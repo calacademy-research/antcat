@@ -6,7 +6,7 @@ Feature: Adding a taxon unsuccessfully
   Scenario: Adding a genus without setting authorship reference
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
-    And I save my changes
+    And I press "Save"
     Then I should see "Protonym authorship reference can't be blank"
 
   @javascript
@@ -17,7 +17,7 @@ Feature: Adding a taxon unsuccessfully
       And I set the name to "Atta"
       And I press "OK"
     And I fill in "taxon_type_taxt" with "Notes"
-    And I save my changes
+    And I press "Save"
     Then I should see "Protonym name name can't be blank"
     And the "taxon_type_taxt" field should contain "Notes"
     And the name button should contain "Atta"

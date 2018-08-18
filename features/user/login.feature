@@ -1,8 +1,4 @@
 Feature: Logging in
-  As a user of AntCat
-  I want to be able to log in
-  So I can edit references
-
   Background:
     Given this user exists
       | email             | name    | password | password_confirmation |

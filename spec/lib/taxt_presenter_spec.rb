@@ -8,11 +8,11 @@ describe TaxtPresenter do
     end
 
     context "names that should be italicized" do
-      let(:genus) { create_genus "Atta" }
+      let(:genus) { create :genus }
 
       it "includes HTML <i> tags" do
         taxt = "{tax #{genus.id}}"
-        expect(described_class[taxt].to_text).to eq "<i>Atta</i>"
+        expect(described_class[taxt].to_text).to eq "<i>#{genus.name.name}</i>"
       end
     end
   end

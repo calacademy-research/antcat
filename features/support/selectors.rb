@@ -73,7 +73,7 @@ module HtmlSelectorsHelpers
       $1
 
     else
-      raise "Can't find mapping from \"#{locator}\" to a selector"
+      raise %(Can't find mapping from "#{locator}" to a selector)
     end
   end
 end

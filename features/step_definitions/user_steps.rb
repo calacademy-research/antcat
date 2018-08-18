@@ -25,7 +25,7 @@ end
 # TODO change to "I am loged in as an editor" because we want to
 # open registration to non-editors in the future.
 Given('I am logged in') do
-  user = Feed.without_tracking { create :editor }
+  user = Feed.without_tracking { create :user, :editor }
   login_programmatically user
 end
 
@@ -36,20 +36,14 @@ end
 
 Given("there is a user named {string}") do |name|
   name = "Quintus Batiatus" if name.blank?
-  create :editor, name: name
+  create :user, :editor, name: name
 end
 
-# "catalog editor" and "editor" are the same. There used to be -- at least
-# in Cucumber tests -- a user role called "bibliography editor" that really
-# meant a registered non-editor user. They may have had special privileges in
-# the past, or perhaps the feature was never implemented. At any rate, there's
-# no such thing at the moment, but we may want to add something similar.
-# TODO investigate adding/reinstating a "bibliography editor" user role.
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = User.find_by name: name
   user ||= Feed.without_tracking do
-    create :editor, name: name
+    create :user, :editor, name: name
   end
   login_programmatically user
 end
@@ -57,7 +51,7 @@ end
 When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = Feed.without_tracking do
-    create :user, can_edit: true, is_superadmin: true, name: name
+    create :user, :editor, :superadmin, name: name
   end
   login_programmatically user
 end

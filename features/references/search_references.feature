@@ -1,9 +1,4 @@
 Feature: Searching references
-  As a user of AntCat
-  I want to search for references
-  So that I can use one in my paper
-    Or see if I have already added it
-
   Background:
     Given these references exist
       | authors        | year | citation_year | title                 | citation   |
@@ -51,7 +46,7 @@ Feature: Searching references
     And I fill in the references search box with "zzzzzz year:1972-1980"
     And I press "Go" by the references search box
     Then I should see "No results found"
-    And the "q" field should contain "zzzzzz year:1972-1980"
+    And the "reference_q" field should contain "zzzzzz year:1972-1980"
 
   @search
   Scenario: Searching by year

@@ -10,29 +10,23 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Rank first described in given year" do
+    describe "searching by rank first described in given year" do
       describe "shared setup..." do
         let!(:reference1977) { reference_factory author_name: 'Bolton', citation_year: '1977' }
-        let!(:atta) { create_genus }
-        let!(:betta) { create_genus }
+        let!(:atta) { create :genus }
+        let!(:betta) { create :genus }
 
         before do
           atta.protonym.authorship.update! reference: reference1977
           betta.protonym.authorship.update! reference: reference1977
           reference1988 = reference_factory author_name: 'Fisher', citation_year: '1988'
-          gamma = create_genus
+          gamma = create :genus
           gamma.protonym.authorship.update! reference: reference1988
         end
 
-        it "returns the one match" do
-          results = described_class[rank: 'Genus', year: "1977", valid_only: true]
-          expect(results).to match_array [atta, betta]
-        end
-
         it "honors the validity flag" do
-          delta = create_genus
+          delta = create :genus, :synonym
           delta.protonym.authorship.update! reference: reference1977
-          delta.update! status: Status::SYNONYM
 
           results = described_class[rank: 'Genus', year: "1977", valid_only: true]
           expect(results).to match_array [atta, betta]
@@ -41,21 +35,20 @@ describe Taxa::AdvancedSearch do
 
       it "returns all regardless of validity if that flag is false" do
         reference1977 = reference_factory author_name: 'Bolton', citation_year: '1977'
-        atta = create_genus
+        atta = create :genus, :synonym
         atta.protonym.authorship.update! reference: reference1977
-        atta.update! status: Status::SYNONYM
 
         results = described_class[rank: 'Genus', year: "1977", valid_only: false]
         expect(results).to match_array [atta]
       end
 
-      describe "Finding certain ranks" do
-        let!(:subfamily) { create_subfamily }
-        let!(:tribe) { create_tribe subfamily: subfamily }
-        let!(:genus) { create_genus tribe: tribe }
-        let!(:subgenus) { create_subgenus genus: genus }
-        let!(:species) { create_species genus: genus }
-        let!(:subspecies) { create_subspecies 'Atta major minor', species: species, genus: genus }
+      describe "searching by ranks" do
+        let!(:subfamily) { create :subfamily }
+        let!(:tribe) { create :tribe, subfamily: subfamily }
+        let!(:genus) { create :genus, tribe: tribe }
+        let!(:subgenus) { create :subgenus, genus: genus }
+        let!(:species) { create :species, genus: genus }
+        let!(:subspecies) { create :subspecies, species: species, genus: genus }
 
         before do
           reference = reference_factory author_name: 'Bolton', citation_year: '1977'
@@ -84,10 +77,10 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Finding by author name" do
+    describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = reference_factory author_name: 'Bolton'
-        atta = create_genus
+        atta = create :family
         atta.protonym.authorship.update! reference: reference
 
         expect(described_class[author_name: 'Bolton']).to eq [atta]
@@ -96,19 +89,10 @@ describe Taxa::AdvancedSearch do
       it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :article_reference,
           author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
-        atta = create_genus
+        atta = create :family
         atta.protonym.authorship.update! reference: reference
 
         expect(described_class[author_name: 'Fisher']).to eq [atta]
-      end
-
-      it "doesn't crash if the author isn't found" do
-        reference = create :article_reference,
-          author_names: [create(:author_name, name: 'Bolton')]
-        atta = create_genus
-        atta.protonym.authorship.update! reference: reference
-
-        expect(described_class[author_name: 'Fisher']).to be_empty
       end
 
       it "finds the taxa for the author's references, even if he's nested inside the reference" do
@@ -117,7 +101,7 @@ describe Taxa::AdvancedSearch do
         reference = create :nested_reference, title: 'Ants',
           author_names: [create(:author_name, name: 'Fisher')],
           nesting_reference: nested_in
-        atta = create_genus
+        atta = create :family
         atta.protonym.authorship.update! reference: reference
 
         expect(described_class[author_name: 'Fisher']).to eq [atta]
@@ -155,45 +139,45 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching for locality" do
+    describe "searching for locality" do
       let!(:indonesia) { create :protonym, locality: 'Indonesia (Bhutan)' }
       let!(:china) { create :protonym, locality: 'China' }
-      let!(:atta) { create_genus protonym: indonesia }
-      let!(:eciton) { create_genus protonym: china }
+      let!(:atta) { create :genus, protonym: indonesia }
+      let!(:eciton) { create :genus, protonym: china }
 
       it "only returns taxa with that locality" do
         expect(described_class[locality: 'Indonesia']).to eq [atta]
       end
     end
 
-    describe "Searching for biogeographic region" do
+    describe "searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
-        create_species biogeographic_region: 'Australasia'
-        eciton = create_species biogeographic_region: 'Indomalaya'
+        create :species, biogeographic_region: 'Australasia'
+        eciton = create :species, biogeographic_region: 'Indomalaya'
 
         expect(described_class[biogeographic_region: 'Indomalaya']).to eq [eciton]
       end
 
       it "not only returns anything if nothing has that biogeographic_region" do
-        create_species
+        create :species
         expect(described_class[biogeographic_region: 'San Pedro']).to be_empty
       end
 
       it "only returns taxa with no biogeographic_region if that's what's specified" do
-        create_species biogeographic_region: 'Australasia'
-        eciton = create_species
+        create :species, biogeographic_region: 'Australasia'
+        eciton = create :species
 
         results = described_class[rank: 'Species', biogeographic_region: 'None']
         expect(results).to eq [eciton]
       end
 
       it "doesn't match substrings" do
-        atta = create_species biogeographic_region: 'Australasia'
+        atta = create :species, biogeographic_region: 'Australasia'
         expect(described_class[biogeographic_region: 'Aust']).not_to eq [atta]
       end
     end
 
-    describe "Searching type fields" do
+    describe "searching type fields" do
       let!(:one) { create :species, published_type_information: 'one' }
       let!(:two) { create :species, additional_type_information: 'one two' }
       let!(:three) { create :species, type_notes: 'one two three' }
@@ -207,26 +191,19 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching for forms" do
+    describe "searching for forms" do
       it "only returns taxa with those forms" do
-        citation = create :citation, forms: 'w.q.'
-        protonym = create :protonym, authorship: citation
-        atta = create_species protonym: protonym
+        protonym = create :protonym, authorship: create(:citation, forms: 'w.q.')
+        atta = create :species, protonym: protonym
 
-        citation = create :citation, forms: 'q.'
-        protonym = create :protonym, authorship: citation
-        create_species protonym: protonym # eciton
+        protonym = create :protonym, authorship: create(:citation, forms: 'q.')
+        create :species, protonym: protonym
 
         expect(described_class[forms: 'w.']).to eq [atta]
       end
-
-      it "returns nothing if nothing has those forms" do
-        create_species
-        expect(described_class[forms: 'w.']).to be_empty
-      end
     end
 
-    describe "Searching by status" do
+    describe "searching by status" do
       let!(:valid) { create :family, :valid }
       let!(:synonym) { create :family, :synonym }
 
@@ -240,7 +217,7 @@ describe Taxa::AdvancedSearch do
       end
     end
 
-    describe "Searching by fossil" do
+    describe "searching by fossil" do
       let!(:extant) { create :family }
       let!(:fossil) { create :family, :fossil }
 
@@ -249,7 +226,7 @@ describe Taxa::AdvancedSearch do
       specify { expect(described_class[fossil: "false"]).to match_array [extant] }
     end
 
-    describe "Searching by nomen nudum" do
+    describe "searching by nomen nudum" do
       let!(:no_match) { create :family }
       let!(:yes_match) { create :family, nomen_nudum: true }
 
@@ -258,7 +235,7 @@ describe Taxa::AdvancedSearch do
       specify { expect(described_class[nomen_nudum: "false"]).to match_array [no_match] }
     end
 
-    describe "Searching by unresolved junior homonym" do
+    describe "searching by unresolved junior homonym" do
       let!(:no_match) { create :family }
       let!(:yes_match) { create :family, unresolved_homonym: true }
 
@@ -267,7 +244,7 @@ describe Taxa::AdvancedSearch do
       specify { expect(described_class[unresolved_junior_homonym: "false"]).to match_array [no_match] }
     end
 
-    describe "Searching by ichnotaxon" do
+    describe "searching by ichnotaxon" do
       let!(:no_match) { create :family }
       let!(:yes_match) { create :family, ichnotaxon: true }
 
@@ -276,7 +253,7 @@ describe Taxa::AdvancedSearch do
       specify { expect(described_class[ichnotaxon: "false"]).to match_array [no_match] }
     end
 
-    describe "Searching by Hong" do
+    describe "searching by Hong" do
       let!(:no_match) { create :family }
       let!(:yes_match) { create :family, hong: true }
 

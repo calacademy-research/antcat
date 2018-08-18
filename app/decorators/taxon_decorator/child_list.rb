@@ -1,4 +1,5 @@
 # TODO make this just fetch the taxa, and render the HTML somewhere else.
+# TODO Some branches are unreachable because `taxon.respond_to?(children_selector)` is false.
 
 class TaxonDecorator::ChildList
   include ActionView::Helpers
@@ -12,7 +13,7 @@ class TaxonDecorator::ChildList
 
   def call
     content = ''.html_safe
-    [:subfamilies, :tribes, :genera].each do |rank|
+    [:subfamilies, :tribes, :genera_incertae_sedis_in].each do |rank|
       content << child_lists_for_rank(rank)
     end
     content << collective_group_name_child_list
@@ -30,6 +31,8 @@ class TaxonDecorator::ChildList
       return ''.html_safe unless taxon.respond_to?(children_selector) && taxon.send(children_selector).present?
 
       if taxon.is_a?(Subfamily) && children_selector == :genera
+        # TODO this is never triggered since there is no `Subfamily#genera`,
+        # and `:genera` was replaced with `:genera_incertae_sedis_in`.
         child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
           child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
       else
@@ -95,7 +98,7 @@ class TaxonDecorator::ChildList
         label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      label << if conditions[:incertae_sedis_in]
+      label << if conditions[:incertae_sedis_in] || formicidae_incertae_sedis_genera?(taxon, children)
                  ' <i>incertae sedis</i> in '.html_safe
                elsif conditions[:collective_group_names]
                  ' in '
@@ -104,6 +107,11 @@ class TaxonDecorator::ChildList
                end
 
       label << content_tag(:span, taxon.taxon_label)
+    end
+
+    # TODO see https://github.com/calacademy-research/antcat/issues/453
+    def formicidae_incertae_sedis_genera? taxon, children
+      taxon.is_a?(Family) && children.first.is_a?(Genus)
     end
 
     def child_list_items children

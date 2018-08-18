@@ -1,9 +1,4 @@
 Feature: Adding a taxon successfully
-  As an editor of AntCat
-  I want to add taxa
-  So that information is kept up-to-date
-  So people use AntCat
-
   Background:
     Given I am logged in
     And this reference exists
@@ -34,7 +29,7 @@ Feature: Adding a taxon successfully
     When I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "Eciton" in the protonym
 
@@ -58,7 +53,7 @@ Feature: Adding a taxon successfully
       And I set the type name to "Eciton major"
       And I press "OK"
       And I press "Add this name"
-    And I save my changes
+    And I press "Save"
 
     Then I should be on the catalog page for "Eciton"
 
@@ -86,7 +81,7 @@ Feature: Adding a taxon successfully
     When I set the type name to "Mayria madagascarensis"
       And I press "OK"
       And I press "Add this name"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Camponotus (Mayria)"
     And I should see "Mayria" in the protonym
 
@@ -118,7 +113,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Eciton major"
       And I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
     And I should see "Add another"
@@ -146,7 +141,7 @@ Feature: Adding a taxon successfully
     And I set the protonym name to "Dolichoderus (Subdolichoderus) major"
     And I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
 
@@ -165,7 +160,7 @@ Feature: Adding a taxon successfully
       And I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"
-    And I save my changes
+    And I press "Save"
     And I wait
     And the changes are approved
     And I go to the catalog page for "Atta"
@@ -177,7 +172,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Atta major"
       And I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
-    And I save my changes
+    And I press "Save"
     And I wait
     Then I should be on the catalog page for "Atta major"
     And I should see "Atta major" in the protonym
@@ -200,7 +195,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Eciton major infra"
       And I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the index
     And I should see "Eciton major infra" in the protonym
@@ -227,7 +222,7 @@ Feature: Adding a taxon successfully
     When I set the type name to "Atta"
       And I press "OK" in "#type_name_field"
       And I press "Add this name"
-    When I save my changes
+    When I press "Save"
     Then I should be on the catalog page for "Dorylinae"
     And I should see "Dorylinae" in the protonym
 
@@ -250,7 +245,7 @@ Feature: Adding a taxon successfully
 
     When I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
-    And I save my changes
+    And I press "Save"
     Then I should be on the catalog page for "Dorylini"
       And I should see "Dorylini" in the protonym
 

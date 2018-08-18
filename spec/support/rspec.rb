@@ -48,5 +48,6 @@ RSpec.configure do |config|
   end
 
   config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include JsonResponseHelper, type: :controller
   config.include FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
 end

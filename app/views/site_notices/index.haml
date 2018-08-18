@@ -1,10 +1,10 @@
 -@title = "Site Notices"
 -breadcrumb :site_notices
 
-.buttons_right
+.buttons-right
   -if user_has_unread_site_notices? current_user
     =link_to "Mark all as read", mark_all_as_read_site_notices_path, method: :post, class: "btn-normal"
-  -if user_can_edit?
+  -if can? :edit, :catalog
     =link_to "New", new_site_notice_path, class: "btn-normal"
 
 -if @site_notices.empty?

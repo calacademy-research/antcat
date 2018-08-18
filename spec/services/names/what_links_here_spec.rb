@@ -3,7 +3,7 @@ require "spec_helper"
 describe Names::WhatLinksHere do
   describe "#call" do
     it "returns references in fields" do
-      atta = create_genus 'Atta'
+      atta = create :family
       protonym = create :protonym, name: atta.name
       atta.update_attribute :protonym, protonym
       atta.update_attribute :type_name, atta.name
@@ -17,8 +17,8 @@ describe Names::WhatLinksHere do
     end
 
     it "returns references in taxts" do
-      atta = create_genus 'Atta'
-      eciton = create_genus 'Eciton'
+      atta = create :family
+      eciton = create :family
       eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
 
       subject = described_class.new(atta.name)

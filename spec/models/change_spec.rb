@@ -1,40 +1,27 @@
 require 'spec_helper'
 
-describe Change, :versioning do
-  let(:user) { create :user }
-
-  describe 'relationships' do
-    it "has a version" do
-      genus = create_genus
-      change = described_class.new user: user
-      change.save!
-      change.reload
-      create :version, item: genus, change: change
-      genus_version = genus.versions.reload.last
-
-      expect(change.versions.first).to eq genus_version
-    end
-
-    it "has a user (the editor)" do
-      # TODO
-    end
+describe Change do
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:user).on(:create) }
   end
 
   describe "scopes" do
+    let(:user) { create :user }
+
     describe ".waiting" do
       before do
-        genus_1 = create_genus
-        genus_1.taxon_state.update review_state: TaxonState::WAITING
-        @unreviewed_change = setup_version genus_1, user
+        taxon_1 = create :family
+        taxon_1.taxon_state.update review_state: TaxonState::WAITING
+        @unreviewed_change = setup_version taxon_1, user
 
-        genus_2 = create_genus
-        genus_2.taxon_state.update review_state: TaxonState::APPROVED
-        approved_earlier_change = setup_version genus_2, user
+        taxon_2 = create :family
+        taxon_2.taxon_state.update review_state: TaxonState::APPROVED
+        approved_earlier_change = setup_version taxon_2, user
         approved_earlier_change.update approved_at: 7.days.ago
 
-        genus_2 = create_genus
-        genus_2.taxon_state.update review_state: TaxonState::APPROVED
-        approved_later_change = setup_version genus_2, user
+        taxon_2 = create :family
+        taxon_2.taxon_state.update review_state: TaxonState::APPROVED
+        approved_later_change = setup_version taxon_2, user
         approved_later_change.update approved_at: 7.days.from_now
       end
 

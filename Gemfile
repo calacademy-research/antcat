@@ -17,13 +17,13 @@ gem 'uglifier'
 gem 'xml-simple'
 gem 'yui-compressor'
 
-gem 'activeadmin'
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 2.0'
 # Version locked because of bug when fetching s3 hosted PDF:
 #   `uninitialized constant Paperclip::Storage::S3::AWS`
 #   Test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
+gem 'cancancan'
 gem 'colorize'
 gem 'data_migrate'
 gem 'devise'
@@ -44,6 +44,7 @@ gem 'paper_trail', '< 8.0'
 gem 'paperclip', '4.3.1'
 gem 'rails-observers'
 gem 'redcarpet'
+gem 'rolify'
 gem 'rouge'
 gem 'ruby-progressbar'
 gem 'select2-rails'

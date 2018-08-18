@@ -25,10 +25,9 @@ describe DuplicatesController do
         rank_to_create: 'species' }
 
       expect(response).to have_http_status :ok
-      taxa = JSON.parse response.body
-      expect(taxa.size).to eq 1
-      expect(taxa[0]['species']['name_cache']).to eq @species_epithet
-      expect(taxa[0]['species']['duplicate_type']).to eq 'secondary_junior_homonym'
+      expect(json_response.size).to eq 1
+      expect(json_response[0]['species']['name_cache']).to eq @species_epithet
+      expect(json_response[0]['species']['duplicate_type']).to eq 'secondary_junior_homonym'
     end
 
     it "can find a `return_to_original match` for same protonym", :pending do
@@ -46,10 +45,9 @@ describe DuplicatesController do
         rank_to_create: 'species' }
 
       expect(response).to have_http_status :ok
-      taxa = JSON.parse response.body
-      expect(taxa.size).to eq 1
-      expect(taxa[0]['species']['name_cache']).to eq @species_epithet
-      expect(taxa[0]['species']['duplicate_type']).to eq 'return_to_original'
+      expect(json_response.size).to eq 1
+      expect(json_response[0]['species']['name_cache']).to eq @species_epithet
+      expect(json_response[0]['species']['duplicate_type']).to eq 'return_to_original'
     end
 
     it "finds no matches for same protonym distinct epithet", :pending do

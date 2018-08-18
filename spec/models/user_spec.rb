@@ -23,14 +23,16 @@ describe User do
   end
 
   describe "authorization" do
-    it "knows if it can edit the catalog" do
-      expect(described_class.new.can_edit).to be_falsey
-      expect(described_class.new(can_edit: true).can_edit).to be true
+    context "when user is not an editor" do
+      let(:user) { described_class.new }
+
+      specify { expect(user.can?(:edit, :catalog)).to be false }
     end
 
-    it "knows if it can review changes" do
-      expect(described_class.new.can_review_changes?).to be_falsey
-      expect(described_class.new(can_edit: true).can_review_changes?).to be true
+    context "when user is an editor" do
+      let(:user) { create :user, :editor }
+
+      specify { expect(user.can?(:edit, :catalog)).to be true }
     end
   end
 

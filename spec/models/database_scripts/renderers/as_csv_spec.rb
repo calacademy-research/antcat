@@ -29,21 +29,21 @@ describe DatabaseScripts::Renderers::AsCSV do
     end
 
     context "with explicit `results`" do
-      let!(:species) { create_species }
+      let!(:taxon) { create :family }
 
       it 'renders the supplied `results` as CSV' do
         rendered =
           dummy.as_csv do |c|
             c.header :taxon, :status
 
-            c.rows(Species.all) do |taxon|
+            c.rows(Taxon.all) do |taxon|
               [taxon.id, taxon.status]
             end
           end
 
         expect(rendered).to eq <<~CSV
           taxon,status
-          #{species.id},#{species.status}
+          #{taxon.id},#{taxon.status}
         CSV
       end
     end

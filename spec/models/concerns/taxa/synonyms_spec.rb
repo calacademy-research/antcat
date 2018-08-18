@@ -2,15 +2,15 @@ require "spec_helper"
 
 describe Taxon do # rubocop:disable RSpec/FilePath
   describe "#junior_synonyms_recursive" do
-    let(:taxon) { create_species }
+    let(:taxon) { create :family }
 
     context "when there are no `junior_synonyms`" do
       specify { expect(taxon.junior_synonyms_recursive).to be_empty }
     end
 
     context "when there are direct junior_synonyms" do
-      let(:junior_synonym) { create_species }
-      let(:another_junior_synonym) { create_species }
+      let(:junior_synonym) { create :family }
+      let(:another_junior_synonym) { create :family }
 
       before do
         create :synonym, senior_synonym: taxon, junior_synonym: junior_synonym
@@ -23,10 +23,10 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     end
 
     context "when there are nested `junior_synonyms`" do
-      let(:junior_synonym) { create_species }
-      let(:nested_junior_synonym) { create_species }
-      let(:deeply_nested_junior_synonym) { create_species }
-      let(:another_deeply_nested_junior_synonym) { create_species }
+      let(:junior_synonym) { create :family }
+      let(:nested_junior_synonym) { create :family }
+      let(:deeply_nested_junior_synonym) { create :family }
+      let(:another_deeply_nested_junior_synonym) { create :family }
 
       before do
         create :synonym, senior_synonym: taxon, junior_synonym: junior_synonym
@@ -55,8 +55,8 @@ describe Taxon do # rubocop:disable RSpec/FilePath
   end
 
   it "can have junior and senior synonyms" do
-    senior = create_genus 'Atta'
-    junior = create_genus 'Eciton'
+    senior = create :family
+    junior = create :family
     create :synonym, junior_synonym: junior, senior_synonym: senior
 
     expect(senior.junior_synonyms.count).to eq 1
@@ -67,8 +67,8 @@ describe Taxon do # rubocop:disable RSpec/FilePath
 
   describe "Reversing synonymy" do
     it "makes one the synonym of the other and set statuses" do
-      atta = create_genus 'Atta'
-      attaboi = create_genus 'Attaboi'
+      atta = create :family
+      attaboi = create :family
 
       become_junior_synonym_of atta, attaboi
       atta.reload
@@ -85,8 +85,8 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     end
 
     it "doesn't create duplicate synonym in case of synonym cycle" do
-      atta = create_genus 'Atta', status: Status::SYNONYM
-      attaboi = create_genus 'Attaboi', status: Status::SYNONYM
+      atta = create :family, :synonym
+      attaboi = create :family, :synonym
 
       create :synonym, junior_synonym: atta, senior_synonym: attaboi
       create :synonym, junior_synonym: attaboi, senior_synonym: atta
@@ -101,27 +101,27 @@ describe Taxon do # rubocop:disable RSpec/FilePath
 
   describe "Removing synonymy" do
     it "removes all synonymies for the taxon" do
-      atta = create_genus 'Atta'
-      attaboi = create_genus 'Attaboi'
+      atta = create :family
+      attaboi = create :family
       become_junior_synonym_of attaboi, atta
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be_truthy
+      expect(atta.junior_synonyms.all.include?(attaboi)).to be true
       expect(atta).not_to be_synonym
       expect(attaboi).to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be_truthy
+      expect(attaboi.senior_synonyms.all.include?(atta)).to be true
 
       become_not_junior_synonym_of attaboi, atta
 
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be_falsey
+      expect(atta.junior_synonyms.all.include?(attaboi)).to be false
       expect(atta).not_to be_synonym
       expect(attaboi).not_to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be_falsey
+      expect(attaboi.senior_synonyms.all.include?(atta)).to be false
     end
   end
 
   describe "Deleting synonyms when status changed" do
     it "deletes synonyms when the status changes from 'synonym'" do
-      atta = create_genus
-      eciton = create_genus
+      atta = create :family
+      eciton = create :family
       become_junior_synonym_of atta, eciton
       expect(atta).to be_synonym
       expect(atta.senior_synonyms.size).to eq 1
@@ -136,8 +136,8 @@ describe Taxon do # rubocop:disable RSpec/FilePath
   end
 
   describe "with_own_id" do
-    let(:atta) { create_genus 'Atta' }
-    let(:eciton) { create_genus 'Eciton' }
+    let(:atta) { create :family }
+    let(:eciton) { create :family }
 
     before { become_junior_synonym_of eciton, atta }
 

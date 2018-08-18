@@ -11,13 +11,10 @@ describe Api::V1::AuthorsController do
     it "gets all author primary keys" do
       expect(response.body.to_s).to include author.id.to_s
       expect(response.body.to_s).to include another_author.id.to_s
-      authors = JSON.parse response.body
-      expect(authors.count).to eq 2
+      expect(json_response.count).to eq 2
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
@@ -27,8 +24,6 @@ describe Api::V1::AuthorsController do
       expect(response.body.to_s).to include author.id.to_s
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

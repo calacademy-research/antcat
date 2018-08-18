@@ -29,7 +29,7 @@ describe Family do
   describe "#genera" do
     let!(:genus_without_subfamily) { create_genus subfamily: nil }
 
-    before { create_genus subfamily: create_subfamily } # genus_with_subfamily
+    before { create_genus subfamily: create(:subfamily) } # genus_with_subfamily
 
     it "includes genera without subfamilies" do
       expect(family.genera).to eq [genus_without_subfamily]
@@ -37,7 +37,7 @@ describe Family do
   end
 
   describe "#subfamilies" do
-    let!(:subfamily) { create_subfamily }
+    let!(:subfamily) { create :subfamily }
 
     it "includes all subfamilies" do
       expect(family.subfamilies).to eq [subfamily]

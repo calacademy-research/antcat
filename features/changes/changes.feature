@@ -25,7 +25,7 @@ Feature: Changes
     And I set the type name to "Atta major"
     And I press "OK"
     And I press "Add this name"
-    And I save my changes
+    And I press "Save"
     Then I should see "This taxon has been changed; changes awaiting approval"
 
     When I follow "Review change"
@@ -54,7 +54,7 @@ Feature: Changes
     Given I add the genus "Atta"
     And I add the genus "Batta"
 
-    When I log in as a superadmin named "Stan Blum"
+    When I log in as a superadmin
     And I go to the unreviewed changes page
     Then I should see "Approve all"
 

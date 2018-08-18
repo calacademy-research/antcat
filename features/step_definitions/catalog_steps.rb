@@ -36,7 +36,7 @@ end
 
 When('I press "Go" by the catalog search box') do
   # TODO fix mobile
-  within "#desktop-lower-menu" do
+  within "#catalog-search-form-test-hook" do
     step 'I press "Go"'
   end
 end

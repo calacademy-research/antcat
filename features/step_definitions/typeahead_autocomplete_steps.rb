@@ -13,7 +13,7 @@ When("I click the first autocomplete suggestion") do
 end
 
 Then("the search box should contain {string}") do |text|
-  expect(page.evaluate_script("$('input#q').val()")).to eq text
+  expect(page.evaluate_script("$('input#reference_q').val()")).to eq text
 end
 
 When("I start filling in {string} with {string}") do |field, value|

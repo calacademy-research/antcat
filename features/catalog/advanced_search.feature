@@ -1,10 +1,6 @@
 # TODO move most of these to unit tests.
 
 Feature: Searching the catalog
-  As a user of AntCat
-  I want to search the catalog in index view
-  So that I can find taxa with their parents and siblings
-
   Background:
     Given I go to the catalog
     And I follow the first "Advanced Search"
@@ -13,15 +9,6 @@ Feature: Searching the catalog
     When I fill in "year" with "2010"
     And I press "Go" in the search section
     Then I should see "No results"
-
-  Scenario: Searching when one result
-    Given there is a species described in 2010
-    And there is a species described in 2011
-
-    When I fill in "year" with "2010"
-    And I press "Go" in the search section
-    Then I should see "1 result"
-    And I should see the species described in 2010
 
   Scenario: Searching for subfamilies
     Given there is a subfamily described in 2010
@@ -32,7 +19,7 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see the species described in 2010
 
-  Scenario: Searching for an invalid taxon
+  Scenario: Searching for valid taxa
     Given there is an invalid species described in 2010
 
     When I fill in "year" with "2010"
@@ -129,14 +116,6 @@ Feature: Searching the catalog
     Then I should see "2 result"
     And I should see the species described in 2010
     And I should see the species described in 2011
-
-  Scenario: Searching for 'described in' (malformatted range)
-    Given there is a species described in 2010
-    And there is a species described in 2011
-
-    When I fill in "year" with "2000-1900"
-    And I press "Go" in the search section
-    Then I should see "No results"
 
   Scenario: Download search results
     Given there is a species described in 2010

@@ -1,5 +1,5 @@
 class JournalsController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :show, :autocomplete]
+  before_action :ensure_can_edit_catalog, except: [:index, :show, :autocomplete]
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
   layout "references"

@@ -3,24 +3,19 @@ require 'spec_helper'
 describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
-      create_genus
-      create_species 'Atta minor'
-      create :species_name, name: 'Eciton minor'
+      create :family
       get :index
     end
 
     it "gets all protonyms" do
-      author_names = JSON.parse response.body
-      expect(author_names.count).to eq 7 # hmm
+      expect(json_response.count).to eq 1 # TODO.
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
-    let!(:taxon) { create_genus }
+    let!(:taxon) { create :family }
 
     before { get :show, params: { id: taxon.protonym_id } }
 
@@ -28,8 +23,6 @@ describe Api::V1::ProtonymsController do
       expect(response.body.to_s).to include taxon.protonym.id.to_s
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

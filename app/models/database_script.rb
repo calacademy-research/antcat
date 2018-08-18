@@ -11,7 +11,8 @@ class DatabaseScript
     VERY_SLOW_TAG = "very-slow",
     NEW_TAG = "new!",
     CSV_TAG = "csv",
-    REGRESSION_TEST_TAG = "regression-test"
+    REGRESSION_TEST_TAG = "regression-test",
+    VALIDATED = "validated"
   ]
 
   ScriptNotFound = Class.new StandardError

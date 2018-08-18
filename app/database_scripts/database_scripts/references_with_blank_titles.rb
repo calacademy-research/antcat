@@ -7,4 +7,4 @@ module DatabaseScripts
 end
 
 __END__
-topic_areas: [references]
+topic_areas: [references, validated]

@@ -1,6 +1,19 @@
 require 'spec_helper'
 
 describe TooltipsController do
+  describe "forbidden actions" do
+    context "when signed in as a user" do
+      before { sign_in create(:user) }
+
+      specify { expect(get(:new)).to have_http_status :forbidden }
+      specify { expect(get(:show, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create)).to have_http_status :forbidden }
+      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
+    end
+  end
+
   describe "GET index" do
     context "when signed in" do
       let!(:no_namespace)         { create :tooltip, key: "no_namespace" }
@@ -9,7 +22,7 @@ describe TooltipsController do
       let!(:references_new_title) { create :tooltip, key: "new.title", scope: "references" }
       let!(:taxa_type_species)    { create :tooltip, key: "type_species", scope: "taxa" }
 
-      before { sign_in create :editor }
+      before { sign_in create(:user, :editor) }
 
       describe "grouping" do
         before do

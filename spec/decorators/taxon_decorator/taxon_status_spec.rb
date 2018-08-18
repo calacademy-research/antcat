@@ -3,19 +3,19 @@ require "spec_helper"
 describe TaxonDecorator::TaxonStatus do
   describe "#call" do
     it "is html_safe" do
-      expect(create_genus.decorate.taxon_status).to be_html_safe
+      expect(create(:family).decorate.taxon_status).to be_html_safe
     end
 
     context "when taxon is valid" do
       it "returns 'valid' if the status is valid" do
-        taxon = create_genus
+        taxon = create :family
         expect(taxon.decorate.taxon_status).to eq 'valid'
       end
     end
 
     context "when taxon is a homonym" do
       context "when taxon does not have a `homonym_replaced_by`" do
-        let!(:taxon) { create_genus status: Status::HOMONYM }
+        let!(:taxon) { create :family, :homonym }
 
         specify { expect(taxon.decorate.taxon_status).to eq 'homonym' }
       end
@@ -41,7 +41,7 @@ describe TaxonDecorator::TaxonStatus do
 
     # NOTE `unresolved_homonym`s usually have a status that is not `homonym`.
     context "when taxon is an unresolved homonym" do
-      let(:taxon) { create_genus 'Atta' }
+      let(:taxon) { create :family }
 
       before { taxon.update! unresolved_homonym: true }
 
@@ -52,7 +52,7 @@ describe TaxonDecorator::TaxonStatus do
       context "when there is a current valid taxon" do
         let!(:senior_synonym) { create_genus 'Eciton' }
 
-        before { taxon.update! current_valid_taxon: senior_synonym, status: Status::UNAVAILABLE }
+        before { taxon.update! current_valid_taxon: senior_synonym, status: Status::SYNONYM }
 
         specify do
           expect(taxon.decorate.taxon_status).
@@ -70,7 +70,7 @@ describe TaxonDecorator::TaxonStatus do
     context "when taxon is a synonym" do
       context "when a taxon has no `Synonym`s" do
         context "when taxon does not have a `current_valid_taxon`" do
-          let!(:taxon) { create_genus status: Status::SYNONYM }
+          let!(:taxon) { create :family, :synonym }
 
           specify do
             expect(taxon.decorate.taxon_status).to include "junior synonym"
@@ -81,7 +81,7 @@ describe TaxonDecorator::TaxonStatus do
       context "when taxon has a single valid senior `Synonym`" do
         specify do
           senior_synonym = create_genus 'Atta'
-          junior_synonym = create_genus 'Atta', status: Status::SYNONYM
+          junior_synonym = create :genus, :synonym
           create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
           expect(junior_synonym.decorate.taxon_status).
@@ -95,7 +95,7 @@ describe TaxonDecorator::TaxonStatus do
           let!(:junior_synonym) { create :genus, :synonym }
 
           before do
-            senior_synonym = create_genus 'Atta'
+            senior_synonym = create :genus
             senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
@@ -113,7 +113,7 @@ describe TaxonDecorator::TaxonStatus do
           let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: other_senior_synonym }
 
           before do
-            senior_synonym = create_genus 'Atta'
+            senior_synonym = create :genus
             senior_synonym.update_attribute :created_at, 100.seconds.ago
             create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
 
@@ -147,7 +147,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is incertae sedis" do
-      let(:taxon) { create_genus incertae_sedis_in: 'family' }
+      let(:taxon) { create :genus, incertae_sedis_in: 'family' }
 
       specify do
         expect(taxon.decorate.taxon_status).to eq '<i>incertae sedis</i> in family, valid'
@@ -159,8 +159,8 @@ describe TaxonDecorator::TaxonStatus do
     context "when the senior synonym is itself invalid" do
       subject { described_class.new(junior) }
 
-      let(:invalid_senior) { create_genus 'Atta', status: Status::SYNONYM }
-      let(:junior) { create_genus 'Eciton', status: Status::SYNONYM }
+      let(:invalid_senior) { create :family, :synonym }
+      let(:junior) { create :family, :synonym }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 

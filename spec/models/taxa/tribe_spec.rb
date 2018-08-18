@@ -46,9 +46,9 @@ describe Tribe do
     end
 
     it "assigns the subfamily of its descendants" do
-      genus = create_genus tribe: tribe
-      species = create_species genus: genus
-      create_subspecies species: species, genus: genus
+      genus = create :genus, tribe: tribe
+      species = create :species, genus: genus
+      create :subspecies, species: species, genus: genus
 
       # test the initial subfamilies
       expect(tribe.subfamily).to eq subfamily

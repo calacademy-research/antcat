@@ -3,12 +3,15 @@ FactoryBot.define do
     name 'Mark Wilden'
     sequence(:email) { |n| "mark#{n}@example.com" }
     password 'secret'
-  end
 
-  factory :editor, class: User do
-    name 'Brian Fisher'
-    sequence(:email) { |n| "brian#{n}@example.com" }
-    password 'secret'
-    can_edit true
+    trait :superadmin do
+      after(:create) { |user| user.add_role :superadmin }
+    end
+
+    trait :editor do
+      name 'Brian Fisher'
+      sequence(:email) { |n| "brian#{n}@example.com" }
+      after(:create) { |user| user.add_role :editor }
+    end
   end
 end

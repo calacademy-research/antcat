@@ -5,6 +5,7 @@ class Feedback < ApplicationRecord
   belongs_to :user
 
   validates :comment, presence: true, length: { maximum: 10_000 }
+  validate :comment_has_not_previously_been_submitted, on: :create
 
   scope :pending_count, -> { where(open: true).count }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
@@ -17,7 +18,7 @@ class Feedback < ApplicationRecord
   tracked on: [:create, :destroy]
 
   def from_the_same_ip
-    Feedback.where(ip: ip)
+    self.class.where(ip: ip)
   end
 
   def closed?
@@ -35,4 +36,14 @@ class Feedback < ApplicationRecord
     save!
     create_activity :reopen_feedback
   end
+
+  private
+
+    def comment_has_not_previously_been_submitted
+      return unless self.class.where(comment: comment).exists?
+      errors.add :comment, <<~MSG
+        has already been submitted. If it is unlikely that the exact comment has already
+        been submitted, please let us know. Either way, we got your feedback, thanks!.
+      MSG
+    end
 end

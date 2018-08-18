@@ -22,6 +22,9 @@ Rails/DynamicFindBy:
 Rails/FilePath:
   Enabled: false
 
+Rails/HasAndBelongsToMany:
+  Enabled: false
+
 # TODO we want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
@@ -136,6 +139,9 @@ RSpec/NamedSubject:
   Enabled: false
 
 RSpec/NestedGroups:
+  Enabled: false
+
+RSpec/NotToNot:
   Enabled: false
 
 RSpec/PredicateMatcher:

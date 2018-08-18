@@ -1,5 +1,5 @@
 class ReferencesController < ApplicationController
-  before_action :authenticate_editor, except: [:index, :show, :autocomplete]
+  before_action :ensure_can_edit_catalog, except: [:index, :show, :autocomplete]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -75,7 +75,7 @@ class ReferencesController < ApplicationController
   end
 
   def autocomplete
-    search_query = params[:q] || params[:qq] || ''
+    search_query = params[:reference_q] || ''
 
     respond_to do |format|
       format.json do

@@ -1,8 +1,12 @@
 -@title = @user.name
 -breadcrumb :user, @user
 
+-if user_is_superadmin?
+  .buttons-right
+    =link_to "Edit as superadmin", edit_user_path(@user), class: "btn-normal"
+
 -if current_user == @user
-  .buttons_right
+  .buttons-right
     =link_to "Change my password/name/email", edit_user_registration_path, class: "btn-normal"
 %p
   %strong Name:
@@ -12,7 +16,7 @@
   =link_to @user.email, "mailto:#{@user.email}"
 %p
   %strong Editor:
-  =@user.can_edit? ? 'Yes' : 'No'
+  =@user.can?(:edit, :catalog) ? 'Yes' : 'No'
 
 .row.margin-top
   .large-12.columns

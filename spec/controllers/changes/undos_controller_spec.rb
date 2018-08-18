@@ -1,9 +1,18 @@
 require 'spec_helper'
 
 describe Changes::UndosController do
+  describe "forbidden actions" do
+    context "when signed in as a user" do
+      before { sign_in create(:user) }
+
+      specify { expect(get(:show, params: { change_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { change_id: 1 })).to have_http_status :forbidden }
+    end
+  end
+
   describe "GET show" do
     describe "check that we can find and report the entire undo set" do
-      let!(:adder) { create :editor }
+      let!(:adder) { create :user, :editor }
       let!(:taxon) { create_taxon_version_and_change TaxonState::WAITING, adder, nil, 'Genus1' }
 
       before { sign_in adder }
@@ -22,7 +31,7 @@ describe Changes::UndosController do
 
       context "when undoing an older change would hit newer changes" do
         before do
-          change = create :change, taxon: taxon, change_type: "update"
+          change = create :change, taxon: taxon, change_type: "update", user: create(:user)
           create :version, item: taxon, whodunnit: adder.id, change: change
           taxon.status = Status::HOMONYM
           taxon.save

@@ -3,10 +3,14 @@ require 'spec_helper'
 describe TaxonForm do
   include RefactorTaxonFactoriesHelpers
 
+  before do
+    fake_current_user
+  end
+
   describe "#save" do
-    describe "Saving a new record, based on params from a form with nested attributes" do
+    describe "saving a new records" do
       it "saves a new genus" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         params[:type_fossil] = 0
@@ -21,7 +25,7 @@ describe TaxonForm do
       end
 
       it "saves a new subgenus" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = subgenus_params
 
         described_class.new(taxon, params).save
@@ -32,7 +36,7 @@ describe TaxonForm do
       end
 
       it "sets the new taxon's state" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         params[:type_fossil] = 0
@@ -42,11 +46,11 @@ describe TaxonForm do
 
         taxon.reload
         expect(taxon).to be_waiting
-        expect(taxon.can_approve?).to be_truthy
+        expect(taxon.can_approve?).to be true
       end
 
       it "saves a new species" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = species_params
 
         described_class.new(taxon, params).save
@@ -57,7 +61,7 @@ describe TaxonForm do
       end
 
       it "saves a new subspecies" do
-        taxon = build_new_taxon_and_set_parent :subspecies, create_species
+        taxon = build_new_taxon_and_set_parent :subspecies, create(:species)
         params = subspecies_params
 
         described_class.new(taxon, params).save
@@ -70,11 +74,11 @@ describe TaxonForm do
       it "sets name, status and flag fields" do
         headline_reference = create :article_reference
         taxt_reference = create :article_reference
-        taxon = build_new_taxon_and_set_parent :species, create_genus
+        taxon = build_new_taxon_and_set_parent :species, create(:genus)
 
         params = taxon_params
-        params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
-        params[:protonym_attributes][:name_attributes][:id] = create(:species_name, name: 'Betta major').id
+        params[:name_attributes][:id] = create(:species_name).id
+        params[:protonym_attributes][:name_attributes][:id] = create(:species_name).id
         params[:incertae_sedis_in] = 'genus'
         params[:nomen_nudum] = '1'
         params[:hong] = '1'
@@ -97,12 +101,11 @@ describe TaxonForm do
 
       it "sets authorship taxt" do
         reference = create :article_reference
-        taxon = build_new_taxon_and_set_parent :species, create_genus
+        taxon = build_new_taxon_and_set_parent :species, create(:genus)
         params = taxon_params
 
-        params[:name_attributes][:id] = create(:species_name, name: 'Atta major').id
-        params[:protonym_attributes][:name_attributes][:id] =
-          create(:species_name, name: 'Betta major').id
+        params[:name_attributes][:id] = create(:species_name).id
+        params[:protonym_attributes][:name_attributes][:id] = create(:species_name).id
         params[:protonym_attributes][:authorship_attributes][:notes_taxt] = "{ref #{reference.id}}"
 
         described_class.new(taxon, params).save
@@ -112,9 +115,9 @@ describe TaxonForm do
       end
 
       it "sets homonym replaced by" do
-        taxon = build_new_taxon_and_set_parent :species, create_genus
+        taxon = build_new_taxon_and_set_parent :species, create(:genus)
         params = species_params
-        replacement_homonym = create_genus
+        replacement_homonym = create :family
 
         params[:homonym_replaced_by_id] = replacement_homonym.id
 
@@ -125,12 +128,12 @@ describe TaxonForm do
       end
 
       it "sets current valid taxon" do
-        taxon = build_new_taxon_and_set_parent :species, create_genus
+        taxon = build_new_taxon_and_set_parent :species, create(:genus)
         params = species_params
-        current_valid_taxon = create_genus
+        current_valid_taxon = create :family
 
         params[:current_valid_taxon_id] = current_valid_taxon.id
-        params[:status] = Status::UNAVAILABLE
+        params[:status] = Status::SYNONYM
 
         described_class.new(taxon, params).save
 
@@ -139,7 +142,7 @@ describe TaxonForm do
       end
 
       it "allows name gender to be set when updating a taxon" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
 
         # Must do this, probably so that a new genus isn't created.
         @genus_params = genus_params.deep_dup
@@ -160,7 +163,7 @@ describe TaxonForm do
       end
 
       it "allows name gender to be unset when updating a taxon" do
-        taxon = build_new_taxon_and_set_parent :genus, create_subfamily
+        taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params
 
         described_class.new(taxon, params).save
@@ -179,7 +182,7 @@ describe TaxonForm do
 
       describe "Creating a Change" do
         context "when a taxon is added" do
-          let!(:taxon) { build_new_taxon_and_set_parent :species, create_genus }
+          let!(:taxon) { build_new_taxon_and_set_parent :species, create(:genus) }
 
           it "creates a Change pointing to the version of Taxon" do
             expect do
@@ -190,7 +193,7 @@ describe TaxonForm do
         end
 
         context "when a taxon is edited" do
-          let(:genus) { create_genus }
+          let(:genus) { create :family }
 
           it "creates a Change for an edit" do
             expect do
@@ -242,8 +245,8 @@ describe TaxonForm do
       describe "Taxon#remove_auto_generated" do
         include MarkAsAutogeneratedHelpers
 
-        let!(:genus) { create_genus }
-        let!(:another_genus) { create_genus }
+        let!(:genus) { create :genus }
+        let!(:another_genus) { create :genus }
         let!(:synonym) { create :synonym, senior_synonym: genus, junior_synonym: another_genus }
         let!(:actors) { [genus, genus.name, synonym] }
 
@@ -261,7 +264,7 @@ describe TaxonForm do
       end
 
       context "#set_taxon_state_to_waiting" do
-        let(:genus) { create_genus }
+        let(:genus) { create :genus }
 
         before do
           genus.taxon_state.update_columns review_state: TaxonState::OLD

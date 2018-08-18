@@ -8,8 +8,8 @@ Given('there is a genus Orderia with the history items "AAA", "BBB" and "CCC"') 
 end
 
 When("I drag the AAA history item a bit") do
-  aaa = find ".history_item", text: "AAA"
-  ccc = find ".history_item", text: "CCC"
+  aaa = find ".history-item", text: "AAA"
+  ccc = find ".history-item", text: "CCC"
   aaa.drag_to ccc
 end
 

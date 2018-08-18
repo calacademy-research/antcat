@@ -5,29 +5,29 @@ describe TaxonDecorator::ChildList do
 
   describe "#child_list" do
     context "formats a tribes list" do
-      let!(:attini) { create_tribe 'Attini', subfamily: subfamily }
+      let!(:tribe) { create_tribe 'Attini', subfamily: subfamily }
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, subfamily.tribes, true)).
-          to eq %{<div><span class="caption">Tribe (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{attini.id}">Attini</a>.</div>}
+          to eq %{<div><span class="caption">Tribe (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{tribe.id}">Attini</a>.</div>}
       end
     end
 
     context "formats a child list, specifying extinctness" do
-      let!(:atta) { create_genus 'Atta', subfamily: subfamily }
+      let!(:genus) { create_genus 'Atta', subfamily: subfamily }
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).
-          to eq %{<div><span class="caption">Genus (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>}
+          to eq %{<div><span class="caption">Genus (extant) of <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>}
       end
     end
 
     context "formats a genera list, not specifying extinctness" do
-      let!(:atta) { create_genus 'Atta', subfamily: subfamily }
+      let!(:genus) { create_genus 'Atta', subfamily: subfamily }
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, false)).
-          to eq %(<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{atta.id}"><i>Atta</i></a>.</div>)
+          to eq %(<div><span class="caption">Genus of <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
       end
     end
 
@@ -37,6 +37,16 @@ describe TaxonDecorator::ChildList do
       specify do
         expect(described_class.new(subfamily).send(:child_list, [genus], false, incertae_sedis_in: 'subfamily')).
           to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Dolichoderinae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
+      end
+    end
+
+    context "when children are genera incertae sedis in Formicidae" do
+      let!(:family) { create :family }
+      let!(:genus) { create_genus 'Atta', subfamily: nil }
+
+      specify do
+        expect(described_class.new(family).send(:child_list, [genus], false)).
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Formicidae</span></span>: <a href="/catalog/#{genus.id}"><i>Atta</i></a>.</div>)
       end
     end
   end

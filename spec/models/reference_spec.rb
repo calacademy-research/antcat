@@ -33,12 +33,9 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        fisher1910b = reference_factory author_name: 'Fisher',
-          citation_year: '1910b', fix_type: :article_reference
-        wheeler1874 = reference_factory author_name: 'Wheeler',
-          citation_year: '1874', fix_type: :article_reference
-        fisher1910a = reference_factory author_name: 'Fisher',
-          citation_year: '1910a', fix_type: :article_reference
+        fisher1910b = reference_factory author_name: 'Fisher', citation_year: '1910b'
+        wheeler1874 = reference_factory author_name: 'Wheeler', citation_year: '1874'
+        fisher1910a = reference_factory author_name: 'Fisher', citation_year: '1910a'
 
         expect(described_class.order_by_author_names_and_year).
           to eq [fisher1910a, fisher1910b, wheeler1874]
@@ -59,33 +56,13 @@ describe Reference do
     end
   end
 
-  describe ".solr_search", :search do
-    it "returns an empty array if nothing is found for author_name" do
-      create :reference
-      Sunspot.commit
-
-      expect(described_class.solr_search { keywords 'foo' }.results).to be_empty
-    end
-
+  describe ".search", :search do
     it "finds the reference for a given author_name if it exists" do
       reference = reference_factory author_name: 'Ward'
       reference_factory author_name: 'Fisher'
       Sunspot.commit
 
-      expect(described_class.solr_search { keywords 'Ward' }.results).to eq [reference]
-    end
-
-    it "returns an empty array if nothing is found for a given year and author_name" do
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      reference_factory author_name: 'Bolton', citation_year: '1995'
-      reference_factory author_name: 'Fisher', citation_year: '2011'
-      reference_factory author_name: 'Fisher', citation_year: '1996'
-      Sunspot.commit
-
-      expect(described_class.solr_search do
-        with(:year).between(2012..2013)
-        keywords 'Fisher'
-      end.results).to be_empty
+      expect(described_class.search { keywords 'Ward' }.results).to eq [reference]
     end
 
     it "returns the one reference for a given year and author_name" do
@@ -95,7 +72,7 @@ describe Reference do
       reference = reference_factory author_name: 'Fisher', citation_year: '1996'
       Sunspot.commit
 
-      expect(described_class.solr_search do
+      expect(described_class.search do
         with(:year).between(1996..1996)
         keywords 'Fisher'
       end.results).to eq [reference]
@@ -106,7 +83,7 @@ describe Reference do
       reference_factory author_name: 'Bolton', citation_year: '2010'
       Sunspot.commit
 
-      expect(described_class.solr_search { keywords '2010b' }.results).to eq [with_letter]
+      expect(described_class.search { keywords '2010b' }.results).to eq [with_letter]
     end
   end
 
@@ -265,31 +242,6 @@ describe Reference do
     end
   end
 
-  context "long fields (#title, #public_notes, #editor_notes and #taxonomic_notes)" do
-    describe "when entering a newline" do
-      let(:reference) { create :reference }
-
-      it "strips the newline" do
-        reference.title = "A\nB"
-        reference.public_notes = "A\nB"
-        reference.editor_notes = "A\nB"
-        reference.taxonomic_notes = "A\nB"
-        reference.save!
-
-        expect(reference.title).to eq "A B"
-        expect(reference.public_notes).to eq "A B"
-        expect(reference.editor_notes).to eq "A B"
-        expect(reference.taxonomic_notes).to eq "A B"
-      end
-
-      it "handles all sorts of newlines" do
-        reference.title = "A\r\nB"
-        reference.save!
-        expect(reference.title).to eq "A B"
-      end
-    end
-  end
-
   describe "shared setup" do
     let(:reference_params) do
       {
@@ -410,10 +362,9 @@ describe Reference do
     end
 
     it "handles multiple authors" do
-      reference = create :article_reference,
+      reference = create :article_reference, citation_year: '2001', year: '2001',
         author_names: [create(:author_name, name: 'Bolton, B.'),
-                        create(:author_name, name: 'Fisher, R.')],
-        citation_year: '2001', year: '2001'
+                        create(:author_name, name: 'Fisher, R.')]
       expect(reference.keey_without_letters_in_year).to eq 'Bolton & Fisher, 2001'
     end
   end

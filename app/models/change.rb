@@ -3,9 +3,11 @@ class Change < ApplicationRecord
 
   belongs_to :approver, class_name: 'User'
   belongs_to :taxon, class_name: 'Taxon'
-  belongs_to :user # TODO: Validate presence of `:on_create`.
+  belongs_to :user
 
   has_many :versions, class_name: 'PaperTrail::Version'
+
+  validates :user, presence: true, on: :create
 
   scope :waiting, -> { joins_taxon_states.merge(TaxonState.waiting) }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.taxon_id') }

@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  ActiveAdmin.routes self
-
   root to: 'catalog#index'
 
   resources :changes, only: [:show, :index] do
@@ -139,8 +137,8 @@ Rails.application.routes.draw do
   get 'name_fields/find'
   get 'name_fields/:type/:id' => 'name_fields#show'
 
-  devise_for :users
-  resources :users, only: [:index, :show] do
+  devise_for :users, path_prefix: 'my', controllers: { registrations: "registrations" }
+  resources :users, only: [:index, :show, :new, :create, :edit, :update] do
     collection do
       get :mentionables
     end

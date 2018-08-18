@@ -9,11 +9,11 @@
 
     :javascript
       window.AntCat = {}
-      AntCat.user_can_edit = #{!!user_can_edit?}
       AntCat.testing = #{Rails.env.test?}
 
     =javascript_include_tag 'all_pages/google_analytics' if Rails.env.production?
     =javascript_include_tag 'application'
+    =javascript_include_tag 'controllers/references/search_form/all_fields_autocompletion'
     =javascript_include_tag 'logged_in_only' if current_user
 
     =stylesheet_link_tag 'foundation_and_overrides'
@@ -25,7 +25,12 @@
     =favicon_link_tag
     =yield :head
 
-    =link_to_current_page_on_localhost if current_user&.superadmin?
+    :coffee
+      # HACK this is to make the navigation search boxes not flicker on page loads
+      # due to CSS animations. I'm not sure what this changes.
+      $ ->
+
+    =link_to_current_page_on_localhost if user_is_superadmin?
 
     %body{id: current_controller_css_id}
       #header

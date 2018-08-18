@@ -1,8 +1,8 @@
 -@title = 'Authors'
 -breadcrumb :authors
 
--if user_can_edit?
-  .buttons_right
+-if can? :edit, :catalog
+  .buttons-right
     =link_to 'Merge Authors', merge_authors_path, class: 'btn-normal'
 
 %table

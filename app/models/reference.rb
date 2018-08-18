@@ -23,7 +23,7 @@ class Reference < ApplicationRecord
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxon
 
-  validates :title, presence: true, if: -> { self.class.requires_title }
+  validates :title, presence: true
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
@@ -61,10 +61,6 @@ class Reference < ApplicationRecord
     text    :authors_for_keey do authors_for_keey end # To find "et al".
     string  :citation_year
     string  :author_names_string
-  end
-
-  def self.requires_title
-    true
   end
 
   def self.approve_all
@@ -124,7 +120,10 @@ class Reference < ApplicationRecord
     return if duplicates.blank?
 
     duplicate = Reference.find duplicates.first[:match].id
-    errors.add :base, "This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>To save, click \"Save Anyway\"".html_safe
+    errors.add :base, <<~MSG.html_safe
+      This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
+      To save, click "Save Anyway"
+    MSG
     true
   end
 

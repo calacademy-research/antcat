@@ -153,17 +153,4 @@ describe ReferenceDecorator do
       specify { expect(reference.decorate.format_review_state).to eq '' }
     end
   end
-
-  describe "a regression where a string should've been duped" do
-    let(:reference) do
-      create :article_reference,
-        author_names: [author_name], citation_year: '1874', title: 'Format',
-        journal: create(:journal, name: 'Ants'),
-        series_volume_issue: '1:1', pagination: '2'
-    end
-
-    it "really should have been duped" do
-      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Format. Ants 1:1:2.'
-    end
-  end
 end

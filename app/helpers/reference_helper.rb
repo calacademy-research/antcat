@@ -41,7 +41,7 @@ module ReferenceHelper
     links << link_to('Latest Additions', references_latest_additions_path)
     links << link_to('Latest Changes', references_latest_changes_path)
 
-    if user_can_edit?
+    if can? :edit, :catalog
       # TODO probably allow anyone to export search results.
       if show_export_search_results_to_endnote?
         links << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]))

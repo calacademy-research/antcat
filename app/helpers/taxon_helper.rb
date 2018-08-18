@@ -82,7 +82,7 @@ module TaxonHelper
     change = taxon.last_change
     return unless change
 
-    content_tag :span, class: 'change_history' do
+    content_tag :span, class: 'change-history' do
       content = if change.change_type == 'create'
                   "Added by"
                 else

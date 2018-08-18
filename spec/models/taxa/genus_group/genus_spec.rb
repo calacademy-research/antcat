@@ -157,9 +157,9 @@ describe Genus do
     end
 
     context "when there are descendants" do
-      let(:species) { create_species genus: genus }
-      let(:subgenus) { create_subgenus genus: genus }
-      let(:subspecies) { create_subspecies genus: genus, species: species }
+      let(:species) { create :species, genus: genus }
+      let(:subgenus) { create :subgenus, genus: genus }
+      let(:subspecies) { create :subspecies, genus: genus, species: species }
 
       it "returns all the species, subspecies and subgenera of the genus" do
         expect(genus.descendants).to match_array [species, subgenus, subspecies]
@@ -169,7 +169,7 @@ describe Genus do
 
   describe "#parent" do
     context "when there's no subfamily" do
-      let!(:genus) { create_genus subfamily: nil, tribe: nil }
+      let!(:genus) { create :genus, subfamily: nil, tribe: nil }
 
       it "is nil" do
         expect(genus.parent).to be_nil
@@ -177,7 +177,7 @@ describe Genus do
     end
 
     context "when there is one" do
-      let!(:genus) { create_genus subfamily: subfamily, tribe: nil }
+      let!(:genus) { create :genus, subfamily: subfamily, tribe: nil }
 
       it "refers to the subfamily" do
         expect(genus.parent).to eq genus.subfamily
@@ -192,7 +192,7 @@ describe Genus do
   end
 
   describe "#parent=" do
-    let!(:genus) { create_genus 'Aneuretus', protonym: create(:protonym) }
+    let!(:genus) { create :genus }
 
     it "assigns to both tribe and subfamily when parent is a tribe" do
       genus.parent = tribe
@@ -204,7 +204,7 @@ describe Genus do
 
   describe "#update_parent" do
     it "assigns to both tribe and subfamily when parent is a tribe" do
-      genus = create_genus 'Aneuretus', protonym: create(:protonym)
+      genus = create :genus
       genus.update_parent tribe
 
       expect(genus.tribe).to eq tribe
@@ -227,8 +227,8 @@ describe Genus do
     end
 
     it "assigns the subfamily of its descendants" do
-      species = create_species genus: genus_with_tribe
-      create_subspecies species: species, genus: genus_with_tribe
+      species = create :species, genus: genus_with_tribe
+      create :subspecies, species: species, genus: genus_with_tribe
 
       # test the initial subfamilies
       expect(genus_with_tribe.subfamily).to eq subfamily

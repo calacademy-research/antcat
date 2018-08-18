@@ -200,7 +200,7 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Current valid name" do
-    let(:taxon) { create_genus }
+    let(:taxon) { create :genus }
 
     context 'when taxon is valid' do
       it "returns nil" do
@@ -209,9 +209,9 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     context "when taxon has a `current_valid_taxon`" do
-      let!(:old) { create_genus }
+      let!(:old) { create :genus }
 
-      before { taxon.update! current_valid_taxon: old, status: Status::UNAVAILABLE }
+      before { taxon.update! current_valid_taxon: old, status: Status::SYNONYM }
 
       it "exports the current valid name of the taxon" do
         expect(export_taxon(taxon)[13]).to end_with old.name.name
@@ -219,7 +219,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     context "when there isn't a current_valid_taxon" do
-      let!(:junior_synonym) { create_species 'Atta major', genus: taxon, status: Status::SYNONYM }
+      let!(:junior_synonym) { create :species, :synonym, genus: taxon }
 
       before do
         senior_synonym = create_species 'Eciton major', genus: taxon
@@ -234,12 +234,12 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "Sending all taxa - not just valid" do
     it "can export a junior synonym" do
-      taxon = create_genus status: Status::ORIGINAL_COMBINATION
+      taxon = create :genus, :original_combination
       expect(export_taxon(taxon)[11]).to eq 'original combination'
     end
 
     it "can export a Tribe" do
-      taxon = create_tribe
+      taxon = create :tribe
       expect(export_taxon(taxon)).not_to be_nil
     end
 
@@ -251,18 +251,18 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
     it "sends TRUE or FALSE (when TRUE)" do
-      taxon = create_genus status: Status::ORIGINAL_COMBINATION
+      taxon = create :genus, :original_combination
       expect(export_taxon(taxon)[14]).to eq 'TRUE'
     end
 
     it "sends TRUE or FALSE (when FALSE)" do
-      taxon = create_genus
+      taxon = create :genus
       expect(export_taxon(taxon)[14]).to eq 'FALSE'
     end
   end
 
   describe "Sending 'author_date_html' that includes the full reference in the rollover" do
-    let(:taxon) { create_genus }
+    let(:taxon) { create :genus }
 
     before do
       reference = create :article_reference,
@@ -282,14 +282,11 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Original combination" do
-    let(:original_combination) { create_species 'Atta major' }
-    let(:recombination) { create_species 'Eciton major' }
+    let(:recombination) { create :species }
+    let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
 
     before do
-      original_combination.status = Status::ORIGINAL_COMBINATION
-      original_combination.current_valid_taxon = recombination
       recombination.protonym.name = original_combination.name
-      original_combination.save!
       recombination.save!
     end
 
@@ -299,7 +296,7 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Reference ID" do
-    let!(:taxon) { create_genus }
+    let!(:taxon) { create :genus }
 
     it "sends the protonym's reference ID" do
       reference_id = export_taxon(taxon)[18]
@@ -316,25 +313,25 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "Bioregion" do
     it "sends the biogeographic region" do
-      taxon = create_genus biogeographic_region: 'Neotropic'
+      taxon = create :genus, biogeographic_region: 'Neotropic'
       expect(export_taxon(taxon)[19]).to eq 'Neotropic'
     end
   end
 
   describe "Country" do
     it "sends the locality" do
-      taxon = create_genus protonym: create(:protonym, locality: 'Canada')
+      taxon = create :genus, protonym: create(:protonym, locality: 'Canada')
       expect(export_taxon(taxon)[20]).to eq 'Canada'
     end
   end
 
   describe "Current valid rank" do
     it "sends the right value for each class" do
-      expect(export_taxon(create_subfamily)[21]).to eq 'Subfamily'
-      expect(export_taxon(create_genus)[21]).to eq 'Genus'
-      expect(export_taxon(create_subgenus)[21]).to eq 'Subgenus'
-      expect(export_taxon(create_species)[21]).to eq 'Species'
-      expect(export_taxon(create_subspecies)[21]).to eq 'Subspecies'
+      expect(export_taxon(create(:subfamily))[21]).to eq 'Subfamily'
+      expect(export_taxon(create(:genus))[21]).to eq 'Genus'
+      expect(export_taxon(create(:subgenus))[21]).to eq 'Subgenus'
+      expect(export_taxon(create(:species))[21]).to eq 'Species'
+      expect(export_taxon(create(:subspecies))[21]).to eq 'Subspecies'
     end
   end
 
@@ -342,58 +339,57 @@ describe Exporters::Antweb::ExportTaxon do
     let(:subfamily) { create_subfamily 'Dolichoderinae' }
     let(:tribe) { create_tribe 'Attini', subfamily: subfamily }
     let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
-    let(:subgenus) { create_subgenus genus: genus, tribe: tribe, subfamily: subfamily }
+    let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
     let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
 
-    it "sdoesn't punt on a subfamily's family" do
-      taxon = create_subfamily
+    it "doesn't punt on a subfamily's family" do
+      taxon = create :subfamily
       expect(export_taxon(taxon)[23]).to eq 'Formicidae'
     end
 
     it "handles a taxon's subfamily" do
-      taxon = create_tribe subfamily: subfamily
+      taxon = create :tribe, subfamily: subfamily
       expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
     it "doesn't skip over tribe and return the subfamily" do
-      taxon = create_genus tribe: tribe
+      taxon = create :genus, tribe: tribe
       expect(export_taxon(taxon)[23]).to eq 'Attini'
     end
 
     it "returns the subfamily only if there's no tribe" do
-      taxon = create_genus subfamily: subfamily, tribe: nil
+      taxon = create :genus, subfamily: subfamily, tribe: nil
       expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
     end
 
     it "skips over subgenus and return the genus", :pending do
       skip "the subgenus factory is broken"
 
-      taxon = create_species genus: genus, subgenus: subgenus
+      taxon = create :species, genus: genus, subgenus: subgenus
       expect(export_taxon(taxon)[23]).to eq 'Atta'
     end
 
     it "handles a taxon's species" do
-      taxon = create_subspecies 'Atta betta cappa', species: species, genus: genus, subfamily: subfamily
+      taxon = create :subspecies, species: species, genus: genus, subfamily: subfamily
       expect(export_taxon(taxon)[23]).to eq 'Atta betta'
     end
 
     it "handles a synonym" do
       senior = create_genus 'Eciton', subfamily: subfamily
-      junior = create_genus 'Atta', subfamily: subfamily, current_valid_taxon: senior,
-        status: Status::UNAVAILABLE
-      taxon = create_species genus: junior
+      junior = create :genus, :synonym, subfamily: subfamily, current_valid_taxon: senior
+      taxon = create :species, genus: junior
       create :synonym, senior_synonym: senior, junior_synonym: junior
 
       expect(export_taxon(taxon)[23]).to eq 'Eciton'
     end
 
     it "handles a genus without a subfamily" do
-      taxon = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
+      taxon = create :genus, tribe: nil, subfamily: nil
       expect(export_taxon(taxon)[23]).to eq 'Formicidae'
     end
 
     it "handles a subspecies without a species" do
-      taxon = create_subspecies 'Atta betta kappa', genus: genus, species: nil, subfamily: nil
+      taxon = create :subspecies, genus: genus, species: nil, subfamily: nil
       expect(export_taxon(taxon)[23]).to eq 'Atta'
     end
   end
@@ -494,7 +490,7 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#authorship_html_string" do
-    let(:taxon) { create_genus }
+    let(:taxon) { create :genus }
     let(:reference) do
       journal = create :journal, name: 'Ants'
       author_name = create :author_name, name: "Forel, A."
@@ -503,7 +499,7 @@ describe Exporters::Antweb::ExportTaxon do
         journal: journal, series_volume_issue: '1:1', pagination: '2'
     end
 
-    it "formats references into HTML, with rollover" do
+    it "formats references into HTML" do
       taxon.protonym.authorship.reference = reference
       expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
       expect(exporter.send(:authorship_html_string, taxon)).to eq expected
@@ -544,42 +540,29 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#export_history" do
-    it "doesn't blow up" do
-      exporter.send :export_history, create_genus
-    end
-
     context "a genus" do
-      before do
-        shared_name = create :genus_name, name: 'Atta'
-
-        # Protonym.
-        author_name = create :author_name,
-          name: 'Bolton, B.',
-          author: create(:author)
+      let!(:shared_name) { create :genus_name, name: 'Atta' }
+      let!(:protonym) do
+        author_name = create :author_name, name: 'Bolton, B.'
         reference = ArticleReference.new author_names: [author_name],
           title: 'Ants I have known',
           citation_year: '2010a',
           journal: create(:journal, name: 'Psyche'),
           series_volume_issue: '1',
           pagination: '2'
-        authorship = Citation.create! reference: reference, pages: '12'
-        protonym = Protonym.create! name: shared_name, authorship: authorship
-
-        # Genus and species.
-        @genus = create_genus name: shared_name, protonym: protonym, hol_id: 9999
-        @species = create_species 'Atta major', genus: @genus, hol_id: 1234
+        authorship = create :citation, reference: reference, pages: '12'
+        create :protonym, name: shared_name, authorship: authorship
       end
 
-      it "formats a taxon's history suitable for AntWeb" do
-        species = @species
-        genus = @genus
+      let!(:genus) { create :genus, name: shared_name, protonym: protonym, hol_id: 9999 }
+      let!(:species) { create_species 'Atta major', genus: genus, hol_id: 1234 }
 
+      it "formats a taxon's history for AntWeb" do
         should_see_this_reference_id = genus.protonym.authorship.reference.id
 
         genus.update_attribute :type_name, species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
-        # For `TaxonDecorator#references`.
         a_reference = create :article_reference
         a_tribe = create :tribe
         genus.reference_sections.create title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
@@ -655,14 +638,6 @@ describe Exporters::Antweb::ExportTaxon do
           %(</div>)
         )
       end
-    end
-
-    it "handles italics in missing references (regression)" do
-      # TODO
-      # Confirm that `Exporters::Antweb::InlineCitation`
-      # doesn't return "Brady, Schultz, &lt;i&gt;et al.&lt;/i&gt; 2006",
-      # which happens with missing references unless we call "html_safe"
-      # on this line: `link = helpers.link_to reference.keey.html_safe,`.
     end
   end
 end

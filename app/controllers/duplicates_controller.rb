@@ -1,5 +1,5 @@
 class DuplicatesController < ApplicationController
-  before_action :authenticate_editor
+  before_action :ensure_can_edit_catalog
 
   # Takes requires parent_id (target parent) and previous_combination_id
   # returns all matching taxa that could conflict with this naming.

@@ -1,14 +1,14 @@
 -@title = "#{unitalicize @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
-.buttons_right
+.buttons-right
   .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
   #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
     %ul.no-bullet
       %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
       -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
         %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
-  -if user_can_edit?
+  -if can? :edit, :catalog
     =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
     =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
@@ -100,7 +100,7 @@
           %th Public notes
           %td=or_dash @reference.public_notes
         -# TODO let's also show these to non-editors?
-        -if user_can_edit?
+        -if can? :edit, :catalog
           %tr
             %th Editor notes
             %td=or_dash @reference.editor_notes
@@ -126,7 +126,7 @@
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
 
--if user_can_edit?
+-if can? :edit, :catalog
   .row.margin-bottom
     .small-12.columns.no-right-padding
       %h5 Review

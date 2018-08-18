@@ -22,9 +22,16 @@
         right: 0
         top: 1rem
       #desktop-lower-menu
+        .reference-search-form
+          margin-right: 1rem
         .expandable-catalog-search
           width: 130px
+        .expandable-reference-search
+          width: 165px
+        .expandable-catalog-search, .expandable-reference-search
           transition: all .5s
+          height: 2.6rem !important
+          margin-right: 0rem
           // fix background after typeahead messes it up
           background-color: #fff !important
           &:focus
