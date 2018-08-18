@@ -51,7 +51,7 @@ describe LinkHelper do
     end
 
     it "outputs nothing for subgenera" do
-      subgenus = create_subgenus 'Atta (Batta)', genus: create_genus('Atta')
+      subgenus = create_subgenus
       expect(helper.link_to_antweb(subgenus)).to be_nil
     end
 

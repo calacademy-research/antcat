@@ -4,16 +4,15 @@ describe Api::V1::NamesController do
   describe "GET index" do
     before do
       create :genus
-      create_species 'Atta minor'
     end
 
-    let!(:protonym_name) { create :species_name, name: 'Eciton minor' }
+    let!(:protonym_name) { create :species_name }
 
     it "gets all author names keys" do
       get :index
 
       expect(response.body.to_s).to include "Atta"
-      expect(json_response.count).to eq 21
+      expect(json_response.count).to eq 10 # TODO.
     end
 
     it "gets all author names keys (starts_at)" do
@@ -38,8 +37,6 @@ describe Api::V1::NamesController do
       expect(response.body.to_s).to include "Atta"
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

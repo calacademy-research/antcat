@@ -4,17 +4,14 @@ describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
       create :genus
-      create_species 'Atta minor'
       get :index
     end
 
     it "gets all protonyms" do
-      expect(json_response.count).to eq 7 # hmm
+      expect(json_response.count).to eq 3 # TODO.
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
@@ -26,8 +23,6 @@ describe Api::V1::ProtonymsController do
       expect(response.body.to_s).to include taxon.protonym.id.to_s
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

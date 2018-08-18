@@ -14,9 +14,7 @@ describe Api::V1::AuthorNamesController do
       expect(json_response.count).to eq 2
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET show" do
@@ -28,8 +26,6 @@ describe Api::V1::AuthorNamesController do
       expect(response.body.to_s).to include "Bolton"
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 end

@@ -37,8 +37,8 @@ describe Taxon do
     end
 
     describe ".self_join_on" do
-      let!(:atta) { create_genus "Atta", fossil: true }
-      let!(:atta_major) { create_species "Atta major", genus: atta }
+      let!(:atta) { create_genus fossil: true }
+      let!(:atta_major) { create_species genus: atta }
 
       it "handles self-referential condition" do
         extant_with_fossil_parent = described_class.self_join_on(:genus).
@@ -209,8 +209,8 @@ describe Taxon do
     end
 
     context "when there isn't a protonym authorship" do
-      let(:species) { create_species 'Atta minor maxus' }
-      let(:protonym_name) { create :subspecies_name, name: 'Eciton minor maxus' }
+      let(:species) { create_species }
+      let(:protonym_name) { create :subspecies_name }
 
       it "handles it" do
         expect(species.protonym).to receive(:authorship).and_return nil

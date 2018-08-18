@@ -39,9 +39,7 @@ describe Api::V1::TaxaController do
       expect(json_response['species']['name_cache']).to eq "Atta minor maxus"
     end
 
-    it 'returns HTTP 200' do
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(response).to have_http_status :ok }
   end
 
   describe "GET search" do
