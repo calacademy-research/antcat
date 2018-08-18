@@ -5,9 +5,7 @@ describe Taxa::AnyNonTaxtReferences do
     subject { described_class.new(atta) }
 
     let!(:atta) { create :family }
-    let!(:eciton) { create :family }
-
-    before { eciton.update_attribute :type_taxt, "{tax #{atta.id}}" }
+    let!(:eciton) { create :family, type_taxt: "{tax #{atta.id}}" }
 
     context "when taxon has non-taxt references" do
       before { eciton.update_attribute :homonym_replaced_by, atta }

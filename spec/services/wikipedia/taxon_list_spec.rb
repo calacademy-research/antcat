@@ -1,19 +1,13 @@
 require "spec_helper"
 
 describe Wikipedia::TaxonList do
-  let(:atta) { create_genus "Atta" }
-  let(:extant_species) { create_species "Atta cephalotes" }
-  let(:fossil_species) { create_species "Atta mexicana", fossil: true }
-
-  before do
-    # We cannot trust the factories, so set parent here.
-    extant_species.update! genus: atta
-    fossil_species.update! genus: atta
-  end
+  let!(:taxon) { create :genus }
+  let!(:extant_species) { create_species "Atta cephalotes", genus: taxon }
+  let!(:fossil_species) { create_species "Atta mexicana", genus: taxon, fossil: true }
 
   describe "#call" do
     it "outputs a wiki-formatted list" do
-      results = described_class[atta]
+      results = described_class[taxon]
 
       expect(results).to include "diversity_link = #Species"
       expect(results).to include "==Species=="

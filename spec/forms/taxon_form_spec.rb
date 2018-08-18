@@ -8,7 +8,7 @@ describe TaxonForm do
   end
 
   describe "#save" do
-    describe "Saving a new record, based on params from a form with nested attributes" do
+    describe "saving a new records" do
       it "saves a new genus" do
         taxon = build_new_taxon_and_set_parent :genus, create(:subfamily)
         params = genus_params

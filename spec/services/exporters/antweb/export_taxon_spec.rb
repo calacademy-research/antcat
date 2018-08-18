@@ -342,7 +342,7 @@ describe Exporters::Antweb::ExportTaxon do
     let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
     let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
 
-    it "sdoesn't punt on a subfamily's family" do
+    it "doesn't punt on a subfamily's family" do
       taxon = create :subfamily
       expect(export_taxon(taxon)[23]).to eq 'Formicidae'
     end
@@ -499,7 +499,7 @@ describe Exporters::Antweb::ExportTaxon do
         journal: journal, series_volume_issue: '1:1', pagination: '2'
     end
 
-    it "formats references into HTML, with rollover" do
+    it "formats references into HTML" do
       taxon.protonym.authorship.reference = reference
       expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
       expect(exporter.send(:authorship_html_string, taxon)).to eq expected
@@ -541,37 +541,28 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "#export_history" do
     context "a genus" do
-      before do
-        shared_name = create :genus_name, name: 'Atta'
-
-        # Protonym.
-        author_name = create :author_name,
-          name: 'Bolton, B.',
-          author: create(:author)
+      let!(:shared_name) { create :genus_name, name: 'Atta' }
+      let!(:protonym) do
+        author_name = create :author_name, name: 'Bolton, B.'
         reference = ArticleReference.new author_names: [author_name],
           title: 'Ants I have known',
           citation_year: '2010a',
           journal: create(:journal, name: 'Psyche'),
           series_volume_issue: '1',
           pagination: '2'
-        authorship = Citation.create! reference: reference, pages: '12'
-        protonym = Protonym.create! name: shared_name, authorship: authorship
-
-        # Genus and species.
-        @genus = create_genus name: shared_name, protonym: protonym, hol_id: 9999
-        @species = create_species 'Atta major', genus: @genus, hol_id: 1234
+        authorship = create :citation, reference: reference, pages: '12'
+        create :protonym, name: shared_name, authorship: authorship
       end
 
-      it "formats a taxon's history suitable for AntWeb" do
-        species = @species
-        genus = @genus
+      let!(:genus) { create :genus, name: shared_name, protonym: protonym, hol_id: 9999 }
+      let!(:species) { create_species 'Atta major', genus: genus, hol_id: 1234 }
 
+      it "formats a taxon's history for AntWeb" do
         should_see_this_reference_id = genus.protonym.authorship.reference.id
 
         genus.update_attribute :type_name, species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
-        # For `TaxonDecorator#references`.
         a_reference = create :article_reference
         a_tribe = create :tribe
         genus.reference_sections.create title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
@@ -647,14 +638,6 @@ describe Exporters::Antweb::ExportTaxon do
           %(</div>)
         )
       end
-    end
-
-    it "handles italics in missing references (regression)" do
-      # TODO
-      # Confirm that `Exporters::Antweb::InlineCitation`
-      # doesn't return "Brady, Schultz, &lt;i&gt;et al.&lt;/i&gt; 2006",
-      # which happens with missing references unless we call "html_safe"
-      # on this line: `link = helpers.link_to reference.keey.html_safe,`.
     end
   end
 end
