@@ -1,5 +1,5 @@
--@title = @script.title
--breadcrumb :database_script, @script
+-@title = @database_script.title
+-breadcrumb :database_script, @database_script
 
 -content_for :head do
   =javascript_include_tag "sortable_tables"
@@ -7,24 +7,24 @@
 .row.collapse
   .medium-8.columns
     %h5
-      -if @script.topic_areas.present?
+      -if @database_script.topic_areas.present?
         =succeed ":" do
-          =@script.decorate.format_topic_areas
-      =@script.title
-      =@script.decorate.format_tags
-    %p=markdown @script.description
+          =@database_script.decorate.format_topic_areas
+      =@database_script.title
+      =@database_script.decorate.format_tags
+    %p=markdown @database_script.description
 
   .medium-4.columns
     .callout
       Show source:
       =succeed "," do
-        =link_to "current (antcat.org)", source_database_script_path(@script)
-      =link_to "GitHub (dev)", @script.decorate.github_url
+        =link_to "current (antcat.org)", source_database_script_path(@database_script)
+      =link_to "GitHub (dev)", @database_script.decorate.github_url
 
-      -if @script.respond_to? :to_csv
+      -if @database_script.respond_to? :to_csv
         %br
         Export as:
-        =link_to "csv", database_script_path(@script, format: :csv), class: "btn-normal btn-tiny"
+        =link_to "csv", database_script_path(@database_script, format: :csv), class: "btn-normal btn-tiny"
 
 .row.column
   .callout

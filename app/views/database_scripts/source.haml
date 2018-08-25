@@ -1,12 +1,12 @@
--@title = "Show Source - #{@script.title}"
--breadcrumb :show_database_script_source, @script
+-@title = "Show Source - #{@database_script.title}"
+-breadcrumb :show_database_script_source, @database_script
 
 -content_for :head do
   =stylesheet_link_tag "rouge_syntax_highlight"
 
-=link_to "Back to script", database_script_path(@script), class: "btn-normal"
+=link_to "Back to script", database_script_path(@database_script), class: "btn-normal"
 
 .callout
   =preserve do
     %pre.highlight
-      =highlight_ruby @script.source_code
+      =highlight_ruby @database_script.source_code
