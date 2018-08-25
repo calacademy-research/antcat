@@ -1,3 +1,5 @@
+- show_parent_form = !taxon.new_record? && (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus) || taxon.kind_of?(Tribe))
+
 %table.unstriped.no-border
   %tr
     =form.fields_for :name do |name_form|
@@ -27,7 +29,15 @@
     %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
     %td=form.taxon_select :homonym_replaced_by
 
-  =render 'taxa/form/parent_section', taxon: taxon, form: form
+  -if show_parent_form
+    %tr#parent_row
+      -form.object.parent_name ||= form.object.parent.try(:name)
+      -form.object.parent_name ||= Name.new
+      =form.fields_for :parent_name do |parent_name_form|
+        =hidden_field_tag 'taxon[parent_name_attributes][id]', form.object.parent_name.id
+        %td.caption=parent_name_form.label :name, 'Parent'
+        %td#parent_name_field
+          =render 'name_fields/panel', name_string: taxon.parent_name.name
 
   %tr
     %td.caption=form.label :current_valid_taxon, 'Current valid name'

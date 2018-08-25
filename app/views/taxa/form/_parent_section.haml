@@ -1,9 +1,0 @@
--if (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus) || taxon.kind_of?(Tribe)) && ! taxon.new_record?
-  %tr#parent_row
-    -form.object.parent_name ||= form.object.parent.try(:name)
-    -form.object.parent_name ||= Name.new
-    =form.fields_for :parent_name do |parent_name_form|
-      =hidden_field_tag 'taxon[parent_name_attributes][id]', form.object.parent_name.id
-      %td.caption=parent_name_form.label :name, 'Parent'
-      %td#parent_name_field
-        =render 'name_fields/panel', name_string: taxon.parent_name.name
