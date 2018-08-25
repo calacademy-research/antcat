@@ -20,8 +20,8 @@ en:
       inactive: "Your account hasn't been activated yet"
     sessions:
       link: 'Log in'
-      signed_in: "You're logged in"
-      signed_out: "You're logged out"
+      signed_in: ""
+      signed_out: ""
       unauthenticated: 'Please log in before continuing'
       unconfirmed: 'Please confirm your account before continuing'
       locked: 'Your account is locked'
