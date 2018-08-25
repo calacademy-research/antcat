@@ -39,8 +39,7 @@
     =render 'taxa/form/type_section',              taxon: @taxon, form: form
 
     .buttons_section
-      -# TODO `@possible_homonym` is not declared anywhere.
-      =render 'taxa/form/buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
+      =render 'taxa/form/buttons_save_section', taxon: @taxon
 
 -unless @taxon.new_record?
   .not-really-taxon-form
