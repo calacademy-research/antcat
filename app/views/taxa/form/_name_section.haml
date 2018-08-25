@@ -1,5 +1,4 @@
 -default_name_string ||= nil
--gender ||= 'unknown'
 
 =form.fields_for :name do |name_form|
   %tr
@@ -19,4 +18,4 @@
               default_name_string: default_name_string && "#{default_name_string} "
         -if taxon.name.kind_of? GenusGroupName
           .medium-1.columns.end
-            =name_form.select :gender, [ [ 'unknown', nil ], 'masculine', 'feminine', 'neuter' ]
+            =name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
