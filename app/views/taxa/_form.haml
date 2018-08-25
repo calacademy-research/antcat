@@ -34,9 +34,9 @@
   =render 'shared/errors_for', resource: @taxon
 
   .callout
-    =render 'taxa/form/name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'taxa/form/protonym_section',          taxon: @taxon, form: form
-    =render 'taxa/form/type_section',              taxon: @taxon, form: form
+    =render 'taxa/form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
+    =render 'taxa/form/protonym_section', taxon: @taxon, form: form
+    =render 'taxa/form/type_section',     taxon: @taxon, form: form
 
     .buttons_section
       =render 'taxa/form/buttons_save_section', taxon: @taxon
