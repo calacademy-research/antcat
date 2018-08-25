@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180811003901) do
+ActiveRecord::Schema.define(version: 20180825185431) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -385,7 +385,6 @@ ActiveRecord::Schema.define(version: 20180811003901) do
     t.text "type_specimen_repository"
     t.text "type_specimen_code"
     t.text "type_specimen_url"
-    t.integer "collision_merge_id"
     t.boolean "auto_generated", default: false
     t.string "origin"
     t.boolean "display", default: true
