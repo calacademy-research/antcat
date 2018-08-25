@@ -29,7 +29,7 @@ class TooltipsController < ApplicationController
       if params[:referral] && params[:referral].size > 0
         redirect_to params[:referral] # joe dis broke
       else
-        redirect_to tooltip_path(@tooltip), notice: 'Tooltip was successfully created.'
+        redirect_to @tooltip, notice: 'Tooltip was successfully created.'
       end
     else
       render :new

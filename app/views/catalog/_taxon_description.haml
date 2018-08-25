@@ -30,7 +30,7 @@
         -if current_user
           %span.show-on-hover
             =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
-            =link_to "History", taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
+            =link_to "History", history_item, class: "btn-normal btn-tiny"
 
 -if taxon.junior_synonyms_recursive.exists?
   %h6 #{pluralize(taxon.junior_synonyms_recursive.count, 'junior synonym')}

@@ -5,7 +5,7 @@
   .buttons-right
     =link_to "Edit journal name", edit_journal_path(@journal), class: "btn-normal"
     -unless @references.exists?
-      =link_to "Delete", journal_path(@journal), class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
+      =link_to "Delete", @journal, class: "btn-delete", method: :delete, data: { confirm: "Are you sure?" }
 
 %h5 References using this journal
 -if @references.empty?
