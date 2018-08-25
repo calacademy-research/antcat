@@ -66,10 +66,10 @@ module TaxonHelper
       end
 
     # TODO: Joe test this case
-    if taxon[:unresolved_homonym] == true && taxon.new_record?
+    if taxon.unresolved_homonym? && taxon.new_record?
       string = " secondary junior homonym of #{string}"
-    elsif !taxon[:collision_merge_id].nil? && taxon.new_record?
-      target_taxon = Taxon.find_by(id: taxon[:collision_merge_id])
+    elsif taxon.collision_merge_id.present? && taxon.new_record?
+      target_taxon = Taxon.find_by(id: taxon.collision_merge_id)
       string = " merge back into original #{target_taxon.name_html_cache}"
     end
 
