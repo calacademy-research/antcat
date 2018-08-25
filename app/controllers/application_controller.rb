@@ -16,6 +16,12 @@ class ApplicationController < ActionController::Base
      status: :forbidden
   end
 
+  if Rails.env.development?
+    rescue_from RSolr::Error::ConnectionRefused do
+      render plain: "Solr is not running. Run: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
+    end
+  end
+
   def user_for_paper_trail
     current_user.try :id
   end
