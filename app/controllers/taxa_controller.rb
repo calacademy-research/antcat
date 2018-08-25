@@ -26,15 +26,7 @@ class TaxaController < ApplicationController
       flash[:notice] += " <strong>#{link}</strong>".html_safe
     end
 
-    # Nil check to avoid showing 404 to the user and breaking the tests
-    # when we loose track of `@taxon`.
-    # `change_parent.feature` fails without this, but it seems to work if the
-    # steps are manually reproduced in the browser.
-    if @taxon.id
-      redirect_to catalog_path(@taxon)
-    else
-      redirect_to root_path
-    end
+    redirect_to catalog_path(@taxon)
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
   end
@@ -45,17 +37,8 @@ class TaxaController < ApplicationController
   def update
     save_taxon
 
-    # Same issue as in `#create`, but tests pass without this check.
-    flash[:notice] = "Taxon was successfully updated."
-    if @taxon.id
-      @taxon.create_activity :update, edit_summary: params[:edit_summary]
-      redirect_to catalog_path(@taxon)
-    else
-      Activity.create_without_trackable :custom,
-        parameters: { text: "updated an unknown taxon" },
-        edit_summary: params[:edit_summary]
-      redirect_to root_path
-    end
+    @taxon.create_activity :update, edit_summary: params[:edit_summary]
+    redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
   end
@@ -180,8 +163,6 @@ class TaxaController < ApplicationController
       )
     end
 
-    # This builds a `Name` without subclassing, not eg a `SpeciesName`,
-    # but it seems to work OK.
     def build_new_taxon rank
       taxon_class = "#{rank}".titlecase.constantize
 
