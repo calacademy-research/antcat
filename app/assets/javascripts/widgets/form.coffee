@@ -1,6 +1,5 @@
 class AntCat.Form
   constructor: (@element, @options = {}) ->
-    AntCat.check 'Form', '@element', @element
     @element.addClass 'antcat_form'
     @initialize_buttons() if @needs_to_initialize_buttons_in_constructor()
 
@@ -10,7 +9,7 @@ class AntCat.Form
 
   initialize_buttons: =>
     @options.button_container or= '> .buttons'
-    @buttons = @element.find(@options.button_container); AntCat.check 'Form.initialize_buttons', '@buttons', @buttons
+    @buttons = @element.find(@options.button_container)
     @buttons
       .find(':button, :submit').end()
       .find('.submit')
@@ -30,8 +29,6 @@ class AntCat.Form
     return unless $control
     if $control.size() == 1
       $control.focus()
-    else
-      AntCat.check 'Form.focus_initial_control', '$control', $control
 
   initial_control_to_focus: =>
     @element.find('input[type=text]:visible:first, textarea:visible:first').first()
