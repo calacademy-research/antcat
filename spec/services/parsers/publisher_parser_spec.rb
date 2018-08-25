@@ -10,7 +10,7 @@ describe Parsers::PublisherParser do
 
     it "parses it correctly" do
       expect(parser.parse('New York: Houghton Mifflin')).
-        to eq publisher: { name: 'Houghton Mifflin', place: 'New York' }
+        to eq publisher: { name: 'Houghton Mifflin', place_name: 'New York' }
     end
 
     it "doesn't consider a single digit as a place ..." do

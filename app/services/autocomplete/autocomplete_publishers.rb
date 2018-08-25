@@ -7,8 +7,8 @@ module Autocomplete
     end
 
     def call
-      Publisher.joins('LEFT OUTER JOIN places ON place_id = places.id').
-        where("CONCAT(COALESCE(places.name, ''), ':', publishers.name) LIKE ?", search_expression).
+      Publisher.
+        where("CONCAT(COALESCE(publishers.place_name, ''), ':', publishers.name) LIKE ?", search_expression).
         map(&:display_name)
     end
 

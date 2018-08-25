@@ -6,7 +6,7 @@ grammar Parsers::PublisherGrammar
       {
         publisher: {
           name: capture(:publisher_name).to_s,
-          place: capture(:publisher_place).to_s
+          place_name: capture(:publisher_place).to_s
         }
       }
     }

@@ -35,9 +35,7 @@ Given("these/this book reference(s) exist(s)") do |table|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
 
-    publisher = create :publisher,
-      name: matches[2],
-      place: create(:place, name: matches[1])
+    publisher = create :publisher, name: matches[2], place_name: matches[1]
     hash.merge! publisher: publisher, pagination: matches[3]
     create_reference :book_reference, hash
   end

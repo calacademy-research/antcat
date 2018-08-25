@@ -6,7 +6,7 @@
 #   :pagination, :series_volume_issue
 #
 # Ignores:
-#   :journal, :place, :publisher
+#   :journal, :publisher
 
 module References
   class ReferenceSimilarity

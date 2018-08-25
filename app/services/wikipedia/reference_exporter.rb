@@ -98,7 +98,7 @@ module Wikipedia
   # |location= |publisher= |page= |isbn=}}
   class BookReference < ReferenceExporter
     def format
-      location = reference.publisher.place.name
+      location = reference.publisher.place_name
       publisher = reference.publisher.name
 
       <<-TEMPLATE.squish

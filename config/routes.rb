@@ -155,7 +155,6 @@ Rails.application.routes.draw do
       resources :citations, only: [:index, :show]
       resources :taxon_history_items, only: [:index, :show]
       resources :journals, only: [:index, :show]
-      resources :places, only: [:index, :show]
       resources :publishers, only: [:index, :show]
       resources :references, only: [:index, :show]
       resources :reference_author_names, only: [:index, :show]

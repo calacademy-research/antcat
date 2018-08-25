@@ -1,5 +1,4 @@
-class Place < ApplicationRecord
-  validates :name, presence: true
+# TODO remove.
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+class Place < ApplicationRecord
 end
