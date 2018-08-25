@@ -13,8 +13,7 @@ Feature: Merging authors
       | Bolton,B.  | More ants      | 2011 | Psyche 2:2 |
     And the following names exist for another author
       | Fisher, B. |
-    When I go to the merge authors page
-    Then I should not see "Bolton, B." in the author panel
+    And I go to the merge authors page
 
   Scenario: Searching for an author
     When I search for "Bolton, B." in the author panel
@@ -39,7 +38,6 @@ Feature: Merging authors
     Then I should see "Bolton, B." in the first author panel
     And I should see "This author is open in another panel" in the second author panel
 
-  @javascript
   Scenario: Closing a panel
     Given I search for "Bolton, B." in the author panel
 
