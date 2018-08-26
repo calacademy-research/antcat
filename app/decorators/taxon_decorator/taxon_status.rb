@@ -20,7 +20,7 @@ class TaxonDecorator::TaxonStatus
     delegate :incertae_sedis_in, :homonym?, :homonym_replaced_by, :unidentifiable?,
       :unresolved_homonym?, :current_valid_taxon_including_synonyms, :nomen_nudum?,
       :synonym?, :obsolete_combination?, :unavailable_misspelling?, :unavailable_uncategorized?,
-      :nonconfirming_synonym?, :invalid?, :ichnotaxon?, to: :taxon
+      :invalid?, :ichnotaxon?, to: :taxon
 
     def main_status
       if homonym? && homonym_replaced_by
@@ -43,8 +43,6 @@ class TaxonDecorator::TaxonStatus
         "a misspelling of #{format_valid_combination}"
       elsif unavailable_uncategorized?
         "see #{format_valid_combination}"
-      elsif nonconfirming_synonym?
-        "a non standard form of #{format_valid_combination}"
       elsif invalid?
         taxon.status
       else

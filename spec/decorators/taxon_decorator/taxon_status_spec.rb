@@ -136,10 +136,6 @@ describe TaxonDecorator::TaxonStatus do
       # TODO what to do?
     end
 
-    context "when taxon is a nonconfirming synonym" do
-      # TODO remove?
-    end
-
     context "when taxon is `invalid?`" do
       let!(:taxon) { create :family, :excluded_from_formicidae }
 

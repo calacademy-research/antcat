@@ -10,7 +10,6 @@ class Status
     COLLECTIVE_GROUP_NAME     = "collective group name",
     OBSOLETE_COMBINATION      = "obsolete combination",
     UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
-    NONCONFORMING_SYNONYM     = "nonconforming synonym",
     UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
   ]
 
@@ -27,7 +26,6 @@ class Status
       [COLLECTIVE_GROUP_NAME,     'collective group names'],
       [OBSOLETE_COMBINATION,      'obsolete combinations'],
       [UNAVAILABLE_MISSPELLING,   'unavailable misspellings'],
-      [NONCONFORMING_SYNONYM,     'nonconforming synonyms'],
       [UNAVAILABLE_UNCATEGORIZED, 'unavailable uncategorized']
     ].map do |label, plural_label|
       Status.new label: label, plural_label: plural_label

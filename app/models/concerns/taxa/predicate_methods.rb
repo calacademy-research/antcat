@@ -42,10 +42,6 @@ module Taxa::PredicateMethods
     status == Status::UNAVAILABLE_UNCATEGORIZED
   end
 
-  def nonconfirming_synonym?
-    status == Status::NONCONFORMING_SYNONYM
-  end
-
   # A status of 'original combination' means that the taxon/name is a placeholder
   # for the original name of the species under the original genus.
   def original_combination?

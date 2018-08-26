@@ -13,8 +13,7 @@ describe Status do
       expect(described_class.options_for_select.map(&:first)).to eq [
         "valid", "synonym", "homonym", "unidentifiable", "unavailable",
         "excluded from Formicidae", "original combination", "collective group name",
-        "obsolete combination", "unavailable misspelling", "nonconforming synonym",
-        "unavailable uncategorized"
+        "obsolete combination", "unavailable misspelling", "unavailable uncategorized"
       ]
     end
   end
