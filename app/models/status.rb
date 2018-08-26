@@ -38,10 +38,6 @@ class Status
   end
   class << self; alias_method :[], :find end
 
-  def self.ordered_statuses
-    statuses.map &:to_s
-  end
-
   def initialize hash
     @hash = hash
   end
