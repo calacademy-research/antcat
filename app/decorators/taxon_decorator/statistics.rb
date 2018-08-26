@@ -83,7 +83,7 @@ class TaxonDecorator::Statistics
     def rank_status_count rank, status, count, label_statuses = true
       count_and_status =
         if label_statuses
-          pluralize_with_delimiters count, status, Status[status].to_s(:plural)
+          pluralize_with_delimiters count, status, Status.plural(status)
         else
           number_with_delimiter count
         end

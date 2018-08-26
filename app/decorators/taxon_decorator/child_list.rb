@@ -89,7 +89,7 @@ class TaxonDecorator::ChildList
       label << 'Hong (2002) ' if conditions[:hong]
 
       label << if conditions[:collective_group_names]
-                 Status['collective group name'].to_s(children.size).humanize
+                 Status::COLLECTIVE_GROUP_NAME.pluralize(children.size).humanize
                else
                  children.first.rank.pluralize(children.size).titleize
                end
