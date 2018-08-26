@@ -99,6 +99,9 @@ Naming/PredicateName:
 Naming/VariableNumber:
   Enabled: false
 
+FactoryBot/AttributeDefinedStatically:
+  Enabled: false
+
 FactoryBot/CreateList:
   Enabled: false
 
