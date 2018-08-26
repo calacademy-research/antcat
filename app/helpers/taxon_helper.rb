@@ -102,7 +102,7 @@ module TaxonHelper
         SQL
 
         if approved_change
-          content << "; approved by #{approved_change.decorate.format_approver_name} ".html_safe
+          content << "; approved by #{approved_change.decorate.format_approved_by} ".html_safe
           content << approved_change.decorate.format_approved_at.html_safe
         end
       end
