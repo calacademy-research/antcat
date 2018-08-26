@@ -7,14 +7,4 @@ describe Status do
       expect(described_class['synonym'].to_s(:plural)).to eq 'synonyms'
     end
   end
-
-  describe ".options_for_select" do
-    specify do
-      expect(described_class.options_for_select.map(&:first)).to eq [
-        "valid", "synonym", "homonym", "unidentifiable", "unavailable",
-        "excluded from Formicidae", "original combination", "collective group name",
-        "obsolete combination", "unavailable misspelling", "unavailable uncategorized"
-      ]
-    end
-  end
 end

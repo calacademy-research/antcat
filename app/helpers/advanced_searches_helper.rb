@@ -26,7 +26,7 @@ module AdvancedSearchesHelper
     extra_options = [["Any", ""]]
 
     options_for_select(extra_options, value) <<
-      options_for_select(Status.options_for_select, value)
+      options_for_select(Status::STATUSES, value)
   end
 
   def any_yes_no_options_for_select value = "Any"

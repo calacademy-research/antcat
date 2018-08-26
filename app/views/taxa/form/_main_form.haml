@@ -23,7 +23,7 @@
 
   %tr
     %td.caption=form.label :status
-    %td=form.select :status, Status.options_for_select
+    %td=form.select :status, Status::STATUSES
 
   %tr
     %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'

@@ -42,10 +42,6 @@ class Status
     statuses.map &:to_s
   end
 
-  def self.options_for_select
-    statuses.map &:option_for_select
-  end
-
   def initialize hash
     @hash = hash
   end
@@ -63,9 +59,5 @@ class Status
 
   def includes? identifier
     @hash.value?(identifier)
-  end
-
-  def option_for_select
-    [@hash[:label], @hash[:label]]
   end
 end
