@@ -77,10 +77,6 @@ module Catalog
 
       # If user searched from the search box in the header, and
       # theres a single match, then redirect to that match.
-      #
-      # "im_feeling_lucky" is manually set in the header search forms,
-      # so we know when to redirect (the forms on the seach page never redirects,
-      # because that would be annoying).
       def single_match_we_should_redirect_to? taxa
         params[:im_feeling_lucky] && taxa.count == 1
       end

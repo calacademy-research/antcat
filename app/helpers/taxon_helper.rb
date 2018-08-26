@@ -65,7 +65,6 @@ module TaxonHelper
         ''
       end
 
-    # TODO: Joe test this case
     if taxon.unresolved_homonym? && taxon.new_record?
       string = " secondary junior homonym of #{string}"
     elsif taxon.collision_merge_id.present? && taxon.new_record?
@@ -92,11 +91,6 @@ module TaxonHelper
       content << change.decorate.format_created_at.html_safe
 
       if taxon.approved?
-        # I don't fully understand this case;
-        # it appears that somehow, we're able to generate "changes" without affiliated
-        # taxon_states. not clear to me how this happens or whether this should be allowed.
-        # Workaround: If the taxon_state is showing "approved", go get the most recent change
-        # that has a noted approval.
         approved_change = Change.where(<<-SQL.squish, change.taxon_id).last
           taxon_id = ? AND approved_at IS NOT NULL
         SQL

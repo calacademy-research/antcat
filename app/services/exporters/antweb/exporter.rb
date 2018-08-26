@@ -1,6 +1,4 @@
 # Export via `rake antweb:export`.
-# This class will grow for some more time while decoupling the export
-# code from the rest of the code.
 
 # rubocop:disable Rails/Output
 class Exporters::Antweb::Exporter

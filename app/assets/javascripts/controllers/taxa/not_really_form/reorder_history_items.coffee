@@ -5,9 +5,7 @@ $ ->
 SORTABLE =       ".history-items"
 SORTABLE_ITEM =  ".history-item"
 
-# Internal only.
-# We're using a random class to check if the element already is
-# sortable, because jQuery cannot reliably do it.
+# Random class to check if the element already is sortable, because jQuery cannot reliably do it.
 IS_SORTABLE = "is-sortable-made-up-class"
 
 setupReorderButton = ->

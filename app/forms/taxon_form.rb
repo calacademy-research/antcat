@@ -81,18 +81,6 @@ class TaxonForm
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
 
-        # PaperTrail does not create versions for new records.
-        # So, if you undo the first change, and try to reify the previous one,
-        # you end up with no object! `touch_with_version` gives us one, but
-        # just for the taxa, not the protonym or other changable objects.
-        #
-        # TODO move to an `after_create` callback, or we may want to not do
-        # `touch_with_version` at all since it's not the PaperTrail way:
-        #
-        #   "This also means that PaperTrail does not waste space storing a
-        #   version of the object as it currently stands. The versions method
-        #   gives you previous versions; to get the current one just call a
-        #   finder on your Widget model as usual."
         taxon.paper_trail.touch_with_version
 
         change.update taxon: taxon

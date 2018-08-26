@@ -87,8 +87,6 @@ class TaxaController < ApplicationController
       # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
       collision_resolution = params[:collision_resolution]
       if collision_resolution.blank? || collision_resolution == 'homonym'
-        # We get here when 1) there's no `collision_resolution` (the normal case),
-        # or 2) the the editor has confirmed that we are creating a homonym.
         TaxonForm.new(@taxon, taxon_params, @previous_combination).save
       else
         # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)

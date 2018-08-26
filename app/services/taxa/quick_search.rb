@@ -1,5 +1,3 @@
-# TODO cleanup after extracting into service object.
-
 module Taxa
   class QuickSearch
     include Service

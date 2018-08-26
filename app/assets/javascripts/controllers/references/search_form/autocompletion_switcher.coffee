@@ -8,7 +8,7 @@ ALL_FIELDS_SEARCH_BOX = "#breadcrumbs .twitter-typeahead"
 AUTHOR_SEARCH_BOX = "#author_q"
 
 setupReferenceAutocompletionSwitcher = ->
-  # Set initial visibility (in case a user has already made an author search).
+  # Set initial visibility.
   setSearchBoxesVisibility()
 
   # Enable autocompletion for the authors names search box.

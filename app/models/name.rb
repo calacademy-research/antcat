@@ -1,5 +1,4 @@
-# All `Name` subclasses are for taxa; `AuthorName`s are used for references;
-# `ReferenceAuthorName` is used for ??????.
+# All `Name` subclasses are for taxa; `AuthorName`s are used for references.
 
 class Name < ApplicationRecord
   include Formatters::ItalicsHelper
