@@ -10,7 +10,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def link_to_taxon_with_author_citation
-    link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation
+    link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
   end
 
   def link_each_epithet
