@@ -1,6 +1,10 @@
 module LinkHelper
   def link_to_antwiki taxon
-    page_title = taxon.name.name.tr(" ", '_')
+    page_title = if taxon.is_a? Subgenus
+                   taxon.name.epithet
+                 else
+                   taxon.name.name.tr(" ", '_')
+                 end
     link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 
