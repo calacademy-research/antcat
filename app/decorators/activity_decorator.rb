@@ -10,6 +10,8 @@ class ActivityDecorator < Draper::Decorator
   def did_something
     partial = template_partial
     helpers.render partial: partial, locals: { activity: self }
+  rescue
+    "<code>error rendering error Activity :(</code>".html_safe
   end
 
   def when
@@ -26,6 +28,8 @@ class ActivityDecorator < Draper::Decorator
     return unless url
 
     helpers.link_to "History", url, class: "btn-normal btn-tiny"
+  rescue ActionController::UrlGenerationError
+    "<code>???</code>".html_safe
   end
 
   def icon
