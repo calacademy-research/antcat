@@ -37,8 +37,8 @@ describe Taxon do
     end
 
     describe ".self_join_on" do
-      let!(:atta) { create_genus fossil: true }
-      let!(:atta_major) { create_species genus: atta }
+      let!(:atta) { create :genus, fossil: true }
+      let!(:atta_major) { create :species, genus: atta }
 
       it "handles self-referential condition" do
         extant_with_fossil_parent = described_class.self_join_on(:genus).
@@ -263,7 +263,7 @@ describe Taxon do
     let(:old_parent) { create_species 'Atta major', genus: create_genus('Atta') }
     let(:new_parent) { create_species 'Eciton nigrus', genus: create_genus('Eciton') }
     let(:subspecies) do
-      create_subspecies name: create(:subspecies_name, name: 'Atta major medius minor'),
+      create :subspecies, name: create(:subspecies_name, name: 'Atta major medius minor'),
         species: old_parent
     end
 

@@ -14,7 +14,6 @@ describe SubspeciesName do
   end
 
   # TODO DRY
-  # Changing the species of a subspecies name
   describe "#change_parent" do
     it "replaces the species part of the name and fix all the other parts, too" do
       subspecies_name = described_class.new name: 'Atta major minor',
@@ -45,7 +44,7 @@ describe SubspeciesName do
         it "raises" do
           existing_subspecies_name = described_class.create! name: 'Eciton niger minor',
             epithet: 'minor', epithets: 'niger minor'
-          create_subspecies 'Eciton niger minor', name: existing_subspecies_name
+          create :subspecies, name: existing_subspecies_name
 
           subspecies_name = described_class.create! name: 'Atta major minor',
             epithet: 'minor', epithets: 'major minor'

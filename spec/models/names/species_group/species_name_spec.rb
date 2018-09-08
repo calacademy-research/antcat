@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesName do
-  # Changing the genus of a species name
   describe "#change_parent" do
     it "replaces the genus part of the name" do
       species_name = described_class.new name: 'Atta major', epithet: 'major'
@@ -19,7 +18,7 @@ describe SpeciesName do
 
         before do
           existing_species_name = described_class.create! name: 'Eciton major', epithet: 'major'
-          create_species 'Eciton major', name: existing_species_name
+          create :species, name: existing_species_name
 
           GenusName.create! name: 'Eciton', epithet: 'Eciton' # protonym_name
         end
