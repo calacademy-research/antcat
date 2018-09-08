@@ -35,5 +35,5 @@ When("I merge the authors") do
 end
 
 Then("I should not be able to merge the authors") do
-  step %(I should not see "Click this button")
+  step 'I should not see "Click this button"'
 end

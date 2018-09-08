@@ -5,8 +5,6 @@ Feature: Logging in
       | email@example.com | Quintus | secret   | secret                |
 
   Scenario: Logging in successfully from the login page
-    Given I am not logged in
-
     When I go to the login page
     Then I should not see "Logout"
 
@@ -17,8 +15,6 @@ Feature: Logging in
     And I should see "Logout"
 
   Scenario: Logging in unsuccessfully
-    Given I am not logged in
-
     When I go to the main page
     And I follow the first "Login"
     And I fill in "user_email" with "email@example.com"
@@ -27,8 +23,6 @@ Feature: Logging in
     Then I should be on the login page
 
   Scenario: Returning to previous page
-    Given I am not logged in
-
     When I go to the references page
     And I follow the first "Login"
     And I fill in "user_email" with "email@example.com"

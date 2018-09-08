@@ -15,9 +15,9 @@ end
 When("I open the database script {string} and browse its source") do |script_name|
   visit "/database_scripts/#{script_name}"
 
-  step %(I should see "Show source")
-  step %{I follow "current (antcat.org)"}
-  step %(I should see "Back to script")
+  step 'I should see "Show source"'
+  step 'I follow "current (antcat.org)"'
+  step 'I should see "Back to script"'
 
   @browsed_scripts_count += 1
 end

@@ -18,7 +18,7 @@ end
 # fields section
 ### name field
 When("I click the name field") do
-  step %(I click "#name_field .display_button")
+  step 'I click "#name_field .display_button"'
 end
 
 When("I set the name to {string}") do |name|

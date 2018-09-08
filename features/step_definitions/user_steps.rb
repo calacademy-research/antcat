@@ -5,9 +5,6 @@ Given("this/these user(s) exists") do |table|
   table.hashes.each { |hash| User.create! hash }
 end
 
-Given('I am not logged in') do
-end
-
 def login_programmatically user
   login_as user, scope: :user, run_callbacks: false
   @user = user # Add as instance variable to make it available for other steps.
@@ -63,7 +60,7 @@ end
 
 When("I log out") do
   step 'I follow the first "Logout"'
-  step %(I should see "Login")
+  step 'I should see "Login"'
 end
 
 When("I fill in the email field with my email address") do
