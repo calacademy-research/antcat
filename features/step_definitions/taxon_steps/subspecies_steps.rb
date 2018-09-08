@@ -10,7 +10,7 @@ Given("there is a subspecies {string} without a species") do |subspecies_name|
   create_subspecies subspecies_name, species: nil
 end
 
-Given("a subspecies exists for that species with a name of {string} and an epithet of {string} and a taxonomic history of {string}") do |name, epithet, history|
+Given("a subspecies exists for that species with a name of {string} and an epithet of {string}") do |name, epithet|
   subspecies_name = create :subspecies_name,
     name: name,
     epithet: epithet,
@@ -19,8 +19,6 @@ Given("a subspecies exists for that species with a name of {string} and an epith
     name: subspecies_name,
     species: @species,
     genus: @species.genus
-  history = 'none' if history.blank?
-  subspecies.history_items.create! taxt: history
 end
 
 Given("there is a subspecies {string} which is a subspecies of {string} in the genus {string}") do |subspecies, species, genus|

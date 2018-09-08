@@ -1,9 +1,3 @@
-Given("there is a subfamily {string} with taxonomic history {string}") do |taxon_name, history|
-  name = create :subfamily_name, name: taxon_name
-  taxon = create :subfamily, name: name
-  taxon.history_items.create! taxt: history
-end
-
 Given("there is a subfamily {string} with a reference section {string}") do |taxon_name, references|
   name = create :subfamily_name, name: taxon_name
   taxon = create :subfamily, name: name

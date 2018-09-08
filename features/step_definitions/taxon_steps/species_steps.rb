@@ -2,14 +2,12 @@ Given("there is a species {string}") do |name|
   create_species name
 end
 
-Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, parent_name, history|
+Given(/a species exists with a name of "(.*?)" and a genus of "(.*?)"/) do |taxon_name, parent_name|
   genus = Genus.find_by_name parent_name
   genus ||= create :genus, name: create(:genus_name, name: parent_name)
   @species = create :species,
     name: create(:species_name, name: "#{parent_name} #{taxon_name}"),
     genus: genus
-  history = 'none' if history.blank?
-  @species.history_items.create! taxt: history
 end
 
 Given("species {string} exists in that genus") do |name|

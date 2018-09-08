@@ -1,15 +1,15 @@
 Feature: Using the catalog
   Background:
     Given the Formicidae family exists
-    And there is a subfamily "Dolichoderinae" with taxonomic history "Dolichoderinae history"
-    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae" and a taxonomic history of "Dolichoderini history"
-    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-    And a genus exists with a name of "Atta" and no subfamily and a taxonomic history of "Atta history"
-    And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini" and a taxonomic history of "Dolichoderus history"
-    And a species exists with a name of "abruptus" and a genus of "Dolichoderus" and a taxonomic history of "abruptus history"
-    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor" and a taxonomic history of "minor history"
-    And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae" and a taxonomic history of "Campononotus history"
-    And a species exists with a name of "abruptus" and a genus of "Camponotus" and a taxonomic history of "abruptus history"
+    And there is a subfamily "Dolichoderinae"
+    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
+    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
+    And a genus exists with a name of "Atta" and no subfamily
+    And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini"
+    And a species exists with a name of "abruptus" and a genus of "Dolichoderus"
+    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor"
+    And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae"
+    And a species exists with a name of "abruptus" and a genus of "Camponotus"
 
   Scenario: Going to the root
     When I go to the catalog
@@ -31,7 +31,6 @@ Feature: Using the catalog
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
     Then "Dolichoderinae" should be selected
-    And I should see "Dolichoderinae history"
     And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
 
@@ -42,7 +41,6 @@ Feature: Using the catalog
     Then "Dolichoderinae" should be selected
     And I should see "Dolichoderini" in the taxon description
     And "Dolichoderini" should be selected
-    And I should see "Dolichoderini history"
     And I should see "Dolichoderus" in the index
 
   Scenario: Selecting a genus
@@ -52,7 +50,6 @@ Feature: Using the catalog
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
-    And I should see "Dolichoderus history"
     And I should see "1 valid species, 1 valid subspecies"
     And I should see "abruptus" in the index
 
@@ -65,7 +62,6 @@ Feature: Using the catalog
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
     And "abruptus" should be selected
-    And I should see "abruptus history"
 
   Scenario: Selecting a subspecies from the species list
     When I go to the catalog
@@ -88,7 +84,6 @@ Feature: Using the catalog
     And I should not see "Atta" in the genera index
     And "Incertae sedis" should be selected in the subfamilies index
     And "Dolichoderinae" should be selected in the families index
-    And I should see "Dolichoderinae history"
 
   Scenario: Displaying items containing broken taxt links
     Given I am logged in

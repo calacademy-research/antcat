@@ -22,7 +22,7 @@ Given("there is a genus {string} that is incertae sedis in the subfamily") do |n
   genus.update_attribute :incertae_sedis_in, 'subfamily'
 end
 
-Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and a taxonomic history of "(.*?)")?(?: and a status of "(.*?)")?$/) do |taxon_name, parent_name, history, status|
+Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |taxon_name, parent_name|
   status ||= Status::VALID
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
@@ -30,31 +30,21 @@ Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"(?: and 
   taxon = create :genus,
     name: create(:name, name: taxon_name),
     subfamily: subfamily,
-    tribe: nil,
-    status: status
-
-  history = 'none' if history.blank?
-  taxon.history_items.create! taxt: history
+    tribe: nil
 end
 
-Given(/a genus exists with a name of "(.*?)" and no subfamily(?: and a taxonomic history of "(.*?)")?/) do |taxon_name, history|
+Given(/a genus exists with a name of "(.*?)" and no subfamily/) do |taxon_name|
   another_genus = create :genus_name, name: taxon_name
-
   genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
-  history = 'none' if history.blank?
-  genus.history_items.create! taxt: history
 end
 
-Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"(?: and a taxonomic history of "(.*?)")?/) do |fossil, taxon_name, parent_name, history|
+Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, taxon_name, parent_name|
   tribe = Tribe.find_by_name parent_name
   taxon = create :genus,
     name: create(:name, name: taxon_name),
     subfamily: tribe.subfamily,
     tribe: tribe,
     fossil: fossil.present?
-
-  history = 'none' if history.blank?
-  taxon.history_items.create! taxt: history
 end
 
 Given("genus {string} exists in that tribe") do |name|
