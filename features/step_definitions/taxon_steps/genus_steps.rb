@@ -18,8 +18,7 @@ Given("there is a genus {string} with type name {string}") do |name, type_name|
 end
 
 Given("there is a genus {string} that is incertae sedis in the subfamily") do |name|
-  genus = create_genus name
-  genus.update_attribute :incertae_sedis_in, 'subfamily'
+  create_genus name, incertae_sedis_in: 'subfamily'
 end
 
 Given("a genus exists with a name of {string} and a subfamily of {string}") do |taxon_name, parent_name|

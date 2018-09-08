@@ -46,21 +46,13 @@ Given("there is a subspecies {string} with genus {string} and no species") do |s
   create_subspecies subspecies_name, genus: genus, species: nil
 end
 
-Given(/^there is a species "([^"]*)"(?: described by "([^"]*)")? which is a junior synonym of "([^"]*)"$/) do |junior, author_name, senior|
-  genus = create_genus 'Solenopsis'
+Given("there is a species {string} which is a junior synonym of {string}") do |junior, senior|
+  genus = create :genus
   senior = create_species senior, genus: genus
   junior = create_species junior, status: Status::SYNONYM, genus: genus
   create :synonym, senior_synonym: senior, junior_synonym: junior
-  make_author_of_taxon junior, author_name if author_name
 end
 
 Given("there is a species with published type information {string}") do |published_type_information|
   create :species, published_type_information: published_type_information
-end
-
-def make_author_of_taxon taxon, author_name
-  author = create :author
-  author_name = create :author_name, name: author_name, author: author
-  reference = create :article_reference, author_names: [author_name]
-  taxon.protonym.authorship.update! reference: reference
 end
