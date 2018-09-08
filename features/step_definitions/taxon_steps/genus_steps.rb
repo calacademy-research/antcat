@@ -9,7 +9,7 @@ end
 
 Given("there is a genus {string} with protonym name {string}") do |name, protonym_name|
   genus = create_genus name
-  genus.protonym.name = Name.find_by_name protonym_name if protonym_name
+  genus.protonym.name = Name.find_by_name protonym_name
 end
 
 Given("there is a genus {string} with type name {string}") do |name, type_name|
@@ -22,8 +22,7 @@ Given("there is a genus {string} that is incertae sedis in the subfamily") do |n
   genus.update_attribute :incertae_sedis_in, 'subfamily'
 end
 
-Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |taxon_name, parent_name|
-  status ||= Status::VALID
+Given("a genus exists with a name of {string} and a subfamily of {string}") do |taxon_name, parent_name|
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 
@@ -33,7 +32,7 @@ Given(/^a genus exists with a name of "(.*?)" and a subfamily of "(.*?)"$/) do |
     tribe: nil
 end
 
-Given(/a genus exists with a name of "(.*?)" and no subfamily/) do |taxon_name|
+Given("a genus exists with a name of {string} and no subfamily") do |taxon_name|
   another_genus = create :genus_name, name: taxon_name
   genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
 end

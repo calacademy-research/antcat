@@ -2,7 +2,7 @@ Given("there is a tribe {string}") do |name|
   create_tribe name
 end
 
-Given(/a tribe exists with a name of "(.*?)"(?: and a subfamily of "(.*?)")?/) do |taxon_name, parent_name|
+Given("a tribe exists with a name of {string} and a subfamily of {string}") do |taxon_name, parent_name|
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
   taxon = create :tribe,

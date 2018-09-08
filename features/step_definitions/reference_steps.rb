@@ -95,7 +95,7 @@ Given("the following entry nests it") do |table|
     nesting_reference: nestee_reference
 end
 
-Given(/^that the entry has a URL that's on our site$/) do
+Given("that the entry has a URL that's on our site") do
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update file_file_name: '123.pdf',
     url: "localhost/documents/#{@reference.document.id}/123.pdf"

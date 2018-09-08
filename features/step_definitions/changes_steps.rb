@@ -7,17 +7,9 @@ Given("there is a genus {string} that's waiting for approval") do |name|
   genus = create_genus name
   genus.taxon_state.update_columns review_state: TaxonState::WAITING
 
-  # TODO: Do not use `User.first` or `User.first.id`.
-  change = create :change, taxon: genus, user: User.first
-  whodunnit = User.first.id
-  create :version, item_id: genus.id, whodunnit: whodunnit, change_id: change.id
-
-  # A version is created automatically if PaperTrail is enabled (tag `@papertrail`),
-  # but we're having issues creating changes and attaching changes to versions.
-  # Use this to attach a change to existing versions:
-  # PaperTrail::Version.where(item_id: genus.id, item_type: "Taxon").each do |version|
-  #   version.update_columns change_id: change.id, whodunnit: whodunnit
-  # end
+  user = User.first
+  change = create :change, taxon: genus, user: user
+  create :version, item_id: genus.id, whodunnit: user.id, change_id: change.id
 end
 
 When("I add the genus {string}") do |name|
