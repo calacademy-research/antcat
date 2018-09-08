@@ -15,7 +15,6 @@ Given("species {string} exists in that genus") do |name|
     subfamily: @subfamily,
     genus: @genus,
     name: create(:species_name, name: name)
-  @species.history_items.create! taxt: "#{name} history"
 end
 
 Given("there is an original species {string} with genus {string}") do |species_name, genus_name|
@@ -34,8 +33,7 @@ Given("there is species {string} and another species {string} shared between pro
 
   create_species valid_species_name,
     genus: later_genus,
-    status: Status::VALID,
-    protonym_id: proto_species.id
+    protonym_id: proto_species.id # TODO.
 end
 
 Given("there is a species {string} with genus {string}") do |species_name, genus_name|

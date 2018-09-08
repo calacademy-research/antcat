@@ -28,19 +28,19 @@ Feature: Searching the catalog
     And I should see "Dolichoderus" in the search results
 
     When I follow "Dolichoderini" in the search results
-    Then I should see "Dolichoderini history"
+    Then I should see "Dolichoderini" in the header
 
   Scenario: Searching for full species name, not just epithet
     When I fill in the catalog search box with "Dolichoderus major "
     And I press "Go" by the catalog search box
-    Then I should see "Dolichoderus major history"
+    Then I should see "Dolichoderus major" in the header
 
   Scenario: Searching for subgenus
     Given subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
 
     When I fill in the catalog search box with "Subdol"
     And I press "Go" by the catalog search box
-    Then I should see "Dolichoderus (Subdolichoderus) history"
+    Then I should see "(Subdolichoderus)" in the header
 
   @javascript
   Scenario: Search using autocomplete

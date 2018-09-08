@@ -15,7 +15,7 @@ Given("a subspecies exists for that species with a name of {string} and an epith
     name: name,
     epithet: epithet,
     epithets: epithet
-  subspecies = create :subspecies,
+  create :subspecies,
     name: subspecies_name,
     species: @species,
     genus: @species.genus

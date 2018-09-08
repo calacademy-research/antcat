@@ -26,20 +26,20 @@ Given("a genus exists with a name of {string} and a subfamily of {string}") do |
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 
-  taxon = create :genus,
+  create :genus,
     name: create(:name, name: taxon_name),
     subfamily: subfamily,
     tribe: nil
 end
 
 Given("a genus exists with a name of {string} and no subfamily") do |taxon_name|
-  another_genus = create :genus_name, name: taxon_name
-  genus = create :genus, name: another_genus, subfamily: nil, tribe: nil
+  genus_name = create :genus_name, name: taxon_name
+  create :genus, name: genus_name, subfamily: nil, tribe: nil
 end
 
 Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, taxon_name, parent_name|
   tribe = Tribe.find_by_name parent_name
-  taxon = create :genus,
+  create :genus,
     name: create(:name, name: taxon_name),
     subfamily: tribe.subfamily,
     tribe: tribe,
@@ -51,7 +51,6 @@ Given("genus {string} exists in that tribe") do |name|
     subfamily: @subfamily,
     tribe: @tribe,
     name: create(:genus_name, name: name)
-  @genus.history_items.create! taxt: "#{name} history"
 end
 
 Given("genus {string} exists in that subfamily") do |name|
@@ -59,7 +58,6 @@ Given("genus {string} exists in that subfamily") do |name|
     subfamily: @subfamily,
     tribe: nil,
     name: create(:genus_name, name: name)
-  @genus.history_items.create! taxt: "#{name} history"
 end
 
 Given("there is a genus {string} with {string} name") do |name, gender|
