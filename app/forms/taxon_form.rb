@@ -23,10 +23,11 @@ class TaxonForm
         # There is no `UndoTracker#get_current_change_id` at this point, so if
         # anything in the "update_*" methods triggers a save for any reason,
         # the versions' `change_id`s will be nil.
-        update_name                 params.delete :name_attributes
         update_parent               params.delete :parent_name_attributes
         update_protonym             params.delete :protonym_attributes
         update_type_name            params.delete :type_name_attributes
+
+        params[:name_id] = params[:name_attributes][:id]
 
         taxon.attributes = params
 
@@ -36,14 +37,6 @@ class TaxonForm
           Taxa::HandlePreviousCombination[taxon, previous_combination]
         end
       end
-    end
-
-    def update_name name_attributes
-      attributes = name_attributes
-
-      attributes[:name_id] = attributes.delete :id
-      taxon.name.gender = attributes.delete :gender
-      taxon.attributes = attributes
     end
 
     def update_parent parent_name_attributes
