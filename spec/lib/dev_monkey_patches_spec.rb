@@ -1,13 +1,11 @@
 require "spec_helper"
 
-# We never really enable the patch in this spec, just expecting on the
-# return value. It's hard to more than this, because the patch is enabled
-# in an initializer which is for dev only. Once modules have been mixed in,
-# it's very hard to remove them, and we do not want any of them in tests.
+# We never really enable the patch in this spec beause it's very hard
+# to remove modules have been mixed in.
 
 describe DevMonkeyPatches do
   before do
-    allow($stdout).to receive :puts # Suppress standard output.
+    allow($stdout).to receive :puts # Suppress.
     allow(described_class).to receive(:enable!).and_return :stubbed
   end
 

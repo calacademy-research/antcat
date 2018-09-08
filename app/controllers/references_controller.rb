@@ -58,8 +58,7 @@ class ReferencesController < ApplicationController
       @reference.create_activity :destroy, edit_summary: params[:edit_summary]
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
-      redirect_to reference_path(@reference),
-        alert: @reference.errors.full_messages.to_sentence
+      redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence
     end
   end
 

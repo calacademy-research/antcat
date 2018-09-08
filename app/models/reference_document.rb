@@ -42,12 +42,10 @@ class ReferenceDocument < ApplicationRecord
       file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
     end
 
-    # Hardcoded IP, yuck
     def hosted_by_hol?
       url.present? && url =~ %r{^https?://128.146.250.117}
     end
 
-    # Hardcoded address, yuck
     def hosted_by_antbase?
       url.present? && url =~ %r{^https?://antbase\.org}
     end
@@ -55,11 +53,11 @@ class ReferenceDocument < ApplicationRecord
     def check_url
       return if Rails.env.development? # HACK
       return if file_file_name.present? || url.blank?
-      # this is to avoid authentication problems when a URL to one of "our" files is copied
-      # to another reference (e.g., nested)
+      # This is to avoid authentication problems when a URL to one of "our" files is copied
+      # to another reference (e.g., nested).
       return if url =~ /antcat/
       return if hosted_by_hol? || hosted_by_antbase?
-      # a URL with spaces is valid, but URI.parse rejects it
+
       uri = URI.parse url.gsub(/ /, '%20')
       response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
       errors.add :url, 'was not found' unless (200..399).cover? response_code
@@ -76,6 +74,6 @@ class ReferenceDocument < ApplicationRecord
     end
 
     def s3_url
-      file.expiring_url 1.day.to_i # seconds
+      file.expiring_url 1.day.to_i # Seconds.
     end
 end

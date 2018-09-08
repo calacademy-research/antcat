@@ -12,8 +12,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :user_is_superadmin?
   rescue_from CanCan::AccessDenied do |exception|
-    render plain: "You need the '#{exception.message}' permission to do that :(",
-     status: :forbidden
+    render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
   end
 
   if Rails.env.development?
