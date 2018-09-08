@@ -5,7 +5,7 @@ Feature: Showing/hiding invalid taxa
 
   Background:
     Given the Formicidae family exists
-    And subfamily "Availabledae" exists
+    And there is a subfamily "Availabledae"
     And there is an invalid subfamily Invalidinae
 
   Scenario: Invalid taxa are initially hidden

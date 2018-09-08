@@ -120,7 +120,7 @@ Feature: Adding a taxon successfully
 
   @search @javascript
   Scenario: Adding a species to a subgenus
-    Given subfamily "Dolichoderinae" exists
+    Given there is a subfamily "Dolichoderinae"
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe
     And species "Dolichoderus major" exists in that genus
