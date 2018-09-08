@@ -14,7 +14,7 @@ describe Names::PicklistMatching do
 
       expect(described_class['att']).to eq [
         id: name.id, name: name.name,
-        label: '<b><i>Atta</i></b>', value: name.name
+        label: '<i>Atta</i>', value: name.name
       ]
     end
 
@@ -24,7 +24,7 @@ describe Names::PicklistMatching do
 
       expect(described_class['gyx']).to eq [
         id: name.id, name: name.name,
-        label: '<b><i>Gesomyrmex</i></b>', value: name.name
+        label: '<i>Gesomyrmex</i>', value: name.name
       ]
     end
 
@@ -37,13 +37,13 @@ describe Names::PicklistMatching do
         {
           id: bothroponera.id,
           name: bothroponera.name,
-          label: '<b><i>Bothroponera</i></b>',
+          label: '<i>Bothroponera</i>',
           value: bothroponera.name
         },
         {
           id: brachyponera.name.id,
           name: brachyponera.name.name,
-          label: '<b><i>Brachyponera</i></b>',
+          label: '<i>Brachyponera</i>',
           taxon_id: brachyponera.id,
           value: brachyponera.name.name
         }
@@ -64,19 +64,19 @@ describe Names::PicklistMatching do
         {
           id: atta.id,
           name: 'Atta',
-          label: '<b><i>Atta</i></b>',
+          label: '<i>Atta</i>',
           value: atta.name
         },
         {
           id: acanthognathus.id,
           name: 'Acanthognathus laevigatus',
-          label: '<b><i>Acanthognathus laevigatus</i></b>',
+          label: '<i>Acanthognathus laevigatus</i>',
           value: acanthognathus.name
         },
         {
           id: acropyga.id,
           name: 'Acropyga dubitata',
-          label: '<b><i>Acropyga dubitata</i></b>',
+          label: '<i>Acropyga dubitata</i>',
           value: acropyga.name
         }
       ]
