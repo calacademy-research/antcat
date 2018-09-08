@@ -2,11 +2,11 @@ Given("there is a species {string}") do |name|
   create_species name
 end
 
-Given("a species exists with a name of {string} and a genus of {string}") do |taxon_name, parent_name|
+Given("a species exists with a name of {string} and a genus of {string}") do |name, parent_name|
   genus = Genus.find_by_name parent_name
   genus ||= create :genus, name: create(:genus_name, name: parent_name)
   @species = create :species,
-    name: create(:species_name, name: "#{parent_name} #{taxon_name}"),
+    name: create(:species_name, name: "#{parent_name} #{name}"),
     genus: genus
 end
 

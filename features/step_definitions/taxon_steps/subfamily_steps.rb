@@ -1,12 +1,12 @@
-Given("there is a subfamily {string} with a reference section {string}") do |taxon_name, references|
-  name = create :subfamily_name, name: taxon_name
-  taxon = create :subfamily, name: name
+Given("there is a subfamily {string} with a reference section {string}") do |name, references|
+  subfamily_name = create :subfamily_name, name: name
+  taxon = create :subfamily, name: subfamily_name
   taxon.reference_sections.create! references_taxt: references
 end
 
-Given("there is a subfamily {string}") do |taxon_name|
-  name = create :subfamily_name, name: taxon_name
-  @subfamily = create :subfamily, name: name
+Given("there is a subfamily {string}") do |name|
+  subfamily_name = create :subfamily_name, name: name
+  @subfamily = create :subfamily, name: subfamily_name
 end
 
 Given("there is an invalid subfamily Invalidinae") do

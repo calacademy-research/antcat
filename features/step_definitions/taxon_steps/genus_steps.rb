@@ -21,25 +21,25 @@ Given("there is a genus {string} that is incertae sedis in the subfamily") do |n
   create_genus name, incertae_sedis_in: 'subfamily'
 end
 
-Given("a genus exists with a name of {string} and a subfamily of {string}") do |taxon_name, parent_name|
+Given("a genus exists with a name of {string} and a subfamily of {string}") do |name, parent_name|
   subfamily = Subfamily.find_by_name parent_name
   subfamily ||= create :subfamily, name: create(:name, name: parent_name)
 
   create :genus,
-    name: create(:name, name: taxon_name),
+    name: create(:name, name: name),
     subfamily: subfamily,
     tribe: nil
 end
 
-Given("a genus exists with a name of {string} and no subfamily") do |taxon_name|
-  genus_name = create :genus_name, name: taxon_name
+Given("a genus exists with a name of {string} and no subfamily") do |name|
+  genus_name = create :genus_name, name: name
   create :genus, name: genus_name, subfamily: nil, tribe: nil
 end
 
-Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, taxon_name, parent_name|
+Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, name, parent_name|
   tribe = Tribe.find_by_name parent_name
   create :genus,
-    name: create(:name, name: taxon_name),
+    name: create(:name, name: name),
     subfamily: tribe.subfamily,
     tribe: tribe,
     fossil: fossil.present?
