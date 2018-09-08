@@ -53,6 +53,6 @@ Given("there is a species {string} which is a junior synonym of {string}") do |j
   create :synonym, senior_synonym: senior, junior_synonym: junior
 end
 
-Given("there is a species with published type information {string}") do |published_type_information|
-  create :species, published_type_information: published_type_information
+Given("there is a species with primary type information {string}") do |primary_type_information|
+  create :species, primary_type_information: primary_type_information
 end

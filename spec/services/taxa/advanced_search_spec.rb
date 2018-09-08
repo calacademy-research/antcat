@@ -178,11 +178,11 @@ describe Taxa::AdvancedSearch do
     end
 
     describe "searching type fields" do
-      let!(:one) { create :species, published_type_information: 'one' }
-      let!(:two) { create :species, additional_type_information: 'one two' }
+      let!(:one) { create :species, primary_type_information: 'one' }
+      let!(:two) { create :species, secondary_type_information: 'one two' }
       let!(:three) { create :species, type_notes: 'one two three' }
 
-      before { create :species, published_type_information: 'unrelated' }
+      before { create :species, primary_type_information: 'unrelated' }
 
       it "returns taxa with type fields matching the query" do
         expect(described_class[type_information: 'one']).to match_array [one, two, three]

@@ -2,14 +2,12 @@
   %h5.callout-header Type
   %table.unstriped.no-border
     -if taxon.kind_of? SpeciesGroupTaxon
-      -# TODO: Rename columns in database to match view.
-      -# Was renamed in 6b43268edb1f86c19b0ecb6a611e901a34e2c2b9.
       %tr
         %td.caption=form.label :primary_type_information
-        %td=render 'shared/taxt_editor/template', name: 'taxon[published_type_information]', content: taxon.published_type_information, id: :taxon_published_type_information
+        %td=render 'shared/taxt_editor/template', name: 'taxon[primary_type_information]', content: taxon.primary_type_information, id: :taxon_primary_type_information
       %tr
         %td.caption=form.label :secondary_type_information
-        %td=render 'shared/taxt_editor/template', name: 'taxon[additional_type_information]', content: taxon.additional_type_information, id: :taxon_additional_type_information
+        %td=render 'shared/taxt_editor/template', name: 'taxon[secondary_type_information]', content: taxon.secondary_type_information, id: :taxon_secondary_type_information
       %tr
         %td.caption=form.label :type_notes
         %td=render 'shared/taxt_editor/template', name: 'taxon[type_notes]', content: taxon.type_notes, id: :taxon_type_notes

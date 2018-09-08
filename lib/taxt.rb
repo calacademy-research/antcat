@@ -12,8 +12,8 @@ class Taxt
       Taxon            => ['headline_notes_taxt',
                            'type_taxt',
                            'genus_species_header_notes_taxt',
-                           'published_type_information',
-                           'additional_type_information',
+                           'primary_type_information',
+                           'secondary_type_information',
                            'type_notes'],
       Citation         => ['notes_taxt']
     }
