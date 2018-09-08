@@ -13,15 +13,6 @@ Feature: Editing a taxon's name, protonym name, or type name
     And I press "Save"
     Then I should see "Wildencidae" in the header
 
-  Scenario: Trying to enter a blank name
-    Given the Formicidae family exists
-
-    When I go to the edit page for "Formicidae"
-    And I click the name field
-    And I set the name to ""
-    And I press "OK"
-    Then I should still see the name field
-
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"
     And there is a genus "Atta"

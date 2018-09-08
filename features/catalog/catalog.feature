@@ -63,7 +63,7 @@ Feature: Using the catalog
     And "Dolichoderus" should be selected
     And "abruptus" should be selected
 
-  Scenario: Selecting a subspecies from the species list
+  Scenario: Selecting a subspecies
     When I go to the catalog
     And I follow "Dolichoderinae" in the index
     And I follow "All genera" in the subfamilies index

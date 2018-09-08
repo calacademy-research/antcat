@@ -146,38 +146,6 @@ Feature: Adding a taxon successfully
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
 
   @search @javascript
-  Scenario: Using a genus's type-species for the name of a species
-    When I go to the catalog page for "Formicinae"
-    And I follow "Add genus"
-    And I click the name field
-      And I set the name to "Atta"
-      And I press "OK"
-    And I click the protonym name field
-      And I set the protonym name to "Atta"
-      And I press "OK"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    And I click the type name field
-      And I set the type name to "Atta major"
-      And I press "OK"
-      And I press "Add this name"
-    And I press "Save"
-    And I wait
-    And the changes are approved
-    And I go to the catalog page for "Atta"
-    And I follow "Add species"
-    And I click the name field
-      And I set the name to "Atta major"
-      And I press "OK"
-    And I click the protonym name field
-      And I set the protonym name to "Atta major"
-      And I press "OK"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    And I press "Save"
-    And I wait
-    Then I should be on the catalog page for "Atta major"
-    And I should see "Atta major" in the protonym
-
-  @search @javascript
   Scenario: Adding a subspecies
     Given there is a species "Eciton major" with genus "Eciton"
 
