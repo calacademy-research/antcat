@@ -68,7 +68,7 @@ class TaxonDecorator::Statistics
 
     def invalid_statistics rank_stats
       sorted_keys = rank_stats.keys.sort_by do |key|
-        Status.ordered_statuses.index key
+        Status::STATUSES.index key
       end
 
       status_strings = sorted_keys.map do |status|
@@ -83,7 +83,7 @@ class TaxonDecorator::Statistics
     def rank_status_count rank, status, count, label_statuses = true
       count_and_status =
         if label_statuses
-          pluralize_with_delimiters count, status, Status[status].to_s(:plural)
+          pluralize_with_delimiters count, status, Status.plural(status)
         else
           number_with_delimiter count
         end

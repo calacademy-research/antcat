@@ -68,7 +68,7 @@ class Exporters::Endnote::Formatter::Book < Exporters::Endnote::Formatter::Base
     end
 
     def add_contents
-      add 'C', @reference.publisher.place.name
+      add 'C', @reference.publisher.place_name
       add 'I', @reference.publisher.name
       add 'P', @reference.pagination
     end

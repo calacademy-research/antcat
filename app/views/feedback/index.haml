@@ -13,13 +13,13 @@
       %th
   -@feedbacks.each do |feedback|
     %tr{class: ("closed" if feedback.closed?)}
-      %td=link_to "##{feedback.id}", feedback_path(feedback)
+      %td=link_to "##{feedback.id}", feedback
       -if feedback.open?
         %td Open
       -else
         %td.gray Closed
       %td=render "feedback", feedback: feedback
       %td.center-text.no-wrap=link_comments_section feedback
-      %td=link_to "Details", feedback_path(feedback), class: "btn-normal"
+      %td=link_to "Details", feedback, class: "btn-normal"
 
 =will_paginate @feedbacks

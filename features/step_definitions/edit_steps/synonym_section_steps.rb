@@ -1,12 +1,12 @@
 When("I save the senior synonym") do
   within '#senior-synonyms-section-test-hook' do
-    step %(I press "Save")
+    step 'I press "Save"'
   end
 end
 
 When("I save the synonym") do
   within '#junior-synonyms-section-test-hook' do
-    step %(I press "Save")
+    step 'I press "Save"'
   end
 end
 

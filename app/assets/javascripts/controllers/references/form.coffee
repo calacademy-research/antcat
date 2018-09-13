@@ -15,6 +15,6 @@ setupReferenceTypeTabs = ->
   $('form.edit_reference, form.new_reference').submit -> $('#reference_type').val(referenceType)
 
 setupAutocompletion = ->
-  window.setupAuthorAutocomplete $('#reference_author_names_string')
+  window.setupAdvancedAuthorAutocomplete $('#reference_author_names_string')
   window.setupReferenceEditJournalAutocomplete $('#reference_journal_name')
   window.setupReferenceEditPublisherAutocomplete $('#reference_publisher_string')

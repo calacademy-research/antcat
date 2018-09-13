@@ -120,7 +120,7 @@ Feature: Adding a taxon successfully
 
   @search @javascript
   Scenario: Adding a species to a subgenus
-    Given subfamily "Dolichoderinae" exists
+    Given there is a subfamily "Dolichoderinae"
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe
     And species "Dolichoderus major" exists in that genus
@@ -144,38 +144,6 @@ Feature: Adding a taxon successfully
     And I press "Save"
     Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
     And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
-
-  @search @javascript
-  Scenario: Using a genus's type-species for the name of a species
-    When I go to the catalog page for "Formicinae"
-    And I follow "Add genus"
-    And I click the name field
-      And I set the name to "Atta"
-      And I press "OK"
-    And I click the protonym name field
-      And I set the protonym name to "Atta"
-      And I press "OK"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    And I click the type name field
-      And I set the type name to "Atta major"
-      And I press "OK"
-      And I press "Add this name"
-    And I press "Save"
-    And I wait
-    And the changes are approved
-    And I go to the catalog page for "Atta"
-    And I follow "Add species"
-    And I click the name field
-      And I set the name to "Atta major"
-      And I press "OK"
-    And I click the protonym name field
-      And I set the protonym name to "Atta major"
-      And I press "OK"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    And I press "Save"
-    And I wait
-    Then I should be on the catalog page for "Atta major"
-    And I should see "Atta major" in the protonym
 
   @search @javascript
   Scenario: Adding a subspecies

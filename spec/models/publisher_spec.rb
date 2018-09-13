@@ -9,15 +9,15 @@ describe Publisher do
       context "when valid" do
         context 'when publisher does not exists' do
           it "creates and returns the publisher" do
-            publisher = described_class.create_with_place name: 'Wiley', place: 'Chicago'
+            publisher = described_class.create_with_place name: 'Wiley', place_name: 'Chicago'
             expect(publisher.name).to eq 'Wiley'
-            expect(publisher.place.name).to eq 'Chicago'
+            expect(publisher.place_name).to eq 'Chicago'
           end
         end
 
         context 'when publisher does not exists' do
           it "reuses existing publisher" do
-            2.times { described_class.create_with_place name: 'Wiley', place: 'Chicago' }
+            2.times { described_class.create_with_place name: 'Wiley', place_name: 'Chicago' }
             expect(described_class.count).to eq 1
           end
         end
@@ -31,17 +31,10 @@ describe Publisher do
           end
         end
 
-        context "when place is invalid" do
-          it "raises" do
-            expect { described_class.create_with_place(name: "A Name", place: "") }.
-              to raise_error ActiveRecord::RecordInvalid
-          end
-        end
-
         context "when place is blank" do
           it "silently returns without raising" do
-            expect(described_class.create_with_place(name: "", place: "A Place")).to be nil
-            expect { described_class.create_with_place name: "", place: "A Place" }.
+            expect(described_class.create_with_place(name: "", place_name: "A Place")).to be nil
+            expect { described_class.create_with_place name: "", place_name: "A Place" }.
               not_to raise_error ActiveRecord::RecordInvalid
           end
         end
@@ -63,7 +56,7 @@ describe Publisher do
 
   describe "#display_name" do
     it "format name and place" do
-      publisher = described_class.create! name: "Wiley", place: Place.create!(name: 'New York')
+      publisher = described_class.create! name: "Wiley", place_name: 'New York'
       expect(publisher.display_name).to eq 'New York: Wiley'
     end
 

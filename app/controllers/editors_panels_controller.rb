@@ -12,7 +12,6 @@ class EditorsPanelsController < ApplicationController
 
   private
 
-    # Unreviewed/pending/open/etc.
     def unreviewed_changes_counts
       {
         open_issues:                Issue.open.count,

@@ -58,7 +58,7 @@ gem 'workflow'
 
 group :development do
   gem 'brakeman'
-  gem 'rubocop', '~> 0.58.1', require: false
+  gem 'rubocop', '~> 0.58.2', require: false
   gem 'rubocop-rspec'
 end
 

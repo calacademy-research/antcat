@@ -24,7 +24,7 @@ When("I search for {string} in another author panel") do |term|
 end
 
 When("I close the first author panel") do
-  step %(I follow "close" in the first author panel)
+  step 'I press "close" in the first author panel'
 end
 
 When("I merge the authors") do
@@ -35,5 +35,5 @@ When("I merge the authors") do
 end
 
 Then("I should not be able to merge the authors") do
-  step %(I should not see "Click this button")
+  step 'I should not see "Click this button"'
 end

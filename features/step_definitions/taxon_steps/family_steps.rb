@@ -5,12 +5,14 @@ Given("the Formicidae family exists") do
     title: 'Ants'
 
   protonym = create :protonym,
-    name: create(:subfamily_name, name: "Formicariae"),
-    authorship: create(:citation, reference: reference, pages: "124")
+    name: create(:subfamily_name),
+    authorship: create(:citation, reference: reference)
 
   create :family,
     name: create(:family_name, name: "Formicidae"),
-    protonym: protonym,
-    type_name: create(:genus_name, name: "Formica"),
-    history_items: [create(:taxon_history_item)]
+    protonym: protonym
+end
+
+Given("Formicidae has a history item {string}") do |string|
+  Family.first.history_items << create(:taxon_history_item, taxt: string)
 end

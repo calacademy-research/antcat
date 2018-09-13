@@ -16,15 +16,7 @@ Given("this/these reference(s) exist(s)") do |table|
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     journal = create :journal, name: matches[1]
 
-    # Not sure why this is required, but we have to do it to avoid having to
-    # add empty doi fields in the Cucumber data tables. Perhaps because
-    # Cucumber's "doi" hash key conflicts with FactoryBot's :doi symbol?
-    doi = hash.delete "doi"
-
-    hash.merge! journal: journal,
-      series_volume_issue: matches[2],
-      pagination: matches[3],
-      doi: doi
+    hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
 
     create_reference :article_reference, hash
   end
@@ -35,9 +27,7 @@ Given("these/this book reference(s) exist(s)") do |table|
     citation = hash.delete 'citation'
     matches = citation.match /([^:]+): (\w+), (.*)/
 
-    publisher = create :publisher,
-      name: matches[2],
-      place: create(:place, name: matches[1])
+    publisher = create :publisher, name: matches[2], place_name: matches[1]
     hash.merge! publisher: publisher, pagination: matches[3]
     create_reference :book_reference, hash
   end
@@ -47,7 +37,6 @@ end
 # Special cases because we want specific IDs.
 Given("there is a Giovanni reference") do
   reference = create :article_reference,
-    author_names: [],
     citation_year: '1809',
     title: "Giovanni's Favorite Ants"
 
@@ -57,7 +46,6 @@ end
 
 Given("there is a reference by Giovanni's brother") do
   reference = create :article_reference,
-    author_names: [],
     citation_year: '1800',
     title: "Giovanni's Brother's Favorite Ants"
 
@@ -107,11 +95,10 @@ Given("the following entry nests it") do |table|
     nesting_reference: nestee_reference
 end
 
-Given(/^that the entry has a URL that's on our site( that is public)?$/) do |is_public|
+Given("that the entry has a URL that's on our site") do
   @reference.update_attribute :document, ReferenceDocument.create!
   @reference.document.update file_file_name: '123.pdf',
-    url: "localhost/documents/#{@reference.document.id}/123.pdf",
-    public: is_public ? true : nil
+    url: "localhost/documents/#{@reference.document.id}/123.pdf"
 end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
@@ -146,7 +133,6 @@ Then("I should not see the missing reference") do
   step 'I should not see "Adventures among Ants"'
 end
 
-# New references list
 def find_reference_by_keey keey
   parts = keey.split ' '
   last_name = parts[0]

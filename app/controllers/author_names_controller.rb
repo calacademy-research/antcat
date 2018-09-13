@@ -14,7 +14,7 @@ class AuthorNamesController < ApplicationController
 
     if @author_name.save
       @author_name.paper_trail.touch_with_version
-      redirect_to author_path(@author_name.author), notice: 'Author name was successfully created.'
+      redirect_to @author_name.author, notice: 'Author name was successfully created.'
     else
       render :new
     end
@@ -25,7 +25,7 @@ class AuthorNamesController < ApplicationController
 
   def update
     if @author_name.update author_name_params
-      redirect_to author_path(@author_name.author), notice: 'Author name was successfully updated.'
+      redirect_to @author_name.author, notice: 'Author name was successfully updated.'
     else
       render :edit
     end
@@ -33,9 +33,9 @@ class AuthorNamesController < ApplicationController
 
   def destroy
     if @author_name.destroy
-      redirect_to author_path(@author_name.author), notice: 'Author name was successfully deleted.'
+      redirect_to @author_name.author, notice: 'Author name was successfully deleted.'
     else
-      redirect_to author_path(@author_name.author), warning: 'Could not delete author name.'
+      redirect_to @author_name.author, warning: 'Could not delete author name.'
     end
   end
 

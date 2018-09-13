@@ -1,11 +1,5 @@
 $ ->
   setupAuthorAutocomplete()
-  setupCloseLinks()
-
-setupCloseLinks = ->
-  $('.close_link').click ->
-    $(this).closest('form').submit()
-    false
 
 setupAuthorAutocomplete = ->
   return if AntCat.testing

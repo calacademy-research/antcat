@@ -11,7 +11,7 @@ module References
 
       # The two virtual attributes.
       if original.is_a?(::BookReference)
-        new_reference.publisher_string = "#{publisher.place.name}: #{publisher.name}"
+        new_reference.publisher_string = "#{publisher.place_name}: #{publisher.name}"
       end
       new_reference.journal_name = journal.name if original.is_a?(::ArticleReference)
 

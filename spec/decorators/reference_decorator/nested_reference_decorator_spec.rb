@@ -7,7 +7,7 @@ describe NestedReferenceDecorator do
     it "formats nested references" do
       reference = create :book_reference, author_names: [create(:author_name, name: 'Mayr, E.')],
         citation_year: '2010', title: 'My Ants', pagination: '32 pp.',
-        publisher: create(:publisher, name: 'Wiley', place: create(:place, name: 'New York'))
+        publisher: create(:publisher, name: 'Wiley', place_name: 'New York')
       nested_reference = create :nested_reference, nesting_reference: reference,
         author_names: [author_name], title: 'Les fourmis',
         citation_year: '1874', pages_in: 'Pp. 32-45 in'

@@ -1,7 +1,7 @@
 # TODO namespace under `References`.
 
 class DefaultReferencesController < ApplicationController
-  before_action :ensure_can_edit_catalog
+  before_action :authenticate_user!
   before_action :set_reference, only: :update
 
   def update
@@ -10,9 +10,8 @@ class DefaultReferencesController < ApplicationController
     if request.xhr?
       head :ok
     else
-      redirect_back fallback_location: references_path, notice: <<-MSG.squish
-          #{@reference.keey} was successfully set as the default reference.
-      MSG
+      redirect_back fallback_location: references_path,
+        notice: "{@reference.keey} was successfully set as the default reference."
     end
   end
 

@@ -1,4 +1,4 @@
-# TODO confirm with someone and then migrate nil review states to "none".
+# TODO migrate nil review states to "none".
 # `Reference.where(review_state: nil).last` --> created_at: "2013-07-09 01:01:35"
 
 class Reference < ApplicationRecord

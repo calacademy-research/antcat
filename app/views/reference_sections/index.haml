@@ -20,12 +20,12 @@
   -if @reference_sections.empty?
     %tr
       %td{colspan: 5} Found no results.
-  -@reference_sections.each do |item|
+  -@reference_sections.each do |reference_section|
     %tr
-      %td=link_to "##{item.id}", item
-      %td=item.taxon ? item.taxon.decorate.link_to_taxon : "???"
-      %td=TaxtPresenter[item.title_taxt].to_html
-      %td=TaxtPresenter[item.subtitle_taxt].to_html
-      %td=TaxtPresenter[item.references_taxt].to_html
+      %td=link_to "##{reference_section.id}", reference_section
+      %td=reference_section.taxon ? reference_section.taxon.decorate.link_to_taxon : "???"
+      %td=TaxtPresenter[reference_section.title_taxt].to_html
+      %td=TaxtPresenter[reference_section.subtitle_taxt].to_html
+      %td=TaxtPresenter[reference_section.references_taxt].to_html
 
 =will_paginate @reference_sections

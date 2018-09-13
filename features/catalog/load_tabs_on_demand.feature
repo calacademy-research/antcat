@@ -2,8 +2,8 @@ Feature: Load taxon browser tabs on demand
   Background:
     Given the maximum number of taxa to load in each tab is 2
     And the Formicidae family exists
-    And subfamily "Aninae" exists
-    And subfamily "Baninae" exists
+    And there is a subfamily "Aninae"
+    And there is a subfamily "Baninae"
 
   Scenario: Under the maximum number
     When I go to the catalog
@@ -13,7 +13,7 @@ Feature: Load taxon browser tabs on demand
 
   @javascript
   Scenario: Over the maximum number
-    Given subfamily "Caninae" exists
+    Given there is a subfamily "Caninae"
 
     When I go to the catalog
     Then I should see "Aninae" in the index

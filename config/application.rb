@@ -20,7 +20,6 @@ module AntCat
     config.active_record.observers = [
       :author_name_observer,
       :journal_observer,
-      :place_observer,
       :publisher_observer,
       :reference_author_name_observer,
       :reference_document_observer,

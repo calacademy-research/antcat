@@ -12,7 +12,7 @@
         %hr
         -site_notices.each do |site_notice|
           %strong.left.site-notice-test-hook
-            =link_to site_notice.title, site_notice_path(site_notice)
+            =link_to site_notice.title, site_notice
           %span.right.gray.text-align-right
             =time_ago_in_words(site_notice.created_at)
             ago

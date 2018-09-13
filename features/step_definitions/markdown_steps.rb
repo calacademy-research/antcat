@@ -1,8 +1,8 @@
 # TODO DRY w.r.t `notifications_steps.rb`.
 
 Given("I am on a page with a textarea with markdown preview and autocompletion") do
-  step %(I go to the open issues page)
-  step %(I follow "New")
+  step 'I go to the open issues page'
+  step 'I follow "New"'
 end
 
 When("I fill in {string} with {string} followed by the user id of {string}") do |textarea, text, name|
@@ -41,7 +41,7 @@ Then("the markdown textarea should contain a markdown link to Eciton") do
 end
 
 When("I clear the markdown textarea") do
-  step %(I fill in "issue_description" with "%rsomething_to_clear_the_suggestions")
+  step 'I fill in "issue_description" with "%rsomething_to_clear_the_suggestions"'
   markdown_textarea.set ""
 end
 

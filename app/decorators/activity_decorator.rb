@@ -2,8 +2,6 @@ class ActivityDecorator < Draper::Decorator
   delegate :user, :trackable_id, :trackable, :trackable_type,
     :parameters, :action, :edit_summary, :edit_summary?
 
-  # Activities are by default associated with the performing user, but
-  # in the console and other situations we may not have a current user.
   def link_user
     return '' unless user
     user.decorate.user_page_link
@@ -12,6 +10,8 @@ class ActivityDecorator < Draper::Decorator
   def did_something
     partial = template_partial
     helpers.render partial: partial, locals: { activity: self }
+  rescue
+    "<code>error rendering error Activity :(</code>".html_safe
   end
 
   def when
@@ -28,6 +28,8 @@ class ActivityDecorator < Draper::Decorator
     return unless url
 
     helpers.link_to "History", url, class: "btn-normal btn-tiny"
+  rescue ActionController::UrlGenerationError
+    "<code>???</code>".html_safe
   end
 
   def icon

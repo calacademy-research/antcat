@@ -29,19 +29,10 @@ FactoryBot.define do
       epithet_html { "<i>#{name}</i>" }
     end
 
-    # TODO possibly broken
-    # from prod db
-    # Subgenus.first.name.name_html # "<i>Lasius</i> <i>(Acanthomyops)</i>"
-    #
-    # from
-    # $rails console test --sandbox
-    # SunspotTest.stub
-    # FactoryBot.create :subgenus
-    # Subgenus.first.name.name_html # "<i>Atta</i> <i>(Atta (Subgenus2))</i>"
     factory :subgenus_name, class: SubgenusName do
       sequence(:name) { |n| "Atta (Subgenus#{n})" }
-      name_html { "<i>Atta</i> <i>(#{name})</i>" }
-      epithet { name.split(' ').last }
+      name_html { "<i>Atta</i> <i>(#{epithet})</i>" }
+      epithet { name.split(' ').last.remove('(', ')') }
       epithet_html { "<i>#{epithet}</i>" }
     end
 

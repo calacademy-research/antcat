@@ -1,0 +1,76 @@
+- show_parent_form = !taxon.new_record? && (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus) || taxon.kind_of?(Tribe))
+
+%table.unstriped.no-border
+  %tr
+    =form.fields_for :name do |name_form|
+      -if name_form.object.new_record?
+        =hidden_field_tag 'taxon[name_attributes][id]'
+      %td.caption
+        =name_form.label :name do
+          Name
+          =tooltip_icon "name", scope: :taxa
+        %small
+          %em=taxon_name_description taxon
+      %td
+        .row
+          .medium-1.columns
+            %span#name_field
+              =render 'name_fields/panel', name_string: taxon.name.try(:name),
+                default_name_string: default_name_string && "#{default_name_string} "
+          -if taxon.name.kind_of? GenusGroupName
+            .medium-1.columns.end
+              =name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
+
+  %tr
+    %td.caption=form.label :status
+    %td=form.select :status, Status::STATUSES
+
+  %tr
+    %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+    %td=form.taxon_select :homonym_replaced_by
+
+  -if show_parent_form
+    %tr#parent_row
+      -form.object.parent_name ||= form.object.parent.try(:name)
+      -form.object.parent_name ||= Name.new
+      =form.fields_for :parent_name do |parent_name_form|
+        =hidden_field_tag 'taxon[parent_name_attributes][id]', form.object.parent_name.id
+        %td.caption=parent_name_form.label :name, 'Parent'
+        %td#parent_name_field
+          =render 'name_fields/panel', name_string: taxon.parent_name.name
+
+  %tr
+    %td.caption=form.label :current_valid_taxon, 'Current valid name'
+    %td=form.taxon_select :current_valid_taxon
+
+  %tr
+    %td.caption.no-wrap
+      =form.label :incertae_sedis_in
+    %td
+      =form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
+
+  %tr
+    %td
+    %td
+      =form.check_box :fossil
+      =form.label :fossil do
+        Fossil
+        =tooltip_icon "fossil", scope: :taxa
+
+      =form.check_box :nomen_nudum
+      =form.label :nomen_nudum, 'Nomen nudum'
+
+      =form.check_box :unresolved_homonym
+      =form.label :unresolved_homonym, 'Unresolved junior homonym'
+
+      =form.check_box :ichnotaxon
+      =form.label :ichnotaxon, 'Ichnotaxon'
+
+      =form.check_box :hong
+      =form.label :hong do
+        Hong
+        =tooltip_icon "hong", scope: :taxa
+
+  %tr
+    %td.caption=form.label :headline_notes_taxt, 'Notes'
+    %td=render 'shared/taxt_editor/template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt

@@ -3,7 +3,6 @@ class ConvertToSubspeciesController < ApplicationController
   before_action :set_taxon, only: [:new, :create]
 
   def new
-    @default_name_string = @taxon.genus.name.name + ' '
   end
 
   # TODO move validations to service.

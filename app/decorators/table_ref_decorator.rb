@@ -1,6 +1,3 @@
-# Only tested indirectly because we can probably get rid of this once taxt items
-# have been migrated to relational records in the database.
-
 class TableRefDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

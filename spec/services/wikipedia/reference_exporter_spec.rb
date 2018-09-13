@@ -36,7 +36,7 @@ describe Wikipedia::ReferenceExporter do
         <ref name="Batiatus_&_Glaber_2000">{{cite book
         |first1=Q. L. |last1=Batiatus |first2=G. C. |last2=Glaber
         |year=2000 |title=Formica and Apples |url=
-        |location=New York |publisher=Wiley
+        |location=San Francisco |publisher=Wiley
         |pages=7–14 |isbn=}}</ref>
       TEMPLATE
     end

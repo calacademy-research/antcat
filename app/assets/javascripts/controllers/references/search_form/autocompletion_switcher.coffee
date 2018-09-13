@@ -8,11 +8,11 @@ ALL_FIELDS_SEARCH_BOX = "#breadcrumbs .twitter-typeahead"
 AUTHOR_SEARCH_BOX = "#author_q"
 
 setupReferenceAutocompletionSwitcher = ->
-  # Set initial visibility (in case a user has already made an author search).
+  # Set initial visibility.
   setSearchBoxesVisibility()
 
   # Enable autocompletion for the authors names search box.
-  window.setupAuthorAutocomplete $(AUTHOR_SEARCH_BOX)
+  window.setupAdvancedAuthorAutocomplete $(AUTHOR_SEARCH_BOX)
 
   # Set change handler so that the correct search box is shown after selecting.
   $("#search_type").change -> setSearchBoxesVisibility()

@@ -27,7 +27,7 @@
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         as it can make the site unresponsive.
 
--[@other_scripts, @regression_tests].each do |scripts|
+-[@other_scripts, @regression_tests].each do |database_scripts|
   %table.tablesorter.margin-bottom
     %thead
       %tr
@@ -35,8 +35,8 @@
         %th Script
         %th Tags
     %tbody
-      -scripts.each do |script|
+      -database_scripts.each do |database_script|
         %tr
-          %td.shrink=script.decorate.format_topic_areas
-          %td=link_to script.title, database_script_path(script)
-          %td=script.decorate.format_tags
+          %td.shrink=database_script.decorate.format_topic_areas
+          %td=link_to database_script.title, database_script_path(database_script)
+          %td=database_script.decorate.format_tags

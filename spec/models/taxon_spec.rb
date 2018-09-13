@@ -5,7 +5,7 @@ describe Taxon do
   it { is_expected.to validate_presence_of :protonym }
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
   it do
-    is_expected.to validate_inclusion_of(:biogeographic_region).
+    expect(subject).to validate_inclusion_of(:biogeographic_region).
       in_array(BiogeographicRegion::REGIONS).allow_nil
   end
 

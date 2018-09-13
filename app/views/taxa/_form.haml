@@ -34,13 +34,12 @@
   =render 'shared/errors_for', resource: @taxon
 
   .callout
-    =render 'taxa/form/name_status_flags_section', taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'taxa/form/protonym_section',          taxon: @taxon, form: form
-    =render 'taxa/form/type_section',              taxon: @taxon, form: form
+    =render 'taxa/form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
+    =render 'taxa/form/protonym_section', taxon: @taxon, form: form
+    =render 'taxa/form/type_section',     taxon: @taxon, form: form
 
     .buttons_section
-      -# TODO `@possible_homonym` is not declared anywhere.
-      =render 'taxa/form/buttons_save_section', taxon: @taxon, possible_homonym: @possible_homonym
+      =render 'taxa/form/buttons_save_section', taxon: @taxon
 
 -unless @taxon.new_record?
   .not-really-taxon-form

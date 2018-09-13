@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :publisher do
     name 'Wiley'
-    place
+    place_name 'San Francisco'
   end
 end

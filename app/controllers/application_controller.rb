@@ -12,8 +12,13 @@ class ApplicationController < ActionController::Base
 
   helper_method :user_is_superadmin?
   rescue_from CanCan::AccessDenied do |exception|
-    render plain: "You need the '#{exception.message}' permission to do that :(",
-     status: :forbidden
+    render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
+  end
+
+  if Rails.env.development?
+    rescue_from RSolr::Error::ConnectionRefused do
+      render plain: "Solr is not running. Run: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
+    end
   end
 
   def user_for_paper_trail

@@ -8,7 +8,7 @@ describe Exporters::Endnote::Formatter do
       author_names: [create(:author_name, name: 'Bolton, B.')],
       title: 'Ants Are My Life',
       citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
     expect(formatter.format([reference])).to eq %(%0 Book
 %A Bolton, B.
@@ -27,7 +27,7 @@ describe Exporters::Endnote::Formatter do
       author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
       title: 'Ants Are My Life',
       citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
     expect(formatter.format([reference])).to eq %(%0 Book
 %A Bolton, B.
@@ -47,7 +47,7 @@ describe Exporters::Endnote::Formatter do
       author_names: [],
       title: 'Ants Are My Life',
       citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place: create(:place, name: 'Dresden')),
+      publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
     expect(formatter.format([reference])).to eq %(%0 Book
 %D 1933

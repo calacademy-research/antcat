@@ -56,7 +56,7 @@ class DatabaseScript
     File.read script_path
   end
 
-  # For `link_to "script", database_script_path(@script)`.
+  # For `link_to "database_script", database_script_path(@database_script)`.
   def to_param
     filename_without_extension
   end
