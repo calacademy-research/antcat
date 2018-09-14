@@ -1,14 +1,4 @@
 module TaxonHelper
-  def sort_by_status_and_name taxa
-    taxa.sort do |a, b|
-      if a.status == b.status
-        a.name_cache <=> b.name_cache # name ascending
-      else
-        b.status <=> a.status # status descending
-      end
-    end
-  end
-
   # This is for the edit taxa form. Advanced search uses another.
   def biogeographic_region_options_for_select value = nil
     options_for_select([[nil, nil]], value) <<
