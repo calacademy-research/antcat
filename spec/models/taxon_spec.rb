@@ -17,8 +17,6 @@ describe Taxon do
 
       before do
         create :genus, :homonym, homonym_replaced_by: valid_taxon, subfamily: subfamily
-        junior_synonym = create :genus, :synonym, subfamily: subfamily
-        create :synonym, junior_synonym: junior_synonym, senior_synonym: valid_taxon
       end
 
       it "only includes valid taxa" do
@@ -79,10 +77,6 @@ describe Taxon do
           expect(unique_ranks(described_class.ranks("Species", "genus"))).
             to eq ["Genus", "Species"]
         end
-
-        it "handles single items" do
-          expect(unique_ranks(described_class.ranks("Species"))).to eq ["Species"]
-        end
       end
 
       describe ".exclude_ranks" do
@@ -102,7 +96,7 @@ describe Taxon do
       end
     end
 
-    context 'when there are more than one matche' do
+    context 'when there are more than one matches' do
       let!(:name) { create :genus_name, name: 'Monomorium' }
 
       before { 2.times { create :genus, name: name } }
@@ -141,8 +135,7 @@ describe Taxon do
       let!(:history_item) { taxon.history_items.create! taxt: 'taxt' }
 
       it "cascades to delete history items" do
-        expect { taxon.destroy }.
-          to change { TaxonHistoryItem.exists? history_item.id }.from(true).to(false)
+        expect { taxon.destroy }.to change { TaxonHistoryItem.exists? history_item.id }.to(false)
       end
     end
 
@@ -236,26 +229,14 @@ describe Taxon do
     end
   end
 
-  describe "#parent and #parent=" do
+  describe "#parent=" do
     let(:genus) { create :genus }
     let(:subfamily) { create :subfamily }
 
-    describe "#parent=" do
-      it "can be assigned from an object" do
-        genus.parent = subfamily
-        genus.save!
-        expect(genus.reload.subfamily).to eq subfamily
-      end
-    end
-
-    describe "#parent" do
-      context "when the taxon is a `Family`" do
-        let(:family) { create :family }
-
-        it "returns nil" do
-          expect(family.parent).to be_nil
-        end
-      end
+    it "can be assigned from an object" do
+      genus.parent = subfamily
+      genus.save!
+      expect(genus.reload.subfamily).to eq subfamily
     end
   end
 

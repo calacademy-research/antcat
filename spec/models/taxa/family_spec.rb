@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Family do
   let(:family) { create :family }
 
+  describe "#parent" do
+    specify { expect(family.parent).to be_nil }
+  end
+
   describe "#statistics" do
     before do
       subfamily = create :subfamily

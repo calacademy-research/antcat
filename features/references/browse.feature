@@ -1,8 +1,4 @@
 Feature: View bibliography
-  As a researcher
-  I want to see what the literature is for ant taxonomy
-  So that I can obtain it and read it
-
   Scenario: Viewing a nested reference (with italics)
     Given there is a book reference
     And the following entry nests it
@@ -11,7 +7,7 @@ Feature: View bibliography
 
     When I go to the references page
     Then I should see "Ward, P.S. 2010. The ant Azteca trigona. In: "
-     Then I should see "Azteca trigona" italicized
+    And I should see "Azteca trigona" italicized
 
   Scenario: Viewing a missing reference
     Given this reference exists

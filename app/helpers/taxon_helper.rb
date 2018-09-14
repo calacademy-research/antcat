@@ -1,7 +1,3 @@
-# This helper is for code related to editing taxa, ie not taxa in general.
-# There are some similar methods in `CatalogHelper` (via `_editor_buttons.haml`),
-# that we may want to DRY up.
-
 module TaxonHelper
   def sort_by_status_and_name taxa
     taxa.sort do |a, b|
@@ -53,11 +49,9 @@ module TaxonHelper
         parent = taxon.tribe || taxon.subfamily
         "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Species
-        parent = taxon.parent
-        "species of " << parent.name.to_html
+        "species of " << taxon.parent.name.to_html
       when Subgenus
-        parent = taxon.genus
-        "subgenus of " << parent.name.to_html
+        "subgenus of " << taxon.genus.name.to_html
       when Subspecies
         parent = taxon.species
         "subspecies of " << (parent ? parent.name.to_html : '(no species)')

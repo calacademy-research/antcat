@@ -1,7 +1,4 @@
 Feature: Add new nested reference button
-  As an editor
-  I want to add new nested references from the parent reference
-
   Scenario: Add new nested reference using the button
     Given this reference exists
       | author     | title          | year | citation   |
