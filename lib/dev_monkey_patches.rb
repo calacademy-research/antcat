@@ -14,7 +14,7 @@
 # `ddpg ddrg.l` = puts AntCat catalog link of random species, with name, in green!
 #   => http://antcat.org/catalog/429929?Leptothorax
 #
-# `ddfg.siblings.peach` = puts each siblings of the first genus
+# `ddff.children.peach` = puts each child of the first genus
 #   => Total: 31 of types Genus.
 #      429012 (valid) genus Calyptites
 #      429013 (valid) genus Condylodon ...

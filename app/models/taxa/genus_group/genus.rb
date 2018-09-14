@@ -32,12 +32,6 @@ class Genus < GenusGroupTaxon
     tribe || subfamily || Family.first
   end
 
-  def siblings
-    tribe && tribe.genera ||
-      subfamily && subfamily.genera.without_tribe ||
-      Genus.without_subfamily
-  end
-
   def displayable_child_taxa
     descendants.displayable
   end

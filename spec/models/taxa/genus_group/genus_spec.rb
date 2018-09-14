@@ -112,43 +112,6 @@ describe Genus do
     end
   end
 
-  describe "#siblings" do
-    context "when there are no others" do
-      it "returns itself" do
-        expect(genus_with_tribe.siblings).to eq [genus_with_tribe]
-      end
-    end
-
-    context "when there are other genera in the same tribe" do
-      let(:genus) { create :genus, tribe: tribe, subfamily: tribe.subfamily }
-      let(:another_genus) { create :genus, tribe: tribe, subfamily: tribe.subfamily }
-
-      it "returns itself and its tribe's other genera" do
-        expect(genus.siblings).to match_array [genus, another_genus]
-      end
-    end
-
-    context "when there's no subfamily" do
-      let(:genus) { create :genus, subfamily: nil, tribe: nil }
-      let(:another_genus) { create :genus, subfamily: nil, tribe: nil }
-
-      it "returns all the genera with no subfamilies" do
-        expect(genus.siblings).to match_array [genus, another_genus]
-      end
-    end
-
-    context "when there's no tribe" do
-      let(:genus) { create :genus, subfamily: subfamily, tribe: nil }
-      let(:another_genus) { create :genus, subfamily: subfamily, tribe: nil }
-
-      before { create :genus, tribe: tribe, subfamily: subfamily }
-
-      it "returns the other genera in its subfamily without tribes" do
-        expect(genus.siblings).to match_array [genus, another_genus]
-      end
-    end
-  end
-
   describe "#descendants" do
     context "when there are no descendants" do
       it "returns an empty array" do

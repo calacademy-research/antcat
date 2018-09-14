@@ -54,14 +54,4 @@ describe Species do
       end
     end
   end
-
-  describe "#siblings" do
-    let(:genus) { create :genus }
-    let(:species) { create :species, genus: genus }
-    let(:another_species) { create :species, genus: genus }
-
-    it "returns itself and its genus's species" do
-      expect(species.siblings).to match_array [species, another_species]
-    end
-  end
 end
