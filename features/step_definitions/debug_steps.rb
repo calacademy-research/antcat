@@ -19,6 +19,10 @@ And("WAIT_FOR_JQUERY") do
   wait_for_jquery
 end
 
+And("MONKEY") do
+  DevMonkeyPatches.enable!
+end
+
 Given(/^PENDING/) do
   pending
 end

@@ -24,8 +24,8 @@
 module DevMonkeyPatches
   def self.enable
     return if ENV["NO_DEV_MONKEY_PATCHES"]
-    raise "#{name} cannot be enabled in production" if ::Rails.env.production?
-    raise "use `#{name}.enable!` in test" if ::Rails.env.test?
+    raise "`DevMonkeyPatches` cannot be enabled in production" if ::Rails.env.production?
+    raise "use `DevMonkeyPatches.enable!` in test" if ::Rails.env.test?
     enable!
   end
 
