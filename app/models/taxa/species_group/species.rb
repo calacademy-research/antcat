@@ -14,10 +14,6 @@ class Species < SpeciesGroupTaxon
     end
   end
 
-  def siblings
-    genus.species
-  end
-
   def children
     subspecies
   end

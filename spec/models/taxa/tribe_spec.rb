@@ -12,13 +12,6 @@ describe Tribe do
     expect(tribe.children).to eq tribe.genera
   end
 
-  describe "#siblings" do
-    it "returns itself and its subfamily's other tribes" do
-      another_tribe = create :tribe, subfamily: subfamily
-      expect(tribe.siblings).to match_array [tribe, another_tribe]
-    end
-  end
-
   describe "#statistics" do
     it "includes the number of genera" do
       create :genus, tribe: tribe

@@ -22,7 +22,7 @@ describe Author do
     let!(:bolton) { create :author_name, name: 'Bolton' }
     let!(:fisher) { create :author_name, name: 'Fisher' }
 
-    it "converts a list of author names to author objects" do
+    it "returns `Author`s" do
       expect(described_class.find_by_names(['Bolton', 'Fisher'])).
         to match_array [bolton.author, fisher.author]
     end

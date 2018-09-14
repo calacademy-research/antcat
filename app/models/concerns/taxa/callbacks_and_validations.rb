@@ -3,12 +3,15 @@
 module Taxa::CallbacksAndValidations
   extend ActiveSupport::Concern
 
+  BIOGEOGRAPHIC_REGIONS = %w[
+    Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
+  ]
+
   included do
     validates :name, presence: true
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
-    validates :biogeographic_region,
-      inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
+    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
     validate :current_valid_taxon_validation
 
     before_create :build_default_taxon_state
@@ -23,7 +26,7 @@ module Taxa::CallbacksAndValidations
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
       :genus_species_header_notes_taxt, :biogeographic_region], replace_newlines: true
 
-    strip_attributes only: [:published_type_information, :additional_type_information, :type_notes]
+    strip_attributes only: [:primary_type_information, :secondary_type_information, :type_notes]
   end
 
   # Recursively save children, presumably to trigger callbacks and create

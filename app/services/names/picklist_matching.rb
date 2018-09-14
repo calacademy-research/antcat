@@ -62,7 +62,7 @@ class Names::PicklistMatching
 
     def format matches
       matches.map do |e|
-        result = { id: e.id.to_i, name: e.name, label: "<b>#{e.name_html}</b>", value: e.name }
+        result = { id: e.id.to_i, name: e.name, label: e.name_html, value: e.name }
         result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
         result
       end

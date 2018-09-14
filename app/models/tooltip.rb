@@ -6,7 +6,6 @@ class Tooltip < ApplicationRecord
     format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
       message: "can only contain alphanumeric characters and '.-_:'" }
 
-  scope :enabled_keys, -> { where(key_enabled: true) }
   scope :enabled_selectors, -> do
     where(selector_enabled: true).where.not(selector: "")
   end

@@ -10,7 +10,7 @@
           =link_to "Show child list", show_children_taxa_path(taxon), class: "btn-normal btn-tiny"
           (open in a new tab or make sure you have saved first)
       -else
-        -sort_by_status_and_name(taxon.children.includes(:name)).each do |child|
+        -taxon.children.includes(:name).order(status: :desc, name_cache: :asc).each do |child|
           %li
             =child.decorate.link_to_taxon
             =raw "(" + child.decorate.taxon_status + ")"

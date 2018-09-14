@@ -28,9 +28,6 @@ $ ->
           else
             $(this).attr('href',$(this).next().attr('href'))
 
-  # Added to the global window object to make it callable from anywhere.
-  window.testTooltipSelector = (new AntCat.TestTooltipSelector).testTooltipSelector
-
 class AntCat.SelectorTooltips
   SELECTOR_TOOLTIP_CLASS = 'selector-tooltip'
   SELECTOR_TEST_TOOLTIP_CLASS = 'selector-test-tooltip'
@@ -74,17 +71,3 @@ class AntCat.Tooltipify
         startHoverHandler = -> $(this).stop(true)
         stopHoverHandler = -> $(this).remove()
         ui.tooltip.hover startHoverHandler, stopHoverHandler
-
-# To test a selector, paste this snippet into your browser's JavaScript console:
-#   testTooltipSelector('label[for="reference_title"]');
-# A second and third arguments are optional (for the tooltip text and id):
-#   testTooltipSelector('label[for="reference_title"]', "Wololoo", "9999");
-#
-# This method is exposed on the global window object in jQuery's .ready function.
-class AntCat.TestTooltipSelector
-  testTooltipSelector: (selector, title = 'test', id = '99999') ->
-    engine = new AntCat.SelectorTooltips
-    engine.removeAllSelectorTestTooltips()
-    test_tooltip = true
-    engine.createTooltip selector, title, id, test_tooltip
-    (new AntCat.Tooltipify).tooltipifyAll()

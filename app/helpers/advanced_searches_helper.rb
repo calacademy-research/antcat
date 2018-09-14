@@ -19,14 +19,12 @@ module AdvancedSearchesHelper
     extra_options = [["Any", ""], ["None", "None"]]
 
     options_for_select(extra_options, value) <<
-      options_for_select(BiogeographicRegion::REGIONS, value)
+      options_for_select(Taxon::BIOGEOGRAPHIC_REGIONS, value)
   end
 
   def search_status_options_for_select value = "Any"
     extra_options = [["Any", ""]]
-
-    options_for_select(extra_options, value) <<
-      options_for_select(Status::STATUSES, value)
+    options_for_select(extra_options, value) << options_for_select(Status::STATUSES, value)
   end
 
   def any_yes_no_options_for_select value = "Any"

@@ -1,22 +1,8 @@
-# This helper is for code related to editing taxa, ie not taxa in general.
-# There are some similar methods in `CatalogHelper` (via `_editor_buttons.haml`),
-# that we may want to DRY up.
-
 module TaxonHelper
-  def sort_by_status_and_name taxa
-    taxa.sort do |a, b|
-      if a.status == b.status
-        a.name_cache <=> b.name_cache # name ascending
-      else
-        b.status <=> a.status # status descending
-      end
-    end
-  end
-
   # This is for the edit taxa form. Advanced search uses another.
   def biogeographic_region_options_for_select value = nil
     options_for_select([[nil, nil]], value) <<
-      options_for_select(BiogeographicRegion::REGIONS, value)
+      options_for_select(Taxon::BIOGEOGRAPHIC_REGIONS, value)
   end
 
   def taxon_link_or_deleted_string id, deleted_label = nil
@@ -53,11 +39,9 @@ module TaxonHelper
         parent = taxon.tribe || taxon.subfamily
         "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
       when Species
-        parent = taxon.parent
-        "species of " << parent.name.to_html
+        "species of " << taxon.parent.name.to_html
       when Subgenus
-        parent = taxon.genus
-        "subgenus of " << parent.name.to_html
+        "subgenus of " << taxon.genus.name.to_html
       when Subspecies
         parent = taxon.species
         "subspecies of " << (parent ? parent.name.to_html : '(no species)')

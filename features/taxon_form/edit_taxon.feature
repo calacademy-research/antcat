@@ -108,8 +108,8 @@ Feature: Editing a taxon
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta major"
-    And I fill in "taxon_published_type_information" with "Madagascar: Prov. Tolliara"
-    And I fill in "taxon_additional_type_information" with "A neotype had also been designated"
+    And I fill in "taxon_primary_type_information" with "Madagascar: Prov. Tolliara"
+    And I fill in "taxon_secondary_type_information" with "A neotype had also been designated"
     And I fill in "taxon_type_notes" with "Note: Typo in Toliara"
     And I save the taxon form
     Then I should be on the catalog page for "Atta major"

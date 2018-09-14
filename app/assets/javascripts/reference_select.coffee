@@ -22,5 +22,5 @@ $.fn.referenceSelectify = ->
     ajax:
       url: '/references/autocomplete'
       dataType: 'json'
-      data: (params) -> { qq: params.term }
+      data: (params) -> { reference_q: params.term }
       processResults: (data) -> { results: data }

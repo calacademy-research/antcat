@@ -6,7 +6,7 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
     reference.author_names = [author_name]
   end
 
-  taxon = create_species
+  taxon = create :species
   taxon.update! status: Status::SYNONYM if invalid
   taxon.protonym.authorship.update! reference: reference
 end

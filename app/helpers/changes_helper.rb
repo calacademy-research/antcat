@@ -1,8 +1,4 @@
 module ChangesHelper
-  def format_taxon_name name
-    name.name_html.html_safe
-  end
-
   def confirm_before_undo_button change
     return unless can? :edit, :catalog
     link_to 'Undo...', change_undos_path(change), class: "btn-saves-warning"

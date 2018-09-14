@@ -42,7 +42,7 @@ describe Name do
     end
 
     context 'when the contents of the name change' do
-      let!(:taxon) { create_genus name: atta_name }
+      let!(:taxon) { create :genus, name: atta_name }
 
       it "changes the cache" do
         expect(taxon.name_cache).to eq 'Atta'
@@ -56,7 +56,7 @@ describe Name do
 
     context 'when a different name is assigned' do
       let!(:betta_name) { find_or_create_name 'Betta' }
-      let!(:taxon) { create_genus name: atta_name }
+      let!(:taxon) { create :genus, name: atta_name }
 
       before do
         betta_name.update_attribute :name_html, '<i>Betta</i>'

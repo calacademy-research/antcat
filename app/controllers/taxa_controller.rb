@@ -155,8 +155,8 @@ class TaxaController < ApplicationController
         :type_fossil,
         :type_taxt,
         :biogeographic_region,
-        :published_type_information,
-        :additional_type_information,
+        :primary_type_information,
+        :secondary_type_information,
         :type_notes
       )
     end

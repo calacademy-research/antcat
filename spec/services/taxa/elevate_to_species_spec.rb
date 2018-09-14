@@ -5,7 +5,7 @@ describe Taxa::ElevateToSpecies do
     let(:genus) { create_genus 'Atta' }
 
     it "turns the record into a Species" do
-      taxon = create_subspecies 'Atta major colobopsis'
+      taxon = create :subspecies
       expect(taxon).to be_kind_of Subspecies
 
       described_class[taxon]
@@ -18,7 +18,7 @@ describe Taxa::ElevateToSpecies do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
         epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create_subspecies name: subspecies_name, genus: genus, species: species
+      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
 
       described_class[taxon]
 
@@ -32,7 +32,7 @@ describe Taxa::ElevateToSpecies do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
         epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create_subspecies name: subspecies_name, genus: genus, species: species
+      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
       name_count = Name.count
 
       described_class[taxon]
@@ -44,7 +44,7 @@ describe Taxa::ElevateToSpecies do
       species = create_species 'Atta colobopsis', genus: genus
       subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
         epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create_subspecies name: subspecies_name, genus: genus, species: species
+      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
 
       described_class[taxon]
 
@@ -56,7 +56,7 @@ describe Taxa::ElevateToSpecies do
       species = create_species 'Atta major', genus: genus
       subspecies_name = SubspeciesName.create! name: 'Atta batta major',
         epithet: 'major', epithets: 'batta major'
-      taxon = create_subspecies name: subspecies_name, species: species
+      taxon = create :subspecies, name: subspecies_name, species: species
 
       expect { described_class[taxon] }.not_to raise_error
     end

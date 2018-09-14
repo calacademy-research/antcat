@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe AuthorName do
-  let(:author) { Author.create! }
-
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :author }
   it { is_expected.to validate_presence_of :name }
@@ -42,7 +40,7 @@ describe AuthorName do
 
   describe "#import_author_names_string" do
     it "finds or creates authors with names in the string" do
-      described_class.create! name: 'Bolton, B.', author: author
+      described_class.create! name: 'Bolton, B.', author: Author.create!
       author_data = described_class.import_author_names_string 'Ward, P.S.; Bolton, B.'
       expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
       expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
