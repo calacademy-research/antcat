@@ -28,7 +28,7 @@ module Autocomplete
       attr_reader :search_query
 
       def search_results
-        exact_id_match || ::References::Search::Fulltext[search_options]
+        exact_id_match || ::References::Search::Fulltext[default_search_options.merge keyword_params]
       end
 
       def exact_id_match
@@ -38,8 +38,8 @@ module Autocomplete
         [match] if match
       end
 
-      def search_options
-        { reference_type: :nomissing, items_per_page: 15 }.merge keyword_params
+      def default_search_options
+        { reference_type: :nomissing, items_per_page: 15 }
       end
 
       def keyword_params
