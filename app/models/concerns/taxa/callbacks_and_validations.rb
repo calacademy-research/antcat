@@ -3,12 +3,15 @@
 module Taxa::CallbacksAndValidations
   extend ActiveSupport::Concern
 
+  BIOGEOGRAPHIC_REGIONS = %w[
+    Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
+  ]
+
   included do
     validates :name, presence: true
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
-    validates :biogeographic_region,
-      inclusion: { in: BiogeographicRegion::REGIONS, allow_nil: true }
+    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
     validate :current_valid_taxon_validation
 
     before_create :build_default_taxon_state

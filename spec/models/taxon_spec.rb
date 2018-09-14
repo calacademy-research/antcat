@@ -6,7 +6,7 @@ describe Taxon do
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
   it do
     expect(subject).to validate_inclusion_of(:biogeographic_region).
-      in_array(BiogeographicRegion::REGIONS).allow_nil
+      in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
   end
 
   describe "scopes" do
