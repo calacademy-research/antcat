@@ -20,7 +20,7 @@ Rails.application.routes.draw do
     collection do
       get :autocomplete
     end
-    resources :author_names, except: :show, shallow: true
+    resources :author_names, except: [:show, :index], shallow: true
   end
   resources :merge_authors, only: [:index, :merge]
   post '/merge_authors/merge', to: 'merge_authors#merge'
@@ -185,7 +185,7 @@ Rails.application.routes.draw do
 
     scope module: :editors_panels do
       resources :versions, only: [:index, :show]
-      resource :bolton_keys_to_ref_tags, only: [:show, :new, :create]
+      resource :bolton_keys_to_ref_tags, only: [:show, :create]
     end
   end
 
