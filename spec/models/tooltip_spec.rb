@@ -12,15 +12,6 @@ describe Tooltip do
   end
 
   describe "scopes" do
-    describe ".enabled_keys" do
-      let!(:enabled) { create :tooltip, key_enabled: true }
-      let!(:disabled) { create :tooltip, key_enabled: false }
-
-      it "only returns enabled keys" do
-        expect(described_class.enabled_keys).to eq [enabled]
-      end
-    end
-
     describe ".enabled_selectors" do
       let!(:enabled) { create :tooltip }
       let!(:disabled) { create :tooltip, selector_enabled: false }
