@@ -13,11 +13,11 @@ Feature: Searching the catalog
   Scenario: Searching for subfamilies
     Given there is a subfamily described in 2010
 
-    When I select "Subfamilies" from the rank selector
+    When I select "Subfamilies" from "rank"
     And I fill in "year" with "2010"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see the species described in 2010
+    And I should see "2010" within the search results
 
   Scenario: Searching for valid taxa
     Given there is an invalid species described in 2010
@@ -33,7 +33,7 @@ Feature: Searching the catalog
     When I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see the species described in 2010
+    And I should see "2010" within the search results
 
   Scenario: Finding a genus
     Given there is a species "Atta major" with genus "Atta"
@@ -64,7 +64,7 @@ Feature: Searching the catalog
     And there is a species with biogeographic region "Afrotropic"
     And there is a species with biogeographic region "Afrotropic"
 
-    When I select "Afrotropic" from the biogeographic region selector
+    When I select "Afrotropic" from "biogeographic_region"
     And I press "Go" in the search section
     Then I should see "2 results"
     And I should see "Afrotropic" within the search results
@@ -74,7 +74,7 @@ Feature: Searching the catalog
     And there is a species with biogeographic region "Afrotropic"
     And there is a genus located in "Africa"
 
-    When I select "Any" from the biogeographic region selector
+    When I select "Any" from "biogeographic_region"
     And I fill in "locality" with "Africa"
     And I press "Go" in the search section
     Then I should see "1 result"
@@ -84,8 +84,8 @@ Feature: Searching the catalog
     And there is a species with biogeographic region "Afrotropic"
     And there is a species located in "Africa"
 
-    When I select "Species" from the rank selector
-    And I select "None" from the biogeographic region selector
+    When I select "Species" from "rank"
+    And I select "None" from "biogeographic_region"
     And I press "Go" in the search section
     Then I should see "1 result"
     And I should see "Africa" within the search results
@@ -114,8 +114,8 @@ Feature: Searching the catalog
     When I fill in "year" with "2010-2011"
     And I press "Go" in the search section
     Then I should see "2 result"
-    And I should see the species described in 2010
-    And I should see the species described in 2011
+    And I should see "2010" within the search results
+    And I should see "2010" within the search results
 
   Scenario: Download search results
     Given there is a species described in 2010
