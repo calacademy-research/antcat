@@ -17,10 +17,6 @@ FactoryBot.define do
       sequence(:name) { |n| "Tribe#{n}" }
     end
 
-    factory :subtribe_name, class: SubtribeName do
-      sequence(:name) { |n| "Subtribe#{n}" }
-    end
-
     factory :genus_name, class: GenusName do
       sequence(:name) { |n| "Genus#{n}" }
       name_html { "<i>#{name}</i>" }

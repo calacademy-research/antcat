@@ -51,14 +51,6 @@ FactoryBot.define do
       subfamily
     end
 
-    # FIX? Broken. The are 8 SubtribeName:s in the prod db, but no
-    # Subtribe:s, so low-priority.
-    factory :subtribe, class: Subtribe do
-      association :name, factory: :subtribe_name
-      association :type_name, factory: :genus_name
-      subfamily
-    end
-
     factory :genus, class: Genus do
       association :name, factory: :genus_name
       association :type_name, factory: :species_name
