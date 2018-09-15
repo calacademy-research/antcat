@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ReferenceDecorator do
   let(:nil_decorator) { described_class.new nil }
-  let(:author_name) { create :author_name, name: "Forel, A." }
 
   describe "#format_reference_document_link" do
     let!(:reference) { build_stubbed :reference }

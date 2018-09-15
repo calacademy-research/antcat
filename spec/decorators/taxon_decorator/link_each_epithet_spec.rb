@@ -35,20 +35,20 @@ describe TaxonDecorator::LinkEachEpithet do
       end
 
       context "when taxon has more than 3 epithets" do
-        let!(:formica) { create_genus 'Formica' }
-        let!(:rufa) { create_species 'rufa', genus: formica }
-        let!(:major) do
+        let!(:genus) { create_genus 'Formica' }
+        let!(:species) { create_species 'rufa', genus: genus }
+        let!(:subspecies) do
           major_name = Name.create! name: 'Formica rufa pratensis major',
             epithet_html: '<i>major</i>',
             epithets: 'rufa pratensis major'
-          create :subspecies, name: major_name, species: rufa, genus: rufa.genus
+          create :subspecies, name: major_name, species: species, genus: genus
         end
 
         specify do
-          expect(described_class[major]).to eq(
-            %(<a href="/catalog/#{formica.id}"><i>Formica</i></a> ) +
-            %(<a href="/catalog/#{rufa.id}"><i>rufa</i></a> ) +
-            %(<a href="/catalog/#{major.id}"><i>pratensis major</i></a>)
+          expect(described_class[subspecies]).to eq(
+            %(<a href="/catalog/#{genus.id}"><i>Formica</i></a> ) +
+            %(<a href="/catalog/#{species.id}"><i>rufa</i></a> ) +
+            %(<a href="/catalog/#{subspecies.id}"><i>pratensis major</i></a>)
           )
         end
       end
