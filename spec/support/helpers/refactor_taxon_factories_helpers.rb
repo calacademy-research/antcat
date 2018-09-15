@@ -37,11 +37,4 @@ module RefactorTaxonFactoriesHelpers
 
     Protonym.new name: name, authorship: citation
   end
-
-  def an_old_taxon
-    taxon = minimal_family
-    taxon.taxon_state.update_columns review_state: TaxonState::OLD
-    taxon.reload
-    taxon
-  end
 end

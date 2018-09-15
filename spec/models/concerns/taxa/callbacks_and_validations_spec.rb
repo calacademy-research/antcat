@@ -20,13 +20,12 @@ describe Taxa::CallbacksAndValidations do
     end
 
     context "when updating" do
-      let(:taxon) { an_old_taxon }
+      let(:taxon) { create :family, :old }
 
       context "when it `save_initiator`" do
         it "sets the review_status to 'waiting'" do
           taxon.save_initiator = true
-          taxon.save
-          expect(taxon.waiting?).to be true
+          expect { taxon.save }.to change { taxon.waiting? }.to true
         end
 
         it "doesn't cascade" do
