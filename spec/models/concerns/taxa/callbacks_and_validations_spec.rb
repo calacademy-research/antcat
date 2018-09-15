@@ -5,7 +5,7 @@ describe Taxa::CallbacksAndValidations do
 
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
     context "when creating a taxon" do
-      let(:taxon) { build_minimal_family }
+      let(:taxon) { build :family }
 
       it "creates a taxon_state" do
         expect(taxon.taxon_state).to be nil
@@ -99,9 +99,9 @@ describe Taxa::CallbacksAndValidations do
   # TODO improve "expect_any_instance_of" etc.
   describe "#save_children" do
     let!(:species) { create :species }
-    let!(:genus) { Taxon.find species.genus.id }
-    let!(:tribe) { Taxon.find genus.tribe.id }
-    let!(:subfamily) { Taxon.find species.subfamily.id }
+    let!(:genus) { species.genus }
+    let!(:tribe) { genus.tribe }
+    let!(:subfamily) { species.subfamily }
 
     context "when taxon is not the `save_initiator`" do
       it "doesn't save the children" do
@@ -111,8 +111,8 @@ describe Taxa::CallbacksAndValidations do
 
         # But not its children.
         [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
           expect_any_instance_of(klass).not_to receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
         end
 
         subfamily.save
@@ -121,43 +121,33 @@ describe Taxa::CallbacksAndValidations do
 
     context "when taxon is the `save_initiator`" do
       it "saves the children" do
-        # All children should be saved, and their children too.
-        [Subfamily, Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).to receive(:save_children).and_call_original
-          expect_any_instance_of(klass).to receive(:save).and_call_original
-        end
+        # Save these:
+        expect_any_instance_of(Genus).to receive(:save).and_call_original
+        expect_any_instance_of(Genus).to receive(:save_children).and_call_original
 
-        # But not the family.
-        expect_any_instance_of(Family).not_to receive(:save_children).and_call_original
+        expect_any_instance_of(Species).to receive(:save).and_call_original
+        expect_any_instance_of(Species).to receive(:save_children).and_call_original
 
-        subfamily.save_initiator = true
-        subfamily.save
-      end
-
-      it "doesn't save unrelated taxa" do
-        another_subfamily = create :subfamily
-
-        expect(another_subfamily).to receive(:save).and_call_original
-        expect(subfamily).not_to receive(:save).and_call_original
-
-        [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+        # Should not be saved:
+        [Family, Subfamily, Tribe].each do |klass|
           expect_any_instance_of(klass).not_to receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
         end
 
-        another_subfamily.save_initiator = true
-        another_subfamily.save
+        genus.save_initiator = true
+        genus.save
       end
 
       it "never recursively saves children of families" do
-        family = minimal_family
+        family = create :family
 
         family.save_initiator = true
-        expect(family.save_children).to be nil
+        family.save
 
-        # Confirm test isn't borked.
-        subfamily.save_initiator = true
-        expect(subfamily.save_children).not_to be nil
+        expect(family.children).to eq [subfamily]
+        expect_any_instance_of(Family).to_not receive(:children)
+        expect_any_instance_of(Subfamily).to_not receive(:save)
+        expect_any_instance_of(Subfamily).to_not receive(:save_children)
       end
     end
   end
