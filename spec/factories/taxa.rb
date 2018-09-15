@@ -1,5 +1,3 @@
-require_relative '../support/helpers/get_name_parts_helpers'
-
 FactoryBot.define do
   factory :taxon do
     protonym
@@ -130,7 +128,7 @@ def _create_taxon name_or_attributes, rank, attributes = {}
 
   attributes =
     if name_or_attributes.is_a? String
-      name, epithet, epithets = GetNamePartsHelpers.get_name_parts name_or_attributes
+      name, epithet, epithets = get_name_parts name_or_attributes
       name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
       attributes.reverse_merge name: name_object, name_cache: name
     else
@@ -138,4 +136,11 @@ def _create_taxon name_or_attributes, rank, attributes = {}
     end
 
   FactoryBot.create taxon_factory, attributes
+end
+
+def get_name_parts name
+  parts = name.split ' '
+  epithet = parts.last
+  epithets = parts[1..-1].join(' ') unless parts.size < 2
+  [name, epithet, epithets]
 end
