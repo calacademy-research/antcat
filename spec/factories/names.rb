@@ -1,5 +1,3 @@
-require_relative '../support/helpers/get_name_parts_helpers'
-
 FactoryBot.define do
   factory :name do
     sequence(:name) { |_n| raise }
@@ -51,9 +49,4 @@ FactoryBot.define do
       epithet_html { "<i>#{epithet}</i>" }
     end
   end
-end
-
-def find_or_create_name name
-  name, epithet, epithets = GetNamePartsHelpers.get_name_parts name
-  create :name, name: name, epithet: epithet, epithets: epithets
 end

@@ -23,7 +23,7 @@ describe Name do
   end
 
   describe "#set_taxon_caches" do
-    let!(:atta_name) { find_or_create_name 'Atta' }
+    let!(:atta_name) { create :genus_name, name: 'Atta' }
 
     before { atta_name.update_attribute :name_html, '<i>Atta</i>' }
 
@@ -55,7 +55,7 @@ describe Name do
     end
 
     context 'when a different name is assigned' do
-      let!(:betta_name) { find_or_create_name 'Betta' }
+      let!(:betta_name) { create :genus_name, name: 'Betta' }
       let!(:taxon) { create :genus, name: atta_name }
 
       before do
