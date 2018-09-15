@@ -55,7 +55,7 @@ describe Taxa::AdvancedSearch do
 
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
-        reference = reference_factory author_name: 'Bolton'
+        reference = create :reference, author_name: 'Bolton'
         taxon = create :family
         taxon.protonym.authorship.update! reference: reference
 

@@ -3,7 +3,7 @@ require "spec_helper"
 describe References::Search::FulltextLight, :search do
   describe "search queries" do
     context "when search query contains hyphens" do
-      let!(:reference) { reference_factory author_name: "Casevitz-Weulersse" }
+      let!(:reference) { create :reference, author_name: "Casevitz-Weulersse" }
 
       before { Sunspot.commit }
 
@@ -29,10 +29,10 @@ describe References::Search::FulltextLight, :search do
 
   describe "ordering" do
     let(:service) { described_class.new("Forel 1911") }
-    let(:forel_a) { reference_factory author_name: "Forel", citation_year: "1911a" }
-    let(:forel_b) { reference_factory author_name: "Forel", citation_year: "1911b" }
+    let(:forel_a) { create :reference, author_name: "Forel", citation_year: "1911a" }
+    let(:forel_b) { create :reference, author_name: "Forel", citation_year: "1911b" }
     let(:less_relevant) do
-      reference_factory author_name: "Other", citation_year: "1912", title: "Forel 1911 was here"
+      create :reference, author_name: "Other", citation_year: "1912", title: "Forel 1911 was here"
     end
 
     context "when references have the same year but different citation years" do

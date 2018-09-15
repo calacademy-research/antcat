@@ -33,9 +33,9 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        fisher1910b = reference_factory author_name: 'Fisher', citation_year: '1910b'
-        wheeler1874 = reference_factory author_name: 'Wheeler', citation_year: '1874'
-        fisher1910a = reference_factory author_name: 'Fisher', citation_year: '1910a'
+        fisher1910b = create :reference, author_name: 'Fisher', citation_year: '1910b'
+        wheeler1874 = create :reference, author_name: 'Wheeler', citation_year: '1874'
+        fisher1910a = create :reference, author_name: 'Fisher', citation_year: '1910a'
 
         expect(described_class.order_by_author_names_and_year).
           to eq [fisher1910a, fisher1910b, wheeler1874]
@@ -310,7 +310,7 @@ describe Reference do
 
   describe "#keey_without_letters_in_year" do
     it "doesn't include the year ordinal" do
-      reference = reference_factory author_name: 'Bolton', citation_year: '1885g'
+      reference = create :reference, author_name: 'Bolton', citation_year: '1885g'
       expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'
     end
 

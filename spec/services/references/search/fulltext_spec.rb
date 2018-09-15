@@ -49,7 +49,7 @@ describe References::Search::Fulltext, :search do
 
     describe 'author names' do
       context "when author contains German diacritics" do
-        let!(:reference) { reference_factory author_name: 'Hölldobler' }
+        let!(:reference) { create :reference, author_name: 'Hölldobler' }
 
         before { Sunspot.commit }
 
@@ -58,7 +58,7 @@ describe References::Search::Fulltext, :search do
       end
 
       context "when author contains Hungarian diacritics" do
-        let!(:reference) { reference_factory author_name: 'Csősz' }
+        let!(:reference) { create :reference, author_name: 'Csősz' }
 
         before { Sunspot.commit }
 
