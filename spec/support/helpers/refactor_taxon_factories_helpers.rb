@@ -12,12 +12,6 @@ module RefactorTaxonFactoriesHelpers
     taxon
   end
 
-  def build_new_taxon_and_set_parent rank, parent
-    taxon = build_new_taxon rank
-    taxon.parent = parent
-    taxon
-  end
-
   # New set of light factories because FactoryBot does too much and some factories are bugged.
   # TODO refactor and merge.
   def build_minimal_family

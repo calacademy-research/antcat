@@ -11,7 +11,7 @@ describe TaxonForm do
     describe "saving a new records" do
       describe "Creating a Change" do
         context "when a taxon is added" do
-          let!(:taxon) { build_new_taxon_and_set_parent :species, create(:genus) }
+          let!(:taxon) { build :subfamily }
 
           it "creates a Change pointing to the version of Taxon" do
             expect do
