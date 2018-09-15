@@ -71,18 +71,6 @@ describe Taxa::AdvancedSearch do
         expect(described_class[author_name: 'Fisher']).to eq [taxon]
       end
 
-      it "finds the taxa for the author's references, even if he's nested inside the reference" do
-        nested_in = create :article_reference, author_names: [create(:author_name, name: 'Bolton')]
-        fisher_reference = create :nested_reference,
-          author_names: [create(:author_name, name: 'Fisher')],
-          nesting_reference: nested_in
-        taxon = create :family
-        taxon.protonym.authorship.update! reference: fisher_reference
-
-        expect(described_class[author_name: 'Fisher']).to eq [taxon]
-        expect(described_class[author_name: 'Bolton']).to be_empty
-      end
-
       describe "when author in protonym has many different names" do
         let!(:barry_taxon) { create :genus }
         let!(:bolton_taxon) { create :genus }

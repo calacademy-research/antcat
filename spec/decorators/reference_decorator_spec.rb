@@ -17,33 +17,6 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#make_html_safe" do
-    def make_html_safe string
-      nil_decorator.send :make_html_safe, string
-    end
-
-    it "doesn't touch a string without HTML" do
-      expect(make_html_safe('string')).to eq 'string'
-    end
-
-    it "leaves italics alone" do
-      expect(make_html_safe('<i>string</i>')).to eq '<i>string</i>'
-    end
-
-    it "leaves quotes alone" do
-      expect(make_html_safe('"string"')).to eq '"string"'
-    end
-
-    it "returns an html_safe string" do
-      expect(make_html_safe('"string"')).to be_html_safe
-    end
-
-    it "escapes other HTML" do
-      expect(make_html_safe('<script>danger</script>')).
-        to eq '&lt;script&gt;danger&lt;/script&gt;'
-    end
-  end
-
   describe "#plain_text" do
     context "with unsafe characters" do
       let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
@@ -101,21 +74,6 @@ describe ReferenceDecorator do
 
     it "handles missing dates" do
       check_format_date '', ''
-    end
-  end
-
-  describe "#format_italics" do
-    it "replaces asterisks with italics" do
-      results = nil_decorator.send :format_italics, "*Lasius* queen".html_safe
-      expect(results).to eq "<i>Lasius</i> queen"
-      expect(results).to be_html_safe
-    end
-
-    context "when string isn't html_safe" do
-      it "raises" do
-        expect { nil_decorator.send :format_italics, 'roman' }.
-          to raise_error "Can't call format_italics on an unsafe string"
-      end
     end
   end
 

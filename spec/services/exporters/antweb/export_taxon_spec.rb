@@ -555,10 +555,10 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       let!(:genus) { create :genus, name: shared_name, protonym: protonym, hol_id: 9999 }
-      let!(:species) { create_species 'Atta major', genus: genus, hol_id: 1234 }
+      let!(:species) { create_species 'Atta major', genus: genus }
 
       it "formats a taxon's history for AntWeb" do
-        should_see_this_reference_id = genus.protonym.authorship.reference.id
+        authorship_reference_id = genus.protonym.authorship.reference.id
 
         genus.update_attribute :type_name, species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
@@ -591,7 +591,7 @@ describe Exporters::Antweb::ExportTaxon do
 
               # authorship
               %(<span>) +
-                %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{should_see_this_reference_id}">Bolton, 2010a</a>) +
+                %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference_id}">Bolton, 2010a</a>) +
                 %(: 12) +
               %(</span>) +
               %(. ) +

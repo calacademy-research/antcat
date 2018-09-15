@@ -21,12 +21,4 @@ describe Names::DuplicatesWithReferences do
       )
     end
   end
-
-  describe "#duplicates" do
-    before { create :name, name: 'Notatta' }
-
-    it "returns the records with same name but different ID" do
-      expect(described_class.new.send(:duplicates)).to match_array [first_atta_name, second_atta_name]
-    end
-  end
 end

@@ -6,32 +6,17 @@ describe ChangeDecorator do
   describe "#format_adder_name" do
     let(:change) { build_stubbed :change, approver: user, change_type: "create" }
 
-    it "formats the adder's name" do
+    specify do
       allow(change).to receive(:changed_by).and_return user
-
-      results = change.decorate.format_adder_name
-      expect(results).to match /First Last/
-      expect(results).to match(/ added$/)
+      expect(change.decorate.format_adder_name).to match /First Last.*? added/
     end
   end
 
   describe "#format_approver_name" do
     let(:change) { build_stubbed :change, approver: user }
 
-    it "formats the approver's name" do
-      results = change.decorate.format_approver_name
-      expect(results).to match /First Last/
-      expect(results).to match /approved this change/
-    end
-  end
-
-  describe "#format_time_ago" do
-    let(:nil_decorator) { described_class.new nil }
-    let(:time) { 1.hour.ago }
-
-    it "formats time" do
-      expect(nil_decorator.send(:format_time_ago, time)).
-        to match %r{<span>about 1 hour ago</span>}
+    specify do
+      expect(change.decorate.format_approver_name).to match /First Last.*? approved this change/
     end
   end
 end
