@@ -30,17 +30,6 @@ describe Taxa::QuickSearch do
         to match_array [rufa.genus, monomorium]
     end
 
-    it "only returns subfamilies, tribes, genera, subgenera, species, and subspecies" do
-      create_subfamily 'Lepto'
-      create_tribe 'Lepto1'
-      create_genus 'Lepto2'
-      create_subgenus 'Lepto3'
-      create_species 'Lepto4'
-      create_subspecies 'Lepto5'
-
-      expect(described_class['Lepto', search_type: 'beginning_with'].size).to eq 6
-    end
-
     it "sorts results by name" do
       lepti = create :subfamily, name: create(:name, name: "Lepti")
       lepta = create :subfamily, name: create(:name, name: "Lepta")
