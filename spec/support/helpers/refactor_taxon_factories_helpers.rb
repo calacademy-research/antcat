@@ -24,12 +24,6 @@ module RefactorTaxonFactoriesHelpers
     build_minimal_family.tap &:save
   end
 
-  def minimal_subfamily
-    name = SubfamilyName.new name: "Minimalinae"
-    protonym = Protonym.first || minimal_protonym
-    Subfamily.new(name: name, protonym: protonym, status: Status::VALID).tap &:save
-  end
-
   def minimal_protonym
     reference = UnknownReference.new citation: "book", citation_year: 2000, title: "Ants plz"
     citation = Citation.new reference: reference

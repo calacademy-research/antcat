@@ -135,7 +135,7 @@ describe Taxa::CallbacksAndValidations do
       end
 
       it "doesn't save unrelated taxa" do
-        another_subfamily = minimal_subfamily
+        another_subfamily = create :subfamily
 
         expect(another_subfamily).to receive(:save).and_call_original
         expect(subfamily).not_to receive(:save).and_call_original
