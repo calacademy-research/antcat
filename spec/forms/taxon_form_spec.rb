@@ -30,15 +30,6 @@ describe TaxonForm do
             end.to change { Change.count }.from(0).to(1)
             expect(Change.first.change_type).to eq 'update'
           end
-
-          it "changes the review state" do
-            genus.taxon_state.update_columns review_state: TaxonState::OLD
-            genus.reload
-
-            expect do
-              with_versioning { described_class.new(genus, genus_params).save }
-            end.to change { genus.old? }.from(true).to(false)
-          end
         end
       end
     end
@@ -102,7 +93,7 @@ describe TaxonForm do
         end
 
         it "changes the review state" do
-          with_versioning { described_class.new(genus, genus_params).save }
+          described_class.new(genus, genus_params).save
           expect(genus).not_to be_old
         end
       end
@@ -111,17 +102,16 @@ describe TaxonForm do
 end
 
 def taxon_params
-  reference = create :article_reference
   HashWithIndifferentAccess.new(
     name_attributes: {},
     status: Status::VALID,
     protonym_attributes: {
       name_attributes:  {},
       authorship_attributes: {
-        reference_id: reference.id
+        reference_id: create(:article_reference).id
       }
     }
-  ).deep_dup
+  )
 end
 
 def genus_params
@@ -129,5 +119,5 @@ def genus_params
   params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
   params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
   params[:type_name_attributes] = { id: create(:species_name, name: 'Betta major').id }
-  params.deep_dup
+  params
 end
