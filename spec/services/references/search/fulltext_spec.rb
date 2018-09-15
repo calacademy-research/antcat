@@ -4,11 +4,11 @@ describe References::Search::Fulltext, :search do
   describe "#call" do
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do
-        reference_factory author_name: 'Bolton', citation_year: '1994'
-        reference_factory author_name: 'Bolton', citation_year: '1995'
-        reference_factory author_name: 'Bolton', citation_year: '1996a'
-        reference_factory author_name: 'Bolton', citation_year: '1997'
-        reference_factory author_name: 'Bolton', citation_year: '1998'
+        create :reference, citation_year: '1994'
+        create :reference, citation_year: '1995'
+        create :reference, citation_year: '1996a'
+        create :reference, citation_year: '1997'
+        create :reference, citation_year: '1998'
         Sunspot.commit
       end
 
@@ -19,20 +19,22 @@ describe References::Search::Fulltext, :search do
     end
 
     describe "year" do
-      it "works" do
-        reference = create :book_reference, title: 'Atta', citation_year: '2004'
-        create :book_reference, title: 'Atta', citation_year: '2003'
-        create :book_reference, citation_year: '2004'
-        Sunspot.commit
+      let!(:reference) { create :reference, citation_year: '2004' }
 
-        expect(described_class[keywords: 'atta', year: 2004]).to eq [reference]
+      before do
+        create :reference, citation_year: '2003'
+        Sunspot.commit
+      end
+
+      specify do
+        expect(described_class[year: 2004]).to eq [reference]
       end
     end
 
     describe 'notes' do
-      let!(:public) { reference_factory author_name: 'Hölldobler', public_notes: 'public' }
-      let!(:editor) { reference_factory author_name: 'Hölldobler', editor_notes: 'editor' }
-      let!(:taxonomic) { reference_factory author_name: 'Hölldobler', taxonomic_notes: 'taxonomic' }
+      let!(:public) { create :reference, public_notes: 'public' }
+      let!(:editor) { create :reference, editor_notes: 'editor' }
+      let!(:taxonomic) { create :reference, taxonomic_notes: 'taxonomic' }
 
       before do
         Sunspot.commit
@@ -123,9 +125,10 @@ describe References::Search::Fulltext, :search do
   end
 
   describe "replacing some characters to make search work" do
+    let!(:title) { '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton' }
+    let!(:reference) { create :reference, title: title }
+
     it "handles this reference with asterixes and a hyphen" do
-      title = '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton'
-      reference = create :article_reference, title: title
       Sunspot.commit
 
       expect(described_class[title: title]).to eq [reference]

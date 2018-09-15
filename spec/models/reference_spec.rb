@@ -40,50 +40,6 @@ describe Reference do
         expect(described_class.order_by_author_names_and_year).
           to eq [fisher1910a, fisher1910b, wheeler1874]
       end
-
-      it "sorts by multiple author_names using their order in each reference" do
-        a = reference_from_author_string 'Abdalla, F. C.; Cruz-Landim, C. da.'
-        m = reference_from_author_string 'Mueller, U. G.; Mikheyev, A. S.; Abbot, P.'
-        v = reference_from_author_string "Vinson, S. B.; MacKay, W. P.; Rebeles M.; A.; Arredondo B.; H. C.; Rodríguez R.; A. D.; González, D. A."
-
-        expect(described_class.order_by_author_names_and_year).to eq [a, m, v]
-      end
-
-      def reference_from_author_string string
-        author_names = AuthorName.import_author_names_string(string)[:author_names]
-        create :article_reference, author_names: author_names
-      end
-    end
-  end
-
-  describe ".search", :search do
-    it "finds the reference for a given author_name if it exists" do
-      reference = reference_factory author_name: 'Ward'
-      reference_factory author_name: 'Fisher'
-      Sunspot.commit
-
-      expect(described_class.search { keywords 'Ward' }.results).to eq [reference]
-    end
-
-    it "returns the one reference for a given year and author_name" do
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      reference_factory author_name: 'Bolton', citation_year: '1995'
-      reference_factory author_name: 'Fisher', citation_year: '2011'
-      reference = reference_factory author_name: 'Fisher', citation_year: '1996'
-      Sunspot.commit
-
-      expect(described_class.search do
-        with(:year).between(1996..1996)
-        keywords 'Fisher'
-      end.results).to eq [reference]
-    end
-
-    it "searches citation years" do
-      with_letter = reference_factory author_name: 'Bolton', citation_year: '2010b'
-      reference_factory author_name: 'Bolton', citation_year: '2010'
-      Sunspot.commit
-
-      expect(described_class.search { keywords '2010b' }.results).to eq [with_letter]
     end
   end
 
@@ -130,11 +86,8 @@ describe Reference do
       end
 
       it "includes the author_names' suffix" do
-        reference = described_class.create! title: 'Ants',
-          citation_year: '2010',
-          author_names: [fisher_bl, ward_ps],
-          author_names_suffix: ' (eds.)'
-        expect(reference.reload.author_names_string).to eq 'Fisher, B.L.; Ward, P.S. (eds.)'
+        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
+        expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (ed.)'
       end
     end
 
@@ -191,7 +144,7 @@ describe Reference do
 
   describe "#principal_author_last_name_cache" do
     context "when there are no authors" do
-      let!(:reference) { described_class.create! title: 'title', citation_year: '1993' }
+      let!(:reference) { create :reference, author_names: [] }
 
       it "is nil" do
         expect(reference.principal_author_last_name_cache).to be_nil
@@ -236,7 +189,7 @@ describe Reference do
     end
 
     context 'when `citation_year` is nil' do
-      let(:reference) { reference_factory author_name: 'Bolton', citation_year: nil }
+      let(:reference) { create :reference, citation_year: nil }
 
       specify { expect(reference.short_citation_year).to eq "[no year]" }
     end
