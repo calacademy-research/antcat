@@ -15,47 +15,38 @@ describe Taxa::CallbacksAndValidations do
 
       it "sets the review_status to 'waiting'" do
         taxon.save
-        expect(taxon).to be_waiting
+        expect(taxon.waiting?).to be true
       end
     end
 
     context "when updating" do
       let(:taxon) { an_old_taxon }
 
-      it "tests tests and makes sure Workflow is in sync" do
-        expect(taxon.taxon_state.review_state).to eq TaxonState::OLD
-        expect(taxon).not_to be_waiting
-
-        taxon.save_initiator = true
-        taxon.save
-
-        expect(taxon.taxon_state.review_state).to eq TaxonState::WAITING
-        expect(taxon).to be_waiting
-      end
-
       context "when it `save_initiator`" do
         it "sets the review_status to 'waiting'" do
           taxon.save_initiator = true
           taxon.save
-          expect(taxon).to be_waiting
+          expect(taxon.waiting?).to be true
         end
 
         it "doesn't cascade" do
-          family, subfamily = old_family_and_subfamily
+          family = create :family, :old
+          subfamily = create :subfamily, :old, family: family
+
+          expect(family.waiting?).to be false
+          expect(subfamily.waiting?).to be false
 
           family.save_initiator = true
           family.save
 
-          expect(family).to be_waiting
-          expect(subfamily).not_to be_waiting
+          expect(family.waiting?).to be true
+          expect(subfamily.waiting?).to be false
         end
       end
 
       context "when it not `save_initiator`" do
         it "doesn't change the review state" do
-          expect(taxon).to be_old
-          taxon.save
-          expect(taxon).to be_old
+          expect { taxon.save }.to_not change { taxon.old? }
         end
       end
     end
@@ -67,8 +58,8 @@ describe Taxa::CallbacksAndValidations do
     context "when a generated taxon" do
       it "removes 'auto_generated' flags from things" do
         # Setup.
-        taxon = minimal_family
-        another_taxon = minimal_family
+        taxon = create :family
+        another_taxon = create :family
         synonym = create :synonym, senior_synonym: taxon, junior_synonym: another_taxon
 
         actors = [taxon, taxon.name, synonym]
@@ -86,7 +77,8 @@ describe Taxa::CallbacksAndValidations do
 
       it "doesn't cascade" do
         # Setup.
-        family, subfamily = old_family_and_subfamily
+        family = create :family
+        subfamily = create :subfamily, family: family
 
         actors = [family, subfamily, family.name, subfamily.name]
         mark_as_auto_generated actors

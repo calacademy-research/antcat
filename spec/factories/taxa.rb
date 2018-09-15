@@ -91,6 +91,10 @@ FactoryBot.define do
       species
       genus
     end
+
+    trait :old do
+      association :taxon_state, review_state: TaxonState::OLD
+    end
   end
 end
 

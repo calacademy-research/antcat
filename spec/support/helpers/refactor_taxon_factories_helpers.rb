@@ -44,21 +44,4 @@ module RefactorTaxonFactoriesHelpers
     taxon.reload
     taxon
   end
-
-  def old_family_and_subfamily
-    family = an_old_taxon
-
-    subfamily = minimal_subfamily
-    subfamily.family = family
-    subfamily.save
-    subfamily.taxon_state.update_columns review_state: TaxonState::OLD
-    subfamily.reload
-
-    # Confirm.
-    expect(family).to be_old
-    expect(subfamily.family).to eq family
-    expect(subfamily).to be_old
-
-    [family, subfamily]
-  end
 end
