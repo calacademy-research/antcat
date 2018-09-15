@@ -62,7 +62,7 @@ describe Reference do
       end
     end
 
-    context 'when input is present and valid' do
+    context 'when input is valid' do
       it "returns the author names and the suffix" do
         results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
         fisher = AuthorName.find_by(name: 'Fisher, B.')
@@ -195,7 +195,7 @@ describe Reference do
     end
   end
 
-  describe "shared setup" do
+  describe "duplicate checking" do
     let(:reference_params) do
       {
         author_names: [fisher_bl],
@@ -219,18 +219,16 @@ describe Reference do
       end
     end
 
-    describe "duplicate checking" do
-      it "allows a duplicate record to be saved" do
-        expect { ArticleReference.create! reference_params }.not_to raise_error
-      end
+    it "allows a duplicate record to be saved" do
+      expect { ArticleReference.create! reference_params }.not_to raise_error
+    end
 
-      it "checks possible duplication and add to errors, if any found" do
-        duplicate = ArticleReference.create! reference_params
+    it "checks possible duplication and add to errors, if any found" do
+      duplicate = ArticleReference.create! reference_params
 
-        expect(duplicate.errors).to be_empty
-        expect(duplicate.check_for_duplicate).to be_truthy
-        expect(duplicate.errors).not_to be_empty
-      end
+      expect(duplicate.errors).to be_empty
+      expect(duplicate.check_for_duplicate).to be_truthy
+      expect(duplicate.errors).not_to be_empty
     end
   end
 
