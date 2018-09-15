@@ -22,7 +22,6 @@ FactoryBot.define do
     journal
     sequence(:series_volume_issue) { |n| n }
     sequence(:pagination) { |n| n }
-    doi '10.10.1038/nphys1170'
   end
 
   factory :book_reference do
@@ -31,7 +30,6 @@ FactoryBot.define do
     sequence(:citation_year) { |n| "201#{n}d" }
     publisher
     pagination '22 pp.'
-    doi '10.10.1038/nphys1170'
   end
 
   factory :unknown_reference do
@@ -53,6 +51,5 @@ FactoryBot.define do
     sequence(:citation_year) { |n| "201#{n}d" }
     pages_in 'In: '
     nesting_reference { create :book_reference }
-    doi '10.10.1038/nphys1170'
   end
 end

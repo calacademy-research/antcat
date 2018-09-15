@@ -25,7 +25,8 @@ describe ArticleReferenceDecorator do
     let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
     let!(:reference) do
       create :article_reference, author_names: [latreille], citation_year: '1809', title: "*Atta*",
-        journal: create(:journal, name: 'Science'), series_volume_issue: '(1)', pagination: '3'
+        journal: create(:journal, name: 'Science'), series_volume_issue: '(1)', pagination: '3',
+        doi: "10.10.1038/nphys1170"
     end
 
     before { allow(reference).to receive(:url).and_return 'example.com' }
@@ -37,11 +38,9 @@ describe ArticleReferenceDecorator do
         %(<span class="expandable-reference">) +
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." class="expandable-reference-key" href="#">Latreille, 1809</a>} +
           %(<span class="expandable-reference-content">) +
-            %{<span class="expandable-reference-text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span>} +
-            %( ) +
-            %(<a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a> ) +
-            %(<a href="example.com">PDF</a>) +
-            %( ) +
+            %{<span class="expandable-reference-text">Latreille, P. A. 1809. <i>Atta</i>. Science (1):3.</span> } +
+            %(<a href="http://dx.doi.org/#{reference.doi}">#{reference.doi}</a> ) +
+            %(<a href="example.com">PDF</a> ) +
             %(<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>) +
           %(</span>) +
         %(</span>)

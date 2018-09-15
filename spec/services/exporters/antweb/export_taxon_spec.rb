@@ -563,7 +563,7 @@ describe Exporters::Antweb::ExportTaxon do
         genus.update_attribute :type_name, species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
-        a_reference = create :article_reference
+        a_reference = create :article_reference, doi: "10.10.1038/nphys1170"
         a_tribe = create :tribe
         genus.reference_sections.create title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
           references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);"
@@ -573,6 +573,7 @@ describe Exporters::Antweb::ExportTaxon do
         ref_journal_name = a_reference.journal.name
         ref_pagination = a_reference.pagination
         ref_volume = a_reference.series_volume_issue
+        ref_doi = a_reference.doi
 
         results = exporter.send :export_history, genus
         expect(results).to eq(
@@ -627,9 +628,7 @@ describe Exporters::Antweb::ExportTaxon do
                   %(<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +
-                  %(<a href="http://dx.doi.org/10.10.1038/nphys1170">) +
-                    %(10.10.1038/nphys1170) +
-                  %(</a>) +
+                  %(<a href="http://dx.doi.org/#{ref_doi}">#{ref_doi}</a>) +
                   %{: 766 (diagnosis);} +
                 %(</div>) +
               %(</div>) +

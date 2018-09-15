@@ -10,7 +10,7 @@ describe Wikipedia::ReferenceExporter do
       journal = build_stubbed :journal, name: "Zootaxa"
       @reference = build_stubbed :article_reference, journal: journal,
         author_names: [batiatus], title: "*Formica* and Apples",
-        pagination: "7-14", year: "2000"
+        pagination: "7-14", year: "2000", doi: "10.10.1038/nphys1170"
     end
 
     it "formats" do
@@ -18,7 +18,7 @@ describe Wikipedia::ReferenceExporter do
         <ref name="Batiatus_2000">{{cite journal
         |first1=Q. L. |last1=Batiatus |year=2000 |title=''Formica'' and Apples
         |url= |journal=Zootaxa |publisher= |volume=#{@reference.volume} |issue=
-        |pages=7–14 |doi=10.10.1038/nphys1170 }}</ref>
+        |pages=7–14 |doi=#{@reference.doi} }}</ref>
       TEMPLATE
     end
   end
