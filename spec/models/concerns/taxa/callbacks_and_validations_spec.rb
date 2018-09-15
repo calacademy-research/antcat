@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Taxa::CallbacksAndValidations do
-  include RefactorTaxonFactoriesHelpers
-
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
     context "when creating a taxon" do
       let(:taxon) { build :family }

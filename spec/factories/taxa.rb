@@ -1,5 +1,3 @@
-# See also `RefactorTaxonFactoriesHelpers`.
-
 require_relative '../support/helpers/get_name_parts_helpers'
 
 FactoryBot.define do

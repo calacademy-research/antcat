@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe TaxonForm do
-  include RefactorTaxonFactoriesHelpers
-
   before do
     fake_current_user
   end
