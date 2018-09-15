@@ -93,6 +93,10 @@ FactoryBot.define do
     trait :old do
       association :taxon_state, review_state: TaxonState::OLD
     end
+
+    trait :waiting do
+      association :taxon_state, review_state: TaxonState::WAITING
+    end
   end
 end
 

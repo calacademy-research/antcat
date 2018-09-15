@@ -86,14 +86,15 @@ describe Taxon do
   describe "Last change and version" do
     describe "#last_change" do
       let(:taxon) { create :family }
-      let(:user) { create :user }
 
       it "returns nil if no Changes have been created for it" do
         expect(taxon.last_change).to be_nil
       end
 
       it "returns the Change, if any" do
-        change = setup_version taxon, user
+        change = create :change, taxon: taxon
+        create :version, item: taxon, change: change
+
         expect(taxon.last_change).to eq change
       end
     end

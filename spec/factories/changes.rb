@@ -1,13 +1,8 @@
 FactoryBot.define do
   factory :change do
     change_type "create"
+    user
   end
-end
-
-def setup_version taxon, user
-  change = create :change, taxon: taxon, user: user
-  create :version, item: taxon, event: 'create', change: change, whodunnit: user.id
-  change
 end
 
 def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
