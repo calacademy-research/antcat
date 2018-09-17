@@ -1,13 +1,13 @@
 Given("there is a reference") do
-  @reference = create :article_reference
+  create :article_reference
 end
 
 Given("there is an article reference") do
-  @reference = create :article_reference
+  create :article_reference
 end
 
 Given("there is a book reference") do
-  @reference = create :book_reference
+  create :book_reference
 end
 
 Given("this/these reference(s) exist(s)") do |table|
@@ -45,9 +45,7 @@ Given("there is a Giovanni reference") do
 end
 
 Given("there is a reference by Giovanni's brother") do
-  reference = create :article_reference,
-    citation_year: '1800',
-    title: "Giovanni's Brother's Favorite Ants"
+  reference = create :article_reference, title: "Giovanni's Brother's Favorite Ants"
 
   reference.update_column :id, 7778
   reference.author_names << create(:author_name, name: 'Giovanni, J.')
@@ -62,17 +60,16 @@ def create_reference type, hash
   author_name = if author
                   AuthorName.find_by(name: author) || create(:author_name, name: author)
                 end
-  @reference = create type, hash.merge(author_names: [author_name])
+  create type, hash.merge(author_names: [author_name])
 end
 
 Given("the following entry nests it") do |table|
   data = table.hashes.first
-  nestee_reference = @reference
-  @reference = NestedReference.create! title: data[:title],
+  NestedReference.create! title: data[:title],
     author_names: [create(:author_name, name: data[:author])],
     citation_year: data[:citation_year],
     pages_in: data[:pages_in],
-    nesting_reference: nestee_reference
+    nesting_reference: Reference.last
 end
 
 Given("a Bolton-Fisher reference exists with the title {string}") do |title|
@@ -84,9 +81,10 @@ Given("a Bolton-Fisher reference exists with the title {string}") do |title|
 end
 
 Given("that the entry has a URL that's on our site") do
-  @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update file_file_name: '123.pdf',
-    url: "localhost/documents/#{@reference.document.id}/123.pdf"
+  reference = Reference.last
+  reference.update_attribute :document, ReferenceDocument.create!
+  reference.document.update file_file_name: '123.pdf',
+    url: "localhost/documents/#{reference.document.id}/123.pdf"
 end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
@@ -161,8 +159,9 @@ Then("nesting_reference_id should contain a valid reference id") do
 end
 
 Given("there is a taxon with that reference as its protonym's reference") do
+  reference = Reference.last
   taxon = create_genus
-  taxon.protonym.authorship.reference = @reference
+  taxon.protonym.authorship.reference = reference
   taxon.protonym.authorship.save!
 end
 

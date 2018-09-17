@@ -11,7 +11,7 @@ Feature: Copy reference
     Given this reference exist
       | author     | title          | citation | citation_year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          |
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "Article" tab should be selected
@@ -25,7 +25,7 @@ Feature: Copy reference
     Given this book reference exist
       | author     | citation_year | title | citation                |
       | Bolton, B. | 2010          | Ants  | New York: Wiley, 23 pp. |
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "Book" tab should be selected
@@ -39,7 +39,7 @@ Feature: Copy reference
     And the following entry nests it
       | author       | title          | citation_year | pages_in |
       | Aardvark, A. | Dolichoderinae | 2011          | In:      |
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "Nested" tab should be selected
@@ -52,7 +52,7 @@ Feature: Copy reference
     Given this unknown reference exist
       | author     | citation | citation_year | title |
       | Ward, P.S. | New York | 2010a         | Ants  |
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "Other" tab should be selected
@@ -64,7 +64,7 @@ Feature: Copy reference
   Scenario: Copy a reference with a document
     Given there is a reference
     And that the entry has a URL that's on our site
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "reference_document_attributes_url" field should contain ""
@@ -75,7 +75,7 @@ Feature: Copy reference
       | author     | title          | citation | citation_year | date     |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          | 19900101 |
     And that the entry has a URL that's on our site
-    And I go to the page for that reference
+    And I go to the page of the most recent reference
 
     When I follow "Copy"
     Then the "reference_title" field should contain "Annals of Ants"
