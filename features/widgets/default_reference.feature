@@ -3,8 +3,8 @@ Feature: Using the default reference
   Background:
     Given I am logged in
     And this reference exists
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+      | author     | year |
+      | Ward, P.S. | 2010 |
 
   Scenario: Default reference used for new taxon
     Given there is a genus "Atta"

@@ -3,10 +3,10 @@ Feature: Reference selector
     Given I am logged in
     And the reference selector returns 2 results per page
     And these references exists
-      | authors  | citation   | title     | year |
-      | Fisher   | Psyche 3:3 | Ants Uno  | 2004 |
-      | Fisher   | Psyche 3:3 | Ants Dos  | 2004 |
-      | Batiatus | Psyche 3:3 | Ants Tres | 2004 |
+      | authors  | year |
+      | Fisher   | 2004 |
+      | Fisher   | 2004 |
+      | Batiatus | 2004 |
     And there is a subfamily "Formicinae"
 
   @search @javascript

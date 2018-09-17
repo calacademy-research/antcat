@@ -49,9 +49,9 @@ Feature: Working with authors and their names
     And I should not see "Bolton, B."
 
   Scenario: Seeing references by author
-    Given this book reference exist
-      | authors    | year | title     | citation                |
-      | Bolton, B. | 2010 | Cool Ants | New York: Wiley, 23 pp. |
+    Given this reference exist
+      | authors    | year | title     |
+      | Bolton, B. | 2010 | Cool Ants |
 
     When I go to the authors page
     And I follow "Bolton, B."

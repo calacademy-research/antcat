@@ -9,8 +9,8 @@ Feature: Feed (taxa)
       And there is a subfamily "Formicinae"
       And there is a genus "Eciton"
       And this reference exists
-        | authors | citation   | title | year |
-        | Fisher  | Psyche 3:3 | Ants  | 2004 |
+        | authors | year |
+        | Fisher  | 2004 |
     And activity tracking is enabled
 
     When I go to the catalog page for "Formicinae"

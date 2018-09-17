@@ -12,7 +12,7 @@ end
 
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
-    citation = hash.delete 'citation'
+    citation = hash.delete('citation') || "Psyche 1:1"
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     journal = create :journal, name: matches[1]
 

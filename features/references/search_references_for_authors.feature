@@ -2,10 +2,10 @@
 Feature: Search references for authors
   Background:
     Given these references exist
-      | authors               | year | citation_year | title   | citation   |
-      | Fisher, B.;Bolton, B. | 1995 | 1995b         | Anthill | Ants 1:1-2 |
-      | Forel, M.             | 1995 | 1995b         | Formis  | Ants 1:1-2 |
-      | Bolton, B.            | 2010 | 2010          | Antz    | Ants 2:1-2 |
+      | authors               | year | citation_year | title   |
+      | Fisher, B.;Bolton, B. | 1995 | 1995b         | Anthill |
+      | Forel, M.             | 1995 | 1995b         | Formis  |
+      | Bolton, B.            | 2010 | 2010          | Antz    |
     And I go to the references page
 
   Scenario: Searching for one author only (keyword search)

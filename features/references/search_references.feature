@@ -107,11 +107,11 @@ Feature: Searching references
   @search
   Scenario: Seeing just "other" references (not article, book, etc.)
     Given this reference exists
-      | authors    | year | title | citation      |
-      | Fisher, B. | 1895 | Known | Psyche 11:1-2 |
+      | authors    | year | title |
+      | Fisher, B. | 1895 | Known |
     And this unknown reference exists
-      | authors    | year | title   | citation       |
-      | Bolton, B. | 2001 | Unknown | Science 11:1-2 |
+      | authors    | year | title   |
+      | Bolton, B. | 2001 | Unknown |
 
     When I go to the references page
     Then I should see "Known"
