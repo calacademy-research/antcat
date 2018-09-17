@@ -71,13 +71,7 @@ def create_reference type, hash
       end
     end
 
-  hash[:year] = hash.delete('year').to_i
-  hash[:citation_year] =
-    if hash[:citation_year].present?
-      hash.delete('citation_year').to_s
-    else
-      hash[:year].to_s
-    end
+  hash[:citation_year] = hash.delete('year') if hash[:year].present?
 
   @reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
 end

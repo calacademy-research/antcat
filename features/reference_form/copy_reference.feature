@@ -50,8 +50,8 @@ Feature: Copy reference
 
   Scenario: Copy an unknown reference
     Given this unknown reference exist
-      | authors    | citation | year | citation_year | title |
-      | Ward, P.S. | New York | 2010 | 2010a         | Ants  |
+      | authors    | citation | citation_year | title |
+      | Ward, P.S. | New York | 2010a         | Ants  |
     And I go to the page for that reference
 
     When I follow "Copy"
