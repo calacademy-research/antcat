@@ -113,14 +113,6 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference.update_column :id, 50000
 end
 
-Given("there is a missing reference") do
-  create :missing_reference
-end
-
-Then("I should not see the missing reference") do
-  step 'I should not see "Adventures among Ants"'
-end
-
 def find_reference_by_keey keey
   parts = keey.split ' '
   last_name = parts[0]
