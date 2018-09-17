@@ -66,9 +66,8 @@ def create_reference type, hash
       authors = hash.delete 'authors'
       parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
       author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-      parsed_author_names.reduce([]) do |memo, author_name|
-        author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-        memo << author_name
+      parsed_author_names.map do |author_name|
+        AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
       end
     end
 
@@ -80,9 +79,7 @@ def create_reference type, hash
       hash[:year].to_s
     end
 
-  reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
-  @reference ||= reference
-  reference
+  @reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
 end
 
 Given("the following entry nests it") do |table|
