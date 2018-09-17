@@ -60,11 +60,11 @@ Feature: Searching references
   @search
   Scenario: Searching by a year range
     Given these references exist
-      | citation_year |
-      | 2009a         |
-      | 2010c         |
-      | 2011d         |
-      | 2012e         |
+      | author | citation_year |
+      | author | 2009a         |
+      | author | 2010c         |
+      | author | 2011d         |
+      | author | 2012e         |
 
     When I go to the references page
     And I fill in the references search box with "year:2010-2011"

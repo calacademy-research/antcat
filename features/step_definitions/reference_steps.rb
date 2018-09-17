@@ -59,19 +59,10 @@ end
 
 def create_reference type, hash
   author = hash.delete 'author'
-  author_names =
-    if author
-      [AuthorName.find_by(name: author) || create(:author_name, name: author)]
-    else
-      authors = hash.delete 'authors'
-      parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
-      author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-      parsed_author_names.map do |author_name|
-        AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-      end
-    end
-
-  @reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
+  author_name = if author
+                  AuthorName.find_by(name: author) || create(:author_name, name: author)
+                end
+  @reference = create type, hash.merge(author_names: [author_name])
 end
 
 Given("the following entry nests it") do |table|
@@ -82,6 +73,14 @@ Given("the following entry nests it") do |table|
     citation_year: data[:citation_year],
     pages_in: data[:pages_in],
     nesting_reference: nestee_reference
+end
+
+Given("a Bolton-Fisher reference exists with the title {string}") do |title|
+  author_names = [
+    AuthorName.find_by(name: "Bolton, B."),
+    create(:author_name, name: "Fisher, B.")
+  ]
+  create :unknown_reference, author_names: author_names, title: title
 end
 
 Given("that the entry has a URL that's on our site") do
