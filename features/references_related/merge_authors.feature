@@ -8,7 +8,7 @@ Feature: Merging authors
       | Bolton, B. |
       | Bolton,B.  |
     And these references exist
-      | authors    | title          |
+      | author     | title          |
       | Bolton, B. | Annals of Ants |
       | Bolton,B.  | More ants      |
     And the following names exist for another author

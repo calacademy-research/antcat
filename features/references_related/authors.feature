@@ -50,7 +50,7 @@ Feature: Working with authors and their names
 
   Scenario: Seeing references by author
     Given this reference exist
-      | authors    | title     |
+      | author     | title     |
       | Bolton, B. | Cool Ants |
 
     When I go to the authors page

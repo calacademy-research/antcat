@@ -3,7 +3,7 @@ Feature: Reference selector
     Given I am logged in
     And the reference selector returns 2 results per page
     And these references exists
-      | authors  | citation_year |
+      | author   | citation_year |
       | Fisher   | 2004          |
       | Fisher   | 2004          |
       | Batiatus | 2004          |

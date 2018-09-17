@@ -7,7 +7,7 @@ Feature: Checking for duplicates during data entry
   Background:
     Given I am logged in
     And this reference exists
-      | authors  | citation   | title | citation_year |
+      | author   | citation   | title | citation_year |
       | Ward, P. | Psyche 6:1 | Ants  | 2010          |
 
   Scenario: Adding a duplicate reference, but saving it anyway
@@ -27,7 +27,7 @@ Feature: Checking for duplicates during data entry
 
   Scenario: Editing a reference that makes it a duplicate
     Given this reference exists
-      | authors    | citation   | title            | citation_year |
+      | author     | citation   | title            | citation_year |
       | Bolton, B. | Psyche 5:3 | Ants are my life | 2010          |
 
     When I go to the edit page for the most recent reference

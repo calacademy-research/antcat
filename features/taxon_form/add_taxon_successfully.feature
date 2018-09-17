@@ -2,8 +2,8 @@ Feature: Adding a taxon successfully
   Background:
     Given I am logged in
     And this reference exists
-      | authors | title | citation_year |
-      | Fisher  | Ants  | 2004          |
+      | author | title | citation_year |
+      | Fisher | Ants  | 2004          |
     And there is a subfamily "Formicinae"
 
   @search @javascript

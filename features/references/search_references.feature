@@ -1,7 +1,7 @@
 Feature: Searching references
   Background:
     Given these references exist
-      | authors        | citation_year | title                 |
+      | author         | citation_year | title                 |
       | Fisher, B.     | 1995          | Anthill               |
       | Hölldobler, B. | 1995b         | Formis                |
       | Bolton, B.     | 2010 ("2011") | Ants of North America |
@@ -77,7 +77,7 @@ Feature: Searching references
   @search
   Scenario: Searching by author and year
     Given these references exist
-      | authors    | citation_year |
+      | author     | citation_year |
       | Fisher, B. | 1895a         |
       | Fisher, B. | 1810b         |
       | Bolton, B. | 1810e         |
@@ -107,10 +107,10 @@ Feature: Searching references
   @search
   Scenario: Seeing just "other" references (not article, book, etc.)
     Given this reference exists
-      | authors    | title |
+      | author     | title |
       | Fisher, B. | Known |
     And this unknown reference exists
-      | authors    | title   |
+      | author     | title   |
       | Bolton, B. | Unknown |
 
     When I go to the references page
@@ -135,7 +135,7 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords
     Given these references exists
-      | authors    | title         |
+      | author     | title         |
       | Fisher, B. | Anthill       |
       | Bolton, B. | Fisher's Ants |
 
@@ -149,7 +149,7 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords (that are not well formatted)
     Given these references exists
-      | authors    | title         |
+      | author     | title         |
       | Fisher, B. | Anthill       |
       | Bolton, B. | Fisher's Ants |
 

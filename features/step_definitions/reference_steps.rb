@@ -61,7 +61,7 @@ def create_reference type, hash
   author = hash.delete 'author'
   author_names =
     if author
-      [create(:author_name, name: author)]
+      [AuthorName.find_by(name: author) || create(:author_name, name: author)]
     else
       authors = hash.delete 'authors'
       parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
@@ -78,7 +78,7 @@ Given("the following entry nests it") do |table|
   data = table.hashes.first
   nestee_reference = @reference
   @reference = NestedReference.create! title: data[:title],
-    author_names: [create(:author_name, name: data[:authors])],
+    author_names: [create(:author_name, name: data[:author])],
     citation_year: data[:citation_year],
     pages_in: data[:pages_in],
     nesting_reference: nestee_reference

@@ -12,7 +12,7 @@ Feature: Edit reference unsuccessfully
 
   Scenario: Cancelling edit after an error
     Given this reference exists
-      | authors   | citation_year | title                    | citation      |
+      | author    | citation_year | title                    | citation      |
       | Forel, A. | 1874          | Les fourmis de la Suisse | Neue 26:1-452 |
 
     When I go to the edit page for the most recent reference
