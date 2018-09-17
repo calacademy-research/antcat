@@ -1,10 +1,10 @@
 Feature: Searching references
   Background:
     Given these references exist
-      | authors        | year | citation_year | title                 | citation   |
-      | Fisher, B.     | 1995 | 1995          | Anthill               | Ants 1:1-2 |
-      | Hölldobler, B. | 1995 | 1995b         | Formis                | Ants 1:1-2 |
-      | Bolton, B.     | 2010 | 2010 ("2011") | Ants of North America | Ants 2:1-2 |
+      | authors        | year | citation_year | title                 |
+      | Fisher, B.     | 1995 | 1995          | Anthill               |
+      | Hölldobler, B. | 1995 | 1995b         | Formis                |
+      | Bolton, B.     | 2010 | 2010 ("2011") | Ants of North America |
 
   Scenario: Not searching yet
     When I go to the references page
@@ -60,11 +60,11 @@ Feature: Searching references
   @search
   Scenario: Searching by a year range
     Given these references exist
-      | year | citation_year | authors | title  | citation    |
-      | 2009 | 2009a         | authors | title1 | Ants 31:1-2 |
-      | 2010 | 2010c         | authors | title2 | Ants 32:1-2 |
-      | 2011 | 2011d         | authors | title3 | Ants 33:1-2 |
-      | 2012 | 2012e         | authors | title4 | Ants 34:1-2 |
+      | year | citation_year |
+      | 2009 | 2009a         |
+      | 2010 | 2010c         |
+      | 2011 | 2011d         |
+      | 2012 | 2012e         |
 
     When I go to the references page
     And I fill in the references search box with "year:2010-2011"
@@ -77,11 +77,11 @@ Feature: Searching references
   @search
   Scenario: Searching by author and year
     Given these references exist
-      | authors    | year | citation_year | title  | citation    |
-      | Fisher, B. | 1895 | 1895a         | title5 | Ants 11:1-2 |
-      | Fisher, B. | 1810 | 1810b         | title6 | Ants 12:1-2 |
-      | Bolton, B. | 1810 | 1810e         | title7 | Ants 13:1-2 |
-      | Bolton, B. | 1895 | 1895d         | title8 | Ants 14:1-2 |
+      | authors    | year | citation_year |
+      | Fisher, B. | 1895 | 1895a         |
+      | Fisher, B. | 1810 | 1810b         |
+      | Bolton, B. | 1810 | 1810e         |
+      | Bolton, B. | 1895 | 1895d         |
 
     When I go to the references page
     And I fill in the references search box with "fisher year:1895-1895"
@@ -135,9 +135,9 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords
     Given these references exists
-      | authors    | year | title         | citation      |
-      | Fisher, B. | 1995 | Anthill       | Ants 1:1-2    |
-      | Bolton, B. | 1895 | Fisher's Ants | Psyche 11:1-2 |
+      | authors    | year | title         |
+      | Fisher, B. | 1995 | Anthill       |
+      | Bolton, B. | 1895 | Fisher's Ants |
 
     When I go to the references page
     And I fill in the references search box with "author:fish"
@@ -149,9 +149,9 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords (that are not well formatted)
     Given these references exists
-      | authors    | year | title         | citation      |
-      | Fisher, B. | 1995 | Anthill       | Ants 1:1-2    |
-      | Bolton, B. | 1895 | Fisher's Ants | Psyche 11:1-2 |
+      | authors    | year | title         |
+      | Fisher, B. | 1995 | Anthill       |
+      | Bolton, B. | 1895 | Fisher's Ants |
 
     When I go to the references page
     And I fill in the references search box with "Author: fish"

@@ -17,14 +17,6 @@ Feature: Using the catalog
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
-
-  Scenario: Seeing the family when it's been explicitly requested
-    When I go to the catalog page for "Formicidae"
-    Then I should see "Formicidae" in the taxon description
-    And I should see "valid" in the taxon description
-    And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
-    And I should see "Fossil: 1 valid genus"
-    And I should see "Subfamily of Formicidae: Dolichoderinae."
     And the page title should have "Formicidae" in it
 
   Scenario: Selecting a subfamily
