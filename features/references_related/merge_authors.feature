@@ -8,9 +8,9 @@ Feature: Merging authors
       | Bolton, B. |
       | Bolton,B.  |
     And these references exist
-      | authors    | title          | year |
-      | Bolton, B. | Annals of Ants | 2010 |
-      | Bolton,B.  | More ants      | 2011 |
+      | authors    | title          |
+      | Bolton, B. | Annals of Ants |
+      | Bolton,B.  | More ants      |
     And the following names exist for another author
       | Fisher, B. |
     And I go to the merge authors page

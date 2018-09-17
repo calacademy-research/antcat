@@ -10,7 +10,7 @@ Feature: Reference selector
     And there is a subfamily "Formicinae"
 
   @search @javascript
-  Scenario: Adding a reference from the autocompleion suggestions
+  Scenario: Adding a reference from the autocompletion suggestions
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Formicinae"
@@ -22,7 +22,8 @@ Feature: Reference selector
       And I set the protonym name to "Eciton"
       And I press "OK"
       And I set the authorship to the first search results of "Batiatus (2004)"
-    And I click the type name field
+    Then the authorship should contain the reference "Batiatus 2004"
+    When I click the type name field
     And I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"

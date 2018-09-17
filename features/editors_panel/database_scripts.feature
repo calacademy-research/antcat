@@ -27,8 +27,6 @@ Feature: Database scripts
     When I open all database scripts and browse their sources
     Then I should have browsed at least 5 database scripts
 
-  # Should not require JS, but throws `URI::InvalidURIError` without it.
-  @search @javascript
   Scenario: Script: Missing references in protonym authorships
     Given the genus Atta has a protonym with a missing reference
     And this reference exists

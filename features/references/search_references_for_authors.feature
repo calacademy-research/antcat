@@ -1,13 +1,13 @@
-@search
 Feature: Search references for authors
   Background:
     Given these references exist
-      | authors               | year | citation_year | title   |
-      | Fisher, B.;Bolton, B. | 1995 | 1995b         | Anthill |
-      | Forel, M.             | 1995 | 1995b         | Formis  |
-      | Bolton, B.            | 2010 | 2010          | Antz    |
+      | authors               | title   |
+      | Fisher, B.;Bolton, B. | Anthill |
+      | Forel, M.             | Formis  |
+      | Bolton, B.            | Antz    |
     And I go to the references page
 
+  @search
   Scenario: Searching for one author only (keyword search)
     When I fill in the references search box with "author:'Bolton, B.'"
     And I press "Go" by the references search box

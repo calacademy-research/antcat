@@ -1,10 +1,10 @@
 Feature: Searching references
   Background:
     Given these references exist
-      | authors        | year | citation_year | title                 |
-      | Fisher, B.     | 1995 | 1995          | Anthill               |
-      | Hölldobler, B. | 1995 | 1995b         | Formis                |
-      | Bolton, B.     | 2010 | 2010 ("2011") | Ants of North America |
+      | authors        | citation_year | title                 |
+      | Fisher, B.     | 1995          | Anthill               |
+      | Hölldobler, B. | 1995b         | Formis                |
+      | Bolton, B.     | 2010 ("2011") | Ants of North America |
 
   Scenario: Not searching yet
     When I go to the references page
@@ -77,11 +77,11 @@ Feature: Searching references
   @search
   Scenario: Searching by author and year
     Given these references exist
-      | authors    | year | citation_year |
-      | Fisher, B. | 1895 | 1895a         |
-      | Fisher, B. | 1810 | 1810b         |
-      | Bolton, B. | 1810 | 1810e         |
-      | Bolton, B. | 1895 | 1895d         |
+      | authors    | citation_year |
+      | Fisher, B. | 1895a         |
+      | Fisher, B. | 1810b         |
+      | Bolton, B. | 1810e         |
+      | Bolton, B. | 1895d         |
 
     When I go to the references page
     And I fill in the references search box with "fisher year:1895-1895"
@@ -107,11 +107,11 @@ Feature: Searching references
   @search
   Scenario: Seeing just "other" references (not article, book, etc.)
     Given this reference exists
-      | authors    | year | title |
-      | Fisher, B. | 1895 | Known |
+      | authors    | title |
+      | Fisher, B. | Known |
     And this unknown reference exists
-      | authors    | year | title   |
-      | Bolton, B. | 2001 | Unknown |
+      | authors    | title   |
+      | Bolton, B. | Unknown |
 
     When I go to the references page
     Then I should see "Known"
@@ -135,9 +135,9 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords
     Given these references exists
-      | authors    | year | title         |
-      | Fisher, B. | 1995 | Anthill       |
-      | Bolton, B. | 1895 | Fisher's Ants |
+      | authors    | title         |
+      | Fisher, B. | Anthill       |
+      | Bolton, B. | Fisher's Ants |
 
     When I go to the references page
     And I fill in the references search box with "author:fish"
@@ -149,9 +149,9 @@ Feature: Searching references
   @javascript @search
   Scenario: Search using autocomplete keywords (that are not well formatted)
     Given these references exists
-      | authors    | year | title         |
-      | Fisher, B. | 1995 | Anthill       |
-      | Bolton, B. | 1895 | Fisher's Ants |
+      | authors    | title         |
+      | Fisher, B. | Anthill       |
+      | Bolton, B. | Fisher's Ants |
 
     When I go to the references page
     And I fill in the references search box with "Author: fish"
