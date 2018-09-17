@@ -1,22 +1,22 @@
 Feature: Searching references
   Background:
     Given these references exist
-      | author         | title          |
-      | Hölldobler, B. | Fisher's Ants  |
-      | Bolton, B.     | Bolton's Ants  |
+      | author         | title             |
+      | Hölldobler, B. | Hölldobler's Ants |
+      | Fisher, B.     | Fisher's Ants     |
     And I go to the references page
 
   @search
-  Scenario: Searching for an author name with diacritics
+  Scenario: Searching for an author name with diacritics, using the diacritics in the query
     When I fill in the references search box with "Hölldobler"
     And I press "Go" by the references search box
     Then I should see "Hölldobler, B."
-    And I should not see "Fisher, B."
+    Then I should not see "Fisher, B."
 
   Scenario: Finding nothing
     When I fill in the references search box with "zzzzzz"
     And I press "Go" by the references search box
-    Then I should see "No results found"
+    And I should see "No results found"
 
   Scenario: Maintaining search box contents
     When I fill in the references search box with "zzzzzz year:1972-1980"
@@ -26,9 +26,9 @@ Feature: Searching references
 
   @javascript @search
   Scenario: Search using autocomplete
-    When I fill in the references search box with "bolt"
+    When I fill in the references search box with "hol"
     Then I should see the following autocomplete suggestions:
-      | Bolton's Ants  |
+      | Hölldobler's Ants |
     And I should not see the following autocomplete suggestions:
       | Fisher's Ants |
 
@@ -38,7 +38,7 @@ Feature: Searching references
     Then I should see the following autocomplete suggestions:
       | Fisher's Ants |
     And I should not see the following autocomplete suggestions:
-      | Bolton's Ants |
+      | Hölldobler's Ants |
 
   @javascript @search
   Scenario: Expanding autocomplete suggestions

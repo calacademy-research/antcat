@@ -47,12 +47,3 @@ Feature: Working with authors and their names
     And I follow "Authors" inside the breadcrumb
     Then I should see "Bolton, Z."
     And I should not see "Bolton, B."
-
-  Scenario: Seeing references by author
-    Given this reference exist
-      | author     | title     |
-      | Bolton, B. | Cool Ants |
-
-    When I go to the authors page
-    And I follow "Bolton, B."
-    Then I should see "Cool Ants"

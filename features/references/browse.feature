@@ -1,15 +1,14 @@
 Feature: View bibliography
-  Scenario: Viewing a nested reference (with italics)
-    Given there is a book reference
-    And the following entry nests it
-      | author     | title                    | citation_year | pages_in |
-      | Ward, P.S. | The ant *Azteca trigona* | 2010          | In:      |
+  Scenario: Viewing a reference with italics
+    Given this reference exist
+      | author     | title                    |
+      | Ward, P.S. | The ant *Azteca trigona* |
 
     When I go to the references page
-    Then I should see "Ward, P.S. 2010. The ant Azteca trigona. In: "
+    Then I should see "The ant Azteca trigona"
     And I should see "Azteca trigona" italicized
 
-  Scenario: Going to the author's page
+  Scenario: Seeing references by author (going to the author's page)
     Given this reference exist
       | author     | title     |
       | Bolton, B. | Cool Ants |

@@ -33,7 +33,3 @@ When("I merge the authors") do
     And I press "Merge these authors"
   )
 end
-
-Then("I should not be able to merge the authors") do
-  step 'I should not see "Click this button"'
-end
