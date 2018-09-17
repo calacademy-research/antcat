@@ -23,8 +23,8 @@ Feature: Editing a taxon
   @search @javascript
   Scenario: Changing the authorship
     Given this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | citation_year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004          |
     And there is a genus "Eciton"
 
     When I go to the edit page for "Eciton"

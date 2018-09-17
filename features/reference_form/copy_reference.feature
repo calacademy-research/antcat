@@ -9,8 +9,8 @@ Feature: Copy reference
 
   Scenario: Copy an article reference
     Given this reference exist
-      | authors    | title          | citation | year |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 |
+      | authors    | title          | citation | citation_year |
+      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          |
     And I go to the page for that reference
 
     When I follow "Copy"
@@ -23,8 +23,8 @@ Feature: Copy reference
 
   Scenario: Copy a book reference
     Given this book reference exist
-      | authors    | year | title | citation                |
-      | Bolton, B. | 2010 | Ants  | New York: Wiley, 23 pp. |
+      | authors    | citation_year | title | citation                |
+      | Bolton, B. | 2010          | Ants  | New York: Wiley, 23 pp. |
     And I go to the page for that reference
 
     When I follow "Copy"
@@ -37,8 +37,8 @@ Feature: Copy reference
   Scenario: Copy a nested reference
     Given there is an article reference
     And the following entry nests it
-      | authors      | title          | year | pages_in |
-      | Aardvark, A. | Dolichoderinae | 2011 | In:      |
+      | authors      | title          | citation_year | pages_in |
+      | Aardvark, A. | Dolichoderinae | 2011          | In:      |
     And I go to the page for that reference
 
     When I follow "Copy"
@@ -72,8 +72,8 @@ Feature: Copy reference
   @javascript
   Scenario: Copy a reference with a date
     Given this reference exist
-      | authors    | title          | citation | year | date     |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910 | 19900101 |
+      | authors    | title          | citation | citation_year | date     |
+      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          | 19900101 |
     And that the entry has a URL that's on our site
     And I go to the page for that reference
 

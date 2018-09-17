@@ -30,8 +30,8 @@ Feature: Database scripts
   Scenario: Script: Missing references in protonym authorships
     Given the genus Atta has a protonym with a missing reference
     And this reference exists
-      | authors      | year | title                  |
-      | Batiatus, Q. | 2000 | The missing reference! |
+      | authors      | citation_year | title                  |
+      | Batiatus, Q. | 2000          | The missing reference! |
 
     When I follow "Missing references in protonym authorships"
     Then I should see "Batiatus 2000"

@@ -71,8 +71,6 @@ def create_reference type, hash
       end
     end
 
-  hash[:citation_year] = hash.delete('year') if hash[:year].present?
-
   @reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
 end
 
@@ -81,7 +79,7 @@ Given("the following entry nests it") do |table|
   nestee_reference = @reference
   @reference = NestedReference.create! title: data[:title],
     author_names: [create(:author_name, name: data[:authors])],
-    citation_year: data[:year],
+    citation_year: data[:citation_year],
     pages_in: data[:pages_in],
     nesting_reference: nestee_reference
 end

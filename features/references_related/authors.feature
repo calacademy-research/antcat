@@ -50,8 +50,8 @@ Feature: Working with authors and their names
 
   Scenario: Seeing references by author
     Given this reference exist
-      | authors    | year | title     |
-      | Bolton, B. | 2010 | Cool Ants |
+      | authors    | title     |
+      | Bolton, B. | Cool Ants |
 
     When I go to the authors page
     And I follow "Bolton, B."

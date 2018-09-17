@@ -7,8 +7,8 @@ Feature: Workflow
 
   Background:
     Given this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | authors | citation   | title | citation_year |
+      | Fisher  | Psyche 3:3 | Ants  | 2004          |
     And there is a subfamily "Formicinae"
     And I log in as a catalog editor named "Mark Wilden"
 

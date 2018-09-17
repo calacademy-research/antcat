@@ -2,8 +2,8 @@ Feature: View bibliography
   Scenario: Viewing a nested reference (with italics)
     Given there is a book reference
     And the following entry nests it
-      | authors    | title                    | year | pages_in |
-      | Ward, P.S. | The ant *Azteca trigona* | 2010 | In:      |
+      | authors    | title                    | citation_year | pages_in |
+      | Ward, P.S. | The ant *Azteca trigona* | 2010          | In:      |
 
     When I go to the references page
     Then I should see "Ward, P.S. 2010. The ant Azteca trigona. In: "
@@ -21,8 +21,8 @@ Feature: View bibliography
 
   Scenario: Going to the author's page
     Given this reference exist
-      | authors    | year | title     |
-      | Bolton, B. | 2010 | Cool Ants |
+      | authors    | title     |
+      | Bolton, B. | Cool Ants |
 
     When I go to the page of the most recent reference
     And I follow "Bolton, B."
