@@ -473,7 +473,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     false
 
   setup_autocomplete: ($textbox) =>
-    return if AntCat.testing
     url = '/name_pickers/search'
     url += '?species_only=1' if @options.species_only
     url += '?genera_only=1' if @options.genera_only
