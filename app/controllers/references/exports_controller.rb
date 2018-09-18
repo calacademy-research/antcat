@@ -8,7 +8,6 @@ module References
 
       references =
         if id
-          # `where` and not `find` because we need to return an array.
           Reference.where(id: id)
         elsif searching
           options = params.merge(endnote_export: true)

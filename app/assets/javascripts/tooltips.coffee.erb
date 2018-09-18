@@ -1,6 +1,3 @@
-# This is only included on pages where tooltips
-# can appear (via `TooltipHelper#enable_tooltips`).
-
 $ ->
   $.ajax '/tooltips/enabled_selectors', success: (data) -> # uses request origin to restrict returned items
     tooltipsToInsert = data
@@ -57,12 +54,9 @@ class AntCat.SelectorTooltips
        title="#{title}" src='<%= image_path 'help.png' %>' alt="Help" /></a>"""
 
 class AntCat.Tooltipify
-  # `$('.tooltip').tooltip()` is built-into jQuery UI; it takes a selector
-  # (class="tooltip" by convention), and "tooltipifies" all elements matching that selector;
-  # whatever is in the `title` attribute on those elements is used as the tooltip text.
   tooltipifyAll: ->
     $('.tooltip').tooltip
-      show: false # show immediately
+      show: false
       content: -> $(this).prop('title') # Without this, HTML is displayed as text.
       position:
         my: "left top"
