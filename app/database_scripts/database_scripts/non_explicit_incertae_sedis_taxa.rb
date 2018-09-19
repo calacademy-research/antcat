@@ -62,7 +62,6 @@ description: >
   value for "Incertae sedis in".
 
 
-  Taxa that are "Exccuded from Formicidae" are not included here.
+  Taxa that are "Excluded from Formicidae" are not included here.
 
-tags: [new!]
 topic_areas: [catalog]
