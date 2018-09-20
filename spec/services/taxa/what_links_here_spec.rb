@@ -24,9 +24,7 @@ describe Taxa::WhatLinksHere do
 
     describe "references in taxt" do
       context "when there are references in taxts" do
-        let!(:taxon) { create :family }
-
-        before { taxon.update_attribute :type_taxt, "{tax #{atta.id}}" }
+        let!(:taxon) { create :family, type_taxt: "{tax #{atta.id}}" }
 
         specify do
           expect(described_class[atta]).to match_array [
@@ -38,8 +36,6 @@ describe Taxa::WhatLinksHere do
       end
 
       describe "when references in its own taxt" do
-        before { atta.update_attribute :type_taxt, "{tax #{atta.id}}" }
-
         it "doesn't consider this an external reference" do
           expect(described_class[atta]).to be_empty
         end
@@ -49,7 +45,7 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "when reference in its authorship taxt" do
-      before { atta.protonym.authorship.update_attribute :notes_taxt, "{tax #{atta.id}}" }
+      before { atta.protonym.authorship.update notes_taxt: "{tax #{atta.id}}" }
 
       it "doesn't consider this an external reference" do
         expect(described_class[atta]).to be_empty

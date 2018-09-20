@@ -32,23 +32,23 @@ describe ReferenceDecorator do
       end
 
       it "escapes the citation year" do
-        reference.update_attribute :citation_year, '<script>'
+        reference.update citation_year: '<script>'
         expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
-        reference.update_attribute :title, '<script>'
+        reference.update title: '<script>'
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
       end
 
       it "escapes the title but leave the italics alone" do
-        reference.update_attribute :title, '*foo*<script>'
+        reference.update title: '*foo*<script>'
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
 
       it "escapes the date" do
-        reference.update_attribute :date, '1933>'
+        reference.update date: '1933>'
         expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
       end

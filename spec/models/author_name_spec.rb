@@ -33,7 +33,7 @@ describe AuthorName do
     it "updates associated references when the name is changed" do
       author_name = create :author_name, name: 'Ward'
       reference = create :reference, author_names: [author_name]
-      author_name.update_attribute :name, 'Fisher'
+      author_name.update name: 'Fisher'
       expect(reference.reload.author_names_string).to eq 'Fisher'
     end
   end

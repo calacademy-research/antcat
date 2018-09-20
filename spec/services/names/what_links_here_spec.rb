@@ -5,8 +5,7 @@ describe Names::WhatLinksHere do
     it "returns references in fields" do
       atta = create :family
       protonym = create :protonym, name: atta.name
-      atta.update_attribute :protonym, protonym
-      atta.update_attribute :type_name, atta.name
+      atta.update protonym: protonym, type_name: atta.name
 
       subject = described_class.new(atta.name)
       expect(subject.call).to match_array [
@@ -19,7 +18,7 @@ describe Names::WhatLinksHere do
     it "returns references in taxts" do
       atta = create :family
       eciton = create :family
-      eciton.update_attribute :type_taxt, "{nam #{atta.name.id}}"
+      eciton.update type_taxt: "{nam #{atta.name.id}}"
 
       subject = described_class.new(atta.name)
       expect(subject.call).to match_array [

@@ -560,7 +560,7 @@ describe Exporters::Antweb::ExportTaxon do
       it "formats a taxon's history for AntWeb" do
         authorship_reference_id = genus.protonym.authorship.reference.id
 
-        genus.update_attribute :type_name, species.name
+        genus.update type_name: species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
 
         a_reference = create :article_reference, doi: "10.10.1038/nphys1170"
