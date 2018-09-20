@@ -4,52 +4,33 @@ describe Publisher do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :name }
 
-  describe "factory methods" do
-    describe ".create_with_place" do
-      context "when valid" do
-        context 'when publisher does not exists' do
-          it "creates and returns the publisher" do
-            publisher = described_class.create_with_place name: 'Wiley', place_name: 'Chicago'
-            expect(publisher.name).to eq 'Wiley'
-            expect(publisher.place_name).to eq 'Chicago'
-          end
-        end
-
-        context 'when publisher does not exists' do
-          it "reuses existing publisher" do
-            2.times { described_class.create_with_place name: 'Wiley', place_name: 'Chicago' }
-            expect(described_class.count).to eq 1
-          end
+  describe ".create_with_place_form_string" do
+    context "when invalid" do
+      context "when string is blank" do
+        specify do
+          expect { described_class.create_with_place_form_string('') }.to_not change { described_class.count }
         end
       end
 
-      context "when invalid" do
-        context "when name is supplied but no place" do
-          it "raises" do
-            expect { described_class.create_with_place(name: 'Wiley') }.
-              to raise_error ArgumentError
-          end
-        end
-
-        context "when place is blank" do
-          it "silently returns without raising" do
-            expect(described_class.create_with_place(name: "", place_name: "A Place")).to be nil
-            expect { described_class.create_with_place name: "", place_name: "A Place" }.
-              not_to raise_error ActiveRecord::RecordInvalid
-          end
+      context "when name or place is missing" do
+        specify do
+          expect { described_class.create_with_place_form_string('Wiley') }.to_not change { described_class.count }
         end
       end
     end
 
-    describe ".create_with_place_form_string" do
-      it "handles blank strings" do
-        expect(described_class).not_to receive :create_with_place
-        described_class.create_with_place_form_string ''
+    context "when valid" do
+      it "creates a publisher" do
+        publisher = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
+        expect(publisher.name).to eq 'Houghton Mifflin'
+        expect(publisher.place_name).to eq 'New York'
       end
 
-      it "parses" do
-        results = described_class.create_with_place_form_string 'New York: Houghton Mifflin'
-        expect(results.display_name).to eq 'New York: Houghton Mifflin'
+      context "when name/place combination already exists" do
+        it "reuses existing publisher" do
+          2.times { described_class.create_with_place_form_string("Wiley: Chicago") }
+          expect(described_class.count).to eq 1
+        end
       end
     end
   end
