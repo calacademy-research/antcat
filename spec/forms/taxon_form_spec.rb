@@ -47,8 +47,8 @@ end
 
 def genus_params
   params = taxon_params
-  params[:name_attributes][:id] = create(:genus_name, name: 'Atta').id
-  params[:protonym_attributes][:name_attributes][:id] = create(:genus_name, name: 'Betta').id
-  params[:type_name_attributes] = { id: create(:species_name, name: 'Betta major').id }
+  params[:name_attributes][:id] = create(:genus_name).id
+  params[:protonym_attributes][:name_attributes][:id] = create(:genus_name).id
+  params[:type_name_attributes] = { id: create(:species_name).id }
   params
 end

@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Tribe do
-  let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
+  let(:tribe) { create :tribe, subfamily: subfamily }
+  let(:subfamily) { create :subfamily }
 
   it "can have genera, which are its children" do
-    atta = create :genus, name: create(:name, name: 'Acromyrmex'), tribe: tribe
-    acromyrmex = create :genus, name: create(:name, name: 'Atta'), tribe: tribe
+    genus = create :genus, tribe: tribe
+    another_genus = create :genus, tribe: tribe
 
-    expect(tribe.genera).to eq [atta, acromyrmex]
+    expect(tribe.genera).to eq [genus, another_genus]
     expect(tribe.children).to eq tribe.genera
   end
 
