@@ -170,12 +170,12 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     Synonym.where(junior_synonym: senior, senior_synonym: junior).destroy_all
     Synonym.where(senior_synonym: senior, junior_synonym: junior).destroy_all
     create :synonym, junior_synonym: junior, senior_synonym: senior
-    senior.update! status: Status::VALID
-    junior.update! status: Status::SYNONYM
+    senior.update!(status: Status::VALID, current_valid_taxon: nil)
+    junior.update!(status: Status::SYNONYM, current_valid_taxon: senior)
   end
 
   def become_not_junior_synonym_of junior, senior
     Synonym.where(junior_synonym: junior, senior_synonym: senior).destroy_all
-    junior.update! status: Status::VALID if junior.senior_synonyms.empty?
+    junior.update!(status: Status::VALID, current_valid_taxon: nil) if junior.senior_synonyms.empty?
   end
 end

@@ -9,6 +9,7 @@ FactoryBot.define do
 
     trait :synonym do
       status Status::SYNONYM
+      with_current_valid_taxon
     end
 
     trait :homonym do
@@ -17,6 +18,7 @@ FactoryBot.define do
 
     trait :original_combination do
       status Status::ORIGINAL_COMBINATION
+      with_current_valid_taxon
     end
 
     trait :unidentifiable do
@@ -33,6 +35,10 @@ FactoryBot.define do
 
     trait :fossil do
       fossil true
+    end
+
+    trait :with_current_valid_taxon do
+      current_valid_taxon { Family.first || FactoryBot.create(:family) }
     end
 
     factory :family, class: Family do

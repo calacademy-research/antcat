@@ -80,5 +80,13 @@ module Taxa::CallbacksAndValidations
       if unavailable? && current_valid_taxon
         errors.add :current_valid_name, "can't be set for unavailable taxa"
       end
+
+      if requires_current_valid_taxon? && !current_valid_taxon
+        errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
+      end
+    end
+
+    def requires_current_valid_taxon?
+      synonym? || original_combination? || obsolete_combination?
     end
 end

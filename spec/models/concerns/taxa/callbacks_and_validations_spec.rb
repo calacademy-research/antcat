@@ -156,7 +156,7 @@ describe Taxa::CallbacksAndValidations do
 
   describe "#delete_synonyms" do
     let(:senior) { create :family }
-    let(:junior) { create :family, :synonym }
+    let(:junior) { create :family, :synonym, current_valid_taxon: senior }
 
     before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 
@@ -181,6 +181,7 @@ describe Taxa::CallbacksAndValidations do
         context "when status was changed from 'synonym'" do
           it "destroys all synonyms where it's the junior" do
             junior.status = Status::VALID
+            junior.current_valid_taxon = nil
 
             expect { junior.save! }.to change { Synonym.count }.by -1
             expect(senior.junior_synonyms.count).to eq 0
@@ -204,21 +205,56 @@ describe Taxa::CallbacksAndValidations do
   end
 
   describe "#current_valid_taxon_validation" do
-    context "when a valid taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, current_valid_taxon: create(:family) }
+    context "when taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
 
-      specify do
-        taxon.valid?
-        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+      context 'when status is "valid"' do
+        let(:status) { Status::VALID }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+        end
+      end
+
+      context 'when status is "unavailable"' do
+        let(:status) { Status::UNAVAILABLE }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+        end
       end
     end
 
-    context "when an  taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, :unavailable, current_valid_taxon: create(:family) }
+    context "when taxon has no `#current_valid_taxon`" do
+      let(:taxon) { build :family, status: status }
 
-      specify do
-        taxon.valid?
-        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+      context 'when status is "synonym"' do
+        let(:status) { Status::SYNONYM }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for synonyms"])
+        end
+      end
+
+      context 'when status is "original_combination"' do
+        let(:status) { Status::ORIGINAL_COMBINATION }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for original combinations"])
+        end
+      end
+
+      context 'when status is "obsolete_combination"' do
+        let(:status) { Status::OBSOLETE_COMBINATION }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for obsolete combinations"])
+        end
       end
     end
   end

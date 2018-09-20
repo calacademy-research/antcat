@@ -155,8 +155,8 @@ describe TaxonDecorator::TaxonStatus do
     context "when the senior synonym is itself invalid" do
       subject { described_class.new(junior) }
 
-      let(:invalid_senior) { create :family, :synonym }
-      let(:junior) { create :family, :synonym }
+      let(:invalid_senior) { create :family, :homonym }
+      let(:junior) { create :family, :homonym }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 
