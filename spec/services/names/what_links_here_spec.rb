@@ -3,33 +3,32 @@ require "spec_helper"
 describe Names::WhatLinksHere do
   describe "#call" do
     it "returns references in fields" do
-      atta = create :family
-      protonym = create :protonym, name: atta.name
-      atta.update protonym: protonym, type_name: atta.name
+      taxon = create :family
+      protonym = create :protonym, name: taxon.name
+      taxon.update protonym: protonym, type_name: taxon.name
 
-      subject = described_class.new(atta.name)
+      subject = described_class.new(taxon.name)
       expect(subject.call).to match_array [
-        { table: 'taxa', field: :name_id, id: atta.id },
-        { table: 'taxa', field: :type_name_id, id: atta.id },
+        { table: 'taxa', field: :name_id, id: taxon.id },
+        { table: 'taxa', field: :type_name_id, id: taxon.id },
         { table: 'protonyms', field: :name_id, id: protonym.id }
       ]
     end
 
     it "returns references in taxts" do
-      atta = create :family
-      eciton = create :family
-      eciton.update type_taxt: "{nam #{atta.name.id}}"
+      taxon = create :family
+      other_taxon = create :family, type_taxt: "{nam #{taxon.name.id}}"
 
-      subject = described_class.new(atta.name)
+      subject = described_class.new(taxon.name)
       expect(subject.call).to match_array [
-        { table: 'taxa', field: :name_id, id: atta.id },
-        { table: 'taxa', field: :type_taxt, id: eciton.id }
+        { table: 'taxa', field: :name_id, id: taxon.id },
+        { table: 'taxa', field: :type_taxt, id: other_taxon.id }
       ]
     end
   end
 
   describe "#references_in_taxt" do
-    let(:name) { Name.create! name: 'Atta' }
+    let(:name) { create :genus_name }
 
     before do
       # Create a record for each type of taxt.

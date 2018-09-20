@@ -19,9 +19,9 @@ describe TaxaController do
     end
 
     let(:authorship_reference) { create :article_reference }
-    let(:name) { create :genus_name, name: 'Atta' }
-    let(:protonym_name) { create :genus_name, name: 'Betta' }
-    let(:type_name) { create :species_name, name: 'Betta major' }
+    let(:name) { create :genus_name }
+    let(:protonym_name) { create :genus_name }
+    let(:type_name) { create :species_name }
 
     let(:base_params) do
       HashWithIndifferentAccess.new(

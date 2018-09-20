@@ -2,13 +2,13 @@ require "spec_helper"
 
 describe Taxa::AnyNonTaxtReferences do
   describe "#call" do
-    subject { described_class.new(atta) }
+    subject { described_class.new(taxon) }
 
-    let!(:atta) { create :family }
-    let!(:eciton) { create :family, type_taxt: "{tax #{atta.id}}" }
+    let!(:taxon) { create :family }
+    let!(:other_taxon) { create :family, type_taxt: "{tax #{taxon.id}}" }
 
     context "when taxon has non-taxt references" do
-      before { eciton.update homonym_replaced_by: atta }
+      before { other_taxon.update homonym_replaced_by: taxon }
 
       it { expect(subject.call).to be true }
     end
