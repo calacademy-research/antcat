@@ -65,59 +65,6 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     expect(junior.junior_synonyms.count).to eq 0
   end
 
-  describe "Reversing synonymy" do
-    it "makes one the synonym of the other and set statuses" do
-      atta = create :family
-      attaboi = create :family
-
-      become_junior_synonym_of atta, attaboi
-      atta.reload
-      attaboi.reload
-      expect(atta.senior_synonyms).to include attaboi
-
-      become_junior_synonym_of attaboi, atta
-      atta.reload
-      attaboi.reload
-      expect(attaboi.status).to eq Status::SYNONYM
-      expect(attaboi.senior_synonyms).to include atta
-      expect(atta.status).to eq Status::VALID
-      expect(atta.senior_synonyms).not_to include attaboi
-    end
-
-    it "doesn't create duplicate synonym in case of synonym cycle" do
-      atta = create :family, :synonym
-      attaboi = create :family, :synonym
-
-      create :synonym, junior_synonym: atta, senior_synonym: attaboi
-      create :synonym, junior_synonym: attaboi, senior_synonym: atta
-      expect(Synonym.count).to eq 2
-
-      become_junior_synonym_of atta, attaboi
-      expect(Synonym.count).to eq 1
-      expect(atta.senior_synonyms).to include attaboi
-      expect(attaboi.senior_synonyms).not_to include atta
-    end
-  end
-
-  describe "Removing synonymy" do
-    it "removes all synonymies for the taxon" do
-      atta = create :family
-      attaboi = create :family
-      become_junior_synonym_of attaboi, atta
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be true
-      expect(atta).not_to be_synonym
-      expect(attaboi).to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be true
-
-      become_not_junior_synonym_of attaboi, atta
-
-      expect(atta.junior_synonyms.all.include?(attaboi)).to be false
-      expect(atta).not_to be_synonym
-      expect(attaboi).not_to be_synonym
-      expect(attaboi.senior_synonyms.all.include?(atta)).to be false
-    end
-  end
-
   describe "Deleting synonyms when status changed" do
     it "deletes synonyms when the status changes from 'synonym'" do
       atta = create :family
@@ -172,10 +119,5 @@ describe Taxon do # rubocop:disable RSpec/FilePath
     create :synonym, junior_synonym: junior, senior_synonym: senior
     senior.update!(status: Status::VALID, current_valid_taxon: nil)
     junior.update!(status: Status::SYNONYM, current_valid_taxon: senior)
-  end
-
-  def become_not_junior_synonym_of junior, senior
-    Synonym.where(junior_synonym: junior, senior_synonym: senior).destroy_all
-    junior.update!(status: Status::VALID, current_valid_taxon: nil) if junior.senior_synonyms.empty?
   end
 end
