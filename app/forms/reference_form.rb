@@ -62,6 +62,7 @@ class ReferenceForm
     end
 
     def parse_author_names_string
+      return if params[:author_names_string] == @reference.author_names_string
       author_names_and_suffix = @reference.parse_author_names_and_suffix params.delete(:author_names_string)
       @reference.author_names.clear
       params[:author_names] = author_names_and_suffix[:author_names]
