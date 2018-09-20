@@ -86,7 +86,7 @@ class ReferenceForm
       @reference.publisher_string = publisher_string
 
       # Add error or set valid publisher in the params.
-      publisher = Publisher.create_with_place_form_string publisher_string
+      publisher = Publisher.create_form_string publisher_string
       if publisher.nil? && publisher_string.present?
         @reference.errors.add :publisher_string,
           "couldn't be parsed. In general, use the format 'Place: Publisher'."

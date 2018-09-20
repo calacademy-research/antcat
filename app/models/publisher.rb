@@ -7,7 +7,7 @@ class Publisher < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
-  def self.create_with_place_form_string string
+  def self.create_form_string string
     parts = Parsers::PublisherParser.parse string
     return unless parts
 
