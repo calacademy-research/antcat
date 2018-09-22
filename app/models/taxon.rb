@@ -133,11 +133,13 @@ class Taxon < ApplicationRecord
   end
 
   def author_citation
-    string = authorship_reference.keey_without_letters_in_year
-    if string && recombination?
-      string = '(' + string + ')'
+    citation = authorship_reference.keey_without_letters_in_year
+
+    if recombination?
+      '(' + citation + ')'
+    else
+      citation
     end
-    string
   end
 
   def authorship_reference

@@ -395,11 +395,11 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "Test stubbed" do
-    let(:ponerinae) { create_subfamily "Ponerinae" }
+    let(:taxon) { create :subfamily }
 
     it "'author date html' # [8]" do
-      reference = ponerinae.protonym.authorship.reference
-      author = reference.principal_author_last_name_cache
+      reference = taxon.authorship_reference
+      author = reference.authors_for_keey
       year = reference.citation_year
       title = reference.title
       journal_name = reference.journal.name
@@ -407,7 +407,7 @@ describe Exporters::Antweb::ExportTaxon do
       volume = reference.series_volume_issue
 
       expected = %(<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{volume}:#{pagination}.">#{author}, #{year}</span>)
-      expect(export_taxon(ponerinae)[8]).to eq expected
+      expect(export_taxon(taxon)[8]).to eq expected
     end
   end
 
@@ -511,7 +511,7 @@ describe Exporters::Antweb::ExportTaxon do
         a_tribe = create :tribe
         genus.reference_sections.create title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
           references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);"
-        ref_author = a_reference.principal_author_last_name_cache
+        ref_author = a_reference.authors_for_keey
         ref_year = a_reference.citation_year
         ref_title = a_reference.title
         ref_journal_name = a_reference.journal.name
