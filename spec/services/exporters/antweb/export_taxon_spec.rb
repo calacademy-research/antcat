@@ -24,7 +24,6 @@ describe Exporters::Antweb::ExportTaxon do
     let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
 
     before do
-      allow(exporter).to receive(:export_history).and_return 'history'
       allow_any_instance_of(described_class).to receive(:authorship_html_string).
         and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
     end
@@ -36,10 +35,10 @@ describe Exporters::Antweb::ExportTaxon do
       allow_alns_for ponerinae, 'Bolton'
       allow_year_for ponerinae, 2001
 
-      expect(export_taxon(ponerinae)[0..17]).to eq [
+      expect(export_taxon(ponerinae)[0..16]).to eq [
         ponerinae.id, 'Ponerinae', nil, nil, nil, nil, nil,
         'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
       ]
     end
 
@@ -51,10 +50,10 @@ describe Exporters::Antweb::ExportTaxon do
       allow_alns_for fossil, 'Fisher'
       allow_year_for fossil, 2001
 
-      expect(export_taxon(fossil)[0..17]).to eq [
+      expect(export_taxon(fossil)[0..16]).to eq [
         fossil.id, 'Ponerinae', nil, 'Atta', nil, nil, nil,
         'Fisher, 2013', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Fisher', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'TRUE', 'history'
+        'Fisher', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'TRUE'
       ]
     end
 
@@ -66,10 +65,10 @@ describe Exporters::Antweb::ExportTaxon do
       allow_alns_for acanthognathus, 'Bolton'
       allow_year_for acanthognathus, 2001
 
-      expect(export_taxon(acanthognathus)[0..17]).to eq [
+      expect(export_taxon(acanthognathus)[0..16]).to eq [
         acanthognathus.id, 'Ponerinae', 'Dacetini', 'Acanothognathus', nil, nil, nil,
         'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
       ]
     end
 
@@ -80,10 +79,10 @@ describe Exporters::Antweb::ExportTaxon do
       allow_alns_for acanthognathus, 'Bolton'
       allow_year_for acanthognathus, 2001
 
-      expect(export_taxon(acanthognathus)[0..17]).to eq [
+      expect(export_taxon(acanthognathus)[0..16]).to eq [
         acanthognathus.id, 'Ponerinae', nil, 'Acanothognathus', nil, nil, nil,
         'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+        'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
       ]
     end
 
@@ -94,10 +93,10 @@ describe Exporters::Antweb::ExportTaxon do
       allow_alns_for acanthognathus, 'Fisher'
       allow_year_for acanthognathus, 2001
 
-      expect(export_taxon(acanthognathus)[0..17]).to eq [
+      expect(export_taxon(acanthognathus)[0..16]).to eq [
         acanthognathus.id, 'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil,
         'Fisher, 2013', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Fisher', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+        'Fisher', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
       ]
     end
 
@@ -110,10 +109,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for species, 'Bolton'
         allow_year_for species, 2001
 
-        expect(export_taxon(species)[0..17]).to eq [
+        expect(export_taxon(species)[0..16]).to eq [
           species.id, 'Ponerinae', 'Attini', 'Atta', nil, 'robustus', nil,
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
 
@@ -125,10 +124,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for species, 'Bolton'
         allow_year_for species, 2001
 
-        expect(export_taxon(species)[0..17]).to eq [
+        expect(export_taxon(species)[0..16]).to eq [
           species.id, 'Ponerinae', nil, 'Atta', nil, 'robustus', nil,
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
 
@@ -140,10 +139,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for species, 'Bolton'
         allow_year_for species, 2001
 
-        expect(export_taxon(species)[0..17]).to eq [
+        expect(export_taxon(species)[0..16]).to eq [
           species.id, 'incertae_sedis', nil, 'Atta', nil, 'robustus', nil,
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
     end
@@ -158,10 +157,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 
-        expect(export_taxon(subspecies)[0..17]).to eq [
+        expect(export_taxon(subspecies)[0..16]).to eq [
           subspecies.id, 'Ponerinae', 'Attini', 'Atta', nil, 'robustus', 'emeryii',
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
 
@@ -174,10 +173,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 
-        expect(export_taxon(subspecies)[0..17]).to eq [
+        expect(export_taxon(subspecies)[0..16]).to eq [
           subspecies.id, 'Ponerinae', nil, 'Atta', nil, 'robustus', 'emeryii',
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
 
@@ -190,10 +189,10 @@ describe Exporters::Antweb::ExportTaxon do
         allow_alns_for subspecies, 'Bolton'
         allow_year_for subspecies, 2001
 
-        expect(export_taxon(subspecies)[0..17]).to eq [
+        expect(export_taxon(subspecies)[0..16]).to eq [
           subspecies.id, 'incertae_sedis', nil, 'Atta', nil, 'robustus', 'emeryii',
           'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE', 'history'
+          'Bolton', '2001', 'valid', 'TRUE', nil, 'FALSE', nil, 'FALSE'
         ]
       end
     end
@@ -519,8 +518,7 @@ describe Exporters::Antweb::ExportTaxon do
         ref_volume = a_reference.series_volume_issue
         ref_doi = a_reference.doi
 
-        results = exporter.send :export_history, genus
-        expect(results).to eq(
+        expect(export_taxon(genus)[17]).to eq(
           %(<div class="antcat_taxon">) +
 
             # statistics
