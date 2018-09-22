@@ -133,8 +133,6 @@ class Taxon < ApplicationRecord
   end
 
   def author_citation
-    return unless authorship_reference
-
     string = authorship_reference.keey_without_letters_in_year
     if string && recombination?
       string = '(' + string + ')'
@@ -143,7 +141,7 @@ class Taxon < ApplicationRecord
   end
 
   def authorship_reference
-    protonym.try(:authorship).try(:reference)
+    protonym.authorship.reference
   end
 
   def what_links_here

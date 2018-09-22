@@ -200,16 +200,6 @@ describe Taxon do
         expect(species.author_citation).to eq 'Bolton, 2005'
       end
     end
-
-    context "when there isn't a protonym authorship" do
-      let(:species) { create_species }
-      let(:protonym_name) { create :subspecies_name }
-
-      it "handles it" do
-        expect(species.protonym).to receive(:authorship).and_return nil
-        expect(species.author_citation).to be_nil
-      end
-    end
   end
 
   describe "#protonym" do

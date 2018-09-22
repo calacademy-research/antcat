@@ -441,27 +441,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 
-  describe "#author_last_names_string" do
-    context "when there is a protonym" do
-      let(:genus) { build_stubbed :genus }
-
-      it "delegates" do
-        expect_any_instance_of(Reference).
-          to receive(:authors_for_keey).and_return 'Bolton'
-
-        expect(exporter.send(:author_last_names_string, genus)).to eq 'Bolton'
-      end
-    end
-
-    context "there is no protonym" do
-      let(:genus) { build_stubbed :genus, protonym: nil }
-
-      it "handles it" do
-        expect(exporter.send(:author_last_names_string, genus)).to be_nil
-      end
-    end
-  end
-
   describe "#original_combination" do
     context "when there was no recombining" do
       let!(:taxon) { build_stubbed :genus }
@@ -501,39 +480,6 @@ describe Exporters::Antweb::ExportTaxon do
       taxon.protonym.authorship.reference = reference
       expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
       expect(exporter.send(:authorship_html_string, taxon)).to eq expected
-    end
-
-    context "something is missing" do
-      context "when missing protonyms" do
-        let!(:taxon) { build_stubbed :genus, protonym: nil }
-
-        specify do
-          expect(taxon.protonym).to be nil
-          expect(exporter.send(:authorship_html_string, taxon)).to be nil
-        end
-      end
-
-      context "when missing protonym authorships" do
-        let!(:protonym) { build_stubbed :protonym, authorship: nil }
-        let!(:taxon) { build_stubbed :genus, protonym: protonym }
-
-        specify do
-          expect(taxon.protonym).not_to be nil
-          expect(exporter.send(:authorship_html_string, taxon)).to be nil
-        end
-      end
-
-      context "when missing authorship references" do
-        let!(:protonym) do
-          build_stubbed :protonym, authorship: build_stubbed(:citation, reference: nil)
-        end
-        let!(:taxon) { build_stubbed :genus, protonym: protonym }
-
-        specify do
-          expect(taxon.protonym.authorship).not_to be nil
-          expect(exporter.send(:authorship_html_string, taxon)).to be nil
-        end
-      end
     end
   end
 

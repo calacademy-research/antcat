@@ -119,15 +119,11 @@ class Exporters::Antweb::ExportTaxon
 
     # TODO rename.
     def author_last_names_string taxon
-      reference = taxon.authorship_reference
-      return unless reference
-
-      reference.authors_for_keey
+      taxon.authorship_reference.authors_for_keey
     end
 
     def authorship_html_string taxon
       reference = taxon.authorship_reference
-      return unless reference
 
       plain_text = reference.decorate.plain_text
       content_tag :span, reference.keey, title: plain_text
@@ -135,10 +131,7 @@ class Exporters::Antweb::ExportTaxon
 
     # TODO rename.
     def year taxon
-      reference = taxon.authorship_reference
-      return unless reference
-
-      reference.year_or_no_year
+      taxon.authorship_reference.year_or_no_year
     end
 
     def original_combination taxon
