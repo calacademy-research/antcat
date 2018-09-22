@@ -248,102 +248,95 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[17]: `taxonomic history html`" do
-      context "a genus" do
-        let!(:shared_name) { create :genus_name, name: 'Atta' }
-        let!(:protonym) do
-          author_name = create :author_name, name: 'Bolton, B.'
-          reference = ArticleReference.new author_names: [author_name],
-            title: 'Ants I have known',
-            citation_year: '2010a',
-            journal: create(:journal, name: 'Psyche'),
-            series_volume_issue: '1',
-            pagination: '2'
-          authorship = create :citation, reference: reference, pages: '12'
-          create :protonym, name: shared_name, authorship: authorship
-        end
+      let!(:atta_name) { create :genus_name, name: 'Atta' }
+      let!(:authorship_reference) do
+        author_name = create :author_name, name: 'Bolton, B.'
+        create :article_reference, author_names: [author_name],
+          title: 'Ants I have known',
+          citation_year: '2010a',
+          journal: create(:journal, name: 'Psyche'),
+          series_volume_issue: '1',
+          pagination: '2'
+      end
+      let!(:protonym) do
+        authorship = create :citation, reference: authorship_reference, pages: '12'
+        create :protonym, name: atta_name, authorship: authorship
+      end
+      let!(:genus) { create :genus, name: atta_name, protonym: protonym, hol_id: 9999 }
+      let!(:species) { create_species 'Atta major', genus: genus }
+      let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
 
-        let!(:genus) { create :genus, name: shared_name, protonym: protonym, hol_id: 9999 }
-        let!(:species) { create_species 'Atta major', genus: genus }
+      before do
+        genus.update type_name: species.name
+        genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
+        genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
+      end
 
-        it "formats a taxon's history for AntWeb" do
-          authorship_reference_id = genus.authorship_reference.id
+      it "formats a taxon's history for AntWeb" do
+        ref_author = a_reference.authors_for_keey
+        ref_year = a_reference.citation_year
+        ref_title = a_reference.title
+        ref_journal_name = a_reference.journal.name
+        ref_pagination = a_reference.pagination
+        ref_volume = a_reference.series_volume_issue
+        ref_doi = a_reference.doi
 
-          genus.update type_name: species.name
-          genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
+        expect(export_taxon(genus)[17]).to eq(
+          %(<div class="antcat_taxon">) +
 
-          a_reference = create :article_reference, doi: "10.10.1038/nphys1170"
-          a_tribe = create :tribe
-          genus.reference_sections.create title_taxt: "Subfamily and tribe {tax #{a_tribe.id}}",
-            references_taxt: "{ref #{a_reference.id}}: 766 (diagnosis);"
-          ref_author = a_reference.authors_for_keey
-          ref_year = a_reference.citation_year
-          ref_title = a_reference.title
-          ref_journal_name = a_reference.journal.name
-          ref_pagination = a_reference.pagination
-          ref_volume = a_reference.series_volume_issue
-          ref_doi = a_reference.doi
+            # statistics
+            %(<div class="statistics">) +
+              %(<p>1 species</p>) +
+            %(</div>) +
 
-          expect(export_taxon(genus)[17]).to eq(
-            %(<div class="antcat_taxon">) +
+            # headline
+            %(<div>) +
+              # protonym
+              %(<b><span><i>Atta</i></span></b> ) +
 
-              # statistics
-              %(<div class="statistics">) +
-                %(<p>1 species</p>) +
-              %(</div>) +
+              # authorship
+              %(<span>) +
+                %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
+                %(: 12) +
+              %(</span>) +
+              %(. ) +
 
-              # headline
+              # type
+              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>) +
+              %( ) +
+              # links
+              %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
+              %( ) +
+              %(<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
+              %( ) +
+              %(<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
+
+            %(</div>) +
+
+            # taxonomic history
+            %(<p><b>Taxonomic history</b></p>) +
+            %(<div><div>) +
+              %(<table><tr><td>) +
+                %(Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
+              %(</td></tr></table>) +
+            %(</div></div>) +
+
+            # references
+            %(<div>) +
               %(<div>) +
-                # protonym
-                %(<b><span><i>Atta</i></span></b> ) +
-
-                # authorship
-                %(<span>) +
-                  %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference_id}">Bolton, 2010a</a>) +
-                  %(: 12) +
-                %(</span>) +
-                %(. ) +
-
-                # type
-                %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>) +
-                %( ) +
-                # links
-                %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
-                %( ) +
-                %(<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
-                %( ) +
-                %(<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
-
-              %(</div>) +
-
-              # taxonomic history
-              %(<p><b>Taxonomic history</b></p>) +
-              %(<div><div>) +
-                %(<table><tr><td>) +
-                  %(Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
-                %(</td></tr></table>) +
-              %(</div></div>) +
-
-              # references
-              %(<div>) +
+                %(<div>Title</div>) +
                 %(<div>) +
-                  %(<div>Subfamily and tribe ) +
-                    %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{a_tribe.id}">) +
-                      %(#{a_tribe.name_cache}) +
-                    %(</a>) +
-                  %(</div>) +
-                  %(<div>) +
-                    %(<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">) +
-                      %(#{ref_author}, #{ref_year}) +
-                    %(</a> ) +
-                    %(<a href="http://dx.doi.org/#{ref_doi}">#{ref_doi}</a>) +
-                    %{: 766 (diagnosis);} +
-                  %(</div>) +
+                  %(<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">) +
+                    %(#{ref_author}, #{ref_year}) +
+                  %(</a> ) +
+                  %(<a href="http://dx.doi.org/#{ref_doi}">#{ref_doi}</a>) +
+                  %(: 766;) +
                 %(</div>) +
               %(</div>) +
+            %(</div>) +
 
-            %(</div>)
-          )
-        end
+          %(</div>)
+        )
       end
     end
 
