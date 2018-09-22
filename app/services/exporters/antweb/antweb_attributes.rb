@@ -60,11 +60,9 @@ class Exporters::Antweb::AntwebAttributes
     end
 
     def species_attributes
-      return {} unless genus
-
       attributes = {
-        subfamily: genus&.subfamily&.name&.name || 'incertae_sedis',
-        tribe: genus&.tribe&.name&.name,
+        subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
+        tribe: genus.tribe&.name&.name,
         genus: genus.name.name
       }
 
@@ -83,8 +81,8 @@ class Exporters::Antweb::AntwebAttributes
 
     def subspecies_attributes
       attributes = {
-        subfamily: genus&.subfamily&.name&.name || 'incertae_sedis',
-        tribe: genus&.tribe&.name&.name
+        subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
+        tribe: genus.tribe&.name&.name
       }
 
       # TODO: hmm.
