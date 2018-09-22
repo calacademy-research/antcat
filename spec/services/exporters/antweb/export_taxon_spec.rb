@@ -1,8 +1,5 @@
-# TODO too much untested stubs. Some specs here have no idea if they are broken.
-
 require 'spec_helper'
 
-# rubocop:disable RSpec/SubjectStub
 describe Exporters::Antweb::ExportTaxon do
   subject(:exporter) { described_class.new }
 
@@ -11,23 +8,9 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#call" do
-    # "allow_author_last_names_string_for_and_return"
-    def allow_alns_for taxon, value
-      allow(exporter).to receive(:author_last_names_string).with(taxon).and_return value
-    end
-
-    def allow_year_for taxon, value
-      allow(exporter).to receive(:year).with(taxon).and_return value
-    end
-
     let(:ponerinae) { create_subfamily 'Ponerinae' }
     let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
     let(:taxon) { create :family }
-
-    before do
-      allow_any_instance_of(described_class).to receive(:authorship_html_string).
-        and_return '<span title="Bolton. Ants>Bolton, 1970</span>'
-    end
 
     describe "[0]: `antcat_id`" do
       specify { expect(export_taxon(taxon)[0]).to eq taxon.id }
@@ -63,15 +46,8 @@ describe Exporters::Antweb::ExportTaxon do
 
     it "can export a subfamily" do
       create_genus subfamily: ponerinae, tribe: nil
-
-      allow(ponerinae).to receive(:author_citation).and_return 'Bolton, 2011'
-      allow_alns_for ponerinae, 'Bolton'
-      allow_year_for ponerinae, 2001
-
-      expect(export_taxon(ponerinae)[1..10]).to eq [
-        'Ponerinae', nil, nil, nil, nil, nil,
-        'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001'
+      expect(export_taxon(ponerinae)[1..6]).to eq [
+        'Ponerinae', nil, nil, nil, nil, nil
       ]
     end
 
@@ -79,42 +55,22 @@ describe Exporters::Antweb::ExportTaxon do
       dacetini = create_tribe 'Dacetini', subfamily: ponerinae
       acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: dacetini
 
-      allow(acanthognathus).to receive(:author_citation).and_return 'Bolton, 2011'
-      allow_alns_for acanthognathus, 'Bolton'
-      allow_year_for acanthognathus, 2001
-
-      expect(export_taxon(acanthognathus)[1..10]).to eq [
-        'Ponerinae', 'Dacetini', 'Acanothognathus', nil, nil, nil,
-        'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001'
+      expect(export_taxon(acanthognathus)[1..6]).to eq [
+        'Ponerinae', 'Dacetini', 'Acanothognathus', nil, nil, nil
       ]
     end
 
     it "can export a genus without a tribe" do
       acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: nil
-
-      allow(acanthognathus).to receive(:author_citation).and_return 'Bolton, 2011'
-      allow_alns_for acanthognathus, 'Bolton'
-      allow_year_for acanthognathus, 2001
-
-      expect(export_taxon(acanthognathus)[1..10]).to eq [
-        'Ponerinae', nil, 'Acanothognathus', nil, nil, nil,
-        'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Bolton', '2001'
+      expect(export_taxon(acanthognathus)[1..6]).to eq [
+        'Ponerinae', nil, 'Acanothognathus', nil, nil, nil
       ]
     end
 
     it "can export a genus without a subfamily as being in 'incertae_sedis'" do
       acanthognathus = create_genus 'Acanothognathus', tribe: nil, subfamily: nil
-
-      allow(acanthognathus).to receive(:author_citation).and_return 'Fisher, 2013'
-      allow_alns_for acanthognathus, 'Fisher'
-      allow_year_for acanthognathus, 2001
-
-      expect(export_taxon(acanthognathus)[1..10]).to eq [
-        'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil,
-        'Fisher, 2013', '<span title="Bolton. Ants>Bolton, 1970</span>',
-        'Fisher', '2001'
+      expect(export_taxon(acanthognathus)[1..6]).to eq [
+        'incertae_sedis', nil, 'Acanothognathus', nil, nil, nil
       ]
     end
 
@@ -123,14 +79,8 @@ describe Exporters::Antweb::ExportTaxon do
         atta = create_genus 'Atta', tribe: attini
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for species, 'Bolton'
-        allow_year_for species, 2001
-
-        expect(export_taxon(species)[1..10]).to eq [
-          'Ponerinae', 'Attini', 'Atta', nil, 'robustus', nil,
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(species)[1..6]).to eq [
+          'Ponerinae', 'Attini', 'Atta', nil, 'robustus', nil
         ]
       end
 
@@ -138,14 +88,8 @@ describe Exporters::Antweb::ExportTaxon do
         atta = create_genus 'Atta', subfamily: ponerinae, tribe: nil
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for species, 'Bolton'
-        allow_year_for species, 2001
-
-        expect(export_taxon(species)[1..10]).to eq [
-          'Ponerinae', nil, 'Atta', nil, 'robustus', nil,
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(species)[1..6]).to eq [
+          'Ponerinae', nil, 'Atta', nil, 'robustus', nil
         ]
       end
 
@@ -153,14 +97,8 @@ describe Exporters::Antweb::ExportTaxon do
         atta = create_genus 'Atta', subfamily: nil, tribe: nil
         species = create_species 'Atta robustus', genus: atta
 
-        allow(species).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for species, 'Bolton'
-        allow_year_for species, 2001
-
-        expect(export_taxon(species)[1..10]).to eq [
-          'incertae_sedis', nil, 'Atta', nil, 'robustus', nil,
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(species)[1..6]).to eq [
+          'incertae_sedis', nil, 'Atta', nil, 'robustus', nil
         ]
       end
     end
@@ -171,14 +109,8 @@ describe Exporters::Antweb::ExportTaxon do
         species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: ponerinae, genus: atta, species: species
 
-        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for subspecies, 'Bolton'
-        allow_year_for subspecies, 2001
-
-        expect(export_taxon(subspecies)[1..10]).to eq [
-          'Ponerinae', 'Attini', 'Atta', nil, 'robustus', 'emeryii',
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(subspecies)[1..6]).to eq [
+          'Ponerinae', 'Attini', 'Atta', nil, 'robustus', 'emeryii'
         ]
       end
 
@@ -187,14 +119,8 @@ describe Exporters::Antweb::ExportTaxon do
         species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
 
-        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for subspecies, 'Bolton'
-        allow_year_for subspecies, 2001
-
-        expect(export_taxon(subspecies)[1..10]).to eq [
-          'Ponerinae', nil, 'Atta', nil, 'robustus', 'emeryii',
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(subspecies)[1..6]).to eq [
+          'Ponerinae', nil, 'Atta', nil, 'robustus', 'emeryii'
         ]
       end
 
@@ -203,14 +129,8 @@ describe Exporters::Antweb::ExportTaxon do
         species = create_species 'Atta robustus', subfamily: nil, genus: atta
         subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
 
-        allow(subspecies).to receive(:author_citation).and_return 'Bolton, 2011'
-        allow_alns_for subspecies, 'Bolton'
-        allow_year_for subspecies, 2001
-
-        expect(export_taxon(subspecies)[1..10]).to eq [
-          'incertae_sedis', nil, 'Atta', nil, 'robustus', 'emeryii',
-          'Bolton, 2011', '<span title="Bolton. Ants>Bolton, 1970</span>',
-          'Bolton', '2001'
+        expect(export_taxon(subspecies)[1..6]).to eq [
+          'incertae_sedis', nil, 'Atta', nil, 'robustus', 'emeryii'
         ]
       end
     end
@@ -600,4 +520,3 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 end
-# rubocop:enable RSpec/SubjectStub
