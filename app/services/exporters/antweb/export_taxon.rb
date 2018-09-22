@@ -1,6 +1,5 @@
 # TODO do not include in the top namespace.
 # rubocop:disable Style/MixinUsage
-include Exporters::Antweb::MonkeyPatchTaxon
 include ActionView::Helpers::TagHelper # For `#content_tag`.
 include ActionView::Context # For `#content_tag`.
 # rubocop:enable Style/MixinUsage
@@ -70,7 +69,7 @@ class Exporters::Antweb::ExportTaxon
           taxon.current_valid_taxon_including_synonyms.name.name
         end
 
-      convert_to_antweb_array taxon.add_antweb_attributes(attributes)
+      convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
     end
 
     def boolean_to_antweb boolean
