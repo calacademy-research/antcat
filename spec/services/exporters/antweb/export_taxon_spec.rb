@@ -17,20 +17,10 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[8]: `author date html`" do
-      before do
-        reference = create :article_reference,
-          author_names: [create(:author_name, name: "Forel, A.")],
-          citation_year: "1874",
-          title: "Les fourmis de la Suisse",
-          journal: create(:journal, name: "Neue Denkschriften"),
-          series_volume_issue: "26",
-          pagination: "1-452"
-        taxon.protonym.authorship.update! reference: reference
-      end
-
       specify do
+        reference = taxon.authorship_reference
         expect(export_taxon(taxon)[8]).
-          to eq '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
+          to eq %(<span title="#{reference.decorate.plain_text}">#{reference.keey}</span>)
       end
     end
 
@@ -332,23 +322,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 
-  describe "Test stubbed" do
-    let(:taxon) { create :subfamily }
-
-    it "'author date html' # [8]" do
-      reference = taxon.authorship_reference
-      author = reference.authors_for_keey
-      year = reference.citation_year
-      title = reference.title
-      journal_name = reference.journal.name
-      pagination = reference.pagination
-      volume = reference.series_volume_issue
-
-      expected = %(<span title="#{author}, B.L. #{year}. #{title}. #{journal_name} #{volume}:#{pagination}.">#{author}, #{year}</span>)
-      expect(export_taxon(taxon)[8]).to eq expected
-    end
-  end
-
   describe "HEADER" do
     it "is the same as the code" do
       expected = "antcat id\t" +
@@ -401,23 +374,6 @@ describe Exporters::Antweb::ExportTaxon do
       it "is the protonym" do
         expect(exporter.send(:original_combination, recombination)).to eq original_combination
       end
-    end
-  end
-
-  describe "#authorship_html_string" do
-    let(:taxon) { create :genus }
-    let(:reference) do
-      journal = create :journal, name: 'Ants'
-      author_name = create :author_name, name: "Forel, A."
-      create :article_reference,
-        author_names: [author_name], citation_year: '1874', title: 'Format',
-        journal: journal, series_volume_issue: '1:1', pagination: '2'
-    end
-
-    it "formats references into HTML" do
-      taxon.protonym.authorship.reference = reference
-      expected = '<span title="Forel, A. 1874. Format. Ants 1:1:2.">Forel, 1874</span>'
-      expect(exporter.send(:authorship_html_string, taxon)).to eq expected
     end
   end
 
