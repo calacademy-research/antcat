@@ -50,6 +50,68 @@ describe Exporters::Antweb::ExportTaxon do
       end
     end
 
+    describe "[13]: `current valid name`" do
+      let(:taxon) { create :genus }
+
+      context 'when taxon is valid' do
+        it "returns nil" do
+          expect(export_taxon(taxon)[13]).to be_nil
+        end
+      end
+
+      context "when taxon has a `current_valid_taxon`" do
+        let!(:old) { create :genus }
+
+        before { taxon.update! current_valid_taxon: old, status: Status::SYNONYM }
+
+        it "exports the current valid name of the taxon" do
+          expect(export_taxon(taxon)[13]).to end_with old.name.name
+        end
+      end
+
+      context "when there isn't a current_valid_taxon" do
+        let!(:junior_synonym) { create :species, :synonym, genus: taxon }
+
+        before do
+          senior_synonym = create_species 'Eciton major', genus: taxon
+          create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+        end
+
+        it "looks at synonyms" do
+          expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
+        end
+      end
+    end
+
+    # So that AntWeb knows when to use parentheses around authorship.
+    # NOTE: This and `was original combination` have been mixed up, but it's been like that forever.
+    describe "[14]: `original combination`" do
+      specify do
+        taxon = create :genus, :original_combination
+        expect(export_taxon(taxon)[14]).to eq 'TRUE'
+      end
+
+      specify do
+        taxon = create :genus
+        expect(export_taxon(taxon)[14]).to eq 'FALSE'
+      end
+    end
+
+    # NOTE: See above.
+    describe "[15]: `was original combination`" do
+      let(:recombination) { create :species }
+      let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
+
+      before do
+        recombination.protonym.name = original_combination.name
+        recombination.save!
+      end
+
+      it "is the protonym, otherwise" do
+        expect(export_taxon(recombination)[15]).to eq original_combination.name.name
+      end
+    end
+
     describe "[16]: `fossil`" do
       context "when taxon is not fossil" do
         specify { expect(export_taxon(taxon)[16]).to eq 'FALSE' }
@@ -253,39 +315,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 
-  describe "Current valid name" do
-    let(:taxon) { create :genus }
-
-    context 'when taxon is valid' do
-      it "returns nil" do
-        expect(export_taxon(taxon)[13]).to be_nil
-      end
-    end
-
-    context "when taxon has a `current_valid_taxon`" do
-      let!(:old) { create :genus }
-
-      before { taxon.update! current_valid_taxon: old, status: Status::SYNONYM }
-
-      it "exports the current valid name of the taxon" do
-        expect(export_taxon(taxon)[13]).to end_with old.name.name
-      end
-    end
-
-    context "when there isn't a current_valid_taxon" do
-      let!(:junior_synonym) { create :species, :synonym, genus: taxon }
-
-      before do
-        senior_synonym = create_species 'Eciton major', genus: taxon
-        create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
-      end
-
-      it "looks at synonyms" do
-        expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
-      end
-    end
-  end
-
   describe "Sending all taxa - not just valid" do
     it "can export a junior synonym" do
       taxon = create :genus, :original_combination
@@ -300,32 +329,6 @@ describe Exporters::Antweb::ExportTaxon do
     it "can export a Subgenus" do
       taxon = create_subgenus 'Atta (Boyo)'
       expect(export_taxon(taxon)[4]).to eq 'Boyo'
-    end
-  end
-
-  describe "Sending 'was original combination' so that AntWeb knows when to use parentheses around authorship" do
-    it "sends TRUE or FALSE (when TRUE)" do
-      taxon = create :genus, :original_combination
-      expect(export_taxon(taxon)[14]).to eq 'TRUE'
-    end
-
-    it "sends TRUE or FALSE (when FALSE)" do
-      taxon = create :genus
-      expect(export_taxon(taxon)[14]).to eq 'FALSE'
-    end
-  end
-
-  describe "Original combination" do
-    let(:recombination) { create :species }
-    let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
-
-    before do
-      recombination.protonym.name = original_combination.name
-      recombination.save!
-    end
-
-    it "is the protonym, otherwise" do
-      expect(export_taxon(recombination)[15]).to eq original_combination.name.name
     end
   end
 
