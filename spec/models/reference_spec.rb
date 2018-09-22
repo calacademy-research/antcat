@@ -129,29 +129,18 @@ describe Reference do
     end
   end
 
-  describe "#principal_author_last_name_cache" do
+  describe "#principal_author_last_name" do
     context "when there are no authors" do
       let!(:reference) { create :reference, author_names: [] }
 
-      it "is nil" do
-        expect(reference.principal_author_last_name_cache).to be_nil
-      end
+      specify { expect(reference.principal_author_last_name).to eq nil }
     end
 
     context 'when there are authors' do
       let!(:reference) { create :reference, author_names: [ward_ps, fisher_bl] }
 
       it "is the last name of the principal author" do
-        expect(reference.principal_author_last_name_cache).to eq 'Ward'
-      end
-    end
-
-    context "when an author_name's name is changed" do
-      let!(:reference) { create :reference, author_names: [ward_ps] }
-
-      it "updates its `principal_author_last_name_cache`" do
-        expect { ward_ps.update name: 'Bolton, B.' }.
-          to change { reference.reload.principal_author_last_name_cache }.from('Ward').to('Bolton')
+        expect(reference.principal_author_last_name).to eq 'Ward'
       end
     end
   end
@@ -197,7 +186,7 @@ describe Reference do
 
     describe 'implementing MatchReferences' do
       it 'maps all fields correctly' do
-        expect(original.principal_author_last_name_cache).to eq 'Fisher'
+        expect(original.principal_author_last_name).to eq 'Fisher'
         expect(original.year).to eq 1981
         expect(original.title).to eq 'Dolichoderinae'
         expect(original.type).to eq 'ArticleReference'
@@ -300,7 +289,7 @@ describe Reference do
     end
 
     it "handles multiple authors" do
-      reference = create :article_reference, citation_year: '2001', year: '2001',
+      reference = create :article_reference, citation_year: '2001',
         author_names: [create(:author_name, name: 'Bolton, B.'),
                         create(:author_name, name: 'Fisher, R.')]
       expect(reference.keey_without_letters_in_year).to eq 'Bolton & Fisher, 2001'

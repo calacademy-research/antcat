@@ -5,11 +5,6 @@ describe References::ReferenceSimilarity do
     let(:lhs) { ArticleReference.new title: 'Ants', year: '1975' }
     let(:rhs) { NestedReference.new title: 'Ants', year: '1975' }
 
-    before do
-      lhs.principal_author_last_name_cache = 'Fisher, B. L.'
-      rhs.principal_author_last_name_cache = 'Fisher, B. L.'
-    end
-
     it "never considers references of different types similar in the least" do
       expect(described_class[lhs, rhs]).to eq 0.00
     end
@@ -21,25 +16,25 @@ describe References::ReferenceSimilarity do
       let(:rhs) { Reference.new year: 2010 }
 
       it "doesn't match if the author name is different" do
-        lhs.principal_author_last_name_cache = 'Fisher'
-        rhs.principal_author_last_name_cache = 'Bolton'
+        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
+        expect(rhs).to receive(:principal_author_last_name).and_return 'Bolton'
         expect(described_class[lhs, rhs]).to eq 0.00
       end
 
       it "doesn't match if the author name is a prefix" do
-        lhs.principal_author_last_name_cache = 'Fisher'
-        rhs.principal_author_last_name_cache = 'Fish'
+        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
+        expect(rhs).to receive(:principal_author_last_name).and_return 'Fish'
         expect(described_class[lhs, rhs]).to eq 0.00
       end
     end
 
-    context 'when the author names match' do
+    context 'when author names match' do
       let(:lhs) { Reference.new title: 'A' }
       let(:rhs) { Reference.new title: 'B' }
 
       before do
-        lhs.principal_author_last_name_cache = 'Fisher, B. L.'
-        rhs.principal_author_last_name_cache = 'Fisher, B. L.'
+        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
+        expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
       end
 
       it "doesn't match if the author name is the same but the year is different" do
@@ -53,20 +48,25 @@ describe References::ReferenceSimilarity do
         rhs.year = '1980'
         expect(described_class[lhs, rhs]).to eq 0.10
       end
+    end
+
+    context 'when author names almost match' do
+      let(:lhs) { Reference.new title: 'A' }
+      let(:rhs) { Reference.new title: 'B' }
 
       it "matches if the author names differ by accentation" do
-        lhs.principal_author_last_name_cache = 'Csösz'
+        expect(lhs).to receive(:principal_author_last_name).and_return 'Csösz'
+        expect(rhs).to receive(:principal_author_last_name).and_return 'Csősz'
         lhs.year = '1979'
-        rhs.principal_author_last_name_cache = 'Csősz'
         rhs.year = '1980'
 
         expect(described_class[lhs, rhs]).to eq 0.10
       end
 
       it "matches if the author names differ by case" do
-        lhs.principal_author_last_name_cache = 'MacKay'
+        expect(lhs).to receive(:principal_author_last_name).and_return 'MacKay'
+        expect(rhs).to receive(:principal_author_last_name).and_return 'Mackay'
         lhs.year = '1979'
-        rhs.principal_author_last_name_cache = 'Mackay'
         rhs.year = '1980'
 
         expect(described_class[lhs, rhs]).to eq 0.10
@@ -79,8 +79,8 @@ describe References::ReferenceSimilarity do
     let(:rhs) { Reference.new }
 
     before do
-      lhs.principal_author_last_name_cache = 'Fisher, B. L.'
-      rhs.principal_author_last_name_cache = 'Fisher, B. L.'
+      expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
+      expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
     end
 
     it "matches with much less confidence if the author and title are the same but the year is not within 1" do
@@ -173,8 +173,8 @@ describe References::ReferenceSimilarity do
     let(:rhs) { BookReference.new title: 'Formica', pagination: '1-76' }
 
     before do
-      lhs.principal_author_last_name_cache = 'Fisher'
-      rhs.principal_author_last_name_cache = 'Fisher'
+      expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
+      expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
     end
 
     it 'matches with much less confidence when the year does not match' do
@@ -195,8 +195,8 @@ describe References::ReferenceSimilarity do
     let(:rhs) { ArticleReference.new title: 'Formica' }
 
     before do
-      lhs.principal_author_last_name_cache = 'Fisher'
-      rhs.principal_author_last_name_cache = 'Fisher'
+      expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
+      expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
     end
 
     context 'when the pagination matches' do
@@ -271,17 +271,15 @@ describe References::ReferenceSimilarity do
 
   describe 'matching everything except the pagination' do
     let(:lhs) do
-      ArticleReference.new title: 'Myrmicinae',
-        pagination: '29-30', series_volume_issue: '1', year: '2002'
+      ArticleReference.new title: 'Ant', pagination: '8-9', series_volume_issue: '1', year: '2002'
     end
     let(:rhs) do
-      ArticleReference.new title: 'Myrmicinae',
-        pagination: '15-19', series_volume_issue: '1', year: '2002'
+      ArticleReference.new title: 'Ant', pagination: '1-7', series_volume_issue: '1', year: '2002'
     end
 
     before do
-      lhs.principal_author_last_name_cache = 'Fisher'
-      rhs.principal_author_last_name_cache = 'Fisher'
+      expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
+      expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
     end
 
     it "gives it a 0.99" do

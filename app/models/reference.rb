@@ -160,6 +160,10 @@ class Reference < ApplicationRecord
     year.to_s
   end
 
+  def principal_author_last_name
+    author_names.first&.last_name
+  end
+
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]
   end
