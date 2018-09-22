@@ -36,10 +36,7 @@ class Exporters::Antweb::ExportTaxon
 
     def export_taxon taxon
       authorship_reference = taxon.authorship_reference
-
-      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
-      parent_name = parent_taxon.try(:name).try(:name)
-      parent_name ||= 'Formicidae'
+      parent = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
 
       attributes = {
         antcat_id:              taxon.id,
@@ -58,7 +55,7 @@ class Exporters::Antweb::ExportTaxon
         locality:               taxon.protonym.locality,
         rank:                   taxon.class.to_s,
         hol_id:                 taxon.hol_id,
-        parent:                 parent_name
+        parent:                 parent&.name&.name || 'Formicidae'
       }
 
       attributes[:current_valid_name] =
