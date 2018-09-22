@@ -39,8 +39,7 @@ class Exporters::Antweb::ExportTaxon
   private
 
     def export_taxon taxon
-      reference = taxon.authorship_reference
-      reference_id = reference.is_a?(MissingReference) ? nil : reference.id
+      authorship_reference = taxon.authorship_reference
 
       parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
       parent_name = parent_taxon.try(:name).try(:name)
@@ -56,9 +55,9 @@ class Exporters::Antweb::ExportTaxon
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
         original_combination:   original_combination(taxon).try(:name).try(:name),
-        authors:                author_last_names_string(taxon),
-        year:                   year(taxon) && year(taxon).to_s,
-        reference_id:           reference_id,
+        authors:                authorship_reference.authors_for_keey,
+        year:                   authorship_reference.year_or_no_year,
+        reference_id:           authorship_reference.is_a?(MissingReference) ? nil : authorship_reference.id,
         biogeographic_region:   taxon.biogeographic_region,
         locality:               taxon.protonym.locality,
         rank:                   taxon.class.to_s,
@@ -117,21 +116,11 @@ class Exporters::Antweb::ExportTaxon
       "#{subfamily} #{current_valid_name}"
     end
 
-    # TODO rename.
-    def author_last_names_string taxon
-      taxon.authorship_reference.authors_for_keey
-    end
-
     def authorship_html_string taxon
       reference = taxon.authorship_reference
 
       plain_text = reference.decorate.plain_text
       content_tag :span, reference.keey, title: plain_text
-    end
-
-    # TODO rename.
-    def year taxon
-      taxon.authorship_reference.year_or_no_year
     end
 
     def original_combination taxon
@@ -145,23 +134,11 @@ class Exporters::Antweb::ExportTaxon
         content = ''.html_safe
         content << taxon.statistics(include_invalid: false)
         content << genus_species_header_notes_taxt(taxon)
-        content << export_headline(taxon)
-        content << export_history_items(taxon)
+        content << Exporters::Antweb::ExportHeadline[taxon]
+        content << Exporters::Antweb::ExportHistoryItems[taxon]
         content << taxon.child_lists(for_antweb: true)
-        content << export_reference_sections(taxon)
+        content << Exporters::Antweb::ExportReferenceSections[taxon]
       end
-    end
-
-    def export_headline taxon
-      Exporters::Antweb::ExportHeadline[taxon]
-    end
-
-    def export_history_items taxon
-      Exporters::Antweb::ExportHistoryItems[taxon]
-    end
-
-    def export_reference_sections taxon
-      Exporters::Antweb::ExportReferenceSections[taxon]
     end
 
     def genus_species_header_notes_taxt taxon
