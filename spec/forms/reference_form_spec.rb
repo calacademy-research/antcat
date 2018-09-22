@@ -26,13 +26,7 @@ describe ReferenceForm do
       end
 
       describe "updating attributes" do
-        let!(:author_names) do
-          [
-            create(:author_name, name: "Fisher, B."),
-            create(:author_name, name: "Bolton, B."),
-            create(:author_name, name: "Batiatus, B.")
-          ]
-        end
+        let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
         let!(:reference) { create :unknown_reference, author_names: author_names }
 
         context "when author names have not changed" do
@@ -56,17 +50,43 @@ describe ReferenceForm do
         end
 
         context "when something has changed" do
-          let(:reference_params) do
-            {
-              bolton_key: "Smith, 1858b",
-              author_names_string: reference.author_names_string
-            }
+          context "when author names have not changed" do
+            let(:reference_params) do
+              {
+                bolton_key: "Smith, 1858b",
+                author_names_string: reference.author_names_string
+              }
+            end
+
+            it "creates a single version for the reference" do
+              with_versioning do
+                expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+                  to change { reference.versions.count }.by(1)
+              end
+            end
           end
 
-          it "creates a single version for the reference" do
-            with_versioning do
-              expect { described_class.new(reference, reference_params, original_params, request_host).save }.
-                to change { reference.versions.count }.by(1)
+          context "when an author names have been added" do
+            let(:reference_params) do
+              {
+                bolton_key: "Smith, 1858b",
+                author_names_string: "Batiatus, B.; Glaber, G."
+              }
+            end
+
+            # TODO we may want this.
+            xit "creates a single version for the reference" do
+              with_versioning do
+                expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+                  to change { reference.versions.count }.by(1)
+              end
+            end
+
+            it "updates `#author_names_string_cache`" do
+              with_versioning do
+                expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+                  to change { reference.author_names_string_cache }.to("Batiatus, B.; Glaber, G.")
+              end
             end
           end
         end
