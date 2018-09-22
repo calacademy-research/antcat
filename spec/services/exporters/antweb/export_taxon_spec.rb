@@ -89,16 +89,22 @@ describe Exporters::Antweb::ExportTaxon do
 
     # NOTE: See above.
     describe "[15]: `was original combination`" do
-      let(:recombination) { create :species }
-      let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
-
-      before do
-        recombination.protonym.name = original_combination.name
-        recombination.save!
+      context "when there was no recombining" do
+        specify { expect(export_taxon(taxon)[15]).to eq nil }
       end
 
-      it "is the protonym, otherwise" do
-        expect(export_taxon(recombination)[15]).to eq original_combination.name.name
+      context "when there has been some recombining" do
+        let(:recombination) { create :species }
+        let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
+
+        before do
+          recombination.protonym.name = original_combination.name
+          recombination.save!
+        end
+
+        it "is the protonym" do
+          expect(export_taxon(recombination)[15]).to eq original_combination.name.name
+        end
       end
     end
 
@@ -349,31 +355,6 @@ describe Exporters::Antweb::ExportTaxon do
         "hol id\t" +
         "current valid parent"
       expect(described_class::HEADER).to eq expected
-    end
-  end
-
-  describe "#original_combination" do
-    context "when there was no recombining" do
-      let!(:taxon) { build_stubbed :genus }
-
-      specify { expect(exporter.send(:original_combination, taxon)).to eq nil }
-    end
-
-    context "when there has been some recombining" do
-      let!(:original_combination) { create_species 'Atta major' }
-      let!(:recombination) { create_species 'Eciton major' }
-
-      before do
-        original_combination.status = Status::ORIGINAL_COMBINATION
-        original_combination.current_valid_taxon = recombination
-        recombination.protonym.name = original_combination.name
-        original_combination.save!
-        recombination.save!
-      end
-
-      it "is the protonym" do
-        expect(exporter.send(:original_combination, recombination)).to eq original_combination
-      end
     end
   end
 
