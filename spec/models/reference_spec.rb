@@ -8,19 +8,6 @@ describe Reference do
   it { is_expected.to validate_presence_of :title }
 
   describe "scopes" do
-    let(:bolton_b) { create :author_name, name: 'Bolton, B.' }
-
-    describe ".sorted_by_principal_author_last_name" do
-      let!(:bolton_reference) { create :article_reference, author_names: [bolton_b, ward_ps] }
-      let!(:ward_reference) { create :article_reference, author_names: [ward_ps, bolton_b] }
-      let!(:fisher_reference) { create :article_reference, author_names: [fisher_bl, bolton_b] }
-
-      it "orders by author_name" do
-        expect(described_class.sorted_by_principal_author_last_name).
-          to eq [bolton_reference, fisher_reference, ward_reference]
-      end
-    end
-
     describe ".unreviewed_references" do
       let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
 

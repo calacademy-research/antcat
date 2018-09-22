@@ -13,7 +13,7 @@ class JournalsController < ApplicationController
 
   def show
     @references = @journal.references.
-      sorted_by_principal_author_last_name.
+      order_by_author_names_and_year.
       includes_document.
       paginate(page: params[:page])
   end

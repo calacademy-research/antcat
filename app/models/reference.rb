@@ -34,7 +34,6 @@ class Reference < ApplicationRecord
   scope :latest_changes, -> { order(updated_at: :desc) }
   scope :no_missing, -> { where.not(type: "MissingReference") }
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
-  scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
