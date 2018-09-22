@@ -22,7 +22,7 @@ Feature: Reference selector
       And I set the protonym name to "Eciton"
       And I press "OK"
       And I set the authorship to the first search results of "Batiatus (2004)"
-    Then the authorship should contain the reference "Batiatus 2004"
+    Then the authorship should contain the reference "Batiatus, 2004"
     When I click the type name field
     And I set the type name to "Atta major"
       And I press "OK"

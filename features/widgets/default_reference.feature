@@ -8,8 +8,8 @@ Feature: Using the default reference
 
   Scenario: Default reference used for new taxon
     Given there is a genus "Atta"
-    And the default reference is "Ward 2010"
+    And the default reference is "Ward, 2010"
 
     When I go to the catalog page for "Atta"
     And I follow "Add species"
-    Then the authorship should contain the reference "Ward 2010"
+    Then the authorship should contain the reference "Ward, 2010"

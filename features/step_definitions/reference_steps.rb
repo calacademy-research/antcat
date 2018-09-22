@@ -112,10 +112,10 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
 end
 
 def find_reference_by_keey keey
-  parts = keey.split ' '
+  parts = keey.split ','
   last_name = parts[0]
   year = parts[1]
-  Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
+  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
 end
 
 Given("the default reference is {string}") do |keey|

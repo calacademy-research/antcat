@@ -29,7 +29,7 @@ Feature: Editing a taxon
 
     When I go to the edit page for "Eciton"
     And I set the authorship to the first search results of "Fisher (2004)"
-    Then the authorship should contain the reference "Fisher 2004"
+    Then the authorship should contain the reference "Fisher, 2004"
 
     When I fill in the authorship notes with "Authorship notes"
     And I fill in "taxon_type_taxt" with "Notes"
