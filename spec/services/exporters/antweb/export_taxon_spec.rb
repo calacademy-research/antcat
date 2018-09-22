@@ -363,7 +363,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     it "skips over subgenus and return the genus", :pending do
-      skip "the subgenus factory is broken"
+      skip "broke a long time ago"
 
       taxon = create :species, genus: genus, subgenus: subgenus
       expect(export_taxon(taxon)[23]).to eq 'Atta'
@@ -464,11 +464,9 @@ describe Exporters::Antweb::ExportTaxon do
 
   describe "#original_combination" do
     context "when there was no recombining" do
-      let!(:genus) { build_stubbed :genus }
+      let!(:taxon) { build_stubbed :genus }
 
-      it "is nil" do
-        expect(exporter.send(:original_combination, genus)).to be_nil
-      end
+      specify { expect(exporter.send(:original_combination, taxon)).to eq nil }
     end
 
     context "when there has been some recombining" do

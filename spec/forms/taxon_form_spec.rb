@@ -14,7 +14,7 @@ describe TaxonForm do
           expect do
             with_versioning { described_class.new(taxon, genus_params).save }
           end.to change { Change.count }.from(0).to(1)
-          expect(Change.first.taxon_id).to eq taxon.versions.reload.last.item_id
+          expect(Change.last.taxon).to eq taxon.versions.last.item
         end
       end
 
@@ -25,7 +25,7 @@ describe TaxonForm do
           expect do
             with_versioning { described_class.new(genus, genus_params).save }
           end.to change { Change.count }.from(0).to(1)
-          expect(Change.first.change_type).to eq 'update'
+          expect(Change.last.change_type).to eq 'update'
         end
       end
     end

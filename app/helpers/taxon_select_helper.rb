@@ -5,12 +5,12 @@ module TaxonSelectHelper
 
     select_tag taxon_attribute_name,
       options_for_select([taxon_id].compact, taxon_id),
-      class: 'select2-autocomplete', data: data_attributes(taxon, rank)
+      class: 'select2-autocomplete', data: taxon_data_attributes(taxon, rank)
   end
 
   private
 
-    def data_attributes taxon, rank
+    def taxon_data_attributes taxon, rank
       for_taxon = if taxon
                     {
                       name_html: taxon.name.name_html,
@@ -33,7 +33,7 @@ module TaxonSelectHelper
         select "#{taxon_attribute_name}_id".to_sym,
           options_for_select([taxon_id].compact, taxon_id),
           { include_blank: '(none)' },
-          class: 'select2-autocomplete', data: data_attributes(taxon, rank)
+          class: 'select2-autocomplete', data: taxon_data_attributes(taxon, rank)
       end
     end
 end

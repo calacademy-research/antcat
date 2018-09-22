@@ -3,7 +3,7 @@
 
 class TaxaController < ApplicationController
   before_action :ensure_can_edit_catalog
-  before_action :set_previous_combination, only: [:new, :create, :edit, :update]
+  before_action :set_previous_combination, only: [:new, :create]
   before_action :set_taxon, only: [:edit, :update]
 
   def new
@@ -13,7 +13,7 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = get_taxon_for_create
-    save_taxon
+    save_taxon_and_maybe_previous_combination
 
     @taxon.create_activity :create, edit_summary: params[:edit_summary]
 
@@ -35,7 +35,7 @@ class TaxaController < ApplicationController
   end
 
   def update
-    save_taxon
+    TaxonForm.new(@taxon, taxon_params).save
 
     @taxon.create_activity :update, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
@@ -82,7 +82,7 @@ class TaxaController < ApplicationController
       taxon
     end
 
-    def save_taxon
+    def save_taxon_and_maybe_previous_combination
       # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
       collision_resolution = params[:collision_resolution]
       if collision_resolution.blank? || collision_resolution == 'homonym'

@@ -134,9 +134,7 @@ describe Genus do
     context "when there's no subfamily" do
       let!(:genus) { create :genus, subfamily: nil, tribe: nil }
 
-      it "is nil" do
-        expect(genus.parent).to be_nil
-      end
+      specify { expect(genus.parent).to eq nil }
     end
 
     context "when there is one" do

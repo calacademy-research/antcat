@@ -24,7 +24,7 @@ class TaxonDecorator::HeadlineProtonym
       string = protonym_name protonym
       string << ' ' << authorship(protonym.authorship)
       string << locality(protonym.locality)
-      add_period_if_necessary(string || '')
+      add_period_if_necessary string
     end
 
     def protonym_name protonym
