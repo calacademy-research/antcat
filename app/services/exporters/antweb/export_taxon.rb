@@ -1,10 +1,7 @@
-# TODO do not include in the top namespace.
-# rubocop:disable Style/MixinUsage
-include ActionView::Helpers::TagHelper # For `#content_tag`.
-include ActionView::Context # For `#content_tag`.
-# rubocop:enable Style/MixinUsage
-
 class Exporters::Antweb::ExportTaxon
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Context # For `#content_tag`.
+
   HEADER =
     "antcat id\t"                + #  [0]
     "subfamily\t"                + #  [1]
