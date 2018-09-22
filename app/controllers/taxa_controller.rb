@@ -68,7 +68,6 @@ class TaxaController < ApplicationController
           taxon.unresolved_homonym = true
           taxon.status = Status::HOMONYM
         else
-          taxon.collision_merge_id = collision_resolution
           # TODO `original_combination` is never used.
           original_combination = Taxon.find(collision_resolution)
           original_combination.inherit_attributes_for_new_combination @previous_combination, parent

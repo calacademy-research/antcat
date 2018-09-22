@@ -16,7 +16,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  attr_accessor :parent_name, :duplicate_type, :collision_merge_id
+  attr_accessor :parent_name, :duplicate_type
 
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
