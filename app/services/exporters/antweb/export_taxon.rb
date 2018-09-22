@@ -39,7 +39,7 @@ class Exporters::Antweb::ExportTaxon
   private
 
     def export_taxon taxon
-      reference = taxon.protonym.authorship.reference
+      reference = taxon.authorship_reference
       reference_id = reference.is_a?(MissingReference) ? nil : reference.id
 
       parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)

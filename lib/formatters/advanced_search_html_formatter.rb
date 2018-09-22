@@ -12,7 +12,6 @@ module Formatters::AdvancedSearchHtmlFormatter
   end
 
   def format_protonym taxon
-    reference = taxon.protonym.authorship.reference
-    reference.decorate.expandable_reference
+    taxon.authorship_reference.decorate.expandable_reference
   end
 end

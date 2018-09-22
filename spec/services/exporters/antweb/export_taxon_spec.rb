@@ -300,7 +300,7 @@ describe Exporters::Antweb::ExportTaxon do
 
     it "sends the protonym's reference ID" do
       reference_id = export_taxon(taxon)[18]
-      expect(reference_id).to eq taxon.protonym.authorship.reference.id
+      expect(reference_id).to eq taxon.authorship_reference.id
     end
 
     it "sends nil if the protonym's reference is a MissingReference" do
@@ -502,7 +502,7 @@ describe Exporters::Antweb::ExportTaxon do
       let!(:species) { create_species 'Atta major', genus: genus }
 
       it "formats a taxon's history for AntWeb" do
-        authorship_reference_id = genus.protonym.authorship.reference.id
+        authorship_reference_id = genus.authorship_reference.id
 
         genus.update type_name: species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"

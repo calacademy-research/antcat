@@ -70,7 +70,7 @@ module DatabaseScripts
       end
 
       def author_year taxon
-        taxon.protonym.authorship.reference.try(:year)
+        taxon.authorship_reference&.year
       end
 
       def link_taxon taxon

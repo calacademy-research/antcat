@@ -18,7 +18,7 @@ module Formatters::AdvancedSearchTextFormatter
   end
 
   def format_protonym taxon
-    reference = taxon.protonym.authorship.reference
+    reference = taxon.authorship_reference
 
     string = ''.html_safe
     string << reference.decorate.plain_text
