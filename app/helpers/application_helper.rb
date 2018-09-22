@@ -1,6 +1,4 @@
 module ApplicationHelper
-  include LinkHelper
-
   def or_dash thing
     return dash if thing.blank? || thing.try(:zero?)
     thing
