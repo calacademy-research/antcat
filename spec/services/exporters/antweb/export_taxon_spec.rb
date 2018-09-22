@@ -16,6 +16,24 @@ describe Exporters::Antweb::ExportTaxon do
       specify { expect(export_taxon(taxon)[0]).to eq taxon.id }
     end
 
+    describe "[8]: `author date html`" do
+      before do
+        reference = create :article_reference,
+          author_names: [create(:author_name, name: "Forel, A.")],
+          citation_year: "1874",
+          title: "Les fourmis de la Suisse",
+          journal: create(:journal, name: "Neue Denkschriften"),
+          series_volume_issue: "26",
+          pagination: "1-452"
+        taxon.protonym.authorship.update! reference: reference
+      end
+
+      specify do
+        expect(export_taxon(taxon)[8]).
+          to eq '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
+      end
+    end
+
     describe "[11]: `status`" do
       specify { expect(export_taxon(taxon)[11]).to eq taxon.status }
     end
@@ -41,6 +59,105 @@ describe Exporters::Antweb::ExportTaxon do
         let(:taxon) { create :family, fossil: true }
 
         specify { expect(export_taxon(taxon)[16]).to eq 'TRUE' }
+      end
+    end
+
+    describe "[18]: `reference`" do
+      let!(:taxon) { create :genus }
+
+      it "sends the protonym's reference ID" do
+        reference_id = export_taxon(taxon)[18]
+        expect(reference_id).to eq taxon.authorship_reference.id
+      end
+
+      it "sends nil if the protonym's reference is a MissingReference" do
+        taxon.protonym.authorship.reference = create :missing_reference
+        taxon.save!
+        reference_id = export_taxon(taxon)[18]
+        expect(reference_id).to be_nil
+      end
+    end
+
+    describe "[19]: `bioregion`" do
+      it "sends the biogeographic region" do
+        taxon = create :genus, biogeographic_region: 'Neotropic'
+        expect(export_taxon(taxon)[19]).to eq 'Neotropic'
+      end
+    end
+
+    describe "[20]: `country`" do
+      it "sends the locality" do
+        taxon = create :genus, protonym: create(:protonym, locality: 'Canada')
+        expect(export_taxon(taxon)[20]).to eq 'Canada'
+      end
+    end
+
+    describe "[21]: `current valid rank`" do
+      it "sends the right value for each class" do
+        expect(export_taxon(create(:subfamily))[21]).to eq 'Subfamily'
+        expect(export_taxon(create(:genus))[21]).to eq 'Genus'
+        expect(export_taxon(create(:subgenus))[21]).to eq 'Subgenus'
+        expect(export_taxon(create(:species))[21]).to eq 'Species'
+        expect(export_taxon(create(:subspecies))[21]).to eq 'Subspecies'
+      end
+    end
+
+    describe "[23]: `current valid parent`" do
+      let(:subfamily) { create_subfamily 'Dolichoderinae' }
+      let(:tribe) { create_tribe 'Attini', subfamily: subfamily }
+      let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
+      let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
+      let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
+
+      it "doesn't punt on a subfamily's family" do
+        taxon = create :subfamily
+        expect(export_taxon(taxon)[23]).to eq 'Formicidae'
+      end
+
+      it "handles a taxon's subfamily" do
+        taxon = create :tribe, subfamily: subfamily
+        expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
+      end
+
+      it "doesn't skip over tribe and return the subfamily" do
+        taxon = create :genus, tribe: tribe
+        expect(export_taxon(taxon)[23]).to eq 'Attini'
+      end
+
+      it "returns the subfamily only if there's no tribe" do
+        taxon = create :genus, subfamily: subfamily, tribe: nil
+        expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
+      end
+
+      it "skips over subgenus and return the genus", :pending do
+        skip "broke a long time ago"
+
+        taxon = create :species, genus: genus, subgenus: subgenus
+        expect(export_taxon(taxon)[23]).to eq 'Atta'
+      end
+
+      it "handles a taxon's species" do
+        taxon = create :subspecies, species: species, genus: genus, subfamily: subfamily
+        expect(export_taxon(taxon)[23]).to eq 'Atta betta'
+      end
+
+      it "handles a synonym" do
+        senior = create_genus 'Eciton', subfamily: subfamily
+        junior = create :genus, :synonym, subfamily: subfamily, current_valid_taxon: senior
+        taxon = create :species, genus: junior
+        create :synonym, senior_synonym: senior, junior_synonym: junior
+
+        expect(export_taxon(taxon)[23]).to eq 'Eciton'
+      end
+
+      it "handles a genus without a subfamily" do
+        taxon = create :genus, tribe: nil, subfamily: nil
+        expect(export_taxon(taxon)[23]).to eq 'Formicidae'
+      end
+
+      it "handles a subspecies without a species" do
+        taxon = create :subspecies, genus: genus, species: nil, subfamily: nil
+        expect(export_taxon(taxon)[23]).to eq 'Atta'
       end
     end
 
@@ -198,26 +315,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
   end
 
-  describe "Sending 'author_date_html' that includes the full reference in the rollover" do
-    let(:taxon) { create :genus }
-
-    before do
-      reference = create :article_reference,
-        author_names: [create(:author_name, name: "Forel, A.")],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse",
-        journal: create(:journal, name: "Neue Denkschriften"),
-        series_volume_issue: "26",
-        pagination: "1-452"
-      taxon.protonym.authorship.update! reference: reference
-    end
-
-    specify do
-      expect(export_taxon(taxon)[8]).
-        to eq '<span title="Forel, A. 1874. Les fourmis de la Suisse. Neue Denkschriften 26:1-452.">Forel, 1874</span>'
-    end
-  end
-
   describe "Original combination" do
     let(:recombination) { create :species }
     let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
@@ -229,105 +326,6 @@ describe Exporters::Antweb::ExportTaxon do
 
     it "is the protonym, otherwise" do
       expect(export_taxon(recombination)[15]).to eq original_combination.name.name
-    end
-  end
-
-  describe "Reference ID" do
-    let!(:taxon) { create :genus }
-
-    it "sends the protonym's reference ID" do
-      reference_id = export_taxon(taxon)[18]
-      expect(reference_id).to eq taxon.authorship_reference.id
-    end
-
-    it "sends nil if the protonym's reference is a MissingReference" do
-      taxon.protonym.authorship.reference = create :missing_reference
-      taxon.save!
-      reference_id = export_taxon(taxon)[18]
-      expect(reference_id).to be_nil
-    end
-  end
-
-  describe "Bioregion" do
-    it "sends the biogeographic region" do
-      taxon = create :genus, biogeographic_region: 'Neotropic'
-      expect(export_taxon(taxon)[19]).to eq 'Neotropic'
-    end
-  end
-
-  describe "Country" do
-    it "sends the locality" do
-      taxon = create :genus, protonym: create(:protonym, locality: 'Canada')
-      expect(export_taxon(taxon)[20]).to eq 'Canada'
-    end
-  end
-
-  describe "Current valid rank" do
-    it "sends the right value for each class" do
-      expect(export_taxon(create(:subfamily))[21]).to eq 'Subfamily'
-      expect(export_taxon(create(:genus))[21]).to eq 'Genus'
-      expect(export_taxon(create(:subgenus))[21]).to eq 'Subgenus'
-      expect(export_taxon(create(:species))[21]).to eq 'Species'
-      expect(export_taxon(create(:subspecies))[21]).to eq 'Subspecies'
-    end
-  end
-
-  describe "Current valid parent" do
-    let(:subfamily) { create_subfamily 'Dolichoderinae' }
-    let(:tribe) { create_tribe 'Attini', subfamily: subfamily }
-    let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
-    let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
-    let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
-
-    it "doesn't punt on a subfamily's family" do
-      taxon = create :subfamily
-      expect(export_taxon(taxon)[23]).to eq 'Formicidae'
-    end
-
-    it "handles a taxon's subfamily" do
-      taxon = create :tribe, subfamily: subfamily
-      expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
-    end
-
-    it "doesn't skip over tribe and return the subfamily" do
-      taxon = create :genus, tribe: tribe
-      expect(export_taxon(taxon)[23]).to eq 'Attini'
-    end
-
-    it "returns the subfamily only if there's no tribe" do
-      taxon = create :genus, subfamily: subfamily, tribe: nil
-      expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
-    end
-
-    it "skips over subgenus and return the genus", :pending do
-      skip "broke a long time ago"
-
-      taxon = create :species, genus: genus, subgenus: subgenus
-      expect(export_taxon(taxon)[23]).to eq 'Atta'
-    end
-
-    it "handles a taxon's species" do
-      taxon = create :subspecies, species: species, genus: genus, subfamily: subfamily
-      expect(export_taxon(taxon)[23]).to eq 'Atta betta'
-    end
-
-    it "handles a synonym" do
-      senior = create_genus 'Eciton', subfamily: subfamily
-      junior = create :genus, :synonym, subfamily: subfamily, current_valid_taxon: senior
-      taxon = create :species, genus: junior
-      create :synonym, senior_synonym: senior, junior_synonym: junior
-
-      expect(export_taxon(taxon)[23]).to eq 'Eciton'
-    end
-
-    it "handles a genus without a subfamily" do
-      taxon = create :genus, tribe: nil, subfamily: nil
-      expect(export_taxon(taxon)[23]).to eq 'Formicidae'
-    end
-
-    it "handles a subspecies without a species" do
-      taxon = create :subspecies, genus: genus, species: nil, subfamily: nil
-      expect(export_taxon(taxon)[23]).to eq 'Atta'
     end
   end
 
