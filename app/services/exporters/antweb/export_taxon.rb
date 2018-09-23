@@ -47,7 +47,7 @@ class Exporters::Antweb::ExportTaxon
         author_date:            taxon.author_citation,
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
-        original_combination:   original_combination(taxon).try(:name).try(:name),
+        original_combination:   original_combination(taxon)&.name&.name,
         authors:                authorship_reference.authors_for_keey,
         year:                   authorship_reference.year_or_no_year,
         reference_id:           authorship_reference.is_a?(MissingReference) ? nil : authorship_reference.id,

@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_for_paper_trail
-    current_user.try :id
+    current_user&.id
   end
 
   def root_redirect_for_active_admin _exception

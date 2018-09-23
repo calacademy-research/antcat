@@ -14,7 +14,7 @@ describe SiteNoticesHelper do
       end
 
       context "when session variable is present" do
-        let!(:last_site_notice_id) { SiteNotice.last.try :id }
+        let!(:last_site_notice_id) { SiteNotice.last&.id }
 
         context "when session variable is lower than the last notice" do
           specify { expect(dismissed?(last_site_notice_id - 1)).to be false }

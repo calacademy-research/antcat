@@ -85,8 +85,7 @@ module Taxa
         return true if model == Taxon && matched_id == id
         return true  if model == Protonym && matched_id == protonym_id
         if model == Citation
-          authorship_id = protonym.try(:authorship).try(:id)
-          return true if authorship_id == matched_id
+          return true if protonym.authorship_id == matched_id
         end
         false
       end
