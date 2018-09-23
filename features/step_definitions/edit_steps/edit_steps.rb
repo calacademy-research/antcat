@@ -162,3 +162,8 @@ Then("the taxon mouseover should contain {string}") do |text|
   element = find '.expandable-reference-key'
   expect(element['title']).to have_content text
 end
+
+Then("{string} should be of the rank of {string}") do |name, rank|
+  taxon = Taxon.find_by(name_cache: name)
+  expect(taxon.rank).to eq rank
+end

@@ -3,23 +3,19 @@ crumb :edit_catalog do
   link "Edit Catalog"
 end
 
-crumb :new_taxon do
-  link "Add Taxon"
-  parent :edit_catalog
-end
-
-crumb :taxon_being_edited do |taxon|
-  if taxon
-    link "#{taxon.name_html_cache} (##{taxon.id})".html_safe, catalog_path(taxon)
-  else
-    link "[deleted]"
-  end
-  parent :edit_catalog
+crumb :new_taxon do |parent_id, rank_to_create|
+  link "Add #{rank_to_create}"
+  parent Taxon.find(parent_id)
 end
 
 crumb :edit_taxon do |taxon|
-  link "Edit", edit_taxa_path(taxon)
-  parent :taxon_being_edited, taxon
+  if taxon
+    link "Edit", edit_taxa_path(taxon)
+    parent taxon
+  else
+    link "[deleted]"
+    parent :edit_catalog
+  end
 end
 
   crumb :edit_taxon_show_children do |taxon|
@@ -49,7 +45,7 @@ end
 
 crumb :taxon_history_items do |taxon|
   link "History Items"
-  parent :taxon_being_edited, taxon
+  parent taxon
 end
 
   crumb :taxon_history_item do |item|
@@ -69,7 +65,7 @@ end
 
 crumb :reference_sections do |taxon|
   link "Reference Sections"
-  parent :taxon_being_edited, taxon
+  parent taxon
 end
 
   crumb :reference_section do |reference_section|

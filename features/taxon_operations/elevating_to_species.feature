@@ -12,10 +12,7 @@ Feature: Elevating subspecies to species
     And I will confirm on the next step
     And I follow "Elevate to species"
     Then I should see "Subspecies was successfully elevated to a species."
-    And I should see the catalog entry for "Solenopsis subbus"
-
-    When I go to the edit page for "Solenopsis subbus"
-    Then I should see "species of Solenopsis"
+    And "Solenopsis subbus" should be of the rank of "species"
 
   Scenario: Only show button if showing a subspecies
     When I go to the catalog page for "Solenopsis"
