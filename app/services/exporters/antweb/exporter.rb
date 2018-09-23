@@ -44,23 +44,19 @@ class Exporters::Antweb::Exporter
 
             begin
               row = Exporters::Antweb::ExportTaxon.new.call(taxon)
-            rescue StandardError => e
-              STDERR.puts "========================#{taxon.id}===================="
-              STDERR.puts "An error of type #{e} happened, message is #{e.message}"
-              STDERR.puts e.backtrace
-              STDERR.puts "======================================================="
-            end
-
-            if row
-              row[20].delete!('\"') if row[20]
               row.each do |col|
                 if col.is_a? String
                   col.delete!("\n")
                   col.delete!("\r")
                 end
               end
+              file.puts row.join("\t")
+            rescue StandardError => e
+              STDERR.puts "========================#{taxon.id}===================="
+              STDERR.puts "An error of type #{e} happened, message is #{e.message}"
+              STDERR.puts e.backtrace
+              STDERR.puts "======================================================="
             end
-            file.puts row.join("\t") if row
           end
         end
       end
