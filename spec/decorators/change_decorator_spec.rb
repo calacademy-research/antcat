@@ -11,12 +11,4 @@ describe ChangeDecorator do
       expect(change.decorate.format_adder_name).to match /First Last.*? added/
     end
   end
-
-  describe "#format_approver_name" do
-    let(:change) { build_stubbed :change, approver: user }
-
-    specify do
-      expect(change.decorate.format_approver_name).to match /First Last.*? approved this change/
-    end
-  end
 end

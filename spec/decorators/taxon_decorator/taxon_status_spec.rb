@@ -39,7 +39,6 @@ describe TaxonDecorator::TaxonStatus do
       specify { expect(taxon.decorate.taxon_status).to eq "unidentifiable" }
     end
 
-    # NOTE `unresolved_homonym`s usually have a status that is not `homonym`.
     context "when taxon is an unresolved homonym" do
       let(:taxon) { create :family }
 

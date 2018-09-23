@@ -25,8 +25,6 @@ class TaxonDecorator::TaxonStatus
     def main_status
       if homonym? && homonym_replaced_by
         "homonym replaced by #{homonym_replaced_by.decorate.link_to_taxon_with_author_citation}"
-      elsif unidentifiable?
-        "unidentifiable"
       elsif unresolved_homonym?
         if current_valid_taxon_including_synonyms
           "unresolved junior homonym, junior synonym#{format_senior_synonym}"
