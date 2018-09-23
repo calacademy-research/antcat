@@ -1,7 +1,7 @@
 module TaxonSelectHelper
   def taxon_select_tag taxon_attribute_name, taxon_id, rank: nil
     taxon = Taxon.find_by(id: taxon_id)
-    taxon_id = taxon.try(:id)
+    taxon_id = taxon&.id
 
     select_tag taxon_attribute_name,
       options_for_select([taxon_id].compact, taxon_id),
@@ -28,7 +28,7 @@ module TaxonSelectHelper
 
       def taxon_select taxon_attribute_name, rank: nil
         taxon = object.send taxon_attribute_name
-        taxon_id = taxon.try(:id)
+        taxon_id = taxon&.id
 
         select "#{taxon_attribute_name}_id".to_sym,
           options_for_select([taxon_id].compact, taxon_id),

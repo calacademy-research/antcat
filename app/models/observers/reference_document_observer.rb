@@ -1,5 +1,5 @@
 class ReferenceDocumentObserver < ActiveRecord::Observer
   def before_update reference_document
-    reference_document.try(:reference).try :invalidate_caches
+    reference_document&.reference&.invalidate_caches
   end
 end
