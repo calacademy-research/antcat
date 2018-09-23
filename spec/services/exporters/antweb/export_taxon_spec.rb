@@ -344,15 +344,7 @@ describe Exporters::Antweb::ExportTaxon do
       let!(:taxon) { create :genus }
 
       it "sends the protonym's reference ID" do
-        reference_id = export_taxon(taxon)[18]
-        expect(reference_id).to eq taxon.authorship_reference.id
-      end
-
-      it "sends nil if the protonym's reference is a MissingReference" do
-        taxon.protonym.authorship.reference = create :missing_reference
-        taxon.save!
-        reference_id = export_taxon(taxon)[18]
-        expect(reference_id).to be_nil
+        expect(export_taxon(taxon)[18]).to eq taxon.authorship_reference.id
       end
     end
 
