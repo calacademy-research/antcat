@@ -32,7 +32,7 @@ describe SpeciesGroupName do
       let(:new_comb_parent) { create(:subfamily) } # uncombinable_parent
       let(:old_comb) { species }
 
-      it "raises " do
+      specify do
         expect { described_class.name_for_new_comb old_comb, new_comb_parent }.
           to raise_error /uncombinable/
       end

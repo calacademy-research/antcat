@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe TaxonDecorator::HeadlineType do
-  let(:species_name) { create :species_name, name: 'Atta major', epithet: 'major' }
+  let(:species_name) { create :species_name, name: 'Atta major' }
 
   describe "#call" do
     it "shows the type taxon" do

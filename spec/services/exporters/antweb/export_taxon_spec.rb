@@ -209,7 +209,6 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       specify do
-        taxon = create :genus
         expect(export_taxon(taxon)[14]).to eq 'FALSE'
       end
     end
@@ -341,25 +340,21 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[18]: `reference id`" do
-      let!(:taxon) { create :genus }
-
       it "sends the protonym's reference ID" do
         expect(export_taxon(taxon)[18]).to eq taxon.authorship_reference.id
       end
     end
 
     describe "[19]: `bioregion`" do
-      it "sends the biogeographic region" do
-        taxon = create :genus, biogeographic_region: 'Neotropic'
-        expect(export_taxon(taxon)[19]).to eq 'Neotropic'
-      end
+      let!(:taxon) { create :genus, biogeographic_region: 'Neotropic' }
+
+      specify { expect(export_taxon(taxon)[19]).to eq 'Neotropic' }
     end
 
     describe "[20]: `country`" do
-      it "sends the locality" do
-        taxon = create :genus, protonym: create(:protonym, locality: 'Canada')
-        expect(export_taxon(taxon)[20]).to eq 'Canada'
-      end
+      let!(:taxon) { create :genus, protonym: create(:protonym, locality: 'Canada') }
+
+      specify { expect(export_taxon(taxon)[20]).to eq 'Canada' }
     end
 
     describe "[21]: `current valid rank`" do

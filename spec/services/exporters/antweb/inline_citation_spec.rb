@@ -43,16 +43,11 @@ describe Exporters::Antweb::InlineCitation do
       end
     end
 
-    describe "Handling quotes in the title" do
-      let(:reference) do
-        create :unknown_reference, author_names: [latreille],
-          citation_year: '1809', title: '"Atta"'
-      end
+    describe "handling quotes in the title" do
+      let(:reference) { create :unknown_reference, title: '"Atta"' }
 
       it "escapes them" do
-        expect(described_class[reference]).to eq(
-          %(<a title="Latreille, P. A. 1809. &quot;Atta&quot;. New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>)
-        )
+        expect(described_class[reference]).to include " &quot;Atta&quot;"
       end
     end
   end
