@@ -95,30 +95,24 @@ FactoryBot.define do
   end
 end
 
-def create_genus name_or_attributes = 'Atta', attributes = {}
-  _create_taxon name_or_attributes, :genus, attributes
+def create_genus name_string, attributes = {}
+  _create_taxon name_string, :genus, attributes
 end
 
-def create_species name_or_attributes = 'Atta major', attributes = {}
-  _create_taxon name_or_attributes, :species, attributes
+def create_species name_string, attributes = {}
+  _create_taxon name_string, :species, attributes
 end
 
-def create_subspecies name_or_attributes = 'Atta major minor', attributes = {}
-  _create_taxon name_or_attributes, :subspecies, attributes
+def create_subspecies name_string, attributes = {}
+  _create_taxon name_string, :subspecies, attributes
 end
 
-def _create_taxon name_or_attributes, rank, attributes = {}
-  taxon_factory = rank
-  name_factory = "#{rank}_name".to_sym
+def _create_taxon name_string, taxon_factory, attributes = {}
+  name_factory = "#{taxon_factory}_name".to_sym
 
-  attributes =
-    if name_or_attributes.is_a? String
-      name, epithet, epithets = get_name_parts name_or_attributes
-      name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
-      attributes.reverse_merge name: name_object, name_cache: name
-    else
-      name_or_attributes
-    end
+  name, epithet, epithets = get_name_parts name_string
+  name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
+  attributes = attributes.reverse_merge name: name_object
 
   FactoryBot.create taxon_factory, attributes
 end
