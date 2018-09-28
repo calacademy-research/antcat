@@ -43,29 +43,29 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[1-6]: `subfamily`, ``tribe, `genus`, `subgenus`, `species` and `subspecies`" do
-      let(:ponerinae) { create_subfamily 'Ponerinae' }
-      let(:attini) { create_tribe 'Attini', subfamily: ponerinae }
+      let(:subfamily) { create :subfamily }
+      let(:attini) { create_tribe 'Attini', subfamily: subfamily }
 
       it "can export a subfamily" do
-        create_genus subfamily: ponerinae, tribe: nil
-        expect(export_taxon(ponerinae)[1..6]).to eq [
-          'Ponerinae', nil, nil, nil, nil, nil
+        create_genus subfamily: subfamily, tribe: nil
+        expect(export_taxon(subfamily)[1..6]).to eq [
+          subfamily.name_cache, nil, nil, nil, nil, nil
         ]
       end
 
       it "can export a genus" do
-        dacetini = create_tribe 'Dacetini', subfamily: ponerinae
-        acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: dacetini
+        dacetini = create_tribe 'Dacetini', subfamily: subfamily
+        acanthognathus = create_genus 'Acanothognathus', subfamily: subfamily, tribe: dacetini
 
         expect(export_taxon(acanthognathus)[1..6]).to eq [
-          'Ponerinae', 'Dacetini', 'Acanothognathus', nil, nil, nil
+          subfamily.name_cache, 'Dacetini', 'Acanothognathus', nil, nil, nil
         ]
       end
 
       it "can export a genus without a tribe" do
-        acanthognathus = create_genus 'Acanothognathus', subfamily: ponerinae, tribe: nil
+        acanthognathus = create_genus 'Acanothognathus', subfamily: subfamily, tribe: nil
         expect(export_taxon(acanthognathus)[1..6]).to eq [
-          'Ponerinae', nil, 'Acanothognathus', nil, nil, nil
+          subfamily.name_cache, nil, 'Acanothognathus', nil, nil, nil
         ]
       end
 
@@ -87,16 +87,16 @@ describe Exporters::Antweb::ExportTaxon do
           species = create_species 'Atta robustus', genus: atta
 
           expect(export_taxon(species)[1..6]).to eq [
-            'Ponerinae', 'Attini', 'Atta', nil, 'robustus', nil
+            subfamily.name_cache, 'Attini', 'Atta', nil, 'robustus', nil
           ]
         end
 
         it "can export a species without a tribe" do
-          atta = create_genus 'Atta', subfamily: ponerinae, tribe: nil
+          atta = create_genus 'Atta', subfamily: subfamily, tribe: nil
           species = create_species 'Atta robustus', genus: atta
 
           expect(export_taxon(species)[1..6]).to eq [
-            'Ponerinae', nil, 'Atta', nil, 'robustus', nil
+            subfamily.name_cache, nil, 'Atta', nil, 'robustus', nil
           ]
         end
 
@@ -112,22 +112,22 @@ describe Exporters::Antweb::ExportTaxon do
 
       describe "Exporting subspecies" do
         it "exports one correctly" do
-          atta = create_genus 'Atta', subfamily: ponerinae, tribe: attini
-          species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
-          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: ponerinae, genus: atta, species: species
+          atta = create_genus 'Atta', subfamily: subfamily, tribe: attini
+          species = create_species 'Atta robustus', subfamily: subfamily, genus: atta
+          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: subfamily, genus: atta, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            'Ponerinae', 'Attini', 'Atta', nil, 'robustus', 'emeryii'
+            subfamily.name_cache, 'Attini', 'Atta', nil, 'robustus', 'emeryii'
           ]
         end
 
         it "can export a subspecies without a tribe" do
-          atta = create_genus 'Atta', subfamily: ponerinae, tribe: nil
-          species = create_species 'Atta robustus', subfamily: ponerinae, genus: atta
+          atta = create_genus 'Atta', subfamily: subfamily, tribe: nil
+          species = create_species 'Atta robustus', subfamily: subfamily, genus: atta
           subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            'Ponerinae', nil, 'Atta', nil, 'robustus', 'emeryii'
+            subfamily.name_cache, nil, 'Atta', nil, 'robustus', 'emeryii'
           ]
         end
 

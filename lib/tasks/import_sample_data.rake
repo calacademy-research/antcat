@@ -21,7 +21,7 @@ namespace :antcat do
       puts "Creating taxa..."
       create :family # Formicidae.
 
-      antcatinae = create_subfamily 'Antcatinae'
+      antcatinae = create :subfamily, name: create(:subfamily_name, name: 'Antcatinae')
       antcatini = create_tribe 'Antcatini', subfamily: antcatinae
 
       # a bunch of species
@@ -47,7 +47,7 @@ namespace :antcat do
       end
 
       # fossil subfamily
-      paraantcatinae = create_subfamily 'Paraantcatinae'
+      paraantcatinae = create :subfamily, name: create(:subfamily_name, name: 'Paraantcatinae')
       paraantcatini = create_tribe 'Paraantcatini', subfamily: paraantcatinae
 
       paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
