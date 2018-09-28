@@ -32,7 +32,6 @@ When(/^I log in as a user \(not editor\)$/) do
 end
 
 Given("there is a user named {string}") do |name|
-  name = "Quintus Batiatus" if name.blank?
   create :user, :editor, name: name
 end
 

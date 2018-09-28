@@ -5,7 +5,6 @@ $ ->
     catalogSplitter.unborkTaxonBrowserScrollbars()
 
 class @CatalogSplitter
-  # In the order they appear on the HTML.
   HEADER = "#header"
   CONTENT = "#content" # Everything except the header and feedback modal is nested here.
 
@@ -38,7 +37,6 @@ class @CatalogSplitter
     # set the size anyways so that a scrollbar is added.
     @autosize TAXON_DESCRIPTION
 
-  # For TAXON_DESCRIPTION / TAXON_BROWSER.
   autosize: (element) ->
     height = @heightOf(CONTENT) - @heightOf(SPLITTER)
     height -= switch element

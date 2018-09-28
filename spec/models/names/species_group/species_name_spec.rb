@@ -1,6 +1,15 @@
 require 'spec_helper'
 
 describe SpeciesName do
+  describe "name parts" do
+    let(:species_name) { described_class.new name: 'Atta major', epithet: 'major' }
+
+    specify do
+      expect(species_name.genus_epithet).to eq 'Atta'
+      expect(species_name.species_epithet).to eq 'major'
+    end
+  end
+
   describe "#change_parent" do
     it "replaces the genus part of the name" do
       species_name = described_class.new name: 'Atta major', epithet: 'major'

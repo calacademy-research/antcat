@@ -16,7 +16,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  attr_accessor :parent_name, :duplicate_type, :collision_merge_id
+  attr_accessor :parent_name, :duplicate_type
 
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
@@ -133,17 +133,17 @@ class Taxon < ApplicationRecord
   end
 
   def author_citation
-    return unless authorship_reference
+    citation = authorship_reference.keey_without_letters_in_year
 
-    string = authorship_reference.keey_without_letters_in_year
-    if string && recombination?
-      string = '(' + string + ')'
+    if recombination?
+      '(' + citation + ')'
+    else
+      citation
     end
-    string
   end
 
   def authorship_reference
-    protonym.try(:authorship).try(:reference)
+    protonym.authorship.reference
   end
 
   def what_links_here

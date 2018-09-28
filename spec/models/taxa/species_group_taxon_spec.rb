@@ -7,15 +7,21 @@ describe SpeciesGroupTaxon do
     genus = create :genus
     expect(genus.subfamily).not_to be_nil
 
-    taxon = create :species_group_taxon, genus: genus, subfamily: nil
+    taxon = create :species, genus: genus, subfamily: nil
     expect(taxon.subfamily).to eq genus.subfamily
   end
 
   describe "#inherit_attributes_for_new_combination" do
-    include RefactorTaxonFactoriesHelpers
-
     let(:new_comb_parent) { build_stubbed :genus }
-    let(:new_comb) { build_new_taxon :species }
+    let(:new_comb) do
+      taxon = Species.new
+      taxon.build_name
+      taxon.build_type_name
+      taxon.build_protonym
+      taxon.protonym.build_name
+      taxon.protonym.build_authorship
+      taxon
+    end
     let(:old_comb) do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "not 404"
       create :species, biogeographic_region: "Neotropic"

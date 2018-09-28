@@ -26,17 +26,3 @@ Feature: Database scripts
   Scenario: Clicking on all scripts just to see if the page renders
     When I open all database scripts and browse their sources
     Then I should have browsed at least 5 database scripts
-
-  # Should not require JS, but throws `URI::InvalidURIError` without it.
-  @search @javascript
-  Scenario: Script: Missing references in protonym authorships
-    Given the genus Atta has a protonym with a missing reference
-    And this reference exists
-      | authors      | citation   | year | title                  |
-      | Batiatus, Q. | Psyche 2:1 | 2000 | The missing reference! |
-
-    When I follow "Missing references in protonym authorships"
-    Then I should see "Batiatus 2000"
-
-    When I follow "Batiatus 2000"
-    Then I should see "The missing reference!"

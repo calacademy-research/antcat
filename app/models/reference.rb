@@ -1,4 +1,5 @@
 # TODO avoid `require`.
+# TODO remove `references.principal_author_last_name_cache`.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
@@ -34,7 +35,6 @@ class Reference < ApplicationRecord
   scope :latest_changes, -> { order(updated_at: :desc) }
   scope :no_missing, -> { where.not(type: "MissingReference") }
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
-  scope :sorted_by_principal_author_last_name, -> { order(:principal_author_last_name_cache) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
@@ -83,10 +83,6 @@ class Reference < ApplicationRecord
     author_names_string_cache
   end
 
-  def author_names_string=(string)
-    self.author_names_string_cache = string
-  end
-
   # TODO we should probably have `#year` [int] and something
   # like `#non_standard_year` [string] instead of this +
   # `#year` + `#citation_year`.
@@ -99,17 +95,14 @@ class Reference < ApplicationRecord
   # TODO does this duplicate `set_author_names_caches`?
   # There's also `#author_names_string=` which sets `#author_names_string_cache`.
   def refresh_author_names_caches(*)
-    string, principal_author_last_name = make_author_names_caches
-    # TODO only update once.
-    update_attribute :author_names_string_cache, string
-    update_attribute :principal_author_last_name_cache, principal_author_last_name
+    update_attribute :author_names_string_cache, make_author_names_string_cache
   end
 
   def parse_author_names_and_suffix author_names_string
     author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
     if author_names_and_suffix[:author_names].empty? && author_names_string.present?
       errors.add :author_names_string, "couldn't be parsed."
-      self.author_names_string = author_names_string
+      self.author_names_string_cache = author_names_string
       raise ActiveRecord::RecordInvalid, self
     end
     author_names_and_suffix
@@ -161,6 +154,10 @@ class Reference < ApplicationRecord
     year.to_s
   end
 
+  def principal_author_last_name
+    author_names.first&.last_name
+  end
+
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]
   end
@@ -195,15 +192,12 @@ class Reference < ApplicationRecord
 
     # TODO does this duplicate `refresh_author_names_caches`?
     def set_author_names_caches(*)
-      self.author_names_string_cache, self.principal_author_last_name_cache = make_author_names_caches
+      self.author_names_string_cache = make_author_names_string_cache
     end
 
-    def make_author_names_caches
+    def make_author_names_string_cache
       string = author_names.map(&:name).join('; ')
       string << author_names_suffix if author_names_suffix.present?
-      first_author_name = author_names.first
-      last_name = first_author_name && first_author_name.last_name
-
-      [string, last_name]
+      string
     end
 end

@@ -22,7 +22,7 @@ describe TaxonDecorator::LinkEachEpithet do
     end
 
     context 'when taxon is a subspecies`' do
-      let(:taxon) { create_subspecies }
+      let(:taxon) { create :subspecies }
 
       context "when taxon has 2 epithets (standard modern subspecies name)" do
         it 'links the genus, species and subspecies' do
@@ -35,34 +35,34 @@ describe TaxonDecorator::LinkEachEpithet do
       end
 
       context "when taxon has more than 3 epithets" do
-        let!(:formica) { create_genus 'Formica' }
-        let!(:rufa) { create_species 'rufa', genus: formica }
-        let!(:major) do
+        let!(:genus) { create_genus 'Formica' }
+        let!(:species) { create_species 'rufa', genus: genus }
+        let!(:subspecies) do
           major_name = Name.create! name: 'Formica rufa pratensis major',
             epithet_html: '<i>major</i>',
             epithets: 'rufa pratensis major'
-          create :subspecies, name: major_name, species: rufa, genus: rufa.genus
+          create :subspecies, name: major_name, species: species, genus: genus
         end
 
         specify do
-          expect(described_class[major]).to eq(
-            %(<a href="/catalog/#{formica.id}"><i>Formica</i></a> ) +
-            %(<a href="/catalog/#{rufa.id}"><i>rufa</i></a> ) +
-            %(<a href="/catalog/#{major.id}"><i>pratensis major</i></a>)
+          expect(described_class[subspecies]).to eq(
+            %(<a href="/catalog/#{genus.id}"><i>Formica</i></a> ) +
+            %(<a href="/catalog/#{species.id}"><i>rufa</i></a> ) +
+            %(<a href="/catalog/#{subspecies.id}"><i>pratensis major</i></a>)
           )
         end
       end
     end
 
     context 'when taxon has a non-conforming name`' do
-      let(:taxon) { create_subspecies }
+      let(:taxon) { create :subspecies }
 
       before { taxon.name.update nonconforming_name: true }
 
       it 'links the genus, and links the rest of the name to the taxon' do
         expect(described_class[taxon]).to eq(
           %(<a href="/catalog/#{taxon.genus.id}"><i>#{taxon.genus.name_cache}</i></a> ) +
-          %(<a href="/catalog/#{taxon.id}"><i>major minor</i></a>)
+          %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name.epithets}</i></a>)
         )
       end
     end

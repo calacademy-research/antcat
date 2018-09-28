@@ -215,18 +215,15 @@ module DatabaseScripts
         @_taxt_tags
       end
 
-      # Moved from `RakeUtils`.
       def reject_existing model, ids
         filter_by_existence model, ids, reject_existing: true
       end
 
-      # Moved from `RakeUtils`.
       def extract_tagged_ids string, tag
         regex = /(?<={#{Regexp.quote(tag.to_s)} )\d*?(?=})/
         string.scan(regex).map &:to_i
       end
 
-      # Moved from `RakeUtils`.
       def find_all_tagged_ids model, column, tag
         ids = []
         tag = tag.to_s
@@ -237,7 +234,6 @@ module DatabaseScripts
         ids
       end
 
-      # Moved from `RakeUtils`.
       def filter_by_existence model, ids, options = {}
         return to_enum(:filter_by_existence, model, ids, options).to_a unless block_given?
         # Reject non-existing by default.

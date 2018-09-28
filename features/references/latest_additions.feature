@@ -38,7 +38,7 @@ Feature: Latest Additions (seeing what's new)
     Then I should not see "Default"
 
     When I follow "Make default"
-    Given the default reference is "Ward 2010"
+    Given the default reference is "Ward, 2010"
     And I go to the latest reference additions page
     Then I should see "Default"
     And I should not see "Make default"

@@ -75,8 +75,6 @@ module Catalog
         AuthorName.find_by(name: name).nil?
       end
 
-      # If user searched from the search box in the header, and
-      # theres a single match, then redirect to that match.
       def single_match_we_should_redirect_to? taxa
         params[:im_feeling_lucky] && taxa.count == 1
       end

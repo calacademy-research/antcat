@@ -26,10 +26,3 @@ end
 Then("I should have browsed at least 5 database scripts") do
   expect(@browsed_scripts_count).to be >= 5
 end
-
-Given("the genus Atta has a protonym with a missing reference") do
-  reference = create :missing_reference, citation: "Batiatus 2000"
-  taxon = create_genus "Atta"
-  taxon.protonym.authorship.reference = reference
-  taxon.save!
-end

@@ -1,15 +1,27 @@
 require 'spec_helper'
 
 describe SubspeciesName do
-  subject do
-    described_class.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
-  end
+  describe "name parts" do
+    context 'when three name parts' do
+      let(:subspecies_name) do
+        described_class.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
+      end
 
-  describe "#name_parts" do
-    it "knows its species epithet" do
-      expect(subject.genus_epithet).to eq 'Atta'
-      expect(subject.species_epithet).to eq 'major'
-      expect(subject.subspecies_epithets).to eq 'minor'
+      specify do
+        expect(subspecies_name.genus_epithet).to eq 'Atta'
+        expect(subspecies_name.species_epithet).to eq 'major'
+        expect(subspecies_name.subspecies_epithets).to eq 'minor'
+      end
+    end
+
+    context 'when four name parts' do
+      let(:subspecies_name) do
+        described_class.new name: 'Acus major minor medium', epithet: 'medium', epithets: 'major minor medium'
+      end
+
+      specify do
+        expect(subspecies_name.subspecies_epithets).to eq 'minor medium'
+      end
     end
   end
 
@@ -68,17 +80,6 @@ describe SubspeciesName do
           expect { subspecies_name.change_parent species_name }.not_to raise_error
         end
       end
-    end
-  end
-
-  describe "#subspecies_epithets" do
-    subject do
-      described_class.new name: 'Acus major minor medium',
-        epithet: 'medium', epithets: 'major minor medium'
-    end
-
-    it "is the subspecies epithets minus the species epithet" do
-      expect(subject.subspecies_epithets).to eq 'minor medium'
     end
   end
 end

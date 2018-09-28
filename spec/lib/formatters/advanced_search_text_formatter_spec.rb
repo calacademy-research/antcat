@@ -15,11 +15,11 @@ describe Formatters::AdvancedSearchTextFormatter do
         author_names: [latreille], citation_year: '1809',
         title: "*Atta*", journal: science,
         series_volume_issue: '(1)', pagination: '3', doi: '123'
-      taxon = create_genus 'Atta', incertae_sedis_in: 'genus', nomen_nudum: true
+      taxon = create :genus, incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update reference: reference
 
       results = formatter.format taxon
-      expect(results).to eq "Atta incertae sedis in genus, nomen nudum\n" \
+      expect(results).to eq "#{taxon.name_cache} incertae sedis in genus, nomen nudum\n" \
         "Latreille, P. A. 1809. Atta. Science (1):3. DOI: 123   #{reference.id}\n\n"
     end
   end

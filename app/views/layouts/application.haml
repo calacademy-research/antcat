@@ -9,7 +9,6 @@
 
     :javascript
       window.AntCat = {}
-      AntCat.testing = #{Rails.env.test?}
 
     =javascript_include_tag 'all_pages/google_analytics' if Rails.env.production?
     =javascript_include_tag 'application'

@@ -20,23 +20,21 @@ class TaxonDecorator::HeadlineProtonym
     delegate :protonym, to: :taxon
 
     def headline_protonym
-      return ''.html_safe unless protonym
-      string = protonym_name protonym
+      string = protonym_name
       string << ' ' << authorship(protonym.authorship)
       string << locality(protonym.locality)
-      add_period_if_necessary(string || '')
+      add_period_if_necessary string
     end
 
-    def protonym_name protonym
+    def protonym_name
       content_tag :b do
         content_tag :span do
-          protonym.name.protonym_with_fossil_html protonym.fossil
+          protonym.name.protonym_with_fossil_html protonym.fossil?
         end
       end
     end
 
     def authorship authorship
-      return '' unless authorship.try :reference
       string = link_to_reference authorship.reference
       string << ": #{authorship.pages}" if authorship.pages.present?
       string << " (#{authorship.forms})" if authorship.forms.present?

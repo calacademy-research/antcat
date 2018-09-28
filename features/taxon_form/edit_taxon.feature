@@ -23,13 +23,13 @@ Feature: Editing a taxon
   @search @javascript
   Scenario: Changing the authorship
     Given this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | author | citation   | title | citation_year |
+      | Fisher | Psyche 3:3 | Ants  | 2004          |
     And there is a genus "Eciton"
 
     When I go to the edit page for "Eciton"
     And I set the authorship to the first search results of "Fisher (2004)"
-    Then the authorship should contain the reference "Fisher 2004"
+    Then the authorship should contain the reference "Fisher, 2004"
 
     When I fill in the authorship notes with "Authorship notes"
     And I fill in "taxon_type_taxt" with "Notes"

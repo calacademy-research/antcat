@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :issue do
     association :adder, factory: :user
-    open true # rubocop:disable Security/Open
+    open { true }
     title "Check synonyms"
     description "Joffre's brother told me these were synonyms."
 
@@ -9,7 +9,7 @@ FactoryBot.define do
     end
 
     trait :closed do
-      open false # rubocop:disable Security/Open
+      open { false }
       association :closer, factory: :user
     end
   end

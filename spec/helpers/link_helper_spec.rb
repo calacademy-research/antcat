@@ -34,9 +34,9 @@ describe LinkHelper do
 
   describe "#link_to_antweb" do
     it "handles subfamilies" do
-      subfamily = create_subfamily 'Attaichnae'
+      subfamily = create :subfamily
       expect(helper.link_to_antweb(subfamily)).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=attaichnae&project=worldants">AntWeb</a>'
+        to eq %(<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{subfamily.name_cache.downcase}&project=worldants">AntWeb</a>)
     end
 
     it "outputs nothing for tribes" do

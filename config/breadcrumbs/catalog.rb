@@ -8,7 +8,7 @@ end
     parent :catalog
   end
 
-  ranks = [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies]
+  ranks = [:subfamily, :tribe, :genus, :subgenus, :species, :subspecies]
   ranks.each do |rank|
     crumb rank do |taxon|
       link taxon_breadcrumb_link(taxon)

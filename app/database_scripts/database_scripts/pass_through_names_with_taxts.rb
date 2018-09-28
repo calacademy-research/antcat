@@ -27,5 +27,4 @@ description: >
 
   See %github375.
 
-tags: [new!]
 topic_areas: [synonyms]

@@ -9,13 +9,4 @@ describe TaxonBrowserHelper do
         to eq %(<a class="valid genus" href="/catalog/#{taxon.id}"><i>#{taxon.name.name}</i></a>)
     end
   end
-
-  # Not tested: "nomen_nudum"/"collective_group_name"
-  describe "#css_classes_for_status" do
-    let(:taxon) { build :genus }
-
-    it "returns the correct classes" do
-      expect(helper.send(:css_classes_for_status, taxon)).to match_array ["valid"]
-    end
-  end
 end

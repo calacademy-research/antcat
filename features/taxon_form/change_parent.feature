@@ -3,22 +3,6 @@ Feature: Changing parent genus, species, tribe or subfamily
   Background:
     Given I am logged in
 
-  Scenario: Changing a species's genus
-    Given there is a genus "Atta"
-    And there is a genus "Eciton"
-    And there is a species "Atta major" with genus "Atta"
-
-    When I go to the edit page for "Atta major"
-    And I click the parent name field
-    And I set the parent name to "Eciton"
-    And I press "OK"
-    Then I should see "Would you like to create a new combination under this parent?"
-
-    When I press "Yes, create new combination"
-    And I press "Save"
-    Then I should be on the catalog page for "Eciton major"
-    And the name in the header should be "Eciton major"
-
   Scenario: Changing a species's genus by using the helper link
     Given there is a species "Atta major" with genus "Atta"
     And there is a genus "Eciton"
@@ -73,7 +57,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
     When I choose "homonym"
     And I press "Yes, create new combination"
-    Then I should see "new secondary junior homonym of species of Atta"
+    Then I should see "new secondary junior homonym of Atta"
 
   Scenario: Merging when we have distinct protonyms
     Given there is a species "Atta major" with genus "Atta"
@@ -90,7 +74,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
     When I choose "homonym"
     And I press "Yes, create new combination"
-    Then I should see "new secondary junior homonym of species of Atta"
+    Then I should see "new secondary junior homonym of Atta"
 
   Scenario: Detecting a possible secondary homonym when there is a subspecies name conflict
     Given there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
@@ -106,7 +90,7 @@ Feature: Changing parent genus, species, tribe or subfamily
 
     When I choose "secondary_junior_homonym"
     And I press "Yes, create new combination"
-    Then I should see "new secondary junior homonym of subspecies of Atta betus"
+    Then I should see "new secondary junior homonym of Atta betus"
 
     When I press "Save"
     Then I should see "Atta betus subbus"
@@ -253,16 +237,12 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
 
-  # Pick a name that has no duplicates.
-  # It should have simple dialogs and then warp to a page that has the fix.
   Scenario: Merging back when we have the same protonym
     Given there is a species "Atta major" with genus "Atta"
     And there is a subspecies "Atta major minor" without a species
 
     When I go to the edit page for "Atta major minor"
-    Then I should see "subspecies of (no species)"
-
-    When I click the parent name field
+    And I click the parent name field
     And I set the parent name to "Atta major"
     And I press "OK"
     Then I should see "Confirm parent species change"
@@ -270,16 +250,14 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Choose a parent species:"
 
     When I press "Yes, update parent record only"
-    Then I should see "subspecies of Atta major"
+    Then I should see "Atta major › Atta major minor › Edit"
 
   Scenario: Merging back when we have the same protonym without superadmin
     Given there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
     And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
 
     When I go to the edit page for "Atta speccus subbus"
-    Then I should see "subspecies of Atta speccus"
-
-    When I click the parent name field
+    And I click the parent name field
     And I set the parent name to "Batta speccus"
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations."
@@ -289,16 +267,13 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should not see "No, just change the parent"
     And I should see "Yes, create new combination"
 
-  # Pick a name that has duplicates. Force a choice.
   Scenario: Merging back when we have the same protonym with superadmin
     Given I log in as a superadmin
     And there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
     And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
 
     When I go to the edit page for "Atta speccus subbus"
-    Then I should see "subspecies of Atta speccus"
-
-    When I click the parent name field
+    And I click the parent name field
     And I set the parent name to "Batta speccus"
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations."
@@ -317,9 +292,7 @@ Feature: Changing parent genus, species, tribe or subfamily
     And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
 
     When I go to the edit page for "Atta speccus subbus"
-    Then I should see "subspecies of Atta speccus"
-
-    When I click the parent name field
+    And I click the parent name field
     And I set the parent name to "Batta fpeccus"
     And I press "OK"
     Then I should see "This new combination looks a lot like existing combinations."
@@ -335,4 +308,4 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Yes, update parent record only"
 
     When I press "Yes, update parent record only"
-    Then I should see "subspecies of Batta fpeccus"
+    Then I should see "Batta fpeccus › Atta speccus subbus › Edit"

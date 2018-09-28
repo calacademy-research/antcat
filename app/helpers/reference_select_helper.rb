@@ -19,7 +19,7 @@ module ReferenceSelectHelper
 
       def reference_select reference_attribute_name
         reference = object.send reference_attribute_name
-        reference_id = reference.try(:id)
+        reference_id = reference&.id
 
         select "#{reference_attribute_name}_id".to_sym,
           options_for_select([reference_id].compact, reference_id),

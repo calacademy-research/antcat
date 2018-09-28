@@ -37,12 +37,15 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
       end
     end
 
+    # TODO revisit this. It was written before adding validations for `#current_valid_taxon`
+    # to synonyms, original combinations and obsolete combination.
     context 'when no senior synonyms are valid' do
       let!(:invalid_senior) { create :family, :homonym }
       let!(:another_invalid_senior) { create :family, :homonym }
       let!(:junior_synonym) { create :genus, :synonym }
 
       before do
+        junior_synonym.update_columns current_valid_taxon_id: nil # HACK, see TODO above.
         create :synonym, junior_synonym: junior_synonym, senior_synonym: invalid_senior
         create :synonym, senior_synonym: another_invalid_senior, junior_synonym: junior_synonym
       end
@@ -55,9 +58,10 @@ describe Taxa::CurrentValidTaxonIncludingSynonyms do
     context "when there's a synonym of a synonym" do
       let!(:senior_synonym_of_senior_synonym) { create :family }
       let!(:senior_synonym) { create :family, :synonym }
-      let!(:taxon) { create :family, status: :synonym }
+      let!(:taxon) { create :family, :synonym }
 
       before do
+        taxon.update_columns current_valid_taxon_id: nil # HACK, see TODO above.
         create :synonym, junior_synonym: senior_synonym, senior_synonym: senior_synonym_of_senior_synonym
         create :synonym, junior_synonym: taxon, senior_synonym: senior_synonym
       end

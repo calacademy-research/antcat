@@ -1,16 +1,16 @@
 require 'spec_helper'
 
 describe Genus do
-  let(:genus_with_tribe) { create :genus, name: create(:genus_name, name: 'Atta'), tribe: tribe }
-  let(:tribe) { create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily }
-  let(:subfamily) { create :subfamily, name: create(:name, name: 'Myrmicinae') }
-  let(:genus) { create :genus, name: create(:genus_name, name: 'Atta') }
+  let(:genus_with_tribe) { create :genus, tribe: tribe }
+  let(:tribe) { create :tribe, subfamily: subfamily }
+  let(:subfamily) { create :subfamily }
+  let(:genus) { create :genus }
 
   it "can have species, which are its children" do
-    robusta = create :species, name: create(:name, name: "robusta"), genus: genus
-    saltensis = create :species, name: create(:name, name: "saltensis"), genus: genus
+    species = create :species, genus: genus
+    other_species = create :species, genus: genus
 
-    expect(genus.species).to eq [robusta, saltensis]
+    expect(genus.species).to eq [species, other_species]
     expect(genus.children).to eq genus.species
   end
 
@@ -106,9 +106,9 @@ describe Genus do
   describe "#without_tribe" do
     it "returns genera with no tribe" do
       create :genus, tribe: tribe, subfamily: tribe.subfamily
-      atta = create :genus, subfamily: tribe.subfamily, tribe: nil
+      taxon = create :genus, subfamily: tribe.subfamily, tribe: nil
 
-      expect(described_class.without_tribe.all).to eq [atta]
+      expect(described_class.without_tribe.all).to eq [taxon]
     end
   end
 
@@ -134,9 +134,7 @@ describe Genus do
     context "when there's no subfamily" do
       let!(:genus) { create :genus, subfamily: nil, tribe: nil }
 
-      it "is nil" do
-        expect(genus.parent).to be_nil
-      end
+      specify { expect(genus.parent).to eq nil }
     end
 
     context "when there is one" do

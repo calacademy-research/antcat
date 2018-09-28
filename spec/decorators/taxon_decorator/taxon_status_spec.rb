@@ -39,7 +39,6 @@ describe TaxonDecorator::TaxonStatus do
       specify { expect(taxon.decorate.taxon_status).to eq "unidentifiable" }
     end
 
-    # NOTE `unresolved_homonym`s usually have a status that is not `homonym`.
     context "when taxon is an unresolved homonym" do
       let(:taxon) { create :family }
 
@@ -50,13 +49,13 @@ describe TaxonDecorator::TaxonStatus do
       end
 
       context "when there is a current valid taxon" do
-        let!(:senior_synonym) { create_genus 'Eciton' }
+        let!(:senior) { create :genus }
 
-        before { taxon.update! current_valid_taxon: senior_synonym, status: Status::SYNONYM }
+        before { taxon.update! current_valid_taxon: senior, status: Status::SYNONYM }
 
         specify do
           expect(taxon.decorate.taxon_status).
-            to include %(unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Eciton</i></a>)
+            to include %(unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior.id}"><i>#{senior.name_cache}</i></a>)
         end
       end
     end
@@ -80,49 +79,49 @@ describe TaxonDecorator::TaxonStatus do
 
       context "when taxon has a single valid senior `Synonym`" do
         specify do
-          senior_synonym = create_genus 'Atta'
-          junior_synonym = create :genus, :synonym
-          create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+          senior = create :genus
+          junior = create :genus, :synonym
+          create :synonym, junior_synonym: junior, senior_synonym: senior
 
-          expect(junior_synonym.decorate.taxon_status).
-            to include %(junior synonym of current valid taxon <a href="/catalog/#{senior_synonym.id}"><i>Atta</i></a>)
+          expect(junior.decorate.taxon_status).
+            to include %(junior synonym of current valid taxon <a href="/catalog/#{senior.id}"><i>#{senior.name_cache}</i></a>)
         end
       end
 
       describe "using current valid taxon" do
         context "when a null current valid taxon" do
-          let!(:other_senior_synonym) { create_genus 'Eciton' }
-          let!(:junior_synonym) { create :genus, :synonym }
+          let!(:other_senior) { create :genus }
+          let!(:junior) { create :genus, :synonym }
 
           before do
-            senior_synonym = create :genus
-            senior_synonym.update_attribute :created_at, 100.seconds.ago
-            create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+            senior = create :genus
+            senior.update_attribute :created_at, 100.seconds.ago
+            create :synonym, junior_synonym: junior, senior_synonym: senior
 
-            create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
+            create :synonym, senior_synonym: other_senior, junior_synonym: junior
           end
 
           specify do
-            expect(junior_synonym.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>)
+            expect(junior.decorate.taxon_status).
+              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior.id}"><i>#{other_senior.name_cache}</i></a>)
           end
         end
 
         context "when a current valid taxon that's one of two 'senior synonyms'" do
-          let!(:other_senior_synonym) { create_genus 'Eciton' }
-          let!(:junior_synonym) { create :genus, :synonym, current_valid_taxon: other_senior_synonym }
+          let!(:other_senior) { create :genus }
+          let!(:junior) { create :genus, :synonym, current_valid_taxon: other_senior }
 
           before do
-            senior_synonym = create :genus
-            senior_synonym.update_attribute :created_at, 100.seconds.ago
-            create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
+            senior = create :genus
+            senior.update_attribute :created_at, 100.seconds.ago
+            create :synonym, junior_synonym: junior, senior_synonym: senior
 
-            create :synonym, senior_synonym: other_senior_synonym, junior_synonym: junior_synonym
+            create :synonym, senior_synonym: other_senior, junior_synonym: junior
           end
 
           it specify do
-            expect(junior_synonym.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior_synonym.id}"><i>Eciton</i></a>)
+            expect(junior.decorate.taxon_status).
+              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior.id}"><i>#{other_senior.name_cache}</i></a>)
           end
         end
       end
@@ -155,8 +154,8 @@ describe TaxonDecorator::TaxonStatus do
     context "when the senior synonym is itself invalid" do
       subject { described_class.new(junior) }
 
-      let(:invalid_senior) { create :family, :synonym }
-      let(:junior) { create :family, :synonym }
+      let(:invalid_senior) { create :family, :homonym }
+      let(:junior) { create :family, :homonym }
 
       before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
 

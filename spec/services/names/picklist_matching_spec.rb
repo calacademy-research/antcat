@@ -9,8 +9,7 @@ describe Names::PicklistMatching do
     end
 
     it "can find one prefix match" do
-      name = find_or_create_name 'Atta'
-      name.update name_html: '<i>Atta</i>'
+      name = create :genus_name, name: 'Atta'
 
       expect(described_class['att']).to eq [
         id: name.id, name: name.name,
@@ -19,8 +18,7 @@ describe Names::PicklistMatching do
     end
 
     it "can find one fuzzy match" do
-      name = find_or_create_name 'Gesomyrmex'
-      name.update name_html: '<i>Gesomyrmex</i>'
+      name = create :genus_name, name: 'Gesomyrmex'
 
       expect(described_class['gyx']).to eq [
         id: name.id, name: name.name,
@@ -29,8 +27,7 @@ describe Names::PicklistMatching do
     end
 
     it "returns the taxon_id, if there is one" do
-      bothroponera = find_or_create_name 'Bothroponera'
-      bothroponera.update name_html: '<i>Bothroponera</i>'
+      bothroponera = create :genus_name, name: 'Bothroponera'
       brachyponera = create_genus 'Brachyponera'
 
       expect(described_class['bera']).to eq [
@@ -51,14 +48,9 @@ describe Names::PicklistMatching do
     end
 
     it "puts prefix matches at the beginning" do
-      acropyga = find_or_create_name 'Acropyga dubitata'
-      acropyga.update name_html: '<i>Acropyga dubitata</i>'
-
-      atta = find_or_create_name 'Atta'
-      atta.update_attribute :name_html, "<i>Atta</i>"
-
-      acanthognathus = find_or_create_name 'Acanthognathus laevigatus'
-      acanthognathus.update name_html: '<i>Acanthognathus laevigatus</i>'
+      acropyga = create :genus_name, name: 'Acropyga dubitata'
+      atta = create :genus_name, name: 'Atta'
+      acanthognathus = create :genus_name, name: 'Acanthognathus laevigatus'
 
       expect(described_class['atta']).to eq [
         {
@@ -82,15 +74,6 @@ describe Names::PicklistMatching do
       ]
     end
 
-    it "requires the first letter to match either the name or the epithet" do
-      find_or_create_name 'Acropyga dubitata'
-      find_or_create_name 'Acropyga indubitata'
-
-      results = described_class['dubitata']
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Acropyga dubitata'
-    end
-
     it "only returns names attached to species, if that option is sent" do
       create_genus 'Atta'
       create_species 'Atta major'
@@ -110,8 +93,8 @@ describe Names::PicklistMatching do
     end
 
     it "only returns names attached to subfamilies or tribes, if that option is sent" do
-      subfamily = create_subfamily 'Attinae'
-      tribe = create_tribe 'Attini'
+      subfamily = create :subfamily, name: create(:subfamily_name, name: 'Attinae')
+      tribe = create :tribe, name: create(:subfamily_name, name: 'Attini')
       create_genus 'Atta', tribe: tribe, subfamily: subfamily
       create_species 'Atta major'
 

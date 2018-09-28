@@ -1,8 +1,8 @@
 # Requires that the client have:
-#   :type, :principal_author_last_name_cache, :title
+#   :type, :principal_author_last_name, :title
 #
 # Compares using these fields:
-#   :type, :principal_author_last_name_cache, :title, :year,
+#   :type, :principal_author_last_name, :title, :year,
 #   :pagination, :series_volume_issue
 #
 # Ignores:
@@ -25,12 +25,12 @@ module References
 
       attr_reader :lhs, :rhs
 
-      delegate :type, :principal_author_last_name_cache, :title, :year, :pagination,
+      delegate :type, :principal_author_last_name, :title, :year, :pagination,
         :series_volume_issue, to: :lhs
 
       def similarity
         return 0.00 unless type == rhs.type
-        return 0.00 unless normalize_author(principal_author_last_name_cache) == normalize_author(rhs.principal_author_last_name_cache)
+        return 0.00 unless normalize_author(principal_author_last_name) == normalize_author(rhs.principal_author_last_name)
 
         result = match_title || match_article || match_book
         year_matches = year_matches?

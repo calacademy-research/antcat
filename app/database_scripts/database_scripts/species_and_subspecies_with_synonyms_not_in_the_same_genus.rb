@@ -57,5 +57,4 @@ description: >
 
   See %github237.
 
-tags: [new!]
 topic_areas: [synonyms]

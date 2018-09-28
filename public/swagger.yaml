@@ -1040,8 +1040,6 @@ definitions:
         type: string
       author_names_suffix:
         type: string
-      principal_author_last_name_cache:
-        type: string
       reason_missing:
         type: string
       review_state:

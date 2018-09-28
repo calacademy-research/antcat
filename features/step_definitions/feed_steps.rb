@@ -71,7 +71,7 @@ end
 
 # TaxonHistoryItem
 When("I add a taxon history item for the feed") do
-  taxon = Feed.without_tracking { create_subfamily }
+  taxon = Feed.without_tracking { create_dolichoderinae }
 
   cheat_and_set_user_for_feed
   taxon_history_item = TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: taxon
@@ -80,7 +80,7 @@ end
 
 When("I edit a taxon history item for the feed") do
   taxon_history_item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
+    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_dolichoderinae
   end
 
   cheat_and_set_user_for_feed
@@ -89,7 +89,7 @@ end
 
 When("I delete a taxon history item for the feed") do
   taxon_history_item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_subfamily
+    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_dolichoderinae
   end
 
   cheat_and_set_user_for_feed
@@ -155,7 +155,7 @@ end
 When("I add a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+    references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
   end
 
   cheat_and_set_user_for_feed
@@ -165,7 +165,7 @@ end
 When("I edit a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-      references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+      references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
   end
 
   cheat_and_set_user_for_feed
@@ -175,7 +175,7 @@ end
 When("I delete a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-      references_taxt: "The Ants (amber checklist)", taxon: create_subfamily
+      references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
   end
 
   cheat_and_set_user_for_feed
@@ -221,4 +221,8 @@ end
 # figure out how to improve this.
 def cheat_and_set_user_for_feed
   User.current = User.last
+end
+
+def create_dolichoderinae
+  create :subfamily, name: create(:subfamily_name, name: "Dolichoderinae")
 end

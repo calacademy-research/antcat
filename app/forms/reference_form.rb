@@ -62,7 +62,10 @@ class ReferenceForm
     end
 
     def parse_author_names_string
-      author_names_and_suffix = @reference.parse_author_names_and_suffix params.delete(:author_names_string)
+      string = params.delete(:author_names_string)
+      return if string == @reference.author_names_string
+
+      author_names_and_suffix = @reference.parse_author_names_and_suffix string
       @reference.author_names.clear
       params[:author_names] = author_names_and_suffix[:author_names]
       params[:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
@@ -86,7 +89,7 @@ class ReferenceForm
       @reference.publisher_string = publisher_string
 
       # Add error or set valid publisher in the params.
-      publisher = Publisher.create_with_place_form_string publisher_string
+      publisher = Publisher.create_form_string publisher_string
       if publisher.nil? && publisher_string.present?
         @reference.errors.add :publisher_string,
           "couldn't be parsed. In general, use the format 'Place: Publisher'."
