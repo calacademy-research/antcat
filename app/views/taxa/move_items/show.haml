@@ -1,0 +1,54 @@
+-@title = "Move items"
+-breadcrumb :move_items_to, @taxon, @to_taxon
+
+-content_for :head do
+  =javascript_include_tag "controllers/taxa/move_items/select_checkboxes"
+
+=form_tag taxa_move_items_path do
+  =hidden_field_tag :to_taxon_id, @to_taxon.id
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Move items from
+        =@taxon.decorate.id_and_name_and_author_citation
+
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend to
+        =@to_taxon.decorate.id_and_name_and_author_citation
+
+  .row
+    .medium-6.columns
+      -if @taxon.history_items.empty?
+        No history items.
+      -else
+        %table.history-items
+          %caption
+            History items
+            .right
+              =link_to "Select all", "#", id: "select-all", class: "btn-normal btn-tiny"
+              =link_to "Unselect all", "#", id: "unselect-all", class: "btn-normal btn-tiny"
+          %tbody
+            -@taxon.history_items.each do |history_item|
+              %tr
+                %td=check_box_tag "history_item_ids[]", history_item.id
+                %td
+                  %small=TaxtPresenter[history_item.taxt].to_html
+
+    .medium-6.columns
+      -if @to_taxon.history_items.empty?
+        No history items.
+      -else
+        %table
+          %caption History items
+          %tbody
+            -@to_taxon.history_items.each do |history_item|
+              %tr
+                %td
+                  %small=TaxtPresenter[history_item.taxt].to_html
+
+  .row.margin-bottom
+    .medium-12.columns
+      .center-text
+        =button_tag type: "submit", class: "btn-saves has-spinner" do
+          =spinner_icon + "Move selected items"

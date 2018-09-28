@@ -23,6 +23,7 @@ class Activity < ApplicationRecord
     execute_script
     finish_reviewing
     merge_authors
+    move_items
     reopen_feedback
     reopen_issue
     reorder_taxon_history_items

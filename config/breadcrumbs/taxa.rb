@@ -87,4 +87,19 @@ crumb :synonym_relationship do |synonym|
   link "Synonym Relationship ##{synonym.id}"
   parent :edit_catalog
 end
+
+crumb :move_items do |taxon|
+  link "Move items", new_taxa_move_items_path(taxon)
+  parent :edit_taxon, taxon
+end
+
+crumb :move_items_select_target do |taxon|
+  link "Select target"
+  parent :move_items, taxon
+end
+
+crumb :move_items_to do |taxon, to_taxon|
+  link "to #{to_taxon.name_with_fossil}".html_safe, taxa_move_items_path(taxon, to_taxon_id: to_taxon.id)
+  parent :move_items, taxon
+end
 # rubocop:enable Layout/IndentationConsistency
