@@ -129,6 +129,9 @@ Rails.application.routes.draw do
       end
     end
     resource :convert_to_subspecies, only: [:new, :create]
+    scope module: :taxa, controller: :move_items do
+      resource :move_items, only: [:new, :show, :create]
+    end
   end
 
   resource :default_reference, only: :update

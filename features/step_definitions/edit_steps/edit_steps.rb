@@ -15,6 +15,10 @@ Then(/^I (should|should not) see an Edit button$/) do |should_selector|
   end
 end
 
+When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
+  select2 name, from: taxon_selector_id
+end
+
 # fields section
 ### name field
 When("I click the name field") do
