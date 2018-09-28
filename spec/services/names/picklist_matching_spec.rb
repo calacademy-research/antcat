@@ -93,7 +93,7 @@ describe Names::PicklistMatching do
     end
 
     it "only returns names attached to subfamilies or tribes, if that option is sent" do
-      subfamily = create_subfamily 'Attinae'
+      subfamily = create :subfamily, name: create(:subfamily_name, name: 'Attinae')
       tribe = create_tribe 'Attini'
       create_genus 'Atta', tribe: tribe, subfamily: subfamily
       create_species 'Atta major'

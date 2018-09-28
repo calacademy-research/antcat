@@ -95,10 +95,6 @@ FactoryBot.define do
   end
 end
 
-def create_subfamily name_or_attributes = 'Dolichoderinae', attributes = {}
-  _create_taxon name_or_attributes, :subfamily, attributes
-end
-
 def create_tribe name_or_attributes = 'Attini', attributes = {}
   _create_taxon name_or_attributes, :tribe, attributes
 end

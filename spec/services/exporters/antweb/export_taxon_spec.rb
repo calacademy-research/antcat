@@ -368,7 +368,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[23]: `current valid parent`" do
-      let(:subfamily) { create_subfamily 'Dolichoderinae' }
+      let(:subfamily) { create :subfamily }
       let(:tribe) { create_tribe 'Attini', subfamily: subfamily }
       let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
       let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
@@ -381,7 +381,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       it "handles a taxon's subfamily" do
         taxon = create :tribe, subfamily: subfamily
-        expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
+        expect(export_taxon(taxon)[23]).to eq subfamily.name_cache
       end
 
       it "doesn't skip over tribe and return the subfamily" do
@@ -391,7 +391,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       it "returns the subfamily only if there's no tribe" do
         taxon = create :genus, subfamily: subfamily, tribe: nil
-        expect(export_taxon(taxon)[23]).to eq 'Dolichoderinae'
+        expect(export_taxon(taxon)[23]).to eq subfamily.name_cache
       end
 
       it "skips over subgenus and return the genus", :pending do
