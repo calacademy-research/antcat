@@ -96,30 +96,16 @@ FactoryBot.define do
 end
 
 def create_genus name_string, attributes = {}
-  _create_taxon name_string, :genus, attributes
+  attributes = attributes.reverse_merge(name: create(:genus_name, name: name_string))
+  FactoryBot.create :genus, attributes
 end
 
 def create_species name_string, attributes = {}
-  _create_taxon name_string, :species, attributes
+  attributes = attributes.reverse_merge(name: create(:species_name, name: name_string))
+  FactoryBot.create :species, attributes
 end
 
 def create_subspecies name_string, attributes = {}
-  _create_taxon name_string, :subspecies, attributes
-end
-
-def _create_taxon name_string, taxon_factory, attributes = {}
-  name_factory = "#{taxon_factory}_name".to_sym
-
-  name, epithet, epithets = get_name_parts name_string
-  name_object = create name_factory, name: name, epithet: epithet, epithets: epithets
-  attributes = attributes.reverse_merge name: name_object
-
-  FactoryBot.create taxon_factory, attributes
-end
-
-def get_name_parts name
-  parts = name.split ' '
-  epithet = parts.last
-  epithets = parts[1..-1].join(' ') unless parts.size < 2
-  [name, epithet, epithets]
+  attributes = attributes.reverse_merge(name: create(:subspecies_name, name: name_string))
+  FactoryBot.create :subspecies, attributes
 end
