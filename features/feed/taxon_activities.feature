@@ -3,7 +3,9 @@ Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @search
+  # TODO this fails a lot Travis due to
+  # `ActiveRecord::ConnectionTimeoutError: could not obtain a connection from the pool within 5.000 seconds`.
+  @javascript @search @no_travis
   Scenario: Added taxon (with edit summary)
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
