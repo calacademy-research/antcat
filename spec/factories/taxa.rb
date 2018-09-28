@@ -99,10 +99,6 @@ def create_genus name_or_attributes = 'Atta', attributes = {}
   _create_taxon name_or_attributes, :genus, attributes
 end
 
-def create_subgenus name_or_attributes = 'Atta (Subatta)', attributes = {}
-  _create_taxon name_or_attributes, :subgenus, attributes
-end
-
 def create_species name_or_attributes = 'Atta major', attributes = {}
   _create_taxon name_or_attributes, :species, attributes
 end

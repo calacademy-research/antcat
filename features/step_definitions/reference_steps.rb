@@ -160,7 +160,7 @@ end
 
 Given("there is a taxon with that reference as its protonym's reference") do
   reference = Reference.last
-  taxon = create_genus
+  taxon = create :genus
   taxon.protonym.authorship.reference = reference
   taxon.protonym.authorship.save!
 end
