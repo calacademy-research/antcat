@@ -47,11 +47,7 @@ Given("the maximum number of taxa to load in each tab is {int}") do |number|
     and_return number.to_i
 end
 
-Given("Atta has a history section item with two linked references, of which one does not exists") do
-  reference = create :article_reference, citation_year: 2000,
-    author_names: [create(:author_name, name: "Batiatus, Q.")]
-  taxt = "{ref #{reference.id}}; {ref 99999}"
-
-  taxon = Taxon.find_by name_cache: "Atta"
-  taxon.reference_sections << ReferenceSection.create!(references_taxt: taxt)
+Given("Atta has a history item with a broken link") do
+  taxon = Taxon.find_by(name_cache: "Atta")
+  create :taxon_history_item, taxon: taxon, taxt: "{ref 99999}"
 end
