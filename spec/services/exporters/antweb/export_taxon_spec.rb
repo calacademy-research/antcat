@@ -80,61 +80,61 @@ describe Exporters::Antweb::ExportTaxon do
 
       describe "Exporting species" do
         it "exports one correctly" do
-          genus = create_genus 'Atta', tribe: tribe
+          genus = create :genus, tribe: tribe
           species = create_species 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
-            subfamily.name_cache, tribe.name_cache, 'Atta', nil, 'robustus', nil
+            subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', nil
           ]
         end
 
         it "can export a species without a tribe" do
-          genus = create_genus 'Atta', subfamily: subfamily, tribe: nil
+          genus = create :genus, subfamily: subfamily, tribe: nil
           species = create_species 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
-            subfamily.name_cache, nil, 'Atta', nil, 'robustus', nil
+            subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', nil
           ]
         end
 
         it "exports a species without a subfamily as being in the 'incertae sedis' subfamily" do
-          genus = create_genus 'Atta', subfamily: nil, tribe: nil
+          genus = create :genus, subfamily: nil, tribe: nil
           species = create_species 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
-            'incertae_sedis', nil, 'Atta', nil, 'robustus', nil
+            'incertae_sedis', nil, genus.name_cache, nil, 'robustus', nil
           ]
         end
       end
 
       describe "Exporting subspecies" do
         it "exports one correctly" do
-          atta = create_genus 'Atta', subfamily: subfamily, tribe: tribe
-          species = create_species 'Atta robustus', subfamily: subfamily, genus: atta
-          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: subfamily, genus: atta, species: species
+          genus = create :genus, subfamily: subfamily, tribe: tribe
+          species = create_species 'Atta robustus', subfamily: subfamily, genus: genus
+          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            subfamily.name_cache, tribe.name_cache, 'Atta', nil, 'robustus', 'emeryii'
+            subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
 
         it "can export a subspecies without a tribe" do
-          atta = create_genus 'Atta', subfamily: subfamily, tribe: nil
-          species = create_species 'Atta robustus', subfamily: subfamily, genus: atta
-          subspecies = create_subspecies 'Atta robustus emeryii', genus: atta, species: species
+          genus = create :genus, subfamily: subfamily, tribe: nil
+          species = create_species 'Atta robustus', subfamily: subfamily, genus: genus
+          subspecies = create_subspecies 'Atta robustus emeryii', genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            subfamily.name_cache, nil, 'Atta', nil, 'robustus', 'emeryii'
+            subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
 
         it "exports a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
-          atta = create_genus 'Atta', subfamily: nil, tribe: nil
-          species = create_species 'Atta robustus', subfamily: nil, genus: atta
-          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: atta, species: species
+          genus = create :genus, subfamily: nil, tribe: nil
+          species = create_species 'Atta robustus', subfamily: nil, genus: genus
+          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            'incertae_sedis', nil, 'Atta', nil, 'robustus', 'emeryii'
+            'incertae_sedis', nil, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
       end
@@ -395,7 +395,7 @@ describe Exporters::Antweb::ExportTaxon do
         skip "broke a long time ago"
 
         taxon = create :species, genus: genus, subgenus: subgenus
-        expect(export_taxon(taxon)[23]).to eq 'Atta'
+        expect(export_taxon(taxon)[23]).to eq genus.name_cache
       end
 
       it "handles a taxon's species" do
@@ -419,7 +419,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       it "handles a subspecies without a species" do
         taxon = create :subspecies, genus: genus, species: nil, subfamily: nil
-        expect(export_taxon(taxon)[23]).to eq 'Atta'
+        expect(export_taxon(taxon)[23]).to eq genus.name_cache
       end
     end
   end
