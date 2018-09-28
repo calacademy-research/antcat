@@ -22,7 +22,7 @@ describe TaxonDecorator::LinkEachEpithet do
     end
 
     context 'when taxon is a subspecies`' do
-      let(:taxon) { create_subspecies }
+      let(:taxon) { create :subspecies }
 
       context "when taxon has 2 epithets (standard modern subspecies name)" do
         it 'links the genus, species and subspecies' do
@@ -55,14 +55,14 @@ describe TaxonDecorator::LinkEachEpithet do
     end
 
     context 'when taxon has a non-conforming name`' do
-      let(:taxon) { create_subspecies }
+      let(:taxon) { create :subspecies }
 
       before { taxon.name.update nonconforming_name: true }
 
       it 'links the genus, and links the rest of the name to the taxon' do
         expect(described_class[taxon]).to eq(
           %(<a href="/catalog/#{taxon.genus.id}"><i>#{taxon.genus.name_cache}</i></a> ) +
-          %(<a href="/catalog/#{taxon.id}"><i>major minor</i></a>)
+          %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name.epithets}</i></a>)
         )
       end
     end

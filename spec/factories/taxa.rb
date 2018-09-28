@@ -76,7 +76,7 @@ FactoryBot.define do
     end
 
     factory :subspecies, class: Subspecies do
-      association :name, factory: :species_name
+      association :name, factory: :subspecies_name
       species
       genus
     end
