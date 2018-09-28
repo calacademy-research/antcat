@@ -20,12 +20,11 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        fisher1910b = create :reference, author_name: 'Fisher', citation_year: '1910b'
-        wheeler1874 = create :reference, author_name: 'Wheeler', citation_year: '1874'
-        fisher1910a = create :reference, author_name: 'Fisher', citation_year: '1910a'
+        one = create :reference, author_name: 'Fisher', citation_year: '1910b'
+        two = create :reference, author_name: 'Wheeler', citation_year: '1874'
+        three = create :reference, author_name: 'Fisher', citation_year: '1910a'
 
-        expect(described_class.order_by_author_names_and_year).
-          to eq [fisher1910a, fisher1910b, wheeler1874]
+        expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
     end
   end
