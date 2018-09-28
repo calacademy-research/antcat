@@ -70,11 +70,6 @@ FactoryBot.define do
       genus
     end
 
-    factory :species_group_taxon, class: SpeciesGroupTaxon do
-      association :name, factory: :species_name
-      genus
-    end
-
     factory :species, class: Species do
       association :name, factory: :species_name
       genus

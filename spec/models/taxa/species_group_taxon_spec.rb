@@ -7,7 +7,7 @@ describe SpeciesGroupTaxon do
     genus = create :genus
     expect(genus.subfamily).not_to be_nil
 
-    taxon = create :species_group_taxon, genus: genus, subfamily: nil
+    taxon = create :species, genus: genus, subfamily: nil
     expect(taxon.subfamily).to eq genus.subfamily
   end
 
