@@ -372,8 +372,7 @@ describe Exporters::Antweb::ExportTaxon do
       let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
 
       it "doesn't punt on a subfamily's family" do
-        taxon = create :subfamily
-        expect(export_taxon(taxon)[23]).to eq 'Formicidae'
+        expect(export_taxon(subfamily)[23]).to eq 'Formicidae'
       end
 
       it "handles a taxon's subfamily" do
@@ -399,17 +398,17 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       it "handles a taxon's species" do
-        taxon = create :subspecies, species: species, genus: genus, subfamily: subfamily
+        taxon = create :subspecies, species: species
         expect(export_taxon(taxon)[23]).to eq 'Atta betta'
       end
 
       it "handles a synonym" do
-        senior = create_genus 'Eciton', subfamily: subfamily
-        junior = create :genus, :synonym, subfamily: subfamily, current_valid_taxon: senior
+        senior = create :genus
+        junior = create :genus, :synonym, current_valid_taxon: senior
         taxon = create :species, genus: junior
         create :synonym, senior_synonym: senior, junior_synonym: junior
 
-        expect(export_taxon(taxon)[23]).to eq 'Eciton'
+        expect(export_taxon(taxon)[23]).to eq senior.name_cache
       end
 
       it "handles a genus without a subfamily" do
@@ -418,7 +417,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       it "handles a subspecies without a species" do
-        taxon = create :subspecies, genus: genus, species: nil, subfamily: nil
+        taxon = create :subspecies, genus: genus, species: nil
         expect(export_taxon(taxon)[23]).to eq genus.name_cache
       end
     end

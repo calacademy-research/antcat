@@ -16,7 +16,7 @@ describe BreadcrumbsHelper do
 
       specify do
         ranks.each do |rank|
-          taxon = send "create_#{rank}"
+          taxon = create rank
           expect(helper.taxon_breadcrumb_link(taxon)).
             to eq %(<a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a>)
         end
@@ -28,7 +28,7 @@ describe BreadcrumbsHelper do
 
       specify do
         ranks.each do |rank|
-          taxon = send "create_#{rank}"
+          taxon = create rank
           expect(helper.taxon_breadcrumb_link(taxon)).
             to eq %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>)
         end
