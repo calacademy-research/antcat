@@ -35,18 +35,18 @@ describe Taxon do
     end
 
     describe ".self_join_on" do
-      let!(:atta) { create :genus, fossil: true }
-      let!(:atta_major) { create :species, genus: atta }
+      let!(:genus) { create :genus, fossil: true }
+      let!(:species) { create :species, genus: genus }
 
       it "handles self-referential condition" do
-        extant_with_fossil_parent = described_class.self_join_on(:genus).
-          where(fossil: false, taxa_self_join_alias: { fossil: true })
-        expect(extant_with_fossil_parent.count).to eq 1
-        expect(extant_with_fossil_parent.first).to eq atta_major
+        query = -> do
+          described_class.self_join_on(:genus).
+            where(fossil: false, taxa_self_join_alias: { fossil: true })
+        end
 
-        # Make sure test case isn't playing tricks with us.
-        atta.update_columns fossil: false
-        expect(extant_with_fossil_parent.count).to eq 0
+        expect(query.call).to eq [species]
+        genus.update fossil: false
+        expect(query.call).to eq []
       end
     end
 
@@ -168,14 +168,6 @@ describe Taxon do
   end
 
   describe "#author_citation" do
-    it "delegates to the protonym" do
-      genus = build_stubbed :genus
-      expect_any_instance_of(Reference).
-        to receive(:keey_without_letters_in_year).and_return 'Bolton 2005'
-
-      expect(genus.author_citation).to eq 'Bolton 2005'
-    end
-
     context "when a recombination in a different genus" do
       let(:species) { create_species 'Atta minor' }
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
@@ -198,16 +190,6 @@ describe Taxon do
 
         expect(species.protonym).to receive(:name).and_return protonym_name
         expect(species.author_citation).to eq 'Bolton, 2005'
-      end
-    end
-
-    context "when there isn't a protonym authorship" do
-      let(:species) { create_species }
-      let(:protonym_name) { create :subspecies_name }
-
-      it "handles it" do
-        expect(species.protonym).to receive(:authorship).and_return nil
-        expect(species.author_citation).to be_nil
       end
     end
   end

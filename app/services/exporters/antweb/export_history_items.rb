@@ -1,7 +1,6 @@
 class Exporters::Antweb::ExportHistoryItems
-  include ERB::Util
-  include ActionView::Helpers::TagHelper
-  include ActionView::Context
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Context # For `#content_tag`.
   include ApplicationHelper
   include Service
 

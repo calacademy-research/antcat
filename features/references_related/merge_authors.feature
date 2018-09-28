@@ -4,13 +4,14 @@ Feature: Merging authors
   So that they are correct
 
   Background:
-    Given the following names exist for an author
+    Given I am logged in
+    And the following names exist for an author
       | Bolton, B. |
       | Bolton,B.  |
     And these references exist
-      | authors    | title          | year | citation   |
-      | Bolton, B. | Annals of Ants | 2010 | Psyche 1:1 |
-      | Bolton,B.  | More ants      | 2011 | Psyche 2:2 |
+      | author     | title          |
+      | Bolton, B. | Annals of Ants |
+      | Bolton,B.  | More ants      |
     And the following names exist for another author
       | Fisher, B. |
     And I go to the merge authors page
@@ -47,16 +48,8 @@ Feature: Merging authors
     And I should not see "Bolton, B."
 
   Scenario: Merging
-    Given I am logged in
-
-    When I go to the merge authors page
-    And I search for "Bolton, B." in the author panel
+    When I search for "Bolton, B." in the author panel
     And I search for "Fisher, B." in another author panel
     And I merge the authors
     Then I should see "Bolton, B." in the first author panel
     And I should see "Fisher, B." in the first author panel
-
-  Scenario: Not logged in - can't merge
-    When I search for "Bolton, B." in the author panel
-    And I search for "Fisher, B." in another author panel
-    Then I should not be able to merge the authors

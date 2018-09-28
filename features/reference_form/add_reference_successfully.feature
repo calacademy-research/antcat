@@ -30,8 +30,8 @@ Feature: Add reference
   @javascript
   Scenario: Adding a nested reference
     Given this reference exists
-      | author     | title          | year | citation   |
-      | Ward, P.S. | Annals of Ants | 2010 | Psyche 1:1 |
+      | author     | title          | citation_year | citation   |
+      | Ward, P.S. | Annals of Ants | 2010          | Psyche 1:1 |
 
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"

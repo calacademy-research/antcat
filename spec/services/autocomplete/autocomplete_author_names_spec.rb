@@ -1,36 +1,34 @@
 require "spec_helper"
 
 describe Autocomplete::AutocompleteAuthorNames do
-  let(:author) { Author.create! }
+  let(:author) { create :author }
 
   describe "#call" do
     it "matches by prefix" do
-      bolton = AuthorName.create! name: 'Bolton', author: author
-      AuthorName.create! name: 'Fisher', author: author
+      bolton = create :author_name, name: 'Bolton', author: author
+      create :author_name, name: 'Fisher', author: author
 
       expect(described_class['bol']).to eq [bolton.name]
     end
 
     it "matches substrings" do
-      bolton = AuthorName.create! name: 'Bolton', author: author
-      AuthorName.create! name: 'Fisher', author: author
+      bolton = create :author_name, name: 'Bolton', author: author
+      create :author_name, name: 'Fisher', author: author
 
       expect(described_class['ol']).to eq [bolton.name]
     end
 
     it "returns authors in order of most recently used" do
-      ['Never Used', 'Recent', 'Old', 'Most Recent'].each do |name|
-        AuthorName.create! name: name, author: author
-      end
-      reference = create :reference, author_names: [AuthorName.find_by(name: 'Most Recent')]
-      ReferenceAuthorName.create! created_at: 5.seconds.ago,
-        author_name: AuthorName.find_by(name: 'Recent'),
-        reference: reference
-      ReferenceAuthorName.create! created_at: 10.seconds.ago,
-        author_name: AuthorName.find_by(name: 'Old'),
-        reference: reference
+      never_used =  create :author_name, author: author
+      recent =      create :author_name, author: author
+      old =         create :author_name, author: author
+      most_recent = create :author_name, author: author
 
-      expect(described_class[]).to eq ['Most Recent', 'Recent', 'Old', 'Never Used']
+      reference = create :reference, author_names: [most_recent]
+      create :reference_author_name, created_at: 5.seconds.ago, author_name: recent, reference: reference
+      create :reference_author_name, created_at: 10.seconds.ago, author_name: old, reference: reference
+
+      expect(described_class[]).to eq [most_recent.name, recent.name, old.name, never_used.name]
     end
   end
 end

@@ -27,6 +27,8 @@ class Exporters::Antweb::ExportHeadline
 
     attr_reader :taxon
 
+    delegate :headline_notes_taxt, to: :taxon
+
     def headline_protonym
       TaxonDecorator::HeadlineProtonym[taxon, for_antweb: true]
     end
@@ -40,8 +42,8 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def headline_notes
-      return if taxon.headline_notes_taxt.blank?
-      TaxtPresenter[taxon.headline_notes_taxt].to_antweb
+      return if headline_notes_taxt.blank?
+      TaxtPresenter[headline_notes_taxt].to_antweb
     end
 
     def link_to_antcat

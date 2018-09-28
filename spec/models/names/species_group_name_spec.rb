@@ -1,20 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesGroupName do
-  subject { SpeciesName.new name: 'Atta major', epithet: 'major' }
-
-  describe "#genus_epithet" do
-    it "knows its genus epithet" do
-      expect(subject.genus_epithet).to eq 'Atta'
-    end
-  end
-
-  describe "#species_epithet" do
-    it "knows its species epithet" do
-      expect(subject.species_epithet).to eq 'major'
-    end
-  end
-
   describe ".name_for_new_comb" do
     let(:species) { create_species "Lasius cactusia" }
 
@@ -46,7 +32,7 @@ describe SpeciesGroupName do
       let(:new_comb_parent) { create(:subfamily) } # uncombinable_parent
       let(:old_comb) { species }
 
-      it "raises " do
+      specify do
         expect { described_class.name_for_new_comb old_comb, new_comb_parent }.
           to raise_error /uncombinable/
       end

@@ -9,7 +9,8 @@ describe Exporters::Antweb::InlineCitation do
       title: "*Atta*",
       journal: create(:journal, name: 'Science'),
       series_volume_issue: '(1)',
-      pagination: '3'
+      pagination: '3',
+      doi: "10.10.1038/nphys1170"
   end
 
   before { allow(reference).to receive(:url).and_return 'example.com' }
@@ -23,7 +24,7 @@ describe Exporters::Antweb::InlineCitation do
           expect(described_class[reference]).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
-            %( <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>)
+            %( <a href="http://dx.doi.org/#{reference.doi}">#{reference.doi}</a>)
           )
         end
       end
@@ -35,23 +36,18 @@ describe Exporters::Antweb::InlineCitation do
           expect(described_class[reference]).to eq(
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
-            %( <a href="http://dx.doi.org/10.10.1038/nphys1170">10.10.1038/nphys1170</a>) +
+            %( <a href="http://dx.doi.org/#{reference.doi}">#{reference.doi}</a>) +
             %( <a href="example.com">PDF</a>)
           )
         end
       end
     end
 
-    describe "Handling quotes in the title" do
-      let(:reference) do
-        create :unknown_reference, author_names: [latreille],
-          citation_year: '1809', title: '"Atta"'
-      end
+    describe "handling quotes in the title" do
+      let(:reference) { create :unknown_reference, title: '"Atta"' }
 
       it "escapes them" do
-        expect(described_class[reference]).to eq(
-          %(<a title="Latreille, P. A. 1809. &quot;Atta&quot;. New York." href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>)
-        )
+        expect(described_class[reference]).to include " &quot;Atta&quot;"
       end
     end
   end

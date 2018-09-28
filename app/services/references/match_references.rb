@@ -25,10 +25,11 @@ module References
       end
 
       def candidates
-        return [] unless target.principal_author_last_name_cache
+        return [] unless target.principal_author_last_name
 
-        target_author = target.principal_author_last_name_cache
-        Reference.where(principal_author_last_name_cache: target_author)
+        target_author = target.principal_author_last_name
+        Reference.joins(:author_names).where(reference_author_names: { position: 1 }).
+          where("author_names.name LIKE ?", "#{target_author}%")
       end
 
       def possible_match? candidate

@@ -7,14 +7,14 @@ class Publisher < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
-  def self.create_with_place(name:, place_name:)
-    return if name.blank?
-    find_or_create_by!(name: name, place_name: place_name)
-  end
-
-  def self.create_with_place_form_string string
+  def self.create_form_string string
     parts = Parsers::PublisherParser.parse string
-    create_with_place parts[:publisher] if parts
+    return unless parts
+
+    name = parts[:publisher][:name]
+    place_name = parts[:publisher][:place_name]
+
+    find_or_create_by!(name: name, place_name: place_name)
   end
 
   def display_name

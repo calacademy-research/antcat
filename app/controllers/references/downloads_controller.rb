@@ -1,5 +1,3 @@
-# TODO this is possibly not used.
-
 module References
   class DownloadsController < ApplicationController
     def show

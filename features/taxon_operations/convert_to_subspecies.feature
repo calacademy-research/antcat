@@ -20,9 +20,7 @@ Feature: Converting a species to a subspecies
 
     When I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
-
-    When I go to the edit page for "Camponotus alii dallatorei"
-    Then I should see "subspecies of Camponotus alii"
+    And "Camponotus alii dallatorei" should be of the rank of "subspecies"
 
   @javascript
   Scenario: Converting a species to a subspecies when it already exists

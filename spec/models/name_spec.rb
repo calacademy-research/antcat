@@ -23,9 +23,7 @@ describe Name do
   end
 
   describe "#set_taxon_caches" do
-    let!(:atta_name) { find_or_create_name 'Atta' }
-
-    before { atta_name.update_attribute :name_html, '<i>Atta</i>' }
+    let!(:atta_name) { create :genus_name, name: 'Atta' }
 
     context 'when name is assigned to a taxon' do
       let!(:taxon) { create_genus 'Eciton' }
@@ -55,16 +53,11 @@ describe Name do
     end
 
     context 'when a different name is assigned' do
-      let!(:betta_name) { find_or_create_name 'Betta' }
+      let!(:betta_name) { create :genus_name, name: 'Betta' }
       let!(:taxon) { create :genus, name: atta_name }
 
-      before do
-        betta_name.update_attribute :name_html, '<i>Betta</i>'
-        taxon.update_attribute :name, betta_name
-      end
-
       it "changes the cache" do
-        taxon.update_attribute :name, betta_name
+        taxon.update name: betta_name
         expect(taxon.name_cache).to eq 'Betta'
         expect(taxon.name_html_cache).to eq '<i>Betta</i>'
       end

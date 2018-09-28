@@ -1,11 +1,9 @@
 require 'spec_helper'
 
 describe Taxa::CallbacksAndValidations do
-  include RefactorTaxonFactoriesHelpers
-
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
     context "when creating a taxon" do
-      let(:taxon) { build_minimal_family }
+      let(:taxon) { build :family }
 
       it "creates a taxon_state" do
         expect(taxon.taxon_state).to be nil
@@ -15,47 +13,37 @@ describe Taxa::CallbacksAndValidations do
 
       it "sets the review_status to 'waiting'" do
         taxon.save
-        expect(taxon).to be_waiting
+        expect(taxon.waiting?).to be true
       end
     end
 
     context "when updating" do
-      let(:taxon) { an_old_taxon }
-
-      it "tests tests and makes sure Workflow is in sync" do
-        expect(taxon.taxon_state.review_state).to eq TaxonState::OLD
-        expect(taxon).not_to be_waiting
-
-        taxon.save_initiator = true
-        taxon.save
-
-        expect(taxon.taxon_state.review_state).to eq TaxonState::WAITING
-        expect(taxon).to be_waiting
-      end
+      let(:taxon) { create :family, :old }
 
       context "when it `save_initiator`" do
         it "sets the review_status to 'waiting'" do
           taxon.save_initiator = true
-          taxon.save
-          expect(taxon).to be_waiting
+          expect { taxon.save }.to change { taxon.waiting? }.to true
         end
 
         it "doesn't cascade" do
-          family, subfamily = old_family_and_subfamily
+          family = create :family, :old
+          subfamily = create :subfamily, :old, family: family
+
+          expect(family.waiting?).to be false
+          expect(subfamily.waiting?).to be false
 
           family.save_initiator = true
           family.save
 
-          expect(family).to be_waiting
-          expect(subfamily).not_to be_waiting
+          expect(family.waiting?).to be true
+          expect(subfamily.waiting?).to be false
         end
       end
 
       context "when it not `save_initiator`" do
         it "doesn't change the review state" do
-          expect(taxon).to be_old
-          taxon.save
-          expect(taxon).to be_old
+          expect { taxon.save }.to_not change { taxon.old? }
         end
       end
     end
@@ -67,8 +55,8 @@ describe Taxa::CallbacksAndValidations do
     context "when a generated taxon" do
       it "removes 'auto_generated' flags from things" do
         # Setup.
-        taxon = minimal_family
-        another_taxon = minimal_family
+        taxon = create :family
+        another_taxon = create :family
         synonym = create :synonym, senior_synonym: taxon, junior_synonym: another_taxon
 
         actors = [taxon, taxon.name, synonym]
@@ -86,7 +74,8 @@ describe Taxa::CallbacksAndValidations do
 
       it "doesn't cascade" do
         # Setup.
-        family, subfamily = old_family_and_subfamily
+        family = create :family
+        subfamily = create :subfamily, family: family
 
         actors = [family, subfamily, family.name, subfamily.name]
         mark_as_auto_generated actors
@@ -108,9 +97,9 @@ describe Taxa::CallbacksAndValidations do
   # TODO improve "expect_any_instance_of" etc.
   describe "#save_children" do
     let!(:species) { create :species }
-    let!(:genus) { Taxon.find species.genus.id }
-    let!(:tribe) { Taxon.find genus.tribe.id }
-    let!(:subfamily) { Taxon.find species.subfamily.id }
+    let!(:genus) { species.genus }
+    let!(:tribe) { genus.tribe }
+    let!(:subfamily) { species.subfamily }
 
     context "when taxon is not the `save_initiator`" do
       it "doesn't save the children" do
@@ -120,8 +109,8 @@ describe Taxa::CallbacksAndValidations do
 
         # But not its children.
         [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
           expect_any_instance_of(klass).not_to receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
         end
 
         subfamily.save
@@ -130,43 +119,33 @@ describe Taxa::CallbacksAndValidations do
 
     context "when taxon is the `save_initiator`" do
       it "saves the children" do
-        # All children should be saved, and their children too.
-        [Subfamily, Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).to receive(:save_children).and_call_original
-          expect_any_instance_of(klass).to receive(:save).and_call_original
-        end
+        # Save these:
+        expect_any_instance_of(Genus).to receive(:save).and_call_original
+        expect_any_instance_of(Genus).to receive(:save_children).and_call_original
 
-        # But not the family.
-        expect_any_instance_of(Family).not_to receive(:save_children).and_call_original
+        expect_any_instance_of(Species).to receive(:save).and_call_original
+        expect_any_instance_of(Species).to receive(:save_children).and_call_original
 
-        subfamily.save_initiator = true
-        subfamily.save
-      end
-
-      it "doesn't save unrelated taxa" do
-        another_subfamily = minimal_subfamily
-
-        expect(another_subfamily).to receive(:save).and_call_original
-        expect(subfamily).not_to receive(:save).and_call_original
-
-        [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
+        # Should not be saved:
+        [Family, Subfamily, Tribe].each do |klass|
           expect_any_instance_of(klass).not_to receive(:save).and_call_original
+          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
         end
 
-        another_subfamily.save_initiator = true
-        another_subfamily.save
+        genus.save_initiator = true
+        genus.save
       end
 
       it "never recursively saves children of families" do
-        family = minimal_family
+        family = create :family
 
         family.save_initiator = true
-        expect(family.save_children).to be nil
+        family.save
 
-        # Confirm test isn't borked.
-        subfamily.save_initiator = true
-        expect(subfamily.save_children).not_to be nil
+        expect(family.children).to eq [subfamily]
+        expect_any_instance_of(Family).to_not receive(:children)
+        expect_any_instance_of(Subfamily).to_not receive(:save)
+        expect_any_instance_of(Subfamily).to_not receive(:save_children)
       end
     end
   end
@@ -177,7 +156,7 @@ describe Taxa::CallbacksAndValidations do
 
   describe "#delete_synonyms" do
     let(:senior) { create :family }
-    let(:junior) { create :family, :synonym }
+    let(:junior) { create :family, :synonym, current_valid_taxon: senior }
 
     before { create :synonym, junior_synonym: junior, senior_synonym: senior }
 
@@ -202,6 +181,7 @@ describe Taxa::CallbacksAndValidations do
         context "when status was changed from 'synonym'" do
           it "destroys all synonyms where it's the junior" do
             junior.status = Status::VALID
+            junior.current_valid_taxon = nil
 
             expect { junior.save! }.to change { Synonym.count }.by -1
             expect(senior.junior_synonyms.count).to eq 0
@@ -225,21 +205,56 @@ describe Taxa::CallbacksAndValidations do
   end
 
   describe "#current_valid_taxon_validation" do
-    context "when a valid taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, current_valid_taxon: create(:family) }
+    context "when taxon has a `#current_valid_taxon`" do
+      let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
 
-      specify do
-        taxon.valid?
-        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+      context 'when status is "valid"' do
+        let(:status) { Status::VALID }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+        end
+      end
+
+      context 'when status is "unavailable"' do
+        let(:status) { Status::UNAVAILABLE }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+        end
       end
     end
 
-    context "when an  taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, :unavailable, current_valid_taxon: create(:family) }
+    context "when taxon has no `#current_valid_taxon`" do
+      let(:taxon) { build :family, status: status }
 
-      specify do
-        taxon.valid?
-        expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+      context 'when status is "synonym"' do
+        let(:status) { Status::SYNONYM }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for synonyms"])
+        end
+      end
+
+      context 'when status is "original_combination"' do
+        let(:status) { Status::ORIGINAL_COMBINATION }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for original combinations"])
+        end
+      end
+
+      context 'when status is "obsolete_combination"' do
+        let(:status) { Status::OBSOLETE_COMBINATION }
+
+        specify do
+          taxon.valid?
+          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for obsolete combinations"])
+        end
       end
     end
   end

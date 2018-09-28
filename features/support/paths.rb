@@ -39,8 +39,6 @@ module NavigationHelpers
       references_path
     when /^the latest reference additions page$/
       references_latest_additions_path
-    when /^the page for that reference$/
-      reference_path(@reference || Reference.first)
     when /^the page of the most recent reference$/
       reference_path(Reference.last)
     when /^the edit page for the most recent reference$/

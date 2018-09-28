@@ -7,8 +7,8 @@ Feature: Changes
   @javascript @search @papertrail @no_travis
   Scenario: Adding a taxon and seeing it on the Changes page
     Given this reference exist
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | author | citation   | title | citation_year |
+      | Fisher | Psyche 3:3 | Ants  | 2004          |
     And there is a subfamily "Formicinae"
     And there is a genus "Eciton"
 

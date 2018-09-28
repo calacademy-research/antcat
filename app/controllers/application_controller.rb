@@ -5,7 +5,6 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
 
-  # CORS protection defeat - we're read only.
   skip_before_action :verify_authenticity_token
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
@@ -22,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_for_paper_trail
-    current_user.try :id
+    current_user&.id
   end
 
   def root_redirect_for_active_admin _exception

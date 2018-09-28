@@ -1,0 +1,20 @@
+-@title = "Move items - select target"
+-breadcrumb :move_items_select_target, @taxon
+
+-content_for :head do
+  =javascript_include_tag "taxon_select"
+
+=form_tag taxa_move_items_path, method: :get do
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Move items from
+        =@taxon.decorate.id_and_name_and_author_citation
+
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend to
+        =taxon_select_tag :to_taxon_id, params[:to_taxon_id]
+        %br
+        =button_tag type: "submit", class: "btn-normal has-spinner" do
+          =spinner_icon + "Select..."

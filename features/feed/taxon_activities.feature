@@ -3,14 +3,16 @@ Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @search
+  # TODO this fails a lot Travis due to
+  # `ActiveRecord::ConnectionTimeoutError: could not obtain a connection from the pool within 5.000 seconds`.
+  @javascript @search @no_travis
   Scenario: Added taxon (with edit summary)
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
       And there is a genus "Eciton"
       And this reference exists
-        | authors | citation   | title | year |
-        | Fisher  | Psyche 3:3 | Ants  | 2004 |
+        | author | citation_year |
+        | Fisher | 2004          |
     And activity tracking is enabled
 
     When I go to the catalog page for "Formicinae"

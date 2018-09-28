@@ -17,14 +17,6 @@ Feature: Using the catalog
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
-
-  Scenario: Seeing the family when it's been explicitly requested
-    When I go to the catalog page for "Formicidae"
-    Then I should see "Formicidae" in the taxon description
-    And I should see "valid" in the taxon description
-    And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
-    And I should see "Fossil: 1 valid genus"
-    And I should see "Subfamily of Formicidae: Dolichoderinae."
     And the page title should have "Formicidae" in it
 
   Scenario: Selecting a subfamily
@@ -88,11 +80,10 @@ Feature: Using the catalog
   Scenario: Displaying items containing broken taxt links
     Given I am logged in
     And there is a genus "Atta"
-    And Atta has a history section item with two linked references, of which one does not exists
+    And Atta has a history item with a broken link
 
     When I go to the catalog page for "Atta"
-    Then I should see "Batiatus, 2000"
-    And I should see "CANNOT FIND REFERENCE WITH ID 99999"
+    Then I should see "CANNOT FIND REFERENCE WITH ID 99999"
 
     When I follow "Search history?"
     Then the "item_id" field should contain "99999"

@@ -1,13 +1,13 @@
 require 'spec_helper'
 
 describe Subfamily do
-  let(:subfamily) { create :subfamily, name: create(:subfamily_name, name: 'Dolichoderinae') }
+  let(:subfamily) { create :subfamily }
 
   it "can have tribes, which are its children" do
-    attini = create :tribe, name: create(:name, name: 'Attini'), subfamily: subfamily
-    dacetini = create :tribe, name: create(:name, name: 'Dacetini'), subfamily: subfamily
+    tribe = create :tribe, subfamily: subfamily
+    other_tribe = create :tribe, subfamily: subfamily
 
-    expect(subfamily.tribes).to eq [attini, dacetini]
+    expect(subfamily.tribes).to eq [tribe, other_tribe]
     expect(subfamily.tribes).to eq subfamily.children
   end
 

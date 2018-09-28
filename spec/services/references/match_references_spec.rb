@@ -8,9 +8,9 @@ describe References::MatchReferences do
       and_return(reference_similarity)
   end
 
-  describe "#match" do
-    let!(:match) { create_match 'Ward' }
-    let(:target) { build_target 'Ward' }
+  describe "#call" do
+    let!(:match) { create :reference, author_name: 'Ward, P.S.' }
+    let(:target) { create :reference, author_name: 'Ward' }
 
     context "when an obvious mismatch" do
       before { expect(reference_similarity).to receive(:call).and_return(0.00) }
@@ -31,8 +31,8 @@ describe References::MatchReferences do
     end
 
     context "with an author last name with an apostrophe in it (regression)" do
-      let!(:match) { create_match "Arnol'di, G." }
-      let(:target) { build_target "Arnol'di" }
+      let!(:match) { create :reference, author_name: "Arnol'di, G." }
+      let(:target) { create :reference, author_name: "Arnol'di" }
 
       before { expect(reference_similarity).to receive(:call).and_return(0.10) }
 
@@ -42,16 +42,5 @@ describe References::MatchReferences do
         ]
       end
     end
-  end
-
-  def create_match author_name_name
-    author_name = create :author_name, name: author_name_name
-    create :reference, author_names: [author_name]
-  end
-
-  def build_target principal_author_last_name_cache
-    target = Reference.new
-    target.principal_author_last_name_cache = principal_author_last_name_cache
-    target
   end
 end

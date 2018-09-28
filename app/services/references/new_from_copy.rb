@@ -40,7 +40,7 @@ module References
 
       def basic_fields_and_notes
         [
-          :author_names_string,
+          :author_names_string_cache,
           :citation_year,
           :title,
           :pagination,

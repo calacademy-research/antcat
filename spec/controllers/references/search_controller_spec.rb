@@ -4,7 +4,7 @@ describe References::SearchController do
   describe "GET index" do
     describe "search terms matching ids" do
       context "when reference exists" do
-        let!(:reference) { reference_factory author_name: 'E.O. Wilson', id: 99999 }
+        let!(:reference) { create :article_reference, id: 99999 }
 
         it "redirects to #show" do
           get :index, params: { reference_q: reference.id }

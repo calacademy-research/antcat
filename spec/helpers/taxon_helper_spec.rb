@@ -21,58 +21,6 @@ describe TaxonHelper do
     end
   end
 
-  describe "#taxon_name_description" do
-    it "handles subfamilies" do
-      subfamily = build_stubbed :subfamily
-      expect(helper.taxon_name_description(subfamily)).to eq 'subfamily'
-    end
-
-    it "handles genera" do
-      subfamily = build_stubbed :subfamily
-      genus = create :genus, subfamily: subfamily, tribe: nil
-      expect(helper.taxon_name_description(genus)).to eq "genus of #{subfamily.name.name}"
-    end
-
-    it "handles genera without a subfamily" do
-      genus = create :genus, subfamily: nil, tribe: nil
-      expect(helper.taxon_name_description(genus)).to eq "genus of (no subfamily)"
-    end
-
-    it "handles genera with a tribe" do
-      tribe = create :tribe
-      genus = create :genus, tribe: tribe
-      expect(helper.taxon_name_description(genus)).to eq "genus of #{tribe.name.name}"
-    end
-
-    it "handles new genera" do
-      subfamily = build_stubbed :subfamily
-      genus = build :genus, subfamily: subfamily, tribe: nil
-      expect(helper.taxon_name_description(genus)).to eq "new genus of #{subfamily.name.name}"
-    end
-
-    it "handles new species" do
-      genus = create :genus
-      species = build :species, genus: genus
-      expect(helper.taxon_name_description(species)).to eq "new species of <i>#{genus.name.name}</i>"
-    end
-
-    it "handles subspecies" do
-      species = build :species
-      subspecies = build :subspecies, species: species
-      expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of <i>#{species.name.name}</i>"
-    end
-
-    it "handles subspecies without a species" do
-      subspecies = build :subspecies, species: nil
-      expect(helper.taxon_name_description(subspecies)).to eq "new subspecies of (no species)"
-    end
-
-    it "is html_safe" do
-      taxon = create :family
-      expect(helper.taxon_name_description(taxon)).to be_html_safe
-    end
-  end
-
   describe "#taxon_change_history" do
     it "shows nothing for old taxa" do
       taxon = create :genus

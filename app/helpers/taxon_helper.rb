@@ -28,36 +28,14 @@ module TaxonHelper
   end
 
   def taxon_name_description taxon
-    string =
-      case taxon
-      when Subfamily
-        "subfamily"
-      when Tribe
-        parent = taxon.subfamily
-        "tribe of " << (parent ? parent.name.to_html : '(no subfamily)')
-      when Genus
-        parent = taxon.tribe || taxon.subfamily
-        "genus of " << (parent ? parent.name.to_html : '(no subfamily)')
-      when Species
-        "species of " << taxon.parent.name.to_html
-      when Subgenus
-        "subgenus of " << taxon.genus.name.to_html
-      when Subspecies
-        parent = taxon.species
-        "subspecies of " << (parent ? parent.name.to_html : '(no species)')
-      else
-        ''
-      end
+    return unless taxon.new_record?
 
-    if taxon.unresolved_homonym? && taxon.new_record?
-      string = " secondary junior homonym of #{string}"
-    elsif taxon.collision_merge_id.present? && taxon.new_record?
-      target_taxon = Taxon.find_by(id: taxon.collision_merge_id)
-      string = " merge back into original #{target_taxon.name_html_cache}"
+    if taxon.unresolved_homonym?
+      "new secondary junior homonym of #{taxon.parent.name_html_cache}".html_safe
+    elsif params[:collision_resolution].present?
+      target_taxon = Taxon.find_by(id: params[:collision_resolution])
+      "new merge back into original #{target_taxon.name_html_cache}".html_safe
     end
-
-    string = "new #{string}" if taxon.new_record?
-    string.html_safe
   end
 
   def taxon_change_history taxon

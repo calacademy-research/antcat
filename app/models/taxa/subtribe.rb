@@ -1,6 +1,7 @@
+# NOTE The are 8 `SubtribeName`s in the db, but no `Subtribe`s.
+
 class Subtribe < Taxon
   def parent= _parent_taxon
-    # probably tribe...
     raise NotImplementedError, "currently we have no subtribes"
   end
 

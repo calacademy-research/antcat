@@ -8,5 +8,4 @@ end
 
 __END__
 description: See %github389.
-tags: [new!]
 topic_areas: [catalog]

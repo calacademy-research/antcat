@@ -17,7 +17,7 @@ module SiteNoticesHelper
     def most_recent_site_notice_already_dismissed? last_dismissed_id
       return false unless last_dismissed_id
 
-      last_site_notice_id = SiteNotice.last.try :id
+      last_site_notice_id = SiteNotice.last&.id
       return false unless last_site_notice_id # There are 0 notices in the database.
 
       last_site_notice_id <= last_dismissed_id

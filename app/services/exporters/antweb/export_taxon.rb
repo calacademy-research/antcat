@@ -1,11 +1,7 @@
-# TODO do not include in the top namespace.
-# rubocop:disable Style/MixinUsage
-include Exporters::Antweb::MonkeyPatchTaxon
-include ActionView::Helpers::TagHelper # For `#content_tag`.
-include ActionView::Context # For `#content_tag`.
-# rubocop:enable Style/MixinUsage
-
 class Exporters::Antweb::ExportTaxon
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Context # For `#content_tag`.
+
   HEADER =
     "antcat id\t"                + #  [0]
     "subfamily\t"                + #  [1]
@@ -39,12 +35,8 @@ class Exporters::Antweb::ExportTaxon
   private
 
     def export_taxon taxon
-      reference = taxon.protonym.authorship.reference
-      reference_id = reference.is_a?(MissingReference) ? nil : reference.id
-
-      parent_taxon = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
-      parent_name = parent_taxon.try(:name).try(:name)
-      parent_name ||= 'Formicidae'
+      authorship_reference = taxon.authorship_reference
+      parent = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
 
       attributes = {
         antcat_id:              taxon.id,
@@ -55,15 +47,15 @@ class Exporters::Antweb::ExportTaxon
         author_date:            taxon.author_citation,
         author_date_html:       authorship_html_string(taxon),
         original_combination?:  taxon.original_combination?,
-        original_combination:   original_combination(taxon).try(:name).try(:name),
-        authors:                author_last_names_string(taxon),
-        year:                   year(taxon) && year(taxon).to_s,
-        reference_id:           reference_id,
+        original_combination:   original_combination(taxon)&.name&.name,
+        authors:                authorship_reference.authors_for_keey,
+        year:                   authorship_reference.year_or_no_year,
+        reference_id:           authorship_reference.is_a?(MissingReference) ? nil : authorship_reference.id,
         biogeographic_region:   taxon.biogeographic_region,
         locality:               taxon.protonym.locality,
         rank:                   taxon.class.to_s,
         hol_id:                 taxon.hol_id,
-        parent:                 parent_name
+        parent:                 parent&.name&.name || 'Formicidae'
       }
 
       attributes[:current_valid_name] =
@@ -71,7 +63,7 @@ class Exporters::Antweb::ExportTaxon
           taxon.current_valid_taxon_including_synonyms.name.name
         end
 
-      convert_to_antweb_array taxon.add_antweb_attributes(attributes)
+      convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
     end
 
     def boolean_to_antweb boolean
@@ -117,28 +109,11 @@ class Exporters::Antweb::ExportTaxon
       "#{subfamily} #{current_valid_name}"
     end
 
-    # TODO rename.
-    def author_last_names_string taxon
-      reference = taxon.authorship_reference
-      return unless reference
-
-      reference.authors_for_keey
-    end
-
     def authorship_html_string taxon
       reference = taxon.authorship_reference
-      return unless reference
 
       plain_text = reference.decorate.plain_text
       content_tag :span, reference.keey, title: plain_text
-    end
-
-    # TODO rename.
-    def year taxon
-      reference = taxon.authorship_reference
-      return unless reference
-
-      reference.year_or_no_year
     end
 
     def original_combination taxon
@@ -152,23 +127,11 @@ class Exporters::Antweb::ExportTaxon
         content = ''.html_safe
         content << taxon.statistics(include_invalid: false)
         content << genus_species_header_notes_taxt(taxon)
-        content << export_headline(taxon)
-        content << export_history_items(taxon)
+        content << Exporters::Antweb::ExportHeadline[taxon]
+        content << Exporters::Antweb::ExportHistoryItems[taxon]
         content << taxon.child_lists(for_antweb: true)
-        content << export_reference_sections(taxon)
+        content << Exporters::Antweb::ExportReferenceSections[taxon]
       end
-    end
-
-    def export_headline taxon
-      Exporters::Antweb::ExportHeadline[taxon]
-    end
-
-    def export_history_items taxon
-      Exporters::Antweb::ExportHistoryItems[taxon]
-    end
-
-    def export_reference_sections taxon
-      Exporters::Antweb::ExportReferenceSections[taxon]
     end
 
     def genus_species_header_notes_taxt taxon

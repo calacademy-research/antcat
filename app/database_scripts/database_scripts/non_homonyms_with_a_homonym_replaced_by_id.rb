@@ -13,7 +13,7 @@ module DatabaseScripts
             markdown_taxon_link(taxon),
             taxon.status,
             markdown_taxon_link(taxon.homonym_replaced_by),
-            taxon.homonym_replaced_by.try(:status)
+            taxon.homonym_replaced_by.status
           ]
         end
       end

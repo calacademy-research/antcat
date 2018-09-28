@@ -1,18 +1,18 @@
 Given("there is a reference") do
-  @reference = create :article_reference
+  create :article_reference
 end
 
 Given("there is an article reference") do
-  @reference = create :article_reference
+  create :article_reference
 end
 
 Given("there is a book reference") do
-  @reference = create :book_reference
+  create :book_reference
 end
 
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
-    citation = hash.delete 'citation'
+    citation = hash.delete('citation') || "Psyche 1:1"
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     journal = create :journal, name: matches[1]
 
@@ -45,9 +45,7 @@ Given("there is a Giovanni reference") do
 end
 
 Given("there is a reference by Giovanni's brother") do
-  reference = create :article_reference,
-    citation_year: '1800',
-    title: "Giovanni's Brother's Favorite Ants"
+  reference = create :article_reference, title: "Giovanni's Brother's Favorite Ants"
 
   reference.update_column :id, 7778
   reference.author_names << create(:author_name, name: 'Giovanni, J.')
@@ -59,46 +57,34 @@ end
 
 def create_reference type, hash
   author = hash.delete 'author'
-  author_names =
-    if author
-      [create(:author_name, name: author)]
-    else
-      authors = hash.delete 'authors'
-      parsed_author_names = Parsers::AuthorParser.parse(authors)[:names]
-      author_names_suffix = Parsers::AuthorParser.parse(authors)[:suffix]
-      parsed_author_names.reduce([]) do |memo, author_name|
-        author_name = AuthorName.find_by(name: author_name) || create(:author_name, name: author_name)
-        memo << author_name
-      end
-    end
-
-  hash[:year] = hash.delete('year').to_i
-  hash[:citation_year] =
-    if hash[:citation_year].present?
-      hash.delete('citation_year').to_s
-    else
-      hash[:year].to_s
-    end
-
-  reference = create type, hash.merge(author_names: author_names, author_names_suffix: author_names_suffix)
-  @reference ||= reference
-  reference
+  author_name = if author
+                  AuthorName.find_by(name: author) || create(:author_name, name: author)
+                end
+  create type, hash.merge(author_names: [author_name])
 end
 
 Given("the following entry nests it") do |table|
   data = table.hashes.first
-  nestee_reference = @reference
-  @reference = NestedReference.create! title: data[:title],
-    author_names: [create(:author_name, name: data[:authors])],
-    citation_year: data[:year],
+  NestedReference.create! title: data[:title],
+    author_names: [create(:author_name, name: data[:author])],
+    citation_year: data[:citation_year],
     pages_in: data[:pages_in],
-    nesting_reference: nestee_reference
+    nesting_reference: Reference.last
+end
+
+Given("a Bolton-Fisher reference exists with the title {string}") do |title|
+  author_names = [
+    AuthorName.find_by(name: "Bolton, B."),
+    create(:author_name, name: "Fisher, B.")
+  ]
+  create :unknown_reference, author_names: author_names, title: title
 end
 
 Given("that the entry has a URL that's on our site") do
-  @reference.update_attribute :document, ReferenceDocument.create!
-  @reference.document.update file_file_name: '123.pdf',
-    url: "localhost/documents/#{@reference.document.id}/123.pdf"
+  reference = Reference.last
+  reference.update_attribute :document, ReferenceDocument.create!
+  reference.document.update file_file_name: '123.pdf',
+    url: "localhost/documents/#{reference.document.id}/123.pdf"
 end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
@@ -125,19 +111,11 @@ Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference.update_column :id, 50000
 end
 
-Given("there is a missing reference") do
-  create :missing_reference
-end
-
-Then("I should not see the missing reference") do
-  step 'I should not see "Adventures among Ants"'
-end
-
 def find_reference_by_keey keey
-  parts = keey.split ' '
+  parts = keey.split ','
   last_name = parts[0]
   year = parts[1]
-  Reference.find_by(principal_author_last_name_cache: last_name, year: year.to_i)
+  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
 end
 
 Given("the default reference is {string}") do |keey|
@@ -181,8 +159,9 @@ Then("nesting_reference_id should contain a valid reference id") do
 end
 
 Given("there is a taxon with that reference as its protonym's reference") do
-  taxon = create_genus
-  taxon.protonym.authorship.reference = @reference
+  reference = Reference.last
+  taxon = create :genus
+  taxon.protonym.authorship.reference = reference
   taxon.protonym.authorship.save!
 end
 

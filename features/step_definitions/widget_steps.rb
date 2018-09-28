@@ -30,5 +30,5 @@ end
 
 # Misc
 Given(/^there is a species name "([^"]*)"$/) do |name|
-  find_or_create_name name
+  create :genus_name, name: name
 end

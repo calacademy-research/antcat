@@ -17,6 +17,16 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::LinkEachEpithet[taxon]
   end
 
+  def id_and_name_and_author_citation
+    h.content_tag :span do
+      h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
+      h.concat " "
+      h.concat link_to_taxon
+      h.concat " "
+      h.concat h.content_tag(:small, author_citation, class: "gray")
+    end
+  end
+
   # Currently accepts very confusing arguments.
   # `include_invalid` tells `TaxonDecorator::Statistics` to remove
   # invalid taxa from the already generated hash of counts. This is the older method.

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe ReferenceDecorator do
   let(:nil_decorator) { described_class.new nil }
-  let(:author_name) { create :author_name, name: "Forel, A." }
 
   describe "#format_reference_document_link" do
     let!(:reference) { build_stubbed :reference }
@@ -15,33 +14,6 @@ describe ReferenceDecorator do
     it "creates a link" do
       expect(reference.decorate.format_reference_document_link).
         to eq '<a href="example.com">PDF</a>'
-    end
-  end
-
-  describe "#make_html_safe" do
-    def make_html_safe string
-      nil_decorator.send :make_html_safe, string
-    end
-
-    it "doesn't touch a string without HTML" do
-      expect(make_html_safe('string')).to eq 'string'
-    end
-
-    it "leaves italics alone" do
-      expect(make_html_safe('<i>string</i>')).to eq '<i>string</i>'
-    end
-
-    it "leaves quotes alone" do
-      expect(make_html_safe('"string"')).to eq '"string"'
-    end
-
-    it "returns an html_safe string" do
-      expect(make_html_safe('"string"')).to be_html_safe
-    end
-
-    it "escapes other HTML" do
-      expect(make_html_safe('<script>danger</script>')).
-        to eq '&lt;script&gt;danger&lt;/script&gt;'
     end
   end
 
@@ -60,23 +32,23 @@ describe ReferenceDecorator do
       end
 
       it "escapes the citation year" do
-        reference.update_attribute :citation_year, '<script>'
+        reference.update citation_year: '<script>'
         expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. &lt;script&gt;. Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
-        reference.update_attribute :title, '<script>'
+        reference.update title: '<script>'
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
       end
 
       it "escapes the title but leave the italics alone" do
-        reference.update_attribute :title, '*foo*<script>'
+        reference.update title: '*foo*<script>'
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
 
       it "escapes the date" do
-        reference.update_attribute :date, '1933>'
+        reference.update date: '1933>'
         expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
       end
@@ -102,21 +74,6 @@ describe ReferenceDecorator do
 
     it "handles missing dates" do
       check_format_date '', ''
-    end
-  end
-
-  describe "#format_italics" do
-    it "replaces asterisks with italics" do
-      results = nil_decorator.send :format_italics, "*Lasius* queen".html_safe
-      expect(results).to eq "<i>Lasius</i> queen"
-      expect(results).to be_html_safe
-    end
-
-    context "when string isn't html_safe" do
-      it "raises" do
-        expect { nil_decorator.send :format_italics, 'roman' }.
-          to raise_error "Can't call format_italics on an unsafe string"
-      end
     end
   end
 

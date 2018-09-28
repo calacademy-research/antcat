@@ -5,6 +5,8 @@ class ReferenceSection < ApplicationRecord
 
   belongs_to :taxon
 
+  validates :taxon, presence: true
+
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   has_primitive_search where: ->(search_type) { <<-SQL.squish }

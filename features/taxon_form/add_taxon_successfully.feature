@@ -2,8 +2,8 @@ Feature: Adding a taxon successfully
   Background:
     Given I am logged in
     And this reference exists
-      | authors | citation   | title | year |
-      | Fisher  | Psyche 3:3 | Ants  | 2004 |
+      | author | title | citation_year |
+      | Fisher | Ants  | 2004          |
     And there is a subfamily "Formicinae"
 
   @search @javascript
@@ -102,7 +102,7 @@ Feature: Adding a taxon successfully
     When I go to the catalog page for "Eciton"
     And I follow "Add species"
     Then I should be on the new taxon page
-    And I should see "new species of Eciton"
+    And I should see "Eciton › Add species"
 
     When I click the name field
     Then the name field should contain "Eciton "
@@ -129,8 +129,7 @@ Feature: Adding a taxon successfully
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
     And I follow "Add species"
     Then I should be on the new taxon page
-    And I should see "new species of "
-    And I should see "Dolichoderus (Subdolichoderus)"
+    And I should see "(Subdolichoderus) › Add species"
 
     When I click the name field
     Then the name field should contain "Dolichoderus (Subdolichoderus) "
@@ -152,7 +151,7 @@ Feature: Adding a taxon successfully
     When I go to the catalog page for "Eciton major"
     And I follow "Add subspecies"
     Then I should be on the new taxon page
-    And I should see "new subspecies of Eciton major"
+    And I should see "Eciton major › Add subspecies"
 
     When I click the name field
     Then the name field should contain "Eciton major "

@@ -1,8 +1,6 @@
 # TODO something. This is also used for the reference form (author search only).
 
 window.setupAdvancedAuthorAutocomplete = (selector) ->
-  return if AntCat.testing
-
   selector.autocomplete
     autoFocus: true
     minLength: 3

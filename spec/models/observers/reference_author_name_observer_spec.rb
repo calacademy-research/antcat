@@ -20,7 +20,7 @@ describe ReferenceAuthorNameObserver do
       expect(reference.plain_text_cache).not_to be_nil
 
       # Act and test.
-      reference.reference_author_names.first.update_attribute :position, 1000
+      reference.reference_author_names.first.update position: 1000
       reference.reload
       expect(reference.plain_text_cache).to be_nil
     end

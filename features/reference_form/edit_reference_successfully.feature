@@ -4,8 +4,8 @@ Feature: Edit reference successfully
 
   Scenario: Edit a reference
     Given this reference exists
-      | authors | citation   | title | year |
-      | authors | Psyche 5:3 | title | 2010 |
+      | author | citation   | title | citation_year |
+      | author | Psyche 5:3 | title | 2010          |
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
@@ -17,8 +17,8 @@ Feature: Edit reference successfully
   @javascript
   Scenario: Change a reference's type
     Given this reference exists
-      | authors    | title | citation   | year |
-      | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
+      | author     | title | citation   | citation_year |
+      | Fisher, B. | Ants  | Psyche 6:4 | 2010          |
 
     When I go to the edit page for the most recent reference
     And I follow "Book"
@@ -29,16 +29,16 @@ Feature: Edit reference successfully
 
   Scenario: See the correct tab initially (book reference)
     Given this book reference exists
-      | authors    | title | citation                | year |
-      | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010 |
+      | author     | title | citation                | citation_year |
+      | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010          |
 
     When I go to the edit page for the most recent reference
     Then the "Book" tab should be selected
 
   Scenario: See the correct tab initially (unknown reference)
     Given this unknown reference exists
-      | authors    | title | citation | year |
-      | Fisher, B. | Ants  | New York | 2010 |
+      | author     | title | citation | citation_year |
+      | Fisher, B. | Ants  | New York | 2010          |
 
     When I go to the edit page for the most recent reference
     Then the "Other" tab should be selected
@@ -53,11 +53,11 @@ Feature: Edit reference successfully
 
   Scenario: Edit a nested reference
     Given this reference exists
-      | authors    | citation   | year | title |
-      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
+      | author     | citation   | citation_year | title |
+      | Ward, P.S. | Psyche 5:3 | 2001          | Ants  |
     And the following entry nests it
-      | authors    | title            | year | pages_in |
-      | Bolton, B. | Ants are my life | 2001 | In:      |
+      | author     | title            | citation_year | pages_in |
+      | Bolton, B. | Ants are my life | 2001          | In:      |
 
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"

@@ -9,7 +9,15 @@ class Citation < ApplicationRecord
   has_one :protonym, foreign_key: :authorship_id # See note above.
 
   validates :reference, presence: true
+  validate :no_missing_references
 
   strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+
+  private
+
+    def no_missing_references
+      return unless reference.is_a? MissingReference
+      errors.add :reference, "cannot be a missing reference"
+    end
 end

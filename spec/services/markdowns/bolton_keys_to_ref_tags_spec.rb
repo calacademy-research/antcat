@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe Markdowns::BoltonKeysToRefTags do
   describe "#call" do
-    let!(:latreille) { reference_factory bolton_key: "Latreille 1802c", author_name: "no" }
+    let!(:latreille) { create :reference, bolton_key: "Latreille 1802c" }
 
     context "when content contains a matching reference" do
       specify { expect(described_class["Latreille, 1802c: 236;"]).to eq "{ref #{latreille.id}}: 236;" }
@@ -12,7 +12,7 @@ describe Markdowns::BoltonKeysToRefTags do
       end
 
       context "with ampersand in the key" do
-        let!(:agosti) { reference_factory bolton_key: "Agosti Wood 1987b", author_name: "no" }
+        let!(:agosti) { create :reference, bolton_key: "Agosti Wood 1987b" }
 
         specify do
           expect(described_class["Agosti & Wood, 1987b: 236"]).to eq "{ref #{agosti.id}}: 236"
@@ -20,7 +20,7 @@ describe Markdowns::BoltonKeysToRefTags do
       end
 
       context "with 'et al.' in the key" do
-        let!(:agosti) { reference_factory bolton_key: "Agosti et al. 1987b", author_name: "no" }
+        let!(:agosti) { create :reference, bolton_key: "Agosti et al. 1987b" }
 
         specify { expect(described_class["Agosti et al., 1987b: 236"]).to eq "{ref #{agosti.id}}: 236" }
       end
@@ -51,7 +51,7 @@ describe Markdowns::BoltonKeysToRefTags do
       end
 
       context "when both have matching Bolton keys on AntCat" do
-        let!(:fisher_et_al) { reference_factory bolton_key: "Fisher et al. 2002", author_name: "no" }
+        let!(:fisher_et_al) { create :reference, bolton_key: "Fisher et al. 2002" }
 
         specify { expect(described_class[content]).to eq "{ref #{latreille.id}}: 236; {ref #{fisher_et_al.id}}: 37" }
       end

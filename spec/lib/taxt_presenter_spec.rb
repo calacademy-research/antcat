@@ -19,14 +19,8 @@ describe TaxtPresenter do
 
   describe "#to_html" do
     describe "escaping input" do
-      xit "escapes its input" do
-        parsed = described_class['<script>'].to_html
-        expect(parsed).to eq '&lt;script&gt;'
-        expect(parsed).to be_html_safe
-      end
-
       it "doesn't escape already escaped input" do
-        reference = create :missing_reference, citation: 'Latreille, 1809 <script>'
+        reference = create :unknown_reference, citation: 'Latreille, 1809 <script>'
         expected = 'Latreille, 1809 &lt;script&gt;'
         expect(reference.decorate.expandable_reference).to include expected
         expect(described_class["{ref #{reference.id}}"].to_html).to include expected
@@ -61,8 +55,8 @@ describe TaxtPresenter do
 
     describe "nam tags (names)" do
       it "returns the HTML version of the name" do
-        name = create :subspecies_name, name_html: '<i>Atta major minor</i>'
-        expect(described_class["{nam #{name.id}}"].to_html).to eq '<i>Atta major minor</i>'
+        name = create :subspecies_name
+        expect(described_class["{nam #{name.id}}"].to_html).to eq name.to_html
       end
 
       context "when the name can't be found" do
@@ -80,17 +74,17 @@ describe TaxtPresenter do
 
     describe "tax tags (taxa)" do
       it "uses the HTML version of the taxon's name" do
-        genus = create :genus, name: create(:genus_name, name_html: '<i>Atta</i>')
-        expect(described_class["{tax #{genus.id}}"].to_html).
-          to eq %(<a href="/catalog/#{genus.id}"><i>Atta</i></a>)
+        taxon = create :genus
+        expect(described_class["{tax #{taxon.id}}"].to_html).
+          to eq %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>)
       end
 
       context "when the taxon is a fossil" do
-        let!(:genus) { create :genus, name: create(:genus_name, name_html: '<i>Atta</i>'), fossil: true }
+        let!(:taxon) { create :genus, fossil: true }
 
         it "includes the fossil symbol" do
-          expect(described_class["{tax #{genus.id}}"].to_html).
-            to eq %(<a href="/catalog/#{genus.id}"><i>&dagger;</i><i>Atta</i></a>)
+          expect(described_class["{tax #{taxon.id}}"].to_html).
+            to eq %(<a href="/catalog/#{taxon.id}"><i>&dagger;</i><i>#{taxon.name_cache}</i></a>)
         end
       end
 

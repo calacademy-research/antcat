@@ -6,13 +6,11 @@ Feature: Add and edit open issues
   Background:
     Given I am logged in
 
-  Scenario: No open issues
+  Scenario: Adding an issue
     When I go to the open issues page
     Then I should see "There are currently no open issues."
 
-  Scenario: Adding an issue
-    When I go to the open issues page
-    And I follow "New"
+    When I follow "New"
     And I fill in "issue_title" with "Resolve homonyms"
     And I fill in "issue_description" with "Ids #999 and #777"
     And I press "Save"

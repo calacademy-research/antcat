@@ -30,8 +30,8 @@ module DatabaseScripts
         # `t.rows(find_each: true) do |taxon|`
         t.rows(cached_results.limit(1)) do |taxon|
           [
-            taxon.try(:subfamily).try(:name_cache),
-            taxon.try(:genus).try(:name_html_cache),
+            taxon&.subfamily&.name_cache,
+            taxon&.genus&.name_html_cache,
             link_taxon(taxon),
             author_year(taxon),
             taxon.author_citation,
@@ -49,8 +49,8 @@ module DatabaseScripts
 
         c.rows(find_each: true) do |taxon|
           [
-            taxon.try(:subfamily).try(:name_cache),
-            taxon.try(:genus).try(:name_cache),
+            taxon&.subfamily&.name_cache,
+            taxon&.genus&.name_cache,
             taxon.name_cache,
             author_year(taxon),
             taxon.author_citation,
@@ -70,7 +70,7 @@ module DatabaseScripts
       end
 
       def author_year taxon
-        taxon.protonym.authorship.reference.try(:year)
+        taxon.authorship_reference&.year
       end
 
       def link_taxon taxon

@@ -1,4 +1,4 @@
-Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) do |invalid, year, author|
+Given(/^there is a species described in (\d+)(?: by "([^"]+)")?$/) do |year, author|
   reference = create :article_reference, citation_year: year
   if author
     bolton = create :author
@@ -7,7 +7,12 @@ Given(/^there is a(n invalid)? species described in (\d+)(?: by "([^"]+)")?$/) d
   end
 
   taxon = create :species
-  taxon.update! status: Status::SYNONYM if invalid
+  taxon.protonym.authorship.update! reference: reference
+end
+
+Given("there is an invalid species described in {int}") do |year|
+  reference = create :article_reference, citation_year: year
+  taxon = create :species, :synonym
   taxon.protonym.authorship.update! reference: reference
 end
 
@@ -35,18 +40,6 @@ Given("there is a species with forms {string}") do |forms|
   citation = create :citation, forms: forms
   protonym = create :protonym, authorship: citation
   create :species, protonym: protonym
-end
-
-Then("I should see the species described in {int}") do |year|
-  step %(I should see "#{year}")
-end
-
-When("I select {string} from the rank selector") do |value|
-  step %(I select "#{value}" from "rank")
-end
-
-When("I select {string} from the biogeographic region selector") do |value|
-  step %(I select "#{value}" from "biogeographic_region")
 end
 
 When("I check valid only in the advanced search form") do

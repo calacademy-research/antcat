@@ -15,6 +15,10 @@ Then(/^I (should|should not) see an Edit button$/) do |should_selector|
   end
 end
 
+When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
+  select2 name, from: taxon_selector_id
+end
+
 # fields section
 ### name field
 When("I click the name field") do
@@ -161,4 +165,9 @@ end
 Then("the taxon mouseover should contain {string}") do |text|
   element = find '.expandable-reference-key'
   expect(element['title']).to have_content text
+end
+
+Then("{string} should be of the rank of {string}") do |name, rank|
+  taxon = Taxon.find_by(name_cache: name)
+  expect(taxon.rank).to eq rank
 end

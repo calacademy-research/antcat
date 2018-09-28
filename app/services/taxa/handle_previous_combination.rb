@@ -28,6 +28,8 @@ class Taxa::HandlePreviousCombination
       end
     end
 
+    # TODO this passes only because taxa and protonyms created in tests happen to have the same ID.
+    # `taxa.id` and `protonyms.id` will never be the same as protonym IDs are in a different range.
     def status_string_for_previous_combination previous_combination
       if previous_combination.id == taxon.protonym.id
         Status::ORIGINAL_COMBINATION
