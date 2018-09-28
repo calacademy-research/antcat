@@ -95,10 +95,6 @@ FactoryBot.define do
   end
 end
 
-def create_tribe name_or_attributes = 'Attini', attributes = {}
-  _create_taxon name_or_attributes, :tribe, attributes
-end
-
 def create_genus name_or_attributes = 'Atta', attributes = {}
   _create_taxon name_or_attributes, :genus, attributes
 end

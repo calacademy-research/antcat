@@ -44,7 +44,7 @@ describe Exporters::Antweb::ExportTaxon do
 
     describe "[1-6]: `subfamily`, ``tribe, `genus`, `subgenus`, `species` and `subspecies`" do
       let(:subfamily) { create :subfamily }
-      let(:attini) { create_tribe 'Attini', subfamily: subfamily }
+      let(:tribe) { create :tribe, subfamily: subfamily }
 
       it "can export a subfamily" do
         create_genus subfamily: subfamily, tribe: nil
@@ -54,11 +54,10 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       it "can export a genus" do
-        dacetini = create_tribe 'Dacetini', subfamily: subfamily
-        acanthognathus = create_genus 'Acanothognathus', subfamily: subfamily, tribe: dacetini
+        acanthognathus = create_genus 'Acanothognathus', subfamily: subfamily, tribe: tribe
 
         expect(export_taxon(acanthognathus)[1..6]).to eq [
-          subfamily.name_cache, 'Dacetini', 'Acanothognathus', nil, nil, nil
+          subfamily.name_cache, tribe.name_cache, 'Acanothognathus', nil, nil, nil
         ]
       end
 
@@ -83,11 +82,11 @@ describe Exporters::Antweb::ExportTaxon do
 
       describe "Exporting species" do
         it "exports one correctly" do
-          atta = create_genus 'Atta', tribe: attini
+          atta = create_genus 'Atta', tribe: tribe
           species = create_species 'Atta robustus', genus: atta
 
           expect(export_taxon(species)[1..6]).to eq [
-            subfamily.name_cache, 'Attini', 'Atta', nil, 'robustus', nil
+            subfamily.name_cache, tribe.name_cache, 'Atta', nil, 'robustus', nil
           ]
         end
 
@@ -112,12 +111,12 @@ describe Exporters::Antweb::ExportTaxon do
 
       describe "Exporting subspecies" do
         it "exports one correctly" do
-          atta = create_genus 'Atta', subfamily: subfamily, tribe: attini
+          atta = create_genus 'Atta', subfamily: subfamily, tribe: tribe
           species = create_species 'Atta robustus', subfamily: subfamily, genus: atta
           subspecies = create_subspecies 'Atta robustus emeryii', subfamily: subfamily, genus: atta, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
-            subfamily.name_cache, 'Attini', 'Atta', nil, 'robustus', 'emeryii'
+            subfamily.name_cache, tribe.name_cache, 'Atta', nil, 'robustus', 'emeryii'
           ]
         end
 
@@ -369,7 +368,7 @@ describe Exporters::Antweb::ExportTaxon do
 
     describe "[23]: `current valid parent`" do
       let(:subfamily) { create :subfamily }
-      let(:tribe) { create_tribe 'Attini', subfamily: subfamily }
+      let(:tribe) { create :tribe, subfamily: subfamily }
       let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
       let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
       let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
@@ -386,7 +385,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       it "doesn't skip over tribe and return the subfamily" do
         taxon = create :genus, tribe: tribe
-        expect(export_taxon(taxon)[23]).to eq 'Attini'
+        expect(export_taxon(taxon)[23]).to eq tribe.name_cache
       end
 
       it "returns the subfamily only if there's no tribe" do

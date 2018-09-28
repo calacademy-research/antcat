@@ -22,7 +22,7 @@ namespace :antcat do
       create :family # Formicidae.
 
       antcatinae = create :subfamily, name: create(:subfamily_name, name: 'Antcatinae')
-      antcatini = create_tribe 'Antcatini', subfamily: antcatinae
+      antcatini = create :tribe, subfamily: antcatinae, name: create(:tribe_name, name: 'Antcatini')
 
       # a bunch of species
       pseudoantcatia = create_genus 'Pseudoantcatia', tribe: antcatini
@@ -48,7 +48,7 @@ namespace :antcat do
 
       # fossil subfamily
       paraantcatinae = create :subfamily, name: create(:subfamily_name, name: 'Paraantcatinae')
-      paraantcatini = create_tribe 'Paraantcatini', subfamily: paraantcatinae
+      paraantcatini = create :tribe, subfamily: paraantcatinae, name: create(:tribe_name, name: 'Paraantcatini')
 
       paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
       %w[subplanifrons orientalis shinshuensis sompoensis].each do |species|
