@@ -3,13 +3,13 @@ Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::Au
 
 module Parsers::AuthorParser
   def self.parse! string
-    return { names: [] } if string.blank?
+    return [] if string.blank?
 
     match = Parsers::AuthorGrammar.parse(string, consume: false)
     result = match.value
     string.gsub! /#{Regexp.escape match}/, ''
 
-    { names: result[:names], suffix: result[:suffix] }
+    result[:names]
   end
 
   def self.parse string
