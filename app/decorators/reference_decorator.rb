@@ -57,7 +57,7 @@ class ReferenceDecorator < ApplicationDecorator
   private
 
     def generate_plain_text
-      string = make_html_safe(reference.author_names_string.dup)
+      string = make_html_safe(reference.author_names_string_with_suffix)
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
       string << format_title << ' '

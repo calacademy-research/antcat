@@ -63,12 +63,11 @@ class ReferenceForm
 
     def parse_author_names_string
       string = params.delete(:author_names_string)
-      return if string == @reference.author_names_string
+      return if string.strip == @reference.author_names_string
 
-      author_names_and_suffix = @reference.parse_author_names_and_suffix string
+      author_names = @reference.parse_author_names string
       @reference.author_names.clear
-      params[:author_names] = author_names_and_suffix[:author_names]
-      params[:author_names_suffix] = author_names_and_suffix[:author_names_suffix]
+      params[:author_names] = author_names
     end
 
     def set_journal

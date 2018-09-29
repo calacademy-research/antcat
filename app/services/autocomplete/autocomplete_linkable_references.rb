@@ -10,7 +10,7 @@ module Autocomplete
       search_results.map do |reference|
         {
           id: reference.id,
-          author: reference.author_names_string,
+          author: reference.author_names_string_with_suffix,
           year: reference.citation_year,
           title: reference.decorate.format_title,
           full_pagination: full_pagination(reference),

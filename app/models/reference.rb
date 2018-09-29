@@ -40,7 +40,7 @@ class Reference < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-    :pages_in, :doi, :reason_missing, :review_state, :bolton_key], replace_newlines: true
+    :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
   searchable do
@@ -83,6 +83,12 @@ class Reference < ApplicationRecord
     author_names_string_cache
   end
 
+  def author_names_string_with_suffix
+    string = make_author_names_string_cache
+    string << " #{author_names_suffix}" if author_names_suffix.present?
+    string
+  end
+
   # TODO we should probably have `#year` [int] and something
   # like `#non_standard_year` [string] instead of this +
   # `#year` + `#citation_year`.
@@ -92,20 +98,18 @@ class Reference < ApplicationRecord
     citation_year.gsub %r{ .*$}, ''
   end
 
-  # TODO does this duplicate `set_author_names_caches`?
-  # There's also `#author_names_string=` which sets `#author_names_string_cache`.
   def refresh_author_names_caches(*)
     update_attribute :author_names_string_cache, make_author_names_string_cache
   end
 
-  def parse_author_names_and_suffix author_names_string
-    author_names_and_suffix = AuthorName.import_author_names_string author_names_string.dup
-    if author_names_and_suffix[:author_names].empty? && author_names_string.present?
+  def parse_author_names author_names_string
+    author_names = AuthorName.import_author_names_string(author_names_string.dup)[:author_names]
+    if author_names.empty? && author_names_string.present?
       errors.add :author_names_string, "couldn't be parsed."
       self.author_names_string_cache = author_names_string
       raise ActiveRecord::RecordInvalid, self
     end
-    author_names_and_suffix
+    author_names
   end
 
   def check_for_duplicate
@@ -190,14 +194,11 @@ class Reference < ApplicationRecord
       # rubocop:enable Lint/AssignmentInCondition
     end
 
-    # TODO does this duplicate `refresh_author_names_caches`?
     def set_author_names_caches(*)
       self.author_names_string_cache = make_author_names_string_cache
     end
 
     def make_author_names_string_cache
-      string = author_names.map(&:name).join('; ')
-      string << author_names_suffix if author_names_suffix.present?
-      string
+      author_names.map(&:name).join('; ').strip
     end
 end

@@ -29,19 +29,18 @@ describe Reference do
     end
   end
 
-  describe "#parse_author_names_and_suffix" do
+  describe "#parse_author_names" do
     let(:reference) { build_stubbed :reference }
 
     context 'when input in empty' do
       it "returns nothing" do
-        expect(reference.parse_author_names_and_suffix('')).
-          to eq author_names: [], author_names_suffix: nil
+        expect(reference.parse_author_names('')).to eq []
       end
     end
 
     context 'when input is invalid' do
       it "adds an error and raise an exception" do
-        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }.
+        expect { reference.parse_author_names('...asdf sdf dsfdsf') }.
           to raise_error ActiveRecord::RecordInvalid
         expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
         expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
@@ -49,12 +48,31 @@ describe Reference do
     end
 
     context 'when input is valid' do
-      it "returns the author names and the suffix" do
-        results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
+      it "returns the author names" do
+        results = reference.parse_author_names 'Fisher, B.; Bolton, B.'
         fisher = AuthorName.find_by(name: 'Fisher, B.')
         bolton = AuthorName.find_by(name: 'Bolton, B.')
 
-        expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
+        expect(results).to eq [fisher, bolton]
+      end
+    end
+  end
+
+  describe "#author_names_string_with_suffix" do
+    describe "formatting" do
+      it "consists of one author_name if that's all there is" do
+        reference = build_stubbed :reference, author_names: [fisher_bl]
+        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.'
+      end
+
+      it "separates multiple author_names with semicolons" do
+        reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
+        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.; Ward, P.S.'
+      end
+
+      it "includes the author_names' suffix" do
+        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
+        expect(reference.reload.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
       end
     end
   end
@@ -69,11 +87,6 @@ describe Reference do
       it "separates multiple author_names with semicolons" do
         reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
-      end
-
-      it "includes the author_names' suffix" do
-        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
-        expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (ed.)'
       end
     end
 
@@ -105,14 +118,6 @@ describe Reference do
           expect { ward_ps.update name: 'Fisher' }.
             to change { reference.reload.author_names_string }.
             from('Ward, P.S.').to('Fisher')
-        end
-      end
-
-      context "when `author_names_suffix` changes" do
-        before { reference.update author_names_suffix: ' (eds.)' }
-
-        it "updates its `author_names_string`" do
-          expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (eds.)'
         end
       end
     end
