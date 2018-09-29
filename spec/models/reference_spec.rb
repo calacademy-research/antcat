@@ -146,43 +146,6 @@ describe Reference do
     end
   end
 
-  describe "duplicate checking" do
-    let(:reference_params) do
-      {
-        author_names: [fisher_bl],
-        citation_year: '1981',
-        title: 'Dolichoderinae',
-        journal: create(:journal),
-        series_volume_issue: '1(2)',
-        pagination: '22-54'
-      }
-    end
-    let!(:original) { ArticleReference.create! reference_params }
-
-    describe 'implementing MatchReferences' do
-      it 'maps all fields correctly' do
-        expect(original.principal_author_last_name).to eq 'Fisher'
-        expect(original.year).to eq 1981
-        expect(original.title).to eq 'Dolichoderinae'
-        expect(original.type).to eq 'ArticleReference'
-        expect(original.series_volume_issue).to eq '1(2)'
-        expect(original.pagination).to eq '22-54'
-      end
-    end
-
-    it "allows a duplicate record to be saved" do
-      expect { ArticleReference.create! reference_params }.not_to raise_error
-    end
-
-    it "checks possible duplication and add to errors, if any found" do
-      duplicate = ArticleReference.create! reference_params
-
-      expect(duplicate.errors).to be_empty
-      expect(duplicate.check_for_duplicate).to be_truthy
-      expect(duplicate.errors).not_to be_empty
-    end
-  end
-
   describe "#short_citation_year" do
     it "is the same as citation year if nothing extra" do
       reference = build_stubbed :article_reference, citation_year: '1970'

@@ -34,7 +34,7 @@ class ReferenceForm
         raise ActiveRecord::Rollback if @reference.errors.present?
 
         if original_params[:ignore_possible_duplicate].blank?
-          if @reference.check_for_duplicate
+          if check_for_duplicates!
             original_params[:ignore_possible_duplicate] = "yes"
             raise ActiveRecord::Rollback
           end
@@ -112,5 +112,17 @@ class ReferenceForm
       return unless params[:document_attributes]
       return if params[:document_attributes][:url].blank?
       params[:document_attributes][:id] = nil
+    end
+
+    def check_for_duplicates!
+      duplicates = References::MatchReferences[@reference, min_similarity: 0.5]
+      return if duplicates.blank?
+
+      duplicate = Reference.find duplicates.first[:match].id
+      @reference.errors.add :base, <<~MSG.html_safe
+        This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
+        To save, click "Save Anyway"
+      MSG
+      true
     end
 end

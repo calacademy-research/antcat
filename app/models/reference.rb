@@ -102,18 +102,6 @@ class Reference < ApplicationRecord
     update_attribute :author_names_string_cache, make_author_names_string_cache
   end
 
-  def check_for_duplicate
-    duplicates = References::MatchReferences[self, min_similarity: 0.5]
-    return if duplicates.blank?
-
-    duplicate = Reference.find duplicates.first[:match].id
-    errors.add :base, <<~MSG.html_safe
-      This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
-      To save, click "Save Anyway"
-    MSG
-    true
-  end
-
   # TODO merge into Workflow. Only used for `.approve_all`,
   # which approves all unreviewed references of any state (which Workflow doesn't allow).
   def approve
