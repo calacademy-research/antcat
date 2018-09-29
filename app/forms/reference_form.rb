@@ -15,23 +15,23 @@ class ReferenceForm
 
   private
 
-    attr_reader :params, :original_params, :request_host
+    attr_reader :reference, :params, :original_params, :request_host
 
     def save_reference
       Reference.transaction do
         clear_document_params_if_necessary
         set_pagination
-        clear_nesting_reference_id unless @reference.is_a? ::NestedReference
+        clear_nesting_reference_id unless reference.is_a? ::NestedReference
         parse_author_names_string
-        set_journal if @reference.is_a? ::ArticleReference
-        set_publisher if @reference.is_a? ::BookReference
+        set_journal if reference.is_a? ::ArticleReference
+        set_publisher if reference.is_a? ::BookReference
 
         # Set attributes to make sure they're persisted in the form.
-        @reference.attributes = params
+        reference.attributes = params
 
         # Raise if there are errors -- #save! clears the errors
         # before validating, so we need to manually raise here.
-        raise ActiveRecord::Rollback if @reference.errors.present?
+        raise ActiveRecord::Rollback if reference.errors.present?
 
         if original_params[:ignore_possible_duplicate].blank?
           if check_for_duplicates!
@@ -40,7 +40,7 @@ class ReferenceForm
           end
         end
 
-        @reference.save!
+        reference.save!
         set_document_host
 
         return true
@@ -51,29 +51,29 @@ class ReferenceForm
 
     def set_pagination
       params[:pagination] =
-        case @reference
+        case reference
         when ArticleReference then original_params[:article_pagination]
         when BookReference    then original_params[:book_pagination]
         end
     end
 
     def set_document_host
-      @reference.document_host = request_host
+      reference.document_host = request_host
     end
 
     def parse_author_names_string
       string = params.delete(:author_names_string)
-      return if string.strip == @reference.author_names_string
+      return if string.strip == reference.author_names_string
 
       author_names = Authors::FindOrCreateNamesFromString[string.dup]
 
       if author_names.empty? && string.present?
-        @reference.errors.add :author_names_string, "couldn't be parsed."
-        @reference.author_names_string_cache = string
-        raise ActiveRecord::RecordInvalid, @reference
+        reference.errors.add :author_names_string, "couldn't be parsed."
+        reference.author_names_string_cache = string
+        raise ActiveRecord::RecordInvalid, reference
       end
 
-      @reference.author_names.clear
+      reference.author_names.clear
       params[:author_names] = author_names
     end
 
@@ -81,7 +81,7 @@ class ReferenceForm
       journal_name = params[:journal_name]
 
       # Set journal_name for the form.
-      @reference.journal_name = journal_name
+      reference.journal_name = journal_name
 
       # Set nil or valid publisher in the params.
       journal = Journal.find_or_create_by(name: journal_name)
@@ -92,12 +92,12 @@ class ReferenceForm
       publisher_string = params[:publisher_string]
 
       # Set publisher_string for the form.
-      @reference.publisher_string = publisher_string
+      reference.publisher_string = publisher_string
 
       # Add error or set valid publisher in the params.
       publisher = Publisher.create_form_string publisher_string
       if publisher.nil? && publisher_string.present?
-        @reference.errors.add :publisher_string,
+        reference.errors.add :publisher_string,
           "couldn't be parsed. In general, use the format 'Place: Publisher'."
       else
         params[:publisher] = publisher
@@ -115,11 +115,11 @@ class ReferenceForm
     end
 
     def check_for_duplicates!
-      duplicates = References::FindDuplicates[@reference, min_similarity: 0.5]
+      duplicates = References::FindDuplicates[reference, min_similarity: 0.5]
       return if duplicates.blank?
 
       duplicate = Reference.find duplicates.first[:match].id
-      @reference.errors.add :base, <<~MSG.html_safe
+      reference.errors.add :base, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
         To save, click "Save Anyway"
       MSG
