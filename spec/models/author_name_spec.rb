@@ -6,72 +6,12 @@ describe AuthorName do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_uniqueness_of :name }
 
-  describe "#import" do
-    context 'when authors does not exists' do
-      it "creates and returns the authors" do
-        results = described_class.import ['Fisher, B.L.', 'Wheeler, W.M.']
-        expect(results.map(&:name)).to match_array ['Fisher, B.L.', 'Wheeler, W.M.']
-      end
-    end
-
-    context 'when authors already exists' do
-      before { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }
-
-      it "reuses existing authors" do
-        expect { described_class.import ['Fisher, B.L.', 'Wheeler, W.M.'] }.
-          not_to change { described_class.count }.from(2)
-      end
-    end
-
-    it "is case sensitive" do
-      described_class.import ['Mackay, W. M.', 'MacKay, W. M.']
-      expect(described_class.count).to eq 2
-    end
-  end
-
   describe "editing" do
     it "updates associated references when the name is changed" do
       author_name = create :author_name, name: 'Ward'
       reference = create :reference, author_names: [author_name]
       author_name.update name: 'Fisher'
       expect(reference.reload.author_names_string).to eq 'Fisher'
-    end
-  end
-
-  describe "#import_author_names_string" do
-    it "finds or creates authors with names in the string" do
-      described_class.create! name: 'Bolton, B.', author: Author.create!
-      author_data = described_class.import_author_names_string 'Ward, P.S.; Bolton, B.'
-      expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
-      expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
-      expect(author_data[:author_names_suffix]).to be_nil
-      expect(described_class.count).to eq 2
-    end
-
-    it "returns the authors suffix" do
-      author_data = described_class.import_author_names_string 'Ward, P.S.; Bolton, B. (eds.)'
-      expect(author_data[:author_names].first.name).to eq 'Ward, P.S.'
-      expect(author_data[:author_names].second.name).to eq 'Bolton, B.'
-      expect(author_data[:author_names_suffix]).to eq ' (eds.)'
-    end
-
-    it "handles 'the Andres'" do
-      author_data = described_class.import_author_names_string 'Andre, Edm.; Andre, Ern.'
-      expect(author_data[:author_names].first.name).to eq 'Andre, Edm.'
-      expect(author_data[:author_names].second.name).to eq 'Andre, Ern.'
-    end
-
-    it "handles invalid input" do
-      author_data = described_class.import_author_names_string ' ; '
-      expect(author_data[:author_names]).to eq []
-      expect(author_data[:author_names_suffix]).to be_nil
-    end
-
-    it "handles a semicolon followed by a space at the end" do
-      author_data = described_class.import_author_names_string 'Ward, P. S.; '
-      expect(author_data[:author_names].size).to eq 1
-      expect(author_data[:author_names].first.name).to eq 'Ward, P. S.'
-      expect(author_data[:author_names_suffix]).to be_nil
     end
   end
 

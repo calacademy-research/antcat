@@ -29,35 +29,6 @@ describe Reference do
     end
   end
 
-  describe "#parse_author_names" do
-    let(:reference) { build_stubbed :reference }
-
-    context 'when input in empty' do
-      it "returns nothing" do
-        expect(reference.parse_author_names('')).to eq []
-      end
-    end
-
-    context 'when input is invalid' do
-      it "adds an error and raise an exception" do
-        expect { reference.parse_author_names('...asdf sdf dsfdsf') }.
-          to raise_error ActiveRecord::RecordInvalid
-        expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
-        expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
-      end
-    end
-
-    context 'when input is valid' do
-      it "returns the author names" do
-        results = reference.parse_author_names 'Fisher, B.; Bolton, B.'
-        fisher = AuthorName.find_by(name: 'Fisher, B.')
-        bolton = AuthorName.find_by(name: 'Bolton, B.')
-
-        expect(results).to eq [fisher, bolton]
-      end
-    end
-  end
-
   describe "#author_names_string_with_suffix" do
     describe "formatting" do
       it "consists of one author_name if that's all there is" do

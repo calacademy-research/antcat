@@ -65,7 +65,14 @@ class ReferenceForm
       string = params.delete(:author_names_string)
       return if string.strip == @reference.author_names_string
 
-      author_names = @reference.parse_author_names string
+      author_names = Authors::FindOrCreateNamesFromString[string.dup][:author_names]
+
+      if author_names.empty? && string.present?
+        @reference.errors.add :author_names_string, "couldn't be parsed."
+        @reference.author_names_string_cache = string
+        raise ActiveRecord::RecordInvalid, @reference
+      end
+
       @reference.author_names.clear
       params[:author_names] = author_names
     end

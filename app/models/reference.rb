@@ -102,16 +102,6 @@ class Reference < ApplicationRecord
     update_attribute :author_names_string_cache, make_author_names_string_cache
   end
 
-  def parse_author_names author_names_string
-    author_names = AuthorName.import_author_names_string(author_names_string.dup)[:author_names]
-    if author_names.empty? && author_names_string.present?
-      errors.add :author_names_string, "couldn't be parsed."
-      self.author_names_string_cache = author_names_string
-      raise ActiveRecord::RecordInvalid, self
-    end
-    author_names
-  end
-
   def check_for_duplicate
     duplicates = References::MatchReferences[self, min_similarity: 0.5]
     return if duplicates.blank?
