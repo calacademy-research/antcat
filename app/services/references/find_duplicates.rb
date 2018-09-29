@@ -1,5 +1,5 @@
 module References
-  class MatchReferences
+  class FindDuplicates
     include Service
 
     def initialize target, min_similarity: 0.01

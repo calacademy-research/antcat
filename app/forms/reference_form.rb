@@ -115,7 +115,7 @@ class ReferenceForm
     end
 
     def check_for_duplicates!
-      duplicates = References::MatchReferences[@reference, min_similarity: 0.5]
+      duplicates = References::FindDuplicates[@reference, min_similarity: 0.5]
       return if duplicates.blank?
 
       duplicate = Reference.find duplicates.first[:match].id
