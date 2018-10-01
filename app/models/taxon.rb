@@ -57,7 +57,7 @@ class Taxon < ApplicationRecord
       ]
     )
   end
-  scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
+  scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name_cache, -> { order(:name_cache) }
 
   # Example usage:
