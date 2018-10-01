@@ -68,7 +68,7 @@ class TaxonDecorator::ChildList
       children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
       children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
 
-      children.valid.includes(:name).order_by_name_cache
+      children.valid.includes(:name).order_by_name
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}

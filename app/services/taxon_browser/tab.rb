@@ -46,7 +46,7 @@ module TaxonBrowser
     private
 
       def sorted_taxa
-        @taxa.order_by_name_cache
+        @taxa.order_by_name
       end
   end
 end

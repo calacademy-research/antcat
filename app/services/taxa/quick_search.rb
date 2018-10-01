@@ -11,7 +11,7 @@ module Taxa
     def call
       return Taxon.none if search_query.blank?
 
-      query = Taxon.joins(:name).order_by_name_cache
+      query = Taxon.joins(:name).order_by_name
       query = query.valid if valid_only.present?
       query = case search_type
               when 'matching'

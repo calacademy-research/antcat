@@ -35,7 +35,7 @@
 -if taxon.junior_synonyms_recursive.exists?
   %h6 #{pluralize(taxon.junior_synonyms_recursive.count, 'junior synonym')}
   %ul.junior-synonyms.small-margin-bottom
-    -taxon.junior_synonyms_recursive.order_by_name_cache.each do |synonym|
+    -taxon.junior_synonyms_recursive.order_by_name.each do |synonym|
       %li
         =synonym.decorate.link_to_taxon
         =synonym.decorate.author_citation
