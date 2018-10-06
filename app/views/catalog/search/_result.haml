@@ -1,7 +1,8 @@
 %tr
   %td
-    =format_name taxon
-    =format_status_reference taxon
-    =format_type_localities taxon
-    =format_forms taxon
-    =format_protonym taxon
+    -presenter = AdvancedSearchPresenter::HTML.new
+    =presenter.format_name taxon
+    =presenter.format_status_reference taxon
+    =presenter.format_type_localities taxon
+    =presenter.format_forms taxon
+    =presenter.format_protonym taxon

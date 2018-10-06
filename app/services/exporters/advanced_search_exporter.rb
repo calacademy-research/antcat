@@ -1,6 +1,5 @@
 class Exporters::AdvancedSearchExporter
   include Service
-  include Formatters::AdvancedSearchTextFormatter
 
   def initialize taxa
     @taxa = taxa
@@ -10,7 +9,7 @@ class Exporters::AdvancedSearchExporter
     return unless taxa
 
     taxa.reduce('') do |content, taxon|
-      content << format(taxon)
+      content << AdvancedSearchPresenter::Text.new.format(taxon)
     end
   end
 

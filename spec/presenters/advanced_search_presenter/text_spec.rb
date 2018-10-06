@@ -1,11 +1,7 @@
 require 'spec_helper'
 
-class FormattersAdvancedSearchTextFormatterTestClass
-  include Formatters::AdvancedSearchTextFormatter
-end
-
-describe Formatters::AdvancedSearchTextFormatter do
-  subject(:formatter) { FormattersAdvancedSearchTextFormatterTestClass.new }
+describe AdvancedSearchPresenter::Text do
+  subject(:formatter) { described_class.new }
 
   describe "#format" do
     it "formats in text style, rather than HTML" do

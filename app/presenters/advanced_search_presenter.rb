@@ -1,4 +1,4 @@
-module Formatters::AdvancedSearchFormatter
+class AdvancedSearchPresenter
   include ApplicationHelper
 
   def format_status_reference taxon

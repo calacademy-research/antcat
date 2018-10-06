@@ -1,13 +1,7 @@
 require 'spec_helper'
 
-class FormattersAdvancedSearchHtmlFormatterTestClass
-  include Formatters::AdvancedSearchHtmlFormatter
-  include ActionView::Helpers::TagHelper # For `#content_tag`.
-  include ActionView::Context # For `#content_tag`.
-end
-
-describe Formatters::AdvancedSearchHtmlFormatter do
-  subject(:formatter) { FormattersAdvancedSearchHtmlFormatterTestClass.new }
+describe AdvancedSearchPresenter::HTML do
+  subject(:formatter) { described_class.new }
 
   describe "#format" do
     it "formats a taxon" do
