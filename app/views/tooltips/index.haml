@@ -38,5 +38,5 @@
       -@grouped_tooltips.each do |scope, tooltips|
         %tr
           %th.scope{colspan: 6}
-            =scope&.capitalize || "No scope"
+            =scope.capitalize
         =render tooltips
