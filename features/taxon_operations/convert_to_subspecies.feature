@@ -34,7 +34,7 @@ Feature: Converting a species to a subspecies
     Then the new species field should contain "Camponotus alii"
 
     When I press "Convert"
-    Then I should see "The subspecies 'Camponotus alii dallatorei' already exists."
+    Then I should see "This name is in use by another taxon"
 
   @javascript
   Scenario: Converting a species to a subspecies when the species has subspecies

@@ -3,50 +3,49 @@ module Taxa
     include Service
     include Formatters::ItalicsHelper
 
-    def initialize taxon
-      @taxon = taxon
+    def initialize subspecies
+      @subspecies = subspecies
     end
 
     def call
-      elevate_to_species
+      new_species = build_new_species
+
+      if Taxon.find_by_name(new_species.name.name)
+        new_species.errors.add :base, "This name is in use by another taxon"
+        return new_species
+      end
+
+      new_species.save
+      new_species
     end
 
     private
 
-      attr_reader :taxon
+      attr_reader :subspecies
 
-      delegate :name, :species, :create_activity, :name_html_cache, to: :taxon
-
-      def elevate_to_species
-        raise NoSpeciesForSubspeciesError unless species
-        # Removed commented out code + comments that looked very WIP.
-        # See 37064da56f47a530a388b268289a73cb24b93d75.
-
-        new_name_string = "#{species.genus.name.name} #{name.epithet}"
-        new_name = SpeciesName.find_by_name new_name_string
-        unless new_name
-          new_name = SpeciesName.new
-          new_name.update name: new_name_string,
-                          name_html: italicize(new_name_string),
-                          epithet: name.epithet,
-                          epithet_html: name.epithet_html,
-                          epithets: nil
-          new_name.save
-        end
-
-        create_elevate_to_species_activity new_name
-
-        # TODO no not use `#update_columns`.
-        taxon.update_columns name_id: new_name.id,
-                             species_id: nil,
-                             name_cache: new_name.name,
-                             name_html_cache: new_name.name_html,
-                             type: 'Species'
+      def build_new_species
+        taxon = Species.new
+        taxon.save_initiator = true
+        taxon.attributes = Taxa::CopyAttributes[subspecies]
+        taxon.genus = subspecies.genus
+        taxon.name = species_name
+        taxon
       end
 
-      def create_elevate_to_species_activity new_name
-        create_activity :elevate_subspecies_to_species,
-          parameters: { name_was: name_html_cache, name: new_name.name_html }
+      def species_name
+        species = subspecies.species
+        new_name_string = "#{species.genus.name.name} #{subspecies.name.epithet}"
+
+        new_name = SpeciesName.find_by_name new_name_string
+
+        return new_name if new_name
+
+        # TODO the `Name` classes set the epithets and HTML names.
+        SpeciesName.new name: new_name_string,
+          name_html: italicize(new_name_string),
+          epithet: subspecies.name.epithet,
+          epithet_html: subspecies.name.epithet_html,
+          epithets: nil
       end
   end
 end
