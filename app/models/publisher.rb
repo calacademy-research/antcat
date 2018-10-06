@@ -1,6 +1,4 @@
 class Publisher < ApplicationRecord
-  belongs_to :place
-
   has_many :references
 
   validates :name, presence: true
