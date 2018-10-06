@@ -4,14 +4,6 @@ module DevMonkeyPatches::Rails
   end
 
   module ActiveRecord_Relation # rubocop:disable Naming/ClassAndModuleCamelCase
-    def v
-      valid
-    end
-
-    def c
-      count
-    end
-
     def dev_dev_puts_each
       $stdout.puts "Total: #{count} of types #{distinct.pluck(:type).join(', ')}.".yellow
       each do |taxon|

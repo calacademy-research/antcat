@@ -8,7 +8,7 @@
 # "Madness? THIS - IS... ANTCAT!! [kicks the Java developer into the deep well]
 #
 # Examples:
-# `ddt("Atta").s.v.c` = valid Atta species count
+# `ddt("Atta").species.count` = Atta species count
 #   => 17
 #
 # `ddpg ddrg.l` = puts AntCat catalog link of random species, with name, in green!
