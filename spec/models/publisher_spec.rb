@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Publisher do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :place_name }
 
   describe ".create_form_string" do
     context "when invalid" do
@@ -36,14 +37,10 @@ describe Publisher do
   end
 
   describe "#display_name" do
-    it "format name and place" do
-      publisher = described_class.create! name: "Wiley", place_name: 'New York'
-      expect(publisher.display_name).to eq 'New York: Wiley'
-    end
+    let(:publisher) { create :publisher, name: "Wiley", place_name: 'New York' }
 
-    it "formats correctly even if there is no place" do
-      publisher = described_class.create! name: "Wiley"
-      expect(publisher.display_name).to eq 'Wiley'
+    specify do
+      expect(publisher.display_name).to eq 'New York: Wiley'
     end
   end
 end
