@@ -87,22 +87,6 @@ class TaxtPresenter
     end
 
     def warn_about_non_existing_id klass, id
-      <<-HTML.squish
-        <span class="bold-warning">
-          CANNOT FIND #{klass} WITH ID #{id}#{seach_history_link(id)}
-        </span>
-      HTML
-    end
-
-    def seach_history_link id
-      case @format
-      when :to_html
-        " " + link_to("Search history?", versions_path(item_id: id),
-          class: "btn-normal btn-tiny")
-      when :to_text
-        "" # Probably do not show when `:to_text`...
-      when :to_antweb
-        "" # Don't show when exporting to AntWeb.
-      end
+      "CANNOT FIND #{klass} WITH ID #{id}"
     end
 end

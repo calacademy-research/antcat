@@ -115,11 +115,7 @@ describe TaxtPresenter do
 
         context "when the ref points to a reference that doesn't exist" do
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND REFERENCE WITH ID 999"
           end
         end
       end
@@ -129,11 +125,7 @@ describe TaxtPresenter do
           let(:results) { described_class["{nam 999}"].to_antweb }
 
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND NAME WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND NAME WITH ID 999"
           end
         end
       end
@@ -143,11 +135,7 @@ describe TaxtPresenter do
 
         context "when the taxon can't be found" do
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND TAXON WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND TAXON WITH ID 999"
           end
         end
       end
