@@ -55,9 +55,9 @@ describe Markdowns::Render do
         let(:taxt_markdown) { '{ref 9999999}' }
 
         it "renders an error message" do
-          expected = %(<p><span class="broken-markdown-link"> could not find reference with id 9999999 </span></p>\n)
-          expect(described_class[markdown]).to eq expected
-          expect(described_class[taxt_markdown]).to eq expected
+          expected = "CANNOT FIND REFERENCE WITH ID 9999999"
+          expect(described_class[markdown]).to include expected
+          expect(described_class[taxt_markdown]).to include expected
         end
       end
     end
@@ -77,8 +77,7 @@ describe Markdowns::Render do
         let(:taxt_markdown) { '{nam 9999999}' }
 
         it "renders an error message" do
-          expected = %(<p><span class="broken-markdown-link"> could not find name with id 9999999 </span></p>\n)
-          expect(described_class[taxt_markdown]).to eq expected
+          expect(described_class[taxt_markdown]).to include "CANNOT FIND NAME WITH ID 9999999"
         end
       end
     end
@@ -98,8 +97,7 @@ describe Markdowns::Render do
         let(:markdown) { "%journal9999999" }
 
         it "renders an error message" do
-          expected = %(<p><span class="broken-markdown-link"> could not find journal with id 9999999 </span></p>\n)
-          expect(described_class[markdown]).to eq expected
+          expect(described_class[markdown]).to include "CANNOT FIND JOURNAL WITH ID 9999999"
         end
       end
     end
