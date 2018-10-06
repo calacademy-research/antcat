@@ -8,7 +8,7 @@ class CommentDecorator < Draper::Decorator
   def truncated_for_tables
     truncated = helpers.truncate comment.body, length: 80, separator: " "
     stripped = helpers.strip_tags truncated
-    helpers.antcat_markdown_only(stripped).html_safe
+    Markdowns::ParseAntcatHooks[stripped].html_safe
   end
 
   private
