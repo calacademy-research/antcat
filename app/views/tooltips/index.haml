@@ -35,9 +35,8 @@
           No tooltips found.
           =link_to 'Be a hero and create the first one?', new_tooltip_path
     -else
-      -@grouped_tooltips.each do |namespace, tooltips|
-        %tr.fake_subheader
-          %td{colspan: 6}
-            %h6
-              =if namespace.present? then namespace.capitalize else "No namespace" end
+      -@grouped_tooltips.each do |scope, tooltips|
+        %tr
+          %th.scope{colspan: 6}
+            =scope&.capitalize || "No scope"
         =render tooltips
