@@ -2,63 +2,143 @@ require 'spec_helper'
 
 describe Taxa::ElevateToSpecies do
   describe "#call" do
-    let(:genus) { create_genus 'Atta' }
+    describe "unuccessfully elevating" do
+      context "when subspecies has no species" do
+        let!(:subspecies) { create :subspecies, species: nil }
 
-    it "turns the record into a Species" do
-      taxon = create :subspecies
-      expect(taxon).to be_kind_of Subspecies
+        specify do
+          expect { described_class[subspecies] }.to raise_error(NoMethodError)
+        end
+      end
 
-      described_class[taxon]
+      context "when a species with this name already exists" do
+        let!(:genus) { create_genus 'Atta' }
+        let!(:species) { create_species 'Atta major', genus: genus }
+        let!(:subspecies_name) do
+          SubspeciesName.create! name: 'Atta batta major',
+            epithet: 'major', epithets: 'batta major'
+        end
+        let!(:subspecies) { create :subspecies, name: subspecies_name, species: species }
 
-      taxon = Species.find taxon.id
-      expect(taxon).to be_kind_of Species
+        it "returns the new new non-persister species with errors" do
+          new_species = described_class[subspecies]
+          expect(new_species.errors[:base]).to eq ["This name is in use by another taxon"]
+        end
+
+        it "does not create a new taxon" do
+          expect { described_class[subspecies] }.to_not change { Taxon.count }
+        end
+      end
     end
 
-    it "forms the new species name from the epithet" do
-      species = create_species 'Atta major', genus: genus
-      subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-        epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
+    describe "successfully elevating" do
+      context "when there is no name collision" do
+        let!(:subspecies) { create :subspecies }
 
-      described_class[taxon]
+        it "does not modify the original subspecies record" do
+          expect { described_class[subspecies] }.to_not change { subspecies.reload.attributes }
+        end
 
-      taxon = Species.find taxon.id
-      expect(taxon.name.name).to eq 'Atta colobopsis'
-      expect(taxon.name.epithet).to eq 'colobopsis'
-      expect(taxon.name.epithets).to be_nil
+        it "creates a new taxon" do
+          expect { described_class[subspecies] }.to change { Taxon.count }.by(1)
+        end
+
+        it "returns the new species" do
+          expect(described_class[subspecies]).to be_a Species
+        end
+
+        it "creates a new species with a species name" do
+          new_species = described_class[subspecies]
+
+          expect(new_species).to be_a Species
+          expect(new_species.name).to be_a SpeciesName
+        end
+
+        it "copies relevant attributes from the original subspecies record" do
+          new_species = described_class[subspecies]
+
+          [
+            :fossil,
+            :status,
+            :homonym_replaced_by_id,
+            :incertae_sedis_in,
+            :protonym,
+            :type_taxt,
+            :headline_notes_taxt,
+            :hong,
+            :type_name,
+            :genus_species_header_notes_taxt,
+            :type_fossil,
+            :unresolved_homonym,
+            :current_valid_taxon,
+            :ichnotaxon,
+            :nomen_nudum,
+            :biogeographic_region,
+            :primary_type_information,
+            :secondary_type_information,
+            :type_notes
+          ].each do |attribute|
+            expect(new_species.send(attribute)).to eq subspecies.send(attribute)
+          end
+        end
+
+        it "sets relevant taxonomical relations from the original subspecies" do
+          new_species = described_class[subspecies]
+
+          expect(new_species.subfamily).to eq subspecies.subfamily
+          expect(new_species.genus).to eq subspecies.genus
+          expect(new_species.subgenus).to eq subspecies.subgenus
+        end
+
+        it "nilifies `species_id`" do
+          expect(described_class[subspecies].species_id).to eq nil
+        end
+      end
     end
 
-    it "creates a new species name, if necessary" do
-      species = create_species 'Atta major', genus: genus
-      subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-        epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
-      name_count = Name.count
+    # TODO these specs were left as is after rewriting this service
+    # because we should stop reusing `Name`s once we're ready for that.
+    context "old specs" do
+      let!(:genus) { create_genus 'Atta' }
 
-      described_class[taxon]
+      it "forms the new species name from the epithet" do
+        species = create_species 'Atta major', genus: genus
+        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
+          epithet: 'colobopsis', epithets: 'major colobopsis'
+        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
 
-      expect(Name.count).to eq(name_count + 1)
-    end
+        described_class[taxon]
 
-    it "reuses existing species name, if possible" do
-      species = create_species 'Atta colobopsis', genus: genus
-      subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-        epithet: 'colobopsis', epithets: 'major colobopsis'
-      taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
+        new_species = Taxon.last
 
-      described_class[taxon]
+        expect(new_species.name.name).to eq 'Atta colobopsis'
+        expect(new_species.name.epithet).to eq 'colobopsis'
+        expect(new_species.name.epithets).to be_nil
+      end
 
-      taxon = Species.find taxon.id
-      expect(taxon.name).to eq species.name
-    end
+      it "creates a new species name, if necessary" do
+        species = create_species 'Atta major', genus: genus
+        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
+          epithet: 'colobopsis', epithets: 'major colobopsis'
+        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
+        name_count = Name.count
 
-    it "doesn't crash and burn if the species already exists" do
-      species = create_species 'Atta major', genus: genus
-      subspecies_name = SubspeciesName.create! name: 'Atta batta major',
-        epithet: 'major', epithets: 'batta major'
-      taxon = create :subspecies, name: subspecies_name, species: species
+        described_class[taxon]
 
-      expect { described_class[taxon] }.not_to raise_error
+        expect(Name.count).to eq(name_count + 1)
+      end
+
+      it "reuses existing species name, if possible" do
+        existing_species_name = create :species_name, name: "Atta colobopsis"
+        species = create_species 'Atta noconflictus', genus: genus
+        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
+          epithet: 'colobopsis', epithets: 'major colobopsis'
+        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
+
+        new_species = described_class[taxon]
+
+        expect(new_species.name).to eq existing_species_name
+      end
     end
   end
 end
