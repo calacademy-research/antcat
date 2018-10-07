@@ -10,16 +10,15 @@ class Exporters::Antweb::ExportHeadline
 
   def call
     content_tag :div do
-      notes = headline_notes
-      hol_link = link_to_hol(taxon)
-      string = headline_protonym
-      string << ' ' << headline_type
-      string << ' ' << type_fields if type_fields.present?
-      string << ' ' << notes if notes
-      string << ' ' << link_to_antcat if link_to_antcat
-      string << ' ' << link_to_antwiki(taxon) if link_to_antwiki(taxon)
-      string << ' ' << hol_link if hol_link
-      string
+      [
+        headline_protonym,
+        headline_type,
+        type_fields,
+        headline_notes,
+        link_to_antcat,
+        link_to_antwiki(taxon),
+        link_to_hol(taxon)
+      ].compact.join(' ').html_safe
     end
   end
 
@@ -38,7 +37,7 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def type_fields
-      @type_fields ||= Exporters::Antweb::TypeFields[taxon]
+      Exporters::Antweb::TypeFields[taxon]
     end
 
     def headline_notes

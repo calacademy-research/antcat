@@ -297,7 +297,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>) +
+              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
               %( ) +
               # links
               %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
