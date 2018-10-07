@@ -18,32 +18,24 @@ class TaxtPresenter
   end
 
   def to_antweb
-    parse :to_antweb
+    return '' if @taxt.blank?
+
+    parse_antweb_refs!
+    parse_antweb_nams!
+    parse_antweb_taxs!
+
+    @taxt.html_safe
   end
 
   private
 
-    def parse format
-      return '' if @taxt.blank?
-
-      @format = format
-
-      parse_refs!
-      parse_nams!
-      parse_taxs!
-
-      @taxt.html_safe
-    end
-
     # References, "{ref 123}".
-    def parse_refs!
+    def parse_antweb_refs!
       @taxt.gsub!(/{ref (\d+)}/) do
         reference = Reference.find_by id: $1
 
         if reference
-          case @format
-          when :to_antweb then Exporters::Antweb::InlineCitation[reference]
-          end
+          Exporters::Antweb::InlineCitation[reference]
         else
           warn_about_non_existing_id "REFERENCE", $1
         end
@@ -51,7 +43,7 @@ class TaxtPresenter
     end
 
     # Names, "{nam 123}".
-    def parse_nams!
+    def parse_antweb_nams!
       @taxt.gsub!(/{nam (\d+)}/) do
         name = Name.find_by id: $1
 
@@ -64,14 +56,12 @@ class TaxtPresenter
     end
 
     # Taxa, "{tax 123}".
-    def parse_taxs!
+    def parse_antweb_taxs!
       @taxt.gsub!(/{tax (\d+)}/) do
         taxon = Taxon.find_by id: $1
 
         if taxon
-          case @format
-          when :to_antweb then Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
-          end
+          Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
         else
           warn_about_non_existing_id "TAXON", $1
         end
