@@ -282,7 +282,7 @@ describe Exporters::Antweb::ExportTaxon do
           %(<div class="antcat_taxon">) +
 
             # statistics
-            %(<p>1 valid species</p>) +
+            %(<p>Extant: 1 valid species</p>) +
 
             # headline
             %(<div>) +
