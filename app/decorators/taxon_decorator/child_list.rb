@@ -18,9 +18,7 @@ class TaxonDecorator::ChildList
     end
     content << collective_group_name_child_list
 
-    return if content.blank?
-
-    content_tag :div, content, class: 'child_lists'
+    content
   end
 
   private
