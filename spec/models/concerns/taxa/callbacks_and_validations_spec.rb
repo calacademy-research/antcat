@@ -56,10 +56,8 @@ describe Taxa::CallbacksAndValidations do
       it "removes 'auto_generated' flags from things" do
         # Setup.
         taxon = create :family
-        another_taxon = create :family
-        synonym = create :synonym, senior_synonym: taxon, junior_synonym: another_taxon
 
-        actors = [taxon, taxon.name, synonym]
+        actors = [taxon, taxon.name]
 
         mark_as_auto_generated actors
         actors.each &:reload
