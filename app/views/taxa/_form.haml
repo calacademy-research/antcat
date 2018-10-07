@@ -21,9 +21,7 @@
   =text_field_tag 'is_superadmin', user_is_superadmin?
 
 -url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
--method = @taxon.new_record? ? 'post' : 'put'
-=form_for @taxon, as: :taxon, url: url, method: method, html: { class: 'taxon_form' } do |form|
-
+=form_for @taxon, as: :taxon, url: url, html: { class: 'taxon_form' } do |form|
   -# Also for name collision-related code in `AntCat.NameField` (see above).
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
