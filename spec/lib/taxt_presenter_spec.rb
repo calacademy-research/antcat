@@ -1,22 +1,6 @@
 require "spec_helper"
 
 describe TaxtPresenter do
-  describe "#to_text" do
-    it "renders text without links or HTML (except <i> tags)" do
-      taxt = "{tax #{create(:family).id}}"
-      expect(described_class[taxt].to_text).to eq "Formicidae"
-    end
-
-    context "names that should be italicized" do
-      let(:genus) { create :genus }
-
-      it "includes HTML <i> tags" do
-        taxt = "{tax #{genus.id}}"
-        expect(described_class[taxt].to_text).to eq "<i>#{genus.name.name}</i>"
-      end
-    end
-  end
-
   describe "#to_html" do
     describe "escaping input" do
       it "doesn't escape already escaped input" do
