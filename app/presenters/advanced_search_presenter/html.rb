@@ -10,8 +10,4 @@ class AdvancedSearchPresenter::HTML < AdvancedSearchPresenter
     string = 'Forms: '
     string << add_period_if_necessary(taxon.protonym.authorship.forms)
   end
-
-  def format_protonym taxon
-    taxon.authorship_reference.decorate.expandable_reference
-  end
 end
