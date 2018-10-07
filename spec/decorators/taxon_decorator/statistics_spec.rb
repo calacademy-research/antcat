@@ -26,12 +26,6 @@ describe TaxonDecorator::Statistics do
           to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
           '<p>Fossil: 2 valid subfamilies</p>'
       end
-
-      it "can exclude fossil statistics" do
-        expect(described_class[statistics, include_fossil: false]).to eq(
-          '<p>1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>'
-        )
-      end
     end
 
     it "handles just fossil statistics" do
