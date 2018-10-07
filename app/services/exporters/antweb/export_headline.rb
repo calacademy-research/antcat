@@ -2,7 +2,6 @@ class Exporters::Antweb::ExportHeadline
   include ActionView::Helpers
   include ActionView::Context
   include Service
-  include LinkHelper
 
   def initialize taxon
     @taxon = taxon
@@ -16,8 +15,8 @@ class Exporters::Antweb::ExportHeadline
         type_fields,
         headline_notes,
         link_to_antcat,
-        link_to_antwiki(taxon),
-        link_to_hol(taxon)
+        taxon.decorate.link_to_antwiki,
+        taxon.decorate.link_to_hol
       ].compact.join(' ').html_safe
     end
   end
