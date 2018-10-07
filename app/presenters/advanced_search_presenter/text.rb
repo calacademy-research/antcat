@@ -6,8 +6,7 @@ class AdvancedSearchPresenter::Text < AdvancedSearchPresenter
     type_localities = format_type_localities(taxon)
     string << convert_to_text(' ' + type_localities) if type_localities.present?
     string << "\n"
-    protonym = convert_to_text format_protonym taxon
-    string << protonym if protonym.present?
+    string << convert_to_text(format_protonym(taxon))
     string << "\n\n"
   end
 
