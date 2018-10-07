@@ -28,10 +28,7 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   def statistics valid_only: false
-    statistics = taxon.statistics valid_only: valid_only
-    return '' unless statistics
-
-    TaxonDecorator::Statistics[statistics]
+    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
 
   def headline_protonym
