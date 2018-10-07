@@ -11,25 +11,27 @@ class AdvancedSearchPresenter::Text < AdvancedSearchPresenter
     string << "\n\n"
   end
 
-  def format_name taxon
-    taxon.name_cache
-  end
+  private
 
-  def format_protonym taxon
-    reference = taxon.authorship_reference
+    def format_name taxon
+      taxon.name_cache
+    end
 
-    string = ''.html_safe
-    string << reference.decorate.plain_text
-    string << " DOI: " << reference.doi if reference.doi?
-    string << "   #{reference.id}"
-    string
-  end
+    def format_protonym taxon
+      reference = taxon.authorship_reference
 
-  def italicize string
-    string
-  end
+      string = ''.html_safe
+      string << reference.decorate.plain_text
+      string << " DOI: " << reference.doi if reference.doi?
+      string << "   #{reference.id}"
+      string
+    end
 
-  def convert_to_text string
-    unitalicize string.html_safe
-  end
+    def italicize string
+      string
+    end
+
+    def convert_to_text string
+      unitalicize string.html_safe
+    end
 end
