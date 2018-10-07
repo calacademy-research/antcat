@@ -4,12 +4,11 @@ class TaxonDecorator::Statistics
   include Service
   include ApplicationHelper # For `#pluralize_with_delimiters` and `#number_with_delimiter`.
 
-  # TODO: Push `include_invalid`/`include_fossil` to the taxa models.
+  # TODO: Push `include_fossil` to the taxa models.
   # This method is cheap, but `Taxon#statistics` is very slow and it always
   # fetches all statistics and then this method removes invalid/fossil taxa.
-  def initialize statistics, include_invalid: true, include_fossil: true
+  def initialize statistics, include_fossil: true
     @statistics = statistics
-    @include_invalid = include_invalid
     @include_fossil = include_fossil
   end
 
@@ -45,13 +44,12 @@ class TaxonDecorator::Statistics
 
   private
 
-    attr_reader :include_invalid, :include_fossil
+    attr_reader :include_fossil
 
     def rank_statistics rank_stats, rank
       return unless rank_stats
 
       valid_string = valid_statistics rank_stats.delete('valid'), rank
-      return valid_string unless include_invalid
 
       invalid_string = invalid_statistics rank_stats
       if invalid_string && valid_string.blank?
@@ -63,7 +61,7 @@ class TaxonDecorator::Statistics
 
     def valid_statistics valid_rank_stats, rank
       return unless valid_rank_stats
-      rank_status_count(rank, 'valid', valid_rank_stats, include_invalid)
+      rank_status_count(rank, 'valid', valid_rank_stats)
     end
 
     def invalid_statistics rank_stats
@@ -80,13 +78,8 @@ class TaxonDecorator::Statistics
       end
     end
 
-    def rank_status_count rank, status, count, label_statuses = true
-      count_and_status =
-        if label_statuses
-          pluralize_with_delimiters count, status, Status.plural(status)
-        else
-          number_with_delimiter count
-        end
+    def rank_status_count rank, status, count
+      count_and_status = pluralize_with_delimiters count, status, Status.plural(status)
 
       if status == Status::VALID
         # We must first singularize because rank may already be pluralized.

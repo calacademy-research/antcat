@@ -119,17 +119,5 @@ describe TaxonDecorator::Statistics do
       expect(described_class[statistics]).
         to eq '<p>2 valid species (2 synonyms, 2 homonyms, 2 unavailable, 2 excluded from Formicidae)</p>'
     end
-
-    it "leaves out invalid status if desired" do
-      statistics = {
-        extant: {
-          genera: { 'valid' => 1, 'homonym' => 2 },
-          species: { 'valid' => 2 },
-          subspecies: { 'valid' => 3 }
-        }
-      }
-      expect(described_class[statistics, include_invalid: false]).
-        to eq '<p>1 genus, 2 species, 3 subspecies</p>'
-    end
   end
 end

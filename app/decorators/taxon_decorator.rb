@@ -27,16 +27,11 @@ class TaxonDecorator < ApplicationDecorator
     end
   end
 
-  # Currently accepts very confusing arguments.
-  # `include_invalid` tells `TaxonDecorator::Statistics` to remove
-  # invalid taxa from the already generated hash of counts. This is the older method.
-  # `valid_only` was written for performance reasons; it makes `Taxon#statistics`
-  # ignore invalid taxa to begin with.
-  def statistics valid_only: false, include_invalid: true
+  def statistics valid_only: false
     statistics = taxon.statistics valid_only: valid_only
     return '' unless statistics
 
-    TaxonDecorator::Statistics[statistics, include_invalid: include_invalid]
+    TaxonDecorator::Statistics[statistics]
   end
 
   def headline_protonym
