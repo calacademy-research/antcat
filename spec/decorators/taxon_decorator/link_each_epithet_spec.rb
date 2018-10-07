@@ -38,9 +38,7 @@ describe TaxonDecorator::LinkEachEpithet do
         let!(:genus) { create_genus 'Formica' }
         let!(:species) { create_species 'rufa', genus: genus }
         let!(:subspecies) do
-          major_name = Name.create! name: 'Formica rufa pratensis major',
-            epithet_html: '<i>major</i>',
-            epithets: 'rufa pratensis major'
+          major_name = SubspeciesName.create! name: 'Formica rufa pratensis major'
           create :subspecies, name: major_name, species: species, genus: genus
         end
 

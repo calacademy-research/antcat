@@ -21,8 +21,7 @@ class TaxonDecorator::LinkEachEpithet
     if species
       string << header_link(species, species.name.epithet_html.html_safe)
       string << ' '.html_safe
-      epithets_without_species = @taxon.name.epithets.split(' ')[1..-1].join ' '
-      string << header_link(@taxon, italicize(epithets_without_species))
+      string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
     else
       string << header_link(@taxon, italicize(@taxon.name.epithets))
     end
