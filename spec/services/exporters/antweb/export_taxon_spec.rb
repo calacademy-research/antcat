@@ -281,9 +281,7 @@ describe Exporters::Antweb::ExportTaxon do
           %(<div class="antcat_taxon">) +
 
             # statistics
-            %(<div class="statistics">) +
-              %(<p>1 species</p>) +
-            %(</div>) +
+            %(<p>1 species</p>) +
 
             # headline
             %(<div>) +

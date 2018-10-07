@@ -36,10 +36,7 @@ class TaxonDecorator < ApplicationDecorator
     statistics = taxon.statistics valid_only: valid_only
     return '' unless statistics
 
-    content = TaxonDecorator::Statistics[statistics, include_invalid: include_invalid]
-    return '' if content.blank?
-
-    helpers.content_tag :div, content, class: 'statistics'
+    TaxonDecorator::Statistics[statistics, include_invalid: include_invalid]
   end
 
   def headline_protonym

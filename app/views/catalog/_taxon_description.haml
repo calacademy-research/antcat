@@ -7,7 +7,7 @@
     %span.review_state This taxon has been changed; changes awaiting approval
     =link_to_review_change taxon
 
-.small-margin-bottom
+#statistics.small-margin-bottom
   =render "statistics", taxon: taxon
 
 -if taxon.genus_species_header_notes_taxt.present?
