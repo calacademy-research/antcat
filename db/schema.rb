@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180908122656) do
+ActiveRecord::Schema.define(version: 20181009175440) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -342,8 +342,8 @@ ActiveRecord::Schema.define(version: 20180908122656) do
   end
 
   create_table "synonyms", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
-    t.integer "senior_synonym_id"
-    t.integer "junior_synonym_id"
+    t.integer "senior_synonym_id", null: false
+    t.integer "junior_synonym_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "auto_generated", default: false
@@ -506,4 +506,6 @@ ActiveRecord::Schema.define(version: 20180908122656) do
   end
 
   add_foreign_key "site_notices", "users"
+  add_foreign_key "synonyms", "taxa", column: "junior_synonym_id", name: "fk_synonyms__junior_synonym_id__taxa__id"
+  add_foreign_key "synonyms", "taxa", column: "senior_synonym_id", name: "fk_synonyms__senior_synonym_id__taxa__id"
 end
