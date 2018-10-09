@@ -143,8 +143,6 @@ Feature: Workflow
 
     # TODO: test this where we undo the oldest and then both are gone.
 
-  # FIX: currently doesn't work with incertae sedis taxa, which
-  # is why we need to nest the genera in a tribe in this test.
   Scenario: Deleting a subfamily with genera and undoing the change
     Given the Formicidae family exists
     And I log in as a superadmin
@@ -153,26 +151,26 @@ Feature: Workflow
     And genus "Antcatia" exists in that tribe
     And genus "Tactania" exists in that tribe
 
-    When I go to the catalog page for "Formicidae"
-    And I follow "Ancatinae" in the families index
+    When I go to the catalog page for "Ancatinae"
+    Then I should see "Antcatini"
+    And I should see "Antcatia"
+    And I should see "Tactania"
+
+    When I go to the catalog page for "Antcatini"
     Then I should see "Antcatia"
     And I should see "Tactania"
 
     When I follow "Delete..."
     And I follow "Confirm and delete"
-    And I go to the catalog page for "Formicidae"
-    Then I should not see "Ancatinae"
-
-    When I follow "All genera"
-    Then I should not see "Antcatia"
+    And I go to the catalog page for "Ancatinae"
+    Then I should not see "Antcatini"
+    And I should not see "Antcatia"
     And I should not see "Tactania"
 
     When I go to the changes page
     And I follow the first "Undo..."
     And I press "Undo!"
-    And I go to the catalog page for "Formicidae"
-    Then I should see "Ancatinae"
-
-    When I follow "All genera"
-    Then I should see "Antcatia"
+    And I go to the catalog page for "Ancatinae"
+    Then I should see "Antcatini"
+    And I should see "Antcatia"
     And I should see "Tactania"

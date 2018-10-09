@@ -17,6 +17,8 @@ class TaxaGrabBagController < ApplicationController
   def destroy
     Taxa::DeleteTaxonAndChildren[@taxon]
     redirect_to root_path, notice: "Taxon was successfully deleted."
+  rescue ActiveRecord::StatementInvalid => e
+    redirect_to confirm_before_delete_taxa_path(@taxon), alert: "error: #{e}"
   end
 
   # "Light version" of `#destroy` (which is for superadmins only). A button to this

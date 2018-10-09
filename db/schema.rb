@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181009175440) do
+ActiveRecord::Schema.define(version: 20181009181953) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -508,4 +508,12 @@ ActiveRecord::Schema.define(version: 20181009175440) do
   add_foreign_key "site_notices", "users"
   add_foreign_key "synonyms", "taxa", column: "junior_synonym_id", name: "fk_synonyms__junior_synonym_id__taxa__id"
   add_foreign_key "synonyms", "taxa", column: "senior_synonym_id", name: "fk_synonyms__senior_synonym_id__taxa__id"
+  add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
+  add_foreign_key "taxa", "taxa", column: "current_valid_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "family_id", name: "fk_taxa__family_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "genus_id", name: "fk_taxa__genus_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "homonym_replaced_by_id", name: "fk_taxa__homonym_replaced_by_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "subfamily_id", name: "fk_taxa__subfamily_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
 end
