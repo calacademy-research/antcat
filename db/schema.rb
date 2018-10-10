@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181009181953) do
+ActiveRecord::Schema.define(version: 20181010191708) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -348,7 +348,7 @@ ActiveRecord::Schema.define(version: 20181009181953) do
     t.datetime "updated_at"
     t.boolean "auto_generated", default: false
     t.string "origin"
-    t.index ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id"
+    t.index ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", unique: true
     t.index ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id"
     t.index ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id"
   end
