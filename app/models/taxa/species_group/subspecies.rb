@@ -31,10 +31,6 @@ class Subspecies < SpeciesGroupTaxon
     Subspecies.none
   end
 
-  def elevate_to_species
-    Taxa::ElevateToSpecies[self]
-  end
-
   private
 
     def set_genus

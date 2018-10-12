@@ -44,20 +44,39 @@ class ConvertToSubspeciesController < ApplicationController
       render :new and return
     end
 
-    begin
-      @taxon.convert_to_subspecies_of @new_species
-    rescue Taxon::TaxonExists => e
-      @taxon.errors.add :base, e.message
-      render :new and return
-    end
+    new_subspecies = Taxa::ConvertToSubspecies[@taxon, @new_species]
+    if new_subspecies.persisted?
+      create_convert_species_to_subspecies_activity @taxon, new_subspecies
+      redirect_to catalog_path(new_subspecies), notice: <<~MSG
+        <p>Species was successfully converted to a subspecies.<p>
 
-    redirect_to catalog_path(@taxon),
-      notice: "Probably converted species to a subspecies."
+        <p>The old species record has not been modified and must be manually updated.</p>
+
+        <p>
+          What to do:<br>
+          • The status of the old species should probably be "obsolete combination"<br>
+          • See if synonyms must be moved (must be manually moved)<br>
+          • Check 'What link here'
+        </p>
+      MSG
+    else
+      # This case may not be possible as of writing, but once we add more validations it may be.
+      redirect_to catalog_path(@taxon), alert: new_subspecies.errors.full_messages.to_sentence
+    end
   end
 
   private
 
     def set_taxon
       @taxon = Taxon.find(params[:taxa_id])
+    end
+
+    def create_convert_species_to_subspecies_activity original_species, new_subspecies
+      original_species.create_activity :convert_species_to_subspecies,
+        parameters: {
+          original_species_id: original_species.id,
+          name_was: original_species.name_html_cache,
+          name: new_subspecies.name.name_html
+        }
     end
 end
