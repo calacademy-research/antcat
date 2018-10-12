@@ -2,17 +2,17 @@ module Autocomplete
   class AutocompleteJournals
     include Service
 
-    def initialize search_query = ''
+    def initialize search_query
       @search_query = search_query
     end
 
     def call
       Journal.select('journals.name, COUNT(*)').
-        joins('LEFT OUTER JOIN `references` ON references.journal_id = journals.id').
+        left_outer_joins(:references).
         where('journals.name LIKE ?', search_expression).
         group('journals.id').
         order('COUNT(*) DESC').
-        map(&:name)
+        pluck(:name)
     end
 
     private

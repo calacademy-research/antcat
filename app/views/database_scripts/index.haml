@@ -17,7 +17,7 @@
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
         indicates that the script is related to something we used to have an issue with, and we just want to make sure no new similar issues appear. Most of these should be empty.
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VALIDATED]
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VALIDATED_TAG]
         means that there are validations to prevent the issue. This does not mean that the isssue
         can never happen because many validations are only run in the application layer,
         not in the database. These tags are manily used to track our progress of adding more
@@ -27,7 +27,7 @@
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         as it can make the site unresponsive.
 
--[@other_scripts, @regression_tests].each do |database_scripts|
+-@grouped_database_scripts.each do |_title, database_scripts|
   %table.tablesorter.margin-bottom
     %thead
       %tr

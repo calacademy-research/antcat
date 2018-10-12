@@ -49,7 +49,7 @@ module DatabaseScripts
 
     def not_matching_any_endings
       any_ending = endings.values.flatten.join("|")
-      Genus.where("name_cache NOT REGEXP ?", "#{any_ending}$").order_by_name_cache
+      Genus.where("name_cache NOT REGEXP ?", "#{any_ending}$").order_by_name
     end
 
     def formatted_not_matching_any_endings
@@ -88,5 +88,5 @@ end
 
 __END__
 description: Version 0.1 of this script. Read-only.
-tags: [slow]
+tags: [list, slow]
 topic_areas: [catalog]

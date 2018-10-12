@@ -24,5 +24,4 @@ Feature: Elevating subspecies to species
     When I go to the catalog page for "Solenopsis speccus subbus"
     And I will confirm on the next step
     And I follow "Elevate to species"
-    Then I should see "Subspecies was successfully elevated to a species."
-    And I should see the catalog entry for "Solenopsis subbus"
+    Then I should see "This name is in use by another taxon"

@@ -5,7 +5,7 @@ class TaxonHistoryItem < ApplicationRecord
 
   belongs_to :taxon
 
-  validates :taxt, :taxon_id, presence: true
+  validates :taxt, :taxon, presence: true
 
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }

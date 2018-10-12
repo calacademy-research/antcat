@@ -263,6 +263,7 @@ describe Exporters::Antweb::ExportTaxon do
       let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
 
       before do
+        create :species, :unavailable, genus: genus # For the statistics.
         genus.update type_name: species.name
         genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
         genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
@@ -281,9 +282,7 @@ describe Exporters::Antweb::ExportTaxon do
           %(<div class="antcat_taxon">) +
 
             # statistics
-            %(<div class="statistics">) +
-              %(<p>1 species</p>) +
-            %(</div>) +
+            %(<p>Extant: 1 valid species</p>) +
 
             # headline
             %(<div>) +
@@ -298,7 +297,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span>) +
+              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
               %( ) +
               # links
               %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +

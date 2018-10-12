@@ -8,9 +8,8 @@ module Markdowns
     include ActionView::Helpers::UrlHelper
     include Service
 
-    def initialize content, include_search_history_links: false
+    def initialize content
       @content = content
-      @include_search_history_links = include_search_history_links
     end
 
     def call
@@ -28,7 +27,7 @@ module Markdowns
 
     private
 
-      attr_reader :content, :include_search_history_links
+      attr_reader :content
 
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
@@ -131,20 +130,7 @@ module Markdowns
       end
 
       def broken_markdown_link type, string
-        if include_search_history_links
-          broken_markdown_link_with_search_history_link type, string
-        else
-          broken_markdown_link_without_history_link type, string
-        end
-      end
-
-      # TODO probably merge the "with" and "without" methods.
-      def broken_markdown_link_without_history_link type, string
-        <<-HTML.squish
-          <span class="broken-markdown-link">
-            could not find #{type} with id #{string}
-          </span>
-        HTML
+        broken_markdown_link_with_search_history_link type, string
       end
 
       def broken_markdown_link_with_search_history_link type, id

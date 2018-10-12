@@ -28,7 +28,7 @@ module References
         end
 
         def author_names
-          Parsers::AuthorParser.parse(search_query)[:names]
+          Parsers::AuthorParser.parse(search_query)
         end
     end
   end

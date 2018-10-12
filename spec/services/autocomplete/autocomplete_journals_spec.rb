@@ -14,15 +14,14 @@ describe Autocomplete::AutocompleteJournals do
     end
 
     it "returns results in order of most used" do
-      ['Most Used', 'Never Used', 'Occasionally Used', 'Rarely Used'].each do |name|
-        create :journal, name: name
-      end
-      2.times { create :article_reference, journal: Journal.find_by(name: 'Rarely Used') }
-      3.times { create :article_reference, journal: Journal.find_by(name: 'Occasionally Used') }
-      4.times { create :article_reference, journal: Journal.find_by(name: 'Most Used') }
-      0.times { create :article_reference, journal: Journal.find_by(name: 'Never Used') }
+      most_used = create :journal
+      never_used = create :journal
+      rarely_used = create :journal
 
-      expect(described_class[]).to eq ['Most Used', 'Occasionally Used', 'Rarely Used', 'Never Used']
+      2.times { create :article_reference, journal: rarely_used }
+      4.times { create :article_reference, journal: most_used }
+
+      expect(described_class['']).to eq [most_used.name, rarely_used.name, never_used.name]
     end
   end
 end

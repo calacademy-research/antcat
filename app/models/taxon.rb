@@ -29,7 +29,6 @@ class Taxon < ApplicationRecord
   belongs_to :current_valid_taxon, class_name: 'Taxon'
 
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
-  has_many :taxa, class_name: "Taxon", foreign_key: :genus_id # Only `genus_id`?
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
 
@@ -58,8 +57,8 @@ class Taxon < ApplicationRecord
       ]
     )
   end
-  scope :order_by_joined_epithet, -> { joins(:name).order('names.epithet') }
-  scope :order_by_name_cache, -> { order(:name_cache) }
+  scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
+  scope :order_by_name, -> { order(:name_cache) }
 
   # Example usage:
   # Say we want something like this (which doesn't work):

@@ -28,7 +28,7 @@ module Taxa
       end
 
       def search_results
-        query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name_cache
+        query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
 
         query = filter_by_fossil(query, params[:fossil])
         query = filter_by_nomen_nudum(query, params[:nomen_nudum])

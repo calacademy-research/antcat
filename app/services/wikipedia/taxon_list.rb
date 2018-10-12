@@ -48,7 +48,7 @@ module Wikipedia
 
       def set_children rank
         @children_rank = rank
-        @children = @taxon.send(@children_rank).valid.order_by_name_cache
+        @children = @taxon.send(@children_rank).valid.order_by_name
       end
 
       def divider

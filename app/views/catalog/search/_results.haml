@@ -8,6 +8,13 @@
   %table
     %caption=pluralize_with_delimiters taxa.count, 'result'
     -taxa.each do |taxon|
-      =render 'result', taxon: taxon
+      %tr
+        %td
+          -presenter = AdvancedSearchPresenter::HTML.new
+          =presenter.format_name taxon
+          =presenter.format_status_reference taxon
+          =presenter.format_type_localities taxon
+          =presenter.format_forms taxon
+          =taxon.authorship_reference.decorate.expandable_reference
 
   =will_paginate taxa

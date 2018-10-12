@@ -42,7 +42,6 @@ class Names::CreateNameFromString
     def genus_or_tribe_or_subfamily
       case string
       when /inae$/ then :subfamily
-      when /idae$/ then :subfamily # NOTE actually a family suffix.
       when /ini$/  then :tribe
       else              :genus
       end

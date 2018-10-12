@@ -17,7 +17,7 @@ module Autocomplete
           search_query: search_query,
           id: reference.id,
           title: reference.title,
-          author: reference.author_names_string,
+          author: reference.author_names_string_with_suffix,
           year: reference.citation_year
         }
       end

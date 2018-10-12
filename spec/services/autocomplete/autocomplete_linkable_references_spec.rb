@@ -17,7 +17,7 @@ describe Autocomplete::AutocompleteLinkableReferences do
         expect(service.call).to eq [
           {
             id: reference.id,
-            author: reference.author_names_string,
+            author: reference.author_names_string_with_suffix,
             year: reference.citation_year,
             title: "#{reference.title}.",
             full_pagination: "[pagination: #{reference.pages_in} (22 pp.)]",

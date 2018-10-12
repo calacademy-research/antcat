@@ -7,7 +7,7 @@ class Exporters::Antweb::TypeFields
   end
 
   def call
-    formatted_type_fields.reject(&:blank?).join(' ').html_safe
+    formatted_type_fields.compact.join(' ').html_safe
   end
 
   private
@@ -19,17 +19,17 @@ class Exporters::Antweb::TypeFields
     end
 
     def primary_type_information
-      return if taxon.primary_type_information.blank?
+      return unless taxon.primary_type_information
       add_period_if_necessary "Primary type information: #{detax(taxon.primary_type_information)}"
     end
 
     def secondary_type_information
-      return if taxon.secondary_type_information.blank?
+      return unless taxon.secondary_type_information
       add_period_if_necessary "Secondary type information: #{detax(taxon.secondary_type_information)}"
     end
 
     def type_notes
-      return if taxon.type_notes.blank?
+      return unless taxon.type_notes
       add_period_if_necessary "Type notes: #{detax(taxon.type_notes)}"
     end
 

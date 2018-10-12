@@ -1,8 +1,6 @@
 module AdvancedSearchesHelper
   PER_PAGE_OPTIONS = [30, 100, 500, 1000]
 
-  include Formatters::AdvancedSearchHtmlFormatter
-
   def rank_options_for_select value = 'All'
     options = { "All"         => "All",
                 "Subfamilies" => "Subfamily",
