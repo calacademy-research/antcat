@@ -125,7 +125,7 @@ class Exporters::Antweb::ExportTaxon
 
       content_tag :div, class: 'antcat_taxon' do # NOTE `.antcat_taxon` is used on AntWeb.
         content = ''.html_safe
-        content << taxon.statistics(include_invalid: false)
+        content << taxon.statistics(valid_only: true)
         content << genus_species_header_notes_taxt(taxon)
         content << Exporters::Antweb::ExportHeadline[taxon]
         content << Exporters::Antweb::ExportHistoryItems[taxon]

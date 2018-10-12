@@ -18,9 +18,7 @@ class TaxonDecorator::ChildList
     end
     content << collective_group_name_child_list
 
-    return if content.blank?
-
-    content_tag :div, content, class: 'child_lists'
+    content
   end
 
   private
@@ -68,7 +66,7 @@ class TaxonDecorator::ChildList
       children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
       children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
 
-      children.valid.includes(:name).order_by_name_cache
+      children.valid.includes(:name).order_by_name
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}

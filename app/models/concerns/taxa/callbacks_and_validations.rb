@@ -56,11 +56,7 @@ module Taxa::CallbacksAndValidations
 
     def remove_auto_generated
       self.auto_generated = false
-
-      name.make_not_auto_generated!
-
-      junior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
-      senior_synonyms_objects.auto_generated.each &:make_not_auto_generated!
+      name.auto_generated = false
     end
 
     def build_default_taxon_state

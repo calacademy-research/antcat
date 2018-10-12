@@ -27,19 +27,8 @@ class TaxonDecorator < ApplicationDecorator
     end
   end
 
-  # Currently accepts very confusing arguments.
-  # `include_invalid` tells `TaxonDecorator::Statistics` to remove
-  # invalid taxa from the already generated hash of counts. This is the older method.
-  # `valid_only` was written for performance reasons; it makes `Taxon#statistics`
-  # ignore invalid taxa to begin with.
-  def statistics valid_only: false, include_invalid: true
-    statistics = taxon.statistics valid_only: valid_only
-    return '' unless statistics
-
-    content = TaxonDecorator::Statistics[statistics, include_invalid: include_invalid]
-    return '' if content.blank?
-
-    helpers.content_tag :div, content, class: 'statistics'
+  def statistics valid_only: false
+    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
 
   def headline_protonym
@@ -57,4 +46,53 @@ class TaxonDecorator < ApplicationDecorator
   def taxon_status
     TaxonDecorator::TaxonStatus[taxon]
   end
+
+  def link_to_antwiki
+    page_title = if taxon.is_a? Subgenus
+                   taxon.name.epithet
+                 else
+                   taxon.name.name.tr(" ", '_')
+                 end
+    link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
+  end
+
+  def link_to_hol
+    return unless taxon.hol_id
+    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+  end
+
+  def link_to_antweb
+    return if taxon.class.in? [Family, Tribe, Subgenus]
+
+    url = "http://www.antweb.org/description.do?"
+    params = { rank: taxon.class.to_s.downcase }
+    params.merge! case taxon
+                  when Species
+                    {      genus: taxon.genus.name.name.downcase,
+                         species: taxon.name.epithet.downcase }
+                  when Subspecies
+                    return unless taxon.species
+                    {      genus: taxon.genus.name.name.downcase,
+                         species: taxon.species.name.epithet,
+                      subspecies: taxon.name.subspecies_epithets.downcase }
+                  when Genus
+                    {      genus: taxon.name.name.downcase }
+                  when Subfamily
+                    {  subfamily: taxon.name.name.downcase }
+                  else
+                    raise "Don't know how to link #{taxon} to AntWeb"
+                  end
+
+    params[:project] = "worldants"
+
+    # Rails' .to_param sorts the params, this one doesn't
+    url << params.map { |key, value| value.to_query(key) }.compact * '&'
+    link_to_external_site 'AntWeb', url.html_safe
+  end
+
+  private
+
+    def link_to_external_site label, url
+      h.link_to label, url, class: 'link_to_external_site'
+    end
 end

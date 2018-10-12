@@ -742,9 +742,6 @@ definitions:
           origin:
             type: string
             description: The origin of an automatic import. Remains populated even if an editor has touched it and turned the auto_generated flag to false.
-          display:
-            type: boolean
-            description: True if it should be shown in the taxon browser. If false, it will still show in searches.
 
   Author:
     description: Author primary key IDs
@@ -775,14 +772,6 @@ definitions:
       name:
         type: string
         description: author name
-      verified:
-        type: boolean
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -809,12 +798,6 @@ definitions:
         type: boolean
       locality:
         type: string
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -901,12 +884,6 @@ definitions:
       notes_taxt:
         type: string
         description: Long field with text and notes
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -932,12 +909,6 @@ definitions:
       taxt:
         type: string
         description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -957,12 +928,6 @@ definitions:
       name:
         type: string
         description: Journal name
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -982,12 +947,6 @@ definitions:
       name:
         type: string
         description: Publisher name
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -1054,12 +1013,6 @@ definitions:
       name:
         type: string
         description: Reference name
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -1082,12 +1035,6 @@ definitions:
         type: integer
       position:
         type: integer
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time
@@ -1164,12 +1111,6 @@ definitions:
       junior_synonym_id:
         type: integer
         description: Junior taxa
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
-      origin:
-        type: string
-        description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.
       created_at:
         type: string
         format: date-time

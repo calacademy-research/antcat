@@ -10,7 +10,7 @@ class TaxonDecorator::HeadlineProtonym
   end
 
   def call
-    headline_protonym
+    add_period_if_necessary headline_protonym
   end
 
   private
@@ -20,10 +20,11 @@ class TaxonDecorator::HeadlineProtonym
     delegate :protonym, to: :taxon
 
     def headline_protonym
-      string = protonym_name
-      string << ' ' << authorship(protonym.authorship)
-      string << locality(protonym.locality)
-      add_period_if_necessary string
+      [
+        protonym_name,
+        authorship(protonym.authorship),
+        locality(protonym.locality)
+      ].compact.join(" ").html_safe
     end
 
     def protonym_name
@@ -51,7 +52,7 @@ class TaxonDecorator::HeadlineProtonym
     end
 
     def locality locality
-      return '' if locality.blank?
+      return if locality.blank?
 
       first_parenthesis = locality.index("(")
       capitalized =
@@ -63,7 +64,7 @@ class TaxonDecorator::HeadlineProtonym
           locality.upcase
         end
 
-      add_period_if_necessary ' ' + capitalized
+      add_period_if_necessary capitalized
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.

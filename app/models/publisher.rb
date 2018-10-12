@@ -1,9 +1,7 @@
 class Publisher < ApplicationRecord
-  belongs_to :place
-
   has_many :references
 
-  validates :name, presence: true
+  validates :name, :place_name, presence: true
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
@@ -18,7 +16,6 @@ class Publisher < ApplicationRecord
   end
 
   def display_name
-    return name if place_name.blank?
     "#{place_name}: #{name}"
   end
 end

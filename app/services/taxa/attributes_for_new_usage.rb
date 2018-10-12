@@ -19,7 +19,7 @@ module Taxa
         unresolved_homonym: old_comb.unresolved_homonym,
         ichnotaxon: old_comb.ichnotaxon,
         hong: old_comb.hong,
-        headline_notes_taxt: old_comb.headline_notes_taxt || "",
+        headline_notes_taxt: old_comb.headline_notes_taxt,
         biogeographic_region: old_comb.biogeographic_region,
         primary_type_information: old_comb.primary_type_information,
         secondary_type_information: old_comb.secondary_type_information,
@@ -34,7 +34,7 @@ module Taxa
             reference_attributes: { id: old_comb.protonym.authorship.reference_id },
             pages: old_comb.protonym.authorship.pages,
             forms: old_comb.protonym.authorship.forms,
-            notes_taxt: old_comb.protonym.authorship.notes_taxt || "",
+            notes_taxt: old_comb.protonym.authorship.notes_taxt,
             id: old_comb.protonym.authorship_id
           }
         }

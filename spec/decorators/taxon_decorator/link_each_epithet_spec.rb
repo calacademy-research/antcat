@@ -38,9 +38,7 @@ describe TaxonDecorator::LinkEachEpithet do
         let!(:genus) { create_genus 'Formica' }
         let!(:species) { create_species 'rufa', genus: genus }
         let!(:subspecies) do
-          major_name = Name.create! name: 'Formica rufa pratensis major',
-            epithet_html: '<i>major</i>',
-            epithets: 'rufa pratensis major'
+          major_name = SubspeciesName.create! name: 'Formica rufa pratensis major'
           create :subspecies, name: major_name, species: species, genus: genus
         end
 
@@ -51,19 +49,6 @@ describe TaxonDecorator::LinkEachEpithet do
             %(<a href="/catalog/#{subspecies.id}"><i>pratensis major</i></a>)
           )
         end
-      end
-    end
-
-    context 'when taxon has a non-conforming name`' do
-      let(:taxon) { create :subspecies }
-
-      before { taxon.name.update nonconforming_name: true }
-
-      it 'links the genus, and links the rest of the name to the taxon' do
-        expect(described_class[taxon]).to eq(
-          %(<a href="/catalog/#{taxon.genus.id}"><i>#{taxon.genus.name_cache}</i></a> ) +
-          %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name.epithets}</i></a>)
-        )
       end
     end
   end

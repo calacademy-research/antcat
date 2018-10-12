@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :taxon_history_item do
     taxt 'history item content'
-    taxon_id 123999
+    association :taxon, factory: :family
   end
 end

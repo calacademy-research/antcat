@@ -4,26 +4,6 @@ module DevMonkeyPatches::AntCat
   end
 
   module Taxon
-    def sf
-      subfamilies
-    end
-
-    def g
-      genera
-    end
-
-    def s
-      species
-    end
-
-    def ss
-      subspecies
-    end
-
-    def ch
-      children
-    end
-
     def dev_dev_link localhost: false
       host = localhost ? "localhost:3000" : "antcat.org"
       link = "http://#{host}/catalog/#{id}?#{name_cache.tr(' ', '_')}"

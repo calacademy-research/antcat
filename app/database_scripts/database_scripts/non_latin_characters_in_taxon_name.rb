@@ -10,4 +10,5 @@ end
 
 __END__
 description: See also %github168.
+tags: [list]
 topic_areas: [catalog]

@@ -1,22 +1,6 @@
 require "spec_helper"
 
 describe TaxtPresenter do
-  describe "#to_text" do
-    it "renders text without links or HTML (except <i> tags)" do
-      taxt = "{tax #{create(:family).id}}"
-      expect(described_class[taxt].to_text).to eq "Formicidae"
-    end
-
-    context "names that should be italicized" do
-      let(:genus) { create :genus }
-
-      it "includes HTML <i> tags" do
-        taxt = "{tax #{genus.id}}"
-        expect(described_class[taxt].to_text).to eq "<i>#{genus.name.name}</i>"
-      end
-    end
-  end
-
   describe "#to_html" do
     describe "escaping input" do
       it "doesn't escape already escaped input" do
@@ -115,11 +99,7 @@ describe TaxtPresenter do
 
         context "when the ref points to a reference that doesn't exist" do
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND REFERENCE WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND REFERENCE WITH ID 999"
           end
         end
       end
@@ -129,11 +109,7 @@ describe TaxtPresenter do
           let(:results) { described_class["{nam 999}"].to_antweb }
 
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND NAME WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND NAME WITH ID 999"
           end
         end
       end
@@ -143,11 +119,7 @@ describe TaxtPresenter do
 
         context "when the taxon can't be found" do
           it "adds a warning" do
-            expect(results).to match "CANNOT FIND TAXON WITH ID 999"
-          end
-
-          it "doesn't include a 'Search history?' link" do
-            expect(results).not_to match "Search history?"
+            expect(results).to eq "CANNOT FIND TAXON WITH ID 999"
           end
         end
       end

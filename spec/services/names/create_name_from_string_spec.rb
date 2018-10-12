@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Names::CreateNameFromString do
   describe '#call' do
-    context 'when sting is a subgenus name' do
+    context 'when input is a subgenus name' do
       it 'creates a `SubgenusName`' do
         described_class['Camponotus (Forelophilus)']
         name = Name.last
