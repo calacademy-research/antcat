@@ -5,8 +5,14 @@ class DatabaseScriptsController < ApplicationController
   before_action :set_database_script, only: [:show, :source]
 
   def index
-    @regression_tests, @other_scripts = DatabaseScript.all.partition do |script|
-      DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
+    @grouped_database_scripts = DatabaseScript.all.group_by do |script|
+      if DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
+        :regression_tests
+      elsif DatabaseScript::LIST_TAG.in? script.tags
+        :lists
+      else
+        :other
+      end
     end
   end
 
