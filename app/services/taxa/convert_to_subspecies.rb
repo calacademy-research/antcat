@@ -45,7 +45,7 @@ module Taxa
 
         return new_name if new_name
 
-        # TODO the `Name` classes set the epithets and HTML names.
+        # TODO make the `Name` classes set epithets and HTML names.
         SubspeciesName.new name: new_name_string,
           name_html: italicize(new_name_string),
           epithet: original_species.name.epithet,

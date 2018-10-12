@@ -43,12 +43,11 @@ module Taxa
 
         return new_name if new_name
 
-        # TODO the `Name` classes set the epithets and HTML names.
+        # TODO make the `Name` classes set epithet and HTML names.
         SpeciesName.new name: new_name_string,
           name_html: italicize(new_name_string),
           epithet: subspecies.name.epithet,
-          epithet_html: subspecies.name.epithet_html,
-          epithets: nil
+          epithet_html: subspecies.name.epithet_html
       end
 
       def move_history_items! new_species
