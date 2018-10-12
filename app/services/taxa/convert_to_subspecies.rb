@@ -18,7 +18,10 @@ module Taxa
         return new_subspecies
       end
 
-      new_subspecies.save
+      if new_subspecies.save
+        move_history_items! new_subspecies
+      end
+
       new_subspecies
     end
 
@@ -48,6 +51,10 @@ module Taxa
           epithet: original_species.name.epithet,
           epithet_html: original_species.name.epithet_html,
           epithets: "#{new_species_parent.name.epithet} #{original_species.name.epithet}"
+      end
+
+      def move_history_items! new_subspecies
+        Taxa::MoveItems[new_subspecies, original_species.history_items]
       end
   end
 end

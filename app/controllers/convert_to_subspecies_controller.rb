@@ -56,7 +56,6 @@ class ConvertToSubspeciesController < ApplicationController
           What to do:<br>
           • The status of the old species should probably be "obsolete combination"<br>
           • See if synonyms must be moved (must be manually moved)<br>
-          • Move history items as needed (use the 'Move history items' button)<br>
           • Check 'What link here'
         </p>
       MSG

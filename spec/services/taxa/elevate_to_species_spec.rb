@@ -93,6 +93,16 @@ describe Taxa::ElevateToSpecies do
         it "nilifies `species_id`" do
           expect(described_class[subspecies].species_id).to eq nil
         end
+
+        context "when taxon has history items" do
+          let!(:history_item) { create :taxon_history_item, taxon: subspecies }
+
+          it 'moves them to the new species' do
+            expect(history_item.taxon).to eq subspecies
+            new_species = described_class[subspecies]
+            expect(history_item.reload.taxon).to eq new_species
+          end
+        end
       end
     end
 
