@@ -88,6 +88,10 @@ class TaxaGrabBagController < ApplicationController
 
     def create_elevate_to_species_activity subspecies, new_species
       subspecies.create_activity :elevate_subspecies_to_species,
-        parameters: { name_was: subspecies.name_html_cache, name: new_species.name.name_html }
+        parameters: {
+          original_subspecies_id: subspecies.id,
+          name_was: subspecies.name_html_cache,
+          name: new_species.name.name_html
+        }
     end
 end

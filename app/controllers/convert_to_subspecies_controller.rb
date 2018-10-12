@@ -62,6 +62,10 @@ class ConvertToSubspeciesController < ApplicationController
 
     def create_convert_species_to_subspecies_activity original_species, new_subspecies
       original_species.create_activity :convert_species_to_subspecies,
-        parameters: { name_was: original_species.name_html_cache, name: new_subspecies.name.name_html }
+        parameters: {
+          original_species_id: original_species.id,
+          name_was: original_species.name_html_cache,
+          name: new_subspecies.name.name_html
+        }
     end
 end

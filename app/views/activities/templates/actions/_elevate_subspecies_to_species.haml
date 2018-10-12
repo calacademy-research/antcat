@@ -1,5 +1,15 @@
 elevated the subspecies
-=activity.parameters[:name_was].html_safe
+
+-if activity.parameters[:original_subspecies_id]
+  =taxon_link_or_deleted_string activity.parameters[:original_subspecies_id], activity.parameters[:name_was].html_safe
+-else
+  =activity.parameters[:name_was].html_safe
+
 to the rank of species (now
 =succeed ")" do
   =activity.link_trackable_if_exists activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)
+
+-unless activity.parameters[:original_subspecies_id]
+  %small.bold-warning please see note
+  =inline_expandable("show more") do
+    This subspecies was elevated using the old code that modified the original record in place. The old subspecies record may be missing and may have to be recreated.
