@@ -47,7 +47,19 @@ class ConvertToSubspeciesController < ApplicationController
     new_subspecies = Taxa::ConvertToSubspecies[@taxon, @new_species]
     if new_subspecies.persisted?
       create_convert_species_to_subspecies_activity @taxon, new_subspecies
-      redirect_to catalog_path(new_subspecies), notice: "Species was successfully converted to a subspecies"
+      redirect_to catalog_path(new_subspecies), notice: <<~MSG
+        <p>Species was successfully converted to a subspecies.<p>
+
+        <p>The old species record has not been modified and must be manually updated.</p>
+
+        <p>
+          What to do:<br>
+          • The status of the old species should probably be "obsolete combination"<br>
+          • See if synonyms must be moved (must be manually moved)<br>
+          • Move history items as needed (use the 'Move history items' button)<br>
+          • Check 'What link here'
+        </p>
+      MSG
     else
       # This case may not be possible as of writing, but once we add more validations it may be.
       redirect_to catalog_path(@taxon), alert: new_subspecies.errors.full_messages.to_sentence

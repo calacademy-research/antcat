@@ -45,7 +45,19 @@ class TaxaGrabBagController < ApplicationController
     new_species = Taxa::ElevateToSpecies[@taxon]
     if new_species.persisted?
       create_elevate_to_species_activity @taxon, new_species
-      redirect_to catalog_path(new_species), notice: "Subspecies was successfully elevated to a species."
+      redirect_to catalog_path(new_species), notice: <<~MSG
+        <p>Subspecies was successfully elevated to a species.<p>
+
+        <p>The old subspecies record has not been modified and must be manually updated.</p>
+
+        <p>
+          What to do:<br>
+          • The status of the old subspecies should probably be "obsolete combination"<br>
+          • See if synonyms must be moved (must be manually moved)<br>
+          • Move history items as needed (use the 'Move history items' button)<br>
+          • Check 'What link here'
+        </p>
+      MSG
     else
       # This case may not be possible as of writing, but once we add more validations it may be.
       redirect_to catalog_path(@taxon), alert: new_species.errors.full_messages.to_sentence
