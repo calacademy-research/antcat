@@ -28,8 +28,8 @@ end
     parent :edit_taxon, taxon
   end
 
-crumb :convert_to_species do |taxon|
-  link "Convert to Species"
+crumb :convert_species_to_subspecies do |taxon|
+  link "Convert species to subspecies"
   parent :edit_taxon, taxon
 end
 
