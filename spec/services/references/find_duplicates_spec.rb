@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe References::MatchReferences do
+describe References::FindDuplicates do
   let(:reference_similarity) { double }
 
   before do

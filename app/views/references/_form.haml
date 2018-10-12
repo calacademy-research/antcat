@@ -12,11 +12,16 @@
   =render 'shared/errors_for', resource: reference
 
   .row
-    .medium-6.columns
+    .medium-4.columns
       =label_tag :reference_author_names_string do
         Authors
         =tooltip_icon :authors, scope: :references
       =f.text_field :author_names_string
+    .medium-2.columns
+      =label_tag :author_names_suffix do
+        Authors suffix
+        =tooltip_icon :author_names_suffix, scope: :references
+      =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
     .medium-1.columns
       =label_tag :reference_citation_year, 'Year'
       =f.text_field :citation_year

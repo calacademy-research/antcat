@@ -19,14 +19,4 @@ describe Parsers::ArticleCitationParser do
         to eq series: 'I', volume: 'C', issue: 'xix'
     end
   end
-
-  describe "#get_page_parts" do
-    it "can parse beginning and ending page numbers" do
-      expect(parser.get_page_parts('163-181')).to eq start: '163', end: '181'
-    end
-
-    it "can parse just a single page number" do
-      expect(parser.get_page_parts('8')).to eq start: '8'
-    end
-  end
 end

@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe ReferenceForm do
   describe "#save" do
-    context "when reference exists" do
-      let(:original_params) { {} }
-      let(:request_host) { 123 }
+    let(:original_params) { {} }
+    let(:request_host) { 123 }
 
+    context "when reference exists" do
       describe "updating attributes" do
         let!(:reference) { create :unknown_reference }
         let(:reference_params) do
@@ -90,6 +90,31 @@ describe ReferenceForm do
             end
           end
         end
+      end
+    end
+
+    describe "duplicate checking" do
+      let!(:original) { create :article_reference }
+      let(:reference_params) do
+        {
+          author_names_string: original.author_names_string,
+          citation_year: original.citation_year,
+          title: original.title,
+          journal: original.journal,
+          series_volume_issue: original.series_volume_issue,
+          pagination: original.pagination
+        }
+      end
+      let!(:duplicate) { create :article_reference, author_names: original.author_names }
+
+      it "allows a duplicate record to be saved" do
+        expect { described_class.new(duplicate, reference_params, original_params, request_host).save }.not_to raise_error
+      end
+
+      it "checks possible duplication and add to errors, if any found" do
+        expect(duplicate.errors).to be_empty
+        expect(described_class.new(duplicate, reference_params, original_params, request_host).save).to be nil
+        expect(duplicate.errors[:base].first).to include "This may be a duplicate of Fisher"
       end
     end
   end

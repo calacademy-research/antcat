@@ -29,32 +29,21 @@ describe Reference do
     end
   end
 
-  describe "#parse_author_names_and_suffix" do
-    let(:reference) { build_stubbed :reference }
-
-    context 'when input in empty' do
-      it "returns nothing" do
-        expect(reference.parse_author_names_and_suffix('')).
-          to eq author_names: [], author_names_suffix: nil
+  describe "#author_names_string_with_suffix" do
+    describe "formatting" do
+      it "consists of one author_name if that's all there is" do
+        reference = build_stubbed :reference, author_names: [fisher_bl]
+        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.'
       end
-    end
 
-    context 'when input is invalid' do
-      it "adds an error and raise an exception" do
-        expect { reference.parse_author_names_and_suffix('...asdf sdf dsfdsf') }.
-          to raise_error ActiveRecord::RecordInvalid
-        expect(reference.errors.messages).to eq author_names_string: ["couldn't be parsed."]
-        expect(reference.author_names_string).to eq '...asdf sdf dsfdsf'
+      it "separates multiple author_names with semicolons" do
+        reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
+        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.; Ward, P.S.'
       end
-    end
 
-    context 'when input is valid' do
-      it "returns the author names and the suffix" do
-        results = reference.parse_author_names_and_suffix 'Fisher, B.; Bolton, B. (eds.)'
-        fisher = AuthorName.find_by(name: 'Fisher, B.')
-        bolton = AuthorName.find_by(name: 'Bolton, B.')
-
-        expect(results).to eq author_names: [fisher, bolton], author_names_suffix: ' (eds.)'
+      it "includes the author_names' suffix" do
+        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
+        expect(reference.reload.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
       end
     end
   end
@@ -69,11 +58,6 @@ describe Reference do
       it "separates multiple author_names with semicolons" do
         reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
-      end
-
-      it "includes the author_names' suffix" do
-        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
-        expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (ed.)'
       end
     end
 
@@ -105,14 +89,6 @@ describe Reference do
           expect { ward_ps.update name: 'Fisher' }.
             to change { reference.reload.author_names_string }.
             from('Ward, P.S.').to('Fisher')
-        end
-      end
-
-      context "when `author_names_suffix` changes" do
-        before { reference.update author_names_suffix: ' (eds.)' }
-
-        it "updates its `author_names_string`" do
-          expect(reference.reload.author_names_string).to eq 'Fisher, B.L. (eds.)'
         end
       end
     end
@@ -167,43 +143,6 @@ describe Reference do
       let(:reference) { create :reference, citation_year: nil }
 
       specify { expect(reference.short_citation_year).to eq "[no year]" }
-    end
-  end
-
-  describe "duplicate checking" do
-    let(:reference_params) do
-      {
-        author_names: [fisher_bl],
-        citation_year: '1981',
-        title: 'Dolichoderinae',
-        journal: create(:journal),
-        series_volume_issue: '1(2)',
-        pagination: '22-54'
-      }
-    end
-    let!(:original) { ArticleReference.create! reference_params }
-
-    describe 'implementing MatchReferences' do
-      it 'maps all fields correctly' do
-        expect(original.principal_author_last_name).to eq 'Fisher'
-        expect(original.year).to eq 1981
-        expect(original.title).to eq 'Dolichoderinae'
-        expect(original.type).to eq 'ArticleReference'
-        expect(original.series_volume_issue).to eq '1(2)'
-        expect(original.pagination).to eq '22-54'
-      end
-    end
-
-    it "allows a duplicate record to be saved" do
-      expect { ArticleReference.create! reference_params }.not_to raise_error
-    end
-
-    it "checks possible duplication and add to errors, if any found" do
-      duplicate = ArticleReference.create! reference_params
-
-      expect(duplicate.errors).to be_empty
-      expect(duplicate.check_for_duplicate).to be_truthy
-      expect(duplicate.errors).not_to be_empty
     end
   end
 
