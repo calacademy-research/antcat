@@ -19,13 +19,6 @@ Feature: Feed
     And I follow "Delete"
     Then I should see "No activities"
 
-  Scenario: Only superadmins should be able to delete feed items
-    Given I add a journal for the feed
-
-    When I go to the activity feed
-    Then I should see 1 item in the feed
-    And I should not see "Delete"
-
   @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin

@@ -2,16 +2,6 @@ Feature: Editing a taxon
   Background:
     Given I am logged in
 
-  Scenario: Editing a species
-    Given a species exists with a name of "major" and a genus of "Atta"
-
-    When I go to the catalog page for "Atta major"
-    Then I should see "Atta major" in the header
-
-    When I go to the edit page for "Atta major"
-    And I save the taxon form
-    Then I should see "Atta major" in the header
-
   Scenario: Cancelling
     Given there is a genus "Calyptites"
 
@@ -61,16 +51,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta"
     And I should see "neuter"
 
-  Scenario: Don't see gender field for species-group names
-    Given a species exists with a name of "major" and a genus of "Atta"
-
-    When I go to the edit page for "Atta major"
-    Then I should not see the gender menu
-
-    When I go to the edit page for "Atta"
-    Then I should see the gender menu
-
-  Scenario: Changing biogeographic region
+  Scenario: Changing biogeographic region (species-group name)
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta major"
@@ -81,15 +62,6 @@ Feature: Editing a taxon
 
     When I press the edit taxon link
     Then I should see "Malagasy" selected in "taxon_biogeographic_region"
-
-  Scenario: Don't see biogeographic region field for genus-group name
-    Given a species exists with a name of "major" and a genus of "Atta"
-
-    When I go to the edit page for "Atta"
-    Then I should not see "Biogeographic region"
-
-    When I go to the edit page for "Atta major"
-    Then I should see "Biogeographic region"
 
   Scenario: Clearing the biogeographic_region
     Given a species exists with a name of "major" and a genus of "Atta"
