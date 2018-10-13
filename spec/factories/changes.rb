@@ -6,7 +6,7 @@ FactoryBot.define do
 end
 
 def create_taxon_version_and_change review_state, user = @user, approver = nil, genus_name = 'default_genus'
-  name = create :name, name: genus_name
+  name = create :genus_name, name: genus_name
   taxon = create :genus, name: name
   taxon.taxon_state.review_state = review_state
 

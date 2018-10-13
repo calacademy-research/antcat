@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Species do
+  it { is_expected.to validate_presence_of :genus }
+
   it "can have subspecies, which are its children" do
     species = create :species
     robusta = create :subspecies, species: species

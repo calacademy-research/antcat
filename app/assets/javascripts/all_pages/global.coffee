@@ -108,7 +108,7 @@ $ ->
     truncateString: "..."
     showText: """<span class="btn-normal btn-tiny">Show more</span>"""
     hideText: """<span class="btn-normal btn-tiny">Show less</span>"""
-    hideClass: "anything-except-hide" # Becuase `.hide` conflics with jQuery.
+    hideClass: "anything-except-hide" # Because `.hide` conflics with jQuery.
 
     # HACK to make keys inside truncated elements to work after showing/hiding.
     animate: true

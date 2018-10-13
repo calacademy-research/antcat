@@ -23,10 +23,10 @@ end
 
 Given("a genus exists with a name of {string} and a subfamily of {string}") do |name, parent_name|
   subfamily = Subfamily.find_by_name parent_name
-  subfamily ||= create :subfamily, name: create(:name, name: parent_name)
+  subfamily ||= create :subfamily, name: create(:subfamily_name, name: parent_name)
 
   create :genus,
-    name: create(:name, name: name),
+    name: create(:genus_name, name: name),
     subfamily: subfamily,
     tribe: nil
 end
@@ -39,7 +39,7 @@ end
 Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, name, parent_name|
   tribe = Tribe.find_by_name parent_name
   create :genus,
-    name: create(:name, name: name),
+    name: create(:genus_name, name: name),
     subfamily: tribe.subfamily,
     tribe: tribe,
     fossil: fossil.present?

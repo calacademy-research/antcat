@@ -123,7 +123,6 @@ Feature: Adding a taxon successfully
     Given there is a subfamily "Dolichoderinae"
     And tribe "Dolichoderini" exists in that subfamily
     And genus "Dolichoderus" exists in that tribe
-    And species "Dolichoderus major" exists in that genus
     And subgenus "Dolichoderus (Subdolichoderus)" exists in that genus
 
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
@@ -134,15 +133,16 @@ Feature: Adding a taxon successfully
     When I click the name field
     Then the name field should contain "Dolichoderus "
 
-    When I set the name to "Dolichoderus (Subdolichoderus) major"
+    When I set the name to "Dolichoderus major"
     And I press "OK"
     And I click the protonym name field
-    And I set the protonym name to "Dolichoderus (Subdolichoderus) major"
+    # TODO: this only works because it's already set to "Dolichoderus major".
+    And I set the protonym name to "Dolichoderus major"
     And I press "OK"
     And I set the authorship to the first search results of "Fisher (2004)"
     And I press "Save"
-    Then I should be on the catalog page for "Dolichoderus (Subdolichoderus) major"
-    And I should see "Dolichoderus (Subdolichoderus) major" in the protonym
+    Then I should be on the catalog page for "Dolichoderus major"
+    And I should see "Dolichoderus major" in the protonym
 
   @search @javascript
   Scenario: Adding a subspecies
