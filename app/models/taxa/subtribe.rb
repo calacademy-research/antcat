@@ -5,6 +5,10 @@ class Subtribe < Taxon
     raise NotImplementedError, "currently we have no subtribes"
   end
 
+  def update_parent _new_parent
+    raise "cannot update parent of subtribes"
+  end
+
   def children
     raise NotImplementedError
   end
