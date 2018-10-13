@@ -6,15 +6,6 @@ Feature: Editing tooltips
   Background:
     Given I am logged in
 
-  Scenario: Listing all tooltips
-    Given this tooltip exist
-      | key      | key_enabled | text        | scope        |
-      | selector | true        | Is enabled! | widget_tests |
-
-    When I go to the tooltips editing page
-    Then I should see "Edit Tooltips"
-    And I should see "Is enabled!"
-
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists

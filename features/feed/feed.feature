@@ -3,10 +3,6 @@ Feature: Feed
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: No activities
-    When I go to the activity feed
-    Then I should see "No activities"
-
   @javascript
   Scenario: Deleting activities
     Given I log in as a superadmin
