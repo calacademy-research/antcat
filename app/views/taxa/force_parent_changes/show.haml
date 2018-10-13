@@ -1,0 +1,27 @@
+-@title = "Force parent change"
+-breadcrumb :force_parent_change, @taxon
+
+-content_for :head do
+  =javascript_include_tag "taxon_select"
+
+=form_tag taxa_force_parent_change_path do
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Change parent of
+        =@taxon.decorate.id_and_name_and_author_citation
+
+        %br
+        Current parent:
+        =@taxon.parent.decorate.id_and_name_and_author_citation
+
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend to
+        =taxon_select_tag :new_parent_id, params[:new_parent_id]
+
+  .row.margin-bottom
+    .medium-12.columns
+      .center-text
+        =button_tag type: "submit", class: "btn-delete has-spinner" do
+          =spinner_icon + "Change parent"

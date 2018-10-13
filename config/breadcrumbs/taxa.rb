@@ -88,6 +88,11 @@ crumb :synonym_relationship do |synonym|
   parent :edit_catalog
 end
 
+crumb :force_parent_change do |taxon|
+  link "Force parent change"
+  parent :edit_taxon, taxon
+end
+
 crumb :move_items do |taxon|
   link "Move items", new_taxa_move_items_path(taxon)
   parent :edit_taxon, taxon

@@ -14,3 +14,8 @@
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"
+  %br
+  %br
+  .right
+    -if !taxon.class.in?([Family, Subfamily]) && user_is_superadmin?
+      =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-delete btn-tiny btn-warning"

@@ -22,6 +22,7 @@ class Activity < ApplicationRecord
     elevate_subspecies_to_species
     execute_script
     finish_reviewing
+    force_parent_change
     merge_authors
     move_items
     reopen_feedback

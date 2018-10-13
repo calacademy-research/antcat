@@ -148,3 +148,7 @@ Then("the {string} of {string} should be {string}") do |association, taxon_name,
 
   expect(taxon.send(association.to_sym)).to eq other_taxon
 end
+
+When("I set the new parent field to {string}") do |name|
+  select2 name, from: 'new_parent_id'
+end
