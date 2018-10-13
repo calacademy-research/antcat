@@ -120,6 +120,7 @@ class TaxaController < ApplicationController
     def taxon_params
       params.require(:taxon).permit(
         :status,
+        :species_id,
         { name_attributes: [:id, :gender] },
         :homonym_replaced_by_id,
         :current_valid_taxon_id,

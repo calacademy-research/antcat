@@ -177,12 +177,12 @@ Feature: Changing parent genus, species, tribe or subfamily
     And there is a subspecies "Crematogaster menilekii proserpina" without a species
 
     When I go to the edit page for "Crematogaster menilekii proserpina"
-    And I click the parent name field
-    And I set the parent name to "Crematogaster menilekii"
-    And I press "OK"
-    And I press "Yes, update parent record only"
+    Then I should see "this subspecies has no species, please set one"
+
+    When I set "taxon_species_id" to "Crematogaster menilekii" [select-two]
     And I press "Save"
     Then I should be on the catalog page for "Crematogaster menilekii proserpina"
+    And the "species" of "Crematogaster menilekii proserpina" should be "Crematogaster menilekii"
 
   Scenario: Changing a genus's tribe
     Given there is a tribe "Attini"

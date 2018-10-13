@@ -137,3 +137,14 @@ Then("{string} should be of the rank of {string}") do |name, rank|
   taxon = Taxon.find_by(name_cache: name)
   expect(taxon.rank).to eq rank
 end
+
+When("I set {string} to {string} [select-two]") do |id, name|
+  select2 name, from: id
+end
+
+Then("the {string} of {string} should be {string}") do |association, taxon_name, other_taxon_name|
+  taxon = Taxon.find_by(name_cache: taxon_name)
+  other_taxon = Taxon.find_by(name_cache: other_taxon_name)
+
+  expect(taxon.send(association.to_sym)).to eq other_taxon
+end
