@@ -5,14 +5,8 @@ class Subspecies < SpeciesGroupTaxon
 
   before_validation :set_genus
 
-  def update_parent new_parent
-    super
-    self.genus = new_parent.genus if new_parent.genus
-    self.subgenus = new_parent.subgenus if new_parent.subgenus
-    self.species = new_parent
-  end
-
-  def statistics valid_only: false
+  def parent
+    species || genus
   end
 
   def parent= parent_taxon
@@ -22,13 +16,19 @@ class Subspecies < SpeciesGroupTaxon
     self.species = parent_taxon
   end
 
-  def parent
-    species || genus
+  def update_parent new_parent
+    super
+    self.genus = new_parent.genus if new_parent.genus
+    self.subgenus = new_parent.subgenus if new_parent.subgenus
+    self.species = new_parent
   end
 
   # TODO remove?
   def children
     Subspecies.none
+  end
+
+  def statistics valid_only: false
   end
 
   private

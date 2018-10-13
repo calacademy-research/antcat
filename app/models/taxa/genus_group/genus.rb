@@ -8,6 +8,10 @@ class Genus < GenusGroupTaxon
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }
 
+  def parent
+    tribe || subfamily || Family.first
+  end
+
   def update_parent new_parent
     case new_parent
     when Tribe
@@ -23,24 +27,16 @@ class Genus < GenusGroupTaxon
     update_descendants_subfamilies
   end
 
-  def statistics valid_only: false
-    get_statistics [:species, :subspecies], valid_only: valid_only
-  end
-
-  def parent
-    tribe || subfamily || Family.first
-  end
-
   def displayable_child_taxa
     descendants.displayable
   end
 
-  def descendants
-    Taxon.where(genus: self)
-  end
-
   def displayable_subgenera
     Subgenus.where(genus: self).displayable
+  end
+
+  def descendants
+    Taxon.where(genus: self)
   end
 
   def find_epithet_in_genus target_epithet_string
@@ -62,6 +58,10 @@ class Genus < GenusGroupTaxon
       return results unless results.empty?
     end
     nil
+  end
+
+  def statistics valid_only: false
+    get_statistics [:species, :subspecies], valid_only: valid_only
   end
 
   private

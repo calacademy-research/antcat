@@ -31,15 +31,15 @@ class Subfamily < Taxon
     "tribes"
   end
 
-  def statistics valid_only: false
-    get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
-  end
-
   def all_displayable_genera
     genera.displayable
   end
 
   def genera_incertae_sedis_in
     genera.displayable.without_tribe
+  end
+
+  def statistics valid_only: false
+    get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
   end
 end

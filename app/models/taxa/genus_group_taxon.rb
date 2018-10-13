@@ -5,14 +5,6 @@ class GenusGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :tribe
 
-  def children
-    species
-  end
-
-  def childrens_rank_in_words
-    "species"
-  end
-
   def parent= parent_taxon
     case parent_taxon
     when Subfamily
@@ -21,5 +13,13 @@ class GenusGroupTaxon < Taxon
       self.subfamily = parent_taxon.subfamily
       self.tribe = parent_taxon
     end
+  end
+
+  def children
+    species
+  end
+
+  def childrens_rank_in_words
+    "species"
   end
 end
