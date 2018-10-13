@@ -13,9 +13,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
-    Then I should be on the new taxon page
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
@@ -57,9 +55,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Camponotus"
     And I follow "Add subgenus"
-    Then I should be on the new taxon page
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Camponotus (Mayria)"
       And I press "OK"
     And I click the protonym name field
@@ -84,10 +80,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Eciton"
     And I follow "Add species"
-    Then I should be on the new taxon page
-    And I should see "Eciton › Add species"
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Eciton major"
       And I press "OK"
     And I click the protonym name field
@@ -108,10 +101,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
     And I follow "Add species"
-    Then I should be on the new taxon page
-    And I should see "(Subdolichoderus) › Add species"
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Dolichoderus major"
       And I press "OK"
     And I click the protonym name field
@@ -129,10 +119,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Eciton major"
     And I follow "Add subspecies"
-    Then I should be on the new taxon page
-    And I should see "Eciton major › Add subspecies"
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Eciton major infra"
       And I press "OK"
     And I click the protonym name field
@@ -150,9 +137,7 @@ Feature: Adding a taxon successfully
 
     When I go to the main page
     And I follow "Add subfamily"
-    Then I should be on the new taxon page
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Dorylinae"
       And I press "OK"
     And I click the protonym name field
@@ -175,9 +160,7 @@ Feature: Adding a taxon successfully
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
     And I follow "Add tribe"
-    Then I should be on the new taxon page
-
-    When I click the name field
+    And I click the name field
       And I set the name to "Dorylini"
       And I press "OK"
     And I click the protonym name field
