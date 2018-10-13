@@ -12,6 +12,16 @@ class Genus < GenusGroupTaxon
     tribe || subfamily || Family.first
   end
 
+  def parent= parent_taxon
+    case parent_taxon
+    when Subfamily
+      self.subfamily = parent_taxon
+    when Tribe
+      self.subfamily = parent_taxon.subfamily
+      self.tribe = parent_taxon
+    end
+  end
+
   def update_parent new_parent
     case new_parent
     when Tribe
