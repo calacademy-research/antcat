@@ -132,7 +132,7 @@ Feature: Adding a taxon successfully
     And I should see "(Subdolichoderus) › Add species"
 
     When I click the name field
-    Then the name field should contain "Dolichoderus (Subdolichoderus) "
+    Then the name field should contain "Dolichoderus "
 
     When I set the name to "Dolichoderus (Subdolichoderus) major"
     And I press "OK"
