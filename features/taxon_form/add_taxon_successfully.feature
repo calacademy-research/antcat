@@ -78,12 +78,6 @@ Feature: Adding a taxon successfully
     And I follow "Subgenera"
     Then I should see "Mayria" in the index
 
-  Scenario: Hide "Add species" link on subfamily catalog pages
-    Given there is a subfamily "Formicinae"
-
-    When I go to the catalog page for "Formicinae"
-    Then I should not see "Add species"
-
   @javascript
   Scenario: Adding a species
     Given there is a genus "Eciton"
