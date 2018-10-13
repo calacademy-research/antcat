@@ -9,7 +9,6 @@ class Genus < GenusGroupTaxon
   scope :without_tribe, -> { where(tribe_id: nil) }
 
   def update_parent new_parent
-    set_name_caches
     case new_parent
     when Tribe
       self.tribe = new_parent

@@ -97,7 +97,6 @@ class Taxon < ApplicationRecord
     return if parent == new_parent
 
     name.change_parent new_parent.name
-    set_name_caches
     self.parent = new_parent
     self.subfamily = new_parent.subfamily
   end

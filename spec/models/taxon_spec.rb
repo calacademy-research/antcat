@@ -249,11 +249,6 @@ describe Taxon do
         expect(name.epithet_html).to eq '<i>minor</i>'
         expect(name.epithets).to eq 'nigrus medius minor'
       end
-
-      it "changes the cached name, etc., of a subspecies" do
-        expect(subspecies.name_cache).to eq 'Eciton nigrus medius minor'
-        expect(subspecies.name_html_cache).to eq '<i>Eciton nigrus medius minor</i>'
-      end
     end
   end
 end
