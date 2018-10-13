@@ -18,7 +18,6 @@
   =text_field_tag 'taxon_name_string', @taxon.name_cache
   =text_field_tag 'species_id', @taxon.rank.to_s == "subspecies" ?  @taxon.species_id : true
   =text_field_tag 'reset_epithet', @reset_epithet
-  =text_field_tag 'is_superadmin', user_is_superadmin?
 
 -url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
 =form_for @taxon, as: :taxon, url: url, html: { class: 'taxon_form' } do |form|

@@ -109,7 +109,6 @@ Rails.application.routes.draw do
         delete :destroy
         delete :destroy_unreferenced
         post :reorder_history_items
-        get :update_parent # TODO change to put.
       end
     end
     collection do

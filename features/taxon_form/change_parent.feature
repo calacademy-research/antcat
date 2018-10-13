@@ -237,21 +237,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I press "OK"
     Then I should see "This must be the name of an existing taxon"
 
-  Scenario: Merging back when we have the same protonym
-    Given there is a species "Atta major" with genus "Atta"
-    And there is a subspecies "Atta major minor" without a species
-
-    When I go to the edit page for "Atta major minor"
-    And I click the parent name field
-    And I set the parent name to "Atta major"
-    And I press "OK"
-    Then I should see "Confirm parent species change"
-    And I should see "Atta major: "
-    And I should see "Choose a parent species:"
-
-    When I press "Yes, update parent record only"
-    Then I should see "Atta major › Atta major minor › Edit"
-
   Scenario: Merging back when we have the same protonym without superadmin
     Given there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
     And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
@@ -264,48 +249,4 @@ Feature: Changing parent genus, species, tribe or subfamily
     And I should see "Batta speccus subbus: "
     And I should see " This would become a secondary junior homonym; name conflict with distinct authorship"
     And I should see "Create secondary junior homonym of Batta speccus subbus: "
-    And I should not see "No, just change the parent"
     And I should see "Yes, create new combination"
-
-  Scenario: Merging back when we have the same protonym with superadmin
-    Given I log in as a superadmin
-    And there is a subspecies "Batta speccus subbus" which is a subspecies of "Batta speccus" in the genus "Batta"
-    And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
-
-    When I go to the edit page for "Atta speccus subbus"
-    And I click the parent name field
-    And I set the parent name to "Batta speccus"
-    And I press "OK"
-    Then I should see "This new combination looks a lot like existing combinations."
-    And I should see "Batta speccus subbus: "
-    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
-    And I should see "Create secondary junior homonym of Batta speccus subbus:"
-    And I should see "No, just change the parent"
-    And I should see "Yes, create new combination"
-
-    When I press "No, just change the parent"
-    Then I should see "Atta speccus subbus"
-
-  Scenario: Changing parent of subspecies to a species with an inconsistent name
-    Given I log in as a superadmin
-    And there is a subspecies "Batta fpeccus subbus" which is a subspecies of "Batta fpeccus" in the genus "Batta"
-    And there is a subspecies "Atta speccus subbus" which is a subspecies of "Atta speccus" in the genus "Atta"
-
-    When I go to the edit page for "Atta speccus subbus"
-    And I click the parent name field
-    And I set the parent name to "Batta fpeccus"
-    And I press "OK"
-    Then I should see "This new combination looks a lot like existing combinations."
-    And I should see "Batta fpeccus subbus:"
-    And I should see "This would become a secondary junior homonym; name conflict with distinct authorship"
-    And I should see "Create secondary junior homonym of Batta fpeccus subbus: (Fisher"
-    And I should see "No, just change the parent"
-    And I should see "Yes, create new combination"
-
-    When I press "No, just change the parent"
-    Then I should see "Batta fpeccus:"
-    And I should see "This does not match the name of the current species. Use with caution."
-    And I should see "Yes, update parent record only"
-
-    When I press "Yes, update parent record only"
-    Then I should see "Batta fpeccus › Atta speccus subbus › Edit"
