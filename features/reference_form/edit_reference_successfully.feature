@@ -2,18 +2,6 @@ Feature: Edit reference successfully
   Background:
     Given I am logged in
 
-  Scenario: Edit a reference
-    Given this reference exists
-      | author | citation   | title | citation_year |
-      | author | Psyche 5:3 | title | 2010          |
-
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    And I fill in "reference_title" with "Ant Title"
-    And I fill in "reference_citation_year" with "1910a"
-    And I press "Save"
-    Then I should see "Ward, B.L.; Bolton, B. 1910a. Ant Title"
-
   @javascript
   Scenario: Change a reference's type
     Given this reference exists
