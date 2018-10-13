@@ -12,19 +12,17 @@ Feature: Adding a taxon successfully
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Formicinae"
-      And I follow "Add genus"
+    And I follow "Add genus"
     Then I should be on the new taxon page
 
     When I click the name field
       And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
-
-    When I set the protonym name to "Eciton"
+      And I set the protonym name to "Eciton"
       And I press "OK"
     And I click the type name field
-
-    When I set the type name to "Atta major"
+      And I set the type name to "Atta major"
       And I press "OK"
       And I press "Add this name"
     And I press "Save"
@@ -39,8 +37,8 @@ Feature: Adding a taxon successfully
     Given tribe "Ecitonini" exists in that subfamily
 
     When I go to the catalog page for "Ecitonini"
-      And I follow "Add genus"
-      And I click the name field
+    And I follow "Add genus"
+    And I click the name field
       And I set the name to "Eciton"
       And I press "OK"
     And I click the protonym name field
@@ -51,7 +49,6 @@ Feature: Adding a taxon successfully
       And I press "OK"
       And I press "Add this name"
     And I press "Save"
-
     Then I should be on the catalog page for "Eciton"
 
   @javascript
@@ -59,20 +56,18 @@ Feature: Adding a taxon successfully
     Given there is a genus "Camponotus"
 
     When I go to the catalog page for "Camponotus"
-      And I follow "Add subgenus"
+    And I follow "Add subgenus"
     Then I should be on the new taxon page
 
     When I click the name field
       And I set the name to "Camponotus (Mayria)"
       And I press "OK"
     And I click the protonym name field
-
-    When I set the protonym name to "Mayria"
+      And I set the protonym name to "Mayria"
       And I press "OK"
       And I press "Add this name"
     And I click the type name field
-
-    When I set the type name to "Mayria madagascarensis"
+      And I set the type name to "Mayria madagascarensis"
       And I press "OK"
       And I press "Add this name"
     And I press "Save"
@@ -99,12 +94,12 @@ Feature: Adding a taxon successfully
     And I should see "Eciton › Add species"
 
     When I click the name field
-    When I set the name to "Eciton major"
+      And I set the name to "Eciton major"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major"
       And I press "OK"
-    And WAIT_FOR_JQUERY
+      And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
@@ -123,13 +118,13 @@ Feature: Adding a taxon successfully
     And I should see "(Subdolichoderus) › Add species"
 
     When I click the name field
-    When I set the name to "Dolichoderus major"
-    And I press "OK"
+      And I set the name to "Dolichoderus major"
+      And I press "OK"
     And I click the protonym name field
-    # TODO: this only works because it's already set to "Dolichoderus major".
-    And I set the protonym name to "Dolichoderus major"
-    And I press "OK"
-    And WAIT_FOR_JQUERY
+      # TODO: this only works because it's already set to "Dolichoderus major".
+      And I set the protonym name to "Dolichoderus major"
+      And I press "OK"
+      And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should be on the catalog page for "Dolichoderus major"
     And I should see "Dolichoderus major" in the protonym
@@ -144,12 +139,12 @@ Feature: Adding a taxon successfully
     And I should see "Eciton major › Add subspecies"
 
     When I click the name field
-    When I set the name to "Eciton major infra"
+      And I set the name to "Eciton major infra"
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Eciton major infra"
       And I press "OK"
-    And WAIT_FOR_JQUERY
+      And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the index
@@ -160,19 +155,17 @@ Feature: Adding a taxon successfully
     Given the Formicidae family exists
 
     When I go to the main page
-      And I follow "Add subfamily"
+    And I follow "Add subfamily"
     Then I should be on the new taxon page
 
     When I click the name field
       And I set the name to "Dorylinae"
       And I press "OK"
     And I click the protonym name field
-    Then the protonym name field should contain "Dorylinae"
-
-    When I press "OK"
+      Then the protonym name field should contain "Dorylinae"
+      When I press "OK"
     And I click the type name field
-
-    When I set the type name to "Atta"
+      And I set the type name to "Atta"
       And I press "OK" in "#type_name_field"
       And I press "Add this name"
     When I press "Save"
@@ -181,26 +174,25 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Formicinae"
     And I follow "Formicidae subfamilies"
-      Then I should see "Dorylinae" in the index
-      And I should not see "Add another"
+    Then I should see "Dorylinae" in the index
+    And I should not see "Add another"
 
   @javascript
   Scenario: Adding a tribe
     When I go to the catalog page for "Formicinae"
-      And I follow "Add tribe"
+    And I follow "Add tribe"
     Then I should be on the new taxon page
 
     When I click the name field
       And I set the name to "Dorylini"
       And I press "OK"
     And I click the protonym name field
-    Then the protonym name field should contain "Dorylini"
-
-    When I press "OK"
-    And WAIT_FOR_JQUERY
+      Then the protonym name field should contain "Dorylini"
+      And I press "OK"
+      And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should be on the catalog page for "Dorylini"
-      And I should see "Dorylini" in the protonym
+    And I should see "Dorylini" in the protonym
 
     When I go to the catalog page for "Formicinae"
     And I follow "Formicinae tribes"
