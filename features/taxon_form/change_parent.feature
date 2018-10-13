@@ -158,20 +158,6 @@ Feature: Changing parent genus, species, tribe or subfamily
     Then I should be on the catalog page for "Eciton nigra minor"
     And the name in the header should be "Eciton nigra minor"
 
-  Scenario: Parent field not visible for the family
-    Given the Formicidae family exists
-
-    When I go to the edit page for "Formicidae"
-    Then I should not see the parent name field
-
-  Scenario: Parent field not visible while adding
-    Given there is a species "Eciton major" with genus "Eciton"
-
-    When I go to the catalog page for "Eciton major"
-    And I follow "Add subspecies"
-    Then I should be on the new taxon page
-    And I should not see the parent name field
-
   Scenario: Fixing a subspecies without a species
     Given there is a species "Crematogaster menilekii"
     And there is a subspecies "Crematogaster menilekii proserpina" without a species
