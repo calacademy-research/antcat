@@ -19,12 +19,10 @@ Feature: Adding a taxon successfully
       And I set the name to "Atta"
       And I press "OK"
     And I click the protonym name field
-    Then the protonym name field should contain "Atta"
 
     When I set the protonym name to "Eciton"
       And I press "OK"
     And I click the type name field
-    Then the type name field should contain "Eciton "
 
     When I set the type name to "Atta major"
       And I press "OK"
@@ -68,13 +66,11 @@ Feature: Adding a taxon successfully
       And I set the name to "Camponotus (Mayria)"
       And I press "OK"
     And I click the protonym name field
-    Then the protonym name field should contain "Camponotus (Mayria)"
 
     When I set the protonym name to "Mayria"
       And I press "OK"
       And I press "Add this name"
     And I click the type name field
-    Then the type name field should contain "Mayria "
 
     When I set the type name to "Mayria madagascarensis"
       And I press "OK"
@@ -103,8 +99,6 @@ Feature: Adding a taxon successfully
     And I should see "Eciton › Add species"
 
     When I click the name field
-    Then the name field should contain "Eciton "
-
     When I set the name to "Eciton major"
       And I press "OK"
     And I click the protonym name field
@@ -129,8 +123,6 @@ Feature: Adding a taxon successfully
     And I should see "(Subdolichoderus) › Add species"
 
     When I click the name field
-    Then the name field should contain "Dolichoderus "
-
     When I set the name to "Dolichoderus major"
     And I press "OK"
     And I click the protonym name field
@@ -152,8 +144,6 @@ Feature: Adding a taxon successfully
     And I should see "Eciton major › Add subspecies"
 
     When I click the name field
-    Then the name field should contain "Eciton major "
-
     When I set the name to "Eciton major infra"
       And I press "OK"
     And I click the protonym name field
@@ -181,7 +171,6 @@ Feature: Adding a taxon successfully
 
     When I press "OK"
     And I click the type name field
-    Then the type name field should contain "Dorylinae "
 
     When I set the type name to "Atta"
       And I press "OK" in "#type_name_field"
