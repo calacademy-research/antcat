@@ -19,6 +19,8 @@ class Genus < GenusGroupTaxon
     when Tribe
       self.subfamily = parent_taxon.subfamily
       self.tribe = parent_taxon
+    else
+      raise InvalidParent.new(self, parent_taxon)
     end
   end
 
@@ -33,6 +35,8 @@ class Genus < GenusGroupTaxon
     when nil
       self.tribe = nil
       self.subfamily = nil
+    else
+      raise InvalidParent.new(self, new_parent)
     end
     update_descendants_subfamilies
   end

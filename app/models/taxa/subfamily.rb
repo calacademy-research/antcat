@@ -13,6 +13,7 @@ class Subfamily < Taxon
   end
 
   def parent= parent_taxon
+    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Family)
     self.family = parent_taxon
   end
 

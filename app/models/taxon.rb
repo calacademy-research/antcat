@@ -14,6 +14,20 @@ class Taxon < ApplicationRecord
 
   class TaxonExists < StandardError; end
 
+  # TODO extract this and all `#update_parent`s into a new service `ForceParentChange`.
+  class InvalidParent < StandardError
+    attr_reader :taxon, :new_parent
+
+    def initialize taxon, new_parent = nil
+      @taxon = taxon
+      @new_parent = new_parent
+    end
+
+    def message
+      "Invalid parent: ##{new_parent&.id} (#{new_parent&.rank}) for ##{taxon.id} (#{taxon.rank})"
+    end
+  end
+
   self.table_name = :taxa
 
   attr_accessor :parent_name, :duplicate_type
@@ -90,15 +104,6 @@ class Taxon < ApplicationRecord
   # TODO remove since `#name_cache` is not unique.
   def self.find_by_name name
     find_by(name_cache: name)
-  end
-
-  # TODO see if we can push this down to the subclasses.
-  def update_parent new_parent
-    return if parent == new_parent
-
-    name.change_parent new_parent.name
-    self.parent = new_parent
-    self.subfamily = new_parent.subfamily
   end
 
   def rank

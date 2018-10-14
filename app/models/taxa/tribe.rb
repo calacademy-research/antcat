@@ -8,14 +8,15 @@ class Tribe < Taxon
   end
 
   def parent= parent_taxon
+    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Subfamily)
     self.subfamily = parent_taxon
   end
 
   def update_parent new_parent
-    if new_parent.is_a? Subfamily
-      self.subfamily = new_parent
-      update_descendants_subfamilies
-    end
+    raise InvalidParent.new(self, new_parent) unless new_parent.is_a?(Subfamily)
+
+    self.subfamily = new_parent
+    update_descendants_subfamilies
   end
 
   def children
