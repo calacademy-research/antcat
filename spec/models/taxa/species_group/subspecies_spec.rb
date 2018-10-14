@@ -35,16 +35,33 @@ describe Subspecies do
   end
 
   describe "#update_parent" do
-    let!(:subspecies) { create :subspecies }
-    let!(:species) { create :species }
+    let(:subspecies) { create :subspecies }
+    let(:new_parent) { create :species }
 
     it "sets all the parent fields" do
-      subspecies.update_parent species
+      subspecies.update_parent new_parent
 
-      expect(subspecies.species).to eq species
-      expect(subspecies.genus).to eq species.genus
-      expect(subspecies.subgenus).to eq species.subgenus
-      expect(subspecies.subfamily).to eq species.subfamily
+      expect(subspecies.species).to eq new_parent
+      expect(subspecies.genus).to eq new_parent.genus
+      expect(subspecies.subgenus).to eq new_parent.subgenus
+      expect(subspecies.subfamily).to eq new_parent.subfamily
+    end
+
+    describe "updating the name" do
+      let(:subspecies) do
+        create :subspecies, name: create(:subspecies_name, name: 'Atta major medius minor')
+      end
+      let(:new_parent) { create_species 'Eciton nigrus' }
+
+      specify do
+        subspecies.update_parent new_parent
+
+        expect(subspecies.name.name).to eq 'Eciton nigrus medius minor'
+        expect(subspecies.name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
+        expect(subspecies.name.epithet).to eq 'minor'
+        expect(subspecies.name.epithet_html).to eq '<i>minor</i>'
+        expect(subspecies.name.epithets).to eq 'nigrus medius minor'
+      end
     end
   end
 
@@ -52,9 +69,7 @@ describe Subspecies do
     context "without a species" do
       let(:taxon) { create :subspecies, genus: genus, species: nil }
 
-      it "returns the genus" do
-        expect(taxon.parent).to eq genus
-      end
+      specify { expect(taxon.parent).to eq genus }
     end
   end
 end
