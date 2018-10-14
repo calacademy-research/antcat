@@ -111,15 +111,6 @@ Rails.application.routes.draw do
         post :reorder_history_items
       end
     end
-    collection do
-      controller :duplicates do
-        get :find_duplicates
-        get :find_name_duplicates_only
-      end
-      scope module: :taxa, controller: :redirect_by_parent_name_id do
-        get :redirect_by_parent_name_id, action: :index
-      end
-    end
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     resources :synonyms, only: [:create, :destroy] do

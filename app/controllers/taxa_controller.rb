@@ -150,7 +150,6 @@ class TaxaController < ApplicationController
             }
           ]
         },
-        { parent_name_attributes: [:id] },
         { type_name_attributes: [:id] },
         :type_fossil,
         :type_taxt,

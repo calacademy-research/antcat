@@ -30,19 +30,6 @@ When("I set the name gender to {string}") do |gender|
   step %(I select "#{gender}" from "taxon_name_attributes_gender")
 end
 
-### parent field
-When("I click the parent name field") do
-  find('#parent_name_field .display_button').click
-end
-
-When("I set the parent name to {string}") do |name|
-  step %(I fill in "name_string" with "#{name}")
-end
-
-Then("I should not see the parent name field") do
-  expect(page).to_not have_css "#parent_row"
-end
-
 #### current valid taxon field
 Then("the current valid taxon name should be {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)

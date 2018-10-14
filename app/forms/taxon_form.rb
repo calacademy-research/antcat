@@ -25,8 +25,7 @@ class TaxonForm
         # the versions' `change_id`s will be nil.
         subspecies_without_species_special_case
 
-        update_parent               params.delete :parent_name_attributes
-        update_type_name            params.delete :type_name_attributes
+        update_type_name params.delete :type_name_attributes
 
         params[:name_id] = params[:name_attributes][:id]
         params[:protonym_attributes][:name_id] = params[:protonym_attributes][:name_attributes][:id]
@@ -46,15 +45,6 @@ class TaxonForm
       if taxon.is_a?(Subspecies) && taxon.species.blank? && params[:species_id].present?
         taxon.update_parent Taxon.find(params[:species_id])
       end
-    rescue Taxon::TaxonExists
-      taxon.errors.add :base, "This name is in use by another taxon"
-      raise
-    end
-
-    def update_parent parent_name_attributes
-      return unless parent_name_attributes
-
-      taxon.update_parent Taxon.find_by(name_id: parent_name_attributes[:id])
     rescue Taxon::TaxonExists
       taxon.errors.add :base, "This name is in use by another taxon"
       raise

@@ -57,9 +57,6 @@ class NameFieldsController < NamePickersController
     render json: data
   end
 
-  # TODO joe - this is probably where we should handle the cases currently done in
-  # a combination of duplicatescontroller and name_field.coffee
-
   private
 
     def add_name name_string, data
