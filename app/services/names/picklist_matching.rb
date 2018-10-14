@@ -35,29 +35,8 @@ class Names::PicklistMatching
 
     def picklist_query name_field, search_term
       Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
-        joins("#{join_type} taxa ON taxa.name_id = names.id").
-        where("#{name_field} LIKE ? #{rank_filter}", search_term)
-    end
-
-    def join_type
-      if options[:species_only] || options[:genera_only] || options[:subfamilies_or_tribes_only]
-        'JOIN'
-      else
-        'LEFT OUTER JOIN'
-      end
-    end
-
-    def rank_filter
-      case
-      when options[:species_only]
-        'AND taxa.type = "Species"'
-      when options[:genera_only]
-        'AND taxa.type = "Genus"'
-      when options[:subfamilies_or_tribes_only]
-        'AND (taxa.type = "Subfamily" OR taxa.type = "Tribe")'
-      else
-        ''
-      end
+        joins("LEFT OUTER JOIN taxa ON taxa.name_id = names.id").
+        where("#{name_field} LIKE ?", search_term)
     end
 
     def format matches

@@ -6,9 +6,6 @@ class AntCat.NameField extends AntCat.Panel
     @set_help()
 
   create_form: ($element, form_options) =>
-    form_options.subfamilies_or_tribes_only = @options.subfamilies_or_tribes_only
-    form_options.genera_only = @options.genera_only
-    form_options.species_only = @options.species_only
     form_options.allow_blank = @options.allow_blank
     form_options.default_name_string = @get_default_name_string()
     new AntCat.NameFieldForm $element, form_options
@@ -52,7 +49,6 @@ class AntCat.NameField extends AntCat.Panel
   on_form_open: =>
     super
 
-  # This is the main entry point after submission. start
   on_form_success: (data) =>
     @set_value data.id
     @set_submit_button_text 'OK'
@@ -125,9 +121,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
 
   setup_autocomplete: ($textbox) =>
     url = '/name_pickers/search'
-    url += '?species_only=1' if @options.species_only
-    url += '?genera_only=1' if @options.genera_only
-    url += '?subfamilies_or_tribes_only=1' if @options.subfamilies_or_tribes_only
 
     $textbox.autocomplete(autoFocus: true, source: url, minLength: 3)
       .data('uiAutocomplete')._renderItem = @render_item
