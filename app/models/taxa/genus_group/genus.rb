@@ -79,5 +79,6 @@ class Genus < GenusGroupTaxon
     def update_descendants_subfamilies
       species.each { |s| s.subfamily = subfamily }
       subspecies.each { |s| s.subfamily = subfamily }
+      subgenera.each { |s| s.subfamily = subfamily }
     end
 end
