@@ -29,8 +29,6 @@ class AntCat.NameField extends AntCat.Panel
       else if @options.new_or_homonym
         "Type the name, or type characters in the name then choose a name
         from the drop-down list, or type a new name, or choose a homonym."
-      else if @options.require_new
-        "Type a new taxon name"
       else
         "Type the name, or type characters in the name then choose a name
         from the drop-down list."
@@ -41,7 +39,6 @@ class AntCat.NameField extends AntCat.Panel
     action = "?field=true"
     action += "&allow_blank=true" if @options.allow_blank
     action += "&new_or_homonym=true" if @options.new_or_homonym
-    action += "&require_new=true" if @options.require_new
     action += "&confirm_add_name=true" if @deciding_whether_to_add_name
     action
 
@@ -64,7 +61,7 @@ class AntCat.NameField extends AntCat.Panel
   on_application_error: (data) =>
     @show_error data.error_message
     @set_submit_button_text data.submit_button_text
-    @deciding_whether_to_add_name = not @options.require_new
+    @deciding_whether_to_add_name = true
     @set_help()
 
   #------------
