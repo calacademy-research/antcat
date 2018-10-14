@@ -10,30 +10,6 @@ describe Taxon do
   end
 
   describe "scopes" do
-    let(:subfamily) { create :subfamily }
-
-    describe ".valid" do
-      let!(:valid_taxon) { create :genus, subfamily: subfamily }
-
-      before do
-        create :genus, :homonym, homonym_replaced_by: valid_taxon, subfamily: subfamily
-      end
-
-      it "only includes valid taxa" do
-        expect(subfamily.genera.valid).to eq [valid_taxon]
-      end
-    end
-
-    describe ".extant" do
-      let!(:extant_genus) { create :genus, subfamily: subfamily }
-
-      before { create :genus, subfamily: subfamily, fossil: true }
-
-      it "only includes extant taxa" do
-        expect(subfamily.genera.extant).to eq [extant_genus]
-      end
-    end
-
     describe ".self_join_on" do
       let!(:genus) { create :genus, fossil: true }
       let!(:species) { create :species, genus: genus }
