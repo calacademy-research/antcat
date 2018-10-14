@@ -14,7 +14,7 @@ class Taxon < ApplicationRecord
 
   class TaxonExists < StandardError; end
 
-  # TODO extract this and all `#update_parent`s into a new service `ForceParentChange`.
+  # TODO extract this and all `#update_parent`s into `ForceParentChange`.
   class InvalidParent < StandardError
     attr_reader :taxon, :new_parent
 
