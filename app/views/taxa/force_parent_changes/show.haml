@@ -18,7 +18,11 @@
     .medium-6.columns
       %fieldset.fieldset
         %legend to
-        =taxon_select_tag :new_parent_id, params[:new_parent_id]
+        =taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks
+
+        %br
+        Possible parent ranks:
+        =@valid_parent_ranks.to_sentence
 
   .row.margin-bottom
     .medium-12.columns
