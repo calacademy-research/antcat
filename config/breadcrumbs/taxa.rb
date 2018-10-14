@@ -88,6 +88,11 @@ crumb :synonym_relationship do |synonym|
   parent :edit_catalog
 end
 
+crumb :create_combination do |taxon|
+  link "Create combination"
+  parent :edit_taxon, taxon
+end
+
 crumb :force_parent_change do |taxon|
   link "Force parent change"
   parent :edit_taxon, taxon

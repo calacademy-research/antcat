@@ -128,10 +128,9 @@ Rails.application.routes.draw do
       end
     end
     resource :convert_to_subspecies, only: [:new, :create]
-    scope module: :taxa, controller: :force_parent_change do
+    scope module: :taxa do
+      resource :create_combination, only: [:new, :show]
       resource :force_parent_change, only: [:show, :create]
-    end
-    scope module: :taxa, controller: :move_items do
       resource :move_items, only: [:new, :show, :create]
     end
   end

@@ -39,26 +39,26 @@ Feature: Workflow
     And there is a genus "Chatsworth"
 
     # Change parent from A -> B
-    When I go to the edit page for "Atta major"
-    And I click the parent name field
-    And I set the parent name to "Becton"
-    And I press "OK"
+    When I go to the catalog page for "Atta major"
+    And I follow "Create combination"
+    And I set the new parent field to "Becton"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
 
     # Change parent from B -> C
-    When I go to the edit page for "Becton major"
-    And I click the parent name field
-    And I set the parent name to "Chatsworth"
-    And I press "OK"
+    When I go to the catalog page for "Becton major"
+    And I follow "Create combination"
+    And I set the new parent field to "Chatsworth"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
     When I press "Save"
@@ -103,26 +103,26 @@ Feature: Workflow
     And there is a genus "Chatsworth"
 
     # Change parent from A -> B
-    When I go to the edit page for "Atta major"
-    And I click the parent name field
-    And I set the parent name to "Becton"
-    And I press "OK"
+    When I go to the catalog page for "Atta major"
+    And I follow "Create combination"
+    And I set the new parent field to "Becton"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
 
     # Change parent from B -> C
-    When I go to the edit page for "Becton major"
-    And I click the parent name field
-    And I set the parent name to "Chatsworth"
-    And I press "OK"
+    When I go to the catalog page for "Becton major"
+    And I follow "Create combination"
+    And I set the new parent field to "Chatsworth"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
     When I press "Save"
