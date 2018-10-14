@@ -17,6 +17,8 @@ module Taxa
 
       def update_parent_and_save
         taxon.transaction do
+          UndoTracker.setup_change taxon, :update
+
           taxon.update_parent new_parent
           taxon.save
         end
