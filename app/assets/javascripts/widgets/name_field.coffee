@@ -40,7 +40,6 @@ class AntCat.NameField extends AntCat.Panel
   construct_parameters: =>
     action = "?field=true"
     action += "&allow_blank=true" if @options.allow_blank
-    action += "&require_existing=true" if @options.require_existing
     action += "&new_or_homonym=true" if @options.new_or_homonym
     action += "&require_new=true" if @options.require_new
     action += "&confirm_add_name=true" if @deciding_whether_to_add_name
@@ -64,11 +63,8 @@ class AntCat.NameField extends AntCat.Panel
 
   on_application_error: (data) =>
     @show_error data.error_message
-    if data.reason == 'not found' and @options.require_existing
-      @deciding_whether_to_add_name = false
-    else
-      @set_submit_button_text data.submit_button_text
-      @deciding_whether_to_add_name = not @options.require_new
+    @set_submit_button_text data.submit_button_text
+    @deciding_whether_to_add_name = not @options.require_new
     @set_help()
 
   #------------
