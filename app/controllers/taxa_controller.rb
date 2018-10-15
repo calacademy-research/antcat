@@ -7,14 +7,20 @@ class TaxaController < ApplicationController
   before_action :set_taxon, only: [:edit, :update]
 
   def new
-    @taxon = get_taxon_for_create
-    set_authorship_reference
+    @taxon = build_taxon_with_parent
+
+    if @previous_combination
+      set_attributes_from_previous_combination
+    else
+      @taxon.protonym.authorship.reference ||= DefaultReference.get session
+    end
   end
 
   def create
-    @taxon = get_taxon_for_create
+    @taxon = build_taxon_with_parent
 
     if @previous_combination
+      set_attributes_from_previous_combination
       create_previous_combination_or_save_original_combination
     else
       TaxonForm.new(@taxon, taxon_params).save
@@ -50,33 +56,13 @@ class TaxaController < ApplicationController
 
   private
 
-    def set_previous_combination
-      return if params[:previous_combination_id].blank?
-      @previous_combination = Taxon.find(params[:previous_combination_id])
-    end
-
     def set_taxon
       @taxon = Taxon.find(params[:id])
     end
 
-    def get_taxon_for_create
-      parent = Taxon.find(params[:parent_id])
-
-      taxon = build_new_taxon params[:rank_to_create]
-      taxon.parent = parent
-
-      if params[:collision_resolution]
-        if blank_or_homonym_collision_resolution?
-          taxon.unresolved_homonym = true
-          taxon.status = Status::HOMONYM
-        end
-      end
-
-      if @previous_combination
-        taxon.inherit_attributes_for_new_combination @previous_combination, parent
-      end
-
-      taxon
+    def set_previous_combination
+      return if params[:previous_combination_id].blank?
+      @previous_combination = Taxon.find(params[:previous_combination_id])
     end
 
     def create_previous_combination_or_save_original_combination
@@ -87,10 +73,6 @@ class TaxaController < ApplicationController
         original_combination = Taxon.find(params[:collision_resolution])
         TaxonForm.new(original_combination, taxon_params, @previous_combination).save
       end
-    end
-
-    def set_authorship_reference
-      @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
     # `collision_resolution` will be a taxon ID, "homonym" or blank.
@@ -141,7 +123,15 @@ class TaxaController < ApplicationController
       )
     end
 
-    def build_new_taxon rank
+    def build_taxon_with_parent
+      parent = Taxon.find(params[:parent_id])
+
+      taxon = build_taxon params[:rank_to_create]
+      taxon.parent = parent
+      taxon
+    end
+
+    def build_taxon rank
       taxon_class = "#{rank}".titlecase.constantize
 
       taxon = taxon_class.new
@@ -151,5 +141,16 @@ class TaxaController < ApplicationController
       taxon.protonym.build_name
       taxon.protonym.build_authorship
       taxon
+    end
+
+    def set_attributes_from_previous_combination
+      if params[:collision_resolution]
+        if blank_or_homonym_collision_resolution?
+          @taxon.unresolved_homonym = true
+          @taxon.status = Status::HOMONYM
+        end
+      end
+
+      @taxon.inherit_attributes_for_new_combination @previous_combination, @taxon.parent
     end
 end
