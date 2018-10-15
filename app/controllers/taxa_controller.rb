@@ -87,26 +87,13 @@ class TaxaController < ApplicationController
         original_combination = Taxon.find(params[:collision_resolution])
         TaxonForm.new(original_combination, taxon_params, @previous_combination).save
       end
-
-      # TODO move to `Taxa::HandlePreviousCombination` and wrap in transaction.
-      create_new_usages_for_subspecies if @previous_combination.is_a?(Species)
-    end
-
-    # TODO looks like this isn't tested
-    def create_new_usages_for_subspecies
-      @previous_combination.children.valid.each do |t|
-        new_child = Subspecies.new
-        new_child.parent = @taxon
-        new_child.inherit_attributes_for_new_combination t, @taxon
-        TaxonForm.new(new_child, Taxa::AttributesForNewUsage[new_child, t], t).save
-      end
     end
 
     def set_authorship_reference
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
     end
 
-    # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
+    # `collision_resolution` will be a taxon ID, "homonym" or blank.
     def blank_or_homonym_collision_resolution?
       params[:collision_resolution].blank? || params[:collision_resolution] == 'homonym'
     end

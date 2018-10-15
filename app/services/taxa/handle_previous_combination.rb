@@ -13,6 +13,8 @@ class Taxa::HandlePreviousCombination
 
     new_status = status_string_for_previous_combination previous_combination
     update_elements previous_combination, new_status
+
+    create_new_usages_for_subspecies if previous_combination.is_a?(Species)
   end
 
   private
@@ -45,5 +47,15 @@ class Taxa::HandlePreviousCombination
       taxon_to_update.junior_synonyms_objects.update_all senior_synonym_id: taxon.id
       taxon_to_update.senior_synonyms_objects.update_all junior_synonym_id: taxon.id
       taxon_to_update.save
+    end
+
+    # TODO this isn't tested.
+    def create_new_usages_for_subspecies
+      previous_combination.children.valid.each do |t|
+        new_child = Subspecies.new
+        new_child.parent = taxon
+        new_child.inherit_attributes_for_new_combination t, taxon
+        TaxonForm.new(new_child, Taxa::AttributesForNewUsage[new_child, t], t).save
+      end
     end
 end
