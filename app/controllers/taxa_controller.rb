@@ -28,14 +28,7 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :create, edit_summary: params[:edit_summary]
 
-    flash[:notice] = "Taxon was successfully added."
-
-    show_add_another_species_link = @taxon.id && @taxon.is_a?(Species) && @taxon.genus
-    if show_add_another_species_link
-      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
-        new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
-      flash[:notice] += " <strong>#{link}</strong>".html_safe
-    end
+    flash[:notice] = "Taxon was successfully added." + add_another_species_link
 
     redirect_to catalog_path(@taxon)
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
@@ -78,6 +71,15 @@ class TaxaController < ApplicationController
     # `collision_resolution` will be a taxon ID, "homonym" or blank.
     def blank_or_homonym_collision_resolution?
       params[:collision_resolution].blank? || params[:collision_resolution] == 'homonym'
+    end
+
+    def add_another_species_link
+      return "" unless @taxon.id && @taxon.is_a?(Species) && @taxon.genus
+
+      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
+        new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
+
+      " <strong>#{link}</strong>".html_safe
     end
 
     def taxon_params
