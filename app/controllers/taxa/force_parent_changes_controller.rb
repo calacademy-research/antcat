@@ -1,6 +1,6 @@
 module Taxa
   class ForceParentChangesController < ApplicationController
-    before_action :authenticate_superadmin
+    before_action :ensure_can_edit_catalog
     before_action :set_taxon
     before_action :set_valid_parent_ranks
     before_action :set_new_parent, only: [:create]
