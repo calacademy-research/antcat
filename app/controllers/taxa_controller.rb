@@ -89,21 +89,14 @@ class TaxaController < ApplicationController
       end
 
       # TODO move to `Taxa::HandlePreviousCombination` and wrap in transaction.
-      if @previous_combination.is_a?(Species) && @previous_combination.children.exists?
-        create_new_usages_for_subspecies
-      end
+      create_new_usages_for_subspecies if @previous_combination.is_a?(Species)
     end
 
     # TODO looks like this isn't tested
     def create_new_usages_for_subspecies
       @previous_combination.children.valid.each do |t|
         new_child = Subspecies.new
-
-        # Only building type_name because all other will be copied from 't'.
-        # TODO Not sure why type_name is not copied?
-        new_child.build_type_name
         new_child.parent = @taxon
-
         new_child.inherit_attributes_for_new_combination t, @taxon
         TaxonForm.new(new_child, Taxa::AttributesForNewUsage[new_child, t], t).save
       end
