@@ -21,7 +21,14 @@ class TaxaController < ApplicationController
 
     if @previous_combination
       set_attributes_from_previous_combination
-      create_previous_combination_or_save_original_combination
+
+      if blank_or_homonym_collision_resolution?
+        TaxonForm.new(@taxon, taxon_params, @previous_combination).save
+      else
+        # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
+        original_combination = Taxon.find(params[:collision_resolution])
+        TaxonForm.new(original_combination, taxon_params, @previous_combination).save
+      end
     else
       TaxonForm.new(@taxon, taxon_params).save
     end
@@ -56,16 +63,6 @@ class TaxaController < ApplicationController
     def set_previous_combination
       return if params[:previous_combination_id].blank?
       @previous_combination = Taxon.find(params[:previous_combination_id])
-    end
-
-    def create_previous_combination_or_save_original_combination
-      if blank_or_homonym_collision_resolution?
-        TaxonForm.new(@taxon, taxon_params, @previous_combination).save
-      else
-        # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
-        original_combination = Taxon.find(params[:collision_resolution])
-        TaxonForm.new(original_combination, taxon_params, @previous_combination).save
-      end
     end
 
     # `collision_resolution` will be a taxon ID, "homonym" or blank.
