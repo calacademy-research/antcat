@@ -64,14 +64,9 @@ class TaxaController < ApplicationController
         if blank_or_homonym_collision_resolution?
           taxon.unresolved_homonym = true
           taxon.status = Status::HOMONYM
-        else
-          # TODO `original_combination` is never used.
-          original_combination = Taxon.find(params[:collision_resolution])
-          original_combination.inherit_attributes_for_new_combination @previous_combination, parent
         end
       end
 
-      # TODO move to `Taxa::HandlePreviousCombination`?
       if @previous_combination
         taxon.inherit_attributes_for_new_combination @previous_combination, parent
       end
@@ -88,6 +83,7 @@ class TaxaController < ApplicationController
         TaxonForm.new(original_combination, taxon_params, @previous_combination).save
       end
 
+      # TODO move to `Taxa::HandlePreviousCombination` and wrap in transaction.
       if @previous_combination.is_a?(Species) && @previous_combination.children.exists?
         create_new_usages_for_subspecies
       end
