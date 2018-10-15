@@ -1,6 +1,4 @@
 class Subspecies < SpeciesGroupTaxon
-  class NoSpeciesForSubspeciesError < StandardError; end
-
   belongs_to :species
 
   before_validation :set_genus
