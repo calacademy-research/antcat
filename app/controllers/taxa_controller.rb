@@ -24,20 +24,35 @@ class TaxaController < ApplicationController
 
       if blank_or_homonym_collision_resolution?
         TaxonForm.new(@taxon, taxon_params, @previous_combination).save
+
+        @taxon.create_activity :create_combination, edit_summary: params[:edit_summary],
+          parameters: {
+            name: @taxon.name_html_cache,
+            previous_combination_id: @previous_combination.id,
+            previous_combination_name: @previous_combination.name_html_cache
+          }
+
+        redirect_to catalog_path(@taxon), notice: "Successfully created combination"
       else
-        # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
         original_combination = Taxon.find(params[:collision_resolution])
         TaxonForm.new(original_combination, taxon_params, @previous_combination).save
+
+        original_combination.create_activity :return_combination_to_previous_usage,
+          edit_summary: params[:edit_summary],
+          parameters: {
+            name: original_combination.name_html_cache,
+            previous_combination_id: @previous_combination.id,
+            previous_combination_name: @previous_combination.name_html_cache
+          }
+
+        redirect_to catalog_path(original_combination), notice: "Taxon was return to a previous usage."
       end
     else
       TaxonForm.new(@taxon, taxon_params).save
+      @taxon.create_activity :create, edit_summary: params[:edit_summary]
+
+      redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
     end
-
-    @taxon.create_activity :create, edit_summary: params[:edit_summary]
-
-    flash[:notice] = "Taxon was successfully added." + add_another_species_link
-
-    redirect_to catalog_path(@taxon)
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
   end
@@ -71,7 +86,7 @@ class TaxaController < ApplicationController
     end
 
     def add_another_species_link
-      return "" unless @taxon.id && @taxon.is_a?(Species) && @taxon.genus
+      return "" unless @taxon.is_a?(Species) && @taxon.genus
 
       link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
         new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
