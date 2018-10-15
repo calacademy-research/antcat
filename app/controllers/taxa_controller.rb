@@ -23,34 +23,15 @@ class TaxaController < ApplicationController
       set_attributes_from_previous_combination
 
       if blank_or_homonym_collision_resolution?
-        TaxonForm.new(@taxon, taxon_params, @previous_combination).save
-
-        @taxon.create_activity :create_combination, edit_summary: params[:edit_summary],
-          parameters: {
-            name: @taxon.name_html_cache,
-            previous_combination_id: @previous_combination.id,
-            previous_combination_name: @previous_combination.name_html_cache
-          }
-
-        redirect_to catalog_path(@taxon), notice: "Successfully created combination"
+        create_new_combination!
+        redirect_to catalog_path(@taxon), notice: "Successfully created combination."
       else
-        original_combination = Taxon.find(params[:collision_resolution])
-        TaxonForm.new(original_combination, taxon_params, @previous_combination).save
-
-        original_combination.create_activity :return_combination_to_previous_usage,
-          edit_summary: params[:edit_summary],
-          parameters: {
-            name: original_combination.name_html_cache,
-            previous_combination_id: @previous_combination.id,
-            previous_combination_name: @previous_combination.name_html_cache
-          }
-
+        original_combination = save_original_combination!
         redirect_to catalog_path(original_combination), notice: "Taxon was return to a previous usage."
       end
     else
       TaxonForm.new(@taxon, taxon_params).save
       @taxon.create_activity :create, edit_summary: params[:edit_summary]
-
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
     end
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
@@ -83,6 +64,32 @@ class TaxaController < ApplicationController
     # `collision_resolution` will be a taxon ID, "homonym" or blank.
     def blank_or_homonym_collision_resolution?
       params[:collision_resolution].blank? || params[:collision_resolution] == 'homonym'
+    end
+
+    def create_new_combination!
+      TaxonForm.new(@taxon, taxon_params, @previous_combination).save
+
+      @taxon.create_activity :create_combination, edit_summary: params[:edit_summary],
+        parameters: {
+          name: @taxon.name_html_cache,
+          previous_combination_id: @previous_combination.id,
+          previous_combination_name: @previous_combination.name_html_cache
+        }
+    end
+
+    def save_original_combination!
+      original_combination = Taxon.find(params[:collision_resolution])
+      TaxonForm.new(original_combination, taxon_params, @previous_combination).save
+
+      original_combination.create_activity :return_combination_to_previous_usage,
+        edit_summary: params[:edit_summary],
+        parameters: {
+          name: original_combination.name_html_cache,
+          previous_combination_id: @previous_combination.id,
+          previous_combination_name: @previous_combination.name_html_cache
+        }
+
+      original_combination
     end
 
     def add_another_species_link
