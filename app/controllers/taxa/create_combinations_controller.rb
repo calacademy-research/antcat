@@ -18,7 +18,7 @@ module Taxa
                    @new_parent.parent.find_subspecies_in_genus(@taxon.name.epithet)
                  else
                    @new_parent.find_epithet_in_genus(@taxon.name.epithet)
-                 end || []
+                 end
     end
 
     private
