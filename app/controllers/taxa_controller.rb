@@ -13,7 +13,12 @@ class TaxaController < ApplicationController
 
   def create
     @taxon = get_taxon_for_create
-    save_taxon_and_maybe_previous_combination
+
+    if @previous_combination
+      create_previous_combination_or_save_original_combination
+    else
+      TaxonForm.new(@taxon, taxon_params).save
+    end
 
     @taxon.create_activity :create, edit_summary: params[:edit_summary]
 
@@ -74,7 +79,7 @@ class TaxaController < ApplicationController
       taxon
     end
 
-    def save_taxon_and_maybe_previous_combination
+    def create_previous_combination_or_save_original_combination
       if blank_or_homonym_collision_resolution?
         TaxonForm.new(@taxon, taxon_params, @previous_combination).save
       else
