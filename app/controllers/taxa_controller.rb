@@ -60,16 +60,13 @@ class TaxaController < ApplicationController
       taxon = build_new_taxon params[:rank_to_create]
       taxon.parent = parent
 
-      # Radio button case - we got duplicates, and the user picked one
-      # to resolve the problem.
-      collision_resolution = params[:collision_resolution]
-      if collision_resolution
-        if collision_resolution == 'homonym' || collision_resolution.blank?
+      if params[:collision_resolution]
+        if blank_or_homonym_collision_resolution?
           taxon.unresolved_homonym = true
           taxon.status = Status::HOMONYM
         else
           # TODO `original_combination` is never used.
-          original_combination = Taxon.find(collision_resolution)
+          original_combination = Taxon.find(params[:collision_resolution])
           original_combination.inherit_attributes_for_new_combination @previous_combination, parent
         end
       end
@@ -83,13 +80,11 @@ class TaxaController < ApplicationController
     end
 
     def save_taxon_and_maybe_previous_combination
-      # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
-      collision_resolution = params[:collision_resolution]
-      if collision_resolution.blank? || collision_resolution == 'homonym'
+      if blank_or_homonym_collision_resolution?
         TaxonForm.new(@taxon, taxon_params, @previous_combination).save
       else
         # TODO I believe this is where we lose track of `@taxon.id` (see nil check in `#create`)
-        original_combination = Taxon.find(collision_resolution)
+        original_combination = Taxon.find(params[:collision_resolution])
         TaxonForm.new(original_combination, taxon_params, @previous_combination).save
       end
 
@@ -115,6 +110,11 @@ class TaxaController < ApplicationController
 
     def set_authorship_reference
       @taxon.protonym.authorship.reference ||= DefaultReference.get session
+    end
+
+    # `collision_resolution` will be the taxon ID of the preferred taxon or "homonym".
+    def blank_or_homonym_collision_resolution?
+      params[:collision_resolution].blank? || params[:collision_resolution] == 'homonym'
     end
 
     def taxon_params
