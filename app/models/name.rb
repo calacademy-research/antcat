@@ -20,10 +20,6 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
-  # TODO maybe raise?
-  def change_parent _name
-  end
-
   def to_html
     name_html
   end
