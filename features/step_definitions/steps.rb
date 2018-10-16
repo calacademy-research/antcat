@@ -156,10 +156,6 @@ When("I reload the page") do
   visit current_path
 end
 
-Then("I should not see any error messages") do
-  expect(page).to_not have_css '.error_messages li'
-end
-
 When("I follow {string} inside the breadcrumb") do |link|
   within "#breadcrumbs" do
     step %(I follow "#{link}")

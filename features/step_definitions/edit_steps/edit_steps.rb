@@ -29,15 +29,6 @@ When("I set the name to {string}") do |name|
   step %(I fill in "name_string" with "#{name}")
 end
 
-Then("I should still see the name field") do
-  find '#name_field .edit'
-end
-
-Then("the name field should contain {string}") do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
-end
-
 # Try adding this (waiting finder) if the JS driver clicks on "OK" and
 # then navigates to a different page before the JS has had time to execute.
 # TODO probably include this in other steps so that it's always run.
@@ -49,14 +40,6 @@ end
 # gender
 When("I set the name gender to {string}") do |gender|
   step %(I select "#{gender}" from "taxon_name_attributes_gender")
-end
-
-Then(/^I should (not )?see the gender menu$/) do |should_not|
-  if should_not
-    expect(page).to have_no_css '#taxon_name_attributes_gender'
-  else
-    expect(page).to have_css '#taxon_name_attributes_gender'
-  end
 end
 
 ### parent field
@@ -143,11 +126,6 @@ When("I set the type name to {string}") do |name|
   within '#type_name_field' do
     step %(I fill in "name_string" with "#{name}")
   end
-end
-
-Then("the type name field should contain {string}") do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
 end
 
 # convert species to subspecies
