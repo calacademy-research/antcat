@@ -54,10 +54,4 @@ class Name < ApplicationRecord
       Taxon.where(name: self).update_all(name_cache: name)
       Taxon.where(name: self).update_all(name_html_cache: name_html)
     end
-
-    def change name_string
-      existing_names = Name.where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists if existing_names.any? { |name| !name.what_links_here.empty? }
-      update! name: name_string, name_html: italicize(name_string)
-    end
 end
