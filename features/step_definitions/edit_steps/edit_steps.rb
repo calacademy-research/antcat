@@ -7,14 +7,6 @@ When("I save the taxon form") do
   find("#save-taxon-form").click
 end
 
-Then(/^I (should|should not) see an Edit button$/) do |should_selector|
-  if should_selector == "should not"
-    expect(page).to have_no_css "a.btn-normal", text: "Edit"
-  else
-    expect(page).to have_css "a.btn-normal", text: "Edit"
-  end
-end
-
 When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
   select2 name, from: taxon_selector_id
 end
