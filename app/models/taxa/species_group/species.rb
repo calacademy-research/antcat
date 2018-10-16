@@ -15,14 +15,12 @@ class Species < SpeciesGroupTaxon
     else
       raise InvalidParent.new(self, parent_taxon)
     end
+    self.subfamily = parent_taxon.subfamily
   end
 
   def update_parent new_parent
-    return if parent == new_parent
-
-    name.change_parent new_parent.name
+    name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent
-    self.subfamily = new_parent.subfamily
   end
 
   def children

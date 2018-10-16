@@ -9,19 +9,16 @@ class Subspecies < SpeciesGroupTaxon
 
   def parent= parent_taxon
     raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Species)
+
+    self.subfamily = parent_taxon.subfamily
+    self.genus = parent_taxon.genus
+    self.subgenus = parent_taxon.subgenus
     self.species = parent_taxon
   end
 
   def update_parent new_parent
-    raise InvalidParent.new(self, new_parent) unless new_parent.is_a?(Species)
-    return if parent == new_parent
-
-    name.change_parent new_parent.name
-
-    self.subfamily = new_parent.subfamily
-    self.genus = new_parent.genus if new_parent.genus
-    self.subgenus = new_parent.subgenus if new_parent.subgenus
-    self.species = new_parent
+    name.change_parent(new_parent.name) unless new_parent == parent
+    self.parent = new_parent
   end
 
   # TODO remove?

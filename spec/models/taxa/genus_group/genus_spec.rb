@@ -179,14 +179,6 @@ describe Genus do
       expect(genus_with_tribe.subfamily).to eq subfamily
     end
 
-    it "clears both subfamily and tribe when the new parent is nil" do
-      expect(genus_with_tribe.tribe).to eq tribe # Trigger FactoryBot.
-      genus_with_tribe.update_parent nil
-
-      expect(genus_with_tribe.tribe).to eq nil
-      expect(genus_with_tribe.subfamily).to eq nil
-    end
-
     it "assigns the subfamily of its descendants" do
       species = create :species, genus: genus_with_tribe
       create :subspecies, species: species, genus: genus_with_tribe

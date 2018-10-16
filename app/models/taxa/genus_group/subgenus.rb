@@ -16,8 +16,7 @@ class Subgenus < GenusGroupTaxon
   end
 
   def update_parent new_parent
-    raise InvalidParent.new(self, new_parent) unless new_parent.is_a?(Genus)
-    self.genus = new_parent
+    self.parent = new_parent
   end
 
   def statistics valid_only: false

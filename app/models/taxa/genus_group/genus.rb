@@ -16,6 +16,7 @@ class Genus < GenusGroupTaxon
     case parent_taxon
     when Subfamily
       self.subfamily = parent_taxon
+      self.tribe = nil
     when Tribe
       self.subfamily = parent_taxon.subfamily
       self.tribe = parent_taxon
@@ -25,19 +26,7 @@ class Genus < GenusGroupTaxon
   end
 
   def update_parent new_parent
-    case new_parent
-    when Tribe
-      self.tribe = new_parent
-      self.subfamily = new_parent.subfamily
-    when Subfamily
-      self.tribe = nil
-      self.subfamily = new_parent
-    when nil
-      self.tribe = nil
-      self.subfamily = nil
-    else
-      raise InvalidParent.new(self, new_parent)
-    end
+    self.parent = new_parent
     update_descendants_subfamilies
   end
 
