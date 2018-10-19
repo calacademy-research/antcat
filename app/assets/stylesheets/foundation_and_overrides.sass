@@ -81,9 +81,7 @@
   font-size: rem-calc(14)
   line-height: rem-calc(12)
   margin-bottom: 0
-
-button
-  @include normal-sized-button
+  border: 1px $primary-color solid
 
 // Button colors
 //  ---------------------------------------------------------------------------
@@ -100,15 +98,19 @@ button
 
 .btn-saves
   @include button-style($color_pretty, auto, auto)
+  border: 1px $color_pretty solid
 
 .btn-saves-warning, .btn-delete
   @include button-style($alert-color, auto, auto)
+  border: 1px $alert-color solid
 
 .btn-cancel, .btn-white
-  border: 1px solid #000 !important
   @include button-style(#fff, auto, #000)
+  border: 1px solid #000 !important
 
-// Make button styles work for links too.
+// Make button styles work for links too. Some link button have the class ".button"
+// because I did not manage to align them buton button elements in any other way.
+// ".button" is also required to make ".disabled" work.
 a.btn-normal, a.btn-saves, a.btn-saves-warning, a.btn-delete, a.btn-cancel, a.btn-white
   padding: 0.55rem 0.75rem
   color: #fff !important
@@ -117,15 +119,9 @@ a.btn-cancel, a.btn-white
   color: #000 !important
 
 .btn-tiny
-  padding: 0.1rem 0.3rem !important
+  padding: 0.15rem 0.3rem !important
   font-size: rem-calc(12) !important
   white-space: nowrap
-  // Remove border added by ".button" (which is required by ".disabled").
-  border: 0
-
-// Restore borders on white buttons (removed above).
-.btn-tiny.btn-cancel
-  border: 1px #000 solid
 
 button.close-button
   background-color: transparent
