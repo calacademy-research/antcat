@@ -14,7 +14,19 @@ setupReferenceTypeTabs = ->
   # Include reference type in the form before submitting.
   $('form.edit_reference, form.new_reference').submit -> $('#reference_type').val(referenceType)
 
+setupJournalAutocompletion = ->
+  $('#reference_journal_name').autocomplete
+    autoFocus: true
+    source: '/journals/autocomplete'
+    minLength: 3
+
+setupPublisherAutocompletion = ->
+  $('#reference_publisher_string').autocomplete
+    autoFocus: true
+    source: '/publishers/autocomplete'
+    minLength: 3
+
 setupAutocompletion = ->
   window.setupAdvancedAuthorAutocomplete $('#reference_author_names_string')
-  window.setupReferenceEditJournalAutocomplete $('#reference_journal_name')
-  window.setupReferenceEditPublisherAutocomplete $('#reference_publisher_string')
+  setupJournalAutocompletion()
+  setupPublisherAutocompletion()
