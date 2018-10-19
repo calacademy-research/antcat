@@ -10,13 +10,6 @@ Given("a species exists with a name of {string} and a genus of {string}") do |na
     genus: genus
 end
 
-Given("species {string} exists in that genus") do |name|
-  @species = create :species,
-    subfamily: @subfamily,
-    genus: @genus,
-    name: create(:species_name, name: name)
-end
-
 Given("there is an original species {string} with genus {string}") do |species_name, genus_name|
   genus = create_genus genus_name
   create_species species_name,
