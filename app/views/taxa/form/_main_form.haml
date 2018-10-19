@@ -37,6 +37,18 @@
           =form.taxon_select :species, rank: :species
 
   %tr
+    %td.caption=form.label :parent, 'Parent'
+    %td
+      -if taxon.parent
+        =taxon.parent.decorate.id_and_name_and_author_citation
+        -unless taxon.new_record?
+          -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
+            =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+          -if taxon.rank.in?(Taxon::ALLOW_FORCE_CHANGE_PARENT_RANKS)
+            =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-delete btn-tiny"
+      -else
+        (none)
+  %tr
     %td.caption=form.label :current_valid_taxon, 'Current valid name'
     %td=form.taxon_select :current_valid_taxon
 
