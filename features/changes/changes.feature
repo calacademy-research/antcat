@@ -41,7 +41,6 @@ Feature: Changes
 
   Scenario: Approving all changes
     Given I add the genus "Atta"
-    And I add the genus "Batta"
 
     When I log in as a superadmin
     And I go to the unreviewed changes page
@@ -51,13 +50,7 @@ Feature: Changes
     When I follow "Approve all"
     And I go to the unreviewed changes page
     Then I should not see "Approve[^d]"
-
-  Scenario: Should not see approve all if not superadmin
-    Given I add the genus "Atta"
-
-    When I go to the unreviewed changes page
-    Then I should not see "Approve all"
-    And I should not see "There are no unreviewed changes."
+    And I should see "There are no unreviewed changes."
 
   @papertrail
   Scenario: Another editor editing a change that's waiting for approval
@@ -81,14 +74,6 @@ Feature: Changes
 
     When I go to the catalog page for "Atta"
     Then I should see "approved by Mark Wilden"
-
-  Scenario: Trying to approve one's own change
-    When I add the genus "Atta"
-    And I go to the catalog page for "Atta"
-    Then I should see "Added by Mark Wilden"
-
-    When I go to the changes page
-    Then I should not see "Approve[^?]"
 
   @papertrail
   Scenario: Editing a taxon - modified, not added
