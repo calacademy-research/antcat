@@ -1,16 +1,14 @@
-# We don't have to use `@papertrail` when we create (cheat) versions in steps.
-
 Feature: Changes
   Background:
     Given I log in as a catalog editor named "Mark Wilden"
 
-  @javascript @search @papertrail @no_travis
+  @javascript
   Scenario: Adding a taxon and seeing it on the Changes page
     Given this reference exist
-      | author | citation   | title | citation_year |
-      | Fisher | Psyche 3:3 | Ants  | 2004          |
+      | author | citation_year |
+      | Fisher | 2004          |
+    And the default reference is "Fisher, 2004"
     And there is a subfamily "Formicinae"
-    And there is a genus "Eciton"
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
@@ -18,21 +16,13 @@ Feature: Changes
     And I set the name to "Atta"
     And I press "OK"
     And I click the protonym name field
-    And I set the protonym name to "Eciton"
     And I press "OK"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    And I click the type name field
-    And I set the type name to "Atta major"
-    And I press "OK"
-    And I press "Add this name"
+    And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should see "This taxon has been changed; changes awaiting approval"
 
-    When I follow "Review change"
-    Then I should see "Atta"
-
-    When I follow "Atta"
-    Then I should be on the catalog page for "Atta"
+    When I go to the changes page
+    Then I should see "added Atta"
 
   Scenario: Approving a change
     Given I add the genus "Atta"
@@ -42,7 +32,6 @@ Feature: Changes
 
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
-    And I will confirm on the next step
     And I follow "Approve"
     Then I should not see "Approve[^d]"
     And I should see "Stan Blum approved"
@@ -87,7 +76,6 @@ Feature: Changes
 
     When I log in as a catalog editor named "Mark Wilden"
     And I go to the changes page
-    Given I will confirm on the next step
     And I follow "Approve"
     Then I should see "Mark Wilden approved"
 
