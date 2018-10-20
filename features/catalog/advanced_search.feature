@@ -9,17 +9,16 @@ Feature: Searching the catalog
     Then I should see "No results"
 
   Scenario: Searching for subfamilies
-    Given there is a subfamily described in 2010
+    Given there is a subfamily "Formicinae"
 
     When I select "Subfamilies" from "rank"
     And I press "Go" in the search section
     Then I should see "1 result"
 
   Scenario: Searching for valid taxa
-    Given there is an invalid species described in 2010
+    Given there is an invalid family
 
-    When I fill in "year" with "2010"
-    And I check valid only in the advanced search form
+    When I check valid only in the advanced search form
     And I press "Go" in the search section
     Then I should see "No results"
 
@@ -61,16 +60,6 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "2 results"
     And I should see "Afrotropic" within the search results
-
-  Scenario: Searching for 'Any' biogeographic_region
-    Given there is a species with biogeographic region "Malagasy"
-    And there is a species with biogeographic region "Afrotropic"
-    And there is a genus located in "Africa"
-
-    When I select "Any" from "biogeographic_region"
-    And I fill in "locality" with "Africa"
-    And I press "Go" in the search section
-    Then I should see "1 result"
 
   Scenario: Searching for 'None' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
