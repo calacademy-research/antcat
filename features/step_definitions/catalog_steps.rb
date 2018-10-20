@@ -1,8 +1,8 @@
-Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
+Then(/^I should ?(not)? see the reference key$/) do |should_not|
   if should_not == "not"
-    expect(page).to have_no_css ".expandable-reference-key", text: text
+    expect(page).to have_no_css ".expandable-reference-key"
   else
-    expect(page).to have_css ".expandable-reference-key", text: text
+    expect(page).to have_css ".expandable-reference-key"
   end
 end
 

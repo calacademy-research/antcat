@@ -10,13 +10,13 @@ Feature: Expanding reference keys
 
   Scenario: Expanding a reference key in the catalog
     When I go to the catalog page for "Formicidae"
-    Then I should see the reference key "Latreille, 1809"
-      And I should not see the reference key expansion
+    Then I should see the reference key
+    And I should not see the reference key expansion
 
     When I click the reference key
     Then I should see the reference key expansion
-      And I should not see the reference key "Latreille, 1809"
+    And I should not see the reference key
 
     When I click the reference key expansion
-    Then I should see the reference key "Latreille, 1809"
-      And I should not see the reference key expansion
+    Then I should see the reference key
+    And I should not see the reference key expansion
