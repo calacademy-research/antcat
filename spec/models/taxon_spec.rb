@@ -89,24 +89,6 @@ describe Taxon do
     end
   end
 
-  describe ".find_by_name" do
-    context 'when nothing matches' do
-      it "returns nil" do
-        expect(described_class.find_by_name('sdfsdf')).to eq nil
-      end
-    end
-
-    context 'when there are more than one matches' do
-      let!(:name) { create :genus_name, name: 'Monomorium' }
-
-      before { 2.times { create :genus, name: name } }
-
-      it "returns one of the items (hmm)" do
-        expect(described_class.find_by_name('Monomorium').name).to eq name
-      end
-    end
-  end
-
   describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 
