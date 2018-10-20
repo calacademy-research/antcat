@@ -25,7 +25,7 @@ Feature: Changes
     Then I should see "added Atta"
 
   Scenario: Approving a change
-    Given I add the genus "Atta"
+    Given there is a genus "Atta" that's waiting for approval
 
     When I go to the catalog page for "Atta"
     Then I should see "Added by Mark Wilden"
@@ -40,7 +40,7 @@ Feature: Changes
     Then I should see "approved by Stan Blum"
 
   Scenario: Approving all changes
-    Given I add the genus "Atta"
+    Given there is a genus "Atta" that's waiting for approval
 
     When I log in as a superadmin
     And I go to the unreviewed changes page
@@ -54,8 +54,9 @@ Feature: Changes
 
   @papertrail
   Scenario: Another editor editing a change that's waiting for approval
-    When I add the genus "Atta"
-    And I go to the changes page
+    Given there is a genus "Atta" that's waiting for approval
+
+    When I go to the changes page
     Then I should see "Mark Wilden added"
 
     When I log in as a catalog editor named "Stan Blum"
