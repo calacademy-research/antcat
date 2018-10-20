@@ -6,10 +6,7 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    Given this reference exists
-      | author | citation   | title | citation_year |
-      | Fisher | Psyche 3:3 | Ants  | 2004          |
-    And there is a subfamily "Formicinae"
+    Given there is a subfamily "Formicinae"
     And I log in as a catalog editor named "Mark Wilden"
 
   @javascript

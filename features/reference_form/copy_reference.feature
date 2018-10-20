@@ -23,8 +23,8 @@ Feature: Copy reference
 
   Scenario: Copy a book reference
     Given this book reference exist
-      | author     | citation_year | title | citation                |
-      | Bolton, B. | 2010          | Ants  | New York: Wiley, 23 pp. |
+      | author     | citation_year | citation                |
+      | Bolton, B. | 2010          | New York: Wiley, 23 pp. |
     And I go to the page of the most recent reference
 
     When I follow "Copy"
@@ -50,8 +50,8 @@ Feature: Copy reference
 
   Scenario: Copy an unknown reference
     Given this unknown reference exist
-      | author     | citation | citation_year | title |
-      | Ward, P.S. | New York | 2010a         | Ants  |
+      | author     | citation | citation_year |
+      | Ward, P.S. | New York | 2010a         |
     And I go to the page of the most recent reference
 
     When I follow "Copy"
@@ -72,9 +72,8 @@ Feature: Copy reference
   @javascript
   Scenario: Copy a reference with a date
     Given this reference exist
-      | author     | title          | citation | citation_year | date     |
-      | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          | 19900101 |
-    And that the entry has a URL that's on our site
+      | author     | title          | citation_year | date     |
+      | Ward, P.S. | Annals of Ants | 1910          | 19900101 |
     And I go to the page of the most recent reference
 
     When I follow "Copy"
