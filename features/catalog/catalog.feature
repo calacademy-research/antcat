@@ -7,7 +7,7 @@ Feature: Using the catalog
     And a genus exists with a name of "Atta" and no subfamily
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus"
-    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor"
+    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor"
     And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae"
     And a species exists with a name of "abruptus" and a genus of "Camponotus"
 
