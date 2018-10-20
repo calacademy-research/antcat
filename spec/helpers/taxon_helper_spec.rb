@@ -23,23 +23,23 @@ describe TaxonHelper do
 
   describe "#taxon_change_history" do
     it "shows nothing for old taxa" do
-      taxon = create :genus
+      taxon = create :family
       expect(helper.taxon_change_history(taxon)).to be_nil
     end
 
     it "shows the adder for waiting taxa" do
-      adder = create :user, :editor
+      adder = create :user
       taxon = create_taxon_version_and_change adder
 
       change_history = helper.taxon_change_history taxon
       expect(change_history).to match /Added by/
-      expect(change_history).to match /Brian Fisher/
+      expect(change_history).to match /#{adder.name}/
       expect(change_history).to match /less than a minute ago/
     end
 
     it "shows the adder and the approver for approved taxa" do
-      adder = create :user, :editor
-      approver = create :user, :editor
+      adder = create :user
+      approver = create :user
       taxon = create_taxon_version_and_change adder
       change = Change.find taxon.last_change.id
       change.update! approver: approver, approved_at: Time.current

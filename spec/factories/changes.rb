@@ -6,11 +6,8 @@ FactoryBot.define do
 end
 
 def create_taxon_version_and_change user
-  taxon = create :genus
-  taxon.taxon_state.review_state = TaxonState::WAITING
-
+  taxon = create :family
   change = create :change, taxon: taxon, change_type: "create", user: user
   create :version, item: taxon, whodunnit: user.id, change: change
-
   taxon
 end
