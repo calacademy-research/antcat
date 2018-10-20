@@ -23,7 +23,7 @@ Feature: Editing a user
     When I follow the first "Login"
       And I fill in the email field with my email address
       And I fill in "user_password" with "new password"
-    And I press the first "Login"
+    And I press "Login"
     Then I should be on the main page
     And I should see "Brian Fisher"
 
