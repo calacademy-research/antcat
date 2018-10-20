@@ -46,14 +46,14 @@ Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) 
 end
 
 Given("genus {string} exists in that tribe") do |name|
-  @genus = create :genus,
+  create :genus,
     subfamily: @subfamily,
     tribe: @tribe,
     name: create(:genus_name, name: name)
 end
 
 Given("genus {string} exists in that subfamily") do |name|
-  @genus = create :genus,
+  create :genus,
     subfamily: @subfamily,
     tribe: nil,
     name: create(:genus_name, name: name)
