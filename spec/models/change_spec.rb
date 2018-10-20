@@ -22,38 +22,35 @@ describe Change do
   describe "#undo_items" do
     describe "check that we can find and report the entire undo set" do
       let!(:adder) { create :user, :editor }
-      let!(:taxon) { create_taxon_version_and_change adder, 'Genus1' }
+      let!(:taxon) { create_taxon_version_and_change adder }
 
       context "when no others would be deleted" do
         it "returns a single taxon" do
-          undo_items = described_class.first.undo_items
-
-          expect(undo_items.size).to eq 1
-          expect(undo_items.to_s).to match "Genus1"
-          expect(undo_items.to_s).to match "change_type"
-          expect(undo_items.to_s).to match "create"
+          expect(described_class.first.undo_items).to match(
+            [
+              { taxon: taxon, change_type: "create", date: anything, user: adder }
+            ]
+          )
         end
       end
 
       context "when undoing an older change would hit newer changes" do
+        let!(:second_editor) { create :user }
+
         before do
-          change = create :change, taxon: taxon, change_type: "update", user: create(:user)
+          change = create :change, taxon: taxon, change_type: "update", user: second_editor
           create :version, item: taxon, whodunnit: adder.id, change: change
           taxon.status = Status::HOMONYM
           taxon.save
         end
 
         it "returns multiple items" do
-          undo_items = described_class.first.undo_items
-
-          expect(undo_items.size).to eq 2
-          expect(undo_items[0].to_s).to match "Genus1"
-          expect(undo_items[0].to_s).to match "change_type"
-          expect(undo_items[0].to_s).to match "Brian Fisher"
-          expect(undo_items[0].to_s).to match "create"
-
-          expect(undo_items[1].to_s).to match "Genus1"
-          expect(undo_items[1].to_s).to match "update"
+          expect(described_class.first.undo_items).to match(
+            [
+              { taxon: taxon, change_type: "create", date: anything, user: adder },
+              { taxon: taxon, change_type: "update", date: anything, user: second_editor }
+            ]
+          )
         end
       end
     end
