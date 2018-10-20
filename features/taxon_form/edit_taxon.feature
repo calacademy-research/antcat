@@ -51,7 +51,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta"
     And I should see "neuter"
 
-  Scenario: Changing biogeographic region (species-group name)
+  Scenario: Adding and clearing the biogeographic region (species-group name)
     Given a species exists with a name of "major" and a genus of "Atta"
 
     When I go to the edit page for "Atta major"
@@ -60,18 +60,7 @@ Feature: Editing a taxon
     Then I should be on the catalog page for "Atta major"
     And I should see "Malagasy"
 
-    When I press the edit taxon link
-    Then I should see "Malagasy" selected in "taxon_biogeographic_region"
-
-  Scenario: Clearing the biogeographic_region
-    Given a species exists with a name of "major" and a genus of "Atta"
-
     When I go to the edit page for "Atta major"
-    And I select "Malagasy" from "taxon_biogeographic_region"
-    And I save the taxon form
-    Then I should see "Malagasy"
-
-    When I press the edit taxon link
     And I select "" from "taxon_biogeographic_region"
     And I save the taxon form
     Then I should not see "Malagasy"

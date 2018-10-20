@@ -1,7 +1,3 @@
-When("I press the edit taxon link") do
-  find("#edit-taxon-test-hook").click
-end
-
 # Without JavaScript, `I press "Save"` raises `Capybara::Ambiguous`.
 When("I save the taxon form") do
   find("#save-taxon-form").click
