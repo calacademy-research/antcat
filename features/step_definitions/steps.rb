@@ -116,11 +116,6 @@ Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
   end
 end
 
-Then("{string} should be checked") do |checkbox_id|
-  checkbox = find "##{checkbox_id}"
-  expect(checkbox).to be_checked
-end
-
 # Misc
 And('I will confirm on the next step') do
   begin
