@@ -76,14 +76,3 @@ Feature: Using the catalog
     And I should not see "Atta" in the genera index
     And "Incertae sedis" should be selected in the subfamilies index
     And "Dolichoderinae" should be selected in the families index
-
-  Scenario: Displaying items containing broken taxt links
-    Given I am logged in
-    And there is a genus "Atta"
-    And Atta has a history item with a broken link
-
-    When I go to the catalog page for "Atta"
-    Then I should see "CANNOT FIND REFERENCE WITH ID 99999"
-
-    When I follow "Search history?"
-    Then the "item_id" field should contain "99999"

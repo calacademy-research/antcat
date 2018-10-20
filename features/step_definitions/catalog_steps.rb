@@ -42,8 +42,3 @@ Given("the maximum number of taxa to load in each tab is {int}") do |number|
     to receive(:max_taxa_to_load).
     and_return number.to_i
 end
-
-Given("Atta has a history item with a broken link") do
-  taxon = Taxon.find_by(name_cache: "Atta")
-  create :taxon_history_item, taxon: taxon, taxt: "{ref 99999}"
-end
