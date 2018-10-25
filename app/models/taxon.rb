@@ -41,8 +41,8 @@ class Taxon < ApplicationRecord
   has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
   has_many :junior_synonyms, through: :synonyms_as_senior
   has_many :senior_synonyms, through: :synonyms_as_junior
-  has_many :junior_synonyms_objects, foreign_key: :senior_synonym_id, class_name: 'Synonym'
-  has_many :senior_synonyms_objects, foreign_key: :junior_synonym_id, class_name: 'Synonym'
+  has_many :junior_synonyms_objects, foreign_key: :senior_synonym_id, class_name: 'Synonym', dependent: :destroy
+  has_many :senior_synonyms_objects, foreign_key: :junior_synonym_id, class_name: 'Synonym', dependent: :destroy
 
   scope :displayable, -> do
     where.not(status: [Status::UNAVAILABLE_MISSPELLING, Status::UNAVAILABLE_UNCATEGORIZED])
