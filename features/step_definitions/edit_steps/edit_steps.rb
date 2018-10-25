@@ -30,19 +30,6 @@ When("I set the name gender to {string}") do |gender|
   step %(I select "#{gender}" from "taxon_name_attributes_gender")
 end
 
-### parent field
-When("I click the parent name field") do
-  find('#parent_name_field .display_button').click
-end
-
-When("I set the parent name to {string}") do |name|
-  step %(I fill in "name_string" with "#{name}")
-end
-
-Then("I should not see the parent name field") do
-  expect(page).to_not have_css "#parent_row"
-end
-
 #### current valid taxon field
 Then("the current valid taxon name should be {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)
@@ -136,4 +123,19 @@ end
 Then("{string} should be of the rank of {string}") do |name, rank|
   taxon = Taxon.find_by(name_cache: name)
   expect(taxon.rank).to eq rank
+end
+
+When("I set {string} to {string} [select-two]") do |id, name|
+  select2 name, from: id
+end
+
+Then("the {string} of {string} should be {string}") do |association, taxon_name, other_taxon_name|
+  taxon = Taxon.find_by(name_cache: taxon_name)
+  other_taxon = Taxon.find_by(name_cache: other_taxon_name)
+
+  expect(taxon.send(association.to_sym)).to eq other_taxon
+end
+
+When("I set the new parent field to {string}") do |name|
+  select2 name, from: 'new_parent_id'
 end

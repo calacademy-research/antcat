@@ -1,0 +1,40 @@
+-@title = "Force parent change"
+-breadcrumb :force_parent_change, @taxon
+
+-content_for :head do
+  =javascript_include_tag "taxon_select"
+
+=form_tag taxa_force_parent_change_path do
+  .row
+    .medium-4.columns
+      %fieldset.fieldset
+        %legend Change parent of
+        =@taxon.decorate.id_and_name_and_author_citation
+
+        %br
+        Current parent:
+        =@taxon.parent.decorate.id_and_name_and_author_citation
+
+    .medium-4.columns
+      %fieldset.fieldset
+        %legend to
+        =taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks
+
+        %br
+        Possible parent ranks:
+        =@valid_parent_ranks.to_sentence
+
+    .medium-4.columns
+      .callout
+        %h6 Help
+        %p Please only use this functionality to correct obvious mistakes such as species that are listed in the wrong genus and never should have been there (homonyms, for example). Force-changing parent will modify the record in place without creating a new record. Use the "Create combination" button to create combinations.
+        %p Parents of the following ranks can be changed from this page: tribe, genus, subgenus, species and subspecies. Parents of children are updated in most cases, but there are edge-cases that may not be fully covered, so pay extra attention to <i>incertae sedis</i> taxa, and uncommon ranks such as subgenera.
+        %p
+          =link_to "Subspecies without a species", "/database_scripts/subspecies_without_species"
+          is a special case that can be fixed in the normal edit form.
+
+  .row.margin-bottom
+    .medium-6.columns
+      .center-text
+        =button_tag type: "submit", class: "btn-delete has-spinner" do
+          =spinner_icon + "Change parent"

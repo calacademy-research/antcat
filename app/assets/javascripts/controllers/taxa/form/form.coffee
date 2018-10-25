@@ -20,7 +20,6 @@ class AntCat.TypeNameField extends AntCat.NameField
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_fields_section()
-    @initialize_parent_section()
     @initialize_events()
     super
 
@@ -31,22 +30,9 @@ class AntCat.TaxonForm extends AntCat.Form
     if $('#type_name_field').size() == 1
       new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
 
-  initialize_parent_section: =>
-    options = {}
-    if @taxon_rank() == 'genus' or @taxon_rank() == 'tribe'
-      options = {subfamilies_or_tribes_only: true}
-    else if @taxon_rank() == 'species'
-      options = {genera_only: true}
-    else if @taxon_rank() == 'subspecies'
-      options = {species_only: true}
-    new AntCat.ParentSection options
-
   initialize_events: =>
     @element.bind 'keydown', (event) ->
       return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
-
-  taxon_rank: =>
-    $('#taxon_rank').val()
 
   ###### client functions
   on_form_open: =>

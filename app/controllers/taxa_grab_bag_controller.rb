@@ -78,21 +78,6 @@ class TaxaGrabBagController < ApplicationController
     end
   end
 
-  # TODO move logic to model?
-  def update_parent
-    new_parent = Taxon.find params[:new_parent_id]
-    case new_parent
-    when Species   then @taxon.species = new_parent
-    when Genus     then @taxon.genus = new_parent
-    when Subgenus  then @taxon.subgenus = new_parent
-    when Subfamily then @taxon.subfamily = new_parent
-    when Family    then @taxon.family = new_parent
-    end
-
-    @taxon.save!
-    redirect_to edit_taxa_path(@taxon)
-  end
-
   private
 
     def set_taxon

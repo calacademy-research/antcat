@@ -6,12 +6,21 @@ class Species < SpeciesGroupTaxon
   end
 
   def parent= parent_taxon
-    if parent_taxon.is_a? Subgenus
+    case parent_taxon
+    when Subgenus
       self.subgenus = parent_taxon
-      self.genus = subgenus.parent
-    else
+      self.genus = parent_taxon.genus
+    when Genus
       self.genus = parent_taxon
+    else
+      raise InvalidParent.new(self, parent_taxon)
     end
+    self.subfamily = parent_taxon.subfamily
+  end
+
+  def update_parent new_parent
+    name.change_parent(new_parent.name) unless new_parent == parent
+    self.parent = new_parent
   end
 
   def children

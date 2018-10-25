@@ -9,14 +9,28 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  ALLOW_CREATE_COMBINATION_RANKS = %w[species subspecies]
+  ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id]
 
   class TaxonExists < StandardError; end
 
-  self.table_name = :taxa
+  # TODO extract this and all `#update_parent`s into `ForceParentChange`.
+  class InvalidParent < StandardError
+    attr_reader :taxon, :new_parent
 
-  attr_accessor :parent_name, :duplicate_type
+    def initialize taxon, new_parent = nil
+      @taxon = taxon
+      @new_parent = new_parent
+    end
+
+    def message
+      "Invalid parent: ##{new_parent&.id} (#{new_parent&.rank}) for ##{taxon.id} (#{taxon.rank})"
+    end
+  end
+
+  self.table_name = :taxa
 
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
@@ -90,16 +104,6 @@ class Taxon < ApplicationRecord
   # TODO remove since `#name_cache` is not unique.
   def self.find_by_name name
     find_by(name_cache: name)
-  end
-
-  # TODO see if we can push this down to the subclasses.
-  def update_parent new_parent
-    return if parent == new_parent
-
-    name.change_parent new_parent.name
-    set_name_caches
-    self.parent = new_parent
-    self.subfamily = new_parent.subfamily
   end
 
   def rank

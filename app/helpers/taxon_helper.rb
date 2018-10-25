@@ -13,14 +13,6 @@ module TaxonHelper
     end
   end
 
-  def reset_epithet taxon
-    case taxon
-    when Family  then taxon.name.name
-    when Species then taxon.name.genus_epithet
-    else              ""
-    end
-  end
-
   def default_name_string taxon
     return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
     return taxon.species.name.name if taxon.is_a?(Subspecies)

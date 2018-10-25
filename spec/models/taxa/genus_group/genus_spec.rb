@@ -179,14 +179,6 @@ describe Genus do
       expect(genus_with_tribe.subfamily).to eq subfamily
     end
 
-    it "clears both subfamily and tribe when the new parent is nil" do
-      expect(genus_with_tribe.tribe).to eq tribe # Trigger FactoryBot.
-      genus_with_tribe.update_parent nil
-
-      expect(genus_with_tribe.tribe).to eq nil
-      expect(genus_with_tribe.subfamily).to eq nil
-    end
-
     it "assigns the subfamily of its descendants" do
       species = create :species, genus: genus_with_tribe
       create :subspecies, species: species, genus: genus_with_tribe
@@ -210,8 +202,8 @@ describe Genus do
   describe "#find_epithet_in_genus" do
     let!(:species) { create_species 'Atta serratula' }
 
-    it "returns nil if nothing matches" do
-      expect(genus.find_epithet_in_genus('sdfsdf')).to eq nil
+    context "when nothing matches" do
+      specify { expect(genus.find_epithet_in_genus('sdfsdf')).to eq [] }
     end
 
     it "returns the one item" do

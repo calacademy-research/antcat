@@ -3,15 +3,11 @@ class Family < Taxon
   end
 
   def parent= _parent_taxon
-    raise "do you really want to change the parent of Formicidae?"
+    raise "cannot update parent of families"
   end
 
-  def all_displayable_genera
-    Genus.displayable
-  end
-
-  def genera_incertae_sedis_in
-    genera.displayable
+  def update_parent _new_parent
+    raise "cannot update parent of families"
   end
 
   def children
@@ -20,6 +16,14 @@ class Family < Taxon
 
   def childrens_rank_in_words
     "subfamilies"
+  end
+
+  def all_displayable_genera
+    Genus.displayable
+  end
+
+  def genera_incertae_sedis_in
+    genera.displayable
   end
 
   def genera
