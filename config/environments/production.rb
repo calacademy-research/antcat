@@ -96,4 +96,34 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  #           ___________         __
+  #           \_   _____/__  ____/  |_____________
+  #            |    __)_\  \/  /\   __\_  __ \__  \
+  #            |        \>    <  |  |  |  | \// __ \_
+  #           /_______  /__/\_ \ |__|  |__|  (____  /
+  #       _________   \/      \/   __             \/  __
+  #       \_   ___ \  ____   _____/  |_  ____   _____/  |_
+  #       /    \  \/ /  _ \ /    \   __\/ __ \ /    \   __\
+  #       \     \___(  <_> )   |  \  | \  ___/|   |  \  |
+  #        \______  /\____/|___|  /__|  \___  >___|  /__|
+  #               \/            \/          \/     \/
+  # #############################################################################
+  # # Simulate production locally for debugging/profiling
+  # #############################################################################
+  #
+  #   Uncomment these lines:
+  #
+  #   config.cache_classes = false
+  #   config.public_file_server.enabled = true
+  #   config.assets.debug = false
+  #   config.log_level = :debug
+  #
+  #   ## See log in console (or run `tail -f log/production.log`)
+  #   ActiveRecord::Base.logger = Logger.new STDOUT
+  #
+  #   Precompile assets: `rake assets:precompile RAILS_ENV=production`
+  #   (you may also want to `rake assets:clobber`)
+  #
+  #   Run server: `rails s -e production`
 end

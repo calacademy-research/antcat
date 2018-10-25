@@ -4,7 +4,7 @@
 module TaxonButtonsHelper
   def link_to_edit_taxon taxon
     if can? :edit, :catalog
-      link_to "Edit", edit_taxa_path(taxon), id: "edit-taxon-test-hook", class: "btn-normal"
+      link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
     end
   end
 
@@ -71,11 +71,11 @@ module TaxonButtonsHelper
     MSG
 
     link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
-      class: "btn-delete", data: { confirm: message }
+      class: "btn-tiny btn-delete", data: { confirm: message }
   end
 
   def confirm_before_superadmin_delete_button taxon
     return unless user_is_superadmin?
-    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-delete"
+    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-tiny btn-delete"
   end
 end

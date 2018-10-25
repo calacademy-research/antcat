@@ -25,13 +25,11 @@ describe SubspeciesName do
     end
   end
 
-  # TODO DRY
   describe "#change_parent" do
-    it "replaces the species part of the name and fix all the other parts, too" do
-      subspecies_name = described_class.new name: 'Atta major minor',
-        epithet: 'minor', epithets: 'major minor'
-      species_name = SpeciesName.new name: 'Eciton niger', epithet: 'niger'
+    let(:subspecies_name) { create :subspecies_name, name: 'Atta major minor' }
+    let(:species_name) { create :species_name, name: 'Eciton niger' }
 
+    it "replaces the species part of the name and fix all the other parts, too" do
       subspecies_name.change_parent species_name
 
       expect(subspecies_name.name).to eq 'Eciton niger minor'
@@ -40,9 +38,7 @@ describe SubspeciesName do
     end
 
     it "handles more than one subspecies epithet" do
-      subspecies_name = described_class.new name: 'Atta major minor medii',
-        epithet: 'medii', epithets: 'major minor medii'
-      species_name = SpeciesName.new name: 'Eciton niger', epithet: 'niger'
+      subspecies_name = create :subspecies_name, name: 'Atta major minor medii'
 
       subspecies_name.change_parent species_name
 
@@ -52,31 +48,20 @@ describe SubspeciesName do
     end
 
     context "when name already exists" do
+      let!(:existing_subspecies_name) { create :subspecies_name, name: 'Eciton niger minor' }
+
       context "when name is used by a different taxon" do
-        it "raises" do
-          existing_subspecies_name = described_class.create! name: 'Eciton niger minor',
-            epithet: 'minor', epithets: 'niger minor'
+        before do
           create :subspecies, name: existing_subspecies_name
+        end
 
-          subspecies_name = described_class.create! name: 'Atta major minor',
-            epithet: 'minor', epithets: 'major minor'
-          species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-          SpeciesName.create! name: 'Eciton niger', epithet: 'niger' # protonym_name
-
-          expect { subspecies_name.change_parent species_name }.
-            to raise_error Taxon::TaxonExists
+        it "raises" do
+          expect { subspecies_name.change_parent species_name }.to raise_error Taxon::TaxonExists
         end
       end
 
       context "when name is an orphan" do
         it "doesn't raise" do
-          described_class.create! name: 'Eciton niger minor',
-            epithet: 'minor', epithets: 'niger minor' # orphan_subspecies_name
-          subspecies_name = described_class.create! name: 'Atta major minor',
-            epithet: 'minor', epithets: 'major minor'
-          species_name = SpeciesName.create! name: 'Eciton niger', epithet: 'niger'
-          SpeciesName.create! name: 'Eciton niger', epithet: 'niger' # protonym_name
-
           expect { subspecies_name.change_parent species_name }.not_to raise_error
         end
       end

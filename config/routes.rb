@@ -109,16 +109,6 @@ Rails.application.routes.draw do
         delete :destroy
         delete :destroy_unreferenced
         post :reorder_history_items
-        get :update_parent # TODO change to put.
-      end
-    end
-    collection do
-      controller :duplicates do
-        get :find_duplicates
-        get :find_name_duplicates_only
-      end
-      scope module: :taxa, controller: :redirect_by_parent_name_id do
-        get :redirect_by_parent_name_id, action: :index
       end
     end
     resources :taxon_history_items, only: [:new, :create]
@@ -129,7 +119,9 @@ Rails.application.routes.draw do
       end
     end
     resource :convert_to_subspecies, only: [:new, :create]
-    scope module: :taxa, controller: :move_items do
+    scope module: :taxa do
+      resource :create_combination, only: [:new, :show]
+      resource :force_parent_change, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
     end
   end
@@ -238,6 +230,10 @@ Rails.application.routes.draw do
     member do
       get :source
     end
+  end
+
+  namespace :my do
+    resources :recently_used_references, only: [:index, :create]
   end
 
   namespace :beta_and_such do

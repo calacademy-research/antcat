@@ -98,14 +98,16 @@ class MakePreviewable
   hideSpinner: -> @spinner().hide()
 
 class ExtrasArea
-  DEFAULT_REFERENCE_BUTTON_ID = "default-reference-button"
-  INSERT_REFERENCE_BUTTON_ID  = "insert-reference-button"
-  INSERT_TAXON_BUTTON_ID      = "insert-taxon-button"
+  DEFAULT_REFERENCE_BUTTON_ID        = "default-reference-button"
+  RECENTLY_USED_REFERENCES_BUTTON_ID = "recently-used-references-button"
+  INSERT_REFERENCE_BUTTON_ID         = "insert-reference-button"
+  INSERT_TAXON_BUTTON_ID             = "insert-taxon-button"
 
   constructor: (@textarea, @textareaTab) ->
     @createExtrasArea().appendTo @textareaTab
     @setupDefaultReferenceButton()
     @setupInsertTaxaButtons()
+    @setupRecentlyUserReferencesButton()
     @setupInsertReferenceButton()
     @setupInsertTaxonButton()
 
@@ -118,12 +120,27 @@ class ExtrasArea
     $ """
     <div>
       <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
+      <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-normal btn-tiny">Recently used references</a>
       <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
       <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
       <span id="extras-area"></span>
       <span title='#{helpText}' class="tooltip">???</span>
     </div>
     """
+
+  setupRecentlyUserReferencesButton: ->
+    button = @textareaTab.find("##{RECENTLY_USED_REFERENCES_BUTTON_ID}")
+
+    button.click =>
+      event.preventDefault()
+
+      originalValue = @textarea.val()
+
+      @textarea.insertAtCaret "!!"
+      afterValue = @textarea.val()
+
+      @restoreIfUnchanged originalValue, afterValue
+      @textarea.trigger('click.atwhoInner')
 
   setupInsertReferenceButton: ->
     button = @textareaTab.find("##{INSERT_REFERENCE_BUTTON_ID}")

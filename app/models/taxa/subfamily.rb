@@ -13,7 +13,12 @@ class Subfamily < Taxon
   end
 
   def parent= parent_taxon
+    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Family)
     self.family = parent_taxon
+  end
+
+  def update_parent _new_parent
+    raise "cannot update parent of subfamilies"
   end
 
   # TODO among other things, this is called when deleting a
@@ -27,15 +32,15 @@ class Subfamily < Taxon
     "tribes"
   end
 
-  def statistics valid_only: false
-    get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
-  end
-
   def all_displayable_genera
     genera.displayable
   end
 
   def genera_incertae_sedis_in
     genera.displayable.without_tribe
+  end
+
+  def statistics valid_only: false
+    get_statistics [:tribes, :genera, :species, :subspecies], valid_only: valid_only
   end
 end

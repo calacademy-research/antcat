@@ -74,35 +74,6 @@ describe Names::PicklistMatching do
       ]
     end
 
-    it "only returns names attached to species, if that option is sent" do
-      create_genus 'Atta'
-      create_species 'Atta major'
-
-      results = described_class['atta', species_only: true]
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta major'
-    end
-
-    it "only returns names attached to genera, if that option is sent" do
-      create_genus 'Atta'
-      create_species 'Atta major'
-
-      results = described_class['atta', genera_only: true]
-      expect(results.size).to eq 1
-      expect(results.first[:name]).to eq 'Atta'
-    end
-
-    it "only returns names attached to subfamilies or tribes, if that option is sent" do
-      subfamily = create :subfamily, name: create(:subfamily_name, name: 'Attinae')
-      tribe = create :tribe, name: create(:subfamily_name, name: 'Attini')
-      create_genus 'Atta', tribe: tribe, subfamily: subfamily
-      create_species 'Atta major'
-
-      results = described_class['att', subfamilies_or_tribes_only: true]
-      expect(results.size).to eq 2
-      expect(results.map { |e| e[:name] }).to match_array ['Attinae', 'Attini']
-    end
-
     it "prioritizes names already associated with taxa" do
       atta_name = create :name, name: 'Atta'
       taxon = create_genus 'Atta'

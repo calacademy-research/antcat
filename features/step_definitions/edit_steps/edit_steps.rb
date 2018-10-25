@@ -1,18 +1,6 @@
-When("I press the edit taxon link") do
-  find("#edit-taxon-test-hook").click
-end
-
 # Without JavaScript, `I press "Save"` raises `Capybara::Ambiguous`.
 When("I save the taxon form") do
   find("#save-taxon-form").click
-end
-
-Then(/^I (should|should not) see an Edit button$/) do |should_selector|
-  if should_selector == "should not"
-    expect(page).to have_no_css "a.btn-normal", text: "Edit"
-  else
-    expect(page).to have_css "a.btn-normal", text: "Edit"
-  end
 end
 
 When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
@@ -29,15 +17,6 @@ When("I set the name to {string}") do |name|
   step %(I fill in "name_string" with "#{name}")
 end
 
-Then("I should still see the name field") do
-  find '#name_field .edit'
-end
-
-Then("the name field should contain {string}") do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
-end
-
 # Try adding this (waiting finder) if the JS driver clicks on "OK" and
 # then navigates to a different page before the JS has had time to execute.
 # TODO probably include this in other steps so that it's always run.
@@ -49,27 +28,6 @@ end
 # gender
 When("I set the name gender to {string}") do |gender|
   step %(I select "#{gender}" from "taxon_name_attributes_gender")
-end
-
-Then(/^I should (not )?see the gender menu$/) do |should_not|
-  if should_not
-    expect(page).to have_no_css '#taxon_name_attributes_gender'
-  else
-    expect(page).to have_css '#taxon_name_attributes_gender'
-  end
-end
-
-### parent field
-When("I click the parent name field") do
-  find('#parent_name_field .display_button').click
-end
-
-When("I set the parent name to {string}") do |name|
-  step %(I fill in "name_string" with "#{name}")
-end
-
-Then("I should not see the parent name field") do
-  expect(page).to_not have_css "#parent_row"
 end
 
 #### current valid taxon field
@@ -145,11 +103,6 @@ When("I set the type name to {string}") do |name|
   end
 end
 
-Then("the type name field should contain {string}") do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
-end
-
 # convert species to subspecies
 Then("the new species field should contain {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)
@@ -170,4 +123,19 @@ end
 Then("{string} should be of the rank of {string}") do |name, rank|
   taxon = Taxon.find_by(name_cache: name)
   expect(taxon.rank).to eq rank
+end
+
+When("I set {string} to {string} [select-two]") do |id, name|
+  select2 name, from: id
+end
+
+Then("the {string} of {string} should be {string}") do |association, taxon_name, other_taxon_name|
+  taxon = Taxon.find_by(name_cache: taxon_name)
+  other_taxon = Taxon.find_by(name_cache: other_taxon_name)
+
+  expect(taxon.send(association.to_sym)).to eq other_taxon
+end
+
+When("I set the new parent field to {string}") do |name|
+  select2 name, from: 'new_parent_id'
 end

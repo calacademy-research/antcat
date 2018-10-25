@@ -2,8 +2,6 @@
 Feature: Editing a user
   As a user of AntCat
   I want to edit my password and email
-  So that I can use a password that makes sense
-    And so I can use a different email than what I was signed up with
 
   Scenario: Changing my password
     Given I am logged in
@@ -25,7 +23,7 @@ Feature: Editing a user
     When I follow the first "Login"
       And I fill in the email field with my email address
       And I fill in "user_password" with "new password"
-    And I press the first "Login"
+    And I press "Login"
     Then I should be on the main page
     And I should see "Brian Fisher"
 

@@ -1,5 +1,3 @@
-- show_parent_form = !taxon.new_record? && (taxon.kind_of?(SpeciesGroupTaxon) || taxon.kind_of?(Genus) || taxon.kind_of?(Tribe))
-
 %table.unstriped.no-border
   %tr
     =form.fields_for :name do |name_form|
@@ -29,16 +27,27 @@
     %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
     %td=form.taxon_select :homonym_replaced_by
 
-  -if show_parent_form
-    %tr#parent_row
-      -form.object.parent_name ||= form.object.parent.try(:name)
-      -form.object.parent_name ||= Name.new
-      =form.fields_for :parent_name do |parent_name_form|
-        =hidden_field_tag 'taxon[parent_name_attributes][id]', form.object.parent_name.id
-        %td.caption=parent_name_form.label :name, 'Parent'
-        %td#parent_name_field
-          =render 'name_fields/panel', name_string: taxon.parent_name.name
+  -unless taxon.new_record?
+    -if taxon.is_a?(Subspecies) && taxon.species.blank?
+      %tr
+        %td.caption Species
+        %td
+          %span.bold-warning warning!
+          this subspecies has no species, please set one
+          =form.taxon_select :species, rank: :species
 
+  %tr
+    %td.caption=form.label :parent, 'Parent'
+    %td
+      -if taxon.parent
+        =taxon.parent.decorate.id_and_name_and_author_citation
+        -unless taxon.new_record?
+          -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
+            =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+          -if taxon.rank.in?(Taxon::ALLOW_FORCE_CHANGE_PARENT_RANKS)
+            =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-delete btn-tiny"
+      -else
+        (none)
   %tr
     %td.caption=form.label :current_valid_taxon, 'Current valid name'
     %td=form.taxon_select :current_valid_taxon

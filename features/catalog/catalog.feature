@@ -7,7 +7,7 @@ Feature: Using the catalog
     And a genus exists with a name of "Atta" and no subfamily
     And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini"
     And a species exists with a name of "abruptus" and a genus of "Dolichoderus"
-    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor" and an epithet of "minor"
+    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor"
     And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae"
     And a species exists with a name of "abruptus" and a genus of "Camponotus"
 
@@ -76,14 +76,3 @@ Feature: Using the catalog
     And I should not see "Atta" in the genera index
     And "Incertae sedis" should be selected in the subfamilies index
     And "Dolichoderinae" should be selected in the families index
-
-  Scenario: Displaying items containing broken taxt links
-    Given I am logged in
-    And there is a genus "Atta"
-    And Atta has a history item with a broken link
-
-    When I go to the catalog page for "Atta"
-    Then I should see "CANNOT FIND REFERENCE WITH ID 99999"
-
-    When I follow "Search history?"
-    Then the "item_id" field should contain "99999"

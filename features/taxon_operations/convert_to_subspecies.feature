@@ -1,8 +1,4 @@
 Feature: Converting a species to a subspecies
-  As an editor of AntCat
-  I want to make a species a subspecies
-  So the data is correct
-
   Background:
     Given I am logged in
 

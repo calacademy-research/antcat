@@ -1,8 +1,8 @@
-Then(/^I should ?(not)? see the reference key "([^"]+)"$/) do |should_not, text|
+Then(/^I should ?(not)? see the reference key$/) do |should_not|
   if should_not == "not"
-    expect(page).to have_no_css ".expandable-reference-key", text: text
+    expect(page).to have_no_css ".expandable-reference-key"
   else
-    expect(page).to have_css ".expandable-reference-key", text: text
+    expect(page).to have_css ".expandable-reference-key"
   end
 end
 
@@ -20,10 +20,6 @@ end
 
 When("I click the reference key expansion") do
   find(".expandable-reference-content").click
-end
-
-Then("I should see the catalog entry for {string}") do |taxon|
-  step %(the name in the header should be "#{taxon}")
 end
 
 Then("the name in the header should be {string}") do |name|
@@ -45,9 +41,4 @@ Given("the maximum number of taxa to load in each tab is {int}") do |number|
   allow_any_instance_of(TaxonBrowser::Browser).
     to receive(:max_taxa_to_load).
     and_return number.to_i
-end
-
-Given("Atta has a history item with a broken link") do
-  taxon = Taxon.find_by(name_cache: "Atta")
-  create :taxon_history_item, taxon: taxon, taxt: "{ref 99999}"
 end

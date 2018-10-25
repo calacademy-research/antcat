@@ -9,8 +9,9 @@ module Autocomplete
     def call
       AuthorName.where('name LIKE ?', "%#{search_query}%").
         includes(:reference_author_names).
+        distinct.
         order('reference_author_names.created_at DESC', 'name').
-        pluck(:name)
+        map(&:name)
     end
 
     private

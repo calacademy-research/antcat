@@ -1,5 +1,15 @@
 -default_name_string ||= nil
 
-.antcat_name_picker.antcat_name_field.antcat_panel
-  =render 'name_fields/display', name_string: name_string
-  =render 'name_fields/edit', name_string: name_string, default_name_string: default_name_string
+.antcat_name_field
+  .display
+    %button.display_button
+      =name_string.present? ? name_string : '(none)'
+  .edit.nested_form{data: { action: '/name_fields/find', method: 'get' }}
+    .controls
+      =text_field_tag :name_string, name_string
+      =hidden_field_tag :default_name_string, default_name_string
+      %button.submit.btn-normal OK
+      %button.cancel.btn-cancel Cancel
+      =shared_spinner_icon
+    .error_messages
+    .help

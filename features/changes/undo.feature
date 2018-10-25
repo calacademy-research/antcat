@@ -6,10 +6,7 @@ Feature: Workflow
   so mistakes can be repaired
 
   Background:
-    Given this reference exists
-      | author | citation   | title | citation_year |
-      | Fisher | Psyche 3:3 | Ants  | 2004          |
-    And there is a subfamily "Formicinae"
+    Given there is a subfamily "Formicinae"
     And I log in as a catalog editor named "Mark Wilden"
 
   @javascript
@@ -42,26 +39,26 @@ Feature: Workflow
     And there is a genus "Chatsworth"
 
     # Change parent from A -> B
-    When I go to the edit page for "Atta major"
-    And I click the parent name field
-    And I set the parent name to "Becton"
-    And I press "OK"
+    When I go to the catalog page for "Atta major"
+    And I follow "Create combination"
+    And I set the new parent field to "Becton"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
 
     # Change parent from B -> C
-    When I go to the edit page for "Becton major"
-    And I click the parent name field
-    And I set the parent name to "Chatsworth"
-    And I press "OK"
+    When I go to the catalog page for "Becton major"
+    And I follow "Create combination"
+    And I set the new parent field to "Chatsworth"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
     When I press "Save"
@@ -106,26 +103,26 @@ Feature: Workflow
     And there is a genus "Chatsworth"
 
     # Change parent from A -> B
-    When I go to the edit page for "Atta major"
-    And I click the parent name field
-    And I set the parent name to "Becton"
-    And I press "OK"
+    When I go to the catalog page for "Atta major"
+    And I follow "Create combination"
+    And I set the new parent field to "Becton"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     And I press "Save"
     And I go to the changes page
     Then I should see "Becton"
     And I should see "major"
 
     # Change parent from B -> C
-    When I go to the edit page for "Becton major"
-    And I click the parent name field
-    And I set the parent name to "Chatsworth"
-    And I press "OK"
+    When I go to the catalog page for "Becton major"
+    And I follow "Create combination"
+    And I set the new parent field to "Chatsworth"
+    And I press "Select..."
     Then I should see "Would you like to create a new combination under this parent?"
 
-    When I press "Yes, create new combination"
+    When I follow "Yes, create new combination"
     Then the name button should contain "Chatsworth major"
 
     When I press "Save"
@@ -143,8 +140,6 @@ Feature: Workflow
 
     # TODO: test this where we undo the oldest and then both are gone.
 
-  # FIX: currently doesn't work with incertae sedis taxa, which
-  # is why we need to nest the genera in a tribe in this test.
   Scenario: Deleting a subfamily with genera and undoing the change
     Given the Formicidae family exists
     And I log in as a superadmin
@@ -153,26 +148,26 @@ Feature: Workflow
     And genus "Antcatia" exists in that tribe
     And genus "Tactania" exists in that tribe
 
-    When I go to the catalog page for "Formicidae"
-    And I follow "Ancatinae" in the families index
+    When I go to the catalog page for "Ancatinae"
+    Then I should see "Antcatini"
+    And I should see "Antcatia"
+    And I should see "Tactania"
+
+    When I go to the catalog page for "Antcatini"
     Then I should see "Antcatia"
     And I should see "Tactania"
 
     When I follow "Delete..."
     And I follow "Confirm and delete"
-    And I go to the catalog page for "Formicidae"
-    Then I should not see "Ancatinae"
-
-    When I follow "All genera"
-    Then I should not see "Antcatia"
+    And I go to the catalog page for "Ancatinae"
+    Then I should not see "Antcatini"
+    And I should not see "Antcatia"
     And I should not see "Tactania"
 
     When I go to the changes page
     And I follow the first "Undo..."
     And I press "Undo!"
-    And I go to the catalog page for "Formicidae"
-    Then I should see "Ancatinae"
-
-    When I follow "All genera"
-    Then I should see "Antcatia"
+    And I go to the catalog page for "Ancatinae"
+    Then I should see "Antcatini"
+    And I should see "Antcatia"
     And I should see "Tactania"

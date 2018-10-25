@@ -22,10 +22,3 @@ Feature: Edit reference unsuccessfully
 
     When I follow "Cancel"
     Then I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452"
-
-    When I follow "Edit"
-    Then I should not see any error messages
-
-    When I press "Save"
-    Then I should not see any error messages
-    And I should see "Forel, A. 1874. Les fourmis de la Suisse. Neue 26:1-452"

@@ -46,10 +46,12 @@
     .medium-1.columns
       Ichnotaxon
       =select_tag :ichnotaxon, any_yes_no_options_for_select(params[:ichnotaxon])
-    .medium-1.columns
+    .medium-1.columns.end
       Hong
       =select_tag :hong, any_yes_no_options_for_select(params[:hong])
-    .medium-2.columns{style: "padding-top: 2rem"}
+
+  .row
+    .medium-2.columns.end
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
 
@@ -62,4 +64,5 @@
       =button_tag type: 'submit', name: nil, class: 'btn-normal has-spinner' do
         =spinner_icon + "Go"
       -if !@is_quick_search && @taxa.present?
-        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "btn-normal download-button-hack"
+        &nbsp;
+        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"

@@ -1,25 +1,17 @@
-Given(/^there is a species described in (\d+)(?: by "([^"]+)")?$/) do |year, author|
+Given("there is a species described in {int}") do |year|
   reference = create :article_reference, citation_year: year
-  if author
-    bolton = create :author
-    author_name = create :author_name, name: author, author: bolton
-    reference.author_names = [author_name]
-  end
-
   taxon = create :species
   taxon.protonym.authorship.update! reference: reference
 end
 
-Given("there is an invalid species described in {int}") do |year|
-  reference = create :article_reference, citation_year: year
-  taxon = create :species, :synonym
+Given("there is a species described by Bolton") do
+  reference = create :article_reference, author_names: [create(:author_name, name: 'Bolton')]
+  taxon = create :species
   taxon.protonym.authorship.update! reference: reference
 end
 
-Given("there is a subfamily described in {int}") do |year|
-  taxon = create :subfamily
-  reference = create :article_reference, citation_year: year
-  taxon.protonym.authorship.update! reference: reference
+Given("there is an invalid family") do
+  create :family, :excluded_from_formicidae
 end
 
 Given("there is a genus located in {string}") do |locality|

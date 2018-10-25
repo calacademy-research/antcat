@@ -20,10 +20,6 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
-  # TODO maybe raise?
-  def change_parent _name
-  end
-
   def to_html
     name_html
   end
@@ -57,11 +53,5 @@ class Name < ApplicationRecord
     def set_taxon_caches
       Taxon.where(name: self).update_all(name_cache: name)
       Taxon.where(name: self).update_all(name_html_cache: name_html)
-    end
-
-    def change name_string
-      existing_names = Name.where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists if existing_names.any? { |name| !name.what_links_here.empty? }
-      update! name: name_string, name_html: italicize(name_string)
     end
 end

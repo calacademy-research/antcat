@@ -1,34 +1,32 @@
 class Subspecies < SpeciesGroupTaxon
-  class NoSpeciesForSubspeciesError < StandardError; end
-
   belongs_to :species
 
   before_validation :set_genus
-
-  def update_parent new_parent
-    super
-    self.genus = new_parent.genus if new_parent.genus
-    self.subgenus = new_parent.subgenus if new_parent.subgenus
-    self.species = new_parent
-  end
-
-  def statistics valid_only: false
-  end
-
-  def parent= parent_taxon
-    if parent_taxon.is_a? Subgenus
-      raise "we probably do not support this"
-    end
-    self.species = parent_taxon
-  end
 
   def parent
     species || genus
   end
 
+  def parent= parent_taxon
+    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Species)
+
+    self.subfamily = parent_taxon.subfamily
+    self.genus = parent_taxon.genus
+    self.subgenus = parent_taxon.subgenus
+    self.species = parent_taxon
+  end
+
+  def update_parent new_parent
+    name.change_parent(new_parent.name) unless new_parent == parent
+    self.parent = new_parent
+  end
+
   # TODO remove?
   def children
     Subspecies.none
+  end
+
+  def statistics valid_only: false
   end
 
   private

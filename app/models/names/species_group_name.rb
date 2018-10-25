@@ -33,4 +33,10 @@ class SpeciesGroupName < Name
         old_comb.is_a?(Subspecies) && new_comb_parent.is_a?(Species)
     end
     private_class_method :valid_rank_combination?
+
+    def change name_string
+      existing_names = Name.where.not(id: id).where(name: name_string)
+      raise Taxon::TaxonExists if existing_names.any? { |name| !name.what_links_here.empty? }
+      update! name: name_string, name_html: italicize(name_string)
+    end
 end

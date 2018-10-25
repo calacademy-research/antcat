@@ -5,8 +5,6 @@ class NameFieldsController < NamePickersController
     name_string = params[:name_string]
     allow_blank = params[:allow_blank].present?
     new_or_homonym = params[:new_or_homonym].present?
-    require_new = params[:require_new].present?
-    require_existing = params[:require_existing].present?
 
     confirming_adding_name = params[:confirm_add_name].present?
 
@@ -28,37 +26,18 @@ class NameFieldsController < NamePickersController
         add_name name_string, data
       end
 
-    elsif require_new
-      name = Name.find_by_name name_string
-      if name
-        if Taxon.find_by_name_id name.id
-          tell_about_existing name, data
-        else
-          add_name name_string, data
-        end
-      else
-        add_name name_string, data
-      end
-
     else
       name = Name.find_by_name name_string
       if name
         accept_success name, data
       else
-        if require_existing
-          tell_existing_required data
-        else
-          ask_about_adding name_string, data
-        end
+        ask_about_adding name_string, data
       end
     end
 
     data[:content] = render_to_string(partial: 'name_fields/panel', locals: { name_string: name_string })
     render json: data
   end
-
-  # TODO joe - this is probably where we should handle the cases currently done in
-  # a combination of duplicatescontroller and name_field.coffee
 
   private
 
@@ -90,12 +69,6 @@ class NameFieldsController < NamePickersController
     def accept_success name, data
       data[:success] = true
       data[:id] = name.id
-    end
-
-    def tell_existing_required data
-      data[:success] = false
-      data[:error_message] = 'This must be the name of an existing taxon'
-      data[:reason] = 'not found'
     end
 
     def ask_about_adding name_string, data
