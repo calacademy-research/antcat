@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesGroupTaxon do
-  it { is_expected.to validate_presence_of :genus }
-
   it "has its subfamily set from its genus" do
     genus = create :genus
     expect(genus.subfamily).not_to be_nil

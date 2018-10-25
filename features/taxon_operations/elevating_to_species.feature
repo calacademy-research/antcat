@@ -1,8 +1,4 @@
 Feature: Elevating subspecies to species
-  As an editor of AntCat
-  I want to make a subspecies a species
-  So the data is correct
-
   Background:
     Given I am logged in
     And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"

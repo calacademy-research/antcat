@@ -2,18 +2,6 @@ Feature: Edit reference successfully
   Background:
     Given I am logged in
 
-  Scenario: Edit a reference
-    Given this reference exists
-      | author | citation   | title | citation_year |
-      | author | Psyche 5:3 | title | 2010          |
-
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    And I fill in "reference_title" with "Ant Title"
-    And I fill in "reference_citation_year" with "1910a"
-    And I press "Save"
-    Then I should see "Ward, B.L.; Bolton, B. 1910a. Ant Title"
-
   @javascript
   Scenario: Change a reference's type
     Given this reference exists
@@ -29,16 +17,16 @@ Feature: Edit reference successfully
 
   Scenario: See the correct tab initially (book reference)
     Given this book reference exists
-      | author     | title | citation                | citation_year |
-      | Fisher, B. | Ants  | New York: Wiley, 22 pp. | 2010          |
+      | author     | title | citation                |
+      | Fisher, B. | Ants  | New York: Wiley, 22 pp. |
 
     When I go to the edit page for the most recent reference
     Then the "Book" tab should be selected
 
   Scenario: See the correct tab initially (unknown reference)
     Given this unknown reference exists
-      | author     | title | citation | citation_year |
-      | Fisher, B. | Ants  | New York | 2010          |
+      | author     |
+      | Fisher, B. |
 
     When I go to the edit page for the most recent reference
     Then the "Other" tab should be selected

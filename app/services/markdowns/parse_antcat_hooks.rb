@@ -102,7 +102,7 @@ module Markdowns
       # renders: a link to the GitHub issue (including non-existing and PRs).
       def parse_github_ids!
         content.gsub!(/%github(\d+)/) do
-          # Also works for PRs becuase GH figures that out.
+          # Also works for PRs because GH figures that out.
           url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
           link_to "GitHub ##{$1}", url
         end

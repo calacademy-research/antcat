@@ -1,5 +1,3 @@
-# TODO move most of these to unit tests.
-
 Feature: Searching the catalog
   Background:
     Given I go to the catalog
@@ -11,29 +9,25 @@ Feature: Searching the catalog
     Then I should see "No results"
 
   Scenario: Searching for subfamilies
-    Given there is a subfamily described in 2010
+    Given there is a subfamily "Formicinae"
 
     When I select "Subfamilies" from "rank"
-    And I fill in "year" with "2010"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "2010" within the search results
 
   Scenario: Searching for valid taxa
-    Given there is an invalid species described in 2010
+    Given there is an invalid family
 
-    When I fill in "year" with "2010"
-    And I check valid only in the advanced search form
+    When I check valid only in the advanced search form
     And I press "Go" in the search section
     Then I should see "No results"
 
   Scenario: Searching for an author's descriptions
-    Given there is a species described in 2010 by "Bolton"
+    Given there is a species described by Bolton
 
     When I fill in "author_name" with "Bolton"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "2010" within the search results
 
   Scenario: Finding a genus
     Given there is a species "Atta major" with genus "Atta"
@@ -44,9 +38,7 @@ Feature: Searching the catalog
     Then I should see "Atta major"
 
   Scenario: Manually entering an unknown name instead of using picklist
-    Given there is a species described in 2010 by "Bolton, B."
-
-    When I fill in "author_name" with "Bolton"
+    When I fill in "author_name" with "asdasdasd"
     And I press "Go" in the search section
     Then I should see "No results found. If you're choosing an author, make sure you pick the name from the dropdown list."
 
@@ -68,16 +60,6 @@ Feature: Searching the catalog
     And I press "Go" in the search section
     Then I should see "2 results"
     And I should see "Afrotropic" within the search results
-
-  Scenario: Searching for 'Any' biogeographic_region
-    Given there is a species with biogeographic region "Malagasy"
-    And there is a species with biogeographic region "Afrotropic"
-    And there is a genus located in "Africa"
-
-    When I select "Any" from "biogeographic_region"
-    And I fill in "locality" with "Africa"
-    And I press "Go" in the search section
-    Then I should see "1 result"
 
   Scenario: Searching for 'None' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"

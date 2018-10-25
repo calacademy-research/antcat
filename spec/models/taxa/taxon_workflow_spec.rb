@@ -4,7 +4,9 @@ describe Taxon do
   let(:adder) { create :user, :editor }
 
   it "can transition from waiting to approved" do
-    taxon = create_taxon_version_and_change TaxonState::WAITING, adder
+    taxon = create :family
+    create :change, taxon: taxon, change_type: "create", user: adder
+
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be true
 

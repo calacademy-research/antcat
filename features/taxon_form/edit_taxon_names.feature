@@ -5,13 +5,14 @@ Feature: Editing a taxon's name, protonym name, or type name
 
   Scenario: Editing a family's name
     Given the Formicidae family exists
+    And there is a subfamily "Formicinae"
 
-    When I go to the edit page for "Formicidae"
+    When I go to the edit page for "Formicinae"
     And I click the name field
-    And I set the name to "Wildencidae"
+    And I set the name to "Wildencinae"
     And I press "OK"
     And I press "Save"
-    Then I should see "Wildencidae" in the header
+    Then I should see "Wildencinae" in the header
 
   Scenario: Setting a genus's name to an existing one
     Given there is a genus "Calyptites"

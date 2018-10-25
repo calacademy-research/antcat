@@ -249,4 +249,17 @@ describe Taxa::CallbacksAndValidations do
       end
     end
   end
+
+  describe "#ensure_correct_name_type" do
+    let(:family) { create :family }
+
+    context 'when `Taxon` and `Name` classes do not match' do
+      let(:genus_name) { create :genus_name }
+
+      specify do
+        expect { family.name = genus_name }.to change { family.valid? }.from(true).to(false)
+        expect(family.errors.messages[:base].first).to include 'must match'
+      end
+    end
+  end
 end

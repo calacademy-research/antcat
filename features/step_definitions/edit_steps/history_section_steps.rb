@@ -44,7 +44,7 @@ When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)
   taxon = Taxon.find_by_name name
   taxt =  if tagged_name
             tag_taxon = Taxon.find_by_name tagged_name
-            encode_taxon tag_taxon
+            "{tax #{tag_taxon.id}}"
           else
             'Tag'
           end
@@ -64,8 +64,4 @@ When("I update the history item to say {string}") do |text|
     And I save the taxon history item
     And I wait
   )
-end
-
-def encode_taxon taxon
-  "{tax #{taxon.id}}"
 end

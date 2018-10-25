@@ -225,12 +225,5 @@ describe Reference do
       reference = create :reference, author_name: 'Bolton', citation_year: '1885g'
       expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'
     end
-
-    it "handles multiple authors" do
-      reference = create :article_reference, citation_year: '2001',
-        author_names: [create(:author_name, name: 'Bolton, B.'),
-                        create(:author_name, name: 'Fisher, R.')]
-      expect(reference.keey_without_letters_in_year).to eq 'Bolton & Fisher, 2001'
-    end
   end
 end

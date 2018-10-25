@@ -3,16 +3,14 @@ Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  # TODO this fails a lot Travis due to
-  # `ActiveRecord::ConnectionTimeoutError: could not obtain a connection from the pool within 5.000 seconds`.
-  @javascript @search @no_travis
+  @javascript
   Scenario: Added taxon (with edit summary)
     Given activity tracking is disabled
       And there is a subfamily "Formicinae"
-      And there is a genus "Eciton"
       And this reference exists
         | author | citation_year |
         | Fisher | 2004          |
+    And the default reference is "Fisher, 2004"
     And activity tracking is enabled
 
     When I go to the catalog page for "Formicinae"
@@ -21,14 +19,9 @@ Feature: Feed (taxa)
           And I set the name to "Atta"
           And I press "OK"
         And I click the protonym name field
-          And I set the protonym name to "Eciton"
           And I press "OK"
-        And I set the authorship to the first search results of "Fisher (2004)"
-        And I click the type name field
-          And I set the type name to "Atta major"
-          And I press "OK"
-          And I press "Add this name"
         And I fill in "edit_summary" with "fix typo"
+        And WAIT_FOR_JQUERY
         And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the genus Atta to the subfamily Formicinae" and no other feed items

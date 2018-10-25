@@ -31,9 +31,9 @@ describe Taxa::QuickSearch do
     end
 
     it "sorts results by name" do
-      lepti = create :subfamily, name: create(:name, name: "Lepti")
-      lepta = create :subfamily, name: create(:name, name: "Lepta")
-      lepte = create :subfamily, name: create(:name, name: "Lepte")
+      lepti = create :subfamily, name: create(:subfamily_name, name: "Lepti")
+      lepta = create :subfamily, name: create(:subfamily_name, name: "Lepta")
+      lepte = create :subfamily, name: create(:subfamily_name, name: "Lepte")
 
       expect(described_class['Lept', search_type: 'beginning_with']).to eq [lepta, lepte, lepti]
     end

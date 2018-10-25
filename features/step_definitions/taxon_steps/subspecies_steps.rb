@@ -10,11 +10,8 @@ Given("there is a subspecies {string} without a species") do |subspecies_name|
   create_subspecies subspecies_name, species: nil
 end
 
-Given("a subspecies exists for that species with a name of {string} and an epithet of {string}") do |name, epithet|
-  subspecies_name = create :subspecies_name,
-    name: name,
-    epithet: epithet,
-    epithets: epithet
+Given("a subspecies exists for that species with a name of {string}") do |name|
+  subspecies_name = create :subspecies_name, name: name
   create :subspecies,
     name: subspecies_name,
     species: @species,

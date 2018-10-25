@@ -14,8 +14,6 @@ gem 'request_store'
 gem 'sass-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
-gem 'xml-simple'
-gem 'yui-compressor'
 
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'

@@ -6,9 +6,6 @@ class Subgenus < GenusGroupTaxon
 
   validates :genus, presence: true
 
-  # TODO move to `Taxa::CallbacksAndValidations` once we're ready for it.
-  validate :ensure_correct_name_type
-
   def parent
     genus
   end
@@ -20,12 +17,4 @@ class Subgenus < GenusGroupTaxon
 
   def statistics valid_only: false
   end
-
-  private
-
-    def ensure_correct_name_type
-      return if name.is_a? name_class
-      error_message = "`Taxon` (#{self.class}) and `Name` (#{name.class}) types must match"
-      errors.add :base, error_message unless errors.added? :base, error_message
-    end
 end

@@ -44,15 +44,3 @@ insertAuthor = (string, position, author) ->
     string: string
     position: position
   }
-
-window.setupReferenceEditJournalAutocomplete = (selector) ->
-  selector.autocomplete
-    autoFocus: true
-    source: '/journals/autocomplete'
-    minLength: 3
-
-window.setupReferenceEditPublisherAutocomplete = (selector) ->
-  selector.autocomplete
-    autoFocus: true
-    source: '/publishers/autocomplete'
-    minLength: 3

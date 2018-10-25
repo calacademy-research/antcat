@@ -1,39 +1,19 @@
 @import "colors"
 
-@mixin controls_area
-  color: #000 !important
-  background-color: $color_picker_background
-  border: solid 1px black
-
 .antcat_panel .display
   cursor: pointer
 
-.antcat_name_picker
-  // restore background after Foundation
-  table tr:nth-of-type(even)
-    background-color: $color_picker_background !important
-
-  ul.error_messages
-    font-size: 14px
-
+.antcat_name_field
+  width: 700px
   input[type=text]
     width: 600px
     font-size: 14px
-
   .help
     font-style: italic
     font-size: 12px
-    color: $color_picker_help
-
-  td.throbber
-    width: 20px
-
-.antcat_name_picker.antcat_name_field
-  .display
-    cursor: pointer
-    float: left
   .edit
-    @include controls_area
+    padding: 1rem
+    border: solid 1px black
     display: none
   #combination_message
     padding: 4px 0 0 150px

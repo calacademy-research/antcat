@@ -12,7 +12,7 @@ module Taxa::CallbacksAndValidations
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
     validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
-    validate :current_valid_taxon_validation
+    validate :current_valid_taxon_validation, :ensure_correct_name_type
 
     before_create :build_default_taxon_state
     before_save :set_name_caches
@@ -84,5 +84,12 @@ module Taxa::CallbacksAndValidations
 
     def requires_current_valid_taxon?
       synonym? || original_combination? || obsolete_combination?
+    end
+
+    def ensure_correct_name_type
+      return if name.is_a? name_class
+      return unless name_id_changed? # Make sure taxa already in this state can be saved.
+      error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
+      errors.add :base, error_message unless errors.added? :base, error_message
     end
 end

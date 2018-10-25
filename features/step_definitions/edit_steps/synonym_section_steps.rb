@@ -23,9 +23,9 @@ When("I click {string} beside the first senior synonym") do |button|
 end
 
 When("I fill in the junior synonym name with {string}") do |name|
-  already_opened_select2 name, from: 'synonym_taxon_id'
+  already_opened_select2 name
 end
 
 When("I fill in the senior synonym name with {string}") do |name|
-  already_opened_select2 name, from: 'synonym_taxon_id'
+  already_opened_select2 name
 end
