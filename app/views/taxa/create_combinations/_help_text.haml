@@ -1,0 +1,15 @@
+%p Once the new parent has been selected you will be given one or more of the following options:
+
+%p
+  %b "Yes, create new combination"
+  will navigate you to the new taxon form. Saving the form will create a new taxon record for the new combination and will change the status of the previous usage to "obsolete combination." This button is shown when there are no potential name conflicts.
+
+%p
+  %b "Create homonym"
+  does the same as "Yes, create new combination". It is shown when there are potential name conflicts. It does not matter which "Create homonym" button is pressed. Use this option to if the potential name conflict is a false positive.
+
+%p
+  %b "Merge back"
+  will navigate you to the new taxon form. Saving the form will modify the "merge back taxon" and will change the status of the previous usage to "obsolete combination." It is shown when one of the potential name conflicts have the same
+  %code protonym_id
+  as the taxon in the "Original taxon" field.

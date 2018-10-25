@@ -4,40 +4,46 @@
 =form_tag taxa_move_items_path do
   =hidden_field_tag :new_parent_id, @new_parent.id
   .row
-    .medium-6.columns
-      %fieldset.fieldset
-        %legend Original taxon
-        =@taxon.decorate.id_and_name_and_author_citation
+    .medium-8.columns
+      .row
+        .medium-6.columns
+          %fieldset.fieldset
+            %legend Original taxon
+            =@taxon.decorate.id_and_name_and_author_citation
 
-    .medium-6.columns
-      %fieldset.fieldset
-        %legend New parent
-        =@new_parent.decorate.id_and_name_and_author_citation
+        .medium-6.columns
+          %fieldset.fieldset
+            %legend New parent
+            =@new_parent.decorate.id_and_name_and_author_citation
 
-  .row
-    .medium-12.columns
-      -if @options.empty?
-        Would you like to create a new combination under this parent?
-        =link_to 'Yes, create new combination', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id), class: "btn-normal btn-tiny"
-      -else
-        .callout.small-12.medium-6.alert This new combination looks a lot like existing combinations
-        %table
-          %caption Choose a representation
-          %thead
-            %tr
-              %th Taxon
-              %th Duplicate type
-              %th Resolution
-          %tbody
-            -@options.each do |option|
-              %tr
-                %td=option.decorate.id_and_name_and_author_citation
-                %td
-                  -if option.protonym.id == @taxon.protonym.id
-                    return to a previous usage
-                  -else
-                    create secondary junior homonym
-                %td
-                  =link_to 'Create homonym', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id, collision_resolution: 'homonym'), class: "btn-normal btn-tiny"
-                  -if option.protonym.id == @taxon.protonym.id
-                    =link_to 'Merge back', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id, collision_resolution: option.id), class: "btn-normal btn-tiny"
+      .row
+        .medium-12.columns
+          -if @options.empty?
+            Would you like to create a new combination under this parent?
+            =link_to 'Yes, create new combination', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id), class: "btn-normal btn-tiny"
+          -else
+            %table
+              %caption This new combination looks a lot like existing combinations
+              %thead
+                %tr
+                  %th Taxon
+                  %th Duplicate type
+                  %th Resolution
+              %tbody
+                -@options.each do |option|
+                  %tr
+                    %td=option.decorate.id_and_name_and_author_citation
+                    %td
+                      -if option.protonym.id == @taxon.protonym.id
+                        return to a previous usage
+                      -else
+                        create secondary junior homonym
+                    %td
+                      =link_to 'Create homonym', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id, collision_resolution: 'homonym'), class: "btn-normal btn-tiny"
+                      -if option.protonym.id == @taxon.protonym.id
+                        =link_to 'Merge back', new_taxa_path(parent_id: @new_parent.id, rank_to_create: @taxon.rank, previous_combination_id: @taxon.id, collision_resolution: option.id), class: "btn-normal btn-tiny"
+
+    .medium-4.columns
+      .callout
+        %h6 Help
+        =render "help_text"
