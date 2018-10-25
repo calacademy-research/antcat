@@ -240,6 +240,10 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :my do
+    resources :recently_used_references, only: [:index, :create]
+  end
+
   namespace :beta_and_such do
     # Empty for now.
   end

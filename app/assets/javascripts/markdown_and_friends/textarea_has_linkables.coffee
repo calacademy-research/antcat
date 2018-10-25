@@ -6,21 +6,30 @@ $ ->
 reuseCallbacks = (url) ->
   matcher: AntCat.allowSpacesWhileAutocompleting
 
+  # Update recently used references if a reference is picked.
+  beforeInsert: (value, _li) ->
+    return value unless value.indexOf("{ref ") > -1
+    $.ajax
+      url: "/my/recently_used_references"
+      type: 'POST'
+      dataType: 'json'
+      data: id: value.match(/\d+/)[0]
+    value
+
   remoteFilter: (query, callback) ->
     MDPreview.showSpinner this
     $.getJSON url, q: query, (data) =>
       MDPreview.hideSpinner this
       callback data
 
-  # Disable `sorter`.
-  # The default implementation is evil (imo) because is removes good matches
-  # for no good reason (imo). So, if the search query isn't a substring of
-  # the field defined by `searchKey` (`name` by default), the matches that we
-  # already know are good are *removed* -- not sorted last. This makes little sense
-  # for our remote data, and I do not know how to disable it.
+  # Disable `sorter`. The default implementation removes good matches if the search
+  # query isn't a substring of the field defined by `searchKey` (`name` by default).
   sorter: (query, items, searchKey) -> items
 
 AntCat.setupLinkables = =>
+  referenceDisplayTpl =
+    '<li><small>#${id}</small> ${author} (${year}) ${bolton_key} <small>${title}</small> ${full_pagination}</li>'
+
   $('[data-has-linkables]')
     .atwho
       at: '{t'
@@ -37,7 +46,7 @@ AntCat.setupLinkables = =>
       delay: 300
       maxLen: 50
       insertTpl: '{ref ${id}}:'
-      displayTpl: '<li><small>#${id}</small> ${author} (${year}) ${bolton_key} <small>${title}</small> ${full_pagination}</li>'
+      displayTpl: referenceDisplayTpl
       callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
 
     .atwho
@@ -63,3 +72,12 @@ AntCat.setupLinkables = =>
       insertTpl: '%feedback${id}'
       displayTpl: '<li><small>#${id}</small> ${date} <small>${status}</small></li>'
       callbacks: reuseCallbacks "/feedback/autocomplete.json"
+
+    .atwho
+      at: '!!'
+      limit: 15
+      delay: 300
+      maxLen: 50
+      insertTpl: '{ref ${id}}:'
+      displayTpl: referenceDisplayTpl
+      callbacks: reuseCallbacks "/my/recently_used_references"
