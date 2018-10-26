@@ -4,8 +4,7 @@ class AntCat.Panel
 
   initialize: (@element) =>
     @_form = null
-    if @options.click_on_display
-      @element.find('.display').click @edit
+    @element.find('.display').click @edit
 
   string_value: =>
     @element.find('#name_string').val()
