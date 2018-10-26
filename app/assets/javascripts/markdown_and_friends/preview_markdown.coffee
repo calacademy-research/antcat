@@ -179,7 +179,7 @@ class ExtrasArea
         @textarea.val originalValue
 
   setupDefaultReferenceButton: ->
-    reference = AntCat.defaultReference()
+    reference = defaultReference()
     button = @textareaTab.find("##{DEFAULT_REFERENCE_BUTTON_ID}")
 
     unless reference?.id
@@ -204,7 +204,7 @@ class ExtrasArea
       id = $(event.target).data('id')
       @textarea.insertAtCaret "{tax #{id}} "
 
-AntCat.defaultReference = ->
+defaultReference = ->
   reference = $('#default-reference')
   id = reference.data('id')
   keey = reference.data('keey')
