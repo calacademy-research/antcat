@@ -3,7 +3,7 @@
     %tr
       -if name_form.object.new_record?
         =hidden_field_tag 'taxon[name_attributes][id]'
-      %td.caption
+      %td
         =name_form.label :name do
           Name
           =tooltip_icon "name", scope: :taxa
@@ -15,28 +15,28 @@
             default_name_string: default_name_string && "#{default_name_string} "
     -if taxon.name.kind_of? GenusGroupName
       %tr
-        %td.caption=name_form.label :gender
+        %td=name_form.label :gender
         %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
 
   %tr
-    %td.caption=form.label :status
+    %td=form.label :status
     %td=form.select :status, Status::STATUSES
 
   %tr
-    %td.caption.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+    %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
     %td=form.taxon_select :homonym_replaced_by
 
   -unless taxon.new_record?
     -if taxon.is_a?(Subspecies) && taxon.species.blank?
       %tr
-        %td.caption Species
+        %td Species
         %td
           %span.bold-warning warning!
           this subspecies has no species, please set one
           =form.taxon_select :species, rank: :species
 
   %tr
-    %td.caption=form.label :parent, 'Parent'
+    %td=form.label :parent, 'Parent'
     %td
       -if taxon.parent
         =taxon.parent.decorate.id_and_name_and_author_citation
@@ -48,11 +48,11 @@
       -else
         (none)
   %tr
-    %td.caption=form.label :current_valid_taxon, 'Current valid name'
+    %td=form.label :current_valid_taxon, 'Current valid name'
     %td=form.taxon_select :current_valid_taxon
 
   %tr
-    %td.caption.no-wrap
+    %td.no-wrap
       =form.label :incertae_sedis_in
     %td
       =form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
@@ -80,5 +80,5 @@
         =tooltip_icon "hong", scope: :taxa
 
   %tr
-    %td.caption=form.label :headline_notes_taxt, 'Notes'
+    %td=form.label :headline_notes_taxt, 'Notes'
     %td=render 'shared/taxt_editor/template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt
