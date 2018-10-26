@@ -58,9 +58,11 @@ Layout/ClassStructure:
 Layout/DotPosition:
   EnforcedStyle: trailing
 
-Layout/EmptyLinesAroundArguments:
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
+Layout/EmptyLinesAroundArguments:
+  Enabled: false
 Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: rails
