@@ -85,7 +85,7 @@ end
 
 # "I should see/contain/selected ..."
 Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
-  expect(page).to have_content text
+  expect(page).to have_content text, normalize_ws: true
 end
 
 Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
@@ -140,7 +140,7 @@ Then("I should see an alert {string}") do |message|
 end
 
 Then("the page title should have {string} in it") do |title|
-  expect(page.title).to have_content title
+  expect(page.title).to have_content title, normalize_ws: true
 end
 
 When("I reload the page") do

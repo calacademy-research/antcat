@@ -1,3 +1,12 @@
+GIT
+  remote: git://github.com/thoughtbot/capybara-webkit.git
+  revision: 77fdac424cd6fdb5aa266b229a888cc58da8e95e
+  branch: master
+  specs:
+    capybara-webkit (1.15.1)
+      capybara (>= 2.3, < 4.0)
+      json
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -80,9 +89,6 @@ GEM
     capybara-screenshot (1.0.22)
       capybara (>= 1.0, < 4)
       launchy
-    capybara-webkit (1.15.1)
-      capybara (>= 2.3, < 4.0)
-      json
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
     chromedriver-helper (2.1.0)
@@ -430,7 +436,7 @@ DEPENDENCIES
   cancancan
   capybara
   capybara-screenshot
-  capybara-webkit
+  capybara-webkit!
   chromedriver-helper
   citrus
   coffee-rails
