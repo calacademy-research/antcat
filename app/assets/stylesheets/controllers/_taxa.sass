@@ -1,33 +1,11 @@
 @import "colors"
 
-// Restore input fields' `display` since Typeahead makes the fields smaller.
-// They actually look better when they're smaller, but let's keep the form
-// more consistent until we have re-styled it (for example by putting fields
-// on the same row, removing pixel units, making it prettier).
-%fix-typeahead-display
-  .twitter-typeahead
-    display: block !important
-
-// For stuff that may or may not be used in
-// both the form and the not really form.
-#taxa-controller
-  .taxon_form, .not-really-taxon-form
-    td.caption
-      width: 120px
-      vertical-align: top
-      padding-top: 3px
-
-    .display_button
-      white-space: normal
-
 // For the taxon form that is not the "not really" form.
 #taxa-controller
   .taxon_form
     .protonym-section
       #protonym_name_field
         display: inline-block
-      .locality
-        @extend %fix-typeahead-display
 
 .fake-input
   border: 1px solid #cacaca
