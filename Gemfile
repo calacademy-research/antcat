@@ -66,10 +66,10 @@ group :development, :test do
   gem 'headless'
   gem 'launchy'
   gem 'pry'
+  gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
   gem 'sunspot_test'
-  gem 'thin'
 end
 
 group :test do
