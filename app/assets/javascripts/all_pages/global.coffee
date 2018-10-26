@@ -1,3 +1,5 @@
+window.AntCat = {}
+
 $ ->
   $(document).foundation()
   AntCat.makeReferenceKeeysExpandable document
