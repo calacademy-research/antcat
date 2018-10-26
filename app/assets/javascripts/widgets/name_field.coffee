@@ -100,7 +100,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   default_name: =>
     unless @textbox.val() or not @default_name_string
       @textbox.val @default_name_string
-      @textbox.setCaretPos @default_name_string.length + 1
 
   add_to_url: (parameters) =>
     @element.data 'action', @element.data('action') + parameters
