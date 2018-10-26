@@ -6,7 +6,7 @@ FactoryBot.define do
     epithet_html { name_html }
 
     factory :family_name, class: FamilyName do
-      name 'Formicidae'
+      name { 'Formicidae' }
     end
 
     factory :subfamily_name, class: SubfamilyName do
