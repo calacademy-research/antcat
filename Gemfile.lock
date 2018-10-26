@@ -148,7 +148,6 @@ GEM
     erubis (2.7.0)
     eventmachine (1.2.5)
     execjs (2.7.0)
-    ey_config (0.0.7)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
     factory_bot_rails (4.8.2)
@@ -445,7 +444,6 @@ DEPENDENCIES
   devise
   diffy
   draper
-  ey_config
   factory_bot_rails
   font-awesome-rails
   foundation-rails (= 6.1.2.0)
