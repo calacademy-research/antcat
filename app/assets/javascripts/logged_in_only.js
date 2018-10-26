@@ -1,5 +1,4 @@
 // vendor/assets/javascripts
-//= require jquery.a-tools-1.5.2
 //= require jquery.form
 
 // app/assets/javascripts

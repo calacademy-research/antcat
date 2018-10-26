@@ -5,7 +5,8 @@ window.setupAdvancedAuthorAutocomplete = (selector) ->
     autoFocus: true
     minLength: 3
     source: (request, response) ->
-      searchTerm = extractAuthorSearchTerm(@element.val(), $(@element).getSelection().start)
+      selectionStart = AntCat.getInputSelection(@element.get(0), true)
+      searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
       if searchTerm.length >= 3
         $.getJSON '/authors/autocomplete', { term: searchTerm }, response
       else
@@ -14,9 +15,9 @@ window.setupAdvancedAuthorAutocomplete = (selector) ->
     focus: -> false
     select: (event, ui) ->
       $this = $(this)
-      value_and_position = insertAuthor(@value, $this.getSelection().start, ui.item.value)
+      selectionStart = AntCat.getInputSelection($this.get(0), true)
+      value_and_position = insertAuthor(@value, selectionStart, ui.item.value)
       @value = value_and_position.string
-      $this.setCaretPos value_and_position.position + 1
       false
 
 extractAuthorSearchTerm = (string, position) ->

@@ -56,7 +56,7 @@ AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
     null
 
 # Via https://stackoverflow.com/a/3966822
-AntCat.getInputSelection = (el) ->
+AntCat.getInputSelection = (el, onlyStartPosition = false) ->
   start = 0
   end = 0
   normalizedValue = undefined
@@ -90,6 +90,8 @@ AntCat.getInputSelection = (el) ->
         else
           end = -textInputRange.moveEnd('character', -len)
           end += normalizedValue.slice(0, end).split('\n').length - 1
+
+  return start if onlyStartPosition
 
   selectedValue = el.value.slice(start, end)
   selectedValue
