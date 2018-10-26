@@ -43,11 +43,6 @@ enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
-
-$.fn.select = -> @.addClass 'ui-selecting'
-
-AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
-
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
   # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
