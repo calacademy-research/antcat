@@ -78,14 +78,18 @@ class AntCat.Panel
       on_application_error: @on_application_error
       before_submit:        @before_submit
 
+  find_topmost: (element, selector) =>
+    all_elements = element.find(selector)
+    all_elements.filter -> not all_elements.is $(element).parents()
+
   show_form: =>
-    @element.find_topmost('div.display').hide()
-    @element.find_topmost('div.edit').show()
+    @find_topmost(@element, 'div.display').hide()
+    @find_topmost(@element, 'div.edit').show()
     @form().open()
 
   hide_form: =>
-    @element.find_topmost('div.edit').hide()
-    @element.find_topmost('div.display').show()
+    @find_topmost(@element, 'div.edit').hide()
+    @find_topmost(@element, 'div.display').show()
     @form().close()
 
   is_editing: =>

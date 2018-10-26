@@ -43,10 +43,6 @@ enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
-# find just the topmost elements that match - don't drill down into them
-$.fn.find_topmost = (selector) ->
-  all_elements = @find(selector)
-  all_elements.filter -> not all_elements.is $(@).parents()
 
 $.fn.select = -> @.addClass 'ui-selecting'
 
