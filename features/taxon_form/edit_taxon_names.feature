@@ -1,7 +1,7 @@
 @javascript
 Feature: Editing a taxon's name, protonym name, or type name
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Editing a family's name
     Given the Formicidae family exists

@@ -8,7 +8,7 @@ Feature: Reversing synonymy
 
   Background:
     Given there is a species "Solenopsis invicta" which is a junior synonym of "Solenopsis wagneri"
-    And I am logged in
+    And I am logged in as a catalog editor
 
   Scenario: Reversing synonym from the senior side
     When I go to the edit page for "Solenopsis wagneri"

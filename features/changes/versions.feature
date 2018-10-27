@@ -1,7 +1,7 @@
 @papertrail @javascript
 Feature: Versions (filtering)
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Filtering versions by event
     Given a journal exists with a name of "Psyche"

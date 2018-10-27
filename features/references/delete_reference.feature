@@ -1,6 +1,6 @@
 Feature: Delete reference
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And there is a reference
 
   Scenario: Delete a reference

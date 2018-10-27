@@ -1,7 +1,7 @@
 @javascript
 Feature: Using the default reference
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And this reference exists
       | author     | citation_year |
       | Ward, P.S. | 2010          |

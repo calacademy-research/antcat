@@ -1,6 +1,6 @@
 Feature: Converting a species to a subspecies
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   @javascript
   Scenario: Converting a species to a subspecies

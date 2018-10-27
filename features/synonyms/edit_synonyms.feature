@@ -1,7 +1,7 @@
 @javascript
 Feature: Editing the synonyms section
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Seeing the synonyms section
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"

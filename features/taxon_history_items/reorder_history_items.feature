@@ -4,8 +4,8 @@ Feature: Reorder history items
   I want to change the order of taxonomic history items
 
   Background:
-    And I am logged in
-    Given there is a genus Orderia with the history items "AAA", "BBB" and "CCC"
+    Given I am logged in as a catalog editor
+    And there is a genus Orderia with the history items "AAA", "BBB" and "CCC"
 
   Scenario: Reordering a history item but cancelling
     When I go to the catalog page for "Orderia"
