@@ -8,7 +8,7 @@
     Showing
     =pluralize(@open_issues_count, "open issue") + "."
 
--if can? :edit, :catalog
+-if current_user
   .buttons-right=link_to "New", new_issue_path, class: "btn-normal"
 
 %table.issues.unstriped

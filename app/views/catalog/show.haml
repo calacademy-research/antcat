@@ -11,8 +11,10 @@
     %h5.left An Online Catalog of the Ants of the World
     .right by Barry Bolton
     .clearfix
-  -if can? :edit, :catalog
-    =render "editor_buttons", taxon: @taxon
+
+  -if current_user
+    .buttons-right
+      =render "editor_buttons", taxon: @taxon
 
   -if @taxon.original_combination?
     =render "original_combination", taxon: @taxon
