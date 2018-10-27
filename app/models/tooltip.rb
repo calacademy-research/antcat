@@ -7,10 +7,6 @@ class Tooltip < ApplicationRecord
     format: { with: /\A[a-zA-Z0-9._:\-]+\z/,
       message: "can only contain alphanumeric characters and '.-_:'" }
 
-  scope :enabled_selectors, -> do
-    where(selector_enabled: true).where.not(selector: "")
-  end
-
   has_paper_trail
   tracked on: :all, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
 
