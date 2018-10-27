@@ -68,9 +68,6 @@ class TaxonForm
       if taxon.new_record?
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
-
-        taxon.paper_trail.touch_with_version
-
         change.update taxon: taxon
       else
         UndoTracker.setup_change taxon, :update
