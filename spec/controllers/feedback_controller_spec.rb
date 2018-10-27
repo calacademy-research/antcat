@@ -12,8 +12,8 @@ describe FeedbackController do
       specify { expect(delete(:close, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
+    context "when signed in as a helper" do
+      before { sign_in create(:user, :helper) }
 
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end

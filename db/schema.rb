@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181026232720) do
+ActiveRecord::Schema.define(version: 20181110043622) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -461,6 +461,7 @@ ActiveRecord::Schema.define(version: 20181026232720) do
     t.string "name"
     t.datetime "invitation_created_at"
     t.boolean "is_superadmin"
+    t.boolean "is_helper", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token"
     t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"

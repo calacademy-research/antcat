@@ -1,6 +1,6 @@
 Feature: Add reference
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
     And I go to the references page
     And I follow "New"
 

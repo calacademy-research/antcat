@@ -11,8 +11,8 @@ class ApplicationController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  delegate :is_editor?, :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
-  helper_method :user_is_editor?, :user_is_superadmin?
+  delegate :is_editor?, :is_at_least_helper?, :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
+  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
 
   rescue_from NotAuthorized do |exception|
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
@@ -71,9 +71,15 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # TODO: Rename to `ensure_user_is_editor`?
     def ensure_can_edit_catalog
       authenticate_user!
       raise NotAuthorized, "editor" unless user_is_editor?
+    end
+
+    def ensure_user_is_at_least_helper
+      authenticate_user!
+      raise NotAuthorized, "helper" unless user_is_at_least_helper?
     end
 
     def authenticate_superadmin

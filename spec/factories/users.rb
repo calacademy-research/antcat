@@ -13,5 +13,9 @@ FactoryBot.define do
       sequence(:email) { |n| "brian#{n}@example.com" }
       can_edit { true }
     end
+
+    trait :helper do
+      is_helper { true }
+    end
   end
 end

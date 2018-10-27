@@ -1,6 +1,6 @@
 Feature: Edit reference unsuccessfully
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
 
   Scenario: Cancelling edit after an error
     Given this reference exists

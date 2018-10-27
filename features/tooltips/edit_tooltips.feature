@@ -4,7 +4,7 @@ Feature: Editing tooltips
   So that other editors can understand how to edit the catalog
 
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
 
   @javascript
   Scenario: Hovering a tooltip

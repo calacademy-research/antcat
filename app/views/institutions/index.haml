@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
--if user_is_editor?
+-if user_is_at_least_helper?
   .buttons-right=link_to 'New', new_institution_path, class: 'btn-normal'
 
 %table.tablesorter

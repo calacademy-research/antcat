@@ -37,6 +37,11 @@ class User < ApplicationRecord
     can_edit?
   end
 
+  def is_at_least_helper?
+    is_helper? || is_editor?
+  end
+
+  # TODO move to `UserDecorator`.
   def angle_bracketed_email
     %("#{name}" <#{email}>)
   end

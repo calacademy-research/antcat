@@ -12,14 +12,16 @@
     =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
     =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
 
-  -if user_is_editor?
+  -if user_is_at_least_helper?
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
     -unless @reference.is_a? MissingReference
       =link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
     =set_as_default_reference_button @reference
-    =link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
+
+  -if user_is_editor?
+    =link_to "Delete", reference_path(@reference), class: "btn-delete", method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
 
 .clearfix
 

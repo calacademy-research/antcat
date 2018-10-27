@@ -11,12 +11,11 @@
 %p
   %strong Name:
   =@user.name
+  =@user.decorate.user_badge
+
 %p
   %strong Email:
   =link_to @user.email, "mailto:#{@user.email}"
-%p
-  %strong Editor:
-  =@user.is_editor? ? 'Yes' : 'No'
 
 .row.margin-top
   .large-12.columns

@@ -3,8 +3,9 @@
 
 =enable_tooltips
 
-.buttons-right
-  =link_to 'New Tooltip', new_tooltip_path, class: "btn-normal"
+-if user_is_at_least_helper?
+  .buttons-right
+    =link_to 'New Tooltip', new_tooltip_path, class: "btn-normal"
 
 %table#tooltips
   %thead

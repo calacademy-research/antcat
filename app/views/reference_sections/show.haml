@@ -1,9 +1,10 @@
 -@title = "Reference Section ##{@comparer.most_recent.id}"
 -breadcrumb :reference_section, @comparer.most_recent
 
--content_for :application do
-  .buttons-right
-    =link_to "Edit", edit_reference_section_path(@comparer.most_recent), class: "btn-normal"
-  .clear
+-if user_is_at_least_helper?
+  -content_for :application do
+    .buttons-right
+      =link_to "Edit", edit_reference_section_path(@comparer.most_recent), class: "btn-normal"
+    .clear
 
 =render file: "compare_revisions/show", locals: { comparer: @comparer }
