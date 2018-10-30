@@ -15,6 +15,28 @@ class ReferenceDecorator < ApplicationDecorator
     format_italics h reference.taxonomic_notes
   end
 
+  # TODO store denormalized value in the database?
+  def format_date
+    reference_date = reference.date
+    return unless reference_date
+    return reference_date if reference_date.size < 4
+
+    match = reference_date.match /(.*?)(\d{4,8})(.*)/
+    prefix = match[1]
+    digits = match[2]
+    suffix = match[3]
+
+    year  = digits[0...4]
+    month = digits[4...6]
+    day   = digits[6...8]
+
+    date = year
+    date << '-' + month if month.present?
+    date << '-' + day if day.present?
+
+    prefix + date + suffix
+  end
+
   # TODO rename as it also links DOIs, not just reference documents.
   def format_reference_document_link
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
@@ -62,7 +84,6 @@ class ReferenceDecorator < ApplicationDecorator
       string << make_html_safe(reference.citation_year) << '. '
       string << format_title << ' '
       string << format_italics(helpers.add_period_if_necessary(format_citation))
-      string << " [#{format_date(reference.date)}]" if reference.date?
       string
     end
 
@@ -116,26 +137,6 @@ class ReferenceDecorator < ApplicationDecorator
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
       string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
       string.html_safe
-    end
-
-    # TODO store denormalized value in the database?
-    def format_date input
-      return input if input.size < 4
-
-      match = input.match /(.*?)(\d{4,8})(.*)/
-      prefix = match[1]
-      digits = match[2]
-      suffix = match[3]
-
-      year  = digits[0...4]
-      month = digits[4...6]
-      day   = digits[6...8]
-
-      date = year
-      date << '-' + month if month.present?
-      date << '-' + day if day.present?
-
-      prefix + date + suffix
     end
 
     def doi_link
