@@ -22,8 +22,7 @@ class SpeciesGroupTaxon < Taxon
   def inherit_attributes_for_new_combination old_comb, new_comb_parent
     raise "rank mismatch" unless can_inherit_for_new_combination_from? old_comb
 
-    # TODO method does two different things; extract to new method.
-    self.name = SpeciesGroupName.name_for_new_comb old_comb, new_comb_parent
+    self.name = Taxa::NameForNewCombination[old_comb, new_comb_parent]
 
     copy_attributes_from old_comb, :protonym, :biogeographic_region
   end
