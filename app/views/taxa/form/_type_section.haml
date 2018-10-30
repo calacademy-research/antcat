@@ -1,7 +1,7 @@
 .callout
   %h5.callout-header Type
   %table.unstriped.no-border
-    -if taxon.kind_of? SpeciesGroupTaxon
+    -if taxon.is_a? SpeciesGroupTaxon
       %tr
         %td=form.label :primary_type_information
         %td=render 'shared/taxt_editor/template', name: 'taxon[primary_type_information]', content: taxon.primary_type_information, id: :taxon_primary_type_information

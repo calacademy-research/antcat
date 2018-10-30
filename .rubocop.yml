@@ -63,6 +63,7 @@ Layout/EmptyLineAfterGuardClause:
 
 Layout/EmptyLinesAroundArguments:
   Enabled: false
+
 Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: rails
