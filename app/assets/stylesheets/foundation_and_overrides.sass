@@ -4,6 +4,9 @@
 @import foundation
 @import colors
 
+// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
+// @import motion-ui/motion-ui
+
 +foundation-global-styles
 +foundation-grid
 +foundation-typography
@@ -21,6 +24,7 @@
 //+foundation-drilldown-menu
 +foundation-dropdown
 +foundation-dropdown-menu
+//+foundation-responsive-embed
 //+foundation-flex-video
 +foundation-label
 //+foundation-media-object
@@ -44,6 +48,10 @@
 // If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
 // +motion-ui-transitions
 // +motion-ui-animations
+
+// Make sure dropdown buttons do not have faded Webkit backgrounds.
+.dropdown
+  -webkit-appearance: none !important
 
 .pagination a, .pagination button
   display: inline
@@ -87,6 +95,9 @@
   line-height: rem-calc(12)
   margin-bottom: 0
   border: 1px $primary-color solid
+  color: #fff
+  &:active, &:hover, &:focus
+    color: #fff
 
 // Button colors
 //  ---------------------------------------------------------------------------
@@ -104,6 +115,9 @@
 .btn-saves
   @include button-style($color_pretty, auto, auto)
   border: 1px $color_pretty solid
+  color: #fff
+  &:active, &:hover, &:focus
+    color: #fff
 
 .btn-saves-warning, .btn-delete
   @include button-style($alert-color, auto, auto)
