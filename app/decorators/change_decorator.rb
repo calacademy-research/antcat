@@ -41,7 +41,7 @@ class ChangeDecorator < Draper::Decorator
 
     if taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
-        method: :put, class: "btn-saves",
+        method: :put, class: "btn-saves btn-tiny",
         data: { confirm: "Are you sure you want to approve this change?" }
     end
   end

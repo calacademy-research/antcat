@@ -1,7 +1,7 @@
 module ChangesHelper
   def confirm_before_undo_button change
     return unless can? :edit, :catalog
-    link_to 'Undo...', change_undos_path(change), class: "btn-saves-warning"
+    link_to 'Undo...', change_undos_path(change), class: "btn-saves-warning btn-tiny"
   end
 
   def approve_all_changes_button
