@@ -28,7 +28,7 @@ gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
 gem 'font-awesome-rails'
-gem 'foundation-rails', '6.1.2.0'
+gem 'foundation-rails', '6.2.3.0'
 gem 'fuzzy-string-match', require: false
 gem 'gretel'
 gem 'high_voltage'
