@@ -101,11 +101,6 @@ When("I fill in {string} with a URL to a document that exists") do |field|
   step %(I fill in "#{field}" with "google\.com/foo")
 end
 
-When("I fill in {string} with a URL to a document that doesn't exist in the first reference") do |field|
-  stub_request(:any, "google.com/foo").to_return status: 404
-  step %(I fill in "#{field}" with "google\.com/foo")
-end
-
 Given "there is a reference with ID 50000 for Dolerichoderinae" do
   reference = create :unknown_reference, title: 'Dolerichoderinae'
   reference.update_column :id, 50000

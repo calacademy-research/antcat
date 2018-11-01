@@ -14,7 +14,7 @@ describe ReferenceDocument do
   end
 
   it "validates the URL" do
-    document = described_class.new url: '*'
+    document = described_class.new url: ':::'
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
   end
@@ -23,26 +23,6 @@ describe ReferenceDocument do
     stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
     document = described_class.new url: 'http://antwiki.org/a url'
     expect(document).to be_valid
-  end
-
-  it "doesn't check existence of URL when it's ours" do
-    document = described_class.new url: 'http://antcat.org/a.pdf'
-    expect(document).to be_valid
-  end
-
-  it "validates the URL's path" do
-    document = described_class.new url: 'google.com'
-    expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
-  end
-
-  it "validates that the URL exists" do
-    stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Hello World!"
-    document = described_class.create url: 'http://antwiki.org/1.pdf'
-    expect(document).to be_valid
-    stub_request(:any, "http://antwiki.org/1.pdf").to_return body: "Not Found", status: 404
-    expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array ['Url was not found']
   end
 
   it "creates the URL for an uploaded file so that it goes to our controller" do
