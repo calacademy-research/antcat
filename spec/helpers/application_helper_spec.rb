@@ -42,7 +42,8 @@ describe ApplicationHelper do
       end
 
       it "raises if called on unsafe strings" do
-        expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.to raise_error
+        expect { helper.unitalicize('Attini <i>Atta major</i> r.') }.
+          to raise_error("Can't unitalicize an unsafe string")
       end
     end
   end

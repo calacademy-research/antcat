@@ -1,9 +1,9 @@
 Then(/^I should (not )?see the following autocomplete suggestions:$/) do |should_not, table|
   table.raw.each do |suggestion|
     if should_not
-      expect(page).to have_no_css ".tt-suggestion", text: suggestion.first
+      expect(page).to have_no_css ".tt-suggestion", text: suggestion.first, normalize_ws: true
     else
-      expect(page).to have_css ".tt-suggestion", text: suggestion.first
+      expect(page).to have_css ".tt-suggestion", text: suggestion.first, normalize_ws: true
     end
   end
 end

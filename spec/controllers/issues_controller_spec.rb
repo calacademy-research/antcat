@@ -2,15 +2,13 @@ require 'spec_helper'
 
 describe IssuesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
-      specify { expect(get(:new)).to have_http_status :forbidden }
-      specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create)).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:close, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:reopen, params: { id: 1 })).to have_http_status :forbidden }
+    context "when not signed in" do
+      specify { expect(get(:new)).to redirect_to_signin_form }
+      specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(post(:create)).to redirect_to_signin_form }
+      specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(post(:close, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(post(:reopen, params: { id: 1 })).to redirect_to_signin_form }
     end
   end
 end

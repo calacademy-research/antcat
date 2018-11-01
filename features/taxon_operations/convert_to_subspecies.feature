@@ -1,6 +1,6 @@
 Feature: Converting a species to a subspecies
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   @javascript
   Scenario: Converting a species to a subspecies
@@ -53,9 +53,3 @@ Feature: Converting a species to a subspecies
     And I follow "Convert to subspecies"
     And I press "Convert"
     Then I should see "Please select a species"
-
-  Scenario: Only show button if showing a species
-    Given there is a subspecies "Camponotus dallatorei alii"
-
-    When I go to the catalog page for "Camponotus dallatorei alii"
-    Then I should not see "Convert to subspecies"

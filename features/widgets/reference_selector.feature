@@ -1,6 +1,6 @@
 Feature: Reference selector
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And the reference selector returns 2 results per page
     And these references exists
       | author   | citation_year |

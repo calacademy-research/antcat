@@ -54,7 +54,7 @@ class Taxa::HandlePreviousCombination
       previous_combination.children.valid.each do |t|
         new_child = Subspecies.new
         new_child.parent = taxon
-        new_child.inherit_attributes_for_new_combination t, taxon
+        Taxa::InheritAttributesForNewCombination[new_child, t, taxon]
         TaxonForm.new(new_child, Taxa::AttributesForNewUsage[new_child, t], t).save
       end
     end

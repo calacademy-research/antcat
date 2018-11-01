@@ -5,7 +5,7 @@ Feature: Copy reference
   And so that the bibliography continues to be up-to-date
 
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Copy an article reference
     Given this reference exist

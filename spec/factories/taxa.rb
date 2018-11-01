@@ -4,37 +4,37 @@ FactoryBot.define do
     valid
 
     trait :valid do
-      status Status::VALID
+      status { Status::VALID }
     end
 
     trait :synonym do
-      status Status::SYNONYM
+      status { Status::SYNONYM }
       with_current_valid_taxon
     end
 
     trait :homonym do
-      status Status::HOMONYM
+      status { Status::HOMONYM }
     end
 
     trait :original_combination do
-      status Status::ORIGINAL_COMBINATION
+      status { Status::ORIGINAL_COMBINATION }
       with_current_valid_taxon
     end
 
     trait :unidentifiable do
-      status Status::UNIDENTIFIABLE
+      status { Status::UNIDENTIFIABLE }
     end
 
     trait :unavailable do
-      status Status::UNAVAILABLE
+      status { Status::UNAVAILABLE }
     end
 
     trait :excluded_from_formicidae do
-      status Status::EXCLUDED_FROM_FORMICIDAE
+      status { Status::EXCLUDED_FROM_FORMICIDAE }
     end
 
     trait :fossil do
-      fossil true
+      fossil { true }
     end
 
     trait :with_current_valid_taxon do

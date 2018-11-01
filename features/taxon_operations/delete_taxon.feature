@@ -1,6 +1,6 @@
 Feature: Deleting a taxon
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Deleting a taxon that was just added
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"

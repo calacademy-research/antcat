@@ -11,58 +11,9 @@
 
   key_enabled: true
   text: >
-    Set to false to disable hard-coded/key-based tooltips. Useful if an editor wants to
-    hide a hard-coded tooltip (just uncheck <i>key_enabled</i>) or move a hard-coded tooltip
-    (edit the tooltip to include a selector and then uncheck <i>key_enabled</i> and check
-    <i>selector_enabled</i>), without having to ask a developer to do it.
-
-- key: 'tooltips'
-  scope: 'tooltips'
-  key_enabled: true
-  text: 'jQuery selector, see <a href="/help/editing_tooltips">Help page</a>.'
-
-- key: 'selector_enabled'
-  scope: 'tooltips'
-  key_enabled: true
-  text: 'Set to false to disable selector-based tooltips.'
+    Set to false to disable hard-coded/key-based tooltips.
 
 - key: 'text'
   scope: 'tooltips'
   key_enabled: true
   text: 'The tooltip text. HTML is allowed. Double quotes are not 100% supported.'
-
-# example tooltips
-- key: 'authors'
-  scope: 'references'
-  selector: "label[for='reference_author_names_string']"
-  selector_enabled: true
-  text: >
-    EXAMPLE TOOLTIP: Separate author names by semicolons.
-    Format: 'Lastname, F.I; Antcatson, A.'
-
-- key: 'references.title'
-  scope: 'references'
-  selector: "label[for='reference_title']"
-  selector_enabled: true
-  text: "EXAMPLE TOOLTIP: Surround genus/species names with *asterisks* to add<i>italics</i>'"
-
-- key: 'add'
-  scope: 'references'
-  selector: ".author_names_section_buttons > button"
-  selector_enabled: true
-  text: >
-    EXAMPLE TOOLTIP: Add alternative spelling (perhaps a journal spelled the name with two
-    instead of three initials)<!-- HTML comments can be added like this. Comments are hidden,
-    but rendered in the HTML source; may look something like this: -->
-    <!-- 'TODO improve this tooltip' -->
-
-- key: 'hong'
-  scope: 'taxa'
-
-  selector: "label[for='taxon_hong']"
-  selector_enabled: true
-  text: >
-    EXAMPLE TOOLTIP: Not really sure what this is really..
-    <a href='http://www.antcat.org/catalog/429372'>†<i>Curtipalpulus</i></a> has 'hong'
-    set to true.. <a href='http://www.antcat.org/catalog/429480'>†<i>Eoaenictites</i></a>
-    has it set to 'false' but both look equally 'Hongy'..?

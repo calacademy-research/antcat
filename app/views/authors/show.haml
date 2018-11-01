@@ -71,7 +71,7 @@
     %h5
       Names belonging to author
       -if can? :edit, :catalog
-        =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal'
+        =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
     #names.callout.margin-bottom
       %table
         %thead
@@ -84,6 +84,6 @@
               %td=author_name.name
               %td
                 -if can? :edit, :catalog
-                  =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal"
+                  =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
                 -if user_is_superadmin?
-                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-delete"
+                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-delete btn-tiny"

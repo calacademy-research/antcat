@@ -11,7 +11,7 @@ class DefaultReferencesController < ApplicationController
       head :ok
     else
       redirect_back fallback_location: references_path,
-        notice: "{@reference.keey} was successfully set as the default reference."
+        notice: "#{@reference.keey} was successfully set as the default reference."
     end
   end
 

@@ -19,15 +19,13 @@ When("I log in as {string}") do |name|
   login_programmatically user
 end
 
-# TODO change to "I am loged in as an editor" because we want to
-# open registration to non-editors in the future.
 Given('I am logged in') do
-  user = Feed.without_tracking { create :user, :editor }
+  user = Feed.without_tracking { create :user }
   login_programmatically user
 end
 
-When(/^I log in as a user \(not editor\)$/) do
-  user = Feed.without_tracking { create :user }
+Given('I am logged in as a catalog editor') do
+  user = Feed.without_tracking { create :user, :editor }
   login_programmatically user
 end
 
@@ -63,7 +61,7 @@ When("I log out") do
 end
 
 When("I fill in the email field with my email address") do
-  user = User.find_by(name: 'Brian Fisher') # TODO something. Harcoded.
+  user = User.find_by(name: 'Mark Wilden') # TODO something. Harcoded.
   step %(I fill in "user_email" with "#{user.email}")
 end
 

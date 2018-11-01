@@ -13,13 +13,12 @@
 %ul
   %li=link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
   %li=link_to 'List of users', users_path
-  %li=link_to 'Change log (user friendly)', 'https://github.com/calacademy-research/antcat/wiki/Change-log-(user-friendly)'
   %li=link_to 'Source code', 'https://github.com/calacademy-research/antcat'
   %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
   %li
-    =link_to 'API docs', page_path('swagger-ui')
+    =link_to 'API docs', 'swagger-ui'
     =surround "(", ")" do
-      =link_to 'Swagger API definition', page_path('swagger.yaml')
+      =link_to 'Swagger API definition', 'swagger.yaml'
 
 %p
   This material is based on work supported by the

@@ -2,11 +2,11 @@ FactoryBot.define do
   factory :activity do
     user factory: :user
     trackable factory: :journal
-    action "create"
+    action { "create" }
 
     trait :custom do
-      trackable nil
-      action :custom
+      trackable { nil }
+      action { :custom }
     end
   end
 end

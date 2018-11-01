@@ -21,6 +21,3 @@ See [INSTALL.md](INSTALL.md)
 
 ## Contributing
 Contributions welcome! Please see [the wiki page](https://github.com/calacademy-research/antcat/wiki/Contributing).
-
-## Commit history notes
-See [Removed code](https://github.com/calacademy-research/antcat/wiki/Removed-code-(for-developers,-mainly)).

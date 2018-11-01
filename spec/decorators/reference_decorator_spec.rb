@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe ReferenceDecorator do
-  let(:nil_decorator) { described_class.new nil }
-
   describe "#format_reference_document_link" do
     let!(:reference) { build_stubbed :reference }
 
@@ -46,18 +44,14 @@ describe ReferenceDecorator do
         reference.update title: '*foo*<script>'
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
       end
-
-      it "escapes the date" do
-        reference.update date: '1933>'
-        expect(reference.decorate.plain_text).
-          to eq 'Ward, P. S. 1874. Les fourmis de la Suisse. 32 pp. [1933&gt;]'
-      end
     end
   end
 
   describe "#format_date" do
     def check_format_date date, expected
-      expect(nil_decorator.send(:format_date, date)).to eq expected
+      reference = build_stubbed :reference
+      expect(reference).to receive(:date).and_return(date)
+      expect(reference.decorate.format_date).to eq expected
     end
 
     it "uses ISO 8601 format for calendar dates" do

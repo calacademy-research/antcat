@@ -58,10 +58,8 @@ class ReferenceDocument < ApplicationRecord
       return if url =~ /antcat/
       return if hosted_by_hol? || hosted_by_antbase?
 
-      uri = URI.parse url.gsub(/ /, '%20')
-      response_code = Net::HTTP.new(uri.host, 80).request_head(uri.path).code.to_i
-      errors.add :url, 'was not found' unless (200..399).cover? response_code
-    rescue SocketError, URI::InvalidURIError, ArgumentError
+      URI.parse(url.gsub(' ', '%20'))
+    rescue URI::InvalidURIError
       errors.add :url, 'is not in a valid format'
     end
 

@@ -32,7 +32,6 @@ module Taxa
       def delete_with_state! taxon
         Taxon.transaction do
           taxon_state = taxon.taxon_state
-          taxon_state.paper_trail.touch_with_version if taxon_state.versions.empty?
 
           taxon_state.deleted = true
           taxon_state.review_state = TaxonState::WAITING

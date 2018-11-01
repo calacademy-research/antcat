@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181010191708) do
+ActiveRecord::Schema.define(version: 20181026232720) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -30,10 +30,7 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "verified"
     t.integer "author_id"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.index ["author_id"], name: "author_names_author_id_idx"
     t.index ["created_at", "name"], name: "author_created_at_name"
     t.index ["name"], name: "author_name_idx"
@@ -95,8 +92,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.datetime "updated_at"
     t.text "notes_taxt"
     t.string "forms"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.index ["reference_id"], name: "index_authorships_on_reference_id"
   end
 
@@ -173,7 +168,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "origin"
     t.index ["name"], name: "journals_name_idx"
   end
 
@@ -224,8 +218,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.boolean "sic"
     t.string "locality"
     t.integer "name_id"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
     t.index ["name_id"], name: "protonyms_name_id_idx"
   end
@@ -255,8 +247,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "position"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.index ["author_name_id"], name: "author_participations_author_id_idx"
     t.index ["reference_id", "position"], name: "author_participations_reference_id_position_idx"
     t.index ["reference_id"], name: "author_participations_reference_id_idx"
@@ -308,8 +298,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.string "review_state"
     t.text "plain_text_cache"
     t.text "expandable_reference_cache"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.string "doi"
     t.string "bolton_key"
     t.index ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: { author_names_string_cache: 255 }
@@ -346,8 +334,6 @@ ActiveRecord::Schema.define(version: 20181010191708) do
     t.integer "junior_synonym_id", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
     t.index ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", unique: true
     t.index ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id"
     t.index ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id"

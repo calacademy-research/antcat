@@ -8,9 +8,11 @@
       %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
       -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
         %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
-  -if can? :edit, :catalog
+  -if current_user
     =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
     =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
+
+  -if can? :edit, :catalog
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
@@ -49,6 +51,9 @@
         %tr
           %th Pagination
           %td=or_dash @reference.pagination
+        %tr
+          %th Date
+          %td=@reference.decorate.format_date
         %tr
           %th Type
           %td=@reference.type.underscore.humanize
@@ -99,14 +104,12 @@
         %tr
           %th Public notes
           %td=or_dash @reference.public_notes
-        -# TODO let's also show these to non-editors?
-        -if can? :edit, :catalog
-          %tr
-            %th Editor notes
-            %td=or_dash @reference.editor_notes
-          %tr
-            %th Taxonomic notes
-            %td=or_dash @reference.taxonomic_notes
+        %tr
+          %th Editor notes
+          %td=or_dash @reference.editor_notes
+        %tr
+          %th Taxonomic notes
+          %td=or_dash @reference.taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom

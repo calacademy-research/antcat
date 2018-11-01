@@ -1,5 +1,6 @@
 require "spec_helper"
 
+# rubocop:disable Metrics/LineLength
 describe TaxonDecorator::ChildList do
   let(:subfamily) { create :subfamily }
 
@@ -87,3 +88,4 @@ describe TaxonDecorator::ChildList do
     end
   end
 end
+# rubocop:enable Metrics/LineLength

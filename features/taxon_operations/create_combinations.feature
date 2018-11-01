@@ -1,7 +1,7 @@
 @javascript
 Feature: Create combinations
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Changing a species's genus by using the helper link
     Given there is a species "Atta major" with genus "Atta"

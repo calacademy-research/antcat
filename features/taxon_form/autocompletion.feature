@@ -1,7 +1,7 @@
 @javascript
 Feature: Autocompletion (taxon-related)
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And a species exists with a name of "major" and a genus of "Atta"
 
   Scenario: Autocompleting protonym localities

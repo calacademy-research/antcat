@@ -276,6 +276,7 @@ describe Exporters::Antweb::ExportTaxon do
         ref_journal_name = a_reference.journal.name
         ref_pagination = a_reference.pagination
         ref_volume = a_reference.series_volume_issue
+        ref_title_tag = "#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}."
         ref_doi = a_reference.doi
 
         expect(export_taxon(genus)[17]).to eq(
@@ -321,7 +322,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(<div>) +
                 %(<div>Title</div>) +
                 %(<div>) +
-                  %(<a title="#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}." href="http://antcat.org/references/#{a_reference.id}">) +
+                  %(<a title="#{ref_title_tag}" href="http://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +
                   %(<a href="http://dx.doi.org/#{ref_doi}">#{ref_doi}</a>) +

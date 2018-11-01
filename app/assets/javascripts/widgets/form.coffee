@@ -1,9 +1,6 @@
 class AntCat.Form
   constructor: (@element, @options = {}) ->
-    @element.addClass 'antcat_form'
-    @initialize_buttons() if @needs_to_initialize_buttons_in_constructor()
-
-  needs_to_initialize_buttons_in_constructor: => true
+    @initialize_buttons()
 
   form: => @element
 
