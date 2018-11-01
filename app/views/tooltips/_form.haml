@@ -1,36 +1,7 @@
 =enable_tooltips
 
-.buttons-right
-  =link_to "Hide/show advanced", "#", class: "btn-white", data: { show_hide_toggler_for: "advanced_options" }
-
 =form_for tooltip do |f|
-  =hidden_field_tag 'referral', referral
   =render 'shared/errors_for', resource: tooltip
-
-  -# Advanced options, hidden by default. Put first or the user may
-  -# not see it after toggling on smaller screens.
-  .row{data: { show_hide_toggable_id: "advanced_options" }}
-    .medium-6.columns
-      %fieldset.fieldset
-        %legend Advanced options
-        %p
-          =f.label :selector do
-            Selector
-            =tooltip_icon :selector, scope: :tooltips, disable_edit_link: true
-          .clear
-          =f.text_area :selector, cols: 40, rows: 5
-
-        %p
-          =f.check_box :selector_enabled
-          =f.label :selector_enabled do
-            Selector enabled
-            =tooltip_icon :selector_enabled, scope: :tooltips, disable_edit_link: true
-        %p
-          =f.check_box :key_enabled
-          =f.label :key_enabled do
-            Key enabled
-            =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-
   .row
     .medium-6.columns
       =f.label :key do
@@ -53,5 +24,9 @@
 
   .row
     .medium-6.columns
+      =f.check_box :key_enabled
+      =f.label :key_enabled do
+        Key enabled
+        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
       .actions
         =f.button type: :submit, class: "btn-saves"

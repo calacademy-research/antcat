@@ -200,12 +200,6 @@ Rails.application.routes.draw do
   resources :synonyms, only: :show
 
   resources :tooltips do
-    collection do
-      get :enabled_selectors
-      get :render_missing_tooltips
-      get :toggle_tooltip_helper
-    end
-
     scope module: :tooltips do
       resources :history, only: :index
     end

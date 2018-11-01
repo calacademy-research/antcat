@@ -29,7 +29,6 @@ Feature: Editing tooltips
       And I fill in "tooltip[key]" with "hardcoded"
       And I fill in "tooltip[scope]" with "widget_tests"
       And I fill in "tooltip[text]" with "Text used in the tooltip"
-      And I follow "Hide/show advanced"
       And I check "tooltip[key_enabled]"
     And I press "Create Tooltip"
     And I wait
@@ -45,7 +44,6 @@ Feature: Editing tooltips
 
     When I follow "New Tooltip"
     And I fill in "tooltip[key]" with "text"
-    And I follow "Hide/show advanced"
     And I check "tooltip[key_enabled]"
     And I fill in "tooltip[scope]" with "tooltips2"
     And I fill in "tooltip[text]" with "Text used in the tooltip"
@@ -54,12 +52,3 @@ Feature: Editing tooltips
     And I go to the tooltips editing page
     And I hover the tooltip next to the text "Tooltip text"
     Then I should not see the tooltip text "Text used in the tooltip"
-
-  @javascript
-  Scenario: Toggle i helpers
-    When I go to the tooltips editing page
-    And I follow "Show tooltips helper"
-    Then I should see "Hide tooltips helper"
-
-    When I follow "Hide tooltips helper"
-    Then I should see "Show tooltips helper"
