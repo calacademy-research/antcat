@@ -1,7 +1,7 @@
 # TODO implement pagination for lists inside scripts.
 
 class DatabaseScriptsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: :index
+  before_action :authenticate_user!
   before_action :set_database_script, only: [:show, :source]
 
   def index

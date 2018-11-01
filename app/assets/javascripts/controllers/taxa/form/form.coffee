@@ -20,20 +20,10 @@ class AntCat.TypeNameField extends AntCat.NameField
 class AntCat.TaxonForm extends AntCat.Form
   constructor: (@element, @options = {}) ->
     @initialize_fields_section()
-    @initialize_events()
     super
 
-  ###### initialization
   initialize_fields_section: =>
     name_field = new AntCat.NameField $('#name_field'), value_id: 'taxon_name_attributes_id', parent_form: @, new_or_homonym: true
     protonym_field = new AntCat.ProtonymField $('#protonym_name_field'), name_field, value_id: 'taxon_protonym_attributes_name_attributes_id', parent_form: @
     if $('#type_name_field').size() == 1
       new AntCat.TypeNameField $('#type_name_field'), protonym_field, value_id: 'taxon_type_name_attributes_id', parent_form: @, allow_blank: true
-
-  initialize_events: =>
-    @element.bind 'keydown', (event) ->
-      return false if event.type is 'keydown' and event.which is $.ui.keyCode.ENTER
-
-  ###### client functions
-  on_form_open: =>
-    super

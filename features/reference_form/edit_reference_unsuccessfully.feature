@@ -1,6 +1,6 @@
 Feature: Edit reference unsuccessfully
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Specifying the document URL when it doesn't exist
     Given there is a reference

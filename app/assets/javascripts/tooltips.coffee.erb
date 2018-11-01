@@ -1,8 +1,8 @@
 $ ->
   $.ajax '/tooltips/enabled_selectors', success: (data) -> # uses request origin to restrict returned items
     tooltipsToInsert = data
-    (new AntCat.SelectorTooltips).createTooltips tooltipsToInsert
-    (new AntCat.Tooltipify).tooltipifyAll()
+    (new SelectorTooltips).createTooltips tooltipsToInsert
+    (new Tooltipify).tooltipifyAll()
 
 $ ->
   $.ajax '/tooltips/render_missing_tooltips', success: (data) ->
@@ -25,7 +25,7 @@ $ ->
           else
             $(this).attr('href',$(this).next().attr('href'))
 
-class AntCat.SelectorTooltips
+class SelectorTooltips
   SELECTOR_TOOLTIP_CLASS = 'selector-tooltip'
   SELECTOR_TEST_TOOLTIP_CLASS = 'selector-test-tooltip'
 
@@ -53,7 +53,7 @@ class AntCat.SelectorTooltips
        <img class="help_icon tooltip #{SELECTOR_TOOLTIP_CLASS}" \
        title="#{title}" src='<%= image_path 'help.png' %>' alt="Help" /></a>"""
 
-class AntCat.Tooltipify
+class Tooltipify
   tooltipifyAll: ->
     $('.tooltip').tooltip
       show: false

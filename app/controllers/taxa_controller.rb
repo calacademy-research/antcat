@@ -172,6 +172,6 @@ class TaxaController < ApplicationController
         end
       end
 
-      @taxon.inherit_attributes_for_new_combination @previous_combination, @taxon.parent
+      Taxa::InheritAttributesForNewCombination[@taxon, @previous_combination, @taxon.parent]
     end
 end

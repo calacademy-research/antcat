@@ -1,5 +1,5 @@
 class IssuesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_issue, only: [:show, :edit, :update, :reopen, :close]
 
   def index

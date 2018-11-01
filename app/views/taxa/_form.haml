@@ -25,7 +25,17 @@
     =render 'taxa/form/type_section',     taxon: @taxon, form: form
 
     .buttons_section
-      =render 'taxa/form/buttons_save_section', taxon: @taxon
+      .row
+        .medium-3.columns
+          =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+        .medium-3.columns.end
+          =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves button has-spinner' do
+            =spinner_icon + 'Save'
+          &nbsp;
+          -cancel_link = @taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(@taxon)
+          =link_to 'Cancel', cancel_link, class: 'button btn-cancel'
+          =tooltip_icon :cancel, scope: :taxa
 
 -unless @taxon.new_record?
   .not-really-taxon-form

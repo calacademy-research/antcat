@@ -1,6 +1,6 @@
 Feature: Editing a history item
   Background:
-    And I am logged in
+    Given I am logged in as a catalog editor
 
   @javascript @feed
   Scenario: Editing a history item

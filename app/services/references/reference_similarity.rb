@@ -75,7 +75,7 @@ module References
         return unless rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
         return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
-            normalize_series_volume_issue(series_volume_issue)
+          normalize_series_volume_issue(series_volume_issue)
       end
 
       # NOTE using `#type` to make the service more general.

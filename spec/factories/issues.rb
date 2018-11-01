@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :issue do
     association :adder, factory: :user
     open { true }
-    title "Check synonyms"
-    description "Joffre's brother told me these were synonyms."
+    title { "Check synonyms" }
+    description { "Joffre's brother told me these were synonyms." }
 
     trait :open do
     end

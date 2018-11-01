@@ -23,8 +23,7 @@ class SynonymsController < ApplicationController
     if already_a_synonym? junior, senior
       error_message = 'This taxon is already a synonym'
     else
-      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
-      synonym.paper_trail.touch_with_version
+      Synonym.create! senior_synonym: senior, junior_synonym: junior
     end
 
     if error_message.blank?
@@ -45,8 +44,7 @@ class SynonymsController < ApplicationController
 
     Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
     Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
-    synonym = Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
-    synonym.paper_trail.touch_with_version
+    Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
 
     render json: { content: content(@taxon) }
   end

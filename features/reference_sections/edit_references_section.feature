@@ -1,6 +1,6 @@
 Feature: Editing references sections
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   @javascript @feed
   Scenario: Editing a reference section (with edit summary)

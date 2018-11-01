@@ -1,33 +1,10 @@
 class AntCat.Panel
   constructor: (@element, @options = {}) ->
-    @_post_constructor(@element, @options)
-
-  _post_constructor: (@element, @options) =>
     @initialize @element
-    if @options.open_immediately
-      @edit()
 
   initialize: (@element) =>
-    edit_selector = @options.edit_selector || '> .edit'
-    @edit_section = @element.find edit_selector
-
-    display_selector = @options.display_selector || '> .display'
-    @display_section = @element.find display_selector
-
     @_form = null
-    if @options.click_on_display
-      @element.find('.display').click @edit
-    if @options.click_on_icon
-      $edit_icon = @element.find '.edit_icon'
-      $edit_icon.click @edit
-      @element
-        .mouseenter(@show_edit_icon)
-        .mouseleave(@hide_edit_icon)
-    if @options.highlight
-      @element.find('.display').hover(
-        (event) => $(event.target).select(),
-        (event) => AntCat.deselect()
-      )
+    @element.find('.display').click @edit
 
   string_value: =>
     @element.find('#name_string').val()
@@ -36,9 +13,6 @@ class AntCat.Panel
     @save_panel()
     @show_form()
     false
-
-  show_edit_icon: => @element.find('.edit_icon').show() unless @is_editing()
-  hide_edit_icon: => @element.find('.edit_icon').hide()
 
   on_form_open: =>
     @options.parent_form.disable_buttons() if @options.parent_form
@@ -78,15 +52,16 @@ class AntCat.Panel
       on_application_error: @on_application_error
       before_submit:        @before_submit
 
+  find_topmost: (element, selector) =>
+    all_elements = element.find(selector)
+    all_elements.filter -> not all_elements.is $(element).parents()
+
   show_form: =>
-    @element.find_topmost('div.display').hide()
-    @element.find_topmost('div.edit').show()
+    @find_topmost(@element, 'div.display').hide()
+    @find_topmost(@element, 'div.edit').show()
     @form().open()
 
   hide_form: =>
-    @element.find_topmost('div.edit').hide()
-    @element.find_topmost('div.display').show()
+    @find_topmost(@element, 'div.edit').hide()
+    @find_topmost(@element, 'div.display').show()
     @form().close()
-
-  is_editing: =>
-    @element.find('div.edit').is ':visible'

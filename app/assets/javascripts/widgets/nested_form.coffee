@@ -4,14 +4,7 @@
 #
 # This code simulates nested forms by converting
 # <div class=nested_form> elements to <form>s
-
-$.fn.nested_form = (options = {}) ->
-  this.each -> new AntCat.NestedForm $(this), options
-
 class AntCat.NestedForm extends AntCat.AjaxForm
-
-  @css_class = 'nested_form'
-
   form: =>
     AntCat.NestedForm.create_form_from @element
 

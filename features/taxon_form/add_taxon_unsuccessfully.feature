@@ -1,6 +1,6 @@
 Feature: Adding a taxon unsuccessfully
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And there is a subfamily "Formicinae"
 
   Scenario: Adding a genus without setting authorship reference

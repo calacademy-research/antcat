@@ -7,9 +7,6 @@
 
     =csrf_meta_tag
 
-    :javascript
-      window.AntCat = {}
-
     =javascript_include_tag 'all_pages/google_analytics' if Rails.env.production?
     =javascript_include_tag 'application'
     =javascript_include_tag 'controllers/references/search_form/all_fields_autocompletion'
@@ -24,10 +21,10 @@
     =favicon_link_tag
     =yield :head
 
-    :coffee
-      # HACK this is to make the navigation search boxes not flicker on page loads
-      # due to CSS animations. I'm not sure what this changes.
-      $ ->
+    %script
+      // HACK to make the navigation search boxes not flicker on page loads
+      // due to CSS animations. See https://stackoverflow.com/a/42969608.
+      "empty script tag"
 
     =link_to_current_page_on_localhost if user_is_superadmin?
 

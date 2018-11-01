@@ -4,8 +4,8 @@ FactoryBot.define do
     sequence(:name) { |n| "Academy of Science #{n}" }
 
     trait :casc do
-      abbreviation 'CASC'
-      name 'California Academy of Sciences'
+      abbreviation { 'CASC' }
+      name { 'California Academy of Sciences' }
     end
   end
 end

@@ -5,7 +5,7 @@ Feature: Checking for duplicates during data entry
   So that there are no duplicate references
 
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
     And this reference exists
       | author   | citation   | title | citation_year |
       | Ward, P. | Psyche 6:1 | Ants  | 2010          |

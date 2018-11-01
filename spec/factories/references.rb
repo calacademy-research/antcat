@@ -29,27 +29,27 @@ FactoryBot.define do
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
     publisher
-    pagination '22 pp.'
+    pagination { '22 pp.' }
   end
 
   factory :unknown_reference do
     author_names { [create(:author_name)] }
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
-    citation 'New York'
+    citation { 'New York' }
   end
 
   factory :missing_reference do
-    title '(missing)'
-    citation_year '2009'
-    citation 'Latreille, 2009'
+    title { '(missing)' }
+    citation_year { '2009' }
+    citation { 'Latreille, 2009' }
   end
 
   factory :nested_reference do
     author_names { [create(:author_name)] }
     sequence(:title) { |n| "Nested ants #{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
-    pages_in 'In: '
+    pages_in { 'In: ' }
     nesting_reference { create :book_reference }
   end
 end

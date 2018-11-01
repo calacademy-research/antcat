@@ -58,6 +58,9 @@ Layout/ClassStructure:
 Layout/DotPosition:
   EnforcedStyle: trailing
 
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
 Layout/EmptyLinesAroundArguments:
   Enabled: false
 
@@ -97,9 +100,6 @@ Naming/PredicateName:
   Enabled: false
 
 Naming/VariableNumber:
-  Enabled: false
-
-FactoryBot/AttributeDefinedStatically:
   Enabled: false
 
 FactoryBot/CreateList:
@@ -280,4 +280,4 @@ Metrics/PerceivedComplexity:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 213
+  Max: 180

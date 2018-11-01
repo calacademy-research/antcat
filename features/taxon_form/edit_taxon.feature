@@ -1,6 +1,6 @@
 Feature: Editing a taxon
   Background:
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
   Scenario: Cancelling
     Given there is a genus "Calyptites"

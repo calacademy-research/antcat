@@ -1,6 +1,5 @@
 class AntCat.NameField extends AntCat.Panel
   constructor: ($parent_element, @options = {}) ->
-    @options.click_on_display = true
     @value_id = @options.value_id
     super $parent_element.find('> .antcat_name_field'), @options
     @set_help()
@@ -101,7 +100,6 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
   default_name: =>
     unless @textbox.val() or not @default_name_string
       @textbox.val @default_name_string
-      @textbox.setCaretPos @default_name_string.length + 1
 
   add_to_url: (parameters) =>
     @element.data 'action', @element.data('action') + parameters

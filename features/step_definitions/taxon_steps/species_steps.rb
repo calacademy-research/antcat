@@ -18,6 +18,7 @@ Given("there is an original species {string} with genus {string}") do |species_n
     current_valid_taxon: (Family.first || create(:family)) # TODO revisit. Added after adding validations.
 end
 
+# rubocop:disable Metrics/LineLength
 Given("there is species {string} and another species {string} shared between protonym genus {string} and later genus {string}") do |protonym_species_name, valid_species_name, protonym_genus_name, valid_genus_name|
   proto_genus = create_genus protonym_genus_name
   proto_species = create_species protonym_species_name,
@@ -30,6 +31,7 @@ Given("there is species {string} and another species {string} shared between pro
     genus: later_genus,
     protonym_id: proto_species.id # TODO.
 end
+# rubocop:enable Metrics/LineLength
 
 Given("there is a species {string} with genus {string}") do |species_name, genus_name|
   genus = Genus.find_by(name_cache: genus_name) || create_genus(genus_name)

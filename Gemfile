@@ -27,7 +27,6 @@ gem 'data_migrate'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
-gem 'ey_config'
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.1.2.0'
 gem 'fuzzy-string-match', require: false
@@ -38,7 +37,7 @@ gem 'jquery-atwho-rails'
 gem 'jquery-rails', '> 4.0'
 gem 'jquery-ui-rails', '> 5.0'
 gem 'newrelic_rpm'
-gem 'paper_trail', '< 8.0'
+gem 'paper_trail', '< 10.0'
 gem 'paperclip', '4.3.1'
 gem 'rails-observers'
 gem 'redcarpet'
@@ -56,7 +55,7 @@ gem 'workflow'
 
 group :development do
   gem 'brakeman'
-  gem 'rubocop', '~> 0.58.2', require: false
+  gem 'rubocop', '~> 0.60.0', require: false
   gem 'rubocop-rspec'
 end
 
@@ -67,16 +66,17 @@ group :development, :test do
   gem 'headless'
   gem 'launchy'
   gem 'pry'
+  gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
   gem 'sunspot_test'
-  gem 'thin'
 end
 
 group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'capybara-webkit'
+  # TODO: sourced to GitHub because `DEPRECATED: Capybara::Helpers::normalize_whitespace`.
+  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
   gem 'chromedriver-helper'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'

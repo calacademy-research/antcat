@@ -11,14 +11,14 @@ Feature: Browse Feedback
     Then I should be on the login page
 
   Scenario: Browsing submitted feedback index
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
     When I go to the feedback index
     Then I should see "[no name] <[no email]; IP 127.0.0.1> submitted"
     And I should see "Mad catalog!"
 
   Scenario: Displaying a single feedback item
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
     When I go to the most recent feedback item
     Then I should see "[no name] <[no email]; IP 127.0.0.1> submitted"
@@ -26,7 +26,7 @@ Feature: Browse Feedback
 
   @javascript
   Scenario: Show formatted for email (to use when replying)
-    Given I am logged in
+    Given I am logged in as a catalog editor
 
     When I go to the most recent feedback item
     Then I should not see "Formatted for email"

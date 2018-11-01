@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
 
   if Rails.env.development?
     rescue_from RSolr::Error::ConnectionRefused do
-      render plain: "Solr is not running. Run: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
+      render plain: "Start Solr: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
     end
   end
 

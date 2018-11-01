@@ -1,3 +1,5 @@
+window.AntCat = {}
+
 $ ->
   $(document).foundation()
   AntCat.makeReferenceKeeysExpandable document
@@ -41,15 +43,6 @@ enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
-# find just the topmost elements that match - don't drill down into them
-$.fn.find_topmost = (selector) ->
-  all_elements = @find(selector)
-  all_elements.filter -> not all_elements.is $(@).parents()
-
-$.fn.select = -> @.addClass 'ui-selecting'
-
-AntCat.deselect = -> $('.ui-selecting').removeClass('ui-selecting')
-
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
   # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
@@ -63,7 +56,7 @@ AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
     null
 
 # Via https://stackoverflow.com/a/3966822
-AntCat.getInputSelection = (el) ->
+AntCat.getInputSelection = (el, onlyStartPosition = false) ->
   start = 0
   end = 0
   normalizedValue = undefined
@@ -97,6 +90,8 @@ AntCat.getInputSelection = (el) ->
         else
           end = -textInputRange.moveEnd('character', -len)
           end += normalizedValue.slice(0, end).split('\n').length - 1
+
+  return start if onlyStartPosition
 
   selectedValue = el.value.slice(start, end)
   selectedValue
