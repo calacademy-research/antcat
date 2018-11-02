@@ -1,5 +1,3 @@
-# TODO something. This is also used for the reference form (author search only).
-
 window.setupAdvancedAuthorAutocomplete = (selector) ->
   selector.autocomplete
     autoFocus: true

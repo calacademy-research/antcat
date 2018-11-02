@@ -39,7 +39,7 @@ module Autocomplete
       end
 
       def default_search_options
-        { reference_type: :nomissing, items_per_page: 15 }
+        { reference_type: :nomissing, items_per_page: 10 }
       end
 
       def keyword_params

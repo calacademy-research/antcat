@@ -123,19 +123,7 @@ Given("there is no default reference") do
 end
 
 When("I fill in the references search box with {string}") do |search_term|
-  within "#breadcrumbs" do
-    step %(I fill in "reference_q" with "#{search_term}")
-  end
-end
-
-When("I fill in the references authors search box with {string}") do |search_term|
-  within "#breadcrumbs" do
-    step %(I fill in "author_q" with "#{search_term}")
-  end
-end
-
-When("I select author search from the search type selector") do
-  select "author", from: "search_type"
+  step %(I fill in "reference_q" with "#{search_term}")
 end
 
 When('I press "Go" by the references search box') do
