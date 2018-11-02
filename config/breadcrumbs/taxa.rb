@@ -93,6 +93,11 @@ crumb :create_combination do |taxon|
   parent :edit_taxon, taxon
 end
 
+crumb :create_obsolete_combination do |taxon|
+  link "Create obsolete combination"
+  parent :edit_taxon, taxon
+end
+
 crumb :force_parent_change do |taxon|
   link "Force parent change"
   parent :edit_taxon, taxon
