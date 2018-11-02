@@ -6,8 +6,8 @@
 
 .buttons-right
   -if @feedback.open?
-    =link_to "Hide/show 'What you can do...'", "#", class: "btn-white", data: { show_hide_toggler_for: "guidelines_for_editors" }
-  =link_to "Hide/show formatted for email", "#", class: "btn-white", data: { show_hide_toggler_for: "for_email" }
+    =link_to "Hide/show 'What you can do...'", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "guidelines_for_editors" }
+  =link_to "Hide/show formatted for email", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "for_email" }
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-warning")
   -else

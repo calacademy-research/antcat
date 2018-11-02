@@ -27,7 +27,7 @@ module ReferenceHelper
     css_classes = tiny ? "btn-tiny" : ""
 
     if reference == DefaultReference.get(session)
-      content_tag :span, 'Default reference', class: (css_classes << " btn-white"),
+      content_tag :span, 'Default reference', class: (css_classes << " btn-nodanger"),
         title: "This referece is set as the default reference."
     else
       link_to 'Make default', default_reference_path(id: reference.id),
