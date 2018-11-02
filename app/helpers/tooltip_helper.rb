@@ -9,7 +9,7 @@ module TooltipHelper
     return if tooltip&.key_disabled?
 
     text =  if tooltip
-              tooltip.try(:text) || "No tooltip text set. Click icon to edit."
+              tooltip.text
             else
               "Could not find tooltip with key '#{key_param}' with page scope '#{scope}'. Click icon to create."
             end
