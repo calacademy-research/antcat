@@ -3,7 +3,7 @@ module ReferenceHelper
     return unless user_is_superadmin?
 
     link_to 'Approve all', approve_all_reviewing_references_path,
-      method: :put, class: "btn-saves-warning",
+      method: :put, class: "btn-warning",
       data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end
 
@@ -18,7 +18,7 @@ module ReferenceHelper
         data: { confirm: 'Are you ready to start reviewing this reference?' }
     elsif reference.can_restart_reviewing?
       link_to 'Restart reviewing', restart_reviewing_reference_path(reference),
-        method: :post, class: "btn-saves-warning",
+        method: :post, class: "btn-warning",
         data: { confirm: 'Do you want to start reviewing this reference again?' }
     end
   end

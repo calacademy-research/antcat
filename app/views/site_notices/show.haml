@@ -11,7 +11,7 @@
   .buttons-right
     =link_to("Edit", edit_site_notice_path(@site_notice), class: "btn-normal")
     -if user_is_superadmin?
-      =link_to "Delete", @site_notice, method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-delete"
+      =link_to "Delete", @site_notice, method: :delete, data: { confirm: "Delete? This removes the site notice from the archive." }, class: "btn-warning"
 .clear
 
 .row

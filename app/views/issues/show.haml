@@ -13,7 +13,7 @@
     -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
     -else
-      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-saves-warning"
+      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-warning"
     =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
 .clear
 

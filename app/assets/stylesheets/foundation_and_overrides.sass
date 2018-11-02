@@ -104,12 +104,12 @@
 // | Color | What for                         | Class
 // | ------|----------------------------------|--------------------------------
 // | Blue  | Save, publish, etc (hits the db) | .btn-saves
-// | Red   | Save, and watch out!             | .btn-saves-warning, .btn-delete
+// | Red   | Dangerous!                       | .btn-warning
 // | White | Cancel, help -- harmless stuff   | .btn-cancel, .btn-white
 // | Green | Everything else, "ok whatever"   | .btn-normal
 //  ---------------------------------------------------------------------------
 
-.btn-normal, .btn-saves, .btn-saves-warning, .btn-delete, .btn-cancel, .btn-white
+.btn-normal, .btn-saves, .btn-warning, .btn-cancel, .btn-white
   @include normal-sized-button
 
 .btn-saves
@@ -119,8 +119,11 @@
   &:active, &:hover, &:focus
     color: #fff
 
-.btn-saves-warning, .btn-delete
+.btn-warning
   @include button-style($alert-color, auto, auto)
+  color: #fff
+  &:active, &:hover, &:focus
+    color: #fff
   border: 1px $alert-color solid
 
 .btn-cancel, .btn-white
@@ -130,7 +133,7 @@
 // Make button styles work for links too. Some link button have the class ".button"
 // because I did not manage to align them buton button elements in any other way.
 // ".button" is also required to make ".disabled" work.
-a.btn-normal, a.btn-saves, a.btn-saves-warning, a.btn-delete, a.btn-cancel, a.btn-white
+a.btn-normal, a.btn-saves, a.btn-cancel, a.btn-white
   padding: 0.55rem 0.75rem
   color: #fff !important
 

@@ -9,11 +9,11 @@
     =link_to "Hide/show 'What you can do...'", "#", class: "btn-white", data: { show_hide_toggler_for: "guidelines_for_editors" }
   =link_to "Hide/show formatted for email", "#", class: "btn-white", data: { show_hide_toggler_for: "for_email" }
   -if @feedback.closed?
-    =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-saves-warning")
+    =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-warning")
   -else
     =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-saves")
   -if user_is_superadmin?
-    =link_to "Delete", @feedback, method: :delete, data: { confirm: "Delete? Note that this is for deleting spam and ridiculous suggestions. Archiving closed items instead of deleting them is good for tracking submissions and submitters." }, class: "btn-delete"
+    =link_to "Delete", @feedback, method: :delete, data: { confirm: "Delete? Note that this is for deleting spam and ridiculous suggestions. Archiving closed items instead of deleting them is good for tracking submissions and submitters." }, class: "btn-warning"
 
 -# Empty paragraph to avoid overlapping of ".buttons-right".
 %p

@@ -20,6 +20,6 @@
     -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
       =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
     -if taxon.rank.in?(Taxon::ALLOW_FORCE_CHANGE_PARENT_RANKS)
-      =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-delete btn-tiny"
+      =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-warning btn-tiny"
     =delete_unreferenced_taxon_button taxon
     =confirm_before_superadmin_delete_button taxon
