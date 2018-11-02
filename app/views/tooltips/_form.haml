@@ -4,21 +4,15 @@
   =render 'shared/errors_for', resource: tooltip
   .row
     .medium-6.columns
-      =f.label :key do
-        Key
-        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
+      =f.label :key
       =f.text_field :key
 
-      =f.label :scope do
-        Scope
-        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+      =f.label :scope
       =f.text_field :scope
 
   .row
     .medium-6.columns
-      =f.label :text do
-        Text
-        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
+      =f.label :text
       .clear
       =f.text_area :text, cols: 40, rows: 5
 
@@ -26,7 +20,7 @@
     .medium-6.columns
       =f.check_box :key_enabled
       =f.label :key_enabled do
-        Key enabled
-        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
+        Enabled
+
       .actions
         =f.button type: :submit, class: "btn-saves"

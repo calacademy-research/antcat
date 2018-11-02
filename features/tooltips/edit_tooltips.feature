@@ -35,20 +35,3 @@ Feature: Editing tooltips
     And I go to the tooltips test page
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
-
-  @javascript
-  Scenario: Page based exclusion works
-    When I go to the tooltips editing page
-    And I hover the tooltip next to the text "Tooltip text"
-    Then I should see the tooltip text "Could not find tooltip with key 'text'"
-
-    When I follow "New Tooltip"
-    And I fill in "tooltip[key]" with "text"
-    And I check "tooltip[key_enabled]"
-    And I fill in "tooltip[scope]" with "tooltips2"
-    And I fill in "tooltip[text]" with "Text used in the tooltip"
-    And I press "Create Tooltip"
-    And I wait
-    And I go to the tooltips editing page
-    And I hover the tooltip next to the text "Tooltip text"
-    Then I should not see the tooltip text "Text used in the tooltip"
