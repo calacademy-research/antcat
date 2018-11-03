@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'catalog#index'
 
+  mount SwaggerUiEngine::Engine, at: "/api_docs"
+
   resources :changes, only: [:show, :index] do
     collection do
       get :unreviewed

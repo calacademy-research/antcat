@@ -411,6 +411,9 @@ GEM
     sunspot_test (0.4.1)
       sunspot_rails (>= 2.1.1)
       sunspot_solr
+    swagger_ui_engine (1.1.2)
+      rails (>= 4.2)
+      sass-rails
     temple (0.8.0)
     thor (0.20.0)
     thread_safe (0.3.6)
@@ -509,6 +512,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr (= 2.2.0)
   sunspot_test
+  swagger_ui_engine
   twitter-typeahead-rails
   uglifier
   unread
