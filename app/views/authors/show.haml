@@ -86,4 +86,4 @@
                 -if can? :edit, :catalog
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
                 -if user_is_superadmin?
-                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-delete btn-tiny"
+                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"

@@ -1,11 +1,11 @@
 @import "colors"
 
-// "tt" = Twitter Typeahead.
-
 .tt-menu
-  background-color: #eee
-  z-index: 9999
+  padding: 0.4rem
+  background-color: #f2f2f2
+  z-index: 999 !important
   color: #000
+  max-width: 500px
 
 .tt-suggestion
   font-size: 90%
@@ -23,10 +23,27 @@
   p:first-child
     border-top: none
 
+.tt-dataset-authors
+  a
+    color: #000
+  p
+    padding: 0
+    margin-bottom: 0
+  .tt-suggestion:hover
+    p
+      background-color: $color_green
+
+.tt-dataset-references
+  margin-top: 1.2rem
+  p
+    overflow: hidden
+    text-overflow: ellipsis
+
+.autocompletion-header
+  font-size: 16px
+  font-weight: bold
+
 .empty-message
   padding: 5px 10px
   text-align: center
   font-size: 90%
-
-input.typeahead.tt-hint
-  height: 1.8rem

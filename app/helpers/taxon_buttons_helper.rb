@@ -71,11 +71,11 @@ module TaxonButtonsHelper
     MSG
 
     link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
-      class: "btn-tiny btn-delete", data: { confirm: message }
+      class: "btn-warning btn-tiny", data: { confirm: message }
   end
 
   def confirm_before_superadmin_delete_button taxon
     return unless user_is_superadmin?
-    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-tiny btn-delete"
+    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-warning btn-tiny"
   end
 end

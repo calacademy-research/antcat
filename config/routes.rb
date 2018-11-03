@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'catalog#index'
 
+  mount SwaggerUiEngine::Engine, at: "/api_docs"
+
   resources :changes, only: [:show, :index] do
     collection do
       get :unreviewed
@@ -122,6 +124,7 @@ Rails.application.routes.draw do
     scope module: :taxa do
       resource :create_combination, only: [:new, :show]
       resource :force_parent_change, only: [:show, :create]
+      resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
     end
   end

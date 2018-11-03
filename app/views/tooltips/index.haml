@@ -9,17 +9,10 @@
 %table#tooltips
   %thead
     %tr
-      %th.apply_tooltip
-        Key
-        =tooltip_icon :key, scope: :tooltips, disable_edit_link: true
-      %th.apply_tooltip
-        Page scope
-      %th.apply_tooltip
-        Key enabled?
-        =tooltip_icon :key_enabled, scope: :tooltips, disable_edit_link: true
-      %th.apply_tooltip
-        Tooltip text
-        =tooltip_icon :text, scope: :tooltips, disable_edit_link: true
+      %th Key
+      %th Page scope
+      %th Enabled?
+      %th Tooltip text
   %tbody
     -if @grouped_tooltips.empty?
       %tr

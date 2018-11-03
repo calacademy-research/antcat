@@ -34,7 +34,7 @@
             =spinner_icon + 'Save'
           &nbsp;
           -cancel_link = @taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(@taxon)
-          =link_to 'Cancel', cancel_link, class: 'button btn-cancel'
+          =link_to 'Cancel', cancel_link, class: 'button btn-nodanger'
           =tooltip_icon :cancel, scope: :taxa
 
 -unless @taxon.new_record?

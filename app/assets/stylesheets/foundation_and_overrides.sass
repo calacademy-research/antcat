@@ -104,12 +104,12 @@
 // | Color | What for                         | Class
 // | ------|----------------------------------|--------------------------------
 // | Blue  | Save, publish, etc (hits the db) | .btn-saves
-// | Red   | Save, and watch out!             | .btn-saves-warning, .btn-delete
-// | White | Cancel, help -- harmless stuff   | .btn-cancel, .btn-white
+// | Red   | Dangerous!                       | .btn-warning
+// | White | Cancel, help                     | .btn-nodanger
 // | Green | Everything else, "ok whatever"   | .btn-normal
 //  ---------------------------------------------------------------------------
 
-.btn-normal, .btn-saves, .btn-saves-warning, .btn-delete, .btn-cancel, .btn-white
+.btn-normal, .btn-saves, .btn-warning, .btn-nodanger
   @include normal-sized-button
 
 .btn-saves
@@ -119,22 +119,25 @@
   &:active, &:hover, &:focus
     color: #fff
 
-.btn-saves-warning, .btn-delete
+.btn-warning
   @include button-style($alert-color, auto, auto)
+  color: #fff
+  &:active, &:hover, &:focus
+    color: #fff
   border: 1px $alert-color solid
 
-.btn-cancel, .btn-white
+.btn-nodanger
   @include button-style(#fff, auto, #000)
   border: 1px solid #000 !important
 
 // Make button styles work for links too. Some link button have the class ".button"
 // because I did not manage to align them buton button elements in any other way.
 // ".button" is also required to make ".disabled" work.
-a.btn-normal, a.btn-saves, a.btn-saves-warning, a.btn-delete, a.btn-cancel, a.btn-white
+a.btn-normal, a.btn-saves, a.btn-nodanger
   padding: 0.55rem 0.75rem
   color: #fff !important
 
-a.btn-cancel, a.btn-white
+a.btn-nodanger
   color: #000 !important
 
 .btn-tiny
@@ -147,13 +150,6 @@ button.close-button
 
 table th
   text-align: left
-
-// Prevent Foundation from making backgrounds gray.
-// TODO it should be possible to use Foundation's `.unstriped` class,
-// but it doesn't work for some reason.
-table.unstriped
-  tr
-    background-color: #fff !important
 
 .tabs-title
   a
@@ -176,3 +172,6 @@ table.unstriped
 // To prevent the underline from appearing twice.
 abbr[title]
   border-bottom: 0
+
+table
+  border-spacing: 0

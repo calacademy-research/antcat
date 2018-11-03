@@ -9,7 +9,7 @@ setupCommentsReplyLinks = ->
     replyForm.show()
     replyForm.find("textarea").makePreviewable()
 
-  $(".reply-form .btn-cancel").click (event) ->
+  $(".reply-form .btn-nodanger").click (event) ->
     event.preventDefault()
     $(event.target).parents(".reply-form").hide()
 

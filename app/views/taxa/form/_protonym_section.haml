@@ -1,7 +1,7 @@
 .protonym-section.callout
   %h5.callout-header Protonym
   =form.fields_for :protonym do |protonym_form|
-    %table.unstriped.no-border
+    %table.unstriped
       %tr
         =protonym_form.fields_for :name do |name_form|
           -if name_form.object.new_record?
