@@ -1,12 +1,10 @@
 $ ->
   taxa = new Bloodhound
-    datumTokenizer: Bloodhound.tokenizers.obj.whitespace('taxa')
+    datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
       url: '/catalog/autocomplete?q=%QUERY'
       wildcard: '%QUERY'
-
-  taxa.initialize()
 
   options =
     hint: true
@@ -15,7 +13,7 @@ $ ->
 
   dataSet =
     name: 'taxa'
-    limit: Infinity # bug in typeahead.js v0.11.1; limited on server-side anyway
+    limit: Infinity # TODO bug in typeahead.js v0.11.1; limited on server-side anyway.
     displayKey: 'name'
     source: taxa.ttAdapter()
     templates:

@@ -15,16 +15,15 @@ Feature: Search references for authors
     And I should see "Bolton's Ants"
     And I should not see "Forel's Ants"
 
+  @javascript @search
   Scenario: Searching for multiple authors (via the search type select)
-    When I select author search from the search type selector
-    And I fill in the references authors search box with "Bolton, B.; Fisher, B."
-    And I press "Go" by the references search box
-    Then I should see "Bolton and Fisher's Ants"
-    And I should not see "Bolton's Ants"
-    And I should not see "Forel's Ants"
+    When I fill in the references search box with "bol"
+    Then I should see the following autocomplete suggestions:
+      | Bolton, B. |
+    And I should not see the following autocomplete suggestions:
+      | Forel, M. |
 
-  Scenario: Unparsable author name (via the search type select)
-    When I select author search from the search type selector
-    And I fill in the references authors search box with "123"
-    And I press "Go" by the references search box
-    Then I should see "Could not parse author names"
+    When I follow "Bolton, B."
+    Then I should see "Bolton and Fisher's Ants"
+    And I should see "Bolton's Ants"
+    And I should not see "Forel's Ants"

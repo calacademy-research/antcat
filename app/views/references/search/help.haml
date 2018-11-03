@@ -1,20 +1,7 @@
 -@title = "Search Help"
 -breadcrumb :references_search_help
 
-%h4 Simple reference search
-%p Enter anything in the search box and press the closest "Go" button.
-
-%h5 Searching by author name(s)
-%p
-  Select
-  %code Search by author(s)
-  from the search type dropbox. Type at least the first three letters of an author's last name in the search box. Wait for a while, and click on one of the suggestions that pops under the search box, and press the closest "Go" button.
-
-%p It is possible to manually enter the name (for example "Wilson, E. O.; Billen, J.;"), but the names must exactly match the names in the database ("Wilson" or "Wilson, E." will not work), and the query has to be formatted like in the first example.
-
-%p See the below section for more advanced queries.
-
-%h4 Advanced search (using keywords)
+%h5 Search using keywords
 %table
   %thead
     %tr
@@ -23,75 +10,75 @@
       %th{width: "30%"} Notes
   %tr
     %td any field (no keyword)
-    %td=link_to "nylanderia", references_search_index_path(q: "nylanderia")
+    %td=link_to "nylanderia", references_search_index_path(reference_q: "nylanderia")
     %td Case insensitive.
   %tr
     %td title
-    %td=link_to "title:leach", references_search_index_path(q: "title:leach")
+    %td=link_to "title:leach", references_search_index_path(reference_q: "title:leach")
     %td
       Compare:
-      =link_to "title:leach", references_search_index_path(q: "title:leach")
+      =link_to "title:leach", references_search_index_path(reference_q: "title:leach")
       \/
-      =link_to "author:leach", references_search_index_path(q: "author:leach")
+      =link_to "author:leach", references_search_index_path(reference_q: "author:leach")
       \/
       =succeed "." do
-        =link_to "leach", references_search_index_path(q: "leach")
+        =link_to "leach", references_search_index_path(reference_q: "leach")
   %tr
     %td title, more than one word
-    %td=link_to 'title:"solenopsis invicta"', references_search_index_path(q: 'title:"solenopsis invicta"')
+    %td=link_to 'title:"solenopsis invicta"', references_search_index_path(reference_q: 'title:"solenopsis invicta"')
     %td Wrap query in single or double quotes, and put in after the colon.
   %tr
     %td publication year
-    %td=link_to "year:2009", references_search_index_path(q: "year:2009")
+    %td=link_to "year:2009", references_search_index_path(reference_q: "year:2009")
     %td
   %tr
     %td publication year, range
-    %td=link_to "year:2000-2009", references_search_index_path(q: "year:2000-2009")
+    %td=link_to "year:2000-2009", references_search_index_path(reference_q: "year:2000-2009")
   %tr
     %td author
-    %td=link_to "author:wilson", references_search_index_path(q: 'author:wilson')
+    %td=link_to "author:wilson", references_search_index_path(reference_q: 'author:wilson')
     %td Authors are indexed by last name and initials. If you cannot find what you're looking for, try removing the first name from the query.
   %tr
     %td author, names containing spaces
-    %td=link_to "author:'De Andrade'", references_search_index_path(q: "author:'De Andrade'")
+    %td=link_to "author:'De Andrade'", references_search_index_path(reference_q: "author:'De Andrade'")
     %td Wrap the name in single or double quotes, and put in after the colon.
   %tr
     %td author, exact match
-    %td=link_to 'author:"Smith, D. R."', references_search_index_path(q: 'author:"Smith, D. R."')
+    %td=link_to 'author:"Smith, D. R."', references_search_index_path(reference_q: 'author:"Smith, D. R."')
     %td Manually type the name(s) or start typing and click on one of the suggestions.
   %tr
     %td author, multiple authors
-    %td=link_to "author:'Bolton, B.; Fisher, B. L.'", references_search_index_path(q: "author:'Bolton, B.; Fisher, B. L.'")
+    %td=link_to "author:'Bolton, B.; Fisher, B. L.'", references_search_index_path(reference_q: "author:'Bolton, B.; Fisher, B. L.'")
     %td As above.
   %tr
     %td reference type
     %td
-      =link_to "type:nomissing", references_search_index_path(q: "type:nomissing")
+      =link_to "type:nomissing", references_search_index_path(reference_q: "type:nomissing")
       ,
-      =link_to "type:missing", references_search_index_path(q: "type:missing")
+      =link_to "type:missing", references_search_index_path(reference_q: "type:missing")
       ,
-      =link_to "type:nested", references_search_index_path(q: "type:nested")
+      =link_to "type:nested", references_search_index_path(reference_q: "type:nested")
       ,
-      =link_to "type:unknown", references_search_index_path(q: "type:unknown")
+      =link_to "type:unknown", references_search_index_path(reference_q: "type:unknown")
     %td Defaults to "nomissing".
   %tr
     %td combined keywords
-    %td=link_to 'author:wilson year:1970-1979', references_search_index_path(q: 'author:wilson year:1970-1979')
+    %td=link_to 'author:wilson year:1970-1979', references_search_index_path(reference_q: 'author:wilson year:1970-1979')
     %td
   %tr
     %td queries containing diacritics
     %td
-      =link_to "hölldobler", references_search_index_path(q: "hölldobler")
+      =link_to "hölldobler", references_search_index_path(reference_q: "hölldobler")
       or
-      =link_to "holldobler", references_search_index_path(q: "holldobler")
+      =link_to "holldobler", references_search_index_path(reference_q: "holldobler")
     %td
   %tr
     %td journal; type the name, there's no keyword for this
-    %td=link_to "zootaxa", references_search_index_path(q: "zootaxa")
+    %td=link_to "zootaxa", references_search_index_path(reference_q: "zootaxa")
     %td
       Current workaround: if there are too many unrelated results (example:
       =succeed ")," do
-        =link_to "tropics", references_search_index_path(q: "tropics")
+        =link_to "tropics", references_search_index_path(reference_q: "tropics")
       find the journal in the
       =link_to "journals index", journals_path
       or follow the journal link from the reference details page to see which references are linked to that journal (example:
