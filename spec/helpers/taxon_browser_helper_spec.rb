@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TaxonBrowserHelper do
   describe "#taxon_browser_link" do
-    let(:taxon) { create :genus }
+    let(:taxon) { build_stubbed :genus }
 
     it "formats" do
       expect(helper.taxon_browser_link(taxon)).
