@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 ruby '2.3.3'
 
 gem 'rails', '< 5.2'
@@ -56,6 +56,7 @@ gem 'workflow'
 
 group :development do
   gem 'brakeman'
+  gem 'bundler-audit'
   gem 'rubocop', '~> 0.60.0', require: false
   gem 'rubocop-rspec'
 end
@@ -77,7 +78,7 @@ group :test do
   gem 'capybara'
   gem 'capybara-screenshot'
   # TODO: sourced to GitHub because `DEPRECATED: Capybara::Helpers::normalize_whitespace`.
-  gem 'capybara-webkit', github: 'thoughtbot/capybara-webkit', branch: 'master'
+  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git', ref: '77fdac424'
   gem 'chromedriver-helper'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'

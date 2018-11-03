@@ -2,7 +2,7 @@
   .taxt-presenter
     %h6.title_taxt=markdown item.title_taxt, no_wrapping_p: true
     %h6.subtitle_taxt=TaxtPresenter[item.subtitle_taxt].to_html
-    %a.taxt-editor-edit-button.btn-white.btn-tiny Edit
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
     =markdown item.references_taxt, no_wrapping_p: true
 
   .taxt-editor-editor{style: 'display: none' }
@@ -15,5 +15,5 @@
         =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
 
     %a.taxt-editor-reference-section-save-button.btn-saves Save
-    %a.taxt-editor-cancel-button.btn-cancel Cancel
-    %a.taxt-editor-delete-button.btn-delete Delete
+    %a.taxt-editor-cancel-button.btn-nodanger Cancel
+    %a.taxt-editor-delete-button.btn-warning Delete

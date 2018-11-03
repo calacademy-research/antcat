@@ -36,7 +36,7 @@ startReordering = ->
         <a id="save-reordered-history-items" class="btn-saves btn-tiny disabled button">
           Save new order
         </a>
-        <a id="cancel-history-item-reordering" class="btn-cancel btn-tiny">Cancel</a>
+        <a id="cancel-history-item-reordering" class="btn-nodanger btn-tiny">Cancel</a>
       </div>"""
 
     $("#save-reordered-history-items").on "click", -> saveNewOrder()
