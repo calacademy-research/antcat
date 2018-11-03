@@ -139,3 +139,7 @@ end
 When("I set the new parent field to {string}") do |name|
   select2 name, from: 'new_parent_id'
 end
+
+When("I set the obsolete genus field to {string}") do |name|
+  select2 name, from: 'obsolete_genus_id'
+end

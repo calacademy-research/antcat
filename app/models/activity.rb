@@ -19,6 +19,7 @@ class Activity < ApplicationRecord
     close_issue
     convert_species_to_subspecies
     create_combination
+    create_obsolete_combination
     custom
     elevate_subspecies_to_species
     execute_script
