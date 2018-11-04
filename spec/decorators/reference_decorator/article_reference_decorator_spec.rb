@@ -38,7 +38,7 @@ describe ArticleReferenceDecorator do
           %{<a title="Latreille, P. A. 1809. Atta. #{reference.journal.name} (1):3." class="expandable-reference-key" href="#">Latreille, 1809</a>} +
           %(<span class="expandable-reference-content">) +
             %{<span class="expandable-reference-text">Latreille, P. A. 1809. <i>Atta</i>. #{reference.journal.name} (1):3.</span> } +
-            %(<a href="http://dx.doi.org/#{reference.doi}">#{reference.doi}</a> ) +
+            %(<a href="https://doi.org/#{reference.doi}">#{reference.doi}</a> ) +
             %(<a href="example.com">PDF</a> ) +
             %(<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>) +
           %(</span>) +
