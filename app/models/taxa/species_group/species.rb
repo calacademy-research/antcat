@@ -30,8 +30,4 @@ class Species < SpeciesGroupTaxon
   def childrens_rank_in_words
     "subspecies"
   end
-
-  def statistics valid_only: false
-    get_statistics [:subspecies], valid_only: valid_only
-  end
 end
