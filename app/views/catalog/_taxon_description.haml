@@ -29,8 +29,8 @@
         -if current_user
           %span.show-on-hover
             -if user_is_at_least_helper?
-              =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
-            =link_to "History", history_item, class: "btn-normal btn-tiny"
+              =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+            =link_to "History", history_item, class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms_recursive.exists?
   %h6 #{pluralize(taxon.junior_synonyms_recursive.count, 'junior synonym')}
