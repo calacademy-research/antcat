@@ -23,7 +23,7 @@ Feature: Checking for duplicates during data entry
     Then I should see "This may be a duplicate of Ward, 2010"
 
     When I press "Save Anyway"
-    Then I should see "Reference was successfully created"
+    Then I should see "Reference was successfully added"
 
   Scenario: Editing a reference that makes it a duplicate
     Given this reference exists
