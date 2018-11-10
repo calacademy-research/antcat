@@ -63,10 +63,6 @@ module ApplicationHelper
     end
   end
 
-  def reference_layout?
-    current_layout == "references"
-  end
-
   def inline_expandable label = "Show more"
     show_more = content_tag :a, class: "hide-when-expanded gray" do
                   content_tag :small, label
@@ -84,12 +80,4 @@ module ApplicationHelper
     content_tag :span, nil,
       class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
-
-  private
-
-    # HACK via https://stackoverflow.com/a/40174627
-    def current_layout
-      layout = controller.send :_layout, ["test"]
-      layout.inspect.remove('"').split("/").last.gsub(/.haml/, "")
-    end
 end
