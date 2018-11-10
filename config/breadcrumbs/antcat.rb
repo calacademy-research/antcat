@@ -1,6 +1,6 @@
 # rubocop:disable Layout/IndentationConsistency
 crumb :antcat do
-  link "AntCat"
+  link "AntCat", root_path
 end
 
 crumb :about do
