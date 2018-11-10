@@ -1,22 +1,6 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
-.clearfix
-
-.float-right.right{data: { sticky_container: true }}
-  .sticky{data: { sticky: true, stick_to: "bottom"}}
-    #quick-links.callout.secondary.float-right
-      %h6.center-text Quick links for author
-      %ul.menu
-        %li
-          %a{href: "#references"} References
-        %li
-          %a{href: "#taxa"} Taxa
-        %li
-          %a{href: "#statistics"} Statistics
-        %li
-          %a{href: "#names"} Names
-
 #references.callout.margin-bottom
   %h5 References by author
   -if @references.empty?
