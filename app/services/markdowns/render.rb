@@ -22,7 +22,8 @@ module Markdowns
           tables: true,
           underline: false,
           no_intra_emphasis: true,
-          strikethrough: true
+          strikethrough: true,
+          fenced_code_blocks: true
         }
 
         Redcarpet::Markdown.new renderer, extensions
@@ -32,7 +33,6 @@ module Markdowns
         options = {
           hard_wrap: true,
           space_after_headers: true,
-          fenced_code_blocks: true,
           underline: false
         }
 
