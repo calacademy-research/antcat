@@ -4,6 +4,11 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
+.buttons-right
+  =link_to "Show source code", @database_script.decorate.github_url, class: "btn-normal"
+  -if @database_script.respond_to? :to_csv
+    =link_to "Export as CSV", database_script_path(@database_script, format: :csv), class: "btn-normal"
+
 .row.collapse
   .medium-8.columns
     %h5
@@ -13,18 +18,6 @@
       =@database_script.title
       =@database_script.decorate.format_tags
     %p=markdown @database_script.description
-
-  .medium-4.columns
-    .callout
-      Show source:
-      =succeed "," do
-        =link_to "current (antcat.org)", source_database_script_path(@database_script)
-      =link_to "GitHub (dev)", @database_script.decorate.github_url
-
-      -if @database_script.respond_to? :to_csv
-        %br
-        Export as:
-        =link_to "csv", database_script_path(@database_script, format: :csv), class: "btn-normal btn-tiny"
 
 .row.column
   .callout

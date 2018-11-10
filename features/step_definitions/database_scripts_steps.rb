@@ -3,22 +3,18 @@ Given("there is a Lasius subspecies without a species") do
   expect(subspecies.species).to be nil
 end
 
-When("I open all database scripts and browse their sources") do
+When("I open all database scripts once by one") do
   @browsed_scripts_count = 0
 
   script_names = DatabaseScript.all.map &:to_param
   script_names.each do |script_name|
-    step %(I open the database script "#{script_name}" and browse its source)
+    step %(I open the database script "#{script_name}")
   end
 end
 
-When("I open the database script {string} and browse its source") do |script_name|
+When("I open the database script {string}") do |script_name|
   visit "/database_scripts/#{script_name}"
-
-  step 'I should see "Show source"'
-  step 'I follow "current (antcat.org)"'
-  step 'I should see "Back to script"'
-
+  step 'I should see "Show source"' # Anything to confirm the page was rendered.
   @browsed_scripts_count += 1
 end
 

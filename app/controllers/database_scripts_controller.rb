@@ -2,7 +2,7 @@
 
 class DatabaseScriptsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_database_script, only: [:show, :source]
+  before_action :set_database_script, only: [:show]
 
   def index
     @grouped_database_scripts = DatabaseScript.all.group_by do |script|
@@ -26,9 +26,6 @@ class DatabaseScriptsController < ApplicationController
         send_data @database_script.to_csv, filename: csv_filename
       end
     end
-  end
-
-  def source
   end
 
   private

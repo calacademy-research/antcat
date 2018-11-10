@@ -223,11 +223,7 @@ Rails.application.routes.draw do
     get :formatting_help
   end
 
-  resources :database_scripts, only: [:index, :show] do
-    member do
-      get :source
-    end
-  end
+  resources :database_scripts, only: [:index, :show]
 
   namespace :my do
     resources :recently_used_references, only: [:index, :create]
