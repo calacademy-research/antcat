@@ -2,7 +2,7 @@
 -breadcrumb :institution, @comparer.most_recent
 
 -content_for :application do
-  -if can? :edit, :catalog
+  -if user_is_editor?
     .buttons-right
       =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'
       -if user_is_superadmin?

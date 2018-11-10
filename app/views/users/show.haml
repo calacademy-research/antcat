@@ -16,7 +16,7 @@
   =link_to @user.email, "mailto:#{@user.email}"
 %p
   %strong Editor:
-  =@user.can?(:edit, :catalog) ? 'Yes' : 'No'
+  =@user.is_editor? ? 'Yes' : 'No'
 
 .row.margin-top
   .large-12.columns

@@ -8,7 +8,7 @@ module SiteNoticesHelper
   end
 
   def user_has_unread_site_notices? user
-    return false unless user&.can? :edit, :catalog
+    return false unless user&.is_editor?
     SiteNotice.unread_by(user).exists?
   end
 

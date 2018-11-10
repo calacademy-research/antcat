@@ -54,7 +54,7 @@
   .small-6.columns.end
     %h5
       Names belonging to author
-      -if can? :edit, :catalog
+      -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
     #names.callout.margin-bottom
       %table
@@ -67,7 +67,7 @@
             %tr
               %td=author_name.name
               %td
-                -if can? :edit, :catalog
+                -if user_is_editor?
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
                 -if user_is_superadmin?
                   =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"

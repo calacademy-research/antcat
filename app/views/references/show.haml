@@ -12,7 +12,7 @@
     =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
     =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
 
-  -if can? :edit, :catalog
+  -if user_is_editor?
     =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
       =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
@@ -129,7 +129,7 @@
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
 
--if can? :edit, :catalog
+-if user_is_editor?
   .row.margin-bottom
     .small-12.columns.no-right-padding
       %h5 Review
