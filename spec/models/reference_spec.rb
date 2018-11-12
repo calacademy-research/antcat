@@ -42,8 +42,8 @@ describe Reference do
       end
 
       it "includes the author_names' suffix" do
-        reference = create :reference, author_names: [fisher_bl], author_names_suffix: ' (ed.)'
-        expect(reference.reload.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
+        reference = build_stubbed :reference, author_names: [fisher_bl], author_names_suffix: '(ed.)'
+        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
       end
     end
   end
@@ -106,13 +106,13 @@ describe Reference do
 
   describe "#principal_author_last_name" do
     context "when there are no authors" do
-      let!(:reference) { create :reference, author_names: [] }
+      let!(:reference) { build_stubbed :reference, author_names: [] }
 
       specify { expect(reference.principal_author_last_name).to eq nil }
     end
 
     context 'when there are authors' do
-      let!(:reference) { create :reference, author_names: [ward_ps, fisher_bl] }
+      let!(:reference) { build_stubbed :reference, author_names: [ward_ps, fisher_bl] }
 
       it "is the last name of the principal author" do
         expect(reference.principal_author_last_name).to eq 'Ward'
@@ -164,12 +164,12 @@ describe Reference do
   end
 
   describe "#what_links_here" do
-    subject { create :article_reference }
+    let(:reference) { build_stubbed :article_reference }
 
     it "calls `References::WhatLinksHere`" do
       expect(References::WhatLinksHere).to receive(:new).
-        with(subject, predicate: false).and_call_original
-      subject.what_links_here
+        with(reference, predicate: false).and_call_original
+      reference.what_links_here
     end
   end
 
@@ -221,8 +221,9 @@ describe Reference do
   end
 
   describe "#keey_without_letters_in_year" do
+    let(:reference) { create :reference, author_name: 'Bolton', citation_year: '1885g' }
+
     it "doesn't include the year ordinal" do
-      reference = create :reference, author_name: 'Bolton', citation_year: '1885g'
       expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'
     end
   end

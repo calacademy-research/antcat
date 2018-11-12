@@ -12,7 +12,7 @@ describe User do
     end
 
     context "when user is an editor" do
-      let(:user) { create :user, :editor }
+      let(:user) { build_stubbed :user, :editor }
 
       specify { expect(user.is_editor?).to be true }
     end

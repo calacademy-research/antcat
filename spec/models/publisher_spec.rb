@@ -37,7 +37,7 @@ describe Publisher do
   end
 
   describe "#display_name" do
-    let(:publisher) { create :publisher, name: "Wiley", place_name: 'New York' }
+    let(:publisher) { build_stubbed :publisher, name: "Wiley", place_name: 'New York' }
 
     specify do
       expect(publisher.display_name).to eq 'New York: Wiley'
