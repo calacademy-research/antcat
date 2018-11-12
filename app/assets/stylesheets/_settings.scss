@@ -42,6 +42,7 @@
 //  37. Top Bar
 
 @import 'util/util';
+@import 'colors';
 
 // 1. Global
 // ---------
@@ -62,11 +63,11 @@ $global-lineheight: 1.5;
 // );
 //  success: #3adb76,
 $foundation-palette: (
-  primary: #479f03,
+  primary: $color_green,
   secondary: #767676,
-  success: #2199e8,
+  success: $color_pretty,
   warning: #cc4b37,
-  alert: #ec5840,
+  alert: $color_danger,
 );
 $light-gray: #e6e6e6;
 $medium-gray: #cacaca;
