@@ -6,7 +6,7 @@ class TaxonHistoryItemsController < ApplicationController
   def index
     @taxon_history_items = TaxonHistoryItem.all
     @taxon_history_items = @taxon_history_items.search_objects(search_params) if params[:q].present?
-    @taxon_history_items = @taxon_history_items.paginate(page: params[:page], per_page: 100)
+    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 100)
   end
 
   def show
