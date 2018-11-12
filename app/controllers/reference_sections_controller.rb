@@ -6,7 +6,7 @@ class ReferenceSectionsController < ApplicationController
   def index
     @reference_sections = ReferenceSection.all
     @reference_sections = @reference_sections.search_objects(search_params) if params[:q].present?
-    @reference_sections = @reference_sections.includes(taxon: [:name]).paginate(page: params[:page], per_page: 100)
+    @reference_sections = @reference_sections.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
   end
 
   def show
