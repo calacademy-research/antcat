@@ -6,7 +6,7 @@ module Catalog
 
     # This is the "Advanced Search" page.
     def index
-      return if user_not_searching_yet? # Just render the form.
+      return if not_searching_yet? # Just render the form.
 
       @taxa = Taxa::AdvancedSearch[advanced_search_params]
       @is_author_search = is_author_search?
@@ -29,6 +29,11 @@ module Catalog
     # The "quick search" shares the same view as the "Advanced Search".
     # The forms could be merged, but having two is pretty nice too.
     def quick_search
+      if searching_for_nothing_from_the_header?
+        redirect_to action: :index
+        return
+      end
+
       taxa = Taxa::QuickSearch[
         params[:qq],
         search_type: params[:search_type],
@@ -59,8 +64,12 @@ module Catalog
       end
 
       # A blank `params[:rank]` means the user has not made a search yet.
-      def user_not_searching_yet?
+      def not_searching_yet?
         params[:rank].blank?
+      end
+
+      def searching_for_nothing_from_the_header?
+        params[:qq].blank? && params[:im_feeling_lucky].present?
       end
 
       def advanced_search_params
