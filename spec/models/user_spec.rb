@@ -4,24 +4,6 @@ describe User do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to be_versioned }
 
-  describe "scopes" do
-    describe ".as_angle_bracketed_emails" do
-      before do
-        create :user, name: "Archibald", email: "archibald@antcat.org"
-        create :user, name: "Batiatus", email: "batiatus@antcat.org"
-        create :user, name: "Flint", email: "flint@antcat.org"
-      end
-
-      it "returns all user's #angle_bracketed_email" do
-        expect(described_class.as_angle_bracketed_emails).to eq <<-STR.squish
-          "Archibald" <archibald@antcat.org>,
-          "Batiatus" <batiatus@antcat.org>,
-          "Flint" <flint@antcat.org>
-        STR
-      end
-    end
-  end
-
   describe "authorization" do
     context "when user is not an editor" do
       let(:user) { described_class.new }
