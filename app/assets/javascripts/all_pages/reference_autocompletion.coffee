@@ -42,7 +42,6 @@ $ ->
         '</div>'
       suggestion: (reference) ->
         '<p>' + reference.author + ' (' + reference.year + ')<br><small>' + reference.title + '</small></p>'
-        # Note: `reference.author` is generated from `Reference.author_names_string_with_suffix`.
 
   options =
     highlight: true

@@ -84,7 +84,7 @@ class Reference < ApplicationRecord
   end
 
   def author_names_string_with_suffix
-    string = make_author_names_string_cache
+    string = author_names_string
     string << " #{author_names_suffix}" if author_names_suffix.present?
     string
   end
