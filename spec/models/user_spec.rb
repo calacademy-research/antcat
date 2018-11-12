@@ -18,14 +18,6 @@ describe User do
     end
   end
 
-  describe "#angle_bracketed_email" do
-    let(:user) { build_stubbed :user, name: "A User", email: "user@example.com" }
-
-    it "builds a string suitable for emails" do
-      expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'
-    end
-  end
-
   describe "#notify_because" do
     let(:user) { create :user }
     let(:notifier) { create :user }

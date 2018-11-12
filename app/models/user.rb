@@ -40,11 +40,6 @@ class User < ApplicationRecord
     is_helper? || is_editor?
   end
 
-  # TODO move to `UserDecorator`.
-  def angle_bracketed_email
-    %("#{name}" <#{email}>)
-  end
-
   def notify_because(reason, attached:, notifier:)
     return if notifier == self
     return if already_notified_for_attached_by_user? attached, notifier

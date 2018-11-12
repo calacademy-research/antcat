@@ -15,4 +15,10 @@ describe UserDecorator do
         to eq %(<a href="/users/#{user.id}">@<strong>First Last</strong></a>)
     end
   end
+
+  describe "#angle_bracketed_email" do
+    it "builds a string suitable for emails" do
+      expect(user.decorate.angle_bracketed_email).to eq '"First Last" <email@example.com>'
+    end
+  end
 end
