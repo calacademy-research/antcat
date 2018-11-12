@@ -44,8 +44,7 @@ class FeedbackController < ApplicationController
     respond_to do |format|
       if @feedback.save
         format.json do
-          json = { feedback_success_callout: feedback_success_callout }
-          render json: json, status: :created
+          render status: :created, json: { feedback_success_callout: feedback_success_callout }
         end
       else
         format.json { render_unprocessable }

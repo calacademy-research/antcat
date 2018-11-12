@@ -74,10 +74,9 @@ class TaxonHistoryItemsController < ApplicationController
     end
 
     def render_json item
-      json = {
+      render json: {
         content: render_to_string(partial: 'taxon_history_items/taxt_editor_template', locals: { item: item }),
         error: item.errors.full_messages.to_sentence
       }
-      render json: json
     end
 end

@@ -74,10 +74,9 @@ class ReferenceSectionsController < ApplicationController
     end
 
     def render_json item
-      json = {
+      render json: {
         content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { item: item }),
         error: item.errors.full_messages.to_sentence
       }
-      render json: json
     end
 end
