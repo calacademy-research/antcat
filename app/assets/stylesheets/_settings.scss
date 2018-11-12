@@ -69,8 +69,11 @@ $foundation-palette: (
   warning: #cc4b37,
   alert: $color_danger,
 );
-$light-gray: #e6e6e6;
-$medium-gray: #cacaca;
+// NOTE changed.
+// $light-gray: #e6e6e6;
+$light-gray: $color_light_gray;
+// $medium-gray: #cacaca;
+$medium-gray: $color_medium_gray;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #fefefe;
