@@ -48,6 +48,22 @@ describe User do
     end
   end
 
+  describe "#mark_unseen_notifications_as_seen" do
+    let!(:user) { create :user }
+    let!(:notification) { create :notification, :unread, user: user }
+
+    specify do
+      expect { user.mark_unseen_notifications_as_seen }.
+        to change { user.unseen_notifications.count }.from(1).to(0)
+    end
+  end
+
+  describe "#mentionable_search_key" do
+    let!(:user) { create :user }
+
+    specify { expect(user.mentionable_search_key).to eq "#{user.id} #{user.name} #{user.email}" }
+  end
+
   describe "#already_notified_for_attached_by_user?" do
     let(:user) { create :user }
     let(:notifier) { create :user }
