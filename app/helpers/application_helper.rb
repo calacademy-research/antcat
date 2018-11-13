@@ -59,7 +59,7 @@ module ApplicationHelper
     case flash_type.to_sym
     when :success, :notice        then "primary"
     when :error, :alert, :warning then "alert"
-    else                               "secondary"
+    else                               raise
     end
   end
 
