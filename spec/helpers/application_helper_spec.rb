@@ -48,6 +48,20 @@ describe ApplicationHelper do
     end
   end
 
+  describe "#foundation_class_for" do
+    specify { expect(helper.foundation_class_for("success")).to eq "primary" }
+    specify { expect(helper.foundation_class_for("notice")).to eq "primary" }
+    specify { expect(helper.foundation_class_for("error")).to eq "alert" }
+    specify { expect(helper.foundation_class_for("alert")).to eq "alert" }
+    specify { expect(helper.foundation_class_for("warning")).to eq "alert" }
+
+    context "when `flash_type` is not supported" do
+      specify do
+        expect { helper.foundation_class_for("pizza") }.to raise_error(StandardError)
+      end
+    end
+  end
+
   describe "#antcat_icon" do
     it "formats" do
       expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>'
