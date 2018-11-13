@@ -7,6 +7,18 @@ describe Family do
     specify { expect(family.parent).to be_nil }
   end
 
+  describe "#parent=" do
+    specify do
+      expect { described_class.new.parent = nil }.to raise_error("cannot update parent of families")
+    end
+  end
+
+  describe "#update_parent" do
+    specify do
+      expect { described_class.new.update_parent(nil) }.to raise_error("cannot update parent of families")
+    end
+  end
+
   describe "#genera" do
     let!(:genus_without_subfamily) { create :genus, subfamily: nil }
 

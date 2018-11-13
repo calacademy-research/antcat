@@ -64,12 +64,14 @@ class Activity < ApplicationRecord
     create_for_trackable nil, action, edit_summary: edit_summary, parameters: parameters
   end
 
+  # :nocov:
   # For calling from the console.
   def self.execute_script_activity user, edit_summary
     raise "You must assign a user." unless user
     raise "You must include an edit summary." unless edit_summary
     create! trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary
   end
+  # :nocov:
 
   def pagination_page
     index = Activity.ids_desc.pluck(:id).index(id)
