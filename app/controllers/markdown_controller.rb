@@ -6,7 +6,6 @@ class MarkdownController < ApplicationController
 
   def formatting_help
     respond_to do |format|
-      format.json { render partial: "formatting_help" }
       format.html { render "formatting_help" }
     end
   end
