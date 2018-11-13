@@ -43,9 +43,6 @@ module ApplicationHelper
     content_tag :span, "new!", class: "label"
   end
 
-  # First attempt at creating a spinner that works on all elements.
-  # Add .has-spinner to the button/link/element and call this method inside that element.
-  # To be improved once all buttons are more consistently formatted site-wide.
   def spinner_icon
     "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
   end
@@ -77,7 +74,6 @@ module ApplicationHelper
   end
 
   def antcat_icon *css_classes
-    content_tag :span, nil,
-      class: ["antcat_icon"].concat(Array.wrap(css_classes))
+    content_tag :span, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 end

@@ -63,9 +63,7 @@ describe ApplicationHelper do
   end
 
   describe "#antcat_icon" do
-    it "formats" do
-      expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>'
-    end
+    specify { expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>' }
 
     describe "arguments" do
       context "when a string" do
