@@ -57,9 +57,9 @@ module TaxonButtonsHelper
   def elevate_to_species_button taxon
     return unless taxon.is_a? Subspecies
 
-    message = "Are you sure you want to elevate this subspecies to species?"
-    link_to 'Elevate to species', elevate_to_species_taxa_path(taxon),
-      method: :put, class: "btn-saves", data: { confirm: message }
+    link_to 'Elevate to species', taxa_elevate_to_species_path(taxon),
+      method: :post, class: "btn-saves",
+      data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
   end
 
   def delete_unreferenced_taxon_button taxon
