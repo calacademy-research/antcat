@@ -20,6 +20,10 @@ module DatabaseScripts
       def table
         Synonym.arel_table
       end
+
+      def synonym_link synonym
+        "<a href='/synonyms/#{synonym.id}'>#{synonym.id}</a>"
+      end
   end
 end
 
