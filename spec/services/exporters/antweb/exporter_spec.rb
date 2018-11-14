@@ -33,6 +33,13 @@ describe Exporters::Antweb::Exporter do
   end
 
   describe "#call" do
-    # TODO
+    let(:filename) { "antweb_export_test" }
+
+    it "writes data to the specified file" do
+      file = double('file')
+      expect(File).to receive(:open).with(filename, "w").and_yield(file)
+      expect(file).to receive(:puts).with(anything)
+      described_class[filename]
+    end
   end
 end
