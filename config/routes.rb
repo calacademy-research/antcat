@@ -118,9 +118,9 @@ Rails.application.routes.draw do
         put :reverse_synonymy
       end
     end
-    resource :convert_to_subspecies, only: [:new, :create]
     scope module: :taxa do
       resource :create_combination, only: [:new, :show]
+      resource :convert_to_subspecies, only: [:new, :create]
       resource :force_parent_change, only: [:show, :create]
       resource :elevate_to_species, only: [:create]
       resource :create_obsolete_combination, only: [:show, :create]
