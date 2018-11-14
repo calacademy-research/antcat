@@ -43,14 +43,6 @@ class TaxaGrabBagController < ApplicationController
   def show_children
   end
 
-  def reorder_history_items
-    if Taxa::ReorderHistoryItems[@taxon, params[:taxon_history_item]]
-      render json: { success: true }
-    else
-      render json: @taxon.errors, status: :unprocessable_entity
-    end
-  end
-
   private
 
     def set_taxon

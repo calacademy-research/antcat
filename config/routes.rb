@@ -109,7 +109,6 @@ Rails.application.routes.draw do
         get :confirm_before_delete
         delete :destroy
         delete :destroy_unreferenced
-        post :reorder_history_items
       end
     end
     resources :taxon_history_items, only: [:new, :create]
@@ -126,6 +125,7 @@ Rails.application.routes.draw do
       resource :elevate_to_species, only: [:create]
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
+      resource :reorder_history_items, only: [:create]
     end
   end
 
