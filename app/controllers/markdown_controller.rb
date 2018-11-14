@@ -5,8 +5,5 @@ class MarkdownController < ApplicationController
   end
 
   def formatting_help
-    respond_to do |format|
-      format.html { render "formatting_help" }
-    end
   end
 end
