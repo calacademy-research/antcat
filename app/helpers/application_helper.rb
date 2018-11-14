@@ -54,9 +54,9 @@ module ApplicationHelper
 
   def foundation_class_for flash_type
     case flash_type.to_sym
-    when :success, :notice        then "primary"
-    when :error, :alert, :warning then "alert"
-    else                               raise
+    when :notice then "primary"
+    when :alert  then "alert"
+    else         raise
     end
   end
 
