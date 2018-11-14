@@ -1,12 +1,11 @@
 module TooltipHelper
   def enable_tooltips
-    return unless current_user
     content_for(:head) { javascript_include_tag "tooltips" }
   end
 
   def tooltip_icon key_param, scope: nil
     tooltip = Tooltip.find_by(key: key_param, scope: scope)
-    return if tooltip&.key_disabled?
+    return unless tooltip&.key_enabled?
 
     text =  if tooltip
               tooltip.text

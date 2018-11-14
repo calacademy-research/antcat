@@ -28,10 +28,6 @@ class ApplicationController < ActionController::Base
     current_user&.id
   end
 
-  def root_redirect_for_active_admin _exception
-    redirect_to root_url
-  end
-
   protected
 
     def configure_permitted_parameters
@@ -42,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Save location so that we can redirect back to the previous page after signing in/out.
+    # Save location to redirect back to after signing in.
     def save_location
       unless request.xhr? || request.url =~ %r{/users/}
         session[:user_return_to] = request.url
