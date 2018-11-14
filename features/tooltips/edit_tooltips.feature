@@ -9,8 +9,8 @@ Feature: Editing tooltips
   @javascript
   Scenario: Hovering a tooltip
     Given this tooltip exists
-      | key       | key_enabled | text      | scope        |
-      | hardcoded | true        | A tooltip | widget_tests |
+      | key       | text      | scope        |
+      | hardcoded | A tooltip | widget_tests |
 
     When I go to the tooltips test page
     Then I should not see the tooltip text "A tooltip"
@@ -29,9 +29,7 @@ Feature: Editing tooltips
       And I fill in "tooltip[key]" with "hardcoded"
       And I fill in "tooltip[scope]" with "widget_tests"
       And I fill in "tooltip[text]" with "Text used in the tooltip"
-      And I check "tooltip[key_enabled]"
     And I press "Create Tooltip"
-    And I wait
     And I go to the tooltips test page
     And I hover the tooltip next to the text "Hardcoded"
     Then I should see the tooltip text "Text used in the tooltip"
