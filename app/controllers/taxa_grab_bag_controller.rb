@@ -38,11 +38,6 @@ class TaxaGrabBagController < ApplicationController
     redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
   end
 
-  # Show children on another page for performance reasons.
-  # Example of a very slow page: http://localhost:3000/taxa/429244/edit
-  def show_children
-  end
-
   private
 
     def set_taxon

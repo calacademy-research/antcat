@@ -105,7 +105,6 @@ Rails.application.routes.draw do
   resources :taxa, only: [:new, :create, :edit, :update] do
     member do
       controller :taxa_grab_bag do
-        get :show_children
         get :confirm_before_delete
         delete :destroy
         delete :destroy_unreferenced
@@ -119,6 +118,7 @@ Rails.application.routes.draw do
       end
     end
     scope module: :taxa do
+      resource :children, only: [:show]
       resource :create_combination, only: [:new, :show]
       resource :convert_to_subspecies, only: [:new, :create]
       resource :force_parent_change, only: [:show, :create]

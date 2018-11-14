@@ -7,7 +7,7 @@
       -if max_number && taxon.children.count > max_number
         %li
           Too many children to show here.
-          =link_to "Show child list", show_children_taxa_path(taxon), class: "btn-normal btn-tiny"
+          =link_to "Show all children", taxa_children_path(taxon), class: "btn-normal btn-tiny"
           (open in a new tab or make sure you have saved first)
       -else
         -taxon.children.includes(:name).order(status: :desc, name_cache: :asc).each do |child|
