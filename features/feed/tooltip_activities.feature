@@ -25,7 +25,8 @@ Feature: Feed (tooltips)
     Then I should see "Archibald edited the tooltip taxa.authors" and no other feed items
 
   Scenario: Deleted tooltip
-    Given there is a tooltip for the feed
+    Given I log in as a superadmin named "Archibald"
+    And there is a tooltip for the feed
 
     When I go to the tooltips editing page
       And I follow "authors"

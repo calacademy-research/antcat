@@ -1,4 +1,5 @@
 class TooltipsController < ApplicationController
+  before_action :authenticate_superadmin, only: [:destroy]
   before_action :ensure_user_is_at_least_helper, except: [:index]
   before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
 
