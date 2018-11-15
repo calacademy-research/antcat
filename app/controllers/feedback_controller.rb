@@ -6,7 +6,6 @@ class FeedbackController < ApplicationController
 
   before_action :authenticate_superadmin, only: [:destroy]
   before_action :ensure_user_is_at_least_helper, except: [:create]
-  before_action :ensure_can_edit_catalog, only: [:destroy]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
