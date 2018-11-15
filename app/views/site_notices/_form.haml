@@ -1,7 +1,7 @@
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
-.row.collapse
+.row
   .medium-8.columns
     =form_for site_notice do |f|
       =render "shared/errors_for", resource: site_notice
