@@ -5,7 +5,7 @@
     %p The history includes historical synonyms that are not current. This section is used to indicate which ones are currently valid.
 
     .container#junior-synonyms-section-test-hook.left
-      =render 'taxa/not_really_form/synonyms_subsection', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_own_id, junior_or_senior: 'junior'
+      =render 'taxa/_not_really_form/synonyms_subsection', taxon: taxon, title: 'Junior synonyms', synonyms: taxon.junior_synonyms_with_own_id, junior_or_senior: 'junior'
     .container#senior-synonyms-section-test-hook.right
-      =render 'taxa/not_really_form/synonyms_subsection', taxon: taxon, title: 'Senior synonyms', synonyms: taxon.senior_synonyms_with_own_id, junior_or_senior: 'senior'
+      =render 'taxa/_not_really_form/synonyms_subsection', taxon: taxon, title: 'Senior synonyms', synonyms: taxon.senior_synonyms_with_own_id, junior_or_senior: 'senior'
   .clearfix

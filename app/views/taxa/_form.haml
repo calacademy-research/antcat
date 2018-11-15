@@ -20,9 +20,9 @@
   =render 'shared/errors_for', resource: @taxon
 
   .callout
-    =render 'taxa/form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'taxa/form/protonym_section', taxon: @taxon, form: form
-    =render 'taxa/form/type_section',     taxon: @taxon, form: form
+    =render 'taxa/_form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
+    =render 'taxa/_form/protonym_section', taxon: @taxon, form: form
+    =render 'taxa/_form/type_section',     taxon: @taxon, form: form
 
     .buttons_section
       .row
@@ -39,7 +39,7 @@
 
 -unless @taxon.new_record?
   .not-really-taxon-form
-    =render 'taxa/not_really_form/history_items_section', taxon: @taxon
-    =render 'taxa/not_really_form/children_section', taxon: @taxon, max_number: 50
-    =render 'taxa/not_really_form/synonyms_section', taxon: @taxon
-    =render 'taxa/not_really_form/references_section', taxon: @taxon
+    =render 'taxa/_not_really_form/history_items_section', taxon: @taxon
+    =render 'taxa/_not_really_form/children_section', taxon: @taxon, max_number: 50
+    =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
+    =render 'taxa/_not_really_form/references_section', taxon: @taxon
