@@ -7,7 +7,7 @@ describe RevisionComparer, :versioning do
 
   describe "#most_recent" do
     context "when item exists" do
-      it "returns the item (pretty much same as Model#find)" do
+      it "returns the item (pretty much same as `Model#find`)" do
         most_recent = described_class.new(model, item.id).most_recent
         expect(most_recent).to eq item
       end
@@ -16,7 +16,7 @@ describe RevisionComparer, :versioning do
     context "when item has been deleted" do
       before { item.destroy }
 
-      it "returns the item (similar to Model#find, but searches in versions too)" do
+      it "returns the item (similar to `Model#find`, but searches in versions too)" do
         expect { model.find(item_id) }.to raise_error ActiveRecord::RecordNotFound
 
         most_recent = described_class.new(model, item_id).most_recent

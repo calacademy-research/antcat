@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Taxa::CopyAttributes do
   describe "#call" do
-    let!(:taxon) { create :species }
+    let!(:taxon) { build_stubbed :species }
 
     it "returns a hash with the copied attriutes" do
       expect(described_class[taxon]).to eq({

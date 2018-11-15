@@ -23,7 +23,9 @@
         =tooltip_icon :author_names_suffix, scope: :references
       =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
     .medium-1.columns
-      =label_tag :reference_citation_year, 'Year'
+      =label_tag :reference_citation_year do
+        Year
+        =tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
     .medium-1.columns
       =label_tag :reference_bolton_key do

@@ -21,7 +21,7 @@
     =set_as_default_reference_button @reference
 
   -if user_is_editor?
-    =link_to "Delete", reference_path(@reference), class: "btn-delete", method: :delete, data: { confirm: "Do you want to delete this reference? Note: it can take a minute or to to check that there are no references to this one." }
+    =link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
 
 .clearfix
 
@@ -31,13 +31,13 @@
 -# page but through out the catalog). Updating all tests would
 -# take way too long time, we're linking them here instead for now.
 .row.margin-bottom
-  .small-12.columns.no-right-padding
+  .small-12.columns
     .callout
       =@reference.plain_text
       =@reference.format_reference_document_link
 
 .row.margin-bottom
-  .small-12.columns.no-right-padding
+  .small-12.columns
     %h5 Data
     %table.table
       %tbody
@@ -99,7 +99,7 @@
           %td=or_dash @reference.format_reference_document_link
 
 .row.margin-bottom
-  .small-12.columns.no-right-padding
+  .small-12.columns
     %h5 Notes
     %table.table
       %tbody
@@ -115,7 +115,7 @@
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom
-    .small-12.columns.no-right-padding
+    .small-12.columns
       %h5 Taxa described in this reference
       %small Note: taxa described in nestees of this reference are not included here.
       %table
@@ -133,7 +133,7 @@
 
 -if user_is_editor?
   .row.margin-bottom
-    .small-12.columns.no-right-padding
+    .small-12.columns
       %h5 Review
       %table
         %thead

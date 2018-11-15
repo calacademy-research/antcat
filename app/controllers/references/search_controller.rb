@@ -8,26 +8,7 @@ module References
       return redirect_to references_path unless user_is_searching?
 
       params[:q] = params[:reference_q]
-
-      unparsable_author_names_error_message = <<-MSG
-        Could not parse author names. Start by typing a name, wait for a while
-        and then click on one of the suggestions. It is possible to manually
-        type the query (for example "Wilson, E. O.; Billen, J.;"),
-        but the names must exactly match the names in the database
-        ("Wilson" or "Wilson, E." will not work), and the query has to be
-        formatted like in the first example. Still not working? Email us!
-      MSG
-
-      @references = if params[:search_type] == "author"
-                      begin
-                        References::Search::AuthorSearch[params[:author_q], params[:page]]
-                      rescue Citrus::ParseError
-                        flash.now.alert = unparsable_author_names_error_message
-                        Reference.none.paginate page: 9999
-                      end
-                    else
-                      References::Search::FulltextWithExtractedKeywords[params]
-                    end
+      @references = References::Search::FulltextWithExtractedKeywords[params]
     end
 
     def help

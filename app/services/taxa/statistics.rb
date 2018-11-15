@@ -18,25 +18,25 @@ module Taxa
 
       def ranks
         @ranks ||= case taxon
-                   when Family
+                   when ::Family
                      {
-                       subfamilies: Subfamily,
-                       tribes: Tribe,
-                       genera: Genus,
-                       species: Species,
-                       subspecies: Subspecies
+                       subfamilies: ::Subfamily,
+                       tribes: ::Tribe,
+                       genera: ::Genus,
+                       species: ::Species,
+                       subspecies: ::Subspecies
                      }
-                   when Subfamily
+                   when ::Subfamily
                      [:tribes, :genera, :species, :subspecies]
-                   when Tribe
+                   when ::Tribe
                      [:genera, :species]
-                   when Genus
+                   when ::Genus
                      [:species, :subspecies]
-                   when Subgenus
+                   when ::Subgenus
                      nil
-                   when Species
+                   when ::Species
                      [:subspecies]
-                   when Subspecies
+                   when ::Subspecies
                      nil
                    end
       end

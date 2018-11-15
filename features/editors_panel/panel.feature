@@ -24,4 +24,4 @@ Feature: Editor's Panel
     When I go to the Editor's Panel
     Then I should see "1 Open issues"
     And I should see "0 Unreviewed references"
-    And I should see "1 Pending user feedback emails"
+    And I should see "1 Pending feedbacks"

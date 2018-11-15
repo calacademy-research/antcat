@@ -7,12 +7,8 @@ class DefaultReferencesController < ApplicationController
   def update
     DefaultReference.set session, @reference
 
-    if request.xhr?
-      head :ok
-    else
-      redirect_back fallback_location: references_path,
-        notice: "#{@reference.keey} was successfully set as the default reference."
-    end
+    redirect_back fallback_location: references_path,
+      notice: "#{@reference.keey} was successfully set as the default reference."
   end
 
   private

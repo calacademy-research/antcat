@@ -57,7 +57,7 @@ class SynonymsController < ApplicationController
     end
 
     def content taxon
-      render_to_string partial: 'taxa/not_really_form/synonyms_section', locals: { taxon: taxon }
+      render_to_string partial: 'taxa/_not_really_form/synonyms_section', locals: { taxon: taxon }
     end
 
     def set_synonym

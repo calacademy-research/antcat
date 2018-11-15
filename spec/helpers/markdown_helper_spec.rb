@@ -1,12 +1,12 @@
 require "spec_helper"
 
 describe MarkdownHelper do
-  let(:string) { "should be delegated" }
-
   describe "#markdown" do
-    it "formats markdown (delegates)" do
-      expect(Markdowns::Render).to receive(:new).with(string).and_call_original
-      helper.markdown string
+    let(:content) { "pizza" }
+
+    it "calls `Markdowns::Render`" do
+      expect(Markdowns::Render).to receive(:new).with(content).and_call_original
+      helper.markdown content
     end
   end
 end

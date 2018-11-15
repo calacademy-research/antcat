@@ -83,5 +83,6 @@ group :test do
   gem 'rails-controller-testing'
   gem 'selenium-webdriver', '>= 2.48' # works with firefox as of v34
   gem 'shoulda-matchers'
+  gem 'simplecov', require: false
   gem 'webmock'
 end

@@ -30,10 +30,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<~MSG
-        Reference was successfully created.
-        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
-      MSG
+      redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
       render :new
     end
@@ -44,10 +41,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<~MSG
-        Reference was successfully updated.
-        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
-      MSG
+      redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       render :edit
     end

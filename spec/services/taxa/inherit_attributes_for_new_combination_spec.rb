@@ -14,7 +14,7 @@ describe Taxa::InheritAttributesForNewCombination do
     end
     let(:old_comb) do
       stub_request(:any, "http://antcat.org/1.pdf").to_return body: "not 404"
-      create :species, biogeographic_region: "Neotropic"
+      build_stubbed :species, biogeographic_region: "Neotropic"
     end
 
     it "copies relevant fields from `old_comb`" do
@@ -39,9 +39,9 @@ describe Taxa::InheritAttributesForNewCombination do
     end
 
     it "raises on invalid rank combinations" do
-      new_comb = create :subspecies
-      old_comb = create :species
-      irrelevant_parent = create :subfamily
+      new_comb = build_stubbed :subspecies
+      old_comb = build_stubbed :species
+      irrelevant_parent = build_stubbed :subfamily
 
       expect do
         described_class[new_comb, old_comb, irrelevant_parent]

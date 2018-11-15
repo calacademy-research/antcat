@@ -9,6 +9,7 @@ class Change < ApplicationRecord
 
   validates :user, presence: true, on: :create
 
+  scope :includes_associated, -> { includes(:user, :approver, taxon: [:name, :taxon_state]) }
   scope :waiting, -> { joins_taxon_states.merge(TaxonState.waiting) }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.taxon_id') }
 

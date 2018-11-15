@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ConvertToSubspeciesController do
+describe Taxa::ConvertToSubspeciesController do
   describe "forbidden actions" do
     context "when signed in as a user" do
       before { sign_in create(:user) }

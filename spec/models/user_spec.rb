@@ -4,24 +4,6 @@ describe User do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to be_versioned }
 
-  describe "scopes" do
-    describe ".as_angle_bracketed_emails" do
-      before do
-        create :user, name: "Archibald", email: "archibald@antcat.org"
-        create :user, name: "Batiatus", email: "batiatus@antcat.org"
-        create :user, name: "Flint", email: "flint@antcat.org"
-      end
-
-      it "returns all user's #angle_bracketed_email" do
-        expect(described_class.as_angle_bracketed_emails).to eq <<-STR.squish
-          "Archibald" <archibald@antcat.org>,
-          "Batiatus" <batiatus@antcat.org>,
-          "Flint" <flint@antcat.org>
-        STR
-      end
-    end
-  end
-
   describe "authorization" do
     context "when user is not an editor" do
       let(:user) { described_class.new }
@@ -30,17 +12,9 @@ describe User do
     end
 
     context "when user is an editor" do
-      let(:user) { create :user, :editor }
+      let(:user) { build_stubbed :user, :editor }
 
       specify { expect(user.is_editor?).to be true }
-    end
-  end
-
-  describe "#angle_bracketed_email" do
-    let(:user) { build_stubbed :user, name: "A User", email: "user@example.com" }
-
-    it "builds a string suitable for emails" do
-      expect(user.angle_bracketed_email).to eq '"A User" <user@example.com>'
     end
   end
 
@@ -72,6 +46,22 @@ describe User do
         user.notify_because :mentioned_in_thing, attached: issue, notifier: notifier
       end.to change { Notification.count }.by 1
     end
+  end
+
+  describe "#mark_unseen_notifications_as_seen" do
+    let!(:user) { create :user }
+    let!(:notification) { create :notification, :unread, user: user }
+
+    specify do
+      expect { user.mark_unseen_notifications_as_seen }.
+        to change { user.unseen_notifications.count }.from(1).to(0)
+    end
+  end
+
+  describe "#mentionable_search_key" do
+    let!(:user) { create :user }
+
+    specify { expect(user.mentionable_search_key).to eq "#{user.id} #{user.name} #{user.email}" }
   end
 
   describe "#already_notified_for_attached_by_user?" do

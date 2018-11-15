@@ -1,5 +1,5 @@
 class UserDecorator < Draper::Decorator
-  delegate :name, :is_editor?, :is_at_least_helper?
+  delegate :name, :email, :is_editor?, :is_at_least_helper?
 
   def user_page_link
     helpers.link_to name, user
@@ -7,6 +7,10 @@ class UserDecorator < Draper::Decorator
 
   def ping_user_link
     helpers.link_to "@<strong>#{name}</strong>".html_safe, user
+  end
+
+  def angle_bracketed_email
+    %("#{name}" <#{email}>)
   end
 
   def user_badge

@@ -57,12 +57,13 @@ module TaxonButtonsHelper
   def elevate_to_species_button taxon
     return unless taxon.is_a? Subspecies
 
-    message = "Are you sure you want to elevate this subspecies to species?"
-    link_to 'Elevate to species', elevate_to_species_taxa_path(taxon),
-      method: :put, class: "btn-saves", data: { confirm: message }
+    link_to 'Elevate to species', taxa_elevate_to_species_path(taxon),
+      method: :post, class: "btn-saves",
+      data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
   end
 
   def delete_unreferenced_taxon_button taxon
+    return if taxon.is_a? Family
     return if taxon.any_nontaxt_references?
 
     message = <<-MSG.squish
@@ -75,6 +76,7 @@ module TaxonButtonsHelper
   end
 
   def confirm_before_superadmin_delete_button taxon
+    return if taxon.is_a? Family
     return unless user_is_superadmin?
     link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-warning btn-tiny"
   end

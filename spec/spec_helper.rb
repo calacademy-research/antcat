@@ -1,3 +1,10 @@
+if ENV["COVERAGE"]
+  require 'simplecov'
+
+  SimpleCov.command_name "rspec"
+  SimpleCov.start
+end
+
 ENV["RAILS_ENV"] ||= 'test'
 
 require 'sunspot_test/rspec' # Tag blocks with `:search` to enable Sunspot. Commit with `Sunspot.commit`.

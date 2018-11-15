@@ -11,7 +11,6 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   scope :order_by_name, -> { order(:name) }
-  scope :as_angle_bracketed_emails, -> { all.map(&:angle_bracketed_email).join(", ") }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
@@ -39,11 +38,6 @@ class User < ApplicationRecord
 
   def is_at_least_helper?
     is_helper? || is_editor?
-  end
-
-  # TODO move to `UserDecorator`.
-  def angle_bracketed_email
-    %("#{name}" <#{email}>)
   end
 
   def notify_because(reason, attached:, notifier:)

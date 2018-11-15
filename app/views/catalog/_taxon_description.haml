@@ -8,7 +8,16 @@
     =link_to_review_change taxon
 
 #statistics.small-margin-bottom
-  =render "statistics", taxon: taxon
+  -if show_full_statistics? taxon
+    =taxon.decorate.statistics
+  -else
+    -# If there's no valid-only stats, try including invalid too before giving up.
+    -statistics = taxon.decorate.statistics(valid_only: true).presence || taxon.decorate.statistics
+    -if statistics.present?
+      .left=statistics
+      .left{style: "margin-left: 1rem"}
+        =link_to "More statistics", catalog_path(taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
+      .clear
 
 =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
 
@@ -19,7 +28,22 @@
   =taxon.decorate.link_to_antweb
   =taxon.decorate.link_to_antwiki
   =taxon.decorate.link_to_hol
-  =render "type_fields", taxon: taxon
+
+  #type-fields
+    -if taxon.primary_type_information.present?
+      .truncate
+        %strong Primary type information:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.primary_type_information]
+
+    -if taxon.secondary_type_information.present?
+      .truncate
+        %strong Secondary type information:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.secondary_type_information]
+
+    -if taxon.type_notes.present?
+      .truncate
+        %strong Type notes:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
 
 -if taxon.history_items.present?
   %ul.history.small-margin-bottom
@@ -29,8 +53,8 @@
         -if current_user
           %span.show-on-hover
             -if user_is_at_least_helper?
-              =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-tiny"
-            =link_to "History", history_item, class: "btn-normal btn-tiny"
+              =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+            =link_to "History", history_item, class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms_recursive.exists?
   %h6 #{pluralize(taxon.junior_synonyms_recursive.count, 'junior synonym')}
@@ -48,5 +72,23 @@
   %br
   =link_to "Formicidae family references", catalog_path(429011)
 -else
-  =render "reference_sections", taxon: taxon
+  -if taxon.reference_sections.present?
+    .reference-sections
+      -taxon.reference_sections.each do |reference_section|
+        .section.small-margin-bottom
+          -if reference_section.title_taxt.present?
+            %h6=TaxtPresenter[reference_section.title_taxt].to_html
+
+          -if reference_section.subtitle_taxt.present?
+            %h7=TaxtPresenter[reference_section.subtitle_taxt].to_html
+
+          -if reference_section.references_taxt.present?
+            %p=TaxtPresenter[reference_section.references_taxt].to_html
+
+          -if current_user
+            %span.show-on-hover
+              -if user_is_at_least_helper?
+                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
+              =link_to "History", reference_section, class: "btn-normal btn-very-tiny"
+
   =taxon_change_history taxon

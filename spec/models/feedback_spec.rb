@@ -23,7 +23,7 @@ describe Feedback do
   end
 
   describe "#from_the_same_ip" do
-    let!(:feedback) { create :feedback }
+    let!(:feedback) { build_stubbed :feedback, ip: "255.255.255.255" }
 
     before do
       create :feedback
@@ -31,7 +31,7 @@ describe Feedback do
     end
 
     it "returns feedbacks from the same IP" do
-      expect(feedback.from_the_same_ip.count).to eq 2
+      expect(feedback.from_the_same_ip.count).to eq 1
     end
   end
 
