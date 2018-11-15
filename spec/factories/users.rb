@@ -5,13 +5,17 @@ FactoryBot.define do
     password { 'secret' }
 
     trait :superadmin do
-      after(:create) { |user| user.add_role :superadmin }
+      is_superadmin { true }
     end
 
     trait :editor do
       name { 'Brian Fisher' }
       sequence(:email) { |n| "brian#{n}@example.com" }
-      after(:create) { |user| user.add_role :editor }
+      can_edit { true }
+    end
+
+    trait :helper do
+      is_helper { true }
     end
   end
 end

@@ -55,13 +55,8 @@ namespace :antcat do
         create_species "Paraantcatia #{species}", genus: paraantcatia, fossil: true
       end
 
-      puts "Creating users..."
-      User.create! email: 'user@example.com', name: 'Test User', password: 'secret123'
-      editor = User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123'
-      editor.add_role :editor
-      superadmin = User.create! email: 'superadmin@example.com', name: 'Test Superadmin', password: 'secret123'
-      superadmin.add_role :editor
-      superadmin.add_role :superadmin
+      puts "Creating user..."
+      User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', can_edit: true, is_superadmin: true
 
       puts "Successfully imported sample data."
     end

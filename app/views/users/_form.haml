@@ -4,17 +4,18 @@
     .medium-6.columns.end
       =f.label :name
       =f.text_field :name
+
       =f.label :email
       =f.text_field :email
+
       =f.label :password
       =f.password_field :password
 
-  .row
-    .medium-6.columns.end
-      -Role.all.each do |role|
-        %div
-          =check_box_tag "user[role_ids][]", role.id, user.roles.include?(role)
-          =role.name.humanize
+      =f.check_box :can_edit
+      =f.label :editor
+
+      =f.check_box :is_helper
+      =f.label :helper_editor
 
   .row
     .medium-6.columns.end

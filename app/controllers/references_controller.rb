@@ -1,5 +1,6 @@
 class ReferencesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:index, :show, :autocomplete]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
+  before_action :ensure_can_edit_catalog, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index

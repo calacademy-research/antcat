@@ -8,10 +8,10 @@
 %table
   %thead
     %th Name
-    %th Editor
+    %th
     %th Email
   -@users.each do |user|
     %tr
       %td=user.decorate.user_page_link
-      %td=user.can?(:edit, :catalog) ? 'Yes' : dash
+      %td=user.decorate.user_badge
       %td=user.email

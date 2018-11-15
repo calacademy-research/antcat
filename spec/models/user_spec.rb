@@ -26,13 +26,13 @@ describe User do
     context "when user is not an editor" do
       let(:user) { described_class.new }
 
-      specify { expect(user.can?(:edit, :catalog)).to be false }
+      specify { expect(user.is_editor?).to be false }
     end
 
     context "when user is an editor" do
       let(:user) { create :user, :editor }
 
-      specify { expect(user.can?(:edit, :catalog)).to be true }
+      specify { expect(user.is_editor?).to be true }
     end
   end
 

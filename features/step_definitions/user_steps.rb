@@ -25,6 +25,11 @@ Given('I am logged in as a catalog editor') do
   login_programmatically user
 end
 
+Given('I am logged in as a helper editor') do
+  user = Feed.without_tracking { create :user, :helper }
+  login_programmatically user
+end
+
 Given("there is a user named {string}") do |name|
   create :user, :editor, name: name
 end

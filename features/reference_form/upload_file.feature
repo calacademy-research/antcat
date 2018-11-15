@@ -7,7 +7,7 @@ Feature: Upload a file
   # servers are cleared, but not files stored on S3.
   Scenario: Clearing the URL after uploading the file
     Given PENDING
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
     And there is a reference
     And that the entry has a URL that's on our site
 
