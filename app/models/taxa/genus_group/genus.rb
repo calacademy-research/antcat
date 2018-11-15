@@ -55,10 +55,6 @@ class Genus < GenusGroupTaxon
       where(names: { epithet: Names::EpithetSearchSet[target_subspecies_string] })
   end
 
-  def statistics valid_only: false
-    get_statistics [:species, :subspecies], valid_only: valid_only
-  end
-
   private
 
     def update_descendants_subfamilies

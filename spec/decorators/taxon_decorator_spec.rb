@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe TaxonDecorator do
-  let(:taxon) { create :family }
+  let(:taxon) { build_stubbed :family }
   let(:decorated) { taxon.decorate }
 
   describe "#link_to_taxon" do
@@ -55,13 +55,13 @@ describe TaxonDecorator do
 
   describe "#link_to_antweb" do
     it "handles subfamilies" do
-      taxon = create :subfamily
+      taxon = build_stubbed :subfamily
       expect(taxon.decorate.link_to_antweb).
-        to eq %(<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{taxon.name_cache.downcase}&project=worldants">AntWeb</a>)
+        to eq %(<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{taxon.name.name.downcase}&project=worldants">AntWeb</a>)
     end
 
     it "outputs nothing for tribes" do
-      taxon = create :tribe
+      taxon = build_stubbed :tribe
       expect(taxon.decorate.link_to_antweb).to be_nil
     end
 
@@ -72,7 +72,7 @@ describe TaxonDecorator do
     end
 
     it "outputs nothing for subgenera" do
-      taxon = create :subgenus
+      taxon = build_stubbed :subgenus
       expect(taxon.decorate.link_to_antweb).to be_nil
     end
 
@@ -91,7 +91,7 @@ describe TaxonDecorator do
     end
 
     it "just returns nil for subspecies without species" do
-      taxon = create :subspecies, species: nil
+      taxon = build_stubbed :subspecies, species: nil
       expect(taxon.decorate.link_to_antweb).to be_nil
     end
   end

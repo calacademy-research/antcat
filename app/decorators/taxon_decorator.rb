@@ -65,7 +65,7 @@ class TaxonDecorator < ApplicationDecorator
     return if taxon.class.in? [Family, Tribe, Subgenus]
 
     url = "http://www.antweb.org/description.do?"
-    params = { rank: taxon.class.to_s.downcase }
+    params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
                     {      genus: taxon.genus.name.name.downcase,

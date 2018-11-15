@@ -1,7 +1,6 @@
 Feature: Searching the catalog
   Background:
-    Given I go to the catalog
-    And I follow the first "Advanced Search"
+    Given I go to the advanced search page
 
   Scenario: Searching when no results
     When I fill in "year" with "2010"

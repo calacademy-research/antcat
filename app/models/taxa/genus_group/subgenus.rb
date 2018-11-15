@@ -18,7 +18,4 @@ class Subgenus < GenusGroupTaxon
   def update_parent new_parent
     self.parent = new_parent
   end
-
-  def statistics valid_only: false
-  end
 end

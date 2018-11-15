@@ -157,7 +157,7 @@ class Taxon < ApplicationRecord
     Taxa::AnyNonTaxtReferences[self]
   end
 
-  def get_statistics ranks, valid_only: false
-    Taxa::Statistics[self, ranks, valid_only: valid_only]
+  def statistics valid_only: false
+    Taxa::Statistics[self, valid_only: valid_only]
   end
 end

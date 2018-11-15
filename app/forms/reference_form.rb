@@ -120,7 +120,7 @@ class ReferenceForm
 
       duplicate = Reference.find duplicates.first[:match].id
       reference.errors.add :base, <<~MSG.html_safe
-        This may be a duplicate of #{duplicate.decorate.plain_text} #{duplicate.id}.<br>
+        This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
         To save, click "Save Anyway"
       MSG
       true
