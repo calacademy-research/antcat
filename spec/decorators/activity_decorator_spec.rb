@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe ActivityDecorator do
-  let(:activity) { create :activity }
+  let(:activity) { build_stubbed :activity }
 
   describe "#link_user" do
     context "with a valid user" do
@@ -11,7 +11,7 @@ describe ActivityDecorator do
     end
 
     context "without a valid user" do
-      let(:activity) { create :activity, user: nil }
+      let(:activity) { build_stubbed :activity, user: nil }
 
       it "handles nil / 'system' activities" do
         expect(activity.decorate.link_user).to eq ""
@@ -38,8 +38,8 @@ describe ActivityDecorator do
       end
 
       it "allows custom paths" do
-        taxon = create :family
-        activity = create :activity, trackable: taxon
+        taxon = build_stubbed :family
+        activity = build_stubbed :activity, trackable: taxon
         trackable_id = activity.trackable_id
         path = "/catalog/#{trackable_id}"
 
@@ -49,7 +49,7 @@ describe ActivityDecorator do
     end
 
     context "without a valid trackable" do
-      let(:activity) { create :activity, trackable: nil }
+      let(:activity) { build_stubbed :activity, trackable: nil }
 
       it "handles nil trackables" do
         expect(activity.decorate.link_trackable_if_exists("label")).to eq "label"
@@ -58,7 +58,7 @@ describe ActivityDecorator do
   end
 
   describe "#trackabe_type_to_human" do
-    let(:activity) { create :activity, trackable_type: "BookReference" }
+    let(:activity) { build_stubbed :activity, trackable_type: "BookReference" }
 
     it "converts camelcase to spaced downcased" do
       expect(activity.decorate.trackabe_type_to_human).to eq "book reference"
@@ -67,19 +67,19 @@ describe ActivityDecorator do
 
   describe "#action_to_verb" do
     it "past participle-ifies defined actions" do
-      decorated = build(:activity, action: "create").decorate
+      decorated = build_stubbed(:activity, action: "create").decorate
       expect(decorated.action_to_verb).to eq "added"
     end
 
     it "uglifies missing actions" do
-      decorated = build(:activity, action: "bake_a_cake").decorate
+      decorated = build_stubbed(:activity, action: "bake_a_cake").decorate
       expect(decorated.action_to_verb).to eq "BAKE_A_CAKE"
     end
   end
 
   describe "#template_partial" do
     context "when  there's no `trackable_type`" do
-      let(:activity) { create :activity, trackable: nil, action: "approve_all_changes" }
+      let(:activity) { build_stubbed :activity, trackable: nil, action: "approve_all_changes" }
 
       it "returns the action" do
         expect(activity.decorate.send(:template_partial)).
@@ -89,7 +89,7 @@ describe ActivityDecorator do
 
     context "when there's a partial matching `action`" do
       let(:activity) do
-        create :activity, trackable: create(:species), action: "elevate_subspecies_to_species"
+        build_stubbed :activity, trackable: build_stubbed(:species), action: "elevate_subspecies_to_species"
       end
 
       it "returns the action" do
@@ -106,7 +106,7 @@ describe ActivityDecorator do
     end
 
     context "when there's no partial matching `trackable_type`" do
-      let(:activity) { create :activity, trackable: create(:citation) }
+      let(:activity) { build_stubbed :activity, trackable: build_stubbed(:citation) }
 
       it "returns the default template" do
         expect(activity.decorate.send(:template_partial)).

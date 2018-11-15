@@ -5,6 +5,7 @@
 
 .buttons-right
   =link_to "History", tooltip_history_index_path(@tooltip), class: "btn-normal"
-  =link_to 'Delete', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+  -if user_is_superadmin?
+    =link_to 'Delete', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 
 =render 'form', tooltip: @tooltip, referral: @referral

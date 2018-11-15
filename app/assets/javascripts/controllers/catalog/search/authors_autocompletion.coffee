@@ -1,7 +1,7 @@
 $ ->
-  setup_author_autocomplete()
+  setupAuthorAutocomplete()
 
-setup_author_autocomplete = ->
+setupAuthorAutocomplete = ->
   $('#author_name-js-hook').autocomplete
     autoFocus: true
     source: '/authors/autocomplete'

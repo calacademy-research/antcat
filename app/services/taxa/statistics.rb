@@ -2,19 +2,44 @@ module Taxa
   class Statistics
     include Service
 
-    def initialize(taxon, ranks, valid_only:)
+    def initialize(taxon, valid_only:)
       @taxon = taxon
-      @ranks = ranks
       @valid_only = valid_only
     end
 
     def call
+      return unless ranks
       get_statistics
     end
 
     private
 
-      attr_reader :taxon, :ranks, :valid_only
+      attr_reader :taxon, :valid_only
+
+      def ranks
+        @ranks ||= case taxon
+                   when ::Family
+                     {
+                       subfamilies: ::Subfamily,
+                       tribes: ::Tribe,
+                       genera: ::Genus,
+                       species: ::Species,
+                       subspecies: ::Subspecies
+                     }
+                   when ::Subfamily
+                     [:tribes, :genera, :species, :subspecies]
+                   when ::Tribe
+                     [:genera, :species]
+                   when ::Genus
+                     [:species, :subspecies]
+                   when ::Subgenus
+                     nil
+                   when ::Species
+                     [:subspecies]
+                   when ::Subspecies
+                     nil
+                   end
+      end
 
       # TODO this is really slow; figure out how to add database indexes for this.
       def get_statistics

@@ -12,24 +12,6 @@ describe Tribe do
     expect(tribe.children).to eq tribe.genera
   end
 
-  describe "#statistics" do
-    it "includes the number of genera" do
-      create :genus, tribe: tribe
-      expect(tribe.statistics).to eq extant: { genera: { 'valid' => 1 } }
-    end
-
-    it "includes the number of species" do
-      genus = create :genus, tribe: tribe
-      create :species, genus: genus
-      create :species, :synonym, genus: genus
-
-      expect(tribe.statistics).to eq extant: {
-        genera: { "valid" => 1 },
-        species: { "synonym" => 1, "valid" => 1 }
-      }
-    end
-  end
-
   describe "#update_parent" do
     let(:new_subfamily) { create :subfamily }
 

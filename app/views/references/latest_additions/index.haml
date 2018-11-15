@@ -1,15 +1,11 @@
 -@title = 'Latest Additions'
 -breadcrumb :references_latest_additions
 
--if can? :edit, :catalog
-  .buttons-right
-    =link_to "New", new_reference_path, class: "btn-normal"
-
 %table.references
   %thead
     %th
     %th Created
-    -if can? :edit, :catalog
+    -if user_is_editor?
       %th Review status
       %th
       %th
@@ -18,7 +14,7 @@
     %tr
       %td=render 'references/reference', reference: reference
       %td=time_tag reference.created_at
-      -if can? :edit, :catalog
+      -if user_is_editor?
         %td=reference.decorate.format_review_state
         %td=review_reference_button reference
         %td=set_as_default_reference_button reference

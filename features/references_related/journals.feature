@@ -1,6 +1,6 @@
 Feature: Editing journals
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
     And a journal exists with a name of "Psyche"
     And I go to the references page
     And I follow "Journals"

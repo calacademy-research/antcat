@@ -49,7 +49,7 @@ crumb :taxon_history_items do |taxon|
 end
 
   crumb :taxon_history_item do |item|
-    link "##{item.id}"
+    link "##{item.id}", item
     parent :taxon_history_items, item.taxon
   end
 
@@ -69,7 +69,7 @@ crumb :reference_sections do |taxon|
 end
 
   crumb :reference_section do |reference_section|
-    link "##{reference_section.id}"
+    link "##{reference_section.id}", reference_section
     parent :reference_sections, reference_section.taxon
   end
 

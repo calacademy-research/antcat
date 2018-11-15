@@ -1,3 +1,10 @@
+if ENV["COVERAGE"]
+  require 'simplecov'
+
+  SimpleCov.command_name "cucumber"
+  SimpleCov.start
+end
+
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
 

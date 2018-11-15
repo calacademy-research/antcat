@@ -26,9 +26,6 @@ class Subspecies < SpeciesGroupTaxon
     Subspecies.none
   end
 
-  def statistics valid_only: false
-  end
-
   private
 
     def set_genus

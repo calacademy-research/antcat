@@ -3,7 +3,7 @@ class IssuesController < ApplicationController
   before_action :set_issue, only: [:show, :edit, :update, :reopen, :close]
 
   def index
-    @issues = Issue.by_status_and_date.paginate(page: params[:page])
+    @issues = Issue.by_status_and_date.includes(:adder).paginate(page: params[:page])
     @open_issues_count = Issue.open.count
   end
 

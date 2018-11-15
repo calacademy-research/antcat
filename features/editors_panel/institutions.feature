@@ -1,6 +1,6 @@
 Feature: Institutions
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
 
   Scenario: Adding an institution
     When I go to the Editor's Panel

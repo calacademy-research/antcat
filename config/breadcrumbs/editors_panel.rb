@@ -118,11 +118,6 @@ end
     parent :database_scripts
   end
 
-    crumb :show_database_script_source do |script|
-      link "Show Source"
-      parent :database_script, script
-    end
-
 crumb :versions do
   link "PaperTrail Versions", versions_path
   parent :editors_panel

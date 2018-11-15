@@ -33,15 +33,4 @@ class Family < Taxon
   def subfamilies
     Subfamily.all
   end
-
-  def statistics valid_only: false
-    ranks = {
-      subfamilies: Subfamily,
-      tribes: Tribe,
-      genera: Genus,
-      species: Species,
-      subspecies: Subspecies
-    }
-    get_statistics ranks, valid_only: valid_only
-  end
 end

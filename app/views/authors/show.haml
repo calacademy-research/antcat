@@ -1,22 +1,6 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
-.clearfix
-
-.float-right.right{data: { sticky_container: true }}
-  .sticky{data: { sticky: true, stick_to: "bottom"}}
-    #quick-links.callout.secondary.float-right
-      %h6.center-text Quick links for author
-      %ul.menu
-        %li
-          %a{href: "#references"} References
-        %li
-          %a{href: "#taxa"} Taxa
-        %li
-          %a{href: "#statistics"} Statistics
-        %li
-          %a{href: "#names"} Names
-
 #references.callout.margin-bottom
   %h5 References by author
   -if @references.empty?
@@ -70,7 +54,7 @@
   .small-6.columns.end
     %h5
       Names belonging to author
-      -if can? :edit, :catalog
+      -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
     #names.callout.margin-bottom
       %table
@@ -83,7 +67,7 @@
             %tr
               %td=author_name.name
               %td
-                -if can? :edit, :catalog
+                -if user_is_editor?
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
                 -if user_is_superadmin?
                   =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"

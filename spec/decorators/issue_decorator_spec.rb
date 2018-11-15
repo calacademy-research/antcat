@@ -1,8 +1,8 @@
 require "spec_helper"
 
 describe IssueDecorator do
-  let(:open_issue) { create(:issue, :open).decorate }
-  let(:closed_issue) { create(:issue, :closed).decorate }
+  let(:open_issue) { build_stubbed(:issue, :open).decorate }
+  let(:closed_issue) { build_stubbed(:issue, :closed).decorate }
 
   describe "#format_status" do
     specify { expect(open_issue.format_status).to eq "Open" }

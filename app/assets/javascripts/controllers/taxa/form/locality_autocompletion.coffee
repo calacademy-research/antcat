@@ -8,7 +8,6 @@ $ ->
       url: '/protonyms/localities/autocomplete.json'
 
   localities.clearPrefetchCache()
-  localities.initialize()
 
   options =
     hint: false

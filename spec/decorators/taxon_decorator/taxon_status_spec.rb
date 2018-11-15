@@ -15,7 +15,7 @@ describe TaxonDecorator::TaxonStatus do
 
     context "when taxon is a homonym" do
       context "when taxon does not have a `homonym_replaced_by`" do
-        let!(:taxon) { create :family, :homonym }
+        let!(:taxon) { build_stubbed :family, :homonym }
 
         specify { expect(taxon.decorate.taxon_status).to eq 'homonym' }
       end

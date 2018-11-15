@@ -4,9 +4,10 @@
   =reference.format_reference_document_link
   -if current_user
     %span.show-on-hover
-      =link_to "Edit", edit_reference_path(reference), class: "btn-tiny btn-normal"
-      =link_to "History", reference_history_index_path(reference), class: "btn-tiny btn-normal"
-      =link_to "What Links Here", reference_what_links_here_index_path(reference), class: "btn-tiny btn-normal"
+      -if user_is_at_least_helper?
+        =link_to "Edit", edit_reference_path(reference), class: "btn-normal btn-very-tiny"
+      =link_to "History", reference_history_index_path(reference), class: "btn-normal btn-very-tiny"
+      =link_to "What Links Here", reference_what_links_here_index_path(reference), class: "btn-normal btn-very-tiny"
       =set_as_default_reference_button reference, tiny: true
 
   -if reference.public_notes?

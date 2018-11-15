@@ -43,9 +43,6 @@ module ApplicationHelper
     content_tag :span, "new!", class: "label"
   end
 
-  # First attempt at creating a spinner that works on all elements.
-  # Add .has-spinner to the button/link/element and call this method inside that element.
-  # To be improved once all buttons are more consistently formatted site-wide.
   def spinner_icon
     "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
   end
@@ -57,14 +54,10 @@ module ApplicationHelper
 
   def foundation_class_for flash_type
     case flash_type.to_sym
-    when :success, :notice        then "primary"
-    when :error, :alert, :warning then "alert"
-    else                               "secondary"
+    when :notice then "primary"
+    when :alert  then "alert"
+    else         raise
     end
-  end
-
-  def reference_layout?
-    current_layout == "references"
   end
 
   def inline_expandable label = "Show more"
@@ -81,15 +74,6 @@ module ApplicationHelper
   end
 
   def antcat_icon *css_classes
-    content_tag :span, nil,
-      class: ["antcat_icon"].concat(Array.wrap(css_classes))
+    content_tag :span, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
-
-  private
-
-    # HACK via https://stackoverflow.com/a/40174627
-    def current_layout
-      layout = controller.send :_layout, ["test"]
-      layout.inspect.remove('"').split("/").last.gsub(/.haml/, "")
-    end
 end

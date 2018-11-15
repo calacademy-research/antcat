@@ -30,12 +30,13 @@ module AntCat
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{config.root}/lib/tasks/**"]
-    config.autoload_paths += Dir["#{config.root}/app/models/**/"]
+    config.autoload_paths += Dir["#{config.root}/app/models/**/*"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
     config.autoload_paths += Dir["#{config.root}/app/presenters/**/"]
     config.autoload_paths += Dir["#{config.root}/app/services/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
+    # TODO: maye add: `config.action_controller.include_all_helpers = false`
 
     config.assets.enabled = true
   end

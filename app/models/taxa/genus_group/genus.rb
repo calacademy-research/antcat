@@ -14,6 +14,10 @@ class Genus < GenusGroupTaxon
 
   def parent= parent_taxon
     case parent_taxon
+    when Family, nil
+      # NOTE we don't have to clear `family_id` since we do not store that for genera.
+      self.subfamily = nil
+      self.tribe = nil
     when Subfamily
       self.subfamily = parent_taxon
       self.tribe = nil
@@ -53,10 +57,6 @@ class Genus < GenusGroupTaxon
   def find_subspecies_in_genus target_subspecies_string
     Taxon.joins(:name).where(genus: self).
       where(names: { epithet: Names::EpithetSearchSet[target_subspecies_string] })
-  end
-
-  def statistics valid_only: false
-    get_statistics [:species, :subspecies], valid_only: valid_only
   end
 
   private

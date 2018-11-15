@@ -1,5 +1,5 @@
 .right
-  -if can? :edit, :catalog
+  -if user_is_editor?
     =link_to_edit_taxon taxon
 
     -unless taxon.original_combination?
@@ -13,7 +13,7 @@
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"
 
--if can? :edit, :catalog
+-if user_is_editor?
   %br
 
   .right

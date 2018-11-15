@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
-  get 'catalog/:id/wikipedia' => 'catalog#wikipedia_tools'
+  get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
   get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
   get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
@@ -105,12 +105,9 @@ Rails.application.routes.draw do
   resources :taxa, only: [:new, :create, :edit, :update] do
     member do
       controller :taxa_grab_bag do
-        put :elevate_to_species
-        get :show_children
         get :confirm_before_delete
         delete :destroy
         delete :destroy_unreferenced
-        post :reorder_history_items
       end
     end
     resources :taxon_history_items, only: [:new, :create]
@@ -120,12 +117,15 @@ Rails.application.routes.draw do
         put :reverse_synonymy
       end
     end
-    resource :convert_to_subspecies, only: [:new, :create]
     scope module: :taxa do
+      resource :children, only: [:show]
       resource :create_combination, only: [:new, :show]
+      resource :convert_to_subspecies, only: [:new, :create]
       resource :force_parent_change, only: [:show, :create]
+      resource :elevate_to_species, only: [:create]
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
+      resource :reorder_history_items, only: [:create]
     end
   end
 
@@ -223,11 +223,7 @@ Rails.application.routes.draw do
     get :formatting_help
   end
 
-  resources :database_scripts, only: [:index, :show] do
-    member do
-      get :source
-    end
-  end
+  resources :database_scripts, only: [:index, :show]
 
   namespace :my do
     resources :recently_used_references, only: [:index, :create]

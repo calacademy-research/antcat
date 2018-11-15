@@ -1,5 +1,6 @@
 class ReferencesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:index, :show, :autocomplete]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
+  before_action :ensure_can_edit_catalog, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -29,10 +30,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :create, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<~MSG
-        Reference was successfully created.
-        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
-      MSG
+      redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
       render :new
     end
@@ -43,10 +41,7 @@ class ReferencesController < ApplicationController
 
     if save
       @reference.create_activity :update, edit_summary: params[:edit_summary]
-      redirect_to reference_path(@reference), notice: <<~MSG
-        Reference was successfully updated.
-        <strong>#{view_context.set_as_default_reference_button @reference, tiny: true}</strong>
-      MSG
+      redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       render :edit
     end

@@ -2,9 +2,6 @@
 # such as "hey {ref 123}") to something that can be read.
 
 class TaxtPresenter
-  include Rails.application.routes.url_helpers
-  include ActionView::Helpers::UrlHelper
-
   def initialize taxt_from_db
     @taxt = taxt_from_db.try :dup
   end

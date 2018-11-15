@@ -4,14 +4,14 @@ class ChangesController < ApplicationController
   before_action :set_change, only: [:show, :approve]
 
   def index
-    @changes = Change.order(created_at: :desc).paginate(page: params[:page])
+    @changes = Change.includes_associated.order(created_at: :desc).paginate(page: params[:page])
   end
 
   def show
   end
 
   def unreviewed
-    @changes = Change.waiting.order(created_at: :desc).paginate(page: params[:page])
+    @changes = Change.waiting.includes_associated.order(created_at: :desc).paginate(page: params[:page])
   end
 
   # TODO handle error, if any.

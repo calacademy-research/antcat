@@ -1,11 +1,12 @@
 class TaxonHistoryItemsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:show, :index]
+  before_action :ensure_user_is_at_least_helper, except: [:show, :index]
+  before_action :ensure_can_edit_catalog, only: [:destroy]
   before_action :set_taxon_history_item, only: [:edit, :update, :destroy]
 
   def index
     @taxon_history_items = TaxonHistoryItem.all
     @taxon_history_items = @taxon_history_items.search_objects(search_params) if params[:q].present?
-    @taxon_history_items = @taxon_history_items.paginate(page: params[:page], per_page: 100)
+    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
   end
 
   def show
@@ -73,10 +74,9 @@ class TaxonHistoryItemsController < ApplicationController
     end
 
     def render_json item
-      json = {
+      render json: {
         content: render_to_string(partial: 'taxon_history_items/taxt_editor_template', locals: { item: item }),
         error: item.errors.full_messages.to_sentence
       }
-      render json: json
     end
 end

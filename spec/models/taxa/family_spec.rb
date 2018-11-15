@@ -7,26 +7,15 @@ describe Family do
     specify { expect(family.parent).to be_nil }
   end
 
-  describe "#statistics" do
-    before do
-      subfamily = create :subfamily
-      tribe = create :tribe, subfamily: subfamily
-      create :genus, subfamily: subfamily, tribe: tribe
-      create :genus, :homonym, subfamily: subfamily, tribe: tribe
-      2.times { create :subfamily, fossil: true }
+  describe "#parent=" do
+    specify do
+      expect { described_class.new.parent = nil }.to raise_error("cannot update parent of families")
     end
+  end
 
-    it "returns the statistics for each status of each rank" do
-      expect(family.statistics).to eq(
-        extant: {
-          subfamilies: { 'valid' => 1 },
-          tribes: { 'valid' => 1 },
-          genera: { 'valid' => 1, 'homonym' => 1 }
-        },
-        fossil: {
-          subfamilies: { 'valid' => 2 }
-        }
-      )
+  describe "#update_parent" do
+    specify do
+      expect { described_class.new.update_parent(nil) }.to raise_error("cannot update parent of families")
     end
   end
 

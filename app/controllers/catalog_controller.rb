@@ -1,5 +1,5 @@
 class CatalogController < ApplicationController
-  before_action :set_taxon, only: [:show, :tab, :wikipedia_tools]
+  before_action :set_taxon, only: [:show, :tab]
 
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
@@ -40,10 +40,6 @@ class CatalogController < ApplicationController
   def show_invalid
     session[:show_invalid] = true
     redirect_back fallback_location: root_path
-  end
-
-  # Secret page. Append "/wikipedia" after the taxon id.
-  def wikipedia_tools
   end
 
   def autocomplete

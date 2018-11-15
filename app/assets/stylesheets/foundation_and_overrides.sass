@@ -140,10 +140,19 @@ a.btn-normal, a.btn-saves, a.btn-nodanger
 a.btn-nodanger
   color: #000 !important
 
+// TODO: Rename to `.btn-small`.
 .btn-tiny
   padding: 0.15rem 0.3rem !important
   font-size: rem-calc(12) !important
   white-space: nowrap
+
+// For inline "show on hover" buttons to avoid making the layout jump.
+.btn-very-tiny
+  padding: 0.15rem 0.2rem !important
+  font-size: rem-calc(12) !important
+  margin-bottom: 0
+  white-space: nowrap
+  display: inline
 
 button.close-button
   background-color: transparent
@@ -175,3 +184,8 @@ abbr[title]
 
 table
   border-spacing: 0
+
+// TODO: see if we can remove this after updating to Foundation 6.5.
+// Fix double arrow icons in dropdowns.
+select
+  background-image: none

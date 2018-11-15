@@ -1,33 +1,6 @@
 require 'spec_helper'
 
 describe CatalogController do
-  describe 'GET index' do
-    context "family exists" do
-      before do
-        create :family
-        get :index
-      end
-
-      it { expect(response).to render_template :show }
-    end
-
-    context "without a family existing in the database" do
-      before { get :index }
-
-      specify { expect(response).to render_template :family_not_found }
-    end
-  end
-
-  describe 'GET show' do
-    context "RecordNotFound" do
-      before { create :family }
-
-      it "raises on taxon not found (=404 in prod)" do
-        expect { get :show, params: { id: 99999 } }.to raise_error ActiveRecord::RecordNotFound
-      end
-    end
-  end
-
   describe "#show_valid_only and #show_invalid" do
     before do
       create :family

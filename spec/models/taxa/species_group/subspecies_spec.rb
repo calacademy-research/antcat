@@ -5,12 +5,6 @@ describe Subspecies do
 
   it { is_expected.to validate_presence_of :genus }
 
-  describe "#statistics" do
-    it "has no statistics" do
-      expect(described_class.new.statistics).to be_nil
-    end
-  end
-
   it "does not have to have a species (before being fixed up, e.g.)" do
     subspecies = create :subspecies, genus: genus, species: nil
     expect(subspecies).to be_valid

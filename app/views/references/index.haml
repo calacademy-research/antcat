@@ -8,7 +8,7 @@
     %em et al.
   .clearfix
 
--if can? :edit, :catalog
+-if user_is_at_least_helper?
   .buttons-right
     =link_to "New", new_reference_path, class: "btn-normal"
 

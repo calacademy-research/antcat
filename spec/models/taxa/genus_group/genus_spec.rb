@@ -21,80 +21,6 @@ describe Genus do
     expect(genus.subspecies.count).to eq 1
   end
 
-  describe "#statistics" do
-    context "when 0 children" do
-      specify { expect(genus.statistics).to eq({}) }
-    end
-
-    context "when 1 valid species" do
-      before { create :species, genus: genus }
-
-      specify do
-        expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
-      end
-    end
-
-    context "when there are original combinations" do
-      before do
-        create :species, genus: genus
-        create :species, :original_combination, genus: genus
-      end
-
-      it "ignores the original combinations" do
-        expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
-      end
-    end
-
-    context "when 1 valid species and 2 synonyms" do
-      before do
-        create :species, genus: genus
-        2.times { create :species, :synonym, genus: genus }
-      end
-
-      specify do
-        expect(genus.statistics).to eq extant: {
-          species: { 'valid' => 1, 'synonym' => 2 }
-        }
-      end
-    end
-
-    context "when 1 valid species with 2 valid subspecies" do
-      before do
-        species = create :species, genus: genus
-        2.times { create :subspecies, species: species, genus: genus }
-      end
-
-      specify do
-        expect(genus.statistics).to eq extant: {
-          species: { 'valid' => 1 }, subspecies: { 'valid' => 2 }
-        }
-      end
-    end
-
-    context "when there are extinct species and subspecies" do
-      before do
-        species = create :species, genus: genus
-        fossil_species = create :species, genus: genus, fossil: true
-        create :subspecies, genus: genus, species: species, fossil: true
-        create :subspecies, genus: genus, species: species
-        create :subspecies, genus: genus, species: fossil_species, fossil: true
-      end
-
-      it "can differentiate extinct species and subspecies" do
-        expect(genus.statistics).to eq(
-          extant: {
-            species: { 'valid' => 1 },
-            subspecies: { 'valid' => 1 }
-          },
-          fossil: {
-            species: { 'valid' => 1 },
-            subspecies: { 'valid' => 2 }
-          }
-        )
-      end
-    end
-  end
-
   describe "#without_subfamily" do
     let!(:cariridris) { create :genus, subfamily: nil }
 
@@ -177,6 +103,21 @@ describe Genus do
 
       expect(genus_with_tribe.tribe).to eq nil
       expect(genus_with_tribe.subfamily).to eq subfamily
+    end
+
+    it "clears both subfamily and tribe when the new parent is a family" do
+      family = create :family
+      expect(genus_with_tribe.tribe).to eq tribe # Trigger FactoryBot.
+      genus_with_tribe.update_parent family
+      expect(genus_with_tribe.tribe).to eq nil
+      expect(genus_with_tribe.subfamily).to eq nil
+    end
+
+    it "clears both subfamily and tribe when the new parent is nil" do
+      expect(genus_with_tribe.tribe).to eq tribe # Trigger FactoryBot.
+      genus_with_tribe.update_parent nil
+      expect(genus_with_tribe.tribe).to eq nil
+      expect(genus_with_tribe.subfamily).to eq nil
     end
 
     it "assigns the subfamily of its descendants" do

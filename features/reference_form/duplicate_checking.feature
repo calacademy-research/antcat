@@ -5,7 +5,7 @@ Feature: Checking for duplicates during data entry
   So that there are no duplicate references
 
   Background:
-    Given I am logged in as a catalog editor
+    Given I am logged in as a helper editor
     And this reference exists
       | author   | citation   | title | citation_year |
       | Ward, P. | Psyche 6:1 | Ants  | 2010          |
@@ -20,10 +20,10 @@ Feature: Checking for duplicates during data entry
     And I fill in "reference_journal_name" with "Psyche"
     And I fill in "article_pagination" with "1"
     And I press "Save"
-    Then I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1"
+    Then I should see "This may be a duplicate of Ward, 2010"
 
     When I press "Save Anyway"
-    Then I should see "Reference was successfully created"
+    Then I should see "Reference was successfully added"
 
   Scenario: Editing a reference that makes it a duplicate
     Given this reference exists
@@ -35,7 +35,7 @@ Feature: Checking for duplicates during data entry
     And I fill in "reference_title" with "Ants"
     And I fill in "reference_series_volume_issue" with "6:1"
     And I press "Save"
-    Then I should see "This may be a duplicate of Ward, P. 2010. Ants. Psyche 6:1"
+    Then I should see "This may be a duplicate of Ward, 2010"
 
     When I press "Save Anyway"
     Then I should see "Reference was successfully updated"

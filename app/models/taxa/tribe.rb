@@ -30,10 +30,6 @@ class Tribe < Taxon
     Species.where(genus_id: genera.pluck(:id))
   end
 
-  def statistics valid_only: false
-    get_statistics [:genera, :species], valid_only: valid_only
-  end
-
   private
 
     def update_descendants_subfamilies

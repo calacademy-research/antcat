@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  NotAuthorized = Class.new(StandardError)
+
   protect_from_forgery with: :exception
 
   before_action :save_location, :set_user_for_feed
@@ -9,8 +11,10 @@ class ApplicationController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  helper_method :user_is_superadmin?
-  rescue_from CanCan::AccessDenied do |exception|
+  delegate :is_editor?, :is_at_least_helper?, :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
+  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
+
+  rescue_from NotAuthorized do |exception|
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
   end
 
@@ -24,14 +28,6 @@ class ApplicationController < ActionController::Base
     current_user&.id
   end
 
-  def root_redirect_for_active_admin _exception
-    redirect_to root_url
-  end
-
-  def user_is_superadmin?
-    current_user&.superadmin?
-  end
-
   protected
 
     def configure_permitted_parameters
@@ -42,7 +38,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Save location so that we can redirect back to the previous page after signing in/out.
+    # Save location to redirect back to after signing in.
     def save_location
       unless request.xhr? || request.url =~ %r{/users/}
         session[:user_return_to] = request.url
@@ -71,13 +67,19 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    # TODO: Rename to `ensure_user_is_editor`?
     def ensure_can_edit_catalog
       authenticate_user!
-      raise CanCan::AccessDenied, "edit catalog" unless can? :edit, :catalog
+      raise NotAuthorized, "editor" unless user_is_editor?
+    end
+
+    def ensure_user_is_at_least_helper
+      authenticate_user!
+      raise NotAuthorized, "helper" unless user_is_at_least_helper?
     end
 
     def authenticate_superadmin
       authenticate_user!
-      raise CanCan::AccessDenied, "superadmin" unless user_is_superadmin?
+      raise NotAuthorized, "superadmin" unless user_is_superadmin?
     end
 end

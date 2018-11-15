@@ -1,6 +1,6 @@
 module ChangesHelper
   def confirm_before_undo_button change
-    return unless can? :edit, :catalog
+    return unless user_is_editor?
     link_to 'Undo...', change_undos_path(change), class: "btn-warning btn-tiny"
   end
 

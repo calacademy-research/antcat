@@ -5,7 +5,7 @@ class FeedbackController < ApplicationController
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 
   before_action :authenticate_superadmin, only: [:destroy]
-  before_action :ensure_can_edit_catalog, except: [:create]
+  before_action :ensure_user_is_at_least_helper, except: [:create]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
@@ -21,7 +21,7 @@ class FeedbackController < ApplicationController
   # TODO probably remove `by_status_and_date` now that we have filters.
   def index
     @feedbacks = Feedback.by_status_and_date.filter(filter_params)
-    @feedbacks = @feedbacks.paginate(page: params[:page], per_page: 10)
+    @feedbacks = @feedbacks.includes(:user).paginate(page: params[:page], per_page: 10)
   end
 
   def show
@@ -43,8 +43,7 @@ class FeedbackController < ApplicationController
     respond_to do |format|
       if @feedback.save
         format.json do
-          json = { feedback_success_callout: feedback_success_callout }
-          render json: json, status: :created
+          render status: :created, json: { feedback_success_callout: feedback_success_callout }
         end
       else
         format.json { render_unprocessable }

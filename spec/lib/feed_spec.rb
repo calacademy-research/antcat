@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Feed, :feed do
-  describe "globally enabling and disabling tracking" do
+  describe "enabling and disabling tracking" do
     it "is enabled by default" do
       expect(described_class.enabled?).to be true
     end

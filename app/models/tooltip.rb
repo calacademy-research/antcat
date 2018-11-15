@@ -9,8 +9,4 @@ class Tooltip < ApplicationRecord
 
   has_paper_trail
   tracked on: :all, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
-
-  def key_disabled?
-    !key_enabled?
-  end
 end

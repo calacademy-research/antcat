@@ -52,11 +52,6 @@ class DatabaseScript
     @filename_without_extension ||= self.class.name.demodulize.underscore
   end
 
-  # Filename is generated from the script's class name, so presumably safe.
-  def source_code
-    File.read script_path
-  end
-
   # For `link_to "database_script", database_script_path(@database_script)`.
   def to_param
     filename_without_extension

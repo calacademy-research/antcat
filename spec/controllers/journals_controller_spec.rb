@@ -12,4 +12,13 @@ describe JournalsController do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
+
+  describe "GET autocomplete" do
+    let(:term) { "zootaxa" }
+
+    it "calls `Autocomplete::AutocompleteJournals`" do
+      expect(Autocomplete::AutocompleteJournals).to receive(:new).with(term).and_call_original
+      get :autocomplete, params: { term: term, format: :json }
+    end
+  end
 end
