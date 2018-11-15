@@ -14,6 +14,10 @@ class Genus < GenusGroupTaxon
 
   def parent= parent_taxon
     case parent_taxon
+    when Family, nil
+      # NOTE we don't have to clear `family_id` since we do not store that for genera.
+      self.subfamily = nil
+      self.tribe = nil
     when Subfamily
       self.subfamily = parent_taxon
       self.tribe = nil

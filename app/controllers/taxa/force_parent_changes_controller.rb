@@ -9,7 +9,7 @@ module Taxa
     end
 
     def create
-      unless @new_parent
+      if @new_parent.blank? && !@taxon.is_a?(Genus)
         flash.now[:alert] = "A parent must be set."
         render :show
         return
@@ -37,7 +37,7 @@ module Taxa
         @valid_parent_ranks =
           case @taxon
           when Tribe      then [:subfamily]
-          when Genus      then [:subfamily, :tribe]
+          when Genus      then [:family, :subfamily, :tribe]
           when Subgenus   then [:genus]
           when Species    then [:genus, :subgenus]
           when Subspecies then [:species]

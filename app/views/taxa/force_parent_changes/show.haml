@@ -27,8 +27,21 @@
     .medium-4.columns
       .callout
         %h6 Help
-        %p Please only use this functionality to correct obvious mistakes such as species that are listed in the wrong genus and never should have been there (homonyms, for example). Force-changing parent will modify the record in place without creating a new record. Use the "Create combination" button to create combinations.
-        %p Parents of the following ranks can be changed from this page: tribe, genus, subgenus, species and subspecies. Parents of children are updated in most cases, but there are edge-cases that may not be fully covered, so pay extra attention to <i>incertae sedis</i> taxa, and uncommon ranks such as subgenera.
+        %p Use this page to...
+        %p
+          1) Clear parents of taxa that have been excluded from Formicidae (please also update the status in the taxon form to
+          %code excluded from Formicidae
+          if that is not already the case).
+        %p
+          2) Set a genus' parent to Formicidae if the genus is
+          %i incertae sedis
+          at family rank (please also set
+          %code incertae sedis in
+          in the taxon form to
+          %code family
+          if that is not already the case).
+        %p 3) Correct obvious mistakes such as species that are listed in the wrong genus and never should have been there (homonyms, for example).
+        %p Force-changing parent will modify the record in place without creating a new record. Use the "Create combination" button to create combinations.
         %p
           =link_to "Subspecies without a species", "/database_scripts/subspecies_without_species"
           is a special case that can be fixed in the normal edit form.
