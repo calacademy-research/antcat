@@ -86,3 +86,6 @@ group :test do
   gem 'simplecov', require: false
   gem 'webmock'
 end
+
+# Uncomment for profiling.
+# gem 'rack-mini-profiler'
