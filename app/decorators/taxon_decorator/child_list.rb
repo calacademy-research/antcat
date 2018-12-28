@@ -13,10 +13,20 @@ class TaxonDecorator::ChildList
 
   def call
     content = ''.html_safe
-    [:subfamilies, :tribes, :genera_incertae_sedis_in].each do |rank|
-      content << child_lists_for_rank(rank)
+
+    if taxon.is_a?(Family)
+      content << child_lists_for_rank(:subfamilies)
     end
-    content << collective_group_name_child_list
+
+    if taxon.is_a?(Subfamily)
+      content << child_lists_for_rank(:tribes)
+    end
+
+    if taxon.is_a?(Subfamily) || taxon.is_a?(Family)
+      content << child_lists_for_rank(:genera_incertae_sedis_in)
+    end
+
+    content << collective_group_name_child_list if taxon.is_a?(Subfamily)
 
     content
   end
@@ -26,7 +36,7 @@ class TaxonDecorator::ChildList
     attr_reader :taxon
 
     def child_lists_for_rank children_selector
-      return ''.html_safe unless taxon.respond_to?(children_selector) && taxon.send(children_selector).present?
+      return ''.html_safe unless taxon.send(children_selector)
 
       if taxon.is_a?(Subfamily) && children_selector == :genera
         # TODO this is never triggered since there is no `Subfamily#genera`,
@@ -39,18 +49,16 @@ class TaxonDecorator::ChildList
     end
 
     def collective_group_name_child_list
-      children_selector = :collective_group_names
-      return '' unless taxon.respond_to?(children_selector) && taxon.send(children_selector).present?
-      child_list taxon.send(children_selector), false, collective_group_names: true
+      child_list taxon.collective_group_names, false, collective_group_names: true
     end
 
     def child_list_fossil_pairs children_selector, conditions = {}
       extant_conditions = conditions.merge fossil: false
       extinct_conditions = conditions.merge fossil: true
 
-      extinct = child_list_query children_selector, extinct_conditions
-      extant = child_list_query children_selector, extant_conditions
-
+      both = child_list_query children_selector, conditions
+      extinct = both[true] || []
+      extant = both[false] || []
       specify_extinct_or_extant = extinct.present?
 
       child_list(extant, specify_extinct_or_extant, extant_conditions) +
@@ -62,11 +70,11 @@ class TaxonDecorator::ChildList
 
       children = taxon.send children_selector
 
-      children = children.where(fossil: !!conditions[:fossil]) if conditions.key? :fossil
       children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
       children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
 
-      children.valid.includes(:name).order_by_name
+      # HACK: This is Ruby's `#group_by`, not ActiveRecord's `#group`.
+      children.valid.includes(:name).order_by_name.group_by(&:fossil).to_h
     end
 
     def child_list children, specify_extinct_or_extant, conditions = {}
@@ -113,19 +121,15 @@ class TaxonDecorator::ChildList
     end
 
     def child_list_items children
-      children.map { |child| link_to_taxon(child) }.join(', ').html_safe
+      if for_antweb?
+        children.map { |child| Exporters::Antweb::Exporter.antcat_taxon_link_with_name child }
+      else
+        children.map { |child| child.decorate.link_to_taxon }
+      end.join(', ').html_safe
     end
 
     # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
     def for_antweb?
       @for_antweb
-    end
-
-    def link_to_taxon taxon
-      if for_antweb?
-        Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
-      else
-        taxon.decorate.link_to_taxon
-      end
     end
 end
