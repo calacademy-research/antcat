@@ -32,9 +32,6 @@
 
 -@reference = @reference.decorate
 
--# TODO link journal and authors in the formatted reference (not just on this
--# page but through out the catalog). Updating all tests would
--# take way too long time, we're linking them here instead for now.
 .row.margin-bottom
   .small-12.columns
     .callout
@@ -43,8 +40,8 @@
 
 .row.margin-bottom
   .small-12.columns
-    %h5 Data
-    %table.table
+    %h5 Details
+    %table.table.unstriped
       %tbody
         %tr
           %th Authors
@@ -55,9 +52,17 @@
         %tr
           %th Title
           %td=@reference.format_title
+        -if @reference.is_a? UnknownReference
+          %tr
+            %th Citation
+            %td=@reference.format_citation
         %tr
           %th Pagination
-          %td=or_dash @reference.pagination
+          %td
+            -if @reference.is_a? NestedReference
+              =or_dash @reference.pages_in
+            -else
+              =or_dash @reference.pagination
         %tr
           %th Date
           %td=@reference.decorate.format_date
@@ -87,15 +92,13 @@
             %th Nested in
             %td=@reference.nesting_reference.decorate.linked_keey
 
-        -nestees = @reference.nestees
-        -if nestees.present?
+        -if @reference.nestees.present?
           %tr
             %th Nested references
             %td
               %ul.no-bullet
-                -nestees.each do |nestee|
+                -@reference.nestees.each do |nestee|
                   %li=nestee.decorate.linked_keey
-
         %tr
           %th DOI
           %td=or_dash @reference.doi
@@ -103,20 +106,21 @@
           %th Links
           %td=or_dash @reference.format_reference_document_link
 
-.row.margin-bottom
-  .small-12.columns
-    %h5 Notes
-    %table.table.unstriped
-      %tbody
-        %tr
-          %th Public notes
-          %td=or_dash @reference.public_notes
-        %tr
-          %th Editor notes
-          %td=or_dash @reference.editor_notes
-        %tr
-          %th Taxonomic notes
-          %td=or_dash @reference.taxonomic_notes
+-if @reference.any_notes?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 Notes
+      %table.table.unstriped
+        %tbody
+          %tr
+            %th Public notes
+            %td=or_dash @reference.public_notes
+          %tr
+            %th Editor notes
+            %td=or_dash @reference.editor_notes
+          %tr
+            %th Taxonomic notes
+            %td=or_dash @reference.taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom
