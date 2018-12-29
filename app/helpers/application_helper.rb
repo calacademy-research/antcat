@@ -65,6 +65,16 @@ module ApplicationHelper
     end
   end
 
+  def menu_active? menu
+    first_breadcrumb = breadcrumbs.first&.key
+
+    if first_breadcrumb
+      menu == first_breadcrumb
+    else
+      menu == :editors_panel && controller.class.in?([EditorsPanelsController])
+    end
+  end
+
   def inline_expandable label = "Show more"
     show_more = content_tag :a, class: "hide-when-expanded gray" do
                   content_tag :small, label

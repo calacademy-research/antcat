@@ -11,10 +11,6 @@
     =render "editor_buttons", taxon: @taxon
 
 #taxon_description
-  .title.show-for-large
-    %h5.left An Online Catalog of the Ants of the World
-    .right by Barry Bolton
-    .clearfix
 
   -if @taxon.original_combination?
     =render "original_combination", taxon: @taxon
