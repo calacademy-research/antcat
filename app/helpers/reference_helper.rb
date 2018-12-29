@@ -23,8 +23,8 @@ module ReferenceHelper
     end
   end
 
-  def set_as_default_reference_button reference, tiny: false
-    css_classes = tiny ? "btn-tiny" : ""
+  def set_as_default_reference_button reference, very_tiny: false
+    css_classes = very_tiny ? "btn-very-tiny" : "btn-tiny"
 
     if reference == DefaultReference.get(session)
       content_tag :span, 'Default reference', class: (css_classes << " btn-nodanger"),

@@ -8,7 +8,7 @@
         =link_to "Edit", edit_reference_path(reference), class: "btn-normal btn-very-tiny"
       =link_to "History", reference_history_index_path(reference), class: "btn-normal btn-very-tiny"
       =link_to "What Links Here", reference_what_links_here_index_path(reference), class: "btn-normal btn-very-tiny"
-      =set_as_default_reference_button reference, tiny: true
+      =set_as_default_reference_button reference, very_tiny: true
 
   -if reference.public_notes?
     %p.notes
