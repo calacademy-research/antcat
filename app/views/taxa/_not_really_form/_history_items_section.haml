@@ -2,7 +2,7 @@
   %h5.callout-header
     History
     .right
-      =link_to 'Add', new_taxa_taxon_history_item_path(taxon), class: 'button submit btn-normal btn-tiny tooltip', id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them."
+      =link_to 'Add', new_taxa_taxon_history_item_path(taxon), class: 'button submit btn-normal btn-tiny jquery-tooltip', id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them."
       %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
   .history-items{data: {taxon_id: taxon.id}}
     -taxon.history_items.each do |item|

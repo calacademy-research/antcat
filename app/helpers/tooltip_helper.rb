@@ -1,5 +1,8 @@
+# TODO: This is for jQuery tooltips. Rename to avoid confusing with Foundation's tooltips.
+
 module TooltipHelper
   def enable_tooltips
+    return unless current_user
     content_for(:head) { javascript_include_tag "tooltips" }
   end
 
@@ -20,6 +23,6 @@ module TooltipHelper
     end
 
     def tooltip_help_icon text
-      image_tag 'help.png', class: 'help_icon tooltip', title: text
+      content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: text
     end
 end
