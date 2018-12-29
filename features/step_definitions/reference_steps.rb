@@ -127,9 +127,7 @@ When("I fill in the references search box with {string}") do |search_term|
 end
 
 When('I press "Go" by the references search box') do
-  within ".reference-search-form" do
-    step 'I press "Go"'
-  end
+  find("#header_reference_search_button").click
 end
 
 When("I hover the export button") do

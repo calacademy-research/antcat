@@ -33,15 +33,16 @@
               .input-group
                 =text_field_tag "reference_q", params[:reference_q], class: "typeahead-references-js input-group-field expandable-reference-search", placeholder: "Search References"
                 .input-group-button
-                  =button_tag type: 'submit', name: nil, class: 'button has-spinner' do
+                  =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_reference_search_button" do
                     =spinner_icon + "Go"
+
           %li
             =form_tag catalog_quick_search_path, method: :get, id: "catalog-search-form-test-hook" do
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
                 =hidden_field_tag :im_feeling_lucky, true
                 .input-group-button
-                  =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_search_button" do
+                  =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_catalog_search_button" do
                     =spinner_icon + "Go"
           %li.centered-text=link_to 'Advanced<br> Search'.html_safe, catalog_search_path, class: "without-top-padding"
 

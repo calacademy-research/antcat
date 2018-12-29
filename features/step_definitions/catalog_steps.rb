@@ -30,11 +30,8 @@ When("I fill in the catalog search box with {string}") do |search_term|
   find("#desktop-lower-menu #qq").set search_term
 end
 
-When('I press "Go" by the catalog search box') do
-  # TODO fix mobile
-  within "#catalog-search-form-test-hook" do
-    step 'I press "Go"'
-  end
+When('I press the search button by the catalog search box') do
+  find("#header_catalog_search_button").click
 end
 
 Given("the maximum number of taxa to load in each tab is {int}") do |number|
