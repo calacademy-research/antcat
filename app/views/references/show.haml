@@ -1,7 +1,7 @@
 -@title = "#{unitalicize @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
-.buttons-right
+=content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
       =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
@@ -29,8 +29,6 @@
 
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
-
-.clearfix
 
 -@reference = @reference.decorate
 

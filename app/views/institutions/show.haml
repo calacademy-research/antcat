@@ -3,7 +3,7 @@
 
 -content_for :application do
   -if user_is_at_least_helper? && @comparer.most_recent.persisted?
-    .buttons-right
+    =content_for :breadcrumbs_right do
       =link_to 'Edit', edit_institution_path(@comparer.most_recent), class: 'btn-normal'
       -if user_is_superadmin?
         =link_to append_superadmin_icon("Delete"), @comparer.most_recent, method: :delete, data: { confirm: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'

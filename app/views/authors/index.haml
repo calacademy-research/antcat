@@ -2,7 +2,7 @@
 -breadcrumb :authors
 
 -if user_is_editor?
-  .buttons-right
+  =content_for :breadcrumbs_right do
     =link_to 'Merge Authors', merge_authors_path, class: 'btn-normal'
 
 %table

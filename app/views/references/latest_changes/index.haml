@@ -1,7 +1,8 @@
 -@title = 'Latest Changes'
 -breadcrumb :references_latest_changes
 
-.buttons-right=approve_all_references_button
+=content_for :breadcrumbs_right do
+  =approve_all_references_button
 
 %table.stack.references
   %thead

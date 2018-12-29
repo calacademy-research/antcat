@@ -6,15 +6,15 @@
   =javascript_include_tag "controllers/catalog/show/catalog_splitter"
   =javascript_include_tag "controllers/catalog/show/taxon_browser_tab"
 
+-if current_user
+  =content_for :breadcrumbs_right do
+    =render "editor_buttons", taxon: @taxon
+
 #taxon_description
   .title.show-for-large
     %h5.left An Online Catalog of the Ants of the World
     .right by Barry Bolton
     .clearfix
-
-  -if current_user
-    .buttons-right
-      =render "editor_buttons", taxon: @taxon
 
   -if @taxon.original_combination?
     =render "original_combination", taxon: @taxon
