@@ -1,4 +1,7 @@
--content_for :subnavigation do
-  =subnavigation_menu references_subnavigation_links
+-# TODO: Remove references layout.
+
+-if show_references_subnavigation?
+  -content_for :subnavigation do
+    =references_subnavigation_menu
 
 =render file: 'layouts/application'
