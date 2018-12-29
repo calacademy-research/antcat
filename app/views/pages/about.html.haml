@@ -11,9 +11,9 @@
 
 %h5 Links
 %ul
-  %li=link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
+  %li=external_link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
   %li=link_to 'List of users', users_path
-  %li=link_to 'Source code', 'https://github.com/calacademy-research/antcat'
+  %li=external_link_to 'Source code', 'https://github.com/calacademy-research/antcat'
   %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
   %li
     =link_to 'API docs', '/api_docs/swagger_docs/v1'
@@ -22,13 +22,12 @@
 
 %p
   This material is based on work supported by the
-  =link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
+  =external_link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
   under grant number
-  =link_to('0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
+  =external_link_to('#0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
   Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
 #partner_links
-  %hr
   %div
     =link_to 'http://www.calacademy.org/', target: '_blank' do
       =image_tag 'logos/california_academy_of_sciences.png', style: "height: 40px"

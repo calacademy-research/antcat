@@ -35,6 +35,10 @@ module ApplicationHelper
     string.html_safe
   end
 
+  def external_link_to label, url
+    link_to label, url, class: 'external-link'
+  end
+
   def beta_label
     content_tag :span, "beta", class: "label"
   end

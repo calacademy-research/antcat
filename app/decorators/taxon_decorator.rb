@@ -53,12 +53,12 @@ class TaxonDecorator < ApplicationDecorator
                  else
                    taxon.name.name.tr(" ", '_')
                  end
-    link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
+    h.external_link_to 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 
   def link_to_hol
     return unless taxon.hol_id
-    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+    h.external_link_to 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
   end
 
   def link_to_antweb
@@ -87,12 +87,6 @@ class TaxonDecorator < ApplicationDecorator
 
     # Rails' .to_param sorts the params, this one doesn't
     url << params.map { |key, value| value.to_query(key) }.compact * '&'
-    link_to_external_site 'AntWeb', url.html_safe
+    h.external_link_to 'AntWeb', url.html_safe
   end
-
-  private
-
-    def link_to_external_site label, url
-      h.link_to label, url, class: 'link_to_external_site'
-    end
 end

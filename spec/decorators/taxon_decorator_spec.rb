@@ -28,7 +28,7 @@ describe TaxonDecorator do
     it "can link to species" do
       name = taxon.name_cache.tr(' ', '_')
       expect(decorated.link_to_antwiki).to eq(
-        %(<a class="link_to_external_site" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>)
+        %(<a class="external-link" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>)
       )
     end
   end
@@ -47,7 +47,7 @@ describe TaxonDecorator do
 
       it "links" do
         expect(decorated.link_to_hol).to eq(
-          '<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
+          '<a class="external-link" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
         )
       end
     end
@@ -57,7 +57,7 @@ describe TaxonDecorator do
     it "handles subfamilies" do
       taxon = build_stubbed :subfamily
       expect(taxon.decorate.link_to_antweb).
-        to eq %(<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{taxon.name.name.downcase}&project=worldants">AntWeb</a>)
+        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{taxon.name.name.downcase}&project=worldants">AntWeb</a>)
     end
 
     it "outputs nothing for tribes" do
@@ -68,7 +68,7 @@ describe TaxonDecorator do
     it "handles genera" do
       taxon = create_genus 'Atta'
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants">AntWeb</a>'
+        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants">AntWeb</a>'
     end
 
     it "outputs nothing for subgenera" do
@@ -79,7 +79,7 @@ describe TaxonDecorator do
     it "handles species" do
       taxon = create_species 'Atta major', genus: create_genus('Atta')
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
+        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
     end
 
     it "handles subspecies" do
@@ -87,7 +87,7 @@ describe TaxonDecorator do
       species = create_species 'Atta major', genus: genus
       taxon = create_subspecies 'Atta major minor', species: species, genus: genus
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="link_to_external_site" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
+        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
     end
 
     it "just returns nil for subspecies without species" do
