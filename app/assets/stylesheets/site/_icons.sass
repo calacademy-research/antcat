@@ -45,6 +45,9 @@ table.activities
       @extend .fa-comment-o
       font-weight: bold
 
+    &.create.issue
+      @extend .fa-exclamation-circle
+
   .antcat_icon
     &.synonym_arrow
       @extend .fa-long-arrow-right
@@ -72,9 +75,16 @@ table.notifications
     @extend .fa-unlock-alt
     color: #fff
 
+  &.comment
+    @extend .fa-comment-o
+
   &.closed.issue, &.unread
     @extend .fa-check
     color: darkgray
+
+  &.open.issue
+    @extend .fa-exclamation-circle
+    color: $color_green
 
   &.tooltip-icon
     @extend .fa-question-circle
