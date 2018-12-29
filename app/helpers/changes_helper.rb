@@ -12,13 +12,6 @@ module ChangesHelper
       data: { confirm: "Are you sure you want to approve all changes?" }
   end
 
-  def changes_subnavigation_links
-    [
-      link_to('All Changes', changes_path),
-      link_to('Unreviewed Changes', unreviewed_changes_path)
-    ]
-  end
-
   # TODO copy-pasted from `ChangesDecorator`.
   def format_change_type_verb change_type
     case change_type
