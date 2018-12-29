@@ -10,24 +10,25 @@
 -if @site_notices.empty?
   No site notices.
 -else
-  %table
-    %thead
-      %tr
-        %th Title
-        %th Read?
-        %th Comments
-        %th When
-
-    -@site_notices.each do |site_notice|
-      %tr
-        %td.no-wrap=link_to site_notice.title, site_notice_path(site_notice)
-        %td.no-wrap
-          -read_status = site_notice.unread?(current_user) ? "unread" : "read"
-          =antcat_icon read_status
-          =read_status
-        %td.no-wrap=link_comments_section site_notice
-        %td.no-wrap
-          =time_ago_in_words site_notice.created_at
-          ago
+  %table.stack
+    %tbody
+      -@site_notices.each do |site_notice|
+        %tr
+          %td.icon.vertical-align-top
+            -read_status = site_notice.unread?(current_user) ? "unread" : "read"
+            =antcat_icon read_status
+            =read_status
+          %td.no-wrap
+            =link_to site_notice.title, site_notice_path(site_notice)
+            %br
+            %small.text-gray
+              added
+              =time_ago_in_words site_notice.created_at
+              ago
+          %td.no-wrap
+            -if has_comments? site_notice
+              .right
+                =antcat_icon "comment"
+                =link_comments_section site_notice
 
 =will_paginate @site_notices
