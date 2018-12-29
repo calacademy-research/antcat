@@ -1,27 +1,25 @@
 .right
   -if user_is_editor?
     =link_to_edit_taxon taxon
-
-    -unless taxon.original_combination?
-      =add_child_button taxon
-      =add_tribe_button taxon
-      =add_subgenus_button taxon
-      =convert_to_subspecies_button taxon
-      =elevate_to_species_button taxon
-
-    =link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"
 
--if user_is_editor?
-  %br
-
-  .right
-    -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
-      =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
-    -if taxon.rank.in?(Taxon::ALLOW_FORCE_CHANGE_PARENT_RANKS)
-      =link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-warning btn-tiny"
-    -if taxon.rank.in?(["species"]) && taxon.valid_taxon?
-      =link_to "Create obsolete combination", taxa_create_obsolete_combination_path(taxon), class: "btn-normal btn-tiny"
-    =delete_unreferenced_taxon_button taxon
-    =confirm_before_superadmin_delete_button taxon
+  -if user_is_editor?
+    .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
+    #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+      %ul.no-bullet
+        -unless taxon.original_combination?
+          %li=add_child_button taxon
+        %li=add_tribe_button taxon
+        %li=add_subgenus_button taxon
+        %li=elevate_to_species_button taxon
+        %li=convert_to_subspecies_button taxon
+        -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
+          %li=link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal"
+        -if taxon.rank.in?(Taxon::ALLOW_FORCE_CHANGE_PARENT_RANKS)
+          %li=link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-warning"
+        -if taxon.rank.in?(["species"]) && taxon.valid_taxon?
+          %li=link_to "Create obsolete combination", taxa_create_obsolete_combination_path(taxon), class: "btn-normal"
+        %li=delete_unreferenced_taxon_button taxon
+        %li=confirm_before_superadmin_delete_button taxon
+        %li=link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"

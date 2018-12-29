@@ -2,26 +2,33 @@
 -breadcrumb :reference, @reference
 
 .buttons-right
-  .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
-  #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-    %ul.no-bullet
-      %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
-      -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-        %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
-  -if current_user
-    =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
-    =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
+  .right
+    -if user_is_at_least_helper?
+      =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
+      =set_as_default_reference_button @reference
 
-  -if user_is_at_least_helper?
-    =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
-    -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-      =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
-    -unless @reference.is_a? MissingReference
-      =link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
-    =set_as_default_reference_button @reference
+    -if current_user
+      =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
+      =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
 
-  -if user_is_editor?
-    =link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
+    .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
+    #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+      %ul.no-bullet
+        %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
+        -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+          %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
+
+    -if user_is_at_least_helper?
+      .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
+      #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+        %ul.no-bullet
+          -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
+          -unless @reference.is_a? MissingReference
+            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+
+          -if user_is_editor?
+            %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
 
 .clearfix
 

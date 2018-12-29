@@ -62,6 +62,10 @@ body.is-reveal-open
 .dropdown
   -webkit-appearance: none !important
 
+// Avoid adding horizontal scroll on page since the hidden dropdown contents are too far left.
+.dropdown-pane
+  left: 0
+
 .pagination a, .pagination button
   display: inline
 
