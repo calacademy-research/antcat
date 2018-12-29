@@ -60,6 +60,7 @@ module Markdowns
         # HACK to eager load records in a single query for performance reasions.
         refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
         refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
+        refs = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(REFERENCE_TAG_REGEX) do
           id = $~[:id]

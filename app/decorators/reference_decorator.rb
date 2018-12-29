@@ -54,6 +54,8 @@ class ReferenceDecorator < ApplicationDecorator
 
   # Formats the reference as plaintext (with the exception of <i> tags).
   def plain_text
+    return generate_plain_text if ENV['NO_REF_CACHE']
+
     cached = reference.plain_text_cache
     return cached.html_safe if cached
 
@@ -62,6 +64,8 @@ class ReferenceDecorator < ApplicationDecorator
 
   # Formats the reference with HTML, CSS, etc.
   def expandable_reference
+    return generate_expandable_reference if ENV['NO_REF_CACHE']
+
     cached = reference.expandable_reference_cache
     return cached.html_safe if cached
 
