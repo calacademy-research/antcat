@@ -195,7 +195,6 @@ Rails.application.routes.draw do
   resources :site_notices do
     collection do
       post :mark_all_as_read
-      post :dismiss
     end
   end
 

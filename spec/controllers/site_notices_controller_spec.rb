@@ -52,16 +52,8 @@ describe SiteNoticesController do
   describe "POST #mark_all_as_read" do
     after { post :mark_all_as_read }
 
-    it "calls SiteNotice" do
+    it "calls `SiteNotice#mark_as_read`" do
       expect(SiteNotice).to receive(:mark_as_read!).with(:all, for: editor)
     end
-  end
-
-  describe "POST dismiss" do
-    let!(:site_notice) { create :site_notice }
-
-    before { post :dismiss }
-
-    it { is_expected.to set_session[:last_dismissed_site_notice_id].to site_notice.id }
   end
 end
