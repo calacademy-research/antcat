@@ -55,6 +55,8 @@ end
 
 set_driver
 
+Capybara::Webkit.configure(&:block_unknown_urls)
+
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
 Capybara.save_path = './tmp/capybara'

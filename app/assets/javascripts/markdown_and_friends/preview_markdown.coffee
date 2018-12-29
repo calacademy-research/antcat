@@ -75,7 +75,7 @@ class MakePreviewable
 
     toParse = @textarea.val()
     if toParse is ""
-      tab.html "No content. Try this: <code>{ta las}</code>."
+      tab.html "No content. Try this: <code>{tax 430207}</code>."
       return
 
     tab.html "Loading preview... dot dot dot..."

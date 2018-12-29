@@ -6,6 +6,7 @@ $ ->
 setupFeedbackModal = ->
   $("#new_feedback").on("ajax:success", (e, data, status, xhr) ->
     # Close form and add success notice.
+    # TODO: this skips the animation.
     $("#feedback_modal").foundation "close"
     $("#content").prepend data.feedback_success_callout
 
@@ -30,5 +31,5 @@ setupFeedbackModal = ->
     message
 
   renderErrors = (html) ->
-    $("#feedback_errors").html """<p style="color: red">
+    $("#feedback_errors").html """<p class="bold-warning">
       Whoops, error: #{html}</p>"""
