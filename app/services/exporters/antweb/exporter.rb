@@ -4,6 +4,7 @@
 class Exporters::Antweb::Exporter
   include Service
 
+  # TODO: Remove "link_to_external_site".
   def self.antcat_taxon_link taxon, label = "AntCat"
     url = "http://www.antcat.org/catalog/#{taxon.id}"
     %(<a class="link_to_external_site" href="#{url}">#{label}</a>).html_safe

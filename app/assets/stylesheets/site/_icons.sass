@@ -11,31 +11,31 @@ td.icon
   text-align: center
   display: inline-block
 
-  @extend .fa-fw //spacer
+  // Spacer.
+  @extend .fa-fw
 
 table.activities
   td.icon > .antcat_icon
-    // create/add = green plus
+    // Create/add = plus.
     &.create
       @extend .fa-plus
       color: $color_green
 
-    // delete = red minus
+    // Delete = red minus.
     &.destroy
       @extend .fa-minus
       color: $color_danger
 
-    // "approving actions" = green check
-    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.complete_task, &.close_task, &.close_feedback
+    // Approving actions = green check.
+    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.close_feedback, &.close_issue
       @extend .fa-check
       color: $color_green
 
-    // mean actions = red exclamation mark
-    &.undo_change, &.reopen_task, &.restart_reviewing, &.reopen_feedback, &.execute_script
+    // Mean actions = red exclamation mark.
+    &.undo_change, &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
       @extend .fa-exclamation
       color: $color_danger
 
-    // fix colors because .synonym (site.sass) is !important
     &.create.synonym
       color: $color_green !important
     &.destroy.synonym
