@@ -56,7 +56,6 @@
 .pagination a, .pagination button
   display: inline
 
-// make the pickers stand out
 .display_button
   @extend .primary, .hollow, .button
   padding: 0.4rem 0.6rem !important
@@ -129,6 +128,7 @@
 .btn-nodanger
   @include button-style(#fff, auto, #000)
   border: 1px solid #000 !important
+  cursor: pointer
 
 // Make button styles work for links too. Some link button have the class ".button"
 // because I did not manage to align them buton button elements in any other way.
@@ -153,6 +153,9 @@ a.btn-nodanger
   margin-bottom: 0
   white-space: nowrap
   display: inline
+
+button
+  cursor: pointer
 
 button.close-button
   background-color: transparent

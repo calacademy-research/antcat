@@ -118,13 +118,15 @@ class ExtrasArea
     """
 
     $ """
-    <div>
-      <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
-      <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-normal btn-tiny">Recently used references</a>
-      <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
-      <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
-      <span id="extras-area"></span>
-      <span title='#{helpText}' class="tooltip">???</span>
+    <div class="row">
+      <div class="medium-6 columns end">
+        <a id="#{DEFAULT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">Default reference</a>
+        <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-normal btn-tiny">Recently used references</a>
+        <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
+        <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
+        <span id="extras-area"></span>
+        <span title='#{helpText}' class="tooltip">???</span>
+      </div>
     </div>
     """
 
