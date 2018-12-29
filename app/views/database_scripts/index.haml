@@ -6,7 +6,7 @@
 
 .row
   .small-9.columns.end
-    .callout.secondary
+    .callout.primary
       %p
         Scripts tagged with
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
@@ -31,9 +31,9 @@
   %table.tablesorter.margin-bottom
     %thead
       %tr
-        %th Topic area
+        %th.no-wrap Topic area
         %th Script
-        %th Tags
+        %th.no-wrap Tags
     %tbody
       -database_scripts.each do |database_script|
         %tr
