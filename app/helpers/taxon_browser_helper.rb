@@ -55,7 +55,7 @@ module TaxonBrowserHelper
       css = if @taxon_browser.display == param.to_sym
               "upcase selected"
             else
-              "upcase white-label"
+              "upcase smaller-white-label"
             end
 
       content_tag :li do

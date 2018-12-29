@@ -80,16 +80,18 @@ body.is-reveal-open
     a, a.valid.subspecies
       color: #fff !important
     background-color: $color_primary !important
-  .white-label
+    // Becomes too large without this and skips rows.
+    padding-top: 0.15rem
+    padding-bottom: 0.15rem
+  .smaller-white-label
     @extend .label
     background-color: #fff
     border: 1px solid #000
     a
       color: #000 !important
-
-    // becomes too large without this and skips rows
-    padding-top: 0.2rem
-    padding-bottom: 0.2rem
+    // Becomes too large without this and skips rows.
+    padding-top: 0.1rem
+    padding-bottom: 0.1rem
   .white-label.selected
     a, a.valid.subspecies
       color: #fff !important
@@ -155,9 +157,15 @@ a.btn-nodanger
 
 // TODO: Rename to `.btn-small`.
 .btn-tiny
-  padding: 0.15rem 0.3rem !important
-  font-size: rem-calc(12) !important
+  padding: 0.30rem 0.5rem !important
+  font-size: rem-calc(13) !important
   white-space: nowrap
+
+#breadcrumbs
+  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
+    @extend .btn-tiny
+    // Tiny margin to align with dropdown buttons.
+    margin-bottom: 0.1rem
 
 // For inline "show on hover" buttons to avoid making the layout jump.
 .btn-very-tiny
@@ -185,10 +193,12 @@ table th
   background-color: #fff
   border: 1px solid #000
   color: #000 !important
+  a
+    color: #000 !important
 
 .pretty-label
   @extend .label
-  background-color: $color_pretty
+  background-color: $color_primary
 
 .warning-label
   @extend .label
