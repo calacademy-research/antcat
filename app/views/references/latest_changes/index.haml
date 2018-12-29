@@ -5,14 +5,12 @@
   =approve_all_references_button
 
 %table.stack.references
-  %thead
-    %th
-    %th Changed
-    %th
+  %tbody
   -@references.each do |reference|
     %tr
       %td=render 'references/reference', reference: reference
-      %td=time_tag reference.created_at
-      %td=link_to "Show", reference_path(reference), class: "btn-normal"
+      %td.no-wrap
+        changed
+        =time_tag reference.created_at.to_date
 
 =will_paginate @references

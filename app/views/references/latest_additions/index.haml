@@ -2,22 +2,17 @@
 -breadcrumb :references_latest_additions
 
 %table.stack.references
-  %thead
-    %th
-    %th Created
-    -if user_is_editor?
-      %th Review status
-      %th
-      %th
-    %th
+  %tbody
   -@references.each do |reference|
     %tr
       %td=render 'references/reference', reference: reference
-      %td=time_tag reference.created_at
-      -if user_is_editor?
-        %td=reference.decorate.format_review_state
-        %td=review_reference_button reference
-        %td=set_as_default_reference_button reference
-      %td=link_to "Show", reference_path(reference), class: "btn-normal"
+      %td.no-wrap
+        added
+        =time_tag reference.created_at.to_date
+      %td.no-wrap
+        =reference.decorate.format_review_state
+        -if user_is_editor?
+          %br
+          =review_reference_button reference
 
 =will_paginate @references
