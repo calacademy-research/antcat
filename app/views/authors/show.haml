@@ -1,7 +1,7 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
-#references.callout.margin-bottom
+#references.margin-bottom
   %h5 References by author
   -if @references.empty?
     %p Found no references by this author.
@@ -9,8 +9,8 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
+%h5 Taxa described by author
 #taxa.callout.margin-bottom
-  %h5 Taxa described by author
   -if @taxa.empty?
     %p Found no taxa described by this author.
   -else
@@ -30,9 +30,9 @@
 
 .row
   .small-6.columns.end
+    %h5 Statistics
     #statistics.callout.margin-bottom
-      %h5 Statistics
-      %table.table
+      %table.table.unstriped
         %tbody
           %tr
             %th Published between
@@ -57,7 +57,7 @@
       -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
     #names.callout.margin-bottom
-      %table
+      %table.unstriped
         %thead
           %tr
             %th Author name
