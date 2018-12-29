@@ -3,7 +3,7 @@
 
 -if user_is_superadmin?
   .buttons-right
-    =link_to "New (for superadmins)", new_user_path, class: "btn-normal"
+    =link_to append_superadmin_icon("New"), new_user_path, class: "btn-normal"
 
 %table
   %thead

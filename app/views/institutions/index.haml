@@ -22,4 +22,4 @@
         %td
           =link_to 'Edit', edit_institution_path(institution), class: 'btn-normal btn-tiny'
           -if user_is_superadmin?
-            =link_to 'Delete', institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-warning btn-tiny'
+            =link_to append_superadmin_icon("Delete"), institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-warning btn-tiny'

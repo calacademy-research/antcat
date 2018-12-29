@@ -2,7 +2,7 @@ module ReferenceHelper
   def approve_all_references_button
     return unless user_is_superadmin?
 
-    link_to 'Approve all', approve_all_reviewing_references_path,
+    link_to append_superadmin_icon("Approve all"), approve_all_reviewing_references_path,
       method: :put, class: "btn-warning",
       data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }
   end

@@ -78,6 +78,10 @@ module ApplicationHelper
     end
   end
 
+  def append_superadmin_icon label
+    label.html_safe << antcat_icon("superadmin")
+  end
+
   def antcat_icon *css_classes
     content_tag :span, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
