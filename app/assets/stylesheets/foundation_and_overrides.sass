@@ -1,11 +1,10 @@
 @charset "utf-8"
 
-@import settings
-@import foundation
 @import colors
 
-// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
-// @import motion-ui/motion-ui
+@import settings
+@import foundation
+@import motion-ui/motion-ui
 
 +foundation-global-styles
 +foundation-grid
@@ -45,9 +44,19 @@
 //+foundation-tooltip // Note: conflicts with jQuery's tooltips JS/CSS.
 +foundation-top-bar
 
-// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
-// +motion-ui-transitions
-// +motion-ui-animations
++motion-ui-transitions
++motion-ui-animations
+
+// Fix missing scrollbars after closing modal.
+body.is-reveal-open
+  overflow-y: auto
+
+.reveal-overlay
+  overflow-y: auto
+  background: none
+
+.reveal
+  outline: none
 
 // Make sure dropdown buttons do not have faded Webkit backgrounds.
 .dropdown

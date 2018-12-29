@@ -12,6 +12,7 @@
 //= require foundation.util.box
 //= require foundation.util.keyboard
 //= require foundation.util.mediaQuery
+//= require foundation.util.motion
 //= require foundation.util.triggers
 
 //= require jquery-ui/core
