@@ -19,7 +19,7 @@ table.activities
     // Create/add = plus.
     &.create
       @extend .fa-plus
-      color: $color_green
+      color: $color_primary
 
     // Delete = red minus.
     &.destroy
@@ -29,7 +29,7 @@ table.activities
     // Approving actions = green check.
     &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.close_feedback, &.close_issue
       @extend .fa-check
-      color: $color_green
+      color: $color_primary
 
     // Mean actions = red exclamation mark.
     &.undo_change, &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
@@ -37,7 +37,7 @@ table.activities
       color: $color_danger
 
     &.create.synonym
-      color: $color_green !important
+      color: $color_primary !important
     &.destroy.synonym
       color: $color_danger !important
 
@@ -55,13 +55,13 @@ table.activities
 
     &.automated_edit
       @extend .fa-android
-      color: $color_green
+      color: $color_primary
 
 table.notifications
   td.icon > .antcat_icon
     &.seen
       @extend .fa-check
-      color: $color_green
+      color: $color_primary
 
 .antcat_icon
   &.refresh
@@ -69,7 +69,7 @@ table.notifications
 
   &.read
     @extend .fa-check
-    color: $color_green
+    color: $color_primary
 
   &.superadmin
     @extend .fa-unlock-alt
@@ -84,11 +84,11 @@ table.notifications
 
   &.open.issue
     @extend .fa-exclamation-circle
-    color: $color_green
+    color: $color_primary
 
   &.tooltip-icon
     @extend .fa-question-circle
-    color: $color_green
+    color: $color_primary
 
 table.tablesorter thead
   th

@@ -79,7 +79,7 @@ body.is-reveal-open
     @extend .label
     a, a.valid.subspecies
       color: #fff !important
-    background-color: $color_green !important
+    background-color: $color_primary !important
   .white-label
     @extend .label
     background-color: #fff
@@ -100,7 +100,7 @@ body.is-reveal-open
   font-size: 100%
 
 @mixin normal-sized-button
-  @include button-style($primary-color, auto, auto)
+  @include button-style($color_primary, auto, auto)
   @include button-expand(false)
   padding: 0.5rem 0.7rem
   font-size: rem-calc(14)
@@ -125,15 +125,15 @@ body.is-reveal-open
   @include normal-sized-button
 
 .btn-saves
-  @include button-style($color_pretty, auto, auto)
-  border: 1px $color_pretty solid
+  @include button-style($color_save, auto, auto)
+  border: 1px $color_save solid
   color: #fff
   &:active, &:hover, &:focus
     color: #fff
 
 .btn-warning
   @include button-style($alert-color, auto, auto)
-  color: #fff
+  color: #fff !important
   &:active, &:hover, &:focus
     color: #fff
   border: 1px $alert-color solid
