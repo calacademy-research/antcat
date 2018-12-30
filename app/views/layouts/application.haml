@@ -17,6 +17,9 @@
     =stylesheet_link_tag 'dev_css' if include_dev_css?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
+    %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}>
+    %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}>
+
     =favicon_link_tag 'favicon_96x96.png'
 
     =yield :head
@@ -26,27 +29,32 @@
       // due to CSS animations. See https://stackoverflow.com/a/42969608.
       "empty script tag"
 
-    =link_to_current_page_on_localhost if user_is_superadmin?
-
     %body{id: current_controller_css_id}
-      #header
-        =render "navigation"
-        =render "breadcrumbs"
+      %button#feedback-button.hide-for-small-only{data: { open: "feedback_modal" }} Feedback
 
-      #content
-        =render "shared/flash_messages"
-        -# Special case because catalog pages have a fixed layout.
-        -if controller_name == "catalog"
-          =yield
-        -else
-          .row
+      .main-container
+        %header#header
+          .row.collapse
             .small-12.columns
+              =render "navigation"
+              =render "breadcrumbs"
+
+        %section#content
+          .row.collapse
+            =render "shared/flash_messages"
+
+            .small-12.columns.collapse
               -if content_for? :application
                 =yield :application
               -else
                 =yield
 
+        =yield :after_content
+
+        %footer#taxon-browser-sticky-target-js-hook=render "footer"
+
       =render "feedback/feedback_modal"
 
       -# To make the default reference available in JS.
-      =render "shared/default_reference"
+      -if current_user
+        =render "shared/default_reference"

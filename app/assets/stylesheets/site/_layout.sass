@@ -1,0 +1,55 @@
+@import "colors"
+
+html
+  height: 100%
+  box-sizing: border-box
+
+*, *:before, *:after
+  box-sizing: inherit
+
+body
+  position: relative
+  margin: 0
+  padding-bottom: 10rem
+  min-height: 100%
+  font-family: Raleway, "Helvetica Neue", Arial, sans-serif
+
+#catalog-controller
+  #content
+    min-height: 70vh
+    padding-bottom: 10rem
+
+#content
+  padding-top: 1rem
+  padding-bottom: 8rem
+
+#header, #content
+  padding-left: 1rem
+  padding-right: 1rem
+
+footer
+  position: absolute
+  right: 0
+  bottom: 0
+  left: 0
+  background-color: #efefef
+  text-align: center
+  font-size: 80%
+  background-color: $color_primary
+  color: #fff
+  a
+    color: #fff
+  a:hover, a:focus
+    font-weight: bold
+    color: #fff
+  width: 100%
+  margin-top: 3rem
+  padding-top: 3rem
+  padding-bottom: 2rem
+
+  #feedback-footer-link
+    cursor: pointer
+    outline: none
+    &:hover
+      font-weight: bold
+      color: #fff

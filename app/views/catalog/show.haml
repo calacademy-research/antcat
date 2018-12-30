@@ -2,32 +2,55 @@
 -breadcrumb @taxon
 
 -content_for :head do
-  =stylesheet_link_tag "catalog_only"
-  =javascript_include_tag "controllers/catalog/show/catalog_splitter"
   =javascript_include_tag "controllers/catalog/show/taxon_browser_tab"
 
 -if current_user
   =content_for :breadcrumbs_right do
     =render "editor_buttons", taxon: @taxon
 
-#taxon_description
+.row
+  .medium-9.columns
+    #taxon_description
+      -if @taxon.original_combination?
+        =render "original_combination", taxon: @taxon
+      -else
+        =render "taxon_description", taxon: @taxon
+  .medium-3.columns
+    -unless @taxon.original_combination?
+      -if show_full_statistics? @taxon
+        -statistics = @taxon.decorate.statistics
+      -else
+        -# If there's no valid-only stats, try including invalid too before giving up.
+        -statistics = @taxon.decorate.statistics(valid_only: true).presence || @taxon.decorate.statistics
+      -if statistics.present?
+        .callout
+          #statistics.small-margin-bottom
+            =statistics
+            =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
 
-  -if @taxon.original_combination?
-    =render "original_combination", taxon: @taxon
-  -else
-    =render "taxon_description", taxon: @taxon
+    .callout#external-links
+      =@taxon.decorate.link_to_antweb
+      =@taxon.decorate.link_to_antwiki
+      =@taxon.decorate.link_to_hol
+      =@taxon.decorate.link_to_google
 
-#splitter
+    -if @taxon.waiting?
+      %span.review-state This taxon has been changed; changes awaiting approval.
+      =link_to_review_change @taxon
+    =add_period_if_necessary taxon_change_history(@taxon)
 
-#taxon_browser.callout
-  #taxon_key.show-for-large{data: { show_hide_toggable_id: "taxon_key" }}
-    %div &dagger;fossil
-    .valid valid
-    .synonym synonym
-    .subspecies.valid subspecies
-    .unidentifiable unidentifiable/excluded from Formicidae
-    .unavailable unavailable/nomen nudum
-    .homonym homonym
-    .original_combination original combination
+-content_for :after_content do
+  %div{data: { sticky_container: true }}
+    #taxon-browser-container.sticky{data: { btm_anchor: "taxon-browser-sticky-target-js-hook:top", sticky: true, stick_to: "bottom", margin_bottom: 0 }}
+      #taxon_browser
+        #taxon_key.show-for-large{data: { show_hide_toggable_id: "taxon_key" }}
+          %div &dagger;fossil
+          .valid valid
+          .synonym synonym
+          .subspecies.valid subspecies
+          .unidentifiable unidentifiable/excluded from Formicidae
+          .unavailable unavailable/nomen nudum
+          .homonym homonym
+          .original_combination original combination
 
-  =render "taxon_browser", taxon: @taxon, taxon_browser: @taxon_browser
+        =render "taxon_browser", taxon: @taxon, taxon_browser: @taxon_browser

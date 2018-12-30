@@ -1,0 +1,74 @@
+@import "colors"
+
+#catalog-controller
+  #taxon-browser-container
+    max-height: 30vh
+    left: 0
+    width: 100vw
+    background-color: #fff
+
+  #taxon_browser
+    overflow: hidden
+    height: auto
+    max-height: 30rem
+    left: 0
+    .shared-spinner
+      color: $color_primary !important
+      display: none
+      margin-right: 1rem
+    #taxon-browser-tabs.tabs
+      border-top: 4px solid $color_light_gray
+      border-bottom: 0
+    .tabs-title
+      a
+        border-radius: 0 0 5px 5px !important
+    .tabs-panel
+      padding-top: 0rem
+      padding-bottom: 0rem
+    .tabs-content
+      overflow-y: auto
+      max-height: 25vh
+      padding: 0
+      border: 0
+      font-size: 90%
+    .snaked
+      padding-top: 0.8rem
+      padding-bottom: 0.8rem
+      margin-bottom: 0rem
+      -webkit-column-width: 10rem
+      -moz-column-width: 10rem
+      column-width: 10rem
+    .mr-scrollbary
+      height: 100%
+    .upcase
+      text-transform: uppercase
+    li
+      box-sizing: border-box
+    .tab-toggler
+      float: right
+      a
+        color: #fff
+      .label
+        margin-right: 0.5rem
+        margin-top: 0.5rem
+    .tabs-panel
+      padding-bottom: 0
+
+    // Equally space out elements.
+    #taxon_key
+      background: #fff
+      display: none
+      width: 100%
+      text-align: justify
+      div
+        display: inline-block
+        margin-top: 0
+        padding-top: 0.7rem
+        margin-bottom: -1em
+        padding-left: 1rem
+        padding-right: 1rem
+      &:after
+        content: ""
+        width: 100%
+        display: inline-block
+      margin-bottom: -1rem

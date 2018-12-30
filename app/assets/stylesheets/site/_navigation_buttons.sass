@@ -1,0 +1,62 @@
+@import "colors"
+
+a.black-button
+  color: #000 !important
+
+.black-button
+  background-color: $almost_white
+  border: 2px $almost_white solid
+  color: #000 !important
+  font-size: 14px !important
+  margin-left: 1.5rem
+  font-family: 'Montserrat', sans-serif
+  a
+    color: #000 !important
+  &:hover
+    font-weight: 900
+  &.very-active
+    font-weight: 900
+    color: #fff !important
+    border: 2px #000 solid
+    background-color: #000 !important
+
+.black-button:hover, .black-button:active, .black-button:focus
+  background-color: $almost_white
+  transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+
+.big-screaming-button
+  background-color: #fff
+  border: 3px $color_scream_green solid
+  border-radius: 3px !important
+  font-weight: 900
+  font-size: 12px
+  margin-top: -18px
+  margin-right: 28px
+  text-transform: uppercase
+  font-family: 'Montserrat', sans-serif
+
+.big-screaming-orange-button
+  @extend .big-screaming-button
+  border: 3px $color_scream_orange solid
+  color: $color_scream_orange !important
+
+  &.very-active
+    color: #fff !important
+    background-color: $color_scream_orange !important
+
+  &:hover
+    box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.15)
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+
+.big-screaming-green-button
+  @extend .big-screaming-button
+  border: 3px $color_scream_green solid
+  color: $color_scream_green !important
+
+  &.very-active
+    color: #fff !important
+    background-color: $color_scream_green !important
+
+  &:hover
+    box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.15)
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)

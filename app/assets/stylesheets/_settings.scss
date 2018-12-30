@@ -48,9 +48,7 @@
 // ---------
 
 $global-font-size: 100%;
-// NOTE changed.
-// $global-width: rem-calc(1200);
-$global-width: 100%;
+$global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 // NOTE changed.
 // Kept commented out to make upgrades easier.
@@ -79,13 +77,17 @@ $black: #0a0a0a;
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+// NOTE changed.
+// $body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-font-family: Montserrat, 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
 $global-weight-normal: normal;
 $global-weight-bold: bold;
-$global-radius: 0;
+// NOTE changed.
+// $global-radius: 0;
+$global-radius: 3px;
 $global-text-direction: ltr;
 $global-flexbox: false;
 $print-transparent-backgrounds: true;
@@ -567,7 +569,9 @@ $table-hover-scale: 2%;
 $table-row-hover: darken($table-background, $table-hover-scale);
 $table-row-stripe-hover: darken($table-background, $table-color-scale + $table-hover-scale);
 $table-is-striped: true;
-$table-striped-background: smart-scale($table-background, $table-color-scale);
+// NOTE: changed.
+// $table-striped-background: smart-scale($table-background, $table-color-scale);
+$table-striped-background: $color_light_gray;
 $table-stripe: even;
 $table-head-background: smart-scale($table-background, $table-color-scale / 2);
 $table-head-row-hover: darken($table-head-background, $table-hover-scale);
@@ -620,7 +624,9 @@ $titlebar-icon-spacing: 0.25rem;
 
 $has-tip-font-weight: $global-weight-bold;
 $has-tip-border-bottom: dotted 1px $dark-gray;
-$tooltip-background-color: $black;
+// NOTE: changed.
+// $tooltip-background-color: $black;
+$tooltip-background-color: $color_pale;
 $tooltip-color: $white;
 $tooltip-padding: 0.75rem;
 $tooltip-font-size: $small-font-size;
@@ -632,15 +638,10 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-$topbar-background: $light-gray;
+// NOTE changed.
+// $topbar-background: $light-gray;
+$topbar-background: #f8f8f8;
 $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 0.5rem 1rem 0.5rem 0;
 $topbar-input-width: 200px;
 $topbar-unstack-breakpoint: medium;
-
-// NOTE added.
-// 999. Some Overrides
-// -----------
-
-$topbar-background: #262c3a;
-$titlebar-background: #262c3a;

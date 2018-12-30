@@ -3,26 +3,38 @@
 $mobile-topbar-background: #262c3a
 
 #header
+  ::-webkit-input-placeholder
+    font-size: 90%
+  ::-moz-placeholder
+    font-size: 90%
+  ::-ms-input-placeholder
+    font-size: 90%
+  ::placeholder
+    font-size: 90%
+
+  font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
+  background-color: $almost_white
+  padding-top: 1rem
+
   .top-bar
     white-space: nowrap !important
+    margin-bottom: 2rem
+    padding-left: 0
+    padding-right: 0
     .top-bar-title
-      color: #fff !important
+      color: #000 !important
       margin-left: 0 !important
-    .menu > li > a
-      color: #fff !important
-    // Restore mouse pointer for links in labels.
     li.unseen-notifications > a > span
       cursor: pointer
 
   #desktop-only
+    // Show localhost link.
+    &:hover .show-on-hover
+      display: inline
+      margin-right: 1rem
     #desktop-logo
-      padding-top: 3rem
+      margin-top: 2.1rem
     #desktop-menu
-      padding-top: 4rem
-      #desktop-upper-menu
-        position: absolute
-        right: 0
-        top: 1rem
       #desktop-lower-menu
         .reference-search-form
           margin-right: 1rem
@@ -63,25 +75,22 @@ $mobile-topbar-background: #262c3a
       padding-right: 1rem
 
   #breadcrumbs
-    padding: 0.4rem 1rem
-    color: #fff
-    background: $color_primary
+    color: #000 !important
+    margin-bottom: 2rem
+    font-size: 90%
     a
-      color: #fff
-    // Firefox tweak
+      color: $color_primary_light
+      font-weight: 500
+    // Firefox tweak.
     button
       vertical-align: top
-    // Show localhost link.
-    &:hover .show-on-hover
-      display: inline
 
   #tag-line
     margin-top: 0.3rem
 
   #subnavigation
-    padding: 0.4rem 1rem
-    color: #fff
-    background: $color_primary_light
+    margin-top: 0.3rem
+    padding: 0
+    color: $almost_black
     a
-      color: #fff
       margin-right: 0.7rem

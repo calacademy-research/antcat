@@ -41,7 +41,8 @@
 +foundation-tabs
 //+foundation-thumbnail
 +foundation-title-bar
-//+foundation-tooltip // Note: conflicts with jQuery's tooltips JS/CSS.
+// Note: conflicts with jQuery's tooltips JS/CSS.
+//+foundation-tooltip
 +foundation-top-bar
 
 +motion-ui-transitions
@@ -95,11 +96,19 @@ body.is-reveal-open
   .white-label.selected
     a, a.valid.subspecies
       color: #fff !important
-  .accordion-title
-    font-size: 100%
 
 .tabs-title > a
   font-size: 100%
+
+.tabs
+  border-bottom: 4px solid #f1f1f1
+  border-left: 0
+  border-right: 0
+  border-top: 0
+
+.tabs-title
+  a
+    border-radius: 3px 3px 0 0
 
 @mixin normal-sized-button
   @include button-style($color_primary, auto, auto)
@@ -112,6 +121,8 @@ body.is-reveal-open
   color: #fff
   &:active, &:hover, &:focus
     color: #fff
+  border: 1px $color_primary solid
+  border-radius: 3px !important
 
 // Button colors
 //  ---------------------------------------------------------------------------
@@ -215,6 +226,21 @@ table
 // Fix double arrow icons in dropdowns.
 select
   background-image: none
+
+button.radius, .button.radius
+  border-radius: 3px !important
+
+.input-group-field
+  border-radius: 3px
+
+.pagination
+  .current
+    border-radius: 3px
+  em
+    font-style: normal
+
+.callout
+  border-radius: 5px
 
 // Avoid having form elements span the full page.
 input, select, label
