@@ -9,6 +9,7 @@
 //= require foundation.reveal
 //= require foundation.sticky
 //= require foundation.tabs
+//= require foundation.tooltip
 //= require foundation.util.box
 //= require foundation.util.keyboard
 //= require foundation.util.mediaQuery

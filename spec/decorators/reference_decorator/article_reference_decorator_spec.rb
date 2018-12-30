@@ -43,31 +43,13 @@ describe ArticleReferenceDecorator do
     end
 
     specify do
-      expect(reference.decorate.expandable_reference).to eq(
-        %(<span class="expandable-reference">) +
-          %{<a title="Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3." class="expandable-reference-key" href="#">Forel, 1874</a>} +
-          %(<span class="expandable-reference-content">) +
-            %{<span class="expandable-reference-text">Forel, A. 1874. <i>Atta</i> <i>and such</i>. #{reference.journal.name} (1):3.</span> } +
-            %(<a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a> ) +
-            %(<a class="external-link" href="example.com">PDF</a> ) +
-            %(<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>) +
-          %(</span>) +
-        %(</span>)
-      )
-    end
-
-    xspecify do
-      expect(reference.decorate.expandable_reference).to eq(
-        %(<span class="expandable-reference">) +
-          %{<a title="Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3." class="expandable-reference-key" href="#">Forel, 1874</a>} +
-          %(<span class="expandable-reference-content">) +
-            %{<span class="expandable-reference-text">Forel, A. 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a> #{reference.journal.name} (1):3.</span> } +
-            %(<a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a> ) +
-            %(<a class="external-link" href="example.com">PDF</a> ) +
-            %(<a class="btn-normal btn-tiny" href="/references/#{reference.id}">#{reference.id}</a>) +
-          %(</span>) +
-        %(</span>)
-      )
+      expect(reference.decorate.expandable_reference).to eq <<~HTML.squish
+        <span data-tooltip="true" data-allow-html="true" data-tooltip-class="foundation-tooltip" tabindex="2"
+          title="Forel, A. 1874. <i>Atta</i> <i>and such</i>. #{reference.journal.name} (1):3.
+            <a class=&quot;btn-normal btn-tiny&quot; href=&quot;/references/#{reference.id}&quot;>#{reference.id}</a>
+            <a class=&quot;external-link&quot; href=&quot;https://doi.org/#{reference.doi}&quot;>#{reference.doi}</a>
+            <a class=&quot;external-link&quot; href=&quot;example.com&quot;>PDF</a>">Forel, 1874</span>
+      HTML
     end
   end
 end

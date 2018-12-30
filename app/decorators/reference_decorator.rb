@@ -101,24 +101,19 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def generate_expandable_reference
-      helpers.content_tag :span, class: "expandable-reference" do
-        link = helpers.link_to reference.keey, '#',
-          title: helpers.unitalicize(plain_text), class: "expandable-reference-key"
+      small_reference_link_button =
+        helpers.link_to reference.id, helpers.reference_path(reference), class: "btn-normal btn-tiny"
 
-        small_reference_link_button =
-          helpers.link_to reference.id, helpers.reference_path(reference), class: "btn-normal btn-tiny"
+      inner_content = []
+      inner_content << generate_expanded_reference
+      inner_content << small_reference_link_button
+      inner_content << format_reference_document_link
+      content = inner_content.reject(&:blank?).join(' ').html_safe
 
-        expandable_reference_text = helpers.content_tag :span, expanded_reference, class: "expandable-reference-text"
-
-        content = link
-        content << helpers.content_tag(:span, class: "expandable-reference-content") do
-          inner_content = []
-          inner_content << expandable_reference_text
-          inner_content << format_reference_document_link
-          inner_content << small_reference_link_button
-          inner_content.reject(&:blank?).join(' ').html_safe
-        end
-      end
+      # TODO: `tabindex: 2` is required or tooltips won't stay open even with `data-click-open="true"`.
+      helpers.content_tag :span, reference.keey,
+        data: { tooltip: true, allow_html: "true", tooltip_class: "foundation-tooltip" },
+        tabindex: "2", title: content.html_safe
     end
 
     def generate_expanded_reference

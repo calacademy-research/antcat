@@ -24,7 +24,7 @@ Feature: Editing a taxon
     When I fill in the authorship notes with "Authorship notes"
     And I fill in "taxon_type_taxt" with "Notes"
     And I press "Save"
-    Then the taxon mouseover should contain "Fisher 2004. Ants. Psyche 3:3"
+    Then I should see "Fisher, 2004"
     And I should see "Authorship notes" in the headline
 
   Scenario: Changing incertae sedis

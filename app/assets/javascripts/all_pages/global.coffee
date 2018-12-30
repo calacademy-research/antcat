@@ -25,16 +25,7 @@ $.fn.disableButton = -> @addClass "disabled"
 # same elements more than once, they alternate between working and not.
 # Reference keys already in the DOM should not be touched after making
 # references in the markdown preview expandable.
-AntCat.makeReferenceKeeysExpandable = (element) ->
-  $(element).find('.expandable-reference-key').on 'click', ->
-    $(this).parent().find('.expandable-reference-content').toggle()
-    $(this).toggle()
-    false
-
-  $(element).find('.expandable-reference-text').on 'click', ->
-    $(this).parent().parent().find('.expandable-reference-key').toggle()
-    $(this).parent().parent().find('.expandable-reference-content').toggle()
-    false
+AntCat.makeReferenceKeeysExpandable = (element) -> $(element).foundation()
 
 # Used by `ApplicationHelper#inline_expandable`.
 # TODO should be merge with `AntCat.makeReferenceKeeysExpandable`, but
