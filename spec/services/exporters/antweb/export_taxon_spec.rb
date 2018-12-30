@@ -298,10 +298,10 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
+              %(<span>Type-species: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
               %( ) +
               # links
-              %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
+              %(<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
               %( ) +
               %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
               %( ) +
@@ -313,7 +313,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(<p><b>Taxonomic history</b></p>) +
             %(<div><div>) +
               %(<table><tr><td>) +
-                %(Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
+                %(Taxon: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
               %(</td></tr></table>) +
             %(</div></div>) +
 
