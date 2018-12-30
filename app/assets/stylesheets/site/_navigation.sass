@@ -1,5 +1,7 @@
 @import "colors"
 
+$mobile-topbar-background: #262c3a
+
 #header
   .top-bar
     white-space: nowrap !important
@@ -41,7 +43,7 @@
 
   #mobile-only
     #mobile-menu
-      background-color: #262C3A
+      background-color: $mobile-topbar-background
       a
         color: #fff
     #mobile-logo
@@ -73,9 +75,13 @@
     &:hover .show-on-hover
       display: inline
 
+  #tag-line
+    margin-top: 0.3rem
+
   #subnavigation
     padding: 0.4rem 1rem
     color: #fff
     background: $color_primary_light
     a
       color: #fff
+      margin-right: 0.7rem
