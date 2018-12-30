@@ -65,7 +65,7 @@ module Markdowns
         content.gsub!(REFERENCE_TAG_REGEX) do
           id = $~[:id]
           begin
-            refs[id.to_i] || Reference.find(id).decorate.expandable_reference.html_safe
+            refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
           rescue
             broken_markdown_link "reference", id
           end

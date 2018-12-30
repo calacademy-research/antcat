@@ -1,3 +1,6 @@
+# TODO: do not cache in database.
+# TODO: refactor.
+
 class ReferenceDecorator < ApplicationDecorator
   include ERB::Util # For the `h` method.
 
@@ -62,7 +65,7 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_plain_text, :plain_text_cache
   end
 
-  # Formats the reference with HTML, CSS, etc.
+  # Formats the reference with HTML, CSS, etc. Click to show expanded.
   def expandable_reference
     return generate_expandable_reference if ENV['NO_REF_CACHE']
 
@@ -72,7 +75,17 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_expandable_reference, :expandable_reference_cache
   end
 
-  def format_title
+  # Formats the reference with HTML, CSS, etc.
+  def expanded_reference
+    return generate_expanded_reference if ENV['NO_REF_CACHE']
+
+    cached = reference.expanded_reference_cache
+    return cached.html_safe if cached
+
+    reference.set_cache generate_expanded_reference, :expanded_reference_cache
+  end
+
+  def format_plain_text_title
     format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
   end
 
@@ -82,8 +95,8 @@ class ReferenceDecorator < ApplicationDecorator
       string = make_html_safe(reference.author_names_string_with_suffix)
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
-      string << format_title << ' '
-      string << format_italics(helpers.add_period_if_necessary(format_citation))
+      string << helpers.unitalicize(format_plain_text_title) << ' '
+      string << helpers.add_period_if_necessary(format_plain_text_citation)
       string
     end
 
@@ -91,6 +104,11 @@ class ReferenceDecorator < ApplicationDecorator
       helpers.content_tag :span, class: "expandable-reference" do
         link = helpers.link_to reference.keey, '#',
           title: helpers.unitalicize(plain_text), class: "expandable-reference-key"
+
+        small_reference_link_button =
+          helpers.link_to reference.id, helpers.reference_path(reference), class: "btn-normal btn-tiny"
+
+        expandable_reference_text = helpers.content_tag :span, expanded_reference, class: "expandable-reference-text"
 
         content = link
         content << helpers.content_tag(:span, class: "expandable-reference-content") do
@@ -103,14 +121,20 @@ class ReferenceDecorator < ApplicationDecorator
       end
     end
 
-    def expandable_reference_text
-      helpers.content_tag :span, plain_text, class: "expandable-reference-text"
+    def generate_expanded_reference
+      string = make_html_safe(reference.author_names_string_with_suffix)
+      string << ' ' unless string.empty?
+      string << make_html_safe(reference.citation_year) << '. '
+      string << format_plain_text_title << ' '
+      string << format_italics(helpers.add_period_if_necessary(format_citation))
+
+      string
     end
 
-    def small_reference_link_button
-      # TODO replace `reference.id` with "Show" (requires invalidating all references).
-      helpers.link_to reference.id, helpers.reference_path(reference),
-        class: "btn-normal btn-tiny"
+    # Override in subclasses as necessary.
+    def format_plain_text_citation
+      # `format_citation` + `unitalicize` is go get rid of "*" italics.
+      helpers.unitalicize format_italics(format_citation)
     end
 
     # TODO try to move somewhere more general, even if it's only used here.

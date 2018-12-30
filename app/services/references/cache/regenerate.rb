@@ -10,6 +10,7 @@ module References
       def call
         set generate_plain_text, :plain_text_cache
         set generate_expandable_reference, :expandable_reference_cache
+        set generate_expanded_reference, :expanded_reference_cache
       end
 
       private
@@ -26,6 +27,10 @@ module References
 
         def generate_expandable_reference
           reference.decorate.send(:generate_expandable_reference)
+        end
+
+        def generate_expanded_reference
+          reference.decorate.send(:generate_expanded_reference)
         end
     end
   end

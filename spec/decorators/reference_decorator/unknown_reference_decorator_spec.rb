@@ -1,35 +1,34 @@
 require 'spec_helper'
 
 describe UnknownReferenceDecorator do
+  let(:author_name) { create :author_name, name: "Forel, A." }
+  let(:reference) do
+    create :unknown_reference, author_names: [author_name], citation_year: "1874",
+      title: "Les fourmis de la Suisse.", citation: '*Ants* <i>and such</i>'
+  end
+
   describe "#plain_text" do
-    let(:author_name) { create :author_name, name: "Forel, A." }
+    specify { expect(reference.decorate.plain_text).to be_html_safe }
 
-    it "formats unknown references" do
-      reference = create :unknown_reference,
-        author_names: [author_name],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse.",
-        citation: 'New York'
-      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
-    end
-
-    it "returns an html_safe string" do
-      reference = create :unknown_reference
-      expect(reference.decorate.plain_text).to be_html_safe
-    end
-
-    it "italicizes the citation" do
-      reference = create :unknown_reference, citation: '*Ants* <i>et al.</i>'
-      expect(reference.decorate.plain_text).to include '<i>Ants</i> <i>et al.</i>'
+    specify do
+      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Ants and such.'
     end
 
     context "with unsafe characters" do
-      let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
-
       it "escapes them" do
         reference = create :unknown_reference, citation: '<span>Tapinoma</span>'
         expect(reference.decorate.plain_text).to include "&lt;span&gt;Tapinoma&lt;/span&gt;"
       end
+    end
+  end
+
+  describe "#expanded_reference" do
+    specify { expect(reference.decorate.expanded_reference).to be_html_safe }
+
+    specify do
+      expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
+        Forel, A. 1874. Les fourmis de la Suisse. <i>Ants</i> <i>and such</i>.
+      HTML
     end
   end
 end

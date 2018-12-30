@@ -36,13 +36,8 @@ describe ReferenceDecorator do
       end
 
       it "escapes the title" do
-        reference.update title: '<script>'
-        expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. &lt;script&gt;. 32 pp.'
-      end
-
-      it "escapes the title but leave the italics alone" do
         reference.update title: '*foo*<script>'
-        expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. <i>foo</i>&lt;script&gt;. 32 pp.'
+        expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. foo&lt;script&gt;. 32 pp.'
       end
     end
   end

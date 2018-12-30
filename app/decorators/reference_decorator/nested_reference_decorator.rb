@@ -3,8 +3,12 @@ class NestedReferenceDecorator < ReferenceDecorator
 
   private
 
-    def format_citation
+    def format_plain_text_citation
       "#{h pages_in} #{nesting_reference.decorate.plain_text}".html_safe
+    end
+
+    def format_citation
+      "#{h pages_in} #{nesting_reference.decorate.expanded_reference}".html_safe
     end
 
     # Fall back to nesting reference's PDF is nestee does not have one.

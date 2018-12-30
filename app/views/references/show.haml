@@ -35,7 +35,7 @@
 .row.margin-bottom
   .small-12.columns
     .callout
-      =@reference.plain_text
+      =@reference.expanded_reference
       =@reference.format_reference_document_link
 
 .row.margin-bottom
@@ -51,7 +51,7 @@
                 %li=link_to author_name.name, author_name.author
         %tr
           %th Title
-          %td=@reference.format_title
+          %td=@reference.format_plain_text_title
         -if @reference.is_a? UnknownReference
           %tr
             %th Citation
