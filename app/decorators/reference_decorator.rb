@@ -72,10 +72,6 @@ class ReferenceDecorator < ApplicationDecorator
     reference.set_cache generate_expandable_reference, :expandable_reference_cache
   end
 
-  def linked_keey
-    helpers.link_to reference.keey, helpers.reference_path(reference)
-  end
-
   def format_title
     format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
   end

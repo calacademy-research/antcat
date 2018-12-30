@@ -90,7 +90,7 @@
         -if @reference.is_a? NestedReference
           %tr
             %th Nested in
-            %td=@reference.nesting_reference.decorate.linked_keey
+            %td=@reference.nesting_reference.decorate.expandable_reference
 
         -if @reference.nestees.present?
           %tr
@@ -98,7 +98,7 @@
             %td
               %ul.no-bullet
                 -@reference.nestees.each do |nestee|
-                  %li=nestee.decorate.linked_keey
+                  %li=nestee.decorate.expandable_reference
         %tr
           %th DOI
           %td=or_dash @reference.doi
