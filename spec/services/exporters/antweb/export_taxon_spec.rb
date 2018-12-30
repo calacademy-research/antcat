@@ -325,7 +325,7 @@ describe Exporters::Antweb::ExportTaxon do
                   %(<a title="#{ref_title_tag}" href="http://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +
-                  %(<a href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +
+                  %(<a class="external-link" href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +
                   %(: 766;) +
                 %(</div>) +
               %(</div>) +

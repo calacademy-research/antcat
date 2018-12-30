@@ -35,6 +35,7 @@ module ApplicationHelper
     string.html_safe
   end
 
+  # TODO: See if we can use CSS only instead.
   def external_link_to label, url
     link_to label, url, class: 'external-link'
   end
