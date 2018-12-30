@@ -5,7 +5,7 @@ Feature: Search references for authors
       | Forel, M.  | Forel's Ants  |
       | Bolton, B. | Bolton's Ants |
     And a Bolton-Fisher reference exists with the title "Bolton and Fisher's Ants"
-    And I go to the references page
+    And I go to the main page
 
   @search
   Scenario: Searching for one author only (keyword search)

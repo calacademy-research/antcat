@@ -1,9 +1,13 @@
 require 'spec_helper'
 
 describe NestedReferenceDecorator do
+  include ReferencesHelpers
+
+  let(:nestee_author_name) { create :author_name, name: "Mayr, E." }
   let(:author_name) { create :author_name, name: "Forel, A." }
+
   let(:nestee_reference) do
-    create :book_reference, author_names: [create(:author_name, name: 'Mayr, E.')],
+    create :book_reference, author_names: [nestee_author_name],
       citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
       publisher: create(:publisher, name: 'Wiley', place_name: 'New York')
   end
@@ -34,8 +38,8 @@ describe NestedReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a>
-        Pp. 32-45 in Mayr, E. 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
+        #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a>
+        Pp. 32-45 in #{author_link(nestee_author_name)} 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
         <i>and such</i>.</a> New York: Wiley, 32 pp.
       HTML
     end

@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe UnknownReferenceDecorator do
+  include ReferencesHelpers
+
   let(:author_name) { create :author_name, name: "Forel, A." }
   let(:reference) do
     create :unknown_reference, author_names: [author_name], citation_year: "1874",
@@ -27,7 +29,8 @@ describe UnknownReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <a href="/references/#{reference.id}">Les fourmis de la Suisse.</a> <i>Ants</i> <i>and such</i>.
+        #{author_link(author_name)} 1874. <a href="/references/#{reference.id}">Les fourmis de la Suisse.</a>
+        <i>Ants</i> <i>and such</i>.
       HTML
     end
   end

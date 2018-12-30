@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe BookReferenceDecorator do
+  include ReferencesHelpers
+
   let(:author_name) { create :author_name, name: "Forel, A." }
   let(:reference) do
     create :book_reference, author_names: [author_name],
@@ -29,7 +31,8 @@ describe BookReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <a href="/references/#{reference.id}"><i>Ants</i> <i>and such</i>.</a> San Francisco: Wiley, 22 pp.
+        #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Ants</i>
+        <i>and such</i>.</a> San Francisco: Wiley, 22 pp.
       HTML
     end
   end

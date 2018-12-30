@@ -113,7 +113,7 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def generate_expanded_reference
-      string = make_html_safe(reference.author_names_string_with_suffix)
+      string = author_names_with_links
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
       string << format_title_with_link << ' '
@@ -126,6 +126,15 @@ class ReferenceDecorator < ApplicationDecorator
     def format_plain_text_citation
       # `format_citation` + `unitalicize` is go get rid of "*" italics.
       helpers.unitalicize format_italics(format_citation)
+    end
+
+    def author_names_with_links
+      string =  reference.author_names.map do |author_name|
+                  h helpers.link_to(author_name.name.html_safe, author_name.author).html_safe
+                end.join('; ').html_safe
+
+      string << " #{author_names_suffix}" if author_names_suffix.present?
+      string
     end
 
     def format_title_with_link
