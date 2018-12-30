@@ -29,7 +29,7 @@ describe BookReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <i>Ants</i> <i>and such</i>. San Francisco: Wiley, 22 pp.
+        Forel, A. 1874. <a href="/references/#{reference.id}"><i>Ants</i> <i>and such</i>.</a> San Francisco: Wiley, 22 pp.
       HTML
     end
   end

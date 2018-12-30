@@ -31,7 +31,7 @@ describe ArticleReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <i>Atta</i> <i>and such</i>. #{reference.journal.name} (1):3.
+        Forel, A. 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a> #{reference.journal.name} (1):3.
       HTML
     end
   end
@@ -45,8 +45,9 @@ describe ArticleReferenceDecorator do
     specify do
       expect(reference.decorate.expandable_reference).to eq <<~HTML.squish
         <span data-tooltip="true" data-allow-html="true" data-tooltip-class="foundation-tooltip" tabindex="2"
-          title="Forel, A. 1874. <i>Atta</i> <i>and such</i>. #{reference.journal.name} (1):3.
-            <a class=&quot;btn-normal btn-tiny&quot; href=&quot;/references/#{reference.id}&quot;>#{reference.id}</a>
+          title="Forel, A. 1874.
+            <a href=&quot;/references/#{reference.id}&quot;><i>Atta</i> <i>and such</i>.</a>
+            #{reference.journal.name} (1):3.
             <a class=&quot;external-link&quot; href=&quot;https://doi.org/#{reference.doi}&quot;>#{reference.doi}</a>
             <a class=&quot;external-link&quot; href=&quot;example.com&quot;>PDF</a>">Forel, 1874</span>
       HTML

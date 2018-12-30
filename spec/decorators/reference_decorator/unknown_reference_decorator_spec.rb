@@ -27,7 +27,7 @@ describe UnknownReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. Les fourmis de la Suisse. <i>Ants</i> <i>and such</i>.
+        Forel, A. 1874. <a href="/references/#{reference.id}">Les fourmis de la Suisse.</a> <i>Ants</i> <i>and such</i>.
       HTML
     end
   end

@@ -101,12 +101,8 @@ class ReferenceDecorator < ApplicationDecorator
     end
 
     def generate_expandable_reference
-      small_reference_link_button =
-        helpers.link_to reference.id, helpers.reference_path(reference), class: "btn-normal btn-tiny"
-
       inner_content = []
       inner_content << generate_expanded_reference
-      inner_content << small_reference_link_button
       inner_content << format_reference_document_link
       content = inner_content.reject(&:blank?).join(' ').html_safe
 
@@ -120,7 +116,7 @@ class ReferenceDecorator < ApplicationDecorator
       string = make_html_safe(reference.author_names_string_with_suffix)
       string << ' ' unless string.empty?
       string << make_html_safe(reference.citation_year) << '. '
-      string << format_plain_text_title << ' '
+      string << format_title_with_link << ' '
       string << format_italics(helpers.add_period_if_necessary(format_citation))
 
       string
@@ -130,6 +126,10 @@ class ReferenceDecorator < ApplicationDecorator
     def format_plain_text_citation
       # `format_citation` + `unitalicize` is go get rid of "*" italics.
       helpers.unitalicize format_italics(format_citation)
+    end
+
+    def format_title_with_link
+      helpers.link_to format_plain_text_title, helpers.reference_path(reference)
     end
 
     # TODO try to move somewhere more general, even if it's only used here.

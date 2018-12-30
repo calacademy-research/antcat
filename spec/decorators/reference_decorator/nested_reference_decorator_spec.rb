@@ -34,9 +34,9 @@ describe NestedReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        Forel, A. 1874. <i>Atta</i> <i>and such</i>.
-        Pp. 32-45 in Mayr, E. 2010. <i>Lasius</i>
-        <i>and such</i>. New York: Wiley, 32 pp.
+        Forel, A. 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a>
+        Pp. 32-45 in Mayr, E. 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
+        <i>and such</i>.</a> New York: Wiley, 32 pp.
       HTML
     end
   end

@@ -19,7 +19,7 @@ describe MissingReferenceDecorator do
 
     specify do
       expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
-        2010. Tapinoma. <i>Atta</i> <i>and such</i>.
+        2010. <a href="/references/#{reference.id}">Tapinoma.</a> <i>Atta</i> <i>and such</i>.
       HTML
     end
   end
