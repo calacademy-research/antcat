@@ -35,7 +35,7 @@
                 =text_field_tag "reference_q", params[:reference_q], class: "typeahead-references-js input-group-field expandable-reference-search", placeholder: "Search References"
                 .input-group-button
                   =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_reference_search_button" do
-                    =spinner_icon + "Go"
+                    =search_icon
 
           %li
             =form_tag catalog_quick_search_path, method: :get, id: "catalog-search-form-test-hook" do
@@ -44,7 +44,7 @@
                 =hidden_field_tag :im_feeling_lucky, true
                 .input-group-button
                   =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_catalog_search_button" do
-                    =spinner_icon + "Go"
+                    =search_icon
 
 #mobile-only.hide-for-large
   .top-bar
@@ -78,9 +78,9 @@
 
       %li.has-form
         =form_tag catalog_quick_search_path, method: :get do
-          .row.collapse
-            .small-10.columns
+          .row#catalog-search-row
+            .small-9.columns
               =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
               =hidden_field_tag :im_feeling_lucky, true
-            .small-2.columns
-              =button_tag "Go", type: "submit", name: nil, class: "button expanded"
+            .small-3.columns
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded"

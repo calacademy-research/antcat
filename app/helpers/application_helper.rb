@@ -89,6 +89,10 @@ module ApplicationHelper
     end
   end
 
+  def search_icon
+    antcat_icon "search"
+  end
+
   def append_superadmin_icon label
     label.html_safe << antcat_icon("superadmin")
   end
