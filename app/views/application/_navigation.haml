@@ -9,7 +9,7 @@
         %ul.menu
           -# HACK because lazy.
           -if current_user&.id == 60
-            .left
+            %small.left
               =link_to_current_page_on_live_site
               =link_to_current_page_on_localhost
           -if user_signed_in?

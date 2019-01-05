@@ -279,7 +279,8 @@ describe Exporters::Antweb::ExportTaxon do
         ref_title_tag = "#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}."
         ref_doi = a_reference.doi
 
-        expect(export_taxon(genus)[17]).to eq(
+        # rubocop:disable Layout/MultilineOperationIndentation
+        expected =
           %(<div class="antcat_taxon">) +
 
             # statistics
@@ -332,7 +333,9 @@ describe Exporters::Antweb::ExportTaxon do
             %(</div>) +
 
           %(</div>)
-        )
+        # rubocop:enable Layout/MultilineOperationIndentation
+
+        expect(export_taxon(genus)[17]).to eq expected
       end
     end
 

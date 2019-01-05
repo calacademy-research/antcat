@@ -59,7 +59,7 @@ crumb :journals do
 end
 
   crumb :journal do |journal|
-    link "<i>#{journal.name}</i>".html_safe, journal_path(journal)
+    link italicize(journal.name), journal_path(journal)
     parent :journals
   end
 
