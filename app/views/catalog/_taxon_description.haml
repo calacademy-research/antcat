@@ -11,19 +11,20 @@
   =taxon.decorate.headline_type
   =TaxtPresenter[taxon.headline_notes_taxt].to_html
 
+  -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
     -if taxon.primary_type_information.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Primary type information:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.primary_type_information]
 
     -if taxon.secondary_type_information.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Secondary type information:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.secondary_type_information]
 
     -if taxon.type_notes.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Type notes:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
 
