@@ -1,6 +1,9 @@
 -@title = 'Latest Additions'
 -breadcrumb :references_latest_additions
 
+=content_for :breadcrumbs_right do
+  =link_to 'Latest Changes', references_latest_changes_path, class: "btn-normal"
+
 %table.stack.references
   %tbody
   -@references.each do |reference|

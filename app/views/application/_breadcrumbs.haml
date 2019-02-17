@@ -2,10 +2,6 @@
   .left
     =breadcrumbs display_single_fragment: true, link_current: true
 
-    -if content_for? :subnavigation
-      #subnavigation
-        =yield :subnavigation
-
     -if menu_active?(:catalog)
       #tag-line.hide-for-small-only
         An Online Catalog of the Ants of the World

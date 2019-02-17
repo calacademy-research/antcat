@@ -2,6 +2,7 @@
 -breadcrumb :references_latest_changes
 
 =content_for :breadcrumbs_right do
+  =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
   =approve_all_references_button
 
 %table.stack.references

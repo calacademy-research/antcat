@@ -35,34 +35,6 @@ module ReferenceHelper
     end
   end
 
-  def show_references_subnavigation?
-    request.path.in?(
-      [
-        references_path,
-        references_latest_additions_path,
-        references_latest_changes_path,
-        endnote_export_references_path,
-        journals_path, authors_path
-      ]
-    )
-  end
-
-  def references_subnavigation_menu
-    links = []
-    links << link_to('All References', references_path)
-    links << link_to('Latest Additions', references_latest_additions_path)
-    links << link_to('Latest Changes', references_latest_changes_path)
-    links << link_to('Journals', journals_path)
-    links << link_to('Authors', authors_path)
-
-    content_tag :span do |_content|
-      links.flatten.reduce(''.html_safe) do |string, item|
-        string << ' '.html_safe unless string.empty?
-        string << item
-      end
-    end
-  end
-
   def reference_tab_active? reference, reference_class
     "is-active" if reference.is_a? reference_class
   end
