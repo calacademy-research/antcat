@@ -1,6 +1,11 @@
 -@title = 'Search Results'
 -breadcrumb :references_search_results
 
+-if user_is_editor?
+  =content_for :breadcrumbs_right do
+    -# TODO probably allow anyone to export search results.
+    =link_to 'Export to EndNote', endnote_export_references_path(q: params[:q]), class: "btn-normal"
+
 -if @references.empty?
   .callout.alert
     %p No results found for:

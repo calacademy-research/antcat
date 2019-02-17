@@ -17,11 +17,19 @@ module References
 
         def keyword_params
           References::Search::ExtractKeywords[search_query].
-            merge(page: options[:page])
+            merge(search_options)
         end
 
         def search_query
           if options[:q].present? then options[:q].dup else "" end
+        end
+
+        # TODO: Extract `options[:q]` to a params and improve this.
+        def search_options
+          {
+            page: options[:page],
+            endnote_export: options[:endnote_export]
+          }
         end
     end
   end

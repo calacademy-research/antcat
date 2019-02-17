@@ -52,14 +52,6 @@ module ReferenceHelper
     links << link_to('All References', references_path)
     links << link_to('Latest Additions', references_latest_additions_path)
     links << link_to('Latest Changes', references_latest_changes_path)
-
-    if user_is_editor?
-      # TODO probably allow anyone to export search results.
-      if show_export_search_results_to_endnote?
-        links << link_to('Export to EndNote', endnote_export_references_path(q: params[:q]))
-      end
-    end
-
     links << link_to('Journals', journals_path)
     links << link_to('Authors', authors_path)
 
@@ -74,10 +66,4 @@ module ReferenceHelper
   def reference_tab_active? reference, reference_class
     "is-active" if reference.is_a? reference_class
   end
-
-  private
-
-    def show_export_search_results_to_endnote?
-      params[:action] == "search"
-    end
 end
