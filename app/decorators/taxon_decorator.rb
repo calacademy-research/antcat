@@ -91,8 +91,8 @@ class TaxonDecorator < ApplicationDecorator
   end
 
   # We only really want this to make sure all catalog pages has at least one link for the sidebar.
-  def link_to_google
+  def link_to_google_scholar
     params = { q: "#{taxon.name_cache} #{taxon.author_citation}" }.to_query
-    h.external_link_to "Google", "//google.com/search?#{params}"
+    h.external_link_to "Google&nbsp;Scholar".html_safe, "//scholar.google.com/scholar?#{params}"
   end
 end
