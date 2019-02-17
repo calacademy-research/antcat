@@ -2,17 +2,6 @@
   .left
     =breadcrumbs display_single_fragment: true, link_current: true
 
-    -if menu_active?(:catalog)
-      #tag-line.hide-for-small-only
-        An Online Catalog of the Ants of the World
-        %small by Barry Bolton
-    -if menu_active?(:references)
-      #tag-line.hide-for-small-only
-        ANTBIB: A Bibliography of Ant Systematics
-        %small
-          by Philip S. Ward,
-          %em et al.
-
   -if content_for? :breadcrumbs_right
     .right=yield :breadcrumbs_right
 
