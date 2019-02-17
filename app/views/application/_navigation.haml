@@ -65,9 +65,6 @@
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
         %li=link_to 'Changes', changes_path
-
-      -if user_signed_in?
-        %li=link_to "Editor's Panel", editors_panel_path
         %li=current_user.decorate.user_page_link
         %li=link_to 'Logout', destroy_user_session_path, method: :delete
       -else
