@@ -174,6 +174,6 @@ class ReferenceDecorator < ApplicationDecorator
 
     def pdf_link
       return unless reference.downloadable?
-      helpers.external_link_to 'PDF', reference.url
+      helpers.pdf_link_to 'PDF', reference.url
     end
 end

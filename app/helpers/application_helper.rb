@@ -40,6 +40,11 @@ module ApplicationHelper
     link_to label, url, class: 'external-link'
   end
 
+  # TODO: See if we can use CSS only instead.
+  def pdf_link_to label, url
+    link_to label, url, class: 'pdf-link'
+  end
+
   def beta_label
     content_tag :span, "beta", class: "label"
   end

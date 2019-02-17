@@ -11,7 +11,7 @@ describe ReferenceDecorator do
 
     it "creates a link" do
       expect(reference.decorate.format_reference_document_link).
-        to eq '<a class="external-link" href="example.com">PDF</a>'
+        to eq '<a class="pdf-link" href="example.com">PDF</a>'
     end
   end
 

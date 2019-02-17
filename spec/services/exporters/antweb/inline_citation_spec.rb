@@ -37,7 +37,7 @@ describe Exporters::Antweb::InlineCitation do
             %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
             %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
             %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>) +
-            %( <a class="external-link" href="example.com">PDF</a>)
+            %( <a class="pdf-link" href="example.com">PDF</a>)
           )
         end
       end
