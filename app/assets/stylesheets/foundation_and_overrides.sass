@@ -172,6 +172,22 @@ a.btn-nodanger
   font-size: rem-calc(13) !important
   white-space: nowrap
 
+.top-header-link
+  color: #000 !important
+  font-size: 14px
+  margin-left: 1.5rem
+  &:hover, &.very-active
+    font-weight: 900
+  &.very-active
+    @extend .btn-normal
+    @extend .btn-tiny
+
+    // Override `extends`.
+    margin-left: 1.5rem
+    color: #fff !important
+    border: 2px #000 solid
+    background-color: #000 !important
+
 #breadcrumbs
   .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
     @extend .btn-tiny

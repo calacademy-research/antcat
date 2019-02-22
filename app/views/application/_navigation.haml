@@ -15,14 +15,14 @@
           -if user_signed_in?
             =render "unseen_notifications_badge"
             =render "unread_site_notices_badge"
-            %li=link_to "Editor's Panel", editors_panel_path, class: "btn-normal btn-tiny black-button #{'very-active' if menu_active?(:editors_panel)}"
+            %li=link_to "Editor's Panel", editors_panel_path, class: "top-header-link #{'very-active' if menu_active?(:editors_panel)}"
 
           -if user_signed_in?
-            %li=link_to 'Changes', changes_path, class: "btn-normal btn-tiny black-button #{'very-active' if menu_active?(:changes)}"
-            %li=link_to current_user.name, current_user, class: "btn-normal btn-tiny black-button"
-            %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "btn-normal btn-tiny black-button"
+            %li=link_to 'Changes', changes_path, class: "top-header-link #{'very-active' if menu_active?(:changes)}"
+            %li=link_to current_user.name, current_user, class: "top-header-link"
+            %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "top-header-link"
           -else
-            %li=link_to 'Login', new_user_session_path, class: "btn-normal btn-tiny black-button"
+            %li=link_to 'Login', new_user_session_path, class: "top-header-link"
 
       %br
       %br
