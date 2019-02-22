@@ -123,7 +123,9 @@ Given("there is no default reference") do
 end
 
 When("I fill in the references search box with {string}") do |search_term|
-  step %(I fill in "reference_q" with "#{search_term}")
+  within('#desktop-menu') do
+    step %(I fill in "reference_q" with "#{search_term}")
+  end
 end
 
 When('I press "Go" by the references search box') do
