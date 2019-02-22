@@ -6,10 +6,10 @@
 
 %p AntCat is a catalog and bibliography of the taxonomy of the world's ants.
 
-%h5 To cite AntCat
+%h5.margin-top To cite AntCat
 %p Bolton, B. #{Time.current.year}. An online catalog of the ants of the world. Available from http://antcat.org. (accessed [date])
 
-%h5 Links
+%h5.margin-top Links
 %ul
   %li=external_link_to 'Help pages wiki (hosted at GitHub)', "https://github.com/calacademy-research/antcat/wiki"
   %li=link_to 'List of users', users_path
@@ -21,14 +21,14 @@
     =surround "(", ")" do
       =link_to 'Swagger API definition', '/api/v1/swagger.yaml'
 
-%p
+%p.margin-top
   This material is based on work supported by the
   =external_link_to 'National Science Foundation (NSF)', 'http://www.nsf.gov/'
   under grant number
   =external_link_to('#0642321', 'http://www.nsf.gov/awardsearch/showAward?AWD_ID=0642321') + '.'
   Any opinions, findings, and conclusions or recommendations are those of the author(s) and do not necessarily reflect the views of the National Science Foundation.
 
-#partner_links
+#partner-links
   %div
     =link_to 'http://www.calacademy.org/', target: '_blank' do
       =image_tag 'logos/california_academy_of_sciences.png', style: "height: 40px"
