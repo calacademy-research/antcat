@@ -31,7 +31,7 @@ When("I fill in the catalog search box with {string}") do |search_term|
 end
 
 When('I press the search button by the catalog search box') do
-  find("#header_catalog_search_button").click
+  find("#header-catalog-search-button-test-hook").click
 end
 
 Given("the maximum number of taxa to load in each tab is {int}") do |number|
