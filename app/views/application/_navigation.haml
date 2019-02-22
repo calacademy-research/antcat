@@ -2,7 +2,7 @@
   .top-bar
     #desktop-logo.top-bar-title
       =link_to root_path do
-        =image_tag 'logos/antcat_black_35x163.png', alt: 'AntCat', id: "desktop-logo"
+        =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', id: "desktop-logo"
 
     #desktop-menu
       #desktop-upper-menu.top-bar-right
@@ -52,8 +52,8 @@
       .small-5.columns
         #mobile-logo.top-bar-title{data: { hide_for: "large", responsive_toggle: "mobile-menu" }}
           %span.float-left
-            %span.menu-icon.dark{data: { toggle: true }}
-          =image_tag 'logos/antcat_black_35x163.png', data: { toggle: true }
+            %span.menu-icon{data: { toggle: true }}
+          =image_tag 'logos/antcat_white_174x37.png', data: { toggle: true }
       =render "unseen_notifications_badge"
 
   #mobile-menu

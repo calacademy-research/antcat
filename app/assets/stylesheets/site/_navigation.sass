@@ -13,8 +13,10 @@ $mobile-topbar-background: #262c3a
     font-size: 90%
 
   font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
-  background-color: $almost_white
+  background-color: $color_primary
   padding-top: 1rem
+  padding-bottom: 2rem
+  color: #fff
 
   .top-bar
     white-space: nowrap !important
@@ -33,6 +35,7 @@ $mobile-topbar-background: #262c3a
       margin-right: 1rem
     #desktop-logo
       margin-top: 1.3rem
+      color: $almost_white !important
     #desktop-menu
       #desktop-lower-menu
         .reference-search-form
@@ -53,6 +56,8 @@ $mobile-topbar-background: #262c3a
           padding-top: 0 !important
 
   #mobile-only
+    .menu-icon
+      margin-top: 10px
     #mobile-menu
       background-color: $mobile-topbar-background
       a
@@ -73,17 +78,9 @@ $mobile-topbar-background: #262c3a
       padding-left: 1rem
       padding-right: 1rem
 
-  #breadcrumbs
-    margin-top: 2rem
-    color: #000 !important
-    margin-bottom: 2rem
-    font-size: 90%
-    a
-      font-weight: 500
-    // Firefox tweak.
-    button
-      vertical-align: top
-
   #tagline
     @media screen and (max-width: 640px)
       margin-top: 1rem
+
+#breadcrumbs
+  margin-bottom: 2rem

@@ -1,8 +1,9 @@
 @import "colors"
 
 .big-screaming-button
-  background-color: #fff
-  border: 3px $color_scream_green solid
+  background-color: $color_primary
+  border: 3px #fff
+
   border-radius: 3px !important
   font-weight: 900
   font-size: 12px
@@ -11,28 +12,36 @@
   text-transform: uppercase
   font-family: 'Montserrat', sans-serif
 
+.big-screaming-green-button
+  @extend .big-screaming-button
+  border: 3px #fff solid
+  color: $color_primary !important
+  background-color: #fff !important
+
+  &.very-active
+    color: #fff !important
+    border: 3px $color_scream_green solid
+    background-color: $color_scream_green !important
+    &:hover
+      color: #fff !important
+  &:hover
+    box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.35)
+    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    color: $color_scream_green !important
+
 .big-screaming-orange-button
   @extend .big-screaming-button
-  border: 3px $color_scream_orange solid
-  color: $color_scream_orange !important
+  border: 3px #fff solid
+  color: $color_primary !important
+  background-color: #fff !important
 
   &.very-active
     color: #fff !important
     background-color: $color_scream_orange !important
-
+    border: 3px $color_scream_orange solid
+    &:hover
+      color: #fff !important
   &:hover
-    box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.15)
+    box-shadow: 0 0 0 0.5rem rgba(255, 133, 27, 0.50)
     transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
-
-.big-screaming-green-button
-  @extend .big-screaming-button
-  border: 3px $color_scream_green solid
-  color: $color_scream_green !important
-
-  &.very-active
-    color: #fff !important
-    background-color: $color_scream_green !important
-
-  &:hover
-    box-shadow: 0 0 0 0.5rem rgba(69, 210, 152, 0.15)
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    color: $color_scream_orange !important
