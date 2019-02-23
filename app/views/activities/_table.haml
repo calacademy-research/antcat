@@ -20,7 +20,8 @@
         %tr.highlight-activity-anchor{id: "activity-#{activity.id}"}
           %td.icon=decorated.icon
           %td
-            =decorated.link_user
+            -# Don't show user who created other users' accoutns.
+            =decorated.link_user unless activity.trackable_type == 'User'
             =decorated.did_something
           %td=markdown activity.edit_summary, no_wrapping_p: true
           %td=decorated.revision_history_link
