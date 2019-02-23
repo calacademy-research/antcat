@@ -9,7 +9,7 @@ $ ->
   authorsDataSet =
     name: 'authors'
     limit: 5 # NOTE limited on client-side to not interfer with other author autocompletions and because lazy.
-    displayKey: 'search_query'
+    display: (authorName) -> "author:'#{authorName}'"
     source: authors.ttAdapter()
     templates:
       header: '<h5 class="autocompletion-header">Author results <small>(top 5)</small></h5>'
@@ -18,8 +18,7 @@ $ ->
         'Unable to find any authors that match the current query. ' +
         '</div>'
       suggestion: (authorName) ->
-        searchLink = "/references/search?utf8=✓&reference_q=author%3A%27#{authorName}%27"
-        "<a href=\"#{searchLink}\"><p>#{authorName}</p></a>"
+        "<p>#{authorName}</p>"
 
   references = new Bloodhound
     datumTokenizer: Bloodhound.tokenizers.whitespace
@@ -47,4 +46,7 @@ $ ->
     highlight: true
     minLength: 2
 
-   $('input.typeahead-references-js').typeahead options, authorsDataSet, referencesDataSet
+   $('input.typeahead-references-js').typeahead(options, authorsDataSet, referencesDataSet)
+    .on 'typeahead:selected', (e) ->
+      # To make clicking on a suggestion or pressing Enter submit the form.
+      e.target.form.submit()

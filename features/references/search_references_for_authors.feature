@@ -23,7 +23,8 @@ Feature: Search references for authors
     And I should not see the following autocomplete suggestions:
       | Forel, M. |
 
-    When I follow "Bolton, B."
-    Then I should see "Bolton and Fisher's Ants"
+    When I click the first autocomplete suggestion
+    Then the search box should contain "author:'Bolton, B.'"
+    And I should see "Bolton and Fisher's Ants"
     And I should see "Bolton's Ants"
     And I should not see "Forel's Ants"
