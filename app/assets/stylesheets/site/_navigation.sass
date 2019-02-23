@@ -78,8 +78,11 @@ $mobile-topbar-background: $color_primary
       padding-left: 1rem
       padding-right: 1rem
       margin-bottom: 5px
-    .mobile-search-button
-      border: 2px #fff solid
+      .mobile-search-button
+        border: 2px #fff solid
+      // Restore width after Typeahead.
+      .twitter-typeahead
+        width: 100%
 
   #tagline
     @media screen and (max-width: 640px)

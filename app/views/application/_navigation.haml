@@ -58,6 +58,24 @@
 
   #mobile-menu
     %ul.vertical.menu
+      %li.has-form
+        =form_tag references_search_index_path, method: :get do
+          .row#search-row
+            .small-9.columns
+              =text_field_tag 'reference_q', params[:reference_q], class: "typeahead-references-js", placeholder: "Search References"
+              =hidden_field_tag :im_feeling_lucky, true
+            .small-3.columns
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+
+      %li.has-form
+        =form_tag catalog_quick_search_path, method: :get do
+          .row#search-row
+            .small-9.columns
+              =text_field_tag 'qq', params[:qq], class: "typeahead-taxa-js-hook", placeholder: "Search Catalog"
+              =hidden_field_tag :im_feeling_lucky, true
+            .small-3.columns
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+
       %li=link_to 'References', references_path
       %li=link_to "Catalog", root_path
       -if user_signed_in?
@@ -69,22 +87,3 @@
         %li=link_to 'Login', new_user_session_path
       %li
         %a{data: { open: "feedback_modal" }} Feedback
-      %li=link_to 'Advanced Search', catalog_search_path
-
-      %li.has-form
-        =form_tag catalog_quick_search_path, method: :get do
-          .row#search-row
-            .small-9.columns
-              =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
-              =hidden_field_tag :im_feeling_lucky, true
-            .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
-
-      %li.has-form
-        =form_tag references_search_index_path, method: :get do
-          .row#search-row
-            .small-9.columns
-              =text_field_tag 'reference_q', params[:qq], placeholder: "Search References"
-              =hidden_field_tag :im_feeling_lucky, true
-            .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
