@@ -9,20 +9,18 @@
     .medium-4.columns
       %fieldset.fieldset
         %legend Change parent of
-        =@taxon.decorate.id_and_name_and_author_citation
-
-        %br
-        Current parent:
-        =@taxon.parent.decorate.id_and_name_and_author_citation
+        %p=@taxon.decorate.id_and_name_and_author_citation
+        %p
+          Current parent:
+          =@taxon.parent.decorate.id_and_name_and_author_citation
 
     .medium-4.columns
       %fieldset.fieldset
         %legend to
-        =taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks
-
-        %br
-        Possible parent ranks:
-        =@valid_parent_ranks.to_sentence
+        %p=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks
+        %p
+          Possible parent ranks:
+          =@valid_parent_ranks.to_sentence
 
     .medium-4.columns
       .callout

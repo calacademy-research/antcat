@@ -11,19 +11,17 @@
         .medium-6.columns
           %fieldset.fieldset
             %legend Create missing obsolete combination for current valid name
-            =@taxon.decorate.id_and_name_and_author_citation
-
-            %br
-            Current parent:
-            =@taxon.parent.decorate.id_and_name_and_author_citation
+            %p=@taxon.decorate.id_and_name_and_author_citation
+            %p
+              Current parent:
+              =@taxon.parent.decorate.id_and_name_and_author_citation
 
         .medium-6.columns
           %fieldset.fieldset
             %legend obsolete genus
-            =taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: :genus
-
-            %br
-            Possible parent ranks: genus
+            %p=taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: :genus
+            %p
+              Possible parent ranks: genus
       .row
         .medium-12.columns
           .center-text
