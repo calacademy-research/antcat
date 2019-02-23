@@ -1,32 +1,34 @@
 .row.center-text
-  .small-2.columns
-    %h6=image_tag 'logos/antcat_head_white_27x89.png'
-    %ul.no-bullet
-      %li=link_to 'About', page_path('about')
-      %li=link_to 'List of users', users_path
-      %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
-  .small-2.columns{style: "margin-top: 0.7rem"}
-    %ul.no-bullet
-      %li=link_to 'Changes', changes_path
-      %li
-        =link_to page_path('contribute') do
-          Contribute
-          =antcat_icon "star"
-          =antcat_icon "star"
-          =antcat_icon "star"
-      %li=link_to 'Random ant', catalog_random_path
-      %li#feedback-footer-link{data: { open: "feedback_modal" }} Feedback
-  .small-2.columns
-    %ul.no-bullet{style: "margin-top: 1.3rem"}
-      %li=link_to 'API', page_path('swagger-ui')
-      %li=external_link_to 'Help pages', "https://github.com/calacademy-research/antcat/wiki"
-      %li=external_link_to 'GitHub', "https://github.com/calacademy-research/antcat"
-
-  .small-6.columns{style: "margin-top: 0.4rem"}
+  .small-12.medium-6.columns
     .row
-      .small-12.medium-12.large-5.columns.large-offset-2
+      .small-4.columns
+        %h6=image_tag 'logos/antcat_head_white_27x89.png'
+        %ul.no-bullet
+          %li=link_to 'About', page_path('about')
+          %li=link_to 'List of users', users_path
+          %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
+      .small-4.columns{style: "margin-top: 0.7rem"}
+        %ul.no-bullet
+          %li=link_to 'Changes', changes_path
+          %li
+            =link_to page_path('contribute') do
+              Contribute
+              =antcat_icon "star"
+              =antcat_icon "star"
+              =antcat_icon "star"
+          %li=link_to 'Random ant', catalog_random_path
+          %li#feedback-footer-link{data: { open: "feedback_modal" }} Feedback
+      .small-4.columns
+        %ul.no-bullet{style: "margin-top: 1.3rem"}
+          %li=link_to 'API', page_path('swagger-ui')
+          %li=external_link_to 'Help pages', "https://github.com/calacademy-research/antcat/wiki"
+          %li=external_link_to 'GitHub', "https://github.com/calacademy-research/antcat"
+
+  .small-12.columns.medium-6.large-push-1{style: "margin-top: 0.4rem"}
+    .row
+      .small-6.medium-6.large-5.columns.large-offset-2
         =link_to 'http://www.calacademy.org/', target: '_blank' do
           =image_tag 'logos/california_academy_of_sciences_white_80x213.png'
-      .small-12.medium-12.large-5.columns.smedium-push-2
+      .small-6.medium-6.large-5.columns.smedium-push-2
         =link_to 'http://antweb.org/', target: '_blank' do
-          =image_tag 'logos/antweb_white_27x146.png', style: "padding-top: 1.7rem;m"
+          =image_tag 'logos/antweb_white_27x146.png', style: "padding-top: 1.7rem"
