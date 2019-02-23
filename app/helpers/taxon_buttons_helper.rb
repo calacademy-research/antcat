@@ -58,7 +58,7 @@ module TaxonButtonsHelper
     return unless taxon.is_a? Subspecies
 
     link_to 'Elevate to species', taxa_elevate_to_species_path(taxon),
-      method: :post, class: "btn-saves",
+      method: :post, class: "btn-warning",
       data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
   end
 
