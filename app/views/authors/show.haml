@@ -10,11 +10,11 @@
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
 %h5 Taxa described by author
-#taxa.callout.margin-bottom
+.callout.margin-bottom
   -if @taxa.empty?
     %p Found no taxa described by this author.
   -else
-    %table
+    %table.table.stack
       %thead
         %th Taxon
         %th Authorship
@@ -29,9 +29,9 @@
     =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
 
 .row
-  .small-6.columns.end
+  .small-12.medium-6.columns.end
     %h5 Statistics
-    #statistics.callout.margin-bottom
+    .callout.margin-bottom
       %table.table.unstriped
         %tbody
           %tr
@@ -51,12 +51,12 @@
             %td=or_dash @author.described_taxa.valid.count
 
 .row
-  .small-6.columns.end
+  .small-12.medium-6.columns.end
     %h5
       Names belonging to author
       -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
-    #names.callout.margin-bottom
+    .callout.margin-bottom
       %table.unstriped
         %thead
           %tr

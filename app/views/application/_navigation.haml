@@ -78,7 +78,7 @@
               =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
               =hidden_field_tag :im_feeling_lucky, true
             .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded"
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 
       %li.has-form
         =form_tag references_search_index_path, method: :get do
@@ -87,4 +87,4 @@
               =text_field_tag 'reference_q', params[:qq], placeholder: "Search References"
               =hidden_field_tag :im_feeling_lucky, true
             .small-3.columns
-              =button_tag search_icon, type: "submit", name: nil, class: "button expanded"
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"

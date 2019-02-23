@@ -1,6 +1,6 @@
 @import "colors"
 
-$mobile-topbar-background: #262c3a
+$mobile-topbar-background: $color_primary
 
 #header
   ::-webkit-input-placeholder
@@ -16,6 +16,8 @@ $mobile-topbar-background: #262c3a
   background-color: $color_primary
   padding-top: 1rem
   padding-bottom: 2rem
+  @media screen and (max-width: 999px)
+    padding-bottom: 1rem
   color: #fff
 
   .top-bar
@@ -56,6 +58,7 @@ $mobile-topbar-background: #262c3a
           padding-top: 0 !important
 
   #mobile-only
+    font-size: 90%
     .menu-icon
       margin-top: 10px
     #mobile-menu
@@ -79,9 +82,12 @@ $mobile-topbar-background: #262c3a
       padding-right: 1rem
       margin-bottom: 5px
 
+    .mobile-search-button
+      border: 2px #fff solid
+
   #tagline
     @media screen and (max-width: 640px)
-      margin-top: 1rem
+      font-size: 85%
 
 #breadcrumbs
   margin-bottom: 2rem
