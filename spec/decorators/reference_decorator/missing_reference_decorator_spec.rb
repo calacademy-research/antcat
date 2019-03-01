@@ -12,6 +12,17 @@ describe MissingReferenceDecorator do
     specify do
       expect(reference.decorate.plain_text).to eq "2010. Tapinoma. Atta and such."
     end
+
+    context 'with unsafe tags' do
+      let(:reference) { create :missing_reference, citation: '<script>xss</script>' }
+
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'xss'
+      end
+    end
   end
 
   describe "#expanded_reference" do

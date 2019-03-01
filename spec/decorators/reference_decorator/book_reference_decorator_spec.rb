@@ -17,11 +17,17 @@ describe BookReferenceDecorator do
         to eq 'Forel, A. 1874. Ants and such. San Francisco: Wiley, 22 pp.'
     end
 
-    context "with unsafe characters" do
-      it "escapes them" do
-        publisher = create :publisher, name: '<', place_name: '>'
-        reference = create :book_reference, publisher: publisher
-        expect(reference.decorate.plain_text).to include ' &gt;: &lt;'
+    context 'with unsafe tags' do
+      let!(:reference) do
+        publisher = create :publisher, name: '<script>xss</script>', place_name: '<script>xss</script>'
+        create :book_reference, publisher: publisher, pagination: '<script>xss</script>'
+      end
+
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'xss'
       end
     end
   end

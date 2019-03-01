@@ -16,10 +16,14 @@ describe UnknownReferenceDecorator do
       expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Ants and such.'
     end
 
-    context "with unsafe characters" do
-      it "escapes them" do
-        reference = create :unknown_reference, citation: '<span>Tapinoma</span>'
-        expect(reference.decorate.plain_text).to include "&lt;span&gt;Tapinoma&lt;/span&gt;"
+    context 'with unsafe tags' do
+      let!(:reference) { create :unknown_reference, citation: 'Atta <script>xss</script>' }
+
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'Atta xss'
       end
     end
   end

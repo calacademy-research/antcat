@@ -19,11 +19,18 @@ describe ArticleReferenceDecorator do
       expect(results).to eq "Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3."
     end
 
-    context "with unsafe characters" do
-      let(:reference) {  create :article_reference, journal: create(:journal, name: '<script>') }
+    context 'with unsafe tags' do
+      let!(:reference) do
+        journal = create :journal, name: '<script>xss</script>'
+        create :article_reference, journal: journal, pagination: '<script>xss</script>',
+          series_volume_issue: '<script>xss</script>'
+      end
 
-      it "escapes them" do
-        expect(reference.decorate.plain_text).to include '&lt;script&gt;'
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'xss'
       end
     end
   end
