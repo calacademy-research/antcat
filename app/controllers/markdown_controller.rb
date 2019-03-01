@@ -1,7 +1,7 @@
 class MarkdownController < ApplicationController
   def preview
-    text = params[:text].presence || ''
-    render json: Markdowns::Render[text].html_safe
+    text = params[:text] || ''
+    render json: Markdowns::Render[text]
   end
 
   def formatting_help

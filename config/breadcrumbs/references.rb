@@ -4,7 +4,7 @@ crumb :references do
 end
 
   crumb :reference do |reference|
-    link reference.keey, reference_path(reference)
+    link sanitize(reference.keey), reference_path(reference)
     parent :references
   end
 
