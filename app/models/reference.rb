@@ -25,6 +25,7 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxon
 
   validates :title, presence: true
+  validates :doi, format: { with: /\A[^<>]*\z/ }
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
