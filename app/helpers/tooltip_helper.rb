@@ -23,6 +23,6 @@ module TooltipHelper
     end
 
     def tooltip_help_icon text
-      content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: text
+      content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
     end
 end
