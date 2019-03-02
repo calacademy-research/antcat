@@ -22,12 +22,21 @@ class TaxaController < ApplicationController
     if @previous_combination
       set_attributes_from_previous_combination
 
-      if blank_or_homonym_collision_resolution?
-        create_new_combination!
-        redirect_to catalog_path(@taxon), notice: "Successfully created combination."
-      else
-        original_combination = save_original_combination!
-        redirect_to catalog_path(original_combination), notice: "Taxon was return to a previous usage."
+      begin
+        if blank_or_homonym_collision_resolution?
+          create_new_combination!
+          redirect_to catalog_path(@taxon), notice: "Successfully created combination."
+        else
+          original_combination = save_original_combination!
+          redirect_to catalog_path(original_combination), notice: "Taxon was return to a previous usage."
+        end
+      rescue ActiveRecord::RecordNotUnique => error
+        # NOTE: Added because `Taxa::HandlePreviousCombination#update_elements` started to raise this a lot
+        # after the uniqueness constraint was added.
+        #   Mysql2::Error: Duplicate entry '508127-437477' for key 'index_synonyms_on_junior_synonym_id_and_senior_synonym_id':
+        #   UPDATE `synonyms` SET `synonyms`.`junior_synonym_id` = 508127 WHERE `synonyms`.`junior_synonym_id` = 437459
+        flash.now[:alert] = "#{error.message}"
+        render :new
       end
     else
       TaxonForm.new(@taxon, taxon_params).save
