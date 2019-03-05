@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
-.buttons-right
+=content_for :breadcrumbs_right do
   =link_to "Show source code", @database_script.decorate.github_url, class: "btn-normal"
   -if @database_script.respond_to? :to_csv
     =link_to "Export as CSV", database_script_path(@database_script, format: :csv), class: "btn-normal"

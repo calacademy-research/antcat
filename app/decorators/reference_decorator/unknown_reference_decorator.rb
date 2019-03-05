@@ -1,9 +1,8 @@
 class UnknownReferenceDecorator < ReferenceDecorator
   delegate :citation
 
-  private
-
-    def format_citation
-      make_html_safe citation
-    end
+  # NOTE: Not private like its siblings because we need it in a view.
+  def format_citation
+    sanitize citation
+  end
 end

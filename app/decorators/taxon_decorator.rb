@@ -53,12 +53,12 @@ class TaxonDecorator < ApplicationDecorator
                  else
                    taxon.name.name.tr(" ", '_')
                  end
-    link_to_external_site 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
+    h.external_link_to 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end
 
   def link_to_hol
     return unless taxon.hol_id
-    link_to_external_site 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+    h.external_link_to 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
   end
 
   def link_to_antweb
@@ -87,12 +87,12 @@ class TaxonDecorator < ApplicationDecorator
 
     # Rails' .to_param sorts the params, this one doesn't
     url << params.map { |key, value| value.to_query(key) }.compact * '&'
-    link_to_external_site 'AntWeb', url.html_safe
+    h.external_link_to 'AntWeb', url.html_safe
   end
 
-  private
-
-    def link_to_external_site label, url
-      h.link_to label, url, class: 'link_to_external_site'
-    end
+  # We only really want this to make sure all catalog pages has at least one link for the sidebar.
+  def link_to_google_scholar
+    params = { q: "#{taxon.name_cache} #{taxon.author_citation}" }.to_query
+    h.external_link_to "Google&nbsp;Scholar".html_safe, "//scholar.google.com/scholar?#{params}"
+  end
 end

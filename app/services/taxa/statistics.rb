@@ -46,8 +46,14 @@ module Taxa
         statistics = {}
 
         ranks_with_taxa.each do |rank, taxa|
-          taxa = taxa.valid if valid_only
-          count = taxa.group(:fossil, :status).count
+          # NOTE: regarding `order('NULL')` http://dev.housetrip.com/2013/04/19/mysql-order-by-null/
+          count =
+            if valid_only
+              taxa.valid.group(:fossil).order('NULL').count.transform_keys do |k| [k, "valid"] end
+            else
+              taxa.group(:fossil, :status).order('NULL').count
+            end
+
           delete_original_combinations count unless valid_only
 
           massage_count count, rank, statistics

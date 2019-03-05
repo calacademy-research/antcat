@@ -3,7 +3,7 @@ module Catalog
     before_action :set_taxon, only: :index
 
     def index
-      @table_refs = @taxon.what_links_here
+      @table_refs = @taxon.what_links_here.paginate(page: params[:page], per_page: 100)
     end
 
     private

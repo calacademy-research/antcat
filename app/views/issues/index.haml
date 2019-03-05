@@ -1,34 +1,32 @@
 -@title = "Issues"
 -breadcrumb :issues
 
-%p.left
-  -if @open_issues_count.zero?
-    There are currently no open issues.
-  -else
-    Showing
-    =pluralize(@open_issues_count, "open issue") + "."
-
 -if current_user
-  .buttons-right=link_to "New", new_issue_path, class: "btn-normal"
+  =content_for :breadcrumbs_right do
+    =link_to "New", new_issue_path, class: "btn-normal"
 
-%table.issues.unstriped
-  %thead
-    %tr
-      %th
-      %th Status
-      %th Title
-      %th Comments
-      %th Added
+-if @no_open_issues
+  %p
+    There are currently no open issues.
+    =link_to "Create one?", new_issue_path, class: "btn-normal btn-tiny"
+
+%table.issues.unstriped.stack
   %tbody
     -@issues.each do |issue|
       %tr.issue{class: issue.decorate.format_status_css}
-        %td.icon=antcat_icon "issue", issue.decorate.format_status_css
-        %td=issue.decorate.format_status
-        %td.grow=link_to issue.title, issue
-        %td.no-wrap=link_comments_section issue
+        %td.icon.vertical-align-top=antcat_icon "issue", issue.decorate.format_status_css
+        %td.grow
+          =link_to issue.title, issue
+          %br
+          %small.gray-text.with-gray-links
+            added
+            =time_ago_in_words issue.created_at
+            ago by
+            =issue.adder.decorate.user_page_link
         %td.no-wrap
-          =time_ago_in_words issue.created_at
-          ago by
-          =issue.adder.decorate.user_page_link
+          -if has_comments? issue
+            =antcat_icon "comment"
+            =link_comments_section issue
+        %td.no-wrap
 
 =will_paginate @issues

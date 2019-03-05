@@ -22,7 +22,7 @@ Feature: Searching references
     When I fill in the references search box with "zzzzzz year:1972-1980"
     And I press "Go" by the references search box
     Then I should see "No results found"
-    And the "reference_q" field should contain "zzzzzz year:1972-1980"
+    And the "reference_q" field within "#desktop-menu" should contain "zzzzzz year:1972-1980"
 
   @javascript @search
   Scenario: Search using autocomplete

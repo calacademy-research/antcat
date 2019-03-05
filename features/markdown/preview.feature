@@ -11,7 +11,13 @@ Feature: Preview markdown
     And I press "Rerender preview"
     Then I should see "See: Giovanni, 1809"
 
-    # Test reference expansion.
+  @skip
+  Scenario: Previewing references markdown (click to expand)
+    Given there is a Giovanni reference
+    And I am on a page with a textarea with markdown preview and autocompletion
+
+    When I fill in "issue_description" with "See: %reference7777"
+    And I press "Rerender preview"
     And I should not see "Giovanni's Favorite Ants"
     When I follow "Giovanni, 1809"
     Then I should see "Giovanni's Favorite Ants"

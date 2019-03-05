@@ -1,7 +1,7 @@
 class InstitutionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :authenticate_superadmin, only: [:destroy]
-  before_action :set_institution, only: [:show, :edit, :update, :destroy]
+  before_action :set_institution, only: [:edit, :update, :destroy]
 
   def index
     @institutions = Institution.order(:abbreviation)

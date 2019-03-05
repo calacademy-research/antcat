@@ -7,6 +7,6 @@ Given("there is a closed issue {string}") do |title|
 end
 
 Then(/^I should see the (open|closed) issue "([^"]*)"$/) do |status, title|
-  row = find "tr", text: title
-  row.find "td", text: status.capitalize
+  row = find :css, "tr.#{status.downcase}"
+  row.find "td", text: title
 end

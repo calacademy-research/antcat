@@ -1,11 +1,10 @@
 @charset "utf-8"
 
-@import settings
-@import foundation
 @import colors
 
-// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
-// @import motion-ui/motion-ui
+@import settings
+@import foundation
+@import motion-ui/motion-ui
 
 +foundation-global-styles
 +foundation-grid
@@ -29,7 +28,7 @@
 +foundation-label
 //+foundation-media-object
 +foundation-menu
-//+foundation-menu-icon
++foundation-menu-icon
 //+foundation-off-canvas
 //+foundation-orbit
 +foundation-pagination
@@ -42,21 +41,35 @@
 +foundation-tabs
 //+foundation-thumbnail
 +foundation-title-bar
-//+foundation-tooltip // Note: conflicts with jQuery's tooltips JS/CSS.
+// Note: conflicts with jQuery's tooltips JS/CSS.
++foundation-tooltip
 +foundation-top-bar
 
-// If you'd like to include motion-ui the foundation-rails gem comes prepackaged with it, uncomment the 3 @imports, if you are not using the gem you need to install the motion-ui sass package.
-// +motion-ui-transitions
-// +motion-ui-animations
++motion-ui-transitions
++motion-ui-animations
+
+// Fix missing scrollbars after closing modal.
+body.is-reveal-open
+  overflow-y: auto
+
+.reveal-overlay
+  overflow-y: auto
+  background: none
+
+.reveal
+  outline: none
 
 // Make sure dropdown buttons do not have faded Webkit backgrounds.
 .dropdown
   -webkit-appearance: none !important
 
+// Avoid adding horizontal scroll on page since the hidden dropdown contents are too far left.
+.dropdown-pane
+  left: 0
+
 .pagination a, .pagination button
   display: inline
 
-// make the pickers stand out
 .display_button
   @extend .primary, .hollow, .button
   padding: 0.4rem 0.6rem !important
@@ -67,28 +80,38 @@
     @extend .label
     a, a.valid.subspecies
       color: #fff !important
-    background-color: $color_green !important
-  .white-label
+    background-color: $color_primary !important
+    // Becomes too large without this and skips rows.
+    padding-top: 0.15rem
+    padding-bottom: 0.15rem
+  .smaller-white-label
     @extend .label
     background-color: #fff
     border: 1px solid #000
     a
       color: #000 !important
-
-    // becomes too large without this and skips rows
-    padding-top: 0.2rem
-    padding-bottom: 0.2rem
+    // Becomes too large without this and skips rows.
+    padding-top: 0.1rem
+    padding-bottom: 0.1rem
   .white-label.selected
     a, a.valid.subspecies
       color: #fff !important
-  .accordion-title
-    font-size: 100%
 
 .tabs-title > a
   font-size: 100%
 
+.tabs
+  border-bottom: 4px solid #f1f1f1
+  border-left: 0
+  border-right: 0
+  border-top: 0
+
+.tabs-title
+  a
+    border-radius: 3px 3px 0 0
+
 @mixin normal-sized-button
-  @include button-style($primary-color, auto, auto)
+  @include button-style($color_primary, auto, auto)
   @include button-expand(false)
   padding: 0.5rem 0.7rem
   font-size: rem-calc(14)
@@ -98,6 +121,8 @@
   color: #fff
   &:active, &:hover, &:focus
     color: #fff
+  border: 1px $color_primary solid
+  border-radius: 3px !important
 
 // Button colors
 //  ---------------------------------------------------------------------------
@@ -113,15 +138,15 @@
   @include normal-sized-button
 
 .btn-saves
-  @include button-style($color_pretty, auto, auto)
-  border: 1px $color_pretty solid
+  @include button-style($color_save, auto, auto)
+  border: 1px $color_save solid
   color: #fff
   &:active, &:hover, &:focus
     color: #fff
 
 .btn-warning
   @include button-style($alert-color, auto, auto)
-  color: #fff
+  color: #fff !important
   &:active, &:hover, &:focus
     color: #fff
   border: 1px $alert-color solid
@@ -129,6 +154,7 @@
 .btn-nodanger
   @include button-style(#fff, auto, #000)
   border: 1px solid #000 !important
+  cursor: pointer
 
 // Make button styles work for links too. Some link button have the class ".button"
 // because I did not manage to align them buton button elements in any other way.
@@ -142,9 +168,31 @@ a.btn-nodanger
 
 // TODO: Rename to `.btn-small`.
 .btn-tiny
-  padding: 0.15rem 0.3rem !important
-  font-size: rem-calc(12) !important
+  padding: 0.30rem 0.5rem !important
+  font-size: rem-calc(13) !important
   white-space: nowrap
+
+.top-header-link
+  color: #fff !important
+  font-size: 14px
+  margin-left: 1rem
+  &:hover, &.very-active
+    font-weight: 900
+  &.very-active
+    @extend .btn-normal
+    @extend .btn-tiny
+
+    // Override `extends`.
+    margin-left: 1rem
+    color: #fff !important
+    border: 2px #000 solid
+    background-color: #000 !important
+
+#breadcrumbs
+  .btn-normal, .btn-warning, .btn-nodanger, .btn-saves
+    @extend .btn-tiny
+    // Tiny margin to align with dropdown buttons.
+    margin-bottom: 0.1rem
 
 // For inline "show on hover" buttons to avoid making the layout jump.
 .btn-very-tiny
@@ -153,6 +201,9 @@ a.btn-nodanger
   margin-bottom: 0
   white-space: nowrap
   display: inline
+
+button
+  cursor: pointer
 
 button.close-button
   background-color: transparent
@@ -169,10 +220,12 @@ table th
   background-color: #fff
   border: 1px solid #000
   color: #000 !important
+  a
+    color: #000 !important
 
 .pretty-label
   @extend .label
-  background-color: $color_pretty
+  background-color: $color_primary
 
 .warning-label
   @extend .label
@@ -189,3 +242,37 @@ table
 // Fix double arrow icons in dropdowns.
 select
   background-image: none
+
+button.radius, .button.radius
+  border-radius: 3px !important
+
+.input-group-field
+  border-radius: 3px
+
+.pagination
+  .current
+    border-radius: 3px
+  em
+    font-style: normal
+
+.callout
+  border-radius: 5px
+
+.has-tip
+  font-weight: bold !important
+  font-size: 90%
+
+.foundation-tooltip
+  position: absolute
+  top: calc(100% + 0.6495rem)
+  z-index: 1200
+  max-width: 50rem
+  padding: 0.75rem
+  border-radius: 3px
+  background-color: $color_pale
+  font-size: 90%
+  color: #000
+
+// Avoid having form elements span the full page.
+input, select, label
+  max-width: 25em

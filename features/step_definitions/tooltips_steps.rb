@@ -5,7 +5,7 @@ Given("these/this tooltip(s) (also )exist(s)") do |table|
 end
 
 When("I hover the tooltip next to the text {string}") do |text|
-  find('*', text: /^#{text}$/, match: :first).first('img.help_icon').hover
+  find('*', text: /^#{text}$/, match: :first).first('.tooltip-icon').hover
 end
 
 Then(/^I should (not )?see the tooltip text "([^"]*)"$/) do |should_not, text|

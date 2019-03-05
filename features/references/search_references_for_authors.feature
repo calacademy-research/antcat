@@ -5,7 +5,7 @@ Feature: Search references for authors
       | Forel, M.  | Forel's Ants  |
       | Bolton, B. | Bolton's Ants |
     And a Bolton-Fisher reference exists with the title "Bolton and Fisher's Ants"
-    And I go to the references page
+    And I go to the main page
 
   @search
   Scenario: Searching for one author only (keyword search)
@@ -23,7 +23,8 @@ Feature: Search references for authors
     And I should not see the following autocomplete suggestions:
       | Forel, M. |
 
-    When I follow "Bolton, B."
-    Then I should see "Bolton and Fisher's Ants"
+    When I click the first autocomplete suggestion
+    Then the search box should contain "author:'Bolton, B.'"
+    And I should see "Bolton and Fisher's Ants"
     And I should see "Bolton's Ants"
     And I should not see "Forel's Ants"

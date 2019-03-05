@@ -10,7 +10,7 @@ class CatalogController < ApplicationController
   end
 
   def index
-    @taxon = Family.first
+    @taxon = Family.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).first
 
     setup_taxon_browser
     render 'show'
@@ -56,7 +56,7 @@ class CatalogController < ApplicationController
   private
 
     def set_taxon
-      @taxon = Taxon.find params[:id]
+      @taxon = Taxon.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).find params[:id]
     end
 
     def setup_taxon_browser

@@ -1,0 +1,7 @@
+-if user_has_unread_site_notices? current_user
+  -site_notices = SiteNotice.unread_by current_user
+  -count = site_notices.count
+  %li.unseen-notifications
+    =link_to site_notices_path do
+      %span.label=count
+      new notice#{"s" unless count == 1}!

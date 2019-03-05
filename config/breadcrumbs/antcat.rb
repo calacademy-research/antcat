@@ -8,6 +8,11 @@ crumb :about do
   parent :antcat
 end
 
+crumb :contribute do
+  link "Contribute", page_path('contribute')
+  parent :antcat
+end
+
 crumb :users do
   link "Users", users_path
   parent :antcat

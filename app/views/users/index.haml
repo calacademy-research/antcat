@@ -2,14 +2,11 @@
 -breadcrumb :users
 
 -if user_is_superadmin?
-  .buttons-right
-    =link_to "New (for superadmins)", new_user_path, class: "btn-normal"
+  =content_for :breadcrumbs_right do
+    =link_to append_superadmin_icon("New"), new_user_path, class: "btn-normal"
 
-%table
-  %thead
-    %th Name
-    %th
-    %th Email
+%table.stack
+  %tbody
   -@users.each do |user|
     %tr
       %td=user.decorate.user_page_link

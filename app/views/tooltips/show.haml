@@ -3,9 +3,9 @@
 -@title = "Tooltip ##{@tooltip.id}"
 -breadcrumb :tooltip, @tooltip
 
-.buttons-right
+=content_for :breadcrumbs_right do
   =link_to "History", tooltip_history_index_path(@tooltip), class: "btn-normal"
   -if user_is_superadmin?
-    =link_to 'Delete', @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
+    =link_to append_superadmin_icon("Delete"), @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 
 =render 'form', tooltip: @tooltip, referral: @referral

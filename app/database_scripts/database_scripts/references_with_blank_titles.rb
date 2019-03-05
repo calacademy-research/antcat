@@ -7,5 +7,5 @@ module DatabaseScripts
 end
 
 __END__
-tags: [validated]
+tags: [regression-test, validated]
 topic_areas: [references]

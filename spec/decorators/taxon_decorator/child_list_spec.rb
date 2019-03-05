@@ -1,6 +1,5 @@
 require "spec_helper"
 
-# rubocop:disable Metrics/LineLength
 describe TaxonDecorator::ChildList do
   let(:subfamily) { create :subfamily }
 
@@ -61,6 +60,7 @@ describe TaxonDecorator::ChildList do
     end
   end
 
+  # TODO: Do not test private method. Also not very nice specs.
   describe "#child_list_query" do
     let!(:subfamily) { create :subfamily }
     let!(:atta) { create :genus, subfamily: subfamily }
@@ -71,21 +71,18 @@ describe TaxonDecorator::ChildList do
 
     before { create :genus, :synonym, subfamily: subfamily }
 
-    it "finds all genera for the taxon if there are no conditions" do
+    specify do
       results = described_class.new(subfamily).send :child_list_query, :genera
-      expect(results).to match_array [aneuretus, atta, eciton]
+      expect(results[false]).to match_array [atta]
+      expect(results[true]).to match_array [aneuretus, eciton]
 
       results = described_class.new(subfamily).send :child_list_query, :genera, fossil: true
-      expect(results).to match_array [aneuretus, eciton]
+      expect(results[false]).to match_array [atta]
+      expect(results[true]).to match_array [aneuretus, eciton]
 
       results = described_class.new(subfamily).send :child_list_query, :genera, incertae_sedis_in: 'subfamily'
-      expect(results).to match_array [aneuretus]
-    end
-
-    it "doesn't include invalid taxa" do
-      results = described_class.new(subfamily).send :child_list_query, :genera
-      expect(results).to match_array [aneuretus, atta, eciton]
+      expect(results[false]).to eq nil
+      expect(results[true]).to match_array [aneuretus]
     end
   end
 end
-# rubocop:enable Metrics/LineLength

@@ -9,7 +9,7 @@
       =taxon.decorate.link_to_taxon
     -else
       =taxon.name_html_cache.html_safe
-  %td=link_to change.format_created_at, change
+  %td.no-wrap=link_to change.format_created_at, change
   -# TODO: N+1 query.
   %td=link_to change.versions.count, versions_path(change_id: change.id)
   %td

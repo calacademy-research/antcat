@@ -11,19 +11,17 @@
         .medium-6.columns
           %fieldset.fieldset
             %legend Create missing obsolete combination for current valid name
-            =@taxon.decorate.id_and_name_and_author_citation
-
-            %br
-            Current parent:
-            =@taxon.parent.decorate.id_and_name_and_author_citation
+            %p=@taxon.decorate.id_and_name_and_author_citation
+            %p
+              Current parent:
+              =@taxon.parent.decorate.id_and_name_and_author_citation
 
         .medium-6.columns
           %fieldset.fieldset
             %legend obsolete genus
-            =taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: :genus
-
-            %br
-            Possible parent ranks: genus
+            %p=taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: :genus
+            %p
+              Possible parent ranks: genus
       .row
         .medium-12.columns
           .center-text
@@ -44,5 +42,6 @@
               %code obsolete combination
             %li and the protonym set to the protonym of #{@taxon.name_with_fossil}
         %p
-          %strong If the epithet must be changed to match gender, please update the name accordingly after creating the new record.
+          =antcat_icon 'warning-icon'
+          %strong If the spelling of the epithet must be changed to match gender, please update the name accordingly after creating the new record.
         %p The reason we need this special page is becasue it is not currently possible to select an existing protonym record in the taxon form.

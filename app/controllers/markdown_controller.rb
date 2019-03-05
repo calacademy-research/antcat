@@ -1,6 +1,6 @@
 class MarkdownController < ApplicationController
   def preview
-    text = params[:text].presence || ''
+    text = params[:text] || ''
     render json: Markdowns::Render[text]
   end
 

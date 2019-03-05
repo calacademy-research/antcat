@@ -4,7 +4,7 @@ crumb :references do
 end
 
   crumb :reference do |reference|
-    link reference.keey, reference_path(reference)
+    link sanitize(reference.keey), reference_path(reference)
     parent :references
   end
 
@@ -59,7 +59,7 @@ crumb :journals do
 end
 
   crumb :journal do |journal|
-    link "<i>#{journal.name}</i>".html_safe, journal_path(journal)
+    link italicize(journal.name), journal_path(journal)
     parent :journals
   end
 

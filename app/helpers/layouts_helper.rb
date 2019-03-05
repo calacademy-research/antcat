@@ -12,13 +12,4 @@ module LayoutsHelper
     string << (Rails.env.production? ? '' : " (#{Rails.env})")
     string
   end
-
-  def subnavigation_menu *items
-    content_tag :span do |_content|
-      items.flatten.reduce(''.html_safe) do |string, item|
-        string << ' | '.html_safe unless string.empty?
-        string << item
-      end
-    end
-  end
 end

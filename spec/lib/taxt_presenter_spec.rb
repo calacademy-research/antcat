@@ -5,9 +5,8 @@ describe TaxtPresenter do
     describe "escaping input" do
       it "doesn't escape already escaped input" do
         reference = create :unknown_reference, citation: 'Latreille, 1809 <script>'
-        expected = 'Latreille, 1809 &lt;script&gt;'
-        expect(reference.decorate.expandable_reference).to include expected
-        expect(described_class["{ref #{reference.id}}"].to_html).to include expected
+        expect(reference.decorate.expandable_reference).to_not include 'script'
+        expect(described_class["{ref #{reference.id}}"].to_html).to_not include 'script'
       end
     end
 
@@ -21,6 +20,18 @@ describe TaxtPresenter do
       context "when the ref tag is malformed" do
         it "doesn't freak" do
           expect(described_class["{ref sdf}"].to_html).to eq '{ref sdf}'
+        end
+      end
+
+      context 'when reference has no expandable_reference_cache' do
+        let(:reference) { create :unknown_reference, citation: 'Latreille, 1809 <script>' }
+
+        before do
+          expect(reference.expandable_reference_cache).to eq nil
+        end
+
+        it 'generates it' do
+          expect(described_class["{ref #{reference.id}}"].to_html).to_not include 'script'
         end
       end
 

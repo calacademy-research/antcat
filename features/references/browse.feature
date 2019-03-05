@@ -14,6 +14,6 @@ Feature: View bibliography
       | Bolton, B. | Cool Ants |
 
     When I go to the page of the most recent reference
-    And I follow "Bolton, B."
+    And I follow the first "Bolton, B."
     Then I should see "References by author"
     And I should see "Cool Ants"

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get :autocomplete
     get :show_invalid
     get :show_valid_only
+    get "random", to: "random#show"
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
@@ -194,7 +195,6 @@ Rails.application.routes.draw do
   resources :site_notices do
     collection do
       post :mark_all_as_read
-      post :dismiss
     end
   end
 

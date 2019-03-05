@@ -6,6 +6,7 @@ describe Reference do
 
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :title }
+  it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
   describe "scopes" do
     describe ".unreviewed_references" do

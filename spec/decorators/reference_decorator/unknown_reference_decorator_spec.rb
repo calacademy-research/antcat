@@ -1,35 +1,41 @@
 require 'spec_helper'
 
 describe UnknownReferenceDecorator do
+  include ReferencesHelpers
+
+  let(:author_name) { create :author_name, name: "Forel, A." }
+  let(:reference) do
+    create :unknown_reference, author_names: [author_name], citation_year: "1874",
+      title: "Les fourmis de la Suisse.", citation: '*Ants* <i>and such</i>'
+  end
+
   describe "#plain_text" do
-    let(:author_name) { create :author_name, name: "Forel, A." }
+    specify { expect(reference.decorate.plain_text).to be_html_safe }
 
-    it "formats unknown references" do
-      reference = create :unknown_reference,
-        author_names: [author_name],
-        citation_year: "1874",
-        title: "Les fourmis de la Suisse.",
-        citation: 'New York'
-      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Les fourmis de la Suisse. New York.'
+    specify do
+      expect(reference.decorate.plain_text).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Ants and such.'
     end
 
-    it "returns an html_safe string" do
-      reference = create :unknown_reference
-      expect(reference.decorate.plain_text).to be_html_safe
-    end
+    context 'with unsafe tags' do
+      let!(:reference) { create :unknown_reference, citation: 'Atta <script>xss</script>' }
 
-    it "italicizes the citation" do
-      reference = create :unknown_reference, citation: '*Ants* <i>et al.</i>'
-      expect(reference.decorate.plain_text).to include '<i>Ants</i> <i>et al.</i>'
-    end
-
-    context "with unsafe characters" do
-      let!(:author_names) { [create(:author_name, name: 'Ward, P. S.')] }
-
-      it "escapes them" do
-        reference = create :unknown_reference, citation: '<span>Tapinoma</span>'
-        expect(reference.decorate.plain_text).to include "&lt;span&gt;Tapinoma&lt;/span&gt;"
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'Atta xss'
       end
+    end
+  end
+
+  describe "#expanded_reference" do
+    specify { expect(reference.decorate.expanded_reference).to be_html_safe }
+
+    specify do
+      expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
+        #{author_link(author_name)} 1874. <a href="/references/#{reference.id}">Les fourmis de la Suisse.</a>
+        <i>Ants</i> <i>and such</i>.
+      HTML
     end
   end
 end

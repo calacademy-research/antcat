@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
 
   def index
     @issues = Issue.by_status_and_date.includes(:adder).paginate(page: params[:page])
-    @open_issues_count = Issue.open.count
+    @no_open_issues = !Issue.open.exists?
   end
 
   def show

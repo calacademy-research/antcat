@@ -3,7 +3,7 @@ module References
     before_action :set_reference, only: :index
 
     def index
-      @table_refs = @reference.what_links_here
+      @table_refs = @reference.what_links_here.paginate(page: params[:page], per_page: 100)
     end
 
     private

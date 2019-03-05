@@ -1,15 +1,13 @@
 -@title = 'References'
 -breadcrumb :all_references
 
-.title.hide-for-small-only
-  %h5.left ANTBIB: A Bibliography of Ant Systematics
-  .right
-    by Philip S. Ward,
-    %em et al.
-  .clearfix
+=content_for :breadcrumbs_right do
+  =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
+  =link_to 'Latest Changes', references_latest_changes_path, class: "btn-normal"
+  =link_to 'Journals', journals_path, class: "btn-normal"
+  =link_to 'Authors', authors_path, class: "btn-normal"
 
--if user_is_at_least_helper?
-  .buttons-right
+  -if user_is_at_least_helper?
     =link_to "New", new_reference_path, class: "btn-normal"
 
 =render "shared/reference_table", references: @references

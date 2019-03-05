@@ -27,21 +27,22 @@
         Year
         =tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
-    .medium-1.columns
-      =label_tag :reference_bolton_key do
-        Bolton key
-        =tooltip_icon "references.bolton_key", scope: :references
-      =f.text_field :bolton_key
-    .medium-2.columns
-      =label_tag :reference_doi do
-        DOI
-        =tooltip_icon "references.doi", scope: :references
-      =f.text_field :doi
     .medium-2.columns.end
       =label_tag :reference_date do
         Date
         =tooltip_icon "references.date", scope: :references
       =f.text_field :date
+  .row
+    .medium-4.columns
+      =label_tag :reference_doi do
+        DOI
+        =tooltip_icon "references.doi", scope: :references
+      =f.text_field :doi
+    .medium-2.columns.end
+      =label_tag :reference_bolton_key do
+        Bolton key
+        =tooltip_icon "references.bolton_key", scope: :references
+      =f.text_field :bolton_key
 
   .row
     .medium-12.columns

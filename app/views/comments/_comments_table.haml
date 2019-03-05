@@ -3,7 +3,7 @@
 -if comments.empty?
   No comments.
 -else
-  %table
+  %table.stack
     -if include_head
       %thead
         %tr
@@ -38,7 +38,7 @@
 
             -# '"comment body"'
             =surround '"' do
-              =comment.decorate.truncated_for_tables
+              =sanitize comment.decorate.truncated_for_tables
 
           %td.no-wrap
             =time_ago_in_words comment.created_at

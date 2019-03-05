@@ -10,7 +10,7 @@
     .medium-6.columns
       %fieldset.fieldset
         %legend Convert species
-        =@taxon.name_with_fossil
+        %p=@taxon.decorate.id_and_name_and_author_citation
 
       %fieldset.fieldset
         %legend to be a subspecies of

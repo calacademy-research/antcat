@@ -1,17 +1,17 @@
 -@title = 'Latest Changes'
 -breadcrumb :references_latest_changes
 
-.buttons-right=approve_all_references_button
+=content_for :breadcrumbs_right do
+  =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
+  =approve_all_references_button
 
-%table.references
-  %thead
-    %th
-    %th Changed
-    %th
+%table.stack.references
+  %tbody
   -@references.each do |reference|
     %tr
       %td=render 'references/reference', reference: reference
-      %td=time_tag reference.created_at
-      %td=link_to "Show", reference_path(reference), class: "btn-normal"
+      %td.no-wrap
+        changed
+        =time_tag reference.created_at.to_date
 
 =will_paginate @references

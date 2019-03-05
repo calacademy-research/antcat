@@ -1,4 +1,4 @@
-@papertrail @javascript
+@papertrail
 Feature: Versions (filtering)
   Background:
     Given I am logged in as a catalog editor

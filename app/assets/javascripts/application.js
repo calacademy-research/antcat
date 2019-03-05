@@ -9,17 +9,16 @@
 //= require foundation.reveal
 //= require foundation.sticky
 //= require foundation.tabs
+//= require foundation.tooltip
 //= require foundation.util.box
 //= require foundation.util.keyboard
 //= require foundation.util.mediaQuery
+//= require foundation.util.motion
 //= require foundation.util.triggers
 
 //= require jquery-ui/core
 //= require jquery-ui/widgets/autocomplete
-//= require jquery-ui/widgets/dialog
-//= require jquery-ui/widgets/sortable
-//= require jquery-ui/widgets/tabs
-//= require jquery-ui/widgets/tooltip
+//= require jquery-ui/widgets/draggable
 
 //= require select2
 //= require twitter/typeahead

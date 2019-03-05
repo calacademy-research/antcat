@@ -1,7 +1,9 @@
+# TODO consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
+
 require "spec_helper"
 
 describe Markdowns::ParseAntcatHooks do
-  describe "#try_linking_taxon_id" do
+  describe "linking taxa by id" do
     context "existing taxon" do
       let!(:taxon) { create :species }
 
