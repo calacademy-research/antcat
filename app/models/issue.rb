@@ -6,8 +6,8 @@ class Issue < ApplicationRecord
   belongs_to :closer, class_name: "User"
 
   validates :adder, presence: true
-  validates :description, presence: true, allow_blank: false
-  validates :title, presence: true, allow_blank: false, length: { maximum: 70 }
+  validates :description, presence: true
+  validates :title, presence: true, length: { maximum: 70 }
 
   scope :open, -> { where(open: true) }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
