@@ -2,8 +2,8 @@ class NameFieldsController < NamePickersController
   def find
     data = {}
 
-    name_string = params[:name_string]
-    allow_blank = params[:allow_blank].present?
+    name_string = params[:name_string].strip
+    allow_blank = params[:allow_blank].present? # TODO: Remove after migrating `Taxon.type_name` to `Taxon.type_taxon`.
     new_or_homonym = params[:new_or_homonym].present?
 
     confirming_adding_name = params[:confirm_add_name].present?
