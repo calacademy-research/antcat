@@ -1,6 +1,6 @@
 module DatabaseScripts::Renderers::Markdown
   def markdown content
-    Markdowns::Render[content]
+    Markdowns::Render[content, sanitize_content: false]
   end
 
   def markdown_taxon_link taxon_or_id

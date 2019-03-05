@@ -2,6 +2,8 @@
 # such as "hey {ref 123}") to something that can be read.
 
 class TaxtPresenter
+  include ActionView::Helpers::SanitizeHelper
+
   def initialize taxt_from_db
     @taxt = taxt_from_db.try :dup
   end
@@ -11,7 +13,7 @@ class TaxtPresenter
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def to_html
     return '' unless @taxt
-    Markdowns::ParseAntcatHooks[@taxt].html_safe
+    Markdowns::ParseAntcatHooks[strip_tags @taxt].html_safe
   end
 
   def to_antweb
@@ -21,7 +23,7 @@ class TaxtPresenter
     parse_antweb_nams!
     parse_antweb_taxs!
 
-    @taxt.html_safe
+    sanitize @taxt.html_safe
   end
 
   private

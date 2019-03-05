@@ -1,9 +1,15 @@
 module Markdowns
   class Render < Redcarpet::Render::HTML
+    include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize content
-      @content = content
+    def initialize content, sanitize_content: true
+      @content = if sanitize_content
+                   sanitize content
+                 else
+                   content
+                 end
+      @sanitize_content = sanitize_content
     end
 
     def call
@@ -12,7 +18,7 @@ module Markdowns
 
     private
 
-      attr_reader :content
+      attr_reader :content, :sanitize_content
 
       def markdowner
         extensions = {
@@ -41,7 +47,7 @@ module Markdowns
 
       class AntcatMarkdown < Redcarpet::Render::HTML
         def postprocess content
-          Markdowns::ParseAntcatHooks[content].html_safe
+          Markdowns::ParseAntcatHooks[content]
         end
 
         def table header, body

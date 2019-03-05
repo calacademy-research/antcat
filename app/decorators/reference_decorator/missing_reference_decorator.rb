@@ -7,6 +7,6 @@ class MissingReferenceDecorator < ReferenceDecorator
   private
 
     def format_citation
-      make_html_safe citation
+      sanitize citation
     end
 end

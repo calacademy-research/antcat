@@ -4,6 +4,6 @@ class ArticleReferenceDecorator < ReferenceDecorator
   private
 
     def format_citation
-      "#{h journal.name} #{h series_volume_issue}:#{h pagination}".html_safe
+      sanitize "#{journal.name} #{series_volume_issue}:#{pagination}"
     end
 end

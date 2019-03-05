@@ -3,6 +3,6 @@ class UnknownReferenceDecorator < ReferenceDecorator
 
   # NOTE: Not private like its siblings because we need it in a view.
   def format_citation
-    make_html_safe citation
+    sanitize citation
   end
 end

@@ -2,20 +2,21 @@
 # TODO: refactor.
 
 class ReferenceDecorator < ApplicationDecorator
+  include ActionView::Helpers::SanitizeHelper
   include ERB::Util # For the `h` method.
 
   delegate_all
 
   def public_notes
-    format_italics h reference.public_notes
+    format_italics sanitize reference.public_notes
   end
 
   def editor_notes
-    format_italics h reference.editor_notes
+    format_italics sanitize reference.editor_notes
   end
 
   def taxonomic_notes
-    format_italics h reference.taxonomic_notes
+    format_italics sanitize reference.taxonomic_notes
   end
 
   # TODO store denormalized value in the database?
@@ -86,15 +87,15 @@ class ReferenceDecorator < ApplicationDecorator
   end
 
   def format_plain_text_title
-    format_italics helpers.add_period_if_necessary make_html_safe(reference.title)
+    format_italics helpers.add_period_if_necessary sanitize(reference.title)
   end
 
   private
 
     def generate_plain_text
-      string = make_html_safe(reference.author_names_string_with_suffix)
+      string = sanitize(reference.author_names_string_with_suffix)
       string << ' ' unless string.empty?
-      string << make_html_safe(reference.citation_year) << '. '
+      string << sanitize(reference.citation_year) << '. '
       string << helpers.unitalicize(format_plain_text_title) << ' '
       string << helpers.add_period_if_necessary(format_plain_text_citation)
       string
@@ -104,18 +105,18 @@ class ReferenceDecorator < ApplicationDecorator
       inner_content = []
       inner_content << generate_expanded_reference
       inner_content << format_reference_document_link
-      content = inner_content.reject(&:blank?).join(' ').html_safe
+      content = inner_content.reject(&:blank?).join(' ')
 
       # TODO: `tabindex: 2` is required or tooltips won't stay open even with `data-click-open="true"`.
-      helpers.content_tag :span, reference.keey,
+      helpers.content_tag :span, sanitize(reference.keey),
         data: { tooltip: true, allow_html: "true", tooltip_class: "foundation-tooltip" },
         tabindex: "2", title: content.html_safe
     end
 
     def generate_expanded_reference
-      string = author_names_with_links
+      string = sanitize author_names_with_links
       string << ' ' unless string.empty?
-      string << make_html_safe(reference.citation_year) << '. '
+      string << sanitize(reference.citation_year) << '. '
       string << format_title_with_link << ' '
       string << format_italics(helpers.add_period_if_necessary(format_citation))
 
@@ -125,39 +126,20 @@ class ReferenceDecorator < ApplicationDecorator
     # Override in subclasses as necessary.
     def format_plain_text_citation
       # `format_citation` + `unitalicize` is go get rid of "*" italics.
-      helpers.unitalicize format_italics(format_citation)
+      helpers.unitalicize format_italics(sanitize(format_citation))
     end
 
     def author_names_with_links
       string =  reference.author_names.map do |author_name|
-                  h helpers.link_to(author_name.name.html_safe, author_name.author).html_safe
-                end.join('; ').html_safe
+                  helpers.link_to(sanitize(author_name.name), author_name.author)
+                end.join('; ')
 
-      string << " #{author_names_suffix}" if author_names_suffix.present?
+      string << sanitize(" #{author_names_suffix}") if author_names_suffix.present?
       string
     end
 
     def format_title_with_link
       helpers.link_to format_plain_text_title, helpers.reference_path(reference)
-    end
-
-    # TODO try to move somewhere more general, even if it's only used here.
-    # TODO see if there's Rails version of this.
-    def make_html_safe string
-      return ''.html_safe if string.blank?
-
-      string = string.dup
-      quote_code = 'xdjvs4'
-      begin_italics_code = '2rjsd4'
-      end_italics_code = '1rjsd4'
-      string.gsub! '<i>', begin_italics_code
-      string.gsub! '</i>', end_italics_code
-      string.gsub! '"', quote_code
-      string = h string
-      string.gsub! quote_code, '"'
-      string.gsub! end_italics_code, '</i>'
-      string.gsub! begin_italics_code, '<i>'
-      string.html_safe
     end
 
     def format_italics string

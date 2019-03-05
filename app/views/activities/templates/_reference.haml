@@ -1,3 +1,3 @@
 =activity.action_to_verb
 the reference
-=activity.link_trackable_if_exists activity.parameters[:name].html_safe, path: reference_path(activity.trackable_id)
+=activity.link_trackable_if_exists sanitize(activity.parameters[:name]), path: reference_path(activity.trackable_id)

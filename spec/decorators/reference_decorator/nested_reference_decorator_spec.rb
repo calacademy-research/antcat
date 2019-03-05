@@ -25,10 +25,19 @@ describe NestedReferenceDecorator do
         to eq 'Forel, A. 1874. Atta and such. Pp. 32-45 in Mayr, E. 2010. Lasius and such. New York: Wiley, 32 pp.'
     end
 
-    context "with unsafe characters" do
-      it "escapes them" do
-        reference = create :nested_reference, pages_in: 'Pp. >'
-        expect(reference.decorate.plain_text).to include 'Pp. &gt;'
+    context 'with unsafe tags' do
+      let!(:reference) do
+        journal = create :journal, name: '<script>xss</script>'
+        nesting_reference = create :article_reference, journal: journal, pagination: '<script>xss</script>',
+          series_volume_issue: '<script>xss</script>'
+        create :nested_reference, nesting_reference: nesting_reference, pages_in: '<script>xss</script>'
+      end
+
+      it "sanitizes them" do
+        results = reference.decorate.plain_text
+        expect(results).to_not include '<script>xss</script>'
+        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).to include 'xss'
       end
     end
   end

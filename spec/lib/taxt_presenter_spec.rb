@@ -5,9 +5,8 @@ describe TaxtPresenter do
     describe "escaping input" do
       it "doesn't escape already escaped input" do
         reference = create :unknown_reference, citation: 'Latreille, 1809 <script>'
-        expected = 'Latreille, 1809 &lt;script&gt;'
-        expect(reference.decorate.expandable_reference).to include expected
-        expect(described_class["{ref #{reference.id}}"].to_html).to include expected
+        expect(reference.decorate.expandable_reference).to_not include 'script'
+        expect(described_class["{ref #{reference.id}}"].to_html).to_not include 'script'
       end
     end
 
@@ -32,8 +31,7 @@ describe TaxtPresenter do
         end
 
         it 'generates it' do
-          expected = 'Latreille, 1809 &lt;script&gt;'
-          expect(described_class["{ref #{reference.id}}"].to_html).to include expected
+          expect(described_class["{ref #{reference.id}}"].to_html).to_not include 'script'
         end
       end
 
