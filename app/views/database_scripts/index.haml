@@ -6,34 +6,30 @@
 
 .row
   .small-9.columns.end
-    .callout.secondary
+    .callout.primary
       %p
-        Scripts tagged with
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
-        can be exported as CSV
-        =surround "(", ")." do
-          =link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
-      %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
-        indicates that the script is related to something we used to have an issue with, and we just want to make sure no new similar issues appear. Most of these should be empty.
+        scripts can be exported as
+        =external_link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
       %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VALIDATED_TAG]
-        means that there are validations to prevent the issue. This does not mean that the isssue
-        can never happen because many validations are only run in the application layer,
-        not in the database. These tags are manily used to track our progress of adding more
-        validations to the site.
+        means that there are validations in place to prevent the issue
       %p
-        Please be careful when generating scripts tagged with
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
+        is for issues that have been mostly fixed
+        =surround "(", ")" do
+          =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
+      %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
-        as it can make the site unresponsive.
+        may cause the site to become unresponsive
 
 -@grouped_database_scripts.each do |_title, database_scripts|
   %table.tablesorter.margin-bottom
     %thead
       %tr
-        %th Topic area
+        %th.no-wrap Topic area
         %th Script
-        %th Tags
+        %th.no-wrap Tags
     %tbody
       -database_scripts.each do |database_script|
         %tr

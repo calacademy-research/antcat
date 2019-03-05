@@ -1,45 +1,47 @@
 -@title = "#{unitalicize @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
-.buttons-right
-  .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
-  #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
-    %ul.no-bullet
-      %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
-      -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-        %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
-  -if current_user
-    =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
-    =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
+=content_for :breadcrumbs_right do
+  .right
+    -if user_is_at_least_helper?
+      =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
+      =set_as_default_reference_button @reference
 
-  -if user_is_at_least_helper?
-    =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
-    -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-      =link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
-    -unless @reference.is_a? MissingReference
-      =link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
-    =set_as_default_reference_button @reference
+    -if current_user
+      =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
+      =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
 
-  -if user_is_editor?
-    =link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
+    .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
+    #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+      %ul.no-bullet
+        %li=link_to "EndNote", endnote_export_references_path(id: @reference.id)
+        -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+          %li=link_to "Wikipedia", wikipedia_export_reference_path(@reference)
 
-.clearfix
+    -if user_is_at_least_helper?
+      .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
+      #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+        %ul.no-bullet
+          -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
+            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
+          -unless @reference.is_a? MissingReference
+            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+
+          -if user_is_editor?
+            %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
 
 -@reference = @reference.decorate
 
--# TODO link journal and authors in the formatted reference (not just on this
--# page but through out the catalog). Updating all tests would
--# take way too long time, we're linking them here instead for now.
 .row.margin-bottom
   .small-12.columns
     .callout
-      =@reference.plain_text
+      =@reference.expanded_reference
       =@reference.format_reference_document_link
 
 .row.margin-bottom
   .small-12.columns
-    %h5 Data
-    %table.table
+    %h5 Details
+    %table.table.unstriped
       %tbody
         %tr
           %th Authors
@@ -49,10 +51,18 @@
                 %li=link_to author_name.name, author_name.author
         %tr
           %th Title
-          %td=@reference.format_title
+          %td=@reference.format_plain_text_title
+        -if @reference.is_a? UnknownReference
+          %tr
+            %th Citation
+            %td=@reference.format_citation
         %tr
           %th Pagination
-          %td=or_dash @reference.pagination
+          %td
+            -if @reference.is_a? NestedReference
+              =or_dash @reference.pages_in
+            -else
+              =or_dash @reference.pagination
         %tr
           %th Date
           %td=@reference.decorate.format_date
@@ -80,17 +90,15 @@
         -if @reference.is_a? NestedReference
           %tr
             %th Nested in
-            %td=@reference.nesting_reference.decorate.linked_keey
+            %td=@reference.nesting_reference.decorate.expandable_reference
 
-        -nestees = @reference.nestees
-        -if nestees.present?
+        -if @reference.nestees.present?
           %tr
             %th Nested references
             %td
               %ul.no-bullet
-                -nestees.each do |nestee|
-                  %li=nestee.decorate.linked_keey
-
+                -@reference.nestees.each do |nestee|
+                  %li=nestee.decorate.expandable_reference
         %tr
           %th DOI
           %td=or_dash @reference.doi
@@ -98,20 +106,21 @@
           %th Links
           %td=or_dash @reference.format_reference_document_link
 
-.row.margin-bottom
-  .small-12.columns
-    %h5 Notes
-    %table.table
-      %tbody
-        %tr
-          %th Public notes
-          %td=or_dash @reference.public_notes
-        %tr
-          %th Editor notes
-          %td=or_dash @reference.editor_notes
-        %tr
-          %th Taxonomic notes
-          %td=or_dash @reference.taxonomic_notes
+-if @reference.any_notes?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 Notes
+      %table.table.unstriped
+        %tbody
+          %tr
+            %th Public notes
+            %td=or_dash @reference.public_notes
+          %tr
+            %th Editor notes
+            %td=or_dash @reference.editor_notes
+          %tr
+            %th Taxonomic notes
+            %td=or_dash @reference.taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom

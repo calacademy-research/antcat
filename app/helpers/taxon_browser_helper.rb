@@ -5,12 +5,12 @@ module TaxonBrowserHelper
   end
 
   def toggle_invalid_or_valid_only_link label = nil
-    showin_invalid = @taxon_browser.show_invalid?
+    showing_invalid = @taxon_browser.show_invalid?
 
-    if showin_invalid
-      link_to (label.presence || "show valid only"), catalog_show_valid_only_path
+    if showing_invalid
+      link_to append_refresh_icon(label || "show valid only"), catalog_show_valid_only_path
     else
-      link_to (label.presence || "show invalid"), catalog_show_invalid_path
+      link_to append_refresh_icon(label || "show invalid"), catalog_show_invalid_path
     end
   end
 
@@ -55,7 +55,7 @@ module TaxonBrowserHelper
       css = if @taxon_browser.display == param.to_sym
               "upcase selected"
             else
-              "upcase white-label"
+              "upcase smaller-white-label"
             end
 
       content_tag :li do

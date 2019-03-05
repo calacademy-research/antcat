@@ -35,6 +35,16 @@ module ApplicationHelper
     string.html_safe
   end
 
+  # TODO: See if we can use CSS only instead.
+  def external_link_to label, url
+    link_to label, url, class: 'external-link'
+  end
+
+  # TODO: See if we can use CSS only instead.
+  def pdf_link_to label, url
+    link_to label, url, class: 'pdf-link'
+  end
+
   def beta_label
     content_tag :span, "beta", class: "label"
   end
@@ -61,6 +71,11 @@ module ApplicationHelper
     end
   end
 
+  def menu_active? menu
+    first_breadcrumb = breadcrumbs.first&.key
+    menu == first_breadcrumb
+  end
+
   def inline_expandable label = "Show more"
     show_more = content_tag :a, class: "hide-when-expanded gray" do
                   content_tag :small, label
@@ -72,6 +87,18 @@ module ApplicationHelper
     content_tag :span, class: "expandable" do
       show_more + hidden
     end
+  end
+
+  def search_icon
+    antcat_icon "search"
+  end
+
+  def append_superadmin_icon label
+    label.html_safe << antcat_icon("superadmin")
+  end
+
+  def append_refresh_icon label
+    label.html_safe << antcat_icon("refresh")
   end
 
   def antcat_icon *css_classes

@@ -11,6 +11,7 @@ module Markdowns
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include Service
+    include Formatters::ItalicsHelper
 
     TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
     REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
@@ -39,7 +40,7 @@ module Markdowns
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_taxon_ids!
-        # HACK to eager load records in a single query for performance reasions.
+        # HACK to eager load records in a single query for performance reasons.
         ids = content.scan(TAXON_TAG_REGEX).flatten.compact
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
@@ -57,14 +58,15 @@ module Markdowns
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_reference_ids!
-        # HACK to eager load records in a single query for performance reasions.
+        # HACK to eager load records in a single query for performance reasons.
         refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
         refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
+        refs = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(REFERENCE_TAG_REGEX) do
           id = $~[:id]
           begin
-            refs[id.to_i] || Reference.find(id).decorate.expandable_reference.html_safe
+            refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
           rescue
             broken_markdown_link "reference", id
           end
@@ -90,7 +92,7 @@ module Markdowns
         content.gsub!(/%journal(\d+)/) do
           begin
             journal = Journal.find($1)
-            link_to "<i>#{journal.name}</i>".html_safe, journal_path(journal)
+            link_to italicize(journal.name), journal_path(journal)
           rescue
             broken_markdown_link "journal", $1
           end

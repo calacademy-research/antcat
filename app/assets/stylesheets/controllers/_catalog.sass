@@ -3,95 +3,26 @@
 // TODO remove `font-size: xxpx`.
 
 #catalog-controller
-  #taxon_browser
-    overflow: scroll
-    overflow-x: hidden
-    height: auto
-
-    .shared-spinner
-      color: $color_green !important
-      display: none
-      margin-right: 1rem
-    .tabs-content
-      min-height: 115px
-    .snaked
-      -webkit-column-width: 10em
-      -moz-column-width: 10em
-      column-width: 10em
-    .mr-scrollbary
-      height: 100%
-    .upcase
-      text-transform: uppercase
-    li
-      box-sizing: border-box
-    .tab-toggler
-      float: right
-      a
-        color: #fff
-      .label
-        margin-right: 0.5rem
-        margin-top: 0.5rem
-    .tabs-panel
-      padding-bottom: 0
-
-    // Equally space out elements.
-    #taxon_key
-      display: none
-      width: 100%
-      text-align: justify
-      div
-        display: inline-block
-        margin-top: 0
-        margin-bottom: -1em
-      &:after
-        content: ""
-        width: 100%
-        display: inline-block
-      margin-bottom: -1rem
-
-  #splitter
-    background-color: #eee
-    background-repeat: no-repeat
-    background-position: 50%
-    background-image: image_url("horizontal.png")
-    height: 0.4rem
-    width: 100%
-    cursor: row-resize
-    z-index: 900
+  #external-links
+    font-size: 85%
 
   #taxon_description
-    overflow: scroll
-    overflow-x: hidden
-    padding: 0 1rem 1rem 1rem
-
     h6
       font-weight: bold
-
-    .link_to_external_site
-      font-weight: bold
-      font-variant: small-caps
-      font-size: 15px
 
     .header
       font-size: 15px
       .name
+        font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
         font-size: 18px
         font-weight: bold
-      .review_state
-        font-style: italic
-        color: red
-
-    #statistics
-      font-size: 14px
-      line-height: 1.1
-      p
-        margin-bottom: 0
-        font-style: italic
+        margin-right: 0.2rem
 
     .headline
       margin-bottom: 4px
       .name
         font-weight: bold
+        margin-right: 0.2rem
       #type-fields
         font-size: 14px
         margin-bottom: 1em
@@ -117,6 +48,12 @@
       .section:hover .show-on-hover
         display: inline
 
-    .change-history
-      font-size: 13px
-      font-style: italic
+  #statistics
+    font-size: 13px
+    line-height: 1.1
+    p
+      margin-bottom: 4px
+
+  .review-state, .change-history
+    font-style: italic
+    font-size: 80%

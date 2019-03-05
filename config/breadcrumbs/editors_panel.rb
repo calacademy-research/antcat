@@ -3,6 +3,11 @@ crumb :editors_panel do
   link "Editor's Panel", editors_panel_path
 end
 
+crumb :editors_panel_dashboard do
+  link "Dashboard"
+  parent :editors_panel
+end
+
 crumb :tooltips do
   link "Edit Tooltips", tooltips_path
   parent :editors_panel

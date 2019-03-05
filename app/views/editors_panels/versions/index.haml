@@ -15,15 +15,29 @@
 
 -if @versions.count.zero?
   .alert.callout Found no versions.
-
-%table.versions-test-hook
-  -@versions.each do |version|
-    %tr
-      %td
-        =link_to version.id, version_path(version), class: "btn-normal btn-tiny"
-        =try_to_link_revision_history version.item_type, version.item_id
-        =inline_expandable version.inspect do
-          %pre=version.to_yaml
+-else
+  %table
+    %thead
+      %tr
+        %th ID
+        %th Event
+        %th Type
+        %th Item ID
+        %th When
+        %th
+        %th
+    %tbody
+      -@versions.each do |version|
+        %tr
+          %td=link_to version.id, version_path(version)
+          %td=version.event
+          %td=version.item_type
+          %td=version.item_id
+          %td.no-wrap=version.created_at
+          %td=try_to_link_revision_history version.item_type, version.item_id
+          %td
+            =inline_expandable version.inspect do
+              %pre=version.to_yaml
 
 -if @versions.last
   .center-text

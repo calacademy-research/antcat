@@ -3,21 +3,6 @@
   =taxon.author_citation
   =taxon.decorate.taxon_status
   =taxon.name.gender
-  -if taxon.waiting?
-    %span.review_state This taxon has been changed; changes awaiting approval
-    =link_to_review_change taxon
-
-#statistics.small-margin-bottom
-  -if show_full_statistics? taxon
-    =taxon.decorate.statistics
-  -else
-    -# If there's no valid-only stats, try including invalid too before giving up.
-    -statistics = taxon.decorate.statistics(valid_only: true).presence || taxon.decorate.statistics
-    -if statistics.present?
-      .left=statistics
-      .left{style: "margin-left: 1rem"}
-        =link_to "More statistics", catalog_path(taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
-      .clear
 
 =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
 
@@ -25,23 +10,21 @@
   =taxon.decorate.headline_protonym
   =taxon.decorate.headline_type
   =TaxtPresenter[taxon.headline_notes_taxt].to_html
-  =taxon.decorate.link_to_antweb
-  =taxon.decorate.link_to_antwiki
-  =taxon.decorate.link_to_hol
 
+  -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
     -if taxon.primary_type_information.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Primary type information:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.primary_type_information]
 
     -if taxon.secondary_type_information.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Secondary type information:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.secondary_type_information]
 
     -if taxon.type_notes.present?
-      .truncate
+      .truncate-disabled-todo
         %strong Type notes:
         =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
 
@@ -90,5 +73,3 @@
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section, class: "btn-normal btn-very-tiny"
-
-  =taxon_change_history taxon

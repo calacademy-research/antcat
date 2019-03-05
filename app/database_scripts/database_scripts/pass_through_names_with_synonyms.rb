@@ -26,4 +26,5 @@ description: >
 
   See %github375.
 
+tags: [regression-test]
 topic_areas: [synonyms]

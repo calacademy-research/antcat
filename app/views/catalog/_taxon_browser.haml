@@ -5,9 +5,10 @@
 
   %li.tab-toggler
     =shared_spinner_icon
+    %span.white-label
+      =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
     %span.label.secondary
-      =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon_key" }
-    %span.label.secondary=toggle_invalid_or_valid_only_link
+      =toggle_invalid_or_valid_only_link
 
 .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
   -taxon_browser.tabs.each do |tab|

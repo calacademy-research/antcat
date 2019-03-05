@@ -5,21 +5,20 @@
   =javascript_include_tag "sortable_tables"
 
 -if user_is_at_least_helper?
-  .buttons-right=link_to 'New', new_institution_path, class: 'btn-normal'
+  =content_for :breadcrumbs_right do
+    =link_to 'New', new_institution_path, class: 'btn-normal'
 
 %table.tablesorter
-  %thead
-    %tr
-      %th Abbreviation
-      %th Name
-      %th
-
+  %tr
+    %th.no-wrap Abbreviation
+    %th Name
+    %th.no-wrap.sorter-false
   %tbody
     -@institutions.each do |institution|
       %tr
         %td=link_to institution.abbreviation, institution
         %td=link_to institution.name, institution
-        %td
+        %td.no-wrap
           =link_to 'Edit', edit_institution_path(institution), class: 'btn-normal btn-tiny'
           -if user_is_superadmin?
-            =link_to 'Delete', institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-warning btn-tiny'
+            =link_to append_superadmin_icon("Delete"), institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-warning btn-tiny'

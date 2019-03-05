@@ -19,7 +19,6 @@ setupLoadTabButton = ->
 
     spinner.show()
     tab.find(".section-that-can-be-capped").load url, =>
-      window.unborkTaxonBrowserScrollbars()
       removeLoadTabButton tab
       spinner.hide()
 

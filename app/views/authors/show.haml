@@ -1,7 +1,7 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
-#references.callout.margin-bottom
+#references.margin-bottom
   %h5 References by author
   -if @references.empty?
     %p Found no references by this author.
@@ -9,12 +9,12 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
-#taxa.callout.margin-bottom
-  %h5 Taxa described by author
+%h5 Taxa described by author
+.callout.margin-bottom
   -if @taxa.empty?
     %p Found no taxa described by this author.
   -else
-    %table
+    %table.table.stack
       %thead
         %th Taxon
         %th Authorship
@@ -29,10 +29,10 @@
     =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
 
 .row
-  .small-6.columns.end
-    #statistics.callout.margin-bottom
-      %h5 Statistics
-      %table.table
+  .small-12.medium-6.columns.end
+    %h5 Statistics
+    .callout.margin-bottom
+      %table.table.unstriped
         %tbody
           %tr
             %th Published between
@@ -51,13 +51,13 @@
             %td=or_dash @author.described_taxa.valid.count
 
 .row
-  .small-6.columns.end
+  .small-12.medium-6.columns.end
     %h5
       Names belonging to author
       -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
-    #names.callout.margin-bottom
-      %table
+    .callout.margin-bottom
+      %table.unstriped
         %thead
           %tr
             %th Author name
@@ -70,4 +70,4 @@
                 -if user_is_editor?
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
                 -if user_is_superadmin?
-                  =link_to "Delete", author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"
+                  =link_to append_superadmin_icon("Delete"), author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"

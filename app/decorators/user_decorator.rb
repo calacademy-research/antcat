@@ -6,7 +6,7 @@ class UserDecorator < Draper::Decorator
   end
 
   def ping_user_link
-    helpers.link_to "@<strong>#{name}</strong>".html_safe, user
+    helpers.link_to "@#{name}", user, class: 'user-mention'
   end
 
   def angle_bracketed_email

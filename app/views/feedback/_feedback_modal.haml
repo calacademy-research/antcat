@@ -1,4 +1,4 @@
-#feedback_modal.reveal{data: { reveal: true }}
+#feedback_modal.reveal{data: { reveal: "true", animation_in: "fade-in fast", animation_out: "fade-out fast", close_on_esc: "true", overlay: "true" }}
   %button.close-button{"aria-label" => "Close modal", data: { close: true }, type: "button"}
     %span{"aria-hidden" => "true"} &times;
 
@@ -10,7 +10,7 @@
     if you prefer that.
 
     Bugs in the code can be reported on our
-    =link_to "issue tracker on GitHub", "https://github.com/calacademy-research/antcat/issues"
+    =external_link_to "issue tracker on GitHub", "https://github.com/calacademy-research/antcat/issues"
     (account required), but you can use this form to report bugs as well.
 
   %p#feedback_errors

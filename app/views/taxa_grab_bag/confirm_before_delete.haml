@@ -20,4 +20,4 @@
         %td=taxon.status
         %td=taxon.created_at.to_formatted_s :long
 
-=link_to "Confirm and delete", taxa_path(@taxon), class: "btn-warning", method: :delete, data: { confirm: "I've read the warning message and want to proceeed with deleting all these taxa." }
+=link_to append_superadmin_icon("Confirm and delete"), taxa_path(@taxon), class: "btn-warning", method: :delete, data: { confirm: "I've read the warning message and want to proceeed with deleting all these taxa." }

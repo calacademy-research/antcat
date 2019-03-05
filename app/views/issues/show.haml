@@ -1,6 +1,15 @@
 -@title = "Issue ##{@issue.id}: #{@issue.title}"
 -breadcrumb :issue, @issue
 
+-if current_user
+  =content_for :breadcrumbs_right do
+    -if @issue.open?
+      =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
+    -else
+      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-warning"
+    =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
+
+
 .left
   %h5 #{@issue.decorate.format_status} issue: #{@issue.title}
   Added by
@@ -8,14 +17,6 @@
   =time_ago_in_words @issue.created_at
   ago
 
--if current_user
-  .buttons-right
-    -if @issue.open?
-      =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"
-    -else
-      =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-warning"
-    =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
-.clear
 
 -if @issue.closed?
   %p

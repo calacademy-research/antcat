@@ -2,8 +2,6 @@ class JournalsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
-  layout "references"
-
   def index
     order = params[:order] == "reference_count" ? "reference_count DESC" : :name
 

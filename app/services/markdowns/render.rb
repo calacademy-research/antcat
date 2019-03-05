@@ -40,8 +40,8 @@ module Markdowns
       end
 
       class AntcatMarkdown < Redcarpet::Render::HTML
-        def preprocess content
-          Markdowns::ParseAntcatHooks[content]
+        def postprocess content
+          Markdowns::ParseAntcatHooks[content].html_safe
         end
 
         def table header, body

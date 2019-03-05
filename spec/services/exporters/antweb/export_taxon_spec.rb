@@ -279,7 +279,8 @@ describe Exporters::Antweb::ExportTaxon do
         ref_title_tag = "#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}."
         ref_doi = a_reference.doi
 
-        expect(export_taxon(genus)[17]).to eq(
+        # rubocop:disable Layout/MultilineOperationIndentation
+        expected =
           %(<div class="antcat_taxon">) +
 
             # statistics
@@ -298,14 +299,14 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(<span>Type-species: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
+              %(<span>Type-species: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
               %( ) +
               # links
-              %(<a class="link_to_external_site" href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
+              %(<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
               %( ) +
-              %(<a class="link_to_external_site" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
+              %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
               %( ) +
-              %(<a class="link_to_external_site" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
+              %(<a class="external-link" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
 
             %(</div>) +
 
@@ -313,7 +314,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(<p><b>Taxonomic history</b></p>) +
             %(<div><div>) +
               %(<table><tr><td>) +
-                %(Taxon: <a class="link_to_external_site" href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
+                %(Taxon: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
               %(</td></tr></table>) +
             %(</div></div>) +
 
@@ -325,14 +326,16 @@ describe Exporters::Antweb::ExportTaxon do
                   %(<a title="#{ref_title_tag}" href="http://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +
-                  %(<a href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +
+                  %(<a class="external-link" href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +
                   %(: 766;) +
                 %(</div>) +
               %(</div>) +
             %(</div>) +
 
           %(</div>)
-        )
+        # rubocop:enable Layout/MultilineOperationIndentation
+
+        expect(export_taxon(genus)[17]).to eq expected
       end
     end
 

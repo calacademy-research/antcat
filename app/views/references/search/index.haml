@@ -1,14 +1,21 @@
 -@title = 'Search Results'
 -breadcrumb :references_search_results
 
-.callout.primary
-  %p
-    Not quite what you're looking for? Try the
-    =link_to "help pages.", help_references_search_index_path
+-if user_is_editor?
+  =content_for :breadcrumbs_right do
+    -# TODO probably allow anyone to export search results.
+    =link_to 'Export to EndNote', endnote_export_references_path(q: params[:q]), class: "btn-normal"
 
 -if @references.empty?
-  .callout.alert No results found.
+  .callout.alert
+    %p No results found for:
+    %p=params[:reference_q]
 -else
+  .callout.primary
+    %p
+      Not quite what you're looking for? Try the
+      =link_to "help pages.", help_references_search_index_path
+
   =render "shared/reference_table", references: @references
 
 =will_paginate @references

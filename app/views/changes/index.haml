@@ -1,6 +1,9 @@
 -@title = 'All Changes'
 -breadcrumb :all_changes
 
+=content_for :breadcrumbs_right do
+  =link_to 'Unreviewed Changes', unreviewed_changes_path, class: "btn-normal"
+
 =render layout: 'table_header' do
   =render @changes
 

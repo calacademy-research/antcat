@@ -3,7 +3,8 @@ $ ->
 
 class Tooltipify
   tooltipifyAll: ->
-    $('.tooltip').tooltip
+    $('.jquery-tooltip').tooltip
+      tooltipClass: "has-jquery-tooltip" # Custom class to avoid collision with Foundation's tooltips.
       show: false
       content: -> $(this).prop('title') # Without this, HTML is displayed as text.
       position:

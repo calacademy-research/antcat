@@ -2,48 +2,49 @@
   .top-bar
     #desktop-logo.top-bar-title
       =link_to root_path do
-        =image_tag 'antcat_logo.png', alt: 'AntCat'
+        =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', id: "desktop-logo"
 
     #desktop-menu
       #desktop-upper-menu.top-bar-right
         %ul.menu
-          -if Rails.env.development?
-            %li.dev-only=link_to_current_page_on_live_site
-            %li.dev-only=link_to "dev CSS", widget_tests_toggle_dev_css_path, class: "btn-tiny"
+          -# HACK because lazy.
+          -if current_user&.id == 60
+            %small.left
+              =link_to_current_page_on_live_site
+              =link_to_current_page_on_localhost
           -if user_signed_in?
             =render "unseen_notifications_badge"
-            %li=link_to "Editor's Panel", editors_panel_path
-          %li=link_to 'References', references_path
-          %li=link_to 'Changes', changes_path
-          %li=link_to 'AntWeb', 'http://www.antweb.org/'
-          %li=link_to 'About', page_path('about')
+            =render "unread_site_notices_badge"
+            %li=link_to "Editor's Panel", editors_panel_path, class: "top-header-link #{'very-active' if menu_active?(:editors_panel)}"
 
           -if user_signed_in?
-            %li=current_user.decorate.user_page_link
-            %li=link_to 'Logout', destroy_user_session_path, method: :delete
+            %li=link_to 'Changes', changes_path, class: "top-header-link #{'very-active' if menu_active?(:changes)}"
+            %li=link_to current_user.name, current_user, class: "top-header-link"
+            %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "top-header-link"
           -else
-            %li=link_to 'Login', new_user_session_path
-          %li
-            %a{data: { open: "feedback_modal" }} Feedback
+            %li=link_to 'Login', new_user_session_path, class: "top-header-link"
+
+      %br
+      %br
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
+          %li=link_to 'References', references_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
+          %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
           %li
             =form_tag references_search_index_path, method: :get, class: "reference-search-form" do
               .input-group
                 =text_field_tag "reference_q", params[:reference_q], class: "typeahead-references-js input-group-field expandable-reference-search", placeholder: "Search References"
-                .input-group-button
-                  =button_tag type: 'submit', name: nil, class: 'button has-spinner' do
-                    =spinner_icon + "Go"
+                =button_tag type: 'submit', name: nil, id: "header-reference-search-button-test-hook" do
+                  %i.inline-search-icon.fa.fa-search
+
           %li
             =form_tag catalog_quick_search_path, method: :get, id: "catalog-search-form-test-hook" do
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
                 =hidden_field_tag :im_feeling_lucky, true
-                .input-group-button
-                  =button_tag type: 'submit', name: nil, class: 'button has-spinner', id: "header_search_button" do
-                    =spinner_icon + "Go"
-          %li.centered-text=link_to 'Advanced<br> Search'.html_safe, catalog_search_path, class: "without-top-padding"
+                =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook" do
+                  %i.inline-search-icon.fa.fa-search
 
 #mobile-only.hide-for-large
   .top-bar
@@ -52,34 +53,37 @@
         #mobile-logo.top-bar-title{data: { hide_for: "large", responsive_toggle: "mobile-menu" }}
           %span.float-left
             %span.menu-icon{data: { toggle: true }}
-          =image_tag 'antcat_logo_small.png', data: { toggle: true }
+          =image_tag 'logos/antcat_white_174x37.png', data: { toggle: true }
       =render "unseen_notifications_badge"
 
   #mobile-menu
     %ul.vertical.menu
+      %li.has-form
+        =form_tag references_search_index_path, method: :get do
+          .row#search-row
+            .small-9.columns
+              =text_field_tag 'reference_q', params[:reference_q], class: "typeahead-references-js", placeholder: "Search References"
+              =hidden_field_tag :im_feeling_lucky, true
+            .small-3.columns
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+
+      %li.has-form
+        =form_tag catalog_quick_search_path, method: :get do
+          .row#search-row
+            .small-9.columns
+              =text_field_tag 'qq', params[:qq], class: "typeahead-taxa-js-hook", placeholder: "Search Catalog"
+              =hidden_field_tag :im_feeling_lucky, true
+            .small-3.columns
+              =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
+
+      %li=link_to 'References', references_path
       %li=link_to "Catalog", root_path
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path
-      %li=link_to 'References', references_path
-      %li=link_to 'Changes', changes_path
-      %li=link_to 'AntWeb', 'http://www.antweb.org/'
-      %li=link_to 'About', page_path('about')
-
-      -if user_signed_in?
-        %li=link_to "Editor's Panel", editors_panel_path
+        %li=link_to 'Changes', changes_path
         %li=current_user.decorate.user_page_link
         %li=link_to 'Logout', destroy_user_session_path, method: :delete
       -else
         %li=link_to 'Login', new_user_session_path
       %li
         %a{data: { open: "feedback_modal" }} Feedback
-      %li=link_to 'Advanced Search', catalog_search_path
-
-      %li.has-form
-        =form_tag catalog_quick_search_path, method: :get do
-          .row.collapse
-            .small-10.columns
-              =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog"
-              =hidden_field_tag :im_feeling_lucky, true
-            .small-2.columns
-              =button_tag "Go", type: "submit", name: nil, class: "button expanded"

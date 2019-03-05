@@ -1,38 +1,56 @@
 @import "colors"
 
+$mobile-topbar-background: $color_primary
+
 #header
+  ::-webkit-input-placeholder
+    font-size: 90%
+  ::-moz-placeholder
+    font-size: 90%
+  ::-ms-input-placeholder
+    font-size: 90%
+  ::placeholder
+    font-size: 90%
+
+  font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
+  background-color: $color_primary
+  padding-top: 1rem
+  padding-bottom: 2rem
+  @media screen and (max-width: 999px)
+    padding-bottom: 1rem
+  color: #fff
+
   .top-bar
     white-space: nowrap !important
+    padding-left: 0
+    padding-right: 0
     .top-bar-title
-      color: #fff !important
+      color: #000 !important
       margin-left: 0 !important
-    .menu > li > a
-      color: #fff !important
-    // Restore mouse pointer for links in labels.
     li.unseen-notifications > a > span
       cursor: pointer
 
   #desktop-only
+    // Show localhost link.
+    &:hover .show-on-hover
+      display: inline
+      margin-right: 1rem
     #desktop-logo
-      padding-top: 3rem
+      margin-top: 1.3rem
+      color: $almost_white !important
     #desktop-menu
-      padding-top: 4rem
-      #desktop-upper-menu
-        position: absolute
-        right: 0
-        top: 1rem
       #desktop-lower-menu
         .reference-search-form
           margin-right: 1rem
         .expandable-catalog-search
-          width: 130px
+          width: 155px
         .expandable-reference-search
-          width: 165px
+          width: 180px
         .expandable-catalog-search, .expandable-reference-search
           transition: all .5s
           height: 2.6rem !important
           margin-right: 0rem
-          // fix background after typeahead messes it up
+          // Fix background after typeahead.
           background-color: #fff !important
           &:focus
             width: 250px
@@ -40,36 +58,35 @@
           padding-top: 0 !important
 
   #mobile-only
+    font-size: 90%
+    .menu-icon
+      margin-top: 10px
     #mobile-menu
-      background-color: #262C3A
-      a
-        color: #fff
+      background-color: $mobile-topbar-background
     #mobile-logo
       > span
         padding-right: 1rem
-
     li.unseen-notifications
       list-style: none
       float: right
+    .vertical.menu
+      margin-bottom: 1rem
+      padding-bottom: 0.7rem
       a
-        color: #fff !important
+        color: #fff
+    #search-row
+      padding-left: 1rem
+      padding-right: 1rem
+      margin-bottom: 5px
+      .mobile-search-button
+        border: 2px #fff solid
+      // Restore width after Typeahead.
+      .twitter-typeahead
+        width: 100%
 
-  #breadcrumbs
-    padding: 0.4rem 1rem
-    color: #fff
-    background: $color_green
-    a
-      color: #fff
-    // Firefox tweak
-    button
-      vertical-align: top
-    // Show localhost link.
-    &:hover .show-on-hover
-      display: inline
+  #tagline
+    @media screen and (max-width: 640px)
+      font-size: 85%
 
-  #subnavigation
-    padding: 0.4rem 1rem
-    color: #fff
-    background: $color_light_green
-    a
-      color: #fff
+#breadcrumbs
+  margin-bottom: 2rem

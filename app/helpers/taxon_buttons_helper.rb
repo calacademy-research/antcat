@@ -58,7 +58,7 @@ module TaxonButtonsHelper
     return unless taxon.is_a? Subspecies
 
     link_to 'Elevate to species', taxa_elevate_to_species_path(taxon),
-      method: :post, class: "btn-saves",
+      method: :post, class: "btn-warning",
       data: { confirm: "Are you sure you want to elevate this subspecies to species?" }
   end
 
@@ -72,12 +72,12 @@ module TaxonButtonsHelper
     MSG
 
     link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
-      class: "btn-warning btn-tiny", data: { confirm: message }
+      class: "btn-warning", data: { confirm: message }
   end
 
   def confirm_before_superadmin_delete_button taxon
     return if taxon.is_a? Family
     return unless user_is_superadmin?
-    link_to 'Delete...', confirm_before_delete_taxa_path(taxon), class: "btn-warning btn-tiny"
+    link_to append_superadmin_icon("Delete..."), confirm_before_delete_taxa_path(taxon), class: "btn-warning"
   end
 end

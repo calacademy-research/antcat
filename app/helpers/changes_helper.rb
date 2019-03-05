@@ -7,16 +7,9 @@ module ChangesHelper
   def approve_all_changes_button
     return unless user_is_superadmin?
 
-    link_to 'Approve all', approve_all_changes_path,
+    link_to append_superadmin_icon("Approve all"), approve_all_changes_path,
       method: :put, class: "btn-warning",
       data: { confirm: "Are you sure you want to approve all changes?" }
-  end
-
-  def changes_subnavigation_links
-    [
-      link_to('All Changes', changes_path),
-      link_to('Unreviewed Changes', unreviewed_changes_path)
-    ]
   end
 
   # TODO copy-pasted from `ChangesDecorator`.

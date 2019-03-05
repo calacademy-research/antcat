@@ -3,18 +3,22 @@ class NestedReferenceDecorator < ReferenceDecorator
 
   private
 
-    def format_citation
+    def format_plain_text_citation
       "#{h pages_in} #{nesting_reference.decorate.plain_text}".html_safe
+    end
+
+    def format_citation
+      "#{h pages_in} #{nesting_reference.decorate.expanded_reference}".html_safe
     end
 
     # Fall back to nesting reference's PDF is nestee does not have one.
     def pdf_link
       return nesting_reference_pdf_link unless reference.downloadable?
-      helpers.link_to 'PDF', reference.url
+      helpers.external_link_to 'PDF', reference.url
     end
 
     def nesting_reference_pdf_link
       return unless nesting_reference.downloadable?
-      helpers.link_to 'PDF', nesting_reference.url
+      helpers.external_link_to 'PDF', nesting_reference.url
     end
 end

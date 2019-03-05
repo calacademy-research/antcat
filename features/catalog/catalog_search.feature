@@ -6,19 +6,19 @@ Feature: Searching the catalog
 
   Scenario: Searching when no results
     When I fill in the catalog search box with "zxxz"
-    And I press "Go" by the catalog search box
+    And I press the search button by the catalog search box
     Then I should see "No results found."
 
   Scenario: Searching for a 'beginning with' match
     When I fill in the catalog search box with "doli"
-    And I press "Go" by the catalog search box
+    And I press the search button by the catalog search box
     Then I should see "Dolichoderinae" in the search results
     And I should see "Dolichoderus" in the search results
     And I should not see "Dolichoderus major" in the search results
 
   Scenario: Searching for a 'containing' match
     When I fill in the catalog search box with "jor"
-    And I press "Go" by the catalog search box
+    And I press the search button by the catalog search box
     Then I should see "No results"
 
     When I select "Containing" from "search_type"

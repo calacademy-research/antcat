@@ -1,6 +1,3 @@
-# TODO probably remove the big 'unread site notices' box and just add a badge
-# in the header, similar to the (soon) "new notifications" feature.
-
 class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :ensure_can_edit_catalog, except: [:index, :show, :mark_all_as_read]
@@ -51,11 +48,6 @@ class SiteNoticesController < ApplicationController
     SiteNotice.mark_as_read! :all, for: current_user
     redirect_back fallback_location: root_path,
       notice: "All site notices successfully marked as read."
-  end
-
-  def dismiss
-    session[:last_dismissed_site_notice_id] = SiteNotice.last.id
-    redirect_back fallback_location: root_path
   end
 
   private

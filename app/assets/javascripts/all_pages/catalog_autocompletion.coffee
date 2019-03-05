@@ -24,5 +24,4 @@ $ ->
   $('input.typeahead-taxa-js-hook').typeahead(options, dataSet)
     .on 'typeahead:selected', (e) ->
       # To make clicking on a suggestion or pressing Enter submit the form.
-      $("#header_search_button").addClass "disabled"
       e.target.form.submit()

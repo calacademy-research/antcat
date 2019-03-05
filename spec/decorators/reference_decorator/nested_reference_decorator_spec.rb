@@ -1,19 +1,28 @@
 require 'spec_helper'
 
 describe NestedReferenceDecorator do
+  include ReferencesHelpers
+
+  let(:nestee_author_name) { create :author_name, name: "Mayr, E." }
+  let(:author_name) { create :author_name, name: "Forel, A." }
+
+  let(:nestee_reference) do
+    create :book_reference, author_names: [nestee_author_name],
+      citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
+      publisher: create(:publisher, name: 'Wiley', place_name: 'New York')
+  end
+  let(:reference) do
+    create :nested_reference, nesting_reference: nestee_reference,
+      author_names: [author_name], title: '*Atta* <i>and such</i>',
+      citation_year: '1874', pages_in: 'Pp. 32-45 in'
+  end
+
   describe "#plain_text" do
-    let(:author_name) { create :author_name, name: "Forel, A." }
+    specify { expect(reference.decorate.plain_text).to be_html_safe }
 
-    it "formats nested references" do
-      reference = create :book_reference, author_names: [create(:author_name, name: 'Mayr, E.')],
-        citation_year: '2010', title: 'My Ants', pagination: '32 pp.',
-        publisher: create(:publisher, name: 'Wiley', place_name: 'New York')
-      nested_reference = create :nested_reference, nesting_reference: reference,
-        author_names: [author_name], title: 'Les fourmis',
-        citation_year: '1874', pages_in: 'Pp. 32-45 in'
-
-      expect(nested_reference.decorate.plain_text).
-        to eq 'Forel, A. 1874. Les fourmis. Pp. 32-45 in Mayr, E. 2010. My Ants. New York: Wiley, 32 pp.'
+    specify do
+      expect(reference.decorate.plain_text).
+        to eq 'Forel, A. 1874. Atta and such. Pp. 32-45 in Mayr, E. 2010. Lasius and such. New York: Wiley, 32 pp.'
     end
 
     context "with unsafe characters" do
@@ -21,6 +30,18 @@ describe NestedReferenceDecorator do
         reference = create :nested_reference, pages_in: 'Pp. >'
         expect(reference.decorate.plain_text).to include 'Pp. &gt;'
       end
+    end
+  end
+
+  describe "#expanded_reference" do
+    specify { expect(reference.decorate.expanded_reference).to be_html_safe }
+
+    specify do
+      expect(reference.decorate.expanded_reference).to eq <<~HTML.squish
+        #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a>
+        Pp. 32-45 in #{author_link(nestee_author_name)} 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
+        <i>and such</i>.</a> New York: Wiley, 32 pp.
+      HTML
     end
   end
 
@@ -33,7 +54,7 @@ describe NestedReferenceDecorator do
         expect(reference).to receive(:document).and_return(reference_document)
         expect(reference).to receive(:downloadable?).and_return(true)
         expect(reference_document).to receive(:url).and_return('reference.com')
-        expect(reference.decorate.send(:pdf_link)).to eq '<a href="reference.com">PDF</a>'
+        expect(reference.decorate.send(:pdf_link)).to eq '<a class="external-link" href="reference.com">PDF</a>'
       end
     end
 
@@ -48,7 +69,7 @@ describe NestedReferenceDecorator do
           expect(parent_reference).to receive(:downloadable?).and_return(true)
           expect(parent_reference).to receive(:document).and_return(parent_reference_document)
           expect(parent_reference_document).to receive(:url).and_return('parent-reference.com')
-          expect(reference.decorate.send(:pdf_link)).to eq '<a href="parent-reference.com">PDF</a>'
+          expect(reference.decorate.send(:pdf_link)).to eq '<a class="external-link" href="parent-reference.com">PDF</a>'
         end
       end
     end
