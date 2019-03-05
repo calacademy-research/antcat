@@ -27,4 +27,4 @@
   %div{data: { show_hide_toggable_id: "guidelines_for_editors" }}
     =render "guidelines_for_editors"
 
-=render partial: "comments/comments_area", locals: { commentable: @feedback, new_comment: @new_comment }
+=render "comments/comments_area", commentable: @feedback, new_comment: @new_comment

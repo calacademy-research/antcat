@@ -28,4 +28,4 @@
     .callout
       =markdown @issue.description
 
-=render partial: "comments/comments_area", locals: { commentable: @issue, new_comment: @new_comment }
+=render "comments/comments_area", commentable: @issue, new_comment: @new_comment
