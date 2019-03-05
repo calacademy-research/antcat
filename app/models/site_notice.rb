@@ -5,8 +5,8 @@ class SiteNotice < ApplicationRecord
   belongs_to :user
 
   validates :user, presence: true
-  validates :message, presence: true, allow_blank: false
-  validates :title, presence: true, allow_blank: false, length: { maximum: 70 }
+  validates :message, presence: true
+  validates :title, presence: true, length: { maximum: 70 }
 
   scope :order_by_date, -> { order(created_at: :desc) }
 

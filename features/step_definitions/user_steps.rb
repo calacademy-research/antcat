@@ -7,7 +7,7 @@ end
 
 def login_programmatically user
   login_as user, scope: :user, run_callbacks: false
-  @user = user # Add as instance variable to make it available for other steps.
+  @current_cucumber_user = user # Add as instance variable to make it available for other steps.
 end
 
 When("I log in as {string}") do |name|
@@ -53,7 +53,7 @@ end
 
 When("I log out and log in again") do
   step 'I log out'
-  login_programmatically @user
+  login_programmatically @current_cucumber_user
 end
 
 When("I log out") do

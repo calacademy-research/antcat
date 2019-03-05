@@ -26,7 +26,7 @@ class CatalogController < ApplicationController
         setup_taxon_browser
 
         tab = @taxon_browser.tab_by_id params[:tab_id]
-        render partial: "taxon_browser_tab_taxa", locals: { tab: tab, cap: false }
+        render partial: "catalog/taxon_browser_tab_taxa", locals: { tab: tab, cap: false }
       end
     end
   end

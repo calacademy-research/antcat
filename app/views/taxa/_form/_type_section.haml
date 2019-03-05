@@ -21,6 +21,7 @@
 
     -else
       %tr
+        -taxon.build_type_name unless taxon.type_name
         =form.fields_for :type_name do |type_name_form|
           -if taxon.type_name.new_record?
             =hidden_field_tag 'taxon[type_name_attributes][id]'

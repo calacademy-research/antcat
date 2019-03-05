@@ -3,7 +3,7 @@ class Journal < ApplicationRecord
 
   has_many :references, dependent: :restrict_with_error
 
-  validates :name, presence: true, allow_blank: false
+  validates :name, presence: true
 
   scope :includes_reference_count, -> do
     left_joins(:references).group(:id).
