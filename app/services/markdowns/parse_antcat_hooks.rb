@@ -2,11 +2,18 @@
 # "%"-style is the original implementation, while the curly braces format is the
 # original "taxt" format as used in taxt items.
 
+# TODO: Migrate to support a single tag style only.
+# NOTE: The eager loading HACKs make a huge difference on slow pages such as Formicidae.
+# Total loading time decreases to 500-600 ms from 1200-1400 ms as measured by rack-mini-profiler in ndev.
+
 module Markdowns
   class ParseAntcatHooks
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include Service
+
+    TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
+    REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
     def initialize content
       @content = content
@@ -32,19 +39,32 @@ module Markdowns
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_taxon_ids!
-        content.gsub!(/(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/) do
-          try_linking_taxon_id $~[:id]
+        # HACK to eager load records in a single query for performance reasions.
+        ids = content.scan(TAXON_TAG_REGEX).flatten.compact
+        taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
+
+        content.gsub!(TAXON_TAG_REGEX) do
+          taxon = taxa[$~[:id].to_i]
+
+          if taxon
+            taxon.decorate.link_to_taxon
+          else
+            broken_markdown_link "taxon", $~[:id]
+          end
         end
       end
 
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_reference_ids!
-        content.gsub!(/(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/) do
+        # HACK to eager load records in a single query for performance reasions.
+        refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
+        refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
+
+        content.gsub!(REFERENCE_TAG_REGEX) do
           id = $~[:id]
           begin
-            reference = Reference.find(id)
-            reference.decorate.expandable_reference
+            refs[id.to_i] || Reference.find(id).decorate.expandable_reference.html_safe
           rescue
             broken_markdown_link "reference", id
           end
@@ -119,14 +139,6 @@ module Markdowns
             broken_markdown_link "user", $1
           end
         end
-      end
-
-      # Very internal only.
-      def try_linking_taxon_id string
-        taxon = Taxon.find(string)
-        taxon.decorate.link_to_taxon
-      rescue
-        broken_markdown_link "taxon", string
       end
 
       def broken_markdown_link type, string

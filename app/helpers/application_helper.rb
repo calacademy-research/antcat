@@ -56,7 +56,8 @@ module ApplicationHelper
     case flash_type.to_sym
     when :notice then "primary"
     when :alert  then "alert"
-    else         raise
+    when :error  then "alert"
+    else         raise "flash_type `#{flash_type}` not supported"
     end
   end
 

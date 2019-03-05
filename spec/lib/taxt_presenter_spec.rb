@@ -24,6 +24,19 @@ describe TaxtPresenter do
         end
       end
 
+      context 'when reference has no expandable_reference_cache' do
+        let(:reference) { create :unknown_reference, citation: 'Latreille, 1809 <script>' }
+
+        before do
+          expect(reference.expandable_reference_cache).to eq nil
+        end
+
+        it 'generates it' do
+          expected = 'Latreille, 1809 &lt;script&gt;'
+          expect(described_class["{ref #{reference.id}}"].to_html).to include expected
+        end
+      end
+
       context "when the ref points to a reference that doesn't exist" do
         let(:results) { described_class["{ref 999}"].to_html }
 

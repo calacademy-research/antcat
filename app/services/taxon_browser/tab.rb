@@ -24,7 +24,7 @@ module TaxonBrowser
     end
 
     def taxa_count
-      @taxa.count
+      @taxa_count ||= @taxa.count
     end
 
     def too_many_taxa_to_load?

@@ -126,4 +126,7 @@ Rails.application.configure do
   #   (you may also want to `rake assets:clobber`)
   #
   #   Run server: `rails s -e production`
+  #
+  #   To enable `gem 'rack-mini-profiler'` in prod:
+  #   Add `before_action { Rack::MiniProfiler.authorize_request }` to ApplicationController.
 end

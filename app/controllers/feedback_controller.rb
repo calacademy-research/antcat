@@ -82,7 +82,7 @@ class FeedbackController < ApplicationController
       @feedback = Feedback.find params[:id]
     end
 
-    def on_spam
+    def on_spam _options = {}
       @feedback = Feedback.new feedback_params
       @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
       render_unprocessable
