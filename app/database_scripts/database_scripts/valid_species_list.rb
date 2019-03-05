@@ -6,7 +6,8 @@ module DatabaseScripts
     include DatabaseScripts::Renderers::AsCSV
 
     HEADERS = [:subfamily, :genus, :species, :author_year,
-      :author_citation, :fossil, :status, :antcat_id]
+      :author_citation, :fossil, :status, :biogeographic_region,
+      :locality, :antcat_id]
 
     def results
       Species.valid.
@@ -37,6 +38,8 @@ module DatabaseScripts
             taxon.author_citation,
             taxon.fossil?,
             taxon.status,
+            taxon.biogeographic_region,
+            taxon.protonym.locality,
             taxon.id
           ]
         end
@@ -56,6 +59,8 @@ module DatabaseScripts
             taxon.author_citation,
             taxon.fossil?,
             taxon.status,
+            taxon.biogeographic_region,
+            taxon.protonym.locality,
             taxon.id
           ]
         end

@@ -20,4 +20,4 @@
     .callout
       =markdown @site_notice.message
 
-=render partial: "comments/comments_area", locals: { commentable: @site_notice, new_comment: @new_comment }
+=render "comments/comments_area", commentable: @site_notice, new_comment: @new_comment

@@ -17,7 +17,7 @@ Feature: Site notices
     When I go to the users page
     Then I should see an unread site notice
 
-    When I follow "new notice!"
+    When I follow the first "new notice!"
     And I follow "A Site Notice"
     Then I should see "A Site Notice"
     And I should see "Cash is King, that's the message."
