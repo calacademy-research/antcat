@@ -209,6 +209,9 @@ Rails.application.routes.draw do
   end
 
   resources :issues, except: :destroy do
+    scope module: :issues do
+      resources :history, only: :index
+    end
     collection do
       get :autocomplete
     end
