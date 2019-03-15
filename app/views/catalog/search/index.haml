@@ -15,7 +15,7 @@
 
 .tabs-content{data: { tabs_content: "search-tabs" }}
   #advanced_search.tabs-panel{class: advanced_css}
-    =render "advanced_search_form"
+    =render "advanced_search_form", taxa: @taxa
 
   #quick_search.tabs-panel{class: quick_css}
     =render "quick_search_form"
