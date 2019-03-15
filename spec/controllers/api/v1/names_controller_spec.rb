@@ -11,8 +11,8 @@ describe Api::V1::NamesController do
     it "gets all author names keys" do
       get :index
 
-      expect(response.body.to_s).to include species_name.name
-      expect(json_response.count).to eq 4 # TODO.
+      expect(response.body.to_s).to include "Atta"
+      expect(json_response.count).to eq 3 # TODO.
     end
 
     it "gets all author names keys (starts_at)" do

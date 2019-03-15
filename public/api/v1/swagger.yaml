@@ -714,12 +714,10 @@ definitions:
             type: string
           hong:
             type: string
-          type_name_id:
+          type_taxon_id:
             type: integer
           genus_species_header_notes_taxt:
             type: string
-          type_fossil:
-            type: boolean
           name_cache:
             type: string
             description: de-normalized cache of the name object

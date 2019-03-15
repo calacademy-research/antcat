@@ -12,7 +12,7 @@ class Taxon < ApplicationRecord
   ALLOW_CREATE_COMBINATION_RANKS = %w[species subspecies]
   ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
-    :species_id, :homonym_replaced_by_id, :current_valid_taxon_id]
+    :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
 
   class TaxonExists < StandardError; end
 
@@ -37,7 +37,7 @@ class Taxon < ApplicationRecord
 
   belongs_to :name
   belongs_to :protonym, -> { includes :authorship }
-  belongs_to :type_name, class_name: 'Name', foreign_key: :type_name_id
+  belongs_to :type_taxon, class_name: 'Taxon', foreign_key: :type_taxon_id
   belongs_to :genus, class_name: 'Taxon'
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   belongs_to :current_valid_taxon, class_name: 'Taxon'
@@ -90,7 +90,8 @@ class Taxon < ApplicationRecord
   scope :ranks, ->(*ranks) { where(type: ranks) }
   scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
 
-  accepts_nested_attributes_for :name, :protonym, :type_name
+  accepts_nested_attributes_for :name, :protonym
+
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   tracked on: :mixin_create_activity_only, parameters: proc {
     if parent

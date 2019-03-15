@@ -12,9 +12,8 @@ Given("there is a genus {string} with protonym name {string}") do |name, protony
   genus.protonym.name = Name.find_by_name protonym_name
 end
 
-Given("there is a genus {string} with type name {string}") do |name, type_name|
-  genus = create_genus name
-  genus.type_name = Name.find_by_name type_name
+Given("there is a genus {string} with type name {string}") do |name, type_taxon_name|
+  create_genus name, type_taxon: create_species(type_taxon_name)
 end
 
 Given("there is a genus {string} that is incertae sedis in the subfamily") do |name|

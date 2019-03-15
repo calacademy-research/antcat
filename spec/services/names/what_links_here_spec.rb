@@ -5,12 +5,10 @@ describe Names::WhatLinksHere do
     it "returns references in fields" do
       taxon = create :family
       protonym = create :protonym, name: taxon.name
-      taxon.update protonym: protonym, type_name: taxon.name
 
       subject = described_class.new(taxon.name)
       expect(subject.call).to match_array [
         { table: 'taxa', field: :name_id, id: taxon.id },
-        { table: 'taxa', field: :type_name_id, id: taxon.id },
         { table: 'protonyms', field: :name_id, id: protonym.id }
       ]
     end

@@ -14,9 +14,7 @@ describe Taxa::CopyAttributes do
         "type_taxt" => taxon.type_taxt,
         "headline_notes_taxt" => taxon.headline_notes_taxt,
         "hong" => taxon.hong,
-        "type_name_id" => taxon.type_name_id,
         "genus_species_header_notes_taxt" => taxon.genus_species_header_notes_taxt,
-        "type_fossil" => taxon.type_fossil,
         "unresolved_homonym" => taxon.unresolved_homonym,
         "current_valid_taxon_id" => taxon.current_valid_taxon_id,
         "ichnotaxon" => taxon.ichnotaxon,
@@ -24,7 +22,8 @@ describe Taxa::CopyAttributes do
         "biogeographic_region" => taxon.biogeographic_region,
         "primary_type_information" => taxon.primary_type_information,
         "secondary_type_information" => taxon.secondary_type_information,
-        "type_notes" => taxon.type_notes
+        "type_notes" => taxon.type_notes,
+        "type_taxon_id" => taxon.type_taxon_id
       })
     end
   end
