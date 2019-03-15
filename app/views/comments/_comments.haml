@@ -6,8 +6,8 @@
 -comments.each do |comment|
   .comment
     =render "comments/comment", comment: comment
-    =render "comments/reply_form", comment: comment
-    =render "comments/comments", comments: comment.children
+    =render "comments/reply_form", comment: comment, new_comment: new_comment
+    =render "comments/comments", comments: comment.children, new_comment: new_comment
 
   -# Draw a pretty ruler between root comments.
   -unless comment.is_a_reply?
