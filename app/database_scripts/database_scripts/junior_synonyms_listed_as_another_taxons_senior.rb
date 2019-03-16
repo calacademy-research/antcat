@@ -1,7 +1,7 @@
 module DatabaseScripts
   class JuniorSynonymsListedAsAnotherTaxonsSenior < DatabaseScript
     def results
-      Taxon.where(id: Synonym.pluck(:senior_synonym_id)).where(status: Status::SYNONYM)
+      Taxon.where(id: Synonym.select(:senior_synonym_id)).where(status: Status::SYNONYM)
     end
   end
 end

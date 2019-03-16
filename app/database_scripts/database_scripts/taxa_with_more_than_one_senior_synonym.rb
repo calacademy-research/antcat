@@ -18,7 +18,7 @@ module DatabaseScripts
       def synonym_records_with_more_than_one_senior
         Synonym.group(:junior_synonym_id).
           having('COUNT(synonyms.senior_synonym_id) > 1').
-          pluck(:junior_synonym_id)
+          select(:junior_synonym_id)
       end
   end
 end
