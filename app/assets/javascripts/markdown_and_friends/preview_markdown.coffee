@@ -105,6 +105,7 @@ class ExtrasArea
 
   constructor: (@textarea, @textareaTab) ->
     @createExtrasArea().appendTo @textareaTab
+    AntCat.renderTooltips() if AntCat.renderTooltips
     @setupDefaultReferenceButton()
     @setupInsertTaxaButtons()
     @setupRecentlyUserReferencesButton()
@@ -125,7 +126,7 @@ class ExtrasArea
         <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
         <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
         <span id="extras-area"></span>
-        <span title='#{helpText}' class="tooltip">???</span>
+        <span title='#{helpText}' class="antcat_icon tooltip-icon jquery-tooltip"></span>
       </div>
     </div>
     """
