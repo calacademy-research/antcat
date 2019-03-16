@@ -42,6 +42,19 @@ describe DatabaseScript do
     end
   end
 
+  describe '.taxon_in_results?' do
+    context "when taxon is in the script's results" do
+      let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
+      let(:extant_species) { create :species }
+
+      specify do
+        expect { extant_species.genus.update! fossil: true }.
+          to change { script.taxon_in_results?(extant_species) }.
+          from(false).to(true)
+      end
+    end
+  end
+
   describe "testsing with a real script" do
     let(:script) { DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym.new }
 

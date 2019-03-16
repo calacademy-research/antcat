@@ -32,6 +32,10 @@ class DatabaseScript
              end
   end
 
+  def self.taxon_in_results? taxon
+    new.results.where(id: taxon.id).exists?
+  end
+
   def description
     end_data[:description] || ""
   end
