@@ -16,6 +16,16 @@
       -else
         =render "taxon_description", taxon: @taxon
   .medium-3.columns
+    -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
+    -unless @taxon.is_a?(Family)
+      -if current_user && @taxon.has_soft_validation_warnings?
+        #soft-validations.callout.warning
+          %h6
+            Issues
+            .right
+              =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
+          =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
+
     -unless @taxon.original_combination?
       -if show_full_statistics? @taxon
         -statistics = @taxon.decorate.statistics

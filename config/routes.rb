@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     get :show_invalid
     get :show_valid_only
     get "random", to: "random#show"
+    get "fix_random", to: "fix_random#show"
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
