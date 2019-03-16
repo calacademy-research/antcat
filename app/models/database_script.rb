@@ -40,6 +40,10 @@ class DatabaseScript
     end_data[:description] || ""
   end
 
+  def issue_description
+    end_data[:issue_description]
+  end
+
   def tags
     end_data[:tags] || []
   end

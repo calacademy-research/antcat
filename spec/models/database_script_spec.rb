@@ -75,6 +75,12 @@ describe DatabaseScript do
       end
     end
 
+    describe "#issue_description" do
+      it "can have a description" do
+        expect(script.issue_description).to match "This taxon has the status 'valid', but it also has senior synonym(s)."
+      end
+    end
+
     describe "#tags" do
       it "can have tags" do
         expect(script.tags).to eq ["regression-test"]

@@ -1,6 +1,34 @@
 require 'spec_helper'
 
 describe Taxa::CallbacksAndValidations do
+  describe 'DATABASE_SCRIPTS_TO_CHECK' do
+    it 'only includes database scripts with `issue_description`s' do
+      Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK.map(&:new).each do |database_script|
+        expect(database_script.issue_description.present?).to eq true
+      end
+
+      # Sanity check.
+      expect(DatabaseScripts::ValidSpeciesList.new.issue_description).to eq nil
+    end
+  end
+
+  describe '#check_if_in_database_scripts_results' do
+    context 'when taxon is a species in a fossil genus' do
+      let(:taxon) { create :species, genus: create(:genus, :fossil) }
+
+      it 'is `valid?` but has soft-validation warnings' do
+        expect(taxon.valid?).to be true
+        expect(taxon.has_soft_validation_warnings?).to be true
+      end
+
+      it 'adds a warning' do
+        taxon.has_soft_validation_warnings?
+        expect(taxon.soft_validation_warnings[:base].first[:message]).
+          to eq "The parent of this taxon is fossil, but this taxon is extant."
+      end
+    end
+  end
+
   describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
     context "when creating a taxon" do
       let(:taxon) { build :family }
