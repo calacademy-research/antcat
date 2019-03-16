@@ -1,3 +1,5 @@
+# TODO: Remove.
+
 module DatabaseScripts
   class EpiAndQuestionmarkTaxtTags < DatabaseScript
     include Rails.application.routes.url_helpers
@@ -38,8 +40,7 @@ module DatabaseScripts
         when "Taxon"
           link_to(item_id, catalog_path(item_id))
         when "Citation"
-          taxon_id = Citation.find(item_id).protonym.taxon.id
-          "#{item_id} " + link_to("(Taxon #{taxon_id})", catalog_path(taxon_id))
+          "#{item_id}"
         else
           "#{item_type} (#{item_id})"
         end

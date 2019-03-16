@@ -1,3 +1,5 @@
+# TODO: Remove.
+
 # *Very* messy script based on another very messy script.
 # https://github.com/calacademy-research/antcat/blob/
 # 0b1930a3e161e756e3c785bd32d6e54867cc480c/lib/tasks/database_maintenance.rake
@@ -162,7 +164,7 @@ module DatabaseScripts
             [
               attempt_to_link_item(item_type, item_id),
               "`#{item_type}##{field}`",
-              attemp_to_link_taxon(taxon, item_type, item_id),
+              attemp_to_link_taxon(taxon, item_type),
               tag,
               attempt_to_link_broken_ids(tag, broken_matched_ids)
             ]
@@ -170,8 +172,8 @@ module DatabaseScripts
         end
       end
 
-      def attemp_to_link_taxon taxon, item_type, item_id
-        taxon = Citation.find(item_id).protonym.taxon if item_type == "Citation"
+      def attemp_to_link_taxon taxon, item_type
+        return '???' if item_type == "Citation"
         markdown_taxon_link(taxon)
       end
 

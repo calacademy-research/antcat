@@ -22,7 +22,7 @@ class Reference < ApplicationRecord
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
   has_many :citations
   has_many :protonyms, through: :citations
-  has_many :described_taxa, through: :protonyms, source: :taxon
+  has_many :described_taxa, through: :protonyms, source: :taxa
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }

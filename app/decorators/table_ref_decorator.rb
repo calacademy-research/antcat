@@ -40,8 +40,9 @@ class TableRefDecorator
 
     def related_citation_link
       citation = Citation.find(id)
-      taxon = citation.protonym.taxon
-      reference = citation.reference
-      taxon.decorate.link_to_taxon << " (" << reference.decorate.expandable_reference << ")"
+
+      citation.protonym.taxa.map do |taxon|
+        taxon.decorate.link_to_taxon
+      end.join(', ').html_safe
     end
 end

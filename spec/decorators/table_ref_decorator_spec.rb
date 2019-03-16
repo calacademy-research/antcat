@@ -13,8 +13,16 @@ describe TableRefDecorator do
 
     specify { expect(decorated.item_link).to eq id }
     specify do
-      expected = taxon.decorate.link_to_taxon << " (" << reference.decorate.expandable_reference << ")"
-      expect(decorated.related_links).to eq expected
+      expect(decorated.related_links).to eq taxon.decorate.link_to_taxon
+    end
+
+    context 'when citation has a protonym that has many taxa' do
+      let!(:second_taxon) { create :family, protonym: protonym }
+
+      specify do
+        expected = taxon.decorate.link_to_taxon << ", " << second_taxon.decorate.link_to_taxon
+        expect(decorated.related_links).to eq expected
+      end
     end
   end
 
