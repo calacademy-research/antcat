@@ -19,3 +19,4 @@ description: >
 
 tags: [regression-test]
 topic_areas: [synonyms]
+issue_description: This taxon is a "pass-through name", but is has senior or junior synonyms.

@@ -10,3 +10,4 @@ __END__
 description: See %github279.
 tags: [regression-test]
 topic_areas: [synonyms]
+issue_description: This taxon has the status 'valid', but it also has senior synonym(s).

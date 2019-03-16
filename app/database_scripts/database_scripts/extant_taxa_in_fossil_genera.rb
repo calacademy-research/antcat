@@ -25,3 +25,4 @@ end
 
 __END__
 topic_areas: [catalog]
+issue_description: The parent of this taxon is fossil, but this taxon is extant.

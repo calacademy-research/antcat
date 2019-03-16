@@ -17,3 +17,4 @@ end
 
 __END__
 topic_areas: [catalog]
+issue_description: This taxon has a biogeographic region, but it is not a species or subspecies.
