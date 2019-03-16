@@ -36,6 +36,10 @@ class DatabaseScript
     new.results.where(id: taxon.id).exists?
   end
 
+  def soft_validated?
+    self.class.in?(Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK)
+  end
+
   def description
     end_data[:description] || ""
   end
