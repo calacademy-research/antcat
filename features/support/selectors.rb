@@ -18,7 +18,7 @@ module HtmlSelectorsHelpers
     when /the taxon description/
       "#taxon_description"
     when /the protonym/
-      "#taxon_description .headline > b > span"
+      "#taxon_description .headline > span.name"
     when /the type name/
       "#taxon_description .type"
     when /the header/

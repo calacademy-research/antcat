@@ -28,7 +28,7 @@ class Exporters::Antweb::ExportHeadline
     delegate :headline_notes_taxt, to: :taxon
 
     def headline_protonym
-      TaxonDecorator::HeadlineProtonym[taxon, for_antweb: true]
+      Exporters::Antweb::ExportHeadlineProtonym[taxon.protonym]
     end
 
     def headline_type
