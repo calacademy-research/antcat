@@ -17,9 +17,9 @@ class UserDecorator < Draper::Decorator
     return unless is_at_least_helper?
 
     if is_editor?
-      helpers.content_tag :span, "editor", class: "label"
+      helpers.content_tag :span, "editor", class: "label rounded-badge"
     else
-      helpers.content_tag :span, "helper", class: "white-label"
+      helpers.content_tag :span, "helper", class: "white-label rounded-badge"
     end
   end
 end
