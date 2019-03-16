@@ -26,13 +26,19 @@ describe UserDecorator do
     context "when user is an editor" do
       let(:user) { build_stubbed :user, :editor }
 
-      specify { expect(user.decorate.user_badge).to eq %(<span class="label">editor</span>) }
+      specify do
+        expect(user.decorate.user_badge).
+          to eq %(<span class="label rounded-badge">editor <span class="antcat_icon star"></span></span>)
+      end
     end
 
     context "when user is a helper" do
       let(:user) { build_stubbed :user, :helper }
 
-      specify { expect(user.decorate.user_badge).to eq %(<span class="white-label">helper</span>) }
+      specify do
+        expect(user.decorate.user_badge).
+          to eq %(<span class="white-label rounded-badge">helper <span class="antcat_icon black-star"></span></span>)
+      end
     end
 
     context "when user is neither an editor nor a helper" do
