@@ -26,10 +26,10 @@ class DatabaseScript
   end
 
   def self.all
-    Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
-      basename = File.basename path, ".rb"
-      new_from_filename_without_extension basename
-    end
+    @all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
+               basename = File.basename path, ".rb"
+               new_from_filename_without_extension basename
+             end
   end
 
   def description
