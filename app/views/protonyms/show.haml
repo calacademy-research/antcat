@@ -1,0 +1,39 @@
+-@title = "#{unitalicize @protonym.decorate.format_name} - Protonyms"
+-breadcrumb :protonym, @protonym
+
+.row.margin-bottom
+  .small-12.columns
+    %h5
+      Protonym:
+      =@protonym.decorate.format_name
+    %table.table.unstriped
+      %tbody
+        %tr
+          %th Authorship
+          %td=@protonym.authorship.reference.decorate.expandable_reference
+        %tr
+          %th Pages and forms
+          %td=@protonym.decorate.format_pages_and_forms
+        %tr
+          %th Locality
+          %td=@protonym.decorate.format_locality
+        %tr
+          %th Notes
+          %td=or_dash TaxtPresenter[@protonym.authorship.notes_taxt].to_html
+
+-if @protonym.taxa.present?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 Taxa belonging to this protonym
+      %table
+        %thead
+          %th Taxon
+          %th Authorship
+          %th Rank
+          %th Status
+        -@protonym.taxa.each do |taxon|
+          %tr
+            %td=taxon.decorate.link_to_taxon
+            %td=taxon.authorship_reference.decorate.expandable_reference
+            %td=taxon.rank.capitalize
+            %td=taxon.status.capitalize

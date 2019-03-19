@@ -10,6 +10,8 @@ class Protonym < ApplicationRecord
   validates :authorship, presence: true
   validates :name, presence: true
 
+  scope :order_by_name, -> { joins(:name).order('names.name') }
+
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:locality], replace_newlines: true

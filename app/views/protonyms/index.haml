@@ -1,0 +1,23 @@
+-@title = "Protonyms"
+-breadcrumb :protonyms
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Authorship
+      %th Pages and forms
+      %th Locality
+      %th Notes
+      %th Taxa
+  %tbody
+    -@protonyms.each do |protonym|
+      %tr
+        %td=link_to protonym.decorate.format_name, protonym
+        %td=protonym.authorship.reference.decorate.expandable_reference
+        %td=protonym.decorate.format_pages_and_forms
+        %td=protonym.decorate.format_locality
+        %td=or_dash TaxtPresenter[protonym.authorship.notes_taxt].to_html
+        %td=protonym.taxa.count
+
+=will_paginate @protonyms
