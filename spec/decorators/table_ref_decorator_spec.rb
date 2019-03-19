@@ -26,6 +26,15 @@ describe TableRefDecorator do
     end
   end
 
+  context "when table is `protonyms`" do
+    let!(:table) { "protonyms" }
+    let!(:object) { create :protonym }
+    let!(:name) { object.name }
+
+    specify { expect(decorated.item_link).to eq %(<a href="/protonyms/#{id}">#{id}</a>) }
+    specify { expect(decorated.related_links).to eq %(<a href="/protonyms/#{id}">Protonym: #{name.name_html}</a>) }
+  end
+
   context "when table is `reference_sections`" do
     let!(:table) { "reference_sections" }
     let!(:object) { create :reference_section }
