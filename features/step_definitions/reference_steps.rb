@@ -152,3 +152,7 @@ Then("the {string} tab should be selected") do |tab_name|
   tab_name = 'Unknown' if tab_name == 'Other'
   find("#tabs-#{tab_name.downcase}.is-active")
 end
+
+When("I click the Add to Recently Used button") do
+  find("a.add-to-recently-used-references-js-hook").click
+end
