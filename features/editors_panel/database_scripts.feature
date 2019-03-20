@@ -11,7 +11,8 @@ Feature: Database scripts
     Then I should see "Lasius specius subspecius"
 
   Scenario: Displaying database script issues in catalog pages
-    Given there is a Lasius subspecies without a species
+    Given SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG is true
+    And there is a Lasius subspecies without a species
 
     When I go to the catalog page for "Lasius specius subspecius"
     Then I should see "This subspecies has no species"
