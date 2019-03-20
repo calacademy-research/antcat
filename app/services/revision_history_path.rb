@@ -19,6 +19,7 @@ class RevisionHistoryPath
     def url
       case type
       when "Institution"      then institution_path id
+      when "Issue"            then issue_history_index_path id
       when "Reference"        then reference_history_index_path id
       when "TaxonHistoryItem" then taxon_history_item_path id
       when "ReferenceSection" then reference_section_path id
