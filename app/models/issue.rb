@@ -1,4 +1,5 @@
 class Issue < ApplicationRecord
+  include RevisionsCanBeCompared
   include Trackable
   include SendsNotifications
 

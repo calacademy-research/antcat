@@ -8,7 +8,7 @@
 %a{name: "comments"}
 
 %h6.margin-top=comments_count_in_words commentable
-=render "comments/form"
+=render "comments/form", new_comment: new_comment
 
 .comments-container.margin-bottom
-  =render "comments/comments", comments: commentable.root_comments
+  =render "comments/comments", comments: commentable.root_comments, new_comment: new_comment

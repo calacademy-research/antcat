@@ -27,3 +27,4 @@ description: >
   Note that the "Replaced by" button in the edit form is only visible when the when
   a taxon's status is set to "homonym".
 topic_areas: [catalog]
+issue_description: This taxon has a "Replaced by" taxon, but its status is not 'homonym'.

@@ -49,6 +49,7 @@ gem 'sunspot_solr', '2.2.0'
 gem 'swagger_ui_engine'
 gem 'twitter-typeahead-rails'
 gem 'unread'
+gem 'validation_scopes'
 gem 'will_paginate'
 gem 'workflow'
 

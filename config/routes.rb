@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     get :show_invalid
     get :show_valid_only
     get "random", to: "random#show"
+    get "fix_random", to: "fix_random#show"
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
   end
@@ -97,6 +98,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :protonyms, only: [:index, :show, :destroy]
   scope module: :protonyms do
     scope controller: :localities, path: "/protonyms/localities" do
       get :autocomplete
@@ -209,6 +211,9 @@ Rails.application.routes.draw do
   end
 
   resources :issues, except: :destroy do
+    scope module: :issues do
+      resources :history, only: :index
+    end
     collection do
       get :autocomplete
     end

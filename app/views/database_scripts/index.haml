@@ -20,6 +20,8 @@
         =surround "(", ")" do
           =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
       %p
+        "Soft-validated" scripts is where "Fix random!" taxa are randomized from
+      %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         may cause the site to become unresponsive
 
@@ -30,9 +32,13 @@
         %th.no-wrap Topic area
         %th Script
         %th.no-wrap Tags
+        %th Soft-validated
     %tbody
       -database_scripts.each do |database_script|
         %tr
           %td.shrink=database_script.decorate.format_topic_areas
           %td=link_to database_script.title, database_script_path(database_script)
           %td=database_script.decorate.format_tags
+          %td.shrink
+            -if database_script.soft_validated?
+              =antcat_icon("check")

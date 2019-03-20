@@ -1,3 +1,7 @@
+Given("SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG is true") do
+  stub_const "AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG", true
+end
+
 Given("there is a Lasius subspecies without a species") do
   subspecies = create_subspecies "Lasius specius subspecius", species: nil
   expect(subspecies.species).to be nil

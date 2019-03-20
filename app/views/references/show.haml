@@ -5,11 +5,12 @@
   .right
     -if user_is_at_least_helper?
       =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
-      =set_as_default_reference_button @reference
 
     -if current_user
       =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
       =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
+      =set_as_default_reference_button @reference
+      =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
 
     .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
     #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}

@@ -13,6 +13,7 @@ class TableRefDecorator
 
     case table
     when "citations"           then id
+    when "protonyms"           then link_to(id, protonym_path(id))
     when "reference_sections"  then link_to(id, reference_section_path(id))
     when "references"          then link_to(id, reference_path(id))
     when "synonyms", "taxa"    then link_to(id, catalog_path(id))
@@ -26,6 +27,7 @@ class TableRefDecorator
 
     case table
     when "citations"           then related_citation_link
+    when "protonyms"           then related_protonym_link
     when "reference_sections"  then ReferenceSection.find(id).taxon.decorate.link_to_taxon
     when "references"          then Reference.find(id).decorate.expandable_reference
     when "synonyms", "taxa"    then Taxon.find(id).decorate.link_to_taxon
@@ -40,8 +42,14 @@ class TableRefDecorator
 
     def related_citation_link
       citation = Citation.find(id)
-      taxon = citation.protonym.taxon
-      reference = citation.reference
-      taxon.decorate.link_to_taxon << " (" << reference.decorate.expandable_reference << ")"
+
+      citation.protonym.taxa.map do |taxon|
+        taxon.decorate.link_to_taxon
+      end.join(', ').html_safe
+    end
+
+    def related_protonym_link
+      protonym = Protonym.find(id)
+      link_to "Protonym: ".html_safe << protonym.decorate.format_name, protonym_path(protonym)
     end
 end

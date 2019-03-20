@@ -1,7 +1,7 @@
 .reply-form{data: { reply_form_for_comment: comment.id } }
-  =form_for @new_comment do |f|
-    =f.hidden_field :commentable_id, value: @new_comment.commentable_id
-    =f.hidden_field :commentable_type, value: @new_comment.commentable_type
+  =form_for new_comment do |f|
+    =f.hidden_field :commentable_id, value: new_comment.commentable_id
+    =f.hidden_field :commentable_type, value: new_comment.commentable_type
     =f.hidden_field :comment_id, value: comment.id
     .row
       .small-12.columns.end

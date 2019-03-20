@@ -1,18 +1,9 @@
 module DatabaseScripts
   class PassThroughNamesWithSynonyms < DatabaseScript
     def results
-      with_senior_synonyms + with_junior_synonyms
+      Taxon.pass_through_names.left_outer_joins(:junior_synonyms_objects, :senior_synonyms_objects).
+        distinct.where("synonyms.senior_synonym_id IS NOT NULL OR synonyms.junior_synonym_id IS NOT NULL")
     end
-
-    private
-
-      def with_senior_synonyms
-        Taxon.pass_through_names.joins(:senior_synonyms).distinct
-      end
-
-      def with_junior_synonyms
-        Taxon.pass_through_names.joins(:junior_synonyms).distinct
-      end
   end
 end
 
@@ -28,3 +19,4 @@ description: >
 
 tags: [regression-test]
 topic_areas: [synonyms]
+issue_description: This taxon is a "pass-through name", but is has senior or junior synonyms.

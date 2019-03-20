@@ -1,18 +1,9 @@
 module DatabaseScripts
   class PassThroughNamesWithTaxts < DatabaseScript
     def results
-      with_history_items + with_reference_sections
+      Taxon.pass_through_names.left_outer_joins(:history_items, :reference_sections).
+        distinct.where("taxon_history_items.id IS NOT NULL OR reference_sections.id IS NOT NULL")
     end
-
-    private
-
-      def with_history_items
-        Taxon.pass_through_names.joins(:history_items).distinct
-      end
-
-      def with_reference_sections
-        Taxon.pass_through_names.joins(:reference_sections).distinct
-      end
   end
 end
 
@@ -28,3 +19,4 @@ description: >
   See %github375.
 
 topic_areas: [synonyms]
+issue_description: This taxon is a "pass-through name", but is has history items or reference sections.

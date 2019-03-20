@@ -17,9 +17,11 @@ class UserDecorator < Draper::Decorator
     return unless is_at_least_helper?
 
     if is_editor?
-      helpers.content_tag :span, "editor", class: "label"
+      label = "editor ".html_safe << helpers.antcat_icon("star")
+      helpers.content_tag :span, label, class: "label rounded-badge"
     else
-      helpers.content_tag :span, "helper", class: "white-label"
+      label = "helper ".html_safe << helpers.antcat_icon("black-star")
+      helpers.content_tag :span, label, class: "white-label rounded-badge"
     end
   end
 end

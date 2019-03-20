@@ -69,6 +69,11 @@ table.notifications
     color: #fff !important
     font-size: 90%
 
+  &.black-star
+    @extend .fa-star
+    color: #000 !important
+    font-size: 90%
+
   &.refresh
     @extend .fa-refresh
 
@@ -78,6 +83,10 @@ table.notifications
     font-size: 90%
 
   &.read
+    @extend .fa-check
+    color: $color_primary
+
+  &.check
     @extend .fa-check
     color: $color_primary
 

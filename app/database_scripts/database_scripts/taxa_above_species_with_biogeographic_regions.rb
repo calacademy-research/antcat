@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :subspecies, :biogeographic_region
+        t.header :taxon, :biogeographic_region
 
         t.rows { |taxon| [markdown_taxon_link(taxon), taxon.biogeographic_region] }
       end
@@ -17,3 +17,4 @@ end
 
 __END__
 topic_areas: [catalog]
+issue_description: This taxon has a biogeographic region, but it is not a species or subspecies.

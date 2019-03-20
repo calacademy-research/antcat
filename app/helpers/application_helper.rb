@@ -46,11 +46,11 @@ module ApplicationHelper
   end
 
   def beta_label
-    content_tag :span, "beta", class: "label"
+    content_tag :span, "beta", class: "rounded-badge"
   end
 
   def new_label
-    content_tag :span, "new!", class: "label"
+    content_tag :span, "new!", class: "rounded-badge"
   end
 
   def spinner_icon

@@ -34,7 +34,7 @@ class DatabaseScriptDecorator < Draper::Decorator
       when DatabaseScript::NEW_TAG       then "label"
       when DatabaseScript::CSV_TAG       then "pretty-label"
       else                                    "white-label"
-      end
+      end << " rounded-badge"
     end
     private_class_method :tag_css_class
 end

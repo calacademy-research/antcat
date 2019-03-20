@@ -126,3 +126,14 @@ Feature: Compare revisions
     And I follow "whatever"
     And I follow "History"
     Then I should see "Compare selected revisions"
+
+  Scenario: Comparing revisions (issues)
+    Given there is an open issue "Fix broken taxt tags"
+
+    When I go to the open issues page
+    And I follow "Fix broken taxt tags"
+    And I follow "Edit"
+    And I fill in "issue_description" with "all with ID 123"
+    And I press "Save"
+    And I follow "History"
+    Then I should see "Compare selected revisions"
