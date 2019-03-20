@@ -1,5 +1,6 @@
 class ProtonymsController < ApplicationController
-  before_action :set_protonym, only: [:show]
+  before_action :ensure_user_is_at_least_helper, only: :destroy
+  before_action :set_protonym, only: [:show, :destroy]
 
   def index
     @protonyms = Protonym.includes(:name, authorship: :reference).
@@ -7,6 +8,12 @@ class ProtonymsController < ApplicationController
   end
 
   def show
+  end
+
+  def destroy
+    @protonym.destroy
+    @protonym.create_activity :destroy
+    redirect_to protonyms_path, notice: "Successfully deleted protonym."
   end
 
   private
