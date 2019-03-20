@@ -2,6 +2,8 @@
   =feedback.decorate.format_submitter_name
   submitted (#{time_ago_in_words(feedback.created_at)} ago)
 
-%blockquote{class: ("gray" if feedback.closed?)}
+%p{class: ("gray" if feedback.closed?)}
   =feedback.decorate.format_page
   =simple_format strip_tags(feedback.comment)
+
+%br

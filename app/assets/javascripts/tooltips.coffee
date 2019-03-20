@@ -1,8 +1,11 @@
 $ ->
-  (new Tooltipify).tooltipifyAll()
+  AntCat.renderTooltips()
+
+# HACK: Global to make it possible to render tooltips added to the DOM.
+AntCat.renderTooltips = -> (new Tooltipify).renderTooltips()
 
 class Tooltipify
-  tooltipifyAll: ->
+  renderTooltips: ->
     $('.jquery-tooltip').tooltip
       tooltipClass: "has-jquery-tooltip" # Custom class to avoid collision with Foundation's tooltips.
       show: false
