@@ -48,6 +48,11 @@ end
       parent :issue, issue
     end
 
+    crumb :issue_history do |issue|
+      link "History"
+      parent :issue, issue
+    end
+
   crumb :new_issue do |_issue|
     link "New"
     parent :issues
