@@ -7,7 +7,13 @@
 =TaxtPresenter[taxon.genus_species_header_notes_taxt].to_html
 
 .headline
-  =taxon.decorate.headline_protonym
+  %span.name
+    =link_to taxon.protonym.decorate.format_name, taxon.protonym
+  =taxon.authorship_reference.decorate.expandable_reference
+  =taxon.protonym.decorate.format_pages_and_forms
+  =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html
+  =taxon.protonym.decorate.format_locality
+
   =taxon.decorate.headline_type
   =TaxtPresenter[taxon.headline_notes_taxt].to_html
 

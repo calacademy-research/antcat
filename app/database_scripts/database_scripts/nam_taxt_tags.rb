@@ -38,8 +38,10 @@ module DatabaseScripts
         when "Taxon"
           link_to(item_id, catalog_path(item_id))
         when "Citation"
-          taxon_id = Citation.find(item_id).protonym.taxon.id
-          "#{item_id} " + link_to("(Taxon #{taxon_id})", catalog_path(taxon_id))
+          taxa_ids = Citation.find(item_id).protonym.taxa.pluck :id
+          taxa_ids.map do |taxon_id|
+            "#{item_id} " + link_to("(Taxon #{taxon_id})", catalog_path(taxon_id))
+          end.join(', ')
         else
           "#{item_type} (#{item_id})"
         end

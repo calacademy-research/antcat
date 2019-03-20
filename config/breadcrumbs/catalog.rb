@@ -36,4 +36,14 @@ crumb :catalog_search do
   link "Search"
   parent :catalog
 end
+
+crumb :protonyms do
+  link "Protonyms", protonyms_path
+  parent :catalog
+end
+
+  crumb :protonym do |protonym|
+    link protonym.decorate.format_name
+    parent :protonyms
+  end
 # rubocop:enable Layout/IndentationConsistency

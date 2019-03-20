@@ -97,6 +97,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :protonyms, only: [:index, :show, :destroy]
   scope module: :protonyms do
     scope controller: :localities, path: "/protonyms/localities" do
       get :autocomplete

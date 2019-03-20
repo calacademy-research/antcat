@@ -31,10 +31,6 @@ class TaxonDecorator < ApplicationDecorator
     TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
 
-  def headline_protonym
-    TaxonDecorator::HeadlineProtonym[taxon]
-  end
-
   def headline_type
     TaxonDecorator::HeadlineType[taxon]
   end
