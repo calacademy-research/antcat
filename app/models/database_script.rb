@@ -26,14 +26,26 @@ class DatabaseScript
   end
 
   def self.all
-    Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
-      basename = File.basename path, ".rb"
-      new_from_filename_without_extension basename
-    end
+    @all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
+               basename = File.basename path, ".rb"
+               new_from_filename_without_extension basename
+             end
+  end
+
+  def self.taxon_in_results? taxon
+    new.results.where(id: taxon.id).exists?
+  end
+
+  def soft_validated?
+    self.class.in?(Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def description
     end_data[:description] || ""
+  end
+
+  def issue_description
+    end_data[:issue_description]
   end
 
   def tags

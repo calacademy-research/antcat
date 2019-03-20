@@ -3,15 +3,15 @@ module DatabaseScripts
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
-    def species_id_results
-      Taxon.where('species_id NOT IN (SELECT id FROM taxa)')
+    def results
+      Taxon.where.not(species_id: Taxon.select(:id))
     end
 
     def render
       as_table do |t|
         t.header :non_existing_species_id, :taxon, :status, :search_history?
 
-        t.rows(species_id_results) do |taxon|
+        t.rows do |taxon|
           [
             taxon.species_id,
             markdown_taxon_link(taxon),
@@ -33,3 +33,4 @@ description: >
   The columns included in this check are: `species_id` (other are OK).
 
 topic_areas: [catalog]
+issue_description: This subspecies belongs to a species that has been deleted, or does not exists for any other reason.

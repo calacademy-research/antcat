@@ -42,6 +42,26 @@ describe DatabaseScript do
     end
   end
 
+  describe '.taxon_in_results?' do
+    context "when taxon is in the script's results" do
+      let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
+      let(:extant_species) { create :species }
+
+      specify do
+        expect { extant_species.genus.update! fossil: true }.
+          to change { script.taxon_in_results?(extant_species) }.
+          from(false).to(true)
+      end
+    end
+  end
+
+  describe '#soft_validated?' do
+    it 'returns true if the script is used for taxon soft-validations' do
+      expect(Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
+      expect(DatabaseScripts::ValidSpeciesList.new.soft_validated?).to eq false
+    end
+  end
+
   describe "testsing with a real script" do
     let(:script) { DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym.new }
 
@@ -59,6 +79,12 @@ describe DatabaseScript do
       it "doesn't require a description" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
         expect(script.description).to eq ""
+      end
+    end
+
+    describe "#issue_description" do
+      it "can have a description" do
+        expect(script.issue_description).to match "This taxon has the status 'valid', but it also has senior synonym(s)."
       end
     end
 

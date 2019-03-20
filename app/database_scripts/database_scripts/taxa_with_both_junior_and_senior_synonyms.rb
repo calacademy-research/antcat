@@ -9,3 +9,4 @@ end
 __END__
 description: See %github279.
 topic_areas: [synonyms]
+issue_description: This taxon has both senior and junior synonyms.
