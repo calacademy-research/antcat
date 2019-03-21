@@ -37,4 +37,5 @@ description: >
   [Taxa with the same name object](/database_scripts/taxa_with_the_same_name_object);
   open both and sort by count to see the difference.
 
+tags: [list]
 topic_areas: [catalog]
