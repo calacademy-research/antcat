@@ -21,12 +21,6 @@
         =hidden_field_tag 'test_name_field_value', ''
 
     %tr
-      %td=label_tag :allow_blank
-      %td#test_allow_blank_name_field
-        =render 'name_fields/panel', name_string: @name.try(:name)
-        =hidden_field_tag 'test_allow_blank_name_field_value', ''
-
-    %tr
       %td=label_tag :new_or_homonym
       %td#test_new_or_homonym_name_field
         =render 'name_fields/panel', name_string: @name.try(:name)
