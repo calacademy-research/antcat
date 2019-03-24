@@ -89,7 +89,7 @@ describe Markdowns::Render do
         let(:markdown) { "%journal#{journal.id}" }
 
         it "links the journal" do
-          expected = %(<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n)
+          expected = %(<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n)
           expect(described_class[markdown]).to eq expected
         end
       end
