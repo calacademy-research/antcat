@@ -1,12 +1,14 @@
 require 'spec_helper'
 
 describe TaxonHelper do
+  include TestLinksHelpers
+
   describe "#taxon_link_or_deleted_string" do
     context "when taxon exists" do
       let(:taxon) { create :subfamily }
 
       it "returns a link" do
-        expect(helper.taxon_link_or_deleted_string(taxon.id)).to include '<a href="/catalog'
+        expect(helper.taxon_link_or_deleted_string(taxon.id)).to include taxon_link(taxon)
       end
     end
 
