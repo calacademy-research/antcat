@@ -41,7 +41,6 @@ module Taxa
           :type_taxt,
           :headline_notes_taxt,
           :hong,
-          :genus_species_header_notes_taxt,
           :unresolved_homonym,
           :current_valid_taxon_id,
           :ichnotaxon,

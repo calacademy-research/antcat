@@ -58,7 +58,7 @@ description: >
 
 
   Click on the links to see where they are used. If `Item type` says `Taxon`, the taxt tag is contained
-   in either `headline_notes_taxt`, `type_taxt` or `genus_species_header_notes_taxt` of that taxon.
+   in either `headline_notes_taxt` or `type_taxt` of that taxon.
   If it says `Citation`, the taxt is stored in the `notes_taxt` column of that citation;
   since it's not possible no link citations, the taxon which's protonym references that citation.
 topic_areas: [taxt]
