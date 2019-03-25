@@ -1,0 +1,58 @@
+-content_for :head do
+  =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
+  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
+
+=enable_tooltips
+
+=form_for protonym do |f|
+  =render 'shared/errors_for', resource: protonym
+  %table.unstriped
+    %tr
+      %td=f.label :name
+      %td=protonym.decorate.format_name
+    %tr
+      %td
+      %td
+        =f.check_box :fossil
+        =f.label :fossil
+
+        =f.check_box :sic
+        =f.label :sic
+
+    =f.fields_for :authorship do |authorship_fields|
+      %tr
+        %td
+          =authorship_fields.label :reference do
+            Authorship
+            =tooltip_icon "authorship", scope: :taxa
+        %td=authorship_fields.reference_select :reference
+
+      %tr
+        %td
+          =authorship_fields.label :pages do
+            Pages
+            =tooltip_icon "pages", scope: :taxa
+        %td=authorship_fields.text_field :pages
+
+      %tr
+        %td
+          =authorship_fields.label :forms do
+            Forms
+            =tooltip_icon "forms", scope: :taxa
+        %td=authorship_fields.text_field :forms
+
+    %tr
+      %td
+        =f.label :locality do
+          Locality
+          =tooltip_icon "locality", scope: :taxa
+      %td=f.text_field :locality, class: 'locality-autocomplete-js-hook'
+
+    %tr
+      %td=f.label :notes
+      %td=text_area_tag :taxt, protonym.authorship.notes_taxt, rows: 5, name: 'protonym[authorship_attributes][notes_taxt]', data: { has_linkables: true, previewable: true, spreviewable_title: "Notes", use_extras: true }
+
+    %tr
+      %td
+      %td
+        =f.button "Save", type: :submit, class: "btn-saves"
