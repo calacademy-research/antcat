@@ -199,6 +199,8 @@ class ExtrasArea
       """<a class="insert-taxon btn-normal btn-tiny" data-id="#{id}">#{name}</a> """
 
     taxa = $('#taxon-and-ancestors').data('taxa')
+    return unless taxa
+
     taxa.forEach (taxon) =>
       @textareaTab.find('#extras-area').prepend insertTaxonButton(taxon.id, taxon.name)
 
