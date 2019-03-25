@@ -36,5 +36,5 @@ __END__
 description: >
   See %github283
 
-tags: [new!]
+tags: [regression-test]
 topic_areas: [catalog]
