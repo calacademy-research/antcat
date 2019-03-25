@@ -21,18 +21,11 @@
 
     -else
       %tr
-        -taxon.build_type_name unless taxon.type_name
-        =form.fields_for :type_name do |type_name_form|
-          -if taxon.type_name.new_record?
-            =hidden_field_tag 'taxon[type_name_attributes][id]'
-          %td=type_name_form.label :name
-          %td
-            #type_name_field
-              =render 'name_fields/panel', name_string: taxon.type_name.try(:name)
-      %tr
-        %td=form.label :type_fossil, 'Fossil'
-        %td=form.check_box :type_fossil
-
+        %td
+          =form.label :type_name do
+            Type name
+            =tooltip_icon "type.type_taxon", scope: :taxa
+        %td=form.taxon_select :type_taxon
       %tr
         %td=form.label :type_taxt, 'Notes'
         %td=render 'shared/taxt_editor/template', name: 'taxon[type_taxt]', content: taxon.type_taxt, id: :taxon_type_taxt

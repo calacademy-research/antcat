@@ -6,7 +6,6 @@ describe Taxa::InheritAttributesForNewCombination do
     let(:new_comb) do
       taxon = Species.new
       taxon.build_name
-      taxon.build_type_name
       taxon.build_protonym
       taxon.protonym.build_name
       taxon.protonym.build_authorship

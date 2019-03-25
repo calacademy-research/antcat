@@ -10,6 +10,7 @@ Feature: Adding a taxon successfully
   @javascript
   Scenario: Adding a genus
     Given there is a genus "Eciton"
+    And there is a species "Atta major"
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
@@ -19,11 +20,11 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
-    And I click the type name field
-      And I set the type name to "Atta major"
-      And I press "OK"
-      And I press "Add this name"
-    And I press "Save"
+
+    When I set the type name to "Atta major"
+    Then the type name field should contain "Atta major"
+
+    When I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "Eciton" in the protonym
 
@@ -42,10 +43,6 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
-    And I click the type name field
-      And I set the type name to "Eciton major"
-      And I press "OK"
-      And I press "Add this name"
     And I press "Save"
     Then I should be on the catalog page for "Eciton"
 
@@ -60,10 +57,6 @@ Feature: Adding a taxon successfully
       And I press "OK"
     And I click the protonym name field
       And I set the protonym name to "Mayria"
-      And I press "OK"
-      And I press "Add this name"
-    And I click the type name field
-      And I set the type name to "Mayria madagascarensis"
       And I press "OK"
       And I press "Add this name"
     And I press "Save"
@@ -140,11 +133,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       Then the protonym name field should contain "Dorylinae"
       When I press "OK"
-    And I click the type name field
-      And I set the type name to "Atta"
-      And I press "OK" in "#type_name_field"
-      And I press "Add this name"
-    When I press "Save"
+    And I press "Save"
     Then I should be on the catalog page for "Dorylinae"
     And I should see "Dorylinae" in the protonym
 

@@ -44,9 +44,7 @@ Feature: Editing a taxon's name, protonym name, or type name
     And there is a species "Atta minor"
 
     When I go to the edit page for "Atta"
-    And I click the type name field
     And I set the type name to "Atta minor"
-    And I press "OK"
     And I press "Save"
     Then I should see "Atta minor" in the headline
 
@@ -54,12 +52,10 @@ Feature: Editing a taxon's name, protonym name, or type name
     Given there is a genus "Atta" with type name "Atta major"
 
     When I go to the catalog page for "Atta"
-    Then I should not see "Atta major" in the headline
+    Then I should see "Atta major" in the headline
 
     When I follow "Edit"
-    And I click the type name field
     And I set the type name to ""
-    And I press "OK"
     And I press "Save"
     Then I should not see "Atta major" in the headline
 

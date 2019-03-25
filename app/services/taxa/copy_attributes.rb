@@ -41,9 +41,7 @@ module Taxa
           :type_taxt,
           :headline_notes_taxt,
           :hong,
-          :type_name_id,
           :genus_species_header_notes_taxt,
-          :type_fossil,
           :unresolved_homonym,
           :current_valid_taxon_id,
           :ichnotaxon,
@@ -51,7 +49,8 @@ module Taxa
           :biogeographic_region,
           :primary_type_information,
           :secondary_type_information,
-          :type_notes
+          :type_notes,
+          :type_taxon_id
         ]
       end
   end

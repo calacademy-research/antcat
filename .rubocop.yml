@@ -71,6 +71,9 @@ Layout/IndentationConsistency:
 Layout/IndentHash:
   Enabled: false
 
+Layout/IndentHeredoc:
+  Enabled: false
+
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 

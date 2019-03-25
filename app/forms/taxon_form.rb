@@ -25,8 +25,6 @@ class TaxonForm
         # the versions' `change_id`s will be nil.
         subspecies_without_species_special_case
 
-        update_type_name params.delete :type_name_attributes
-
         params[:name_id] = params[:name_attributes][:id]
         params[:protonym_attributes][:name_id] = params[:protonym_attributes][:name_attributes][:id]
 
@@ -48,20 +46,6 @@ class TaxonForm
     rescue Taxon::TaxonExists
       taxon.errors.add :base, "This name is in use by another taxon"
       raise
-    end
-
-    def update_type_name type_name_attributes
-      attributes = type_name_attributes
-
-      if taxon.type_name && taxon.type_name.new_record? && (!attributes || (attributes[:id] == ''))
-        taxon.type_name = nil
-        return
-      end
-
-      if attributes
-        attributes[:type_name_id] = attributes.delete :id
-        taxon.attributes = attributes
-      end
     end
 
     def save_and_create_change!

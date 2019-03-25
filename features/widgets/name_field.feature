@@ -31,15 +31,6 @@ Feature: Name field
     When I press "Cancel"
     Then I should not see "Add this name"
 
-  Scenario: Clearing the name
-    Given there is a genus "Atta"
-
-    When I go to the name field test page for a name
-    And I click the allow_blank name field
-    And I fill in "name_string" with ""
-    And I press "OK"
-    Then I should see "(none)" in the allow_blank name field
-
   Scenario: Picking a new name in a 'new or 'homomym' field
     When I go to the name field test page
     And I click the new_or_homonym field

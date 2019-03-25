@@ -143,8 +143,7 @@ class TaxaController < ApplicationController
             }
           ]
         },
-        { type_name_attributes: [:id] },
-        :type_fossil,
+        :type_taxon_id,
         :type_taxt,
         :biogeographic_region,
         :primary_type_information,
@@ -166,7 +165,6 @@ class TaxaController < ApplicationController
 
       taxon = taxon_class.new
       taxon.build_name
-      taxon.build_type_name
       taxon.build_protonym
       taxon.protonym.build_name
       taxon.protonym.build_authorship

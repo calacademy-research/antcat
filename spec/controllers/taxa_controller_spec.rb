@@ -21,7 +21,6 @@ describe TaxaController do
     let(:authorship_reference) { create :article_reference }
     let(:name) { create :genus_name }
     let(:protonym_name) { create :genus_name }
-    let(:type_name) { create :species_name }
 
     let(:base_params) do
       HashWithIndifferentAccess.new(
@@ -36,9 +35,6 @@ describe TaxaController do
           authorship_attributes: {
             reference_id: authorship_reference.id
           }
-        },
-        type_name_attributes: {
-          id: type_name.id
         }
       )
     end
@@ -63,6 +59,7 @@ describe TaxaController do
 
         describe "basic taxon attributes" do
           let(:homonym_replaced_by) { create :genus }
+          let(:type_taxon) { create :species }
           let(:taxon_params) do
             base_params.deep_merge(
               homonym_replaced_by_id: homonym_replaced_by.id,
@@ -73,12 +70,12 @@ describe TaxaController do
               ichnotaxon: true,
               hong: true,
               headline_notes_taxt: "headline notes taxt",
-              type_fossil: true,
               type_taxt: "type taxt",
               biogeographic_region: Taxon::BIOGEOGRAPHIC_REGIONS.first,
               primary_type_information: "primary type information",
               secondary_type_information: "secondary type information",
-              type_notes: "type notes"
+              type_notes: "type notes",
+              type_taxon_id: type_taxon.id
             )
           end
 
@@ -96,12 +93,12 @@ describe TaxaController do
             expect(taxon.ichnotaxon).to eq taxon_params[:ichnotaxon]
             expect(taxon.hong).to eq taxon_params[:hong]
             expect(taxon.headline_notes_taxt).to eq taxon_params[:headline_notes_taxt]
-            expect(taxon.type_fossil).to eq taxon_params[:type_fossil]
             expect(taxon.type_taxt).to eq taxon_params[:type_taxt]
             expect(taxon.biogeographic_region).to eq taxon_params[:biogeographic_region]
             expect(taxon.primary_type_information).to eq taxon_params[:primary_type_information]
             expect(taxon.secondary_type_information).to eq taxon_params[:secondary_type_information]
             expect(taxon.type_notes).to eq taxon_params[:type_notes]
+            expect(taxon.type_taxon_id).to eq taxon_params[:type_taxon_id]
           end
         end
 
