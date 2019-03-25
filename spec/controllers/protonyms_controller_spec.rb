@@ -27,12 +27,12 @@ describe ProtonymsController do
         fossil: false,
         sic: false,
         locality: 'Africa',
-          authorship_attributes: {
-            pages: '99',
-            forms: 'worker',
-            notes_taxt: 'see Lasius',
-            reference_id: create(:article_reference).id
-          }
+        authorship_attributes: {
+          pages: '99',
+          forms: 'worker',
+          notes_taxt: 'see Lasius',
+          reference_id: create(:article_reference).id
+        }
       }
 
       post(:update, params: { id: protonym.id, protonym: protonym_params })

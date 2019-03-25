@@ -3,3 +3,7 @@ Given("there is a genus protonym {string} with pages and form 'page 9, dealate q
   citation = create :citation, forms: 'dealate queen', pages: 'page 9'
   create :protonym, name: name, authorship: citation
 end
+
+When("I pick {string} from the protonym selector") do |name|
+  select2 name, from: 'taxon_protonym_id'
+end

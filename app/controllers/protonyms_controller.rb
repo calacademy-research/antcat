@@ -27,6 +27,16 @@ class ProtonymsController < ApplicationController
     redirect_to protonyms_path, notice: "Successfully deleted protonym."
   end
 
+  def autocomplete
+    search_query = params[:qq] || ''
+
+    respond_to do |format|
+      format.json do
+        render json: Autocomplete::AutocompleteProtonyms[search_query]
+      end
+    end
+  end
+
   private
 
     def set_protonym
@@ -40,6 +50,7 @@ class ProtonymsController < ApplicationController
         :locality,
         {
           authorship_attributes: [
+            :id,
             :pages,
             :forms,
             :notes_taxt,
