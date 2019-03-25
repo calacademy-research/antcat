@@ -8,6 +8,6 @@ Feature: Autocompletion (taxon-related)
     Given there is a genus located in "Africa"
 
     When I go to the edit page for "Atta major"
-    And I start filling in "#taxon_protonym_attributes_locality" with "A"
+    And I start filling in ".locality-autocomplete-js-hook" with "A"
     Then I should see the following autocomplete suggestions:
       | Africa |

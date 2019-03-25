@@ -76,7 +76,7 @@
               =protonym_form.label :locality do
                 Locality
                 =tooltip_icon "locality", scope: :taxa
-            %td=protonym_form.text_field :locality
+            %td=protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
 
         %tr
           %td=form.label :notes_taxt, 'Notes'
