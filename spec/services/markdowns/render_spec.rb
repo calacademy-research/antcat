@@ -3,6 +3,8 @@
 require "spec_helper"
 
 describe Markdowns::Render do
+  include TestLinksHelpers
+
   describe "#call" do
     it "formats some basic markdown" do
       lasius_name = create :species_name, name: "Lasius"
@@ -32,9 +34,7 @@ describe Markdowns::Render do
 
       markdown = "%taxon#{lasius.id}"
 
-      expect(described_class[markdown]).to eq <<~HTML
-        <p><a href="/catalog/#{lasius.id}"><i>Lasius</i></a></p>
-      HTML
+      expect(described_class[markdown]).to eq "<p>#{taxon_link lasius}</p>\n"
     end
 
     describe "reference ids" do
@@ -89,7 +89,7 @@ describe Markdowns::Render do
         let(:markdown) { "%journal#{journal.id}" }
 
         it "links the journal" do
-          expected = %(<p><a href="/journals/#{journal.id}"><i>#{journal.name}</i></a></p>\n)
+          expected = %(<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n)
           expect(described_class[markdown]).to eq expected
         end
       end

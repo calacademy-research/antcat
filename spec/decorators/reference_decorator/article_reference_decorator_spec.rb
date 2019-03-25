@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ArticleReferenceDecorator do
-  include ReferencesHelpers
+  include TestLinksHelpers
 
   let(:author_name) { create :author_name, name: "Forel, A." }
   let!(:reference) do

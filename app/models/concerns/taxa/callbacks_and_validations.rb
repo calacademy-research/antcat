@@ -14,7 +14,6 @@ module Taxa::CallbacksAndValidations
     DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::SubspeciesWithoutSpecies,
-    DatabaseScripts::TaxaAboveSpeciesWithBiogeographicRegions,
     DatabaseScripts::TaxaReferencingNonExistingTaxa,
     DatabaseScripts::TaxaWithBothJuniorAndSeniorSynonyms,
     DatabaseScripts::TaxaWithMoreThanOneSeniorSynonym,

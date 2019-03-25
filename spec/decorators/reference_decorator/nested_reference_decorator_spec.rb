@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe NestedReferenceDecorator do
-  include ReferencesHelpers
+  include TestLinksHelpers
 
   let(:nestee_author_name) { create :author_name, name: "Mayr, E." }
   let(:author_name) { create :author_name, name: "Forel, A." }

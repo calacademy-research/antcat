@@ -17,4 +17,5 @@ end
 
 __END__
 topic_areas: [catalog]
+tags: [regression-test]
 issue_description: This taxon has a biogeographic region, but it is not a species or subspecies.

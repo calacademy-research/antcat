@@ -11,7 +11,6 @@ module Markdowns
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include Service
-    include Formatters::ItalicsHelper
 
     TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
     REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
@@ -92,7 +91,7 @@ module Markdowns
         content.gsub!(/%journal(\d+)/) do
           begin
             journal = Journal.find($1)
-            link_to italicize(journal.name), journal_path(journal)
+            link_to journal.name, journal_path(journal)
           rescue
             broken_markdown_link "journal", $1
           end
@@ -155,10 +154,8 @@ module Markdowns
         HTML
       end
 
-      # TODO copy-pasted from `TaxtPresenter`.
       def seach_history_link id
-        " " + link_to("Search history?", versions_path(item_id: id),
-        class: "btn-normal btn-tiny")
+        " " + link_to("Search history?", versions_path(item_id: id), class: "btn-normal btn-tiny")
       end
   end
 end
