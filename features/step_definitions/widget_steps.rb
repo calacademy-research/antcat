@@ -7,10 +7,6 @@ Given("the reference selector returns {int} results per page") do |items_per_pag
 end
 
 # Name field
-When(/I click the allow_blank name field/) do
-  step %(I click "#test_allow_blank_name_field .display_button")
-end
-
 When(/I click the new_or_homonym field/) do
   step %(I click "#test_new_or_homonym_name_field .display_button")
 end

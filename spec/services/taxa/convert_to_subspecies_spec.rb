@@ -71,9 +71,7 @@ describe Taxa::ConvertToSubspecies do
             :type_taxt,
             :headline_notes_taxt,
             :hong,
-            :type_name,
             :genus_species_header_notes_taxt,
-            :type_fossil,
             :unresolved_homonym,
             :current_valid_taxon,
             :ichnotaxon,
@@ -81,7 +79,8 @@ describe Taxa::ConvertToSubspecies do
             :biogeographic_region,
             :primary_type_information,
             :secondary_type_information,
-            :type_notes
+            :type_notes,
+            :type_taxon
           ].each do |attribute|
             expect(new_subspecies.send(attribute)).to eq species.send(attribute)
           end

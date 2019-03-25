@@ -259,13 +259,13 @@ describe Exporters::Antweb::ExportTaxon do
         create :protonym, name: atta_name, authorship: authorship
       end
       let!(:genus) { create :genus, name: atta_name, protonym: protonym, hol_id: 9999 }
-      let!(:species) { create_species 'Atta major', genus: genus }
+      let!(:type_species) { create_species 'Atta major', genus: genus }
       let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
 
       before do
         create :species, :unavailable, genus: genus # For the statistics.
-        genus.update type_name: species.name
-        genus.history_items.create taxt: "Taxon: {tax #{species.id}} Name: {nam #{species.name.id}}"
+        genus.update! type_taxon: type_species
+        genus.history_items.create taxt: "Taxon: {tax #{type_species.id}} Name: {nam #{type_species.name.id}}"
         genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
       end
 
@@ -299,8 +299,8 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(<span>Type-species: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a>.</span> ) +
-              %( ) +
+              %(<span>Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.</span>) +
+              %(  ) +
               # links
               %(<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
               %( ) +
@@ -314,7 +314,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(<p><b>Taxonomic history</b></p>) +
             %(<div><div>) +
               %(<table><tr><td>) +
-                %(Taxon: <a href="http://www.antcat.org/catalog/#{species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
+                %(Taxon: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a> Name: <i>Atta major</i>.) +
               %(</td></tr></table>) +
             %(</div></div>) +
 

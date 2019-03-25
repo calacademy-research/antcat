@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe TaxonDecorator::TaxonStatus do
+  include TestLinksHelpers
+
   describe "#call" do
     it "is html_safe" do
       expect(create(:family).decorate.taxon_status).to be_html_safe
@@ -28,7 +30,7 @@ describe TaxonDecorator::TaxonStatus do
 
         specify do
           expect(taxon.decorate.taxon_status).
-            to include %(homonym replaced by <a href="/catalog/#{homonym_replaced_by.id}">Formicidae</a>)
+            to include %(homonym replaced by #{taxon_link homonym_replaced_by})
         end
       end
     end
@@ -55,7 +57,7 @@ describe TaxonDecorator::TaxonStatus do
 
         specify do
           expect(taxon.decorate.taxon_status).
-            to include %(unresolved junior homonym, junior synonym of current valid taxon <a href="/catalog/#{senior.id}"><i>#{senior.name_cache}</i></a>)
+            to include %(unresolved junior homonym, junior synonym of current valid taxon #{taxon_link senior})
         end
       end
     end
@@ -84,7 +86,7 @@ describe TaxonDecorator::TaxonStatus do
           create :synonym, junior_synonym: junior, senior_synonym: senior
 
           expect(junior.decorate.taxon_status).
-            to include %(junior synonym of current valid taxon <a href="/catalog/#{senior.id}"><i>#{senior.name_cache}</i></a>)
+            to include %(junior synonym of current valid taxon #{taxon_link senior})
         end
       end
 
@@ -103,7 +105,7 @@ describe TaxonDecorator::TaxonStatus do
 
           specify do
             expect(junior.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior.id}"><i>#{other_senior.name_cache}</i></a>)
+              to include %(junior synonym of current valid taxon #{taxon_link other_senior})
           end
         end
 
@@ -121,7 +123,7 @@ describe TaxonDecorator::TaxonStatus do
 
           it specify do
             expect(junior.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon <a href="/catalog/#{other_senior.id}"><i>#{other_senior.name_cache}</i></a>)
+              to include %(junior synonym of current valid taxon #{taxon_link other_senior})
           end
         end
       end

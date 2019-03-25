@@ -32,6 +32,7 @@ Feature: Markdown autocompletion
     When I am on a page with a textarea with markdown preview and autocompletion
     And I fill in "issue_description" with "{rfish"
     And I click the suggestion containing "Fisher's Ants"
+    And WAIT
 
     When I am on a page with a textarea with markdown preview and autocompletion
     Then I should not see "Fisher's Ants"

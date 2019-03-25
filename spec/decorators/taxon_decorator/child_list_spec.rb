@@ -1,6 +1,8 @@
 require "spec_helper"
 
 describe TaxonDecorator::ChildList do
+  include TestLinksHelpers
+
   let(:subfamily) { create :subfamily }
 
   describe "#child_list" do
@@ -9,7 +11,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, subfamily.tribes, true)).
-          to eq %{<div><span class="caption">Tribe (extant) of <span>#{subfamily.name_cache}</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>}
+          to eq %{<div><span class="caption">Tribe (extant) of <span>#{subfamily.name_cache}</span></span>: #{taxon_link(taxon)}.</div>}
       end
     end
 
@@ -18,7 +20,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).
-          to eq %{<div><span class="caption">Genus (extant) of <span>#{subfamily.name_cache}</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>}
+          to eq %{<div><span class="caption">Genus (extant) of <span>#{subfamily.name_cache}</span></span>: #{taxon_link(taxon)}.</div>}
       end
     end
 
@@ -27,7 +29,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, false)).
-          to eq %(<div><span class="caption">Genus of <span>#{subfamily.name_cache}</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>)
+          to eq %(<div><span class="caption">Genus of <span>#{subfamily.name_cache}</span></span>: #{taxon_link(taxon)}.</div>)
       end
     end
 
@@ -36,7 +38,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, [taxon], false, incertae_sedis_in: 'subfamily')).
-          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>#{subfamily.name_cache}</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>)
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>#{subfamily.name_cache}</span></span>: #{taxon_link(taxon)}.</div>)
       end
     end
 
@@ -46,7 +48,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(family).send(:child_list, [taxon], false)).
-          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Formicidae</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>)
+          to eq %(<div><span class="caption">Genus <i>incertae sedis</i> in <span>Formicidae</span></span>: #{taxon_link(taxon)}.</div>)
       end
     end
   end
@@ -56,7 +58,7 @@ describe TaxonDecorator::ChildList do
 
     it "formats a list of collective group names" do
       expect(described_class.new(subfamily).send(:collective_group_name_child_list)).
-        to eq %(<div><span class="caption">Collective group name in <span>#{subfamily.name_cache}</span></span>: <a href="/catalog/#{taxon.id}">#{taxon.name.name_html}</a>.</div>)
+        to eq %(<div><span class="caption">Collective group name in <span>#{subfamily.name_cache}</span></span>: #{taxon_link(taxon)}.</div>)
     end
   end
 

@@ -3,17 +3,12 @@ class NameFieldsController < NamePickersController
     data = {}
 
     name_string = params[:name_string].strip
-    allow_blank = params[:allow_blank].present? # TODO: Remove after migrating `Taxon.type_name` to `Taxon.type_taxon`.
     new_or_homonym = params[:new_or_homonym].present?
 
     confirming_adding_name = params[:confirm_add_name].present?
 
     if confirming_adding_name
       add_name name_string, data
-
-    elsif name_string.empty? and allow_blank
-      clear_name data
-
     elsif new_or_homonym
       name = Name.find_by_name name_string
       if name
@@ -25,7 +20,6 @@ class NameFieldsController < NamePickersController
       else
         add_name name_string, data
       end
-
     else
       name = Name.find_by_name name_string
       if name
@@ -45,11 +39,6 @@ class NameFieldsController < NamePickersController
       name = Names::CreateNameFromString[name_string]
       data[:success] = true
       data[:id] = name.id
-    end
-
-    def clear_name data
-      data[:success] = true
-      data[:id] = nil
     end
 
     def tell_about_existing _name, data

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181230032527) do
+ActiveRecord::Schema.define(version: 20190108035206) do
 
   create_table "activities", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "trackable_id"
@@ -380,6 +380,7 @@ ActiveRecord::Schema.define(version: 20181230032527) do
     t.text "primary_type_information"
     t.text "secondary_type_information"
     t.text "type_notes"
+    t.integer "type_taxon_id"
     t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"
@@ -395,6 +396,7 @@ ActiveRecord::Schema.define(version: 20181230032527) do
     t.index ["tribe_id"], name: "taxa_tribe_id_idx"
     t.index ["type"], name: "taxa_type_idx"
     t.index ["type_name_id"], name: "index_taxa_on_type_name_id"
+    t.index ["type_taxon_id"], name: "fk_taxa__type_taxon_id__taxa__id"
   end
 
   create_table "taxon_history_items", id: :integer, force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" do |t|
@@ -504,4 +506,5 @@ ActiveRecord::Schema.define(version: 20181230032527) do
   add_foreign_key "taxa", "taxa", column: "subfamily_id", name: "fk_taxa__subfamily_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
 end

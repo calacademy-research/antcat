@@ -93,14 +93,14 @@ When("I set the protonym name to {string}") do |name|
 end
 
 # type name field
-When("I click the type name field") do
-  find('#type_name_field .display_button').click
+When("I set the type name to {string}") do |name|
+  select2 name, from: 'taxon_type_taxon_id'
 end
 
-When("I set the type name to {string}") do |name|
-  within '#type_name_field' do
-    step %(I fill in "name_string" with "#{name}")
-  end
+Then("the type name field should contain {string}") do |name|
+  taxon = Taxon.find_by(name_cache: name)
+  element = find '#taxon_type_taxon_id'
+  expect(element.value).to eq taxon.id.to_s
 end
 
 # convert species to subspecies

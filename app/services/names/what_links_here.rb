@@ -18,19 +18,12 @@ module Names
 
       def references_in_fields
         references_to_taxon_name.
-          concat(references_to_taxon_type_name).
           concat(references_to_protonym_name)
       end
 
       def references_to_taxon_name
         Taxon.where(name: name).pluck(:id).map do |taxon_id|
           table_ref 'taxa', :name_id, taxon_id
-        end
-      end
-
-      def references_to_taxon_type_name
-        Taxon.where(type_name: name).pluck(:id).map do |taxon_id|
-          table_ref 'taxa', :type_name_id, taxon_id
         end
       end
 

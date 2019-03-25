@@ -5,7 +5,6 @@ class AntCat.NameField extends AntCat.Panel
     @set_help()
 
   create_form: ($element, form_options) =>
-    form_options.allow_blank = @options.allow_blank
     form_options.default_name_string = @get_default_name_string()
     new AntCat.NameFieldForm $element, form_options
 
@@ -22,9 +21,6 @@ class AntCat.NameField extends AntCat.Panel
     text =
       if @deciding_whether_to_add_name
         "Click Add this name, or Cancel"
-      else if @options.allow_blank
-        "Type the name, or type characters in the name then choose a name
-        from the drop-down list, or type a new name, or clear this name."
       else if @options.new_or_homonym
         "Type the name, or type characters in the name then choose a name
         from the drop-down list, or type a new name, or choose a homonym."
@@ -36,7 +32,6 @@ class AntCat.NameField extends AntCat.Panel
 
   construct_parameters: =>
     action = "?field=true"
-    action += "&allow_blank=true" if @options.allow_blank
     action += "&new_or_homonym=true" if @options.new_or_homonym
     action += "&confirm_add_name=true" if @deciding_whether_to_add_name
     action
@@ -105,7 +100,7 @@ class AntCat.NameFieldForm extends AntCat.NestedForm
     @element.data 'action', @element.data('action') + parameters
 
   submit: =>
-    return false if @textbox.val().length == 0 and not @options.allow_blank
+    return false if @textbox.val().length == 0
     @options.before_submit() if @options.before_submit
     super
     false

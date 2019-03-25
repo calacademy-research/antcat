@@ -55,8 +55,6 @@ module HtmlSelectorsHelpers
     # Test pages.
     when /the name field/
       '#test_name_field .display'
-    when /the allow_blank name field/
-      '#test_allow_blank_name_field .display'
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
 
