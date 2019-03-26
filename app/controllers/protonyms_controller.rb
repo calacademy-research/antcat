@@ -48,7 +48,9 @@ class ProtonymsController < ApplicationController
       if params[:protonym][:name_id].present?
         params[:protonym].delete :name_attributes
       else
-        params[:protonym][:name_id] = params[:protonym][:name_attributes][:id]
+        if params[:protonym][:name_attributes].present?
+          params[:protonym][:name_id] = params[:protonym][:name_attributes][:id]
+        end
       end
 
       params.require(:protonym).permit(

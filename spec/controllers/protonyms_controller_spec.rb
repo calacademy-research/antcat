@@ -51,6 +51,20 @@ describe ProtonymsController do
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
+
+    it 'updates the authorship in place without creating a new record' do
+      new_pages = '99'
+      protonym_params = {
+        authorship_attributes: {
+          pages: new_pages
+        }
+      }
+
+      expect(protonym.authorship.pages).to_not eq new_pages
+      expect { post(:update, params: { id: protonym.id, protonym: protonym_params }) }.
+        to_not change { protonym.reload.authorship.id }
+      expect(protonym.authorship.pages).to_not eq new_pages
+    end
   end
 
   describe "DELETE destroy" do
