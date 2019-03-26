@@ -19,6 +19,7 @@
         %td=link_to institution.abbreviation, institution
         %td=link_to institution.name, institution
         %td.no-wrap
-          =link_to 'Edit', edit_institution_path(institution), class: 'btn-normal btn-tiny'
+          -if user_is_editor?
+            =link_to 'Edit', edit_institution_path(institution), class: 'btn-normal btn-tiny'
           -if user_is_superadmin?
             =link_to append_superadmin_icon("Delete"), institution, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-warning btn-tiny'

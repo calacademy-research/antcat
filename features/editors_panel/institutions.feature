@@ -1,8 +1,7 @@
 Feature: Institutions
-  Background:
+  Scenario: Adding an institution
     Given I am logged in as a helper editor
 
-  Scenario: Adding an institution
     When I go to the Editor's Panel
     And I follow "Edit institutions"
     Then I should not see "CASC"
@@ -19,7 +18,8 @@ Feature: Institutions
     And I should see "California Academy of Sciences"
 
   Scenario: Editing an institution
-    Given there is an institution "CASC" ("California Academy of Sciences")
+    Given I am logged in as a catalog editor
+    And there is an institution "CASC" ("California Academy of Sciences")
 
     When I go to the institutions page
     And I follow "CASC"
@@ -34,7 +34,8 @@ Feature: Institutions
     And I should see "Sweden Academy of Sciences"
 
   Scenario: Deleting an institution
-    Given there is an institution "CASC" ("California Academy of Sciences")
+    Given I am logged in as a catalog editor
+    And there is an institution "CASC" ("California Academy of Sciences")
 
     When I go to the institutions page
     Then I should not see "Delete"
