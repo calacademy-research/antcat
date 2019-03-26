@@ -10,5 +10,8 @@
   -@users.each do |user|
     %tr
       %td=user.decorate.user_page_link
-      %td=user.decorate.user_badge
+      %td
+        =user.decorate.user_badge
+        -if user_is_superadmin? && user.superadmin?
+          %span.warning-label.rounded-badge superadmin
       %td=user.email
