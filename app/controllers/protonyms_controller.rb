@@ -44,10 +44,18 @@ class ProtonymsController < ApplicationController
     end
 
     def protonym_params
+      # TODO: Same hack as in `TaxonForm`.
+      if params[:protonym][:name_id].present?
+        params[:protonym].delete :name_attributes
+      else
+        params[:protonym][:name_id] = params[:protonym][:name_attributes][:id]
+      end
+
       params.require(:protonym).permit(
         :fossil,
         :sic,
         :locality,
+        :name_id,
         {
           authorship_attributes: [
             :id,

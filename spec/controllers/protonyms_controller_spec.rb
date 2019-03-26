@@ -27,6 +27,9 @@ describe ProtonymsController do
         fossil: false,
         sic: false,
         locality: 'Africa',
+        name_attributes: {
+          id: create(:genus_name).id
+        },
         authorship_attributes: {
           pages: '99',
           forms: 'worker',
