@@ -1,7 +1,3 @@
-Given("there is a subspecies {string}") do |name|
-  create_subspecies name
-end
-
 Given("there is a subspecies {string} which is a subspecies of {string}") do |subspecies_name, species_name|
   create_subspecies subspecies_name, species: Species.find_by_name(species_name)
 end
