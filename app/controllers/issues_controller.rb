@@ -21,6 +21,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new issue_params
     @issue.adder = current_user
+    @issue.create_activity :create
 
     if @issue.save
       redirect_to @issue, notice: "Successfully created issue."
@@ -31,6 +32,7 @@ class IssuesController < ApplicationController
 
   def update
     if @issue.update issue_params
+      @issue.create_activity :update
       redirect_to @issue, notice: "Successfully updated issue."
     else
       render :edit
@@ -39,12 +41,14 @@ class IssuesController < ApplicationController
 
   def close
     @issue.close! current_user
+    @issue.create_activity :close_issue
 
     redirect_to @issue, notice: "Successfully closed issue."
   end
 
   def reopen
     @issue.reopen!
+    @issue.create_activity :reopen_issue
 
     redirect_to @issue, notice: "Successfully re-opened issue."
   end

@@ -16,20 +16,18 @@ class Issue < ApplicationRecord
   acts_as_commentable
   enable_user_notifications_for :description
   has_paper_trail
-  tracked on: :all, parameters: proc { { title: title } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { title: title } }
 
   def closed?
     !open?
   end
 
   def close! user
-    Feed.without_tracking { update! open: false, closer: user }
-    create_activity :close_issue
+    update! open: false, closer: user
   end
 
   def reopen!
-    Feed.without_tracking { update! open: true, closer: nil }
-    create_activity :reopen_issue
+    update! open: true, closer: nil
   end
 
   # Read-only alias for `Comment#notify_commentable_creator`.
