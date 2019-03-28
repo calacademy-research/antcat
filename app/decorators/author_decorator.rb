@@ -2,28 +2,17 @@ class AuthorDecorator < Draper::Decorator
   delegate :references, :described_taxa
 
   def published_between
-    first_year = references.minimum(:year)
-    most_recent_year = references.maximum(:year)
+    first_year, most_recent_year = references.pluck('MIN(references.year), MAX(references.year)').flatten
 
     return first_year if first_year == most_recent_year
     "#{first_year}&ndash;#{most_recent_year}".html_safe
   end
 
   def taxon_descriptions_between
-    return unless described_taxa.exists?
-
-    taxa = described_taxa.order("references.year, references.id")
-
-    first_year = description_year taxa.first
-    most_recent_year = description_year taxa.last
+    first_year, most_recent_year = described_taxa.pluck('MIN(references.year), MAX(references.year)').flatten
+    return unless first_year || most_recent_year
 
     return first_year if first_year == most_recent_year
     "#{first_year}&ndash;#{most_recent_year}".html_safe
   end
-
-  private
-
-    def description_year taxon
-      taxon.authorship_reference.year
-    end
 end
