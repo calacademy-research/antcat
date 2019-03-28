@@ -18,7 +18,6 @@ class Activity < ApplicationRecord
     close_feedback
     close_issue
     convert_species_to_subspecies
-    create_combination
     create_obsolete_combination
     custom
     elevate_subspecies_to_species
@@ -31,7 +30,6 @@ class Activity < ApplicationRecord
     reopen_issue
     reorder_taxon_history_items
     replace_missing_reference
-    return_combination_to_previous_usage
     restart_reviewing
     start_reviewing
     undo_change

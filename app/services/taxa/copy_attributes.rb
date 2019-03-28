@@ -1,5 +1,3 @@
-# See also Taxa::AttributesForNewUsage`.
-
 module Taxa
   class CopyAttributes
     include Service

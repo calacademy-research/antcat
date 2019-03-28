@@ -19,17 +19,6 @@ module TaxonHelper
     taxon.genus.name.name
   end
 
-  def taxon_name_description taxon
-    return unless taxon.new_record?
-
-    if taxon.unresolved_homonym?
-      "new secondary junior homonym of #{taxon.parent.name_html_cache}".html_safe
-    elsif params[:collision_resolution].present?
-      target_taxon = Taxon.find_by(id: params[:collision_resolution])
-      "new merge back into original #{target_taxon.name_html_cache}".html_safe
-    end
-  end
-
   def taxon_change_history taxon
     return if taxon.old?
     change = taxon.last_change
