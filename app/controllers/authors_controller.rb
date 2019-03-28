@@ -6,8 +6,9 @@ class AuthorsController < ApplicationController
   end
 
   def show
-    @references = @author.references.paginate(page: params[:references_page])
+    @references = @author.references.includes_document.paginate(page: params[:references_page])
     @taxa = @author.described_taxa.order("references.year, references.id").
+     includes(:name, protonym: { authorship: :reference }).
       paginate(page: params[:taxa_page])
   end
 
