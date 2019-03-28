@@ -41,7 +41,7 @@ module Taxa::CallbacksAndValidations
     before_save { save_children if save_initiator }
 
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
-      :genus_species_header_notes_taxt, :biogeographic_region], replace_newlines: true
+      :biogeographic_region], replace_newlines: true
 
     strip_attributes only: [:primary_type_information, :secondary_type_information, :type_notes]
 

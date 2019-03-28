@@ -54,7 +54,7 @@ describe Names::WhatLinksHere do
 
   def taxt_fields
     [
-      [Taxon, [:type_taxt, :headline_notes_taxt, :genus_species_header_notes_taxt]],
+      [Taxon, [:type_taxt, :headline_notes_taxt]],
       [Citation, [:notes_taxt]],
       [ReferenceSection, [:title_taxt, :subtitle_taxt, :references_taxt]],
       [TaxonHistoryItem, [:taxt]]
