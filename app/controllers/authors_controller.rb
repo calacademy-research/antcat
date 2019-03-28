@@ -2,12 +2,15 @@ class AuthorsController < ApplicationController
   before_action :set_author, only: [:show]
 
   def index
-    @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60)
+    @authors = Author.sorted_by_name.
+      paginate(page: params[:page], per_page: 60).
+      preload(:names)
   end
 
   def show
-    @references = @author.references.paginate(page: params[:references_page])
+    @references = @author.references.includes_document.paginate(page: params[:references_page])
     @taxa = @author.described_taxa.order("references.year, references.id").
+     includes(:name, protonym: { authorship: :reference }).
       paginate(page: params[:taxa_page])
   end
 
