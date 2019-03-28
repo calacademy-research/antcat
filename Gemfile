@@ -17,10 +17,7 @@ gem 'uglifier'
 
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
-gem 'aws-sdk'#, '< 2.0'
-# Version locked because of bug when fetching s3 hosted PDF:
-#   `uninitialized constant Paperclip::Storage::S3::AWS`
-#   Test with: http://antcat.org/documents/6308/ward_2014_annu_rev_ecol_evol_syst_phylogeny_and_evolution_of_ants.pdf
+gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'colorize'
 gem 'data_migrate'
 gem 'devise'
