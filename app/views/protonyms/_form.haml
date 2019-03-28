@@ -70,4 +70,5 @@
     %tr
       %td
       %td
+        =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
         =f.button "Save", type: :submit, class: "btn-saves"
