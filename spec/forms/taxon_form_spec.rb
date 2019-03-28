@@ -6,6 +6,28 @@ describe TaxonForm do
   end
 
   describe "#save" do
+    let(:taxon_params) do
+      HashWithIndifferentAccess.new(
+        name_attributes: {},
+        status: Status::VALID,
+        protonym_attributes: {
+          name_attributes:  {},
+          authorship_attributes: {
+            reference_id: create(:article_reference).id
+          }
+        }
+      )
+    end
+    let(:family_params) do
+      type_species = create_species 'Betta major', subfamily: nil
+
+      params = taxon_params
+      params[:name_attributes][:id] = create(:family_name).id
+      params[:protonym_attributes][:name_attributes][:id] = create(:genus_name).id
+      params[:type_taxon_id] = type_species.id
+      params
+    end
+
     describe "creating a changes" do
       context "when a taxon is added" do
         let!(:taxon) { build :family }
@@ -30,27 +52,4 @@ describe TaxonForm do
       end
     end
   end
-end
-
-def taxon_params
-  HashWithIndifferentAccess.new(
-    name_attributes: {},
-    status: Status::VALID,
-    protonym_attributes: {
-      name_attributes:  {},
-      authorship_attributes: {
-        reference_id: create(:article_reference).id
-      }
-    }
-  )
-end
-
-def family_params
-  type_species = create_species 'Betta major', subfamily: nil
-
-  params = taxon_params
-  params[:name_attributes][:id] = create(:family_name).id
-  params[:protonym_attributes][:name_attributes][:id] = create(:genus_name).id
-  params[:type_taxon_id] = type_species.id
-  params
 end

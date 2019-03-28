@@ -18,11 +18,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :protonym
+        t.header :id, :protonym, :orphaned
         t.rows do |protonym|
           [
             protonym.id,
-            link_to(protonym.decorate.format_name, protonym_path(protonym))
+            link_to(protonym.decorate.format_name, protonym_path(protonym)),
+            protonym.taxa.exists? ? "" : 'Yes'
           ]
         end
       end
@@ -33,5 +34,8 @@ end
 __END__
 description: >
   Protonym records with the same name (name value) and reference (reference ID).
+
+  Orphaned protonyms can be deleted from the protonym's page.
+
 tags: [new!]
 topic_areas: [catalog]

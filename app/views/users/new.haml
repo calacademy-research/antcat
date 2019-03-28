@@ -1,10 +1,14 @@
 -@title = "New User"
 -breadcrumb :new_user
 
-.callout.medium-6.columns.end
-  This form is for allowing superadmins to create users.
+.row
+  .medium-8.columns
+    =render "form", user: @user
+  .medium-4.columns
+    .callout
+      %h6 Help
+      %p
+        This form is for allowing superadmins to create users.
 
-  People can create accounts themselves here:
-  =link_to new_user_registration_url, new_user_registration_path
-
-=render "form", user: @user
+        People can create accounts themselves here:
+        =link_to new_user_registration_url, new_user_registration_path

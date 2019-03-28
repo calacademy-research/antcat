@@ -11,7 +11,6 @@ class Taxt
       TaxonHistoryItem => ['taxt'],
       Taxon            => ['headline_notes_taxt',
                            'type_taxt',
-                           'genus_species_header_notes_taxt',
                            'primary_type_information',
                            'secondary_type_information',
                            'type_notes'],

@@ -4,12 +4,66 @@ describe ProtonymsController do
   describe "forbidden actions" do
     context "when not signed in" do
       specify { expect(delete(:destroy, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
     end
 
     context "when signed in as a user" do
       before { sign_in create(:user) }
 
+      specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
+    end
+  end
+
+  describe "POST update" do
+    let!(:protonym) { create :protonym }
+
+    before { sign_in create(:user, :helper) }
+
+    it 'updates the protonym' do
+      protonym_params = {
+        fossil: false,
+        sic: false,
+        locality: 'Africa',
+        name_attributes: {
+          id: create(:genus_name).id
+        },
+        authorship_attributes: {
+          pages: '99',
+          forms: 'worker',
+          notes_taxt: 'see Lasius',
+          reference_id: create(:article_reference).id
+        }
+      }
+
+      post(:update, params: { id: protonym.id, protonym: protonym_params })
+
+      protonym.reload
+      expect(protonym.fossil).to eq protonym_params[:fossil]
+      expect(protonym.sic).to eq protonym_params[:sic]
+      expect(protonym.locality).to eq protonym_params[:locality]
+
+      authorship = protonym.authorship
+      expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
+      expect(authorship.forms).to eq protonym_params[:authorship_attributes][:forms]
+      expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
+      expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
+    end
+
+    it 'updates the authorship in place without creating a new record' do
+      new_pages = '99'
+      protonym_params = {
+        authorship_attributes: {
+          pages: new_pages
+        }
+      }
+
+      expect(protonym.authorship.pages).to_not eq new_pages
+      expect { post(:update, params: { id: protonym.id, protonym: protonym_params }) }.
+        to_not change { protonym.reload.authorship.id }
+      expect(protonym.authorship.pages).to_not eq new_pages
     end
   end
 

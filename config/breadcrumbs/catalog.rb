@@ -43,7 +43,12 @@ crumb :protonyms do
 end
 
   crumb :protonym do |protonym|
-    link protonym.decorate.format_name
+    link protonym.decorate.format_name, protonym_path(protonym)
     parent :protonyms
   end
+
+    crumb :edit_protonym do |protonym|
+      link 'Edit', edit_protonym_path(protonym)
+      parent :protonym, protonym
+    end
 # rubocop:enable Layout/IndentationConsistency

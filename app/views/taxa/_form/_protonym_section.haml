@@ -1,83 +1,76 @@
 .protonym-section.callout
   %h5.callout-header
     Protonym:
-    -if taxon.new_record?
-      New protonym
-    -else
+    -if taxon.persisted?
       =link_to taxon.protonym.decorate.format_name, taxon.protonym
+    -else
+      Select existing or create new
 
   -if taxon.persisted?
-    %p
-      -if taxon.protonym.taxa.count > 1
-        =antcat_icon 'warning-icon'
-        Note: This protonym is shared with
-        =succeed "." do
-          =link_to 'other taxa', taxon.protonym
-    %p
-      =antcat_icon 'warning-icon'
-      Changing the name does not change the protonym of this taxon -- it updates
-      the name of the protonym itself (the name which we show on catalog pages).
-      Any changes made here will be reflected in all taxa that share this protonym.
-
-  %p
-    =antcat_icon 'warning-icon'
-    It is not possible to attach a new taxon to an existing protonym. Neither is it
-    possible to change the protonym of an existing taxon.
-
-  %hr
-
-  =form.fields_for :protonym do |protonym_form|
     %table.unstriped
       %tr
-        =protonym_form.fields_for :name do |name_form|
-          -if name_form.object.new_record?
-            =hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
-          %td
-            =name_form.label :name do
-              Name
-              =tooltip_icon "protonym", scope: :taxa
-          %td
-            #protonym_name_field
-              =render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
+        %td=form.label :protonym
+        %td=form.protonym_select :protonym
+  -else
+    %h5.callout-header Existing protonym (leave blank if you are creating a new protonym)
+    %table.unstriped
       %tr
-        %td
-        %td
-          =protonym_form.check_box :fossil
-          =protonym_form.label :fossil
+        %td=form.label :protonym
+        %td=form.protonym_select :protonym
 
-          =protonym_form.check_box :sic
-          =protonym_form.label :sic
-
-      =protonym_form.fields_for :authorship do |authorship_form|
+    %h5.callout-header New protonym (this will be ignored if an existing protonym is set)
+    =form.fields_for :protonym do |protonym_form|
+      %table.unstriped
+        %tr
+          =protonym_form.fields_for :name do |name_form|
+            -if name_form.object.new_record?
+              =hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
+            %td
+              =name_form.label :name do
+                Name
+                =tooltip_icon "protonym", scope: :taxa
+            %td
+              #protonym_name_field
+                =render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
         %tr
           %td
-            =authorship_form.label :reference do
-              Authorship
-              =tooltip_icon "authorship", scope: :taxa
-          %td=authorship_form.reference_select :reference
-
-        %tr
           %td
-            =authorship_form.label :pages do
-              Pages
-              =tooltip_icon "pages", scope: :taxa
-          %td=authorship_form.text_field :pages
+            =protonym_form.check_box :fossil
+            =protonym_form.label :fossil
 
-        -unless taxon.is_a? Tribe
+            =protonym_form.check_box :sic
+            =protonym_form.label :sic
+
+        =protonym_form.fields_for :authorship do |authorship_form|
           %tr
             %td
-              =authorship_form.label :forms do
-                Forms
-                =tooltip_icon "forms", scope: :taxa
-            %td=authorship_form.text_field :forms
+              =authorship_form.label :reference do
+                Authorship
+                =tooltip_icon "authorship", scope: :taxa
+            %td=authorship_form.reference_select :reference
 
           %tr
             %td
-              =protonym_form.label :locality do
-                Locality
-                =tooltip_icon "locality", scope: :taxa
-            %td=protonym_form.text_field :locality
+              =authorship_form.label :pages do
+                Pages
+                =tooltip_icon "pages", scope: :taxa
+            %td=authorship_form.text_field :pages
 
-        %tr
-          %td=form.label :notes_taxt, 'Notes'
-          %td=render 'shared/taxt_editor/template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt
+          -unless taxon.is_a? Tribe
+            %tr
+              %td
+                =authorship_form.label :forms do
+                  Forms
+                  =tooltip_icon "forms", scope: :taxa
+              %td=authorship_form.text_field :forms
+
+            %tr
+              %td
+                =protonym_form.label :locality do
+                  Locality
+                  =tooltip_icon "locality", scope: :taxa
+              %td=protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+
+          %tr
+            %td=form.label :notes_taxt, 'Notes'
+            %td=render 'shared/taxt_editor/template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt

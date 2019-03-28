@@ -14,7 +14,7 @@ $ ->
     highlight: true
     minLength: 1
 
-  $('#taxon_protonym_attributes_locality').typeahead options,
+  $('.locality-autocomplete-js-hook').typeahead options,
     name: 'localities'
     source: localities
     templates:

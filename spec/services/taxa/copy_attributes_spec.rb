@@ -14,7 +14,6 @@ describe Taxa::CopyAttributes do
         "type_taxt" => taxon.type_taxt,
         "headline_notes_taxt" => taxon.headline_notes_taxt,
         "hong" => taxon.hong,
-        "genus_species_header_notes_taxt" => taxon.genus_species_header_notes_taxt,
         "unresolved_homonym" => taxon.unresolved_homonym,
         "current_valid_taxon_id" => taxon.current_valid_taxon_id,
         "ichnotaxon" => taxon.ichnotaxon,

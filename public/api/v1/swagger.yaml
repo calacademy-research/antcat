@@ -716,8 +716,6 @@ definitions:
             type: string
           type_taxon_id:
             type: integer
-          genus_species_header_notes_taxt:
-            type: string
           name_cache:
             type: string
             description: de-normalized cache of the name object

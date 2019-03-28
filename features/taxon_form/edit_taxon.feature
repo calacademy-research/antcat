@@ -10,22 +10,19 @@ Feature: Editing a taxon
     And I follow "Cancel"
     Then I should not see "incertae sedis" in the header
 
-  @search @javascript
+  @javascript
   Scenario: Changing the authorship
-    Given this reference exists
-      | author | citation   | title | citation_year |
-      | Fisher | Psyche 3:3 | Ants  | 2004          |
-    And there is a genus "Eciton"
+    Given there is a genus "Eciton"
+    And there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
+
+    When I go to the catalog page for "Eciton"
+    Then I should not see "Formica"
 
     When I go to the edit page for "Eciton"
-    And I set the authorship to the first search results of "Fisher (2004)"
-    Then the authorship should contain the reference "Fisher, 2004"
-
-    When I fill in the authorship notes with "Authorship notes"
-    And I fill in "taxon_type_taxt" with "Notes"
+    And I pick "Formica" from the protonym selector
     And I press "Save"
-    Then I should see "Fisher, 2004"
-    And I should see "Authorship notes" in the headline
+    Then I should see "Formica" in the headline
+    And I should see "page 9 (dealate queen)" in the headline
 
   Scenario: Changing incertae sedis
     Given there is a genus "Atta" that is incertae sedis in the subfamily

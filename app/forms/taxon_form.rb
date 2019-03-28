@@ -26,7 +26,12 @@ class TaxonForm
         subspecies_without_species_special_case
 
         params[:name_id] = params[:name_attributes][:id]
-        params[:protonym_attributes][:name_id] = params[:protonym_attributes][:name_attributes][:id]
+
+        if params[:protonym_id].present?
+          params.delete :protonym_attributes
+        else
+          params[:protonym_attributes][:name_id] = params[:protonym_attributes][:name_attributes][:id]
+        end
 
         taxon.attributes = params
 

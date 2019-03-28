@@ -1,3 +1,5 @@
+# To run in console: References::Cache::InvalidateAll[]
+
 # rubocop:disable Rails/Output
 module References
   module Cache

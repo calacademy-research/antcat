@@ -8,9 +8,11 @@ Feature: Feed (issues)
       And I follow "New"
       And I fill in "issue_title" with "Valid?"
       And I fill in "issue_description" with "Ids #999 and #777"
+      And I fill in "edit_summary" with "added question"
       And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald added the issue Valid?" and no other feed items
+    And I should see "added question"
 
   Scenario: Edited issue
     Given there is an open issue for the feed
@@ -19,9 +21,11 @@ Feature: Feed (issues)
       And I follow "Valid?"
       And I follow "Edit"
       And I fill in "issue_description" with "Are these valid?"
+      And I fill in "edit_summary" with "added info"
       And I press "Save"
     And I go to the activity feed
     Then I should see "Archibald edited the issue Valid?" and no other feed items
+    And I should see "added info"
 
   Scenario: Closed an issue
     Given there is an open issue for the feed

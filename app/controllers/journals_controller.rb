@@ -26,6 +26,7 @@ class JournalsController < ApplicationController
   def create
     @journal = Journal.new journal_params
     if @journal.save
+      @journal.create_activity :create
       redirect_to @journal, notice: "Successfully created journal."
     else
       render :new
@@ -34,6 +35,7 @@ class JournalsController < ApplicationController
 
   def update
     if @journal.update journal_params
+      @journal.create_activity :update
       redirect_to @journal, notice: "Successfully updated journal."
     else
       render :edit
@@ -42,6 +44,7 @@ class JournalsController < ApplicationController
 
   def destroy
     if @journal.destroy
+      @journal.create_activity :destroy
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
       redirect_to @journal, alert: @journal.errors.full_messages.to_sentence

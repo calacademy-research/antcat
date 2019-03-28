@@ -1,3 +1,7 @@
+# For finding slow and unused steps:
+#   cucumber -f usage
+#   cucumber -f stepdefs
+
 if ENV["COVERAGE"]
   require 'simplecov'
 

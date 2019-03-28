@@ -34,6 +34,9 @@ module NavigationHelpers
       taxon = Taxon.find_by_name $1
       "/taxa/#{taxon.id}/convert_to_subspecies/new"
 
+    when /^the protonyms page$/
+      protonyms_path
+
     # References, authors, etc
     when /^the references page$/
       references_path
@@ -119,11 +122,7 @@ module NavigationHelpers
     when /^the users page$/
       '/users'
 
-    # Widget test pages
-    when /^the name field test page for a name$/
-      "/widget_tests/name_field_test?id=#{Name.first.id}"
-    when /^the name field test page$/
-      '/widget_tests/name_field_test'
+    # Test pages
     when /^the tooltips test page$/
       '/widget_tests/tooltips_test'
 

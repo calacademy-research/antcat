@@ -10,8 +10,7 @@ describe References::WhatLinksHere do
       taxon = create :genus,
         protonym: protonym,
         type_taxt: "{ref #{reference.id}}",
-        headline_notes_taxt: "{ref #{reference.id}}",
-        genus_species_header_notes_taxt: "{ref #{reference.id}}"
+        headline_notes_taxt: "{ref #{reference.id}}"
       history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
       reference_section = create :reference_section,
         title_taxt: "{ref #{reference.id}}",
@@ -23,7 +22,6 @@ describe References::WhatLinksHere do
       expect(results).to match_array [
         { table: 'taxa',                id: taxon.id,             field: :type_taxt },
         { table: 'taxa',                id: taxon.id,             field: :headline_notes_taxt },
-        { table: 'taxa',                id: taxon.id,             field: :genus_species_header_notes_taxt },
         { table: 'citations',           id: citation.id,          field: :notes_taxt },
         { table: 'citations',           id: citation.id,          field: :reference_id },
         { table: 'reference_sections',  id: reference_section.id, field: :title_taxt },

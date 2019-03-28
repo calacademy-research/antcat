@@ -31,11 +31,25 @@ Feature: Editing a taxon's name, protonym name, or type name
     Given there is a genus "Atta" with protonym name "Atta"
     And there is a genus "Eciton"
 
-    When I go to the edit page for "Atta"
+    When I go to the catalog page for "Atta"
+    Then I should see "Atta" in the headline
+
+    When I go to the protonyms page
+    And I follow "Atta"
+    Then I should see "Protonym: Atta"
+
+    When I follow "Edit"
     And I click the protonym name field
     And I set the protonym name to "Eciton"
     And I press "OK"
+    And WAIT
+    And I press "Save homonym"
+    And WAIT
     And I press "Save"
+    Then I should see "Protonym was successfully updated"
+    And I should see "Protonym: Eciton"
+
+    When I go to the catalog page for "Atta"
     Then I should see "Eciton" in the headline
 
   Scenario: Changing the type name
