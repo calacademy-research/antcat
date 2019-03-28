@@ -51,7 +51,6 @@ class Name < ApplicationRecord
     end
 
     def set_taxon_caches
-      Taxon.where(name: self).update_all(name_cache: name)
-      Taxon.where(name: self).update_all(name_html_cache: name_html)
+      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_html)
     end
 end

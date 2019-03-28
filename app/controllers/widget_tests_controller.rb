@@ -1,9 +1,4 @@
 class WidgetTestsController < ApplicationController
-  def name_field_test
-    @name = Name.first if params[:id]
-    @default_name_string = 'Eciton'
-  end
-
   def tooltips_test
   end
 

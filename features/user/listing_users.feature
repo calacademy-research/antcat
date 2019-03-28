@@ -1,8 +1,8 @@
 Feature: Listing users
   Background:
     Given this user exists
-      | email             | name    | password | password_confirmation |
-      | email@example.com | Quintus | secret   | secret                |
+      | email             | name    | password |
+      | email@example.com | Quintus | secret   |
 
   Scenario: Listing AntCat users
     When I go to the users page

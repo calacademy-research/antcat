@@ -47,7 +47,8 @@ end
 # Journal
 When("I add a journal for the feed") do
   cheat_and_set_user_for_feed
-  create :journal, name: "Archibald Bulletin"
+  journal = create :journal, name: "Archibald Bulletin"
+  journal.create_activity :create
 end
 
 When("I edit a journal for the feed") do
@@ -58,6 +59,7 @@ When("I edit a journal for the feed") do
   cheat_and_set_user_for_feed
   journal.name = "New Journal Name"
   journal.save!
+  journal.create_activity :update
 end
 
 When("I delete a journal for the feed") do
@@ -67,6 +69,7 @@ When("I delete a journal for the feed") do
 
   cheat_and_set_user_for_feed
   journal.destroy
+  journal.create_activity :destroy
 end
 
 # TaxonHistoryItem

@@ -122,11 +122,7 @@ module NavigationHelpers
     when /^the users page$/
       '/users'
 
-    # Widget test pages
-    when /^the name field test page for a name$/
-      "/widget_tests/name_field_test?id=#{Name.first.id}"
-    when /^the name field test page$/
-      '/widget_tests/name_field_test'
+    # Test pages
     when /^the tooltips test page$/
       '/widget_tests/tooltips_test'
 
