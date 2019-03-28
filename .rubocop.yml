@@ -213,6 +213,9 @@ Style/MethodDefParentheses:
 Style/MutableConstant:
   Enabled: false
 
+Style/IfInsideElse:
+  Enabled: false
+
 Style/NumericLiterals:
   Enabled: false
 

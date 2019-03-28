@@ -139,6 +139,15 @@ describe TaxaController do
             expect(authorship.forms).to eq authorship_attributes[:forms]
             expect(authorship.notes_taxt).to eq authorship_attributes[:notes_taxt]
           end
+
+          context 'when `protonym_id` is supplied' do
+            let(:protonym) { create :protonym }
+
+            it 'uses the ID and ignores the protonym attributes' do
+              post :create, params: genus_params.merge(taxon: taxon_params.merge(protonym_id: protonym.id))
+              expect(Taxon.last.protonym.id).to eq protonym.id
+            end
+          end
         end
 
         describe "setting `current_valid_taxon`" do

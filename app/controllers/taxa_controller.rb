@@ -114,6 +114,7 @@ class TaxaController < ApplicationController
       params.require(:taxon).permit(
         :status,
         :species_id,
+        :protonym_id,
         { name_attributes: [:id, :gender] },
         :homonym_replaced_by_id,
         :current_valid_taxon_id,

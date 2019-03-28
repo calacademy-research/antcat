@@ -1,0 +1,74 @@
+-content_for :head do
+  =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
+  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
+
+  -# For the name field.
+  =javascript_include_tag 'widgets/panel'
+  =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
+  =javascript_include_tag 'widgets/name_field'
+  =javascript_include_tag 'controllers/protonyms/form'
+
+=enable_tooltips
+
+=form_for protonym do |f|
+  =render 'shared/errors_for', resource: protonym
+  %table.unstriped
+    =f.fields_for :name do |name_fields|
+      %tr
+        -if name_fields.object.new_record?
+          =hidden_field_tag 'protonym[name_attributes][id]'
+        %td
+          =name_fields.label :name do
+            Name
+            =tooltip_icon "name", scope: :taxa
+        %td
+          %span#protonym_name_field
+            =render 'name_fields/panel', name_string: protonym.name.try(:name)
+
+    %tr
+      %td
+      %td
+        =f.check_box :fossil
+        =f.label :fossil
+
+        =f.check_box :sic
+        =f.label :sic
+
+    =f.fields_for :authorship do |authorship_fields|
+      %tr
+        %td
+          =authorship_fields.label :reference do
+            Authorship
+            =tooltip_icon "authorship", scope: :taxa
+        %td=authorship_fields.reference_select :reference
+
+      %tr
+        %td
+          =authorship_fields.label :pages do
+            Pages
+            =tooltip_icon "pages", scope: :taxa
+        %td=authorship_fields.text_field :pages
+
+      %tr
+        %td
+          =authorship_fields.label :forms do
+            Forms
+            =tooltip_icon "forms", scope: :taxa
+        %td=authorship_fields.text_field :forms
+
+    %tr
+      %td
+        =f.label :locality do
+          Locality
+          =tooltip_icon "locality", scope: :taxa
+      %td=f.text_field :locality, class: 'locality-autocomplete-js-hook'
+
+    %tr
+      %td=f.label :notes
+      %td=text_area_tag :taxt, protonym.authorship.notes_taxt, rows: 5, name: 'protonym[authorship_attributes][notes_taxt]', data: { has_linkables: true, previewable: true, spreviewable_title: "Notes", use_extras: true }
+
+    %tr
+      %td
+      %td
+        =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+        =f.button "Save", type: :submit, class: "btn-saves"
