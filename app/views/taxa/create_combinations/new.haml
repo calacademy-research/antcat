@@ -1,25 +1,142 @@
--@title = "Create combination - select target"
+-@title = "Create combination help"
 -breadcrumb :create_combination, @taxon
 
 -content_for :head do
   =javascript_include_tag "taxon_select"
 
+=content_for :breadcrumbs_right do
+  =link_to "Hide/show help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "help" }
+
 =form_tag taxa_create_combination_path, method: :get do
-  .row
-    .medium-4.columns
-      %fieldset.fieldset
-        %legend Taxon
-        =@taxon.decorate.id_and_name_and_author_citation
-
-    .medium-4.columns
-      %fieldset.fieldset
-        %legend New parent
-        =taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @target_rank
-        %br
-        =button_tag type: "submit", class: "btn-normal has-spinner" do
-          =spinner_icon + "Select..."
-
-    .medium-4.columns
+  .row{data: { show_hide_toggable_id: "help" }}
+    .medium-12.columns
       .callout
         %h6 Help
-        %p=render "help_text"
+        =render "help_text"
+
+  .row.margin-bottom
+    .medium-12.columns
+      %h5 Search for existing combinations
+      .callout
+        .row
+          .medium-6.columns
+            %fieldset.fieldset
+              %legend Taxon
+              =@taxon.decorate.id_and_name_and_author_citation
+
+          .medium-6.columns
+            %fieldset.fieldset
+              %legend
+                Select new parent
+              =taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @target_rank
+              %br
+              =button_tag type: "submit", class: "btn-normal has-spinner" do
+                =spinner_icon + "Search"
+
+  .row.margin-bottom
+    .medium-12.columns
+      %h5 Other records referencing this taxon
+      .callout
+        %p
+          Records that are of particular relevance are listed in tables below.
+
+          Please check
+          =link_to "this page", taxon_what_links_here_path(@taxon), class: 'btn-normal btn-tiny'
+          for all items we are able to find.
+
+  .row.margin-bottom
+    .medium-12.columns
+      %h5 Taxa where this taxon is set as the current valid taxon
+      .callout
+        -current_valid_taxon_of = Taxon.where(current_valid_taxon: @taxon)
+        -if current_valid_taxon_of.empty?
+          None
+          =antcat_icon("check")
+        -else
+          %table.table
+            %thead
+              %tr
+                %th Taxon
+                %th Status
+                %th What Links Here
+                %th Same protonym?
+                %th Has history items?
+
+            -current_valid_taxon_of.each do |taxon|
+              %tr
+                %td.no-wrap
+                  =taxon.decorate.link_to_taxon
+                  =taxon.decorate.author_citation
+                %td=taxon.status
+                %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
+                %td
+                  -if taxon.protonym == @taxon.protonym
+                    Yes
+                    =antcat_icon("check")
+                  -else
+                    No,
+                    =link_to taxon.protonym.decorate.format_name, taxon.protonym
+                %td
+                  -if taxon.history_items.present?
+                    =antcat_icon("check")
+
+  .row.margin-bottom
+    .medium-12.columns
+      %h5
+        Taxa with the same protonym
+        =surround '(', ')' do
+          =link_to @taxon.protonym.decorate.format_name, @taxon.protonym
+      .callout
+        -same_protonym_taxa = @taxon.protonym.taxa.where.not(id: @taxon.id)
+        -if same_protonym_taxa.empty?
+          None
+          =antcat_icon("check")
+        -else
+          %table.table
+            %thead
+              %tr
+                %th Taxon
+                %th Status
+                %th What Links Here
+                %th Has history items?
+
+            -same_protonym_taxa.each do |taxon|
+              %tr
+                %td.no-wrap=taxon.decorate.link_to_taxon
+                %td=taxon.status
+                %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
+                %td
+                  -if taxon.history_items.present?
+                    =antcat_icon("check")
+
+  -if @taxon.is_a? Species
+    .row.margin-bottom
+      .medium-12.columns
+        %h5 Valid subspecies
+        .callout
+          -valid_subspecies = @taxon.subspecies.valid
+          -if valid_subspecies.empty?
+            None
+            =antcat_icon("check")
+          -else
+            %table.table
+              %thead
+                %tr
+                  %th Taxon
+                  %th What Links Here
+                  %th Has history items?
+                  %th Is set as the current valid taxon of other taxa?
+
+              -valid_subspecies.each do |taxon|
+                %tr
+                  %td.no-wrap
+                    =taxon.decorate.link_to_taxon
+                    =taxon.decorate.author_citation
+                  %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
+                  %td
+                    -if taxon.history_items.present?
+                      =antcat_icon("check")
+                  %td
+                    -if taxon.valid_taxon? && Taxon.where(current_valid_taxon: taxon)
+                      =antcat_icon 'warning-icon'
+                      Yes
