@@ -12,6 +12,7 @@ class ReferenceDocument < ApplicationRecord
     storage: :s3,
     s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml', # TODO move to `secrets.yml`
     s3_permissions: 'authenticated-read',
+    s3_region: 'us-east-1',
     s3_protocol: 'http'
   before_post_process :transliterate_file_name
   do_not_validate_attachment_file_type :pdf

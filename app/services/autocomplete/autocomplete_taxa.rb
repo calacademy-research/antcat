@@ -28,7 +28,8 @@ module Autocomplete
       def search_results
         taxa = Taxon.where("name_cache LIKE ? OR name_cache LIKE ?", crazy_search_query, not_as_crazy_search_query)
         taxa = taxa.where(type: rank) if rank.present?
-        taxa.includes(:name, protonym: { authorship: :reference }).take(10)
+        taxa.includes(:name, protonym: { authorship: { reference: :author_names } }).
+          references(:reference_author_names).limit(10)
       end
 
       # TODO not tested.
