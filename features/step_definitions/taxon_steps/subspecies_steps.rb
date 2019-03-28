@@ -2,10 +2,6 @@ Given("there is a subspecies {string} which is a subspecies of {string}") do |su
   create_subspecies subspecies_name, species: Species.find_by_name(species_name)
 end
 
-Given("there is a subspecies {string} without a species") do |subspecies_name|
-  create_subspecies subspecies_name, species: nil
-end
-
 Given("a subspecies exists for that species with a name of {string}") do |name|
   subspecies_name = create :subspecies_name, name: name
   create :subspecies,

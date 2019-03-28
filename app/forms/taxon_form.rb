@@ -1,11 +1,7 @@
-# TODO not really a form but we are getting there.
-
 class TaxonForm
-  # `previous_combination` will be a pointer to a species or subspecies if non-nil.
-  def initialize taxon, taxon_params, previous_combination = nil
+  def initialize taxon, taxon_params
     @taxon = taxon
     @params = taxon_params
-    @previous_combination = previous_combination
   end
 
   def save
@@ -14,7 +10,7 @@ class TaxonForm
 
   private
 
-    attr_reader :taxon, :params, :previous_combination
+    attr_reader :taxon, :params
 
     def save_taxon
       taxon.save_initiator = true
@@ -36,10 +32,6 @@ class TaxonForm
         taxon.attributes = params
 
         save_and_create_change!
-
-        if previous_combination
-          Taxa::HandlePreviousCombination[taxon, previous_combination]
-        end
       end
     end
 

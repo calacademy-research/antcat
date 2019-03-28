@@ -7,8 +7,6 @@
         =name_form.label :name do
           Name
           =tooltip_icon "name", scope: :taxa
-        %small
-          %em=taxon_name_description taxon
       %td
         %span#name_field
           =render 'name_fields/panel', name_string: taxon.name.try(:name),

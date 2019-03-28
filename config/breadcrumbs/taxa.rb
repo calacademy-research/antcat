@@ -89,7 +89,7 @@ crumb :synonym_relationship do |synonym|
 end
 
 crumb :create_combination do |taxon|
-  link "Create combination"
+  link "Create combination help"
   parent :edit_taxon, taxon
 end
 

@@ -22,10 +22,6 @@ When("I click the reference key expansion") do
   find(".expandable-reference-content").click
 end
 
-Then("the name in the header should be {string}") do |name|
-  expect(page).to have_css '.header .name', text: name
-end
-
 When("I fill in the catalog search box with {string}") do |search_term|
   find("#desktop-lower-menu #qq").set search_term
 end
