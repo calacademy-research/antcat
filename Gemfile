@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.3.3'
 
-gem 'rails', '< 5.2'
+gem 'rails', '< 5.3'
 
 gem 'citrus'
 gem 'coffee-rails'
@@ -18,6 +18,7 @@ gem 'uglifier'
 gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
+gem 'bootsnap', require: false
 gem 'colorize'
 gem 'data_migrate'
 gem 'devise'
