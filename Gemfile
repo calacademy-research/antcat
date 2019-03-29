@@ -48,7 +48,7 @@ gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'validation_scopes'
 gem 'will_paginate'
-gem 'workflow'
+gem 'workflow', '< 2'
 
 group :development do
   gem 'brakeman'
