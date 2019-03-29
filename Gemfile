@@ -53,7 +53,7 @@ gem 'workflow'
 group :development do
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'rubocop', '~> 0.60.0', require: false
+  gem 'rubocop', '~> 0.66.0', require: false
   gem 'rubocop-rspec'
 end
 
