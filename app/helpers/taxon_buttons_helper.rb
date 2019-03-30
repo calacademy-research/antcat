@@ -57,12 +57,7 @@ module TaxonButtonsHelper
     return if taxon.is_a? Family
     return if taxon.any_nontaxt_references?
 
-    message = <<-MSG.squish
-      Are you sure you want to delete this taxon? Note: It may take a few
-      moments to check that this taxon isn't being referenced.
-    MSG
-
-    link_to 'Delete', taxa_path(taxon), method: :delete,
-      class: "btn-warning", data: { confirm: message }
+    link_to 'Delete', taxa_path(taxon), method: :delete, class: "btn-warning",
+      data: { confirm: "Are you sure you want to delete this taxon?" }
   end
 end

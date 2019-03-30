@@ -33,25 +33,20 @@ class TaxaController < ApplicationController
   end
 
   def destroy
-    references = @taxon.what_links_here
-
-    if references.empty?
+    if @taxon.what_links_here.present?
+      redirect_to taxon_what_links_here_path(@taxon), alert: <<~MSG
+        Other taxa refer to this taxon, so it can't be deleted.
+        Please see the table on this page for items referring to it.
+      MSG
+    else
       Taxon.transaction do
         UndoTracker.setup_change @taxon, :delete
         @taxon.taxon_state.update!(deleted: true, review_state: TaxonState::WAITING)
         @taxon.destroy!
         @taxon.create_activity :destroy
       end
-    else
-      redirect_to catalog_path(@taxon), notice: <<-MSG.squish
-        Other taxa refer to this taxon, so it can't be deleted.
-        Please talk to Stan (sblum@calacademy.org) to determine a solution.
-        The items referring to this taxon are: #{references}.
-      MSG
-      return
+      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
     end
-
-    redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
   end
 
   private
