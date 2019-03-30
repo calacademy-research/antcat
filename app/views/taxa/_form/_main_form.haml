@@ -11,6 +11,10 @@
         %span#name_field
           =render 'name_fields/panel', name_string: taxon.name.try(:name),
             default_name_string: default_name_string && "#{default_name_string} "
+        -if taxon.new_record? && taxon.is_a?(Subgenus)
+          %span
+            Subgenus name format:
+            %em Genus (Subgenus)
     -if taxon.name.is_a? GenusGroupName
       %tr
         %td=name_form.label :gender
