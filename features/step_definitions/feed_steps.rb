@@ -142,7 +142,8 @@ end
 When("I add a taxon for the feed") do
   Feed.without_tracking do
     cheat_and_set_user_for_feed
-    create :subfamily, name: create(:subfamily_name, name: "Antcatinae")
+    create :subfamily, name: create(:subfamily_name, name: "Antcatinae"),
+      family: create(:family)
   end
 end
 

@@ -32,34 +32,22 @@ Feature: Workflow
     When I go to the catalog page for "Formicinae"
     Then I should not see "asdfgh"
 
-  Scenario: Deleting a subfamily with genera and undoing the change
+  Scenario: Deleting a taxon and undoing the change
     Given the Formicidae family exists
-    And I log in as a superadmin
     And there is a subfamily "Ancatinae"
-    And tribe "Antcatini" exists in that subfamily
-    And genus "Antcatia" exists in that tribe
-    And genus "Tactania" exists in that tribe
 
-    When I go to the catalog page for "Ancatinae"
-    Then I should see "Antcatini"
-    And I should see "Antcatia"
-    And I should see "Tactania"
+    When I go to the catalog page for "Formicidae"
+    Then I should see "Ancatinae"
 
-    When I go to the catalog page for "Antcatini"
-    Then I should see "Antcatia"
-    And I should see "Tactania"
+    When I follow the first "Ancatinae"
+    And I follow "Delete"
+    Then I should see "Taxon was successfully deleted."
 
-    When I follow "Delete..."
-    And I follow "Confirm and delete"
-    And I go to the catalog page for "Ancatinae"
-    Then I should not see "Antcatini"
-    And I should not see "Antcatia"
-    And I should not see "Tactania"
+    When I go to the catalog page for "Formicidae"
+    Then I should not see "Ancatinae"
 
     When I go to the changes page
     And I follow the first "Undo..."
     And I press "Undo!"
-    And I go to the catalog page for "Ancatinae"
-    Then I should see "Antcatini"
-    And I should see "Antcatia"
-    And I should see "Tactania"
+    And I go to the catalog page for "Formicidae"
+    Then I should see "Ancatinae"

@@ -62,13 +62,7 @@ module TaxonButtonsHelper
       moments to check that this taxon isn't being referenced.
     MSG
 
-    link_to 'Delete', destroy_unreferenced_taxa_path(taxon), method: :delete,
+    link_to 'Delete', taxa_path(taxon), method: :delete,
       class: "btn-warning", data: { confirm: message }
-  end
-
-  def confirm_before_superadmin_delete_button taxon
-    return if taxon.is_a? Family
-    return unless user_is_superadmin?
-    link_to append_superadmin_icon("Delete..."), confirm_before_delete_taxa_path(taxon), class: "btn-warning"
   end
 end
