@@ -36,7 +36,6 @@ class ChangeDecorator < Draper::Decorator
   end
 
   def approve_button taxon, changed_by: nil
-    return unless helpers.user_is_editor?
     return helpers.dash if taxon.approved?
 
     if taxon.can_be_approved_by?(change, helpers.current_user, changed_by)

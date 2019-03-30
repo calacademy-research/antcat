@@ -1,24 +1,15 @@
-# TODO maybe less checking of user rights?
-# TODO possibly DRY buttons helpers that may be duplicated elsewhere.
-
 module TaxonButtonsHelper
   def link_to_edit_taxon taxon
-    if user_is_editor?
-      link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
-    end
+    link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
   end
 
   def link_to_review_change taxon
-    return unless user_is_editor?
-
     if taxon.can_be_reviewed? && taxon.last_change
       link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-tiny btn-normal"
     end
   end
 
   def add_child_button taxon
-    return unless user_is_editor?
-
     child_ranks = { family:    "subfamily",
                     subfamily: "genus",
                     tribe:     "genus",
@@ -34,14 +25,14 @@ module TaxonButtonsHelper
   end
 
   def add_tribe_button taxon
-    return unless user_is_editor? && taxon.is_a?(Subfamily)
+    return unless taxon.is_a?(Subfamily)
 
     url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
     link_to "Add tribe", url, class: "btn-normal"
   end
 
   def add_subgenus_button taxon
-    return unless user_is_editor? && taxon.is_a?(Genus)
+    return unless taxon.is_a?(Genus)
 
     url = new_taxa_path rank_to_create: 'subgenus', parent_id: taxon.id
     link_to "Add subgenus", url, class: "btn-normal"
