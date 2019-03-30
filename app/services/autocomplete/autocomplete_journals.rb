@@ -11,7 +11,7 @@ module Autocomplete
         left_outer_joins(:references).
         where('journals.name LIKE ?', search_expression).
         group('journals.id').
-        order('COUNT(*) DESC').
+        order(Arel.sql('COUNT(*) DESC')).
         pluck(:name)
     end
 
