@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_08_035206) do
+ActiveRecord::Schema.define(version: 2019_03_31_150031) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -178,7 +178,6 @@ ActiveRecord::Schema.define(version: 2019_01_08_035206) do
     t.string "epithet"
     t.string "epithet_html"
     t.string "epithets"
-    t.string "protonym_html"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "gender"
@@ -293,7 +292,6 @@ ActiveRecord::Schema.define(version: 2019_01_08_035206) do
     t.integer "nesting_reference_id"
     t.string "pages_in"
     t.string "author_names_suffix"
-    t.string "principal_author_last_name_cache"
     t.string "reason_missing"
     t.string "review_state"
     t.text "plain_text_cache"
@@ -359,7 +357,6 @@ ActiveRecord::Schema.define(version: 2019_01_08_035206) do
     t.boolean "hong", default: false, null: false
     t.integer "name_id"
     t.integer "type_name_id"
-    t.text "genus_species_header_notes_taxt"
     t.boolean "type_fossil"
     t.string "name_cache"
     t.string "name_html_cache"
@@ -375,7 +372,6 @@ ActiveRecord::Schema.define(version: 2019_01_08_035206) do
     t.text "type_specimen_url"
     t.boolean "auto_generated", default: false
     t.string "origin"
-    t.boolean "display", default: true
     t.integer "hol_id"
     t.text "primary_type_information"
     t.text "secondary_type_information"
