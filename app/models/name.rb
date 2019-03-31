@@ -28,10 +28,6 @@ class Name < ApplicationRecord
     "#{dagger_html if fossil}#{epithet_html}".html_safe
   end
 
-  def protonym_with_fossil_html fossil
-    "#{dagger_html if fossil}#{name_html}".html_safe
-  end
-
   def dagger_html
     '&dagger;'.html_safe
   end
