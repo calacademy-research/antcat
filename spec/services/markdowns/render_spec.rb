@@ -83,26 +83,6 @@ describe Markdowns::Render do
       end
     end
 
-    describe "journal ids" do
-      context "existing journal" do
-        let(:journal) { create :journal, name: "Zootaxa" }
-        let(:markdown) { "%journal#{journal.id}" }
-
-        it "links the journal" do
-          expected = %(<p><a href="/journals/#{journal.id}">#{journal.name}</a></p>\n)
-          expect(described_class[markdown]).to eq expected
-        end
-      end
-
-      context "missing journal" do
-        let(:markdown) { "%journal9999999" }
-
-        it "renders an error message" do
-          expect(described_class[markdown]).to include "CANNOT FIND JOURNAL WITH ID 9999999"
-        end
-      end
-    end
-
     it "formats issue ids" do
       issue = create :issue
       markdown = "%issue#{issue.id}"

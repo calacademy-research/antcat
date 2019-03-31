@@ -28,7 +28,6 @@ module Markdowns
       parse_taxon_ids!
       parse_reference_ids!
       parse_name_ids!
-      parse_journal_ids!
       parse_issue_ids!
       parse_feedback_ids!
       parse_github_ids!
@@ -86,19 +85,6 @@ module Markdowns
             Name.find(id).to_html
           rescue
             broken_markdown_link "name", id
-          end
-        end
-      end
-
-      # Matches: %journal123
-      # Renders: link to the journal, with the journal's name as the title.
-      def parse_journal_ids!
-        content.gsub!(/%journal(\d+)/) do
-          begin
-            journal = Journal.find($1)
-            link_to journal.name, journal_path(journal)
-          rescue
-            broken_markdown_link "journal", $1
           end
         end
       end

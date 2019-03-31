@@ -91,11 +91,6 @@ Feature: Markdown autocompletion
     And a visitor has submitted a feedback
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    # Journal
-    When I fill in "issue_description" with "%jsci"
-    And I click the suggestion containing "Science"
-    Then the markdown textarea should contain "%journal"
-
     # Issue
     When I fill in "issue_description" with "%icle"
     And I click the suggestion containing "Cleanup"
