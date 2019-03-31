@@ -43,10 +43,10 @@
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", history_item, class: "btn-normal btn-very-tiny"
 
--if taxon.junior_synonyms_recursive.exists?
-  %h6 #{pluralize(taxon.junior_synonyms_recursive.count, 'junior synonym')}
+-if taxon.junior_synonyms.exists?
+  %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
   %ul.junior-synonyms.small-margin-bottom
-    -taxon.junior_synonyms_recursive.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
+    -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
       %li
         =synonym.decorate.link_to_taxon
         =synonym.decorate.author_citation

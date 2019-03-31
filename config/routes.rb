@@ -109,14 +109,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxa, only: [:new, :create, :edit, :update] do
-    member do
-      controller :taxa_grab_bag do
-        get :confirm_before_delete
-        delete :destroy
-        delete :destroy_unreferenced
-      end
-    end
+  resources :taxa, only: [:new, :create, :edit, :update, :destroy] do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     resources :synonyms, only: [:create, :destroy] do
@@ -183,7 +176,6 @@ Rails.application.routes.draw do
 
   resources :comments, only: [:index, :create, :edit, :update]
 
-  # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   scope path: :panel, controller: :editors_panels do
     root action: :index, as: "editors_panel"
     get :invite_users
