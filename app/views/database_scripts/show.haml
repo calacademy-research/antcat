@@ -17,7 +17,7 @@
           =@database_script.decorate.format_topic_areas
       =@database_script.title
       =@database_script.decorate.format_tags
-    %p=markdown @database_script.description
+    %p=markdown @database_script.description, sanitize_content: false
 
 .row.column
   .callout
