@@ -39,13 +39,11 @@ Feature: Preview markdown
 
   # Testing multiple at the same time because JS tests are painfully slow.
   Scenario: Previewing journal, issue and feedback markdown
-    Given a journal exists with a name of "Ant Science 2000"
-    And there is a closed issue "Cleanup synonyms"
+    Given there is a closed issue "Cleanup synonyms"
     And a visitor has submitted a feedback
     And I am on a page with a textarea with markdown preview and autocompletion
 
     When I fill in the markdown textarea with markdown links for the above
     And I press "Rerender preview"
-    Then I should see "Ant Science 2000"
-    And I should see "(Cleanup synonyms)"
+    Then I should see "(Cleanup synonyms)"
     And I should see "feedback #"
