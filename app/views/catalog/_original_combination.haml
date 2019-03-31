@@ -1,8 +1,5 @@
 .header
   %span.name=taxon.decorate.link_each_epithet
   =taxon.author_citation
-
-  -if taxon.current_valid_taxon
-    see
-    =taxon.current_valid_taxon.decorate.link_each_epithet
-    =taxon.current_valid_taxon.author_citation
+  =taxon.decorate.taxon_status
+  =taxon.name.gender

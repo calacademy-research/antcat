@@ -19,8 +19,8 @@ class TaxonDecorator::TaxonStatus
 
     delegate :incertae_sedis_in, :homonym?, :homonym_replaced_by, :unidentifiable?,
       :unresolved_homonym?, :current_valid_taxon_including_synonyms, :nomen_nudum?,
-      :synonym?, :obsolete_combination?, :unavailable_misspelling?, :unavailable_uncategorized?,
-      :invalid?, :ichnotaxon?, to: :taxon
+      :synonym?, :obsolete_combination?, :original_combination?, :unavailable_misspelling?,
+      :unavailable_uncategorized?, :invalid?, :ichnotaxon?, to: :taxon
 
     def main_status
       if homonym? && homonym_replaced_by
@@ -37,6 +37,8 @@ class TaxonDecorator::TaxonStatus
         "junior synonym#{format_senior_synonym}"
       elsif obsolete_combination?
         "an obsolete combination of #{format_valid_combination}"
+      elsif original_combination?
+        "see #{taxon.current_valid_taxon.decorate.link_to_taxon_with_author_citation}"
       elsif unavailable_misspelling?
         "a misspelling of #{format_valid_combination}"
       elsif unavailable_uncategorized?
