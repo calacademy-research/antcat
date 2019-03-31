@@ -23,11 +23,6 @@ end
     parent :edit_taxon, taxon
   end
 
-  crumb :confirm_before_delete_taxon do |taxon|
-    link "Confirm before delete taxon (superadmin)"
-    parent :edit_taxon, taxon
-  end
-
 crumb :convert_species_to_subspecies do |taxon|
   link "Convert species to subspecies"
   parent :edit_taxon, taxon

@@ -41,11 +41,9 @@ Feature: Feed (taxa)
 
   Scenario: Deleted taxon
     Given I add a taxon for the feed
-    And I log in as a superadmin named "Archibald"
 
     When I go to the catalog page for "Antcatinae"
-      And I follow "Delete..."
-      And I follow "Confirm and delete"
+    And I follow "Delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
 

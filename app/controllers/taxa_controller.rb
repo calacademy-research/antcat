@@ -3,7 +3,7 @@
 
 class TaxaController < ApplicationController
   before_action :ensure_can_edit_catalog
-  before_action :set_taxon, only: [:edit, :update]
+  before_action :set_taxon, only: [:edit, :update, :destroy]
 
   def new
     @taxon = build_taxon_with_parent
@@ -30,6 +30,23 @@ class TaxaController < ApplicationController
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
+  end
+
+  def destroy
+    if @taxon.what_links_here.present?
+      redirect_to taxon_what_links_here_path(@taxon), alert: <<~MSG
+        Other taxa refer to this taxon, so it can't be deleted.
+        Please see the table on this page for items referring to it.
+      MSG
+    else
+      Taxon.transaction do
+        UndoTracker.setup_change @taxon, :delete
+        @taxon.taxon_state.update!(deleted: true, review_state: TaxonState::WAITING)
+        @taxon.destroy!
+        @taxon.create_activity :destroy
+      end
+      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
+    end
   end
 
   private
