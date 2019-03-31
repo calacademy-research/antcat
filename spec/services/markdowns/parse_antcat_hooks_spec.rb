@@ -4,6 +4,11 @@ require "spec_helper"
 
 describe Markdowns::ParseAntcatHooks do
   describe "#call" do
+    it "does not remove <i> tags" do
+      content = "<i>italics<i><i><script>xss</script></i>"
+      expect(described_class[content]).to eq "<i>italics<i><i>xss</i></i></i>"
+    end
+
     describe "ref tags (references)" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :unknown_reference, citation: 'Latreille, 1809 <script>' }
