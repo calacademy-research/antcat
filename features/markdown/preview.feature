@@ -22,6 +22,21 @@ Feature: Preview markdown
     When I follow "Giovanni, 1809"
     Then I should see "Giovanni's Favorite Ants"
 
+  Scenario: Previewing converted Bolton keys
+    Given there is a history item with Forel 1878 Bolton key I want to convert
+
+    When I go to the page of the most recent history item
+    And I follow "Edit"
+    Then I should see "Forel, 1878:"
+    And I should not see "Forel, 1878b:"
+
+    When I click "#convert-bolton-keys-button"
+    Then I should see "Converted Bolton keys, click 'Render preview' to preview"
+
+    When I press "Rerender preview"
+    Then I should see "Forel, 1878b:"
+    And I should not see "Forel, 1878:"
+
   Scenario: Previewing taxa markdown
     Given there is a genus "Eciton"
     And I am on a page with a textarea with markdown preview and autocompletion
