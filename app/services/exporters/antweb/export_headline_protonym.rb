@@ -27,7 +27,7 @@ class Exporters::Antweb::ExportHeadlineProtonym
     def protonym_name
       content_tag :b do
         content_tag :span do
-          protonym.name.protonym_with_fossil_html protonym.fossil?
+          protonym.decorate.format_name
         end
       end
     end
