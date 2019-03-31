@@ -4,7 +4,7 @@ class CatalogController < ApplicationController
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
     before_action only: [:index] do
-      render 'family_not_found' unless Family.exists?
+      render(inline: 'family_not_found', layout: true) unless Family.exists?
       false
     end
   end

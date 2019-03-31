@@ -8,6 +8,12 @@ class Reference < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
+    plain_text_cache
+    expandable_reference_cache
+    expanded_reference_cache
+  ]
+
   attr_accessor :journal_name, :publisher_string
 
   belongs_to :journal
@@ -44,7 +50,7 @@ class Reference < ApplicationRecord
     :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
   tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
 
-  searchable do
+  searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
     string  :type
     integer :year
     text    :author_names_string

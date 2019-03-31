@@ -183,7 +183,6 @@ Rails.application.routes.draw do
 
   resources :comments, only: [:index, :create, :edit, :update]
 
-  # TODO nest more Editor's Panel-ish pages under this (issues, site notices, etc).
   scope path: :panel, controller: :editors_panels do
     root action: :index, as: "editors_panel"
     get :invite_users
