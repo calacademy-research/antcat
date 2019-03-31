@@ -82,7 +82,7 @@ module Markdowns
         content.gsub!(/(\{nam (?<id>\d+)\})/) do
           id = $~[:id]
           begin
-            Name.find(id).to_html
+            Name.find(id).name_html
           rescue
             broken_markdown_link "name", id
           end

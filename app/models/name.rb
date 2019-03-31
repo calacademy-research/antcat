@@ -20,10 +20,6 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
-  def to_html
-    name_html
-  end
-
   def to_html_with_fossil fossil
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
