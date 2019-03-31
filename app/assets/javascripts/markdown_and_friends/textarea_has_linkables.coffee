@@ -58,14 +58,6 @@ setupLinkables = =>
       callbacks: reuseCallbacks "/issues/autocomplete.json"
 
     .atwho
-      at: '%j'
-      limit: 10
-      delay: 300
-      insertTpl: '%journal${id}'
-      displayTpl: '<li><small>#${id}</small> ${name}</li>'
-      callbacks: reuseCallbacks "/journals/linkable_autocomplete.json"
-
-    .atwho
       at: '%f'
       limit: 10
       delay: 300

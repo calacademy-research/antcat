@@ -53,7 +53,6 @@ end
 
 When("I fill in the markdown textarea with markdown links for the above") do
   markdown_textarea.set <<-TEXT.squish
-    %journal#{Journal.first.id}
     %issue#{Issue.first.id}
     %feedback#{Feedback.first.id}
   TEXT

@@ -10,20 +10,24 @@ module Markdowns
   class ParseAntcatHooks
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
+    include ActionView::Helpers::SanitizeHelper
     include Service
 
     TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
     REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
-    def initialize content
-      @content = content
+    def initialize content, sanitize_content: true
+      @content =  if sanitize_content
+                    sanitize(content).to_str
+                  else
+                    content
+                  end
     end
 
     def call
       parse_taxon_ids!
       parse_reference_ids!
       parse_name_ids!
-      parse_journal_ids!
       parse_issue_ids!
       parse_feedback_ids!
       parse_github_ids!
@@ -81,19 +85,6 @@ module Markdowns
             Name.find(id).to_html
           rescue
             broken_markdown_link "name", id
-          end
-        end
-      end
-
-      # Matches: %journal123
-      # Renders: link to the journal, with the journal's name as the title.
-      def parse_journal_ids!
-        content.gsub!(/%journal(\d+)/) do
-          begin
-            journal = Journal.find($1)
-            link_to journal.name, journal_path(journal)
-          rescue
-            broken_markdown_link "journal", $1
           end
         end
       end

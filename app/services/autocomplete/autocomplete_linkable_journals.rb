@@ -1,3 +1,5 @@
+# TODO: See if we want to use this instead of `AutocompleteJournals`, or remove this.
+
 module Autocomplete
   class AutocompleteLinkableJournals
     include Service

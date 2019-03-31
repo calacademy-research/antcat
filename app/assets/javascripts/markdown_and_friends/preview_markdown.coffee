@@ -102,6 +102,7 @@ class ExtrasArea
   RECENTLY_USED_REFERENCES_BUTTON_ID = "recently-used-references-button"
   INSERT_REFERENCE_BUTTON_ID         = "insert-reference-button"
   INSERT_TAXON_BUTTON_ID             = "insert-taxon-button"
+  CONVERT_BOLTON_KEYS_BUTTON_ID      = "convert-bolton-keys-button"
 
   constructor: (@textarea, @textareaTab) ->
     @createExtrasArea().appendTo @textareaTab
@@ -111,6 +112,8 @@ class ExtrasArea
     @setupRecentlyUserReferencesButton()
     @setupInsertReferenceButton()
     @setupInsertTaxonButton()
+
+    @setupConvertBoltonKeysButton()
 
   createExtrasArea: ->
     helpText = """
@@ -126,6 +129,7 @@ class ExtrasArea
         <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
         <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
         <span id="extras-area"></span>
+        <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning btn-tiny">Convert Bolton keys</a>
         <span title='#{helpText}' class="antcat_icon tooltip-icon jquery-tooltip"></span>
       </div>
     </div>
@@ -208,6 +212,24 @@ class ExtrasArea
       event.preventDefault()
       id = $(event.target).data('id')
       @textarea.insertAtCaret "{tax #{id}} "
+
+  setupConvertBoltonKeysButton: ->
+    button = @textareaTab.find("##{CONVERT_BOLTON_KEYS_BUTTON_ID}")
+
+    button.click =>
+      event.preventDefault()
+      return unless confirm "This will overwrite any unsaved content. Do you want to continue?"
+
+      $.ajax
+        url: "/panel/bolton_keys_to_ref_tags.json"
+        type: "post"
+        data: bolton_content: @textarea.val()
+        dataType: "html"
+        success: (parsedContent) =>
+          @textarea.val parsedContent
+          previewTab = @textarea.parent().parent().find(".preview-previewable")
+          previewTab.html "Converted Bolton keys, click 'Render preview' to preview"
+        error: -> $.notify "Error parsing Bolton keys"
 
 defaultReference = ->
   reference = $('#default-reference')

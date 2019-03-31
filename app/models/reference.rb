@@ -1,5 +1,4 @@
 # TODO avoid `require`.
-# TODO remove `references.principal_author_last_name_cache`.
 
 require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'

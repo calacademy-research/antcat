@@ -4,7 +4,7 @@ module Types
     include ActionView::Helpers::SanitizeHelper
 
     def initialize content
-      @content = strip_tags content.try(:dup)
+      @content = content.try(:dup)
     end
 
     def call
