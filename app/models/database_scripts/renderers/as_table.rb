@@ -20,7 +20,7 @@ module DatabaseScripts::Renderers::AsTable
         <table class="tablesorter hover margin-top">
           #{"<caption>#{caption_content}</caption>" if caption_content}
           <thead>#{header_content}</thead>
-          <tbody>#{Markdowns::ParseAntcatHooks[body_content]}</tbody>
+          <tbody>#{Markdowns::ParseAntcatHooks[body_content, sanitize_content: false]}</tbody>
         </table>
       HTML
     end

@@ -10,13 +10,18 @@ module Markdowns
   class ParseAntcatHooks
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
+    include ActionView::Helpers::SanitizeHelper
     include Service
 
     TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
     REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
-    def initialize content
-      @content = content
+    def initialize content, sanitize_content: true
+      @content =  if sanitize_content
+                    sanitize(content).to_str
+                  else
+                    content
+                  end
     end
 
     def call

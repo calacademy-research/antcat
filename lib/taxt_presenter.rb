@@ -13,7 +13,7 @@ class TaxtPresenter
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def to_html
     return '' unless @taxt
-    Markdowns::ParseAntcatHooks[strip_tags @taxt].html_safe
+    Markdowns::ParseAntcatHooks[@taxt].html_safe
   end
 
   def to_antweb
