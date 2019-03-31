@@ -42,10 +42,6 @@ When("I set the current valid taxon name to {string}") do |name|
 end
 
 # status
-Then("the status should be {string}") do |status|
-  expect(page).to have_css "select#taxon_status option[selected=selected][value=#{status}]"
-end
-
 When("I set the status to {string}") do |status|
   step %(I select "#{status}" from "taxon_status")
 end
