@@ -102,6 +102,9 @@ Rails.application.routes.draw do
     collection do
       get :autocomplete
     end
+    scope module: :protonyms do
+      resources :history, only: :index
+    end
   end
   scope module: :protonyms do
     scope controller: :localities, path: "/protonyms/localities" do
