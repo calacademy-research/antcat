@@ -165,9 +165,6 @@ Rails.application.routes.draw do
   resources :antweb_data, only: :index
 
   resources :feedback, only: [:index, :show, :create, :destroy] do
-    collection do
-      get :autocomplete
-    end
     member do
       put :close
       put :reopen
@@ -209,9 +206,6 @@ Rails.application.routes.draw do
   resources :issues, except: :destroy do
     scope module: :issues do
       resources :history, only: :index
-    end
-    collection do
-      get :autocomplete
     end
     member do
       put :close

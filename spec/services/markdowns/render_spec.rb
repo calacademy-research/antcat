@@ -83,22 +83,6 @@ describe Markdowns::Render do
       end
     end
 
-    it "formats issue ids" do
-      issue = create :issue
-      markdown = "%issue#{issue.id}"
-
-      expected = %[<p><a href="/issues/#{issue.id}">issue ##{issue.id} (Check synonyms)</a></p>\n]
-      expect(described_class[markdown]).to eq expected
-    end
-
-    it "formats feedback ids" do
-      feedback = create :feedback
-      markdown = "%feedback#{feedback.id}"
-
-      expected = %(<p><a href="/feedback/#{feedback.id}">feedback ##{feedback.id}</a></p>\n)
-      expect(described_class[markdown]).to eq expected
-    end
-
     it "formats GitHub links" do
       markdown = "%github5"
 

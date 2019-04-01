@@ -51,14 +51,3 @@ Feature: Preview markdown
     When I fill in the markdown textarea with "@user" followed by my user id
     And I press "Rerender preview"
     Then I should see a link to the user page for "Archibald"
-
-  # Testing multiple at the same time because JS tests are painfully slow.
-  Scenario: Previewing journal, issue and feedback markdown
-    Given there is a closed issue "Cleanup synonyms"
-    And a visitor has submitted a feedback
-    And I am on a page with a textarea with markdown preview and autocompletion
-
-    When I fill in the markdown textarea with markdown links for the above
-    And I press "Rerender preview"
-    Then I should see "(Cleanup synonyms)"
-    And I should see "feedback #"
