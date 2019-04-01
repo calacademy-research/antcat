@@ -214,7 +214,6 @@ Rails.application.routes.draw do
 
   namespace :markdown do
     post :preview, action: :preview
-    get :formatting_help
   end
 
   resources :database_scripts, only: [:index, :show]

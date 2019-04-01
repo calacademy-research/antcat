@@ -9,8 +9,4 @@ describe MarkdownController do
       post :preview, params: { text: text }
     end
   end
-
-  describe "GET formatting_help" do
-    specify { expect(get(:formatting_help)).to render_template :formatting_help }
-  end
 end
