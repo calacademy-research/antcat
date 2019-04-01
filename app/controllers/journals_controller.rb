@@ -59,18 +59,6 @@ class JournalsController < ApplicationController
     end
   end
 
-  # For at.js. We need the IDs, which isn't included in `#autocomplete`.
-  # TODO see if we can merge this with `#autocomplete`.
-  def linkable_autocomplete
-    search_query = params[:q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteLinkableJournals[search_query]
-      end
-    end
-  end
-
   private
 
     def set_journal

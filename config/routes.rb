@@ -49,7 +49,6 @@ Rails.application.routes.draw do
   resources :journals do
     collection do
       get :autocomplete
-      get :linkable_autocomplete
     end
   end
 
