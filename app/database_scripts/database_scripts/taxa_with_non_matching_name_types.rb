@@ -29,8 +29,7 @@ module DatabaseScripts
         format_table_for(:tribe, tribe_results) <<
         format_table_for(:genus, genus_results) <<
         format_table_for(:subgenus, subgenus_results) <<
-        "Showing the first 20 of #{species_results.count} species results." <<
-        format_table_for(:species, species_results.limit(20)) <<
+        format_table_for(:species, species_results) <<
         format_table_for(:subspecies, subspecies_results)
     end
 
