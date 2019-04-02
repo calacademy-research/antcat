@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_31_150031) do
+ActiveRecord::Schema.define(version: 2019_04_02_204649) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -356,8 +356,6 @@ ActiveRecord::Schema.define(version: 2019_03_31_150031) do
     t.integer "subgenus_id"
     t.boolean "hong", default: false, null: false
     t.integer "name_id"
-    t.integer "type_name_id"
-    t.boolean "type_fossil"
     t.string "name_cache"
     t.string "name_html_cache"
     t.boolean "unresolved_homonym", default: false, null: false
@@ -365,11 +363,7 @@ ActiveRecord::Schema.define(version: 2019_03_31_150031) do
     t.boolean "ichnotaxon"
     t.boolean "nomen_nudum"
     t.integer "family_id"
-    t.text "verbatim_type_locality"
     t.string "biogeographic_region"
-    t.text "type_specimen_repository"
-    t.text "type_specimen_code"
-    t.text "type_specimen_url"
     t.boolean "auto_generated", default: false
     t.string "origin"
     t.integer "hol_id"
@@ -391,7 +385,6 @@ ActiveRecord::Schema.define(version: 2019_03_31_150031) do
     t.index ["subgenus_id"], name: "index_taxa_on_subgenus_id"
     t.index ["tribe_id"], name: "taxa_tribe_id_idx"
     t.index ["type"], name: "taxa_type_idx"
-    t.index ["type_name_id"], name: "index_taxa_on_type_name_id"
     t.index ["type_taxon_id"], name: "fk_taxa__type_taxon_id__taxa__id"
   end
 
