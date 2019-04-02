@@ -40,7 +40,7 @@ class TaxonDecorator::TaxonStatus
       elsif original_combination?
         "see #{taxon.current_valid_taxon.decorate.link_to_taxon_with_author_citation}"
       elsif unavailable_misspelling?
-        "a misspelling of #{format_valid_combination}"
+        "a misspelling of #{taxon.current_valid_taxon.decorate.link_to_taxon_with_author_citation}"
       elsif unavailable_uncategorized?
         "see #{format_valid_combination}"
       elsif invalid?
