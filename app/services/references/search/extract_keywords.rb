@@ -66,13 +66,12 @@ module References
             ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
             ["title",  '"(.*?)"'],                                             # title:"Iceland"
             ["title",  '\'(.*?)\''],                                           # title:'Iceland'
-            ["title",  '([^ ]+)'], # **                                        # title:Iceland
+            ["title",  '([^ ]+)'],                                             # title:Iceland
             ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
             ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
-            ["author", '([^ ]+)'] # **                                         # author:Bolton
+            ["author", '([^ ]+)'],                                             # author:Bolton
+            ["doi", '([^ ]+)']                                                 # doi:10.11865/zs.201806
           ]
-
-          # ** = stops matching at space or end of string
         end
     end
   end

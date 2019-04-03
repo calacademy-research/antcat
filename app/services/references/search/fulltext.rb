@@ -23,6 +23,7 @@ module References
           end_year        = options[:end_year]
           author          = options[:author]
           title           = options[:title]
+          doi             = options[:doi]
 
           # Hyphens, asterixes and colons makes Solr go bananas.
           title = title.gsub(/-|:|\*/, ' ') if title
@@ -49,6 +50,10 @@ module References
 
             if start_year && end_year
               with(:year).between(start_year..end_year)
+            end
+
+            if doi
+              with(:doi).equal_to doi
             end
 
             case options[:reference_type]

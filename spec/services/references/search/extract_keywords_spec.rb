@@ -99,5 +99,10 @@ describe References::Search::ExtractKeywords do
       expect(keyword_params[:author]).to eq "Wilson"
       expect(keyword_params[:keywords]).to eq ""
     end
+
+    it "extracts DOIs" do
+      keyword_params = described_class["Ants Book doi:10.11865/zs.201806"]
+      expect(keyword_params[:doi]).to eq "10.11865/zs.201806"
+    end
   end
 end
