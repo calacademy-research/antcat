@@ -51,6 +51,10 @@
     %td=link_to "author:'Bolton, B.; Fisher, B. L.'", references_search_index_path(reference_q: "author:'Bolton, B.; Fisher, B. L.'")
     %td As above.
   %tr
+    %td doi
+    %td=link_to "doi:10.11865/zs.201806", references_search_index_path(reference_q: "doi:10.11865/zs.201806")
+    %td Requires an exact match. Using this keyword is the only way to search for DOIs.
+  %tr
     %td reference type
     %td
       =link_to "type:nomissing", references_search_index_path(reference_q: "type:nomissing")
