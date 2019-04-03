@@ -1,6 +1,3 @@
-# TODO remove column `taxa.type_name_id`.
-# TODO remove column `taxa.type_fossil`.
-
 class AddTypeTaxonIdToTaxa < ActiveRecord::Migration[5.1]
   def change
     add_column :taxa, :type_taxon_id, :integer
