@@ -9,4 +9,5 @@ end
 __END__
 description: Auto-generated subspecies are not included.
 topic_areas: [catalog]
+tags: [high-priority]
 issue_description: This subspecies has no species.

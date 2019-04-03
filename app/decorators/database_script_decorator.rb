@@ -29,11 +29,12 @@ class DatabaseScriptDecorator < Draper::Decorator
 
     def self.tag_css_class tag
       case tag
-      when DatabaseScript::SLOW_TAG      then "warning-label"
-      when DatabaseScript::VERY_SLOW_TAG then "warning-label"
-      when DatabaseScript::NEW_TAG       then "label"
-      when DatabaseScript::CSV_TAG       then "pretty-label"
-      else                                    "white-label"
+      when DatabaseScript::SLOW_TAG          then "warning-label"
+      when DatabaseScript::VERY_SLOW_TAG     then "warning-label"
+      when DatabaseScript::NEW_TAG           then "label"
+      when DatabaseScript::CSV_TAG           then "pretty-label"
+      when DatabaseScript::HIGH_PRIORITY_TAG then "secondary-label"
+      else                                        "white-label"
       end << " rounded-badge"
     end
     private_class_method :tag_css_class

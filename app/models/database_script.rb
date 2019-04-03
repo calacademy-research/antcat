@@ -13,7 +13,8 @@ class DatabaseScript
     CSV_TAG = "csv",
     REGRESSION_TEST_TAG = "regression-test",
     LIST_TAG = "list",
-    VALIDATED_TAG = "validated"
+    VALIDATED_TAG = "validated",
+    HIGH_PRIORITY_TAG = "high-priority"
   ]
 
   ScriptNotFound = Class.new StandardError
