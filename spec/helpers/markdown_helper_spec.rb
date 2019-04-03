@@ -5,7 +5,7 @@ describe MarkdownHelper do
     let(:content) { "pizza" }
 
     it "calls `Markdowns::Render`" do
-      expect(Markdowns::Render).to receive(:new).with(content).and_call_original
+      expect(Markdowns::Render).to receive(:new).with(content, sanitize_content: true).and_call_original
       helper.markdown content
     end
   end

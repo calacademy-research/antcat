@@ -18,13 +18,11 @@ class Taxon < ApplicationRecord
     waiting?
   end
 
-  # Allow optional `changed_by` for performance reasons.
-  def can_be_approved_by? change, user, changed_by = nil
+  def can_be_approved_by? change, user
     return false unless user && change
     return false unless waiting? && user.is_editor?
 
-    changed_by ||= change.changed_by
-    user != changed_by
+    user != change.changed_by
   end
 
   def last_change

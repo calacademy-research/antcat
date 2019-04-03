@@ -1,22 +1,14 @@
 class ChangeDecorator < Draper::Decorator
   delegate_all
 
-  # Accepts optional `user` for performance reasons.
-  # TODO: Do not accept optional `user`.
-  def format_adder_name user = nil
+  def format_adder_name
     user_verb = case change.change_type
                 when "create" then "added"
                 when "delete" then "deleted"
                 else               "changed"
                 end
 
-    name = if user
-             format_username user
-           else
-             format_changed_by
-           end
-
-    "#{name} #{user_verb}".html_safe
+    "#{format_changed_by} #{user_verb}".html_safe
   end
 
   def format_changed_by
@@ -35,10 +27,10 @@ class ChangeDecorator < Draper::Decorator
     format_time_ago change.approved_at
   end
 
-  def approve_button taxon, changed_by: nil
+  def approve_button taxon
     return helpers.dash if taxon.approved?
 
-    if taxon.can_be_approved_by?(change, helpers.current_user, changed_by)
+    if taxon.can_be_approved_by?(change, helpers.current_user)
       helpers.link_to 'Approve', helpers.approve_change_path(change),
         method: :put, class: "btn-saves btn-tiny",
         data: { confirm: "Are you sure you want to approve this change?" }

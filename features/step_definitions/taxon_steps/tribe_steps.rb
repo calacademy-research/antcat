@@ -11,7 +11,7 @@ Given("a tribe exists with a name of {string} and a subfamily of {string}") do |
 end
 
 Given("tribe {string} exists in that subfamily") do |name|
-  @tribe = create :tribe,
+  create :tribe,
     subfamily: @subfamily,
     name: create(:tribe_name, name: name)
 end

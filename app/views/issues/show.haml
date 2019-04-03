@@ -2,7 +2,7 @@
 -breadcrumb :issue, @issue
 
 =content_for :breadcrumbs_right do
-  =link_to "History", issue_history_index_path(@issue), class: "btn-normal btn-very-tiny"
+  =link_to "History", issue_history_index_path(@issue), class: "btn-normal"
   -if current_user
     -if @issue.open?
       =link_to "Close", close_issue_path(@issue), method: :put, class: "btn-saves"

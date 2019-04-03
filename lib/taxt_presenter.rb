@@ -47,7 +47,7 @@ class TaxtPresenter
         name = Name.find_by id: $1
 
         if name
-          name.to_html
+          name.name_html
         else
           warn_about_non_existing_id "NAME", $1
         end

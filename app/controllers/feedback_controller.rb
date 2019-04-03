@@ -66,16 +66,6 @@ class FeedbackController < ApplicationController
     redirect_to @feedback, notice: "Successfully re-opened feedback item."
   end
 
-  def autocomplete
-    search_query = params[:q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteFeedbacks[search_query]
-      end
-    end
-  end
-
   private
 
     def set_feedback

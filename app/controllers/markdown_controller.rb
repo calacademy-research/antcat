@@ -3,7 +3,4 @@ class MarkdownController < ApplicationController
     text = params[:text] || ''
     render json: Markdowns::Render[text]
   end
-
-  def formatting_help
-  end
 end

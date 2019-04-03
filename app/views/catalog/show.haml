@@ -11,10 +11,8 @@
 .row
   .medium-9.columns
     #taxon_description
-      -if @taxon.original_combination?
-        =render "original_combination", taxon: @taxon
-      -else
-        =render "taxon_description", taxon: @taxon
+      =render "taxon_description", taxon: @taxon
+
   .medium-3.columns
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
     -if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !@taxon.is_a?(Family)
@@ -50,17 +48,4 @@
     =add_period_if_necessary taxon_change_history(@taxon)
 
 -content_for :after_content do
-  %div{data: { sticky_container: true }}
-    #taxon-browser-container.sticky{data: { btm_anchor: "taxon-browser-sticky-target-js-hook:top", sticky: true, stick_to: "bottom", margin_bottom: 0 }}
-      #taxon_browser
-        #taxon-key{data: { show_hide_toggable_id: "taxon-key" }}
-          %div &dagger;fossil
-          .valid valid
-          .synonym synonym
-          .subspecies.valid subspecies
-          .unidentifiable unidentifiable/excluded from Formicidae
-          .homonym homonym
-          .unavailable unavailable/nomen nudum
-          .original_combination original combination
-
-        =render "taxon_browser", taxon: @taxon, taxon_browser: @taxon_browser
+  =render "taxon_browser/container", taxon: @taxon, taxon_browser: @taxon_browser
