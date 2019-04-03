@@ -21,7 +21,7 @@ module References
 
         def fulltext_search_light
           Reference.search do
-            keywords search_query_without_hyphens do
+            keywords normalized_search_query do
               fields :title, :author_names_string, :citation_year, :bolton_key, :authors_for_keey
               boost_fields author_names_string: 5.0
               boost_fields citation_year: 2.0
@@ -35,7 +35,8 @@ module References
         end
 
         # Hyphens, asterixes and colons makes Solr go bananas.
-        def search_query_without_hyphens
+        # TODO: This is partially duplicated in `References::Search::Fulltext`.
+        def normalized_search_query
           search_query.gsub(/-|:/, ' ')
         end
     end

@@ -29,7 +29,7 @@ module References
           author = author.gsub(/-|:/, ' ') if author
 
           Reference.search(include: [:document]) do
-            keywords search_keywords
+            keywords normalized_search_keywords
 
             if title
               keywords title do
@@ -67,8 +67,9 @@ module References
           end.results
         end
 
-        def search_keywords
-          @search_keywords ||= begin
+        # TODO: This is partially duplicated in `References::Search::FulltextLight`.
+        def normalized_search_keywords
+          @normalized_search_keywords ||= begin
             keywords = options[:keywords] || ""
 
             # TODO very ugly to make some queries work. Fix in Solr.
