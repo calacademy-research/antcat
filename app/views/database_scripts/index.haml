@@ -20,6 +20,10 @@
         =surround "(", ")" do
           =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
       %p
+        =DatabaseScript.decorate_class.format_tags [DatabaseScript::HIGH_PRIORITY_TAG]
+        is for issues we want to fix as soon as possible, usually because the issue is
+        preventing us from improving the code
+      %p
         "Soft-validated" scripts is where "Fix random!" taxa are randomized from
       %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
