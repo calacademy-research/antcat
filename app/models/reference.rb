@@ -54,7 +54,6 @@ class Reference < ApplicationRecord
     integer :year
     text    :author_names_string
     text    :citation_year
-    text    :doi, as: :doi
     text    :title
     text    :journal_name do journal.name if journal end
     text    :publisher_name do publisher.name if publisher end
@@ -66,6 +65,7 @@ class Reference < ApplicationRecord
     text    :bolton_key
     text    :authors_for_keey do authors_for_keey end # To find "et al".
     string  :citation_year
+    string  :doi
     string  :author_names_string
   end
 

@@ -78,26 +78,6 @@
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
     </fieldType>
-    <!-- *** Added for AntCat *** -->
-    <!-- I'm not sure which field to use for this, but the original
-         issue is: given a reference with the doi "10.1111/syen.12253",
-         searching for "10.1111" yields no results without something like this.
-     -->
-    <fieldType name="doi" class="solr.TextField" omitNorms="false">
-      <analyzer type="index">
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.StandardFilterFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.PorterStemFilterFactory"/>
-        <filter class="solr.EdgeNGramFilterFactory" minGramSize="1" maxGramSize="45" side="front"/>
-      </analyzer>
-      <analyzer type="query">
-        <tokenizer class="solr.KeywordTokenizerFactory"/>
-        <filter class="solr.StandardFilterFactory"/>
-        <filter class="solr.LowerCaseFilterFactory"/>
-        <filter class="solr.PorterStemFilterFactory"/>
-      </analyzer>
-    </fieldType>
     <!-- *** This fieldType is used by Sunspot! *** -->
     <fieldType name="boolean" class="solr.BoolField" omitNorms="true"/>
     <!-- *** This fieldType is used by Sunspot! *** -->
@@ -160,8 +140,6 @@
      default: a value that should be used if no value is specified
        when adding a document.
    -->
-    <!-- *** Added for AntCat *** -->
-    <field name="doi" type="doi" indexed="true" stored="true" />
     <!-- *** This field is used by Sunspot! *** -->
     <field name="id" stored="true" type="string" multiValued="false" indexed="true"/>
     <!-- *** This field is used by Sunspot! *** -->

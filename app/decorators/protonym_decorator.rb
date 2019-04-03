@@ -2,7 +2,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :authorship, :name, :fossil?
 
   def format_name
-    name.protonym_with_fossil_html fossil?
+    name.to_html_with_fossil fossil?
   end
 
   def format_locality

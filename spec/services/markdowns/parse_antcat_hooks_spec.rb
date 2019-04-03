@@ -35,7 +35,7 @@ describe Markdowns::ParseAntcatHooks do
     describe "nam tags (names)" do
       it "returns the HTML version of the name" do
         name = create :subspecies_name
-        expect(described_class["{nam #{name.id}}"]).to eq name.to_html
+        expect(described_class["{nam #{name.id}}"]).to eq name.name_html
       end
 
       context "when the name can't be found" do

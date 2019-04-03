@@ -33,4 +33,5 @@ description: >
   The columns included in this check are: `species_id` (other are OK).
 
 topic_areas: [catalog]
+tags: [high-priority]
 issue_description: This subspecies belongs to a species that has been deleted, or does not exists for any other reason.

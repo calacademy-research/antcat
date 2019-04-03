@@ -49,7 +49,6 @@ Rails.application.routes.draw do
   resources :journals do
     collection do
       get :autocomplete
-      get :linkable_autocomplete
     end
   end
 
@@ -101,6 +100,9 @@ Rails.application.routes.draw do
   resources :protonyms, only: [:index, :show, :edit, :update, :destroy] do
     collection do
       get :autocomplete
+    end
+    scope module: :protonyms do
+      resources :history, only: :index
     end
   end
   scope module: :protonyms do
@@ -165,9 +167,6 @@ Rails.application.routes.draw do
   resources :antweb_data, only: :index
 
   resources :feedback, only: [:index, :show, :create, :destroy] do
-    collection do
-      get :autocomplete
-    end
     member do
       put :close
       put :reopen
@@ -210,9 +209,6 @@ Rails.application.routes.draw do
     scope module: :issues do
       resources :history, only: :index
     end
-    collection do
-      get :autocomplete
-    end
     member do
       put :close
       put :reopen
@@ -221,7 +217,6 @@ Rails.application.routes.draw do
 
   namespace :markdown do
     post :preview, action: :preview
-    get :formatting_help
   end
 
   resources :database_scripts, only: [:index, :show]

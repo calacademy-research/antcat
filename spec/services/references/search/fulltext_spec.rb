@@ -124,14 +124,68 @@ describe References::Search::Fulltext, :search do
     end
   end
 
-  describe "replacing some characters to make search work" do
-    let!(:title) { '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton' }
-    let!(:reference) { create :reference, title: title }
+  describe 'searching with `doi`' do
+    let!(:doi) { "10.11865/zs.201806" }
+    let!(:reference) { create :article_reference, doi: doi }
 
-    it "handles this reference with asterixes and a hyphen" do
+    before do
+      create :article_reference # Not matching.
       Sunspot.commit
+    end
 
-      expect(described_class[title: title]).to eq [reference]
+    specify { expect(described_class[doi: doi]).to eq [reference] }
+  end
+
+  describe "ignored characters" do
+    context "when search query contains ').'" do
+      let!(:title) { 'Tetramoriini (Hymenoptera Formicidae).' }
+      let!(:reference) { create :reference, title: title }
+
+      before { Sunspot.commit }
+
+      specify do
+        expect(described_class[keywords: title]).to eq [reference]
+        expect(described_class[title: title]).to eq [reference]
+      end
+    end
+
+    context "when search query contains '&'" do
+      let!(:reference) do
+        bolton = create :author_name, name: 'Bolton, B.'
+        fisher = create :author_name, name: 'Fisher, B.'
+
+        create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+      end
+
+      before { Sunspot.commit }
+
+      specify { expect(described_class[keywords: "Fisher & Bolton 1970a"]).to eq [reference] }
+    end
+
+    context "when search query contains 'et al.'" do
+      let!(:reference) do
+        bolton = create :author_name, name: 'Bolton, B.'
+        fisher = create :author_name, name: 'Fisher, B.'
+        ward = create :author_name, name: 'Ward, P.S.'
+
+        create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+      end
+
+      before { Sunspot.commit }
+
+      specify { expect(described_class[keywords: "Fisher, et al. 1970a"]).to eq [reference] }
+    end
+
+    describe "replacing some characters to make search work" do
+      let!(:title) { '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton' }
+      let!(:reference) { create :reference, title: title }
+
+      it "handles this reference with asterixes and a hyphen" do
+        Sunspot.commit
+
+        expect(described_class[keywords: title]).to eq [reference]
+        expect(described_class[title: title]).to eq [reference]
+      end
     end
   end
 end

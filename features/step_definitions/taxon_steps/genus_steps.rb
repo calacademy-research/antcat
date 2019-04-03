@@ -45,13 +45,6 @@ Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) 
     fossil: fossil.present?
 end
 
-Given("genus {string} exists in that tribe") do |name|
-  create :genus,
-    subfamily: @subfamily,
-    tribe: @tribe,
-    name: create(:genus_name, name: name)
-end
-
 Given("genus {string} exists in that subfamily") do |name|
   create :genus,
     subfamily: @subfamily,

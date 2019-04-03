@@ -28,8 +28,6 @@ module Markdowns
       parse_taxon_ids!
       parse_reference_ids!
       parse_name_ids!
-      parse_issue_ids!
-      parse_feedback_ids!
       parse_github_ids!
       parse_user_ids!
 
@@ -82,31 +80,10 @@ module Markdowns
         content.gsub!(/(\{nam (?<id>\d+)\})/) do
           id = $~[:id]
           begin
-            Name.find(id).to_html
+            Name.find(id).name_html
           rescue
             broken_markdown_link "name", id
           end
-        end
-      end
-
-      # Matches: %issue123
-      # Renders: a link to the issue.
-      def parse_issue_ids!
-        content.gsub!(/%issue(\d+)/) do
-          begin
-            issue = Issue.find($1)
-            link_to "issue ##{$1} (#{issue.title})", issue_path($1)
-          rescue
-            broken_markdown_link "issue", $1
-          end
-        end
-      end
-
-      # matches: %feedback123
-      # Renders: a link to the feedback (including non-existing).
-      def parse_feedback_ids!
-        content.gsub!(/%feedback(\d+)/) do
-          link_to "feedback ##{$1}", feedback_path($1)
         end
       end
 

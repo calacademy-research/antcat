@@ -2,6 +2,7 @@ class Tribe < Taxon
   belongs_to :subfamily
 
   has_many :genera
+  has_many :species, through: :genera
 
   def parent
     subfamily
@@ -23,11 +24,6 @@ class Tribe < Taxon
 
   def childrens_rank_in_words
     "genera"
-  end
-
-  # TODO don't know how to do this as a `has_many`.
-  def species
-    Species.where(genus_id: genera.pluck(:id))
   end
 
   private

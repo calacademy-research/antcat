@@ -53,16 +53,6 @@ class IssuesController < ApplicationController
     redirect_to @issue, notice: "Successfully re-opened issue."
   end
 
-  def autocomplete
-    search_query = params[:q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteIssues[search_query]
-      end
-    end
-  end
-
   private
 
     def set_issue

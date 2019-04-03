@@ -38,7 +38,7 @@ enableInlineExpansions = ->
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
   # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
   # See http://qaz.wtf/u/show.cgi?show=c0-1ff&type=hex and https://unicode-table.com/en/#basic-latin
-  regexp = new RegExp(flag + '([A-Za-z0-9_.,:\\u00c0-\\u01ff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  regexp = new RegExp(flag + '([A-Za-z0-9&_.,:\\u00c0-\\u01ff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
 
   match = regexp.exec(subtext)
   if match

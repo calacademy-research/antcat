@@ -11,13 +11,25 @@ describe References::Search::FulltextLight, :search do
       specify { expect(described_class["Casevitz Weulersse"]).to eq [reference] }
     end
 
+    context "when search query contains '&'" do
+      let!(:reference) do
+        bolton = create :author_name, name: 'Bolton, B.'
+        fisher = create :author_name, name: 'Fisher, B.'
+
+        create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+      end
+
+      before { Sunspot.commit }
+
+      specify { expect(described_class["Fisher & Bolton 1970a"]).to eq [reference] }
+    end
+
     context "when search query contains 'et al.'" do
       let!(:reference) do
         bolton = create :author_name, name: 'Bolton, B.'
         fisher = create :author_name, name: 'Fisher, B.'
         ward = create :author_name, name: 'Ward, P.S.'
 
-        # The reference's key will contain "et al".
         create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 

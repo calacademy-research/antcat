@@ -51,13 +51,6 @@ Then("there should be a textarea with markdown and autocompletion") do
   find "textarea[data-has-linkables]"
 end
 
-When("I fill in the markdown textarea with markdown links for the above") do
-  markdown_textarea.set <<-TEXT.squish
-    %issue#{Issue.first.id}
-    %feedback#{Feedback.first.id}
-  TEXT
-end
-
 def markdown_textarea
   find ".preview-area textarea"
 end
