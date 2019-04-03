@@ -137,3 +137,14 @@ Feature: Compare revisions
     And I press "Save"
     And I follow "History"
     Then I should see "Compare selected revisions"
+
+  Scenario: Comparing revisions (protonyms)
+    Given there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
+
+    When I go to the protonyms page
+    And I follow "Formica"
+    And I follow "Edit"
+    And I fill in "protonym_authorship_attributes_pages" with "page 35"
+    And I press "Save"
+    And I follow "History"
+    Then I should see "Compare selected revisions"

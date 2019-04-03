@@ -51,4 +51,9 @@ end
       link 'Edit', edit_protonym_path(protonym)
       parent :protonym, protonym
     end
+
+    crumb :protonym_history do |protonym|
+      link "History"
+      parent :protonym, protonym
+    end
 # rubocop:enable Layout/IndentationConsistency

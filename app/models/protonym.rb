@@ -1,4 +1,5 @@
 class Protonym < ApplicationRecord
+  include RevisionsCanBeCompared
   include Trackable
 
   # TODO we cannot do `dependent: :destroy` because there are protonyms that share the
