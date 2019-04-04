@@ -5,10 +5,12 @@
   =render 'shared/errors_for', resource: resource
   .row
     .medium-6.columns
-      =f.label :email
+      =f.label :email do
+        Email (public)
       =f.email_field :email, autofocus: true
 
-      =f.label :name
+      =f.label :name do
+        Name (public)
       =f.text_field :name
 
   .row
