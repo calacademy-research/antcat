@@ -20,7 +20,6 @@ class TaxtPresenter
     return '' if @taxt.blank?
 
     parse_antweb_refs!
-    parse_antweb_nams!
     parse_antweb_taxs!
 
     sanitize @taxt.html_safe
@@ -37,19 +36,6 @@ class TaxtPresenter
           Exporters::Antweb::InlineCitation[reference]
         else
           warn_about_non_existing_id "REFERENCE", $1
-        end
-      end
-    end
-
-    # Names, "{nam 123}".
-    def parse_antweb_nams!
-      @taxt.gsub!(/{nam (\d+)}/) do
-        name = Name.find_by id: $1
-
-        if name
-          name.name_html
-        else
-          warn_about_non_existing_id "NAME", $1
         end
       end
     end

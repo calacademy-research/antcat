@@ -7,7 +7,7 @@ module Names
     end
 
     def call
-      references_in_fields.concat(references_in_taxt)
+      references_to_taxon_name.concat(references_to_protonym_name)
     end
 
     private
@@ -15,11 +15,6 @@ module Names
       attr_reader :name
 
       delegate :id, to: :name
-
-      def references_in_fields
-        references_to_taxon_name.
-          concat(references_to_protonym_name)
-      end
 
       def references_to_taxon_name
         Taxon.where(name: name).pluck(:id).map do |taxon_id|
@@ -31,16 +26,6 @@ module Names
         Protonym.where(name: name).pluck(:id).map do |protonym_id|
           table_ref 'protonyms', :name_id, protonym_id
         end
-      end
-
-      def references_in_taxt
-        references = []
-        Taxt.models_with_taxts.each_field do |field, model|
-          model.where("#{field} LIKE '%{nam #{name.id}}%'").pluck(:id).each do |id|
-            references << table_ref(model.table_name, field.to_sym, id)
-          end
-        end
-        references
       end
 
       def table_ref table, field, id

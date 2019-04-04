@@ -63,26 +63,6 @@ describe Markdowns::Render do
       end
     end
 
-    describe "name ids" do
-      context "existing name" do
-        let(:name) { create :genus_name }
-        let(:taxt_markdown) { "{nam #{name.id}}" }
-
-        it "render the HTML version of the name" do
-          expected = "<p><i>#{name.name}</i></p>\n"
-          expect(described_class[taxt_markdown]).to eq expected
-        end
-      end
-
-      context "missing (non-existing) name" do
-        let(:taxt_markdown) { '{nam 9999999}' }
-
-        it "renders an error message" do
-          expect(described_class[taxt_markdown]).to include "CANNOT FIND NAME WITH ID 9999999"
-        end
-      end
-    end
-
     it "formats GitHub links" do
       markdown = "%github5"
 

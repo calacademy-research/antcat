@@ -27,7 +27,6 @@ module Markdowns
     def call
       parse_taxon_ids!
       parse_reference_ids!
-      parse_name_ids!
       parse_github_ids!
       parse_user_ids!
 
@@ -70,19 +69,6 @@ module Markdowns
             refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
           rescue
             broken_markdown_link "reference", id
-          end
-        end
-      end
-
-      # Matches: {nam 134043}
-      # Renders: HTML version of name (Formicidae).
-      def parse_name_ids!
-        content.gsub!(/(\{nam (?<id>\d+)\})/) do
-          id = $~[:id]
-          begin
-            Name.find(id).name_html
-          rescue
-            broken_markdown_link "name", id
           end
         end
       end

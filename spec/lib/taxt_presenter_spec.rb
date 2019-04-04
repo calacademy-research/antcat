@@ -35,16 +35,6 @@ describe TaxtPresenter do
         end
       end
 
-      describe "nam tags (names)" do
-        context "when the name can't be found" do
-          let(:results) { described_class["{nam 999}"].to_antweb }
-
-          it "adds a warning" do
-            expect(results).to eq "CANNOT FIND NAME WITH ID 999"
-          end
-        end
-      end
-
       describe "tax tags (taxa)" do
         let(:results) { described_class["{tax 999}"].to_antweb }
 
