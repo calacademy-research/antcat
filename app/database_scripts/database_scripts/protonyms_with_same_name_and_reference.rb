@@ -33,9 +33,19 @@ end
 
 __END__
 description: >
-  Protonym records with the same name (name value) and reference (reference ID).
+  Protonym records with the same name (name value) and reference (`reference_id`).
+  One in each row is probably a duplicate.
 
-  Orphaned protonyms can be deleted from the protonym's page.
+
+  **How to fix**
+
+
+  * Figure out which is correct protonym
+
+  * Go the the protonym page of the incorrect protonym, and edit each taxon in the "Taxa belonging to this protonym" section, so that the protonym is the correct protonym (you can paste the ID of the correct protonym in the protonym select box).
+
+  * *Optional*: Delete the incorrect and now orphaned protonym (the delete button is only visible for orphaned protonyms). Optional because we can delete all orphans via script.
+
 
 tags: [new!]
 topic_areas: [catalog]
