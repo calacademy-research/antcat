@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_04_235327) do
+ActiveRecord::Schema.define(version: 2019_04_04_235547) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -178,13 +178,6 @@ ActiveRecord::Schema.define(version: 2019_04_04_235327) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "places", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["name"], name: "places_name_idx"
-  end
-
   create_table "protonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -201,10 +194,8 @@ ActiveRecord::Schema.define(version: 2019_04_04_235327) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "place_id"
     t.string "place_name"
     t.index ["name"], name: "publishers_name_idx"
-    t.index ["place_id"], name: "publishers_place_id_idx"
   end
 
   create_table "read_marks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|

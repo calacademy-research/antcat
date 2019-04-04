@@ -1,5 +1,3 @@
-# TODO drop `publishers.place_id`.
-
 class AddPlaceToPublishers < ActiveRecord::Migration[5.1]
   def change
     add_column :publishers, :place_name, :string
