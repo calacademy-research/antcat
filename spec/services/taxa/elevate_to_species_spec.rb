@@ -135,18 +135,6 @@ describe Taxa::ElevateToSpecies do
 
         expect(Name.count).to eq(name_count + 1)
       end
-
-      it "reuses existing species name, if possible" do
-        existing_species_name = create :species_name, name: "Atta colobopsis"
-        species = create_species 'Atta noconflictus', genus: genus
-        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-          epithet: 'colobopsis', epithets: 'major colobopsis'
-        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
-
-        new_species = described_class[taxon]
-
-        expect(new_species.name).to eq existing_species_name
-      end
     end
   end
 end
