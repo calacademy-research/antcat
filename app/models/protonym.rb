@@ -5,6 +5,7 @@ class Protonym < ApplicationRecord
   # TODO we cannot do `dependent: :destroy` because there are protonyms that share the
   # same `authorship_id`. We may not want to allow sharing `authorship_id`.
   # See `Protonym.group(:authorship_id).having("COUNT(*) > 1").count.count`
+  # See also `ProtonymsWithSameAuthorshipRecord`.
   belongs_to :authorship, class_name: 'Citation'
   belongs_to :name
 
