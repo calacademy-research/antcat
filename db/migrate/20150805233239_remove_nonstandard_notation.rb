@@ -41,14 +41,13 @@ class RemoveNonstandardNotation < ActiveRecord::Migration
         name.origin = 'migration remove_nonstandard_notation'
         name.save
       end
-      puts "  name_html: '#{name.name_html}' name id: '#{name.id}' name: '#{name.name}'"
 
       new_taxon = mother.create_taxon Rank[taxon.rank], taxon.parent
       new_taxon.auto_generated = true
       new_taxon.origin = 'migration'
       new_taxon.status = "unavailable uncategorized"
       new_taxon.current_valid_taxon_id = current_valid_taxon.id
-      new_taxon.name_html_cache = name.name_html
+      new_taxon.name_html_cache = name.name_to_html
       new_taxon.name_cache = name.name
       new_taxon.name_id = name.id
       new_taxon.protonym_id = taxon.protonym_id

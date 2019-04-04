@@ -54,7 +54,6 @@ class RemoveProtonymHtml < ActiveRecord::Migration
       new_name_record.origin = 'migration'
       new_name_record.nonconforming_name = name.nonconforming_name
       new_name_record.save
-      puts "  Made new name: #{new_name_record.id} with name #{new_name_record.name} and html: #{new_name_record.name_html}"
     end
 
     # Find all references to the old name id, and replace it with the new name id.

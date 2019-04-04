@@ -1,4 +1,8 @@
 class SpeciesGroupName < Name
+  def name_to_html
+    italicize name
+  end
+
   def epithet_to_html
     italicize epithet
   end

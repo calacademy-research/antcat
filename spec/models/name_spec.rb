@@ -17,8 +17,8 @@ describe Name do
 
   describe "#to_html_with_fossil" do
     it "formats the fossil symbol" do
-      expect(SpeciesName.new(name_html: '<i>Atta major</i>').to_html_with_fossil(false)).to eq '<i>Atta major</i>'
-      expect(SpeciesName.new(name_html: '<i>Atta major</i>').to_html_with_fossil(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major', name_html: '<i>Atta major</i>').to_html_with_fossil(false)).to eq '<i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major', name_html: '<i>Atta major</i>').to_html_with_fossil(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
     end
   end
 
