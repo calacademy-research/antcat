@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_02_204649) do
+ActiveRecord::Schema.define(version: 2019_04_04_235020) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -39,16 +39,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
   create_table "authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "bolton_matches", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "bolton_reference_id"
-    t.integer "reference_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float "similarity"
-    t.index ["bolton_reference_id"], name: "bolton_matches_bolton_reference_id_idx"
-    t.index ["reference_id"], name: "bolton_matches_reference_id_idx"
   end
 
   create_table "bolton_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -128,20 +118,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.datetime "updated_at"
     t.boolean "open", default: true
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
-  end
-
-  create_table "forward_refs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "fixee_id"
-    t.string "fixee_attribute"
-    t.integer "genus_id"
-    t.string "epithet"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "fixee_type"
-    t.string "type"
-    t.integer "name_id"
-    t.index ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type"
-    t.index ["name_id"], name: "index_forward_refs_on_name_id"
   end
 
   create_table "institutions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -415,17 +391,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "scope"
-  end
-
-  create_table "updates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "class_name"
-    t.integer "record_id"
-    t.string "field_name"
-    t.text "before"
-    t.text "after"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "name"
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
