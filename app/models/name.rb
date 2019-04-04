@@ -20,12 +20,16 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
+  def epithet_to_html
+    epithet
+  end
+
   def to_html_with_fossil fossil
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def epithet_with_fossil_html fossil
-    "#{dagger_html if fossil}#{epithet_html}".html_safe
+    "#{dagger_html if fossil}#{epithet_to_html}".html_safe
   end
 
   def dagger_html

@@ -1,4 +1,8 @@
 class SpeciesGroupName < Name
+  def epithet_to_html
+    italicize epithet
+  end
+
   def genus_epithet
     words[0]
   end
