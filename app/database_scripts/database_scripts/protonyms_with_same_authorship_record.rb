@@ -38,12 +38,13 @@ end
 __END__
 description: >
   Protonym records with the same authorship record (`authorship_id`).
+  One in each row is probably a duplicate.
 
 
   **How to fix**
 
 
-  * Figure out which is correct protonym
+  * Figure out which is the correct protonym
 
   * Go the the protonym page of the incorrect protonym, and edit each taxon in the "Taxa belonging to this protonym" section, so that the protonym is the correct protonym (you can paste the ID of the correct protonym in the protonym select box).
 
