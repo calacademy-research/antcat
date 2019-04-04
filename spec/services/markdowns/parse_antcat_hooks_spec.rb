@@ -32,25 +32,6 @@ describe Markdowns::ParseAntcatHooks do
       end
     end
 
-    describe "nam tags (names)" do
-      it "returns the HTML version of the name" do
-        name = create :subspecies_name
-        expect(described_class["{nam #{name.id}}"]).to eq name.name_html
-      end
-
-      context "when the name can't be found" do
-        let(:results) { described_class["{nam 999}"] }
-
-        it "adds a warning" do
-          expect(results).to match "CANNOT FIND NAME WITH ID 999"
-        end
-
-        it "includes a 'Search history?' link" do
-          expect(results).to match "Search history?"
-        end
-      end
-    end
-
     describe "tax tags (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
