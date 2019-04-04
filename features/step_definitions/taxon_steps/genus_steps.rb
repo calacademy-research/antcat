@@ -9,7 +9,7 @@ end
 
 Given("there is a genus {string} with protonym name {string}") do |name, protonym_name|
   genus = create_genus name
-  genus.protonym.name = Name.find_by_name protonym_name
+  genus.protonym.name = Name.find_by(name: protonym_name)
   genus.save
 end
 
