@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_02_204649) do
+ActiveRecord::Schema.define(version: 2019_04_04_235547) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -39,16 +39,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
   create_table "authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "bolton_matches", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "bolton_reference_id"
-    t.integer "reference_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.float "similarity"
-    t.index ["bolton_reference_id"], name: "bolton_matches_bolton_reference_id_idx"
-    t.index ["reference_id"], name: "bolton_matches_reference_id_idx"
   end
 
   create_table "bolton_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -130,20 +120,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
-  create_table "forward_refs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "fixee_id"
-    t.string "fixee_attribute"
-    t.integer "genus_id"
-    t.string "epithet"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "fixee_type"
-    t.string "type"
-    t.integer "name_id"
-    t.index ["fixee_id", "fixee_type"], name: "index_forward_refs_on_fixee_id_and_fixee_type"
-    t.index ["name_id"], name: "index_forward_refs_on_name_id"
-  end
-
   create_table "institutions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "abbreviation", null: false
     t.string "name", null: false
@@ -202,13 +178,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
-  create_table "places", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["name"], name: "places_name_idx"
-  end
-
   create_table "protonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -225,10 +194,8 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "place_id"
     t.string "place_name"
     t.index ["name"], name: "publishers_name_idx"
-    t.index ["place_id"], name: "publishers_place_id_idx"
   end
 
   create_table "read_marks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -306,17 +273,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.index ["nesting_reference_id"], name: "references_nested_reference_id_idx"
     t.index ["publisher_id"], name: "references_publisher_id_idx"
     t.index ["updated_at"], name: "references_updated_at_idx"
-  end
-
-  create_table "roles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "name"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
-    t.index ["name"], name: "index_roles_on_name"
-    t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
   create_table "site_notices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -417,17 +373,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.string "scope"
   end
 
-  create_table "updates", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "class_name"
-    t.integer "record_id"
-    t.string "field_name"
-    t.text "before"
-    t.text "after"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "name"
-  end
-
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: ""
@@ -458,14 +403,6 @@ ActiveRecord::Schema.define(version: 2019_04_02_204649) do
     t.index ["invitation_token"], name: "index_users_on_invitation_token"
     t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-  end
-
-  create_table "users_roles", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "role_id"
-    t.index ["role_id"], name: "index_users_roles_on_role_id"
-    t.index ["user_id", "role_id"], name: "index_users_roles_on_user_id_and_role_id"
-    t.index ["user_id"], name: "index_users_roles_on_user_id"
   end
 
   create_table "versions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
