@@ -48,4 +48,4 @@ description: >
   )
 
 tags: [regression-test]
-topic_areas: [catalog]
+topic_areas: [protonyms]
