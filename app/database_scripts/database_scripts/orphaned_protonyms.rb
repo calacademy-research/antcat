@@ -4,7 +4,7 @@ module DatabaseScripts
     include ActionView::Helpers::UrlHelper
 
     def results
-      Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)")
+      Protonym.where.not(id: Taxon.select(:protonym_id))
     end
 
     def render
@@ -28,8 +28,7 @@ module DatabaseScripts
       def protonym_name_with_search_link protonym
         # rubocop:disable Lint/UriEscapeUnescape
         search_path = "/catalog/search/quick_search?&search_type=containing&qq="
-        label = 'Search'
-        "<a href='#{search_path}#{URI.encode(protonym.name.name, /\W/)}'>#{label}</a>"
+        "<a href='#{search_path}#{URI.encode(protonym.name.name, /\W/)}'>Search</a>"
         # rubocop:enable Lint/UriEscapeUnescape
       end
   end
@@ -40,12 +39,7 @@ description: >
   Click on the protonym name to search for taxa with this name.
 
 
-  It is probably safe to remove these (use:
-  ```
-  orphans = Protonym.where("id NOT IN (SELECT protonym_id FROM taxa)");
-  orphans.each &:destroy
-  ```
-  )
+  These can be deleted via script (see %github430).
 
 tags: [regression-test]
 topic_areas: [protonyms]
