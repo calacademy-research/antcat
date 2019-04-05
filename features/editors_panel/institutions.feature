@@ -1,7 +1,9 @@
+@feed
 Feature: Institutions
-  Scenario: Adding an institution
-    Given I am logged in as a helper editor
+  Background:
+    Given I log in as a catalog editor named "Archibald"
 
+  Scenario: Adding an institution (with feed)
     When I go to the Editor's Panel
     And I follow "Edit institutions"
     Then I should not see "CASC"
@@ -10,6 +12,7 @@ Feature: Institutions
     When I follow "New"
     And I fill in "institution_abbreviation" with "CASC"
     And I fill in "institution_name" with "California Academy of Sciences"
+    And I fill in "edit_summary" with "fix typo"
     And I press "Save"
     Then I should see "Successfully created institution"
 
@@ -17,15 +20,19 @@ Feature: Institutions
     Then I should see "CASC"
     And I should see "California Academy of Sciences"
 
-  Scenario: Editing an institution
-    Given I am logged in as a catalog editor
-    And there is an institution "CASC" ("California Academy of Sciences")
+    When I go to the activity feed
+    Then I should see "Archibald added the institution CASC" and no other feed items
+    And I should see the edit summary "fix typo"
+
+  Scenario: Editing an institution (with feed)
+    Given there is an institution "CASC" ("California Academy of Sciences")
 
     When I go to the institutions page
     And I follow "CASC"
     And I follow "Edit"
     And I fill in "institution_abbreviation" with "SASC"
     And I fill in "institution_name" with "Sweden Academy of Sciences"
+    And I fill in "edit_summary" with "fix typo"
     And I press "Save"
     Then I should see "Successfully updated institution"
 
@@ -33,18 +40,21 @@ Feature: Institutions
     Then I should see "SASC"
     And I should see "Sweden Academy of Sciences"
 
-  Scenario: Deleting an institution
-    Given I am logged in as a catalog editor
-    And there is an institution "CASC" ("California Academy of Sciences")
+    When I go to the activity feed
+    Then I should see "Archibald edited the institution SASC" and no other feed items
+    And I should see the edit summary "fix typo"
+
+  Scenario: Deleting an institution (with feed)
+    Given there is an institution "CASC" ("California Academy of Sciences")
+    And I log in as a superadmin named "Archibald"
 
     When I go to the institutions page
-    Then I should not see "Delete"
-
-    When I log in as a superadmin
-    And I go to the institutions page
     Then I should see "CASC"
 
     When I follow "Delete"
     Then I should be on the institutions page
     And I should see "Institution was successfully deleted"
     And I should not see "CASC"
+
+    When I go to the activity feed
+    Then I should see "Archibald deleted the institution CASC" and no other feed items
