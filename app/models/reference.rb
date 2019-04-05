@@ -1,6 +1,5 @@
 # TODO avoid `require`.
 
-require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
@@ -28,6 +27,7 @@ class Reference < ApplicationRecord
   has_many :citations
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxa
+  has_one :document, class_name: 'ReferenceDocument'
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }
@@ -43,6 +43,8 @@ class Reference < ApplicationRecord
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
+  accepts_nested_attributes_for :document, reject_if: :all_blank
+  delegate :url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
