@@ -104,8 +104,9 @@ class Reference < ApplicationRecord
     citation_year.gsub %r{ .*$}, ''
   end
 
-  def refresh_author_names_caches(*)
-    update_attribute :author_names_string_cache, make_author_names_string_cache
+  def refresh_author_names_caches(*args)
+    set_author_names_caches args
+    save(validate: false)
   end
 
   # TODO merge into Workflow. Only used for `.approve_all`,
@@ -183,10 +184,6 @@ class Reference < ApplicationRecord
     end
 
     def set_author_names_caches(*)
-      self.author_names_string_cache = make_author_names_string_cache
-    end
-
-    def make_author_names_string_cache
-      author_names.map(&:name).join('; ').strip
+      self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end
