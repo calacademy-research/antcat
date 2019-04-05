@@ -29,7 +29,6 @@ describe Taxon do
       end
 
       it "cannot be approved" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
         expect(taxon.can_be_approved_by?(a_change, editor)).to be false
         expect(taxon.can_be_approved_by?(a_change, user)).to be false
       end
@@ -45,7 +44,6 @@ describe Taxon do
       end
 
       it "can be approved by an approver" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
         expect(taxon.can_be_approved_by?(a_change, approver)).to be true
         expect(taxon.can_be_approved_by?(a_change, user)).to be false
       end
@@ -66,7 +64,6 @@ describe Taxon do
       end
 
       it "cannot be approved" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
         expect(taxon.can_be_approved_by?(a_change, editor)).to be false
         expect(taxon.can_be_approved_by?(a_change, user)).to be false
       end
