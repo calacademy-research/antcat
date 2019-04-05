@@ -102,9 +102,8 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  # TODO remove since `#name_cache` is not unique.
-  def self.find_by_name name
-    find_by(name_cache: name)
+  def self.name_clash? name
+    where(name_cache: name).exists?
   end
 
   def rank
