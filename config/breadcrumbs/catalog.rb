@@ -4,14 +4,14 @@ crumb :catalog do
 end
 
   crumb :family do |_taxon|
-    link taxon_breadcrumb_link(Family.first)
+    link Family.first.decorate.link_to_taxon
     parent :catalog
   end
 
   ranks = [:subfamily, :tribe, :genus, :subgenus, :species, :subspecies]
   ranks.each do |rank|
     crumb rank do |taxon|
-      link taxon_breadcrumb_link(taxon)
+      link taxon.decorate.link_to_taxon
       parent_as_symbol = taxon.parent.class.name.downcase.to_sym
       parent parent_as_symbol, taxon.parent rescue :family
     end
