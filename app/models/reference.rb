@@ -125,7 +125,7 @@ class Reference < ApplicationRecord
   # Normal keey: "Bolton, 1885g".
   # This:        "Bolton, 1885".
   def keey_without_letters_in_year
-    authors_for_keey << ', ' << year_or_no_year
+    authors_for_keey << ', ' << year.to_s
   end
 
   def authors_for_keey
@@ -136,11 +136,6 @@ class Reference < ApplicationRecord
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"
     end.html_safe
-  end
-
-  def year_or_no_year
-    return "[no year]" if year.blank?
-    year.to_s
   end
 
   def principal_author_last_name

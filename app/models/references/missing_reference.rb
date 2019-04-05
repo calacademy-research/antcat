@@ -1,4 +1,6 @@
 class MissingReference < Reference
+  validates :citation_year, format: { with: /\A\d{4}[a-z]?\z/ }
+
   def keey
     keey_that_makes_the_most_sense
   end
