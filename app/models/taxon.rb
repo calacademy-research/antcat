@@ -127,7 +127,7 @@ class Taxon < ApplicationRecord
     taxon_and_ancestors.reverse
   end
 
-  def taxon_label
+  def epithet_with_fossil
     name.epithet_with_fossil_html fossil?
   end
 
