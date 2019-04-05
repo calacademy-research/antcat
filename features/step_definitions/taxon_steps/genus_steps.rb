@@ -9,7 +9,7 @@ end
 
 Given("there is a genus {string} with protonym name {string}") do |name, protonym_name|
   genus = create_genus name
-  genus.protonym.name = Name.find_by_name protonym_name
+  genus.protonym.name = Name.find_by(name: protonym_name)
   genus.save
 end
 
@@ -22,7 +22,7 @@ Given("there is a genus {string} that is incertae sedis in the subfamily") do |n
 end
 
 Given("a genus exists with a name of {string} and a subfamily of {string}") do |name, parent_name|
-  subfamily = Subfamily.find_by_name parent_name
+  subfamily = Subfamily.find_by(name_cache: parent_name)
   subfamily ||= create :subfamily, name: create(:subfamily_name, name: parent_name)
 
   create :genus,
@@ -37,7 +37,7 @@ Given("a genus exists with a name of {string} and no subfamily") do |name|
 end
 
 Given(/a (fossil )?genus exists with a name of "(.*?)" and a tribe of "(.*?)"/) do |fossil, name, parent_name|
-  tribe = Tribe.find_by_name parent_name
+  tribe = Tribe.find_by(name_cache: parent_name)
   create :genus,
     name: create(:genus_name, name: name),
     subfamily: tribe.subfamily,

@@ -1,10 +1,6 @@
 #!/usr/bin/env ruby
 #^syntax detection
 
-# Note: this has never been used in production. Use it to quickly set up
-# a dev environment, or just study it (and the Vagrantfile) to figure out
-# which dependencies are required.
-
 site 'https://supermarket.getchef.com/api/v1'
 
 cookbook 'rvm', git: 'git://github.com/fnichol/chef-rvm.git', ref: 'v0.9.2'

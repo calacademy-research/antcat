@@ -41,9 +41,9 @@ Then("the history should be empty") do
 end
 
 When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |name, tagged_name|
-  taxon = Taxon.find_by_name name
+  taxon = Taxon.find_by(name_cache: name)
   taxt =  if tagged_name
-            tag_taxon = Taxon.find_by_name tagged_name
+            tag_taxon = Taxon.find_by(name_cache: tagged_name)
             "{tax #{tag_taxon.id}}"
           else
             'Tag'

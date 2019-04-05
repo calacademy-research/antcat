@@ -3,7 +3,7 @@ Given("there is a species {string}") do |name|
 end
 
 Given("a species exists with a name of {string} and a genus of {string}") do |name, parent_name|
-  genus = Genus.find_by_name parent_name
+  genus = Genus.find_by(name_cache: parent_name)
   genus ||= create :genus, name: create(:genus_name, name: parent_name)
   @species = create :species,
     name: create(:species_name, name: "#{parent_name} #{name}"),

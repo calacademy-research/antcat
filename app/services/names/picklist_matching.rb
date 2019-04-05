@@ -1,5 +1,3 @@
-# TODO refactor more.
-
 class Names::PicklistMatching
   include Service
 
@@ -34,14 +32,14 @@ class Names::PicklistMatching
     end
 
     def picklist_query name_field, search_term
-      Name.select('names.id AS id, name, name_html, taxa.id AS taxon_id').
+      Name.select('names.id AS id, name, taxa.id AS taxon_id').
         joins("LEFT OUTER JOIN taxa ON taxa.name_id = names.id").
         where("#{name_field} LIKE ?", search_term)
     end
 
     def format matches
       matches.map do |e|
-        result = { id: e.id.to_i, name: e.name, label: e.name_html, value: e.name }
+        result = { id: e.id.to_i, name: e.name, label: e.name, value: e.name }
         result[:taxon_id] = e.taxon_id.to_i if e.taxon_id
         result
       end

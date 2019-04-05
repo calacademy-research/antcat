@@ -39,10 +39,6 @@ module Taxa
         species = subspecies.species
         new_name_string = "#{species.genus.name.name} #{subspecies.name.epithet}"
 
-        new_name = SpeciesName.find_by_name new_name_string
-
-        return new_name if new_name
-
         # TODO make the `Name` classes set epithet and HTML names.
         SpeciesName.new name: new_name_string,
           name_html: italicize(new_name_string),

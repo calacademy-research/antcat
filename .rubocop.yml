@@ -12,6 +12,7 @@ AllCops:
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'app/controllers/name_fields_controller.rb'
+    - 'vendor/**/*'
 
 Rails:
   Enabled: true

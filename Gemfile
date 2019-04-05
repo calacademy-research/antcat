@@ -54,8 +54,6 @@ gem 'workflow', '< 2'
 group :development do
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'rubocop', '~> 0.66.0', require: false
-  gem 'rubocop-rspec'
 end
 
 group :development, :test do
@@ -68,6 +66,8 @@ group :development, :test do
   gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
+  gem 'rubocop', '~> 0.66.0', require: false
+  gem 'rubocop-rspec'
   gem 'sunspot_test'
 end
 

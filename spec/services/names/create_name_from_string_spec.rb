@@ -9,6 +9,7 @@ describe Names::CreateNameFromString do
         expect(name).to be_a SubgenusName
         expect(name.name).to eq 'Camponotus (Forelophilus)'
         expect(name.name_html).to eq '<i>Camponotus (Forelophilus)</i>'
+        expect(name.name_to_html).to eq '<i>Camponotus (Forelophilus)</i>'
         expect(name.epithet).to eq 'Forelophilus'
         expect(name.epithet_html).to eq '<i>Forelophilus</i>'
       end

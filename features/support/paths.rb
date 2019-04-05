@@ -16,22 +16,22 @@ module NavigationHelpers
       catalog_search_path
 
     when /^the catalog (entry|page) for "([^"]*)"$/
-      taxon = Taxon.find_by_name $2
+      taxon = Taxon.find_by(name_cache: $2)
       "/catalog/#{taxon.id}"
     when /^the catalog$/
       root_path
 
     # Editing (catalog)
     when /^the edit page for "(.*)"$/
-      "/taxa/#{Taxon.find_by_name($1).id}/edit"
+      "/taxa/#{Taxon.find_by(name_cache: $1).id}/edit"
     when /^the new taxon page$/
       "/taxa/new"
 
     when /^the "Convert to subspecies" page for "([^"]*)"$/
-      taxon = Taxon.find_by_name $1
+      taxon = Taxon.find_by(name_cache: $1)
       "/taxa/#{taxon.id}/convert_to_subspecies"
     when /^the new "Convert to subspecies" page for "([^"]*)"$/
-      taxon = Taxon.find_by_name $1
+      taxon = Taxon.find_by(name_cache: $1)
       "/taxa/#{taxon.id}/convert_to_subspecies/new"
 
     when /^the protonyms page$/

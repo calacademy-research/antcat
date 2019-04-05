@@ -20,12 +20,20 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
+  def name_to_html
+    name
+  end
+
+  def epithet_to_html
+    epithet
+  end
+
   def to_html_with_fossil fossil
-    "#{dagger_html if fossil}#{name_html}".html_safe
+    "#{dagger_html if fossil}#{name_to_html}".html_safe
   end
 
   def epithet_with_fossil_html fossil
-    "#{dagger_html if fossil}#{epithet_html}".html_safe
+    "#{dagger_html if fossil}#{epithet_to_html}".html_safe
   end
 
   def dagger_html
@@ -43,6 +51,6 @@ class Name < ApplicationRecord
     end
 
     def set_taxon_caches
-      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_html)
+      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_to_html)
     end
 end

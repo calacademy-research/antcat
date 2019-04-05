@@ -62,7 +62,7 @@ module Taxa::CallbacksAndValidations
 
     def set_name_caches
       self.name_cache = name.name
-      self.name_html_cache = name.name_html
+      self.name_html_cache = name.name_to_html
     end
 
     def delete_synonyms
