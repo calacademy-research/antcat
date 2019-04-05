@@ -19,7 +19,7 @@ class Taxon < ApplicationRecord
   end
 
   def can_be_approved_by? change, user
-    return false unless waiting? && user.is_editor?
+    return false unless waiting?
 
     user != change.changed_by
   end
