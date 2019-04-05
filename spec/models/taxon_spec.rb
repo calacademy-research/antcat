@@ -79,28 +79,6 @@ describe Taxon do
     end
   end
 
-  describe "#history_items" do
-    let(:taxon) { create :family }
-
-    it "shows the items in the order in which they were added to the taxon" do
-      3.times { |number| taxon.history_items.create! taxt: "#{number}" }
-
-      expect(taxon.history_items.map(&:taxt)).to eq ['0', '1', '2']
-    end
-  end
-
-  describe "#reference_sections" do
-    let(:taxon) { create :family }
-
-    it "shows the items in the order in which they were added to the taxon" do
-      3.times do |number|
-        taxon.reference_sections.create! references_taxt: "#{number}"
-      end
-
-      expect(taxon.reference_sections.map(&:references_taxt)).to eq ['0', '1', '2']
-    end
-  end
-
   describe "#author_citation" do
     context "when a recombination in a different genus" do
       let(:species) { create_species 'Atta minor' }
