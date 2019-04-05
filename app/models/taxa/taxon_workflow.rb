@@ -12,8 +12,6 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  delegate :approver, :approved_at, to: :last_change
-
   def can_be_reviewed?
     waiting?
   end

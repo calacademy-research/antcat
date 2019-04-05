@@ -54,11 +54,6 @@ describe Taxon do
       let(:a_change) { create :change, taxon: taxon, user: adder, approver: approver, approved_at: Time.current }
       let!(:version) { create :version, change_id: a_change.id, item: taxon }
 
-      it "has an approver and an approved_at" do
-        expect(taxon.approver).to eq approver
-        expect(taxon.approved_at).to be_within(7.hours).of Time.current
-      end
-
       it "cannot be reviewed" do
         expect(taxon.can_be_reviewed?).to be false
       end
