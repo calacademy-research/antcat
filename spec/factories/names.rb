@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :name do
-    sequence(:name) { |_n| raise }
     name_html { name }
     epithet { name }
     epithet_html { name_html }
