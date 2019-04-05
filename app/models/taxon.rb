@@ -149,8 +149,8 @@ class Taxon < ApplicationRecord
     protonym.authorship.reference
   end
 
-  def what_links_here
-    Taxa::WhatLinksHere[self]
+  def what_links_here predicate: false
+    Taxa::WhatLinksHere[self, predicate: predicate]
   end
 
   def any_nontaxt_references?
