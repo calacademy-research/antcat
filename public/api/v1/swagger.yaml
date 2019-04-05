@@ -827,15 +827,9 @@ definitions:
       name:
         type: string
         description: Plain text name
-      name_html:
-        type: string
-        description: html version of name (with formatting, usually italics)
       epithet:
         type: string
         description: Plain text terminal epithet
-      epithet_html:
-        type: string
-        description: html version of terminal epithet (with formatting, usually italics)
       epithets:
         type: string
         description: all epithets, plain text

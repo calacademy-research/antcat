@@ -14,12 +14,12 @@ class TaxonDecorator::LinkEachEpithet
     string = genus_link @taxon
 
     if @taxon.is_a? Species
-      return string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
+      return string << header_link(@taxon, @taxon.name.epithet_to_html.html_safe)
     end
 
     species = @taxon.species
     if species
-      string << header_link(species, species.name.epithet_html.html_safe)
+      string << header_link(species, species.name.epithet_to_html.html_safe)
       string << ' '.html_safe
       string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
     else

@@ -77,7 +77,7 @@ module Taxa
           parameters: {
             original_species_id: original_species.id,
             name_was: original_species.name_html_cache,
-            name: new_subspecies.name.name_html
+            name: new_subspecies.name.name_to_html
           }
       end
   end

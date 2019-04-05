@@ -52,6 +52,7 @@ describe Subspecies do
 
         expect(subspecies.name.name).to eq 'Eciton nigrus medius minor'
         expect(subspecies.name.name_html).to eq '<i>Eciton nigrus medius minor</i>'
+        expect(subspecies.name.name_to_html).to eq '<i>Eciton nigrus medius minor</i>'
         expect(subspecies.name.epithet).to eq 'minor'
         expect(subspecies.name.epithet_html).to eq '<i>minor</i>'
         expect(subspecies.name.epithets).to eq 'nigrus medius minor'

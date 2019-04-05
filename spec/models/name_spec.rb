@@ -6,19 +6,19 @@ describe Name do
 
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
-      expect(SpeciesName.new(epithet_html: '<i>major</i>').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
-      expect(SpeciesName.new(epithet_html: '<i>major</i>').epithet_with_fossil_html(false)).to eq '<i>major</i>'
-      expect(GenusName.new(epithet_html: '<i>Atta</i>').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>Atta</i>'
-      expect(GenusName.new(epithet_html: '<i>Atta</i>').epithet_with_fossil_html(false)).to eq '<i>Atta</i>'
-      expect(SubfamilyName.new(epithet_html: 'Attanae').epithet_with_fossil_html(true)).to eq '&dagger;Attanae'
-      expect(SubfamilyName.new(epithet_html: 'Attanae').epithet_with_fossil_html(false)).to eq 'Attanae'
+      expect(SpeciesName.new(epithet: 'major', epithet_html: '<i>major</i>').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
+      expect(SpeciesName.new(epithet: 'major', epithet_html: '<i>major</i>').epithet_with_fossil_html(false)).to eq '<i>major</i>'
+      expect(GenusName.new(epithet: 'Atta', epithet_html: '<i>Atta</i>').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>Atta</i>'
+      expect(GenusName.new(epithet: 'Atta', epithet_html: '<i>Atta</i>').epithet_with_fossil_html(false)).to eq '<i>Atta</i>'
+      expect(SubfamilyName.new(epithet: 'Attanae', epithet_html: 'Attanae').epithet_with_fossil_html(true)).to eq '&dagger;Attanae'
+      expect(SubfamilyName.new(epithet: 'Attanae', epithet_html: 'Attanae').epithet_with_fossil_html(false)).to eq 'Attanae'
     end
   end
 
   describe "#to_html_with_fossil" do
     it "formats the fossil symbol" do
-      expect(SpeciesName.new(name_html: '<i>Atta major</i>').to_html_with_fossil(false)).to eq '<i>Atta major</i>'
-      expect(SpeciesName.new(name_html: '<i>Atta major</i>').to_html_with_fossil(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major', name_html: '<i>Atta major</i>').to_html_with_fossil(false)).to eq '<i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major', name_html: '<i>Atta major</i>').to_html_with_fossil(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
     end
   end
 
