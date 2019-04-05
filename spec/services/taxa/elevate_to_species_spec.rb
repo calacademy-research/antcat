@@ -6,9 +6,7 @@ describe Taxa::ElevateToSpecies do
       context "when subspecies has no species" do
         let!(:subspecies) { create :subspecies, species: nil }
 
-        specify do
-          expect { described_class[subspecies] }.to raise_error(NoMethodError)
-        end
+        specify { expect { described_class[subspecies] }.to raise_error(NoMethodError) }
       end
 
       context "when a species with this name already exists" do
