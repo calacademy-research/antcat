@@ -9,6 +9,12 @@ describe Taxon do
       in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
   end
 
+  describe 'relations' do
+    it { is_expected.to have_many(:history_items).dependent(:destroy) }
+    it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
+    it { is_expected.to belong_to(:protonym).dependent(false) }
+  end
+
   describe "scopes" do
     describe ".self_join_on" do
       let!(:genus) { create :genus, fossil: true }
@@ -73,26 +79,8 @@ describe Taxon do
     end
   end
 
-  describe "#protonym" do
-    context "when the taxon is destroyed" do
-      let!(:family) { create :family }
-
-      it "doesn't destroy the protonym" do
-        expect { family.destroy }.not_to change { Protonym.count }
-      end
-    end
-  end
-
   describe "#history_items" do
     let(:taxon) { create :family }
-
-    context 'when deleting a taxon' do
-      let!(:history_item) { taxon.history_items.create! taxt: 'taxt' }
-
-      it "cascades to delete history items" do
-        expect { taxon.destroy }.to change { TaxonHistoryItem.exists? history_item.id }.to(false)
-      end
-    end
 
     it "shows the items in the order in which they were added to the taxon" do
       3.times { |number| taxon.history_items.create! taxt: "#{number}" }
@@ -103,15 +91,6 @@ describe Taxon do
 
   describe "#reference_sections" do
     let(:taxon) { create :family }
-
-    context 'when deleting a taxon' do
-      let!(:reference_section) { taxon.reference_sections.create! references_taxt: 'foo' }
-
-      it "cascades to delete the reference sections" do
-        expect { taxon.destroy }.
-          to change { ReferenceSection.exists? reference_section.id }.from(true).to(false)
-      end
-    end
 
     it "shows the items in the order in which they were added to the taxon" do
       3.times do |number|
