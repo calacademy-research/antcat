@@ -95,15 +95,6 @@ class Reference < ApplicationRecord
     string
   end
 
-  # TODO we should probably have `#year` [int] and something
-  # like `#non_standard_year` [string] instead of this +
-  # `#year` + `#citation_year`.
-  # TODO what is this used for?
-  def short_citation_year
-    return "[no year]" if citation_year.blank?
-    citation_year.gsub %r{ .*$}, ''
-  end
-
   def refresh_author_names_caches(*args)
     set_author_names_caches args
     save(validate: false)
@@ -119,7 +110,7 @@ class Reference < ApplicationRecord
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
   def keey
-    authors_for_keey << ', ' << short_citation_year
+    authors_for_keey << ', ' << citation_year_without_extras
   end
 
   # Normal keey: "Bolton, 1885g".
@@ -151,6 +142,10 @@ class Reference < ApplicationRecord
   end
 
   private
+
+    def citation_year_without_extras
+      citation_year.gsub(%r{ .*$}, '')
+    end
 
     def check_not_referenced
       return unless what_links_here(predicate: true)

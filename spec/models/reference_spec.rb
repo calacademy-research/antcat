@@ -139,29 +139,6 @@ describe Reference do
           to change { reference.reload.year }.from(1958).to(2009)
       end
     end
-
-    context 'when `citation_year` is nil' do
-      let(:reference) { create :reference, citation_year: nil }
-
-      specify { expect(reference.short_citation_year).to eq "[no year]" }
-    end
-  end
-
-  describe "#short_citation_year" do
-    it "is the same as citation year if nothing extra" do
-      reference = build_stubbed :article_reference, citation_year: '1970'
-      expect(reference.short_citation_year).to eq '1970'
-    end
-
-    it "allows an ordinal letter" do
-      reference = build_stubbed :article_reference, citation_year: '1970a'
-      expect(reference.short_citation_year).to eq '1970a'
-    end
-
-    it "is trimmed if there is something extra" do
-      reference = build_stubbed :article_reference, citation_year: '1970a ("1971")'
-      expect(reference.short_citation_year).to eq '1970a'
-    end
   end
 
   describe "#what_links_here" do
