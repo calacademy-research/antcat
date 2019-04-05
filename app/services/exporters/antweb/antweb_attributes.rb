@@ -69,7 +69,7 @@ class Exporters::Antweb::AntwebAttributes
       # TODO: hmm.
       if name.is_a? SubspeciesName
         attributes.merge!(
-          species: name.epithets.split(' ').first,
+          species: name.epithets.split.first,
           subspecies: name.epithet
         )
       else
@@ -84,7 +84,7 @@ class Exporters::Antweb::AntwebAttributes
         subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
         tribe: genus.tribe&.name&.name,
         genus: genus.name.name,
-        species: name.epithets.split(' ').first,
+        species: name.epithets.split.first,
         subspecies: name.epithet
       }
     end
