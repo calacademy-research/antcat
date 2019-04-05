@@ -2,14 +2,6 @@ Feature: Editing a taxon
   Background:
     Given I am logged in as a catalog editor
 
-  Scenario: Cancelling
-    Given there is a genus "Calyptites"
-
-    When I go to the edit page for "Calyptites"
-    And I select "subfamily" from "taxon_incertae_sedis_in"
-    And I follow "Cancel"
-    Then I should not see "incertae sedis" in the header
-
   @javascript
   Scenario: Changing the authorship
     Given there is a genus "Eciton"
