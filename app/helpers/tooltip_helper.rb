@@ -2,7 +2,6 @@
 
 module TooltipHelper
   def enable_tooltips
-    return unless current_user
     content_for(:head) { javascript_include_tag "tooltips" }
   end
 
@@ -15,14 +14,14 @@ module TooltipHelper
     link_to tooltip_help_icon(tooltip.text), tooltip
   end
 
+  def tooltip_help_icon text
+    content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
+  end
+
   private
 
     def new_populated_tooltip key, scope
       text = "Could not find tooltip with key '#{key}' with page scope '#{scope}'. Click icon to create."
       link_to tooltip_help_icon(text), new_tooltip_path(key: key)
-    end
-
-    def tooltip_help_icon text
-      content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
     end
 end
