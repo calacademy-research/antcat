@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_04_235547) do
+ActiveRecord::Schema.define(version: 2019_04_06_171100) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -39,28 +39,6 @@ ActiveRecord::Schema.define(version: 2019_04_04_235547) do
   create_table "authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "bolton_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "authors"
-    t.string "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string "title"
-    t.string "journal"
-    t.string "series_volume_issue"
-    t.string "pagination"
-    t.string "reference_type"
-    t.integer "year"
-    t.string "citation_year"
-    t.string "publisher"
-    t.string "place"
-    t.text "original"
-    t.integer "match_id"
-    t.string "match_status"
-    t.string "key_cache"
-    t.string "import_result"
-    t.index ["match_id"], name: "index_bolton_references_on_match_id"
   end
 
   create_table "changes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
