@@ -20,6 +20,7 @@ class RevisionHistoryPath
       case type
       when "Institution"      then institution_path id
       when "Issue"            then issue_history_index_path id
+      when "Name"             then name_history_index_path id
       when "Protonym"         then protonym_history_index_path id
       when "Reference"        then reference_history_index_path id
       when "ReferenceSection" then reference_section_path id

@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe SubspeciesName do
+  it { is_expected.to validate_presence_of :epithets }
+
   describe "name parts" do
     context 'when three name parts' do
       let(:subspecies_name) do

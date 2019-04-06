@@ -8,6 +8,9 @@
           Name
           =tooltip_icon "name", scope: :taxa
       %td
+        -if taxon.name.persisted?
+          %span.right
+            =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
         %span#name_field
           =render 'name_fields/panel', name_string: taxon.name.try(:name),
             default_name_string: default_name_string && "#{default_name_string} "
