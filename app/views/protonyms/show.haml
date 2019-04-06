@@ -13,6 +13,7 @@
     %h5
       Protonym:
       =@protonym.decorate.format_name
+      .right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
     %table.table.unstriped
       %tbody
         %tr

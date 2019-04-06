@@ -1,0 +1,37 @@
+-@title = "#{@name.name} (##{@name.id}) - Name records"
+-breadcrumb :name, @name
+
+=enable_tooltips
+
+=content_for :breadcrumbs_right do
+  -if user_is_editor?
+    =link_to "Edit", edit_name_path(@name), class: "btn-normal"
+  =link_to "History", name_history_index_path(@name), class: "btn-normal"
+
+.row.margin-bottom
+  .small-12.columns
+    %h5
+      Name record: #{@name.name_to_html}
+      =tooltip_help_icon "'Name' in this context should not be confused with 'names' in the meaning of 'a taxon'. It is an internal representation of how the actual characters of a name are stored in the database."
+    %table.table.unstriped
+      %tbody
+        %tr
+          %th Type
+          %td
+            %code=@name.type
+        %tr
+          %th Name
+          %td=@name.name
+        %tr
+          %th Epithet
+          %td=@name.epithet
+
+        -if @name.is_a? SubspeciesName
+          %tr
+            %th Epithets
+            %td=@name.epithets
+
+.row.margin-bottom
+  .small-12.columns
+    %h5 What Links Here
+    =render "shared/what_links_here", table_refs: @table_refs

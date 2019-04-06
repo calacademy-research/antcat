@@ -133,6 +133,12 @@ Rails.application.routes.draw do
 
   resource :default_reference, only: :update
 
+  resources :names, only: [:show, :edit, :update] do
+    scope module: :names do
+      resources :history, only: :index
+    end
+  end
+
   get 'name_pickers/search'
   get 'name_fields/find'
   get 'name_fields/:type/:id' => 'name_fields#show'
