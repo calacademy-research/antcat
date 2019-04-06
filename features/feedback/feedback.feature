@@ -1,12 +1,12 @@
-@javascript
+# TODO: Tests broke after updating Rails.
+
+@skip @javascript
 Feature: Feedback
   As an user or editor of AntCat
   I want to submit feedback and corrections
   So that we can improve the catalog
 
   Background:
-    # Tests broke after apdating Rails.
-    Given PENDING
     Given I go to the catalog
 
   Scenario: Showing/hiding the feedback form

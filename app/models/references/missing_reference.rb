@@ -1,4 +1,6 @@
 class MissingReference < Reference
+  validates :citation_year, format: { with: /\A\d{4}[a-z]?\z/ }
+
   def keey
     keey_that_makes_the_most_sense
   end
@@ -14,6 +16,6 @@ class MissingReference < Reference
     # HACK to make the best of what's in the database.
     def keey_that_makes_the_most_sense
       return citation.html_safe if citation[/\d{4}/]
-      "#{citation}, #{short_citation_year}".html_safe
+      "#{citation}, #{citation_year || '[no year]'}".html_safe
     end
 end

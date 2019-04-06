@@ -58,7 +58,8 @@ class ReferenceForm
     end
 
     def set_document_host
-      reference.document_host = request_host
+      return unless reference.document
+      reference.document.host = request_host
     end
 
     def parse_author_names_string

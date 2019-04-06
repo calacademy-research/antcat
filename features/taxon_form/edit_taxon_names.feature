@@ -62,17 +62,6 @@ Feature: Editing a taxon's name, protonym name, or type name
     And I press "Save"
     Then I should see "Atta minor" in the headline
 
-  Scenario: Clearing the type name
-    Given there is a genus "Atta" with type name "Atta major"
-
-    When I go to the catalog page for "Atta"
-    Then I should see "Atta major" in the headline
-
-    When I follow "Edit"
-    And I set the type name to ""
-    And I press "Save"
-    Then I should not see "Atta major" in the headline
-
   Scenario: Changing current valid name
     Given there is a species "Atta major" which is a junior synonym of "Eciton minor"
 

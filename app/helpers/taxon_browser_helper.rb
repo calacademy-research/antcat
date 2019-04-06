@@ -1,7 +1,7 @@
 module TaxonBrowserHelper
   def taxon_browser_link taxon
     classes = css_classes_for_status(taxon) << taxon.rank
-    link_to taxon.taxon_label, catalog_path(taxon), class: classes
+    link_to taxon.epithet_with_fossil, catalog_path(taxon), class: classes
   end
 
   def toggle_invalid_or_valid_only_link label = nil

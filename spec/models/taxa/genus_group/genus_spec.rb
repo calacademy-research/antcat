@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Genus do
-  let(:genus_with_tribe) { create :genus, tribe: tribe }
   let(:tribe) { create :tribe, subfamily: subfamily }
   let(:subfamily) { create :subfamily }
   let(:genus) { create :genus }
@@ -12,13 +11,6 @@ describe Genus do
 
     expect(genus.species).to eq [species, other_species]
     expect(genus.children).to eq genus.species
-  end
-
-  it "uses the species's' genus, if nec." do
-    species = create :species, genus: genus
-    create :subspecies, species: species, genus: nil
-
-    expect(genus.subspecies.count).to eq 1
   end
 
   describe "#without_subfamily" do
@@ -40,9 +32,7 @@ describe Genus do
 
   describe "#descendants" do
     context "when there are no descendants" do
-      it "returns an empty array" do
-        expect(genus.descendants).to eq []
-      end
+      specify { expect(genus.descendants).to eq [] }
     end
 
     context "when there are descendants" do
@@ -57,24 +47,22 @@ describe Genus do
   end
 
   describe "#parent" do
-    context "when there's no subfamily" do
+    context "when genus has no subfamily" do
       let!(:genus) { create :genus, subfamily: nil, tribe: nil }
 
       specify { expect(genus.parent).to eq nil }
     end
 
-    context "when there is one" do
+    context "when genus has a subfamily" do
       let!(:genus) { create :genus, subfamily: subfamily, tribe: nil }
 
-      it "refers to the subfamily" do
-        expect(genus.parent).to eq genus.subfamily
-      end
+      specify { expect(genus.parent).to eq genus.subfamily }
     end
 
-    context "when there is one" do
-      it "refers to the tribe" do
-        expect(genus_with_tribe.parent).to eq tribe
-      end
+    context "when genus has a tribe" do
+      let(:genus) { create :genus, tribe: tribe }
+
+      specify { expect(genus.parent).to eq tribe }
     end
   end
 
@@ -90,6 +78,8 @@ describe Genus do
   end
 
   describe "#update_parent" do
+    let(:genus_with_tribe) { create :genus, tribe: tribe }
+
     it "assigns to both tribe and subfamily when parent is a tribe" do
       genus = create :genus
       genus.update_parent tribe

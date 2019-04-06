@@ -5,9 +5,7 @@ require "spec_helper"
 describe Taxa::AdvancedSearch do
   describe "#call" do
     context "when no meaningful search parameters are given" do
-      it "returns an empty array" do
-        expect(described_class[year: '']).to be_empty
-      end
+      specify { expect(described_class[year: '']).to be_empty }
     end
 
     describe "searching by validity" do

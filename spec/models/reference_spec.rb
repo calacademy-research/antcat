@@ -8,6 +8,9 @@ describe Reference do
   it { is_expected.to validate_presence_of :title }
   it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
+  it { is_expected.to delegate_method(:url).to(:document).allow_nil }
+  it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
+
   describe "scopes" do
     describe ".unreviewed_references" do
       let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
@@ -138,29 +141,6 @@ describe Reference do
         expect { reference.update! citation_year: '2010b ["2009"]' }.
           to change { reference.reload.year }.from(1958).to(2009)
       end
-    end
-
-    context 'when `citation_year` is nil' do
-      let(:reference) { create :reference, citation_year: nil }
-
-      specify { expect(reference.short_citation_year).to eq "[no year]" }
-    end
-  end
-
-  describe "#short_citation_year" do
-    it "is the same as citation year if nothing extra" do
-      reference = build_stubbed :article_reference, citation_year: '1970'
-      expect(reference.short_citation_year).to eq '1970'
-    end
-
-    it "allows an ordinal letter" do
-      reference = build_stubbed :article_reference, citation_year: '1970a'
-      expect(reference.short_citation_year).to eq '1970a'
-    end
-
-    it "is trimmed if there is something extra" do
-      reference = build_stubbed :article_reference, citation_year: '1970a ("1971")'
-      expect(reference.short_citation_year).to eq '1970a'
     end
   end
 

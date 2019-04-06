@@ -29,7 +29,6 @@ class Author < ApplicationRecord
   # NOTE that "first" doesn't mean "primary", or "most correct", it
   # simply refers to the name with the oldest ID.
   def first_author_name_name
-    return '[no author name]' unless names.exists? # TODO validate author has at least one author name.
     names.first.name
   end
 

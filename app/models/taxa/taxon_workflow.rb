@@ -12,15 +12,12 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  delegate :approver, :approved_at, to: :last_change
-
   def can_be_reviewed?
     waiting?
   end
 
   def can_be_approved_by? change, user
-    return false unless user && change
-    return false unless waiting? && user.is_editor?
+    return false unless waiting?
 
     user != change.changed_by
   end

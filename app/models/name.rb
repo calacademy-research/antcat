@@ -47,7 +47,7 @@ class Name < ApplicationRecord
   private
 
     def words
-      @words ||= name.split ' '
+      @words ||= name.split
     end
 
     def set_taxon_caches

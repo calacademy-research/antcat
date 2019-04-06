@@ -65,8 +65,8 @@ Feature: Using the catalog
     When I follow "abruptus"
     Then I should see "minor" in the index
 
+  @skip
   Scenario: Showing the "no tribe" tribe
-    Given PENDING
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
 
     When I go to the catalog

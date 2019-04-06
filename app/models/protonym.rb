@@ -6,7 +6,7 @@ class Protonym < ApplicationRecord
   # same `authorship_id`. We may not want to allow sharing `authorship_id`.
   # See `Protonym.group(:authorship_id).having("COUNT(*) > 1").count.count`
   # See also `ProtonymsWithSameAuthorshipRecord`.
-  belongs_to :authorship, class_name: 'Citation'
+  belongs_to :authorship, class_name: 'Citation', dependent: false
   belongs_to :name
 
   has_many :taxa, class_name: 'Taxon'

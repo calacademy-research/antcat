@@ -112,7 +112,7 @@ class TaxonDecorator::ChildList
                  ' of '
                end
 
-      label << content_tag(:span, taxon.taxon_label)
+      label << content_tag(:span, taxon.epithet_with_fossil)
     end
 
     # TODO see https://github.com/calacademy-research/antcat/issues/453

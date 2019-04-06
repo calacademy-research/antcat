@@ -54,9 +54,7 @@ describe ApplicationHelper do
     specify { expect(helper.foundation_class_for("error")).to eq "alert" }
 
     context "when `flash_type` is not supported" do
-      specify do
-        expect { helper.foundation_class_for("pizza") }.to raise_error(StandardError)
-      end
+      specify { expect { helper.foundation_class_for("pizza") }.to raise_error(StandardError) }
     end
   end
 

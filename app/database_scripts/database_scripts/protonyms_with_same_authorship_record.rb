@@ -51,4 +51,4 @@ description: >
   * *Optional*: Delete the incorrect and now orphaned protonym (the delete button is only visible for orphaned protonyms). Optional because we can delete all orphans via script.
 
 tags: [slow, new!]
-topic_areas: [catalog]
+topic_areas: [protonyms]

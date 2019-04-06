@@ -47,4 +47,4 @@ description: >
 
 
 tags: [new!]
-topic_areas: [catalog]
+topic_areas: [protonyms]

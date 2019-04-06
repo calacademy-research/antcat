@@ -72,10 +72,10 @@ Given("the following entry nests it") do |table|
     nesting_reference: Reference.last
 end
 
-Given("a Bolton-Fisher reference exists with the title {string}") do |title|
+Given("a Hölldobler-Fisher reference exists with the title {string}") do |title|
   author_names = [
-    AuthorName.find_by(name: "Bolton, B."),
-    create(:author_name, name: "Fisher, B.")
+    AuthorName.find_by(name: "Hölldobler, B."),
+    AuthorName.find_by(name: "Fisher, B.")
   ]
   create :unknown_reference, author_names: author_names, title: title
 end

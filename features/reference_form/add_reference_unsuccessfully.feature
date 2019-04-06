@@ -4,11 +4,6 @@ Feature: Add reference unsuccessfully
     And I go to the references page
     And I follow "New"
 
-  Scenario: Adding a reference but then cancelling
-    When I fill in "reference_title" with "Mark Wilden"
-    And I follow "Cancel"
-    Then I should be on the references page
-
   Scenario: Leaving a required field blank should not affect other fields (article)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"

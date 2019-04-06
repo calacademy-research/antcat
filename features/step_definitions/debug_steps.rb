@@ -22,7 +22,3 @@ end
 And("MONKEY") do
   DevMonkeyPatches.enable!
 end
-
-Given(/^PENDING/) do
-  pending
-end
