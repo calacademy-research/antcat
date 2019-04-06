@@ -67,4 +67,4 @@ description: >
   are hidden in the catalog).
 
 tags: [new!]
-topic_areas: [catalog]
+topic_areas: [taxt]

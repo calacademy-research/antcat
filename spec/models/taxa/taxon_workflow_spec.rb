@@ -1,11 +1,9 @@
 require 'spec_helper'
 
 describe Taxon do
-  let(:adder) { create :user, :editor }
-
   it "can transition from waiting to approved" do
     taxon = create :family
-    create :change, taxon: taxon, change_type: "create", user: adder
+    create :change, taxon: taxon, change_type: "create"
 
     expect(taxon).to be_waiting
     expect(taxon.can_approve?).to be true
@@ -16,9 +14,8 @@ describe Taxon do
   end
 
   describe "authorization" do
-    let(:editor) { create :user, :editor }
-    let(:user) { create :user }
-    let(:approver) { create :user, :editor }
+    let(:adder) { create :user }
+    let(:approver) { create :user }
 
     context "when an old record" do
       let(:taxon) { create :family, :old }
@@ -29,25 +26,22 @@ describe Taxon do
       end
 
       it "cannot be approved" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
-        expect(taxon.can_be_approved_by?(a_change, editor)).to be false
-        expect(taxon.can_be_approved_by?(a_change, user)).to be false
+        expect(taxon.can_be_approved_by?(a_change, approver)).to be false
+        expect(taxon.can_be_approved_by?(a_change, adder)).to be false
       end
     end
 
     context "when a waiting record" do
-      let(:changer) { create :user, :editor }
       let(:taxon) { create :family, :waiting }
-      let(:a_change) { create :change, taxon: taxon, user: changer }
+      let(:a_change) { create :change, taxon: taxon, user: adder }
 
       it "can be reviewed by a catalog editor" do
         expect(taxon.can_be_reviewed?).to be true
       end
 
       it "can be approved by an approver" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
         expect(taxon.can_be_approved_by?(a_change, approver)).to be true
-        expect(taxon.can_be_approved_by?(a_change, user)).to be false
+        expect(taxon.can_be_approved_by?(a_change, adder)).to be false
       end
     end
 
@@ -56,19 +50,13 @@ describe Taxon do
       let(:a_change) { create :change, taxon: taxon, user: adder, approver: approver, approved_at: Time.current }
       let!(:version) { create :version, change_id: a_change.id, item: taxon }
 
-      it "has an approver and an approved_at" do
-        expect(taxon.approver).to eq approver
-        expect(taxon.approved_at).to be_within(7.hours).of Time.current
-      end
-
       it "cannot be reviewed" do
         expect(taxon.can_be_reviewed?).to be false
       end
 
       it "cannot be approved" do
-        expect(taxon.can_be_approved_by?(a_change, nil)).to be false
-        expect(taxon.can_be_approved_by?(a_change, editor)).to be false
-        expect(taxon.can_be_approved_by?(a_change, user)).to be false
+        expect(taxon.can_be_approved_by?(a_change, approver)).to be false
+        expect(taxon.can_be_approved_by?(a_change, adder)).to be false
       end
     end
   end

@@ -49,10 +49,4 @@ describe Author do
       expect(AuthorName.count).to eq 2
     end
   end
-
-  describe ".get_author_names_for_feed_message" do
-    it "returns a string of author names" do
-      # TODO
-    end
-  end
 end

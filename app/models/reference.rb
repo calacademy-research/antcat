@@ -1,6 +1,5 @@
 # TODO avoid `require`.
 
-require_dependency 'references/reference_has_document'
 require_dependency 'references/reference_workflow'
 
 class Reference < ApplicationRecord
@@ -28,6 +27,7 @@ class Reference < ApplicationRecord
   has_many :citations
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxa
+  has_one :document, class_name: 'ReferenceDocument'
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }
@@ -43,6 +43,8 @@ class Reference < ApplicationRecord
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
+  accepts_nested_attributes_for :document, reject_if: :all_blank
+  delegate :url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
@@ -95,17 +97,9 @@ class Reference < ApplicationRecord
     string
   end
 
-  # TODO we should probably have `#year` [int] and something
-  # like `#non_standard_year` [string] instead of this +
-  # `#year` + `#citation_year`.
-  # TODO what is this used for?
-  def short_citation_year
-    return "[no year]" if citation_year.blank?
-    citation_year.gsub %r{ .*$}, ''
-  end
-
-  def refresh_author_names_caches(*)
-    update_attribute :author_names_string_cache, make_author_names_string_cache
+  def refresh_author_names_caches(*args)
+    set_author_names_caches args
+    save(validate: false)
   end
 
   # TODO merge into Workflow. Only used for `.approve_all`,
@@ -118,13 +112,13 @@ class Reference < ApplicationRecord
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
   def keey
-    authors_for_keey << ', ' << short_citation_year
+    authors_for_keey << ', ' << citation_year_without_extras
   end
 
   # Normal keey: "Bolton, 1885g".
   # This:        "Bolton, 1885".
   def keey_without_letters_in_year
-    authors_for_keey << ', ' << year_or_no_year
+    authors_for_keey << ', ' << year.to_s
   end
 
   def authors_for_keey
@@ -135,11 +129,6 @@ class Reference < ApplicationRecord
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"
     end.html_safe
-  end
-
-  def year_or_no_year
-    return "[no year]" if year.blank?
-    year.to_s
   end
 
   def principal_author_last_name
@@ -155,6 +144,10 @@ class Reference < ApplicationRecord
   end
 
   private
+
+    def citation_year_without_extras
+      citation_year.gsub(%r{ .*$}, '')
+    end
 
     def check_not_referenced
       return unless what_links_here(predicate: true)
@@ -183,10 +176,6 @@ class Reference < ApplicationRecord
     end
 
     def set_author_names_caches(*)
-      self.author_names_string_cache = make_author_names_string_cache
-    end
-
-    def make_author_names_string_cache
-      author_names.map(&:name).join('; ').strip
+      self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end

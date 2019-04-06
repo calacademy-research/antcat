@@ -9,11 +9,10 @@ Feature: Workflow
     Given there is a subfamily "Formicinae"
     And I log in as a catalog editor named "Mark Wilden"
 
-  @javascript
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the edit page for "Formicinae"
     And I fill in "taxon_headline_notes_taxt" with "asdfgh"
-    And I press "Save"
+    And I save the taxon form
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
     And I should see "asdfgh"

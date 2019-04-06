@@ -166,26 +166,6 @@ When("I add a reference section for the feed") do
   reference_section.create_activity :create
 end
 
-When("I edit a reference section for the feed") do
-  reference_section = Feed.without_tracking do
-    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-      references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
-  end
-
-  cheat_and_set_user_for_feed
-  reference_section.create_activity :update
-end
-
-When("I delete a reference section for the feed") do
-  reference_section = Feed.without_tracking do
-    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-      references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
-  end
-
-  cheat_and_set_user_for_feed
-  reference_section.create_activity :destroy
-end
-
 When("I click on Show more") do
   find("a", text: "Show more").click
 end

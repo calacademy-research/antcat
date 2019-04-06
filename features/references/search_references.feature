@@ -48,3 +48,13 @@ Feature: Searching references
 
     When I click the first autocomplete suggestion
     Then the search box should contain "author:'Fisher, B.'"
+
+  @search
+  Scenario: Searching for one author only (keyword search)
+    Given a Hölldobler-Fisher reference exists with the title "Hölldobler and Fisher's Favorite Ants"
+
+    When I fill in the references search box with "author:'Fisher, B.'"
+    And I press "Go" by the references search box
+    Then I should see "Hölldobler and Fisher's Favorite Ants"
+    And I should not see "Hölldobler's Ants"
+    And I should see "Fisher's Ants"

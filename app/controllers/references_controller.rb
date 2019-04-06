@@ -12,13 +12,17 @@ class ReferencesController < ApplicationController
   end
 
   def new
-    @reference = ArticleReference.new
-
     if params[:nesting_reference_id]
-      build_nested_reference params[:nesting_reference_id], params[:citation_year]
+      @reference = NestedReference.new(
+        citation_year: params[:citation_year],
+        pages_in: "Pp. XX-XX in:",
+        nesting_reference_id: params[:nesting_reference_id]
+      )
     elsif params[:reference_to_copy]
       reference_to_copy = Reference.find params[:reference_to_copy]
       @reference = References::NewFromCopy[reference_to_copy]
+    else
+      @reference = ArticleReference.new
     end
   end
 
@@ -78,13 +82,6 @@ class ReferencesController < ApplicationController
   end
 
   private
-
-    def build_nested_reference reference_id, citation_year
-      @reference = @reference.becomes NestedReference
-      @reference.citation_year = citation_year
-      @reference.pages_in = "Pp. XX-XX in:"
-      @reference.nesting_reference_id = reference_id
-    end
 
     def save
       ReferenceForm.new(@reference, reference_params, params, request.host).save

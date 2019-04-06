@@ -29,9 +29,9 @@ Feature: Latest Additions (seeing what's new)
     And I follow "Restart reviewing"
     Then I should see "Being reviewed"
 
+  # TODO this test just tests itself, and it's not even working.
+  @skip
   Scenario: Changing the default reference button on the latest reference additions page
-    Given PENDING
-    # TODO this test just tests itself, and it's not even working.
     Given there is no default reference
 
     When I go to the latest reference additions page

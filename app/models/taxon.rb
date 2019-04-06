@@ -102,9 +102,8 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  # TODO remove since `#name_cache` is not unique.
-  def self.find_by_name name
-    find_by(name_cache: name)
+  def self.name_clash? name
+    where(name_cache: name).exists?
   end
 
   def rank
@@ -128,7 +127,7 @@ class Taxon < ApplicationRecord
     taxon_and_ancestors.reverse
   end
 
-  def taxon_label
+  def epithet_with_fossil
     name.epithet_with_fossil_html fossil?
   end
 
@@ -150,8 +149,8 @@ class Taxon < ApplicationRecord
     protonym.authorship.reference
   end
 
-  def what_links_here
-    Taxa::WhatLinksHere[self]
+  def what_links_here predicate: false
+    Taxa::WhatLinksHere[self, predicate: predicate]
   end
 
   def any_nontaxt_references?

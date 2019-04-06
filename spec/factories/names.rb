@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :name do
-    sequence(:name) { |_n| raise }
     name_html { name }
     epithet { name }
     epithet_html { name_html }
@@ -26,22 +25,22 @@ FactoryBot.define do
     factory :subgenus_name, class: SubgenusName do
       sequence(:name) { |n| "Atta (Subgenus#{n})" }
       name_html { "<i>Atta</i> <i>(#{epithet})</i>" }
-      epithet { name.split(' ').last.remove('(', ')') }
+      epithet { name.split.last.remove('(', ')') }
       epithet_html { "<i>#{epithet}</i>" }
     end
 
     factory :species_name, class: SpeciesName do
       sequence(:name) { |n| "Atta species#{n}" }
       name_html { "<i>#{name}</i>" }
-      epithet { name.split(' ').last }
+      epithet { name.split.last }
       epithet_html { "<i>#{epithet}</i>" }
     end
 
     factory :subspecies_name, class: SubspeciesName do
       sequence(:name) { |n| "Atta species subspecies#{n}" }
       name_html { "<i>#{name}</i>" }
-      epithet { name.split(' ').last }
-      epithets { name.split(' ')[-2..-1].join(' ') }
+      epithet { name.split.last }
+      epithets { name.split[-2..-1].join(' ') }
       epithet_html { "<i>#{epithet}</i>" }
     end
   end

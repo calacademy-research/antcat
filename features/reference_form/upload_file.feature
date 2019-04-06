@@ -5,8 +5,8 @@ Feature: Upload a file
 
   # TODO: Test never passed for the right reason. Documents hosted on AntCat's
   # servers are cleared, but not files stored on S3.
+  @skip
   Scenario: Clearing the URL after uploading the file
-    Given PENDING
     Given I am logged in as a helper editor
     And there is a reference
     And that the entry has a URL that's on our site

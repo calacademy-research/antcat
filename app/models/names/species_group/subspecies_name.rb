@@ -1,4 +1,6 @@
 class SubspeciesName < SpeciesGroupName
+  validates :epithets, presence: true
+
   def subspecies_epithets
     words[2..-1].join ' '
   end

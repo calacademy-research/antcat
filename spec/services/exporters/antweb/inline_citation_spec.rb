@@ -16,30 +16,28 @@ describe Exporters::Antweb::InlineCitation do
   before { allow(reference).to receive(:url).and_return 'example.com' }
 
   describe "#call" do
-    context "when expansion is not desired" do
-      context "PDF is not available to the user" do
-        it "doesn't include the PDF link" do
-          allow(reference).to receive(:downloadable?).and_return false
+    context "PDF is not available to the user" do
+      it "doesn't include the PDF link" do
+        allow(reference).to receive(:downloadable?).and_return false
 
-          expect(described_class[reference]).to eq(
-            %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
-            %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>)
-          )
-        end
+        expect(described_class[reference]).to eq(
+          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+          %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
+          %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>)
+        )
       end
+    end
 
-      context "when PDF is available to the user" do
-        it "includes the PDF link" do
-          allow(reference).to receive(:downloadable?).and_return true
+    context "when PDF is available to the user" do
+      it "includes the PDF link" do
+        allow(reference).to receive(:downloadable?).and_return true
 
-          expect(described_class[reference]).to eq(
-            %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
-            %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
-            %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>) +
-            %( <a class="pdf-link" href="example.com">PDF</a>)
-          )
-        end
+        expect(described_class[reference]).to eq(
+          %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
+          %(href="http://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
+          %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>) +
+          %( <a class="pdf-link" href="example.com">PDF</a>)
+        )
       end
     end
 

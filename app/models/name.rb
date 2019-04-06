@@ -1,14 +1,17 @@
 # All `Name` subclasses are for taxa; `AuthorName`s are used for references.
 
 class Name < ApplicationRecord
+  include RevisionsCanBeCompared
+  include Trackable
   include Formatters::ItalicsHelper
 
-  validates :name, presence: true
+  validates :name, :epithet, presence: true
 
   after_save :set_taxon_caches
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  strip_attributes only: [:name, :gender], replace_newlines: true
+  strip_attributes replace_newlines: true
+  tracked on: :mixin_create_activity_only, parameters: proc { { name_html: name_to_html } }
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
@@ -47,7 +50,7 @@ class Name < ApplicationRecord
   private
 
     def words
-      @words ||= name.split ' '
+      @words ||= name.split
     end
 
     def set_taxon_caches

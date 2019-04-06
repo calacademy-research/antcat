@@ -3,6 +3,7 @@ require 'spec_helper'
 describe Name do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :name }
+  it { is_expected.to validate_presence_of :epithet }
 
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
@@ -65,7 +66,7 @@ describe Name do
   end
 
   describe "#what_links_here" do
-    subject { described_class.create! name: 'Atta' }
+    subject { described_class.new }
 
     it "calls `Names::WhatLinksHere`" do
       expect(Names::WhatLinksHere).to receive(:new).with(subject).and_call_original
