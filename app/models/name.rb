@@ -3,7 +3,7 @@
 class Name < ApplicationRecord
   include Formatters::ItalicsHelper
 
-  validates :name, presence: true
+  validates :name, :epithet, presence: true
 
   after_save :set_taxon_caches
 
