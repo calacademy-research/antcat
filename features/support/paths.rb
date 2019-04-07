@@ -122,10 +122,6 @@ module NavigationHelpers
     when /^the users page$/
       '/users'
 
-    # Test pages
-    when /^the tooltips test page$/
-      '/widget_tests/tooltips_test'
-
     else
       raise "#{page_name} not found"
     end
