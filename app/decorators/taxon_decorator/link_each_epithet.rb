@@ -33,7 +33,7 @@ class TaxonDecorator::LinkEachEpithet
 
     def genus_link taxon
       # Link name of the genus, but add dagger per to taxon's fossil status.
-      label = taxon.genus.name.to_html_with_fossil @taxon.fossil?
+      label = taxon.genus.name.name_with_fossil_html @taxon.fossil?
       taxon.genus.decorate.link_to_taxon_with_label(label.html_safe) << " "
     end
 

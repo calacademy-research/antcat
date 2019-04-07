@@ -30,7 +30,7 @@ class Name < ApplicationRecord
     epithet
   end
 
-  def to_html_with_fossil fossil
+  def name_with_fossil_html fossil
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
 

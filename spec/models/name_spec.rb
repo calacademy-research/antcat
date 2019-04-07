@@ -16,10 +16,10 @@ describe Name do
     end
   end
 
-  describe "#to_html_with_fossil" do
+  describe "#name_with_fossil_html" do
     it "formats the fossil symbol" do
-      expect(SpeciesName.new(name: 'Atta major').to_html_with_fossil(false)).to eq '<i>Atta major</i>'
-      expect(SpeciesName.new(name: 'Atta major').to_html_with_fossil(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(false)).to eq '<i>Atta major</i>'
+      expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(true)).to eq '<i>&dagger;</i><i>Atta major</i>'
     end
   end
 
