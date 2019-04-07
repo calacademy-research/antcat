@@ -1,9 +1,7 @@
 # NOTE This is only covered indirectly in feature tests. No specs.
-# TODO HTML should be generated in callbacks in the subclasses, not manually.
 
 class Names::CreateNameFromString
   include Service
-  include Formatters::ItalicsHelper
 
   def initialize string
     @string = string
@@ -56,54 +54,54 @@ class Names::CreateNameFromString
     end
 
     def create_subspecies_name!
-      SubspeciesName.create! name:         string,
-                             name_html:    italicize(string),
-                             epithet:      words.third,
-                             epithet_html: italicize(words.third),
-                             epithets:     [words.second, words.third].join(' ')
+      SubspeciesName.create!(
+        name:         string,
+        epithet:      words.third,
+        epithets:     [words.second, words.third].join(' ')
+      )
     end
 
     def create_subspecies_name_with_two_epithets!
-      SubspeciesName.create! name:         string,
-                             name_html:    italicize(string),
-                             epithet:      words.last,
-                             epithet_html: italicize(words.last),
-                             epithets:     words[1..-1].join(' ')
+      SubspeciesName.create!(
+        name:         string,
+        epithet:      words.last,
+        epithets:     words[1..-1].join(' ')
+      )
     end
 
     def create_species_name!
-      SpeciesName.create! name:         string,
-                          name_html:    italicize(string),
-                          epithet:      words.second,
-                          epithet_html: italicize(words.second)
+      SpeciesName.create!(
+        name:         string,
+        epithet:      words.second
+      )
     end
 
     def create_subgenus_name!
       epithet = words.second.tr '()', ''
-      SubgenusName.create! name:         string,
-                           name_html:    italicize(string),
-                           epithet:      epithet,
-                           epithet_html: italicize(epithet)
+      SubgenusName.create!(
+        name:         string,
+        epithet:      epithet
+      )
     end
 
     def create_genus_name!
-      GenusName.create! name:         string,
-                        name_html:    italicize(string),
-                        epithet:      string,
-                        epithet_html: italicize(string)
+      GenusName.create!(
+        name:         string,
+        epithet:      string
+      )
     end
 
     def create_tribe_name!
-      TribeName.create! name:         string,
-                        name_html:    string,
-                        epithet:      string,
-                        epithet_html: string
+      TribeName.create!(
+        name:         string,
+        epithet:      string
+      )
     end
 
     def create_subfamily_name!
-      SubfamilyName.create! name:         string,
-                            name_html:    string,
-                            epithet:      string,
-                            epithet_html: string
+      SubfamilyName.create!(
+        name:         string,
+        epithet:      string
+      )
     end
 end

@@ -3,7 +3,6 @@
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
-  include Formatters::ItalicsHelper
 
   validates :name, :epithet, presence: true
 

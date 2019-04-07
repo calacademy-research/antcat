@@ -1,4 +1,6 @@
 class GenusGroupName < Name
+  include Formatters::ItalicsHelper
+
   def name_to_html
     italicize name
   end
