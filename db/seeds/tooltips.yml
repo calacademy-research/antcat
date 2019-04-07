@@ -1,9 +1,0 @@
-- key: 'key'
-  scope: 'tooltips'
-  text: >
-    Used for referencing hard-coded tooltips. Also used for namespacing.
-    Give all tooltips a key that makes sense.
-
-- key: 'text'
-  scope: 'tooltips'
-  text: 'The tooltip text. HTML is allowed. Double quotes are not 100% supported.'
