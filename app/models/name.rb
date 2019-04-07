@@ -10,7 +10,7 @@ class Name < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true
-  tracked on: :mixin_create_activity_only, parameters: proc { { name_html: name_to_html } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { name_html: name_html } }
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string
@@ -22,20 +22,20 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
-  def name_to_html
+  def name_html
     name
   end
 
-  def epithet_to_html
+  def epithet_html
     epithet
   end
 
   def to_html_with_fossil fossil
-    "#{dagger_html if fossil}#{name_to_html}".html_safe
+    "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
   def epithet_with_fossil_html fossil
-    "#{dagger_html if fossil}#{epithet_to_html}".html_safe
+    "#{dagger_html if fossil}#{epithet_html}".html_safe
   end
 
   def dagger_html
@@ -53,6 +53,6 @@ class Name < ApplicationRecord
     end
 
     def set_taxon_caches
-      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_to_html)
+      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_html)
     end
 end

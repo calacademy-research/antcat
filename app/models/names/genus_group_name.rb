@@ -1,11 +1,11 @@
 class GenusGroupName < Name
   include Formatters::ItalicsHelper
 
-  def name_to_html
+  def name_html
     italicize name
   end
 
-  def epithet_to_html
+  def epithet_html
     italicize epithet
   end
 
