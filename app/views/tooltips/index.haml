@@ -24,4 +24,8 @@
         %tr
           %th.scope{colspan: 4}
             =scope.capitalize
-        =render tooltips
+        -tooltips.each do |tooltip|
+          %tr
+            %td=link_to tooltip.key, tooltip
+            %td=tooltip.scope
+            %td=tooltip.text
