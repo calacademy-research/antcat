@@ -1,19 +1,9 @@
-# hard-coded into the UI
 - key: 'key'
   scope: 'tooltips'
-  key_enabled: true
   text: >
     Used for referencing hard-coded tooltips. Also used for namespacing.
     Give all tooltips a key that makes sense.
 
-- key: 'key_enabled'
-  scope: 'tooltips'
-
-  key_enabled: true
-  text: >
-    Set to false to disable hard-coded/key-based tooltips.
-
 - key: 'text'
   scope: 'tooltips'
-  key_enabled: true
   text: 'The tooltip text. HTML is allowed. Double quotes are not 100% supported.'

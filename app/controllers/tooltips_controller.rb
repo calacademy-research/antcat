@@ -48,6 +48,6 @@ class TooltipsController < ApplicationController
     end
 
     def tooltip_params
-      params.require(:tooltip).permit(:key, :scope, :text, :key_enabled)
+      params.require(:tooltip).permit(:key, :scope, :text)
     end
 end
