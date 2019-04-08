@@ -51,29 +51,6 @@ Given("there is a {string} journal activity") do |action|
   journal.create_activity action.to_sym
 end
 
-# TODO: remove.
-When("I edit a journal for the feed") do
-  journal = Feed.without_tracking do
-    create :journal, name: "Archibald Bulletin"
-  end
-
-  cheat_and_set_user_for_feed
-  journal.name = "New Journal Name"
-  journal.save!
-  journal.create_activity :update
-end
-
-# TODO: remove.
-When("I delete a journal for the feed") do
-  journal = Feed.without_tracking do
-    create :journal, name: "Archibald Bulletin"
-  end
-
-  cheat_and_set_user_for_feed
-  journal.destroy
-  journal.create_activity :destroy
-end
-
 # TaxonHistoryItem
 When("I add a taxon history item for the feed") do
   taxon = Feed.without_tracking { create_dolichoderinae }
