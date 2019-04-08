@@ -4,8 +4,8 @@ Feature: User page
 
   Scenario: Visiting a user's page
     Given this user exists
-      | email              | name    | password |
-      | quintus@antcat.org | Quintus | secret   |
+      | email              | name    |
+      | quintus@antcat.org | Quintus |
 
     When I go to the users page
     And I follow "Quintus"
