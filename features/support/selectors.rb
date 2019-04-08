@@ -10,9 +10,9 @@ module HtmlSelectorsHelpers
       "html > body"
 
     # Catalog.
-    when /taxon browser/
+    when /^the taxon browser$/
       "#taxon_browser"
-    when /the (\w*) index/
+    when /^the (\w*) taxon browser tab$/
       tab_title_target = find(:link, $1)[:href]
       tab_title_target
     when /the protonym/

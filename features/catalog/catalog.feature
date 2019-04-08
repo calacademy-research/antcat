@@ -37,7 +37,7 @@ Feature: Using the catalog
   Scenario: Selecting a genus
     When I go to the catalog
     And I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies index
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
@@ -47,7 +47,7 @@ Feature: Using the catalog
   Scenario: Selecting a species
     When I go to the catalog
     And I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies index
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     And I follow "abruptus"
     Then "Dolichoderinae" should be selected
@@ -57,7 +57,7 @@ Feature: Using the catalog
   Scenario: Selecting a subspecies
     When I go to the catalog
     And I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies index
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the taxon browser
 
@@ -70,8 +70,8 @@ Feature: Using the catalog
 
     When I go to the catalog
     And I follow "Dolichoderinae" in the taxon browser
-    And I follow "Incertae sedis" in the subfamilies index
-    Then I should see "Cariridris" in the genera index
-    And I should not see "Atta" in the genera index
-    And "Incertae sedis" should be selected in the subfamilies index
-    And "Dolichoderinae" should be selected in the families index
+    And I follow "Incertae sedis" in the subfamilies taxon browser tab
+    Then I should see "Cariridris" in the genera taxon browser tab
+    And I should not see "Atta" in the genera taxon browser tab
+    And "Incertae sedis" should be selected in the subfamilies taxon browser tab
+    And "Dolichoderinae" should be selected in the families taxon browser tab
