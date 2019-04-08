@@ -18,11 +18,11 @@ Feature: User page
 
   @feed
   Scenario: See user's most recent feed activities
-    Given I add a journal for the feed
+    Given there is a "destroy" journal activity
 
     When I go to the user page for "Batiatus"
     Then I should see "Batiatus's most recent activity"
-    And I should see "Batiatus added the journal Archibald Bulletin"
+    And I should see "Batiatus deleted the journal"
 
   Scenario: See user's most recent comments
     Given Batiatus has commented "Cool" on an issue with the title "Typos"

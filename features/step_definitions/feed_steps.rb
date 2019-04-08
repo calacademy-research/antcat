@@ -45,12 +45,13 @@ Then("I should see the edit summary {string}") do |content|
 end
 
 # Journal
-When("I add a journal for the feed") do
+Given("there is a {string} journal activity") do |action|
   cheat_and_set_user_for_feed
   journal = create :journal, name: "Archibald Bulletin"
-  journal.create_activity :create
+  journal.create_activity action.to_sym
 end
 
+# TODO: remove.
 When("I edit a journal for the feed") do
   journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"
@@ -62,6 +63,7 @@ When("I edit a journal for the feed") do
   journal.create_activity :update
 end
 
+# TODO: remove.
 When("I delete a journal for the feed") do
   journal = Feed.without_tracking do
     create :journal, name: "Archibald Bulletin"

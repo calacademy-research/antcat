@@ -4,15 +4,15 @@ Feature: Feed (filtering)
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Filtering activities by action
-    Given I add a journal for the feed
-    And I edit a journal for the feed
+    Given there is a "destroy" journal activity
+    And there is a "update" journal activity
 
     When I go to the activity feed
     Then I should see 2 items in the feed
 
-    When I select "Create" from "activity_action"
+    When I select "Destroy" from "activity_action"
     And I press "Filter"
-    Then I should see "Archibald added the journal Archibald Bulletin" and no other feed items
+    Then I should see "Archibald deleted the journal" and no other feed items
 
   Scenario: Showing/hiding automated edits
     Given there is an activity with the edit summary "Not automated"
