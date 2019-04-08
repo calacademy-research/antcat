@@ -58,10 +58,6 @@ module HtmlSelectorsHelpers
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
 
-    # Users.
-    when /the users list/
-      '#content table'
-
     when /the left side of the diff/
       all(".callout .diff")[0]
     when /the right side of the diff/

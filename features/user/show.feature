@@ -3,16 +3,17 @@ Feature: User page
     Given I log in as a catalog editor named "Batiatus"
 
   Scenario: Visiting a user's page
-    When I go to the users page
-    Then I should see a link to the user page for "Batiatus"
+    Given this user exists
+      | email              | name    | password |
+      | quintus@antcat.org | Quintus | secret   |
 
-    When I follow "Batiatus" in the users list
-    Then I should be on the user page for "Batiatus"
-    And there should be a mailto link to the email of "Batiatus"
-    And I should see "Name: Batiatus"
-    And I should see "Batiatus's most recent activity"
+    When I go to the users page
+    And I follow "Quintus"
+    Then I should see "Name: Quintus"
+    And I should see "Email: quintus@antcat.org"
+    And I should see "Quintus's most recent activity"
     And I should see "No activities"
-    And I should see "Batiatus's most recent comments"
+    And I should see "Quintus's most recent comments"
     And I should see "No comments"
 
   @feed

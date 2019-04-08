@@ -61,18 +61,6 @@ When("I log out") do
   step 'I should see "Login"'
 end
 
-When("I fill in the email field with my email address") do
-  user = User.find_by(name: 'Mark Wilden') # TODO something. Harcoded.
-  step %(I fill in "user_email" with "#{user.email}")
-end
-
-Then("there should be a mailto link to the email of {string}") do |name|
-  email = User.find_by(name: name).email
-  within first('#content') do
-    find :css, "a[href='mailto:#{email}']"
-  end
-end
-
 Then("I should see a link to the user page for {string}") do |name|
   user = User.find_by name: name
 
