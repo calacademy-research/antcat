@@ -15,12 +15,8 @@ module HtmlSelectorsHelpers
     when /the (\w*) index/
       tab_title_target = find(:link, $1)[:href]
       tab_title_target
-    when /the taxon description/
-      "#taxon_description"
     when /the protonym/
       "#taxon_description .headline > span.name"
-    when /the type name/
-      "#taxon_description .type"
     when /the header/
       "div.header"
     when /the headline/

@@ -13,7 +13,7 @@ Feature: Using the catalog
 
   Scenario: Going to the root
     When I go to the catalog
-    Then I should see "Formicidae" in the taxon description
+    Then I should see "Formicidae"
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
@@ -31,7 +31,6 @@ Feature: Using the catalog
     And I follow "Dolichoderinae" in the index
     And I follow "Dolichoderini" in the index
     Then "Dolichoderinae" should be selected
-    And I should see "Dolichoderini" in the taxon description
     And "Dolichoderini" should be selected
     And I should see "Dolichoderus" in the index
 
