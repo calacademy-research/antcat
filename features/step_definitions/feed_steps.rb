@@ -116,19 +116,6 @@ Given("there is a tooltip for the feed") do
   end
 end
 
-# Issue
-Given("there is an open issue for the feed") do
-  Feed.without_tracking do
-    create :issue, :open, title: "Valid?"
-  end
-end
-
-Given("there is a closed issue for the feed") do
-  Feed.without_tracking do
-    create :issue, :closed, title: "Valid?"
-  end
-end
-
 # Taxon
 When("I add a taxon for the feed") do
   Feed.without_tracking do
