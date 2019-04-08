@@ -21,32 +21,32 @@ Feature: Using the catalog
 
   Scenario: Selecting a subfamily
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     Then "Dolichoderinae" should be selected
     And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
 
   Scenario: Selecting a tribe
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "Dolichoderini" in the index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "Dolichoderini" in the taxon browser
     Then "Dolichoderinae" should be selected
     And "Dolichoderini" should be selected
-    And I should see "Dolichoderus" in the index
+    And I should see "Dolichoderus" in the taxon browser
 
   Scenario: Selecting a genus
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
     And I should see "1 valid species, 1 valid subspecies"
-    And I should see "abruptus" in the index
+    And I should see "abruptus" in the taxon browser
 
   Scenario: Selecting a species
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
     And I follow "abruptus"
@@ -56,20 +56,20 @@ Feature: Using the catalog
 
   Scenario: Selecting a subspecies
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies index
     And I follow "Dolichoderus"
-    Then I should see "abruptus" in the index
+    Then I should see "abruptus" in the taxon browser
 
     When I follow "abruptus"
-    Then I should see "minor" in the index
+    Then I should see "minor" in the taxon browser
 
   @skip
   Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
 
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     And I follow "Incertae sedis" in the subfamilies index
     Then I should see "Cariridris" in the genera index
     And I should not see "Atta" in the genera index

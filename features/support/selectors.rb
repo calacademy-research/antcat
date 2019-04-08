@@ -10,7 +10,7 @@ module HtmlSelectorsHelpers
       "html > body"
 
     # Catalog.
-    when /the index/ # TODO rename
+    when /taxon browser/
       "#taxon_browser"
     when /the (\w*) index/
       tab_title_target = find(:link, $1)[:href]

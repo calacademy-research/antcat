@@ -29,7 +29,7 @@ Feature: Adding a taxon successfully
     And I should see "Eciton" in the protonym
 
     When I go to the catalog page for "Formicinae"
-    Then I should see "Atta" in the index
+    Then I should see "Atta" in the taxon browser
 
   @javascript
   Scenario: Adding a genus which has a tribe
@@ -65,7 +65,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Camponotus"
     And I follow "Subgenera"
-    Then I should see "Mayria" in the index
+    Then I should see "Mayria" in the taxon browser
 
   @javascript
   Scenario: Adding a species
@@ -118,7 +118,7 @@ Feature: Adding a taxon successfully
       And WAIT_FOR_JQUERY
     And I press "Save"
     Then I should be on the catalog page for "Eciton major infra"
-    And I should see "infra" in the index
+    And I should see "infra" in the taxon browser
     And I should see "Eciton major infra" in the protonym
 
   @javascript
@@ -139,7 +139,7 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Formicinae"
     And I follow "Formicidae subfamilies"
-    Then I should see "Dorylinae" in the index
+    Then I should see "Dorylinae" in the taxon browser
     And I should not see "Add another"
 
   @javascript
