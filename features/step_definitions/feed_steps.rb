@@ -105,16 +105,7 @@ Given("there is a reference for the feed with state {string}") do |state|
     create :article_reference,
       author_names: [create(:author_name, name: 'Giovanni, S.')],
       citation_year: '1809',
-      title: "Giovanni's Favorite Ants",
       review_state: state
-  end
-end
-
-When("I create a bunch of references for the feed") do
-  Feed.without_tracking do
-    create :article_reference, review_state: "reviewing"
-    create :article_reference, review_state: "reviewing"
-    create :article_reference, review_state: "reviewed"
   end
 end
 
