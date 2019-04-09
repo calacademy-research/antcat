@@ -1,12 +1,12 @@
 FactoryBot.define do
   factory :comment do
-    body { "A comment" }
+    sequence(:body) { |n| "A comment #{n}" }
     user
     association :commentable, factory: :issue
 
     trait :reply do
       association :parent, factory: :comment
-      body { "OK, makes sense" }
+      sequence(:body) { |n| "OK, makes sense #{n}" }
     end
   end
 end
