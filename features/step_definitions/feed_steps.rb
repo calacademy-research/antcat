@@ -1,5 +1,3 @@
-# TODO we cheat a lot here (setting user, creating activities).
-
 Given(/^activity tracking is (enabled|disabled)$/) do |state|
   new_state = case state
               when "enabled"  then true
@@ -51,33 +49,6 @@ Given("there is a {string} journal activity") do |action|
   journal.create_activity action.to_sym
 end
 
-# TaxonHistoryItem
-When("I add a taxon history item for the feed") do
-  taxon = Feed.without_tracking { create_dolichoderinae }
-
-  cheat_and_set_user_for_feed
-  taxon_history_item = TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: taxon
-  taxon_history_item.create_activity :create
-end
-
-When("I edit a taxon history item for the feed") do
-  taxon_history_item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_dolichoderinae
-  end
-
-  cheat_and_set_user_for_feed
-  taxon_history_item.create_activity :update
-end
-
-When("I delete a taxon history item for the feed") do
-  taxon_history_item = Feed.without_tracking do
-    TaxonHistoryItem.create taxt: "as a subfamily: {ref 123}", taxon: create_dolichoderinae
-  end
-
-  cheat_and_set_user_for_feed
-  taxon_history_item.create_activity :destroy
-end
-
 # Reference
 Given("there is a reference for the feed with state {string}") do |state|
   Feed.without_tracking do
@@ -116,7 +87,7 @@ end
 When("I add a reference section for the feed") do
   reference_section = Feed.without_tracking do
     ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: create_dolichoderinae
+    references_taxt: "The Ants (amber checklist)", taxon: create(:family)
   end
 
   cheat_and_set_user_for_feed
@@ -150,20 +121,13 @@ When("I execute a script with the content {string}") do |content|
   Activity.create_without_trackable :execute_script, edit_summary: content
 end
 
-# General note about RequestStore
-# The gem is all good, but it makes testing harder.
-#
 # When JavaScript is enabled, Cucumber and the factories run in different threads,
 # so it's tricky to access the request which is where the feed get's the current user,
 # and `UndoTracker` gets the `current_change_id`.
 #
-# Many specs and steps cheat to make life easier, and that OK as long as the
+# TODO: Many specs and steps cheat to make life easier, and that OK as long as the
 # code works as intended and there are tests that doesn't cheat, but we should
 # figure out how to improve this.
 def cheat_and_set_user_for_feed
   User.current = User.last
-end
-
-def create_dolichoderinae
-  create :subfamily, name: create(:subfamily_name, name: "Dolichoderinae")
 end
