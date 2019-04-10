@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_06_233131) do
+ActiveRecord::Schema.define(version: 2019_04_07_012605) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -341,9 +341,6 @@ ActiveRecord::Schema.define(version: 2019_04_06_233131) do
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "key"
     t.text "text"
-    t.boolean "key_enabled", default: true, null: false
-    t.string "selector"
-    t.boolean "selector_enabled"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "scope"

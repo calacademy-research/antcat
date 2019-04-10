@@ -9,8 +9,6 @@ module TooltipHelper
     tooltip = Tooltip.find_by(key: key_param, scope: scope)
 
     return new_populated_tooltip(key_param, scope) unless tooltip
-    return unless tooltip.key_enabled?
-
     link_to tooltip_help_icon(tooltip.text), tooltip
   end
 

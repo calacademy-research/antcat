@@ -12,7 +12,6 @@
     %tr
       %th Key
       %th Page scope
-      %th Enabled?
       %th Tooltip text
   %tbody
     -if @grouped_tooltips.empty?
@@ -25,4 +24,8 @@
         %tr
           %th.scope{colspan: 4}
             =scope.capitalize
-        =render tooltips
+        -tooltips.each do |tooltip|
+          %tr
+            %td=link_to tooltip.key, tooltip
+            %td=tooltip.scope
+            %td=tooltip.text

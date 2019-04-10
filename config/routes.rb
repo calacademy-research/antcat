@@ -242,7 +242,6 @@ Rails.application.routes.draw do
 
   unless Rails.env.production?
     namespace :widget_tests do
-      get :tooltips_test
       get :toggle_dev_css
     end
   end
