@@ -1,7 +1,6 @@
 module Taxa
   class ConvertToSubspecies
     include Service
-    include Formatters::ItalicsHelper
 
     def initialize original_species, new_species_parent
       @original_species = original_species
@@ -41,12 +40,11 @@ module Taxa
       def subspecies_name
         new_name_string = "#{new_species_parent.genus.name.name} #{new_species_parent.name.epithet} #{original_species.name.epithet}"
 
-        # TODO make the `Name` classes set epithets and HTML names.
-        SubspeciesName.new name: new_name_string,
-          name_html: italicize(new_name_string),
+        SubspeciesName.new(
+          name: new_name_string,
           epithet: original_species.name.epithet,
-          epithet_html: original_species.name.epithet_html,
           epithets: "#{new_species_parent.name.epithet} #{original_species.name.epithet}"
+        )
       end
 
       def move_history_items! new_subspecies

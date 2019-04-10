@@ -1,7 +1,6 @@
 module Taxa
   class CreateObsoleteCombination
     include Service
-    include Formatters::ItalicsHelper
 
     def initialize current_valid_taxon, obsolete_genus
       @current_valid_taxon = current_valid_taxon
@@ -40,18 +39,12 @@ module Taxa
         obsolete_combination
       end
 
-      # TODO make the `Name` classes set epithets and HTML names.
       def obsolete_combination_name
         genus_name_part = obsolete_genus.name.name
         species_name_part = current_valid_taxon.name.epithet
         new_name_string = "#{genus_name_part} #{species_name_part}"
 
-        SpeciesName.new(
-          name: new_name_string,
-          name_html: italicize(new_name_string),
-          epithet: current_valid_taxon.name.epithet,
-          epithet_html: current_valid_taxon.name.epithet_html
-        )
+        SpeciesName.new(name: new_name_string, epithet: current_valid_taxon.name.epithet)
       end
   end
 end

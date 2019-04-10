@@ -13,7 +13,7 @@ module TaxonSelectHelper
     def taxon_data_attributes taxon, rank
       for_taxon = if taxon
                     {
-                      name_html: taxon.name.name_to_html,
+                      name_html: taxon.name.name_html,
                       name_with_fossil: taxon.name_with_fossil,
                       author_citation: taxon.author_citation
                     }

@@ -63,7 +63,7 @@ crumb :names do
 end
 
   crumb :name do |name|
-    link "#{name.name_to_html} (##{name.id})".html_safe, name_path(name)
+    link "#{name.name_html} (##{name.id})".html_safe, name_path(name)
     parent :names
   end
 

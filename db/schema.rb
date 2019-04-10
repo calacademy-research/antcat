@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_06_171100) do
+ActiveRecord::Schema.define(version: 2019_04_06_233131) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -128,9 +128,7 @@ ActiveRecord::Schema.define(version: 2019_04_06_171100) do
   create_table "names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "type"
     t.string "name"
-    t.string "name_html"
     t.string "epithet"
-    t.string "epithet_html"
     t.string "epithets"
     t.datetime "created_at"
     t.datetime "updated_at"
