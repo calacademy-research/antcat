@@ -55,11 +55,11 @@ Feature: Feed (references)
 
   Scenario: Approved all references
     Given I log in as a superadmin named "Archibald"
+    And there is a reference for the feed with state "none"
 
-    When I create a bunch of references for the feed
-      And I go to the references page
-      And I follow "Latest Changes"
-      And I follow "Approve all"
+    When I go to the references page
+    And I follow "Latest Changes"
+    And I follow "Approve all"
     And I go to the activity feed
-    Then I should see "Archibald approved all unreviewed references (2 in total)."
-    And I should see 3 items in the feed
+    Then I should see "Archibald approved all unreviewed references (1 in total)."
+    And I should see 2 items in the feed

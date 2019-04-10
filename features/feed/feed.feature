@@ -6,7 +6,7 @@ Feature: Feed
   @javascript
   Scenario: Deleting activities
     Given I log in as a superadmin
-    And I add a journal for the feed
+    And there is a "create" journal activity
 
     When I go to the activity feed
     Then I should see 1 item in the feed

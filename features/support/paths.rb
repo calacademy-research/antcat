@@ -15,8 +15,8 @@ module NavigationHelpers
     when /^the advanced search page$/
       catalog_search_path
 
-    when /^the catalog (entry|page) for "([^"]*)"$/
-      taxon = Taxon.find_by(name_cache: $2)
+    when /^the catalog page for "([^"]*)"$/
+      taxon = Taxon.find_by(name_cache: $1)
       "/catalog/#{taxon.id}"
     when /^the catalog$/
       root_path
@@ -26,13 +26,6 @@ module NavigationHelpers
       "/taxa/#{Taxon.find_by(name_cache: $1).id}/edit"
     when /^the new taxon page$/
       "/taxa/new"
-
-    when /^the "Convert to subspecies" page for "([^"]*)"$/
-      taxon = Taxon.find_by(name_cache: $1)
-      "/taxa/#{taxon.id}/convert_to_subspecies"
-    when /^the new "Convert to subspecies" page for "([^"]*)"$/
-      taxon = Taxon.find_by(name_cache: $1)
-      "/taxa/#{taxon.id}/convert_to_subspecies/new"
 
     when /^the protonyms page$/
       protonyms_path
@@ -121,10 +114,6 @@ module NavigationHelpers
 
     when /^the users page$/
       '/users'
-
-    # Test pages
-    when /^the tooltips test page$/
-      '/widget_tests/tooltips_test'
 
     else
       raise "#{page_name} not found"

@@ -132,7 +132,7 @@ class Taxon < ApplicationRecord
   end
 
   def name_with_fossil
-    name.to_html_with_fossil fossil?
+    name.name_with_fossil_html fossil?
   end
 
   def author_citation

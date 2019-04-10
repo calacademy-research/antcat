@@ -6,8 +6,6 @@
     =link_to "Order by name", journals_path, class: "btn-normal"
   -else
     =link_to "Order by reference count", journals_path(order: "reference_count"), class: "btn-normal"
-  -if user_is_at_least_helper?
-    =link_to "New", new_journal_path, class: "btn-normal"
 
 %table
   %thead

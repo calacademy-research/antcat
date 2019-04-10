@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :citation do
     reference factory: :article_reference
-    pages { '49' }
+    sequence(:pages) { |n| n }
   end
 end

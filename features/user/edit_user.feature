@@ -3,11 +3,15 @@ Feature: Editing a user
   As a user of AntCat
   I want to edit my password and email
 
-  Scenario: Changing my password
-    Given I am logged in
+  Background:
+    Given this user exists
+      | email              | name     | password |
+      | quintus@antcat.org | Batiatus | secret   |
+    Given I log in as a catalog editor named "Batiatus"
 
+  Scenario: Changing my password
     When I go to the main page
-    And I follow the first "Mark Wilden"
+    And I follow the first "Batiatus"
     And I follow "Change my password/name/email"
     And I fill in "user_password" with "new password"
     And I fill in "user_password_confirmation" with "new password"
@@ -18,27 +22,25 @@ Feature: Editing a user
 
     # Logging in with changed password.
     When I follow the first "Logout"
-    Then I should not see "Mark Wilden"
+    Then I should not see "Batiatus"
 
     When I follow the first "Login"
-      And I fill in the email field with my email address
-      And I fill in "user_password" with "new password"
+    And I fill in "user_email" with "quintus@antcat.org"
+    And I fill in "user_password" with "new password"
     And I press "Login"
     Then I should be on the main page
-    And I should see "Mark Wilden"
+    And I should see "Batiatus"
 
   Scenario: Changing my name
-    Given I am logged in
-
     When I go to the main page
-    Then I should see "Mark Wilden"
-    And I should not see "Brian Fisher"
+    Then I should see "Batiatus"
+    And I should not see "Quintus, B."
 
-    When I follow the first "Mark Wilden"
+    When I follow the first "Batiatus"
     And I follow "Change my password/name/email"
-    And I fill in "user_name" with "Batiatus Q."
+    And I fill in "user_name" with "Quintus, B."
     And I fill in "user_current_password" with "secret"
     And I press "Save"
     Then I should be on the main page
-    And I should see "Batiatus Q."
-    And I should not see "Mark Wilden"
+    And I should see "Quintus, B."
+    And I should not see "Batiatus"

@@ -46,7 +46,7 @@ Rails.application.routes.draw do
 
   resources :institutions
 
-  resources :journals do
+  resources :journals, only: [:index, :show, :edit, :update, :destroy] do
     collection do
       get :autocomplete
     end
@@ -242,7 +242,6 @@ Rails.application.routes.draw do
 
   unless Rails.env.production?
     namespace :widget_tests do
-      get :tooltips_test
       get :toggle_dev_css
     end
   end

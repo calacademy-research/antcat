@@ -48,10 +48,7 @@ describe Taxa::CreateObsoleteCombination do
           new_name = "#{obsolete_genus.name.name} #{current_valid_taxon_species_epithet}"
 
           expect(obsolete_combination.name.name).to eq new_name
-          expect(obsolete_combination.name.name_html).to eq "<i>#{new_name}</i>"
-          expect(obsolete_combination.name.name_to_html).to eq "<i>#{new_name}</i>"
           expect(obsolete_combination.name.epithet).to eq current_valid_taxon_species_epithet
-          expect(obsolete_combination.name.epithet_html).to eq "<i>#{current_valid_taxon_species_epithet}</i>"
         end
 
         it "sets the status to obsolete combination" do

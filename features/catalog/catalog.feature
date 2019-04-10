@@ -13,7 +13,7 @@ Feature: Using the catalog
 
   Scenario: Going to the root
     When I go to the catalog
-    Then I should see "Formicidae" in the taxon description
+    Then I should see "Formicidae"
     And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae."
@@ -21,34 +21,33 @@ Feature: Using the catalog
 
   Scenario: Selecting a subfamily
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
+    And I follow "Dolichoderinae" in the taxon browser
     Then "Dolichoderinae" should be selected
     And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
     And I should see "Fossil: 1 valid genus"
 
   Scenario: Selecting a tribe
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "Dolichoderini" in the index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "Dolichoderini" in the taxon browser
     Then "Dolichoderinae" should be selected
-    And I should see "Dolichoderini" in the taxon description
     And "Dolichoderini" should be selected
-    And I should see "Dolichoderus" in the index
+    And I should see "Dolichoderus" in the taxon browser
 
   Scenario: Selecting a genus
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "All genera" in the subfamilies index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
     And I should see "1 valid species, 1 valid subspecies"
-    And I should see "abruptus" in the index
+    And I should see "abruptus" in the taxon browser
 
   Scenario: Selecting a species
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "All genera" in the subfamilies index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     And I follow "abruptus"
     Then "Dolichoderinae" should be selected
@@ -57,22 +56,22 @@ Feature: Using the catalog
 
   Scenario: Selecting a subspecies
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "All genera" in the subfamilies index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
-    Then I should see "abruptus" in the index
+    Then I should see "abruptus" in the taxon browser
 
     When I follow "abruptus"
-    Then I should see "minor" in the index
+    Then I should see "minor" in the taxon browser
 
   @skip
   Scenario: Showing the "no tribe" tribe
     Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
 
     When I go to the catalog
-    And I follow "Dolichoderinae" in the index
-    And I follow "Incertae sedis" in the subfamilies index
-    Then I should see "Cariridris" in the genera index
-    And I should not see "Atta" in the genera index
-    And "Incertae sedis" should be selected in the subfamilies index
-    And "Dolichoderinae" should be selected in the families index
+    And I follow "Dolichoderinae" in the taxon browser
+    And I follow "Incertae sedis" in the subfamilies taxon browser tab
+    Then I should see "Cariridris" in the genera taxon browser tab
+    And I should not see "Atta" in the genera taxon browser tab
+    And "Incertae sedis" should be selected in the subfamilies taxon browser tab
+    And "Dolichoderinae" should be selected in the families taxon browser tab

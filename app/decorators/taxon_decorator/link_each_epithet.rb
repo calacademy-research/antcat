@@ -14,12 +14,12 @@ class TaxonDecorator::LinkEachEpithet
     string = genus_link @taxon
 
     if @taxon.is_a? Species
-      return string << header_link(@taxon, @taxon.name.epithet_to_html.html_safe)
+      return string << header_link(@taxon, @taxon.name.epithet_html.html_safe)
     end
 
     species = @taxon.species
     if species
-      string << header_link(species, species.name.epithet_to_html.html_safe)
+      string << header_link(species, species.name.epithet_html.html_safe)
       string << ' '.html_safe
       string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
     else
@@ -33,7 +33,7 @@ class TaxonDecorator::LinkEachEpithet
 
     def genus_link taxon
       # Link name of the genus, but add dagger per to taxon's fossil status.
-      label = taxon.genus.name.to_html_with_fossil @taxon.fossil?
+      label = taxon.genus.name.name_with_fossil_html @taxon.fossil?
       taxon.genus.decorate.link_to_taxon_with_label(label.html_safe) << " "
     end
 

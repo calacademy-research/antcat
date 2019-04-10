@@ -2,7 +2,7 @@
 # is disabled by default in tests) and create new steps in `feed_steps.rb`.
 
 Given("this/these user(s) exists") do |table|
-  table.hashes.each { |hash| User.create! hash }
+  table.hashes.each { |hash| create :user, hash }
 end
 
 def login_programmatically user
@@ -30,10 +30,6 @@ Given('I am logged in as a helper editor') do
   login_programmatically user
 end
 
-Given("there is a user named {string}") do |name|
-  create :user, :editor, name: name
-end
-
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
   name = "Quintus Batiatus" if name.blank?
   user = User.find_by name: name
@@ -51,26 +47,9 @@ When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   login_programmatically user
 end
 
-When("I log out and log in again") do
-  step 'I log out'
-  login_programmatically @current_cucumber_user
-end
-
 When("I log out") do
   step 'I follow the first "Logout"'
   step 'I should see "Login"'
-end
-
-When("I fill in the email field with my email address") do
-  user = User.find_by(name: 'Mark Wilden') # TODO something. Harcoded.
-  step %(I fill in "user_email" with "#{user.email}")
-end
-
-Then("there should be a mailto link to the email of {string}") do |name|
-  email = User.find_by(name: name).email
-  within first('#content') do
-    find :css, "a[href='mailto:#{email}']"
-  end
 end
 
 Then("I should see a link to the user page for {string}") do |name|

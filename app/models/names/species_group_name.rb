@@ -1,9 +1,11 @@
 class SpeciesGroupName < Name
-  def name_to_html
+  include Formatters::ItalicsHelper
+
+  def name_html
     italicize name
   end
 
-  def epithet_to_html
+  def epithet_html
     italicize epithet
   end
 
@@ -24,6 +26,6 @@ class SpeciesGroupName < Name
     def change name_string
       existing_names = Name.where.not(id: id).where(name: name_string)
       raise Taxon::TaxonExists if existing_names.any? { |name| !name.what_links_here.empty? }
-      update! name: name_string, name_html: italicize(name_string)
+      update! name: name_string
     end
 end

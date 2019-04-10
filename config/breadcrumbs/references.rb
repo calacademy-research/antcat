@@ -68,11 +68,6 @@ end
       parent :journal, journal
     end
 
-  crumb :new_journal do
-    link "New Journal"
-    parent :journals
-  end
-
 crumb :authors do
   link "Authors", authors_path
   parent :references

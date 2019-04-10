@@ -1,7 +1,6 @@
 module Taxa
   class ElevateToSpecies
     include Service
-    include Formatters::ItalicsHelper
 
     def initialize subspecies
       @subspecies = subspecies
@@ -39,11 +38,7 @@ module Taxa
         species = subspecies.species
         new_name_string = "#{species.genus.name.name} #{subspecies.name.epithet}"
 
-        # TODO make the `Name` classes set epithet and HTML names.
-        SpeciesName.new name: new_name_string,
-          name_html: italicize(new_name_string),
-          epithet: subspecies.name.epithet,
-          epithet_html: subspecies.name.epithet_html
+        SpeciesName.new(name: new_name_string, epithet: subspecies.name.epithet)
       end
 
       def move_history_items! new_species

@@ -1,9 +1,5 @@
 Given("there is an open issue {string}") do |title|
-  create :issue, :open, title: title
-end
-
-Given("there is a closed issue {string}") do |title|
-  create :issue, :closed, title: title
+  create :issue, :open, title: title, adder: User.first
 end
 
 Then(/^I should see the (open|closed) issue "([^"]*)"$/) do |status, title|
