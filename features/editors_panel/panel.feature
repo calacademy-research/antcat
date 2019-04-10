@@ -4,11 +4,11 @@ Feature: Editor's Panel
 
   @feed
   Scenario: See most recent feed activities
-    Given I add a journal for the feed
+    Given there is a "destroy" journal activity
 
     When I go to the Editor's Panel
     Then I should see "Most recent activity"
-    And I should see "Batiatus added the journal Archibald Bulletin"
+    And I should see "Batiatus deleted the journal"
 
   Scenario: See most recent comments
     Given Batiatus has commented "Cool" on an issue with the title "Typos"

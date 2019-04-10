@@ -1,9 +1,9 @@
 Feature: Editing a history item
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor named "Archibald"
 
   @javascript @feed
-  Scenario: Editing a history item
+  Scenario: Editing a history item (with feed)
     Given the Formicidae family exists
     And Formicidae has a history item "Formicidae as family"
 
@@ -21,7 +21,9 @@ Feature: Editing a history item
     Then the history item field should be "(none)"
 
     When I go to the activity feed
-    Then I should see the edit summary "fix typo"
+    Then I should see "Archibald edited the taxon history item #" and no other feed items
+    And I should see "belonging to Formicidae"
+    And I should see the edit summary "fix typo"
 
   Scenario: Editing a history item (without JavaScript)
     Given the Formicidae family exists
@@ -75,7 +77,9 @@ Feature: Editing a history item
     Then the history should be "Abc"
 
     When I go to the activity feed
-    Then I should see the edit summary "added new stuff"
+    Then I should see "Archibald added the taxon history item #" and no other feed items
+    And I should see "belonging to Atta"
+    And I should see the edit summary "added new stuff"
 
   @javascript
   Scenario: Adding a history item with blank taxt
@@ -88,7 +92,7 @@ Feature: Editing a history item
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
-  @javascript
+  @javascript @feed
   Scenario: Deleting a history item
     Given there is a genus "Eciton" with taxonomic history "Eciton history"
 
@@ -102,6 +106,10 @@ Feature: Editing a history item
 
     When I refresh the page (JavaScript)
     Then the history should be empty
+
+    When I go to the activity feed
+    Then I should see "Archibald deleted the taxon history item #" and no other feed items
+    And I should see "belonging to Eciton"
 
   @javascript
   Scenario: Seeing the markdown preview (and cancelling)

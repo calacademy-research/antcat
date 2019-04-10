@@ -29,7 +29,7 @@ FactoryBot.define do
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
     publisher
-    pagination { '22 pp.' }
+    sequence(:pagination) { |n| "#{n} pp." }
   end
 
   factory :unknown_reference do

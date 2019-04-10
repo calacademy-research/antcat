@@ -16,21 +16,7 @@ class JournalsController < ApplicationController
       paginate(page: params[:page])
   end
 
-  def new
-    @journal = Journal.new
-  end
-
   def edit
-  end
-
-  def create
-    @journal = Journal.new journal_params
-    if @journal.save
-      @journal.create_activity :create
-      redirect_to @journal, notice: "Successfully created journal."
-    else
-      render :new
-    end
   end
 
   def update

@@ -3,7 +3,9 @@
 Feature: User notifications
   Background:
     Given I log in as a catalog editor named "Archibald"
-    And there is a user named "Batiatus"
+    And this user exists
+      | name     |
+      | Batiatus |
 
   Scenario: No notifications
     When I go to my notifications page
@@ -26,7 +28,9 @@ Feature: User notifications
 
   Scenario: Mentioning users in comments
     # Create issue by a third user.
-    Given there is a user named "Captain Flint"
+    And this user exists
+      | name          |
+      | Captain Flint |
     And there is an open issue "Ghost Stories" created by "Captain Flint"
 
     # Mention Batiatus in a comment.

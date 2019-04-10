@@ -5,6 +5,9 @@ class Name < ApplicationRecord
   include Trackable
   include Formatters::ItalicsHelper
 
+  has_many :protonyms
+  has_many :taxa, class_name: 'Taxon'
+
   validates :name, :epithet, presence: true
 
   after_save :set_taxon_caches

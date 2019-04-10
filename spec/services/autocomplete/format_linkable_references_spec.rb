@@ -15,7 +15,7 @@ describe Autocomplete::FormatLinkableReferences do
               author: reference.author_names_string_with_suffix,
               year: reference.citation_year,
               title: "#{reference.title}.",
-              full_pagination: "[pagination: #{reference.pages_in} (22 pp.)]",
+              full_pagination: "[pagination: #{reference.pages_in} (#{reference.nesting_reference.pagination})]",
               bolton_key: "[Bolton key: #{reference.bolton_key}]"
             }
           ]

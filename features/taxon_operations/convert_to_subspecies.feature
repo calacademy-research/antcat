@@ -9,7 +9,8 @@ Feature: Converting a species to a subspecies
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
-    Then I should be on the new "Convert to subspecies" page for "Camponotus dallatorei"
+    Then I should see "Convert species"
+    And I should see "to be a subspecies of"
 
     When I set the new species field to "Camponotus alii"
     Then the new species field should contain "Camponotus alii"

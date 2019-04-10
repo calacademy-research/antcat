@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user do
-    name { 'Mark Wilden' }
-    sequence(:email) { |n| "mark#{n}@example.com" }
+    sequence(:name) { |n| "User #{n}" }
+    sequence(:email) { |n| "user#{n}@antcat.org" }
     password { 'secret' }
 
     trait :superadmin do
@@ -9,8 +9,6 @@ FactoryBot.define do
     end
 
     trait :editor do
-      name { 'Brian Fisher' }
-      sequence(:email) { |n| "brian#{n}@example.com" }
       can_edit { true }
     end
 

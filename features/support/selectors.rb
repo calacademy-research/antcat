@@ -10,17 +10,13 @@ module HtmlSelectorsHelpers
       "html > body"
 
     # Catalog.
-    when /the index/ # TODO rename
+    when /^the taxon browser$/
       "#taxon_browser"
-    when /the (\w*) index/
+    when /^the (\w*) taxon browser tab$/
       tab_title_target = find(:link, $1)[:href]
       tab_title_target
-    when /the taxon description/
-      "#taxon_description"
     when /the protonym/
       "#taxon_description .headline > span.name"
-    when /the type name/
-      "#taxon_description .type"
     when /the header/
       "div.header"
     when /the headline/
@@ -57,10 +53,6 @@ module HtmlSelectorsHelpers
       '#test_name_field .display'
     when /the new_or_homonym name field/
       '#test_new_or_homonym_name_field .display'
-
-    # Users.
-    when /the users list/
-      '#content table'
 
     when /the left side of the diff/
       all(".callout .diff")[0]

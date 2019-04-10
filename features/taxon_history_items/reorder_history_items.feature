@@ -4,7 +4,7 @@ Feature: Reorder history items
   I want to change the order of taxonomic history items
 
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor named "Archibald"
     And there is a genus Orderia with the history items "AAA", "BBB" and "CCC"
 
   Scenario: Reordering a history item but cancelling
@@ -25,7 +25,8 @@ Feature: Reorder history items
     When I go to the catalog page for "Orderia"
     Then I should see "AAA. BBB. CCC."
 
-  Scenario: Reordering a history item
+  @feed
+  Scenario: Reordering a history item (with feed)
     When I go to the edit page for "Orderia"
     And I click on Reorder in the history section
     And I drag the AAA history item a bit
@@ -36,3 +37,10 @@ Feature: Reorder history items
 
     When I go to the catalog page for "Orderia"
     Then I should see "BBB. AAA. CCC."
+
+    When I go to the activity feed
+    Then I should see "Archibald reordered the history items of Orderia" and no other feed items
+    And I should not see "Order was changed from"
+
+    When I click on Show more
+    Then I should see "Order was changed from"
