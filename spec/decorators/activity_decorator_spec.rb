@@ -20,6 +20,8 @@ describe ActivityDecorator do
   end
 
   describe "#did_something", :feed do
+    include TestLinksHelpers
+
     context 'when there is a trackable' do
       context 'when trackable is a `Reference`' do
         let!(:trackable) { create :article_reference }
@@ -28,6 +30,19 @@ describe ActivityDecorator do
           activity = trackable.create_activity :update
           expect(activity.decorate.did_something.squish).
             to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+        end
+      end
+
+      context 'when trackable is a `Synonym`' do
+        let!(:senior) { create :family }
+        let!(:junior) { create :family }
+        let!(:trackable) { create :synonym, senior_synonym: senior, junior_synonym: junior }
+
+        specify do
+          trackable.destroy
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq %(deleted the synonym relationship #{taxon_link(junior)} (junior) <span class="antcat_icon synonym_arrow"></span> #{taxon_link(senior)} (senior))
         end
       end
 
