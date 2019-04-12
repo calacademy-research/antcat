@@ -25,9 +25,19 @@ describe ActivityDecorator do
         let!(:trackable) { create :article_reference }
 
         specify do
-          activity = trackable.create_activity :create
+          activity = trackable.create_activity :update
           expect(activity.decorate.did_something.squish).
-            to eq %(added the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+            to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+        end
+      end
+
+      context 'when trackable is a `Tooltip`' do
+        let!(:trackable) { create :tooltip, scope: 'taxa', key: 'authors' }
+
+        specify do
+          activity = trackable.create_activity :update
+          expect(activity.decorate.did_something.squish).
+            to eq %(edited the tooltip <a href="/tooltips/#{trackable.id}">#{trackable.scope}.#{trackable.key}</a>)
         end
       end
     end

@@ -59,13 +59,6 @@ Given("there is a reference for the feed with state {string}") do |state|
   end
 end
 
-# Tooltip
-Given("there is a tooltip for the feed") do
-  Feed.without_tracking do
-    Tooltip.create key: "authors", scope: "taxa", text: "Text"
-  end
-end
-
 # Taxon
 When("I add a taxon for the feed") do
   Feed.without_tracking do
