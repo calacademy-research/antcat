@@ -115,12 +115,6 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
   end
 end
 
-# Execute a script
-When("I execute a script with the content {string}") do |content|
-  cheat_and_set_user_for_feed
-  Activity.create_without_trackable :execute_script, edit_summary: content
-end
-
 # When JavaScript is enabled, Cucumber and the factories run in different threads,
 # so it's tricky to access the request which is where the feed get's the current user,
 # and `UndoTracker` gets the `current_change_id`.

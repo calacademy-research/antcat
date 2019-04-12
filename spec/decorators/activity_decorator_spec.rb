@@ -31,6 +31,17 @@ describe ActivityDecorator do
         end
       end
     end
+
+    context 'when there is no trackable' do
+      context 'when action is `execute_script`' do
+        let!(:user) { create :user }
+
+        specify do
+          activity = Activity.execute_script_activity(user, "an edit summary")
+          expect(activity.decorate.did_something.squish).to eq "executed a script"
+        end
+      end
+    end
   end
 
   describe "#link_trackable_if_exists" do
