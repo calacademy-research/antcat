@@ -49,6 +49,10 @@ class Name < ApplicationRecord
     Names::WhatLinksHere[self]
   end
 
+  def orphaned?
+    !(taxa.exists? || protonyms.exists?)
+  end
+
   private
 
     def words
