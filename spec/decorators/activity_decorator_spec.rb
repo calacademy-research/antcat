@@ -41,6 +41,23 @@ describe ActivityDecorator do
           expect(activity.decorate.did_something.squish).to eq "executed a script"
         end
       end
+
+      context 'when action is `approve_all_changes`' do
+        let!(:user) { create :user }
+
+        before do
+          taxon = create :family, :waiting
+          create :change, taxon: taxon, user: user
+        end
+
+        specify do
+          Change.approve_all user
+
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq "approved all unreviewed catalog changes (1 in total)."
+        end
+      end
     end
   end
 

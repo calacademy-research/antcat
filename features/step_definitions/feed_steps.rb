@@ -75,14 +75,6 @@ When("I add a taxon for the feed") do
   end
 end
 
-# Change
-Given("there are two unreviewed catalog changes for the feed") do
-  Feed.without_tracking do
-    step %(there is a genus "Cactusia" that's waiting for approval)
-    step %(there is a genus "Camelia" that's waiting for approval)
-  end
-end
-
 # ReferenceSection
 When("I add a reference section for the feed") do
   reference_section = Feed.without_tracking do
