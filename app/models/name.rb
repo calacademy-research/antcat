@@ -4,8 +4,8 @@ class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  has_many :protonyms
-  has_many :taxa, class_name: 'Taxon'
+  has_many :protonyms, dependent: :restrict_with_error
+  has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :name, :epithet, presence: true
 

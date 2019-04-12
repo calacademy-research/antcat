@@ -5,6 +5,28 @@ describe Name do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :epithet }
 
+  describe "#destroy" do
+    let!(:name) { create :family_name }
+
+    context "when name has taxa" do
+      before { create :family, name: name }
+
+      it "cannot be destroyed" do
+        expect { name.destroy }.not_to change { described_class.count }
+        expect(name.errors[:base]).to eq ["Cannot delete record because dependent taxa exist"]
+      end
+    end
+
+    context "when name has protonyms" do
+      before { create :protonym, name: name }
+
+      it "cannot be destroyed" do
+        expect { name.destroy }.not_to change { described_class.count }
+        expect(name.errors[:base]).to eq ["Cannot delete record because dependent protonyms exist"]
+      end
+    end
+  end
+
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(epithet: 'major').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
