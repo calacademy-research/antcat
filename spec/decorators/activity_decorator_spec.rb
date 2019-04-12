@@ -19,8 +19,18 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#did_something" do
-    # TODO
+  describe "#did_something", :feed do
+    context 'when there is a trackable' do
+      context 'when trackable is a `Reference`' do
+        let!(:trackable) { create :article_reference }
+
+        specify do
+          activity = trackable.create_activity :create
+          expect(activity.decorate.did_something.squish).
+            to eq %(added the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+        end
+      end
+    end
   end
 
   describe "#link_trackable_if_exists" do
