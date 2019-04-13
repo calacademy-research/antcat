@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_07_012605) do
+ActiveRecord::Schema.define(version: 2019_04_13_035117) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -394,7 +394,11 @@ ActiveRecord::Schema.define(version: 2019_04_07_012605) do
     t.index ["whodunnit"], name: "index_versions_on_whodunnit"
   end
 
+  add_foreign_key "issues", "users", column: "adder_id", name: "fk_issues__adder_id__users__id"
+  add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
+  add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "site_notices", "users"
+  add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
   add_foreign_key "synonyms", "taxa", column: "junior_synonym_id", name: "fk_synonyms__junior_synonym_id__taxa__id"
   add_foreign_key "synonyms", "taxa", column: "senior_synonym_id", name: "fk_synonyms__senior_synonym_id__taxa__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
@@ -406,4 +410,5 @@ ActiveRecord::Schema.define(version: 2019_04_07_012605) do
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
+  add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"
 end

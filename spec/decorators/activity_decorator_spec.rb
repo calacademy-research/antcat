@@ -19,8 +19,123 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#did_something" do
-    # TODO
+  describe "#did_something", :feed do
+    include TestLinksHelpers
+
+    context 'when there is a trackable' do
+      context 'when trackable is a `Reference`' do
+        context 'when action is `update`' do
+          let!(:trackable) { create :article_reference }
+
+          specify do
+            activity = trackable.create_activity :update
+            expect(activity.decorate.did_something.squish).
+              to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `start_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'none' }
+
+          specify do
+            trackable.start_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `finish_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'reviewing' }
+
+          specify do
+            trackable.finish_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `restart_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'reviewed' }
+
+          specify do
+            trackable.restart_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+      end
+
+      context 'when trackable is a `Synonym`' do
+        let!(:senior) { create :family }
+        let!(:junior) { create :family }
+        let!(:trackable) { create :synonym, senior_synonym: senior, junior_synonym: junior }
+
+        specify do
+          trackable.destroy
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq %(deleted the synonym relationship #{taxon_link(junior)} (junior) <span class="antcat_icon synonym_arrow"></span> #{taxon_link(senior)} (senior))
+        end
+      end
+
+      context 'when trackable is a `Tooltip`' do
+        let!(:trackable) { create :tooltip, scope: 'taxa', key: 'authors' }
+
+        specify do
+          activity = trackable.create_activity :update
+          expect(activity.decorate.did_something.squish).
+            to eq %(edited the tooltip <a href="/tooltips/#{trackable.id}">#{trackable.scope}.#{trackable.key}</a>)
+        end
+      end
+    end
+
+    context 'when there is no trackable' do
+      context 'when action is `execute_script`' do
+        let!(:user) { create :user }
+
+        specify do
+          activity = Activity.execute_script_activity(user, "an edit summary")
+          expect(activity.decorate.did_something.squish).to eq "executed a script"
+        end
+      end
+
+      context 'when action is `approve_all_changes`' do
+        let!(:user) { create :user }
+
+        before do
+          taxon = create :family, :waiting
+          create :change, taxon: taxon, user: user
+        end
+
+        specify do
+          Change.approve_all user
+
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq "approved all unreviewed catalog changes (1 in total)."
+        end
+      end
+
+      context 'when action is `approve_all_changes`' do
+        before do
+          create :article_reference, review_state: 'none'
+        end
+
+        specify do
+          Reference.approve_all
+
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq "approved all unreviewed references (1 in total)."
+        end
+      end
+    end
   end
 
   describe "#link_trackable_if_exists" do

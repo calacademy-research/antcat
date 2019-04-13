@@ -1,6 +1,6 @@
 require "spec_helper"
 
-class AsCSVDummy < DatabaseTestScript
+class AsCSVDummy < DatabaseScripts::DatabaseTestScript
   include DatabaseScripts::Renderers::AsCSV
 end
 

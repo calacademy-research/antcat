@@ -43,5 +43,4 @@ end
 
 __END__
 description: See %github452 for why we want this.
-tags: [new!]
 topic_areas: [taxt]

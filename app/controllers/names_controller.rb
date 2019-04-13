@@ -1,6 +1,6 @@
 class NamesController < ApplicationController
   before_action :ensure_can_edit_catalog, except: [:show]
-  before_action :set_name, only: [:show, :edit, :update]
+  before_action :set_name, only: [:show, :edit, :update, :destroy]
 
   def show
     @table_refs = @name.what_links_here
@@ -15,6 +15,15 @@ class NamesController < ApplicationController
       redirect_to name_path(@name), notice: "Successfully updated name."
     else
       render :edit
+    end
+  end
+
+  def destroy
+    if @name.destroy
+      @name.create_activity :destroy
+      redirect_to root_path, notice: "Successfully deleted name."
+    else
+      redirect_to name_path(@name), alert: @name.errors.full_messages.to_sentence
     end
   end
 

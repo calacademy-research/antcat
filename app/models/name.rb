@@ -1,15 +1,34 @@
 # All `Name` subclasses are for taxa; `AuthorName`s are used for references.
+# TODO: Validate presence/absence of spaces in names/epithet/epithets.
 
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  has_many :protonyms
-  has_many :taxa, class_name: 'Taxon'
+  # TODO: See how we can make use of this (originally added for  debugging/dev/docs reasons only).
+  # Two or more words:
+  #   `SubgenusName`
+  #   `SpeciesName`
+  #   `SubspeciesName`
+  SINGLE_WORD_NAMES = [
+    'FamilyName',
+    'FamilyOrSubfamilyName', # TODO: Split into `FamilyName` and `SubfamilyName` and remove.
+    'SubfamilyName',
+    'TribeName',
+    'SubtribeName',
+    'GenusName',
+    'CollectiveGroupName' # TODO: Confirm `CollectiveGroupName` are always a single word.
+  ]
+
+  has_many :protonyms, dependent: :restrict_with_error
+  has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :name, :epithet, presence: true
+  validate :ensure_epithet_in_name
 
   after_save :set_taxon_caches
+
+  scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true
@@ -49,7 +68,19 @@ class Name < ApplicationRecord
     Names::WhatLinksHere[self]
   end
 
+  def orphaned?
+    !(taxa.exists? || protonyms.exists?)
+  end
+
   private
+
+    def ensure_epithet_in_name
+      return if name.blank? || epithet.blank?
+      return if name.include?(epithet)
+
+      errors.add :epithet, "must occur in the full name"
+      throw :abort
+    end
 
     def words
       @words ||= name.split

@@ -31,5 +31,4 @@ end
 __END__
 description: >
   Less than 15 characters.
-tags: [new!]
 topic_areas: [taxt]

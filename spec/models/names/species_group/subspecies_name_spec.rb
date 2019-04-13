@@ -3,6 +3,16 @@ require 'spec_helper'
 describe SubspeciesName do
   it { is_expected.to validate_presence_of :epithets }
 
+  describe 'epithet and epithets validation' do
+    subject { build_stubbed :subspecies_name, name: 'Lasius niger nigra' }
+
+    it { is_expected.to allow_value('niger').for :epithet }
+    it { is_expected.not_to allow_value('different').for :epithet }
+
+    it { is_expected.to allow_value('niger').for :epithets }
+    it { is_expected.not_to allow_value('different').for :epithets }
+  end
+
   describe "name parts" do
     context 'when three name parts' do
       let(:subspecies_name) do

@@ -1,5 +1,6 @@
 class SubspeciesName < SpeciesGroupName
   validates :epithets, presence: true
+  validate :ensure_epithets_in_name
 
   def subspecies_epithets
     words[2..-1].join ' '
@@ -10,4 +11,14 @@ class SubspeciesName < SpeciesGroupName
     change name_string
     update! epithets: species_name.epithet + ' ' + subspecies_epithets
   end
+
+  private
+
+    def ensure_epithets_in_name
+      return if name.blank? || epithets.blank?
+      return if name.include?(epithets)
+
+      errors.add :epithets, "must occur in the full name"
+      throw :abort
+    end
 end

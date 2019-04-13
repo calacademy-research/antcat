@@ -33,6 +33,16 @@
 
 -@reference = @reference.decorate
 
+-if @reference.is_a? MissingReference
+  .row.margin-bottom
+    .small-12.columns
+      .callout.alert
+        =antcat_icon "warning-icon"
+        This reference is missing.
+
+        Reason missing:
+        =@reference.reason_missing
+
 .row.margin-bottom
   .small-12.columns
     .callout

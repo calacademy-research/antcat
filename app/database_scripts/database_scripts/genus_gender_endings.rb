@@ -87,6 +87,5 @@ module DatabaseScripts
 end
 
 __END__
-description: Version 0.1 of this script. Read-only.
 tags: [list, slow]
-topic_areas: [catalog]
+topic_areas: [names]

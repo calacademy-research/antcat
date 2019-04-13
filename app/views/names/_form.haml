@@ -1,3 +1,27 @@
+=content_for :breadcrumbs_right do
+  =link_to "Hide/show additional help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "additional-help" }
+
+.row{data: { show_hide_toggable_id: "additional-help" }}
+  .medium-12.columns
+    .callout
+      %h6 Additional help
+      %p
+        %code name
+        is the full name. It is used in a lot of places.
+      %p
+        %code epithet
+        is used mainly in the taxon browser. It is the same as the full name for single-word names (family, subfamily, tribe, genus, and also the less frequently used subtribe names, names of collective group names, and "FamilyOrSubfamilyName").
+      %p
+        Subgenus names consist of two parts: the genus name, followed by the subgenus name in parentheses. The subgenus name part is the epithet in this case.
+      %p For species, the epithet is the species name part.
+      %p For subspecies, the epithet is the last word in the name.
+      %p
+        %code epithets
+        are only for infraspecific names. It consist of everything in the full name, except the genus name part.
+      %p
+        Epithet and epithets are both used for the header link (for linking different parts of the name to the
+        genus/species/subspecies), AntWeb (links and export), and for checking for homonym cases.
+
 .row
   .medium-8.columns
     =form_for name, url: name_path(name) do |f|
@@ -28,8 +52,7 @@
       %h6 Help
       %p
         =antcat_icon 'warning-icon'
-        %strong Consider this an advanced feature,
-        because it is not documented what the different fields are used for.
+        %strong Consider this an advanced feature.
       %p
         =antcat_icon 'warning-icon'
         This form allows saving of duplicates and homonyms. There are no validations for this.

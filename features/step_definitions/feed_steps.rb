@@ -49,37 +49,12 @@ Given("there is a {string} journal activity") do |action|
   journal.create_activity action.to_sym
 end
 
-# Reference
-Given("there is a reference for the feed with state {string}") do |state|
-  Feed.without_tracking do
-    create :article_reference,
-      author_names: [create(:author_name, name: 'Giovanni, S.')],
-      citation_year: '1809',
-      review_state: state
-  end
-end
-
-# Tooltip
-Given("there is a tooltip for the feed") do
-  Feed.without_tracking do
-    Tooltip.create key: "authors", scope: "taxa", text: "Text"
-  end
-end
-
 # Taxon
 When("I add a taxon for the feed") do
   Feed.without_tracking do
     cheat_and_set_user_for_feed
     create :subfamily, name: create(:subfamily_name, name: "Antcatinae"),
       family: create(:family)
-  end
-end
-
-# Change
-Given("there are two unreviewed catalog changes for the feed") do
-  Feed.without_tracking do
-    step %(there is a genus "Cactusia" that's waiting for approval)
-    step %(there is a genus "Camelia" that's waiting for approval)
   end
 end
 
@@ -113,12 +88,6 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
   else
     expect(match).to be_truthy
   end
-end
-
-# Execute a script
-When("I execute a script with the content {string}") do |content|
-  cheat_and_set_user_for_feed
-  Activity.create_without_trackable :execute_script, edit_summary: content
 end
 
 # When JavaScript is enabled, Cucumber and the factories run in different threads,
