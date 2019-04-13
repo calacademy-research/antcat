@@ -38,4 +38,4 @@ description: >
   open both and sort by count to see the difference.
 
 tags: [list]
-topic_areas: [catalog]
+topic_areas: [names]

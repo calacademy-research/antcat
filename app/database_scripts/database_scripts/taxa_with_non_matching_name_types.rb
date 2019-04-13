@@ -55,4 +55,4 @@ description: >
   it may be the other way around, that the name type is correct but the
   taxon's type is not.
 
-topic_areas: [catalog]
+topic_areas: [names]
