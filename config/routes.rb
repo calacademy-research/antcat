@@ -133,7 +133,7 @@ Rails.application.routes.draw do
 
   resource :default_reference, only: :update
 
-  resources :names, only: [:show, :edit, :update] do
+  resources :names, only: [:show, :edit, :update, :destroy] do
     scope module: :names do
       resources :history, only: :index
     end

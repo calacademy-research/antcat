@@ -5,6 +5,35 @@ describe Name do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :epithet }
 
+  describe 'epithet validation' do
+    subject { build_stubbed :name, name: 'Lasius' }
+
+    it { is_expected.to allow_value('Lasius').for :epithet }
+    it { is_expected.not_to allow_value('Different').for :epithet }
+  end
+
+  describe "#destroy" do
+    let!(:name) { create :family_name }
+
+    context "when name has taxa" do
+      before { create :family, name: name }
+
+      it "cannot be destroyed" do
+        expect { name.destroy }.not_to change { described_class.count }
+        expect(name.errors[:base]).to eq ["Cannot delete record because dependent taxa exist"]
+      end
+    end
+
+    context "when name has protonyms" do
+      before { create :protonym, name: name }
+
+      it "cannot be destroyed" do
+        expect { name.destroy }.not_to change { described_class.count }
+        expect(name.errors[:base]).to eq ["Cannot delete record because dependent protonyms exist"]
+      end
+    end
+  end
+
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(epithet: 'major').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
@@ -46,7 +75,7 @@ describe Name do
       it "changes the cache" do
         expect(taxon.name_cache).to eq 'Atta'
         expect(taxon.name_html_cache).to eq '<i>Atta</i>'
-        atta_name.update name: 'Betta'
+        atta_name.update name: 'Betta', epithet: 'Betta'
         taxon.reload
         expect(taxon.name_cache).to eq 'Betta'
         expect(taxon.name_html_cache).to eq '<i>Betta</i>'
