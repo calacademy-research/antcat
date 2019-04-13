@@ -1,4 +1,5 @@
 # All `Name` subclasses are for taxa; `AuthorName`s are used for references.
+# TODO: Validate presence/absence of spaces in names/epithet/epithets.
 
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
@@ -8,6 +9,7 @@ class Name < ApplicationRecord
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :name, :epithet, presence: true
+  validate :ensure_epithet_in_name
 
   after_save :set_taxon_caches
 
@@ -54,6 +56,14 @@ class Name < ApplicationRecord
   end
 
   private
+
+    def ensure_epithet_in_name
+      return if name.blank? || epithet.blank?
+      return if name.include?(epithet)
+
+      errors.add :epithet, "must occur in the full name"
+      throw :abort
+    end
 
     def words
       @words ||= name.split
