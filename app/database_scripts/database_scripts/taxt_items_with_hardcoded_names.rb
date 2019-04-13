@@ -66,5 +66,4 @@ description: >
   including `hardcoded_name` anywhere in the content of a taxt (these HTML comments
   are hidden in the catalog).
 
-tags: [new!]
 topic_areas: [taxt]

@@ -1,7 +1,7 @@
 module DatabaseScripts
   class <%= class_name %> < DatabaseScript
     def results
-      # Subspecies.where(species: nil, auto_generated: false)
+      # Subspecies.where(species: nil)
     end
 
     # When this method isn't implemented, the code tries to figure out
@@ -9,16 +9,23 @@ module DatabaseScripts
     # def render
     #   as_table do |t|
     #     t.header :subspecies, :status
-    #     t.rows { |taxon| [ markdown_taxon_link(taxon), taxon.status ] }
+    #     t.rows do |taxon|
+    #       [
+    #         markdown_taxon_link(taxon),
+    #         taxon.status
+    #       ]
+    #     end
     #   end
     # end
   end
 end
 
 __END__
-# The end data will be parsed as YAML, so hashtag comments are OK here.
+
 description: >
   Optional script description; parsed as **markdown**.
+
+  Tags are optional (some have special meanings, see `DatabaseScript`).
+
 tags: [new!, example-tag]
-# Tags are optional (some have special meanings, see `DatabaseScript`).
 topic_areas: [catalog, references... see the script index page]

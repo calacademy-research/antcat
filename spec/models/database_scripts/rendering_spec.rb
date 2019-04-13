@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe DatabaseScripts::Rendering do
-  let(:script) { DatabaseTestScript.new }
+  let(:script) { DatabaseScripts::DatabaseTestScript.new }
 
   describe "#render" do
     context "the script has not defined #render" do

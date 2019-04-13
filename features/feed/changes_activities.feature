@@ -19,16 +19,3 @@ Feature: Feed (changes)
     Then I should see "Joffre undid the change"
     And I should see the edit summary "deleted by mistake..."
     And I should see 2 item in the feed
-
-  Scenario: Approved all changes
-    Given I log in as a superadmin named "Archibald"
-    And there are two unreviewed catalog changes for the feed
-
-    When I go to the unreviewed changes page
-    And I follow "Approve all"
-    And I go to the activity feed
-    Then I should see "Archibald approved all unreviewed catalog changes"
-    # Should be the below but something is not working in the steps.
-    # Then I should see "Archibald approved all unreviewed catalog changes (2 in total)."
-    And I should see "Archibald approved the change"
-    And I should see at least 3 items in the feed

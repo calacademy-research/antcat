@@ -41,4 +41,4 @@ description: >
   for some notes.
 
 tags: [list]
-topic_areas: [catalog]
+topic_areas: [names]

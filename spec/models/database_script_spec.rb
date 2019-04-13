@@ -9,7 +9,7 @@ describe DatabaseScript do
   end
 
   describe "#cached_results" do
-    let(:database_script) { DatabaseTestScript.new }
+    let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
     it "doesn't call `#result` more than once" do
       expect(database_script).to receive(:results).once.and_return :stubbed
