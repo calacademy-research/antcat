@@ -58,5 +58,4 @@ description: >
   I'd say ignore it for now. Adding the `Current valid taxon` in the "Senior synonyms" sections will make `Taxon`
   disappear from this list.
 
-tags: [new!]
 topic_areas: [synonyms]
