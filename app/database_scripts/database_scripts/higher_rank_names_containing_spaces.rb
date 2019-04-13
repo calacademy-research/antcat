@@ -4,7 +4,7 @@ module DatabaseScripts
     include ActionView::Helpers::UrlHelper
 
     def results
-      Name.where.not(type: ["SubgenusName", "SpeciesName", "SubspeciesName"]).where("name LIKE ?", "% %")
+      Name.single_word_names.where("name LIKE ?", "% %")
     end
 
     def render
