@@ -24,12 +24,50 @@ describe ActivityDecorator do
 
     context 'when there is a trackable' do
       context 'when trackable is a `Reference`' do
-        let!(:trackable) { create :article_reference }
+        context 'when action is `update`' do
+          let!(:trackable) { create :article_reference }
 
-        specify do
-          activity = trackable.create_activity :update
-          expect(activity.decorate.did_something.squish).
-            to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          specify do
+            activity = trackable.create_activity :update
+            expect(activity.decorate.did_something.squish).
+              to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `start_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'none' }
+
+          specify do
+            trackable.start_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `finish_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'reviewing' }
+
+          specify do
+            trackable.finish_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
+        end
+
+        context 'when action is `restart_reviewing`' do
+          let!(:trackable) { create :article_reference, review_state: 'reviewed' }
+
+          specify do
+            trackable.restart_reviewing!
+
+            activity = Activity.last
+            expect(activity.decorate.did_something.squish).
+              to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
+          end
         end
       end
 
@@ -81,6 +119,20 @@ describe ActivityDecorator do
           activity = Activity.last
           expect(activity.decorate.did_something.squish).
             to eq "approved all unreviewed catalog changes (1 in total)."
+        end
+      end
+
+      context 'when action is `approve_all_changes`' do
+        before do
+          create :article_reference, review_state: 'none'
+        end
+
+        specify do
+          Reference.approve_all
+
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq "approved all unreviewed references (1 in total)."
         end
       end
     end

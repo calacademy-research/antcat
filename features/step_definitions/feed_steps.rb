@@ -49,16 +49,6 @@ Given("there is a {string} journal activity") do |action|
   journal.create_activity action.to_sym
 end
 
-# Reference
-Given("there is a reference for the feed with state {string}") do |state|
-  Feed.without_tracking do
-    create :article_reference,
-      author_names: [create(:author_name, name: 'Giovanni, S.')],
-      citation_year: '1809',
-      review_state: state
-  end
-end
-
 # Taxon
 When("I add a taxon for the feed") do
   Feed.without_tracking do
