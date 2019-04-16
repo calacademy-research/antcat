@@ -52,21 +52,9 @@ end
 # Taxon
 When("I add a taxon for the feed") do
   Feed.without_tracking do
-    cheat_and_set_user_for_feed
     create :subfamily, name: create(:subfamily_name, name: "Antcatinae"),
       family: create(:family)
   end
-end
-
-# ReferenceSection
-When("I add a reference section for the feed") do
-  reference_section = Feed.without_tracking do
-    ReferenceSection.create title_taxt: "PALAEONTOLOGY",
-    references_taxt: "The Ants (amber checklist)", taxon: create(:family)
-  end
-
-  cheat_and_set_user_for_feed
-  reference_section.create_activity :create
 end
 
 When("I click on Show more") do
@@ -90,13 +78,7 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
   end
 end
 
-# When JavaScript is enabled, Cucumber and the factories run in different threads,
-# so it's tricky to access the request which is where the feed get's the current user,
-# and `UndoTracker` gets the `current_change_id`.
-#
-# TODO: Many specs and steps cheat to make life easier, and that OK as long as the
-# code works as intended and there are tests that doesn't cheat, but we should
-# figure out how to improve this.
+# TODO: Remove.
 def cheat_and_set_user_for_feed
   User.current = User.last
 end

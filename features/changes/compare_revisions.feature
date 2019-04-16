@@ -49,12 +49,10 @@ Feature: Compare revisions
     Then I should see "Difference between revisions"
     And I should see "initial content"
 
-  Scenario: Comparing reference section revisions (testing added only)
-    When I add a reference section for the feed
-    And I go to the activity feed
-    Then I should see "Archibald added the reference section" and no other feed items
+  Scenario: Comparing reference section revisions
+    Given there is a reference section with the references_taxt "test"
 
-    When I follow the first linked reference section
+    When I go to the page of the most recent reference section
     Then I should see "This item does not have any previous revisions"
 
   @javascript
