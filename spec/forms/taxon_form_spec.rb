@@ -13,7 +13,8 @@ describe TaxonForm do
         protonym_attributes: {
           name_attributes:  {},
           authorship_attributes: {
-            reference_id: create(:article_reference).id
+            reference_id: create(:article_reference).id,
+            pages: '99'
           }
         }
       )

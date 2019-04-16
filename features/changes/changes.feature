@@ -18,6 +18,7 @@ Feature: Changes
     And I click the protonym name field
     And I press "OK"
     And WAIT_FOR_JQUERY
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should see "This taxon has been changed; changes awaiting approval"
 

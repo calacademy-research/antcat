@@ -34,7 +34,8 @@ describe TaxaController do
             id: protonym_name.id
           },
           authorship_attributes: {
-            reference_id: authorship_reference.id
+            reference_id: authorship_reference.id,
+            pages: '99'
           }
         }
       )
