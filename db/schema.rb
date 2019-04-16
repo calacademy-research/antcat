@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_16_170306) do
+ActiveRecord::Schema.define(version: 2019_04_16_171204) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -54,8 +54,8 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   end
 
   create_table "citations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "reference_id"
-    t.string "pages"
+    t.integer "reference_id", null: false
+    t.string "pages", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "notes_taxt"
@@ -89,7 +89,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
     t.integer "user_id"
     t.string "email"
     t.string "name"
-    t.text "comment"
+    t.text "comment", null: false
     t.string "ip"
     t.string "page"
     t.datetime "created_at"
@@ -109,8 +109,8 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   create_table "issues", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "closer_id"
     t.integer "adder_id"
-    t.string "title"
-    t.text "description"
+    t.string "title", null: false
+    t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
@@ -157,7 +157,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   create_table "protonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "authorship_id"
+    t.integer "authorship_id", null: false
     t.boolean "fossil"
     t.boolean "sic"
     t.string "locality"
@@ -167,10 +167,10 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   end
 
   create_table "publishers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "place_name"
+    t.string "place_name", null: false
     t.index ["name"], name: "publishers_name_idx"
   end
 
@@ -252,9 +252,9 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   end
 
   create_table "site_notices", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "title"
-    t.text "message"
-    t.integer "user_id"
+    t.string "title", null: false
+    t.text "message", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_site_notices_on_user_id"
@@ -321,7 +321,7 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   end
 
   create_table "taxon_history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "taxt"
+    t.text "taxt", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "taxon_id"
@@ -339,11 +339,11 @@ ActiveRecord::Schema.define(version: 2019_04_16_170306) do
   end
 
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.string "key"
-    t.text "text"
+    t.string "key", null: false
+    t.text "text", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string "scope"
+    t.string "scope", null: false
   end
 
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
