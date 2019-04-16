@@ -20,6 +20,7 @@ Feature: Feed (taxa)
           And I press "OK"
         And I click the protonym name field
           And I press "OK"
+        And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
         And I fill in "edit_summary" with "fix typo"
         And WAIT_FOR_JQUERY
         And I press "Save"
