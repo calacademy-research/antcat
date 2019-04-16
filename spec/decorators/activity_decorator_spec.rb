@@ -135,6 +135,19 @@ describe ActivityDecorator do
             to eq "approved all unreviewed references (1 in total)."
         end
       end
+
+      context 'when action is `merge_authors`' do
+        let!(:first_author) { create(:author_name, name: 'Bolton, B').author }
+        let!(:second_author) { create(:author_name, name: 'Bolton,B.').author }
+
+        specify do
+          Author.merge [first_author, second_author]
+
+          activity = Activity.last
+          expect(activity.decorate.did_something.squish).
+            to eq %(merged the author(s) Bolton,B. into author <a href="/authors/#{first_author.id}">Bolton, B</a>)
+        end
+      end
     end
   end
 
