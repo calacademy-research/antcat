@@ -1,4 +1,4 @@
-Feature: Latest Additions (seeing what's new)
+Feature: Latest Additions
   As an editor of AntCat
   I want to see recently added references
   So I can keep up with the state of the literature
@@ -28,17 +28,3 @@ Feature: Latest Additions (seeing what's new)
     And I follow "Finish reviewing"
     And I follow "Restart reviewing"
     Then I should see "Being reviewed"
-
-  # TODO this test just tests itself, and it's not even working.
-  @skip
-  Scenario: Changing the default reference button on the latest reference additions page
-    Given there is no default reference
-
-    When I go to the latest reference additions page
-    Then I should not see "Default"
-
-    When I follow "Make default"
-    Given the default reference is "Ward, 2010"
-    And I go to the latest reference additions page
-    Then I should see "Default"
-    And I should not see "Make default"

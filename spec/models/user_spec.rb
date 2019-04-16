@@ -4,20 +4,6 @@ describe User do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to be_versioned }
 
-  describe "authorization" do
-    context "when user is not an editor" do
-      let(:user) { described_class.new }
-
-      specify { expect(user.is_editor?).to be false }
-    end
-
-    context "when user is an editor" do
-      let(:user) { build_stubbed :user, :editor }
-
-      specify { expect(user.is_editor?).to be true }
-    end
-  end
-
   describe "#notify_because" do
     let(:user) { create :user }
     let(:notifier) { create :user }
