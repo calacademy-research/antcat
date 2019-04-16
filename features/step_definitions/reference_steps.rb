@@ -127,10 +127,6 @@ When('I press "Go" by the references search box') do
   find("#header-reference-search-button-test-hook").click
 end
 
-When("I hover the export button") do
-  find(".btn-normal", text: "Export").hover
-end
-
 Then("nesting_reference_id should contain a valid reference id") do
   id = find("#reference_nesting_reference_id").value
   expect(Reference.exists?(id)).to be true
