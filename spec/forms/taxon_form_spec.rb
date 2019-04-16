@@ -19,12 +19,9 @@ describe TaxonForm do
       )
     end
     let(:family_params) do
-      type_species = create_species 'Betta major', subfamily: nil
-
       params = taxon_params
       params[:name_attributes][:id] = create(:family_name).id
       params[:protonym_attributes][:name_attributes][:id] = create(:genus_name).id
-      params[:type_taxon_id] = type_species.id
       params
     end
 
