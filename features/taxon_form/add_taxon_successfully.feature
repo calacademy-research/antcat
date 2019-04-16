@@ -20,6 +20,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
 
     When I set the type name to "Atta major"
     Then the type name field should contain "Atta major"
@@ -43,6 +44,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       And I set the protonym name to "Eciton"
       And I press "OK"
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Eciton"
 
@@ -59,6 +61,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Mayria"
       And I press "OK"
       And I press "Add this name"
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Camponotus (Mayria)"
     And I should see "Mayria" in the protonym
@@ -80,6 +83,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Eciton major"
       And I press "OK"
       And WAIT_FOR_JQUERY
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
@@ -99,6 +103,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Dolichoderus major"
       And I press "OK"
       And WAIT_FOR_JQUERY
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Dolichoderus major"
     And I should see "Dolichoderus major" in the protonym
@@ -116,6 +121,7 @@ Feature: Adding a taxon successfully
       And I set the protonym name to "Eciton major infra"
       And I press "OK"
       And WAIT_FOR_JQUERY
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Eciton major infra"
     And I should see "infra" in the taxon browser
@@ -133,6 +139,7 @@ Feature: Adding a taxon successfully
     And I click the protonym name field
       Then the protonym name field should contain "Dorylinae"
       When I press "OK"
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Dorylinae"
     And I should see "Dorylinae" in the protonym
@@ -153,6 +160,7 @@ Feature: Adding a taxon successfully
       Then the protonym name field should contain "Dorylini"
       And I press "OK"
       And WAIT_FOR_JQUERY
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Dorylini"
     And I should see "Dorylini" in the protonym

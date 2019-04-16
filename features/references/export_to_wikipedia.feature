@@ -1,4 +1,3 @@
-@javascript
 Feature: Export references to Wikipedia
   As an editor of Wikipedia
   I want generate wiki-formatted citation templates
@@ -8,7 +7,6 @@ Feature: Export references to Wikipedia
     Given there is an article reference
 
     When I go to the page of the most recent reference
-    And I hover the export button
     And I follow "Wikipedia"
     Then I should see "{{cite journal"
 
@@ -16,6 +14,5 @@ Feature: Export references to Wikipedia
     Given there is a book reference
 
     When I go to the page of the most recent reference
-    And I hover the export button
     And I follow "Wikipedia"
     Then I should see "{{cite book"

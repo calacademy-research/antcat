@@ -8,7 +8,7 @@ class Citation < ApplicationRecord
 
   has_one :protonym, foreign_key: :authorship_id # See note above.
 
-  validates :reference, presence: true
+  validates :reference, :pages, presence: true
   validate :no_missing_references
 
   accepts_nested_attributes_for :reference

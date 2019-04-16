@@ -17,19 +17,6 @@ describe DevMonkeyPatches do
     end
   end
 
-  context "when in development" do
-    before { allow(Rails.env).to receive(:test?).and_return false }
-
-    it "can be enabled" do
-      expect(described_class.enable).to be :stubbed
-    end
-
-    it "can be suppressed with `NO_DEV_MONKEY_PATCHES=true`" do
-      expect(ENV).to receive(:[]).with("NO_DEV_MONKEY_PATCHES").and_return "yes"
-      expect(described_class.enable).to be nil
-    end
-  end
-
   context "when in test" do
     it "it's not enabled by default" do
       expect { described_class.enable }.to raise_error /in test/

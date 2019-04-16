@@ -68,14 +68,3 @@ Feature: Copy reference
 
     When I follow "Copy"
     Then the "reference_document_attributes_url" field should contain ""
-
-  @javascript
-  Scenario: Copy a reference with a date
-    Given this reference exist
-      | author     | title          | citation_year | date     |
-      | Ward, P.S. | Annals of Ants | 1910          | 19900101 |
-    And I go to the page of the most recent reference
-
-    When I follow "Copy"
-    Then the "reference_title" field should contain "Annals of Ants"
-    And the "reference_date" field should contain ""

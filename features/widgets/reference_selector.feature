@@ -21,7 +21,8 @@ Feature: Reference selector
     And I set the type name to "Atta major"
     And I click the protonym name field
       And I press "OK"
-      And I set the authorship to the first search results of "Batiatus (2004)"
+    And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
+    And I set the authorship to the first search results of "Batiatus (2004)"
     Then the authorship should contain the reference "Batiatus, 2004"
 
     When I press "Save"

@@ -4,7 +4,12 @@ describe Tooltip do
   it { is_expected.to be_versioned }
 
   describe "#key" do
-    it { is_expected.to validate_uniqueness_of :key }
+    describe 'uniqueness' do
+      before { create :tooltip }
+
+      it { is_expected.to validate_uniqueness_of :key }
+    end
+
     it { is_expected.to validate_presence_of :key }
     it { is_expected.to validate_presence_of :scope }
     it { is_expected.to validate_presence_of :text }

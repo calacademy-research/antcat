@@ -113,10 +113,6 @@ Given("the default reference is {string}") do |keey|
   DefaultReference.stub(:get).and_return reference
 end
 
-Given("there is no default reference") do
-  DefaultReference.stub(:get).and_return nil
-end
-
 When("I fill in the references search box with {string}") do |search_term|
   within('#desktop-menu') do
     step %(I fill in "reference_q" with "#{search_term}")
@@ -125,10 +121,6 @@ end
 
 When('I press "Go" by the references search box') do
   find("#header-reference-search-button-test-hook").click
-end
-
-When("I hover the export button") do
-  find(".btn-normal", text: "Export").hover
 end
 
 Then("nesting_reference_id should contain a valid reference id") do

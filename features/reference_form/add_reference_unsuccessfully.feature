@@ -28,13 +28,6 @@ Feature: Add reference unsuccessfully
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "book_pagination" field should contain "2"
 
-  @javascript
-  Scenario: Adding a nested reference with a nonexistent nestee
-    When I follow "Nested"
-    And I fill in "reference_nesting_reference_id" with "123123"
-    And I press "Save"
-    Then I should see "Nesting reference does not exist"
-
   Scenario: Unparseable author string (and maintain already filled in fields)
     When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
     And I press "Save"
