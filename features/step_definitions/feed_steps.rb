@@ -49,14 +49,6 @@ Given("there is a {string} journal activity") do |action|
   journal.create_activity action.to_sym
 end
 
-# Taxon
-When("I add a taxon for the feed") do
-  Feed.without_tracking do
-    create :subfamily, name: create(:subfamily_name, name: "Antcatinae"),
-      family: create(:family)
-  end
-end
-
 When("I click on Show more") do
   find("a", text: "Show more").click
 end
