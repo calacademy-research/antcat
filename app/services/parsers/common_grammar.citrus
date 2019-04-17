@@ -6,16 +6,4 @@ grammar Parsers::CommonGrammar
   rule space
     /\s/
   end
-
-  rule italic
-    /<i.*?>/
-  end
-
-  rule close_tag
-    /<\/\w+>/
-  end
-
-  rule et_al
-    italic 'et al.' close_tag
-  end
 end
