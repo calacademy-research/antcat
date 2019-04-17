@@ -5,15 +5,15 @@ FactoryBot.define do
     password { 'secret' }
 
     trait :superadmin do
-      is_superadmin { true }
+      superadmin { true }
     end
 
     trait :editor do
-      can_edit { true }
+      editor { true }
     end
 
     trait :helper do
-      is_helper { true }
+      helper { true }
     end
   end
 end
