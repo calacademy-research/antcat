@@ -11,32 +11,8 @@ grammar Parsers::CommonGrammar
     /<i.*?>/
   end
 
-  rule tag_end
-    /<\/\w+>/
-  end
-
-  rule tag_ends
-    tag_end*
-  end
-
   rule close_tag
-    tag_end
-  end
-
-  rule roman_number
-    /\b[iIvVxXlLcC]+\b/
-  end
-
-  rule arabic_number
-    /\b[\d]+/
-  end
-
-  rule year
-    ('17'|'18'|'19'|'20'|'21') /\d{2}/ !/\d/
-  end
-
-  rule citation_year
-    year /[[:alpha:]]/?
+    /<\/\w+>/
   end
 
   rule et_al
