@@ -15,7 +15,7 @@ class Feedback < ApplicationRecord
 
   acts_as_commentable
   has_paper_trail
-  tracked on: [:create, :destroy]
+  tracked on: :mixin_create_activity_only
 
   def from_the_same_ip
     self.class.where(ip: ip)
