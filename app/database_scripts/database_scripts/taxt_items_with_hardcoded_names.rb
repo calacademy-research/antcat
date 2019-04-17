@@ -4,9 +4,10 @@ module DatabaseScripts
     include ActionView::Helpers::UrlHelper
 
     def results
-      models_and_ids = Taxt.models_with_taxts.map { |tag, _| [tag, []] }.to_h
+      models_and_ids = {}
 
-      Taxt.models_with_taxts.each_field do |field, model|
+      Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
+        models_and_ids[model] ||= []
         models_and_ids[model] += model.where("#{field} LIKE '%hardcoded_name%'").pluck(:id)
       end
 

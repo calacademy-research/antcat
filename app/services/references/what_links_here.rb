@@ -12,7 +12,7 @@ module References
     end
 
     def call
-      Taxt.models_with_taxts.each_field do |field, model|
+      Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
         model.where("#{field} LIKE '%{ref #{reference.id}}%'").pluck(:id).each do |id|
           references << table_ref(model.table_name, field.to_sym, id)
           return true if predicate
