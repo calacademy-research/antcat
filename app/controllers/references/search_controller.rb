@@ -23,7 +23,7 @@ module References
 
         id = params[:reference_q].strip
         if id =~ /^\d{5,}$/
-          return redirect_to reference_path(id) if Reference.exists? id
+          return redirect_to reference_path(id) if Reference.exists?(id.to_i)
         end
       end
   end
