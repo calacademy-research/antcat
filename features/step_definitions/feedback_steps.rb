@@ -39,7 +39,8 @@ end
 
 Given("a visitor has submitted a feedback with the comment {string}") do |comment|
   cheat_and_set_user_for_feed
-  create :feedback, comment: comment
+  feedback = create :feedback, comment: comment
+  feedback.create_activity :create
 end
 
 Given("a visitor has submitted a feedback") do

@@ -42,6 +42,7 @@ class FeedbackController < ApplicationController
 
     respond_to do |format|
       if @feedback.save
+        @feedback.create_activity :create
         format.json do
           render status: :created, json: { feedback_success_callout: feedback_success_callout }
         end
@@ -53,6 +54,7 @@ class FeedbackController < ApplicationController
 
   def destroy
     @feedback.destroy
+    @feedback.create_activity :destroy
     redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
   end
 

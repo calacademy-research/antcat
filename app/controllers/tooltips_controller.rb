@@ -22,6 +22,7 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new tooltip_params
     if @tooltip.save
+      @tooltip.create_activity :create
       redirect_to @tooltip, notice: 'Tooltip was successfully created.'
     else
       render :new
@@ -30,6 +31,7 @@ class TooltipsController < ApplicationController
 
   def update
     if @tooltip.update tooltip_params
+      @tooltip.create_activity :update
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
       render :show
@@ -38,6 +40,7 @@ class TooltipsController < ApplicationController
 
   def destroy
     @tooltip.destroy
+    @tooltip.create_activity :destroy
     redirect_to tooltips_path, notice: 'Tooltip was successfully deleted.'
   end
 

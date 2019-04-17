@@ -47,11 +47,6 @@ When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
   login_programmatically user
 end
 
-When("I log out") do
-  step 'I follow the first "Logout"'
-  step 'I should see "Login"'
-end
-
 Then("I should see a link to the user page for {string}") do |name|
   user = User.find_by name: name
 

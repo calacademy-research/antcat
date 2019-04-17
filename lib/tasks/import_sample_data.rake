@@ -56,7 +56,7 @@ namespace :antcat do
       end
 
       puts "Creating user..."
-      User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', can_edit: true, is_superadmin: true
+      User.create! email: 'editor@example.com', name: 'Test Editor', password: 'secret123', editor: true, superadmin: true
 
       puts "Successfully imported sample data."
     end

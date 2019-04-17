@@ -25,6 +25,7 @@ class SiteNoticesController < ApplicationController
     @site_notice.user = current_user
 
     if @site_notice.save
+      @site_notice.create_activity :create
       redirect_to @site_notice, notice: "Successfully created site notice."
     else
       render :new
@@ -33,6 +34,7 @@ class SiteNoticesController < ApplicationController
 
   def update
     if @site_notice.update site_notice_params
+      @site_notice.create_activity :update
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
       render :edit
@@ -41,6 +43,7 @@ class SiteNoticesController < ApplicationController
 
   def destroy
     @site_notice.destroy
+    @site_notice.create_activity :destroy
     redirect_to site_notices_path, notice: "Site notice was successfully deleted."
   end
 

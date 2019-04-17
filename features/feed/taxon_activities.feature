@@ -29,7 +29,7 @@ Feature: Feed (taxa)
     And I should see the edit summary "fix typo"
 
   Scenario: Edited taxon (with edit summary)
-    Given I add a taxon for the feed
+    Given there is a subfamily "Antcatinae"
 
     When I go to the catalog page for "Antcatinae"
     And I follow "Edit"
@@ -41,7 +41,7 @@ Feature: Feed (taxa)
     And I should see the edit summary "fix typo"
 
   Scenario: Deleted taxon
-    Given I add a taxon for the feed
+    Given there is a subfamily "Antcatinae"
 
     When I go to the catalog page for "Antcatinae"
     And I follow "Delete"

@@ -8,5 +8,5 @@ class Tooltip < ApplicationRecord
       message: "can only contain alphanumeric characters and '.-_:'" }
 
   has_paper_trail
-  tracked on: :all, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
+  tracked on: :mixin_create_activity_only, parameters: proc { { scope_and_key: "#{scope}.#{key}" } }
 end

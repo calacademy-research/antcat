@@ -26,18 +26,19 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
-  # TODO rename db column.
-  def superadmin?
-    is_superadmin?
+  # TODO: Use `superadmin?` directly.
+  def is_superadmin?
+    superadmin?
   end
 
-  # TODO rename db column.
+  # TODO: Use `editor?` directly.
   def is_editor?
-    can_edit?
+    editor?
   end
 
+  # TODO: Rename to `at_least_helper?`.
   def is_at_least_helper?
-    is_helper? || is_editor?
+    helper? || editor?
   end
 
   def notify_because(reason, attached:, notifier:)

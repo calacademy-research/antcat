@@ -1,22 +1,16 @@
 # Last relics of a former empire.
 
 class Taxt
-  # Helper method for finding "taxt" fields.
-  def self.models_with_taxts
-    # Model / field(s).
-    models = {
-      ReferenceSection => ['references_taxt',
-                           'title_taxt',
-                           'subtitle_taxt'],
-      TaxonHistoryItem => ['taxt'],
-      Taxon            => ['headline_notes_taxt',
-                           'type_taxt',
-                           'primary_type_information',
-                           'secondary_type_information',
-                           'type_notes'],
-      Citation         => ['notes_taxt']
-    }
-    models.each_item_in_arrays_alias :each_field
-    models
-  end
+  TAXT_MODELS_AND_FIELDS = [
+    [Citation,         'notes_taxt'],
+    [ReferenceSection, 'references_taxt'],
+    [ReferenceSection, 'subtitle_taxt'],
+    [ReferenceSection, 'title_taxt'],
+    [Taxon,            'headline_notes_taxt'],
+    [Taxon,            'primary_type_information'],
+    [Taxon,            'secondary_type_information'],
+    [Taxon,            'type_notes'],
+    [Taxon,            'type_taxt'],
+    [TaxonHistoryItem, 'taxt']
+  ]
 end

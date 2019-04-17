@@ -22,7 +22,7 @@ Feature: Add reference
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
     And I follow "Book"
-    And I fill in "reference_publisher_string" with "New York:Houghton Mifflin"
+    And I fill in "reference_publisher_string" with "New York: Houghton Mifflin"
     And I fill in "book_pagination" with "32 pp."
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
