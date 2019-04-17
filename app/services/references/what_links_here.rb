@@ -1,6 +1,3 @@
-# References to a reference.
-# NOTE Expensive method.
-
 module References
   class WhatLinksHere
     include Service
