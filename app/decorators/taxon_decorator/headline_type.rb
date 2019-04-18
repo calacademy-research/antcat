@@ -1,6 +1,4 @@
 class TaxonDecorator::HeadlineType
-  include ActionView::Helpers
-  include ActionView::Context
   include Service
   include ApplicationHelper
 
@@ -42,10 +40,7 @@ class TaxonDecorator::HeadlineType
       end
 
       return '' if string.blank?
-
-      content_tag :span do
-        add_period_if_necessary string
-      end
+      add_period_if_necessary string
     end
 
     def detax taxt

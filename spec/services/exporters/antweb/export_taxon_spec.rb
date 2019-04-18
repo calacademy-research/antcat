@@ -289,18 +289,17 @@ describe Exporters::Antweb::ExportTaxon do
             # headline
             %(<div>) +
               # protonym
-              %(<b><span><i>Atta</i></span></b> ) +
+              %(<b><i>Atta</i></b> ) +
 
               # authorship
-              %(<span>) +
-                %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
-                %(: 12) +
-              %(</span>) +
+              %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
+              %(: 12) +
               %(. ) +
 
               # type
-              %(<span>Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.</span>) +
+              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.) +
               %(  ) +
+
               # links
               %(<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
               %( ) +
@@ -312,11 +311,11 @@ describe Exporters::Antweb::ExportTaxon do
 
             # taxonomic history
             %(<p><b>Taxonomic history</b></p>) +
-            %(<div><div>) +
-              %(<table><tr><td>) +
+            %(<div>) +
+              %(<div>) +
                 %(Taxon: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.) +
-              %(</td></tr></table>) +
-            %(</div></div>) +
+              %(</div>) +
+            %(</div>) +
 
             # references
             %(<div>) +
