@@ -31,7 +31,6 @@ module Taxa::CallbacksAndValidations
 
     before_create :build_default_taxon_state
     before_save :set_name_caches
-    before_save { delete_synonyms if stopped_being_a_synonym? }
 
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
     before_save { remove_auto_generated if save_initiator }
@@ -63,15 +62,6 @@ module Taxa::CallbacksAndValidations
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html
-    end
-
-    def delete_synonyms
-      synonyms_as_junior.destroy_all
-    end
-
-    # When `changes` includes: `{ status: ["synonym", "<not synonym>"] }`
-    def stopped_being_a_synonym?
-      changes[:status].try(:first) == Status::SYNONYM
     end
 
     def remove_auto_generated
