@@ -26,18 +26,7 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
-  # TODO: Use `superadmin?` directly.
-  def is_superadmin?
-    superadmin?
-  end
-
-  # TODO: Use `editor?` directly.
-  def is_editor?
-    editor?
-  end
-
-  # TODO: Rename to `at_least_helper?`.
-  def is_at_least_helper?
+  def at_least_helper?
     helper? || editor?
   end
 
