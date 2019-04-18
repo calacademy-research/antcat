@@ -18,7 +18,7 @@ module Authors
       attr_reader :string
 
       def parsed_author_names
-        Parsers::AuthorParser.parse!(string)
+        Parsers::AuthorParser.parse(string)
       rescue Citrus::ParseError
         []
       end
