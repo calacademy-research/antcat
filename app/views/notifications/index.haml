@@ -17,7 +17,6 @@
           %td.icon=antcat_icon (notification.seen? ? "seen" : "unseen")
           %td.no-wrap
             =notification.notifier.decorate.user_page_link
-            -# TODO maybe convert to a helper.
             =render notification.reason, notification: notification
           %td.no-wrap
             =time_ago_in_words notification.created_at

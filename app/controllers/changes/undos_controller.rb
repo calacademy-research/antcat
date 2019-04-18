@@ -7,7 +7,6 @@ module Changes
       @undo_items = @change.undo_items
     end
 
-    # TODO handle error, if any.
     def create
       @change.undo
       @change.create_activity :undo_change, edit_summary: params[:edit_summary]
