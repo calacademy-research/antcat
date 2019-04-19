@@ -30,7 +30,7 @@ module ReferenceHelper
       content_tag :span, 'Default reference', class: (css_classes << " btn-nodanger"),
         title: "This referece is set as the default reference."
     else
-      link_to 'Make default', default_reference_path(id: reference.id),
+      link_to 'Make default', my_default_reference_path(id: reference.id),
         method: :put, class: (css_classes << " btn-saves")
     end
   end
