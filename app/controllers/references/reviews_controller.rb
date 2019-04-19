@@ -7,19 +7,17 @@ module References
     # TODO allow JSON requests.
     def start
       @reference.start_reviewing!
-      make_default_reference!
-      redirect_back fallback_location: changes_path
+      redirect_back fallback_location: references_path
     end
 
     def finish
       @reference.finish_reviewing!
-      redirect_back fallback_location: changes_path
+      redirect_back fallback_location: references_path
     end
 
     def restart
       @reference.restart_reviewing!
-      make_default_reference!
-      redirect_back fallback_location: changes_path
+      redirect_back fallback_location: references_path
     end
 
     def approve_all
@@ -31,10 +29,6 @@ module References
 
       def set_reference
         @reference = Reference.find params[:id]
-      end
-
-      def make_default_reference!
-        DefaultReference.set session, @reference
       end
   end
 end
