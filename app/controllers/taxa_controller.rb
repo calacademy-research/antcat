@@ -7,7 +7,7 @@ class TaxaController < ApplicationController
 
   def new
     @taxon = build_taxon_with_parent
-    @taxon.protonym.authorship.reference ||= DefaultReference.get session
+    @taxon.protonym.authorship.reference ||= References::DefaultReference.get session
   end
 
   def create

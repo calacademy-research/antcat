@@ -14,8 +14,8 @@ describe My::DefaultReferenceController do
       sign_in create(:user)
     end
 
-    it "calls `DefaultReference.set`" do
-      expect(DefaultReference).to receive(:set).with(session, reference).and_call_original
+    it "calls `References::DefaultReference.set`" do
+      expect(References::DefaultReference).to receive(:set).with(session, reference).and_call_original
       put :update, params: { id: reference.id }
     end
   end
