@@ -6,6 +6,6 @@
     =content_for :breadcrumbs_right do
       =link_to 'Edit', edit_institution_path(@comparer.most_recent), class: 'btn-normal'
       -if user_is_superadmin?
-        =link_to append_superadmin_icon("Delete"), @comparer.most_recent, method: :delete, data: { confirm: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'
+        =link_to append_superadmin_icon("Delete"), @comparer.most_recent, method: :delete, data: { confirm_with_edit_summary: true, message: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'
 
 =render file: "compare_revisions/show", locals: { comparer: @comparer }

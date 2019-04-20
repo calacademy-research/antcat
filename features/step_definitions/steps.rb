@@ -121,7 +121,16 @@ And('I will confirm on the next step') do
   begin
     evaluate_script "window.alert = function(msg) { return true; }"
     evaluate_script "window.confirm = function(msg) { return true; }"
+    evaluate_script "window.prompt = function(msg) { return true; }"
   rescue Capybara::NotSupportedByDriverError # rubocop:disable Lint/HandleExceptions
+  end
+end
+
+When("I will enter {string} in the prompt and confirm on the next step") do |string|
+  begin
+    evaluate_script "window.prompt = function(msg) { return '#{string}'; }"
+  rescue Capybara::NotSupportedByDriverError => e
+    warn e
   end
 end
 
