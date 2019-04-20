@@ -25,7 +25,7 @@
             =decorated.did_something
           %td=markdown activity.edit_summary, no_wrapping_p: true
           %td=decorated.revision_history_link
-          %td.no-wrap
+          %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
             %span.show-on-hover
               =link_to 'Link', decorated.anchor_path, class: 'btn-normal btn-very-tiny'
