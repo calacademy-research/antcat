@@ -2,6 +2,32 @@ module EditorsPanels
   class VersionsController < ApplicationController
     include HasWhereFilters
 
+    FILTER_ITEM_TYPES = %w[
+      Activity
+      Author
+      AuthorName
+      Citation
+      Comment
+      Feedback
+      Institution
+      Issue
+      Journal
+      Name
+      Place
+      Protonym
+      Publisher
+      Reference
+      ReferenceAuthorName
+      ReferenceDocument
+      ReferenceSection
+      SiteNotice
+      Synonym
+      Taxon
+      TaxonHistoryItem
+      TaxonState
+      Tooltip
+    ]
+
     before_action :ensure_can_edit_catalog
 
     has_filters(
@@ -11,14 +37,14 @@ module EditorsPanels
       },
       item_type: {
         tag: :select_tag,
-        options: -> { PaperTrail::Version.distinct.pluck(:item_type) - ["User"] }
+        options: -> { FILTER_ITEM_TYPES }
       },
       item_id: {
         tag: :number_field_tag
       },
       event: {
         tag: :select_tag,
-        options: -> { PaperTrail::Version.distinct.pluck(:event) }
+        options: -> { %w[create destroy update] }
       },
       change_id: {
         tag: :number_field_tag

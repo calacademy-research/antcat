@@ -1,10 +1,10 @@
 require "spec_helper"
 
 describe ActivityDecorator do
-  let(:activity) { build_stubbed :activity }
-
   describe "#link_user" do
     context "with a valid user" do
+      let(:activity) { build_stubbed :activity, user: build_stubbed(:user) }
+
       it "links the user" do
         expect(activity.decorate.link_user).to include activity.user.name
       end
@@ -152,6 +152,8 @@ describe ActivityDecorator do
   end
 
   describe "#link_trackable_if_exists" do
+    let(:activity) { build_stubbed :activity }
+
     context "with a valid trackable" do
       it "links the trackable" do
         trackable_id = activity.trackable_id
@@ -227,6 +229,8 @@ describe ActivityDecorator do
     end
 
     context "when there's a partial matching `trackable_type`" do
+      let(:activity) { build_stubbed :activity }
+
       it "returns that spaced and downcased" do
         expect(activity.decorate.send(:template_partial)).
           to eq "activities/templates/journal"

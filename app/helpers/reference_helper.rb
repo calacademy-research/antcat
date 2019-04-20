@@ -23,15 +23,13 @@ module ReferenceHelper
     end
   end
 
-  def set_as_default_reference_button reference, very_tiny: false
-    css_classes = very_tiny ? "btn-very-tiny" : "btn-tiny"
-
-    if reference == DefaultReference.get(session)
-      content_tag :span, 'Default reference', class: (css_classes << " btn-nodanger"),
+  def set_as_default_reference_button reference
+    if reference == References::DefaultReference.get(session)
+      content_tag :span, 'Default reference', class: "btn-nodanger btn-tiny",
         title: "This referece is set as the default reference."
     else
-      link_to 'Make default', default_reference_path(id: reference.id),
-        method: :put, class: (css_classes << " btn-saves")
+      link_to 'Make default', my_default_reference_path(id: reference.id),
+        method: :put, class: "btn-saves btn-tiny"
     end
   end
 

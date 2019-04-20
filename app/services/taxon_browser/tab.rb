@@ -1,5 +1,3 @@
-# TODO convert to a module?
-
 # Abstract class subclassed by the other two tab types.
 #
 # * `@taxa` are all the taxa shown when the tab is active.

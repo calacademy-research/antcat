@@ -26,9 +26,7 @@ class Exporters::Antweb::ExportHeadlineProtonym
 
     def protonym_name
       content_tag :b do
-        content_tag :span do
-          protonym.decorate.format_name
-        end
+        protonym.decorate.format_name
       end
     end
 
@@ -40,7 +38,7 @@ class Exporters::Antweb::ExportHeadlineProtonym
         string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
       end
 
-      content_tag :span, string
+      string
     end
 
     def link_to_reference reference

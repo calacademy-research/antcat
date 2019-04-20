@@ -37,6 +37,7 @@ Feature: Feed (feedback)
     And I log in as a superadmin named "Archibald"
 
     When I go to the most recent feedback item
-      And I follow "Delete"
+    And I will confirm on the next step
+    And I follow "Delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the feedback item #"

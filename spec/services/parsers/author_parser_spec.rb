@@ -3,36 +3,18 @@ require 'spec_helper'
 describe Parsers::AuthorParser do
   subject(:parser) { described_class }
 
-  describe "parsing author names" do
-    describe "Modifying the input string" do
-      it "modifies the string if the bang version is used" do
-        string = 'Fisher, B.L.'
-        expect(parser.parse!(string)).to eq ['Fisher, B.L.']
-        expect(string).to eq ''
-      end
-
-      it "doesn't modify the string if the bang version is not used" do
-        string = 'Fisher, B.L.'
-        expect(parser.parse(string)).to eq ['Fisher, B.L.']
-        expect(string).to eq 'Fisher, B.L.'
-      end
-    end
-
-    it "returns an empty array if the string is empty" do
+  describe ".parse" do
+    it "returns an empty array if the string is blank" do
       expect(parser.parse('')).to eq []
       expect(parser.parse(nil)).to eq []
     end
 
     it "parses a single author into a one-element array" do
-      string = 'Fisher, B.L.'
-      expect(parser.parse!(string)).to eq ['Fisher, B.L.']
-      expect(string).to eq ''
+      expect(parser.parse('Fisher, B.L.')).to eq ['Fisher, B.L.']
     end
 
     it "parses multiple authors" do
-      string = 'Fisher, B.L.; Wheeler, W.M.'
-      expect(parser.parse!(string)).to eq ['Fisher, B.L.', 'Wheeler, W.M.']
-      expect(string).to eq ''
+      expect(parser.parse('Fisher, B.L.; Wheeler, W.M.')).to eq ['Fisher, B.L.', 'Wheeler, W.M.']
     end
 
     it "handles names with hyphens" do
@@ -52,8 +34,7 @@ describe Parsers::AuthorParser do
     end
 
     it "handles generation numbers" do
-      expect(parser.parse("Coody, C. J.; Watkins, J. F., II")).
-        to eq ["Coody, C. J.", "Watkins, J. F., II"]
+      expect(parser.parse("Coody, C. J.; Watkins, J. F., II")).to eq ["Coody, C. J.", "Watkins, J. F., II"]
     end
 
     it "handles St." do
@@ -65,13 +46,11 @@ describe Parsers::AuthorParser do
     end
 
     it "handles hyphenated first names" do
-      expect(parser.parse("Kim, J-H.; Park, S.-J.; Kim, B.-J.")).
-        to eq ["Kim, J-H.", "Park, S.-J.", "Kim, B.-J."]
+      expect(parser.parse("Kim, J-H.; Park, S.-J.; Kim, B.-J.")).to eq ["Kim, J-H.", "Park, S.-J.", "Kim, B.-J."]
     end
 
     it "handles 'da' at the end of a name" do
-      expect(parser.parse("Silva, R. R. da; Lopes, B. C.")).
-        to eq ['Silva, R. R. da', 'Lopes, B. C.']
+      expect(parser.parse("Silva, R. R. da; Lopes, B. C.")).to eq ['Silva, R. R. da', 'Lopes, B. C.']
     end
 
     it "handles 'dos' in the middle of a name" do
@@ -83,39 +62,27 @@ describe Parsers::AuthorParser do
     end
 
     it "handles authors separated by commas" do
-      expect(parser.parse("Breed, M. D., Page, R. E., Ward, P.S.")).
-        to eq ['Breed, M. D.', 'Page, R. E.', 'Ward, P.S.']
+      expect(parser.parse("Beed, M. D., Page, R., Ward, P.S.")).to eq ['Beed, M. D.', 'Page, R.', 'Ward, P.S.']
     end
 
     it "handles 'Jr.'" do
-      string = 'Brown, W. L., Jr.; Kempf, W. W.'
-      expect(parser.parse!(string)).to eq ['Brown, W. L., Jr.', 'Kempf, W. W.']
-      expect(string).to eq ''
+      expect(parser.parse('Brown, W. L., Jr.; Kempf, W. W.')).to eq ['Brown, W. L., Jr.', 'Kempf, W. W.']
     end
 
     it "handles 'Sr.'" do
-      string = 'Brown, W. L., Sr.'
-      expect(parser.parse!(string)).to eq ['Brown, W. L., Sr.']
-      expect(string).to eq ''
+      expect(parser.parse('Brown, W. L., Sr.')).to eq ['Brown, W. L., Sr.']
     end
 
     it "handles 'III'" do
-      string = 'Morrison, W.R., III'
-      expect(parser.parse!(string)).to eq ['Morrison, W.R., III']
-      expect(string).to eq ''
+      expect(parser.parse('Morrison, W.R., III')).to eq ['Morrison, W.R., III']
     end
 
     it "handles 'Jr'" do
-      string = 'Brown, W. L., Jr; Kempf, W. W.'
-      expect(parser.parse!(string)).to eq ['Brown, W. L., Jr', 'Kempf, W. W.']
-      expect(string).to eq ''
+      expect(parser.parse('Brown, W. L., Jr; Kempf, W. W.')).to eq ['Brown, W. L., Jr', 'Kempf, W. W.']
     end
 
     it "handles a phrase that's known to be an author" do
-      create :author_name, name: 'Anonymous'
-      string = 'Anonymous'
-      expect(parser.parse!(string)).to eq ['Anonymous']
-      expect(string).to be_empty
+      expect(parser.parse('Anonymous')).to eq ['Anonymous']
     end
 
     it "parses this weird one" do
@@ -131,7 +98,7 @@ describe Parsers::AuthorParser do
     end
   end
 
-  describe "parsing first name and initials and last name" do
+  describe ".get_name_parts" do
     it "returns an empty hash if the string is empty" do
       expect(parser.get_name_parts('')).to eq({})
       expect(parser.get_name_parts(nil)).to eq({})
@@ -142,8 +109,7 @@ describe Parsers::AuthorParser do
     end
 
     it "separates the words if there are multiple" do
-      expect(parser.get_name_parts('Bolton, B.L.')).
-       to eq last: 'Bolton', first_and_initials: 'B.L.'
+      expect(parser.get_name_parts('Bolton, B.L.')).to eq last: 'Bolton', first_and_initials: 'B.L.'
     end
 
     it "uses all words if there is no comma" do
@@ -151,8 +117,7 @@ describe Parsers::AuthorParser do
     end
 
     it "uses all words before the comma if there are multiple" do
-      expect(parser.get_name_parts('Baroni Urbani, C.')).
-        to eq last: 'Baroni Urbani', first_and_initials: 'C.'
+      expect(parser.get_name_parts('Baroni Urbani, C.')).to eq last: 'Baroni Urbani', first_and_initials: 'C.'
     end
   end
 end

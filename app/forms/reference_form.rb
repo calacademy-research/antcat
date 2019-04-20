@@ -1,4 +1,3 @@
-# TODO not really a form but we are getting there.
 # NOTE that this service mutates `params`, but that's OK for now.
 
 class ReferenceForm

@@ -32,7 +32,7 @@
     %td=form.taxon_select :homonym_replaced_by
 
   -unless taxon.new_record?
-    -if taxon.is_a?(Subspecies) && taxon.species.blank?
+    -if taxon.is_a?(Subspecies) && !taxon.species
       %tr
         %td Species
         %td

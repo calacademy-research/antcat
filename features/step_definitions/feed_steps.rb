@@ -33,7 +33,7 @@ def feed_items_count
 end
 
 When("I hover the first activity item") do
-  find("table.activities > tbody > tr:first-of-type").hover
+  find("table.activities > tbody > tr:first-of-type .activity-link-wrapper").hover
 end
 
 Then("I should see the edit summary {string}") do |content|

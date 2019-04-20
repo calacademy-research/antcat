@@ -1,6 +1,6 @@
 // gems
 //= require jquery
-//= require jquery_ujs
+//= require rails-ujs
 //= require foundation.core
 //= require foundation.accordion
 //= require foundation.dropdown

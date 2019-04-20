@@ -31,7 +31,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  # TODO use cookies instead of session.
   def show_valid_only
     session[:show_invalid] = false
     redirect_back fallback_location: root_path

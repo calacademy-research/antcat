@@ -173,56 +173,6 @@ describe Taxa::CallbacksAndValidations do
     # TODO
   end
 
-  describe "#delete_synonyms" do
-    let(:senior) { create :family }
-    let(:junior) { create :family, :synonym, current_valid_taxon: senior }
-
-    before { create :synonym, junior_synonym: junior, senior_synonym: senior }
-
-    it "*confirm test setup*" do
-      expect(junior.status).to eq Status::SYNONYM
-      expect(senior.junior_synonyms.count).to eq 1
-      expect(junior.senior_synonyms.count).to eq 1
-    end
-
-    describe "saving a taxon" do
-      context "with the status 'synonym'" do
-        context "when status was not changed" do
-          it "doesn't destroy any synonyms" do
-            junior.fossil = true
-
-            expect { junior.save! }.not_to change { Synonym.count }
-            expect(senior.junior_synonyms.count).to eq 1
-            expect(junior.senior_synonyms.count).to eq 1
-          end
-        end
-
-        context "when status was changed from 'synonym'" do
-          it "destroys all synonyms where it's the junior" do
-            junior.status = Status::VALID
-            junior.current_valid_taxon = nil
-
-            expect { junior.save! }.to change { Synonym.count }.by -1
-            expect(senior.junior_synonyms.count).to eq 0
-            expect(junior.senior_synonyms.count).to eq 0
-          end
-        end
-      end
-
-      context "when taxon doesn't have the status 'synonym'" do
-        context "when status was changed" do
-          it "doesn't destroy any synonyms" do
-            senior.status = Status::HOMONYM
-
-            expect { senior.save! }.not_to change { Synonym.count }
-            expect(senior.junior_synonyms.count).to eq 1
-            expect(junior.senior_synonyms.count).to eq 1
-          end
-        end
-      end
-    end
-  end
-
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }

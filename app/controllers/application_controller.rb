@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
   before_action :cors_preflight_check
   after_action :cors_set_access_control_headers
 
-  delegate :is_editor?, :is_at_least_helper?, :is_superadmin?, to: :current_user, prefix: 'user', allow_nil: true
+  delegate :editor?, :at_least_helper?, :superadmin?, to: :current_user, prefix: 'user_is', allow_nil: true
   helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
 
   rescue_from NotAuthorized do |exception|

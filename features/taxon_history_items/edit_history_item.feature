@@ -21,7 +21,7 @@ Feature: Editing a history item
     Then the history item field should be "(none)"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the taxon history item #" and no other feed items
+    Then I should see "Archibald edited the history item #" and no other feed items
     And I should see "belonging to Formicidae"
     And I should see the edit summary "fix typo"
 
@@ -77,7 +77,7 @@ Feature: Editing a history item
     Then the history should be "Abc"
 
     When I go to the activity feed
-    Then I should see "Archibald added the taxon history item #" and no other feed items
+    Then I should see "Archibald added the history item #" and no other feed items
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
@@ -108,7 +108,7 @@ Feature: Editing a history item
     Then the history should be empty
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the taxon history item #" and no other feed items
+    Then I should see "Archibald deleted the history item #" and no other feed items
     And I should see "belonging to Eciton"
 
   @javascript

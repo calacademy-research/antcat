@@ -11,7 +11,7 @@ class CommentsController < ApplicationController
     },
     commentable_type: {
       tag: :select_tag,
-      options: -> { Comment.distinct.pluck(:commentable_type) }
+      options: -> { %w[Issue Feedback] }
     },
     commentable_id: {
       tag: :number_field_tag

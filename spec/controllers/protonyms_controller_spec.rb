@@ -78,9 +78,13 @@ describe ProtonymsController do
     end
 
     it 'creates an activity', :feed do
-      expect { delete(:destroy, params: { id: protonym.id }) }.
+      expect { delete(:destroy, params: { id: protonym.id, edit_summary: 'Duplicate' }) }.
         to change { Activity.where(action: :destroy, trackable: protonym).count }.by(1)
-      expect(Activity.last.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
+
+      activity = Activity.last
+      expect(activity.trackable_id).to eq protonym.id
+      expect(activity.edit_summary).to eq "Duplicate"
+      expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
 
     context 'when protonym has a taxon' do

@@ -54,7 +54,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def destroy
     @item.destroy
-    @item.create_activity :destroy
+    @item.create_activity :destroy, edit_summary: params[:edit_summary]
 
     render json: { success: true }
   end
