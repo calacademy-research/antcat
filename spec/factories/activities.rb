@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :activity do
-    user factory: :user
+    user { nil }
     trackable factory: :journal
     action { "create" }
 
