@@ -116,11 +116,6 @@ class ExtrasArea
     @setupConvertBoltonKeysButton()
 
   createExtrasArea: ->
-    helpText = """
-      Note: all "quick taxon buttons" get their values from
-      the current taxon itself and all its parents.
-    """
-
     $ """
     <div class="row">
       <div class="medium-6 columns end">
@@ -130,7 +125,6 @@ class ExtrasArea
         <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
         <span id="extras-area"></span>
         <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning btn-tiny">Convert Bolton keys</a>
-        <span title='#{helpText}' class="antcat_icon tooltip-icon jquery-tooltip"></span>
       </div>
     </div>
     """

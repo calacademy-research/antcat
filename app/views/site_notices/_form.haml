@@ -1,8 +1,17 @@
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
+=content_for :breadcrumbs_right do
+  =link_to "Hide/show help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "help" }
+
+.row{data: { show_hide_toggable_id: "help" }}
+  .medium-12.columns
+    .callout
+      %h6 Help
+      %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" notification. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.
+
 .row
-  .medium-8.columns
+  .medium-12.columns
     =form_for site_notice do |f|
       =render "shared/errors_for", resource: site_notice
       .row
@@ -16,8 +25,3 @@
             data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
       =button_tag "Publish", class: "btn-saves"
-
-  .medium-4.columns
-    .callout
-      %h6 Help
-      %p After creating a site notice, all logged-in users will see the message in an "Unread site notices" pop-up. Notices can not be unpublished, but edited existing notices does not trigger new notifications. All editors have the user rights for creating new notices.

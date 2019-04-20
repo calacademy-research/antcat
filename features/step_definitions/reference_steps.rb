@@ -110,7 +110,7 @@ end
 
 Given("the default reference is {string}") do |keey|
   reference = find_reference_by_keey keey
-  DefaultReference.stub(:get).and_return reference
+  References::DefaultReference.stub(:get).and_return reference
 end
 
 When("I fill in the references search box with {string}") do |search_term|

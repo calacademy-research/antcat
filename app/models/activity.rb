@@ -70,8 +70,8 @@ class Activity < ApplicationRecord
   end
   # :nocov:
 
-  def pagination_page
-    index = Activity.ids_desc.pluck(:id).index(id)
+  def pagination_page activities
+    index = activities.where("id > ?", id).count
     per_page = self.class.per_page
     (index + per_page) / per_page
   end

@@ -28,8 +28,6 @@ $.fn.disableButton = -> @addClass "disabled"
 AntCat.makeReferenceKeeysExpandable = (element) -> $(element).foundation()
 
 # Used by `ApplicationHelper#inline_expandable`.
-# TODO should be merge with `AntCat.makeReferenceKeeysExpandable`, but
-# that requires a migration for invalidating reference caches.
 enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()

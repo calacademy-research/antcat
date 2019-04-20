@@ -26,16 +26,6 @@ class Exporters::Antweb::ExportHistoryItems
 
     def history_item item
       content_tag :div do
-        content_tag :table do
-          content_tag :tr do
-            history_item_body item
-          end
-        end
-      end
-    end
-
-    def history_item_body item
-      content_tag :td do
         add_period_if_necessary TaxtPresenter[item.taxt].to_antweb
       end
     end

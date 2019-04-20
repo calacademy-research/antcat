@@ -131,8 +131,6 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :default_reference, only: :update
-
   resources :names, only: [:show, :edit, :update, :destroy] do
     scope module: :names do
       resources :history, only: :index
@@ -229,6 +227,7 @@ Rails.application.routes.draw do
 
   namespace :my do
     resources :recently_used_references, only: [:index, :create]
+    resource :default_reference, only: :update, controller: :default_reference
   end
 
   namespace :beta_and_such do

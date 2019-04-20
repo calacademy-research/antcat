@@ -1,20 +1,17 @@
-Citrus.load "#{__dir__}/common_grammar", force: true unless defined? Parsers::CommonGrammar
 Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
 
 module Parsers::AuthorParser
-  def self.parse! string
+  def self.parse string
     return [] if string.blank?
+    string = string.dup
 
     match = Parsers::AuthorGrammar.parse(string, consume: false)
     result = match.value
     string.gsub! /#{Regexp.escape match}/, ''
 
     result[:names]
-  end
-
-  def self.parse string
-    string &&= string.dup
-    parse! string
+  rescue Citrus::ParseError
+    []
   end
 
   def self.get_name_parts string

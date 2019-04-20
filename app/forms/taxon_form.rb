@@ -37,7 +37,7 @@ class TaxonForm
 
     # TODO: remove once http://localhost:3000/database_scripts/subspecies_without_species has been cleared.
     def subspecies_without_species_special_case
-      if taxon.is_a?(Subspecies) && taxon.species.blank? && params[:species_id].present?
+      if taxon.is_a?(Subspecies) && !taxon.species && params[:species_id].present?
         taxon.update_parent Taxon.find(params[:species_id])
       end
     rescue Taxon::TaxonExists

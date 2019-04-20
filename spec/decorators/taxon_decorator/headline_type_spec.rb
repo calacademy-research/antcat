@@ -9,7 +9,7 @@ describe TaxonDecorator::HeadlineType do
       let(:taxon) { create :genus, type_taxon: type_species }
 
       it "links the type name" do
-        expect(described_class[taxon]).to eq %(<span>Type-species: #{taxon_link(type_species)}.</span>)
+        expect(described_class[taxon]).to eq %(Type-species: #{taxon_link(type_species)}.)
       end
 
       context "when taxon has type taxt" do
@@ -17,7 +17,7 @@ describe TaxonDecorator::HeadlineType do
 
         it "includes the type taxt" do
           expect(described_class[taxon]).
-            to eq %(<span>Type-species: #{taxon_link(type_species)}, by monotypy.</span>)
+            to eq %(Type-species: #{taxon_link(type_species)}, by monotypy.)
         end
       end
     end

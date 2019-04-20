@@ -1,9 +1,0 @@
-grammar Parsers::CommonGrammar
-  rule s
-    space*
-  end
-
-  rule space
-    /\s/
-  end
-end

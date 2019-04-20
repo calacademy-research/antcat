@@ -1,5 +1,4 @@
 # TODO: do not cache in database.
-# TODO: refactor.
 
 class ReferenceDecorator < ApplicationDecorator
   include ActionView::Helpers::SanitizeHelper
@@ -125,7 +124,7 @@ class ReferenceDecorator < ApplicationDecorator
 
     # Override in subclasses as necessary.
     def format_plain_text_citation
-      # `format_citation` + `unitalicize` is go get rid of "*" italics.
+      # `format_citation` + `unitalicize` is to get rid of "*" italics.
       helpers.unitalicize format_italics(sanitize(format_citation))
     end
 

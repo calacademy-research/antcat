@@ -1,6 +1,25 @@
 class ActivitiesController < ApplicationController
   include HasWhereFilters
 
+  FILTER_TRACKABLE_TYPES = %w[
+    Author
+    Change
+    Comment
+    Feedback
+    Institution
+    Issue
+    Journal
+    Protonym
+    Reference
+    ReferenceSection
+    SiteNotice
+    Synonym
+    Taxon
+    TaxonHistoryItem
+    Tooltip
+    User
+  ]
+
   before_action :authenticate_superadmin, only: :destroy
   before_action :set_activity, only: :destroy
 
@@ -11,20 +30,20 @@ class ActivitiesController < ApplicationController
     },
     trackable_type: {
       tag: :select_tag,
-      options: -> { Activity.distinct.pluck(:trackable_type).compact }
+      options: -> { FILTER_TRACKABLE_TYPES }
     },
     trackable_id: {
       tag: :number_field_tag
     },
     activity_action: {
       tag: :select_tag,
-      options: -> { activity_actions_options_for_select },
+      options: -> { Activity::ACTIONS.map(&:humanize).zip(Activity::ACTIONS) },
       prompt: "Action"
     }
   )
 
   def index
-    @activities = activities.ids_desc.include_associations.paginate(page: page)
+    @activities = unpaginated_activities.ids_desc.include_associations.paginate(page: page)
   end
 
   def destroy
@@ -35,19 +54,14 @@ class ActivitiesController < ApplicationController
 
   private
 
-    def self.activity_actions_options_for_select
-      Activity.distinct.pluck(:action, :action).map(&:humanize).
-        zip(Activity.distinct.pluck(:action, :action))
-    end
-    private_class_method :activity_actions_options_for_select
-
-    def activities
-      return Activity.all if params[:id]
-      activities = Activity.filter(hacked_filter_params)
-      unless params[:show_automated_edits]
-        activities = activities.non_automated_edits
+    def unpaginated_activities
+      @unpaginated_activities ||= begin
+        activities = Activity.filter(hacked_filter_params)
+        unless params[:show_automated_edits]
+          activities = activities.non_automated_edits
+        end
+        activities
       end
-      activities
     end
 
     # HACK to make this work at the same time:
@@ -59,8 +73,8 @@ class ActivitiesController < ApplicationController
       return params[:page] unless params[:id]
 
       activity = Activity.find params[:id]
-      # `@page` is to make the delete button return to the previous page.
-      @page = activity.pagination_page
+      # `@page` is also included in the views to make the delete button return to the previous page.
+      @page = activity.pagination_page(unpaginated_activities)
     end
 
     def set_activity

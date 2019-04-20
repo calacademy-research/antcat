@@ -14,13 +14,11 @@ class ChangesController < ApplicationController
     @changes = Change.waiting.includes_associated.order(created_at: :desc).paginate(page: params[:page])
   end
 
-  # TODO handle error, if any.
   def approve
     @change.approve current_user
     redirect_back fallback_location: changes_path, notice: "Approved change."
   end
 
-  # TODO handle error, if any.
   def approve_all
     Change.approve_all current_user
     redirect_to changes_path, notice: "Approved all changes."

@@ -41,7 +41,6 @@ module Taxa
                    end
       end
 
-      # TODO this is really slow; figure out how to add database indexes for this.
       def get_statistics
         statistics = {}
 
