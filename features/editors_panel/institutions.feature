@@ -49,9 +49,8 @@ Feature: Institutions
     And I log in as a superadmin named "Archibald"
 
     When I go to the institutions page
-    Then I should see "CASC"
-
-    When I follow "Delete"
+    And I follow "CASC"
+    And I follow "Delete"
     Then I should be on the institutions page
     And I should see "Institution was successfully deleted"
     And I should not see "CASC"
