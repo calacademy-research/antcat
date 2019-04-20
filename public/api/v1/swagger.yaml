@@ -817,7 +817,6 @@ definitions:
         - FamilyOrSubfamilyName
         - SubtribeName
         - GenusName
-        - OrderName
         - SpeciesName
         - TribeName
         - SubfamilyName
