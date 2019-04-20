@@ -10,7 +10,7 @@ Feature: Searching the catalog
   Scenario: Searching for subfamilies
     Given there is a subfamily "Formicinae"
 
-    When I select "Subfamilies" from "rank"
+    When I select "Subfamily" from "rank"
     And I press "Go" in the search section
     Then I should see "1 result"
 
