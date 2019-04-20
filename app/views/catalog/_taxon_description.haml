@@ -4,77 +4,76 @@
   =taxon.decorate.taxon_status
   =taxon.name.gender
 
--unless taxon.original_combination?
-  .headline
-    %span.name
-      =link_to taxon.protonym.decorate.format_name, taxon.protonym
-    =taxon.authorship_reference.decorate.expandable_reference
-    =taxon.protonym.decorate.format_pages_and_forms
-    =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html
-    =taxon.protonym.decorate.format_locality
+.headline
+  %span.name
+    =link_to taxon.protonym.decorate.format_name, taxon.protonym
+  =taxon.authorship_reference.decorate.expandable_reference
+  =taxon.protonym.decorate.format_pages_and_forms
+  =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html
+  =taxon.protonym.decorate.format_locality
 
-    =taxon.decorate.headline_type
-    =TaxtPresenter[taxon.headline_notes_taxt].to_html
+  =taxon.decorate.headline_type
+  =TaxtPresenter[taxon.headline_notes_taxt].to_html
 
-    -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
-    #type-fields
-      -if taxon.primary_type_information.present?
-        .truncate-disabled-todo
-          %strong Primary type information:
-          =add_period_if_necessary ::Types::FormatTypeField[taxon.primary_type_information]
+  -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
+  #type-fields
+    -if taxon.primary_type_information.present?
+      .truncate-disabled-todo
+        %strong Primary type information:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.primary_type_information]
 
-      -if taxon.secondary_type_information.present?
-        .truncate-disabled-todo
-          %strong Secondary type information:
-          =add_period_if_necessary ::Types::FormatTypeField[taxon.secondary_type_information]
+    -if taxon.secondary_type_information.present?
+      .truncate-disabled-todo
+        %strong Secondary type information:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.secondary_type_information]
 
-      -if taxon.type_notes.present?
-        .truncate-disabled-todo
-          %strong Type notes:
-          =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
+    -if taxon.type_notes.present?
+      .truncate-disabled-todo
+        %strong Type notes:
+        =add_period_if_necessary ::Types::FormatTypeField[taxon.type_notes]
 
-  -if taxon.history_items.present?
-    %ul.history.small-margin-bottom
-      -taxon.history_items.each do |history_item|
-        %li
-          =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+-if taxon.history_items.present?
+  %ul.history.small-margin-bottom
+    -taxon.history_items.each do |history_item|
+      %li
+        =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+        -if current_user
+          %span.show-on-hover
+            -if user_is_at_least_helper?
+              =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+            =link_to "History", history_item, class: "btn-normal btn-very-tiny"
+
+-if taxon.junior_synonyms.exists?
+  %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
+  %ul.junior-synonyms.small-margin-bottom
+    -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
+      %li
+        =synonym.decorate.link_to_taxon
+        =synonym.decorate.author_citation
+
+#child-lists.small-margin-bottom
+  =taxon.decorate.child_lists
+
+-# Special case because the root view pulls in too much data.
+-if action_name == "index"
+  %br
+  =link_to "Formicidae family references", catalog_path(429011)
+-else
+  -if taxon.reference_sections.present?
+    .reference-sections
+      -taxon.reference_sections.each do |reference_section|
+        .section.small-margin-bottom
+          -if reference_section.title_taxt.present?
+            %h6=TaxtPresenter[reference_section.title_taxt].to_html
+
+          -if reference_section.subtitle_taxt.present?
+            %h7=TaxtPresenter[reference_section.subtitle_taxt].to_html
+
+          -if reference_section.references_taxt.present?
+            %p=TaxtPresenter[reference_section.references_taxt].to_html
+
           -if current_user
             %span.show-on-hover
               -if user_is_at_least_helper?
-                =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-              =link_to "History", history_item, class: "btn-normal btn-very-tiny"
-
-  -if taxon.junior_synonyms.exists?
-    %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
-    %ul.junior-synonyms.small-margin-bottom
-      -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
-        %li
-          =synonym.decorate.link_to_taxon
-          =synonym.decorate.author_citation
-
-  #child-lists.small-margin-bottom
-    =taxon.decorate.child_lists
-
-  -# Special case because the root view pulls in too much data.
-  -if action_name == "index"
-    %br
-    =link_to "Formicidae family references", catalog_path(429011)
-  -else
-    -if taxon.reference_sections.present?
-      .reference-sections
-        -taxon.reference_sections.each do |reference_section|
-          .section.small-margin-bottom
-            -if reference_section.title_taxt.present?
-              %h6=TaxtPresenter[reference_section.title_taxt].to_html
-
-            -if reference_section.subtitle_taxt.present?
-              %h7=TaxtPresenter[reference_section.subtitle_taxt].to_html
-
-            -if reference_section.references_taxt.present?
-              %p=TaxtPresenter[reference_section.references_taxt].to_html
-
-            -if current_user
-              %span.show-on-hover
-                -if user_is_at_least_helper?
-                  =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
-                =link_to "History", reference_section, class: "btn-normal btn-very-tiny"
+                =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
+              =link_to "History", reference_section, class: "btn-normal btn-very-tiny"
