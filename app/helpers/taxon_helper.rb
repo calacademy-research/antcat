@@ -1,10 +1,4 @@
 module TaxonHelper
-  # This is for the edit taxa form. Advanced search uses another.
-  def biogeographic_region_options_for_select value = nil
-    options_for_select([[nil, nil]], value) <<
-      options_for_select(Taxon::BIOGEOGRAPHIC_REGIONS, value)
-  end
-
   def taxon_link_or_deleted_string id, deleted_label = nil
     taxon = Taxon.find_by(id: id)
     if taxon

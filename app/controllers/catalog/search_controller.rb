@@ -63,9 +63,8 @@ module Catalog
         end
       end
 
-      # A blank `params[:rank]` means the user has not made a search yet.
       def not_searching_yet?
-        params[:rank].blank?
+        params[:submit_search].nil?
       end
 
       def searching_for_nothing_from_the_header?

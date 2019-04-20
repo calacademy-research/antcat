@@ -1,16 +1,16 @@
 # TODO cleanup after extracting into service object.
-# TODO see if we really want to mutate `params` here.
 
 module Taxa
   class AdvancedSearch
     include Service
 
+    RANKS = %w[Subfamily Tribe Genus Subgenus Species Subspecies]
+
     def initialize params
-      @params = params
+      @params = params.delete_if { |_key, value| value.blank? }
     end
 
     def call
-      tweak_params!
       return Taxon.none if params.blank?
 
       search_results
@@ -19,13 +19,6 @@ module Taxa
     private
 
       attr_reader :params
-
-      def tweak_params!
-        params[:biogeographic_region] = '' if params[:biogeographic_region] == 'Any'
-        params[:rank] = '' if params[:rank] == 'All'
-
-        params.delete_if { |_key, value| value.blank? }
-      end
 
       def search_results
         query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
