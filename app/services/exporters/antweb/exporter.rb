@@ -1,6 +1,5 @@
 # Export via `rake antweb:export`.
 
-# rubocop:disable Rails/Output
 class Exporters::Antweb::Exporter
   include Service
 
@@ -39,7 +38,7 @@ class Exporters::Antweb::Exporter
 
             next if taxon.name.nonconforming_name && taxon.name_cache.index('?')
 
-            puts "Processing: #{taxon.id}" if ENV['DEBUG']
+            STDOUT.puts "Processing: #{taxon.id}" if ENV['DEBUG']
             progress.increment unless Rails.env.test?
 
             begin
@@ -66,4 +65,3 @@ class Exporters::Antweb::Exporter
       Taxon.joins(protonym: [{ authorship: :reference }]).order(:status).pluck(:id).reverse
     end
 end
-# rubocop:enable Rails/Output
