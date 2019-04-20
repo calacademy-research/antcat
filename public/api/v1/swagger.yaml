@@ -820,7 +820,6 @@ definitions:
         - OrderName
         - SpeciesName
         - TribeName
-        - CollectiveGroupName
         - SubfamilyName
         - SubgenusName
         - SubspeciesName

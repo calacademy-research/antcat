@@ -1,2 +1,0 @@
-class CollectiveGroupName < GenusGroupName
-end

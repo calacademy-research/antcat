@@ -16,8 +16,7 @@ class Name < ApplicationRecord
     'SubfamilyName',
     'TribeName',
     'SubtribeName',
-    'GenusName',
-    'CollectiveGroupName' # TODO: Confirm `CollectiveGroupName` are always a single word.
+    'GenusName'
   ]
 
   has_many :protonyms, dependent: :restrict_with_error
