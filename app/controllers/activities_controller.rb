@@ -1,6 +1,25 @@
 class ActivitiesController < ApplicationController
   include HasWhereFilters
 
+  FILTER_TRACKABLE_TYPES = %w[
+    Author
+    Change
+    Comment
+    Feedback
+    Institution
+    Issue
+    Journal
+    Protonym
+    Reference
+    ReferenceSection
+    SiteNotice
+    Synonym
+    Taxon
+    TaxonHistoryItem
+    Tooltip
+    User
+  ]
+
   before_action :authenticate_superadmin, only: :destroy
   before_action :set_activity, only: :destroy
 
@@ -11,14 +30,14 @@ class ActivitiesController < ApplicationController
     },
     trackable_type: {
       tag: :select_tag,
-      options: -> { Activity.distinct.pluck(:trackable_type).compact }
+      options: -> { FILTER_TRACKABLE_TYPES }
     },
     trackable_id: {
       tag: :number_field_tag
     },
     activity_action: {
       tag: :select_tag,
-      options: -> { activity_actions_options_for_select },
+      options: -> { Activity::ACTIONS.map(&:humanize).zip(Activity::ACTIONS) },
       prompt: "Action"
     }
   )
