@@ -58,6 +58,6 @@ module TaxonButtonsHelper
     return if taxon.any_nontaxt_references?
 
     link_to 'Delete', taxa_path(taxon), method: :delete, class: "btn-warning",
-      data: { confirm: "Are you sure you want to delete this taxon?" }
+      data: { confirm_with_edit_summary: true }
   end
 end

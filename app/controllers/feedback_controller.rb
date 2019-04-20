@@ -54,7 +54,7 @@ class FeedbackController < ApplicationController
 
   def destroy
     @feedback.destroy
-    @feedback.create_activity :destroy
+    @feedback.create_activity :destroy, edit_summary: params[:edit_summary]
     redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
   end
 

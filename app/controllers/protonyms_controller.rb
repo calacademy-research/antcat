@@ -24,7 +24,7 @@ class ProtonymsController < ApplicationController
 
   def destroy
     @protonym.destroy
-    @protonym.create_activity :destroy
+    @protonym.create_activity :destroy, edit_summary: params[:edit_summary]
     redirect_to protonyms_path, notice: "Successfully deleted protonym."
   end
 
