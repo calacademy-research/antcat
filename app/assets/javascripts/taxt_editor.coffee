@@ -135,9 +135,14 @@ setupDeleteButton = ->
 
     taxtEditor = $(this).parent().parent()
 
+    data =
+      edit_summary: taxtEditor.find('#edit_summary').val()
+
     $.ajax
       url: taxtEditor.data('url')
       type: 'DELETE'
+      dataType: 'json'
+      data: data
       success: -> taxtEditor.remove()
       error: -> alert 'error :('
 
