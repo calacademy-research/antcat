@@ -90,7 +90,7 @@ module Catalog
       end
 
       def download_filename
-        "#{params[:author_name]}-#{params[:rank]}-#{params[:year]}-#{params[:locality]}-#{params[:valid_only]}".parameterize + '.txt'
+        "antcat_search_results__#{Time.current.strftime('%Y-%m-%d__%H_%M_%S')}.txt"
       end
   end
 end

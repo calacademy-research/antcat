@@ -104,4 +104,4 @@ Feature: Searching the catalog
     When I fill in "year" with "2010"
     And I press "Go" in the search section
     And I follow "Download (advanced search only)"
-    Then I should get a download with the filename "2010.txt"
+    Then I should get a download with the filename "antcat_search_results__" and today's date
