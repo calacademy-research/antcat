@@ -10,6 +10,8 @@ module Parsers::AuthorParser
     string.gsub! /#{Regexp.escape match}/, ''
 
     result[:names]
+  rescue Citrus::ParseError
+    []
   end
 
   def self.get_name_parts string

@@ -19,8 +19,6 @@ module Authors
 
       def parsed_author_names
         Parsers::AuthorParser.parse(string)
-      rescue Citrus::ParseError
-        []
       end
   end
 end
