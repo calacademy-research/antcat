@@ -5,10 +5,10 @@ module TooltipHelper
     content_for(:head) { javascript_include_tag "tooltips" }
   end
 
-  def tooltip_icon key_param, scope: nil
-    tooltip = Tooltip.find_by(key: key_param, scope: scope)
+  def tooltip_icon key, scope:
+    tooltip = Tooltip.find_by(key: key, scope: scope)
 
-    return new_populated_tooltip(key_param, scope) unless tooltip
+    return new_populated_tooltip(key, scope) unless tooltip
     link_to tooltip_help_icon(tooltip.text), tooltip
   end
 
@@ -20,6 +20,6 @@ module TooltipHelper
 
     def new_populated_tooltip key, scope
       text = "Could not find tooltip with key '#{key}' with page scope '#{scope}'. Click icon to create."
-      link_to tooltip_help_icon(text), new_tooltip_path(key: key)
+      link_to tooltip_help_icon(text), new_tooltip_path(key: key, scope: scope)
     end
 end

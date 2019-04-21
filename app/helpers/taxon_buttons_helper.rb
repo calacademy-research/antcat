@@ -4,7 +4,7 @@ module TaxonButtonsHelper
   end
 
   def link_to_review_change taxon
-    if taxon.can_be_reviewed? && taxon.last_change
+    if taxon.waiting? && taxon.last_change
       link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-tiny btn-normal"
     end
   end

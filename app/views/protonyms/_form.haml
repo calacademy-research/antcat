@@ -32,7 +32,9 @@
         =f.label :fossil
 
         =f.check_box :sic
-        =f.label :sic
+        =f.label :sic do
+          Sic
+          =tooltip_icon "sic", scope: :taxa
 
     =f.fields_for :authorship do |authorship_fields|
       %tr

@@ -28,6 +28,7 @@ class CommentsController < ApplicationController
     @comment.set_parent_to = comment_params[:comment_id]
 
     if @comment.save
+      @comment.create_activity :create
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a>

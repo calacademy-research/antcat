@@ -15,16 +15,17 @@
       %li=link_to "Species", catalog_path(Species.valid.first)
       %li=link_to "Subspecies", catalog_path(Subspecies.valid.first)
 
-  .medium-3.columns
+  .medium-6.columns
     %h5 References
     %ul
       %li=link_to "ArticleReference", reference_path(ArticleReference.first)
       %li=link_to "BookReference", reference_path(BookReference.first)
-      %li=link_to "NestedReference", reference_path(122100)
-      %li=link_to "^-- parent (NestedReference)", reference_path(122099)
-      %li=link_to "NestedReference", reference_path(142836)
-      %li=link_to "^-- parent (ArticleReference)", reference_path(142835)
+      %li
+        -nested_reference = NestedReference.first
+        =link_to "NestedReference", reference_path(nested_reference)
+        =link_to "(nesting_reference)", reference_path(nested_reference.nesting_reference)
       %li=link_to "UnknownReference", reference_path(UnknownReference.first)
+      %li=link_to "MissingReference", reference_path(MissingReference.first)
 
   .medium-3.columns
     %h5 Misc.

@@ -24,10 +24,13 @@ describe NestedReference do
   end
 
   describe "#destroy" do
-    let(:reference) { create :nested_reference }
+    let!(:reference) { create :nested_reference }
 
     it "is not be possible to delete a nestee" do
-      expect(reference.nesting_reference.destroy).to be false
+      nesting_reference = reference.reload.nesting_reference
+      expect(nesting_reference.destroy).to be false
+      expect(nesting_reference.errors[:base].first).
+        to eq "This reference can't be deleted, as there are other references to it."
     end
   end
 end

@@ -18,12 +18,10 @@ class Change < ApplicationRecord
   def self.approve_all user
     count = TaxonState.waiting.count
 
-    Feed.without_tracking do
-      TaxonState.waiting.each do |taxon_state|
-        # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(taxon: taxon_state.taxon).find_each do |change|
-          change.approve user
-        end
+    TaxonState.waiting.each do |taxon_state|
+      # TODO maybe something like `TaxonState#approve_related_changes`?
+      Change.where(taxon: taxon_state.taxon).find_each do |change|
+        change.approve user
       end
     end
 
@@ -106,6 +104,10 @@ class Change < ApplicationRecord
     def whodunnit_via_change_id
       version = versions.where.not(whodunnit: nil).first
       version&.user
+    # TODO: There are two deleted users with associated versions:
+    # `PaperTrail::Version.where.not(whodunnit: User.select(:id)).distinct.pluck(:whodunnit)` # ["55", "59"]
+    rescue ActiveRecord::RecordNotFound
+      nil
     end
 
     def most_recent_valid_taxon_version

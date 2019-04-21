@@ -21,11 +21,10 @@ module Taxa
         return unless reordered_ids_valid? reordered_ids
 
         previous_ids = history_items.pluck :id
-        Feed.without_tracking do
-          reordered_ids.each_with_index do |id, index|
-            item = TaxonHistoryItem.find id
-            item.update position: (index + 1)
-          end
+
+        reordered_ids.each_with_index do |id, index|
+          item = TaxonHistoryItem.find id
+          item.update position: (index + 1)
         end
 
         create_activity :reorder_taxon_history_items,

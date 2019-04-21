@@ -34,7 +34,7 @@ class Reference < ApplicationRecord
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
-  before_destroy :check_not_referenced, :check_not_nested
+  before_destroy :check_not_referenced
 
   scope :includes_document, -> { includes(:document) }
   scope :latest_additions, -> { order(created_at: :desc) }
@@ -71,12 +71,6 @@ class Reference < ApplicationRecord
     string  :author_names_string
   end
 
-  def self.approve_all
-    count = Reference.unreviewed.count
-    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
-    Activity.create_without_trackable :approve_all_references, parameters: { count: count }
-  end
-
   def invalidate_caches
     References::Cache::Invalidate[self]
   end
@@ -100,14 +94,6 @@ class Reference < ApplicationRecord
   def refresh_author_names_caches(*args)
     set_author_names_caches args
     save(validate: false)
-  end
-
-  # TODO merge into Workflow. Only used for `.approve_all`,
-  # which approves all unreviewed references of any state (which Workflow doesn't allow).
-  def approve
-    self.review_state = "reviewed"
-    save!
-    Feed.with_tracking { create_activity :finish_reviewing }
   end
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
@@ -153,13 +139,6 @@ class Reference < ApplicationRecord
       return unless what_links_here(predicate: true)
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
-      throw :abort
-    end
-
-    def check_not_nested
-      return unless nestees.exists?
-
-      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.reload.first.id}"
       throw :abort
     end
 

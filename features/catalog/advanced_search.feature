@@ -10,7 +10,7 @@ Feature: Searching the catalog
   Scenario: Searching for subfamilies
     Given there is a subfamily "Formicinae"
 
-    When I select "Subfamilies" from "rank"
+    When I select "Subfamily" from "rank"
     And I press "Go" in the search section
     Then I should see "1 result"
 
@@ -104,4 +104,4 @@ Feature: Searching the catalog
     When I fill in "year" with "2010"
     And I press "Go" in the search section
     And I follow "Download (advanced search only)"
-    Then I should get a download with the filename "all-2010.txt"
+    Then I should get a download with the filename "antcat_search_results__" and today's date
