@@ -38,9 +38,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'none' }
 
           specify do
-            trackable.start_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :start_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -50,9 +48,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewing' }
 
           specify do
-            trackable.finish_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :finish_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -62,9 +58,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewed' }
 
           specify do
-            trackable.restart_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :restart_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -123,14 +117,8 @@ describe ActivityDecorator do
       end
 
       context 'when action is `approve_all_changes`' do
-        before do
-          create :article_reference, review_state: 'none'
-        end
-
         specify do
-          Reference.approve_all
-
-          activity = Activity.last
+          activity = Activity.create_without_trackable :approve_all_references, parameters: { count: 1 }
           expect(activity.decorate.did_something.squish).
             to eq "approved all unreviewed references (1 in total)."
         end

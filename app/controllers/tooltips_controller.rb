@@ -11,8 +11,7 @@ class TooltipsController < ApplicationController
   end
 
   def new
-    @tooltip = Tooltip.new
-    @tooltip.key = params[:key]
+    @tooltip = Tooltip.new(key: params[:key], scope: params[:scope])
   end
 
   def edit

@@ -7,9 +7,6 @@ describe Markdowns::Render do
 
   describe "#call" do
     it "formats some basic markdown" do
-      lasius_name = create :species_name, name: "Lasius"
-      create :species, name: lasius_name
-
       markdown = <<~MARKDOWN
         ###Header
         * A list item
@@ -29,12 +26,9 @@ describe Markdowns::Render do
     end
 
     it "formats taxon ids" do
-      lasius_name = create :species_name, name: "Lasius"
-      lasius = create :species, name: lasius_name
-
-      markdown = "%taxon#{lasius.id}"
-
-      expect(described_class[markdown]).to eq "<p>#{taxon_link lasius}</p>\n"
+      taxon = create :species
+      markdown = "%taxon#{taxon.id}"
+      expect(described_class[markdown]).to eq "<p>#{taxon_link(taxon)}</p>\n"
     end
 
     describe "reference ids" do

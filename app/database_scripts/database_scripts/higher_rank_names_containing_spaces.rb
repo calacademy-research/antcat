@@ -31,5 +31,5 @@ description: >
   It is not possible to fix these names without using scripts. As of writing, all names here
   are subspecies names miscategorized as genus names; these will be fixed by script.
 
-tags: [new!]
+tags: [regression-test]
 topic_areas: [names]

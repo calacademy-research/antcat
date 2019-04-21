@@ -2,7 +2,7 @@
   .row
     .medium-2.columns
       Rank
-      =select_tag :rank, rank_options_for_select(params[:rank])
+      =select_tag :rank, options_for_select(Taxa::AdvancedSearch::RANKS, params[:rank]), include_blank: "Any"
     .medium-2.columns
       Described by
       =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
@@ -19,7 +19,7 @@
   .row
     .medium-3.columns
       Biogeographic region
-      =select_tag :biogeographic_region, search_biogeographic_region_options_for_select(params[:biogeographic_region])
+      =select_tag :biogeographic_region, options_for_select(Taxon::BIOGEOGRAPHIC_REGIONS + ['None'], params[:biogeographic_region]), include_blank: "Any"
     .medium-3.columns
       Locality contains
       =text_field_tag :locality, params[:locality]
@@ -33,22 +33,22 @@
   .row
     .medium-2.columns
       Status
-      =select_tag :status, search_status_options_for_select(params[:status])
+      =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
     .medium-2.columns
       Fossil
-      =select_tag :fossil, any_yes_no_options_for_select(params[:fossil])
+      =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
     .medium-2.columns
       Nomen nudum
-      =select_tag :nomen_nudum, any_yes_no_options_for_select(params[:nomen_nudum])
+      =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
     .medium-3.columns
       Unresolved junior homonym
-      =select_tag :unresolved_junior_homonym, any_yes_no_options_for_select(params[:unresolved_junior_homonym])
+      =select_tag :unresolved_junior_homonym, yes_no_options_for_select(params[:unresolved_junior_homonym]), include_blank: "Either"
     .medium-2.columns
       Ichnotaxon
-      =select_tag :ichnotaxon, any_yes_no_options_for_select(params[:ichnotaxon])
+      =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
     .medium-1.columns.end
       Hong
-      =select_tag :hong, any_yes_no_options_for_select(params[:hong])
+      =select_tag :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
 
   .row
     .medium-2.columns.end
@@ -61,7 +61,7 @@
 
   .row
     .medium-12.columns
-      =button_tag type: 'submit', name: nil, class: 'btn-normal has-spinner' do
+      =button_tag type: 'submit', name: 'submit_search', class: 'btn-normal has-spinner' do
         =spinner_icon + "Go"
       -if taxa.present?
         &nbsp;
