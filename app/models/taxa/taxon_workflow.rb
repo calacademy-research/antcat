@@ -12,10 +12,6 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  def can_be_reviewed?
-    waiting?
-  end
-
   def can_be_approved_by? change, user
     return false unless waiting?
 

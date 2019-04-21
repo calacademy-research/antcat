@@ -21,10 +21,6 @@ describe Taxon do
       let(:taxon) { create :family, :old }
       let(:a_change) { create :change, taxon: taxon, user: adder }
 
-      it "cannot be reviewed" do
-        expect(taxon.can_be_reviewed?).to be false
-      end
-
       it "cannot be approved" do
         expect(taxon.can_be_approved_by?(a_change, approver)).to be false
         expect(taxon.can_be_approved_by?(a_change, adder)).to be false
@@ -34,10 +30,6 @@ describe Taxon do
     context "when a waiting record" do
       let(:taxon) { create :family, :waiting }
       let(:a_change) { create :change, taxon: taxon, user: adder }
-
-      it "can be reviewed by a catalog editor" do
-        expect(taxon.can_be_reviewed?).to be true
-      end
 
       it "can be approved by an approver" do
         expect(taxon.can_be_approved_by?(a_change, approver)).to be true
@@ -49,10 +41,6 @@ describe Taxon do
       let(:taxon) { create :family, :approved }
       let(:a_change) { create :change, taxon: taxon, user: adder, approver: approver, approved_at: Time.current }
       let!(:version) { create :version, change_id: a_change.id, item: taxon }
-
-      it "cannot be reviewed" do
-        expect(taxon.can_be_reviewed?).to be false
-      end
 
       it "cannot be approved" do
         expect(taxon.can_be_approved_by?(a_change, approver)).to be false
