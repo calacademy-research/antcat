@@ -71,12 +71,6 @@ class Reference < ApplicationRecord
     string  :author_names_string
   end
 
-  def self.approve_all
-    count = Reference.unreviewed.count
-    Reference.unreviewed.find_each(&:approve)
-    Activity.create_without_trackable :approve_all_references, parameters: { count: count }
-  end
-
   def invalidate_caches
     References::Cache::Invalidate[self]
   end
@@ -100,13 +94,6 @@ class Reference < ApplicationRecord
   def refresh_author_names_caches(*args)
     set_author_names_caches args
     save(validate: false)
-  end
-
-  # TODO merge into Workflow. Only used for `.approve_all`,
-  # which approves all unreviewed references of any state (which Workflow doesn't allow).
-  def approve
-    self.review_state = "reviewed"
-    save!
   end
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".

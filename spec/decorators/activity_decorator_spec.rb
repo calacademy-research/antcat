@@ -117,14 +117,8 @@ describe ActivityDecorator do
       end
 
       context 'when action is `approve_all_changes`' do
-        before do
-          create :article_reference, review_state: 'none'
-        end
-
         specify do
-          Reference.approve_all
-
-          activity = Activity.last
+          activity = Activity.create_without_trackable :approve_all_references, parameters: { count: 1 }
           expect(activity.decorate.did_something.squish).
             to eq "approved all unreviewed references (1 in total)."
         end
