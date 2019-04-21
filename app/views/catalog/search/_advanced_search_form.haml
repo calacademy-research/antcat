@@ -36,19 +36,19 @@
       =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
     .medium-2.columns
       Fossil
-      =select_tag :fossil, any_yes_no_options_for_select(params[:fossil])
+      =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
     .medium-2.columns
       Nomen nudum
-      =select_tag :nomen_nudum, any_yes_no_options_for_select(params[:nomen_nudum])
+      =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
     .medium-3.columns
       Unresolved junior homonym
-      =select_tag :unresolved_junior_homonym, any_yes_no_options_for_select(params[:unresolved_junior_homonym])
+      =select_tag :unresolved_junior_homonym, yes_no_options_for_select(params[:unresolved_junior_homonym]), include_blank: "Either"
     .medium-2.columns
       Ichnotaxon
-      =select_tag :ichnotaxon, any_yes_no_options_for_select(params[:ichnotaxon])
+      =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
     .medium-1.columns.end
       Hong
-      =select_tag :hong, any_yes_no_options_for_select(params[:hong])
+      =select_tag :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
 
   .row
     .medium-2.columns.end

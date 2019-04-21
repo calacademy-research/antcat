@@ -1,14 +1,8 @@
 module AdvancedSearchesHelper
   PER_PAGE_OPTIONS = [30, 100, 500, 1000]
 
-  def any_yes_no_options_for_select value = "Any"
-    options = [
-      ["Any", ""],
-      ["Yes", "true"],
-      ["No", "false"]
-    ]
-
-    options_for_select(options, value)
+  def yes_no_options_for_select value
+    options_for_select([["Yes", "true"], ["No", "false"]], value)
   end
 
   def per_page_select per_page
