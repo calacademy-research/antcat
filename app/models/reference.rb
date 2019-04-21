@@ -107,7 +107,6 @@ class Reference < ApplicationRecord
   def approve
     self.review_state = "reviewed"
     save!
-    Feed.with_tracking { create_activity :finish_reviewing }
   end
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
