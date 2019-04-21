@@ -39,7 +39,9 @@
             =protonym_form.label :fossil
 
             =protonym_form.check_box :sic
-            =protonym_form.label :sic
+            =form.label :sic do
+              Sic
+              =tooltip_icon "sic", scope: :taxa
 
         =protonym_form.fields_for :authorship do |authorship_form|
           %tr

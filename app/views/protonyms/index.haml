@@ -13,7 +13,10 @@
   %tbody
     -@protonyms.each do |protonym|
       %tr
-        %td=link_to protonym.decorate.format_name, protonym
+        %td
+          =link_to protonym.decorate.format_name, protonym
+          -if protonym.sic?
+            [sic]
         %td=protonym.authorship.reference.decorate.expandable_reference
         %td=protonym.decorate.format_pages_and_forms
         %td=protonym.decorate.format_locality

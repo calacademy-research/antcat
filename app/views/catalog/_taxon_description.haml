@@ -7,6 +7,8 @@
 .headline
   %span.name
     =link_to taxon.protonym.decorate.format_name, taxon.protonym
+  -if taxon.protonym.sic?
+    [sic]
   =taxon.authorship_reference.decorate.expandable_reference
   =taxon.protonym.decorate.format_pages_and_forms
   =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html

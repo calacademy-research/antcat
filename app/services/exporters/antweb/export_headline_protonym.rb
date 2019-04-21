@@ -20,6 +20,7 @@ class Exporters::Antweb::ExportHeadlineProtonym
       [
         protonym_name,
         authorship(protonym.authorship),
+        ('[sic]' if protonym.sic?),
         protonym.decorate.format_locality
       ].compact.join(" ").html_safe
     end
