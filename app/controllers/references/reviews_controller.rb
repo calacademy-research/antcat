@@ -7,16 +7,19 @@ module References
     # TODO allow JSON requests.
     def start
       @reference.start_reviewing!
+      @reference.create_activity :start_reviewing
       redirect_back fallback_location: references_path
     end
 
     def finish
       @reference.finish_reviewing!
+      @reference.create_activity :finish_reviewing
       redirect_back fallback_location: references_path
     end
 
     def restart
       @reference.restart_reviewing!
+      @reference.create_activity :restart_reviewing
       redirect_back fallback_location: references_path
     end
 

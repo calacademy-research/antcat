@@ -38,9 +38,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'none' }
 
           specify do
-            trackable.start_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :start_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -50,9 +48,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewing' }
 
           specify do
-            trackable.finish_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :finish_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -62,9 +58,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewed' }
 
           specify do
-            trackable.restart_reviewing!
-
-            activity = Activity.last
+            activity = trackable.create_activity :restart_reviewing
             expect(activity.decorate.did_something.squish).
               to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
