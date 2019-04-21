@@ -12,12 +12,6 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  def can_be_approved_by? change, user
-    return false unless waiting?
-
-    user != change.changed_by
-  end
-
   def last_change
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
