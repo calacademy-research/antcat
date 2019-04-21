@@ -1,4 +1,5 @@
--@title = "#{unitalicize @reference.keey.html_safe} - References"
+-# TODO: Replace `strip_tags` with `unitalicize` once we have no `MissingReference`s.
+-@title = "#{strip_tags @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
 =content_for :breadcrumbs_right do
