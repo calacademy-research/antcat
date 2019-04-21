@@ -34,7 +34,7 @@ class Reference < ApplicationRecord
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
-  before_destroy :check_not_referenced, :check_not_nested
+  before_destroy :check_not_referenced
 
   scope :includes_document, -> { includes(:document) }
   scope :latest_additions, -> { order(created_at: :desc) }
@@ -139,13 +139,6 @@ class Reference < ApplicationRecord
       return unless what_links_here(predicate: true)
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
-      throw :abort
-    end
-
-    def check_not_nested
-      return unless nestees.exists?
-
-      errors.add :base, "This reference can't be deleted because it's nested in #{nestees.reload.first.id}"
       throw :abort
     end
 
