@@ -73,7 +73,7 @@ class Reference < ApplicationRecord
 
   def self.approve_all
     count = Reference.unreviewed.count
-    Feed.without_tracking { Reference.unreviewed.find_each &:approve }
+    Reference.unreviewed.find_each(&:approve)
     Activity.create_without_trackable :approve_all_references, parameters: { count: count }
   end
 

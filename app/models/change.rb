@@ -18,12 +18,10 @@ class Change < ApplicationRecord
   def self.approve_all user
     count = TaxonState.waiting.count
 
-    Feed.without_tracking do
-      TaxonState.waiting.each do |taxon_state|
-        # TODO maybe something like `TaxonState#approve_related_changes`?
-        Change.where(taxon: taxon_state.taxon).find_each do |change|
-          change.approve user
-        end
+    TaxonState.waiting.each do |taxon_state|
+      # TODO maybe something like `TaxonState#approve_related_changes`?
+      Change.where(taxon: taxon_state.taxon).find_each do |change|
+        change.approve user
       end
     end
 

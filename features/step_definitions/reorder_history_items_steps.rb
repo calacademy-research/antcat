@@ -1,10 +1,8 @@
 Given('there is a genus Orderia with the history items "AAA", "BBB" and "CCC"') do
-  Feed.without_tracking do
-    taxon = create_genus "Orderia"
-    taxon.history_items.create! taxt: "AAA"
-    taxon.history_items.create! taxt: "BBB"
-    taxon.history_items.create! taxt: "CCC"
-  end
+  taxon = create_genus "Orderia"
+  taxon.history_items.create! taxt: "AAA"
+  taxon.history_items.create! taxt: "BBB"
+  taxon.history_items.create! taxt: "CCC"
 end
 
 When("I drag the AAA history item a bit") do
