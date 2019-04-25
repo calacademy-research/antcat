@@ -54,13 +54,5 @@ module TaxonBrowser::Tabs
     def notify_about_no_valid_taxa?
       false
     end
-
-    private
-
-      def sorted_taxa
-        # Sorted by epithet which is used for the link labels.
-        return @taxa.order_by_epithet if display == :all_taxa_in_genus
-        super
-      end
   end
 end
