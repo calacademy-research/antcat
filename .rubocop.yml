@@ -91,9 +91,6 @@ Lint/AmbiguousOperator:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
-Performance/RegexpMatch:
-  Enabled: false
-
 Performance/RedundantBlockCall:
   Enabled: false
 
