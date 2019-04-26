@@ -11,7 +11,7 @@ class Journal < ApplicationRecord
   end
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  tracked on: :mixin_create_activity_only, parameters: proc {
+  trackable parameters: proc {
     { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }
 end

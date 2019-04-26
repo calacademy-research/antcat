@@ -19,7 +19,5 @@ class Protonym < ApplicationRecord
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes only: [:locality], replace_newlines: true
-  tracked on: :mixin_create_activity_only, parameters: proc {
-    { name: decorate.format_name }
-  }
+  trackable parameters: proc { { name: decorate.format_name } }
 end
