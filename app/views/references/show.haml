@@ -1,4 +1,5 @@
--@title = "#{unitalicize @reference.keey.html_safe} - References"
+-# TODO: Replace `strip_tags` with `unitalicize` once we have no `MissingReference`s.
+-@title = "#{strip_tags @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
 =content_for :breadcrumbs_right do
@@ -29,7 +30,7 @@
             %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
 
           -if user_is_editor?
-            %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm: "Do you want to delete this reference?" }
+            %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm_with_edit_summary: true }
 
 -@reference = @reference.decorate
 

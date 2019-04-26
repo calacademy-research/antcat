@@ -16,7 +16,7 @@ class Issue < ApplicationRecord
   acts_as_commentable
   enable_user_notifications_for :description
   has_paper_trail
-  tracked on: :mixin_create_activity_only, parameters: proc { { title: title } }
+  trackable parameters: proc { { title: title } }
 
   def closed?
     !open?

@@ -4,6 +4,7 @@
   =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
 
 =render 'shared/taxt_editor/taxon_and_ancestors', taxon: item.taxon
+=render "shared/default_reference"
 
 =form_for item, url: url do |f|
   =render "shared/errors_for", resource: item

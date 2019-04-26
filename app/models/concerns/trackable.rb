@@ -1,11 +1,10 @@
 # Usage:
 # In the model, include `Trackable` and call:
-# `tracked on: :all`                        for :create, :update, :destroy
-# `tracked on: [:create, :destroy]`         for those hooks
-# `tracked on: :mixin_create_activity_only` no hooks
+# `trackable on: [:create, :destroy, :destroy]` for those hooks
+# `trackable` no hooks
 #
 # To save additional parameters:
-# `tracked on: :all, parameters: proc { { name: name } }`
+# `trackable parameters: proc { { name: name } }`
 
 module Trackable
   extend ActiveSupport::Concern
@@ -15,22 +14,9 @@ module Trackable
   end
 
   module ClassMethods
-    def tracked on:, parameters: proc {}
+    def trackable on: [], parameters: proc {}
       self.activity_parameters = parameters
-
-      case on
-      when :all
-        include TrackableActions::Create,
-                TrackableActions::Update,
-                TrackableActions::Destroy
-      when :mixin_create_activity_only # rubocop:disable Lint/EmptyWhen
-        # Was mixed-in when module was included,
-        # but this makes the code easier to understand.
-      else
-        Array.wrap(on).each do |action|
-          include "TrackableActions::#{action.capitalize}".constantize
-        end
-      end
+      on.each { |action| include "TrackableActions::#{action.capitalize}".constantize }
     end
   end
 

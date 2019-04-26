@@ -31,7 +31,12 @@ module AntCat
       :reference_observer
     ]
 
-    config.enable_dependency_loading = true
+    config.eager_load_paths += Dir["#{config.root}/lib/**/"]
+    config.eager_load_paths += Dir["#{config.root}/lib/tasks/**"]
+    config.eager_load_paths += Dir["#{config.root}/app/models/**/*"]
+    config.eager_load_paths += Dir["#{config.root}/app/decorators/**/"]
+    config.eager_load_paths += Dir["#{config.root}/app/presenters/**/"]
+    config.eager_load_paths += Dir["#{config.root}/app/services/**/"]
 
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
     config.autoload_paths += Dir["#{config.root}/lib/tasks/**"]

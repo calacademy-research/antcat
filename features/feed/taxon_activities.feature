@@ -47,31 +47,3 @@ Feature: Feed (taxa)
     And I follow "Delete"
     And I go to the activity feed
     Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
-
-  Scenario: Elevated subspecies to species
-    Given activity tracking is disabled
-      And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
-    And activity tracking is enabled
-
-    When I go to the catalog page for "Solenopsis speccus subbus"
-      And I will confirm on the next step
-      And I follow "Elevate to species"
-    And I go to the activity feed
-    Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
-
-  @javascript
-  Scenario: Converted species to subspecies
-    Given activity tracking is disabled
-      And there is a species "Camponotus dallatorei" with genus "Camponotus"
-      And there is a species "Camponotus alii" with genus "Camponotus"
-    And activity tracking is enabled
-
-    When I go to the catalog page for "Camponotus dallatorei"
-      And I follow "Convert to subspecies"
-      And I set the new species field to "Camponotus alii"
-      And I wait
-      And I press "Convert"
-    Then I should be on the catalog page for "Camponotus alii dallatorei"
-
-    When I go to the activity feed
-    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" and no other feed items

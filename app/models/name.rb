@@ -31,7 +31,7 @@ class Name < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true
-  tracked on: :mixin_create_activity_only, parameters: proc { { name_html: name_html } }
+  trackable parameters: proc { { name_html: name_html } }
 
   # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
   def self.find_by_name string

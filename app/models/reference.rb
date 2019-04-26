@@ -49,7 +49,7 @@ class Reference < ApplicationRecord
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
     :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
-  tracked on: :mixin_create_activity_only, parameters: proc { { name: keey } }
+  trackable parameters: proc { { name: keey } }
 
   searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
     string  :type

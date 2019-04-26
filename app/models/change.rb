@@ -13,7 +13,7 @@ class Change < ApplicationRecord
   scope :waiting, -> { joins_taxon_states.merge(TaxonState.waiting) }
   scope :joins_taxon_states, -> { joins('JOIN taxon_states ON taxon_states.taxon_id = changes.taxon_id') }
 
-  tracked on: :mixin_create_activity_only
+  trackable
 
   def self.approve_all user
     count = TaxonState.waiting.count

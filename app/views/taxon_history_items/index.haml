@@ -21,7 +21,7 @@
   -@taxon_history_items.each do |history_item|
     %tr
       %td=link_to "##{history_item.id}", history_item
-      %td=history_item.taxon ? history_item.taxon.decorate.link_to_taxon : "???"
+      %td=history_item.taxon.decorate.link_to_taxon
       %td=TaxtPresenter[history_item.taxt].to_html
 
 =will_paginate @taxon_history_items

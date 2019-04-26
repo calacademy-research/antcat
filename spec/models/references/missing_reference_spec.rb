@@ -13,21 +13,21 @@ describe MissingReference do
     context "when no citation_year" do
       before { reference.citation_year = nil }
 
-      specify { expect(reference.keey).to eq "citation, [no year]" }
+      specify { expect(reference.keey).to eq %(<span class="bold-warning">[missing reference]</span> citation, [no year]) }
     end
 
     context "when there is a citation_year" do
       before { reference.citation_year = 2000 }
 
       it "includes the year" do
-        expect(reference.keey).to eq "citation, 2000"
+        expect(reference.keey).to eq %(<span class="bold-warning">[missing reference]</span> citation, 2000)
       end
 
       context "when citation contains a year" do
         before { reference.citation = "citation 1999a" }
 
         it "uses the citation only" do
-          expect(reference.keey).to eq "citation 1999a"
+          expect(reference.keey).to eq %(<span class="bold-warning">[missing reference]</span> citation 1999a)
         end
       end
     end

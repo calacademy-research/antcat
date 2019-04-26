@@ -20,7 +20,7 @@ class Comment < ApplicationRecord
   acts_as_nested_set scope: [:commentable_id, :commentable_type]
   alias_method :commenter, :user # Read-only, for `Comments::NotifyRelevantUsers`.
   has_paper_trail
-  tracked on: :mixin_create_activity_only
+  trackable
 
   def self.build_comment commentable, user, body = ""
     new commentable: commentable, body: body, user: user

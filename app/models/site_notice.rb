@@ -13,6 +13,6 @@ class SiteNotice < ApplicationRecord
   acts_as_commentable
   acts_as_readable on: :created_at
   has_paper_trail
-  tracked on: :mixin_create_activity_only, parameters: proc { { title: title } }
+  trackable parameters: proc { { title: title } }
   enable_user_notifications_for :message
 end
