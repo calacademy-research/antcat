@@ -30,7 +30,7 @@ confirmWithEdiSummary = (element) ->
   answer = window.prompt message, placeholder
 
   unless answer == null
-    if answer != '' or answer == placeholder
+    if answer != '' and answer != placeholder
       appendEditSummary element, answer
 
     element.removeAttribute('data-confirm-with-edit-summary')
