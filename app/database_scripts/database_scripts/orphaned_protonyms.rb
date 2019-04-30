@@ -36,9 +36,6 @@ end
 
 __END__
 description: >
-  Click on the protonym name to search for taxa with this name.
-
-
   These can be deleted via script (see %github430).
 
 tags: [regression-test]
