@@ -27,6 +27,14 @@
 
 .row
   .medium-8.columns
+    -if @name.what_links_here.size > 1
+      .callout.alert
+        =antcat_icon 'warning-icon'
+        %strong Warning!
+        This name is used by more than one taxon/protonym.
+        Please check
+        =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
+
     =form_for name, url: name_path(name) do |f|
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, @name.type
@@ -63,11 +71,8 @@
         %strong Consider this an advanced feature.
       %p
         =antcat_icon 'warning-icon'
-        This form allows saving of duplicates and homonyms. There are no validations for this.
+        This form allows saving of duplicates and homonyms.
       %p
         =antcat_icon 'warning-icon'
         Saving this form will update the name in place.
         The new name will be changed for all records referencing this name will.
-        Please check
-        =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
-        before saving.
