@@ -1,3 +1,6 @@
+-content_for :head do
+  =javascript_include_tag 'check_name_conflicts'
+
 =content_for :breadcrumbs_right do
   =link_to "Hide/show additional help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "additional-help" }
 
@@ -24,6 +27,14 @@
 
 .row
   .medium-8.columns
+    -if @name.what_links_here.size > 1
+      .callout.alert
+        =antcat_icon 'warning-icon'
+        %strong Warning!
+        This name is used by more than one taxon/protonym.
+        Please check
+        =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
+
     =form_for name, url: name_path(name) do |f|
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, @name.type
@@ -32,7 +43,12 @@
         %tbody
           %tr
             %th=f.label :name
-            %td.grow=f.text_field :name
+            %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: @name.id }
+          %tr
+            %td
+            %td
+              #name_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
           %tr
             %th=f.label :epithet
             %td=f.text_field :epithet
@@ -55,11 +71,8 @@
         %strong Consider this an advanced feature.
       %p
         =antcat_icon 'warning-icon'
-        This form allows saving of duplicates and homonyms. There are no validations for this.
+        This form allows saving of duplicates and homonyms.
       %p
         =antcat_icon 'warning-icon'
         Saving this form will update the name in place.
         The new name will be changed for all records referencing this name will.
-        Please check
-        =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
-        before saving.

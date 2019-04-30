@@ -28,6 +28,7 @@ class Name < ApplicationRecord
   after_save :set_taxon_caches
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
+  scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true

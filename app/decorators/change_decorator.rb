@@ -24,6 +24,7 @@ class ChangeDecorator < Draper::Decorator
   end
 
   def format_approved_at
+    return unless change.approved_at?
     format_time_ago change.approved_at
   end
 
@@ -50,7 +51,6 @@ class ChangeDecorator < Draper::Decorator
     end
 
     def format_time_ago time
-      return unless time
-      helpers.content_tag :span, "#{helpers.time_ago_in_words time} ago"
+      "#{helpers.time_ago_in_words time} ago"
     end
 end

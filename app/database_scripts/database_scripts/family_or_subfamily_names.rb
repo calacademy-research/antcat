@@ -27,5 +27,4 @@ __END__
 description: >
   That is, name records with the type `FamilyOrSubfamilyName`. See %github635.
 
-tags: [new!]
 topic_areas: [names]
