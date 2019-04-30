@@ -1,3 +1,6 @@
+-content_for :head do
+  =javascript_include_tag 'check_name_conflicts'
+
 =content_for :breadcrumbs_right do
   =link_to "Hide/show additional help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "additional-help" }
 
@@ -32,7 +35,12 @@
         %tbody
           %tr
             %th=f.label :name
-            %td.grow=f.text_field :name
+            %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: @name.id }
+          %tr
+            %td
+            %td
+              #name_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
           %tr
             %th=f.label :epithet
             %td=f.text_field :epithet
