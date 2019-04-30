@@ -2,12 +2,6 @@
   =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
 
-  -# For the name field.
-  =javascript_include_tag 'widgets/panel'
-  =javascript_include_tag 'widgets/form', 'widgets/ajax_form', 'widgets/nested_form'
-  =javascript_include_tag 'widgets/name_field'
-  =javascript_include_tag 'controllers/protonyms/form'
-
 =enable_tooltips
 =render "shared/default_reference"
 
@@ -34,15 +28,10 @@
   %table.unstriped
     =f.fields_for :name do |name_fields|
       %tr
-        -if name_fields.object.new_record?
-          =hidden_field_tag 'protonym[name_attributes][id]'
+        %td Name
         %td
-          =name_fields.label :name do
-            Name
-            =tooltip_icon "name", scope: :taxa
-        %td
-          %span#protonym_name_field
-            =render 'name_fields/panel', name_string: protonym.name.try(:name)
+          %span.right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
+          =@protonym.decorate.format_name
 
     %tr
       %td
