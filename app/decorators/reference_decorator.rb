@@ -1,6 +1,6 @@
 # TODO: do not cache in database.
 
-class ReferenceDecorator < ApplicationDecorator
+class ReferenceDecorator < Draper::Decorator
   include ActionView::Helpers::SanitizeHelper
   include ERB::Util # For the `h` method.
 

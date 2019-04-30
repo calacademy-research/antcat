@@ -1,4 +1,4 @@
-class TaxonDecorator < ApplicationDecorator
+class TaxonDecorator < Draper::Decorator
   delegate_all
 
   def link_to_taxon
