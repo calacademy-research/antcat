@@ -1,4 +1,13 @@
 module ReferenceSelectHelper
+  def reference_select_tag reference_attribute_name, reference_id
+    reference = Reference.find_by(id: reference_id)
+    reference_id = reference&.id
+
+    select_tag reference_attribute_name,
+      options_for_select([reference_id].compact, reference_id),
+      class: 'select2-autocomplete', data: reference_data_attributes(reference)
+  end
+
   private
 
     def reference_data_attributes reference

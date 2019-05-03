@@ -73,6 +73,8 @@ Rails.application.routes.draw do
           post :restart
         end
 
+        resource :replace_missing, only: [:show, :create], controller: :replace_missing
+
         scope :exports, controller: :exports, as: :export do
           get :wikipedia
         end

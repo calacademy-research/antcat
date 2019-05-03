@@ -44,6 +44,9 @@
         Reason missing:
         =@reference.reason_missing
 
+        -if user_is_editor?
+          =link_to 'Replace', replace_missing_path(@reference), class: 'btn-normal btn-tiny'
+
 .row.margin-bottom
   .small-12.columns
     .callout

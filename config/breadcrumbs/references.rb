@@ -28,6 +28,11 @@ end
     parent :reference, reference
   end
 
+  crumb :replace_missing_reference do |reference|
+    link "Replace"
+    parent :reference, reference
+  end
+
 crumb :references_search_results do
   link "Search Results"
   parent :references
