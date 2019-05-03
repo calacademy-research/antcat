@@ -13,14 +13,14 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :name_cache, :taxa, :count
+        t.header :name_cache, :taxa
 
         t.rows do |taxon|
           ids = taxon.grouped_ids.split(",")
           statuses = taxon.grouped_statuses.split(",")
           taxa = ids.zip statuses
 
-          [taxon.name_cache, taxa_links_with_status(taxa), ids.count]
+          [taxon.name_cache, taxa_links_with_status(taxa)]
         end
       end
     end
