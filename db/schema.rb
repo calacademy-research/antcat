@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_20_144307) do
+ActiveRecord::Schema.define(version: 2019_05_03_152714) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -158,8 +158,8 @@ ActiveRecord::Schema.define(version: 2019_04_20_144307) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "authorship_id", null: false
-    t.boolean "fossil"
-    t.boolean "sic"
+    t.boolean "fossil", default: false, null: false
+    t.boolean "sic", default: false, null: false
     t.string "locality"
     t.integer "name_id"
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
