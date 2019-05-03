@@ -15,11 +15,11 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :name_cache, :taxa, :count
+        t.header :name_cache, :taxa
 
         t.rows do |taxon|
           ids = taxon.grouped_ids.split(",")
-          [taxon.name_cache, link_taxa_ids(ids), ids.count]
+          [taxon.name_cache, link_taxa_ids(ids)]
         end
       end
     end
