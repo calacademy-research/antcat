@@ -1,0 +1,7 @@
+replaced the missing reference
+
+=activity.link_trackable_if_exists sanitize(activity.parameters[:citation]), path: reference_path(activity.trackable_id)
+
+with
+
+=reference_link_or_deleted_string activity.parameters[:target_reference_id]
