@@ -35,7 +35,7 @@ Feature: Editing a taxon
     Then I should see "masculine"
 
     When I go to the edit page for "Atta"
-    And I set the name gender to "neuter"
+    And I select "neuter" from "taxon_name_attributes_gender"
     And I save the taxon form
     Then I should be on the catalog page for "Atta"
     And I should see "neuter"
