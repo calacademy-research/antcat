@@ -21,9 +21,9 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new issue_params
     @issue.adder = current_user
-    @issue.create_activity :create, edit_summary: params[:edit_summary]
 
     if @issue.save
+      @issue.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to @issue, notice: "Successfully created issue."
     else
       render :new
