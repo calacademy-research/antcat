@@ -103,7 +103,7 @@ Feature: Compare revisions
   Scenario: Comparing revisions (taxa)
     Given there is a genus "Atta"
     And I go to the edit page for "Atta"
-    And I select "(none)" from "taxon_incertae_sedis_in"
+    And I select "unavailable" from "taxon_status"
     And I save the taxon form
 
     When I go to the catalog page for "Atta"
