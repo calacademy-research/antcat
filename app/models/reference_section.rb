@@ -14,7 +14,6 @@ class ReferenceSection < ApplicationRecord
       OR references_taxt #{search_type} :q
       OR subtitle_taxt #{search_type} :q
   SQL
-  strip_attributes only: [:title_taxt, :subtitle_taxt,
-    :references_taxt, :taxt], replace_newlines: true
+  strip_attributes only: [:title_taxt, :subtitle_taxt, :references_taxt], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 end
