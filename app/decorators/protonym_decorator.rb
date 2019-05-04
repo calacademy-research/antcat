@@ -23,7 +23,7 @@ class ProtonymDecorator < Draper::Decorator
 
   def format_pages_and_forms
     string = ''
-    string << ": #{authorship.pages}" if authorship.pages.present?
+    string << ": #{authorship.pages}"
     string << " (#{authorship.forms})" if authorship.forms.present?
     string
   end
