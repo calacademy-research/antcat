@@ -61,6 +61,11 @@ end
       parent :protonym, protonym
     end
 
+  crumb :new_protonym do
+    link "New"
+    parent :protonyms
+  end
+
 crumb :names do
   link "Names records"
   parent :catalog

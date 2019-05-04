@@ -1,6 +1,10 @@
 -@title = "Protonyms"
 -breadcrumb :protonyms
 
+=content_for :breadcrumbs_right do
+  -if user_is_editor?
+    =link_to "New", new_protonym_path, class: "btn-normal"
+
 %table
   %thead
     %tr

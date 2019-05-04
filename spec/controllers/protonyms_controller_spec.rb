@@ -3,17 +3,68 @@ require 'spec_helper'
 describe ProtonymsController do
   describe "forbidden actions" do
     context "when not signed in" do
-      specify { expect(delete(:destroy, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(get(:new)).to redirect_to_signin_form }
+      specify { expect(post(:create, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(delete(:destroy, params: { id: 1 })).to redirect_to_signin_form }
     end
 
     context "when signed in as a user" do
       before { sign_in create(:user) }
 
+      specify { expect(get(:new)).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
+    end
+  end
+
+  describe "POST create" do
+    let!(:protonym_params) do
+      {
+        fossil: false,
+        sic: false,
+        locality: 'Africa',
+        name_attributes: {
+          id: create(:genus_name).id
+        },
+        authorship_attributes: {
+          pages: '99',
+          forms: 'worker',
+          notes_taxt: 'see Lasius',
+          reference_id: create(:article_reference).id
+        }
+      }
+    end
+
+    before { sign_in create(:user, :helper) }
+
+    it 'creates a protonym' do
+      expect { post(:create, params: { protonym: protonym_params }) }.to change { Protonym.count }.by(1)
+
+      protonym = Protonym.last
+      expect(protonym.fossil).to eq protonym_params[:fossil]
+      expect(protonym.sic).to eq protonym_params[:sic]
+      expect(protonym.locality).to eq protonym_params[:locality]
+
+      authorship = protonym.authorship
+      expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
+      expect(authorship.forms).to eq protonym_params[:authorship_attributes][:forms]
+      expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
+      expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
+    end
+
+    it 'creates an activity', :feed do
+      expect { post(:create, params: { protonym: protonym_params, edit_summary: 'Split protonym' }) }.
+        to change { Activity.where(action: :create).count }.by(1)
+
+      activity = Activity.last
+      protonym = Protonym.last
+      expect(activity.trackable).to eq protonym
+      expect(activity.edit_summary).to eq "Split protonym"
+      expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
   end
 

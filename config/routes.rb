@@ -99,7 +99,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :protonyms, only: [:index, :show, :edit, :update, :destroy] do
+  resources :protonyms do
     collection do
       get :autocomplete
     end
