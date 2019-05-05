@@ -8,8 +8,7 @@
     .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
     #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
       %ul.no-bullet
-        -unless taxon.original_combination?
-          %li=add_child_button taxon
+        %li=add_child_button taxon
         %li=add_tribe_button taxon
         %li=add_subgenus_button taxon
         %li=elevate_to_species_button taxon
