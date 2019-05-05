@@ -33,6 +33,7 @@ class Exporters::Antweb::ExportHeadlineProtonym
 
     def authorship authorship
       string = link_to_reference authorship.reference
+      string << ": "
       string << protonym.decorate.format_pages_and_forms
 
       if authorship.notes_taxt.present?

@@ -11,7 +11,11 @@ end
   ranks = [:subfamily, :tribe, :genus, :subgenus, :species, :subspecies]
   ranks.each do |rank|
     crumb rank do |taxon|
-      link taxon.decorate.link_to_taxon
+      if taxon.name
+        link taxon.decorate.link_to_taxon
+      else
+        link '[deleted name]'
+      end
       parent_as_symbol = taxon.parent.class.name.downcase.to_sym
       parent parent_as_symbol, taxon.parent rescue :family
     end
@@ -56,6 +60,11 @@ end
       link "History"
       parent :protonym, protonym
     end
+
+  crumb :new_protonym do
+    link "New"
+    parent :protonyms
+  end
 
 crumb :names do
   link "Names records"

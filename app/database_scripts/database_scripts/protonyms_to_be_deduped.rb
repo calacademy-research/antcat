@@ -6,19 +6,15 @@ module DatabaseScripts
     def results
       grouped = Protonym.
         joins(:name, authorship: :reference).
-        group('names.name, references.id, citations.pages, citations.forms, protonyms.locality, protonyms.fossil, protonyms.sic').
+        group('names.name, references.id, protonyms.locality').
         having("COUNT(protonyms.id) > 1")
 
       # This does not work with NULLs, but let's start easy.
       Protonym.joins(:name, authorship: :reference).
         where(
           locality: grouped.select('protonyms.locality'),
-          fossil: grouped.select('protonyms.fossil'),
-          sic: grouped.select('protonyms.sic'),
           names: { name: grouped.select('names.name') },
           citations: {
-            pages: grouped.select('citations.pages'),
-            forms: grouped.select('citations.forms'),
             reference_id: grouped.select('references.id')
           }
         ).includes(:name).order('names.name')
@@ -41,7 +37,11 @@ end
 
 __END__
 description: >
-  Candidates for merging by script. This script is a little bit WIP and will be refined as duplicates are merged and deleted.
+  Version 2
+
+
+  These must be fixed manually. After that the script will be refined again and will be populated with
+  new candidates for merging by script.
 
 
   Same:
@@ -51,15 +51,24 @@ description: >
 
   * `references.id`
 
-  * `citations.pages`
-
-  * `citations.forms`
-
   * `protonyms.locality`
+
+
+  Most probably same (not checked as they were fixed in the first batch of this script):
+
 
   * `protonyms.fossil`
 
   * `protonyms.sic`
+
+
+  Different:
+
+
+  * `citations.pages`
+
+  * `citations.forms`
+
 
 tags: [new!, slow]
 topic_areas: [protonyms]

@@ -25,11 +25,6 @@ Then("the name button should contain {string}") do |name|
   expect(element.text).to eq name
 end
 
-# gender
-When("I set the name gender to {string}") do |gender|
-  step %(I select "#{gender}" from "taxon_name_attributes_gender")
-end
-
 #### current valid taxon field
 Then("the current valid taxon name should be {string}") do |name|
   taxon = Taxon.find_by(name_cache: name)
@@ -42,10 +37,6 @@ When("I set the current valid taxon name to {string}") do |name|
 end
 
 # status
-When("I set the status to {string}") do |status|
-  step %(I select "#{status}" from "taxon_status")
-end
-
 Then("the homonym replaced by name should be {string}") do |name|
   expected_value = if name == '(none)'
                      ''

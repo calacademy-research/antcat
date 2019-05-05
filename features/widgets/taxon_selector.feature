@@ -7,14 +7,14 @@ Feature: Taxon selector
 
   Scenario: Using the selector to set a taxon field
     When I go to the edit page for "Atta"
-    And I set the status to "homonym"
+    And I select "homonym" from "taxon_status"
     And I set the homonym replaced by name to "Eciton"
     And I press "Save"
     Then I should see "Eciton" in the header
 
   Scenario: Clearing a taxon field
     When I go to the edit page for "Atta"
-    And I set the status to "homonym"
+    And I select "homonym" from "taxon_status"
     Then the homonym replaced by name should be "(none)"
 
     When I set the homonym replaced by name to "Eciton"

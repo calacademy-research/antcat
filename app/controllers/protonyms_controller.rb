@@ -10,6 +10,24 @@ class ProtonymsController < ApplicationController
   def show
   end
 
+  def new
+    @protonym = Protonym.new
+    @protonym.build_name
+    @protonym.build_authorship
+  end
+
+  def create
+    @protonym = Protonym.new(protonym_params)
+
+    if @protonym.save
+      @protonym.create_activity :create, edit_summary: params[:edit_summary]
+      redirect_to @protonym, notice: 'Protonym was successfully created.'
+    else
+      @protonym.build_name unless @protonym.name
+      render :new
+    end
+  end
+
   def edit
   end
 
