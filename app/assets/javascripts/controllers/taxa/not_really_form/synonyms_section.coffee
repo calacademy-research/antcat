@@ -25,22 +25,6 @@ window.setupSynonymsSection = ->
 
     $(".delete-synonym-js").click (event) => deleteSynonym(event.target)
 
-  setupReverseSynonymyButtons = ->
-    reverseSynonymy = (target) =>
-      return unless confirm 'Are you sure you want to reverse this synonymy?'
-
-      taxon_id = _taxonId()
-      synonym_id = $(target).data('synonym-id')
-
-      $.ajax
-        url: "/taxa/#{taxon_id}/synonyms/#{synonym_id}/reverse_synonymy"
-        type: 'put'
-        dataType: 'json'
-        success: (data) => _replaceSynonymsSection data.content
-        error: (xhr) => alert xhr.responseText
-
-    $(".reverse-synonym-js").click (event) => reverseSynonymy(event.target)
-
   setupSaveNewButtons = ->
     saveSynonymy = (target) =>
       taxon_id = _taxonId()
@@ -74,5 +58,4 @@ window.setupSynonymsSection = ->
   setupAddNewButtons()
   setupCancelNewButtons()
   setupSaveNewButtons()
-  setupReverseSynonymyButtons()
   setupDeleteButtons()
