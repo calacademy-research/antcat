@@ -200,7 +200,6 @@ Rails.application.routes.draw do
 
   resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy]
   resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
-  resources :synonyms, only: :show
 
   resources :tooltips do
     scope module: :tooltips do

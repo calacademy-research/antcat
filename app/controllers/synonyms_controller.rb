@@ -1,10 +1,7 @@
 class SynonymsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: :show
-  before_action :set_synonym, only: [:show, :destroy]
+  before_action :ensure_can_edit_catalog
+  before_action :set_synonym, only: [:destroy]
   before_action :set_taxon, only: [:create]
-
-  def show
-  end
 
   def create
     synonym_taxon = Taxon.find(params[:synonym_taxon_id])
