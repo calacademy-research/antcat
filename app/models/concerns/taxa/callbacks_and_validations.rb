@@ -93,7 +93,7 @@ module Taxa::CallbacksAndValidations
     end
 
     def requires_current_valid_taxon?
-      synonym? || original_combination? || obsolete_combination?
+      synonym? || original_combination? || obsolete_combination? || unavailable_misspelling? || unavailable_uncategorized?
     end
 
     def ensure_correct_name_type
