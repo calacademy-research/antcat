@@ -1,4 +1,5 @@
 Feature: Signing up
+  @feed
   Scenario: Sign up
     When I go to the sign up page
     And I fill in "user_email" with "pizza@example.com"
@@ -8,3 +9,6 @@ Feature: Signing up
     And I press "Sign Up"
     Then I should be on the main page
     And I should see "Welcome! You have signed up successfully."
+
+    When I go to the activity feed
+    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!"
