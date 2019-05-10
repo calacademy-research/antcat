@@ -25,5 +25,4 @@ end
 
 __END__
 
-tags: [new!]
 topic_areas: [references]
