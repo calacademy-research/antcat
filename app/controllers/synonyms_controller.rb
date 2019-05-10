@@ -4,18 +4,7 @@ class SynonymsController < ApplicationController
   before_action :set_taxon, only: [:create]
 
   def create
-    synonym_taxon = Taxon.find(params[:synonym_taxon_id])
-    is_junior = params[:junior]
-
-    error_message = ''
-
-    if is_junior
-      junior = synonym_taxon
-      senior = @taxon
-    else
-      junior = @taxon
-      senior = synonym_taxon
-    end
+    junior, senior = junior_and_senior
 
     if already_a_synonym? junior, senior
       error_message = 'This taxon is already a synonym'
@@ -38,6 +27,16 @@ class SynonymsController < ApplicationController
   end
 
   private
+
+    def junior_and_senior
+      synonym_taxon = Taxon.find(params[:synonym_taxon_id])
+
+      if params[:junior]
+        [synonym_taxon, @taxon]
+      else
+        [@taxon, synonym_taxon]
+      end
+    end
 
     def already_a_synonym? junior, senior
       Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||
