@@ -20,7 +20,8 @@ class SynonymsController < ApplicationController
     if already_a_synonym? junior, senior
       error_message = 'This taxon is already a synonym'
     else
-      Synonym.create! senior_synonym: senior, junior_synonym: junior
+      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
+      synonym.create_activity :create
     end
 
     if error_message.blank?
@@ -32,6 +33,7 @@ class SynonymsController < ApplicationController
 
   def destroy
     @synonym.destroy
+    @synonym.create_activity :destroy
     head :ok
   end
 
