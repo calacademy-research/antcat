@@ -78,11 +78,6 @@ end
     parent :reference_section, reference_section
   end
 
-crumb :synonym_relationship do |synonym|
-  link "Synonym Relationship ##{synonym.id}"
-  parent :edit_catalog
-end
-
 crumb :create_combination do |taxon|
   link "Create combination help"
   parent :edit_taxon, taxon

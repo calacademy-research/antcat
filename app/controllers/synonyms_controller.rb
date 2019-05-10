@@ -1,10 +1,7 @@
 class SynonymsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: :show
-  before_action :set_synonym, only: [:show, :destroy, :reverse_synonymy]
-  before_action :set_taxon, only: [:create, :reverse_synonymy]
-
-  def show
-  end
+  before_action :ensure_can_edit_catalog
+  before_action :set_synonym, only: [:destroy]
+  before_action :set_taxon, only: [:create]
 
   def create
     synonym_taxon = Taxon.find(params[:synonym_taxon_id])
@@ -36,17 +33,6 @@ class SynonymsController < ApplicationController
   def destroy
     @synonym.destroy
     head :ok
-  end
-
-  def reverse_synonymy
-    new_junior = @synonym.senior_synonym
-    new_senior = @synonym.junior_synonym
-
-    Synonym.where(junior_synonym_id: new_junior, senior_synonym_id: new_senior).destroy_all
-    Synonym.where(senior_synonym_id: new_junior, junior_synonym_id: new_senior).destroy_all
-    Synonym.create! junior_synonym: new_junior, senior_synonym: new_senior
-
-    render json: { content: content(@taxon) }
   end
 
   private
