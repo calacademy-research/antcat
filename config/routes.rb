@@ -116,11 +116,7 @@ Rails.application.routes.draw do
   resources :taxa, only: [:new, :create, :edit, :update, :destroy] do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
-    resources :synonyms, only: [:create, :destroy] do
-      member do
-        put :reverse_synonymy
-      end
-    end
+    resources :synonyms, only: [:create, :destroy]
     scope module: :taxa do
       resource :children, only: [:show]
       resource :create_combination, only: [:new, :show]
@@ -204,7 +200,6 @@ Rails.application.routes.draw do
 
   resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy]
   resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
-  resources :synonyms, only: :show
 
   resources :tooltips do
     scope module: :tooltips do
