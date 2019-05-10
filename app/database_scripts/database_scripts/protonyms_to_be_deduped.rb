@@ -6,13 +6,11 @@ module DatabaseScripts
     def results
       grouped = Protonym.
         joins(:name, authorship: :reference).
-        group('names.name, references.id, protonyms.locality').
+        group('names.name, references.id').
         having("COUNT(protonyms.id) > 1")
 
-      # This does not work with NULLs, but let's start easy.
       Protonym.joins(:name, authorship: :reference).
         where(
-          locality: grouped.select('protonyms.locality'),
           names: { name: grouped.select('names.name') },
           citations: {
             reference_id: grouped.select('references.id')
@@ -37,11 +35,14 @@ end
 
 __END__
 description: >
-  Version 2
+  Version 3
 
 
-  These must be fixed manually. After that the script will be refined again and will be populated with
-  new candidates for merging by script.
+  Candidates for merging by script.
+
+
+  `citations.notes_taxt` is not checked in this script, but the deduping script will make sure they are either all the same,
+  or only one unique `notes_taxt` and use that (this is called "Notes" in the protonym form).
 
 
   Same:
@@ -51,11 +52,11 @@ description: >
 
   * `references.id`
 
-  * `protonyms.locality`
-
 
   Most probably same (not checked as they were fixed in the first batch of this script):
 
+
+  * `protonyms.locality`
 
   * `protonyms.fossil`
 
