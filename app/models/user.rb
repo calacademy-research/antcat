@@ -16,7 +16,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :recoverable, :registerable,
     :rememberable, :trackable, :validatable
   has_paper_trail
-  trackable on: [:create], parameters: proc { { user_id: id } }
+  trackable parameters: proc { { user_id: id } }
 
   def self.current
     RequestStore.store[:current_user]

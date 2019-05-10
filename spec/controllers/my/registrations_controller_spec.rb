@@ -31,6 +31,12 @@ describe My::RegistrationsController do
       expect(user.superadmin).to eq false
     end
 
+    it 'creates an activity', :feed do
+      expect { post(:create, params: { user: user_params }) }.
+        to change { Activity.where(action: :create).count }.by(1)
+      expect(Activity.last.parameters).to eq(user_id: User.last.id)
+    end
+
     context 'when submitting unpermitted attributes' do
       let!(:with_unpermitted_params) do
         user_params.merge(helper: true, editor: true, superadmin: true)

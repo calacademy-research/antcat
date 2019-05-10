@@ -1,7 +1,11 @@
 module My
   class RegistrationsController < Devise::RegistrationsController
     def create
-      super
+      super do |user|
+        if user.persisted?
+          user.create_activity :create
+        end
+      end
     end
 
     protected
