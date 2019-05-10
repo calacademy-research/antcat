@@ -7,16 +7,12 @@ class SynonymsController < ApplicationController
     junior, senior = junior_and_senior
 
     if already_a_synonym? junior, senior
-      error_message = 'This taxon is already a synonym'
+      render json: { error_message: 'This taxon is already a synonym' }, status: :conflict
     else
-      synonym = Synonym.create! senior_synonym: senior, junior_synonym: junior
+      synonym = Synonym.create!(senior_synonym: senior, junior_synonym: junior)
       synonym.create_activity :create
-    end
 
-    if error_message.blank?
       render json: { content: content(@taxon) }
-    else
-      render json: { error_message: error_message }, status: :conflict
     end
   end
 
