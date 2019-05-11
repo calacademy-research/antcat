@@ -1,11 +1,14 @@
 class Notification < ApplicationRecord
   # "mentioned_in_thing" means something other than a comment. For example
   # in the description of an issue or in the message of a site notice.
-  REASONS = %w[ was_replied_to
-                mentioned_in_comment
-                mentioned_in_thing
-                active_in_discussion
-                creator_of_commentable ]
+  # TODO: Rename `mentioned_in_thing` --> `mentioned_in_attached`.
+  REASONS = %w[
+    was_replied_to
+    mentioned_in_comment
+    mentioned_in_thing
+    active_in_discussion
+    creator_of_commentable
+  ]
 
   belongs_to :user
   belongs_to :notifier, class_name: "User"
