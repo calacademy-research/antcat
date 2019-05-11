@@ -11,4 +11,4 @@
 =render "comments/form", new_comment: new_comment
 
 .comments-container.margin-bottom
-  =render "comments/comments", comments: commentable.root_comments, new_comment: new_comment
+  =render "comments/comments", comments: commentable.root_comments.include_associations, new_comment: new_comment
