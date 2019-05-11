@@ -26,9 +26,7 @@
               =time_ago_in_words site_notice.created_at
               ago
           %td.no-wrap
-            -if has_comments? site_notice
-              .right
-                =antcat_icon "comment"
-                =link_comments_section site_notice
+            .right
+              =CommentableDecorator.new(site_notice).link_existing_comments_section
 
 =will_paginate @site_notices
