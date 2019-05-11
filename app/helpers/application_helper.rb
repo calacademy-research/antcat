@@ -9,12 +9,7 @@ module ApplicationHelper
   end
 
   def pluralize_with_delimiters count, singular, plural = nil
-    word = if count == 1
-             singular
-           else
-             plural || singular.pluralize
-           end
-    "#{number_with_delimiter(count)} #{word}"
+    pluralize number_with_delimiter(count), singular, plural
   end
 
   def add_period_if_necessary string
