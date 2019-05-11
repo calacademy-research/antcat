@@ -1,6 +1,6 @@
 module CommentsHelper
   def has_comments? commentable
-    !commentable.comments_count.zero?
+    commentable.any_comments?
   end
 
   def link_comments_section commentable
