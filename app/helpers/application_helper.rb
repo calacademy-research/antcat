@@ -14,8 +14,8 @@ module ApplicationHelper
 
   def add_period_if_necessary string
     return "".html_safe if string.blank?
-    return string + '.' unless string[-1..-1] =~ /[.!?]/
-    string
+    return string if string[-1..-1] =~ /[.!?]/
+    string + '.'
   end
 
   def italicize string
