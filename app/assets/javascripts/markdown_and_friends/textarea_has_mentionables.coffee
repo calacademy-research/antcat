@@ -6,7 +6,7 @@ $ ->
 setupMentionables = ->
   $("[data-has-mentionables]").atwho
     at: "@"
-    searchKey: "mentionable_search_key"
+    searchKey: "search_key"
     insertTpl: "@user${id}"
     displayTpl: '<li><small>#${id}</small> ${name} <small>${email}</small></li>'
     callbacks:
@@ -20,6 +20,10 @@ setupMentionables = ->
 
         MDPreview.showSpinner this
         $.getJSON "/users/mentionables.json", (data) =>
+          data = data.map (user) ->
+            user.search_key = "#{user.id} #{user.name} #{user.email}"
+            user
+
           AntCat.cached_mentionables = data
           MDPreview.hideSpinner this
           callback data
