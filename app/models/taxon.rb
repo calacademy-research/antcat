@@ -130,7 +130,7 @@ class Taxon < ApplicationRecord
     citation = authorship_reference.keey_without_letters_in_year
 
     if recombination?
-      '(' + citation + ')'
+      '('.html_safe + citation + ')'
     else
       citation
     end
