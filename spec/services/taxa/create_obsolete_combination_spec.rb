@@ -8,7 +8,7 @@ describe Taxa::CreateObsoleteCombination do
         let!(:obsolete_genus) { create_genus 'Pyramica' }
 
         before do
-          create_genus 'Pyramica ravidura'
+          create_species 'Pyramica ravidura'
         end
 
         it "does not create a new taxon" do

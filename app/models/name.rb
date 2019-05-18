@@ -1,11 +1,9 @@
-# All `Name` subclasses are for taxa; `AuthorName`s are used for references.
-# TODO: Validate presence/absence of spaces in names/epithet/epithets.
+# All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
 
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  # TODO: See how we can make use of this (originally added for  debugging/dev/docs reasons only).
   # Two or more words:
   #   `SubgenusName`
   #   `SpeciesName`
@@ -23,6 +21,7 @@ class Name < ApplicationRecord
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :name, :epithet, presence: true
+  validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
 
   after_save :set_taxon_caches
@@ -72,6 +71,10 @@ class Name < ApplicationRecord
     !(taxa.exists? || protonyms.exists?)
   end
 
+  def single_word_name?
+    type.in? SINGLE_WORD_NAMES
+  end
+
   private
 
     def ensure_epithet_in_name
@@ -80,6 +83,15 @@ class Name < ApplicationRecord
 
       errors.add :epithet, "must occur in the full name"
       throw :abort
+    end
+
+    def ensure_no_spaces_in_single_word_names
+      return unless single_word_name?
+
+      if name.include?(" ")
+        errors.add :name, "of type #{type} may not contain spaces"
+        throw :abort
+      end
     end
 
     def words
