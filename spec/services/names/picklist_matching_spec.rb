@@ -46,9 +46,9 @@ describe Names::PicklistMatching do
     end
 
     it "puts prefix matches at the beginning" do
-      acropyga = create :genus_name, name: 'Acropyga dubitata'
+      acropyga = create :species_name, name: 'Acropyga dubitata'
       atta = create :genus_name, name: 'Atta'
-      acanthognathus = create :genus_name, name: 'Acanthognathus laevigatus'
+      acanthognathus = create :species_name, name: 'Acanthognathus laevigatus'
 
       expect(described_class['atta']).to eq [
         {
