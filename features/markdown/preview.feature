@@ -31,9 +31,6 @@ Feature: Preview markdown
     And I should not see "Forel, 1878b:"
 
     When I click "#convert-bolton-keys-button"
-    Then I should see "Converted Bolton keys, click 'Render preview' to preview"
-
-    When I press "Rerender preview"
     Then I should see "Forel, 1878b:"
     And I should not see "Forel, 1878:"
 
