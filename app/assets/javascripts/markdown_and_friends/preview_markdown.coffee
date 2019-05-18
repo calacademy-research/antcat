@@ -212,7 +212,6 @@ class ExtrasArea
 
     button.click =>
       event.preventDefault()
-      return unless confirm "This will overwrite any unsaved content. Do you want to continue?"
 
       $.ajax
         url: "/panel/bolton_keys_to_ref_tags.json"
