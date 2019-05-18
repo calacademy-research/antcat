@@ -26,5 +26,6 @@ description: >
   Taxa on the left side have their `homonym_replaced_by_id` set to the right-side taxon.
   Note that the "Replaced by" button in the edit form is only visible when the when
   a taxon's status is set to "homonym".
+tags: [regression-test]
 topic_areas: [catalog]
 issue_description: This taxon has a "Replaced by" taxon, but its status is not 'homonym'.
