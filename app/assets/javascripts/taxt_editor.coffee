@@ -143,7 +143,7 @@ setupDeleteButton = ->
       type: 'DELETE'
       dataType: 'json'
       data: data
-      success: -> taxtEditor.remove()
+      success: -> taxtEditor.parent().remove()
       error: -> alert 'error :('
 
 setupCancelButtons = ->
