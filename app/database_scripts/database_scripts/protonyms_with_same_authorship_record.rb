@@ -14,7 +14,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :protonym, :other_id_, :other_protonym, :locality, :other_locality
+        t.header :id, :protonym, :other_id_, :other_protonym, :candidate?, :locality, :other_locality
         t.rows do |(_authorship_id, protonym)|
           other_protonym = find_other_protonym protonym
 
@@ -23,8 +23,9 @@ module DatabaseScripts
             link_to(protonym.decorate.format_name, protonym_path(protonym)),
             other_protonym.id,
             link_to(other_protonym.decorate.format_name, protonym_path(other_protonym)),
-            protonym.locality,
-            other_protonym.locality
+            (same_ish_name?(protonym, other_protonym) ? 'Yes' : ''),
+            protonym.locality.presence || '-',
+            other_protonym.locality.presence || '-'
           ]
         end
       end
@@ -35,11 +36,19 @@ module DatabaseScripts
       def find_other_protonym protonym
         Protonym.where.not(id: protonym.id).find_by(authorship_id: protonym.authorship_id)
       end
+
+      # "Camponotus (Tanaemyrmex) ruseni" is same-ish as "Tanaemyrmex ruseni".
+      def same_ish_name?(protonym, other_protonym)
+        protonym.name.name.dup.gsub(/.*?\(/, '').remove(')') == other_protonym.name.name
+      end
   end
 end
 
 __END__
 description: >
+  Version 1
+
+
   Candidates for merging by script.
 
 
