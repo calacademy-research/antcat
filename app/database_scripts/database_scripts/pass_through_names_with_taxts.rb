@@ -19,4 +19,5 @@ description: >
   See %github375.
 
 topic_areas: [synonyms]
+tags: [regression-test]
 issue_description: This taxon is a "pass-through name", but is has history items or reference sections.
