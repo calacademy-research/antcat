@@ -41,6 +41,10 @@ class DatabaseScript
     self.class.in?(Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK)
   end
 
+  def fix_random?
+    self.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
+  end
+
   def description
     end_data[:description] || ""
   end
