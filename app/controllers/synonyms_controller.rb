@@ -4,38 +4,35 @@ class SynonymsController < ApplicationController
   before_action :set_taxon, only: [:create]
 
   def create
-    synonym_taxon = Taxon.find(params[:synonym_taxon_id])
-    is_junior = params[:junior]
-
-    error_message = ''
-
-    if is_junior
-      junior = synonym_taxon
-      senior = @taxon
-    else
-      junior = @taxon
-      senior = synonym_taxon
-    end
+    junior, senior = junior_and_senior
 
     if already_a_synonym? junior, senior
-      error_message = 'This taxon is already a synonym'
+      render json: { error_message: 'This taxon is already a synonym' }, status: :conflict
     else
-      Synonym.create! senior_synonym: senior, junior_synonym: junior
-    end
+      synonym = Synonym.create!(senior_synonym: senior, junior_synonym: junior)
+      synonym.create_activity :create
 
-    if error_message.blank?
       render json: { content: content(@taxon) }
-    else
-      render json: { error_message: error_message }, status: :conflict
     end
   end
 
   def destroy
     @synonym.destroy
+    @synonym.create_activity :destroy
     head :ok
   end
 
   private
+
+    def junior_and_senior
+      synonym_taxon = Taxon.find(params[:synonym_taxon_id])
+
+      if params[:junior]
+        [synonym_taxon, @taxon]
+      else
+        [@taxon, synonym_taxon]
+      end
+    end
 
     def already_a_synonym? junior, senior
       Synonym.find_by(senior_synonym: senior, junior_synonym: junior) ||

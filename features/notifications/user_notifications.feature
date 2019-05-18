@@ -42,7 +42,7 @@ Feature: User notifications
     # Confirm Batiatus was notified.
     When I log in as "Batiatus"
     And I go to my notifications page
-    Then I should see "Archibald mentioned you in the comment to the issue Ghost Stories"
+    Then I should see "Archibald mentioned you in the comment on the issue Ghost Stories"
     And I should only see 1 notification
 
   Scenario: Notifying creators, and replying to comments (without mentioning their names)

@@ -30,7 +30,7 @@
       // due to CSS animations. See https://stackoverflow.com/a/42969608.
       "empty script tag"
 
-    %body{id: current_controller_css_id}
+    %body{id: current_controller_css_id(params[:controller])}
       %button#feedback-button.hide-for-small-only{data: { open: "feedback_modal" }} Feedback
 
       .main-container

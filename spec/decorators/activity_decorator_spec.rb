@@ -71,6 +71,7 @@ describe ActivityDecorator do
         let!(:trackable) { create :synonym, senior_synonym: senior, junior_synonym: junior }
 
         specify do
+          trackable.create_activity :destroy
           trackable.destroy
           activity = Activity.last
           expect(activity.decorate.did_something.squish).

@@ -17,7 +17,7 @@ class TaxonDecorator::TaxonStatus
 
     attr_reader :taxon
 
-    delegate :incertae_sedis_in, :homonym?, :homonym_replaced_by, :unidentifiable?,
+    delegate :incertae_sedis_in, :homonym?, :homonym_replaced_by,
       :unresolved_homonym?, :current_valid_taxon, :current_valid_taxon_including_synonyms, :nomen_nudum?,
       :synonym?, :obsolete_combination?, :original_combination?, :unavailable_misspelling?,
       :unavailable_uncategorized?, :invalid?, :ichnotaxon?, to: :taxon

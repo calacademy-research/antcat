@@ -60,23 +60,12 @@ class Exporters::Antweb::AntwebAttributes
     end
 
     def species_attributes
-      attributes = {
+      {
         subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
         tribe: genus.tribe&.name&.name,
-        genus: genus.name.name
+        genus: genus.name.name,
+        species: name.epithet
       }
-
-      # TODO: hmm.
-      if name.is_a? SubspeciesName
-        attributes.merge!(
-          species: name.epithets.split.first,
-          subspecies: name.epithet
-        )
-      else
-        attributes.merge! species: name.epithet
-      end
-
-      attributes
     end
 
     def subspecies_attributes

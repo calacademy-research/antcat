@@ -7,7 +7,7 @@ class Synonym < ApplicationRecord
   validates :junior_synonym, :senior_synonym, presence: true
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  trackable on: [:create, :destroy], parameters: proc {
+  trackable parameters: proc {
     { senior_synonym_id: senior_synonym_id, junior_synonym_id: junior_synonym_id }
   }
 end

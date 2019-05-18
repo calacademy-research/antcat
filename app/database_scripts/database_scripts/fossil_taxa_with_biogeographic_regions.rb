@@ -8,5 +8,6 @@ end
 
 __END__
 description: See %github389.
+tags: [regression-test]
 topic_areas: [catalog]
 issue_description: This taxon is fossil, but is has a biogeographic region.

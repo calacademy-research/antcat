@@ -1,5 +1,14 @@
 module Catalog
   class FixRandomController < ApplicationController
+    DATABASE_SCRIPTS_TO_CHECK = [
+      DatabaseScripts::ExtantTaxaInFossilGenera,
+      DatabaseScripts::FossilTaxaWithBiogeographicRegions,
+      DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
+      DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
+      DatabaseScripts::PassThroughNamesWithTaxts,
+      DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym
+    ]
+
     def show
       if taxon
         redirect_to catalog_path(taxon)
@@ -15,7 +24,7 @@ module Catalog
 
       # HACK: Naive but lazy (not eager) implementation.
       def taxon
-        @taxon ||= Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK.
+        @taxon ||= DATABASE_SCRIPTS_TO_CHECK.
                      map(&:new).shuffle.lazy.
                      map { |script| script.results.sample }.
                      detect { |taxon| taxon }

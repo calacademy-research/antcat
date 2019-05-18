@@ -5,7 +5,7 @@
   =javascript_include_tag "sortable_tables"
 
 .row
-  .small-9.columns.end
+  .small-12.medium-9.columns.end
     .callout.primary
       %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
@@ -24,8 +24,6 @@
         is for issues we want to fix as soon as possible, usually because the issue is
         preventing us from improving the code
       %p
-        "Soft-validated" scripts is where "Fix random!" taxa are randomized from
-      %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         may cause the site to become unresponsive
 
@@ -37,6 +35,7 @@
         %th Script
         %th.no-wrap Tags
         %th Soft-validated
+        %th Fix random
     %tbody
       -database_scripts.each do |database_script|
         %tr
@@ -45,4 +44,7 @@
           %td=database_script.decorate.format_tags
           %td.shrink
             -if database_script.soft_validated?
+              =antcat_icon("check")
+          %td.shrink
+            -if database_script.fix_random?
               =antcat_icon("check")

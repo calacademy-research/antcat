@@ -12,5 +12,4 @@ __END__
 
 description: >
 
-tags: [new!]
 topic_areas: [catalog]

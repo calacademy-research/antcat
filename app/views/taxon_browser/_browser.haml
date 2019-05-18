@@ -8,7 +8,7 @@
     %span.white-label
       =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
     %span.label.secondary
-      =toggle_invalid_or_valid_only_link
+      =toggle_invalid_or_valid_only_link taxon_browser.show_invalid?
 
 .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
   -taxon_browser.tabs.each do |tab|
@@ -30,4 +30,4 @@
         -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
           -unless taxon_browser.show_invalid? # Link unless already showing invalid.
-            %li=toggle_invalid_or_valid_only_link "Show invalid?"
+            %li=toggle_invalid_or_valid_only_link taxon_browser.show_invalid?, "Show invalid?"

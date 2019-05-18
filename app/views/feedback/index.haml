@@ -13,10 +13,7 @@
       -else
         %td.gray Closed
       %td=render "feedback", feedback: feedback
-      %td.center-text.no-wrap
-        -if has_comments? feedback
-          =antcat_icon "comment"
-          =link_comments_section feedback
+      %td.center-text.no-wrap=CommentableDecorator.new(feedback).link_existing_comments_section
       %td=link_to "Details", feedback, class: "btn-normal btn-tiny"
 
 =will_paginate @feedbacks

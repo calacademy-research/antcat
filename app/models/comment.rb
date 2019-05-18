@@ -7,9 +7,9 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
-  scope :order_by_date, -> { order(created_at: :desc)._include_associations }
-  scope :most_recent, ->(number = 5) { order_by_date.limit(number) }
-  scope :_include_associations, -> { includes(:commentable, :user) }
+  scope :order_by_date, -> { order(created_at: :desc) }
+  scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
+  scope :include_associations, -> { includes(:commentable, :user) }
 
   validates :user, presence: true
   validates :body, presence: true

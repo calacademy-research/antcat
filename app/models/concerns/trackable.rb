@@ -1,8 +1,3 @@
-# Usage:
-# In the model, include `Trackable` and call:
-# `trackable on: [:create, :destroy, :destroy]` for those hooks
-# `trackable` no hooks
-#
 # To save additional parameters:
 # `trackable parameters: proc { { name: name } }`
 
@@ -14,9 +9,8 @@ module Trackable
   end
 
   module ClassMethods
-    def trackable on: [], parameters: proc {}
+    def trackable parameters: proc {}
       self.activity_parameters = parameters
-      on.each { |action| include "TrackableActions::#{action.capitalize}".constantize }
     end
   end
 

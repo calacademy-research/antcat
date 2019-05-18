@@ -4,9 +4,7 @@ module TaxonBrowserHelper
     link_to taxon.epithet_with_fossil, catalog_path(taxon), class: classes
   end
 
-  def toggle_invalid_or_valid_only_link label = nil
-    showing_invalid = @taxon_browser.show_invalid?
-
+  def toggle_invalid_or_valid_only_link showing_invalid, label = nil
     if showing_invalid
       link_to append_refresh_icon(label || "show valid only"), catalog_show_valid_only_path
     else
