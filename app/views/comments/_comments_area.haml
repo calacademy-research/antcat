@@ -7,8 +7,8 @@
 -# Anchor link so we can scroll down to the comments section via links.
 %a{name: "comments"}
 
-%h6.margin-top=comments_count_in_words commentable
+%h6.margin-top=CommentableDecorator.new(commentable).comments_count_in_words
 =render "comments/form", new_comment: new_comment
 
 .comments-container.margin-bottom
-  =render "comments/comments", comments: commentable.root_comments, new_comment: new_comment
+  =render "comments/comments", comments: commentable.root_comments.include_associations, new_comment: new_comment

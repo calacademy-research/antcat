@@ -39,10 +39,7 @@ class UsersController < ApplicationController
   def mentionables
     respond_to do |format|
       format.json do
-        json = User.all.to_json root: false,
-          only: [:id, :email, :name],
-          methods: [:mentionable_search_key]
-        render json: json
+        render json: User.all.to_json(root: false, only: [:id, :email, :name])
       end
     end
   end

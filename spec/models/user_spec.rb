@@ -44,12 +44,6 @@ describe User do
     end
   end
 
-  describe "#mentionable_search_key" do
-    let!(:user) { create :user }
-
-    specify { expect(user.mentionable_search_key).to eq "#{user.id} #{user.name} #{user.email}" }
-  end
-
   describe "#already_notified_for_attached_by_user?" do
     let(:user) { create :user }
     let(:notifier) { create :user }

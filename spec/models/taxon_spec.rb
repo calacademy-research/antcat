@@ -84,12 +84,16 @@ describe Taxon do
       let(:species) { create_species 'Atta minor' }
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
-      it "surrounds it in parentheses" do
+      before do
         expect_any_instance_of(Reference).
           to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
+      end
 
+      it "surrounds it in parentheses" do
         expect(species.author_citation).to eq '(Bolton, 2005)'
       end
+
+      specify { expect(species.author_citation).to be_html_safe }
     end
 
     context "when the name simply differs" do

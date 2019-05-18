@@ -20,7 +20,7 @@ class CommentsController < ApplicationController
 
   def index
     @comments = Comment.filter(filter_params)
-    @comments = @comments.order_by_date.paginate(page: params[:page])
+    @comments = @comments.order_by_date.include_associations.paginate(page: params[:page])
   end
 
   def create

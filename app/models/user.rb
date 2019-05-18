@@ -1,5 +1,3 @@
-# TODO column for `devise :invitable` can be removed from the db.
-
 class User < ApplicationRecord
   include Trackable
 
@@ -39,11 +37,6 @@ class User < ApplicationRecord
 
   def mark_unseen_notifications_as_seen
     unseen_notifications.update_all seen: true
-  end
-
-  # For at.js.
-  def mentionable_search_key
-    "#{id} #{name} #{email}"
   end
 
   private

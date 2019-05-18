@@ -115,16 +115,7 @@ class Taxon < ApplicationRecord
   end
 
   def taxon_and_ancestors
-    taxon_and_ancestors = []
-    current_taxon = self
-
-    while current_taxon
-      taxon_and_ancestors << current_taxon
-      current_taxon = current_taxon.parent
-    end
-
-    # Reversed to put Formicidae in the first tab and itself in last.
-    taxon_and_ancestors.reverse
+    Taxa::TaxonAndAncestors[self]
   end
 
   def epithet_with_fossil
@@ -139,7 +130,7 @@ class Taxon < ApplicationRecord
     citation = authorship_reference.keey_without_letters_in_year
 
     if recombination?
-      '(' + citation + ')'
+      '('.html_safe + citation + ')'
     else
       citation
     end

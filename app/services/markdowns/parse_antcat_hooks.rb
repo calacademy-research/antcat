@@ -42,6 +42,8 @@ module Markdowns
       def parse_taxon_ids!
         # HACK to eager load records in a single query for performance reasons.
         ids = content.scan(TAXON_TAG_REGEX).flatten.compact
+        return if ids.blank?
+
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(TAXON_TAG_REGEX) do
@@ -60,6 +62,8 @@ module Markdowns
       def parse_reference_ids!
         # HACK to eager load records in a single query for performance reasons.
         refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
+        return if refs_ids.blank?
+
         refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
         refs = {} if ENV['NO_REF_CACHE']
 
