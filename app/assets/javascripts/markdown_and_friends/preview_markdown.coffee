@@ -29,7 +29,7 @@ class MakePreviewable
     @setupPreviewLink()
 
     if @textarea.data('use-extras')
-      new ExtrasArea(@textarea, @textarea.parent().parent().parent())
+      new ExtrasArea(@textarea, @textarea.parent().parent().parent(), this)
 
     @renderPreview() if @textarea.is(":visible") and @textarea.val() != ""
 
@@ -104,7 +104,7 @@ class ExtrasArea
   INSERT_TAXON_BUTTON_ID             = "insert-taxon-button"
   CONVERT_BOLTON_KEYS_BUTTON_ID      = "convert-bolton-keys-button"
 
-  constructor: (@textarea, @textareaTab) ->
+  constructor: (@textarea, @textareaTab, @taxtEditor) ->
     @createExtrasArea().appendTo @textareaTab
     AntCat.renderTooltips() if AntCat.renderTooltips
     @setupDefaultReferenceButton()
@@ -212,7 +212,6 @@ class ExtrasArea
 
     button.click =>
       event.preventDefault()
-      return unless confirm "This will overwrite any unsaved content. Do you want to continue?"
 
       $.ajax
         url: "/panel/bolton_keys_to_ref_tags.json"
@@ -221,8 +220,8 @@ class ExtrasArea
         dataType: "html"
         success: (parsedContent) =>
           @textarea.val parsedContent
-          previewTab = @textarea.parent().parent().find(".preview-previewable")
-          previewTab.html "Converted Bolton keys, click 'Render preview' to preview"
+          @taxtEditor.renderPreview()
+          $.notify "Converted Bolton keys", className: "success"
         error: -> $.notify "Error parsing Bolton keys"
 
 defaultReference = ->
