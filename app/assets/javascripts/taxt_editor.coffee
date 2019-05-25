@@ -25,14 +25,12 @@ window.setupTaxtEditors = ->
   setupCancelButtons()
 
 unbindAllButtons = ->
-  $(
-    EDIT_BUTTONS
-    CANCEL_BUTTONS
-    OK_BUTTONS
-    DELETE_BUTTONS
-    HISTORY_ITEM_SAVE_BUTTONS
-    REFERENCE_SECTION_SAVE_BUTTONS
-  ).unbind('click')
+  $(EDIT_BUTTONS).unbind('click')
+  $(HISTORY_ITEM_SAVE_BUTTONS).unbind('click')
+  $(REFERENCE_SECTION_SAVE_BUTTONS).unbind('click')
+  $(OK_BUTTONS).unbind('click')
+  $(DELETE_BUTTONS).unbind('click')
+  $(CANCEL_BUTTONS).unbind('click')
 
 setupEditButtons = ->
   $(EDIT_BUTTONS).click (event) ->
