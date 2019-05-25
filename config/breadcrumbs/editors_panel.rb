@@ -59,7 +59,7 @@ end
   end
 
 crumb :activity_feed do
-  link "Activity Feed"
+  link "Activity Feed", activities_path
   parent :editors_panel
 end
 
