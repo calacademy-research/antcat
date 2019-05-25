@@ -1,6 +1,7 @@
 class Exporters::Antweb::ExportTaxon
   include ActionView::Helpers::TagHelper # For `#content_tag`.
   include ActionView::Context # For `#content_tag`.
+  include Service
 
   HEADER =
     "antcat id\t"                + #  [0]
@@ -28,13 +29,19 @@ class Exporters::Antweb::ExportTaxon
     "hol id\t"                   + # [22]
     "current valid parent"         # [23]
 
-  def call taxon
-    export_taxon taxon
+  def initialize taxon
+    @taxon = taxon
+  end
+
+  def call
+    export_taxon
   end
 
   private
 
-    def export_taxon taxon
+    attr_reader :taxon
+
+    def export_taxon
       authorship_reference = taxon.authorship_reference
       parent = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
 
@@ -43,11 +50,11 @@ class Exporters::Antweb::ExportTaxon
         status:                 taxon.status,
         available?:             !taxon.invalid?,
         fossil?:                taxon.fossil,
-        history:                export_history(taxon),
+        history:                export_history,
         author_date:            taxon.author_citation,
-        author_date_html:       authorship_html_string(taxon),
+        author_date_html:       authorship_html_string,
         original_combination?:  taxon.original_combination?,
-        original_combination:   original_combination(taxon)&.name&.name,
+        original_combination:   original_combination&.name&.name,
         authors:                authorship_reference.authors_for_keey,
         year:                   authorship_reference.year,
         reference_id:           authorship_reference.id,
@@ -109,26 +116,26 @@ class Exporters::Antweb::ExportTaxon
       "#{subfamily} #{current_valid_name}"
     end
 
-    def authorship_html_string taxon
+    def authorship_html_string
       reference = taxon.authorship_reference
 
       plain_text = reference.decorate.plain_text
       content_tag :span, reference.keey, title: plain_text
     end
 
-    def original_combination taxon
+    def original_combination
       taxon.class.where(status: Status::ORIGINAL_COMBINATION, current_valid_taxon: taxon).first
     end
 
-    def export_history taxon
-      taxon = taxon.decorate
+    def export_history
+      decorated = taxon.decorate
 
       content_tag :div, class: 'antcat_taxon' do # NOTE `.antcat_taxon` is used on AntWeb.
         content = ''.html_safe
-        content << taxon.statistics(valid_only: true)
+        content << decorated.statistics(valid_only: true)
         content << Exporters::Antweb::ExportHeadline[taxon]
         content << Exporters::Antweb::ExportHistoryItems[taxon]
-        content << taxon.child_lists(for_antweb: true)
+        content << decorated.child_lists(for_antweb: true)
         content << Exporters::Antweb::ExportReferenceSections[taxon]
       end
     end

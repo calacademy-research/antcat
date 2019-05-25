@@ -42,7 +42,7 @@ class Exporters::Antweb::Exporter
             progress.increment unless Rails.env.test?
 
             begin
-              row = Exporters::Antweb::ExportTaxon.new.call(taxon)
+              row = Exporters::Antweb::ExportTaxon[taxon]
               row.each do |col|
                 if col.is_a? String
                   col.delete!("\n")
