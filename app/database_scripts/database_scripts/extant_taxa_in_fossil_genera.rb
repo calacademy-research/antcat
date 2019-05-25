@@ -24,5 +24,9 @@ module DatabaseScripts
 end
 
 __END__
+description: >
+  *Prionomyrmex macrops* can be ignored.
+
 topic_areas: [catalog]
+tags: [regression-test]
 issue_description: The parent of this taxon is fossil, but this taxon is extant.

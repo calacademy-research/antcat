@@ -1,7 +1,6 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
-      DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::FossilTaxaWithBiogeographicRegions,
       DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
       DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
