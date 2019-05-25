@@ -54,7 +54,7 @@ class Exporters::Antweb::AntwebAttributes
     def subgenus_attributes
       {
         subfamily: subfamily&.name&.name || 'incertae_sedis',
-        genus: genus&.name&.name,
+        genus: genus.name.name,
         subgenus: name.epithet.gsub(/[\(\)]/, '')
       }
     end

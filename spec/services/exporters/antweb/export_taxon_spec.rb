@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Exporters::Antweb::ExportTaxon do
   def export_taxon taxon
-    described_class.new.call(taxon)
+    described_class[taxon]
   end
 
   describe "HEADER" do

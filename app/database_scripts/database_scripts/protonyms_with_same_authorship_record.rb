@@ -37,16 +37,16 @@ module DatabaseScripts
         Protonym.where.not(id: protonym.id).find_by(authorship_id: protonym.authorship_id)
       end
 
-      # "Camponotus (Tanaemyrmex) ruseni" is same-ish as "Tanaemyrmex ruseni".
+      # "Crematogaster (Crematogaster) isolata" is same-ish as "Crematogaster solata" (missing "i").
       def same_ish_name?(protonym, other_protonym)
-        protonym.name.name.dup.gsub(/.*?\(/, '').remove(')') == other_protonym.name.name
+        protonym.name.name.dup.gsub(/.*?\(/, '').remove(')').gsub(/ i/, ' ') == other_protonym.name.name
       end
   end
 end
 
 __END__
 description: >
-  Version 1
+  Version 2 (missing "i"s)
 
 
   Candidates for merging by script.

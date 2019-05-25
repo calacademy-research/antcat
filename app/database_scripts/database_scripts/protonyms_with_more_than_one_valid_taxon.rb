@@ -24,5 +24,8 @@ end
 __END__
 
 description: >
+   It is fine for a protonym to have more than one valid taxa if it is above the rank of
+   genus (one valid taxa in rank: tribe, subfamily or family).
 
 topic_areas: [protonyms]
+tags: [regression-test]
