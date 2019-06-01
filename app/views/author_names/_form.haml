@@ -4,4 +4,11 @@
     .medium-6.columns.end
       =f.label :name
       =f.text_field :name
+
+  .row
+    .medium-3.columns.end
+      =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+  .row
+    .medium-3.columns.end
       =f.button 'Save', type: :submit, class: "btn-saves"

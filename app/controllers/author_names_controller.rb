@@ -13,6 +13,7 @@ class AuthorNamesController < ApplicationController
     @author_name.attributes = author_name_params
 
     if @author_name.save
+      @author_name.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to @author_name.author, notice: 'Author name was successfully created.'
     else
       render :new
@@ -24,6 +25,7 @@ class AuthorNamesController < ApplicationController
 
   def update
     if @author_name.update author_name_params
+      @author_name.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @author_name.author, notice: 'Author name was successfully updated.'
     else
       render :edit
@@ -32,6 +34,7 @@ class AuthorNamesController < ApplicationController
 
   def destroy
     if @author_name.destroy
+      @author_name.create_activity :destroy
       redirect_to @author_name.author, notice: 'Author name was successfully deleted.'
     else
       redirect_to @author_name.author, alert: 'Could not delete author name.'
