@@ -61,7 +61,6 @@ module References
             when :nested    then with    :type, 'NestedReference'
             when :missing   then with    :type, 'MissingReference'
             when :nomissing then without :type, 'MissingReference'
-            else                 without :type, 'MissingReference'
             end
 
             if options[:endnote_export]
