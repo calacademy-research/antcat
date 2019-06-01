@@ -36,7 +36,7 @@ describe Author do
     end
   end
 
-  describe ".merge" do
+  describe "#merge" do
     let!(:target_author) { create(:author_name, name: 'Bolton, B').author }
     let!(:author_to_merge) { create(:author_name, name: 'Bolton,B.').author }
 
@@ -46,7 +46,7 @@ describe Author do
 
       all_names = (target_author.names + author_to_merge.names).uniq.sort
 
-      described_class.merge target_author, [author_to_merge]
+      target_author.merge [author_to_merge]
       expect(all_names.all? { |name| name.author == target_author }).to be true
 
       expect(described_class.count).to eq 1

@@ -11,7 +11,7 @@ class MergeAuthorsController < ApplicationController
     create_panels
 
     target_author, *authors_to_merge = @authors
-    Author.merge target_author, authors_to_merge
+    target_author.merge authors_to_merge
 
     params[:terms] = [term]
     index

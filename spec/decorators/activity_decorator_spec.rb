@@ -130,7 +130,7 @@ describe ActivityDecorator do
         let!(:author_to_merge) { create(:author_name, name: 'Bolton,B.').author }
 
         specify do
-          Author.merge target_author, [author_to_merge]
+          target_author.merge [author_to_merge]
 
           activity = Activity.last
           expect(activity.decorate.did_something.squish).
