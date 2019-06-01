@@ -74,7 +74,7 @@ class Change < ApplicationRecord
 
       current_taxon = current_change.most_recent_valid_taxon
       changes << { taxon: current_taxon,
-                   change_type: current_change.change_type,
+                   change_type: current_change.decorate.format_change_type,
                    date: current_change.created_at.strftime("%B %d, %Y"),
                    user: current_change.changed_by }
 
