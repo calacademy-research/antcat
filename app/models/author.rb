@@ -10,8 +10,7 @@ class Author < ApplicationRecord
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a
   end
 
-  def self.merge authors
-    target_author, *authors_to_merge = authors
+  def self.merge target_author, authors_to_merge
     new_names_string = authors_to_merge.map { |author| author.names.map(&:name) }.flatten.join(", ")
 
     transaction do
