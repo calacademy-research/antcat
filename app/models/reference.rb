@@ -17,7 +17,7 @@ class Reference < ApplicationRecord
   belongs_to :journal
   belongs_to :publisher
 
-  has_many :reference_author_names, -> { order(:position) }
+  has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
     through: :reference_author_names,
     after_add: :refresh_author_names_caches,
