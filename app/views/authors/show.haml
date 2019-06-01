@@ -61,11 +61,13 @@
         %thead
           %tr
             %th Author name
+            %th No. of references
             %th
         %tbody
           -@author.names.each do |author_name|
             %tr
               %td=author_name.name
+              %td=author_name.references.count
               %td
                 -if user_is_editor?
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
