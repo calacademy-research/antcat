@@ -28,14 +28,13 @@ Given('I am logged in as a helper editor') do
 end
 
 When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
-  name = "Quintus Batiatus" if name.blank?
-  user = User.find_by(name: name)
-  user ||= create :user, :editor, name: name
+  name ||= "Quintus Batiatus"
+  user = create(:user, :editor, name: name)
   login_programmatically user
 end
 
 When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
-  name = "Quintus Batiatus" if name.blank?
+  name ||= "Quintus Batiatus"
   user = create :user, :editor, :superadmin, name: name
   login_programmatically user
 end

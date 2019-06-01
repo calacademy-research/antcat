@@ -133,7 +133,7 @@ class Change < ApplicationRecord
 
     def undo_create_event_version version
       klass = version.item_type.constantize
-      item = klass.find version.item_id
+      item = klass.find(version.item_id)
       item.delete
     end
 

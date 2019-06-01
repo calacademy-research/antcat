@@ -7,7 +7,7 @@ Feature: Editing a user
     Given this user exists
       | email              | name     | password |
       | quintus@antcat.org | Batiatus | secret   |
-    Given I log in as a catalog editor named "Batiatus"
+    Given I log in as "Batiatus"
 
   Scenario: Changing my password
     When I go to the main page

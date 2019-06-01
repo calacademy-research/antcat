@@ -69,7 +69,7 @@ Feature: Changes
     And I follow "Review change"
     Then I should see "Stan Blum changed"
 
-    When I log in as a catalog editor named "Mark Wilden"
+    When I log in as "Mark Wilden"
     And I go to the changes page
     And I follow "Approve"
     Then I should see "Mark Wilden approved"
