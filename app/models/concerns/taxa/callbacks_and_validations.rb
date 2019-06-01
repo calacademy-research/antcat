@@ -33,8 +33,11 @@ module Taxa::CallbacksAndValidations
     before_save :set_name_caches
 
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
+    # TODO: Move or remove.
     before_save { remove_auto_generated if save_initiator }
+    # TODO: Move or remove.
     before_save { set_taxon_state_to_waiting if save_initiator }
+    # TODO: See if we can remove this.
     before_save { save_children if save_initiator }
 
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
