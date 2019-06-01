@@ -11,19 +11,19 @@ class Author < ApplicationRecord
   end
 
   def self.merge authors
-    new_names_string = get_author_names_for_feed_message authors
-    the_one_author = authors.first
+    target_author, *authors_to_merge = authors
+    new_names_string = authors_to_merge.map { |author| author.names.map(&:name) }.flatten.join(", ")
 
     transaction do
-      authors[1..-1].each do |author|
+      authors_to_merge.each do |author|
         author.names.each do |name|
-          name.update_attribute :author, the_one_author
+          name.update_attribute :author, target_author
         end
         author.destroy
       end
     end
 
-    create_merge_authors_activity the_one_author, new_names_string
+    create_merge_authors_activity target_author, new_names_string
   end
 
   # NOTE that "first" doesn't mean "primary", or "most correct", it
@@ -42,11 +42,4 @@ class Author < ApplicationRecord
       Activity.create_for_trackable author, :merge_authors, parameters: { names: names_string }
     end
     private_class_method :create_merge_authors_activity
-
-    def self.get_author_names_for_feed_message authors
-      authors[1..-1].map do |author|
-        author.names.map(&:name)
-      end.flatten.join(", ")
-    end
-    private_class_method :get_author_names_for_feed_message
 end
