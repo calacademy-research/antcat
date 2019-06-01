@@ -28,7 +28,7 @@ class Change < ApplicationRecord
     Activity.create_without_trackable :approve_all_changes, parameters: { count: count }
   end
 
-  def approve user = nil
+  def approve user
     taxon_state = TaxonState.find_by(taxon: taxon)
     return if taxon_state.review_state == TaxonState::APPROVED
 
