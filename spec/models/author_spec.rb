@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Author do
   it { is_expected.to be_versioned }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+  end
+
   describe "scopes" do
     describe ".sorted_by_name" do
       let!(:ward) { create :author_name, name: 'Ward' }

@@ -1,6 +1,6 @@
 class Author < ApplicationRecord
   has_many :names, -> { order(:name) }, class_name: 'AuthorName'
-  has_many :references, through: :names
+  has_many :references, through: :names, dependent: :restrict_with_error
 
   scope :sorted_by_name, -> { joins(:names).group('authors.id').order(Arel.sql('MAX(name)')) }
 
