@@ -47,7 +47,6 @@ Feature: Feed
   @javascript
   Scenario: Pagination with filtering quirks
     Given I am logged in
-    And activity tracking is disabled
     And the activities are paginated with 2 per page
     And there is an automated activity with the edit summary "[1] fix URL by script"
     And there is an automated activity with the edit summary "[2] fix URL by script"

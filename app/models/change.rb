@@ -42,26 +42,24 @@ class Change < ApplicationRecord
       taxon_state.save!
     end
 
-    Feed.with_tracking { create_activity :approve_change }
+    create_activity :approve_change
   end
 
   def undo
-    Feed.without_tracking do
-      UndoTracker.clear_change
-      change_id_set = find_future_changes
-      versions = SortedSet[]
+    UndoTracker.clear_change
+    change_id_set = find_future_changes
+    versions = SortedSet[]
 
-      Taxon.transaction do
-        change_id_set.each do |undo_this_change_id|
-          # Could be already undone.
-          current_change = Change.find_by id: undo_this_change_id
-          next unless current_change
+    Taxon.transaction do
+      change_id_set.each do |undo_this_change_id|
+        # Could be already undone.
+        current_change = Change.find_by(id: undo_this_change_id)
+        next unless current_change
 
-          versions.merge current_change.versions
-          current_change.delete
-        end
-        undo_versions versions
+        versions.merge current_change.versions
+        current_change.delete
       end
+      undo_versions versions
     end
   end
 
@@ -71,7 +69,7 @@ class Change < ApplicationRecord
     change_id_set = find_future_changes
     change_id_set.each do |current_change_id|
       # Could be already undone.
-      current_change = Change.find_by id: current_change_id
+      current_change = Change.find_by(id: current_change_id)
       next unless current_change
 
       current_taxon = current_change.most_recent_valid_taxon

@@ -5,13 +5,11 @@ Feature: Feed (taxa)
 
   @javascript
   Scenario: Added taxon (with edit summary)
-    Given activity tracking is disabled
-      And there is a subfamily "Formicinae"
-      And this reference exists
-        | author | citation_year |
-        | Fisher | 2004          |
+    Given there is a subfamily "Formicinae"
+    And this reference exists
+      | author | citation_year |
+      | Fisher | 2004          |
     And the default reference is "Fisher, 2004"
-    And activity tracking is enabled
 
     When I go to the catalog page for "Formicinae"
       And I follow "Add genus"
