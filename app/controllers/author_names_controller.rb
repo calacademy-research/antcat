@@ -34,7 +34,7 @@ class AuthorNamesController < ApplicationController
     if @author_name.destroy
       redirect_to @author_name.author, notice: 'Author name was successfully deleted.'
     else
-      redirect_to @author_name.author, warning: 'Could not delete author name.'
+      redirect_to @author_name.author, alert: 'Could not delete author name.'
     end
   end
 
