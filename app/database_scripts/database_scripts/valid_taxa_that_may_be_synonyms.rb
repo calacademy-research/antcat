@@ -53,3 +53,4 @@ description: >
   from the list; the rest are shown in this table.
 
 topic_areas: [catalog]
+tags: [list]

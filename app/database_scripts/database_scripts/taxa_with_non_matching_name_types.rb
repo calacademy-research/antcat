@@ -56,3 +56,4 @@ description: >
   taxon's type is not.
 
 topic_areas: [names]
+tags: [list]
