@@ -1,0 +1,29 @@
+FROM ruby:2.3.3
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+RUN apt-get update -y
+
+RUN apt-get install -y wget bzip2 git openssh-server mysql-client qt5-default libqt5webkit5-dev qtchooser
+
+
+
+RUN mkdir /var/run/sshd
+RUN echo 'root:root' | chpasswd
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# SSH login fix. Otherwise user is kicked off after login
+RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
+ENV NOTVISIBLE "in users profile"
+RUN echo "export VISIBLE=now" >> /etc/profile
+ENV PATH="/code/bin:${PATH}"
+EXPOSE 22
+CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
+ADD . /code/
+WORKDIR /code
+
+
+
+#ENTRYPOINT ["./download-database.sh"]
+#ENTRYPOINT ["/bin/bash"]
+
+

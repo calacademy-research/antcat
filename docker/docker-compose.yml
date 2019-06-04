@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+  antcat:
+    build:
+      context: ../
+      dockerfile: ./docker/antcat-database.docker
+#    command: download-database.sh
+    command: /bin/bash
+    depends_on:
+      - "db"
+    volumes:
+      - ../:/code
+    stdin_open: true
+    tty: true
+    networks:
+      antcat-network:
+
+  db:
+    image: mysql:5.6
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD="true"
+      - MYSQL_USER=root
+      - MYSQL_DATABASE=antcat
+    networks:
+      antcat-network:
+
+
+
+networks:
+  antcat-network:
+
+
+
+
+#httfocps://stackoverflow.com/questions/51270971/docker-compose-stop-depends-on-service-when-parent-finishes
