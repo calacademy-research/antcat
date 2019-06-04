@@ -1,3 +1,10 @@
+tl;dr:
+Add "id_rsa" for your engineyard profile, so you can download databases.
+Run "export_database.sh". Results in /database_export.
+
+
+-------------
+
 This uses docker compose to export the database. It requires a clean checkout of antcat.
 Updating ruby versions will require a change to antcat-database.docker.
 This is based

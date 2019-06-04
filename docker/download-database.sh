@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 cd /code
-git pull
 
 grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
 
