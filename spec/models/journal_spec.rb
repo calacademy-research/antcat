@@ -4,22 +4,7 @@ describe Journal do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :name }
 
-  describe "#destroy" do
-    let!(:journal) { create :journal, name: "ABC" }
-
-    context "journal without references" do
-      it "can be destroyed" do
-        expect { journal.destroy }.to change { described_class.count }.from(1).to(0)
-      end
-    end
-
-    context "journal with a reference" do
-      before { create :article_reference, journal: journal }
-
-      it "cannot be destroyed" do
-        expect { journal.destroy }.not_to change { described_class.count }
-        expect(journal.errors[:base]).to eq ["Cannot delete record because dependent references exist"]
-      end
-    end
+  describe 'relations' do
+    it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
   end
 end

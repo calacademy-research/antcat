@@ -126,15 +126,15 @@ describe ActivityDecorator do
       end
 
       context 'when action is `merge_authors`' do
-        let!(:first_author) { create(:author_name, name: 'Bolton, B').author }
-        let!(:second_author) { create(:author_name, name: 'Bolton,B.').author }
+        let!(:target_author) { create(:author_name, name: 'Bolton, B').author }
+        let!(:author_to_merge) { create(:author_name, name: 'Bolton,B.').author }
 
         specify do
-          Author.merge [first_author, second_author]
+          target_author.merge [author_to_merge]
 
           activity = Activity.last
           expect(activity.decorate.did_something.squish).
-            to eq %(merged the author(s) Bolton,B. into author <a href="/authors/#{first_author.id}">Bolton, B</a>)
+            to eq %(merged the author(s) Bolton,B. into author <a href="/authors/#{target_author.id}">Bolton, B</a>)
         end
       end
     end

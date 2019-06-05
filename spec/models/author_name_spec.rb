@@ -6,6 +6,10 @@ describe AuthorName do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_uniqueness_of :name }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+  end
+
   describe "editing" do
     it "updates associated references when the name is changed" do
       author_name = create :author_name, name: 'Ward'
