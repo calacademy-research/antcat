@@ -3,11 +3,10 @@ Feature: Force-changing parent
   Background:
     Given I log in as a superadmin named "Archibald"
 
+  @feed
   Scenario: Forcing a parent change (and see it in the activity feed)
-    Given activity tracking is disabled
-      And a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
-      And there is a subfamily "Formicinae"
-    And activity tracking is enabled
+    Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+    And there is a subfamily "Formicinae"
 
     When I go to the catalog page for "Atta"
     And I follow "Force parent change"

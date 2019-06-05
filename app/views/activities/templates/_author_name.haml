@@ -1,0 +1,7 @@
+=activity.action_to_verb
+the author name ##{activity.trackable_id}
+
+-author = activity.trackable&.author
+-if author
+  belonging to
+  =link_to author.first_author_name_name, author_path(author)

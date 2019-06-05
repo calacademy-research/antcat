@@ -39,3 +39,4 @@ end
 
 __END__
 topic_areas: [catalog]
+tags: [list]

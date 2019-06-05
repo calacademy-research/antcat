@@ -87,15 +87,7 @@ class TaxaController < ApplicationController
             :name_id,
             :id,
             { name_attributes: [:id] },
-            {
-              authorship_attributes: [
-                :pages,
-                :forms,
-                :notes_taxt,
-                :id,
-                :reference_id
-              ]
-            }
+            { authorship_attributes: [:pages, :forms, :notes_taxt, :id, :reference_id] }
           ]
         },
         :type_taxon_id,

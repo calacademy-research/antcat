@@ -14,7 +14,13 @@ Before("@papertrail") { PaperTrail.enabled = true }
 After("@papertrail")  { PaperTrail.enabled = false }
 
 Around "@feed" do |_scenario, block|
-  Feed.with_tracking { block.call }
+  begin
+    before = Feed.enabled?
+    Feed.enabled = true
+    block.call
+  ensure
+    Feed.enabled = before
+  end
 end
 
 # Some drivers remembers the window size between tests, so always restore.

@@ -12,26 +12,9 @@ describe Name do
     it { is_expected.not_to allow_value('Different').for :epithet }
   end
 
-  describe "#destroy" do
-    let!(:name) { create :family_name }
-
-    context "when name has taxa" do
-      before { create :family, name: name }
-
-      it "cannot be destroyed" do
-        expect { name.destroy }.not_to change { described_class.count }
-        expect(name.errors[:base]).to eq ["Cannot delete record because dependent taxa exist"]
-      end
-    end
-
-    context "when name has protonyms" do
-      before { create :protonym, name: name }
-
-      it "cannot be destroyed" do
-        expect { name.destroy }.not_to change { described_class.count }
-        expect(name.errors[:base]).to eq ["Cannot delete record because dependent protonyms exist"]
-      end
-    end
+  describe 'relations' do
+    it { is_expected.to have_many(:protonyms).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:taxa).dependent(:restrict_with_error) }
   end
 
   describe "#epithet_with_fossil_html" do

@@ -4,6 +4,10 @@ describe Reference do
   let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
   let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
+  end
+
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :title }
   it { is_expected.to_not allow_values('<', '>').for(:doi) }

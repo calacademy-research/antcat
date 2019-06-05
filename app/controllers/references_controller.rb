@@ -52,8 +52,11 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
+    # Grab key before reference author names are deleted.
+    activity_parameters = { name: @reference.keey }
+
     if @reference.destroy
-      @reference.create_activity :destroy, edit_summary: params[:edit_summary]
+      @reference.create_activity :destroy, edit_summary: params[:edit_summary], parameters: activity_parameters
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
       redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence

@@ -1,4 +1,7 @@
 .reference
+  -if reference.is_a?(MissingReference)
+    %span.bold-warning [missing reference]
+
   -reference = reference.decorate
   =reference.expanded_reference
   =reference.format_reference_document_link

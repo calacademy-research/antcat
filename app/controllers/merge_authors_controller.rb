@@ -1,5 +1,3 @@
-# TODO try to not make this depend on JavaScript.
-
 class MergeAuthorsController < ApplicationController
   before_action :ensure_can_edit_catalog, except: :index
 
@@ -11,7 +9,10 @@ class MergeAuthorsController < ApplicationController
   def merge
     term = params[:terms].first
     create_panels
-    Author.merge @authors
+
+    target_author, *authors_to_merge = @authors
+    target_author.merge authors_to_merge
+
     params[:terms] = [term]
     index
     render :index

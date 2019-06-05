@@ -28,3 +28,4 @@ description: >
   That is, name records with the type `FamilyOrSubfamilyName`. See %github635.
 
 topic_areas: [names]
+tags: [list]

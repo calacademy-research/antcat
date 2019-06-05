@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Author do
   it { is_expected.to be_versioned }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+  end
+
   describe "scopes" do
     describe ".sorted_by_name" do
       let!(:ward) { create :author_name, name: 'Ward' }
@@ -32,18 +36,18 @@ describe Author do
     end
   end
 
-  describe ".merge" do
-    let!(:first_bolton_author) { create(:author_name, name: 'Bolton, B').author }
-    let!(:second_bolton_author) { create(:author_name, name: 'Bolton,B.').author }
+  describe "#merge" do
+    let!(:target_author) { create(:author_name, name: 'Bolton, B').author }
+    let!(:author_to_merge) { create(:author_name, name: 'Bolton,B.').author }
 
     it "makes all the names of the passed in authors belong to the same author" do
       expect(described_class.count).to eq 2
       expect(AuthorName.count).to eq 2
 
-      all_names = (first_bolton_author.names + second_bolton_author.names).uniq.sort
+      all_names = (target_author.names + author_to_merge.names).uniq.sort
 
-      described_class.merge [first_bolton_author, second_bolton_author]
-      expect(all_names.all? { |name| name.author == first_bolton_author }).to be true
+      target_author.merge [author_to_merge]
+      expect(all_names.all? { |name| name.author == target_author }).to be true
 
       expect(described_class.count).to eq 1
       expect(AuthorName.count).to eq 2

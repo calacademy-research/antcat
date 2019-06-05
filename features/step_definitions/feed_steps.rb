@@ -1,12 +1,3 @@
-Given(/^activity tracking is (enabled|disabled)$/) do |state|
-  new_state = case state
-              when "enabled"  then true
-              when "disabled" then false
-              else raise
-              end
-  Feed.enabled = new_state
-end
-
 Given("there is an activity with the edit summary {string}") do |edit_summary|
   create :activity, :custom, edit_summary: edit_summary
 end
