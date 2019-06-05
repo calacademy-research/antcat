@@ -30,10 +30,8 @@ Feature: Move items
 
   @feed
   Scenario: Creating activity feed items when moving items
-    Given activity tracking is disabled
-      And there is a genus "Lasius" with taxonomic history "Best ant in the world"
-      And there is a genus "Formica"
-    And activity tracking is enabled
+    Given there is a genus "Lasius" with taxonomic history "Best ant in the world"
+    And there is a genus "Formica"
 
     When I go to the catalog page for "Lasius"
     And I follow "Move items"

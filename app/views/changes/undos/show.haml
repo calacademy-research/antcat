@@ -12,7 +12,7 @@
       %tr
         %td
           =undo_item[:taxon].decorate.link_to_taxon
-          =format_change_type_verb undo_item[:change_type]
+          =undo_item[:change_type]
           by
           =undo_item[:user].decorate.user_page_link
         %td=undo_item[:date]

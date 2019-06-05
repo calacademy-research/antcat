@@ -14,18 +14,37 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :protonym, :other_id_, :other_protonym, :candidate?, :locality, :other_locality
+        t.header :id, :protonym, :other_id_, :other_protonym, :candidate?, :new_name, :action, :name_clash?
         t.rows do |(_authorship_id, protonym)|
           other_protonym = find_other_protonym protonym
+          is_candidate = same_ish_name?(protonym, other_protonym)
+
+          new_name = other_protonym.taxa.first.name.name.dup.gsub(/ /, ' i')
+
+          name_clashes = if is_candidate && Taxon.name_clash?(new_name)
+                           Taxon.where(name_cache: new_name)
+                         end
+
+          name_clash = if name_clashes
+                         name_clashes.first.decorate.link_to_taxon
+                       end
+
+          add_i_to_or_delete = if name_clash
+                                 'Delete: ' + other_protonym.taxa.first.decorate.link_to_taxon
+                               else
+                                 'Add i: ' + other_protonym.taxa.first.decorate.link_to_taxon
+                               end
 
           [
             protonym.id,
             link_to(protonym.decorate.format_name, protonym_path(protonym)),
             other_protonym.id,
             link_to(other_protonym.decorate.format_name, protonym_path(other_protonym)),
-            (same_ish_name?(protonym, other_protonym) ? 'Yes' : ''),
-            protonym.locality.presence || '-',
-            other_protonym.locality.presence || '-'
+            ('Yes' if is_candidate),
+            (new_name if is_candidate),
+            (add_i_to_or_delete if is_candidate),
+            name_clash,
+            ('warning, multiple name clashes' if name_clashes && name_clashes.count > 1)
           ]
         end
       end
@@ -46,7 +65,7 @@ end
 
 __END__
 description: >
-  Version 2 (missing "i"s)
+  Version 2.1 (missing "i"s)
 
 
   Candidates for merging by script.

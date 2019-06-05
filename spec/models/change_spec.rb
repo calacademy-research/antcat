@@ -33,7 +33,7 @@ describe Change do
         it "returns a single taxon" do
           expect(described_class.first.undo_items).to match(
             [
-              { taxon: taxon, change_type: "create", date: anything, user: adder }
+              { taxon: taxon, change_type: "added", date: anything, user: adder }
             ]
           )
         end
@@ -50,8 +50,8 @@ describe Change do
         it "returns multiple items" do
           expect(described_class.first.undo_items).to match(
             [
-              { taxon: taxon, change_type: "create", date: anything, user: adder },
-              { taxon: taxon, change_type: "update", date: anything, user: second_editor }
+              { taxon: taxon, change_type: "added", date: anything, user: adder },
+              { taxon: taxon, change_type: "changed", date: anything, user: second_editor }
             ]
           )
         end
