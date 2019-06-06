@@ -2,11 +2,7 @@ class Protonym < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  # TODO we cannot do `dependent: :destroy` because there are protonyms that share the
-  # same `authorship_id`. We may not want to allow sharing `authorship_id`.
-  # See `Protonym.group(:authorship_id).having("COUNT(*) > 1").count.count`
-  # See also `ProtonymsWithSameAuthorshipRecord`.
-  belongs_to :authorship, class_name: 'Citation', dependent: false
+  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name
 
   has_many :taxa, class_name: 'Taxon'
