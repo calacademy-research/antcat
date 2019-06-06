@@ -60,7 +60,7 @@
     %td.no-wrap
       =form.label :incertae_sedis_in
     %td
-      =form.select :incertae_sedis_in, [['(none)', nil], 'family', 'subfamily', 'tribe', 'genus']
+      =form.select :incertae_sedis_in, [['(none)', nil], *Taxa::CallbacksAndValidations::INCERTAE_SEDIS_IN_RANKS]
 
   %tr
     %td

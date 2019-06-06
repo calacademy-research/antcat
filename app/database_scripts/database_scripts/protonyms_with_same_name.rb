@@ -1,24 +1,23 @@
 module DatabaseScripts
-  class ProtonymsWithSameNameRecord < DatabaseScript
+  class ProtonymsWithSameName < DatabaseScript
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
     def results
-      same_name_id = Protonym.group(:name_id).having('COUNT(protonyms.id) > 1')
-      Protonym.where(name_id: same_name_id.select(:name_id)).includes(:name).order('names.name')
+      same_name_name = Protonym.joins(:name).group('names.name').having('COUNT(protonyms.id) > 1')
+      Protonym.joins(:name).where(names: { name: same_name_name.select('names.name') }).includes(:name).order('names.name')
     end
 
     def render
       as_table do |t|
-        t.header :id, :protonym, :name_id_, :statuses_of_taxa, :any_unresolved_homonyms?
+        t.header :protonym, :authorship, :statuses_of_taxa, :any_unresolved_homonyms?
         t.rows do |protonym|
           taxa_statuses = protonym.taxa.pluck(:status)
 
           [
-            protonym.id,
             link_to(protonym.decorate.format_name, protonym_path(protonym)),
-            link_to(protonym.name.id, name_path(protonym.name)),
-            taxa_statuses.present? ? taxa_statuses.join(', ') : '<span class="bold-warning">Orphaned protonym</span>',
+            protonym.authorship.reference.decorate.expandable_reference,
+            taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : '<span class="bold-warning">Orphaned protonym</span>',
             protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
           ]
         end
@@ -30,7 +29,7 @@ end
 __END__
 
 description: >
-  Protonym records with the same name (`name_id`).
+  Protonym records with the same name (`names.name`).
 
 
   Many of these are OK. Most that are not OK will appear in various other database scripts.
@@ -52,5 +51,5 @@ description: >
 
   * If the authorship is identical: change protonym of one and delete the now orphaned protonym
 
-tags: [slow]
+tags: [list, slow, updated!]
 topic_areas: [protonyms]

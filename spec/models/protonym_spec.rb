@@ -5,8 +5,6 @@ describe Protonym do
   it { is_expected.to validate_presence_of :authorship }
 
   describe 'relations' do
-    # TODO see model.
-    xit { is_expected.to belong_to(:authorship).dependent(:destroy) }
-    it { is_expected.to belong_to(:authorship).dependent(false) }
+    it { is_expected.to belong_to(:authorship).dependent(:destroy) }
   end
 end

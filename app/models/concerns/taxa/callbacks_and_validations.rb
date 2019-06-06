@@ -4,6 +4,7 @@ module Taxa::CallbacksAndValidations
   BIOGEOGRAPHIC_REGIONS = %w[
     Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
   ]
+  INCERTAE_SEDIS_IN_RANKS = %w[family subfamily tribe genus]
   WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
   DATABASE_SCRIPTS_TO_CHECK = [
     DatabaseScripts::ExtantTaxaInFossilGenera,
@@ -23,6 +24,7 @@ module Taxa::CallbacksAndValidations
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
     validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
+    validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
     validate :current_valid_taxon_validation, :ensure_correct_name_type
 
     validation_scope :soft_validation_warnings do |scope|

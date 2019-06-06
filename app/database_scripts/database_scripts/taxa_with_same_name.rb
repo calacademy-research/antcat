@@ -1,11 +1,9 @@
 module DatabaseScripts
-  class TaxaWithSameNameAndStatus < DatabaseScript
+  class TaxaWithSameName < DatabaseScript
     def results
-      name_and_status = Taxon.joins(:name).group('names.name, status').having('COUNT(*) > 1')
+      same_name = Taxon.joins(:name).group('names.name').having('COUNT(*) > 1')
 
-      Taxon.joins(:name).
-        where(names: { name: name_and_status.select(:name) }, status: name_and_status.select(:status)).
-        order('names.name')
+      Taxon.joins(:name).where(names: { name: same_name.select(:name) }).order('names.name')
     end
 
     def render
@@ -24,5 +22,6 @@ module DatabaseScripts
 end
 
 __END__
+
 topic_areas: [catalog]
 tags: [list, updated!]

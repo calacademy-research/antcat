@@ -1,20 +1,20 @@
 module DatabaseScripts
-  class AuthorsWithMultipleNames < DatabaseScript
+  class OrphanedAuthors < DatabaseScript
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
 
     def results
-      Author.where(id: AuthorName.group(:author_id).having("COUNT(id) > 1").select(:author_id))
+      Author.distinct.left_outer_joins(:references).where('references.id IS NULL')
     end
 
     def render
       as_table do |t|
-        t.header :author, :count, :author_names
+        t.header :id, :author, :no_of_references
         t.rows do |author|
           [
+            author.id,
             link_to(author.first_author_name_name, author_path(author)),
-            author.names.count,
-            author.names.map(&:name).join('<br>')
+            author.references.count
           ]
         end
       end
@@ -23,5 +23,9 @@ module DatabaseScripts
 end
 
 __END__
+
+description: >
+  Non-orphaned authors with references in this list indicates that at least one of their author names has no references.
+
 tags: [list, new!]
 topic_areas: [references]

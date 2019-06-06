@@ -4,6 +4,7 @@ describe Author do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
+    it { is_expected.to have_many(:names).class_name('AuthorName').dependent(:destroy) }
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
   end
 

@@ -31,6 +31,7 @@
 
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm_with_edit_summary: true }
+          =activities_link_for_trackable @reference
 
 -@reference = @reference.decorate
 

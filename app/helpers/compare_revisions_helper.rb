@@ -43,13 +43,6 @@ module CompareRevisionsHelper
     params[:selected_id].present? && params[:diff_with_id].blank?
   end
 
-  def try_to_link_revision_history type, id
-    url = RevisionHistoryPath[type, id]
-    return unless url
-
-    link_to "History", url, class: "btn-normal btn-tiny"
-  end
-
   private
 
     def revision_in_any_param? revision
