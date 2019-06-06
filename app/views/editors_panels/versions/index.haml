@@ -34,7 +34,7 @@
           %td=version.item_type
           %td=version.item_id
           %td.no-wrap=version.created_at
-          %td=try_to_link_revision_history version.item_type, version.item_id
+          %td=version.decorate.revision_history_link
           %td
             =inline_expandable version.inspect do
               %pre=version.to_yaml

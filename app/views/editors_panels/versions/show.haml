@@ -2,7 +2,7 @@
 -breadcrumb :version, @version
 
 =content_for :breadcrumbs_right do
-  =try_to_link_revision_history @version.item_type, @version.item_id
+  =@version.decorate.revision_history_link
 
 %pre.wrapped=@version.inspect
 %hr
