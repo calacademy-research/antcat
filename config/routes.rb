@@ -18,7 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :authors, only: [:index, :show] do
+  resources :authors, only: [:index, :show, :destroy] do
     collection do
       get :autocomplete
     end

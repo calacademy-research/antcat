@@ -1,6 +1,10 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
+-if user_is_at_least_helper? && @author.references.empty?
+  =content_for :breadcrumbs_right do
+    =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+
 #references.margin-bottom
   %h5 References by author
   -if @references.empty?
