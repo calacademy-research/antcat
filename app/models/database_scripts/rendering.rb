@@ -9,6 +9,7 @@ module DatabaseScripts
       when ActiveRecord::Relation
         case cached_results.table.name # `#base_class` or `#klass` doesn't work for some reason.
         when "taxa" then as_taxon_table
+        when "protonyms" then as_protonym_table
         when "references" then as_reference_list
         else "Error: cannot implicitly render ActiveRecord::Relation."
         end
@@ -24,7 +25,18 @@ module DatabaseScripts
     def as_taxon_table
       as_table do |t|
         t.header :taxon, :status
-        t.rows { |taxon| [markdown_taxon_link(taxon), taxon.status] }
+        t.rows do |taxon|
+          [markdown_taxon_link(taxon), taxon.status]
+        end
+      end
+    end
+
+    def as_protonym_table
+      as_table do |t|
+        t.header :id, :protonym
+        t.rows do |protonym|
+          [protonym.id, protonym_link(protonym)]
+        end
       end
     end
 
@@ -35,5 +47,11 @@ module DatabaseScripts
       end
       markdown list
     end
+
+    private
+
+      def protonym_link protonym
+        "<a href='/protonyms/#{protonym.id}'>#{protonym.decorate.format_name}</a>"
+      end
   end
 end
