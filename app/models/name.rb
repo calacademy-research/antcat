@@ -4,6 +4,8 @@ class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
+  VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
   # Two or more words:
   #   `SubgenusName`
   #   `SpeciesName`
@@ -21,6 +23,8 @@ class Name < ApplicationRecord
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :name, :epithet, presence: true
+  validates :name, :epithet,
+    format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
 

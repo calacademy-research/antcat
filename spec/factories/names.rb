@@ -7,29 +7,29 @@ FactoryBot.define do
     end
 
     factory :subfamily_name, class: SubfamilyName do
-      sequence(:name) { |n| "Subfamily#{n}" }
+      sequence(:name, 'a') { |n| "Subfamily#{n}" }
     end
 
     factory :tribe_name, class: TribeName do
-      sequence(:name) { |n| "Tribe#{n}" }
+      sequence(:name, 'a') { |n| "Tribe#{n}" }
     end
 
     factory :genus_name, class: GenusName do
-      sequence(:name) { |n| "Genus#{n}" }
+      sequence(:name, 'a') { |n| "Genus#{n}" }
     end
 
     factory :subgenus_name, class: SubgenusName do
-      sequence(:name) { |n| "Atta (Subgenus#{n})" }
+      sequence(:name, 'a') { |n| "Atta (Subgenus#{n})" }
       epithet { name.split.last.remove('(', ')') }
     end
 
     factory :species_name, class: SpeciesName do
-      sequence(:name) { |n| "Atta species#{n}" }
+      sequence(:name, 'a') { |n| "Atta species#{n}" }
       epithet { name.split.last }
     end
 
     factory :subspecies_name, class: SubspeciesName do
-      sequence(:name) { |n| "Atta species subspecies#{n}" }
+      sequence(:name, 'a') { |n| "Atta species subspecies#{n}" }
       epithet { name.split.last }
       epithets { name.split[-2..-1].join(' ') }
     end
