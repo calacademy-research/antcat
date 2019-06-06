@@ -1,7 +1,7 @@
 class Author < ApplicationRecord
   include Trackable
 
-  has_many :names, class_name: 'AuthorName'
+  has_many :names, class_name: 'AuthorName', dependent: :destroy
   has_many :references, through: :names, dependent: :restrict_with_error
 
   scope :sorted_by_name, -> { joins(:names).group('authors.id').order(Arel.sql('MAX(name)')) }
@@ -21,7 +21,8 @@ class Author < ApplicationRecord
         author.names.each do |name|
           name.update(author: self)
         end
-        author.destroy
+        # Reload first to avoid deleting transferred `AuthorName`s.
+        author.reload.destroy
       end
     end
 
@@ -31,7 +32,7 @@ class Author < ApplicationRecord
   # NOTE that "first" doesn't mean "primary", or "most correct", it
   # simply refers to the name with the oldest ID.
   def first_author_name_name
-    names.first.name
+    names.first&.name || '[no author name]'
   end
 
   def described_taxa
