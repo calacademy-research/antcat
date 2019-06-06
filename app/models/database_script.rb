@@ -10,6 +10,7 @@ class DatabaseScript
     SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
     NEW_TAG = "new!",
+    UPDATED = "updated!",
     CSV_TAG = "csv",
     REGRESSION_TEST_TAG = "regression-test",
     LIST_TAG = "list",

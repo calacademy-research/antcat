@@ -23,5 +23,5 @@ module DatabaseScripts
 end
 
 __END__
-tags: [new!, list]
+tags: [list, new!]
 topic_areas: [references]
