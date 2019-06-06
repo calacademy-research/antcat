@@ -3,12 +3,14 @@ class ActivitiesController < ApplicationController
 
   FILTER_TRACKABLE_TYPES = %w[
     Author
+    AuthorName
     Change
     Comment
     Feedback
     Institution
     Issue
     Journal
+    Name
     Protonym
     Reference
     ReferenceSection
