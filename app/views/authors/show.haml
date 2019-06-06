@@ -68,6 +68,7 @@
             %th No. of references
             %th
         %tbody
+          -hide_delete_author_name_button = @author.names.count == 1
           -@author.names.each do |author_name|
             %tr
               %td=author_name.name
@@ -75,5 +76,6 @@
               %td
                 -if user_is_editor?
                   =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
-                -if user_is_superadmin? && author_name.references.empty?
-                  =link_to append_superadmin_icon("Delete"), author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?"  }, class: "btn-warning btn-tiny"
+                -unless hide_delete_author_name_button
+                  -if user_is_superadmin? && author_name.references.empty?
+                    =link_to append_superadmin_icon("Delete"), author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning btn-tiny"
