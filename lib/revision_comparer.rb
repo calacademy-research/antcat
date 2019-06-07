@@ -12,11 +12,16 @@ require "diffy"
 #   to compare those revisions. This revision will always be older than
 #   both `#selected` and `#most_recent`. Always shown to the left when comparing.
 
+# TODO: Improve this class and code in views.
+# TODO: Improve method names.
 class RevisionComparer
   attr_reader :most_recent, :revisions, :selected, :diff_with
 
   # `id` is the only required argument; it's used for `#most_recent`.
   def initialize klass, id, selected_id = nil, diff_with_id = nil
+    @selected_id = selected_id
+    @diff_with_id = diff_with_id
+
     set_most_recent_and_revisions klass, id
 
     @selected = find_revision selected_id
@@ -32,7 +37,26 @@ class RevisionComparer
     Diffy::SplitDiff.new left, right, format: :html
   end
 
+  def looking_at_most_recent?
+    return true if !selected && !diff_with
+    !selected
+  end
+
+  def looking_at_a_single_old_revision?
+    !!selected && !diff_with
+  end
+
+  def revision_selected? revision
+    revision.id == selected_id.to_i
+  end
+
+  def revision_diff_with? revision
+    revision.id == diff_with_id.to_i
+  end
+
   private
+
+    attr_reader :selected_id, :diff_with_id
 
     def set_most_recent_and_revisions klass, id
       @most_recent = klass.find id

@@ -12,7 +12,7 @@
         Version before item was deleted
       %small=most_recent.updated_at
 
-  .callout{class: (looking_at_an_old_revision? ? "make-red" : "make-green")}
+  .callout{class: (comparer.looking_at_a_single_old_revision? ? "make-red" : "make-green")}
     =preserve do
       =render_revision_with_rescue selected || most_recent
 
