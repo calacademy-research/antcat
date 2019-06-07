@@ -1,4 +1,6 @@
 class ReferencesController < ApplicationController
+  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
+
   before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
   before_action :ensure_can_edit_catalog, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
@@ -102,10 +104,7 @@ class ReferencesController < ApplicationController
 
     def reference_type_from_params
       reference_type = params[:reference_type]
-      raise "#{reference_type} is not supported" unless reference_type.in?(
-        ['ArticleReference', 'BookReference', 'MissingReference', 'NestedReference', 'UnknownReference']
-      )
-      reference_type.constantize
+      SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == reference_type.classify } or raise "reference type is not supported"
     end
 
     def reference_params
