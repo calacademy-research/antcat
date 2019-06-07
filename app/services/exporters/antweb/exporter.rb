@@ -35,7 +35,6 @@ class Exporters::Antweb::Exporter
             joins(protonym: [{ authorship: :reference }]).
             includes(protonym: [{ authorship: :reference }]).
             each do |taxon|
-
             next if taxon.name.nonconforming_name && taxon.name_cache.index('?')
 
             STDOUT.puts "Processing: #{taxon.id}" if ENV['DEBUG']
@@ -51,10 +50,10 @@ class Exporters::Antweb::Exporter
               end
               file.puts row.join("\t")
             rescue StandardError => e
-              STDERR.puts "========================#{taxon.id}===================="
-              STDERR.puts "An error of type #{e} happened, message is #{e.message}"
-              STDERR.puts e.backtrace
-              STDERR.puts "======================================================="
+              warn "========================#{taxon.id}===================="
+              warn "An error of type #{e} happened, message is #{e.message}"
+              warn e.backtrace
+              warn "======================================================="
             end
           end
         end

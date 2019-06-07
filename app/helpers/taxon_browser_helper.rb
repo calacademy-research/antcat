@@ -49,6 +49,7 @@ module TaxonBrowserHelper
       extra_tab_link selected, "Subgenera", :subgenera_in_genus
     end
 
+    # rubocop:disable Rails/HelperInstanceVariable
     def extra_tab_link selected, label, param
       css = if @taxon_browser.display == param.to_sym
               "upcase selected"
@@ -62,6 +63,7 @@ module TaxonBrowserHelper
         end
       end
     end
+    # rubocop:enable Rails/HelperInstanceVariable
 
     def css_classes_for_status taxon
       css_classes = []
