@@ -15,6 +15,15 @@ require "diffy"
 # TODO: Improve this class and code in views.
 # TODO: Improve method names.
 class RevisionComparer
+  ATTRIBUTES_IGNORED_IN_DIFF = %i[
+    formatted_cache
+    inline_citation_cache
+    principal_author_last_name_cache
+    plain_text_cache
+    expandable_reference_cache
+    expanded_reference_cache
+  ]
+
   attr_reader :most_recent, :revisions, :selected, :diff_with
 
   # `id` is the only required argument; it's used for `#most_recent`.
@@ -59,7 +68,7 @@ class RevisionComparer
     attr_reader :selected_id, :diff_with_id
 
     def set_most_recent_and_revisions klass, id
-      @most_recent = klass.find id
+      @most_recent = klass.find(id)
       @revisions = @most_recent.versions.not_creates
     rescue ActiveRecord::RecordNotFound
       reify_and_set_most_recent_and_revisions klass, id
@@ -88,8 +97,6 @@ class RevisionComparer
 
     # HACK to make the diff less cluttered.
     def to_json item
-      item.to_json except: [:formatted_cache, :inline_citation_cache,
-        :principal_author_last_name_cache, :plain_text_cache, :expandable_reference_cache,
-        :expanded_reference_cache]
+      item.to_json except: ATTRIBUTES_IGNORED_IN_DIFF
     end
 end
