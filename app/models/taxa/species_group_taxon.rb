@@ -11,10 +11,12 @@ class SpeciesGroupTaxon < Taxon
   before_create :set_subfamily
 
   def recombination?
-    genus_epithet = name.genus_epithet
-    protonym_genus_epithet = protonym.name.genus_epithet
+    # TODO: Check if this is true.
+    # To avoid `NoMethodError` for records with protonyms above genus rank.
+    protonym_name = protonym.name
+    return false unless protonym_name.respond_to?(:genus_epithet)
 
-    genus_epithet != protonym_genus_epithet
+    name.genus_epithet != protonym_name.genus_epithet
   end
 
   private
