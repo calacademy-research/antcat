@@ -28,6 +28,10 @@ class User < ApplicationRecord
     helper? || editor?
   end
 
+  def unread_site_notices
+    SiteNotice.unread_by(self)
+  end
+
   def notify_because(reason, attached:, notifier:)
     return if notifier == self
     return if already_notified_for_attached_by_user? attached, notifier
