@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_04_225010) do
+ActiveRecord::Schema.define(version: 2019_06_08_213246) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -332,7 +332,7 @@ ActiveRecord::Schema.define(version: 2019_05_04_225010) do
   create_table "taxon_states", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "taxon_id"
     t.string "review_state"
-    t.boolean "deleted"
+    t.boolean "deleted", default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["taxon_id"], name: "taxon_states_taxon_id_idx"
