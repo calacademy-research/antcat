@@ -1,3 +1,16 @@
+-# TODO: Decide what to do. Can be removed once `SubspeciesWithAnotherSubspeciesAsSpecies` has been cleared.
+-if current_user
+  -if taxon.is_a?(Subspecies) && taxon.species.nil? && taxon.species_id && Subspecies.find_by(id: taxon.species_id)
+    .callout.alert
+      %p
+        =antcat_icon 'warning-icon'
+        %strong This looks like an infrasubspecific taxon, which cannot be represented on AntCat
+      %p
+        Its species is missing, because this record is stored as a subspecies,
+        and the ID in the species field belongs to another subspecies record,
+        namely:
+        =Subspecies.find_by(id: taxon.species_id).decorate.link_to_taxon_with_author_citation
+
 .header
   %span.name=taxon.decorate.link_each_epithet
   =taxon.author_citation
