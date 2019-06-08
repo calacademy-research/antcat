@@ -82,14 +82,12 @@ describe Taxa::CallbacksAndValidations do
       it "removes 'auto_generated' flags from things" do
         # Setup.
         taxon = create :family, auto_generated: true
-        taxon.name.update auto_generated: true
 
         # Act and test.
         taxon.save_initiator = true
         taxon.save
 
         expect(taxon.reload).not_to be_auto_generated
-        expect(taxon.name).not_to be_auto_generated
       end
 
       it "doesn't cascade" do
@@ -97,18 +95,12 @@ describe Taxa::CallbacksAndValidations do
         family = create :family, auto_generated: true
         subfamily = create :subfamily, family: family, auto_generated: true
 
-        family.name.update auto_generated: true
-        subfamily.name.update auto_generated: true
-
         # Act and test.
         family.save_initiator = true
         family.save
 
         expect(family.reload).not_to be_auto_generated
-        expect(family.name).not_to be_auto_generated
-
         expect(subfamily.reload).to be_auto_generated
-        expect(subfamily.name).to be_auto_generated
       end
     end
   end
@@ -167,10 +159,6 @@ describe Taxa::CallbacksAndValidations do
         expect_any_instance_of(Subfamily).to_not receive(:save_children)
       end
     end
-  end
-
-  describe "#set_name_caches" do
-    # TODO
   end
 
   describe "#current_valid_taxon_validation" do

@@ -71,7 +71,6 @@ module Taxa::CallbacksAndValidations
 
     def remove_auto_generated
       self.auto_generated = false
-      name.auto_generated = false
     end
 
     def build_default_taxon_state
