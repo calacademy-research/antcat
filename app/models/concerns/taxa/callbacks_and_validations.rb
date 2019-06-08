@@ -31,7 +31,6 @@ module Taxa::CallbacksAndValidations
       scope.validate :check_if_in_database_scripts_results
     end
 
-    before_create :build_default_taxon_state
     before_save :set_name_caches
 
     # Additional callbacks for when `#save_initiator` is true (must be set manually).
@@ -60,10 +59,6 @@ module Taxa::CallbacksAndValidations
 
     def remove_auto_generated
       self.auto_generated = false
-    end
-
-    def build_default_taxon_state
-      build_taxon_state review_state: TaxonState::WAITING unless taxon_state
     end
 
     def set_taxon_state_to_waiting

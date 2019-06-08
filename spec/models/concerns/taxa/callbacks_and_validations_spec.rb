@@ -29,7 +29,7 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
-  describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
+  describe "#set_taxon_state_to_waiting" do
     context "when creating a taxon" do
       let(:taxon) { build :family }
 
@@ -40,8 +40,10 @@ describe Taxa::CallbacksAndValidations do
       end
 
       it "sets the review_status to 'waiting'" do
-        taxon.save
-        expect(taxon.waiting?).to be true
+        taxon = create :family, :old
+
+        taxon.save_initiator = true
+        expect { taxon.save }.to change { taxon.waiting? }.from(false).to(true)
       end
     end
 

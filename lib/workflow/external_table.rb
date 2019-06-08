@@ -14,8 +14,7 @@ module Workflow
       private
 
         def write_initial_state
-          # TODO only required in specs (not features).
-          build_default_taxon_state unless taxon_state
+          build_taxon_state review_state: TaxonState::WAITING unless taxon_state
 
           taxon_state = current_review_state
           taxon_state.review_state = current_state.to_s
