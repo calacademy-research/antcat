@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
-.row
+.row.margin-bottom
   .small-12.medium-9.columns.end
     .callout.primary
       %p
@@ -27,24 +27,27 @@
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
         may cause the site to become unresponsive
 
--@grouped_database_scripts.each do |_title, database_scripts|
-  %table.tablesorter.margin-bottom
-    %thead
-      %tr
-        %th.no-wrap Topic area
-        %th Script
-        %th.no-wrap Tags
-        %th Soft-validated
-        %th Fix random
-    %tbody
-      -database_scripts.each do |database_script|
-        %tr
-          %td.shrink=database_script.decorate.format_topic_areas
-          %td=link_to database_script.title, database_script_path(database_script)
-          %td=database_script.decorate.format_tags
-          %td.shrink
-            -if database_script.soft_validated?
-              =antcat_icon("check")
-          %td.shrink
-            -if database_script.fix_random?
-              =antcat_icon("check")
+.row
+  .small-12.columns
+    -@grouped_database_scripts.each do |(_sort_order, title), database_scripts|
+      %h5=title
+      %table.tablesorter.margin-bottom
+        %thead
+          %tr
+            %th.no-wrap Topic area
+            %th Script
+            %th.no-wrap Tags
+            %th Soft-validated
+            %th Fix random
+        %tbody
+          -database_scripts.each do |database_script|
+            %tr
+              %td.shrink=database_script.decorate.format_topic_areas
+              %td=link_to database_script.title, database_script_path(database_script)
+              %td=database_script.decorate.format_tags
+              %td.shrink
+                -if database_script.soft_validated?
+                  =antcat_icon("check")
+              %td.shrink
+                -if database_script.fix_random?
+                  =antcat_icon("check")

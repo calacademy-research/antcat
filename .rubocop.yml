@@ -1,4 +1,7 @@
-require: rubocop-rspec
+require:
+  - rubocop-performance
+  - rubocop-rspec
+  - rubocop-rails
 
 AllCops:
   Exclude:
@@ -41,6 +44,9 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Enabled: false
 
+Layout/AlignArguments:
+  Enabled: false
+
 Layout/AlignArray:
   Enabled: false
 
@@ -69,7 +75,7 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: rails
 
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   Enabled: false
 
 Layout/IndentHeredoc:
@@ -209,6 +215,9 @@ Style/LineEndConcatenation:
   Enabled: false
 
 Style/MethodDefParentheses:
+  Enabled: false
+
+Style/MultilineBlockChain:
   Enabled: false
 
 Style/MutableConstant:

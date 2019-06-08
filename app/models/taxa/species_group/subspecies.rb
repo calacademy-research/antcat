@@ -1,6 +1,8 @@
 class Subspecies < SpeciesGroupTaxon
   belongs_to :species
 
+  # TODO: Once scripts has been cleared, add: `validates :genus, presence: true`
+
   before_validation :set_genus
 
   def parent
