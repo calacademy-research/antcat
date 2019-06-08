@@ -14,12 +14,12 @@ module Draper
         prefix = respond_to?(:model_name) ? model_name : name
         decorator_name = "#{prefix}Decorator"
         decorator_name.constantize
-      rescue NameError => error
+      rescue NameError => e
         if superclass.respond_to?(:decorate_class)
           klass = Class.new(superclass.decorate_class)
           Object.const_set(decorator_name, klass)
         else
-          raise unless error.missing_name?(decorator_name)
+          raise unless e.missing_name?(decorator_name)
           raise Draper::UninferrableDecoratorError, self
         end
       end
