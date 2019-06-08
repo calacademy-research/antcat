@@ -105,62 +105,6 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
-  # TODO improve "expect_any_instance_of" etc.
-  describe "#save_children" do
-    let!(:species) { create :species }
-    let!(:genus) { species.genus }
-    let!(:tribe) { genus.tribe }
-    let!(:subfamily) { species.subfamily }
-
-    context "when taxon is not the `save_initiator`" do
-      it "doesn't save the children" do
-        # The `save_initiator` should be saved.
-        expect(subfamily).to receive(:save).and_call_original
-        expect_any_instance_of(Subfamily).not_to receive(:save_children).and_call_original
-
-        # But not its children.
-        [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save).and_call_original
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
-        end
-
-        subfamily.save
-      end
-    end
-
-    context "when taxon is the `save_initiator`" do
-      it "saves the children" do
-        # Save these:
-        expect_any_instance_of(Genus).to receive(:save).and_call_original
-        expect_any_instance_of(Genus).to receive(:save_children).and_call_original
-
-        expect_any_instance_of(Species).to receive(:save).and_call_original
-        expect_any_instance_of(Species).to receive(:save_children).and_call_original
-
-        # Should not be saved:
-        [Family, Subfamily, Tribe].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save).and_call_original
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
-        end
-
-        genus.save_initiator = true
-        genus.save
-      end
-
-      it "never recursively saves children of families" do
-        family = create :family
-
-        family.save_initiator = true
-        family.save
-
-        expect(family.children).to eq [subfamily]
-        expect_any_instance_of(Family).to_not receive(:children)
-        expect_any_instance_of(Subfamily).to_not receive(:save)
-        expect_any_instance_of(Subfamily).to_not receive(:save_children)
-      end
-    end
-  end
-
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }

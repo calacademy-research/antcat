@@ -39,8 +39,6 @@ module Taxa::CallbacksAndValidations
     before_save { remove_auto_generated if save_initiator }
     # TODO: Move or remove.
     before_save { set_taxon_state_to_waiting if save_initiator }
-    # TODO: See if we can remove this.
-    before_save { save_children if save_initiator }
 
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
       :biogeographic_region], replace_newlines: true
@@ -51,15 +49,6 @@ module Taxa::CallbacksAndValidations
     def check_if_in_database_scripts_results
       _check_if_in_database_scripts_results
     end
-  end
-
-  # Recursively save children, presumably to trigger callbacks and create
-  # PaperTrail versions. Formicidae is excluded, probably for performance reasons?
-  def save_children
-    return if is_a? ::Family
-
-    children.each &:save
-    children.each &:save_children
   end
 
   private
