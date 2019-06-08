@@ -10,7 +10,7 @@ Feature: Searching the catalog
   Scenario: Searching for subfamilies
     Given there is a subfamily "Formicinae"
 
-    When I select "Subfamily" from "rank"
+    When I select "Subfamily" from "type"
     And I press "Go" in the search section
     Then I should see "1 result"
 
@@ -65,7 +65,7 @@ Feature: Searching the catalog
     And there is a species with biogeographic region "Afrotropic"
     And there is a species located in "Africa"
 
-    When I select "Species" from "rank"
+    When I select "Species" from "type"
     And I select "None" from "biogeographic_region"
     And I press "Go" in the search section
     Then I should see "1 result"

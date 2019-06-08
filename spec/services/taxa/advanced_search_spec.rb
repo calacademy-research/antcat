@@ -13,8 +13,8 @@ describe Taxa::AdvancedSearch do
       let!(:synonym) { create :family, :synonym }
 
       specify do
-        expect(described_class[rank: 'Family', valid_only: true]).to match_array [valid]
-        expect(described_class[rank: 'Family', valid_only: false]).to match_array [valid, synonym]
+        expect(described_class[type: 'Family', valid_only: true]).to match_array [valid]
+        expect(described_class[type: 'Family', valid_only: false]).to match_array [valid, synonym]
       end
     end
 
@@ -42,12 +42,12 @@ describe Taxa::AdvancedSearch do
       let!(:subspecies) { create :subspecies, species: species, genus: genus }
 
       specify do
-        expect(described_class[rank: 'Subfamily']).to match_array [subfamily]
-        expect(described_class[rank: 'Tribe']).to match_array [tribe]
-        expect(described_class[rank: 'Genus']).to match_array [genus]
-        expect(described_class[rank: 'Subgenus']).to match_array [subgenus]
-        expect(described_class[rank: 'Species']).to match_array [species]
-        expect(described_class[rank: 'Subspecies']).to match_array [subspecies]
+        expect(described_class[type: 'Subfamily']).to match_array [subfamily]
+        expect(described_class[type: 'Tribe']).to match_array [tribe]
+        expect(described_class[type: 'Genus']).to match_array [genus]
+        expect(described_class[type: 'Subgenus']).to match_array [subgenus]
+        expect(described_class[type: 'Species']).to match_array [species]
+        expect(described_class[type: 'Subspecies']).to match_array [subspecies]
       end
     end
 
@@ -109,7 +109,7 @@ describe Taxa::AdvancedSearch do
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: 'Indomalaya']).to eq [indomanayan_species]
-        expect(described_class[rank: 'Species', biogeographic_region: 'None']).to eq [no_region_species]
+        expect(described_class[type: 'Species', biogeographic_region: 'None']).to eq [no_region_species]
       end
 
       it "doesn't match substrings" do
@@ -180,9 +180,9 @@ describe Taxa::AdvancedSearch do
       let!(:no_match) { create :family }
       let!(:yes_match) { create :family, unresolved_homonym: true }
 
-      specify { expect(described_class[unresolved_junior_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[unresolved_junior_homonym: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[unresolved_junior_homonym: "false"]).to match_array [no_match] }
+      specify { expect(described_class[unresolved_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[unresolved_homonym: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[unresolved_homonym: "false"]).to match_array [no_match] }
     end
 
     describe "searching by ichnotaxon" do
