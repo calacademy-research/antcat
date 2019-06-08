@@ -5,6 +5,6 @@
   =link_to 'Unreviewed Changes', unreviewed_changes_path, class: "btn-normal"
 
 =render layout: 'table_header' do
-  =render @changes
+  =render partial: 'change', collection: @changes
 
 =will_paginate @changes
