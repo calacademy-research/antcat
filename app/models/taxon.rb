@@ -1,8 +1,7 @@
-# TODO avoid `require`.
-
-require_dependency 'taxon_workflow'
-
 class Taxon < ApplicationRecord
+  include Workflow
+  include Workflow::ExternalTable
+
   include Taxa::CallbacksAndValidations
   include Taxa::PredicateMethods
   include Taxa::Synonyms
@@ -45,6 +44,7 @@ class Taxon < ApplicationRecord
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
+  has_one :taxon_state
 
   # Synonyms. Confused? See this:
   # `dolichoderus = Taxon.find(429079)`    = valid taxon, not a synonym
@@ -101,6 +101,13 @@ class Taxon < ApplicationRecord
     end
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
+  workflow do
+    state TaxonState::OLD
+    state TaxonState::WAITING do
+      event :approve, transitions_to: TaxonState::APPROVED
+    end
+    state TaxonState::APPROVED
+  end
 
   def self.name_clash? name
     where(name_cache: name).exists?
@@ -138,6 +145,10 @@ class Taxon < ApplicationRecord
 
   def authorship_reference
     protonym.authorship.reference
+  end
+
+  def last_change
+    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
   def what_links_here predicate: false
