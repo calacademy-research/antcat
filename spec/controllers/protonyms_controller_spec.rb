@@ -124,8 +124,7 @@ describe ProtonymsController do
     before { sign_in create(:user, :helper) }
 
     it 'deletes the protonym' do
-      expect { delete(:destroy, params: { id: protonym.id }) }.
-        to change { Protonym.count }.by(-1)
+      expect { delete(:destroy, params: { id: protonym.id }) }.to change { Protonym.count }.by(-1)
     end
 
     it 'creates an activity', :feed do
@@ -144,8 +143,7 @@ describe ProtonymsController do
       end
 
       specify do
-        expect { delete(:destroy, params: { id: protonym.id }) }.
-          to raise_error(ActiveRecord::StatementInvalid)
+        expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
       end
     end
   end

@@ -1,5 +1,5 @@
 class Publisher < ApplicationRecord
-  has_many :references
+  has_many :references, dependent: :restrict_with_error
 
   validates :name, :place_name, presence: true
 

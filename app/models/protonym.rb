@@ -5,7 +5,7 @@ class Protonym < ApplicationRecord
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name
 
-  has_many :taxa, class_name: 'Taxon'
+  has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
   validates :authorship, presence: true
   validates :name, presence: true

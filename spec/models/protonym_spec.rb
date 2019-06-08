@@ -6,5 +6,6 @@ describe Protonym do
 
   describe 'relations' do
     it { is_expected.to belong_to(:authorship).dependent(:destroy) }
+    it { is_expected.to have_many(:taxa).class_name('Taxon').dependent(:restrict_with_error) }
   end
 end

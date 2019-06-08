@@ -5,6 +5,10 @@ describe Publisher do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :place_name }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+  end
+
   describe ".create_form_string" do
     context "when invalid" do
       context "when string is blank" do

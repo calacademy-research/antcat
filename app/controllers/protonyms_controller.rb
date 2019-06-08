@@ -41,9 +41,12 @@ class ProtonymsController < ApplicationController
   end
 
   def destroy
-    @protonym.destroy
-    @protonym.create_activity :destroy, edit_summary: params[:edit_summary]
-    redirect_to protonyms_path, notice: "Successfully deleted protonym."
+    if @protonym.destroy
+      @protonym.create_activity :destroy, edit_summary: params[:edit_summary]
+      redirect_to protonyms_path, notice: "Successfully deleted protonym."
+    else
+      redirect_to @protonym, alert: @protonym.errors.full_messages.to_sentence
+    end
   end
 
   def autocomplete
