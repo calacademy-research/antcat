@@ -7,13 +7,13 @@ class DatabaseScriptsController < ApplicationController
   def index
     @grouped_database_scripts = DatabaseScript.all.group_by do |script|
       if DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
-        :b_regression_tests
+        [2, 'Regression tests, to check periodically']
       elsif DatabaseScript::LIST_TAG.in? script.tags
-        :c_lists
+        [3, 'Lists']
       else
-        :a_other
+        [1, 'Main scripts']
       end
-    end.sort
+    end.sort_by { |(sort_order, _title), _scripts| sort_order }
   end
 
   def show

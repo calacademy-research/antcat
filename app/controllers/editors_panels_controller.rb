@@ -19,12 +19,7 @@ class EditorsPanelsController < ApplicationController
         unreviewed_references:      Reference.unreviewed.count,
         unreviewed_catalog_changes: Change.waiting.count,
         pending_user_feedbacks:     Feedback.pending_count,
-        unread_site_notices:        unread_site_notices_count
+        unread_site_notices:        current_user&.unread_site_notices&.count
       }
-    end
-
-    def unread_site_notices_count
-      return 0 unless current_user
-      SiteNotice.unread_by(current_user).count
     end
 end

@@ -29,4 +29,5 @@ description: >
   in synonyms section on the edit page, that may have to do with
   [Synonym records referencing non existent taxa](/database_scripts/synonym_records_referencing_non_existent_taxa).
 topic_areas: [synonyms]
+tags: [regression-test]
 issue_description: This taxon has more than one senior synonyn.
