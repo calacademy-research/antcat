@@ -4,6 +4,8 @@ describe Tribe do
   let(:tribe) { create :tribe, subfamily: subfamily }
   let(:subfamily) { create :subfamily }
 
+  it { is_expected.to validate_presence_of :subfamily }
+
   it "can have genera, which are its children" do
     genus = create :genus, tribe: tribe
     another_genus = create :genus, tribe: tribe

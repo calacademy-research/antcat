@@ -4,6 +4,8 @@ class Tribe < Taxon
   has_many :genera
   has_many :species, through: :genera
 
+  validates :subfamily, presence: true
+
   def parent
     subfamily
   end
