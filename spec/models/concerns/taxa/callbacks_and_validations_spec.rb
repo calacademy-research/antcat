@@ -40,10 +40,8 @@ describe Taxa::CallbacksAndValidations do
       end
 
       it "sets the review_status to 'waiting'" do
-        taxon = create :family, :old
-
-        taxon.save_initiator = true
-        expect { taxon.save }.to change { taxon.waiting? }.from(false).to(true)
+        taxon.save
+        expect(taxon.reload.waiting?).to eq true
       end
     end
 
@@ -53,21 +51,21 @@ describe Taxa::CallbacksAndValidations do
       context "when it `save_initiator`" do
         it "sets the review_status to 'waiting'" do
           taxon.save_initiator = true
-          expect { taxon.save }.to change { taxon.waiting? }.to true
+          expect { taxon.save }.to change { taxon.reload.waiting? }.to true
         end
 
         it "doesn't cascade" do
           family = create :family, :old
           subfamily = create :subfamily, :old, family: family
 
-          expect(family.waiting?).to be false
-          expect(subfamily.waiting?).to be false
+          expect(family.reload.waiting?).to be false
+          expect(subfamily.reload.waiting?).to be false
 
           family.save_initiator = true
           family.save
 
-          expect(family.waiting?).to be true
-          expect(subfamily.waiting?).to be false
+          expect(family.reload.waiting?).to be true
+          expect(subfamily.reload.waiting?).to be false
         end
       end
 
