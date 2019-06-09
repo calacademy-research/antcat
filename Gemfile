@@ -20,7 +20,6 @@ gem 'acts_as_list'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'bootsnap', require: false
 gem 'colorize'
-gem 'data_migrate'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
