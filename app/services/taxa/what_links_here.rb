@@ -11,10 +11,10 @@ module Taxa
       if predicate
         any_references?
       else
-        references = []
-        references.concat references_in_taxa
-        references.concat references_in_taxt
-        references.concat references_in_synonyms
+        table_refs = []
+        table_refs.concat references_in_taxa
+        table_refs.concat references_in_taxt
+        table_refs.concat references_in_synonyms
       end
     end
 
@@ -42,35 +42,35 @@ module Taxa
       end
 
       def references_in_taxa
-        references = []
+        table_refs = []
         Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
           Taxon.where(field => id).pluck(:id).each do |taxon_id|
-            references << table_ref('taxa', field, taxon_id)
+            table_refs << table_ref('taxa', field, taxon_id)
           end
         end
-        references
+        table_refs
       end
 
       def references_in_synonyms
-        references = []
+        table_refs = []
         synonyms_as_senior.pluck(:junior_synonym_id).each do |junior_synonym_id|
-          references << table_ref('synonyms', :senior_synonym_id, junior_synonym_id)
+          table_refs << table_ref('synonyms', :senior_synonym_id, junior_synonym_id)
         end
         synonyms_as_junior.pluck(:senior_synonym_id).each do |senior_synonym_id|
-          references << table_ref('synonyms', :junior_synonym_id, senior_synonym_id)
+          table_refs << table_ref('synonyms', :junior_synonym_id, senior_synonym_id)
         end
-        references
+        table_refs
       end
 
       def references_in_taxt
-        references = []
+        table_refs = []
         Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
           model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
             next if exclude_taxt_match? model, matched_id
-            references << table_ref(model.table_name, field.to_sym, matched_id)
+            table_refs << table_ref(model.table_name, field.to_sym, matched_id)
           end
         end
-        references
+        table_refs
       end
 
       def exclude_taxt_match? model, matched_id

@@ -5,34 +5,34 @@ module References
     def initialize reference, predicate: false
       @reference = reference
       @predicate = predicate
-      @references = []
+      @table_refs = []
     end
 
     def call
       Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
         model.where("#{field} LIKE '%{ref #{reference.id}}%'").pluck(:id).each do |id|
-          references << table_ref(model.table_name, field.to_sym, id)
+          table_refs << table_ref(model.table_name, field.to_sym, id)
           return true if predicate
         end
       end
 
       Citation.where(reference: reference).pluck(:id).each do |citation_id|
-        references << table_ref(Citation.table_name, :reference_id, citation_id)
+        table_refs << table_ref(Citation.table_name, :reference_id, citation_id)
         return true if predicate
       end
 
       nestees.pluck(:id).each do |reference_id|
-        references << table_ref('references', :nesting_reference_id, reference_id)
+        table_refs << table_ref('references', :nesting_reference_id, reference_id)
         return true if predicate
       end
       return false if predicate
 
-      references
+      table_refs
     end
 
     private
 
-      attr :references
+      attr :table_refs
       attr_reader :reference, :predicate
 
       delegate :nestees, :id, to: :reference
