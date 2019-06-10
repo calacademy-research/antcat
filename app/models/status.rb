@@ -24,6 +24,9 @@ class Status
     UNAVAILABLE_UNCATEGORIZED => 'unavailable uncategorized'
   }
 
+  PASS_THROUGH_NAMES = [Status::OBSOLETE_COMBINATION, Status::ORIGINAL_COMBINATION, Status::UNAVAILABLE_MISSPELLING]
+  UNDISPLAYABLE = [Status::UNAVAILABLE_MISSPELLING, Status::UNAVAILABLE_UNCATEGORIZED]
+
   def self.plural status
     PLURALS[status] || status
   end
