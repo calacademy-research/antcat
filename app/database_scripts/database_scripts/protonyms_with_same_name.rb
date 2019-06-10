@@ -51,5 +51,5 @@ description: >
 
   * If the authorship is identical: change protonym of one and delete the now orphaned protonym
 
-tags: [list, slow, updated!]
+tags: [list, slow]
 topic_areas: [protonyms]
