@@ -84,7 +84,7 @@ module Taxa
       end
 
       def table_ref table, field, id
-        { table: table, field: field, id: id }
+        TableRef.new(table, field, id)
       end
   end
 end

@@ -7,8 +7,8 @@ describe Names::WhatLinksHere do
       protonym = create :protonym, name: taxon.name
 
       expect(described_class[taxon.name]).to match_array [
-        { table: 'taxa', field: :name_id, id: taxon.id },
-        { table: 'protonyms', field: :name_id, id: protonym.id }
+        TableRef.new('taxa', :name_id, taxon.id),
+        TableRef.new('protonyms', :name_id, protonym.id)
       ]
     end
   end

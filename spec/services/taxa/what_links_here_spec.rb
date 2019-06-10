@@ -13,8 +13,8 @@ describe Taxa::WhatLinksHere do
       context "when there are references in a subfamily" do
         specify do
           expect(described_class[taxon.subfamily]).to match_array [
-            { table: 'taxa', field: :subfamily_id, id: taxon.id },
-            { table: 'taxa', field: :subfamily_id, id: taxon.tribe.id }
+            TableRef.new('taxa', :subfamily_id, taxon.id),
+            TableRef.new('taxa', :subfamily_id, taxon.tribe.id)
           ]
         end
 
@@ -28,7 +28,7 @@ describe Taxa::WhatLinksHere do
 
         specify do
           expect(described_class[taxon]).to match_array [
-            { table: 'taxa', field: :type_taxt, id: other_taxon.id }
+            TableRef.new('taxa', :type_taxt, other_taxon.id)
           ]
         end
 
@@ -62,11 +62,11 @@ describe Taxa::WhatLinksHere do
 
         specify do
           expect(described_class[taxon]).to match_array [
-            { table: 'synonyms', field: :senior_synonym_id, id: other_taxon.id }
+            TableRef.new('synonyms', :senior_synonym_id, other_taxon.id)
           ]
 
           expect(described_class[other_taxon]).to match_array [
-            { table: 'synonyms', field: :junior_synonym_id, id: taxon.id }
+            TableRef.new('synonyms', :junior_synonym_id, taxon.id)
           ]
         end
 
