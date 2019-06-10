@@ -152,6 +152,8 @@ class Reference < ApplicationRecord
       throw :abort
     end
 
+    # TODO: Revisit once missing references have been cleared.
+    # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
     def set_year_from_citation_year
       # rubocop:disable Lint/AssignmentInCondition
       self.year = if citation_year.blank?
