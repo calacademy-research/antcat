@@ -16,7 +16,7 @@ module References
         end
       end
 
-      Citation.where(reference: reference).pluck(:id).each do |citation_id|
+      citations.pluck(:id).each do |citation_id|
         table_refs << table_ref(Citation.table_name, :reference_id, citation_id)
         return true if predicate
       end
@@ -35,7 +35,7 @@ module References
       attr :table_refs
       attr_reader :reference, :predicate
 
-      delegate :nestees, :id, to: :reference
+      delegate :nestees, :citations, :id, to: :reference
 
       def table_ref table, field, id
         TableRef.new(table, field, id)
