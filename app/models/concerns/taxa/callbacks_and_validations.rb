@@ -5,19 +5,6 @@ module Taxa::CallbacksAndValidations
     Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
   ]
   INCERTAE_SEDIS_IN_RANKS = %w[family subfamily tribe genus]
-  WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
-  DATABASE_SCRIPTS_TO_CHECK = [
-    DatabaseScripts::ExtantTaxaInFossilGenera,
-    DatabaseScripts::FossilTaxaWithBiogeographicRegions,
-    DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
-    DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
-    DatabaseScripts::PassThroughNamesWithTaxts,
-    DatabaseScripts::SubspeciesWithoutSpecies,
-    DatabaseScripts::TaxaReferencingNonExistingTaxa,
-    DatabaseScripts::TaxaWithBothJuniorAndSeniorSynonyms,
-    DatabaseScripts::TaxaWithMoreThanOneSeniorSynonym,
-    DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym
-  ]
 
   included do
     validates :name, presence: true
@@ -46,7 +33,7 @@ module Taxa::CallbacksAndValidations
 
     # NOTE: Not private, see https://github.com/gtd/validation_scopes#dont-use-private-methods
     def check_if_in_database_scripts_results
-      _check_if_in_database_scripts_results
+      Taxa::CheckIfInDatabaseResults[self]
     end
   end
 
@@ -89,21 +76,5 @@ module Taxa::CallbacksAndValidations
       return unless name_id_changed? # Make sure taxa already in this state can be saved.
       error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
       errors.add :base, error_message unless errors.added? :base, error_message
-    end
-
-    def _check_if_in_database_scripts_results
-      start = Time.current
-
-      DATABASE_SCRIPTS_TO_CHECK.each do |database_script_klass|
-        next unless database_script_klass.taxon_in_results?(self)
-
-        database_script = database_script_klass.new
-        soft_validation_warnings.add :base, message: database_script.issue_description, database_script: database_script
-      end
-
-      render_duration = Time.current - start
-      if render_duration > WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER
-        soft_validation_warnings.add :base, message: "Script runtime: #{render_duration} seconds"
-      end
     end
 end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Taxa::CallbacksAndValidations do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do
     it 'only includes database scripts with `issue_description`s' do
-      Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK.map(&:new).each do |database_script|
+      Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK.map(&:new).each do |database_script|
         expect(database_script.issue_description.present?).to eq true
       end
 
