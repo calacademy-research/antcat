@@ -23,8 +23,13 @@ end
     parent :users
   end
 
-    crumb :edit_user do |user|
-      link "Edit"
+    crumb :superadmin_edit_user do |user|
+      link "Edit as Superadmin"
+      parent :user, user
+    end
+
+    crumb :edit_my_details do |user|
+      link "Edit My Details"
       parent :user, user
     end
 
