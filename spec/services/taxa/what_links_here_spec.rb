@@ -47,11 +47,13 @@ describe Taxa::WhatLinksHere do
     describe "when reference in its authorship taxt" do
       before { taxon.protonym.authorship.update notes_taxt: "{tax #{taxon.id}}" }
 
-      it "doesn't consider this an external reference" do
-        expect(described_class[taxon]).to be_empty
+      specify do
+        expect(described_class[taxon]).to match_array [
+          TableRef.new('citations', :notes_taxt, taxon.protonym.authorship_id)
+        ]
       end
 
-      specify { expect(described_class[taxon, predicate: true]).to be false }
+      specify { expect(described_class[taxon, predicate: true]).to be true }
     end
 
     describe "references as synonym" do

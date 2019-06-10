@@ -22,8 +22,7 @@ module Taxa
 
       attr_reader :taxon, :predicate
 
-      delegate :id, :synonyms_as_senior, :synonyms_as_junior, :protonym,
-        :protonym_id, to: :taxon
+      delegate :id, :synonyms_as_senior, :synonyms_as_junior, to: :taxon
 
       def any_references?
         Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
@@ -76,9 +75,6 @@ module Taxa
 
       def exclude_taxt_match? model, matched_id
         return true if model == Taxon && matched_id == id
-        if model == Citation
-          return true if protonym.authorship_id == matched_id
-        end
         false
       end
 
