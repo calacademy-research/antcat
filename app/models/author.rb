@@ -36,6 +36,6 @@ class Author < ApplicationRecord
   end
 
   def described_taxa
-    Authors::DescribedTaxa[self]
+    Taxon.joins(protonym: { authorship: { reference: :authors } }).where(authors: { id: id })
   end
 end
