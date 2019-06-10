@@ -1,4 +1,3 @@
-@feed
 Feature: Feed (users)
   Scenario: User signed up
     When I go to the sign up page

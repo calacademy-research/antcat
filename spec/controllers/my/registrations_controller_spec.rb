@@ -31,7 +31,7 @@ describe My::RegistrationsController do
       expect(user.superadmin).to eq false
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { post(:create, params: { user: user_params }) }.
         to change { Activity.where(action: :create).count }.by(1)
       expect(Activity.last.parameters).to eq(user_id: User.last.id)

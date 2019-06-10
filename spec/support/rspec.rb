@@ -28,12 +28,6 @@ RSpec.configure do |config|
     DeferredGarbageCollection.reconsider
   end
 
-  config.around :each, feed: true do |example|
-    Feed.enabled = true
-    example.run
-    Feed.enabled = false
-  end
-
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.

@@ -80,5 +80,3 @@ include Warden::Test::Helpers # rubocop:disable Style/MixinUsage
 Warden.test_mode!
 Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
-
-Feed.enabled = false

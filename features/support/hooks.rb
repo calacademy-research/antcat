@@ -13,16 +13,6 @@ After  { PaperTrail.enabled = false }
 Before("@papertrail") { PaperTrail.enabled = true }
 After("@papertrail")  { PaperTrail.enabled = false }
 
-Around "@feed" do |_scenario, block|
-  begin
-    before = Feed.enabled?
-    Feed.enabled = true
-    block.call
-  ensure
-    Feed.enabled = before
-  end
-end
-
 # Some drivers remembers the window size between tests, so always restore.
 Before("@responsive") { resize_window_to_device :desktop }
 After("@responsive")  { resize_window_to_device :desktop }

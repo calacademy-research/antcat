@@ -2,7 +2,7 @@ Feature: Editing a history item
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @feed
+  @javascript
   Scenario: Editing a history item (with feed)
     Given the Formicidae family exists
     And Formicidae has a history item "Formicidae as family"
@@ -63,7 +63,6 @@ Feature: Editing a history item
     And I save the taxon history item
     Then I should see an alert "Taxt can't be blank"
 
-  @feed
   Scenario: Adding a history item (with edit summary)
     Given there is a genus "Atta"
 
@@ -92,7 +91,7 @@ Feature: Editing a history item
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
-  @javascript @feed
+  @javascript
   Scenario: Deleting a history item
     Given there is a genus "Eciton" with taxonomic history "Eciton history"
 

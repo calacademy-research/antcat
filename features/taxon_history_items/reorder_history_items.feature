@@ -25,7 +25,6 @@ Feature: Reorder history items
     When I go to the catalog page for "Orderia"
     Then I should see "AAA. BBB. CCC."
 
-  @feed
   Scenario: Reordering a history item (with feed)
     When I go to the edit page for "Orderia"
     And I click on Reorder in the history section

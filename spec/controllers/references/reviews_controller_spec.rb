@@ -27,7 +27,7 @@ describe References::ReviewsController do
       expect { put :approve_all }.to change { Reference.unreviewed.count }.from(1).to(0)
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect {  put :approve_all }.to change { Activity.count }.by(1)
 
       activity = Activity.last

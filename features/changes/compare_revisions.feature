@@ -1,4 +1,4 @@
-@feed @papertrail
+@papertrail
 Feature: Compare revisions
   As an editor of AntCat
   I want to browse previous revisions of items

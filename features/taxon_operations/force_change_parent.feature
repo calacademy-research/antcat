@@ -3,7 +3,6 @@ Feature: Force-changing parent
   Background:
     Given I log in as a superadmin named "Archibald"
 
-  @feed
   Scenario: Forcing a parent change (and see it in the activity feed)
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
     And there is a subfamily "Formicinae"

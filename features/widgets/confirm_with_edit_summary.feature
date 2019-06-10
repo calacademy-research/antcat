@@ -1,4 +1,3 @@
-@feed
 Feature: Prompts with edit summaries
   @javascript
   Scenario: Entering an edit summary in the prompt

@@ -19,7 +19,7 @@ describe Taxa::ElevateToSpeciesController do
       post :create, params: { taxa_id: subspecies.id }
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { post :create, params: { taxa_id: subspecies.id } }.to change { Activity.count }.by(1)
 
       activity = Activity.last

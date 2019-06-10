@@ -46,7 +46,7 @@ describe NamesController do
         expect(name.epithets).to eq subspecies_name_params[:epithets]
       end
 
-      it 'creates an activity', :feed do
+      it 'creates an activity' do
         expect { post :update, params: params }.to change { Activity.count }.by(1)
 
         activity = Activity.last
@@ -67,7 +67,7 @@ describe NamesController do
         expect { delete :destroy, params: { id: name.id } }.to change { Name.count }.by(-1)
       end
 
-      it 'creates an activity', :feed do
+      it 'creates an activity' do
         expect { delete :destroy, params: { id: name.id } }.to change { Activity.count }.by(1)
 
         activity = Activity.last

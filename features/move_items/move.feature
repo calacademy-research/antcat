@@ -28,7 +28,6 @@ Feature: Move items
     When I go to the catalog page for "Formica"
     And I should see "Best ant in the world"
 
-  @feed
   Scenario: Creating activity feed items when moving items
     Given there is a genus "Lasius" with taxonomic history "Best ant in the world"
     And there is a genus "Formica"

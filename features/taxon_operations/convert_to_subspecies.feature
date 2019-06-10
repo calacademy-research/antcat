@@ -2,7 +2,7 @@ Feature: Converting a species to a subspecies
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @feed
+  @javascript
   Scenario: Converting a species to a subspecies (with feed)
     Given there is a species "Camponotus dallatorei" with genus "Camponotus"
     And there is a species "Camponotus alii" with genus "Camponotus"

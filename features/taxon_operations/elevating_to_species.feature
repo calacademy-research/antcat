@@ -3,7 +3,6 @@ Feature: Elevating subspecies to species
     Given I log in as a catalog editor named "Archibald"
     And there is a subspecies "Solenopsis speccus subbus" which is a subspecies of "Solenopsis speccus" in the genus "Solenopsis"
 
-  @feed
   Scenario: Elevating subspecies to species (with feed)
     When I go to the catalog page for "Solenopsis speccus subbus"
     And I will confirm on the next step

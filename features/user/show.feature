@@ -16,7 +16,6 @@ Feature: User page
     And I should see "Quintus's most recent comments"
     And I should see "No comments"
 
-  @feed
   Scenario: See user's most recent feed activities
     Given there is a "destroy" journal activity
 
