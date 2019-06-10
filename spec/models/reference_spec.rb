@@ -8,10 +8,13 @@ describe Reference do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
   end
 
-  it { is_expected.to be_versioned }
-  it { is_expected.to validate_presence_of :title }
-  it { is_expected.to_not allow_values('<', '>').for(:doi) }
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :title }
+    it { is_expected.to_not allow_values('<', '>').for(:doi) }
+    it { is_expected.to validate_uniqueness_of(:bolton_key).allow_nil }
+  end
 
+  it { is_expected.to be_versioned }
   it { is_expected.to delegate_method(:url).to(:document).allow_nil }
   it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
 

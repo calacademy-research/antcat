@@ -28,6 +28,7 @@ class Reference < ApplicationRecord
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }
+  validates :bolton_key, uniqueness: true, allow_nil: true
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
