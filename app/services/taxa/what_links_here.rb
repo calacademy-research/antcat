@@ -76,7 +76,6 @@ module Taxa
 
       def exclude_taxt_match? model, matched_id
         return true if model == Taxon && matched_id == id
-        return true  if model == Protonym && matched_id == protonym_id
         if model == Citation
           return true if protonym.authorship_id == matched_id
         end
