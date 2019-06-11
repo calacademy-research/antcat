@@ -73,7 +73,6 @@ describe TaxaController do
               hong: true,
               headline_notes_taxt: "headline notes taxt",
               type_taxt: "type taxt",
-              biogeographic_region: Taxon::BIOGEOGRAPHIC_REGIONS.first,
               primary_type_information: "primary type information",
               secondary_type_information: "secondary type information",
               type_notes: "type notes",
@@ -96,7 +95,6 @@ describe TaxaController do
             expect(taxon.hong).to eq taxon_params[:hong]
             expect(taxon.headline_notes_taxt).to eq taxon_params[:headline_notes_taxt]
             expect(taxon.type_taxt).to eq taxon_params[:type_taxt]
-            expect(taxon.biogeographic_region).to eq taxon_params[:biogeographic_region]
             expect(taxon.primary_type_information).to eq taxon_params[:primary_type_information]
             expect(taxon.secondary_type_information).to eq taxon_params[:secondary_type_information]
             expect(taxon.type_notes).to eq taxon_params[:type_notes]

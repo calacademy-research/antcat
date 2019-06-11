@@ -105,6 +105,23 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
+  describe "#biogeographic_region" do
+    context 'when taxon is a `SpeciesGroupTaxon`' do
+      subject { build_stubbed :species }
+
+      specify do
+        expect(subject).to validate_inclusion_of(:biogeographic_region).
+          in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
+      end
+    end
+
+    context 'when taxon is above `SpeciesGroupTaxon`' do
+      subject { build_stubbed :genus }
+
+      it { is_expected.to validate_absence_of(:biogeographic_region) }
+    end
+  end
+
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }

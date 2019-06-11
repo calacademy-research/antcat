@@ -10,8 +10,10 @@ module Taxa::CallbacksAndValidations
     validates :name, presence: true
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
-    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
+    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }, if: -> { is_a?(SpeciesGroupTaxon) }
+    validates :biogeographic_region, absence: true, unless: -> { is_a?(SpeciesGroupTaxon) }
     validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
+
     validate :current_valid_taxon_validation, :ensure_correct_name_type
 
     validation_scope :soft_validation_warnings do |scope|

@@ -345,7 +345,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[19]: `bioregion`" do
-      let!(:taxon) { create :genus, biogeographic_region: 'Neotropic' }
+      let!(:taxon) { create :species, biogeographic_region: 'Neotropic' }
 
       specify { expect(export_taxon(taxon)[19]).to eq 'Neotropic' }
     end
