@@ -21,35 +21,28 @@ class TaxonDecorator::HeadlineType
       string = ''.html_safe
       string << type_name_and_taxt
       string << add_period_if_necessary(biogeographic_region)
-      string.rstrip.html_safe
+      string.html_safe
     end
 
     def type_name_and_taxt
-      string = ''.html_safe
+      return ''.html_safe unless type_taxon
 
-      if type_taxon
-        type_rank = type_taxon.rank
-        type_rank = 'genus' if type_rank == 'subgenus'
-
-        string = "Type-#{type_rank}: ".html_safe
-        string << link_to_taxon(type_taxon)
-      end
+      string = taxon.decorate.type_taxon_rank
+      string << link_to_taxon(type_taxon)
 
       if type_taxt
         string << detax(type_taxt)
       end
 
-      return '' if string.blank?
       add_period_if_necessary string
     end
 
     def detax taxt
       detaxed = if for_antweb?
-                  add_period_if_necessary TaxtPresenter[taxt].to_antweb
+                  TaxtPresenter[taxt].to_antweb
                 else
-                  add_period_if_necessary TaxtPresenter[taxt].to_html
+                  TaxtPresenter[taxt].to_html
                 end
-      return "" if detaxed.blank?
       return detaxed if detaxed.start_with?(",")
 
       " ".html_safe << detaxed

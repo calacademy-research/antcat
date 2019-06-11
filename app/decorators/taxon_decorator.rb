@@ -27,6 +27,11 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
+  def type_taxon_rank
+    type_rank = type_taxon.is_a?(Subgenus) ? 'genus' : type_taxon.rank
+    "Type-#{type_rank}: ".html_safe
+  end
+
   def statistics valid_only: false
     TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
