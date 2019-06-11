@@ -19,8 +19,10 @@ class Species < SpeciesGroupTaxon
   end
 
   def update_parent new_parent
+    # TODO: This does not update names of subspecies.
     name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent
+    update_descendants
   end
 
   def children
@@ -30,4 +32,12 @@ class Species < SpeciesGroupTaxon
   def childrens_rank_in_words
     "subspecies"
   end
+
+  private
+
+    def update_descendants
+      subspecies.each do |subspecies|
+        subspecies.update(subfamily: subfamily, genus: genus)
+      end
+    end
 end

@@ -15,7 +15,7 @@ describe Tribe do
   end
 
   describe "#update_parent" do
-    let(:new_subfamily) { create :subfamily }
+    let!(:new_subfamily) { create :subfamily }
 
     it "assigns the subfamily when parent is a tribe" do
       tribe.update_parent new_subfamily
@@ -27,18 +27,21 @@ describe Tribe do
       species = create :species, genus: genus
       create :subspecies, species: species, genus: genus
 
-      # test the initial subfamilies
+      # Test initial.
       expect(tribe.subfamily).to eq subfamily
-      expect(tribe.genera.first.subfamily).to eq subfamily
-      expect(tribe.genera.first.species.first.subfamily).to eq subfamily
-      expect(tribe.genera.first.subspecies.first.subfamily).to eq subfamily
+      expect(tribe.reload.genera.first.subfamily).to eq subfamily
+      expect(tribe.reload.genera.first.species.first.subfamily).to eq subfamily
+      expect(tribe.reload.genera.first.subspecies.first.subfamily).to eq subfamily
 
-      # test the updated subfamilies
+      # Act.
       tribe.update_parent new_subfamily
-      expect(tribe.subfamily).to eq new_subfamily
-      expect(tribe.genera.first.subfamily).to eq new_subfamily
-      expect(tribe.genera.first.species.first.subfamily).to eq new_subfamily
-      expect(tribe.genera.first.subspecies.first.subfamily).to eq new_subfamily
+      tribe.save!
+
+      # Assert.
+      expect(tribe.reload.subfamily).to eq new_subfamily
+      expect(tribe.reload.genera.first.subfamily).to eq new_subfamily
+      expect(tribe.reload.genera.first.species.first.subfamily).to eq new_subfamily
+      expect(tribe.reload.genera.first.subspecies.first.subfamily).to eq new_subfamily
     end
   end
 end

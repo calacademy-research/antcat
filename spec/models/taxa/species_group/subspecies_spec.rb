@@ -34,11 +34,12 @@ describe Subspecies do
 
     it "sets all the parent fields" do
       subspecies.update_parent new_parent
+      subspecies.save!
 
-      expect(subspecies.species).to eq new_parent
-      expect(subspecies.genus).to eq new_parent.genus
-      expect(subspecies.subgenus).to eq new_parent.subgenus
-      expect(subspecies.subfamily).to eq new_parent.subfamily
+      expect(subspecies.reload.species).to eq new_parent
+      expect(subspecies.reload.genus).to eq new_parent.genus
+      expect(subspecies.reload.subgenus).to eq new_parent.subgenus
+      expect(subspecies.reload.subfamily).to eq new_parent.subfamily
     end
 
     describe "updating the name" do

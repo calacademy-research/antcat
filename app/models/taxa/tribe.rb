@@ -32,9 +32,9 @@ class Tribe < Taxon
 
     def update_descendants_subfamilies
       genera.each do |genus|
-        genus.subfamily = subfamily
-        genus.species.each { |s| s.subfamily = subfamily }
-        genus.subspecies.each { |s| s.subfamily = subfamily }
+        genus.update(subfamily: subfamily)
+        genus.species.each { |s| s.update(subfamily: subfamily) }
+        genus.subspecies.each { |s| s.update(subfamily: subfamily) }
       end
     end
 end
