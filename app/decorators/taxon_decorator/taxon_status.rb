@@ -27,14 +27,14 @@ class TaxonDecorator::TaxonStatus
         "homonym replaced by #{homonym_replaced_by.decorate.link_to_taxon_with_author_citation}"
       elsif unresolved_homonym?
         if current_valid_taxon_including_synonyms
-          "unresolved junior homonym, junior synonym#{format_senior_synonym}"
+          "unresolved junior homonym, junior synonym of current valid taxon #{format_senior_synonym}"
         else
           "unresolved junior homonym"
         end
       elsif nomen_nudum?
         "<i>nomen nudum</i>"
       elsif synonym?
-        "junior synonym#{format_senior_synonym}"
+        "junior synonym of current valid taxon #{format_senior_synonym}"
       elsif obsolete_combination?
         "an obsolete combination of #{format_current_valid_taxon}"
       elsif original_combination?
@@ -51,10 +51,7 @@ class TaxonDecorator::TaxonStatus
     end
 
     def format_senior_synonym
-      current_valid = current_valid_taxon_including_synonyms
-      return '' unless current_valid
-
-      ' of current valid taxon ' << current_valid.decorate.link_to_taxon_with_author_citation
+      current_valid_taxon_including_synonyms.decorate.link_to_taxon_with_author_citation
     end
 
     def format_current_valid_taxon
