@@ -44,6 +44,9 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Enabled: false
 
+Rails/Validation:
+  Enabled: false
+
 Layout/AlignArguments:
   Enabled: false
 

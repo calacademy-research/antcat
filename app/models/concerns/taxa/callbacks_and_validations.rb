@@ -10,11 +10,9 @@ module Taxa::CallbacksAndValidations
     validates :name, presence: true
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
-    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }, if: -> { is_a?(SpeciesGroupTaxon) }
-    validates :biogeographic_region, absence: true, unless: -> { is_a?(SpeciesGroupTaxon) }
     validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
 
-    validate :current_valid_taxon_validation, :ensure_correct_name_type
+    validate :current_valid_taxon_validation, :ensure_correct_name_type, :biogeographic_region_validation
 
     validation_scope :soft_validation_warnings do |scope|
       scope.validate :check_if_in_database_scripts_results
@@ -53,6 +51,14 @@ module Taxa::CallbacksAndValidations
     def set_taxon_state_to_waiting
       taxon_state.review_state = TaxonState::WAITING
       taxon_state.save
+    end
+
+    def biogeographic_region_validation
+      if is_a?(SpeciesGroupTaxon) && !fossil?
+        validates_inclusion_of :biogeographic_region, in: BIOGEOGRAPHIC_REGIONS, allow_nil: true
+      else
+        validates_absence_of :biogeographic_region
+      end
     end
 
     def current_valid_taxon_validation

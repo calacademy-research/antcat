@@ -5,7 +5,6 @@ module Taxa
     WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
-      DatabaseScripts::FossilTaxaWithBiogeographicRegions,
       DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
       DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
       DatabaseScripts::PassThroughNamesWithTaxts,
