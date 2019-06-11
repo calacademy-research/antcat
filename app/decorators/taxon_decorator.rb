@@ -43,8 +43,8 @@ class TaxonDecorator < Draper::Decorator
     TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
 
-  def child_lists for_antweb: false
-    TaxonDecorator::ChildList[taxon, for_antweb: for_antweb]
+  def child_lists
+    TaxonDecorator::ChildList[taxon]
   end
 
   def taxon_status

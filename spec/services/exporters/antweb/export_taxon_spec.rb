@@ -243,6 +243,18 @@ describe Exporters::Antweb::ExportTaxon do
       end
     end
 
+    describe "[17]: `taxonomic history html` (child lists only)" do
+      let!(:subfamily) { create :subfamily }
+      let!(:tribe) { create :tribe, subfamily: subfamily }
+
+      specify do
+        expected =
+          %{<div><span class="caption">Tribe of <span>#{subfamily.name_cache}</span></span>: } +
+          %{<a href="http://www.antcat.org/catalog/#{tribe.id}">#{tribe.name_cache}</a></div>}
+        expect(export_taxon(subfamily)[17]).to include(expected)
+      end
+    end
+
     describe "[17]: `taxonomic history html`" do
       let!(:atta_name) { create :genus_name, name: 'Atta' }
       let!(:authorship_reference) do

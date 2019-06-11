@@ -135,7 +135,7 @@ class Exporters::Antweb::ExportTaxon
         content << decorated.statistics(valid_only: true)
         content << Exporters::Antweb::ExportHeadline[taxon]
         content << Exporters::Antweb::ExportHistoryItems[taxon]
-        content << decorated.child_lists(for_antweb: true)
+        content << Exporters::Antweb::ExportChildList[taxon]
         content << Exporters::Antweb::ExportReferenceSections[taxon]
       end
     end
