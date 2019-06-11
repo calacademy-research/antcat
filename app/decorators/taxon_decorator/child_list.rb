@@ -12,15 +12,15 @@ class TaxonDecorator::ChildList
 
   def call
     if taxon.is_a?(Family)
-      child_lists_for_rank(:subfamilies)
-      child_lists_for_rank(:genera_incertae_sedis_in_family)
+      child_list_fossil_pairs(:subfamilies)
+      child_list_fossil_pairs(:genera_incertae_sedis_in_family)
     end
 
     if taxon.is_a?(Subfamily)
-      child_lists_for_rank(:tribes)
-      child_lists_for_rank(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: false)
-      child_lists_for_rank(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: true)
-      collective_group_name_child_list
+      child_list_fossil_pairs(:tribes)
+      child_list_fossil_pairs(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: false)
+      child_list_fossil_pairs(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: true)
+      lists << child_list(taxon.collective_group_names, false, collective_group_names: true)
     end
 
     lists.compact
@@ -29,14 +29,6 @@ class TaxonDecorator::ChildList
   private
 
     attr_reader :taxon, :lists
-
-    def child_lists_for_rank children_selector, conditions = {}
-      child_list_fossil_pairs children_selector, conditions
-    end
-
-    def collective_group_name_child_list
-      lists << child_list(taxon.collective_group_names, false, collective_group_names: true)
-    end
 
     def child_list_fossil_pairs children_selector, conditions = {}
       extant_conditions = conditions.merge fossil: false
