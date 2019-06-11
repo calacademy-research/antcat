@@ -1,8 +1,5 @@
-# TODO avoid `require`.
-
-require_dependency 'references/reference_workflow'
-
 class Reference < ApplicationRecord
+  include Workflow
   include RevisionsCanBeCompared
   include Trackable
 
@@ -31,6 +28,7 @@ class Reference < ApplicationRecord
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }
+  validates :bolton_key, uniqueness: true, allow_nil: true
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
@@ -69,6 +67,19 @@ class Reference < ApplicationRecord
     string  :citation_year
     string  :doi
     string  :author_names_string
+  end
+
+  workflow_column :review_state
+  workflow do
+    state :none do
+      event :start_reviewing, transitions_to: :reviewing
+    end
+    state :reviewing do
+      event :finish_reviewing, transitions_to: :reviewed
+    end
+    state :reviewed do
+      event :restart_reviewing, transitions_to: :reviewing
+    end
   end
 
   def invalidate_caches
@@ -142,6 +153,8 @@ class Reference < ApplicationRecord
       throw :abort
     end
 
+    # TODO: Revisit once missing references have been cleared.
+    # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
     def set_year_from_citation_year
       # rubocop:disable Lint/AssignmentInCondition
       self.year = if citation_year.blank?

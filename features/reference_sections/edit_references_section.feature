@@ -2,7 +2,7 @@ Feature: Editing references sections
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @feed
+  @javascript
   Scenario: Editing a reference section (with feed)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
@@ -43,7 +43,7 @@ Feature: Editing references sections
     And I click on the cancel reference section button
     Then the reference section should be "Original reference"
 
-  @javascript @feed
+  @javascript
   Scenario: Adding a reference section (with feed)
     Given there is a genus "Atta"
 
@@ -61,7 +61,7 @@ Feature: Editing references sections
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
-  @javascript @feed
+  @javascript
   Scenario: Deleting a reference section (with feed)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 

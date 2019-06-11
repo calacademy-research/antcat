@@ -18,7 +18,7 @@ describe AuthorsController do
       expect { delete(:destroy, params: { id: author.id }) }.to change { Author.count }.by(-1)
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { delete(:destroy, params: { id: author.id }) }.
         to change { Activity.where(action: :destroy, trackable: author).count }.by(1)
     end

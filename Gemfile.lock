@@ -148,8 +148,6 @@ GEM
       railties (>= 4, < 6)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
-    data_migrate (5.3.1)
-      rails (>= 4.2)
     database_cleaner (1.7.0)
     devise (4.6.2)
       bcrypt (~> 3.0)
@@ -485,7 +483,6 @@ DEPENDENCIES
   coffee-rails
   colorize
   cucumber-rails
-  data_migrate
   database_cleaner
   devise
   diffy

@@ -841,9 +841,6 @@ definitions:
       nonconforming_name:
         type: boolean
         description: Names not confirming to standard naming conventions because they're archiac or erroneous.
-      auto_generated:
-        type: boolean
-        description: Programatically generated (typically from an exteral import)
       origin:
         type: string
         description: If auto-generated, what was the origin of the data? This field can be populated even if "auto generated" is false, if it has been manually iudated inside of antcat. Otherwise nil.

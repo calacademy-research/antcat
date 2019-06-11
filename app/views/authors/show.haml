@@ -6,6 +6,7 @@
     =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
 #references.margin-bottom
+  %a{name: 'references'}
   %h5 References by author
   -if @references.empty?
     %p Found no references by this author.
@@ -15,6 +16,7 @@
 
 %h5 Taxa described by author
 .callout.margin-bottom
+  %a{name: 'taxa'}
   -if @taxa.blank?
     %p Found no taxa described by this author.
   -else

@@ -2,7 +2,6 @@ Feature: Manage names
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @feed
   Scenario: Editing a name (with feed)
     Given there is a genus protonym "Formica"
 

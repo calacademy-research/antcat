@@ -1,4 +1,3 @@
-@feed
 Feature: Feed (feedback)
   Scenario: Added feedback (non-registered user)
     Given a visitor has submitted a feedback

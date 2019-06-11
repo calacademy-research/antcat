@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Taxa::CallbacksAndValidations do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do
     it 'only includes database scripts with `issue_description`s' do
-      Taxa::CallbacksAndValidations::DATABASE_SCRIPTS_TO_CHECK.map(&:new).each do |database_script|
+      Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK.map(&:new).each do |database_script|
         expect(database_script.issue_description.present?).to eq true
       end
 
@@ -29,7 +29,7 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
-  describe "#build_default_taxon_state and #set_taxon_state_to_waiting" do
+  describe "#set_taxon_state_to_waiting" do
     context "when creating a taxon" do
       let(:taxon) { build :family }
 
@@ -41,7 +41,7 @@ describe Taxa::CallbacksAndValidations do
 
       it "sets the review_status to 'waiting'" do
         taxon.save
-        expect(taxon.waiting?).to be true
+        expect(taxon.reload.waiting?).to eq true
       end
     end
 
@@ -51,21 +51,21 @@ describe Taxa::CallbacksAndValidations do
       context "when it `save_initiator`" do
         it "sets the review_status to 'waiting'" do
           taxon.save_initiator = true
-          expect { taxon.save }.to change { taxon.waiting? }.to true
+          expect { taxon.save }.to change { taxon.reload.waiting? }.to true
         end
 
         it "doesn't cascade" do
           family = create :family, :old
           subfamily = create :subfamily, :old, family: family
 
-          expect(family.waiting?).to be false
-          expect(subfamily.waiting?).to be false
+          expect(family.reload.waiting?).to be false
+          expect(subfamily.reload.waiting?).to be false
 
           family.save_initiator = true
           family.save
 
-          expect(family.waiting?).to be true
-          expect(subfamily.waiting?).to be false
+          expect(family.reload.waiting?).to be true
+          expect(subfamily.reload.waiting?).to be false
         end
       end
 
@@ -82,14 +82,12 @@ describe Taxa::CallbacksAndValidations do
       it "removes 'auto_generated' flags from things" do
         # Setup.
         taxon = create :family, auto_generated: true
-        taxon.name.update auto_generated: true
 
         # Act and test.
         taxon.save_initiator = true
         taxon.save
 
         expect(taxon.reload).not_to be_auto_generated
-        expect(taxon.name).not_to be_auto_generated
       end
 
       it "doesn't cascade" do
@@ -97,80 +95,14 @@ describe Taxa::CallbacksAndValidations do
         family = create :family, auto_generated: true
         subfamily = create :subfamily, family: family, auto_generated: true
 
-        family.name.update auto_generated: true
-        subfamily.name.update auto_generated: true
-
         # Act and test.
         family.save_initiator = true
         family.save
 
         expect(family.reload).not_to be_auto_generated
-        expect(family.name).not_to be_auto_generated
-
         expect(subfamily.reload).to be_auto_generated
-        expect(subfamily.name).to be_auto_generated
       end
     end
-  end
-
-  # TODO improve "expect_any_instance_of" etc.
-  describe "#save_children" do
-    let!(:species) { create :species }
-    let!(:genus) { species.genus }
-    let!(:tribe) { genus.tribe }
-    let!(:subfamily) { species.subfamily }
-
-    context "when taxon is not the `save_initiator`" do
-      it "doesn't save the children" do
-        # The `save_initiator` should be saved.
-        expect(subfamily).to receive(:save).and_call_original
-        expect_any_instance_of(Subfamily).not_to receive(:save_children).and_call_original
-
-        # But not its children.
-        [Tribe, Genus, Species].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save).and_call_original
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
-        end
-
-        subfamily.save
-      end
-    end
-
-    context "when taxon is the `save_initiator`" do
-      it "saves the children" do
-        # Save these:
-        expect_any_instance_of(Genus).to receive(:save).and_call_original
-        expect_any_instance_of(Genus).to receive(:save_children).and_call_original
-
-        expect_any_instance_of(Species).to receive(:save).and_call_original
-        expect_any_instance_of(Species).to receive(:save_children).and_call_original
-
-        # Should not be saved:
-        [Family, Subfamily, Tribe].each do |klass|
-          expect_any_instance_of(klass).not_to receive(:save).and_call_original
-          expect_any_instance_of(klass).not_to receive(:save_children).and_call_original
-        end
-
-        genus.save_initiator = true
-        genus.save
-      end
-
-      it "never recursively saves children of families" do
-        family = create :family
-
-        family.save_initiator = true
-        family.save
-
-        expect(family.children).to eq [subfamily]
-        expect_any_instance_of(Family).to_not receive(:children)
-        expect_any_instance_of(Subfamily).to_not receive(:save)
-        expect_any_instance_of(Subfamily).to_not receive(:save_children)
-      end
-    end
-  end
-
-  describe "#set_name_caches" do
-    # TODO
   end
 
   describe "#current_valid_taxon_validation" do

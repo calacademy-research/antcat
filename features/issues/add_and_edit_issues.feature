@@ -1,4 +1,3 @@
-@feed
 Feature: Add and edit open issues
   As an AntCat editor
   I want to add, edit and browse open issues

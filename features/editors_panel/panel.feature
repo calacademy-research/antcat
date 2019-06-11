@@ -2,7 +2,6 @@ Feature: Editor's Panel
   Background:
     Given I log in as a catalog editor named "Batiatus"
 
-  @feed
   Scenario: See most recent feed activities
     Given there is a "destroy" journal activity
 

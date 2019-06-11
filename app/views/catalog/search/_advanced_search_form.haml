@@ -2,7 +2,7 @@
   .row
     .medium-2.columns
       Rank
-      =select_tag :rank, options_for_select(Taxa::AdvancedSearch::RANKS, params[:rank]), include_blank: "Any"
+      =select_tag :type, options_for_select(Taxa::AdvancedSearch::RANKS, params[:type]), include_blank: "Any"
     .medium-2.columns
       Described by
       =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
@@ -42,7 +42,7 @@
       =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
     .medium-3.columns
       Unresolved junior homonym
-      =select_tag :unresolved_junior_homonym, yes_no_options_for_select(params[:unresolved_junior_homonym]), include_blank: "Either"
+      =select_tag :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
     .medium-2.columns
       Ichnotaxon
       =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"

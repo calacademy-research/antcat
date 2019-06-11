@@ -24,7 +24,7 @@ describe AuthorNamesController do
 
     before { sign_in create(:user, :editor) }
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect do
         post(:create, params: { author_name: { name: 'Batiatus' }, author_id: author.id, edit_summary: 'Add name' })
       end.to change { Activity.count }.by(1)
@@ -41,7 +41,7 @@ describe AuthorNamesController do
 
     before { sign_in create(:user, :editor) }
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect do
         post(:update, params: { author_name: { name: 'Batiatus' }, id: author_name.id, edit_summary: 'Edit name' })
       end.to change { Activity.count }.by(1)
@@ -60,7 +60,7 @@ describe AuthorNamesController do
 
     before { sign_in create(:user, :editor, :superadmin) }
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { delete(:destroy, params: { id: author_name.id }) }.to change { Activity.count }.by(1)
 
       activity = Activity.last

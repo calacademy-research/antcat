@@ -78,11 +78,6 @@ end
     parent :comments
   end
 
-crumb :edit_user do
-  link "Edit User"
-  parent :editors_panel
-end
-
 crumb :invite_users do
   link "Invite Users"
   parent :editors_panel

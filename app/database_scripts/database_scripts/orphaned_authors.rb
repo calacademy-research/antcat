@@ -27,5 +27,5 @@ __END__
 description: >
   Non-orphaned authors with references in this list indicates that at least one of their author names has no references.
 
-tags: [list, new!]
+tags: [list]
 topic_areas: [references]

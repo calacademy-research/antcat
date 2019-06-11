@@ -1,8 +1,7 @@
-# TODO avoid `require`.
-
-require_dependency 'taxon_workflow'
-
 class Taxon < ApplicationRecord
+  include Workflow
+  include Workflow::ExternalTable
+
   include Taxa::CallbacksAndValidations
   include Taxa::PredicateMethods
   include Taxa::Synonyms
@@ -45,6 +44,7 @@ class Taxon < ApplicationRecord
   has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
+  has_one :taxon_state
 
   # Synonyms. Confused? See this:
   # `dolichoderus = Taxon.find(429079)`    = valid taxon, not a synonym
@@ -58,34 +58,17 @@ class Taxon < ApplicationRecord
   has_many :junior_synonyms_objects, foreign_key: :senior_synonym_id, class_name: 'Synonym', dependent: :destroy
   has_many :senior_synonyms_objects, foreign_key: :junior_synonym_id, class_name: 'Synonym', dependent: :destroy
 
-  scope :displayable, -> do
-    where.not(status: [Status::UNAVAILABLE_MISSPELLING, Status::UNAVAILABLE_UNCATEGORIZED])
-  end
+  scope :displayable, -> { where.not(status: Status::UNDISPLAYABLE) }
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
-  scope :pass_through_names, -> do
-    where(
-      status: [
-        Status::OBSOLETE_COMBINATION, Status::ORIGINAL_COMBINATION, Status::UNAVAILABLE_MISSPELLING
-      ]
-    )
-  end
+  scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
 
-  # Example usage:
-  # Say we want something like this (which doesn't work):
-  #   `Species.joins(:genera).where(fossil: false, genus: { fossil: true })`
-  #
-  # Then use this:
-  #   `Species.self_join_on(:genus)
-  #      .where(fossil: false, taxa_self_join_alias: { fossil: true })`
+  # Example: `Species.self_join_on(:genus).where(fossil: false, taxa_self_join_alias: { fossil: true })`.
   scope :self_join_on, ->(model) {
-    joins(<<-SQL.squish)
-      LEFT OUTER JOIN `taxa` `taxa_self_join_alias`
-        ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`
-    SQL
+    joins("LEFT OUTER JOIN `taxa` `taxa_self_join_alias` ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`")
   }
   scope :ranks, ->(*ranks) { where(type: ranks) }
   scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
@@ -95,12 +78,17 @@ class Taxon < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   trackable parameters: proc {
     if parent
-      parent_params = { rank: parent.rank,
-                        name: parent.name_html_cache,
-                        id:   parent.id }
+      parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }
     end
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
+  workflow do
+    state TaxonState::OLD
+    state TaxonState::WAITING do
+      event :approve, transitions_to: TaxonState::APPROVED
+    end
+    state TaxonState::APPROVED
+  end
 
   def self.name_clash? name
     where(name_cache: name).exists?
@@ -138,6 +126,10 @@ class Taxon < ApplicationRecord
 
   def authorship_reference
     protonym.authorship.reference
+  end
+
+  def last_change
+    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
   def what_links_here predicate: false

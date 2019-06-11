@@ -1,4 +1,3 @@
-@feed
 Feature: Feed (taxa)
   Background:
     Given I log in as a catalog editor named "Archibald"

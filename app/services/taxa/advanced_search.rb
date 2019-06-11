@@ -1,10 +1,9 @@
-# TODO cleanup after extracting into service object.
-
 module Taxa
   class AdvancedSearch
     include Service
 
     RANKS = %w[Subfamily Tribe Genus Subgenus Species Subspecies]
+    TAXA_COLUMNS = %i[fossil nomen_nudum unresolved_homonym ichnotaxon hong status type]
 
     def initialize params
       @params = params.delete_if { |_key, value| value.blank? }
@@ -12,7 +11,6 @@ module Taxa
 
     def call
       return Taxon.none if params.blank?
-
       search_results
     end
 
@@ -23,14 +21,10 @@ module Taxa
       def search_results
         query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
 
-        query = filter_by_fossil(query, params[:fossil])
-        query = filter_by_nomen_nudum(query, params[:nomen_nudum])
-        query = filter_by_unresolved_junior_homonym(query, params[:unresolved_junior_homonym])
-        query = filter_by_ichnotaxon(query, params[:ichnotaxon])
-        query = filter_by_hong(query, params[:hong])
+        TAXA_COLUMNS.each do |column|
+          query = query.where(column => params[column]) if params[column]
+        end
 
-        query = query.where(status: params[:status]) if params[:status]
-        query = query.where(type: params[:rank]) if params[:rank]
         query = query.valid if params[:valid_only]
 
         if params[:author_name].present?
@@ -86,50 +80,6 @@ module Taxa
         query = query.where('forms LIKE ?', search_term) if params[:forms]
 
         query.includes(:name, protonym: { authorship: :reference })
-      end
-
-      # TODO quick non-DRY code.
-      # TODO sync/normalize db column names and true/false/nil, consider creating scopes, etc.
-      # Maybe refactor, or maybe it will refactor itself when  we start using Solr.
-      def filter_by_fossil(query, fossil)
-        return query unless fossil
-        case fossil
-        when "true"  then query.fossil
-        when "false" then query.extant
-        else raise "not a valid option"
-        end
-      end
-
-      def filter_by_nomen_nudum(query, nomen_nudum)
-        return query unless nomen_nudum
-        case nomen_nudum
-        when "true"  then query.where(nomen_nudum: true)
-        when "false" then query.where(nomen_nudum: [false, nil])
-        end
-      end
-
-      def filter_by_unresolved_junior_homonym(query, unresolved_junior_homonym)
-        return query unless unresolved_junior_homonym
-        case unresolved_junior_homonym
-        when "true"  then query.where(unresolved_homonym: true)
-        when "false" then query.where(unresolved_homonym: [false, nil])
-        end
-      end
-
-      def filter_by_ichnotaxon(query, ichnotaxon)
-        return query unless ichnotaxon
-        case ichnotaxon
-        when "true"  then query.where(ichnotaxon: true)
-        when "false" then query.where(ichnotaxon: [false, nil])
-        end
-      end
-
-      def filter_by_hong(query, hong)
-        return query unless hong
-        case hong
-        when "true"  then query.where(hong: true)
-        when "false" then query.where(hong: [false, nil])
-        end
       end
   end
 end

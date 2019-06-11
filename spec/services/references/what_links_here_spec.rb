@@ -23,14 +23,14 @@ describe References::WhatLinksHere do
           references_taxt: "{ref #{reference.id}}"
 
         expect(reference.reload.what_links_here).to match_array [
-          { table: 'taxa',                id: taxon.id,             field: :type_taxt },
-          { table: 'taxa',                id: taxon.id,             field: :headline_notes_taxt },
-          { table: 'citations',           id: citation.id,          field: :notes_taxt },
-          { table: 'citations',           id: citation.id,          field: :reference_id },
-          { table: 'reference_sections',  id: reference_section.id, field: :title_taxt },
-          { table: 'reference_sections',  id: reference_section.id, field: :subtitle_taxt },
-          { table: 'reference_sections',  id: reference_section.id, field: :references_taxt },
-          { table: 'taxon_history_items', id: history_item.id,      field: :taxt }
+          TableRef.new('taxa',                :type_taxt,           taxon.id),
+          TableRef.new('taxa',                :headline_notes_taxt, taxon.id),
+          TableRef.new('citations',           :notes_taxt,          citation.id),
+          TableRef.new('citations',           :reference_id,        citation.id),
+          TableRef.new('reference_sections',  :title_taxt,          reference_section.id),
+          TableRef.new('reference_sections',  :subtitle_taxt,       reference_section.id),
+          TableRef.new('reference_sections',  :references_taxt,     reference_section.id),
+          TableRef.new('taxon_history_items', :taxt,                history_item.id)
         ]
       end
     end
@@ -45,8 +45,8 @@ describe References::WhatLinksHere do
 
       specify do
         expect(reference.reload.what_links_here).to match_array [
-          { table: 'citations',  id: taxon.protonym.authorship.id, field: :reference_id },
-          { table: 'references', id: nested_reference.id,          field: :nesting_reference_id }
+          TableRef.new('citations',  :reference_id,         taxon.protonym.authorship.id),
+          TableRef.new('references', :nesting_reference_id, nested_reference.id)
         ]
       end
     end

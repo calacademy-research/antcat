@@ -2,7 +2,6 @@ Feature: Delete reference
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @feed
   Scenario: Delete a reference
     Given this reference exist
       | author | citation_year |

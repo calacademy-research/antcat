@@ -30,7 +30,6 @@ module Taxa
 
       def build_new_subspecies
         taxon = Subspecies.new
-        taxon.save_initiator = true
         taxon.attributes = Taxa::CopyAttributes[original_species]
         taxon.species = new_species_parent
         taxon.name = subspecies_name

@@ -51,8 +51,6 @@ class Activity < ApplicationRecord
   serialize :parameters, Hash
 
   def self.create_for_trackable trackable, action, edit_summary: nil, parameters: {}
-    return unless Feed.enabled?
-
     create! trackable: trackable, action: action,
       user: User.current, edit_summary: edit_summary,
       parameters: parameters

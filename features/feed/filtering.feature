@@ -1,4 +1,3 @@
-@feed
 Feature: Feed (filtering)
   Background:
     Given I log in as a catalog editor named "Archibald"

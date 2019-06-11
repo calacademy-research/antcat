@@ -19,7 +19,7 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#did_something", :feed do
+  describe "#did_something" do
     include TestLinksHelpers
 
     context 'when there is a trackable' do

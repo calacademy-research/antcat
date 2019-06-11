@@ -3,7 +3,6 @@ Feature: Create obsolete combination
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @feed
   Scenario: Creating a missing obsolete combination (and see it in the activity feed)
     Given a genus exists with a name of "Pyramica" and no subfamily
     And there is a species "Strumigenys ravidura"

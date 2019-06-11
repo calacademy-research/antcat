@@ -2,7 +2,8 @@ require 'spec_helper'
 
 describe TableRefDecorator do
   let(:id) { object.id }
-  let(:decorated) { described_class.new(table, "_field", id) }
+  let(:table_ref) { TableRef.new(table, "_field", id) }
+  let(:decorated) { described_class.new(table_ref) }
 
   context "when table is `citations`" do
     let!(:table) { "citations" }

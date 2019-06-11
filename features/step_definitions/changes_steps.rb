@@ -1,6 +1,6 @@
 Given("there is a genus {string} that's waiting for approval") do |name|
-  genus = create_genus name
-  genus.taxon_state.update_columns review_state: TaxonState::WAITING
+  genus_name = create :genus_name, name: name
+  genus = create :genus, :waiting, name: genus_name
 
   user = User.first
   change = create :change, taxon: genus, user: user

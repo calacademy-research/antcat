@@ -2,10 +2,8 @@ class TableRefDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
-  def initialize table, field, id
-    @table = table
-    @field = field
-    @id = id
+  def initialize table_ref
+    @table_ref = table_ref
   end
 
   def item_link
@@ -38,7 +36,9 @@ class TableRefDecorator
 
   private
 
-    attr_reader :table, :field, :id
+    attr_reader :table_ref
+
+    delegate :table, :field, :id, to: :table_ref
 
     def related_citation_link
       citation = Citation.find(id)

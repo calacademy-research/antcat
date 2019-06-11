@@ -1,5 +1,3 @@
-# TODO default `taxon_states.deleted` to "false" in db.
-
 class TaxonState < ApplicationRecord
   STATES = [
     APPROVED = "approved",

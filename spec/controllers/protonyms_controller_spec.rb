@@ -56,7 +56,7 @@ describe ProtonymsController do
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { post(:create, params: { protonym: protonym_params, edit_summary: 'Split protonym' }) }.
         to change { Activity.where(action: :create).count }.by(1)
 
@@ -124,11 +124,10 @@ describe ProtonymsController do
     before { sign_in create(:user, :helper) }
 
     it 'deletes the protonym' do
-      expect { delete(:destroy, params: { id: protonym.id }) }.
-        to change { Protonym.count }.by(-1)
+      expect { delete(:destroy, params: { id: protonym.id }) }.to change { Protonym.count }.by(-1)
     end
 
-    it 'creates an activity', :feed do
+    it 'creates an activity' do
       expect { delete(:destroy, params: { id: protonym.id, edit_summary: 'Duplicate' }) }.
         to change { Activity.where(action: :destroy, trackable: protonym).count }.by(1)
 
@@ -144,8 +143,7 @@ describe ProtonymsController do
       end
 
       specify do
-        expect { delete(:destroy, params: { id: protonym.id }) }.
-          to raise_error(ActiveRecord::StatementInvalid)
+        expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
       end
     end
   end

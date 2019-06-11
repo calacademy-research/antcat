@@ -32,5 +32,5 @@ end
 
 __END__
 topic_areas: [catalog]
-tags: [very-slow, updated!, high-priority]
+tags: [very-slow, high-priority]
 issue_description: This subspecies has no species.
