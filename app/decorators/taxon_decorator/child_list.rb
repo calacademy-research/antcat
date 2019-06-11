@@ -11,19 +11,19 @@ class TaxonDecorator::ChildList
   def call
     if taxon.is_a?(Family)
       child_list_fossil_pairs(taxon.subfamilies)
-      child_list_fossil_pairs(taxon.genera_incertae_sedis_in_family, incertae_sedis_in: true)
+      child_list_fossil_pairs(taxon.genera_incertae_sedis_in, incertae_sedis_in: true)
     end
 
     if taxon.is_a?(Subfamily)
       child_list_fossil_pairs(taxon.tribes)
 
       child_list_fossil_pairs(
-        taxon.genera_incertae_sedis_in_subfamily.where(hong: false),
+        taxon.genera_incertae_sedis_in.where(hong: false),
         incertae_sedis_in: true
       )
 
       child_list_fossil_pairs(
-        taxon.genera_incertae_sedis_in_subfamily.where(hong: true),
+        taxon.genera_incertae_sedis_in.where(hong: true),
         incertae_sedis_in: true,
         hong: true
       )

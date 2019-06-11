@@ -1,4 +1,10 @@
 # A `TaxonTab` requires a taxon for which `#children` returns something.
+# TODO: This needs a rehaul.
+
+# Things we may want to show:
+# * [Genera] without tribes
+# * Excluded [from Formicidae]
+# * All incertae sedis [in Formicidae]
 
 module TaxonBrowser::Tabs
   class TaxonTab < TaxonBrowser::Tab

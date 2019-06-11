@@ -22,14 +22,10 @@ class Family < Taxon
     Genus.displayable
   end
 
-  # TODO: For this, `#genera` and `#genera_incertae_sedis_in_family`, see ihttps://github.com/calacademy-research/antcat/issues/453
+  # TODO: See https://github.com/calacademy-research/antcat/issues/453
   # See also `TaxonDecorator::ChildList` and `Subfamily`.
   def genera_incertae_sedis_in
-    genera.displayable
-  end
-
-  def genera_incertae_sedis_in_family
-    Genus.where(incertae_sedis_in: 'family')
+    Genus.where(incertae_sedis_in: 'family').displayable
   end
 
   def genera
