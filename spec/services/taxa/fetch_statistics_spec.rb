@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::Statistics do
+describe Taxa::FetchStatistics do
   describe "#call" do
     context "when family" do
       let(:family) { create :family }

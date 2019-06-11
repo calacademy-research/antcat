@@ -1,5 +1,5 @@
 module Taxa
-  class Statistics
+  class FetchStatistics
     include Service
 
     def initialize(taxon, valid_only:)

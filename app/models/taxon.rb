@@ -141,6 +141,6 @@ class Taxon < ApplicationRecord
   end
 
   def statistics valid_only: false
-    Taxa::Statistics[self, valid_only: valid_only]
+    Taxa::FetchStatistics[self, valid_only: valid_only]
   end
 end
