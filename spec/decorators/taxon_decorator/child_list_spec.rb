@@ -13,8 +13,8 @@ describe TaxonDecorator::ChildList do
       specify do
         expect(described_class[subfamily]).to eq(
           [
-            { label: "Tribe (extant) of <span>#{subfamily.name_cache}</span>", children: [taxon] },
-            { label: "Tribe (extinct) of <span>#{subfamily.name_cache}</span>", children: [fossil_taxon] }
+            { label: "Tribe (extant) of #{subfamily.name_cache}", children: [taxon] },
+            { label: "Tribe (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
           ]
         )
       end
@@ -25,7 +25,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).to eq(
-          label: "Genus (extant) of <span>#{subfamily.name_cache}</span>", children: [taxon]
+          label: "Genus (extant) of #{subfamily.name_cache}", children: [taxon]
         )
       end
     end
@@ -35,7 +35,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, false)).to eq(
-          label: "Genus of <span>#{subfamily.name_cache}</span>", children: [taxon]
+          label: "Genus of #{subfamily.name_cache}", children: [taxon]
         )
       end
     end
@@ -45,7 +45,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, [taxon], false, incertae_sedis_in: 'subfamily')).to eq(
-          label: "Genus <i>incertae sedis</i> in <span>#{subfamily.name_cache}</span>", children: [taxon]
+          label: "Genus <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon]
         )
       end
     end
@@ -56,7 +56,7 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(family).send(:child_list, [taxon], false)).to eq(
-          label: "Genus <i>incertae sedis</i> in <span>Formicidae</span>", children: [taxon]
+          label: "Genus <i>incertae sedis</i> in Formicidae", children: [taxon]
         )
       end
     end
@@ -68,7 +68,7 @@ describe TaxonDecorator::ChildList do
     it "formats a list of collective group names" do
       expect(described_class.new(subfamily).send(:collective_group_name_child_list)).to eq(
         [
-          { label: "Collective group name in <span>#{subfamily.name_cache}</span>", children: [taxon] }
+          { label: "Collective group name in #{subfamily.name_cache}", children: [taxon] }
         ]
       )
     end

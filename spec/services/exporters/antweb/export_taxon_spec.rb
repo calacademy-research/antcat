@@ -249,7 +249,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       specify do
         expected =
-          %{<div><span class="caption">Tribe of <span>#{subfamily.name_cache}</span></span>: } +
+          %{<div><span class="caption">Tribe of #{subfamily.name_cache}</span>: } +
           %{<a href="http://www.antcat.org/catalog/#{tribe.id}">#{tribe.name_cache}</a></div>}
         expect(export_taxon(subfamily)[17]).to include(expected)
       end
