@@ -1,15 +1,14 @@
 require "spec_helper"
 
-describe TaxonDecorator::HeadlineType do
-  include TestLinksHelpers
-
+describe Exporters::Antweb::ExportHeadlineType do
   describe "#call" do
     context "when taxon has a type name" do
       let(:type_species) { create_species 'Atta major' }
       let(:taxon) { create :genus, type_taxon: type_species }
+      let(:taxon_link) { %(<a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>) }
 
       it "links the type name" do
-        expect(described_class[taxon]).to eq %(Type-species: #{taxon_link(type_species)}.)
+        expect(described_class[taxon]).to eq %(Type-species: #{taxon_link}.)
       end
 
       context "when taxon has type taxt" do
@@ -17,7 +16,7 @@ describe TaxonDecorator::HeadlineType do
 
         it "includes the type taxt" do
           expect(described_class[taxon]).
-            to eq %(Type-species: #{taxon_link(type_species)}, by monotypy.)
+            to eq %(Type-species: #{taxon_link}, by monotypy.)
         end
       end
     end

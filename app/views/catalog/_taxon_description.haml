@@ -28,7 +28,11 @@
   =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html
   =taxon.protonym.decorate.format_locality
 
-  =taxon.decorate.headline_type
+  -if taxon.type_taxon
+    =taxon.decorate.type_taxon_rank
+    =add_period_if_necessary(taxon.type_taxon.decorate.link_to_taxon + TaxtPresenter[taxon.decorate.format_type_taxt].to_html)
+  =add_period_if_necessary(taxon.biogeographic_region)
+
   =TaxtPresenter[taxon.headline_notes_taxt].to_html
 
   -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.

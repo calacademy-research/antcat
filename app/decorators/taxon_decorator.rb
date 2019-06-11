@@ -32,12 +32,15 @@ class TaxonDecorator < Draper::Decorator
     "Type-#{type_rank}: ".html_safe
   end
 
-  def statistics valid_only: false
-    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
+  # NOTE: We need this becuase `type_taxt` is stripped of leading whitespace.
+  def format_type_taxt
+    return if type_taxt.blank?
+    return type_taxt if type_taxt.start_with?(",")
+    " " << type_taxt
   end
 
-  def headline_type
-    TaxonDecorator::HeadlineType[taxon]
+  def statistics valid_only: false
+    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
   end
 
   def child_lists for_antweb: false

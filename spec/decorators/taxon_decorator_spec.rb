@@ -22,6 +22,20 @@ describe TaxonDecorator do
     end
   end
 
+  describe "#format_type_taxt" do
+    context 'when `type_taxt` starts with comma' do
+      let(:taxon) { build_stubbed :family, type_taxt: ', pizza' }
+
+      specify { expect(decorated.format_type_taxt).to eq ', pizza' }
+    end
+
+    context 'when `type_taxt` starts with comma' do
+      let(:taxon) { build_stubbed :family, type_taxt: 'pizza' }
+
+      specify { expect(decorated.format_type_taxt).to eq ' pizza' }
+    end
+  end
+
   describe "#link_to_antwiki" do
     let(:taxon) { create :species }
 

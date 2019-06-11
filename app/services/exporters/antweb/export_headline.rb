@@ -32,7 +32,7 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def headline_type
-      TaxonDecorator::HeadlineType[taxon, for_antweb: true]
+      Exporters::Antweb::ExportHeadlineType[taxon]
     end
 
     def type_fields
