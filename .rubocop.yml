@@ -5,8 +5,6 @@ require:
 
 AllCops:
   Exclude:
-    - 'Cheffile'
-    - 'Vagrantfile'
     - 'config.ru'
     - 'db/schema.rb'
     - 'db/data_schema.rb'
