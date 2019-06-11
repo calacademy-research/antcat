@@ -1,8 +1,6 @@
 # TODO: Cleanup more. This is still the messiest code of AntCat.
 
 class TaxonDecorator::ChildList
-  include ActionView::Helpers
-  include ActionView::Context
   include Service
 
   def initialize taxon
@@ -13,7 +11,7 @@ class TaxonDecorator::ChildList
   def call
     if taxon.is_a?(Family)
       child_list_fossil_pairs(taxon.subfamilies)
-      child_list_fossil_pairs(taxon.genera_incertae_sedis_in_family, incertae_sedis_in_label: true)
+      child_list_fossil_pairs(taxon.genera_incertae_sedis_in_family, incertae_sedis_in: true)
     end
 
     if taxon.is_a?(Subfamily)
@@ -21,17 +19,16 @@ class TaxonDecorator::ChildList
 
       child_list_fossil_pairs(
         taxon.genera_incertae_sedis_in_subfamily.where(hong: false),
-        incertae_sedis_in_label: true,
-        hong_label: false
+        incertae_sedis_in: true
       )
 
       child_list_fossil_pairs(
         taxon.genera_incertae_sedis_in_subfamily.where(hong: true),
-        incertae_sedis_in_label: true,
-        hong_label: true
+        incertae_sedis_in: true,
+        hong: true
       )
 
-      lists << child_list(taxon.collective_group_names, false, collective_group_names_label: true)
+      child_list(taxon.collective_group_names, false, collective_group_names: true)
     end
 
     lists.compact
@@ -42,45 +39,38 @@ class TaxonDecorator::ChildList
     attr_reader :taxon, :lists
 
     def child_list_fossil_pairs query, conditions = {}
-      extant_conditions = conditions.merge fossil: false
-      extinct_conditions = conditions.merge fossil: true
-
       # HACK: This is Ruby's `#group_by`, not ActiveRecord's `#group`.
       both = query.valid.includes(:name).order_by_name.group_by(&:fossil).to_h
-      extinct = both[true] || []
-      extant = both[false] || []
-      specify_extinct_or_extant = extinct.present?
+      extinct = both[true]
+      extant = both[false]
+      show_extinct_or_extant = extinct.present?
 
-      lists << child_list(extant, specify_extinct_or_extant, extant_conditions)
-      lists << child_list(extinct, specify_extinct_or_extant, extinct_conditions)
+      child_list(extant, show_extinct_or_extant, conditions.merge(fossil: false))
+      child_list(extinct, show_extinct_or_extant, conditions.merge(fossil: true))
     end
 
-    def child_list children, specify_extinct_or_extant, conditions = {}
+    def child_list children, show_extinct_or_extant, conditions = {}
       return if children.blank?
-
-      {
-        label: child_list_label(children, specify_extinct_or_extant, conditions),
-        children: children
-      }
+      lists << { label: child_list_label(children, show_extinct_or_extant, conditions), children: children }
     end
 
-    def child_list_label children, specify_extinct_or_extant, conditions
+    def child_list_label children, show_extinct_or_extant, conditions
       label = ''.html_safe
-      label << 'Hong (2002) ' if conditions[:hong_label]
+      label << 'Hong (2002) ' if conditions[:hong]
 
-      label << if conditions[:collective_group_names_label]
+      label << if conditions[:collective_group_names]
                  Status::COLLECTIVE_GROUP_NAME.pluralize(children.size).humanize
                else
                  children.first.rank.pluralize(children.size).titleize
                end
 
-      if specify_extinct_or_extant
+      if show_extinct_or_extant
         label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      label << if conditions[:incertae_sedis_in_label]
+      label << if conditions[:incertae_sedis_in]
                  ' <i>incertae sedis</i> in '.html_safe
-               elsif conditions[:collective_group_names_label]
+               elsif conditions[:collective_group_names]
                  ' in '
                else
                  ' of '
