@@ -13,13 +13,15 @@ class TaxonDecorator::ChildList
   def call
     if taxon.is_a?(Family)
       child_list_fossil_pairs(:subfamilies)
-      child_list_fossil_pairs(:genera_incertae_sedis_in_family)
+      child_list_fossil_pairs(:genera_incertae_sedis_in_family, incertae_sedis_in_label: true)
     end
 
     if taxon.is_a?(Subfamily)
       child_list_fossil_pairs(:tribes)
-      child_list_fossil_pairs(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: false)
-      child_list_fossil_pairs(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: true)
+
+      child_list_fossil_pairs(:genera_incertae_sedis_in_subfamily, incertae_sedis_in_label: true, hong: false)
+      child_list_fossil_pairs(:genera_incertae_sedis_in_subfamily, incertae_sedis_in_label: true, hong: true)
+
       lists << child_list(taxon.collective_group_names, false, collective_group_names: true)
     end
 
@@ -44,11 +46,7 @@ class TaxonDecorator::ChildList
     end
 
     def child_list_query children_selector, conditions = {}
-      incertae_sedis_in = conditions[:incertae_sedis_in]
-
       children = taxon.send children_selector
-
-      children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
       children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
 
       # HACK: This is Ruby's `#group_by`, not ActiveRecord's `#group`.
@@ -78,7 +76,7 @@ class TaxonDecorator::ChildList
         label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      label << if conditions[:incertae_sedis_in] || formicidae_incertae_sedis_genera?(taxon, children)
+      label << if conditions[:incertae_sedis_in_label]
                  ' <i>incertae sedis</i> in '.html_safe
                elsif conditions[:collective_group_names]
                  ' in '
@@ -87,10 +85,5 @@ class TaxonDecorator::ChildList
                end
 
       label << taxon.epithet_with_fossil
-    end
-
-    # TODO see https://github.com/calacademy-research/antcat/issues/453
-    def formicidae_incertae_sedis_genera? taxon, children
-      taxon.is_a?(Family) && children.first.is_a?(Genus)
     end
 end

@@ -34,7 +34,12 @@ class Subfamily < Taxon
     genera.displayable
   end
 
+  # TODO: See note in `Family` regarding incertae sedis.
   def genera_incertae_sedis_in
     genera.displayable.without_tribe
+  end
+
+  def genera_incertae_sedis_in_subfamily
+    genera.where(incertae_sedis_in: 'subfamily')
   end
 end
