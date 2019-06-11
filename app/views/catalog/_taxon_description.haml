@@ -12,7 +12,7 @@
         =Subspecies.find_by(id: taxon.species_id).decorate.link_to_taxon_with_author_citation
 
 .header
-  %span.name=taxon.decorate.link_each_epithet
+  %span.name=TaxonDecorator::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.taxon_status
   =taxon.name.gender

@@ -13,10 +13,6 @@ class TaxonDecorator < Draper::Decorator
     link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
   end
 
-  def link_each_epithet
-    TaxonDecorator::LinkEachEpithet[taxon]
-  end
-
   def id_and_name_and_author_citation
     h.content_tag :span do
       h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
@@ -42,10 +38,6 @@ class TaxonDecorator < Draper::Decorator
   def statistics valid_only: false
     stats = Taxa::FetchStatistics[taxon, valid_only: valid_only]
     TaxonDecorator::Statistics[stats]
-  end
-
-  def child_lists
-    TaxonDecorator::ChildList[taxon]
   end
 
   def taxon_status
