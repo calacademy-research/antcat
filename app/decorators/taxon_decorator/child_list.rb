@@ -1,5 +1,4 @@
 # TODO: Cleanup more. This is still the messiest code of AntCat.
-# TODO Some branches are unreachable because `taxon.respond_to?(children_selector)` is false.
 
 class TaxonDecorator::ChildList
   include ActionView::Helpers
@@ -14,17 +13,13 @@ class TaxonDecorator::ChildList
   def call
     if taxon.is_a?(Family)
       child_lists_for_rank(:subfamilies)
+      child_lists_for_rank(:genera_incertae_sedis_in_family)
     end
 
     if taxon.is_a?(Subfamily)
       child_lists_for_rank(:tribes)
-    end
-
-    if taxon.is_a?(Subfamily) || taxon.is_a?(Family)
-      child_lists_for_rank(:genera_incertae_sedis_in)
-    end
-
-    if taxon.is_a?(Subfamily)
+      child_lists_for_rank(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: false)
+      child_lists_for_rank(:genera_incertae_sedis_in, incertae_sedis_in: 'subfamily', hong: true)
       collective_group_name_child_list
     end
 
@@ -35,17 +30,8 @@ class TaxonDecorator::ChildList
 
     attr_reader :taxon, :lists
 
-    def child_lists_for_rank children_selector
-      return unless taxon.send(children_selector)
-
-      if taxon.is_a?(Subfamily) && children_selector == :genera
-        # TODO this is never triggered since there is no `Subfamily#genera`,
-        # and `:genera` was replaced with `:genera_incertae_sedis_in`.
-        lists << child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false)
-        lists << child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
-      else
-        child_list_fossil_pairs children_selector
-      end
+    def child_lists_for_rank children_selector, conditions = {}
+      child_list_fossil_pairs children_selector, conditions
     end
 
     def collective_group_name_child_list
