@@ -10,5 +10,5 @@
     =render "comments/comments", comments: comment.children, new_comment: new_comment
 
   -# Draw a pretty ruler between root comments.
-  -unless comment.is_a_reply?
+  -unless comment.a_reply?
     %hr

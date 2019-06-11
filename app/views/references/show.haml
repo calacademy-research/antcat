@@ -81,7 +81,7 @@
               =or_dash @reference.pagination
         %tr
           %th Date
-          %td=@reference.decorate.format_date
+          %td=or_dash @reference.decorate.format_date
         %tr
           %th Type
           %td=@reference.type.underscore.humanize
@@ -117,10 +117,10 @@
                   %li=nestee.decorate.expandable_reference
         %tr
           %th DOI
-          %td=or_dash @reference.doi
+          %td=or_dash @reference.doi_link
         %tr
-          %th Links
-          %td=or_dash @reference.format_reference_document_link
+          %th PDF link
+          %td=or_dash @reference.pdf_link
 
 -if @reference.any_notes?
   .row.margin-bottom

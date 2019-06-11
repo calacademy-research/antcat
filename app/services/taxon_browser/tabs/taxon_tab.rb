@@ -17,14 +17,14 @@ module TaxonBrowser::Tabs
     end
 
     def notify_about_no_valid_taxa?
-      @taxa.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?
+      @taxa.empty? && !subfamily_with_valid_genera_incertae_sedis?
     end
 
     private
 
       # Exception for subfamilies *only* containing genera that are
       # incertae sedis in that subfamily (that is Martialinae, #430173).
-      def is_a_subfamily_with_valid_genera_incertae_sedis?
+      def subfamily_with_valid_genera_incertae_sedis?
         return unless @tab_taxon.is_a? Subfamily
         @tab_taxon.genera_incertae_sedis_in.valid.exists?
       end

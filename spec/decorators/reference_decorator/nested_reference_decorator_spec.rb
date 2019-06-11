@@ -63,7 +63,7 @@ describe NestedReferenceDecorator do
         expect(reference).to receive(:document).and_return(reference_document)
         expect(reference).to receive(:downloadable?).and_return(true)
         expect(reference_document).to receive(:url).and_return('reference.com')
-        expect(reference.decorate.send(:pdf_link)).to eq '<a class="external-link" href="reference.com">PDF</a>'
+        expect(reference.decorate.pdf_link).to eq '<a class="external-link" href="reference.com">PDF</a>'
       end
     end
 
@@ -78,7 +78,7 @@ describe NestedReferenceDecorator do
           expect(parent_reference).to receive(:downloadable?).and_return(true)
           expect(parent_reference).to receive(:document).and_return(parent_reference_document)
           expect(parent_reference_document).to receive(:url).and_return('parent-reference.com')
-          expect(reference.decorate.send(:pdf_link)).to eq '<a class="external-link" href="parent-reference.com">PDF</a>'
+          expect(reference.decorate.pdf_link).to eq '<a class="external-link" href="parent-reference.com">PDF</a>'
         end
       end
     end

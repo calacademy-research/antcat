@@ -23,10 +23,10 @@ module Comments
 
       attr_accessor :comment, :do_not_notify
 
-      delegate :commenter, :commentable, :body, :parent, :is_a_reply?, to: :comment
+      delegate :commenter, :commentable, :body, :parent, :a_reply?, to: :comment
 
       def notify_replied_to_user
-        return unless is_a_reply?
+        return unless a_reply?
 
         replied_to_user = parent.commenter
         notify replied_to_user, :was_replied_to

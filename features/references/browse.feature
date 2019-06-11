@@ -6,5 +6,5 @@ Feature: View bibliography
 
     When I go to the page of the most recent reference
     And I follow the first "Bolton, B."
-    Then I should see "References by author"
+    Then I should see "References by Bolton, B."
     And I should see "Cool Ants"

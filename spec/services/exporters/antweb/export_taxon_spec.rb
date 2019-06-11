@@ -276,7 +276,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       before do
         create :species, :unavailable, genus: genus # For the statistics.
-        genus.update! type_taxon: type_species
+        genus.update! type_taxon: type_species, type_taxt: ', by monotypy'
         genus.history_items.create taxt: "Taxon: {tax #{type_species.id}}"
         genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
       end
@@ -309,7 +309,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.) +
+              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>, by monotypy.) +
               %(  ) +
 
               # links

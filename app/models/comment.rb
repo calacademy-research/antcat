@@ -26,7 +26,7 @@ class Comment < ApplicationRecord
     new commentable: commentable, body: body, user: user
   end
 
-  def is_a_reply?
+  def a_reply?
     !parent.nil? || set_parent_to.present?
   end
 
