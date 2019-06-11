@@ -139,8 +139,4 @@ class Taxon < ApplicationRecord
   def any_nontaxt_references?
     Taxa::AnyNonTaxtReferences[self]
   end
-
-  def statistics valid_only: false
-    Taxa::FetchStatistics[self, valid_only: valid_only]
-  end
 end

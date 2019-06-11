@@ -40,7 +40,8 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def statistics valid_only: false
-    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
+    stats = Taxa::FetchStatistics[taxon, valid_only: valid_only]
+    TaxonDecorator::Statistics[stats]
   end
 
   def child_lists
