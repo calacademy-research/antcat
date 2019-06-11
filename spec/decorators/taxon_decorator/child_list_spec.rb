@@ -25,7 +25,9 @@ describe TaxonDecorator::ChildList do
 
       specify do
         expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).to eq(
-          label: "Genus (extant) of #{subfamily.name_cache}", children: [taxon]
+          [
+            label: "Genus (extant) of #{subfamily.name_cache}", children: [taxon]
+          ]
         )
       end
     end
