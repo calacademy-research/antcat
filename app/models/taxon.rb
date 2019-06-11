@@ -135,8 +135,4 @@ class Taxon < ApplicationRecord
   def what_links_here predicate: false
     Taxa::WhatLinksHere[self, predicate: predicate]
   end
-
-  def any_nontaxt_references?
-    Taxa::AnyNonTaxtReferences[self]
-  end
 end
