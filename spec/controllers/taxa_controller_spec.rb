@@ -60,11 +60,9 @@ describe TaxaController do
         end
 
         describe "basic taxon attributes" do
-          let(:homonym_replaced_by) { create :genus }
           let(:type_taxon) { create :species }
           let(:taxon_params) do
             base_params.deep_merge(
-              homonym_replaced_by_id: homonym_replaced_by.id,
               incertae_sedis_in: "family",
               fossil: true,
               nomen_nudum: true,
@@ -86,7 +84,6 @@ describe TaxaController do
             taxon = Taxon.last
 
             expect(taxon.status).to eq taxon_params[:status]
-            expect(taxon.homonym_replaced_by).to eq homonym_replaced_by
             expect(taxon.incertae_sedis_in).to eq taxon_params[:incertae_sedis_in]
             expect(taxon.fossil).to eq taxon_params[:fossil]
             expect(taxon.nomen_nudum).to eq taxon_params[:nomen_nudum]

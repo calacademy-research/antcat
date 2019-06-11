@@ -11,6 +11,7 @@ module Taxa::CallbacksAndValidations
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
     validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
+    validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
 
     validate :current_valid_taxon_validation, :ensure_correct_name_type, :biogeographic_region_validation
 

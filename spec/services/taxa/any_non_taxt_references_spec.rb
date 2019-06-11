@@ -5,7 +5,7 @@ describe Taxa::AnyNonTaxtReferences do
     subject { described_class.new(taxon) }
 
     let!(:taxon) { create :family }
-    let!(:other_taxon) { create :family, type_taxt: "{tax #{taxon.id}}" }
+    let!(:other_taxon) { create :family, :homonym, type_taxt: "{tax #{taxon.id}}" }
 
     context "when taxon has non-taxt references" do
       before { other_taxon.update homonym_replaced_by: taxon }

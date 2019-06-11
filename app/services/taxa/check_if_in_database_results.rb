@@ -6,7 +6,6 @@ module Taxa
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
-      DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
       DatabaseScripts::PassThroughNamesWithTaxts,
       DatabaseScripts::SubspeciesWithoutSpecies,
       DatabaseScripts::TaxaReferencingNonExistingTaxa,

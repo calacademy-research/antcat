@@ -2,7 +2,6 @@ module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
-      DatabaseScripts::NonHomonymsWithAHomonymReplacedById,
       DatabaseScripts::PassThroughNamesWithTaxts,
       DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym
     ]

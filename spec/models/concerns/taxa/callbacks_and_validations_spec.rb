@@ -130,6 +130,18 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
+  describe "#homonym_replaced_by" do
+    context 'when taxon is not a homonym' do
+      let(:taxon) { build_stubbed :family }
+      let(:replaced_by) { build_stubbed :family }
+
+      specify do
+        expect { taxon.homonym_replaced_by = replaced_by }.to change { taxon.valid? }.to false
+        expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
+      end
+    end
+  end
+
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
