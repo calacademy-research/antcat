@@ -23,8 +23,12 @@ module TaxonBrowserHelper
     links = []
 
     case selected
-    when Family, Subfamily
+    when Family
       links << extra_tab_link(selected, "All genera", "all_genera_in_#{selected.rank}")
+      links << incertae_sedis_link(selected)
+    when Subfamily
+      links << extra_tab_link(selected, "All genera", "all_genera_in_#{selected.rank}")
+      links << extra_tab_link(selected, "Without tribe", "without_tribe")
       links << incertae_sedis_link(selected)
     when Genus
       links << extra_tab_link(selected, "All taxa", "all_taxa_in_#{selected.rank}")

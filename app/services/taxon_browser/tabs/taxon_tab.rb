@@ -2,7 +2,6 @@
 # TODO: This needs a rehaul.
 
 # Things we may want to show:
-# * [Genera] without tribes
 # * Excluded [from Formicidae]
 # * All incertae sedis [in Formicidae]
 

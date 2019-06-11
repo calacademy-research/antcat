@@ -13,6 +13,9 @@ module TaxonBrowser::Tabs
         when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
           ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
+        when :without_tribe
+          ["#{name_html} genera without tribe", taxon.genera_without_tribe]
+
         when :all_genera_in_family, :all_genera_in_subfamily
           ["All #{name_html} genera", taxon.all_displayable_genera]
 
