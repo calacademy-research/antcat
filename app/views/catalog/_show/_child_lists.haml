@@ -1,0 +1,7 @@
+-taxon.decorate.child_lists.each do |child_list|
+  %div
+    %span.caption
+      =succeed ':' do
+        =child_list[:label]
+    -child_list[:children].each do |child|
+      =child.decorate.link_to_taxon

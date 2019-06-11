@@ -72,13 +72,7 @@
         =synonym.decorate.author_citation
 
 #child-lists.small-margin-bottom
-  -taxon.decorate.child_lists.each do |child_list|
-    %div
-      %span.caption
-        =succeed ':' do
-          =child_list[:label]
-      -child_list[:children].each do |child|
-        =child.decorate.link_to_taxon
+  =render 'catalog/_show/child_lists', taxon: taxon
 
 -# Special case because the root view pulls in too much data.
 -if action_name == "index"
