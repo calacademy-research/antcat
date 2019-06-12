@@ -41,3 +41,4 @@ description: >
   These are not really subspecies, but infrasubspecific taxa, which cannot be represented on AntCat.
 
 topic_areas: [catalog]
+tags: [regression-test]
