@@ -73,11 +73,11 @@ module Taxa::CallbacksAndValidations
     end
 
     def cannot_have_current_valid_taxon?
-      valid_taxon? || unavailable?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:absence]
     end
 
     def requires_current_valid_taxon?
-      synonym? || original_combination? || obsolete_combination? || unavailable_misspelling? || unavailable_uncategorized?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:presence]
     end
 
     def ensure_correct_name_type
