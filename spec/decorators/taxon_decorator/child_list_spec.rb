@@ -1,73 +1,64 @@
 require "spec_helper"
 
 describe TaxonDecorator::ChildList do
-  include TestLinksHelpers
-
-  let(:subfamily) { create :subfamily }
-
-  describe "#child_list" do
-    context "formats a tribes list" do
-      let!(:taxon) { create :tribe, subfamily: subfamily }
-      let!(:fossil_taxon) { create :tribe, :fossil, subfamily: subfamily }
-
-      specify do
-        expect(described_class[subfamily]).to eq(
-          [
-            { label: "Tribe (extant) of #{subfamily.name_cache}", children: [taxon] },
-            { label: "Tribe (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
-          ]
-        )
-      end
-    end
-
-    context "formats a child list, specifying extinctness" do
-      let!(:taxon) { create :genus, subfamily: subfamily }
-
-      specify do
-        expect(described_class.new(subfamily).send(:child_list, Genus.all, true)).to eq(
-          [
-            label: "Genus (extant) of #{subfamily.name_cache}", children: [taxon]
-          ]
-        )
-      end
-    end
-
-    context "formats an incertae sedis genera list" do
-      let!(:taxon) { create :genus, subfamily: subfamily, incertae_sedis_in: 'subfamily' }
-
-      specify do
-        expect(described_class[subfamily]).to eq(
-          [
-            { label: "Genus <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
-          ]
-        )
-      end
-    end
-
-    context "when children are genera incertae sedis in Formicidae" do
+  describe "#call" do
+    context 'when taxon is a family' do
       let!(:family) { create :family }
-      let!(:taxon) { create :genus, incertae_sedis_in: 'family', subfamily: nil }
 
-      specify do
-        expect(described_class[family]).to eq(
-          [
-            { label: "Subfamily of Formicidae", children: [Subfamily.first] },
-            { label: "Genus <i>incertae sedis</i> in Formicidae", children: [taxon] }
-          ]
-        )
+      context "when children are genera incertae sedis in Formicidae" do
+        let!(:taxon) { create :genus, incertae_sedis_in: 'family', subfamily: nil }
+
+        specify do
+          expect(described_class[family]).to eq(
+            [
+              { label: "Subfamily of Formicidae", children: [Subfamily.first] },
+              { label: "Genus <i>incertae sedis</i> in Formicidae", children: [taxon] }
+            ]
+          )
+        end
       end
     end
-  end
 
-  describe "#collective_group_name_child_list" do
-    let!(:taxon) { create :genus, subfamily: subfamily, status: Status::COLLECTIVE_GROUP_NAME }
+    context 'when taxon is a subfamily' do
+      let!(:subfamily) { create :subfamily }
 
-    it "formats a list of collective group names" do
-      expect(described_class[subfamily]).to eq(
-        [
-          { label: "Collective group name in #{subfamily.name_cache}", children: [taxon] }
-        ]
-      )
+      context "when taxon has extant and exting tribes" do
+        let!(:taxon) { create :tribe, subfamily: subfamily }
+        let!(:fossil_taxon) { create :tribe, :fossil, subfamily: subfamily }
+
+        specify do
+          expect(described_class[subfamily]).to eq(
+            [
+              { label: "Tribe (extant) of #{subfamily.name_cache}", children: [taxon] },
+              { label: "Tribe (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
+            ]
+          )
+        end
+      end
+
+      context "when taxon has genera incertae sedis" do
+        let!(:taxon) { create :genus, subfamily: subfamily, incertae_sedis_in: 'subfamily' }
+
+        specify do
+          expect(described_class[subfamily]).to eq(
+            [
+              { label: "Genus <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
+            ]
+          )
+        end
+      end
+
+      context "when taxon has collective group names" do
+        let!(:taxon) { create :genus, subfamily: subfamily, status: Status::COLLECTIVE_GROUP_NAME }
+
+        specify do
+          expect(described_class[subfamily]).to eq(
+            [
+              { label: "Collective group name in #{subfamily.name_cache}", children: [taxon] }
+            ]
+          )
+        end
+      end
     end
   end
 end
