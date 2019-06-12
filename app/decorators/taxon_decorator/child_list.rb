@@ -38,39 +38,39 @@ class TaxonDecorator::ChildList
 
     attr_reader :taxon, :lists
 
-    def child_list_fossil_pairs query, conditions = {}
+    def child_list_fossil_pairs query, label_options = {}
       # HACK: This is Ruby's `#group_by`, not ActiveRecord's `#group`.
       both = query.valid.includes(:name).order_by_name.group_by(&:fossil).to_h
       extinct = both[true]
       extant = both[false]
       show_extinct_or_extant = extinct.present?
 
-      child_list(extant, show_extinct_or_extant, conditions.merge(fossil: false))
-      child_list(extinct, show_extinct_or_extant, conditions.merge(fossil: true))
+      child_list(extant, show_extinct_or_extant, label_options.merge(fossil: false))
+      child_list(extinct, show_extinct_or_extant, label_options.merge(fossil: true))
     end
 
-    def child_list children, show_extinct_or_extant, conditions = {}
+    def child_list children, show_extinct_or_extant, label_options = {}
       return if children.blank?
-      lists << { label: child_list_label(children, show_extinct_or_extant, conditions), children: children }
+      lists << { label: child_list_label(children, show_extinct_or_extant, label_options), children: children }
     end
 
-    def child_list_label children, show_extinct_or_extant, conditions
+    def child_list_label children, show_extinct_or_extant, label_options
       label = ''.html_safe
-      label << 'Hong (2002) ' if conditions[:hong]
+      label << 'Hong (2002) ' if label_options[:hong]
 
-      label << if conditions[:collective_group_names]
+      label << if label_options[:collective_group_names]
                  Status::COLLECTIVE_GROUP_NAME.pluralize(children.size).humanize
                else
                  children.first.rank.pluralize(children.size).titleize
                end
 
       if show_extinct_or_extant
-        label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
+        label << if label_options[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      label << if conditions[:incertae_sedis_in]
+      label << if label_options[:incertae_sedis_in]
                  ' <i>incertae sedis</i> in '.html_safe
-               elsif conditions[:collective_group_names]
+               elsif label_options[:collective_group_names]
                  ' in '
                else
                  ' of '
