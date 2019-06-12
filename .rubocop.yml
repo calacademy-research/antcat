@@ -42,6 +42,9 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Enabled: false
 
+Rails/Validation:
+  Enabled: false
+
 Layout/AlignArguments:
   Enabled: false
 
@@ -231,6 +234,9 @@ Style/NumericPredicate:
   Enabled: false
 
 Style/OneLineConditional:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
   Enabled: false
 
 Style/PerlBackrefs:

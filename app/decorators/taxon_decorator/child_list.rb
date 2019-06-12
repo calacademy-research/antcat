@@ -1,135 +1,81 @@
-# TODO make this just fetch the taxa, and render the HTML somewhere else.
-# TODO Some branches are unreachable because `taxon.respond_to?(children_selector)` is false.
+# TODO: Cleanup more. This is still the messiest code of AntCat.
 
 class TaxonDecorator::ChildList
-  include ActionView::Helpers
-  include ActionView::Context
   include Service
 
-  def initialize taxon, for_antweb: false
+  def initialize taxon
     @taxon = taxon
-    @for_antweb = for_antweb
+    @lists = []
   end
 
   def call
-    content = ''.html_safe
-
     if taxon.is_a?(Family)
-      content << child_lists_for_rank(:subfamilies)
+      child_list_fossil_pairs(taxon.subfamilies)
+      child_list_fossil_pairs(taxon.genera_incertae_sedis_in, incertae_sedis_in: true)
     end
 
     if taxon.is_a?(Subfamily)
-      content << child_lists_for_rank(:tribes)
+      child_list_fossil_pairs(taxon.tribes)
+
+      child_list_fossil_pairs(
+        taxon.genera_incertae_sedis_in.where(hong: false),
+        incertae_sedis_in: true
+      )
+
+      child_list_fossil_pairs(
+        taxon.genera_incertae_sedis_in.where(hong: true),
+        incertae_sedis_in: true,
+        hong: true
+      )
+
+      child_list(taxon.collective_group_names, false, collective_group_names: true)
     end
 
-    if taxon.is_a?(Subfamily) || taxon.is_a?(Family)
-      content << child_lists_for_rank(:genera_incertae_sedis_in)
-    end
-
-    content << collective_group_name_child_list if taxon.is_a?(Subfamily)
-
-    content
+    lists.compact
   end
 
   private
 
-    attr_reader :taxon
+    attr_reader :taxon, :lists
 
-    def child_lists_for_rank children_selector
-      return ''.html_safe unless taxon.send(children_selector)
-
-      if taxon.is_a?(Subfamily) && children_selector == :genera
-        # TODO this is never triggered since there is no `Subfamily#genera`,
-        # and `:genera` was replaced with `:genera_incertae_sedis_in`.
-        child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: false) +
-          child_list_fossil_pairs(children_selector, incertae_sedis_in: 'subfamily', hong: true)
-      else
-        child_list_fossil_pairs children_selector
-      end
-    end
-
-    def collective_group_name_child_list
-      child_list taxon.collective_group_names, false, collective_group_names: true
-    end
-
-    def child_list_fossil_pairs children_selector, conditions = {}
-      extant_conditions = conditions.merge fossil: false
-      extinct_conditions = conditions.merge fossil: true
-
-      both = child_list_query children_selector, conditions
-      extinct = both[true] || []
-      extant = both[false] || []
-      specify_extinct_or_extant = extinct.present?
-
-      child_list(extant, specify_extinct_or_extant, extant_conditions) +
-        child_list(extinct, specify_extinct_or_extant, extinct_conditions)
-    end
-
-    def child_list_query children_selector, conditions = {}
-      incertae_sedis_in = conditions[:incertae_sedis_in]
-
-      children = taxon.send children_selector
-
-      children = children.where(incertae_sedis_in: incertae_sedis_in) if incertae_sedis_in
-      children = children.where(hong: !!conditions[:hong]) if conditions.key? :hong
-
+    def child_list_fossil_pairs query, label_options = {}
       # HACK: This is Ruby's `#group_by`, not ActiveRecord's `#group`.
-      children.valid.includes(:name).order_by_name.group_by(&:fossil).to_h
+      both = query.valid.includes(:name).order_by_name.group_by(&:fossil).to_h
+      extinct = both[true]
+      extant = both[false]
+      show_extinct_or_extant = extinct.present?
+
+      child_list(extant, show_extinct_or_extant, label_options.merge(fossil: false))
+      child_list(extinct, show_extinct_or_extant, label_options.merge(fossil: true))
     end
 
-    def child_list children, specify_extinct_or_extant, conditions = {}
-      return ''.html_safe if children.blank?
-
-      label = child_list_label children, specify_extinct_or_extant, conditions
-      content_tag :div do
-        content = ''.html_safe
-        content << content_tag(:span, label, class: 'caption')
-        content << ': '
-        content << child_list_items(children)
-        content << '.'
-      end
+    def child_list children, show_extinct_or_extant, label_options = {}
+      return if children.blank?
+      lists << { label: child_list_label(children, show_extinct_or_extant, label_options), children: children }
     end
 
-    def child_list_label children, specify_extinct_or_extant, conditions
+    def child_list_label children, show_extinct_or_extant, label_options
       label = ''.html_safe
-      label << 'Hong (2002) ' if conditions[:hong]
+      label << 'Hong (2002) ' if label_options[:hong]
 
-      label << if conditions[:collective_group_names]
+      label << if label_options[:collective_group_names]
                  Status::COLLECTIVE_GROUP_NAME.pluralize(children.size).humanize
                else
                  children.first.rank.pluralize(children.size).titleize
                end
 
-      if specify_extinct_or_extant
-        label << if conditions[:fossil] then ' (extinct)' else ' (extant)' end
+      if show_extinct_or_extant
+        label << if label_options[:fossil] then ' (extinct)' else ' (extant)' end
       end
 
-      label << if conditions[:incertae_sedis_in] || formicidae_incertae_sedis_genera?(taxon, children)
+      label << if label_options[:incertae_sedis_in]
                  ' <i>incertae sedis</i> in '.html_safe
-               elsif conditions[:collective_group_names]
+               elsif label_options[:collective_group_names]
                  ' in '
                else
                  ' of '
                end
 
-      label << content_tag(:span, taxon.epithet_with_fossil)
-    end
-
-    # TODO see https://github.com/calacademy-research/antcat/issues/453
-    def formicidae_incertae_sedis_genera? taxon, children
-      taxon.is_a?(Family) && children.first.is_a?(Genus)
-    end
-
-    def child_list_items children
-      if for_antweb?
-        children.map { |child| Exporters::Antweb::Exporter.antcat_taxon_link_with_name child }
-      else
-        children.map { |child| child.decorate.link_to_taxon }
-      end.join(', ').html_safe
-    end
-
-    # TODO refactor more. Formerly based on `$use_ant_web_formatter`.
-    def for_antweb?
-      @for_antweb
+      label << taxon.epithet_with_fossil
     end
 end

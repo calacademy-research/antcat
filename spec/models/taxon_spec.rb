@@ -4,10 +4,6 @@ describe Taxon do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :protonym }
   it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
-  it do
-    expect(subject).to validate_inclusion_of(:biogeographic_region).
-      in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
-  end
 
   describe 'relations' do
     it { is_expected.to have_many(:history_items).dependent(:destroy) }

@@ -5,12 +5,13 @@ describe TaxonDecorator::TaxonStatus do
 
   describe "#call" do
     it "is html_safe" do
-      expect(create(:family).decorate.taxon_status).to be_html_safe
+      expect(build_stubbed(:family).decorate.taxon_status).to be_html_safe
     end
 
     context "when taxon is valid" do
+      let(:taxon) { build_stubbed :family }
+
       it "returns 'valid' if the status is valid" do
-        taxon = create :family
         expect(taxon.decorate.taxon_status).to eq 'valid'
       end
     end
@@ -23,10 +24,8 @@ describe TaxonDecorator::TaxonStatus do
       end
 
       context "when taxon has a `homonym_replaced_by`" do
-        let!(:homonym_replaced_by) { create :family }
-        let!(:taxon) do
-          create :family, :homonym, homonym_replaced_by: homonym_replaced_by
-        end
+        let!(:homonym_replaced_by) { build_stubbed :family }
+        let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
 
         specify do
           expect(taxon.decorate.taxon_status).
@@ -36,24 +35,21 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is unidentifiable" do
-      let!(:taxon) { create :family, :unidentifiable }
+      let!(:taxon) { build_stubbed :family, :unidentifiable }
 
       specify { expect(taxon.decorate.taxon_status).to eq "unidentifiable" }
     end
 
     context "when taxon is an unresolved homonym" do
-      let(:taxon) { create :family }
-
-      before { taxon.update! unresolved_homonym: true }
-
       context "when there is no senior synonym" do
+        let(:taxon) { build_stubbed :family, unresolved_homonym: true }
+
         specify { expect(taxon.decorate.taxon_status).to eq 'unresolved junior homonym' }
       end
 
       context "when there is a current valid taxon" do
-        let!(:senior) { create :genus }
-
-        before { taxon.update! current_valid_taxon: senior, status: Status::SYNONYM }
+        let(:senior) { build_stubbed :genus }
+        let(:taxon) { build_stubbed :family, :synonym, unresolved_homonym: true, current_valid_taxon: senior }
 
         specify do
           expect(taxon.decorate.taxon_status).
@@ -63,7 +59,7 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is a nomen nudum" do
-      let!(:taxon) { create :family, nomen_nudum: true }
+      let!(:taxon) { build_stubbed :family, nomen_nudum: true }
 
       specify { expect(taxon.decorate.taxon_status).to eq "<i>nomen nudum</i>" }
     end
@@ -121,7 +117,7 @@ describe TaxonDecorator::TaxonStatus do
             create :synonym, senior_synonym: other_senior, junior_synonym: junior
           end
 
-          it specify do
+          specify do
             expect(junior.decorate.taxon_status).
               to include %(junior synonym of current valid taxon #{taxon_link other_senior})
           end
@@ -138,31 +134,16 @@ describe TaxonDecorator::TaxonStatus do
     end
 
     context "when taxon is `invalid?`" do
-      let!(:taxon) { create :family, :excluded_from_formicidae }
+      let!(:taxon) { build_stubbed :family, :excluded_from_formicidae }
 
       specify { expect(taxon.decorate.taxon_status).to eq "excluded from Formicidae" }
     end
 
     context "when taxon is incertae sedis" do
-      let(:taxon) { create :genus, incertae_sedis_in: 'family' }
+      let(:taxon) { build_stubbed :genus, incertae_sedis_in: 'family' }
 
       specify do
         expect(taxon.decorate.taxon_status).to eq '<i>incertae sedis</i> in family, valid'
-      end
-    end
-  end
-
-  describe "#format_senior_synonym" do
-    context "when the senior synonym is itself invalid" do
-      subject { described_class.new(junior) }
-
-      let(:invalid_senior) { create :family, :homonym }
-      let(:junior) { create :family, :homonym }
-
-      before { create :synonym, junior_synonym: junior, senior_synonym: invalid_senior }
-
-      it "returns an empty string" do
-        expect(subject.send(:format_senior_synonym)).to eq ''
       end
     end
   end

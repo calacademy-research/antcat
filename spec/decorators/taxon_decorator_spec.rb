@@ -22,11 +22,25 @@ describe TaxonDecorator do
     end
   end
 
+  describe "#format_type_taxt" do
+    context 'when `type_taxt` starts with comma' do
+      let(:taxon) { build_stubbed :family, type_taxt: ', pizza' }
+
+      specify { expect(decorated.format_type_taxt).to eq ', pizza' }
+    end
+
+    context 'when `type_taxt` starts with comma' do
+      let(:taxon) { build_stubbed :family, type_taxt: 'pizza' }
+
+      specify { expect(decorated.format_type_taxt).to eq ' pizza' }
+    end
+  end
+
   describe "#link_to_antwiki" do
-    let(:taxon) { create :species }
+    let(:taxon) { build_stubbed :species }
 
     it "can link to species" do
-      name = taxon.name_cache.tr(' ', '_')
+      name = taxon.name.name.tr(' ', '_')
       expect(decorated.link_to_antwiki).to eq(
         %(<a class="external-link" href="http://www.antwiki.org/wiki/#{name}">AntWiki</a>)
       )

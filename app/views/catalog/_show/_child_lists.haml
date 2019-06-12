@@ -1,0 +1,6 @@
+-TaxonDecorator::ChildList[taxon].each do |child_list|
+  %div
+    %span.caption
+      =succeed ':' do
+        =child_list[:label]
+    =child_list[:children].map { |child| child.link_to_taxon }.join(', ').html_safe

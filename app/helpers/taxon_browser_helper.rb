@@ -23,11 +23,15 @@ module TaxonBrowserHelper
     links = []
 
     case selected
-    when Family, Subfamily
-      links << extra_tab_link(selected, "All genera", "all_genera_in_#{selected.rank}")
+    when Family
+      links << extra_tab_link(selected, "All genera", TaxonBrowser::Tab::ALL_GENERA_IN_FAMILY)
+      links << incertae_sedis_link(selected)
+    when Subfamily
+      links << extra_tab_link(selected, "All genera", TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY)
+      links << extra_tab_link(selected, "Without tribe", TaxonBrowser::Tab::WITHOUT_TRIBE)
       links << incertae_sedis_link(selected)
     when Genus
-      links << extra_tab_link(selected, "All taxa", "all_taxa_in_#{selected.rank}")
+      links << extra_tab_link(selected, "All taxa", TaxonBrowser::Tab::ALL_TAXA_IN_GENUS)
       links << subgenera_link(selected)
     end
 
@@ -46,7 +50,7 @@ module TaxonBrowserHelper
     # For example Lasius, http://localhost:3000/catalog/429161)
     def subgenera_link selected
       return unless selected.displayable_subgenera.exists?
-      extra_tab_link selected, "Subgenera", :subgenera_in_genus
+      extra_tab_link selected, "Subgenera", TaxonBrowser::Tab::SUBGENERA_IN_GENUS
     end
 
     # rubocop:disable Rails/HelperInstanceVariable

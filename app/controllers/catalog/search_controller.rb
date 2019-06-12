@@ -9,7 +9,7 @@ module Catalog
       return if not_searching_yet? # Just render the form.
 
       @taxa = Taxa::AdvancedSearch[advanced_search_params]
-      @is_author_search = is_author_search?
+      @is_author_search = author_search?
 
       respond_to do |format|
         format.html do
@@ -77,7 +77,7 @@ module Catalog
           :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong
       end
 
-      def is_author_search?
+      def author_search?
         params[:author_name].present? && no_matching_authors?(params[:author_name])
       end
 

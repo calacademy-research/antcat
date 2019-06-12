@@ -12,5 +12,5 @@
       -else
         -taxon.children.includes(:name).order(status: :desc, name_cache: :asc).each do |child|
           %li
-            =child.decorate.link_to_taxon
+            =child.link_to_taxon
             =raw "(" + child.decorate.taxon_status + ")"

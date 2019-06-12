@@ -7,7 +7,6 @@ describe References::Search::Fulltext, :search do
         create :reference, citation_year: '1994'
         create :reference, citation_year: '1995'
         create :reference, citation_year: '1996a'
-        create :reference, citation_year: '1997'
         create :reference, citation_year: '1998'
         Sunspot.commit
       end

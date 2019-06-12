@@ -36,8 +36,8 @@ module TaxonBrowser
 
       def default_or_display display
         case @taxon
-        when Subfamily then :all_genera_in_subfamily if display.blank?
-        when Subgenus  then :subgenera_in_parent_genus
+        when Subfamily then TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY if display.blank?
+        when Subgenus  then TaxonBrowser::Tab::SUBGENERA_IN_PARENT_GENUS
         end || display
       end
 
