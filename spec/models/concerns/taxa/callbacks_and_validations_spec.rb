@@ -144,54 +144,38 @@ describe Taxa::CallbacksAndValidations do
 
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
+      [
+        Status::VALID,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
 
-      context 'when status is "valid"' do
-        let(:status) { Status::VALID }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
-        end
-      end
-
-      context 'when status is "unavailable"' do
-        let(:status) { Status::UNAVAILABLE }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+          specify do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for #{Status.plural(status)} taxa"])
+          end
         end
       end
     end
 
     context "when taxon has no `#current_valid_taxon`" do
-      let(:taxon) { build :family, status: status }
+      [
+        Status::SYNONYM,
+        Status::ORIGINAL_COMBINATION,
+        Status::OBSOLETE_COMBINATION,
+        Status::UNAVAILABLE_MISSPELLING,
+        Status::UNAVAILABLE_UNCATEGORIZED
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status }
 
-      context 'when status is "synonym"' do
-        let(:status) { Status::SYNONYM }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for synonyms"])
-        end
-      end
-
-      context 'when status is "original_combination"' do
-        let(:status) { Status::ORIGINAL_COMBINATION }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for original combinations"])
-        end
-      end
-
-      context 'when status is "obsolete_combination"' do
-        let(:status) { Status::OBSOLETE_COMBINATION }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for obsolete combinations"])
+          specify do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["must be set for #{Status.plural(status)}"])
+          end
         end
       end
     end
