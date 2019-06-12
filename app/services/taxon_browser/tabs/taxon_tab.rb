@@ -38,7 +38,7 @@ module TaxonBrowser::Tabs
       # "Lasius species > Lasius subgenera" to "Lasius > Lasius subgenera".
       def show_only_genus_name?
         return unless @tab_taxon.is_a? Genus
-        display.in? [:all_taxa_in_genus, :subgenera_in_genus, :subgenera_in_parent_genus]
+        display.in? [ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS]
       end
   end
 end

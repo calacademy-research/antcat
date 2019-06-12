@@ -10,16 +10,16 @@ module TaxonBrowser::Tabs
 
       title, taxa =
         case display
-        when :incertae_sedis_in_family, :incertae_sedis_in_subfamily
+        when INCERTAE_SEDIS_IN_FAMILY, INCERTAE_SEDIS_IN_SUBFAMILY
           ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
-        when :without_tribe
+        when WITHOUT_TRIBE
           ["#{name_html} genera without tribe", taxon.genera_without_tribe]
 
-        when :all_genera_in_family, :all_genera_in_subfamily
+        when ALL_GENERA_IN_FAMILY, ALL_GENERA_IN_SUBFAMILY
           ["All #{name_html} genera", taxon.all_displayable_genera]
 
-        when :all_taxa_in_genus
+        when ALL_TAXA_IN_GENUS
           ["All #{name_html} taxa", taxon.displayable_child_taxa]
 
         # Special case because:
@@ -27,11 +27,11 @@ module TaxonBrowser::Tabs
         #   2) There are no taxa with a `subgenus_id` as of 2016.
         #
         # The catalog page in this case will be that of a genus.
-        when :subgenera_in_genus
+        when SUBGENERA_IN_GENUS
           ["#{name_html} subgenera", taxon.displayable_subgenera]
 
         # Like above, but for subgenus catalog pages.
-        when :subgenera_in_parent_genus
+        when SUBGENERA_IN_PARENT_GENUS
           ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.displayable_subgenera]
 
         else
