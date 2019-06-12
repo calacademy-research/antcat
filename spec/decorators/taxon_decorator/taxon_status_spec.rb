@@ -117,7 +117,7 @@ describe TaxonDecorator::TaxonStatus do
             create :synonym, senior_synonym: other_senior, junior_synonym: junior
           end
 
-          it specify do
+          specify do
             expect(junior.decorate.taxon_status).
               to include %(junior synonym of current valid taxon #{taxon_link other_senior})
           end
