@@ -124,6 +124,12 @@ class Taxon < ApplicationRecord
     end
   end
 
+  # PERFORMANCE: This was duplicated from `TaxonDecorator` because decorating many records is not cheap.
+  # TODO: See what we want to do here.
+  def link_to_taxon
+    %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
+  end
+
   def authorship_reference
     protonym.authorship.reference
   end

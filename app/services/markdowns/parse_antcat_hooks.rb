@@ -50,7 +50,7 @@ module Markdowns
           taxon = taxa[$~[:id].to_i]
 
           if taxon
-            taxon.decorate.link_to_taxon
+            taxon.link_to_taxon
           else
             broken_markdown_link "taxon", $~[:id]
           end

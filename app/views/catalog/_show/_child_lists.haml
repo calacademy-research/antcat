@@ -3,4 +3,4 @@
     %span.caption
       =succeed ':' do
         =child_list[:label]
-    =child_list[:children].map { |child| child.decorate.link_to_taxon }.join(', ').html_safe
+    =child_list[:children].map { |child| child.link_to_taxon }.join(', ').html_safe

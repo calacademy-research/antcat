@@ -4,7 +4,7 @@ crumb :catalog do
 end
 
   crumb :family do |_taxon|
-    link Family.first.decorate.link_to_taxon
+    link Family.first.link_to_taxon
     parent :catalog
   end
 
@@ -12,7 +12,7 @@ end
   ranks.each do |rank|
     crumb rank do |taxon|
       if taxon.name
-        link taxon.decorate.link_to_taxon
+        link taxon.link_to_taxon
       else
         link '[deleted name]'
       end

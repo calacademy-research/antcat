@@ -5,7 +5,7 @@
   %td
     =change.format_adder_name
     -if change.change_type != 'delete' && taxon
-      =taxon.decorate.link_to_taxon
+      =taxon.link_to_taxon
     -else
       =taxon.name_html_cache.html_safe
   %td.no-wrap=link_to change.format_created_at, change

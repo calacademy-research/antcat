@@ -68,8 +68,8 @@
   %ul.junior-synonyms.small-margin-bottom
     -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
       %li
-        =synonym.decorate.link_to_taxon
-        =synonym.decorate.author_citation
+        =synonym.link_to_taxon
+        =synonym.author_citation
 
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon

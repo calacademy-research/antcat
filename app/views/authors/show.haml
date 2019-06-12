@@ -30,7 +30,7 @@
         %th Status
       -@taxa.each do |taxon|
         %tr
-          %td=taxon.decorate.link_to_taxon
+          %td=taxon.link_to_taxon
           %td=taxon.authorship_reference.decorate.expandable_reference
           %td=taxon.rank.capitalize
           %td=taxon.status.capitalize
