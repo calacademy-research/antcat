@@ -1,5 +1,5 @@
 class SynonymsController < ApplicationController
-  before_action :ensure_can_edit_catalog
+  before_action :ensure_user_is_editor
   before_action :set_synonym, only: [:destroy]
   before_action :set_taxon, only: [:create]
 

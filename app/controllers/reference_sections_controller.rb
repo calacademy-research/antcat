@@ -1,6 +1,6 @@
 class ReferenceSectionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
-  before_action :ensure_can_edit_catalog, only: [:destroy]
+  before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference_section, only: [:edit, :update, :destroy]
 
   def index

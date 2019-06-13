@@ -1,5 +1,5 @@
 class ChangesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:index, :show, :unreviewed]
+  before_action :ensure_user_is_editor, except: [:index, :show, :unreviewed]
   before_action :authenticate_superadmin, only: :approve_all
   before_action :set_change, only: [:show, :approve]
 

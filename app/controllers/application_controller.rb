@@ -67,8 +67,7 @@ class ApplicationController < ActionController::Base
       end
     end
 
-    # TODO: Rename to `ensure_user_is_editor`?
-    def ensure_can_edit_catalog
+    def ensure_user_is_editor
       authenticate_user!
       raise NotAuthorized, "editor" unless user_is_editor?
     end

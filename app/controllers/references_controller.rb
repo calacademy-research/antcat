@@ -2,7 +2,7 @@ class ReferencesController < ApplicationController
   SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
-  before_action :ensure_can_edit_catalog, only: [:destroy]
+  before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index

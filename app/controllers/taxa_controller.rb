@@ -2,7 +2,7 @@
 # `CatalogController` is responsible for showing taxon pages to users.
 
 class TaxaController < ApplicationController
-  before_action :ensure_can_edit_catalog
+  before_action :ensure_user_is_editor
   before_action :set_taxon, only: [:edit, :update, :destroy]
 
   def new

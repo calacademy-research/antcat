@@ -1,5 +1,5 @@
 class NamesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:show]
+  before_action :ensure_user_is_editor, except: [:show]
   before_action :set_name, only: [:show, :edit, :update, :destroy]
 
   def show
