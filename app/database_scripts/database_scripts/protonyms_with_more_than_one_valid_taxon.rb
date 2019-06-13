@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ProtonymsWithMoreThanOneValidTaxon < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Protonym.joins(:taxa).where(taxa: { status: Status::VALID }).group(:protonym_id).having('COUNT(protonym_id) > 1')
     end

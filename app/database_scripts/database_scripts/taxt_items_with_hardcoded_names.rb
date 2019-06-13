@@ -1,8 +1,5 @@
 module DatabaseScripts
   class TaxtItemsWithHardcodedNames < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       models_and_ids = {}
 

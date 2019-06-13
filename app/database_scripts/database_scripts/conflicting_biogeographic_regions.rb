@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ConflictingBiogeographicRegions < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       conflicts = Protonym.joins(:taxa).group(:protonym_id).having('COUNT(DISTINCT biogeographic_region) > 1')
       Protonym.where(id: conflicts.select(:protonym_id))

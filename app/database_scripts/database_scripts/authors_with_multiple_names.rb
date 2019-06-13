@@ -1,8 +1,5 @@
 module DatabaseScripts
   class AuthorsWithMultipleNames < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Author.where(id: AuthorName.group(:author_id).having("COUNT(id) > 1").select(:author_id))
     end

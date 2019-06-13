@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ValidSpeciesList < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     include DatabaseScripts::Renderers::AsCSV
 
     HEADERS = [:subfamily, :genus, :species, :author_year,

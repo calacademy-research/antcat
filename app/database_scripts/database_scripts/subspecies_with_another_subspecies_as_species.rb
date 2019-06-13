@@ -1,8 +1,5 @@
 module DatabaseScripts
   class SubspeciesWithAnotherSubspeciesAsSpecies < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Subspecies.where(species_id: Subspecies.select(:id))
     end

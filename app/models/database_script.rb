@@ -20,6 +20,11 @@ class DatabaseScript
 
   ScriptNotFound = Class.new StandardError
 
+  def self.inherited(subclass)
+    subclass.include Rails.application.routes.url_helpers
+    subclass.include ActionView::Helpers::UrlHelper
+  end
+
   def self.new_from_filename_without_extension basename
     script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
     raise ScriptNotFound unless script_class

@@ -1,8 +1,5 @@
 module DatabaseScripts
   class FamilyOrSubfamilyNames < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Name.where(type: 'FamilyOrSubfamilyName')
     end

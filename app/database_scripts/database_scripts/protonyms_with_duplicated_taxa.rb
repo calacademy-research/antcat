@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ProtonymsWithDuplicatedTaxa < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Protonym.joins(:taxa).group('protonyms.id, taxa.name_cache').having('COUNT(*) > 1')
     end
