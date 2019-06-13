@@ -22,7 +22,7 @@ class ActivitiesController < ApplicationController
     User
   ]
 
-  before_action :authenticate_superadmin, only: :destroy
+  before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_activity, only: :destroy
 
   has_filters(
@@ -74,7 +74,7 @@ class ActivitiesController < ApplicationController
     def page
       return params[:page] unless params[:id]
 
-      activity = Activity.find params[:id]
+      activity = Activity.find(params[:id])
       # `@page` is also included in the views to make the delete button return to the previous page.
       @page = activity.pagination_page(unpaginated_activities)
     end

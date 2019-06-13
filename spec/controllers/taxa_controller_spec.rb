@@ -71,9 +71,6 @@ describe TaxaController do
               hong: true,
               headline_notes_taxt: "headline notes taxt",
               type_taxt: "type taxt",
-              primary_type_information: "primary type information",
-              secondary_type_information: "secondary type information",
-              type_notes: "type notes",
               type_taxon_id: type_taxon.id
             )
           end
@@ -92,9 +89,6 @@ describe TaxaController do
             expect(taxon.hong).to eq taxon_params[:hong]
             expect(taxon.headline_notes_taxt).to eq taxon_params[:headline_notes_taxt]
             expect(taxon.type_taxt).to eq taxon_params[:type_taxt]
-            expect(taxon.primary_type_information).to eq taxon_params[:primary_type_information]
-            expect(taxon.secondary_type_information).to eq taxon_params[:secondary_type_information]
-            expect(taxon.type_notes).to eq taxon_params[:type_notes]
             expect(taxon.type_taxon_id).to eq taxon_params[:type_taxon_id]
           end
         end
@@ -106,6 +100,9 @@ describe TaxaController do
                 fossil: true,
                 sic: true,
                 locality: "San Francisco",
+                primary_type_information_taxt: "primary type information",
+                secondary_type_information_taxt: "secondary type information",
+                type_notes_taxt: "type notes",
                 authorship_attributes: {
                   pages: "21 pp.",
                   forms: "w.",
@@ -115,7 +112,7 @@ describe TaxaController do
             )
           end
 
-          specify do
+          it 'sets protonym_attributes' do
             post :create, params: genus_params.merge(taxon: taxon_params)
 
             protonym = Taxon.last.protonym
@@ -124,9 +121,12 @@ describe TaxaController do
             expect(protonym.fossil).to eq protonym_attributes[:fossil]
             expect(protonym.sic).to eq protonym_attributes[:sic]
             expect(protonym.locality).to eq protonym_attributes[:locality]
+            expect(protonym.primary_type_information_taxt).to eq protonym_attributes[:primary_type_information_taxt]
+            expect(protonym.secondary_type_information_taxt).to eq protonym_attributes[:secondary_type_information_taxt]
+            expect(protonym.type_notes_taxt).to eq protonym_attributes[:type_notes_taxt]
           end
 
-          specify do
+          it 'sets authorship_attributes' do
             post :create, params: genus_params.merge(taxon: taxon_params)
 
             authorship = Taxon.last.protonym.authorship

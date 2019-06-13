@@ -32,7 +32,7 @@ class ProtonymsController < ApplicationController
   end
 
   def update
-    if @protonym.update protonym_params
+    if @protonym.update(protonym_params)
       @protonym.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
     else
@@ -80,6 +80,9 @@ class ProtonymsController < ApplicationController
         :sic,
         :locality,
         :name_id,
+        :primary_type_information_taxt,
+        :secondary_type_information_taxt,
+        :type_notes_taxt,
         {
           authorship_attributes: [
             :id,

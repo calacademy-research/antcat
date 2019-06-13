@@ -1,6 +1,6 @@
 class ChangesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:index, :show, :unreviewed]
-  before_action :authenticate_superadmin, only: :approve_all
+  before_action :ensure_user_is_editor, except: [:index, :show, :unreviewed]
+  before_action :ensure_user_is_superadmin, only: :approve_all
   before_action :set_change, only: [:show, :approve]
 
   def index
@@ -16,6 +16,7 @@ class ChangesController < ApplicationController
 
   def approve
     @change.approve current_user
+    @change.create_activity :approve_change
     redirect_back fallback_location: changes_path, notice: "Approved change."
   end
 
@@ -27,6 +28,6 @@ class ChangesController < ApplicationController
   private
 
     def set_change
-      @change = Change.find params[:id]
+      @change = Change.find(params[:id])
     end
 end

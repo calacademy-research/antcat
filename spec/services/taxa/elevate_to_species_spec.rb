@@ -69,9 +69,6 @@ describe Taxa::ElevateToSpecies do
             :ichnotaxon,
             :nomen_nudum,
             :biogeographic_region,
-            :primary_type_information,
-            :secondary_type_information,
-            :type_notes,
             :type_taxon
           ].each do |attribute|
             expect(new_species.send(attribute)).to eq subspecies.send(attribute)

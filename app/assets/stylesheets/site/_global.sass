@@ -47,7 +47,8 @@ th.no-wrap, td.no-wrap
 
 .with-gray-links
   a
-    color: $color_gray_text !important
+    color: $color_dark_gray_text !important
+    text-decoration: underline $color_gray_text dotted
 
 pre.wrapped
   white-space: pre-wrap
@@ -81,6 +82,10 @@ a.gray
 
 .show-on-hover
   display: none
+
+.pale-table
+  td, th
+    background-color: $color_pale
 
 table td.shrink
   max-width: 100%

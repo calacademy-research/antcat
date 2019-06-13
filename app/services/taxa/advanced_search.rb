@@ -54,9 +54,9 @@ module Taxa
 
         search_term = "%#{params[:type_information]}%"
         query = query.where(<<-SQL, search_term: search_term) if params[:type_information]
-          primary_type_information LIKE :search_term
-            OR secondary_type_information LIKE :search_term
-            OR type_notes LIKE :search_term
+          primary_type_information_taxt LIKE :search_term
+            OR secondary_type_information_taxt LIKE :search_term
+            OR type_notes_taxt LIKE :search_term
         SQL
 
         search_term = "%#{params[:name]}%"

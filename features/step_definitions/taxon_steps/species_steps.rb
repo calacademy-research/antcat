@@ -28,5 +28,6 @@ Given("there is a species {string} which is a junior synonym of {string}") do |j
 end
 
 Given("there is a species with primary type information {string}") do |primary_type_information|
-  create :species, primary_type_information: primary_type_information
+  protonym = create :protonym, primary_type_information_taxt: primary_type_information
+  create :species, protonym: protonym
 end

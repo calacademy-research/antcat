@@ -36,7 +36,7 @@ class Exporters::Antweb::ExportHeadline
     end
 
     def type_fields
-      Exporters::Antweb::TypeFields[taxon]
+      Exporters::Antweb::TypeFields[taxon.protonym]
     end
 
     def headline_notes

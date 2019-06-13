@@ -27,6 +27,9 @@ describe ProtonymsController do
         fossil: false,
         sic: false,
         locality: 'Africa',
+        primary_type_information_taxt: "primary type information",
+        secondary_type_information_taxt: "secondary type information",
+        type_notes_taxt: "type notes",
         name_attributes: {
           id: create(:genus_name).id
         },
@@ -41,6 +44,7 @@ describe ProtonymsController do
 
     before { sign_in create(:user, :helper) }
 
+    # rubocop:disable RSpec/MultipleExpectations
     it 'creates a protonym' do
       expect { post(:create, params: { protonym: protonym_params }) }.to change { Protonym.count }.by(1)
 
@@ -48,6 +52,9 @@ describe ProtonymsController do
       expect(protonym.fossil).to eq protonym_params[:fossil]
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.locality).to eq protonym_params[:locality]
+      expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
+      expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
+      expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
 
       authorship = protonym.authorship
       expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
@@ -55,6 +62,7 @@ describe ProtonymsController do
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
+    # rubocop:enable RSpec/MultipleExpectations
 
     it 'creates an activity' do
       expect { post(:create, params: { protonym: protonym_params, edit_summary: 'Split protonym' }) }.
@@ -73,11 +81,15 @@ describe ProtonymsController do
 
     before { sign_in create(:user, :helper) }
 
+    # rubocop:disable RSpec/MultipleExpectations
     it 'updates the protonym' do
       protonym_params = {
         fossil: false,
         sic: false,
         locality: 'Africa',
+        primary_type_information_taxt: "primary type information",
+        secondary_type_information_taxt: "secondary type information",
+        type_notes_taxt: "type notes",
         name_attributes: {
           id: create(:genus_name).id
         },
@@ -95,6 +107,9 @@ describe ProtonymsController do
       expect(protonym.fossil).to eq protonym_params[:fossil]
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.locality).to eq protonym_params[:locality]
+      expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
+      expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
+      expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
 
       authorship = protonym.authorship
       expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
@@ -102,6 +117,7 @@ describe ProtonymsController do
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
+    # rubocop:enable RSpec/MultipleExpectations
 
     it 'updates the authorship in place without creating a new record' do
       new_pages = '99'

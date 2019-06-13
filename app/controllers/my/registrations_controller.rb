@@ -21,7 +21,7 @@ module My
           params.delete(:current_password)
         end
 
-        resource.update params
+        resource.update(params)
       end
 
       # TODO: Create welcome page for new contributors.

@@ -30,8 +30,6 @@ module Taxa::CallbacksAndValidations
     strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
       :biogeographic_region], replace_newlines: true
 
-    strip_attributes only: [:primary_type_information, :secondary_type_information, :type_notes]
-
     # NOTE: Not private, see https://github.com/gtd/validation_scopes#dont-use-private-methods
     def check_if_in_database_scripts_results
       Taxa::CheckIfInDatabaseResults[self]

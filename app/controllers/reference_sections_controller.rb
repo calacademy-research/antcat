@@ -1,6 +1,6 @@
 class ReferenceSectionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
-  before_action :ensure_can_edit_catalog, only: [:destroy]
+  before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference_section, only: [:edit, :update, :destroy]
 
   def index
@@ -15,14 +15,14 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def new
-    @item = ReferenceSection.new taxon_id: params[:taxa_id]
+    @item = ReferenceSection.new(taxon_id: params[:taxa_id])
   end
 
   def edit
   end
 
   def update
-    updated = @item.update reference_section_params
+    updated = @item.update(reference_section_params)
 
     if updated
       @item.create_activity :update, edit_summary: params[:edit_summary]
@@ -41,7 +41,7 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def create
-    @item = ReferenceSection.new reference_section_params
+    @item = ReferenceSection.new(reference_section_params)
     @item.taxon_id = params[:taxa_id]
 
     if @item.save
@@ -62,7 +62,7 @@ class ReferenceSectionsController < ApplicationController
   private
 
     def set_reference_section
-      @item = ReferenceSection.find params[:id]
+      @item = ReferenceSection.find(params[:id])
     end
 
     def search_params

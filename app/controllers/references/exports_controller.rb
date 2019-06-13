@@ -34,7 +34,7 @@ module References
     private
 
       def set_reference
-        @reference = Reference.find params[:id]
+        @reference = Reference.find(params[:id])
       end
 
       def all_references_for_endnote

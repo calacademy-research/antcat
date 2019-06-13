@@ -19,9 +19,6 @@ describe Taxa::CopyAttributes do
         "ichnotaxon" => taxon.ichnotaxon,
         "nomen_nudum" => taxon.nomen_nudum,
         "biogeographic_region" => taxon.biogeographic_region,
-        "primary_type_information" => taxon.primary_type_information,
-        "secondary_type_information" => taxon.secondary_type_information,
-        "type_notes" => taxon.type_notes,
         "type_taxon_id" => taxon.type_taxon_id
       })
     end

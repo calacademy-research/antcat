@@ -28,7 +28,7 @@ module EditorsPanels
       Tooltip
     ]
 
-    before_action :ensure_can_edit_catalog
+    before_action :ensure_user_is_editor
 
     has_filters(
       whodunnit: {
@@ -61,7 +61,7 @@ module EditorsPanels
     end
 
     def show
-      @version = PaperTrail::Version.without_user_versions.find params[:id]
+      @version = PaperTrail::Version.without_user_versions.find(params[:id])
     end
 
     private

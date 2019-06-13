@@ -3,9 +3,7 @@ class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :destroy]
 
   def index
-    @authors = Author.sorted_by_name.
-      paginate(page: params[:page], per_page: 60).
-      preload(:names)
+    @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60).preload(:names)
   end
 
   def show
@@ -35,6 +33,6 @@ class AuthorsController < ApplicationController
   private
 
     def set_author
-      @author = Author.find params[:id]
+      @author = Author.find(params[:id])
     end
 end

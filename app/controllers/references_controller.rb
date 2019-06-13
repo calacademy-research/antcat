@@ -2,7 +2,7 @@ class ReferencesController < ApplicationController
   SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
-  before_action :ensure_can_edit_catalog, only: [:destroy]
+  before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -21,7 +21,7 @@ class ReferencesController < ApplicationController
         nesting_reference_id: params[:nesting_reference_id]
       )
     elsif params[:reference_to_copy]
-      reference_to_copy = Reference.find params[:reference_to_copy]
+      reference_to_copy = Reference.find(params[:reference_to_copy])
       @reference = References::NewFromCopy[reference_to_copy]
     else
       @reference = ArticleReference.new
@@ -130,6 +130,6 @@ class ReferencesController < ApplicationController
     end
 
     def set_reference
-      @reference = Reference.find params[:id]
+      @reference = Reference.find(params[:id])
     end
 end

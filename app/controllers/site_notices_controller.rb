@@ -1,7 +1,7 @@
 class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
-  before_action :ensure_can_edit_catalog, except: [:index, :show, :mark_all_as_read]
-  before_action :authenticate_superadmin, only: :destroy
+  before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]
+  before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_site_notice, only: [:show, :edit, :update, :destroy]
   before_action :mark_as_read, only: :show
 
@@ -21,7 +21,7 @@ class SiteNoticesController < ApplicationController
   end
 
   def create
-    @site_notice = SiteNotice.new site_notice_params
+    @site_notice = SiteNotice.new(site_notice_params)
     @site_notice.user = current_user
 
     if @site_notice.save
@@ -33,7 +33,7 @@ class SiteNoticesController < ApplicationController
   end
 
   def update
-    if @site_notice.update site_notice_params
+    if @site_notice.update(site_notice_params)
       @site_notice.create_activity :update
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
@@ -60,7 +60,7 @@ class SiteNoticesController < ApplicationController
     end
 
     def site_notice_params
-      params.require(:site_notice).permit :title, :message
+      params.require(:site_notice).permit(:title, :message)
     end
 
     def mark_as_read
