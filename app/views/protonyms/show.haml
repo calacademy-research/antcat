@@ -28,6 +28,15 @@
           %th Locality
           %td=@protonym.decorate.format_locality
         %tr
+          %th Primary type information
+          %td=add_period_if_necessary ::Types::FormatTypeField[@protonym.primary_type_information_taxt]
+        %tr
+          %th Secondary type information
+          %td=add_period_if_necessary ::Types::FormatTypeField[@protonym.secondary_type_information_taxt]
+        %tr
+          %th Type notes
+          %td=add_period_if_necessary ::Types::FormatTypeField[@protonym.type_notes_taxt]
+        %tr
           %th Notes
           %td=or_dash TaxtPresenter[@protonym.authorship.notes_taxt].to_html
 

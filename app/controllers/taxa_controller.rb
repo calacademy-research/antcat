@@ -83,6 +83,9 @@ class TaxaController < ApplicationController
           protonym_attributes: [
             :fossil,
             :sic,
+            :primary_type_information_taxt,
+            :secondary_type_information_taxt,
+            :type_notes_taxt,
             :locality,
             :name_id,
             :id,
@@ -92,10 +95,7 @@ class TaxaController < ApplicationController
         },
         :type_taxon_id,
         :type_taxt,
-        :biogeographic_region,
-        :primary_type_information,
-        :secondary_type_information,
-        :type_notes
+        :biogeographic_region
       )
     end
 

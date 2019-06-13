@@ -44,9 +44,6 @@ module Taxa
           :ichnotaxon,
           :nomen_nudum,
           :biogeographic_region,
-          :primary_type_information,
-          :secondary_type_information,
-          :type_notes,
           :type_taxon_id
         ]
       end

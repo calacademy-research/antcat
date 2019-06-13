@@ -3,16 +3,6 @@
   %table.unstriped
     -if taxon.is_a? SpeciesGroupTaxon
       %tr
-        %td=form.label :primary_type_information
-        %td=render 'shared/taxt_editor/template', name: 'taxon[primary_type_information]', content: taxon.primary_type_information, id: :taxon_primary_type_information
-      %tr
-        %td.shrink=form.label :secondary_type_information
-        %td=render 'shared/taxt_editor/template', name: 'taxon[secondary_type_information]', content: taxon.secondary_type_information, id: :taxon_secondary_type_information
-      %tr
-        %td=form.label :type_notes
-        %td=render 'shared/taxt_editor/template', name: 'taxon[type_notes]', content: taxon.type_notes, id: :taxon_type_notes
-
-      %tr
         %td
           =form.label :biogeographic_region do
             Biogeographic region

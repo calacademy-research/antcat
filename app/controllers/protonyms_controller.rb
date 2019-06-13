@@ -80,6 +80,9 @@ class ProtonymsController < ApplicationController
         :sic,
         :locality,
         :name_id,
+        :primary_type_information_taxt,
+        :secondary_type_information_taxt,
+        :type_notes_taxt,
         {
           authorship_attributes: [
             :id,

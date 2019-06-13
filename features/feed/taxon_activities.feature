@@ -28,8 +28,7 @@ Feature: Feed (taxa)
   Scenario: Edited taxon (with edit summary)
     Given there is a subfamily "Antcatinae"
 
-    When I go to the catalog page for "Antcatinae"
-    And I follow "Edit"
+    When I go to the edit page for "Antcatinae"
     And I fill in "edit_summary" with "fix typo"
     And I save the taxon form
     And I wait
