@@ -11,6 +11,24 @@
 =enable_tooltips
 =render "shared/default_reference"
 
+-if protonym.taxa.present?
+  .callout.primary.margin-bottom.small-12.columns
+    %h5
+      =antcat_icon 'info'
+      Taxa belonging to this protonym
+    %table.pale-table
+      %thead
+        %th Taxon
+        %th Authorship
+        %th Rank
+        %th Status
+      -protonym.taxa.each do |taxon|
+        %tr
+          %td=taxon.link_to_taxon
+          %td=taxon.authorship_reference.decorate.expandable_reference
+          %td=taxon.rank.capitalize
+          %td=taxon.status.capitalize
+
 =form_for protonym do |f|
   =render 'shared/errors_for', resource: protonym
   %table.unstriped

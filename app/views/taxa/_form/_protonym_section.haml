@@ -3,6 +3,8 @@
     Protonym:
     -if taxon.persisted?
       =link_to taxon.protonym.decorate.format_name, taxon.protonym
+      .right
+        =link_to 'Edit', edit_protonym_path(taxon.protonym), class: 'btn-normal btn-tiny jquery-tooltip', title: "Note: Protonyms may be shared and must be edited in a different form. Please save your changes first if you would like to keep them."
     -else
       Select existing or create new
 
@@ -11,6 +13,31 @@
       %tr
         %td=form.label :protonym
         %td=form.protonym_select :protonym
+
+    -protonym = taxon.protonym
+    %table.table.unstriped.gray-text.with-gray-links#existing-protonym
+      %tbody
+        %tr
+          %td Authorship
+          %td=protonym.authorship.reference.decorate.expandable_reference
+        %tr
+          %td Pages and forms
+          %td=protonym.decorate.format_pages_and_forms
+        %tr
+          %td Locality
+          %td=protonym.decorate.format_locality
+        %tr
+          %td Primary type information
+          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.primary_type_information_taxt]
+        %tr
+          %td Secondary type information
+          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+        %tr
+          %td Type notes
+          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
+        %tr
+          %td Notes
+          %td=or_dash TaxtPresenter[protonym.authorship.notes_taxt].to_html
   -else
     %h5.callout-header Existing protonym (leave blank if you are creating a new protonym)
     %table.unstriped

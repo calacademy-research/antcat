@@ -20,6 +20,9 @@
 .headline
   %span.name
     =link_to taxon.protonym.decorate.format_name, taxon.protonym
+  -if user_is_at_least_helper?
+    %span.show-on-hover
+      =link_to "Edit", edit_protonym_path(taxon.protonym), class: "btn-normal btn-very-tiny"
   -if taxon.protonym.sic?
     [sic]
   =succeed ':' do
