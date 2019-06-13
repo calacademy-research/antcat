@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_superadmin, except: [:index, :show, :mentionables]
+  before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
   before_action :set_user, only: [:show, :edit, :update]
 
   def index

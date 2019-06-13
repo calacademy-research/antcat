@@ -1,6 +1,6 @@
 module References
   class ReviewsController < ApplicationController
-    before_action :authenticate_superadmin, only: :approve_all
+    before_action :ensure_user_is_superadmin, only: :approve_all
     before_action :ensure_user_is_editor
     before_action :set_reference, only: [:start, :finish, :restart]
 

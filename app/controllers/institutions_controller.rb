@@ -1,7 +1,7 @@
 class InstitutionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:new, :create]
   before_action :ensure_user_is_editor, only: [:edit, :update]
-  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :ensure_user_is_superadmin, only: [:destroy]
   before_action :set_institution, only: [:edit, :update, :destroy]
 
   def index

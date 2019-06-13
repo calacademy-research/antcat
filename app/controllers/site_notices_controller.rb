@@ -1,7 +1,7 @@
 class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]
-  before_action :authenticate_superadmin, only: :destroy
+  before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_site_notice, only: [:show, :edit, :update, :destroy]
   before_action :mark_as_read, only: :show
 

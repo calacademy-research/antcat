@@ -22,7 +22,7 @@ class ActivitiesController < ApplicationController
     User
   ]
 
-  before_action :authenticate_superadmin, only: :destroy
+  before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_activity, only: :destroy
 
   has_filters(

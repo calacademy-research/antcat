@@ -77,7 +77,7 @@ class ApplicationController < ActionController::Base
       raise NotAuthorized, "helper" unless user_is_at_least_helper?
     end
 
-    def authenticate_superadmin
+    def ensure_user_is_superadmin
       authenticate_user!
       raise NotAuthorized, "superadmin" unless user_is_superadmin?
     end
