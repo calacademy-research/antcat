@@ -2,8 +2,8 @@ class Exporters::Antweb::TypeFields
   include ApplicationHelper
   include Service
 
-  def initialize taxon
-    @taxon = taxon
+  def initialize protonym
+    @protonym = protonym
   end
 
   def call
@@ -12,25 +12,27 @@ class Exporters::Antweb::TypeFields
 
   private
 
-    attr_reader :taxon
+    attr_reader :protonym
+
+    delegate :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt, to: :protonym
 
     def formatted_type_fields
       [primary_type_information, secondary_type_information, type_notes]
     end
 
     def primary_type_information
-      return unless taxon.primary_type_information
-      add_period_if_necessary "Primary type information: #{detax(taxon.primary_type_information)}"
+      return unless primary_type_information_taxt
+      add_period_if_necessary "Primary type information: #{detax(primary_type_information_taxt)}"
     end
 
     def secondary_type_information
-      return unless taxon.secondary_type_information
-      add_period_if_necessary "Secondary type information: #{detax(taxon.secondary_type_information)}"
+      return unless secondary_type_information_taxt
+      add_period_if_necessary "Secondary type information: #{detax(secondary_type_information_taxt)}"
     end
 
     def type_notes
-      return unless taxon.type_notes
-      add_period_if_necessary "Type notes: #{detax(taxon.type_notes)}"
+      return unless type_notes_taxt
+      add_period_if_necessary "Type notes: #{detax(type_notes_taxt)}"
     end
 
     def detax content

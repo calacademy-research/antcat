@@ -67,8 +67,18 @@
       %td=f.text_field :locality, class: 'locality-autocomplete-js-hook'
 
     %tr
+      %td=f.label :primary_type_information
+      %td=render 'shared/taxt_editor/template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, id: :protonym_primary_type_information_taxt
+    %tr
+      %td.shrink=f.label :secondary_type_information
+      %td=render 'shared/taxt_editor/template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, id: :protonym_secondary_type_information_taxt
+    %tr
+      %td=f.label :type_notes
+      %td=render 'shared/taxt_editor/template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, id: :protonym_type_notes_taxt
+
+    %tr
       %td=f.label :notes
-      %td=text_area_tag :taxt, protonym.authorship.notes_taxt, rows: 5, name: 'protonym[authorship_attributes][notes_taxt]', data: { has_linkables: true, previewable: true, spreviewable_title: "Notes", use_extras: true }
+      %td=render 'shared/taxt_editor/template', name: 'protonym[authorship_attributes][notes_taxt]', content: protonym.authorship.notes_taxt, id: :protonym_authorship_notes_taxt
 
     %tr
       %td
