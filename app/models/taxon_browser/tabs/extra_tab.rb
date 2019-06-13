@@ -8,7 +8,7 @@ module TaxonBrowser::Tabs
 
       name_html = taxon.name_with_fossil
 
-      title, taxa =
+      title, taxa_in_tab =
         case display
         when INCERTAE_SEDIS_IN_FAMILY, INCERTAE_SEDIS_IN_SUBFAMILY
           ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
@@ -38,11 +38,11 @@ module TaxonBrowser::Tabs
           raise "It should not be possible to get here via the GUI."
         end
 
-      new title, taxa, taxon_browser
+      new title, taxa_in_tab, taxon_browser
     end
 
-    def initialize title, taxa, taxon_browser
-      super taxa, taxon_browser
+    def initialize title, taxa_in_tab, taxon_browser
+      super taxa_in_tab, taxon_browser
       @title = title.html_safe
     end
 

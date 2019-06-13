@@ -22,7 +22,7 @@ module TaxonBrowser::Tabs
     end
 
     def notify_about_no_valid_taxa?
-      @taxa.empty? && !subfamily_with_valid_genera_incertae_sedis?
+      taxa_in_tab.empty? && !subfamily_with_valid_genera_incertae_sedis?
     end
 
     private
