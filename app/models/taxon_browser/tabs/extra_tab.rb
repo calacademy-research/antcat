@@ -54,6 +54,9 @@ module TaxonBrowser::Tabs
       @title
     end
 
+    def tab_taxon
+    end
+
     def notify_about_no_valid_taxa?
       false
     end

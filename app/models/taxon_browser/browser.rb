@@ -2,7 +2,8 @@
 
 module TaxonBrowser
   class Browser
-    attr_reader :tabs, :display
+    attr_reader :display
+    attr_accessor :tabs
 
     def initialize taxon, show_invalid, display
       @taxon = taxon
@@ -29,7 +30,7 @@ module TaxonBrowser
     end
 
     def tab_open? tab
-      @tabs.last == tab
+      tabs.last == tab
     end
 
     private
@@ -42,12 +43,12 @@ module TaxonBrowser
       end
 
       def setup_tabs
-        @tabs = taxa_for_tabs.map do |taxon|
+        self.tabs = taxa_for_tabs.map do |taxon|
           Tabs::TaxonTab.new taxon, self
         end
 
         extra_tab = Tabs::ExtraTab.create @taxon, @display, self
-        @tabs << extra_tab if extra_tab
+        tabs << extra_tab if extra_tab
       end
 
       # Follows the "main progression", which from the lowest rank and up is:
