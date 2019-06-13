@@ -38,7 +38,7 @@ module References
     private
 
       def set_reference
-        @reference = Reference.find params[:id]
+        @reference = Reference.find(params[:id])
       end
   end
 end

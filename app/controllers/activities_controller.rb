@@ -74,7 +74,7 @@ class ActivitiesController < ApplicationController
     def page
       return params[:page] unless params[:id]
 
-      activity = Activity.find params[:id]
+      activity = Activity.find(params[:id])
       # `@page` is also included in the views to make the delete button return to the previous page.
       @page = activity.pagination_page(unpaginated_activities)
     end

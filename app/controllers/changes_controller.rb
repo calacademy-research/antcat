@@ -27,6 +27,6 @@ class ChangesController < ApplicationController
   private
 
     def set_change
-      @change = Change.find params[:id]
+      @change = Change.find(params[:id])
     end
 end

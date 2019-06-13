@@ -55,11 +55,10 @@ class CatalogController < ApplicationController
   private
 
     def set_taxon
-      @taxon = Taxon.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).find params[:id]
+      @taxon = Taxon.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).find(params[:id])
     end
 
     def setup_taxon_browser
-      @taxon_browser = TaxonBrowser::Browser.new @taxon,
-        session[:show_invalid], params[:display]&.to_sym
+      @taxon_browser = TaxonBrowser::Browser.new @taxon, session[:show_invalid], params[:display]&.to_sym
     end
 end

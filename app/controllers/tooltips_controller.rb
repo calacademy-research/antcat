@@ -19,7 +19,7 @@ class TooltipsController < ApplicationController
   end
 
   def create
-    @tooltip = Tooltip.new tooltip_params
+    @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
       @tooltip.create_activity :create
       redirect_to @tooltip, notice: 'Tooltip was successfully created.'
@@ -29,7 +29,7 @@ class TooltipsController < ApplicationController
   end
 
   def update
-    if @tooltip.update tooltip_params
+    if @tooltip.update(tooltip_params)
       @tooltip.create_activity :update
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
@@ -46,7 +46,7 @@ class TooltipsController < ApplicationController
   private
 
     def set_tooltip
-      @tooltip = Tooltip.find params[:id]
+      @tooltip = Tooltip.find(params[:id])
     end
 
     def tooltip_params

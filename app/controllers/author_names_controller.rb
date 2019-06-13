@@ -5,11 +5,11 @@ class AuthorNamesController < ApplicationController
   before_action :set_author, only: [:new, :create]
 
   def new
-    @author_name = AuthorName.new author: @author
+    @author_name = AuthorName.new(author: @author)
   end
 
   def create
-    @author_name = AuthorName.new author: @author
+    @author_name = AuthorName.new(author: @author)
     @author_name.attributes = author_name_params
 
     if @author_name.save
@@ -24,7 +24,7 @@ class AuthorNamesController < ApplicationController
   end
 
   def update
-    if @author_name.update author_name_params
+    if @author_name.update(author_name_params)
       @author_name.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @author_name.author, notice: 'Author name was successfully updated.'
     else
@@ -44,11 +44,11 @@ class AuthorNamesController < ApplicationController
   private
 
     def set_author_name
-      @author_name = AuthorName.find params[:id]
+      @author_name = AuthorName.find(params[:id])
     end
 
     def set_author
-      @author = Author.find params[:author_id]
+      @author = Author.find(params[:author_id])
     end
 
     def author_name_params

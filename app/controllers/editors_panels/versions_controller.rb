@@ -61,7 +61,7 @@ module EditorsPanels
     end
 
     def show
-      @version = PaperTrail::Version.without_user_versions.find params[:id]
+      @version = PaperTrail::Version.without_user_versions.find(params[:id])
     end
 
     private

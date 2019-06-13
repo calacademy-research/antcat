@@ -44,10 +44,10 @@ class SynonymsController < ApplicationController
     end
 
     def set_synonym
-      @synonym = Synonym.find params[:id]
+      @synonym = Synonym.find(params[:id])
     end
 
     def set_taxon
-      @taxon = Taxon.find params[:taxa_id]
+      @taxon = Taxon.find(params[:taxa_id])
     end
 end

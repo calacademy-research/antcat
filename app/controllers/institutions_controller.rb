@@ -21,7 +21,7 @@ class InstitutionsController < ApplicationController
   end
 
   def create
-    @institution = Institution.new institution_params
+    @institution = Institution.new(institution_params)
 
     if @institution.save
       @institution.create_activity :create, edit_summary: params[:edit_summary]
@@ -32,7 +32,7 @@ class InstitutionsController < ApplicationController
   end
 
   def update
-    if @institution.update institution_params
+    if @institution.update(institution_params)
       @institution.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
@@ -53,6 +53,6 @@ class InstitutionsController < ApplicationController
     end
 
     def set_institution
-      @institution = Institution.find params[:id]
+      @institution = Institution.find(params[:id])
     end
 end

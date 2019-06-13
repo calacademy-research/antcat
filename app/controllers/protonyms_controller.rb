@@ -32,7 +32,7 @@ class ProtonymsController < ApplicationController
   end
 
   def update
-    if @protonym.update protonym_params
+    if @protonym.update(protonym_params)
       @protonym.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
     else
