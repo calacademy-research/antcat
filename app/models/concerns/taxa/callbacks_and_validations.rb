@@ -10,9 +10,10 @@ module Taxa::CallbacksAndValidations
     validates :name, presence: true
     validates :protonym, presence: true
     validates :status, inclusion: { in: Status::STATUSES }
-    validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
     validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
-    validate :current_valid_taxon_validation, :ensure_correct_name_type
+    validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
+
+    validate :current_valid_taxon_validation, :ensure_correct_name_type, :biogeographic_region_validation
 
     validation_scope :soft_validation_warnings do |scope|
       scope.validate :check_if_in_database_scripts_results
@@ -53,6 +54,14 @@ module Taxa::CallbacksAndValidations
       taxon_state.save
     end
 
+    def biogeographic_region_validation
+      if is_a?(SpeciesGroupTaxon) && !fossil?
+        validates_inclusion_of :biogeographic_region, in: BIOGEOGRAPHIC_REGIONS, allow_nil: true
+      else
+        validates_absence_of :biogeographic_region
+      end
+    end
+
     def current_valid_taxon_validation
       if cannot_have_current_valid_taxon? && current_valid_taxon
         errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
@@ -64,11 +73,11 @@ module Taxa::CallbacksAndValidations
     end
 
     def cannot_have_current_valid_taxon?
-      valid_taxon? || unavailable?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:absence]
     end
 
     def requires_current_valid_taxon?
-      synonym? || original_combination? || obsolete_combination? || unavailable_misspelling? || unavailable_uncategorized?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:presence]
     end
 
     def ensure_correct_name_type

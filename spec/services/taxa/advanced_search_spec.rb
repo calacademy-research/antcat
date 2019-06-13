@@ -111,11 +111,6 @@ describe Taxa::AdvancedSearch do
         expect(described_class[biogeographic_region: 'Indomalaya']).to eq [indomanayan_species]
         expect(described_class[type: 'Species', biogeographic_region: 'None']).to eq [no_region_species]
       end
-
-      it "doesn't match substrings" do
-        create :species, biogeographic_region: 'Australasia'
-        expect(described_class[biogeographic_region: 'Aust']).to be_empty
-      end
     end
 
     describe "searching type fields" do

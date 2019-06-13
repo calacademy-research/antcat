@@ -2,7 +2,7 @@ class AdvancedSearchPresenter::HTML < AdvancedSearchPresenter
   include Formatters::ItalicsHelper
 
   def format_name taxon
-    taxon.decorate.link_to_taxon
+    taxon.link_to_taxon
   end
 
   def format_forms taxon

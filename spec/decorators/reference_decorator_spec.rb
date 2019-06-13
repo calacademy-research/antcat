@@ -96,26 +96,24 @@ describe ReferenceDecorator do
   end
 
   describe "#format_date" do
-    def check_format_date date, expected
-      reference = build_stubbed :reference
-      expect(reference).to receive(:date).and_return(date)
-      expect(reference.decorate.format_date).to eq expected
-    end
-
     it "uses ISO 8601 format for calendar dates" do
-      check_format_date '20101213', '2010-12-13'
+      reference = build_stubbed :reference, date: '20101213'
+      expect(reference.decorate.format_date).to eq '2010-12-13'
     end
 
     it "handles years without months and days" do
-      check_format_date '201012', '2010-12'
+      reference = build_stubbed :reference, date: '201012'
+      expect(reference.decorate.format_date).to eq '2010-12'
     end
 
     it "handles years with months but without days" do
-      check_format_date '2010', '2010'
+      reference = build_stubbed :reference, date: '2010'
+      expect(reference.decorate.format_date).to eq '2010'
     end
 
     it "handles missing dates" do
-      check_format_date '', ''
+      reference = build_stubbed :reference, date: ''
+      expect(reference.decorate.format_date).to eq ''
     end
   end
 
@@ -137,19 +135,7 @@ describe ReferenceDecorator do
     context "when review_state is 'none'" do
       before { reference.review_state = 'none' }
 
-      specify { expect(reference.decorate.format_review_state).to eq '' }
-    end
-
-    context "when review_state is empty string" do
-      before { reference.review_state = '' }
-
-      specify { expect(reference.decorate.format_review_state).to eq '' }
-    end
-
-    context "when review_state is nil" do
-      before { reference.review_state = nil }
-
-      specify { expect(reference.decorate.format_review_state).to eq '' }
+      specify { expect(reference.decorate.format_review_state).to eq 'Not reviewed' }
     end
   end
 

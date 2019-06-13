@@ -7,7 +7,9 @@
 
 #references.margin-bottom
   %a{name: 'references'}
-  %h5 References by author
+  %h5
+    References by
+    =@author.first_author_name_name
   -if @references.empty?
     %p Found no references by this author.
   -else
@@ -28,7 +30,7 @@
         %th Status
       -@taxa.each do |taxon|
         %tr
-          %td=taxon.decorate.link_to_taxon
+          %td=taxon.link_to_taxon
           %td=taxon.authorship_reference.decorate.expandable_reference
           %td=taxon.rank.capitalize
           %td=taxon.status.capitalize

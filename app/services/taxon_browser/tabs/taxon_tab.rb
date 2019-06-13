@@ -1,4 +1,9 @@
 # A `TaxonTab` requires a taxon for which `#children` returns something.
+# TODO: This needs a rehaul.
+
+# Things we may want to show:
+# * Excluded [from Formicidae]
+# * All incertae sedis [in Formicidae]
 
 module TaxonBrowser::Tabs
   class TaxonTab < TaxonBrowser::Tab
@@ -17,14 +22,14 @@ module TaxonBrowser::Tabs
     end
 
     def notify_about_no_valid_taxa?
-      @taxa.empty? && !is_a_subfamily_with_valid_genera_incertae_sedis?
+      @taxa.empty? && !subfamily_with_valid_genera_incertae_sedis?
     end
 
     private
 
       # Exception for subfamilies *only* containing genera that are
       # incertae sedis in that subfamily (that is Martialinae, #430173).
-      def is_a_subfamily_with_valid_genera_incertae_sedis?
+      def subfamily_with_valid_genera_incertae_sedis?
         return unless @tab_taxon.is_a? Subfamily
         @tab_taxon.genera_incertae_sedis_in.valid.exists?
       end
@@ -33,7 +38,7 @@ module TaxonBrowser::Tabs
       # "Lasius species > Lasius subgenera" to "Lasius > Lasius subgenera".
       def show_only_genus_name?
         return unless @tab_taxon.is_a? Genus
-        display.in? [:all_taxa_in_genus, :subgenera_in_genus, :subgenera_in_parent_genus]
+        display.in? [ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS]
       end
   end
 end

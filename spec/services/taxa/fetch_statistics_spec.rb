@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::Statistics do
+describe Taxa::FetchStatistics do
   describe "#call" do
     context "when family" do
       let(:family) { create :family }
@@ -14,7 +14,7 @@ describe Taxa::Statistics do
       end
 
       it "returns the statistics for each status of each rank" do
-        expect(family.statistics).to eq(
+        expect(described_class[family]).to eq(
           extant: {
             subfamilies: { 'valid' => 1 },
             tribes: { 'valid' => 1 },
@@ -31,14 +31,14 @@ describe Taxa::Statistics do
       let(:subfamily) { create :subfamily }
 
       context "when 0 children" do
-        specify { expect(subfamily.statistics).to eq({}) }
+        specify { expect(described_class[subfamily]).to eq({}) }
       end
 
       context "when 1 valid genus" do
         before { create :genus, subfamily: subfamily }
 
         specify do
-          expect(subfamily.statistics).to eq extant: { genera: { 'valid' => 1 } }
+          expect(described_class[subfamily]).to eq extant: { genera: { 'valid' => 1 } }
         end
       end
 
@@ -49,7 +49,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(subfamily.statistics).to eq extant: {
+          expect(described_class[subfamily]).to eq extant: {
             genera: { 'valid' => 1, 'synonym' => 2 }
           }
         end
@@ -62,7 +62,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(subfamily.statistics).to eq extant: {
+          expect(described_class[subfamily]).to eq extant: {
             genera: { 'valid' => 1 },
             species: { 'valid' => 2 }
           }
@@ -77,7 +77,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(subfamily.statistics).to eq extant: {
+          expect(described_class[subfamily]).to eq extant: {
             genera: { 'valid' => 1 },
             species: { 'valid' => 2 },
             subspecies: { 'valid' => 1 }
@@ -96,7 +96,7 @@ describe Taxa::Statistics do
         end
 
         it "differentiates between extinct genera, species and subspecies" do
-          expect(subfamily.statistics).to eq(
+          expect(described_class[subfamily]).to eq(
             extant: {
               genera: { 'valid' => 1 },
               species: { 'valid' => 3 },
@@ -113,7 +113,7 @@ describe Taxa::Statistics do
 
       it "can count tribes" do
         create :tribe, subfamily: subfamily
-        expect(subfamily.statistics).to eq extant: { tribes: { 'valid' => 1 } }
+        expect(described_class[subfamily]).to eq extant: { tribes: { 'valid' => 1 } }
       end
     end
 
@@ -123,7 +123,7 @@ describe Taxa::Statistics do
 
       it "includes the number of genera" do
         create :genus, tribe: tribe
-        expect(tribe.statistics).to eq extant: { genera: { 'valid' => 1 } }
+        expect(described_class[tribe]).to eq extant: { genera: { 'valid' => 1 } }
       end
 
       it "includes the number of species" do
@@ -131,7 +131,7 @@ describe Taxa::Statistics do
         create :species, genus: genus
         create :species, :synonym, genus: genus
 
-        expect(tribe.statistics).to eq extant: {
+        expect(described_class[tribe]).to eq extant: {
           genera: { "valid" => 1 },
           species: { "synonym" => 1, "valid" => 1 }
         }
@@ -142,14 +142,14 @@ describe Taxa::Statistics do
       let(:genus) { create :genus }
 
       context "when 0 children" do
-        specify { expect(genus.statistics).to eq({}) }
+        specify { expect(described_class[genus]).to eq({}) }
       end
 
       context "when 1 valid species" do
         before { create :species, genus: genus }
 
         specify do
-          expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+          expect(described_class[genus]).to eq extant: { species: { 'valid' => 1 } }
         end
       end
 
@@ -160,7 +160,7 @@ describe Taxa::Statistics do
         end
 
         it "ignores the original combinations" do
-          expect(genus.statistics).to eq extant: { species: { 'valid' => 1 } }
+          expect(described_class[genus]).to eq extant: { species: { 'valid' => 1 } }
         end
       end
 
@@ -171,7 +171,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(genus.statistics).to eq extant: {
+          expect(described_class[genus]).to eq extant: {
             species: { 'valid' => 1, 'synonym' => 2 }
           }
         end
@@ -184,7 +184,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(genus.statistics).to eq extant: {
+          expect(described_class[genus]).to eq extant: {
             species: { 'valid' => 1 }, subspecies: { 'valid' => 2 }
           }
         end
@@ -200,7 +200,7 @@ describe Taxa::Statistics do
         end
 
         it "can differentiate extinct species and subspecies" do
-          expect(genus.statistics).to eq(
+          expect(described_class[genus]).to eq(
             extant: {
               species: { 'valid' => 1 },
               subspecies: { 'valid' => 1 }
@@ -218,7 +218,7 @@ describe Taxa::Statistics do
       let(:subgenus) { create :subgenus }
 
       it "has none" do
-        expect(subgenus.statistics).to be_nil
+        expect(described_class[subgenus]).to be_nil
       end
     end
 
@@ -226,14 +226,14 @@ describe Taxa::Statistics do
       let(:species) { create :species }
 
       context "when 0 children" do
-        specify { expect(species.statistics).to eq({}) }
+        specify { expect(described_class[species]).to eq({}) }
       end
 
       context "when 1 valid subspecies" do
         before { create :subspecies, species: species }
 
         specify do
-          expect(species.statistics).to eq extant: {
+          expect(described_class[species]).to eq extant: {
             subspecies: { 'valid' => 1 }
           }
         end
@@ -246,7 +246,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(species.statistics).to eq(
+          expect(described_class[species]).to eq(
             extant: { subspecies: { 'valid' => 1 } },
             fossil: { subspecies: { 'valid' => 1 } }
           )
@@ -260,7 +260,7 @@ describe Taxa::Statistics do
         end
 
         specify do
-          expect(species.statistics).to eq extant: {
+          expect(described_class[species]).to eq extant: {
             subspecies: { 'valid' => 1, 'synonym' => 2 }
           }
         end
@@ -269,7 +269,7 @@ describe Taxa::Statistics do
 
     context "when subspecies" do
       it "has no statistics" do
-        expect(Subspecies.new.statistics).to be_nil
+        expect(described_class[Subspecies.new]).to be_nil
       end
     end
   end

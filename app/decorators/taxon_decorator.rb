@@ -13,10 +13,6 @@ class TaxonDecorator < Draper::Decorator
     link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
   end
 
-  def link_each_epithet
-    TaxonDecorator::LinkEachEpithet[taxon]
-  end
-
   def id_and_name_and_author_citation
     h.content_tag :span do
       h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
@@ -27,16 +23,21 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
+  def type_taxon_rank
+    type_rank = type_taxon.is_a?(Subgenus) ? 'genus' : type_taxon.rank
+    "Type-#{type_rank}: ".html_safe
+  end
+
+  # NOTE: We need this becuase `type_taxt` is stripped of leading whitespace.
+  def format_type_taxt
+    return if type_taxt.blank?
+    return type_taxt if type_taxt.start_with?(",")
+    " " << type_taxt
+  end
+
   def statistics valid_only: false
-    TaxonDecorator::Statistics[taxon.statistics valid_only: valid_only]
-  end
-
-  def headline_type
-    TaxonDecorator::HeadlineType[taxon]
-  end
-
-  def child_lists for_antweb: false
-    TaxonDecorator::ChildList[taxon, for_antweb: for_antweb]
+    stats = Taxa::FetchStatistics[taxon, valid_only: valid_only]
+    TaxonDecorator::Statistics[stats]
   end
 
   def taxon_status

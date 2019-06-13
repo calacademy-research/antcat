@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_08_213246) do
+ActiveRecord::Schema.define(version: 2019_06_12_232837) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 2019_06_08_213246) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "edit_summary"
-    t.boolean "automated_edit", default: false
+    t.boolean "automated_edit", default: false, null: false
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
@@ -94,7 +94,7 @@ ActiveRecord::Schema.define(version: 2019_06_08_213246) do
     t.string "page"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "open", default: true
+    t.boolean "open", default: true, null: false
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 

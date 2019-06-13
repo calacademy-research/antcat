@@ -105,56 +105,77 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
-  describe "#current_valid_taxon_validation" do
-    context "when taxon has a `#current_valid_taxon`" do
-      let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
-
-      context 'when status is "valid"' do
-        let(:status) { Status::VALID }
+  describe "#biogeographic_region" do
+    context 'when taxon is a `SpeciesGroupTaxon`' do
+      context 'when taxon is extant' do
+        subject { build_stubbed :species }
 
         specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for valid taxa"])
+          expect(subject).to validate_inclusion_of(:biogeographic_region).
+            in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
         end
       end
 
-      context 'when status is "unavailable"' do
-        let(:status) { Status::UNAVAILABLE }
+      context 'when taxon is fossil' do
+        subject { build_stubbed :species, :fossil }
 
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for unavailable taxa"])
+        it { is_expected.to validate_absence_of(:biogeographic_region) }
+      end
+    end
+
+    context 'when taxon is above `SpeciesGroupTaxon`' do
+      subject { build_stubbed :genus }
+
+      it { is_expected.to validate_absence_of(:biogeographic_region) }
+    end
+  end
+
+  describe "#homonym_replaced_by" do
+    context 'when taxon is not a homonym' do
+      let(:taxon) { build_stubbed :family }
+      let(:replaced_by) { build_stubbed :family }
+
+      specify do
+        expect { taxon.homonym_replaced_by = replaced_by }.to change { taxon.valid? }.to false
+        expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
+      end
+    end
+  end
+
+  describe "#current_valid_taxon_validation" do
+    context "when taxon has a `#current_valid_taxon`" do
+      [
+        Status::VALID,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
+
+          specify do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for #{Status.plural(status)} taxa"])
+          end
         end
       end
     end
 
     context "when taxon has no `#current_valid_taxon`" do
-      let(:taxon) { build :family, status: status }
+      [
+        Status::SYNONYM,
+        Status::ORIGINAL_COMBINATION,
+        Status::OBSOLETE_COMBINATION,
+        Status::UNAVAILABLE_MISSPELLING,
+        Status::UNAVAILABLE_UNCATEGORIZED
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status }
 
-      context 'when status is "synonym"' do
-        let(:status) { Status::SYNONYM }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for synonyms"])
-        end
-      end
-
-      context 'when status is "original_combination"' do
-        let(:status) { Status::ORIGINAL_COMBINATION }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for original combinations"])
-        end
-      end
-
-      context 'when status is "obsolete_combination"' do
-        let(:status) { Status::OBSOLETE_COMBINATION }
-
-        specify do
-          taxon.valid?
-          expect(taxon.errors.messages).to include(current_valid_name: ["must be set for obsolete combinations"])
+          specify do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["must be set for #{Status.plural(status)}"])
+          end
         end
       end
     end

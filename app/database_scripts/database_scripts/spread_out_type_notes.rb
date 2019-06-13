@@ -18,5 +18,5 @@ description: >
 
   Protonyms with a dash in the 'Not identical?' column can be solved by script (same content, so not really conflicts).
 
-tags: [new!]
+tags: [regression-test]
 topic_areas: [protonyms]

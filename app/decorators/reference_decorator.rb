@@ -45,14 +45,22 @@ class ReferenceDecorator < Draper::Decorator
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
-  def format_review_state
-    review_state = reference.review_state
+  def doi_link
+    return unless reference.doi?
+    helpers.external_link_to reference.doi, ("https://doi.org/" + doi)
+  end
 
-    case review_state
-    when 'reviewing' then 'Being reviewed'
-    when 'none', nil then ''
-    else                  review_state.capitalize
-    end
+  def pdf_link
+    return unless reference.downloadable?
+    helpers.pdf_link_to 'PDF', reference.url
+  end
+
+  def format_review_state
+    {
+      "none"      => 'Not reviewed',
+      "reviewed"  => 'Reviewed',
+      "reviewing" => 'Being reviewed'
+    }[reference.review_state]
   end
 
   # Formats the reference as plaintext (with the exception of <i> tags).
@@ -146,15 +154,5 @@ class ReferenceDecorator < Draper::Decorator
       raise "Can't call format_italics on an unsafe string" unless string.html_safe?
       string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
       string.html_safe
-    end
-
-    def doi_link
-      return unless reference.doi?
-      helpers.external_link_to reference.doi, ("https://doi.org/" + doi)
-    end
-
-    def pdf_link
-      return unless reference.downloadable?
-      helpers.pdf_link_to 'PDF', reference.url
     end
 end

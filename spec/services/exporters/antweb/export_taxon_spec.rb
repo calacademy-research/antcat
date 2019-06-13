@@ -243,6 +243,18 @@ describe Exporters::Antweb::ExportTaxon do
       end
     end
 
+    describe "[17]: `taxonomic history html` (child lists only)" do
+      let!(:subfamily) { create :subfamily }
+      let!(:tribe) { create :tribe, subfamily: subfamily }
+
+      specify do
+        expected =
+          %{<div><span class="caption">Tribe of #{subfamily.name_cache}</span>: } +
+          %{<a href="http://www.antcat.org/catalog/#{tribe.id}">#{tribe.name_cache}</a></div>}
+        expect(export_taxon(subfamily)[17]).to include(expected)
+      end
+    end
+
     describe "[17]: `taxonomic history html`" do
       let!(:atta_name) { create :genus_name, name: 'Atta' }
       let!(:authorship_reference) do
@@ -264,7 +276,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       before do
         create :species, :unavailable, genus: genus # For the statistics.
-        genus.update! type_taxon: type_species
+        genus.update! type_taxon: type_species, type_taxt: ', by monotypy'
         genus.history_items.create taxt: "Taxon: {tax #{type_species.id}}"
         genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
       end
@@ -297,7 +309,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.) +
+              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>, by monotypy.) +
               %(  ) +
 
               # links
@@ -345,7 +357,7 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[19]: `bioregion`" do
-      let!(:taxon) { create :genus, biogeographic_region: 'Neotropic' }
+      let!(:taxon) { create :species, biogeographic_region: 'Neotropic' }
 
       specify { expect(export_taxon(taxon)[19]).to eq 'Neotropic' }
     end

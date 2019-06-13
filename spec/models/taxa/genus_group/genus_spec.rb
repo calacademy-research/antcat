@@ -114,19 +114,22 @@ describe Genus do
       species = create :species, genus: genus_with_tribe
       create :subspecies, species: species, genus: genus_with_tribe
 
-      # test the initial subfamilies
-      expect(genus_with_tribe.subfamily).to eq subfamily
-      expect(genus_with_tribe.species.first.subfamily).to eq subfamily
-      expect(genus_with_tribe.subspecies.first.subfamily).to eq subfamily
+      # Test initial.
+      expect(genus_with_tribe.reload.subfamily).to eq subfamily
+      expect(genus_with_tribe.reload.species.first.subfamily).to eq subfamily
+      expect(genus_with_tribe.reload.subspecies.first.subfamily).to eq subfamily
+      expect(species.reload.subfamily).to eq subfamily
 
-      # test the updated subfamilies
+      # Act.
       new_subfamily = create :subfamily
       new_tribe = create :tribe, subfamily: new_subfamily
       genus_with_tribe.update_parent new_tribe
+      genus_with_tribe.save!
 
-      expect(genus_with_tribe.subfamily).to eq new_subfamily
-      expect(genus_with_tribe.species.first.subfamily).to eq new_subfamily
-      expect(genus_with_tribe.subspecies.first.subfamily).to eq new_subfamily
+      # Assert.
+      expect(genus_with_tribe.reload.tribe).to eq new_tribe
+      expect(genus_with_tribe.reload.species.first.subfamily).to eq new_subfamily
+      expect(genus_with_tribe.reload.subspecies.first.subfamily).to eq new_subfamily
     end
   end
 
