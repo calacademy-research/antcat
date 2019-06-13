@@ -1,5 +1,5 @@
 class NamesController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: [:show]
+  before_action :ensure_user_is_editor, except: [:show]
   before_action :set_name, only: [:show, :edit, :update, :destroy]
 
   def show
@@ -10,7 +10,7 @@ class NamesController < ApplicationController
   end
 
   def update
-    if @name.update name_params
+    if @name.update(name_params)
       @name.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to name_path(@name), notice: "Successfully updated name."
     else

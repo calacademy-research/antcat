@@ -17,15 +17,13 @@ module TaxonBrowser
       SUBGENERA_IN_PARENT_GENUS   = :subgenera_in_parent_genus
     ]
 
-    attr_accessor :tab_taxon
-
     delegate :display, :selected_in_tab?, :tab_open?,
-      :show_invalid?, :max_taxa_to_load, to: :@taxon_browser
+      :show_invalid?, :max_taxa_to_load, to: :taxon_browser
 
-    def initialize taxa, taxon_browser
+    def initialize taxa_in_tab, taxon_browser
       @taxon_browser = taxon_browser
-      @taxa = taxa
-      @taxa = taxa.valid unless show_invalid?
+      @taxa_in_tab = taxa_in_tab
+      @taxa_in_tab = taxa_in_tab.valid unless show_invalid?
     end
 
     def to_param
@@ -33,7 +31,7 @@ module TaxonBrowser
     end
 
     def taxa_count
-      @taxa_count ||= @taxa.count
+      @taxa_count ||= taxa_in_tab.count
     end
 
     def too_many_taxa_to_load?
@@ -54,8 +52,10 @@ module TaxonBrowser
 
     private
 
+      attr_reader :taxon_browser, :taxa_in_tab
+
       def sorted_taxa
-        @taxa.order_by_epithet
+        taxa_in_tab.order_by_epithet
       end
   end
 end

@@ -1,7 +1,7 @@
 class InstitutionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:new, :create]
-  before_action :ensure_can_edit_catalog, only: [:edit, :update]
-  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :ensure_user_is_editor, only: [:edit, :update]
+  before_action :ensure_user_is_superadmin, only: [:destroy]
   before_action :set_institution, only: [:edit, :update, :destroy]
 
   def index
@@ -21,7 +21,7 @@ class InstitutionsController < ApplicationController
   end
 
   def create
-    @institution = Institution.new institution_params
+    @institution = Institution.new(institution_params)
 
     if @institution.save
       @institution.create_activity :create, edit_summary: params[:edit_summary]
@@ -32,7 +32,7 @@ class InstitutionsController < ApplicationController
   end
 
   def update
-    if @institution.update institution_params
+    if @institution.update(institution_params)
       @institution.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
@@ -53,6 +53,6 @@ class InstitutionsController < ApplicationController
     end
 
     def set_institution
-      @institution = Institution.find params[:id]
+      @institution = Institution.find(params[:id])
     end
 end

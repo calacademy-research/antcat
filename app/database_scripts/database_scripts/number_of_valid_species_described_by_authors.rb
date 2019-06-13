@@ -1,8 +1,5 @@
 module DatabaseScripts
   class NumberOfValidSpeciesDescribedByAuthors < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       ActiveRecord::Base.connection.exec_query <<-SQL.squish
         SELECT a.id author_id, MAX(name) name, MIN(YEAR) min_year, MAX(year) max_year, COUNT(*) count FROM taxa

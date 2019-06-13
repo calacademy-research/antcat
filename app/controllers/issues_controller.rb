@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
   end
 
   def create
-    @issue = Issue.new issue_params
+    @issue = Issue.new(issue_params)
     @issue.adder = current_user
 
     if @issue.save
@@ -31,7 +31,7 @@ class IssuesController < ApplicationController
   end
 
   def update
-    if @issue.update issue_params
+    if @issue.update(issue_params)
       @issue.create_activity :update, edit_summary: params[:edit_summary]
       redirect_to @issue, notice: "Successfully updated issue."
     else
@@ -56,10 +56,10 @@ class IssuesController < ApplicationController
   private
 
     def set_issue
-      @issue = Issue.find params[:id]
+      @issue = Issue.find(params[:id])
     end
 
     def issue_params
-      params.require(:issue).permit :title, :description
+      params.require(:issue).permit(:title, :description)
     end
 end

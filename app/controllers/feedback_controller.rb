@@ -4,7 +4,7 @@ class FeedbackController < ApplicationController
 
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 
-  before_action :authenticate_superadmin, only: [:destroy]
+  before_action :ensure_user_is_superadmin, only: [:destroy]
   before_action :ensure_user_is_at_least_helper, except: [:create]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
@@ -29,7 +29,7 @@ class FeedbackController < ApplicationController
   end
 
   def create
-    @feedback = Feedback.new feedback_params
+    @feedback = Feedback.new(feedback_params)
     @feedback.ip = request.remote_ip
     render_unprocessable and return if ip_banned?
     render_unprocessable and return if maybe_rate_throttle
@@ -71,11 +71,11 @@ class FeedbackController < ApplicationController
   private
 
     def set_feedback
-      @feedback = Feedback.find params[:id]
+      @feedback = Feedback.find(params[:id])
     end
 
     def on_spam _options = {}
-      @feedback = Feedback.new feedback_params
+      @feedback = Feedback.new(feedback_params)
       @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
       render_unprocessable
     end
@@ -112,6 +112,6 @@ class FeedbackController < ApplicationController
 
     def feedback_params
       params[:feedback].delete :work_email
-      params.require(:feedback).permit :comment, :name, :email, :user, :page
+      params.require(:feedback).permit(:comment, :name, :email, :user, :page)
     end
 end

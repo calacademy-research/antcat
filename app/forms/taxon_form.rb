@@ -49,7 +49,7 @@ class TaxonForm
       if taxon.new_record?
         change = UndoTracker.setup_change taxon, :create
         taxon.save!
-        change.update taxon: taxon
+        change.update(taxon: taxon)
       else
         UndoTracker.setup_change taxon, :update
         taxon.save!

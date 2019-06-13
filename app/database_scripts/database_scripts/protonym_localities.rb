@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ProtonymLocalities < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Protonym.distinct.pluck(:locality).reject(&:blank?).sort
     end

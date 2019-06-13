@@ -1,8 +1,5 @@
 module DatabaseScripts
   class MissingReferences < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       MissingReference.order(:citation)
     end

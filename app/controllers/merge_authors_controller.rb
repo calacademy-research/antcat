@@ -1,5 +1,5 @@
 class MergeAuthorsController < ApplicationController
-  before_action :ensure_can_edit_catalog, except: :index
+  before_action :ensure_user_is_editor, except: :index
 
   def index
     create_panels

@@ -1,8 +1,5 @@
 module DatabaseScripts
   class ProtonymsWithSameName < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       same_name_name = Protonym.joins(:name).group('names.name').having('COUNT(protonyms.id) > 1')
       Protonym.joins(:name).where(names: { name: same_name_name.select('names.name') }).includes(:name).order('names.name')

@@ -118,7 +118,7 @@ class ReferenceForm
       duplicates = References::FindDuplicates[reference, min_similarity: 0.5]
       return if duplicates.blank?
 
-      duplicate = Reference.find duplicates.first[:match].id
+      duplicate = Reference.find(duplicates.first[:match].id)
       reference.errors.add :base, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
         To save, click "Save Anyway"

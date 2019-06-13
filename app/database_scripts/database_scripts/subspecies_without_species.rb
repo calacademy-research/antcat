@@ -1,8 +1,5 @@
 module DatabaseScripts
   class SubspeciesWithoutSpecies < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Subspecies.where(species: nil)
     end

@@ -2,9 +2,6 @@ require "fuzzystringmatch"
 
 module DatabaseScripts
   class PossiblyDuplicatedJournalNames < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     MIN_DISTANCE = 0.975
 
     def results

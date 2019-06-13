@@ -23,8 +23,8 @@ module Taxa
         previous_ids = history_items.pluck :id
 
         reordered_ids.each_with_index do |id, index|
-          item = TaxonHistoryItem.find id
-          item.update position: (index + 1)
+          item = TaxonHistoryItem.find(id)
+          item.update(position: (index + 1))
         end
 
         create_activity :reorder_taxon_history_items,

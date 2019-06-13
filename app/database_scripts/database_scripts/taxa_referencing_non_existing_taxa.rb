@@ -1,8 +1,5 @@
 module DatabaseScripts
   class TaxaReferencingNonExistingTaxa < DatabaseScript
-    include Rails.application.routes.url_helpers
-    include ActionView::Helpers::UrlHelper
-
     def results
       Taxon.where.not(species_id: Taxon.select(:id))
     end

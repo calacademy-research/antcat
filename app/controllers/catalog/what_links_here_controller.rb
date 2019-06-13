@@ -9,7 +9,7 @@ module Catalog
     private
 
       def set_taxon
-        @taxon = Taxon.find params[:id]
+        @taxon = Taxon.find(params[:id])
       end
   end
 end
