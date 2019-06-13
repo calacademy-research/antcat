@@ -41,8 +41,6 @@ class Change < ApplicationRecord
       taxon_state.review_state = TaxonState::APPROVED
       taxon_state.save!
     end
-
-    create_activity :approve_change
   end
 
   def undo
