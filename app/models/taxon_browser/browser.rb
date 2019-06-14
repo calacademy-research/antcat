@@ -69,7 +69,7 @@ module TaxonBrowser
       end
 
       def taxon_and_ancestors
-        @taxon_and_ancestors ||= @taxon.taxon_and_ancestors
+        @taxon_and_ancestors ||= Taxa::TaxonAndAncestors[@taxon]
       end
   end
 end
