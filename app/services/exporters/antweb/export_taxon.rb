@@ -65,10 +65,7 @@ class Exporters::Antweb::ExportTaxon
         parent:                 parent&.name&.name || 'Formicidae'
       }
 
-      attributes[:current_valid_name] =
-        if taxon.current_valid_taxon_including_synonyms
-          taxon.current_valid_taxon_including_synonyms.name.name
-        end
+      attributes[:current_valid_name] = taxon.current_valid_taxon_including_synonyms&.name&.name
 
       convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
     end

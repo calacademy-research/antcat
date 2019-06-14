@@ -1,10 +1,8 @@
 # TODO: do not cache in database.
 
 class ReferenceDecorator < Draper::Decorator
-  include ActionView::Helpers::SanitizeHelper
-  include ERB::Util # For the `h` method.
-
   delegate_all
+  delegate :sanitize, to: :helpers
 
   def link_to_reference
     helpers.link_to keey, helpers.reference_path(self)

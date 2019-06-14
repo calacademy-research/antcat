@@ -129,7 +129,7 @@ RSpec/ExampleLength:
   Enabled: false
 
 RSpec/ExpectChange:
-  Enabled: false
+  EnforcedStyle: block
 
 RSpec/ExpectInHook:
   Enabled: false
@@ -283,7 +283,7 @@ Metrics/BlockLength:
   Enabled: false
 
 Metrics/ClassLength:
-  Max: 203
+  Max: 190
 
 Metrics/CyclomaticComplexity:
   Enabled: false
@@ -295,7 +295,7 @@ Metrics/ModuleLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 21
+  Max: 17
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
