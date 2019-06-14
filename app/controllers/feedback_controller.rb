@@ -8,7 +8,10 @@ class FeedbackController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:create]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
-  invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
+  # TODO: This was tricky in Capybara tests.
+  unless Rails.env.test?
+    invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
+  end
 
   has_filters(
     open: {
@@ -40,15 +43,11 @@ class FeedbackController < ApplicationController
       @feedback.email = current_user.email
     end
 
-    respond_to do |format|
-      if @feedback.save
-        @feedback.create_activity :create
-        format.json do
-          render status: :created, json: { feedback_success_callout: feedback_success_callout }
-        end
-      else
-        format.json { render_unprocessable }
-      end
+    if @feedback.save
+      @feedback.create_activity :create
+      render json: feedback_success_callout, status: :created
+    else
+      render_unprocessable
     end
   end
 
@@ -102,12 +101,11 @@ class FeedbackController < ApplicationController
     end
 
     def render_unprocessable
-      render json: @feedback.errors, status: :unprocessable_entity
+      render json: @feedback.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
 
     def feedback_success_callout
-      render_to_string partial: "feedback_success_callout",
-        locals: { feedback_id: @feedback.id }
+      render_to_string partial: "feedback_success_callout", locals: { feedback_id: @feedback.id }
     end
 
     def feedback_params

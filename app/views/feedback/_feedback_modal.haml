@@ -2,7 +2,7 @@
   %button.close-button{"aria-label" => "Close modal", data: { close: true }, type: "button"}
     %span{"aria-hidden" => "true"} &times;
 
-  %h6#new_article
+  %h6
   %p Feedback and corrections are most welcomed.
   %p
     Use the below form to make all editors aware of an issue. Or just
@@ -15,7 +15,7 @@
 
   %p#feedback_errors
 
-  =form_for(Feedback.new, url: feedback_index_path, remote: true, html: { id: "new_feedback" }) do |f|
+  =form_for(Feedback.new, url: feedback_index_path, html: { id: "new_feedback" }) do |f|
     -if current_user
       .row
         .medium-6.columns
@@ -47,4 +47,4 @@
 
     .row
       .medium-12.columns
-        =button_tag "Send Feedback", class: "btn-saves"
+        =button_tag "Send Feedback", id: 'submit-feedback-js', class: "btn-saves"
