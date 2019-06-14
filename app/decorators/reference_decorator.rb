@@ -6,6 +6,10 @@ class ReferenceDecorator < Draper::Decorator
 
   delegate_all
 
+  def link_to_reference
+    helpers.link_to keey, helpers.reference_path(self)
+  end
+
   def public_notes
     format_italics sanitize reference.public_notes
   end
