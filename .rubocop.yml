@@ -7,9 +7,7 @@ AllCops:
   Exclude:
     - 'config.ru'
     - 'db/schema.rb'
-    - 'db/data_schema.rb'
     - 'bin/**/*'
-    - 'db/data/**/*'
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'app/controllers/name_fields_controller.rb'
