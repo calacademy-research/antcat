@@ -18,6 +18,7 @@ class Name < ApplicationRecord
     'SubtribeName',
     'GenusName'
   ]
+  BROKEN_ISH_NAME_TYPES = ['FamilyOrSubfamilyName', 'SubtribeName'] # TODO
 
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
