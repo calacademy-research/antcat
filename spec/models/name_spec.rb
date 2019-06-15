@@ -85,14 +85,4 @@ describe Name do
       subject.what_links_here
     end
   end
-
-  describe ".find_by_name" do
-    let(:atta_name) { create :name, name: 'Atta' }
-    let(:taxon) { create_genus 'Atta' }
-
-    it "prioritizes names already associated with taxa" do
-      expect(taxon.name).not_to eq atta_name
-      expect(described_class.find_by_name('Atta')).to eq taxon.name
-    end
-  end
 end

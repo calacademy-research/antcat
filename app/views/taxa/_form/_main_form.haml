@@ -1,23 +1,27 @@
 %table.unstriped
   =form.fields_for :name do |name_form|
     %tr
-      -if name_form.object.new_record?
-        =hidden_field_tag 'taxon[name_attributes][id]'
       %td
         =name_form.label :name do
           Name
           =tooltip_icon "name", scope: :taxa
       %td
         -if taxon.name.persisted?
+          =taxon.name.name_html
           %span.right
             =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
-        %span#name_field
-          =render 'name_fields/panel', name_string: taxon.name.try(:name),
-            default_name_string: default_name_string && "#{default_name_string} "
-        -if taxon.new_record? && taxon.is_a?(Subgenus)
-          %span
-            Subgenus name format:
-            %em Genus (Subgenus)
+        -else
+          -number_of_words = taxon.name_class.name.in?(Name::SINGLE_WORD_NAMES) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
+          =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }
+          -if taxon.is_a?(Subgenus)
+            %span
+              Subgenus name format:
+              %em Genus (Subgenus)
+    %tr
+      %td
+      %td
+        #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
     -if taxon.name.is_a? GenusGroupName
       %tr
         %td=name_form.label :gender

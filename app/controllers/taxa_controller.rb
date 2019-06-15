@@ -13,7 +13,13 @@ class TaxaController < ApplicationController
   def create
     @taxon = build_taxon_with_parent
 
-    TaxonForm.new(@taxon, taxon_params).save
+    TaxonForm.new(
+      @taxon,
+      taxon_params,
+      taxon_name_string: params[:taxon_name_string].presence,
+      protonym_name_string: params[:protonym_name_string].presence
+    ).save
+
     @taxon.create_activity :create, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
@@ -69,7 +75,7 @@ class TaxaController < ApplicationController
         :status,
         :species_id,
         :protonym_id,
-        { name_attributes: [:id, :gender] },
+        { name_attributes: [:gender] },
         :homonym_replaced_by_id,
         :current_valid_taxon_id,
         :incertae_sedis_in,
@@ -87,9 +93,7 @@ class TaxaController < ApplicationController
             :secondary_type_information_taxt,
             :type_notes_taxt,
             :locality,
-            :name_id,
             :id,
-            { name_attributes: [:id] },
             { authorship_attributes: [:pages, :forms, :notes_taxt, :id, :reference_id] }
           ]
         },

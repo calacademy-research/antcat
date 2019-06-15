@@ -1,14 +1,16 @@
-# NOTE This is only covered indirectly in feature tests. No specs.
-
 module Names
   class CreateNameFromString
     include Service
 
-    def initialize string
-      @string = string
+    class UnparsableName < StandardError; end
+
+    def initialize name
+      @name = name
     end
 
     def call
+      raise UnparsableName, name if name.blank?
+
       case name_type
       when :subspecies                   then create_subspecies_name!
       when :subspecies_with_two_epithets then create_subspecies_name_with_two_epithets!
@@ -17,16 +19,16 @@ module Names
       when :genus                        then create_genus_name!
       when :tribe                        then create_tribe_name!
       when :subfamily                    then create_subfamily_name!
-      else raise "No `Name` subclass wanted the string: #{string}"
+      else                               raise UnparsableName, name
       end
     end
 
     private
 
-      attr_reader :string
+      attr_reader :name
 
       def words
-        @words ||= string.split
+        @words ||= name.split
       end
 
       def name_type
@@ -39,7 +41,7 @@ module Names
       end
 
       def genus_or_tribe_or_subfamily
-        case string
+        case name
         when /inae$/ then :subfamily
         when /ini$/  then :tribe
         else              :genus
@@ -56,7 +58,7 @@ module Names
 
       def create_subspecies_name!
         SubspeciesName.create!(
-          name:         string,
+          name:         name,
           epithet:      words.third,
           epithets:     [words.second, words.third].join(' ')
         )
@@ -64,7 +66,7 @@ module Names
 
       def create_subspecies_name_with_two_epithets!
         SubspeciesName.create!(
-          name:         string,
+          name:         name,
           epithet:      words.last,
           epithets:     words[1..-1].join(' ')
         )
@@ -72,7 +74,7 @@ module Names
 
       def create_species_name!
         SpeciesName.create!(
-          name:         string,
+          name:         name,
           epithet:      words.second
         )
       end
@@ -80,29 +82,29 @@ module Names
       def create_subgenus_name!
         epithet = words.second.tr '()', ''
         SubgenusName.create!(
-          name:         string,
+          name:         name,
           epithet:      epithet
         )
       end
 
       def create_genus_name!
         GenusName.create!(
-          name:         string,
-          epithet:      string
+          name:         name,
+          epithet:      name
         )
       end
 
       def create_tribe_name!
         TribeName.create!(
-          name:         string,
-          epithet:      string
+          name:         name,
+          epithet:      name
         )
       end
 
       def create_subfamily_name!
         SubfamilyName.create!(
-          name:         string,
-          epithet:      string
+          name:         name,
+          epithet:      name
         )
       end
   end

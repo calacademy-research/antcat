@@ -19,6 +19,12 @@ class ProtonymsController < ApplicationController
   def create
     @protonym = Protonym.new(protonym_params)
 
+    # TODO: This should not hit the db or be run in a transaction.
+    protonym_name_string = params[:protonym_name_string]
+    if protonym_name_string
+      @protonym.name = Names::CreateNameFromString[protonym_name_string]
+    end
+
     if @protonym.save
       @protonym.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'
@@ -66,20 +72,10 @@ class ProtonymsController < ApplicationController
     end
 
     def protonym_params
-      # TODO: Same hack as in `TaxonForm`.
-      if params[:protonym][:name_id].present?
-        params[:protonym].delete :name_attributes
-      else
-        if params[:protonym][:name_attributes].present?
-          params[:protonym][:name_id] = params[:protonym][:name_attributes][:id]
-        end
-      end
-
       params.require(:protonym).permit(
         :fossil,
         :sic,
         :locality,
-        :name_id,
         :primary_type_information_taxt,
         :secondary_type_information_taxt,
         :type_notes_taxt,

@@ -7,12 +7,6 @@ Given("there is a genus {string} with taxonomic history {string}") do |name, his
   genus.history_items.create! taxt: history
 end
 
-Given("there is a genus {string} with protonym name {string}") do |name, protonym_name|
-  genus = create_genus name
-  genus.protonym.name = Name.find_by(name: protonym_name)
-  genus.save
-end
-
 Given("there is a genus {string} with type name {string}") do |name, type_taxon_name|
   create_genus name, type_taxon: create_species(type_taxon_name)
 end

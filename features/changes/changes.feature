@@ -2,7 +2,6 @@ Feature: Changes
   Background:
     Given I log in as a catalog editor named "Mark Wilden"
 
-  @javascript
   Scenario: Adding a taxon and seeing it on the Changes page
     Given this reference exist
       | author | citation_year |
@@ -12,12 +11,8 @@ Feature: Changes
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
-    And I click the name field
     And I set the name to "Atta"
-    And I press "OK"
-    And I click the protonym name field
-    And I press "OK"
-    And WAIT_FOR_JQUERY
+    And I set the protonym name to "Atta"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should see "This taxon has been changed; changes awaiting approval"

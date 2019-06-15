@@ -3,58 +3,8 @@ Feature: Editing a taxon's name, protonym name, or type name
   Background:
     Given I am logged in as a catalog editor
 
-  Scenario: Editing a family's name
-    Given the Formicidae family exists
-    And there is a subfamily "Formicinae"
-
-    When I go to the edit page for "Formicinae"
-    And I click the name field
-    And I set the name to "Wildencinae"
-    And I press "OK"
-    And I press "Save"
-    Then I should see "Wildencinae" in the header
-
-  Scenario: Setting a genus's name to an existing one
-    Given there is a genus "Calyptites"
-    And there is a genus "Atta"
-
-    When I go to the edit page for "Atta"
-    And I click the name field
-    And I set the name to "Calyptites"
-    And I press "OK"
-    Then I should see "This name is in use by another taxon. To create a homonym, click"
-
-    When I press "Save homonym"
-    Then I should not see "This name is in use by another taxon. To create a homonym, click"
-
-  Scenario: Changing the protonym name
-    Given there is a genus "Atta" with protonym name "Atta"
-    And there is a genus "Eciton"
-
-    When I go to the catalog page for "Atta"
-    Then I should see "Atta" in the headline
-
-    When I go to the protonyms page
-    And I follow "Atta"
-    Then I should see "Protonym: Atta"
-
-    When I follow "Edit"
-    And I click the protonym name field
-    And I set the protonym name to "Eciton"
-    And I press "OK"
-    And WAIT
-    And I press "Save homonym"
-    And WAIT
-    And I press "Save"
-    Then I should see "Protonym was successfully updated"
-    And I should see "Protonym: Eciton"
-
-    When I go to the catalog page for "Atta"
-    Then I should see "Eciton" in the headline
-
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
-    And there is a species "Atta major"
     And there is a species "Atta minor"
 
     When I go to the edit page for "Atta"

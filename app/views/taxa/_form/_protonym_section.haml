@@ -50,15 +50,18 @@
       %table.unstriped
         %tr
           =protonym_form.fields_for :name do |name_form|
-            -if name_form.object.new_record?
-              =hidden_field_tag 'taxon[protonym_attributes][name_attributes][id]'
             %td
               =name_form.label :name do
                 Name
                 =tooltip_icon "protonym", scope: :taxa
             %td
-              #protonym_name_field
-                =render 'name_fields/panel', name_string: taxon.protonym.name.try(:name)
+              =text_field_tag :protonym_name_string, (taxon.protonym.name.name || default_name_string), style: "display: inline-block"
+              %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny{style: "margin-left: 1rem"} Same as name (copy)
+          %tr
+            %td
+            %td
+              #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
         %tr
           %td
           %td

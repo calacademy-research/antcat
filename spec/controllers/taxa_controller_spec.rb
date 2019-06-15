@@ -20,19 +20,10 @@ describe TaxaController do
     end
 
     let(:authorship_reference) { create :article_reference }
-    let(:name) { create :genus_name }
-    let(:protonym_name) { create :genus_name }
-
     let(:base_params) do
       HashWithIndifferentAccess.new(
         status: Status::VALID,
-        name_attributes: {
-          id: name.id
-        },
         protonym_attributes: {
-          name_attributes: {
-            id: protonym_name.id
-          },
           authorship_attributes: {
             reference_id: authorship_reference.id,
             pages: '99'
@@ -45,7 +36,12 @@ describe TaxaController do
       context "when rank is genus" do
         let(:parent) { create :subfamily }
         let(:genus_params) do
-          { parent_id: parent.id, rank_to_create: "genus" }
+          {
+            parent_id: parent.id,
+            rank_to_create: "genus",
+            taxon_name_string: "Atta",
+            protonym_name_string: "Atta"
+          }
         end
 
         describe "most minimal amount of params" do
