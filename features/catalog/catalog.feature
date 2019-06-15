@@ -63,15 +63,3 @@ Feature: Using the catalog
 
     When I follow "abruptus"
     Then I should see "minor" in the taxon browser
-
-  @skip
-  Scenario: Showing the "no tribe" tribe
-    Given a genus exists with a name of "Cariridris" and a subfamily of "Dolichoderinae"
-
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
-    And I follow "Incertae sedis" in the subfamilies taxon browser tab
-    Then I should see "Cariridris" in the genera taxon browser tab
-    And I should not see "Atta" in the genera taxon browser tab
-    And "Incertae sedis" should be selected in the subfamilies taxon browser tab
-    And "Dolichoderinae" should be selected in the families taxon browser tab
