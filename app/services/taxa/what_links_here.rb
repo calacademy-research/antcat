@@ -31,7 +31,7 @@ module Taxa
 
         return true if synonyms_as_senior.exists? || synonyms_as_junior.exists?
 
-        Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
+        Detax::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
           model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
             next if exclude_taxt_match? model, matched_id
             return true
@@ -64,7 +64,7 @@ module Taxa
 
       def references_in_taxt
         table_refs = []
-        Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
+        Detax::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
           model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
             next if exclude_taxt_match? model, matched_id
             table_refs << table_ref(model.table_name, field.to_sym, matched_id)
