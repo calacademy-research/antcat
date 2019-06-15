@@ -30,7 +30,7 @@ class TaxtPresenter
     # References, "{ref 123}".
     def parse_antweb_refs!
       @taxt.gsub!(/{ref (\d+)}/) do
-        reference = Reference.find_by id: $1
+        reference = Reference.find_by(id: $1)
 
         if reference
           Exporters::Antweb::InlineCitation[reference]
@@ -43,7 +43,7 @@ class TaxtPresenter
     # Taxa, "{tax 123}".
     def parse_antweb_taxs!
       @taxt.gsub!(/{tax (\d+)}/) do
-        taxon = Taxon.find_by id: $1
+        taxon = Taxon.find_by(id: $1)
 
         if taxon
           Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon

@@ -11,7 +11,18 @@ describe Reference do
   describe 'validations' do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
-    it { is_expected.to validate_uniqueness_of(:bolton_key).allow_nil }
+
+    describe '`bolton_key` uniqueness' do
+      let!(:conflict) { create :article_reference, bolton_key: 'Batiatus 2000' }
+      let!(:duplicate) { build_stubbed :article_reference }
+
+      specify do
+        expect { duplicate.bolton_key = conflict.bolton_key }.
+          to change { duplicate.valid? }.from(true).to(false)
+        expect(duplicate.errors[:bolton_key].first).to include "Bolton key has already been taken by"
+        expect(duplicate.errors[:bolton_key].first).to include conflict.keey
+      end
+    end
   end
 
   it { is_expected.to be_versioned }

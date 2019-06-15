@@ -28,7 +28,7 @@ class Reference < ApplicationRecord
 
   validates :title, presence: true
   validates :doi, format: { with: /\A[^<>]*\z/ }
-  validates :bolton_key, uniqueness: true, allow_nil: true
+  validate :ensure_bolton_key_unique
 
   before_validation :set_year_from_citation_year
   before_save :set_author_names_caches
@@ -141,6 +141,13 @@ class Reference < ApplicationRecord
   end
 
   private
+
+    def ensure_bolton_key_unique
+      return unless bolton_key
+      return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
+
+      errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
+    end
 
     def citation_year_without_extras
       citation_year.gsub(%r{ .*$}, '')

@@ -102,10 +102,6 @@ class Taxon < ApplicationRecord
     "#{type}Name".constantize
   end
 
-  def taxon_and_ancestors
-    Taxa::TaxonAndAncestors[self]
-  end
-
   def epithet_with_fossil
     name.epithet_with_fossil_html fossil?
   end

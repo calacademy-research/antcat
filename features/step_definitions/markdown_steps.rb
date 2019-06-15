@@ -6,7 +6,7 @@ Given("I am on a page with a textarea with markdown preview and autocompletion")
 end
 
 When("I fill in {string} with {string} followed by the user id of {string}") do |textarea, text, name|
-  user = User.find_by name: name
+  user = User.find_by(name: name)
   step %(I fill in "#{textarea}" with "#{text}#{user.id}")
 end
 
@@ -16,7 +16,7 @@ When('I fill in the markdown textarea with "@user" followed by my user id') do
 end
 
 When('I fill in the markdown textarea with "@taxon" followed by Eciton\'s id') do
-  eciton = Taxon.find_by name_cache: "Eciton"
+  eciton = Taxon.find_by(name_cache: "Eciton")
   step %(I fill in "issue_description" with "%taxon#{eciton.id}")
 end
 
@@ -31,12 +31,12 @@ Then("the markdown textarea should contain {string}") do |text|
 end
 
 Then("the markdown textarea should contain a markdown link to Archibald's user page") do
-  archibald = User.find_by name: "Archibald"
+  archibald = User.find_by(name: "Archibald")
   expect(markdown_textarea.value).to include "@user#{archibald.id}"
 end
 
 Then("the markdown textarea should contain a markdown link to Eciton") do
-  eciton = Taxon.find_by name_cache: "Eciton"
+  eciton = Taxon.find_by(name_cache: "Eciton")
   expect(markdown_textarea.value).to include "{tax #{eciton.id}}"
 end
 
