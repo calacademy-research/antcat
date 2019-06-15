@@ -22,7 +22,7 @@ module Taxa
 
       activity_parameters = activity_parameters_before_change
 
-      if Taxa::MoveItems[@to_taxon, history_items]
+      if Taxa::Operations::MoveItems[@to_taxon, history_items]
         create_activity(activity_parameters)
         redirect_to taxa_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
           notice: "Successfully moved history items. Items can be re-ordered at the taxon's edit page."

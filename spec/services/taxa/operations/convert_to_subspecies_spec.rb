@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::ConvertToSubspecies do
+describe Taxa::Operations::ConvertToSubspecies do
   describe "#call" do
     describe "unsuccessful conversion" do
       let!(:genus) { create_genus 'Atta' }

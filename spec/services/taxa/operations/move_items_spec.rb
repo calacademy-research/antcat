@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::MoveItems do
+describe Taxa::Operations::MoveItems do
   describe "#call" do
     let!(:from_taxon) { create :family }
     let!(:to_taxon) { create :family }

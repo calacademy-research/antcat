@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::ElevateToSpecies do
+describe Taxa::Operations::ElevateToSpecies do
   describe "#call" do
     describe "unuccessfully elevating" do
       context "when subspecies has no species" do

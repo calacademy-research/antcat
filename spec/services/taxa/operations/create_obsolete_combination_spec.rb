@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::CreateObsoleteCombination do
+describe Taxa::Operations::CreateObsoleteCombination do
   describe "#call" do
     describe "unsuccessful case" do
       context "when a species with this name already exists" do

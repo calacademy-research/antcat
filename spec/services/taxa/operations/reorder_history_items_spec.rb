@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Taxa::ReorderHistoryItems do
+describe Taxa::Operations::ReorderHistoryItems do
   describe "#call" do
     let(:taxon) { create :family }
     let!(:first) { taxon.history_items.create! taxt: "A" }

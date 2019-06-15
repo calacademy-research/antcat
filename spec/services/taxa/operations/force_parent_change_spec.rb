@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::ForceParentChange do
+describe Taxa::Operations::ForceParentChange do
   before do
     fake_current_user
   end
