@@ -449,8 +449,6 @@ GEM
     unicode-display_width (1.6.0)
     unread (0.10.1)
       activerecord (>= 3)
-    validation_scopes (0.6.1)
-      activerecord (>= 3, < 6)
     warden (1.2.8)
       rack (>= 2.0.6)
     webmock (3.5.1)
@@ -538,7 +536,6 @@ DEPENDENCIES
   twitter-typeahead-rails
   uglifier
   unread
-  validation_scopes
   webmock
   will_paginate
   workflow (< 2)

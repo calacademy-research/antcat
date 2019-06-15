@@ -16,7 +16,7 @@
   .medium-3.columns
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
     -if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !@taxon.is_a?(Family)
-      -if current_user && @taxon.has_soft_validation_warnings?
+      -if current_user && @taxon.soft_validation_warnings.present?
         #soft-validations.callout.warning
           %h6
             Issues

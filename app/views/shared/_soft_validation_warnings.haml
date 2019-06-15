@@ -1,5 +1,5 @@
 %ul
-  -soft_validation_warnings.full_messages.each do |warning|
+  -soft_validation_warnings.each do |warning|
     %li
       =sanitize(warning[:message])
       -database_script = warning[:database_script]
