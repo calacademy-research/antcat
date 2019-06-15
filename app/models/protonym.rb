@@ -3,7 +3,7 @@ class Protonym < ApplicationRecord
   include Trackable
 
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
-  belongs_to :name
+  belongs_to :name, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
