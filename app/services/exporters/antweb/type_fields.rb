@@ -38,7 +38,7 @@ module Exporters
         end
 
         def detax content
-          TaxtPresenter[content].to_antweb
+          AntwebDetax[content]
         end
     end
   end

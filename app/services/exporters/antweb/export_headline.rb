@@ -43,7 +43,7 @@ module Exporters
 
         def headline_notes
           return if headline_notes_taxt.blank?
-          TaxtPresenter[headline_notes_taxt].to_antweb
+          AntwebDetax[headline_notes_taxt]
         end
 
         def link_to_antcat

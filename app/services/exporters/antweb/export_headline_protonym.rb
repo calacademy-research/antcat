@@ -39,7 +39,7 @@ module Exporters
           string << protonym.decorate.format_pages_and_forms
 
           if authorship.notes_taxt.present?
-            string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
+            string << ' ' << AntwebDetax[authorship.notes_taxt]
           end
 
           string

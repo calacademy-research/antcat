@@ -32,7 +32,7 @@ module Exporters
           string << Exporters::Antweb::Exporter.antcat_taxon_link_with_name(type_taxon)
 
           if type_taxt
-            string << TaxtPresenter[format_type_taxt].to_antweb
+            string << AntwebDetax[format_type_taxt]
           end
 
           add_period_if_necessary string
