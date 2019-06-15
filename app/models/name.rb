@@ -102,6 +102,10 @@ class Name < ApplicationRecord
     end
 
     def set_taxon_caches
-      Taxon.where(name: self).update_all(name_cache: name, name_html_cache: name_html)
+      taxa.reload.each do |taxon|
+        taxon.name_cache = name
+        taxon.name_html_cache = name_html
+        taxon.save(validate: false)
+      end
     end
 end
