@@ -7,6 +7,6 @@ module DatabaseScripts
 end
 
 __END__
-description: See %github279.
 topic_areas: [synonyms]
+tags: [regression-test]
 issue_description: This taxon has both senior and junior synonyms.
