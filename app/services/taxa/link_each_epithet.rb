@@ -1,4 +1,4 @@
-class TaxonDecorator
+module Taxa
   class LinkEachEpithet
     include Service
     include Formatters::ItalicsHelper

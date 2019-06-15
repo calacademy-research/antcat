@@ -1,6 +1,6 @@
 # TODO: Cleanup more. This is still the messiest code of AntCat.
 
-class TaxonDecorator
+module Taxa
   class ChildList
     include Service
 

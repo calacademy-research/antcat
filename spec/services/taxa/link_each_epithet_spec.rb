@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe TaxonDecorator::LinkEachEpithet do
+describe Taxa::LinkEachEpithet do
   include TestLinksHelpers
 
   describe "#call" do

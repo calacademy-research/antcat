@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe TaxonDecorator::ChildList do
+describe Taxa::ChildList do
   describe "#call" do
     context 'when taxon is a family' do
       let!(:family) { create :family }
