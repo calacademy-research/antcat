@@ -15,7 +15,7 @@
   .medium-4.columns
     %h5 Rendered
     -if @with_ref_tags.present?
-      =TaxtPresenter[@with_ref_tags].to_html
+      =Detax[@with_ref_tags]
     -else
       %p No content :(
       %p Paste content from Bolton into the first textarea and press "Convert". For example this:

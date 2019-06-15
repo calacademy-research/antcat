@@ -38,7 +38,7 @@
           %td=add_period_if_necessary ::Types::FormatTypeField[@protonym.type_notes_taxt]
         %tr
           %th Notes
-          %td=or_dash TaxtPresenter[@protonym.authorship.notes_taxt].to_html
+          %td=or_dash Detax[@protonym.authorship.notes_taxt]
 
 -if @protonym.taxa.present?
   .row.margin-bottom
