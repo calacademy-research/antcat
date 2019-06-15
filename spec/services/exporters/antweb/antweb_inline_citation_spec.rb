@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Exporters::Antweb::InlineCitation do
+describe Exporters::Antweb::AntwebInlineCitation do
   let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
   let!(:reference) do
     create :article_reference,

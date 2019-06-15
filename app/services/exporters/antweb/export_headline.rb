@@ -38,7 +38,7 @@ module Exporters
         end
 
         def type_fields
-          Exporters::Antweb::TypeFields[taxon.protonym]
+          Exporters::Antweb::ExportTypeFields[taxon.protonym]
         end
 
         def headline_notes

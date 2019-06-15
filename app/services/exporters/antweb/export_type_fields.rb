@@ -1,6 +1,6 @@
 module Exporters
   module Antweb
-    class TypeFields
+    class ExportTypeFields
       include ApplicationHelper
       include Service
 

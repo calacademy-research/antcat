@@ -46,7 +46,7 @@ module Exporters
         end
 
         def link_to_reference reference
-          Exporters::Antweb::InlineCitation[reference]
+          Exporters::Antweb::AntwebInlineCitation[reference]
         end
     end
   end

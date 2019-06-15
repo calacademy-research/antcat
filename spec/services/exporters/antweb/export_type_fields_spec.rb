@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Exporters::Antweb::TypeFields do
+describe Exporters::Antweb::ExportTypeFields do
   describe "#call" do
     context "when protonym has type information" do
       let(:taxon) { create :genus }

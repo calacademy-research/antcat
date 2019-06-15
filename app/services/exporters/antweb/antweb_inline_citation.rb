@@ -1,6 +1,6 @@
 module Exporters
   module Antweb
-    class InlineCitation
+    class AntwebInlineCitation
       include ActionView::Helpers::UrlHelper
       include ApplicationHelper
       include Service

@@ -29,7 +29,7 @@ module Exporters
             reference = Reference.find_by(id: $1)
 
             if reference
-              Exporters::Antweb::InlineCitation[reference]
+              Exporters::Antweb::AntwebInlineCitation[reference]
             else
               warn_about_non_existing_id "REFERENCE", $1
             end
