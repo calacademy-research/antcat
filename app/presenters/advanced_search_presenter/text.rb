@@ -1,36 +1,38 @@
-class AdvancedSearchPresenter::Text < AdvancedSearchPresenter
-  def format taxon
-    string = convert_to_text(format_name(taxon))
-    status = format_status_reference(taxon).html_safe
-    string << convert_to_text(' ' + status) if status.present?
-    type_localities = format_type_localities(taxon)
-    string << convert_to_text(' ' + type_localities) if type_localities.present?
-    string << "\n"
-    string << convert_to_text(format_protonym(taxon))
-    string << "\n\n"
+class AdvancedSearchPresenter
+  class Text < AdvancedSearchPresenter
+    def format taxon
+      string = convert_to_text(format_name(taxon))
+      status = format_status_reference(taxon).html_safe
+      string << convert_to_text(' ' + status) if status.present?
+      type_localities = format_type_localities(taxon)
+      string << convert_to_text(' ' + type_localities) if type_localities.present?
+      string << "\n"
+      string << convert_to_text(format_protonym(taxon))
+      string << "\n\n"
+    end
+
+    private
+
+      def format_name taxon
+        taxon.name_cache
+      end
+
+      def format_protonym taxon
+        reference = taxon.authorship_reference
+
+        string = ''.html_safe
+        string << reference.decorate.plain_text
+        string << " DOI: " << reference.doi if reference.doi?
+        string << "   #{reference.id}"
+        string
+      end
+
+      def italicize string
+        string
+      end
+
+      def convert_to_text string
+        unitalicize string.html_safe
+      end
   end
-
-  private
-
-    def format_name taxon
-      taxon.name_cache
-    end
-
-    def format_protonym taxon
-      reference = taxon.authorship_reference
-
-      string = ''.html_safe
-      string << reference.decorate.plain_text
-      string << " DOI: " << reference.doi if reference.doi?
-      string << "   #{reference.id}"
-      string
-    end
-
-    def italicize string
-      string
-    end
-
-    def convert_to_text string
-      unitalicize string.html_safe
-    end
 end

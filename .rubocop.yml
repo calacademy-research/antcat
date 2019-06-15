@@ -178,7 +178,7 @@ Style/BracesAroundHashParameters:
   Enabled: false
 
 Style/ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
