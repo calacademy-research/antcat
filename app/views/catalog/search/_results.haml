@@ -1,9 +1,6 @@
 -if taxa.empty?
   .alert.callout
-    -if is_author_search
-      No results found. If you're choosing an author, make sure you pick the name from the dropdown list.
-    -else
-      No results found.
+    No results found.
 -else
   %table
     %caption=pluralize_with_delimiters taxa.count, 'result'

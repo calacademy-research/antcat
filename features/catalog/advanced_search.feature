@@ -39,7 +39,7 @@ Feature: Searching the catalog
   Scenario: Manually entering an unknown name instead of using picklist
     When I fill in "author_name" with "asdasdasd"
     And I press "Go" in the search section
-    Then I should see "No results found. If you're choosing an author, make sure you pick the name from the dropdown list."
+    Then I should see "If you're choosing an author, make sure you pick the name from the dropdown list."
 
   Scenario: Searching for locality
     Given there is a genus located in "Africa"
