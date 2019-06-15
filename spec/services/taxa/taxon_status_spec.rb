@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe TaxonDecorator::TaxonStatus do
+describe Taxa::TaxonStatus do
   include TestLinksHelpers
 
   describe "#call" do

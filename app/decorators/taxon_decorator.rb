@@ -37,11 +37,11 @@ class TaxonDecorator < Draper::Decorator
 
   def statistics valid_only: false
     stats = Taxa::FetchStatistics[taxon, valid_only: valid_only]
-    TaxonDecorator::Statistics[stats]
+    Taxa::FormatStatistics[stats]
   end
 
   def taxon_status
-    TaxonDecorator::TaxonStatus[taxon]
+    Taxa::TaxonStatus[taxon]
   end
 
   def link_to_antwiki

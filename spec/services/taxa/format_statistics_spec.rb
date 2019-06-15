@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe TaxonDecorator::Statistics do
+describe Taxa::FormatStatistics do
   describe '#call' do
     it "handles nil and {}" do
       expect(described_class[nil]).to eq nil

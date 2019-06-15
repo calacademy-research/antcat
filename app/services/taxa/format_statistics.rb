@@ -1,5 +1,5 @@
-class TaxonDecorator
-  class Statistics
+module Taxa
+  class FormatStatistics
     include ActionView::Helpers
     include ActionView::Context
     include Service

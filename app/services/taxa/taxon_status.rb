@@ -1,4 +1,4 @@
-class TaxonDecorator
+module Taxa
   class TaxonStatus
     include Service
 
