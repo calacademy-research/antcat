@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Taxa::QuickSearch do
+describe Taxa::Search::QuickSearch do
   describe "#call" do
     let!(:rufa) do
       create :species,

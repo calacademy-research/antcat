@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-describe Taxa::AdvancedSearch do
+describe Taxa::Search::AdvancedSearch do
   describe "#call" do
     context "when no meaningful search parameters are given" do
       specify { expect(described_class[year: '']).to be_empty }
