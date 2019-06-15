@@ -3,8 +3,8 @@ require 'spec_helper'
 describe TaxonDecorator::Statistics do
   describe '#call' do
     it "handles nil and {}" do
-      expect(described_class[nil]).to eq ''
-      expect(described_class[{}]).to eq ''
+      expect(described_class[nil]).to eq nil
+      expect(described_class[{}]).to eq nil
     end
 
     describe "extant and fossil statistics" do
