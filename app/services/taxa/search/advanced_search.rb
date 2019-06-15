@@ -50,24 +50,20 @@ module Taxa
             end
           end
 
-          search_term = "%#{params[:locality]}%"
-          query = query.where('protonyms.locality LIKE ?', search_term) if params[:locality]
+          query = query.where('protonyms.locality LIKE ?', "%#{params[:locality]}%") if params[:locality]
 
-          search_term = "%#{params[:type_information]}%"
-          query = query.where(<<-SQL, search_term: search_term) if params[:type_information]
+          query = query.where(<<-SQL, search_term: "%#{params[:type_information]}%") if params[:type_information]
             primary_type_information_taxt LIKE :search_term
               OR secondary_type_information_taxt LIKE :search_term
               OR type_notes_taxt LIKE :search_term
           SQL
 
-          search_term = "%#{params[:name]}%"
-          query = query.where('taxa.name_cache LIKE ?', search_term) if params[:name]
+          query = query.where('taxa.name_cache LIKE ?', "%#{params[:name]}%") if params[:name]
 
           if params[:genus]
-            query = query.joins('inner JOIN taxa as genera ON genera.id = taxa.genus_id')
-            query = query.joins('inner JOIN names as genus_names ON  genera.name_id = genus_names.id')
-            search_term = "%#{params[:genus]}%"
-            query = query.where('genus_names.name like ?', search_term)
+            query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
+                      joins('JOIN names AS genus_names ON  genera.name_id = genus_names.id').
+                      where('genus_names.name like ?', "%#{params[:genus]}%")
           end
 
           search_term = params[:biogeographic_region]
@@ -77,8 +73,7 @@ module Taxa
             query = query.where(biogeographic_region: search_term)
           end
 
-          search_term = "%#{params[:forms]}%"
-          query = query.where('forms LIKE ?', search_term) if params[:forms]
+          query = query.where('forms LIKE ?', "%#{params[:forms]}%") if params[:forms]
 
           query.includes(:name, protonym: { authorship: :reference })
         end
