@@ -134,9 +134,9 @@
                     =taxon.decorate.author_citation
                   %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                   %td
-                    -if taxon.history_items.present?
+                    -if taxon.history_items.exists?
                       =antcat_icon("check")
                   %td
-                    -if taxon.valid_taxon? && Taxon.where(current_valid_taxon: taxon)
+                    -if taxon.valid_taxon? && Taxon.where(current_valid_taxon: taxon).exists?
                       =antcat_icon 'warning-icon'
                       Yes
