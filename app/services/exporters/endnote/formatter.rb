@@ -11,7 +11,7 @@ module Exporters
             when UnknownReference then UnknownFormatter
             else raise "Don't know what kind of reference this is: #{reference.inspect}"
             end
-          klass.new(reference).format
+          klass.new(reference).call
         end.select(&:present?).join("\n") + "\n"
       end
     end
@@ -22,27 +22,32 @@ module Exporters
         @string = []
       end
 
-      def format
+      def call
         add '0', kind
         add_author_names
-        add 'D', @reference.year
-        add 'T', @reference.title
+        add 'D', year
+        add 'T', title
         add_contents
-        add 'Z', @reference.public_notes
-        add 'K', @reference.taxonomic_notes
-        add 'U', @reference.url
+        add 'Z', public_notes
+        add 'K', taxonomic_notes
+        add 'U', url
         add '~', 'AntCat'
-        @string.join("\n") + "\n"
+        string.join("\n") + "\n"
       end
 
       private
 
+        attr_reader :reference
+        attr_accessor :string
+
+        delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, :url, to: :reference
+
         def add tag, value
-          @string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
+          string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
         end
 
         def add_author_names
-          @reference.author_names.each do |author|
+          author_names.each do |author|
             add "A", author.name
           end
         end
@@ -51,46 +56,52 @@ module Exporters
     class ArticleFormatter < BaseFormatter
       private
 
+        delegate :journal, :series_volume_issue, :pagination, to: :reference
+
         def kind
           'Journal Article'
         end
 
         def add_contents
-          add 'J', @reference.journal.name
-          add 'N', @reference.series_volume_issue
-          add 'P', @reference.pagination
+          add 'J', journal.name
+          add 'N', series_volume_issue
+          add 'P', pagination
         end
     end
 
     class BookFormatter < BaseFormatter
       private
 
+        delegate :publisher, :pagination, to: :reference
+
         def kind
           'Book'
         end
 
         def add_contents
-          add 'C', @reference.publisher.place_name
-          add 'I', @reference.publisher.name
-          add 'P', @reference.pagination
+          add 'C', publisher.place_name
+          add 'I', publisher.name
+          add 'P', pagination
         end
     end
 
     class UnknownFormatter < BaseFormatter
       private
 
+        delegate :citation, to: :reference
+
         def kind
           'Generic'
         end
 
         def add_contents
-          add '1', @reference.citation
+          add '1', citation
         end
     end
 
     class NestedFormatter < BaseFormatter
       # don't know how to get EndNote to handle nested references
-      def format
+      def call
         ''
       end
     end

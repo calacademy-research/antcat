@@ -39,14 +39,14 @@ module Exporters
           string << protonym.decorate.format_pages_and_forms
 
           if authorship.notes_taxt.present?
-            string << ' ' << TaxtPresenter[authorship.notes_taxt].to_antweb
+            string << ' ' << AntwebDetax[authorship.notes_taxt]
           end
 
           string
         end
 
         def link_to_reference reference
-          Exporters::Antweb::InlineCitation[reference]
+          Exporters::Antweb::AntwebInlineCitation[reference]
         end
     end
   end

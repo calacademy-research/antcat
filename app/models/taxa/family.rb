@@ -23,7 +23,7 @@ class Family < Taxon
   end
 
   # TODO: See https://github.com/calacademy-research/antcat/issues/453
-  # See also `TaxonDecorator::ChildList` and `Subfamily`.
+  # See also `ChildList` and `Subfamily`.
   def genera_incertae_sedis_in
     Genus.where(incertae_sedis_in: 'family').displayable
   end

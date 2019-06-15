@@ -28,7 +28,7 @@ module Exporters
 
         def history_item item
           content_tag :div do
-            add_period_if_necessary TaxtPresenter[item.taxt].to_antweb
+            add_period_if_necessary AntwebDetax[item.taxt]
           end
         end
     end

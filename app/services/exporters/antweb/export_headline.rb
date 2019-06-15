@@ -38,12 +38,12 @@ module Exporters
         end
 
         def type_fields
-          Exporters::Antweb::TypeFields[taxon.protonym]
+          Exporters::Antweb::ExportTypeFields[taxon.protonym]
         end
 
         def headline_notes
           return if headline_notes_taxt.blank?
-          TaxtPresenter[headline_notes_taxt].to_antweb
+          AntwebDetax[headline_notes_taxt]
         end
 
         def link_to_antcat

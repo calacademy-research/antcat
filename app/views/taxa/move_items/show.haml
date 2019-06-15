@@ -33,7 +33,7 @@
               %tr
                 %td=check_box_tag "history_item_ids[]", history_item.id
                 %td
-                  %small=TaxtPresenter[history_item.taxt].to_html
+                  %small=Detax[history_item.taxt]
 
     .medium-6.columns
       -if @to_taxon.history_items.empty?
@@ -45,7 +45,7 @@
             -@to_taxon.history_items.each do |history_item|
               %tr
                 %td
-                  %small=TaxtPresenter[history_item.taxt].to_html
+                  %small=Detax[history_item.taxt]
 
   .row.margin-bottom
     .medium-12.columns

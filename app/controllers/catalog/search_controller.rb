@@ -8,7 +8,7 @@ module Catalog
     def index
       return if not_searching_yet? # Just render the form.
 
-      @taxa = Taxa::AdvancedSearch[advanced_search_params]
+      @taxa = Taxa::Search::AdvancedSearch[advanced_search_params]
       @is_author_search = author_search?
 
       respond_to do |format|
@@ -34,7 +34,7 @@ module Catalog
         return
       end
 
-      taxa = Taxa::QuickSearch[
+      taxa = Taxa::Search::QuickSearch[
         params[:qq],
         search_type: params[:search_type],
         valid_only: params[:valid_only]

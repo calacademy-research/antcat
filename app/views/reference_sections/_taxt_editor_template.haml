@@ -1,7 +1,7 @@
 .taxt-editor{data: { url: "/reference_sections/#{item.id}" }}
   .taxt-presenter
     %h6.title_taxt=markdown item.title_taxt, no_wrapping_p: true
-    %h6.subtitle_taxt=TaxtPresenter[item.subtitle_taxt].to_html
+    %h6.subtitle_taxt=Detax[item.subtitle_taxt]
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
     =markdown item.references_taxt, no_wrapping_p: true
 

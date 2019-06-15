@@ -9,7 +9,7 @@ module Taxa
         return
       end
 
-      new_species = Taxa::ElevateToSpecies[@taxon]
+      new_species = Taxa::Operations::ElevateToSpecies[@taxon]
       if new_species.persisted?
         species_activity @taxon, new_species
         redirect_to catalog_path(new_species), notice: <<~MSG

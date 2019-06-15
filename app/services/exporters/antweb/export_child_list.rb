@@ -12,7 +12,7 @@ module Exporters
       def call
         content = ''.html_safe
 
-        TaxonDecorator::ChildList[taxon].each do |child_list|
+        Taxa::ChildList[taxon].each do |child_list|
           content << child_list(child_list[:label], child_list[:children])
         end
 

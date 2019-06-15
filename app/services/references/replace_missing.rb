@@ -21,7 +21,7 @@ module References
       attr_reader :missing_reference, :target_reference
 
       def replace_all!
-        Taxt::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
+        Detax::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
           model.where("#{field} LIKE '%{ref #{missing_reference.id}}%'").find_each do |match|
             content = match.public_send(field)
             new_content = replace_ref_tags content

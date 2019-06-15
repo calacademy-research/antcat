@@ -29,8 +29,8 @@
         -statistics = @taxon.decorate.statistics
       -else
         -# If there's no valid-only stats, try including invalid too before giving up.
-        -statistics = @taxon.decorate.statistics(valid_only: true).presence || @taxon.decorate.statistics
-      -if statistics.present?
+        -statistics = @taxon.decorate.statistics(valid_only: true) || @taxon.decorate.statistics
+      -if statistics
         .callout
           #statistics.small-margin-bottom
             =statistics

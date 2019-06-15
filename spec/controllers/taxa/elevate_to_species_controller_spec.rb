@@ -14,8 +14,8 @@ describe Taxa::ElevateToSpeciesController do
 
     before { sign_in create(:user, :editor) }
 
-    it 'calls `Taxa::ElevateToSpecies`' do
-      expect(Taxa::ElevateToSpecies).to receive(:new).with(subspecies).and_call_original
+    it 'calls `Taxa::Operations::ElevateToSpecies`' do
+      expect(Taxa::Operations::ElevateToSpecies).to receive(:new).with(subspecies).and_call_original
       post :create, params: { taxa_id: subspecies.id }
     end
 

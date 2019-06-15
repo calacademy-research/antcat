@@ -22,6 +22,6 @@
     %tr
       %td=link_to "##{history_item.id}", history_item
       %td=history_item.taxon.link_to_taxon
-      %td=TaxtPresenter[history_item.taxt].to_html
+      %td=Detax[history_item.taxt]
 
 =will_paginate @taxon_history_items
