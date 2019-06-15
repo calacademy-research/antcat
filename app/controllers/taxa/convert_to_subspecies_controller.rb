@@ -45,7 +45,7 @@ module Taxa
         render :new and return
       end
 
-      new_subspecies = Taxa::ConvertToSubspecies[@taxon, @new_species]
+      new_subspecies = Taxa::Operations::ConvertToSubspecies[@taxon, @new_species]
       if new_subspecies.persisted?
         create_activity @taxon, new_subspecies
         redirect_to catalog_path(new_subspecies), notice: <<~MSG

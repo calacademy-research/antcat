@@ -37,8 +37,8 @@ module TaxonBrowser
 
       def default_or_display display
         case @taxon
-        when Subfamily then TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY if display.blank?
-        when Subgenus  then TaxonBrowser::Tab::SUBGENERA_IN_PARENT_GENUS
+        when Subfamily then Tab::ALL_GENERA_IN_SUBFAMILY if display.blank?
+        when Subgenus  then Tab::SUBGENERA_IN_PARENT_GENUS
         end || display
       end
 
@@ -69,7 +69,7 @@ module TaxonBrowser
       end
 
       def taxon_and_ancestors
-        @taxon_and_ancestors ||= @taxon.taxon_and_ancestors
+        @taxon_and_ancestors ||= Taxa::TaxonAndAncestors[@taxon]
       end
   end
 end

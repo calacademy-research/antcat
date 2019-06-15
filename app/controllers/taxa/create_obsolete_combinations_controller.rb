@@ -36,7 +36,7 @@ module Taxa
       end
 
       def create_obsolete_combination
-        Taxa::CreateObsoleteCombination[@taxon, @obsolete_genus]
+        Taxa::Operations::CreateObsoleteCombination[@taxon, @obsolete_genus]
       end
 
       def create_activity obsolete_combination

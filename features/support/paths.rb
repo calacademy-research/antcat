@@ -105,7 +105,7 @@ module NavigationHelpers
 
     # User
     when /^the user page for "([^"]*)"$/
-      user = User.find_by name: $1
+      user = User.find_by(name: $1)
       "/users/#{user.id}"
     when /^the login page$/
       '/my/users/sign_in'

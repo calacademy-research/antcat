@@ -7,9 +7,7 @@ AllCops:
   Exclude:
     - 'config.ru'
     - 'db/schema.rb'
-    - 'db/data_schema.rb'
     - 'bin/**/*'
-    - 'db/data/**/*'
     - 'db/migrate/**/*'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'app/controllers/name_fields_controller.rb'
@@ -129,7 +127,7 @@ RSpec/ExampleLength:
   Enabled: false
 
 RSpec/ExpectChange:
-  Enabled: false
+  EnforcedStyle: block
 
 RSpec/ExpectInHook:
   Enabled: false
@@ -180,7 +178,7 @@ Style/BracesAroundHashParameters:
   Enabled: false
 
 Style/ClassAndModuleChildren:
-  Enabled: false
+  Enabled: true
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
@@ -283,7 +281,7 @@ Metrics/BlockLength:
   Enabled: false
 
 Metrics/ClassLength:
-  Max: 203
+  Max: 190
 
 Metrics/CyclomaticComplexity:
   Enabled: false
@@ -295,7 +293,7 @@ Metrics/ModuleLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 21
+  Max: 17
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

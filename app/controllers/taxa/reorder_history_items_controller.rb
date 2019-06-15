@@ -4,7 +4,7 @@ module Taxa
     before_action :set_taxon
 
     def create
-      if Taxa::ReorderHistoryItems[@taxon, params[:taxon_history_item]]
+      if Taxa::Operations::ReorderHistoryItems[@taxon, params[:taxon_history_item]]
         render json: { success: true }
       else
         render json: @taxon.errors, status: :unprocessable_entity

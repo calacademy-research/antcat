@@ -38,18 +38,16 @@ describe FeedbackController do
     end
 
     context "when a feedback with the same comment already exists" do
-      before do
-        post :create, params: valid_params
-      end
+      before { post :create, params: valid_params }
 
       it "does not create a feedback item" do
         expect { post :create, params: valid_params }.to_not change { Feedback.count }.from(1)
-        expect(response).to have_http_status :unprocessable_entity
       end
 
       it "includes a friendly error message in the response" do
         post :create, params: valid_params
-        expect(json_response["comment"].first).to include "has already been submitted. If it is unlikely"
+        expect(response.body).to include "has already been submitted. If it is unlikely"
+        expect(response).to have_http_status :unprocessable_entity
       end
     end
   end

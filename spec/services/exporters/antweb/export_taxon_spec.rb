@@ -165,34 +165,35 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[13]: `current valid name`" do
-      let(:taxon) { create :genus }
-
       context 'when taxon is valid' do
+        let(:taxon) { create :genus }
+
         it "returns nil" do
           expect(export_taxon(taxon)[13]).to be_nil
         end
       end
 
       context "when taxon has a `current_valid_taxon`" do
-        let!(:old) { create :genus }
-
-        before { taxon.update! current_valid_taxon: old, status: Status::SYNONYM }
+        let!(:current_valid_taxon) { create :genus }
+        let(:taxon) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
 
         it "exports the current valid name of the taxon" do
-          expect(export_taxon(taxon)[13]).to end_with old.name.name
+          expect(export_taxon(taxon)[13]).to end_with current_valid_taxon.name.name
         end
       end
 
-      context "when there isn't a current_valid_taxon" do
-        let!(:junior_synonym) { create :species, :synonym, genus: taxon }
+      context 'when taxon is a synonym' do
+        context "when there are senior synonyms" do
+          let!(:taxon) { create :species, :synonym }
+          let!(:senior_synonym) { create_species 'Eciton major' }
 
-        before do
-          senior_synonym = create_species 'Eciton major', genus: taxon
-          create :synonym, junior_synonym: junior_synonym, senior_synonym: senior_synonym
-        end
+          before do
+            create :synonym, junior_synonym: taxon, senior_synonym: senior_synonym
+          end
 
-        it "looks at synonyms" do
-          expect(export_taxon(junior_synonym)[13]).to end_with 'Eciton major'
+          it "looks at synonyms" do
+            expect(export_taxon(taxon)[13]).to end_with 'Eciton major'
+          end
         end
       end
     end

@@ -24,7 +24,7 @@
         %td=protonym.authorship.reference.decorate.expandable_reference
         %td=protonym.decorate.format_pages_and_forms
         %td=protonym.decorate.format_locality
-        %td=or_dash TaxtPresenter[protonym.authorship.notes_taxt].to_html
+        %td=or_dash Detax[protonym.authorship.notes_taxt]
         %td=protonym.taxa.count
 
 =will_paginate @protonyms

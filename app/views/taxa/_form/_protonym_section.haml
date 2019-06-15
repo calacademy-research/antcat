@@ -37,7 +37,7 @@
           %td=add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
         %tr
           %td Notes
-          %td=or_dash TaxtPresenter[protonym.authorship.notes_taxt].to_html
+          %td=or_dash Detax[protonym.authorship.notes_taxt]
   -else
     %h5.callout-header Existing protonym (leave blank if you are creating a new protonym)
     %table.unstriped

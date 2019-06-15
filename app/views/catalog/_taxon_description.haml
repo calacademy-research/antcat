@@ -12,7 +12,7 @@
         =Subspecies.find_by(id: taxon.species_id).decorate.link_to_taxon_with_author_citation
 
 .header
-  %span.name=TaxonDecorator::LinkEachEpithet[taxon]
+  %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.taxon_status
   =taxon.name.gender
@@ -28,15 +28,15 @@
   =succeed ':' do
     =taxon.authorship_reference.decorate.expandable_reference
   =taxon.protonym.decorate.format_pages_and_forms
-  =TaxtPresenter[taxon.protonym.authorship.notes_taxt].to_html
+  =Detax[taxon.protonym.authorship.notes_taxt]
   =taxon.protonym.decorate.format_locality
 
   -if taxon.type_taxon
     =taxon.decorate.type_taxon_rank
-    =add_period_if_necessary(taxon.type_taxon.decorate.link_to_taxon + TaxtPresenter[taxon.decorate.format_type_taxt].to_html)
+    =add_period_if_necessary(taxon.type_taxon.decorate.link_to_taxon + Detax[taxon.decorate.format_type_taxt])
   =add_period_if_necessary(taxon.biogeographic_region)
 
-  =TaxtPresenter[taxon.headline_notes_taxt].to_html
+  =Detax[taxon.headline_notes_taxt]
 
   -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
@@ -60,7 +60,7 @@
   %ul.history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
-        =add_period_if_necessary TaxtPresenter[history_item.taxt].to_html
+        =add_period_if_necessary Detax[history_item.taxt]
         -if current_user
           %span.show-on-hover
             -if user_is_at_least_helper?
@@ -88,13 +88,13 @@
       -taxon.reference_sections.each do |reference_section|
         .section.small-margin-bottom
           -if reference_section.title_taxt.present?
-            %h6=TaxtPresenter[reference_section.title_taxt].to_html
+            %h6=Detax[reference_section.title_taxt]
 
           -if reference_section.subtitle_taxt.present?
-            %h7=TaxtPresenter[reference_section.subtitle_taxt].to_html
+            %h7=Detax[reference_section.subtitle_taxt]
 
           -if reference_section.references_taxt.present?
-            %p=TaxtPresenter[reference_section.references_taxt].to_html
+            %p=Detax[reference_section.references_taxt]
 
           -if current_user
             %span.show-on-hover

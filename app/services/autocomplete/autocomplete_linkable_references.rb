@@ -21,7 +21,7 @@ module Autocomplete
       def exact_id_match
         return unless search_query =~ /^\d{6} ?$/
 
-        match = Reference.find_by id: search_query
+        match = Reference.find_by(id: search_query)
         [match] if match
       end
   end

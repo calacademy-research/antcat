@@ -24,8 +24,8 @@
     %tr
       %td=link_to "##{reference_section.id}", reference_section
       %td=reference_section.taxon.link_to_taxon
-      %td=TaxtPresenter[reference_section.title_taxt].to_html
-      %td=TaxtPresenter[reference_section.subtitle_taxt].to_html
-      %td=TaxtPresenter[reference_section.references_taxt].to_html
+      %td=Detax[reference_section.title_taxt]
+      %td=Detax[reference_section.subtitle_taxt]
+      %td=Detax[reference_section.references_taxt]
 
 =will_paginate @reference_sections

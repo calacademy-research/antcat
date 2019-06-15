@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   has_many :activities
   has_many :comments
-  has_many :notifications, -> { order(id: :desc) }
+  has_many :notifications
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
   validates :name, presence: true
@@ -36,11 +36,11 @@ class User < ApplicationRecord
     return if notifier == self
     return if already_notified_for_attached_by_user? attached, notifier
 
-    Notification.create! user: self, reason: reason, attached: attached, notifier: notifier
+    notifications.create!(reason: reason, attached: attached, notifier: notifier)
   end
 
   def mark_unseen_notifications_as_seen
-    unseen_notifications.update_all seen: true
+    unseen_notifications.update_all(seen: true)
   end
 
   private

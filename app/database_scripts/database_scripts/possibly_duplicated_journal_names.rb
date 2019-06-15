@@ -191,7 +191,7 @@ module DatabaseScripts
       end
 
       def link_to_journal journal_name
-        journal = Journal.find_by name: journal_name
+        journal = Journal.find_by(name: journal_name)
         link_to journal.name, journal_path(journal)
       end
   end

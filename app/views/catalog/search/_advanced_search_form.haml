@@ -2,7 +2,7 @@
   .row
     .medium-2.columns
       Rank
-      =select_tag :type, options_for_select(Taxa::AdvancedSearch::RANKS, params[:type]), include_blank: "Any"
+      =select_tag :type, options_for_select(Taxa::Search::AdvancedSearch::RANKS, params[:type]), include_blank: "Any"
     .medium-2.columns
       Described by
       =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
