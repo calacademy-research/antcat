@@ -37,12 +37,6 @@ class Name < ApplicationRecord
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 
-  # TODO rename to avoid confusing this with [Rails'] dynamic finder methods.
-  def self.find_by_name string
-    Name.joins("LEFT JOIN taxa ON (taxa.name_id = names.id)").readonly(false).
-      where(name: string).order('taxa.id DESC').order(:name).first
-  end
-
   def rank
     self.class.name.gsub(/Name$/, "").underscore
   end

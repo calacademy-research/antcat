@@ -73,7 +73,8 @@ class Taxon < ApplicationRecord
   scope :ranks, ->(*ranks) { where(type: ranks) }
   scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
 
-  accepts_nested_attributes_for :name, :protonym
+  accepts_nested_attributes_for :name, update_only: true
+  accepts_nested_attributes_for :protonym
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   trackable parameters: proc {

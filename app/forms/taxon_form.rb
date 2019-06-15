@@ -1,16 +1,21 @@
 class TaxonForm
-  def initialize taxon, taxon_params
+  def initialize taxon, taxon_params, taxon_name_string: nil, protonym_name_string: nil
     @taxon = taxon
     @params = taxon_params
+    @taxon_name_string = taxon_name_string
+    @protonym_name_string = protonym_name_string
   end
 
   def save
     save_taxon
+  rescue Names::CreateNameFromString::UnparsableName => e
+    taxon.errors.add :base, "Could not parse name #{e.message}"
+    raise ActiveRecord::RecordInvalid
   end
 
   private
 
-    attr_reader :taxon, :params
+    attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string
 
     def save_taxon
       taxon.save_initiator = true
@@ -21,15 +26,25 @@ class TaxonForm
         # the versions' `change_id`s will be nil.
         subspecies_without_species_special_case
 
-        params[:name_id] = params[:name_attributes][:id]
+        if taxon_name_string
+          taxon.name = Names::CreateNameFromString[taxon_name_string]
+        end
 
         if params[:protonym_id].present?
           params.delete :protonym_attributes
         else
-          params[:protonym_attributes][:name_id] = params[:protonym_attributes][:name_attributes][:id]
+          if protonym_name_string
+            taxon.protonym.name = Names::CreateNameFromString[protonym_name_string]
+          end
         end
 
         taxon.attributes = params
+
+        # TODO: I don't think this is 100% true, but the current code requires it.
+        if taxon.is_a?(SpeciesGroupTaxon) && taxon.protonym.name.try(:genus_epithet).blank?
+          taxon.errors.add :base, "Species and subspecies must have protonyms with species or subspecies names"
+          raise ActiveRecord::RecordInvalid
+        end
 
         save_and_create_change!
       end

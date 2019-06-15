@@ -3,33 +3,8 @@ Feature: Editing a taxon's name, protonym name, or type name
   Background:
     Given I am logged in as a catalog editor
 
-  Scenario: Editing a family's name
-    Given the Formicidae family exists
-    And there is a subfamily "Formicinae"
-
-    When I go to the edit page for "Formicinae"
-    And I click the name field
-    And I set the name to "Wildencinae"
-    And I press "OK"
-    And I press "Save"
-    Then I should see "Wildencinae" in the header
-
-  Scenario: Setting a genus's name to an existing one
-    Given there is a genus "Calyptites"
-    And there is a genus "Atta"
-
-    When I go to the edit page for "Atta"
-    And I click the name field
-    And I set the name to "Calyptites"
-    And I press "OK"
-    Then I should see "This name is in use by another taxon. To create a homonym, click"
-
-    When I press "Save homonym"
-    Then I should not see "This name is in use by another taxon. To create a homonym, click"
-
   Scenario: Changing the type name
     Given there is a genus "Atta" with type name "Atta major"
-    And there is a species "Atta major"
     And there is a species "Atta minor"
 
     When I go to the edit page for "Atta"

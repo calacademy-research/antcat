@@ -1,6 +1,7 @@
 -content_for :head do
   =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
+  =javascript_include_tag 'check_name_conflicts'
 
 =enable_tooltips
 =render "shared/default_reference"
@@ -30,8 +31,12 @@
       %tr
         %td Name
         %td
-          %span.right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
-          =@protonym.decorate.format_name
+          -if @protonym.name.persisted?
+            %span.right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
+            =@protonym.decorate.format_name
+          -else
+            =text_field_tag :protonym_name_string, @protonym.name.name
+            #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
     %tr
       %td

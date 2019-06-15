@@ -41,12 +41,18 @@ describe ProtonymsController do
         }
       }
     end
+    let!(:params) do
+      {
+        protonym_name_string: "Atta",
+        protonym: protonym_params
+      }
+    end
 
     before { sign_in create(:user, :helper) }
 
     # rubocop:disable RSpec/MultipleExpectations
     it 'creates a protonym' do
-      expect { post(:create, params: { protonym: protonym_params }) }.to change { Protonym.count }.by(1)
+      expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
 
       protonym = Protonym.last
       expect(protonym.fossil).to eq protonym_params[:fossil]
@@ -65,7 +71,7 @@ describe ProtonymsController do
     # rubocop:enable RSpec/MultipleExpectations
 
     it 'creates an activity' do
-      expect { post(:create, params: { protonym: protonym_params, edit_summary: 'Split protonym' }) }.
+      expect { post(:create, params: params.merge(edit_summary: 'Split protonym')) }.
         to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
@@ -90,9 +96,6 @@ describe ProtonymsController do
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
         type_notes_taxt: "type notes",
-        name_attributes: {
-          id: create(:genus_name).id
-        },
         authorship_attributes: {
           pages: '99',
           forms: 'worker',

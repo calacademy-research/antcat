@@ -19,6 +19,12 @@ class ProtonymsController < ApplicationController
   def create
     @protonym = Protonym.new(protonym_params)
 
+    # TODO: This should not hit the db or be run in a transaction.
+    protonym_name_string = params[:protonym_name_string]
+    if protonym_name_string
+      @protonym.name = Names::CreateNameFromString[protonym_name_string]
+    end
+
     if @protonym.save
       @protonym.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'

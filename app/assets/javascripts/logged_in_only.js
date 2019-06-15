@@ -3,7 +3,6 @@
 //= require jquery-ui/widgets/tooltip
 
 // vendor/assets/javascripts
-//= require jquery.form
 //= require notify
 
 // app/assets/javascripts

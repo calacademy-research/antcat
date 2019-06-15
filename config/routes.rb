@@ -136,10 +136,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'name_pickers/search'
-  get 'name_fields/find'
-  get 'name_fields/:type/:id' => 'name_fields#show'
-
   devise_for :users, path_prefix: 'my', controllers: { registrations: "my/registrations" }
   resources :users, only: [:index, :show, :new, :create, :edit, :update] do
     collection do

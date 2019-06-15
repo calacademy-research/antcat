@@ -9,20 +9,8 @@ end
 
 # fields section
 ### name field
-When("I click the name field") do
-  step 'I click "#name_field .display_button"'
-end
-
 When("I set the name to {string}") do |name|
-  step %(I fill in "name_string" with "#{name}")
-end
-
-# Try adding this (waiting finder) if the JS driver clicks on "OK" and
-# then navigates to a different page before the JS has had time to execute.
-# TODO probably include this in other steps so that it's always run.
-Then("the name button should contain {string}") do |name|
-  element = find '#name_field .display_button'
-  expect(element.text).to eq name
+  step %(I fill in "taxon_name_string" with "#{name}")
 end
 
 #### current valid taxon field
@@ -61,22 +49,9 @@ Then(/^the authorship should contain the reference "([^"]*)"$/) do |keey|
   expect(find(selector).value).to eq reference_id.to_s
 end
 
-When("I fill in the authorship notes with {string}") do |notes|
-  step %(I fill in "taxon_protonym_attributes_authorship_attributes_notes_taxt" with "#{notes}")
-end
-
 ### protonym name field
-When("I click the protonym name field") do
-  find('#protonym_name_field .display_button').click
-end
-
-Then("the protonym name field should contain {string}") do |name|
-  element = find '#name_string'
-  expect(element.value).to eq name
-end
-
 When("I set the protonym name to {string}") do |name|
-  step %(I fill in "name_string" with "#{name}")
+  step %(I fill in "protonym_name_string" with "#{name}")
 end
 
 # type name field
