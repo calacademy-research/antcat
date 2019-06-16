@@ -43,7 +43,7 @@ class Name < ApplicationRecord
   trackable parameters: proc { { name_html: name_html } }
 
   def name=(value)
-    self[:name] = value
+    self[:name] = value.squish if value
     set_epithet
     set_epithets
   end

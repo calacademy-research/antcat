@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe Names::BuildNameFromString do
   describe '#call' do
+    context 'when name contains redundant spaces' do
+      it 'squishes them' do
+        name = described_class[' Lasius niger  fusca ']
+
+        expect(name).to be_a SubspeciesName
+        expect(name.name).to eq 'Lasius niger fusca'
+        expect(name.epithet).to eq 'fusca'
+        expect(name.epithets).to eq 'niger fusca'
+      end
+    end
+
     context 'when name is a family name' do
       specify do
         name = described_class['Formicidae']

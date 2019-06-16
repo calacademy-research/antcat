@@ -29,7 +29,7 @@ describe NamesController do
           id: name.id,
           type: 'SubspeciesName',
           name: {
-            name: 'Brandus noviusia nameus'
+            name: 'Brandus noviusia  nameus'
           }
         }
       end
@@ -38,7 +38,7 @@ describe NamesController do
         post :update, params: params
 
         name.reload
-        expect(name.name).to eq params[:name][:name]
+        expect(name.name).to eq 'Brandus noviusia nameus'
         expect(name.epithet).to eq 'nameus'
         expect(name.epithets).to eq 'noviusia nameus'
       end
