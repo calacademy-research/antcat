@@ -12,8 +12,6 @@
 #   => "Atta (Acromyrmex) moelleri subsp. panamensis var. angustata"
 # ```
 
-# TODO: Rewrite this do branch on number of name parts excluding subgenus and old-style notations.
-
 module Names
   class BuildNameFromString
     include Service
@@ -35,9 +33,7 @@ module Names
       when :genus                          then genus_name
       when :subgenus                       then subgenus_name
       when :species                        then species_name
-      when :species_with_subgenus          then species_name_with_subgenus
       when :subspecies                     then subspecies_name
-      when :subspecies_or_infrasubspecific then subspecies_or_infrasubspecific_name
       else                                 raise UnparsableName, "cannot parse name #{name}"
       end
     end
@@ -50,17 +46,26 @@ module Names
         name[0] == name[0].upcase
       end
 
-      def words
-        @words ||= name.split
+      def name_type
+        return :subgenus if subgenus_name?
+
+        case num_words_without_subgenus
+        when 1    then genus_or_tribe_or_subfamily
+        when 2    then :species
+        when 3..6 then :subspecies
+        end
       end
 
-      def name_type
-        case words.size
-        when 1    then genus_or_tribe_or_subfamily
-        when 2    then subgenus_or_species
-        when 3    then species_or_subspecies
-        when 4..6 then :subspecies_or_infrasubspecific
-        end
+      def num_words
+        @num_words ||= name.split.size
+      end
+
+      def num_words_without_subgenus
+        @num_words_without_subgenus ||= name.gsub(/\(.*?\)/, '').squish.split.size
+      end
+
+      def subgenus_name?
+        num_words == 2 && num_words_without_subgenus == 1
       end
 
       # TODO: It could also be subtribe.
@@ -71,18 +76,6 @@ module Names
         when /ini$/  then :tribe
         else              :genus
         end
-      end
-
-      def subgenus_or_species
-        if contains_parenthesis? then :subgenus else :species end
-      end
-
-      def species_or_subspecies
-        if contains_parenthesis? then :species_with_subgenus else :subspecies end
-      end
-
-      def contains_parenthesis?
-        name =~ /\(.*?\)/
       end
 
       def family_name
@@ -121,21 +114,7 @@ module Names
         )
       end
 
-      def species_name_with_subgenus
-        SpeciesName.new(
-          name:       name
-        )
-      end
-
       def subspecies_name
-        SubspeciesName.new(
-          name:       name
-        )
-      end
-
-      # Most of these are infrasubspecific names.
-      # TODO: We currently do not make any distinction between these since there's no correspinding `Taxon` class.
-      def subspecies_or_infrasubspecific_name
         SubspeciesName.new(
           name:       name
         )
