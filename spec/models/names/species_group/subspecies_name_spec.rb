@@ -3,13 +3,6 @@ require 'spec_helper'
 describe SubspeciesName do
   it { is_expected.to validate_presence_of :epithets }
 
-  describe 'epithet and epithets validation' do
-    subject { build_stubbed :subspecies_name, name: 'Lasius niger nigra' }
-
-    it { is_expected.to allow_value('niger').for :epithets }
-    it { is_expected.not_to allow_value('different').for :epithets }
-  end
-
   describe "name parts" do
     context 'when three name parts' do
       let(:subspecies_name) do
@@ -41,7 +34,10 @@ describe SubspeciesName do
     it "replaces the species part of the name and fix all the other parts, too" do
       subspecies_name.change_parent species_name
 
+
       expect(subspecies_name.name).to eq 'Eciton niger minor'
+
+      subspecies_name.valid?
       expect(subspecies_name.epithet).to eq 'minor'
       expect(subspecies_name.epithets).to eq 'niger minor'
     end
@@ -52,6 +48,8 @@ describe SubspeciesName do
       subspecies_name.change_parent species_name
 
       expect(subspecies_name.name).to eq 'Eciton niger minor medii'
+
+      subspecies_name.valid?
       expect(subspecies_name.epithet).to eq 'medii'
       expect(subspecies_name.epithets).to eq 'niger minor medii'
     end

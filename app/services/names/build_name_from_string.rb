@@ -129,8 +129,7 @@ module Names
 
       def subspecies_name
         SubspeciesName.new(
-          name:       name,
-          epithets:   [words.second, words.third].join(' ')
+          name:       name
         )
       end
 
@@ -138,8 +137,7 @@ module Names
       # TODO: We currently do not make any distinction between these since there's no correspinding `Taxon` class.
       def subspecies_or_infrasubspecific_name
         SubspeciesName.new(
-          name:       name,
-          epithets:   words[1..-1].join(' ')
+          name:       name
         )
       end
   end

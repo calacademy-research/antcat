@@ -1,6 +1,8 @@
 class SpeciesGroupName < Name
   include Formatters::ItalicsHelper
 
+  before_validation :set_epithets
+
   def name_html
     italicize name
   end
@@ -22,6 +24,14 @@ class SpeciesGroupName < Name
   end
 
   private
+
+    def set_epithets
+      return unless name
+      without_subgenus_name_part = name.gsub(/\(.*?\)/, '').squish
+      self.epithets = if without_subgenus_name_part.split(' ').size > 2
+                        name_parts[1..-1].join(' ')
+                      end
+    end
 
     def change name_string
       existing_names = Name.where.not(id: id).where(name: name_string)

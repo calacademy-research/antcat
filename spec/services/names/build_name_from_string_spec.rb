@@ -90,9 +90,10 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SubspeciesName
         expect(name.name).to eq 'Lasius niger fusca'
-        expect(name.epithets).to eq 'niger fusca'
+        expect(name.epithets).to eq nil
 
         expect { name.valid? }.to change { name.epithet }.to 'fusca'
+        expect(name.epithets).to eq 'niger fusca'
       end
     end
 
@@ -105,9 +106,10 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Leptothorax rottenbergi scabrosus kabyla'
-          expect(name.epithets).to eq 'rottenbergi scabrosus kabyla'
+          expect(name.epithets).to eq nil
 
           expect { name.valid? }.to change { name.epithet }.to 'kabyla'
+          expect(name.epithets).to eq 'rottenbergi scabrosus kabyla'
         end
       end
 
@@ -117,9 +119,10 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Leptothorax (Hypochira) rottenbergi scabrosus kabyla'
+          expect(name.epithets).to eq nil
 
-          expect(name.epithets).to eq '(Hypochira) rottenbergi scabrosus kabyla'
           expect { name.valid? }.to change { name.epithet }.to 'kabyla'
+          expect(name.epithets).to eq '(Hypochira) rottenbergi scabrosus kabyla'
         end
       end
 
@@ -129,9 +132,10 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Camponotus herculeanus subsp. pennsylvanicus var. mahican'
-          expect(name.epithets).to eq 'herculeanus subsp. pennsylvanicus var. mahican'
+          expect(name.epithets).to eq nil
 
           expect { name.valid? }.to change { name.epithet }.to 'mahican'
+          expect(name.epithets).to eq 'herculeanus subsp. pennsylvanicus var. mahican'
         end
       end
     end
