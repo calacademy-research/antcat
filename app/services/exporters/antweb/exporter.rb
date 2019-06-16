@@ -37,8 +37,6 @@ module Exporters
                 joins(protonym: [{ authorship: :reference }]).
                 includes(protonym: [{ authorship: :reference }]).
                 each do |taxon|
-                next if taxon.name.nonconforming_name && taxon.name_cache.index('?')
-
                 STDOUT.puts "Processing: #{taxon.id}" if ENV['DEBUG']
                 progress.increment unless Rails.env.test?
 
