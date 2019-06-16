@@ -245,9 +245,6 @@ Style/RegexpLiteral:
 Style/RescueModifier:
   Enabled: false
 
-Style/RescueStandardError:
-  Enabled: false
-
 Style/SafeNavigation:
   Enabled: false
 
@@ -267,9 +264,6 @@ Style/UnneededInterpolation:
   Enabled: false
 
 Style/WordArray:
-  Enabled: false
-
-Style/ZeroLengthPredicate:
   Enabled: false
 
 Metrics/AbcSize:

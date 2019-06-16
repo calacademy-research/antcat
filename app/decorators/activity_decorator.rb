@@ -10,7 +10,7 @@ class ActivityDecorator < Draper::Decorator
   def did_something
     partial = template_partial
     helpers.render partial, activity: self
-  rescue
+  rescue StardardError
     "<code>error rendering error Activity :(</code>".html_safe
   end
 
