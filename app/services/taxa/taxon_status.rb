@@ -9,6 +9,7 @@ module Taxa
     def call
       parts = []
       parts << "<i>incertae sedis</i> in #{incertae_sedis_in}" if incertae_sedis_in
+      parts << "<i>nomen nudum</i>" if nomen_nudum?
       parts << main_status
       parts << 'ichnotaxon' if ichnotaxon?
       parts.join(', ').html_safe
@@ -32,8 +33,6 @@ module Taxa
           else
             "unresolved junior homonym"
           end
-        elsif nomen_nudum?
-          "<i>nomen nudum</i>"
         elsif synonym?
           "junior synonym of current valid taxon #{format_senior_synonym}"
         elsif obsolete_combination?

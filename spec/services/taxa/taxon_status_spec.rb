@@ -59,9 +59,9 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a nomen nudum" do
-      let!(:taxon) { build_stubbed :family, nomen_nudum: true }
+      let!(:taxon) { build_stubbed :family, :unavailable, nomen_nudum: true }
 
-      specify { expect(taxon.decorate.taxon_status).to eq "<i>nomen nudum</i>" }
+      specify { expect(taxon.decorate.taxon_status).to eq "<i>nomen nudum</i>, unavailable" }
     end
 
     context "when taxon is a synonym" do
