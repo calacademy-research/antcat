@@ -10,6 +10,7 @@ module Taxa
       parts = []
       parts << "<i>incertae sedis</i> in #{incertae_sedis_in}" if incertae_sedis_in
       parts << "<i>nomen nudum</i>" if nomen_nudum?
+      parts << "unresolved junior homonym" if unresolved_homonym?
       parts << main_status
       parts << 'ichnotaxon' if ichnotaxon?
       parts.join(', ').html_safe
@@ -27,12 +28,6 @@ module Taxa
       def main_status
         if homonym? && homonym_replaced_by
           "homonym replaced by #{homonym_replaced_by.decorate.link_to_taxon_with_author_citation}"
-        elsif unresolved_homonym?
-          if current_valid_taxon_including_synonyms
-            "unresolved junior homonym, junior synonym of current valid taxon #{format_senior_synonym}"
-          else
-            "unresolved junior homonym"
-          end
         elsif synonym?
           "junior synonym of current valid taxon #{format_senior_synonym}"
         elsif obsolete_combination?

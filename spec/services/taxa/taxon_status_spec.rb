@@ -44,7 +44,7 @@ describe Taxa::TaxonStatus do
       context "when there is no senior synonym" do
         let(:taxon) { build_stubbed :family, unresolved_homonym: true }
 
-        specify { expect(taxon.decorate.taxon_status).to eq 'unresolved junior homonym' }
+        specify { expect(taxon.decorate.taxon_status).to eq 'unresolved junior homonym, valid' }
       end
 
       context "when there is a current valid taxon" do
