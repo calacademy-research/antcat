@@ -20,7 +20,7 @@ describe SpeciesName do
   end
 
   describe "name parts" do
-    let(:species_name) { described_class.new name: 'Atta major', epithet: 'major' }
+    let(:species_name) { described_class.new(name: 'Atta major') }
 
     specify do
       expect(species_name.genus_epithet).to eq 'Atta'
@@ -30,8 +30,8 @@ describe SpeciesName do
 
   describe "#change_parent" do
     it "replaces the genus part of the name" do
-      species_name = described_class.new name: 'Atta major', epithet: 'major'
-      genus_name = GenusName.new name: 'Eciton', epithet: 'niger'
+      species_name = described_class.new(name: 'Atta major')
+      genus_name = GenusName.new(name: 'Eciton')
       species_name.change_parent genus_name
 
       expect(species_name.name).to eq 'Eciton major'
@@ -40,14 +40,14 @@ describe SpeciesName do
 
     context "when name already exists" do
       context "when name is used by a different taxon" do
-        let!(:species_name) { described_class.create! name: 'Atta major', epithet: 'major' }
-        let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
+        let!(:species_name) { described_class.create!(name: 'Atta major') }
+        let!(:genus_name) { GenusName.create!(name: 'Eciton') }
 
         before do
-          existing_species_name = described_class.create! name: 'Eciton major', epithet: 'major'
+          existing_species_name = described_class.create!(name: 'Eciton major')
           create :species, name: existing_species_name
 
-          GenusName.create! name: 'Eciton', epithet: 'Eciton' # protonym_name
+          GenusName.create!(name: 'Eciton') # protonym_name
         end
 
         it "raises" do
@@ -56,12 +56,12 @@ describe SpeciesName do
       end
 
       context "when name is an orphan" do
-        let!(:species_name) { described_class.create! name: 'Atta minor', epithet: 'minor' }
-        let!(:genus_name) { GenusName.create! name: 'Eciton', epithet: 'Eciton' }
+        let!(:species_name) { described_class.create! name: 'Atta minor' }
+        let!(:genus_name) { GenusName.create! name: 'Eciton' }
 
         before do
-          described_class.create! name: 'Eciton minor', epithet: 'minor' # orphan_species_name
-          GenusName.create! name: 'Eciton', epithet: 'Eciton' # protonym_name
+          described_class.create!(name: 'Eciton minor') # orphan_species_name
+          GenusName.create!(name: 'Eciton') # protonym_name
         end
 
         it "doesn't raise" do

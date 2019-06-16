@@ -5,7 +5,7 @@ describe Taxa::Search::QuickSearch do
     let!(:rufa) do
       create :species,
         genus: create(:genus, name: create(:genus_name, name: 'Monoceros')),
-        name: create(:species_name, name: 'Monoceros rufa', epithet: 'rufa')
+        name: create(:species_name, name: 'Monoceros rufa')
     end
     let!(:monomorium) { create :genus, name: create(:genus_name, name: 'Monomorium') }
 

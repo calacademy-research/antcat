@@ -45,7 +45,7 @@ module Taxa
           species_name_part = current_valid_taxon.name.epithet
           new_name_string = "#{genus_name_part} #{species_name_part}"
 
-          SpeciesName.new(name: new_name_string, epithet: current_valid_taxon.name.epithet)
+          SpeciesName.new(name: new_name_string)
         end
     end
   end
