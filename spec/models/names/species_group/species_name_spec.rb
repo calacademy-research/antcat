@@ -1,6 +1,24 @@
 require 'spec_helper'
 
 describe SpeciesName do
+  describe '#name=' do
+    specify do
+      name = described_class.new(name: 'Lasius niger')
+
+      expect(name.name).to eq 'Lasius niger'
+      expect(name.epithet).to eq 'niger'
+      expect(name.epithets).to eq nil
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius (Austrolasius) niger')
+
+      expect(name.name).to eq 'Lasius (Austrolasius) niger'
+      expect(name.epithet).to eq 'niger'
+      expect(name.epithets).to eq '(Austrolasius) niger'
+    end
+  end
+
   describe "name parts" do
     let(:species_name) { described_class.new name: 'Atta major', epithet: 'major' }
 

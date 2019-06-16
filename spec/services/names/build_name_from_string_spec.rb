@@ -8,8 +8,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a FamilyName
         expect(name.name).to eq 'Formicidae'
-
-        expect { name.valid? }.to change { name.epithet }.to eq 'Formicidae'
+        expect(name.epithet).to eq 'Formicidae'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -19,8 +19,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SubfamilyName
         expect(name.name).to eq 'Myrmecinae'
-
-        expect { name.valid? }.to change { name.epithet }.to 'Myrmecinae'
+        expect(name.epithet).to eq 'Myrmecinae'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -30,8 +30,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a TribeName
         expect(name.name).to eq 'Attini'
-
-        expect { name.valid? }.to change { name.epithet }.to 'Attini'
+        expect(name.epithet).to eq 'Attini'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -41,8 +41,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a GenusName
         expect(name.name).to eq 'Lasius'
-
-        expect { name.valid? }.to change { name.epithet }.to 'Lasius'
+        expect(name.epithet).to eq 'Lasius'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -52,8 +52,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SubgenusName
         expect(name.name).to eq 'Camponotus (Forelophilus)'
-
-        expect { name.valid? }.to change { name.epithet }.to 'Forelophilus'
+        expect(name.epithet).to eq 'Forelophilus'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -63,8 +63,8 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SpeciesName
         expect(name.name).to eq 'Lasius niger'
-
-        expect { name.valid? }.to change { name.epithet }.to 'niger'
+        expect(name.epithet).to eq 'niger'
+        expect(name.epithets).to eq nil
       end
 
       context 'when name includes subgenus' do
@@ -73,8 +73,8 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SpeciesName
           expect(name.name).to eq 'Formica (Hypochira) subspinosa'
-
-          expect { name.valid? }.to change { name.epithet }.to 'subspinosa'
+          expect(name.epithet).to eq 'subspinosa'
+          expect(name.epithets).to eq '(Hypochira) subspinosa'
         end
       end
     end
@@ -90,10 +90,19 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SubspeciesName
         expect(name.name).to eq 'Lasius niger fusca'
-        expect(name.epithets).to eq nil
-
-        expect { name.valid? }.to change { name.epithet }.to 'fusca'
+        expect(name.epithet).to eq 'fusca'
         expect(name.epithets).to eq 'niger fusca'
+      end
+
+      context 'when name contains abbreivations' do
+        specify do
+          name = described_class['Lasius niger var. fusca']
+
+          expect(name).to be_a SubspeciesName
+          expect(name.name).to eq 'Lasius niger var. fusca'
+          expect(name.epithet).to eq 'fusca'
+          expect(name.epithets).to eq 'niger var. fusca'
+        end
       end
     end
 
@@ -106,9 +115,7 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Leptothorax rottenbergi scabrosus kabyla'
-          expect(name.epithets).to eq nil
-
-          expect { name.valid? }.to change { name.epithet }.to 'kabyla'
+          expect(name.epithet).to eq 'kabyla'
           expect(name.epithets).to eq 'rottenbergi scabrosus kabyla'
         end
       end
@@ -119,9 +126,7 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Leptothorax (Hypochira) rottenbergi scabrosus kabyla'
-          expect(name.epithets).to eq nil
-
-          expect { name.valid? }.to change { name.epithet }.to 'kabyla'
+          expect(name.epithet).to eq 'kabyla'
           expect(name.epithets).to eq '(Hypochira) rottenbergi scabrosus kabyla'
         end
       end
@@ -132,9 +137,7 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a SubspeciesName
           expect(name.name).to eq 'Camponotus herculeanus subsp. pennsylvanicus var. mahican'
-          expect(name.epithets).to eq nil
-
-          expect { name.valid? }.to change { name.epithet }.to 'mahican'
+          expect(name.epithet).to eq 'mahican'
           expect(name.epithets).to eq 'herculeanus subsp. pennsylvanicus var. mahican'
         end
       end

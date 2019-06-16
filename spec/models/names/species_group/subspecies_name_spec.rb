@@ -3,6 +3,40 @@ require 'spec_helper'
 describe SubspeciesName do
   it { is_expected.to validate_presence_of :epithets }
 
+  describe '#name=' do
+    specify do
+      name = described_class.new(name: 'Lasius niger fusca')
+
+      expect(name.name).to eq 'Lasius niger fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq 'niger fusca'
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius niger var. fusca')
+
+      expect(name.name).to eq 'Lasius niger var. fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq 'niger var. fusca'
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius (Austrolasius) niger fusca')
+
+      expect(name.name).to eq 'Lasius (Austrolasius) niger fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq '(Austrolasius) niger fusca'
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius (Austrolasius) niger var. fusca')
+
+      expect(name.name).to eq 'Lasius (Austrolasius) niger var. fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq '(Austrolasius) niger var. fusca'
+    end
+  end
+
   describe "name parts" do
     context 'when three name parts' do
       let(:subspecies_name) do
@@ -34,10 +68,7 @@ describe SubspeciesName do
     it "replaces the species part of the name and fix all the other parts, too" do
       subspecies_name.change_parent species_name
 
-
       expect(subspecies_name.name).to eq 'Eciton niger minor'
-
-      subspecies_name.valid?
       expect(subspecies_name.epithet).to eq 'minor'
       expect(subspecies_name.epithets).to eq 'niger minor'
     end
@@ -48,8 +79,6 @@ describe SubspeciesName do
       subspecies_name.change_parent species_name
 
       expect(subspecies_name.name).to eq 'Eciton niger minor medii'
-
-      subspecies_name.valid?
       expect(subspecies_name.epithet).to eq 'medii'
       expect(subspecies_name.epithets).to eq 'niger minor medii'
     end

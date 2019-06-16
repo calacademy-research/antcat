@@ -53,8 +53,6 @@ describe Subspecies do
 
         subspecies_name = subspecies.name
         expect(subspecies_name.name).to eq 'Eciton nigrus medius minor'
-
-        subspecies_name.valid?
         expect(subspecies_name.epithet).to eq 'minor'
         expect(subspecies_name.epithets).to eq 'nigrus medius minor'
       end

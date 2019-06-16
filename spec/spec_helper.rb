@@ -18,4 +18,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
 
+# Uncomment for bonus stuff.
+# DevMonkeyPatches.enable!
+
 # TODO extra curricular: split this and support files into spec_helper/rails_helper.

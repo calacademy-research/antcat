@@ -29,7 +29,6 @@ class Name < ApplicationRecord
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
 
-  before_validation :set_epithet
   after_save :set_taxon_caches
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
@@ -42,6 +41,12 @@ class Name < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
+
+  def name=(value)
+    self[:name] = value
+    set_epithet
+    set_epithets
+  end
 
   def rank
     self.class.name.gsub(/Name$/, "").underscore
@@ -88,6 +93,15 @@ class Name < ApplicationRecord
                      else
                        name_parts.last
                      end
+    end
+
+    def set_epithets
+      return unless name
+      return unless is_a?(SpeciesGroupName)
+
+      self.epithets = if name_parts.size > 2
+                        name_parts[1..-1].join(' ')
+                      end
     end
 
     def ensure_epithet_in_name
