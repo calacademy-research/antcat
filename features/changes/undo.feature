@@ -39,6 +39,7 @@ Feature: Workflow
     Then I should see "Ancatinae"
 
     When I follow the first "Ancatinae"
+    Given I will confirm on the next step
     And I follow "Delete"
     Then I should see "Taxon was successfully deleted."
 

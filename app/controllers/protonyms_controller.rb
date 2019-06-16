@@ -22,7 +22,7 @@ class ProtonymsController < ApplicationController
     # TODO: This should not hit the db or be run in a transaction.
     protonym_name_string = params[:protonym_name_string]
     if protonym_name_string
-      @protonym.name = Names::CreateNameFromString[protonym_name_string]
+      @protonym.name = Names::BuildNameFromString[protonym_name_string]
     end
 
     if @protonym.save

@@ -16,10 +16,6 @@ module Taxa
 
       validate :current_valid_taxon_validation, :ensure_correct_name_type, :biogeographic_region_validation
 
-      validation_scope :soft_validation_warnings do |scope|
-        scope.validate :check_if_in_database_scripts_results
-      end
-
       before_save :set_name_caches
 
       # Additional callbacks for when `#save_initiator` is true (must be set manually).
@@ -31,9 +27,8 @@ module Taxa
       strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
         :biogeographic_region], replace_newlines: true
 
-      # NOTE: Not private, see https://github.com/gtd/validation_scopes#dont-use-private-methods
-      def check_if_in_database_scripts_results
-        Taxa::CheckIfInDatabaseResults[self]
+      def soft_validation_warnings
+        @soft_validation_warnings = Taxa::CheckIfInDatabaseResults[self]
       end
     end
 
@@ -81,7 +76,7 @@ module Taxa
 
       def ensure_correct_name_type
         return if name.is_a? name_class
-        return unless name_id_changed? # Make sure taxa already in this state can be saved.
+        return if name.class.name.in? Name::BROKEN_ISH_NAME_TYPES # Make sure taxa already in this state can be saved.
         error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
         errors.add :base, error_message unless errors.added? :base, error_message
       end

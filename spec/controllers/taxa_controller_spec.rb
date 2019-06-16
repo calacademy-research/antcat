@@ -158,7 +158,32 @@ describe TaxaController do
           end
         end
       end
+      # rubocop:enable RSpec/MultipleExpectations
+
+      context 'with valid params' do
+        context "when rank is genus" do
+          let(:parent) { create :subfamily }
+          let(:genus_params) do
+            {
+              parent_id: parent.id,
+              rank_to_create: "genus",
+              taxon_name_string: "Attini",
+              protonym_name_string: "Atta"
+            }
+          end
+
+          context 'when non-matching name type' do
+            it "does not create a record" do
+              params = genus_params.merge(taxon: base_params)
+              expect { post :create, params: params }.to_not change { Taxon.count }
+
+              taxon_assign = assigns(:taxon) # TODO: Hmm.
+              expect(taxon_assign.errors.empty?).to eq false
+              expect(taxon_assign.errors[:base]).to eq ["Rank (`Genus`) and name type (`TribeName`) must match."]
+            end
+          end
+        end
+      end
     end
-    # rubocop:enable RSpec/MultipleExpectations
   end
 end

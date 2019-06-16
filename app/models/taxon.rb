@@ -34,7 +34,7 @@ class Taxon < ApplicationRecord
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
 
-  belongs_to :name
+  belongs_to :name, dependent: :destroy
   belongs_to :protonym, -> { includes :authorship }
   belongs_to :type_taxon, class_name: 'Taxon', foreign_key: :type_taxon_id
   belongs_to :genus, class_name: 'Taxon'

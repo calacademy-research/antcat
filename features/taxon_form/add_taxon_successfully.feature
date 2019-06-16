@@ -8,7 +8,7 @@ Feature: Adding a taxon successfully
     And there is a subfamily "Formicinae"
 
   @javascript
-  Scenario: Adding a genus
+  Scenario: Adding a genus (with type name)
     Given there is a species "Atta major"
 
     When I go to the catalog page for "Formicinae"
@@ -110,7 +110,7 @@ Feature: Adding a taxon successfully
     And I should not see "Add another"
 
   @javascript
-  Scenario: Adding a tribe
+  Scenario: Adding a tribe (and copy name to protonym)
     When I go to the catalog page for "Formicinae"
     And I follow "Add tribe"
     And I set the name to "Dorylini"

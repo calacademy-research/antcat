@@ -33,12 +33,7 @@ class NamesController < ApplicationController
       @name = Name.find(params[:id])
     end
 
-    def name_type
-      params[:type].underscore.to_sym
-    end
-
-    # NOTE: Not included: `:gender`, `:nonconforming_name`.
     def name_params
-      params.require(name_type).permit(:name, :epithet, :epithets)
+      params.require(:name).permit(:name, :epithet, :epithets)
     end
 end

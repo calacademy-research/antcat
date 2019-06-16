@@ -8,7 +8,7 @@ class TaxonForm
 
   def save
     save_taxon
-  rescue Names::CreateNameFromString::UnparsableName => e
+  rescue Names::BuildNameFromString::UnparsableName => e
     taxon.errors.add :base, "Could not parse name #{e.message}"
     raise ActiveRecord::RecordInvalid
   end
@@ -27,14 +27,14 @@ class TaxonForm
         subspecies_without_species_special_case
 
         if taxon_name_string
-          taxon.name = Names::CreateNameFromString[taxon_name_string]
+          taxon.name = Names::BuildNameFromString[taxon_name_string]
         end
 
         if params[:protonym_id].present?
           params.delete :protonym_attributes
         else
           if protonym_name_string
-            taxon.protonym.name = Names::CreateNameFromString[protonym_name_string]
+            taxon.protonym.name = Names::BuildNameFromString[protonym_name_string]
           end
         end
 

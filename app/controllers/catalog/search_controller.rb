@@ -8,13 +8,16 @@ module Catalog
     def index
       return if not_searching_yet? # Just render the form.
 
+      if author_search_with_no_matching_authors?
+        flash.now[:alert] = "If you're choosing an author, make sure you pick the name from the dropdown list."
+        return
+      end
+
       @taxa = Taxa::Search::AdvancedSearch[advanced_search_params]
-      @is_author_search = author_search?
 
       respond_to do |format|
         format.html do
-          @taxa = @taxa.paginate page: params[:page],
-            per_page: (params[:per_page] || DEFAULT_PER_PAGE)
+          @taxa = @taxa.paginate(page: params[:page], per_page: (params[:per_page] || DEFAULT_PER_PAGE))
         end
 
         format.text do
@@ -44,8 +47,7 @@ module Catalog
         return redirect_to catalog_path(taxa.first, qq: params[:qq])
       end
 
-      @taxa = taxa.paginate page: params[:page],
-        per_page: (params[:per_page] || DEFAULT_PER_PAGE)
+      @taxa = taxa.paginate(page: params[:page], per_page: (params[:per_page] || DEFAULT_PER_PAGE))
 
       @is_quick_search = true
       render "index"
@@ -77,12 +79,9 @@ module Catalog
           :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong
       end
 
-      def author_search?
-        params[:author_name].present? && no_matching_authors?(params[:author_name])
-      end
-
-      def no_matching_authors? name
-        AuthorName.find_by(name: name).nil?
+      def author_search_with_no_matching_authors?
+        return if params[:author_name].blank?
+        !AuthorName.where(name: params[:author_name]).exists?
       end
 
       def single_match_we_should_redirect_to? taxa

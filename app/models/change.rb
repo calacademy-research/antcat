@@ -1,6 +1,8 @@
 class Change < ApplicationRecord
   include Trackable
 
+  class UndoNameIdConflict < StandardError; end
+
   belongs_to :approver, class_name: 'User'
   belongs_to :taxon, class_name: 'Taxon'
   belongs_to :user
@@ -139,6 +141,16 @@ class Change < ApplicationRecord
       item = version.reify
       unless item
         raise "failed to reify version: #{version.id} referencing change: #{version.change_id}"
+      end
+
+      # TODO: Ninja added after deduping `Name`s.
+      if item.is_a?(Taxon)
+        raise UndoNameIdConflict, item.name_id if Taxon.where.not(id: item.id).where(name_id: item.name_id).exists?
+        raise UndoNameIdConflict, item.name_id if Protonym.where(name_id: item.name_id).exists?
+      end
+      if item.is_a?(Protonym)
+        raise UndoNameIdConflict, item.name_id if Taxon.where(name_id: item.name_id).exists?
+        raise UndoNameIdConflict, item.name_id if Protonym.where.not(id: item.id).where(name_id: item.name_id).exists?
       end
 
       # NOTE may raise `ActiveRecord::RecordInvalid`.

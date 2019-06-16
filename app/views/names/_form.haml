@@ -35,7 +35,7 @@
         Please check
         =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
 
-    =form_for name, url: name_path(name) do |f|
+    =form_for name, url: name_path(name), as: :name do |f|
       =render 'shared/errors_for', resource: name
       =hidden_field_tag :type, @name.type
 

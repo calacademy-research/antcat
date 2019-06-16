@@ -18,7 +18,7 @@
 
   =render 'shared/errors_for', resource: @taxon
 
-  -if @taxon.has_soft_validation_warnings?
+  -if @taxon.soft_validation_warnings.present?
     #soft-validations.callout.warning.small-12.medium-6{data: { closable: true }}
       %h6 Issues
       %p These issues will not prevent you from saving the form. Just so you know :)

@@ -11,6 +11,8 @@ module Changes
       @change.undo
       @change.create_activity :undo_change, edit_summary: params[:edit_summary]
       redirect_to changes_path, notice: "Undid the change ##{@change.id}."
+    rescue Change::UndoNameIdConflict => e
+      redirect_to change_path(@change), notice: "Cannot undo as it would create a name_id conflict with name ##{e.message}."
     end
 
     private
