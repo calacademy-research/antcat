@@ -8,9 +8,6 @@ class TaxonForm
 
   def save
     save_taxon
-  rescue Names::BuildNameFromString::UnparsableName => e
-    taxon.errors.add :base, "Could not parse name #{e.message}"
-    raise ActiveRecord::RecordInvalid
   end
 
   private

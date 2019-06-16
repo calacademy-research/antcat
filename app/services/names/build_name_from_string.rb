@@ -38,7 +38,7 @@ module Names
         when 1    then genus_or_tribe_or_subfamily
         when 2    then SpeciesName
         when 3..6 then SubspeciesName
-        else      raise UnparsableName, "cannot parse name #{name}"
+        else      raise UnparsableName, name
         end
       end
 
