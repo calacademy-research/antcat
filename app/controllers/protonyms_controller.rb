@@ -18,20 +18,18 @@ class ProtonymsController < ApplicationController
 
   def create
     @protonym = Protonym.new(protonym_params)
-
-    # TODO: This should not hit the db or be run in a transaction.
-    protonym_name_string = params[:protonym_name_string]
-    if protonym_name_string
-      @protonym.name = Names::BuildNameFromString[protonym_name_string]
-    end
+    @protonym.name = Names::BuildNameFromString[params[:protonym_name_string]]
 
     if @protonym.save
       @protonym.create_activity :create, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'
     else
-      @protonym.build_name unless @protonym.name
       render :new
     end
+  rescue Names::BuildNameFromString::UnparsableName => e
+    @protonym.errors.add :base, "Could not parse name #{e.message}"
+    @protonym.build_name(name: params[:protonym_name_string]) # Maintain entered name.
+    render :new
   end
 
   def edit
