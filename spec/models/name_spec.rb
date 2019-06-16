@@ -82,11 +82,11 @@ describe Name do
   end
 
   describe "#what_links_here" do
-    subject { described_class.new }
+    let(:name) { described_class.new }
 
     it "calls `Names::WhatLinksHere`" do
-      expect(Names::WhatLinksHere).to receive(:new).with(subject).and_call_original
-      subject.what_links_here
+      expect(Names::WhatLinksHere).to receive(:new).with(name).and_call_original
+      name.what_links_here
     end
   end
 end
