@@ -28,10 +28,9 @@
           %th Epithet
           %td=@name.epithet
 
-        -if @name.is_a? SubspeciesName
-          %tr
-            %th Epithets
-            %td=@name.epithets
+        %tr
+          %th Epithets
+          %td=or_dash @name.epithets
 
 .row.margin-bottom
   .small-12.columns

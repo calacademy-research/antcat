@@ -50,15 +50,6 @@
               #name_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
           %tr
-            %th=f.label :epithet
-            %td=f.text_field :epithet
-
-          -if @name.is_a? SubspeciesName
-            %tr
-              %th=f.label :epithets
-              %td=f.text_field :epithets
-
-          %tr
             %th{colspan: 2}
               =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
               =f.button "Save", type: :submit, class: "btn-saves"
