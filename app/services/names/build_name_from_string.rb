@@ -26,16 +26,7 @@ module Names
       raise UnparsableName, "name cannot be blank" if name.blank?
       raise UnparsableName, "'#{name}' must start with a capital letter" unless starts_with_upper_case_letter?
 
-      case name_type
-      when :family                         then family_name
-      when :subfamily                      then subfamily_name
-      when :tribe                          then tribe_name
-      when :genus                          then genus_name
-      when :subgenus                       then subgenus_name
-      when :species                        then species_name
-      when :subspecies                     then subspecies_name
-      else                                 raise UnparsableName, "cannot parse name #{name}"
-      end
+      name_class.new(name: name)
     end
 
     private
@@ -46,13 +37,14 @@ module Names
         name[0] == name[0].upcase
       end
 
-      def name_type
-        return :subgenus if subgenus_name?
+      def name_class
+        return SubgenusName if subgenus_name?
 
         case num_words_without_subgenus
         when 1    then genus_or_tribe_or_subfamily
-        when 2    then :species
-        when 3..6 then :subspecies
+        when 2    then SpeciesName
+        when 3..6 then SubspeciesName
+        else      raise UnparsableName, "cannot parse name #{name}"
         end
       end
 
@@ -71,53 +63,11 @@ module Names
       # TODO: It could also be subtribe.
       def genus_or_tribe_or_subfamily
         case name
-        when /idae$/ then :family
-        when /inae$/ then :subfamily
-        when /ini$/  then :tribe
-        else              :genus
+        when /idae$/ then FamilyName
+        when /inae$/ then SubfamilyName
+        when /ini$/  then TribeName
+        else              GenusName
         end
-      end
-
-      def family_name
-        FamilyName.new(
-          name:       name
-        )
-      end
-
-      def subfamily_name
-        SubfamilyName.new(
-          name:       name
-        )
-      end
-
-      def tribe_name
-        TribeName.new(
-          name:       name
-        )
-      end
-
-      def genus_name
-        GenusName.new(
-          name:       name
-        )
-      end
-
-      def subgenus_name
-        SubgenusName.new(
-          name:       name
-        )
-      end
-
-      def species_name
-        SpeciesName.new(
-          name:       name
-        )
-      end
-
-      def subspecies_name
-        SubspeciesName.new(
-          name:       name
-        )
       end
   end
 end
