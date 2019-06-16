@@ -30,6 +30,8 @@ class Name < ApplicationRecord
   validate :ensure_epithet_in_name
 
   after_save :set_taxon_caches
+  # NOTE: Technically we don't need to do this, since they *should* not be different, but let's make sure.
+  before_validation :set_epithet, :set_epithets
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -42,6 +44,8 @@ class Name < ApplicationRecord
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 
+  # NOTE: This may make code harder to debug, but we don't want to have to manually specify epithets,
+  # or have them diverge. Consider this to be a factory or persistence-related callback.
   def name=(value)
     self[:name] = value.squish if value
     set_epithet

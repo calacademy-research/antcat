@@ -10,6 +10,17 @@ describe Name do
     it { is_expected.to have_many(:taxa).dependent(:restrict_with_error) }
   end
 
+  describe '`set_epithet` and `#set_epithets`' do
+    let!(:name) { create :subspecies_name, name: 'Lasius niger fusca' }
+
+    before do
+      name.update_columns(epithet: 'pizza', epithets: 'pescatore')
+    end
+
+    specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
+    specify { expect { name.save }.to change { name.epithets }.from('pescatore').to('niger fusca') }
+  end
+
   describe "#epithet_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(epithet: 'major').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
