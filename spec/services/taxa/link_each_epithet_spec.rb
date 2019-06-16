@@ -38,11 +38,10 @@ describe Taxa::LinkEachEpithet do
 
       context "when taxon has more than 3 epithets" do
         let!(:genus) { create_genus 'Formica' }
-        let!(:species) { create_species 'rufa', genus: genus }
+        let!(:species) { create_species 'NOTUSED rufa', genus: genus }
         let!(:subspecies) do
-          major_name = SubspeciesName.create! name: 'NOTUSED NOTUSED pratensis major',
-            epithet: 'NOTUSED', epithets: 'NOTUSED'
-          create :subspecies, name: major_name, species: species, genus: genus
+          subspecies_name = SubspeciesName.create!(name: 'NOTUSED NOTUSED pratensis major')
+          create :subspecies, name: subspecies_name, species: species, genus: genus
         end
 
         specify do

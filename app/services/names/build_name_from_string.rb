@@ -23,19 +23,13 @@ module Names
     end
 
     def call
-      raise UnparsableName, "name cannot be blank" if name.blank?
-      raise UnparsableName, "'#{name}' must start with a capital letter" unless starts_with_upper_case_letter?
-
+      return Name.new if name.blank?
       name_class.new(name: name)
     end
 
     private
 
       attr_reader :name
-
-      def starts_with_upper_case_letter?
-        name[0] == name[0].upcase
-      end
 
       def name_class
         return SubgenusName if subgenus_name?

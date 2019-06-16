@@ -28,6 +28,7 @@ class Name < ApplicationRecord
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
+  validate :ensure_starts_with_upper_case_letter
 
   after_save :set_taxon_caches
   # NOTE: Technically we don't need to do this, since they *should* not be different, but let's make sure.
@@ -123,6 +124,13 @@ class Name < ApplicationRecord
         errors.add :name, "of type #{type} may not contain spaces"
         throw :abort
       end
+    end
+
+    def ensure_starts_with_upper_case_letter
+      return if name.blank?
+      return if name[0] == name[0].upcase
+
+      errors.add :name, "must start with a capital letter"
     end
 
     def name_parts

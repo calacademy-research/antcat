@@ -10,6 +10,17 @@ describe Name do
     it { is_expected.to have_many(:taxa).dependent(:restrict_with_error) }
   end
 
+  describe 'validations' do
+    describe '#ensure_starts_with_upper_case_letter' do
+      let(:name) { build_stubbed :genus_name, name: 'lasius' }
+
+      specify do
+        expect(name.valid?).to eq false
+        expect(name.errors[:name]).to eq ["must start with a capital letter"]
+      end
+    end
+  end
+
   describe '`set_epithet` and `#set_epithets`' do
     let!(:name) { create :subspecies_name, name: 'Lasius niger fusca' }
 

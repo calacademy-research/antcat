@@ -155,13 +155,24 @@ describe Names::BuildNameFromString do
     end
 
     context 'when input cannot be parsed into a `Name`' do
-      context 'when name starts with a lower-case letter' do
-        specify { expect { described_class['lasius niger'] }.to raise_error described_class::UnparsableName }
-      end
-
       context 'when name is blank' do
-        specify { expect { described_class[nil] }.to raise_error described_class::UnparsableName }
-        specify { expect { described_class[''] }.to raise_error described_class::UnparsableName }
+        specify do
+          name = described_class[nil]
+
+          expect(name).to be_a Name
+          expect(name.name).to eq nil
+          expect(name.epithet).to eq nil
+          expect(name.epithets).to eq nil
+        end
+
+        specify do
+          name = described_class['']
+
+          expect(name).to be_a Name
+          expect(name.name).to eq nil
+          expect(name.epithet).to eq nil
+          expect(name.epithets).to eq nil
+        end
       end
 
       # TODO: We want to support this for protonyms like
