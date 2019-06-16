@@ -28,7 +28,7 @@ describe NamesController do
         {
           id: name.id,
           type: 'SubspeciesName',
-          subspecies_name: {
+          name: {
             name: 'Brandus noviusia nameus',
             epithet: 'nameus',
             epithets: 'noviusia nameus'
@@ -40,10 +40,9 @@ describe NamesController do
         post :update, params: params
 
         name.reload
-        subspecies_name_params = params[:subspecies_name]
-        expect(name.name).to eq subspecies_name_params[:name]
-        expect(name.epithet).to eq subspecies_name_params[:epithet]
-        expect(name.epithets).to eq subspecies_name_params[:epithets]
+        expect(name.name).to eq params[:name][:name]
+        expect(name.epithet).to eq params[:name][:epithet]
+        expect(name.epithets).to eq params[:name][:epithets]
       end
 
       it 'creates an activity' do
