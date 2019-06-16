@@ -3,7 +3,7 @@ class SubspeciesName < SpeciesGroupName
   validate :ensure_epithets_in_name
 
   def subspecies_epithets
-    words[2..-1].join ' '
+    name_parts[2..-1].join ' '
   end
 
   def change_parent species_name

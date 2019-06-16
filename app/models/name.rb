@@ -107,11 +107,6 @@ class Name < ApplicationRecord
       end
     end
 
-    # TODO: Replace with non-memoized `#name_parts`.
-    def words
-      @words ||= name.split
-    end
-
     def name_parts
       name.split
     end
