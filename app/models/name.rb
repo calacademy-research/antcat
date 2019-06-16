@@ -29,6 +29,7 @@ class Name < ApplicationRecord
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
 
+  before_validation :set_epithet
   after_save :set_taxon_caches
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
@@ -80,6 +81,15 @@ class Name < ApplicationRecord
 
   private
 
+    def set_epithet
+      return unless name
+      self.epithet = if is_a?(SubgenusName)
+                       name_parts.last.tr('()', '')
+                     else
+                       name_parts.last
+                     end
+    end
+
     def ensure_epithet_in_name
       return if name.blank? || epithet.blank?
       return if name.include?(epithet)
@@ -97,8 +107,13 @@ class Name < ApplicationRecord
       end
     end
 
+    # TODO: Replace with non-memoized `#name_parts`.
     def words
       @words ||= name.split
+    end
+
+    def name_parts
+      name.split
     end
 
     def set_taxon_caches

@@ -13,7 +13,6 @@
 # ```
 
 # TODO: Rewrite this do branch on number of name parts excluding subgenus and old-style notations.
-# TODO: Set `#epithet` by always taking the last name part (and remove parentheses from subgenus parts).
 
 module Names
   class BuildNameFromString
@@ -88,58 +87,49 @@ module Names
 
       def family_name
         FamilyName.new(
-          name:       name,
-          epithet:    name
+          name:       name
         )
       end
 
       def subfamily_name
         SubfamilyName.new(
-          name:       name,
-          epithet:    name
+          name:       name
         )
       end
 
       def tribe_name
         TribeName.new(
-          name:       name,
-          epithet:    name
+          name:       name
         )
       end
 
       def genus_name
         GenusName.new(
-          name:       name,
-          epithet:    name
+          name:       name
         )
       end
 
       def subgenus_name
-        subgenus_part = words.second.tr('()', '')
         SubgenusName.new(
-          name:       name,
-          epithet:    subgenus_part
+          name:       name
         )
       end
 
       def species_name
         SpeciesName.new(
-          name:       name,
-          epithet:    words.second
+          name:       name
         )
       end
 
       def species_name_with_subgenus
         SpeciesName.new(
-          name:       name,
-          epithet:    words.last
+          name:       name
         )
       end
 
       def subspecies_name
         SubspeciesName.new(
           name:       name,
-          epithet:    words.third,
           epithets:   [words.second, words.third].join(' ')
         )
       end
@@ -149,7 +139,6 @@ module Names
       def subspecies_or_infrasubspecific_name
         SubspeciesName.new(
           name:       name,
-          epithet:    words.last,
           epithets:   words[1..-1].join(' ')
         )
       end

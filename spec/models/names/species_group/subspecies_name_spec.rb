@@ -6,9 +6,6 @@ describe SubspeciesName do
   describe 'epithet and epithets validation' do
     subject { build_stubbed :subspecies_name, name: 'Lasius niger nigra' }
 
-    it { is_expected.to allow_value('niger').for :epithet }
-    it { is_expected.not_to allow_value('different').for :epithet }
-
     it { is_expected.to allow_value('niger').for :epithets }
     it { is_expected.not_to allow_value('different').for :epithets }
   end

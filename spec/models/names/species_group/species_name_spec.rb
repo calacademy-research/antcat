@@ -1,13 +1,6 @@
 require 'spec_helper'
 
 describe SpeciesName do
-  describe 'epithet validation' do
-    subject { build_stubbed :species_name, name: 'Lasius niger' }
-
-    it { is_expected.to allow_value('niger').for :epithet }
-    it { is_expected.not_to allow_value('different').for :epithet }
-  end
-
   describe "name parts" do
     let(:species_name) { described_class.new name: 'Atta major', epithet: 'major' }
 
