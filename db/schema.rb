@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041337) do
+ActiveRecord::Schema.define(version: 2019_07_13_041338) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -311,6 +311,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_041337) do
     t.index ["name_id"], name: "taxa_name_id_idx"
     t.index ["protonym_id"], name: "index_taxa_on_protonym_id"
     t.index ["species_id"], name: "taxa_species_id_index"
+    t.index ["status"], name: "index_taxa_on_status"
     t.index ["subfamily_id"], name: "taxa_subfamily_id_idx"
     t.index ["subgenus_id"], name: "index_taxa_on_subgenus_id"
     t.index ["tribe_id"], name: "taxa_tribe_id_idx"
