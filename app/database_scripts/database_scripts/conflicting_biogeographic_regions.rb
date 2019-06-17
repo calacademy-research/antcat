@@ -26,5 +26,5 @@ __END__
 description: >
   Taxa with `biogeographic_region`s that cannot be merged into the protonym by script.
 
-tags: [new!]
+tags: [regression-test]
 topic_areas: [protonyms]
