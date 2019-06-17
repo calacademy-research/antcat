@@ -98,14 +98,14 @@ class TaxaController < ApplicationController
             :primary_type_information_taxt,
             :secondary_type_information_taxt,
             :type_notes_taxt,
+            :biogeographic_region,
             :locality,
             :id,
             { authorship_attributes: [:pages, :forms, :notes_taxt, :id, :reference_id] }
           ]
         },
         :type_taxon_id,
-        :type_taxt,
-        :biogeographic_region
+        :type_taxt
       )
     end
 

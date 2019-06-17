@@ -60,7 +60,7 @@ module Exporters
             authors:                authorship_reference.authors_for_keey,
             year:                   authorship_reference.year,
             reference_id:           authorship_reference.id,
-            biogeographic_region:   taxon.biogeographic_region,
+            biogeographic_region:   taxon.protonym.biogeographic_region,
             locality:               taxon.protonym.locality,
             rank:                   taxon.class.to_s,
             hol_id:                 taxon.hol_id,

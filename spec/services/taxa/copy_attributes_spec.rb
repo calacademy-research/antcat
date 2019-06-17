@@ -18,7 +18,6 @@ describe Taxa::CopyAttributes do
         "current_valid_taxon_id" => taxon.current_valid_taxon_id,
         "ichnotaxon" => taxon.ichnotaxon,
         "nomen_nudum" => taxon.nomen_nudum,
-        "biogeographic_region" => taxon.biogeographic_region,
         "type_taxon_id" => taxon.type_taxon_id
       })
     end

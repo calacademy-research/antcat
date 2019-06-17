@@ -24,6 +24,9 @@
           %td Pages and forms
           %td=protonym.decorate.format_pages_and_forms
         %tr
+          %td Biogeographic region
+          %td=protonym.biogeographic_region
+        %tr
           %td Locality
           %td=protonym.decorate.format_locality
         %tr
@@ -95,6 +98,13 @@
                   Forms
                   =tooltip_icon "forms", scope: :taxa
               %td=authorship_form.text_field :forms
+
+          %tr
+            %td
+              =protonym_form.label :biogeographic_region do
+                Biogeographic region
+                =tooltip_icon "type.biogeographic_region", scope: :taxa
+            %td=protonym_form.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, taxon.protonym.biogeographic_region), include_blank: true
 
             %tr
               %td

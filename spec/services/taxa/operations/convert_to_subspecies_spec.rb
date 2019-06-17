@@ -75,7 +75,6 @@ describe Taxa::Operations::ConvertToSubspecies do
             :current_valid_taxon,
             :ichnotaxon,
             :nomen_nudum,
-            :biogeographic_region,
             :type_taxon
           ].each do |attribute|
             expect(new_subspecies.send(attribute)).to eq species.send(attribute)

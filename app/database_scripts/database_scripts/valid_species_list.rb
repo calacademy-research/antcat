@@ -35,7 +35,7 @@ module DatabaseScripts
             taxon.author_citation,
             taxon.fossil?,
             taxon.status,
-            taxon.biogeographic_region,
+            taxon.protonym.biogeographic_region,
             taxon.protonym.locality,
             taxon.id
           ]
@@ -56,7 +56,7 @@ module DatabaseScripts
             taxon.author_citation,
             taxon.fossil?,
             taxon.status,
-            taxon.biogeographic_region,
+            taxon.protonym.biogeographic_region,
             taxon.protonym.locality,
             taxon.id
           ]
