@@ -25,16 +25,7 @@
           =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
 
     -unless @taxon.original_combination?
-      -if show_full_statistics? @taxon
-        -statistics = @taxon.decorate.statistics
-      -else
-        -# If there's no valid-only stats, try including invalid too before giving up.
-        -statistics = @taxon.decorate.statistics(valid_only: true) || @taxon.decorate.statistics
-      -if statistics
-        .callout
-          #statistics.small-margin-bottom
-            =statistics
-            =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
+      =render 'catalog/_show/statistics', taxon: @taxon
 
     .callout#external-links
       =@taxon.decorate.link_to_antweb
