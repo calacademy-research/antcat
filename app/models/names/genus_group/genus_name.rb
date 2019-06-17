@@ -1,5 +1,5 @@
 class GenusName < GenusGroupName
   def genus_epithet
-    words[0]
+    name_parts[0]
   end
 end

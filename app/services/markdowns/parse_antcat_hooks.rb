@@ -71,7 +71,7 @@ module Markdowns
           id = $~[:id]
           begin
             refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
-          rescue
+          rescue ActiveRecord::RecordNotFound
             broken_markdown_link "reference", id
           end
         end
@@ -91,10 +91,10 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_ids!
         content.gsub!(/@user(\d+)/) do
-          begin
-            user = User.find($1)
+          user = User.find_by(id: $1)
+          if user
             user.decorate.ping_user_link
-          rescue
+          else
             broken_markdown_link "user", $1
           end
         end

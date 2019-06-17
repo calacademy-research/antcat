@@ -9,6 +9,7 @@ Feature: Taxon selector
     When I go to the edit page for "Atta"
     And I select "homonym" from "taxon_status"
     And I set the homonym replaced by name to "Eciton"
+    And WAIT
     And I press "Save"
     Then I should see "Eciton" in the header
 

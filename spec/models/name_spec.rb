@@ -5,16 +5,31 @@ describe Name do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to validate_presence_of :epithet }
 
-  describe 'epithet validation' do
-    subject { build_stubbed :name, name: 'Lasius' }
-
-    it { is_expected.to allow_value('Lasius').for :epithet }
-    it { is_expected.not_to allow_value('Different').for :epithet }
-  end
-
   describe 'relations' do
     it { is_expected.to have_many(:protonyms).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:taxa).dependent(:restrict_with_error) }
+  end
+
+  describe 'validations' do
+    describe '#ensure_starts_with_upper_case_letter' do
+      let(:name) { build_stubbed :genus_name, name: 'lasius' }
+
+      specify do
+        expect(name.valid?).to eq false
+        expect(name.errors[:name]).to eq ["must start with a capital letter"]
+      end
+    end
+  end
+
+  describe '`set_epithet` and `#set_epithets`' do
+    let!(:name) { create :subspecies_name, name: 'Lasius niger fusca' }
+
+    before do
+      name.update_columns(epithet: 'pizza', epithets: 'pescatore')
+    end
+
+    specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
+    specify { expect { name.save }.to change { name.epithets }.from('pescatore').to('niger fusca') }
   end
 
   describe "#epithet_with_fossil_html" do
@@ -58,7 +73,7 @@ describe Name do
       it "changes the cache" do
         expect(taxon.name_cache).to eq 'Atta'
         expect(taxon.name_html_cache).to eq '<i>Atta</i>'
-        atta_name.update name: 'Betta', epithet: 'Betta'
+        atta_name.update! name: 'Betta'
         taxon.reload
         expect(taxon.name_cache).to eq 'Betta'
         expect(taxon.name_html_cache).to eq '<i>Betta</i>'
@@ -70,7 +85,7 @@ describe Name do
       let!(:taxon) { create :genus, name: atta_name }
 
       it "changes the cache" do
-        taxon.update name: betta_name
+        taxon.update! name: betta_name
         expect(taxon.name_cache).to eq 'Betta'
         expect(taxon.name_html_cache).to eq '<i>Betta</i>'
       end
@@ -78,11 +93,11 @@ describe Name do
   end
 
   describe "#what_links_here" do
-    subject { described_class.new }
+    let(:name) { described_class.new }
 
     it "calls `Names::WhatLinksHere`" do
-      expect(Names::WhatLinksHere).to receive(:new).with(subject).and_call_original
-      subject.what_links_here
+      expect(Names::WhatLinksHere).to receive(:new).with(name).and_call_original
+      name.what_links_here
     end
   end
 end

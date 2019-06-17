@@ -12,9 +12,6 @@
 #   => "Atta (Acromyrmex) moelleri subsp. panamensis var. angustata"
 # ```
 
-# TODO: Rewrite this do branch on number of name parts excluding subgenus and old-style notations.
-# TODO: Set `#epithet` by always taking the last name part (and remove parentheses from subgenus parts).
-
 module Names
   class BuildNameFromString
     include Service
@@ -26,132 +23,45 @@ module Names
     end
 
     def call
-      raise UnparsableName, "name cannot be blank" if name.blank?
-      raise UnparsableName, "'#{name}' must start with a capital letter" unless starts_with_upper_case_letter?
-
-      case name_type
-      when :family                         then family_name
-      when :subfamily                      then subfamily_name
-      when :tribe                          then tribe_name
-      when :genus                          then genus_name
-      when :subgenus                       then subgenus_name
-      when :species                        then species_name
-      when :species_with_subgenus          then species_name_with_subgenus
-      when :subspecies                     then subspecies_name
-      when :subspecies_or_infrasubspecific then subspecies_or_infrasubspecific_name
-      else                                 raise UnparsableName, "cannot parse name #{name}"
-      end
+      return Name.new if name.blank?
+      name_class.new(name: name)
     end
 
     private
 
       attr_reader :name
 
-      def starts_with_upper_case_letter?
-        name[0] == name[0].upcase
-      end
+      def name_class
+        return SubgenusName if subgenus_name?
 
-      def words
-        @words ||= name.split
-      end
-
-      def name_type
-        case words.size
+        case num_words_without_subgenus
         when 1    then genus_or_tribe_or_subfamily
-        when 2    then subgenus_or_species
-        when 3    then species_or_subspecies
-        when 4..6 then :subspecies_or_infrasubspecific
+        when 2    then SpeciesName
+        when 3..6 then SubspeciesName
+        else      raise UnparsableName, name
         end
+      end
+
+      def num_words
+        @num_words ||= name.split.size
+      end
+
+      def num_words_without_subgenus
+        @num_words_without_subgenus ||= name.gsub(/\(.*?\)/, '').squish.split.size
+      end
+
+      def subgenus_name?
+        num_words == 2 && num_words_without_subgenus == 1
       end
 
       # TODO: It could also be subtribe.
       def genus_or_tribe_or_subfamily
         case name
-        when /idae$/ then :family
-        when /inae$/ then :subfamily
-        when /ini$/  then :tribe
-        else              :genus
+        when /idae$/ then FamilyName
+        when /inae$/ then SubfamilyName
+        when /ini$/  then TribeName
+        else              GenusName
         end
-      end
-
-      def subgenus_or_species
-        if contains_parenthesis? then :subgenus else :species end
-      end
-
-      def species_or_subspecies
-        if contains_parenthesis? then :species_with_subgenus else :subspecies end
-      end
-
-      def contains_parenthesis?
-        name =~ /\(.*?\)/
-      end
-
-      def family_name
-        FamilyName.new(
-          name:       name,
-          epithet:    name
-        )
-      end
-
-      def subfamily_name
-        SubfamilyName.new(
-          name:       name,
-          epithet:    name
-        )
-      end
-
-      def tribe_name
-        TribeName.new(
-          name:       name,
-          epithet:    name
-        )
-      end
-
-      def genus_name
-        GenusName.new(
-          name:       name,
-          epithet:    name
-        )
-      end
-
-      def subgenus_name
-        subgenus_part = words.second.tr('()', '')
-        SubgenusName.new(
-          name:       name,
-          epithet:    subgenus_part
-        )
-      end
-
-      def species_name
-        SpeciesName.new(
-          name:       name,
-          epithet:    words.second
-        )
-      end
-
-      def species_name_with_subgenus
-        SpeciesName.new(
-          name:       name,
-          epithet:    words.last
-        )
-      end
-
-      def subspecies_name
-        SubspeciesName.new(
-          name:       name,
-          epithet:    words.third,
-          epithets:   [words.second, words.third].join(' ')
-        )
-      end
-
-      # Most of these are infrasubspecific names.
-      # TODO: We currently do not make any distinction between these since there's no correspinding `Taxon` class.
-      def subspecies_or_infrasubspecific_name
-        SubspeciesName.new(
-          name:       name,
-          epithet:    words.last,
-          epithets:   words[1..-1].join(' ')
-        )
       end
   end
 end

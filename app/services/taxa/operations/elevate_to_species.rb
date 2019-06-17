@@ -38,7 +38,7 @@ module Taxa
           species = subspecies.species
           new_name_string = "#{species.genus.name.name} #{subspecies.name.epithet}"
 
-          SpeciesName.new(name: new_name_string, epithet: subspecies.name.epithet)
+          SpeciesName.new(name: new_name_string)
         end
 
         def move_history_items! new_species

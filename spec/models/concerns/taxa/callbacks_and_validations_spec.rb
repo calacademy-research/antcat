@@ -80,10 +80,10 @@ describe Taxa::CallbacksAndValidations do
   describe "#biogeographic_region" do
     context 'when taxon is a `SpeciesGroupTaxon`' do
       context 'when taxon is extant' do
-        subject { build_stubbed :species }
+        let(:taxon) { build_stubbed :species }
 
         specify do
-          expect(subject).to validate_inclusion_of(:biogeographic_region).
+          expect(taxon).to validate_inclusion_of(:biogeographic_region).
             in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
         end
       end

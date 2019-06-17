@@ -34,6 +34,6 @@ class NamesController < ApplicationController
     end
 
     def name_params
-      params.require(:name).permit(:name, :epithet, :epithets)
+      params.require(:name).permit(:name)
     end
 end

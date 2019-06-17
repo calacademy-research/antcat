@@ -16,14 +16,14 @@ module Api
         results = search_results.map do |taxon|
           {
             id: taxon.id,
-              name: taxon.name_cache
+            name: taxon.name_cache
           }
         end
 
-        if results.size > 0
-          render json: results
-        else
+        if results.empty?
           head :not_found
+        else
+          render json: results
         end
       end
     end

@@ -2,6 +2,17 @@ require 'spec_helper'
 
 describe Names::BuildNameFromString do
   describe '#call' do
+    context 'when name contains redundant spaces' do
+      it 'squishes them' do
+        name = described_class[' Lasius niger  fusca ']
+
+        expect(name).to be_a SubspeciesName
+        expect(name.name).to eq 'Lasius niger fusca'
+        expect(name.epithet).to eq 'fusca'
+        expect(name.epithets).to eq 'niger fusca'
+      end
+    end
+
     context 'when name is a family name' do
       specify do
         name = described_class['Formicidae']
@@ -9,6 +20,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a FamilyName
         expect(name.name).to eq 'Formicidae'
         expect(name.epithet).to eq 'Formicidae'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -19,6 +31,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a SubfamilyName
         expect(name.name).to eq 'Myrmecinae'
         expect(name.epithet).to eq 'Myrmecinae'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -29,6 +42,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a TribeName
         expect(name.name).to eq 'Attini'
         expect(name.epithet).to eq 'Attini'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -39,6 +53,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a GenusName
         expect(name.name).to eq 'Lasius'
         expect(name.epithet).to eq 'Lasius'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -49,6 +64,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a SubgenusName
         expect(name.name).to eq 'Camponotus (Forelophilus)'
         expect(name.epithet).to eq 'Forelophilus'
+        expect(name.epithets).to eq nil
       end
     end
 
@@ -59,6 +75,7 @@ describe Names::BuildNameFromString do
         expect(name).to be_a SpeciesName
         expect(name.name).to eq 'Lasius niger'
         expect(name.epithet).to eq 'niger'
+        expect(name.epithets).to eq nil
       end
 
       context 'when name includes subgenus' do
@@ -68,6 +85,7 @@ describe Names::BuildNameFromString do
           expect(name).to be_a SpeciesName
           expect(name.name).to eq 'Formica (Hypochira) subspinosa'
           expect(name.epithet).to eq 'subspinosa'
+          expect(name.epithets).to eq '(Hypochira) subspinosa'
         end
       end
     end
@@ -85,6 +103,17 @@ describe Names::BuildNameFromString do
         expect(name.name).to eq 'Lasius niger fusca'
         expect(name.epithet).to eq 'fusca'
         expect(name.epithets).to eq 'niger fusca'
+      end
+
+      context 'when name contains abbreivations' do
+        specify do
+          name = described_class['Lasius niger var. fusca']
+
+          expect(name).to be_a SubspeciesName
+          expect(name.name).to eq 'Lasius niger var. fusca'
+          expect(name.epithet).to eq 'fusca'
+          expect(name.epithets).to eq 'niger var. fusca'
+        end
       end
     end
 
@@ -126,13 +155,24 @@ describe Names::BuildNameFromString do
     end
 
     context 'when input cannot be parsed into a `Name`' do
-      context 'when name starts with a lower-case letter' do
-        specify { expect { described_class['lasius niger'] }.to raise_error described_class::UnparsableName }
-      end
-
       context 'when name is blank' do
-        specify { expect { described_class[nil] }.to raise_error described_class::UnparsableName }
-        specify { expect { described_class[''] }.to raise_error described_class::UnparsableName }
+        specify do
+          name = described_class[nil]
+
+          expect(name).to be_a Name
+          expect(name.name).to eq nil
+          expect(name.epithet).to eq nil
+          expect(name.epithets).to eq nil
+        end
+
+        specify do
+          name = described_class['']
+
+          expect(name).to be_a Name
+          expect(name.name).to eq nil
+          expect(name.epithet).to eq nil
+          expect(name.epithets).to eq nil
+        end
       end
 
       # TODO: We want to support this for protonyms like

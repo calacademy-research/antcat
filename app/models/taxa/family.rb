@@ -28,10 +28,6 @@ class Family < Taxon
     Genus.where(incertae_sedis_in: 'family').displayable
   end
 
-  def genera
-    Genus.without_subfamily
-  end
-
   def subfamilies
     Subfamily.all
   end

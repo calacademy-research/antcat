@@ -10,11 +10,11 @@ class SpeciesGroupName < Name
   end
 
   def genus_epithet
-    words[0]
+    name_parts[0]
   end
 
   def species_epithet
-    words[1]
+    name_parts[1]
   end
 
   def dagger_html

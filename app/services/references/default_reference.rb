@@ -1,7 +1,7 @@
 module References
   class DefaultReference
     def self.get session
-      Reference.find session[:default_reference_id] rescue nil
+      Reference.find_by(id: session[:default_reference_id])
     end
 
     def self.set session, reference

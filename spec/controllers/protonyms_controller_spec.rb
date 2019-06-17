@@ -30,9 +30,6 @@ describe ProtonymsController do
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
         type_notes_taxt: "type notes",
-        name_attributes: {
-          id: create(:genus_name).id
-        },
         authorship_attributes: {
           pages: '99',
           forms: 'worker',

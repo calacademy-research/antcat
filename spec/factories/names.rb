@@ -1,7 +1,5 @@
 FactoryBot.define do
   factory :name do
-    epithet { name }
-
     factory :family_name, class: FamilyName do
       name { 'Formicidae' }
     end
@@ -20,18 +18,14 @@ FactoryBot.define do
 
     factory :subgenus_name, class: SubgenusName do
       sequence(:name, 'a') { |n| "Atta (Subgenus#{n})" }
-      epithet { name.split.last.remove('(', ')') }
     end
 
     factory :species_name, class: SpeciesName do
       sequence(:name, 'a') { |n| "Atta species#{n}" }
-      epithet { name.split.last }
     end
 
     factory :subspecies_name, class: SubspeciesName do
       sequence(:name, 'a') { |n| "Atta species subspecies#{n}" }
-      epithet { name.split.last }
-      epithets { name.split[-2..-1].join(' ') }
     end
   end
 end

@@ -3,21 +3,43 @@ require 'spec_helper'
 describe SubspeciesName do
   it { is_expected.to validate_presence_of :epithets }
 
-  describe 'epithet and epithets validation' do
-    subject { build_stubbed :subspecies_name, name: 'Lasius niger nigra' }
+  describe '#name=' do
+    specify do
+      name = described_class.new(name: 'Lasius niger fusca')
 
-    it { is_expected.to allow_value('niger').for :epithet }
-    it { is_expected.not_to allow_value('different').for :epithet }
+      expect(name.name).to eq 'Lasius niger fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq 'niger fusca'
+    end
 
-    it { is_expected.to allow_value('niger').for :epithets }
-    it { is_expected.not_to allow_value('different').for :epithets }
+    specify do
+      name = described_class.new(name: 'Lasius niger var. fusca')
+
+      expect(name.name).to eq 'Lasius niger var. fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq 'niger var. fusca'
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius (Austrolasius) niger fusca')
+
+      expect(name.name).to eq 'Lasius (Austrolasius) niger fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq '(Austrolasius) niger fusca'
+    end
+
+    specify do
+      name = described_class.new(name: 'Lasius (Austrolasius) niger var. fusca')
+
+      expect(name.name).to eq 'Lasius (Austrolasius) niger var. fusca'
+      expect(name.epithet).to eq 'fusca'
+      expect(name.epithets).to eq '(Austrolasius) niger var. fusca'
+    end
   end
 
   describe "name parts" do
     context 'when three name parts' do
-      let(:subspecies_name) do
-        described_class.new name: 'Atta major minor', epithet: 'minor', epithets: 'major minor'
-      end
+      let(:subspecies_name) { described_class.new(name: 'Atta major minor') }
 
       specify do
         expect(subspecies_name.genus_epithet).to eq 'Atta'
@@ -27,9 +49,7 @@ describe SubspeciesName do
     end
 
     context 'when four name parts' do
-      let(:subspecies_name) do
-        described_class.new name: 'Acus major minor medium', epithet: 'medium', epithets: 'major minor medium'
-      end
+      let(:subspecies_name) { described_class.new(name: 'Acus major minor medium') }
 
       specify do
         expect(subspecies_name.subspecies_epithets).to eq 'minor medium'

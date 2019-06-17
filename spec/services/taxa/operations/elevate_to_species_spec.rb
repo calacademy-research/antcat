@@ -12,10 +12,7 @@ describe Taxa::Operations::ElevateToSpecies do
       context "when a species with this name already exists" do
         let!(:genus) { create_genus 'Atta' }
         let!(:species) { create_species 'Atta major', genus: genus }
-        let!(:subspecies_name) do
-          SubspeciesName.create! name: 'Atta batta major',
-            epithet: 'major', epithets: 'batta major'
-        end
+        let!(:subspecies_name) { SubspeciesName.create! name: 'Atta batta major' }
         let!(:subspecies) { create :subspecies, name: subspecies_name, species: species }
 
         it "returns the new new non-persister species with errors" do
@@ -103,13 +100,11 @@ describe Taxa::Operations::ElevateToSpecies do
     # because we should stop reusing `Name`s once we're ready for that.
     context "old specs" do
       let!(:genus) { create_genus 'Atta' }
+      let!(:subspecies_name) { SubspeciesName.create!(name: 'Atta major colobopsis') }
+      let!(:species) { create_species 'Atta major', genus: genus }
+      let!(:taxon) { create :subspecies, name: subspecies_name, genus: genus, species: species }
 
       it "forms the new species name from the epithet" do
-        species = create_species 'Atta major', genus: genus
-        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-          epithet: 'colobopsis', epithets: 'major colobopsis'
-        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
-
         described_class[taxon]
 
         new_species = Taxon.last
@@ -119,16 +114,8 @@ describe Taxa::Operations::ElevateToSpecies do
         expect(new_species.name.epithets).to be_nil
       end
 
-      it "creates a new species name, if necessary" do
-        species = create_species 'Atta major', genus: genus
-        subspecies_name = SubspeciesName.create! name: 'Atta major colobopsis',
-          epithet: 'colobopsis', epithets: 'major colobopsis'
-        taxon = create :subspecies, name: subspecies_name, genus: genus, species: species
-        name_count = Name.count
-
-        described_class[taxon]
-
-        expect(Name.count).to eq(name_count + 1)
+      it "creates a new species namey" do
+        expect { described_class[taxon] }.to change { Name.count }.by(1)
       end
     end
   end

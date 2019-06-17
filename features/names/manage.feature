@@ -16,7 +16,6 @@ Feature: Manage names
     And I should not see "Formicus"
 
     When I fill in "name_name_string" with "Lasius"
-    And I fill in "name_epithet" with "Lasius"
     And I fill in "edit_summary" with "fix name"
     And I press "Save"
     Then I should see "Successfully updated name."

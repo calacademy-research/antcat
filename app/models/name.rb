@@ -28,8 +28,11 @@ class Name < ApplicationRecord
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_epithet_in_name
+  validate :ensure_starts_with_upper_case_letter
 
   after_save :set_taxon_caches
+  # NOTE: Technically we don't need to do this, since they *should* not be different, but let's make sure.
+  before_validation :set_epithet, :set_epithets
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -41,6 +44,14 @@ class Name < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
+
+  # NOTE: This may make code harder to debug, but we don't want to have to manually specify epithets,
+  # or have them diverge. Consider this to be a factory or persistence-related callback.
+  def name=(value)
+    self[:name] = value.squish if value
+    set_epithet
+    set_epithets
+  end
 
   def rank
     self.class.name.gsub(/Name$/, "").underscore
@@ -80,6 +91,24 @@ class Name < ApplicationRecord
 
   private
 
+    def set_epithet
+      return unless name
+      self.epithet = if is_a?(SubgenusName)
+                       name_parts.last.tr('()', '')
+                     else
+                       name_parts.last
+                     end
+    end
+
+    def set_epithets
+      return unless name
+      return unless is_a?(SpeciesGroupName)
+
+      self.epithets = if name_parts.size > 2
+                        name_parts[1..-1].join(' ')
+                      end
+    end
+
     def ensure_epithet_in_name
       return if name.blank? || epithet.blank?
       return if name.include?(epithet)
@@ -97,8 +126,15 @@ class Name < ApplicationRecord
       end
     end
 
-    def words
-      @words ||= name.split
+    def ensure_starts_with_upper_case_letter
+      return if name.blank?
+      return if name[0] == name[0].upcase
+
+      errors.add :name, "must start with a capital letter"
+    end
+
+    def name_parts
+      name.split
     end
 
     def set_taxon_caches
