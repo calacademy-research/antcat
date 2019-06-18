@@ -6,6 +6,7 @@ class EditorsPanelsController < ApplicationController
     @count = unreviewed_changes_counts
     @recent_activities = Activity.most_recent(10).includes(:user)
     @recent_comments = Comment.most_recent 5
+    @recent_unconfirmed_activities = Activity.unconfirmed.most_recent(5).includes(:user)
   end
 
   def invite_users

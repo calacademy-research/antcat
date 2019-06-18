@@ -68,6 +68,11 @@ end
     parent :activity_feed
   end
 
+  crumb :unconfirmed_activities do
+    link "Unconfirmed Activities", unconfirmed_activities_path
+    parent :activity_feed
+  end
+
 crumb :comments do
   link "Comments"
   parent :editors_panel

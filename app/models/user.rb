@@ -9,6 +9,7 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   scope :order_by_name, -> { order(:name) }
+  scope :unconfirmed, -> { where(editor: false, helper: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,

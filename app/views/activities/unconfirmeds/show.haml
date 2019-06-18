@@ -1,0 +1,6 @@
+-@title = "Unconfirmed Activities"
+-breadcrumb :unconfirmed_activities
+
+=render "activities/table", activities: @activities, include_head: true
+
+=will_paginate @activities
