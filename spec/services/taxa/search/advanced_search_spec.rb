@@ -104,8 +104,8 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
-        create :species, biogeographic_region: 'Australasia'
-        indomanayan_species = create :species, biogeographic_region: 'Indomalaya'
+        create :species, protonym: create(:protonym, biogeographic_region: 'Australasia')
+        indomanayan_species = create :species, protonym: create(:protonym, biogeographic_region: 'Indomalaya')
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: 'Indomalaya']).to eq [indomanayan_species]

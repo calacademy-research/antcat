@@ -2,9 +2,6 @@ module Taxa
   module CallbacksAndValidations
     extend ActiveSupport::Concern
 
-    BIOGEOGRAPHIC_REGIONS = %w[
-      Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
-    ]
     INCERTAE_SEDIS_IN_RANKS = %w[family subfamily tribe genus]
 
     included do
@@ -14,7 +11,7 @@ module Taxa
       validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
       validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
 
-      validate :current_valid_taxon_validation, :ensure_correct_name_type, :biogeographic_region_validation
+      validate :current_valid_taxon_validation, :ensure_correct_name_type
 
       before_save :set_name_caches
 
@@ -24,8 +21,7 @@ module Taxa
       # TODO: Move or remove.
       before_save { set_taxon_state_to_waiting if save_initiator }
 
-      strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt,
-        :biogeographic_region], replace_newlines: true
+      strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
 
       def soft_validation_warnings
         @soft_validation_warnings = Taxa::CheckIfInDatabaseResults[self]
@@ -46,14 +42,6 @@ module Taxa
       def set_taxon_state_to_waiting
         taxon_state.review_state = TaxonState::WAITING
         taxon_state.save
-      end
-
-      def biogeographic_region_validation
-        if is_a?(SpeciesGroupTaxon) && !fossil?
-          validates_inclusion_of :biogeographic_region, in: BIOGEOGRAPHIC_REGIONS, allow_nil: true
-        else
-          validates_absence_of :biogeographic_region
-        end
       end
 
       def current_valid_taxon_validation
