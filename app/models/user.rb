@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
+  MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
   has_many :activities
   has_many :comments
@@ -26,6 +27,12 @@ class User < ApplicationRecord
 
   def self.current=(user)
     RequestStore.store[:current_user] = user
+  end
+
+  # TODO: Super primitive way of preventing mass registrations once we switch to open registration.
+  # TODO: Revisit shortly after that.
+  def self.too_many_registrations_today?
+    where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY
   end
 
   def unconfirmed_user_over_edit_limit?
