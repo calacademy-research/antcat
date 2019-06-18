@@ -138,6 +138,11 @@ end
     parent :versions
   end
 
+crumb :about_unconfirmed_users do
+  link "About Unconfirmed Users", page_path('unconfirmed_user')
+  parent :editors_panel
+end
+
 crumb :bolton_keys_to_ref_tags do
   link "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
   parent :editors_panel

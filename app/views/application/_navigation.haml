@@ -29,6 +29,7 @@
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
+          =render "unconfirmed_user_notice"
           %li=link_to 'References', references_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
           %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
           %li
@@ -56,6 +57,7 @@
           =image_tag 'logos/antcat_white_174x37.png', data: { toggle: true }
       =render "unseen_notifications_badge"
       =render "unread_site_notices_badge"
+      =render "unconfirmed_user_notice"
 
   #mobile-menu
     %ul.vertical.menu
