@@ -13,6 +13,8 @@
         Name (public)
       =f.text_field :name
 
+      =f.invisible_captcha :work_email
+
   .row
     .medium-6.columns
       =f.label :password, "Password (#{@minimum_password_length} characters minimum)"
