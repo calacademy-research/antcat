@@ -18,9 +18,8 @@
   =time_ago_in_words @issue.created_at
   ago
 
-
--if @issue.closed?
-  %p
+  -if @issue.closed?
+    =dash
     Closed by
     =@issue.closer.decorate.user_page_link
 
