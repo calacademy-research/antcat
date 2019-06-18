@@ -1,8 +1,11 @@
 module DatabaseScripts
   class NonValidTaxaWithACurrentValidTaxonThatIsNotValid < DatabaseScript
+    # TODO: Codify this somewhere.
+    IGNORE_STATUSES = Status::PASS_THROUGH_NAMES + [Status::UNAVAILABLE_UNCATEGORIZED]
+
     def results
-      Taxon.where.not(current_valid_taxon: nil).self_join_on(:current_valid_taxon).
-        where.not(taxa_self_join_alias: { status: Status::VALID })
+      Taxon.where.not(current_valid_taxon: nil).where.not(status: IGNORE_STATUSES).
+        self_join_on(:current_valid_taxon).where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
     def render
@@ -23,5 +26,5 @@ end
 
 __END__
 
-tags: [new!, slow]
+tags: [updated!, slow]
 topic_areas: [catalog]

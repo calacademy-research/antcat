@@ -8,5 +8,5 @@ end
 
 __END__
 
-tags: [new!]
+tags: []
 topic_areas: [homonyms]
