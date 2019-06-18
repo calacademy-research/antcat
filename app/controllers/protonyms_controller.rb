@@ -73,6 +73,7 @@ class ProtonymsController < ApplicationController
       params.require(:protonym).permit(
         :fossil,
         :sic,
+        :biogeographic_region,
         :locality,
         :primary_type_information_taxt,
         :secondary_type_information_taxt,

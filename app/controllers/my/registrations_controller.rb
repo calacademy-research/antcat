@@ -1,5 +1,12 @@
 module My
   class RegistrationsController < Devise::RegistrationsController
+    before_action :check_if_too_many_registrations_today, only: :create
+
+    # TODO: Revisit.
+    unless Rails.env.test?
+      invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
+    end
+
     def create
       super do |user|
         if user.persisted?
@@ -27,6 +34,18 @@ module My
       # TODO: Create welcome page for new contributors.
       def after_sign_up_path_for _resource
         root_path
+      end
+
+    private
+
+      # TODO: Revisit and probably remove.
+      def check_if_too_many_registrations_today
+        return unless User.too_many_registrations_today?
+        redirect_to root_path, alert: 'Sorry, we have had too many new registrations today. Email us?'
+      end
+
+      def on_spam _options = {}
+        redirect_to root_path, alert: "You're not a bot are you? Email us?"
       end
   end
 end

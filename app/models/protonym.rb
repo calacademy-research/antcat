@@ -2,6 +2,10 @@ class Protonym < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  BIOGEOGRAPHIC_REGIONS = %w[
+    Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
+  ]
+
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name, dependent: :destroy
 
@@ -9,12 +13,14 @@ class Protonym < ApplicationRecord
 
   validates :authorship, presence: true
   validates :name, presence: true
+  # TODO: See if wa want to validate this w.r.t. rank of name and fossil status.
+  validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
 
   scope :order_by_name, -> { joins(:name).order('names.name') }
 
   accepts_nested_attributes_for :name, :authorship
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
-  strip_attributes only: [:locality], replace_newlines: true
+  strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.format_name } }
 end

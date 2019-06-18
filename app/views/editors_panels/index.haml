@@ -3,7 +3,6 @@
 
 .row
   .large-4.medium-4.columns
-    -# TODO probably inline `@count`.
     %h5 Unreviewed changes
     %ul.no-bullet
       %li
@@ -29,9 +28,7 @@
   .large-4.medium-4.columns
     %h5 Tools and help pages
     %ul.no-bullet
-      %li
-        =link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
-        =beta_label
+      %li=link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
       %li
         =link_to "Search history items", taxon_history_items_path
         or
@@ -63,6 +60,11 @@
   .large-12.columns
     %h5 Most recent comments (#{link_to("see more", comments_path)})
     =render "comments/comments_table", comments: @recent_comments
+
+.row.margin-top
+  .large-12.columns
+    %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
+    =render "activities/table", activities: @recent_unconfirmed_activities
 
 -if Rails.env.development?
   .row.margin-top

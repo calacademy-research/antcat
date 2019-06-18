@@ -67,6 +67,13 @@ class ApplicationController < ActionController::Base
       end
     end
 
+    def ensure_unconfirmed_user_is_not_over_edit_limit
+      authenticate_user!
+      redirect_to editors_panel_path, alert: <<~MSG if current_user.unconfirmed_user_over_edit_limit?
+        You have reached your allowed number of edits for today, please come back tomorrow!'
+      MSG
+    end
+
     def ensure_user_is_editor
       authenticate_user!
       raise NotAuthorized, "editor" unless user_is_editor?

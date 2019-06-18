@@ -1,6 +1,10 @@
 class User < ApplicationRecord
   include Trackable
 
+  UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
+  UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
+  MAX_NEW_REGISTRATIONS_PER_DAY = 20
+
   has_many :activities
   has_many :comments
   has_many :notifications
@@ -9,6 +13,7 @@ class User < ApplicationRecord
   validates :name, presence: true
 
   scope :order_by_name, -> { order(:name) }
+  scope :unconfirmed, -> { where(editor: false, helper: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
@@ -22,6 +27,27 @@ class User < ApplicationRecord
 
   def self.current=(user)
     RequestStore.store[:current_user] = user
+  end
+
+  # TODO: Super primitive way of preventing mass registrations once we switch to open registration.
+  # TODO: Revisit shortly after that.
+  def self.too_many_registrations_today?
+    where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY
+  end
+
+  def unconfirmed_user_over_edit_limit?
+    return unless unconfirmed?
+    remaining_edits_for_unconfirmed_user <= 0
+  end
+
+  def unconfirmed?
+    !(helper? || editor?)
+  end
+
+  def remaining_edits_for_unconfirmed_user
+    edit_count = activities.where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).count
+    raise "unconfirmed user #{id} has negative remaining edits" if edit_count > UNCONFIRMED_USER_EDIT_LIMIT_COUNT
+    UNCONFIRMED_USER_EDIT_LIMIT_COUNT - edit_count
   end
 
   def at_least_helper?

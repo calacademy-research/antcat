@@ -1,0 +1,18 @@
+-@title = 'About Unconfirmed Users'
+-breadcrumb :about_unconfirmed_users
+
+%p Unconfirmed users are registered users who have yet to be flagged with the helper or editor roles.
+
+%p
+  Things you can do before we confirm your account:
+  %ul
+    %li
+      Add and edit
+      =link_to 'Open Issues', issues_path
+    %li Post comments
+    %li Submit feedback
+
+%p
+  Unconfirmed user are allowed a maximum of
+  =User::UNCONFIRMED_USER_EDIT_LIMIT_COUNT
+  edits per day.

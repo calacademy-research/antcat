@@ -77,31 +77,6 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
-  describe "#biogeographic_region" do
-    context 'when taxon is a `SpeciesGroupTaxon`' do
-      context 'when taxon is extant' do
-        let(:taxon) { build_stubbed :species }
-
-        specify do
-          expect(taxon).to validate_inclusion_of(:biogeographic_region).
-            in_array(Taxon::BIOGEOGRAPHIC_REGIONS).allow_nil
-        end
-      end
-
-      context 'when taxon is fossil' do
-        subject { build_stubbed :species, :fossil }
-
-        it { is_expected.to validate_absence_of(:biogeographic_region) }
-      end
-    end
-
-    context 'when taxon is above `SpeciesGroupTaxon`' do
-      subject { build_stubbed :genus }
-
-      it { is_expected.to validate_absence_of(:biogeographic_region) }
-    end
-  end
-
   describe "#homonym_replaced_by" do
     context 'when taxon is not a homonym' do
       let(:taxon) { build_stubbed :family }

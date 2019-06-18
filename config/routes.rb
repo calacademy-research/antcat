@@ -186,7 +186,13 @@ Rails.application.routes.draw do
 
   get :notifications, to: "notifications#index"
 
-  resources :activities, only: [:index, :destroy]
+  resources :activities, only: [:index, :destroy] do
+    collection do
+      scope module: :activities do
+        resource :unconfirmed, only: :show, as: :unconfirmed_activities
+      end
+    end
+  end
 
   resources :site_notices do
     collection do

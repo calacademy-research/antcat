@@ -25,7 +25,8 @@ Given("there is a species located in {string}") do |locality|
 end
 
 Given("there is a species with biogeographic region {string}") do |biogeographic_region|
-  create :species, biogeographic_region: biogeographic_region
+  protonym = create :protonym, biogeographic_region: biogeographic_region
+  create :species, protonym: protonym
 end
 
 Given("there is a species with forms {string}") do |forms|

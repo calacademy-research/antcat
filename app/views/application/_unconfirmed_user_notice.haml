@@ -1,0 +1,8 @@
+-if current_user&.unconfirmed?
+  %li.unseen-notifications.unconfirmed-user
+    -count = current_user.remaining_edits_for_unconfirmed_user
+    =link_to page_path('about_unconfirmed_users') do
+      %span.label=count
+      remaining edit#{"s" unless count == 1}!
+      %span.what-is-this-unconfirmed-user
+        %small (what is this?)

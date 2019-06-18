@@ -26,6 +26,7 @@ describe ProtonymsController do
       {
         fossil: false,
         sic: false,
+        biogeographic_region: 'Malagasy',
         locality: 'Africa',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
@@ -55,6 +56,7 @@ describe ProtonymsController do
       expect(protonym.fossil).to eq protonym_params[:fossil]
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.locality).to eq protonym_params[:locality]
+      expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
       expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
       expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
       expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
@@ -89,6 +91,7 @@ describe ProtonymsController do
       protonym_params = {
         fossil: false,
         sic: false,
+        biogeographic_region: 'Malagasy',
         locality: 'Africa',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
@@ -106,6 +109,7 @@ describe ProtonymsController do
       protonym.reload
       expect(protonym.fossil).to eq protonym_params[:fossil]
       expect(protonym.sic).to eq protonym_params[:sic]
+      expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
       expect(protonym.locality).to eq protonym_params[:locality]
       expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
       expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]

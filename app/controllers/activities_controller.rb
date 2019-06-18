@@ -45,7 +45,7 @@ class ActivitiesController < ApplicationController
   )
 
   def index
-    @activities = unpaginated_activities.ids_desc.include_associations.paginate(page: page)
+    @activities = unpaginated_activities.ids_desc.includes(:user).paginate(page: page)
   end
 
   def destroy

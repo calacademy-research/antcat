@@ -16,12 +16,12 @@ module Exporters
 
         attr_reader :taxon
 
-        delegate :type_taxt, :type_taxon, :biogeographic_region, to: :taxon
+        delegate :type_taxt, :type_taxon, :protonym, to: :taxon
 
         def headline_type
           string = ''.html_safe
           string << type_name_and_taxt
-          string << add_period_if_necessary(biogeographic_region)
+          string << add_period_if_necessary(protonym.biogeographic_region)
           string.html_safe
         end
 

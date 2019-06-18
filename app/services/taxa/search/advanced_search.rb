@@ -68,9 +68,9 @@ module Taxa
 
           search_term = params[:biogeographic_region]
           if search_term == 'None'
-            query = query.where(biogeographic_region: nil)
+            query = query.where(protonyms: { biogeographic_region: nil })
           elsif search_term
-            query = query.where(biogeographic_region: search_term)
+            query = query.where(protonyms: { biogeographic_region: search_term })
           end
 
           query = query.where('forms LIKE ?', "%#{params[:forms]}%") if params[:forms]

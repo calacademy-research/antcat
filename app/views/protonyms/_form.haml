@@ -73,6 +73,13 @@
 
     %tr
       %td
+        =f.label :biogeographic_region do
+          Biogeographic region
+          =tooltip_icon "type.biogeographic_region", scope: :taxa
+      %td=f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, protonym.biogeographic_region), include_blank: true
+
+    %tr
+      %td
         =f.label :locality do
           Locality
           =tooltip_icon "locality", scope: :taxa

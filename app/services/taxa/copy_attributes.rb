@@ -43,7 +43,6 @@ module Taxa
           :current_valid_taxon_id,
           :ichnotaxon,
           :nomen_nudum,
-          :biogeographic_region,
           :type_taxon_id
         ]
       end

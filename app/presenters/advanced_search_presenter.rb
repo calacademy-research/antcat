@@ -24,11 +24,11 @@ class AdvancedSearchPresenter
 
   def format_type_localities taxon
     string = ''
-    if taxon.protonym.locality.present?
+    if taxon.protonym.locality
       string << add_period_if_necessary(taxon.protonym.locality)
     end
-    if taxon.biogeographic_region.present?
-      string << ' ' << taxon.biogeographic_region
+    if taxon.protonym.biogeographic_region
+      string << ' ' << taxon.protonym.biogeographic_region
       string = add_period_if_necessary string
     end
     string

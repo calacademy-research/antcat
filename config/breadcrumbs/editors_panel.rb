@@ -68,6 +68,11 @@ end
     parent :activity_feed
   end
 
+  crumb :unconfirmed_activities do
+    link "Unconfirmed Activities", unconfirmed_activities_path
+    parent :activity_feed
+  end
+
 crumb :comments do
   link "Comments"
   parent :editors_panel
@@ -132,6 +137,11 @@ end
     link "##{version.id}", version_path(version)
     parent :versions
   end
+
+crumb :about_unconfirmed_users do
+  link "About Unconfirmed Users", page_path('unconfirmed_user')
+  parent :editors_panel
+end
 
 crumb :bolton_keys_to_ref_tags do
   link "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
