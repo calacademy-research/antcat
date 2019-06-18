@@ -24,6 +24,10 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
+  def unconfirmed?
+    !(helper? || editor?)
+  end
+
   def at_least_helper?
     helper? || editor?
   end
