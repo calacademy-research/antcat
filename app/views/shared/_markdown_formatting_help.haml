@@ -1,0 +1,74 @@
+%table.margin-bottom
+  %caption AntCat-specific markdown
+  %thead
+    %tr
+      %th What
+      %th Code
+      %th Output
+  %tbody
+    %tr
+      %td Taxon link
+      %td
+        %code {tax 429349}
+      %td=markdown "{tax 429349}"
+    %tr
+      %td Reference link
+      %td
+        %code {ref 126902}
+      %td=markdown "{ref 126902} (expandable)"
+    %tr
+      %td GitHub issue link
+      %td
+        %code %github126
+      %td=markdown "%github126"
+    %tr
+      %td User page
+      %td
+        %code @user1
+      %td=markdown "@user1"
+
+%table
+  %caption
+    Basic markdown (see
+    =link_to "this page", "https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet"
+    for more formatting help)
+  %thead
+    %tr
+      %th What
+      %th Code
+      %th Output
+  %tbody
+    %tr
+      %td Bold
+      %td
+        %code **bold**
+      %td=markdown "**bold**"
+    %tr
+      %td Italics
+      %td
+        %code *italics*
+      %td=markdown "*italics*"
+    %tr
+      %td Strikethrough
+      %td
+        %code ~~strikethrough~~
+      %td=markdown "~~strikethrough~~"
+    %tr
+      %td Lists
+      %td
+        %code * first item
+        %br
+        %code * second item
+      %td=markdown "* first item\n* second item"
+    %tr
+      %td Link (automatic)
+      %td
+        %code www.antcat.org
+        %br
+        %code http://antcat.org
+      %td=markdown "www.antcat.org\nhttp://antcat.org"
+    %tr
+      %td Link (custom title)
+      %td
+        %code [AntCat](http://www.antcat.org)
+      %td=markdown "[AntCat](http://www.antcat.org)"
