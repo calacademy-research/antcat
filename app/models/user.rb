@@ -1,6 +1,9 @@
 class User < ApplicationRecord
   include Trackable
 
+  UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
+  UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
+
   has_many :activities
   has_many :comments
   has_many :notifications
@@ -25,8 +28,19 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
+  def unconfirmed_user_over_edit_limit?
+    return unless unconfirmed?
+    remaining_edits_for_unconfirmed_user <= 0
+  end
+
   def unconfirmed?
     !(helper? || editor?)
+  end
+
+  def remaining_edits_for_unconfirmed_user
+    edit_count = activities.where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).count
+    raise "unconfirmed user #{id} has negative remaining edits" if edit_count > UNCONFIRMED_USER_EDIT_LIMIT_COUNT
+    UNCONFIRMED_USER_EDIT_LIMIT_COUNT - edit_count
   end
 
   def at_least_helper?

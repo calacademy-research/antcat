@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   include HasWhereFilters
 
   before_action :authenticate_user!
+  before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index]
   before_action :set_comment, only: [:edit, :update]
 
   has_filters(
