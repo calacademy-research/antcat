@@ -1,5 +1,5 @@
 class IssuesController < ApplicationController
-  before_action :authenticate_user!, except: [:index, :show]
+  before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
   before_action :set_issue, only: [:show, :edit, :update, :reopen, :close]
 
   def index

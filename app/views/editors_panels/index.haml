@@ -64,6 +64,11 @@
     %h5 Most recent comments (#{link_to("see more", comments_path)})
     =render "comments/comments_table", comments: @recent_comments
 
+.row.margin-top
+  .large-12.columns
+    %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
+    =render "activities/table", activities: @recent_unconfirmed_activities
+
 -if Rails.env.development?
   .row.margin-top
     .medium-12.columns

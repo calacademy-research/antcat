@@ -43,9 +43,9 @@ class Activity < ApplicationRecord
   validates :action, presence: true, inclusion: { in: ACTIONS }
 
   scope :ids_desc, -> { order(id: :desc) }
-  scope :most_recent, ->(number = 5) { ids_desc.limit(number).include_associations }
-  scope :include_associations, -> { includes(:trackable, :user) }
+  scope :most_recent, ->(number = 5) { ids_desc.limit(number) }
   scope :non_automated_edits, -> { where(automated_edit: false) }
+  scope :unconfirmed, -> { joins(:user).merge(User.unconfirmed) }
 
   has_paper_trail
   serialize :parameters, Hash

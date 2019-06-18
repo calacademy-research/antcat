@@ -4,6 +4,12 @@ describe User do
   it { is_expected.to validate_presence_of :name }
   it { is_expected.to be_versioned }
 
+  describe '#unconfirmed?' do
+    specify { expect(build_stubbed(:user)).to be_unconfirmed }
+    specify { expect(build_stubbed(:user, :helper)).to_not be_unconfirmed }
+    specify { expect(build_stubbed(:user, :editor)).to_not be_unconfirmed }
+  end
+
   describe "#notify_because" do
     let(:user) { create :user }
     let(:notifier) { create :user }
