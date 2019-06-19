@@ -11,5 +11,5 @@ end
 
 Given("there is an invalid subfamily Invalidinae") do
   name = create :subfamily_name, name: "Invalidinae"
-  create :subfamily, :synonym, name: name
+  create :subfamily, :synonym, name: name, current_valid_taxon: create(:family)
 end
