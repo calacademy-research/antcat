@@ -62,7 +62,7 @@ describe DatabaseScript do
     end
   end
 
-  describe "testsing with a real script" do
+  xdescribe "testsing with a real script" do
     let(:script) { DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym.new }
 
     describe "#to_param" do

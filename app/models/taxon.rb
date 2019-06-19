@@ -4,7 +4,6 @@ class Taxon < ApplicationRecord
 
   include Taxa::CallbacksAndValidations
   include Taxa::PredicateMethods
-  include Taxa::Synonyms
   include RevisionsCanBeCompared
   include Trackable
 
@@ -45,18 +44,6 @@ class Taxon < ApplicationRecord
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
   has_one :taxon_state
-
-  # Synonyms. Confused? See this:
-  # `dolichoderus = Taxon.find(429079)`    = valid taxon, not a synonym
-  # `dolichoderus.junior_synonyms`         = 7 taxon objects
-  # `dolichoderus.synonyms_as_junior`      = 0 synonym objects
-  # `dolichoderus.junior_synonyms_objects` = 7 synonym objects
-  has_many :synonyms_as_junior, foreign_key: :junior_synonym_id, class_name: 'Synonym'
-  has_many :synonyms_as_senior, foreign_key: :senior_synonym_id, class_name: 'Synonym'
-  has_many :junior_synonyms, through: :synonyms_as_senior
-  has_many :senior_synonyms, through: :synonyms_as_junior
-  has_many :junior_synonyms_objects, foreign_key: :senior_synonym_id, class_name: 'Synonym', dependent: :destroy
-  has_many :senior_synonyms_objects, foreign_key: :junior_synonym_id, class_name: 'Synonym', dependent: :destroy
 
   scope :displayable, -> { where.not(status: Status::UNDISPLAYABLE) }
   scope :valid, -> { where(status: Status::VALID) }

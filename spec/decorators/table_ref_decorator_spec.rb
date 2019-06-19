@@ -54,15 +54,6 @@ describe TableRefDecorator do
     specify { expect(decorated.related_links).to eq reference.decorate.expandable_reference }
   end
 
-  context "when table is `synonyms`" do
-    let!(:table) { "synonyms" }
-    let!(:object) { create :family, :synonym }
-    let!(:taxon) { object }
-
-    specify { expect(decorated.item_link).to eq %(<a href="/catalog/#{id}">#{id}</a>) }
-    specify { expect(decorated.related_links).to eq taxon.decorate.link_to_taxon }
-  end
-
   context "when table is `taxa`" do
     let!(:table) { "taxa" }
     let!(:object) { create :family }

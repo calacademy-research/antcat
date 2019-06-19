@@ -65,62 +65,21 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a synonym" do
-      context "when a taxon has no `Synonym`s" do
-        context "when taxon does not have a `current_valid_taxon`" do
-          let!(:taxon) { create :family, :synonym }
+      context "when taxon does not have a `current_valid_taxon`" do
+        let!(:taxon) { create :family, :synonym }
 
-          specify do
-            expect(taxon.decorate.taxon_status).to include "junior synonym"
-          end
-        end
-      end
-
-      context "when taxon has a single valid senior `Synonym`" do
         specify do
-          senior = create :genus
-          junior = create :genus, :synonym
-          create :synonym, junior_synonym: junior, senior_synonym: senior
-
-          expect(junior.decorate.taxon_status).
-            to include %(junior synonym of current valid taxon #{taxon_link senior})
+          expect(taxon.decorate.taxon_status).to include "junior synonym"
         end
       end
 
-      describe "using current valid taxon" do
-        context "when a null current valid taxon" do
-          let!(:other_senior) { create :genus }
-          let!(:junior) { create :genus, :synonym }
+      context "when a taxon has a `current_valid_taxon`" do
+        let!(:other_senior) { create :genus }
+        let!(:junior) { create :genus, :synonym, current_valid_taxon: other_senior }
 
-          before do
-            senior = create :genus
-            senior.update_attribute :created_at, 100.seconds.ago
-            create :synonym, junior_synonym: junior, senior_synonym: senior
-
-            create :synonym, senior_synonym: other_senior, junior_synonym: junior
-          end
-
-          specify do
-            expect(junior.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon #{taxon_link other_senior})
-          end
-        end
-
-        context "when a current valid taxon that's one of two 'senior synonyms'" do
-          let!(:other_senior) { create :genus }
-          let!(:junior) { create :genus, :synonym, current_valid_taxon: other_senior }
-
-          before do
-            senior = create :genus
-            senior.update_attribute :created_at, 100.seconds.ago
-            create :synonym, junior_synonym: junior, senior_synonym: senior
-
-            create :synonym, senior_synonym: other_senior, junior_synonym: junior
-          end
-
-          specify do
-            expect(junior.decorate.taxon_status).
-              to include %(junior synonym of current valid taxon #{taxon_link other_senior})
-          end
+        specify do
+          expect(junior.decorate.taxon_status).
+            to include %(junior synonym of current valid taxon #{taxon_link other_senior})
         end
       end
     end

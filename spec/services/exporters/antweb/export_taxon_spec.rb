@@ -184,12 +184,8 @@ describe Exporters::Antweb::ExportTaxon do
 
       context 'when taxon is a synonym' do
         context "when there are senior synonyms" do
-          let!(:taxon) { create :species, :synonym }
           let!(:senior_synonym) { create_species 'Eciton major' }
-
-          before do
-            create :synonym, junior_synonym: taxon, senior_synonym: senior_synonym
-          end
+          let!(:taxon) { create :species, :synonym, current_valid_taxon: senior_synonym }
 
           it "looks at synonyms" do
             expect(export_taxon(taxon)[13]).to end_with 'Eciton major'
@@ -422,7 +418,6 @@ describe Exporters::Antweb::ExportTaxon do
         senior = create :genus
         junior = create :genus, :synonym, current_valid_taxon: senior
         taxon = create :species, genus: junior
-        create :synonym, senior_synonym: senior, junior_synonym: junior
 
         expect(export_taxon(taxon)[23]).to eq senior.name_cache
       end

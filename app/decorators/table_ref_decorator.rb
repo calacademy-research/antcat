@@ -14,7 +14,7 @@ class TableRefDecorator
     when "protonyms"           then link_to(id, protonym_path(id))
     when "reference_sections"  then link_to(id, reference_section_path(id))
     when "references"          then link_to(id, reference_path(id))
-    when "synonyms", "taxa"    then link_to(id, catalog_path(id))
+    when "taxa"                then link_to(id, catalog_path(id))
     when "taxon_history_items" then link_to(id, taxon_history_item_path(id))
     else                            "#{id} ???"
     end
@@ -28,8 +28,8 @@ class TableRefDecorator
     when "protonyms"           then related_protonym_link
     when "reference_sections"  then ReferenceSection.find(id).taxon.decorate.link_to_taxon
     when "references"          then Reference.find(id).decorate.expandable_reference
-    when "synonyms", "taxa"    then Taxon.find(id).decorate.link_to_taxon
     when "taxon_history_items" then TaxonHistoryItem.find(id).taxon.decorate.link_to_taxon
+    when "taxa"                then Taxon.find(id).decorate.link_to_taxon
     else                            "#{table} ???"
     end
   end

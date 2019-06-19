@@ -1,9 +1,7 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
-      DatabaseScripts::JuniorSynonymsListedAsAnotherTaxonsSenior,
-      DatabaseScripts::PassThroughNamesWithTaxts,
-      DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym
+      DatabaseScripts::PassThroughNamesWithTaxts
     ]
 
     def show

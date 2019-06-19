@@ -55,26 +55,5 @@ describe Taxa::WhatLinksHere do
 
       specify { expect(described_class[taxon, predicate: true]).to be true }
     end
-
-    describe "references as synonym" do
-      let(:other_taxon) { create :family }
-
-      context "when there are references" do
-        before { create :synonym, junior_synonym: other_taxon, senior_synonym: taxon }
-
-        specify do
-          expect(described_class[taxon]).to match_array [
-            TableRef.new('synonyms', :senior_synonym_id, other_taxon.id)
-          ]
-
-          expect(described_class[other_taxon]).to match_array [
-            TableRef.new('synonyms', :junior_synonym_id, taxon.id)
-          ]
-        end
-
-        specify { expect(described_class[taxon, predicate: true]).to be true }
-        specify { expect(described_class[other_taxon, predicate: true]).to be true }
-      end
-    end
   end
 end

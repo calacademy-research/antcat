@@ -65,20 +65,6 @@ describe ActivityDecorator do
         end
       end
 
-      context 'when trackable is a `Synonym`' do
-        let!(:senior) { create :family }
-        let!(:junior) { create :family }
-        let!(:trackable) { create :synonym, senior_synonym: senior, junior_synonym: junior }
-
-        specify do
-          trackable.create_activity :destroy
-          trackable.destroy
-          activity = Activity.last
-          expect(activity.decorate.did_something.squish).
-            to eq %(deleted the synonym relationship #{taxon_link(junior)} (junior) <span class="antcat_icon synonym_arrow"></span> #{taxon_link(senior)} (senior))
-        end
-      end
-
       context 'when trackable is a `Tooltip`' do
         let!(:trackable) { create :tooltip, scope: 'taxa', key: 'authors' }
 
