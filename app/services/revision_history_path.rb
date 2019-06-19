@@ -27,6 +27,7 @@ class RevisionHistoryPath
       when "Taxon"            then taxon_history_path id
       when "TaxonHistoryItem" then taxon_history_item_path id
       when "Tooltip"          then tooltip_history_index_path id
+      when "WikiPage"         then wiki_page_history_path id
       end
     end
 end

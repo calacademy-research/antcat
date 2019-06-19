@@ -12,6 +12,7 @@ Feature: Editing a taxon
 
     When I go to the edit page for "Eciton"
     And I pick "Formica" from the protonym selector
+    And WAIT
     And I press "Save"
     Then I should see "Formica" in the headline
     And I should see "page 9 (dealate queen)" in the headline

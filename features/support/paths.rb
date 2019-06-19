@@ -93,6 +93,9 @@ module NavigationHelpers
     when /^the most recent feedback item$/
       "/feedback/#{Feedback.last.id}"
 
+    when /^the wiki pages index$/
+      "/wiki_pages"
+
     # Reference sections and taxon history items
     when /^the reference sections page$/
       "/reference_sections"

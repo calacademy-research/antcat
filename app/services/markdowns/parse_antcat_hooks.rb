@@ -28,6 +28,7 @@ module Markdowns
       parse_taxon_ids!
       parse_reference_ids!
       parse_github_ids!
+      parse_wiki_pages_ids!
       parse_user_ids!
 
       content
@@ -84,6 +85,19 @@ module Markdowns
           # Also works for PRs because GH figures that out.
           url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
           link_to "GitHub ##{$1}", url
+        end
+      end
+
+      # Matches: %wiki123
+      # Renders: a link to the wiki page.
+      def parse_wiki_pages_ids!
+        content.gsub!(/%wiki(\d+)/) do
+          begin
+            wiki_page = WikiPage.find($1)
+            link_to wiki_page.title, wiki_page_path($1)
+          rescue ActiveRecord::RecordNotFound
+            broken_markdown_link "wiki_page", $1
+          end
         end
       end
 
