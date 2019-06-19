@@ -18,7 +18,7 @@ module References
         end
 
       render plain: Exporters::Endnote::Formatter.format(references)
-    rescue StardardError
+    rescue StandardError
       render plain: <<-MSG.squish
         Looks like something went wrong. Exporting missing references is not supported.
         If you tried to export a list of references, try to filter the query with "type:nomissing".
