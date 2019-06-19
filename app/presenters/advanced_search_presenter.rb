@@ -43,7 +43,7 @@ class AdvancedSearchPresenter
     end
 
     def senior_synonym_list taxon
-      return '' if taxon.senior_synonyms.empty?
-      ' of ' << taxon.senior_synonyms.map { |e| format_name(e) }.join(', ')
+      return '' unless taxon.synonym? && taxon.current_valid_taxon
+      ' of ' << format_name(taxon.current_valid_taxon)
     end
 end

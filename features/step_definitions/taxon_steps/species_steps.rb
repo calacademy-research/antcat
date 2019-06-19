@@ -23,8 +23,7 @@ end
 Given("there is a species {string} which is a junior synonym of {string}") do |junior, senior|
   genus = create :genus
   senior = create_species senior, genus: genus
-  junior = create_species junior, status: Status::SYNONYM, genus: genus, current_valid_taxon: senior
-  create :synonym, senior_synonym: senior, junior_synonym: junior
+  create_species junior, status: Status::SYNONYM, genus: genus, current_valid_taxon: senior
 end
 
 Given("there is a species with primary type information {string}") do |primary_type_information|

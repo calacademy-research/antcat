@@ -116,7 +116,6 @@ Rails.application.routes.draw do
   resources :taxa, only: [:new, :create, :edit, :update, :destroy] do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
-    resources :synonyms, only: [:create, :destroy]
     scope module: :taxa do
       resource :children, only: [:show]
       resource :create_combination, only: [:new, :show]
@@ -159,7 +158,6 @@ Rails.application.routes.draw do
       resources :reference_author_names, only: [:index, :show]
       resources :reference_documents, only: [:index, :show]
       resources :reference_sections, only: [:index, :show]
-      resources :synonyms, only: [:index, :show]
     end
   end
 

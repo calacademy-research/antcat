@@ -67,7 +67,7 @@ module Exporters
             parent:                 parent&.name&.name || 'Formicidae'
           }
 
-          attributes[:current_valid_name] = taxon.current_valid_taxon_including_synonyms&.name&.name
+          attributes[:current_valid_name] = taxon.current_valid_taxon&.name&.name
 
           convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
         end

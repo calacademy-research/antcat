@@ -42,12 +42,6 @@ module HtmlSelectorsHelpers
     when /another author panel/
       all(".author_panel").last
 
-    # Editing.
-    when /^the junior synonyms section$/
-      '#junior-synonyms-section-test-hook'
-    when /^the senior synonyms section$/
-      '#senior-synonyms-section-test-hook'
-
     # Test pages.
     when /the name field/
       '#test_name_field .display'

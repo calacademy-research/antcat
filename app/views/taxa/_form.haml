@@ -3,7 +3,6 @@
 -content_for :head do
   =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
   =javascript_include_tag 'controllers/taxa/not_really_form/reorder_history_items'
-  =javascript_include_tag 'controllers/taxa/not_really_form/synonyms_section'
   =javascript_include_tag 'taxon_select', 'reference_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'protonym_select'
   =javascript_include_tag 'check_name_conflicts'
@@ -48,5 +47,4 @@
   .not-really-taxon-form
     =render 'taxa/_not_really_form/history_items_section', taxon: @taxon
     =render 'taxa/_not_really_form/children_section', taxon: @taxon, max_number: 50
-    =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
     =render 'taxa/_not_really_form/references_section', taxon: @taxon

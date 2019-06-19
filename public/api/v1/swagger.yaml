@@ -581,50 +581,6 @@ paths:
         "404":
           description: Record not found
 
-  /synonyms:
-    get:
-      summary: Get all synonyms
-      operationId: getSynonyms
-      tags:
-        - Synonyms
-        - Synonym
-      parameters:
-          - name: starts_at
-            in: query
-            description: Lowest synonym id to be returned
-            required: false
-            type: integer
-            format: int32
-      responses:
-        "200":
-          description: Returns 100 synonyms at a time starting the specified synonym id. If no id is supplied, starts at zero
-
-          schema:
-            $ref: '#/definitions/Synonym'
-        "404":
-          description: Record not found
-
-  /synonyms/{id}:
-    get:
-      summary: Get a single synonym
-      operationId: getsynonym
-      tags:
-        - Synonym
-      parameters:
-        - name: id
-          in: path
-          description: getsynonym id
-          required: true
-          type: integer
-          format: int32
-      responses:
-        "200":
-          description: a single synonym record
-          schema:
-            $ref: '#/definitions/Synonym'
-        "404":
-          description: Record not found
-
 definitions:
   Taxa:
     description: Abridged taxa records
@@ -1074,28 +1030,6 @@ definitions:
         type: string
       public:
         type: boolean
-      created_at:
-        type: string
-        format: date-time
-        description: Automatically generated timestamp for original creation
-      updated_at:
-        type: string
-        format: date-time
-        description: Automatically generated timestamp for most recent update
-
-  Synonym:
-    description: synonym mapping between two taxa
-    type: object
-    properties:
-      id:
-        type: integer
-        description: synonym id, primary key
-      senior_synonym_id:
-        type: integer
-        description: Senior taxa
-      junior_synonym_id:
-        type: integer
-        description: Junior taxa
       created_at:
         type: string
         format: date-time

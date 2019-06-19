@@ -14,7 +14,6 @@ module Taxa
         table_refs = []
         table_refs.concat references_in_taxa
         table_refs.concat references_in_taxt
-        table_refs.concat references_in_synonyms
       end
     end
 
@@ -22,14 +21,12 @@ module Taxa
 
       attr_reader :taxon, :predicate
 
-      delegate :id, :synonyms_as_senior, :synonyms_as_junior, to: :taxon
+      delegate :id, to: :taxon
 
       def any_references?
         Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
           return true if Taxon.where(field => id).exists?
         end
-
-        return true if synonyms_as_senior.exists? || synonyms_as_junior.exists?
 
         Detax::TAXT_MODELS_AND_FIELDS.each do |(model, field)|
           model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
@@ -47,17 +44,6 @@ module Taxa
           Taxon.where(field => id).pluck(:id).each do |taxon_id|
             table_refs << table_ref('taxa', field, taxon_id)
           end
-        end
-        table_refs
-      end
-
-      def references_in_synonyms
-        table_refs = []
-        synonyms_as_senior.pluck(:junior_synonym_id).each do |junior_synonym_id|
-          table_refs << table_ref('synonyms', :senior_synonym_id, junior_synonym_id)
-        end
-        synonyms_as_junior.pluck(:senior_synonym_id).each do |senior_synonym_id|
-          table_refs << table_ref('synonyms', :junior_synonym_id, senior_synonym_id)
         end
         table_refs
       end

@@ -63,17 +63,17 @@ describe DatabaseScript do
   end
 
   describe "testsing with a real script" do
-    let(:script) { DatabaseScripts::ValidTaxaListedAsAnotherTaxonsJuniorSynonym.new }
+    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     describe "#to_param" do
       it "is the filename without extension" do
-        expect(script.to_param).to eq "valid_taxa_listed_as_another_taxons_junior_synonym"
+        expect(script.to_param).to eq "extant_taxa_in_fossil_genera"
       end
     end
 
     describe "#description" do
       it "can have a description" do
-        expect(script.description).to match "See %github279."
+        expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
       end
 
       it "doesn't require a description" do
@@ -84,7 +84,7 @@ describe DatabaseScript do
 
     describe "#issue_description" do
       it "can have a description" do
-        expect(script.issue_description).to match "This taxon has the status 'valid', but it also has senior synonym(s)."
+        expect(script.issue_description).to eq "The parent of this taxon is fossil, but this taxon is extant."
       end
     end
 
