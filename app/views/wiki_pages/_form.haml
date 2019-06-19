@@ -1,0 +1,31 @@
+-content_for :head do
+  =javascript_include_tag "markdown_and_friends"
+
+=content_for :breadcrumbs_right do
+  =link_to "Hide/show help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "help" }
+
+.row{data: { show_hide_toggable_id: "help" }}
+  .medium-12.columns
+    .callout
+      =render 'shared/markdown_formatting_help'
+
+.row
+  .medium-12.columns
+    =form_for wiki_page do |f|
+      =render "shared/errors_for", resource: wiki_page
+      .row
+        .medium-8.columns.end
+          =f.label :title
+          =f.text_field :title, { maxlength: 70 }
+
+      .row
+        .medium-12.columns
+          =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }
+
+      .row
+        .medium-12.columns
+          =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+      .row
+        .medium-12.columns
+          =button_tag "Save", class: "btn-saves"

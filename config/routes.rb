@@ -217,6 +217,15 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :wiki_pages do
+    collection do
+      get :autocomplete
+    end
+    scope module: :wiki_pages do
+      resource :history, only: :show
+    end
+  end
+
   namespace :markdown do
     post :preview, action: :preview
   end

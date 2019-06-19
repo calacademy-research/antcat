@@ -1,0 +1,28 @@
+-@title = "#{@wiki_page.title} - Wiki Page"
+-breadcrumb :wiki_page, @wiki_page
+
+=content_for :breadcrumbs_right do
+  =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-normal"
+  -if current_user
+    =link_to("Edit", edit_wiki_page_path(@wiki_page), class: "btn-normal")
+  -if user_is_superadmin?
+    =link_to append_superadmin_icon("Delete"), @wiki_page, method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
+
+.row.small-margin-bottom
+  .medium-12.columns
+    %h5=@wiki_page.title
+    %small.gray-text
+      Last edited
+      =time_ago_in_words(@wiki_page.updated_at)
+      ago
+
+      =dash
+
+      Added
+      =time_ago_in_words(@wiki_page.created_at)
+      ago
+
+.row
+  .medium-12.columns
+    .callout
+      =markdown @wiki_page.content

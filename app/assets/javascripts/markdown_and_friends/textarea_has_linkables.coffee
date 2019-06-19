@@ -50,6 +50,14 @@ setupLinkables = =>
       callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
 
     .atwho
+      at: '%w'
+      limit: 10
+      delay: 300
+      insertTpl: '%wiki${id}'
+      displayTpl: '<li><small>#${id}</small> ${title}</li>'
+      callbacks: reuseCallbacks "/wiki_pages/autocomplete.json"
+
+    .atwho
       at: '!!'
       limit: 15
       delay: 300

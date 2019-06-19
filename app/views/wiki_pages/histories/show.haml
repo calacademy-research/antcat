@@ -1,0 +1,4 @@
+-@title = "Wiki Page ##{@comparer.most_recent.id}"
+-breadcrumb :wiki_page_history, @comparer.most_recent
+
+=render file: "compare_revisions/show", locals: { comparer: @comparer  }
