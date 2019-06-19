@@ -4,7 +4,7 @@
 %tr.change{class: ("approved" if taxon.taxon_state && taxon.approved?)}
   %td
     =change.format_adder_name
-    -if change.change_type != 'delete' && taxon
+    -if change.change_type != 'delete' && taxon&.name
       =taxon.link_to_taxon
     -else
       =taxon.name_html_cache.html_safe
