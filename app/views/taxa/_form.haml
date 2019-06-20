@@ -18,13 +18,10 @@
   =render 'shared/errors_for', resource: @taxon
 
   -if @taxon.soft_validation_warnings.present?
-    #soft-validations.callout.warning.small-12.medium-6{data: { closable: true }}
+    #soft-validations.callout.warning.small-12.medium-6
       %h6 Issues
       %p These issues will not prevent you from saving the form. Just so you know :)
       =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
-
-      %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
-        %span{"aria-hidden" => "true"} &times;
 
   .callout
     =render 'taxa/_form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
