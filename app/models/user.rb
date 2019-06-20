@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }

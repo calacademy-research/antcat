@@ -32,7 +32,7 @@ Feature: Managing user feedback
 
   Scenario: Deleting a feedback item
     Given a visitor has submitted a feedback with the comment "buy r0lex spam"
-    And I log in as a superadmin
+    And I log in as a superadmin named "Batiatus"
 
     When I go to the most recent feedback item
     And I follow "Delete"
