@@ -35,6 +35,10 @@ class User < ApplicationRecord
     where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY
   end
 
+  def active_for_authentication?
+    super && !locked?
+  end
+
   def unconfirmed_user_over_edit_limit?
     return unless unconfirmed?
     remaining_edits_for_unconfirmed_user <= 0
