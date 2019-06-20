@@ -47,4 +47,12 @@ describe AuthorName do
       end
     end
   end
+
+  describe '#ensure_not_authors_only_author_name' do
+    let!(:author_name) { create :author_name }
+
+    specify do
+      expect { author_name.destroy }.to_not change { described_class.count }
+    end
+  end
 end
