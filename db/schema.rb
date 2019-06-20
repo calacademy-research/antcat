@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041341) do
+ActiveRecord::Schema.define(version: 2019_07_13_041342) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -259,16 +259,6 @@ ActiveRecord::Schema.define(version: 2019_07_13_041341) do
     t.index ["user_id"], name: "index_site_notices_on_user_id"
   end
 
-  create_table "synonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "senior_synonym_id", null: false
-    t.integer "junior_synonym_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", unique: true
-    t.index ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id"
-    t.index ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id"
-  end
-
   create_table "taxa", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "type"
     t.datetime "created_at"
@@ -409,8 +399,6 @@ ActiveRecord::Schema.define(version: 2019_07_13_041341) do
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "site_notices", "users"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
-  add_foreign_key "synonyms", "taxa", column: "junior_synonym_id", name: "fk_synonyms__junior_synonym_id__taxa__id"
-  add_foreign_key "synonyms", "taxa", column: "senior_synonym_id", name: "fk_synonyms__senior_synonym_id__taxa__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
   add_foreign_key "taxa", "taxa", column: "current_valid_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "family_id", name: "fk_taxa__family_id__taxa__id"
