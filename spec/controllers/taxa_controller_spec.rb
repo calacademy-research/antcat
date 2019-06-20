@@ -13,7 +13,6 @@ describe TaxaController do
     end
   end
 
-  # rubocop:disable RSpec/MultipleExpectations
   describe "POST create" do
     before do
       sign_in create(:user, :editor)
@@ -62,7 +61,6 @@ describe TaxaController do
               incertae_sedis_in: "family",
               fossil: true,
               collective_group_name: true,
-              nomen_nudum: true,
               unresolved_homonym: true,
               ichnotaxon: true,
               hong: true,
@@ -81,7 +79,6 @@ describe TaxaController do
             expect(taxon.incertae_sedis_in).to eq taxon_params[:incertae_sedis_in]
             expect(taxon.fossil).to eq taxon_params[:fossil]
             expect(taxon.collective_group_name).to eq taxon_params[:collective_group_name]
-            expect(taxon.nomen_nudum).to eq taxon_params[:nomen_nudum]
             expect(taxon.unresolved_homonym).to eq taxon_params[:unresolved_homonym]
             expect(taxon.ichnotaxon).to eq taxon_params[:ichnotaxon]
             expect(taxon.hong).to eq taxon_params[:hong]
@@ -160,7 +157,6 @@ describe TaxaController do
           end
         end
       end
-      # rubocop:enable RSpec/MultipleExpectations
 
       context 'with valid params' do
         context "when rank is genus" do

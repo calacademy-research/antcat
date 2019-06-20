@@ -48,7 +48,6 @@ describe ProtonymsController do
 
     before { sign_in create(:user, :helper) }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'creates a protonym' do
       expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
 
@@ -67,7 +66,6 @@ describe ProtonymsController do
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'creates an activity' do
       expect { post(:create, params: params.merge(edit_summary: 'Split protonym')) }.
@@ -86,7 +84,6 @@ describe ProtonymsController do
 
     before { sign_in create(:user, :helper) }
 
-    # rubocop:disable RSpec/MultipleExpectations
     it 'updates the protonym' do
       protonym_params = {
         fossil: false,
@@ -121,7 +118,6 @@ describe ProtonymsController do
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
-    # rubocop:enable RSpec/MultipleExpectations
 
     it 'updates the authorship in place without creating a new record' do
       new_pages = '99'
