@@ -11,6 +11,7 @@ module Taxa
       validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
       validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
       validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
+      validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
 
       validate :current_valid_taxon_validation, :ensure_correct_name_type
 

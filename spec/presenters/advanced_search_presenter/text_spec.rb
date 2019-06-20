@@ -11,7 +11,7 @@ describe AdvancedSearchPresenter::Text do
         author_names: [latreille], citation_year: '1809',
         title: "*Atta*", journal: science,
         series_volume_issue: '(1)', pagination: '3', doi: '123'
-      taxon = create :genus, incertae_sedis_in: 'genus', nomen_nudum: true
+      taxon = create :genus, :unavailable, incertae_sedis_in: 'genus', nomen_nudum: true
       taxon.protonym.authorship.update reference: reference
 
       results = formatter.format taxon

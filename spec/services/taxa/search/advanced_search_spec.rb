@@ -164,7 +164,7 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by nomen nudum" do
       let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, nomen_nudum: true }
+      let!(:yes_match) { create :family, :unavailable, nomen_nudum: true }
 
       specify { expect(described_class[nomen_nudum: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[nomen_nudum: "true"]).to match_array [yes_match] }

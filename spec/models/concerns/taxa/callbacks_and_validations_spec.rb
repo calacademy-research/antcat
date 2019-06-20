@@ -100,6 +100,25 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
+  describe "#nomen_nudum" do
+    context 'when taxon is not unavailable' do
+      let(:taxon) { build_stubbed :family }
+
+      specify do
+        expect { taxon.nomen_nudum = true }.to change { taxon.valid? }.to(false)
+        expect(taxon.errors.messages).to include(nomen_nudum: ["can only be set for unavailable taxa"])
+      end
+    end
+
+    context 'when taxon is unavailable' do
+      let(:taxon) { build_stubbed :family, :unavailable }
+
+      specify do
+        expect { taxon.nomen_nudum = true }.to_not change { taxon.valid? }.from(true)
+      end
+    end
+  end
+
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       [
