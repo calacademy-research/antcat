@@ -26,5 +26,5 @@ end
 
 __END__
 
-tags: [updated!, slow]
+tags: [regression-test]
 topic_areas: [catalog]

@@ -11,6 +11,7 @@ module Taxa
       parts << "<i>incertae sedis</i> in #{incertae_sedis_in}" if incertae_sedis_in
       parts << "<i>nomen nudum</i>" if nomen_nudum?
       parts << "unresolved junior homonym" if unresolved_homonym?
+      parts << "collective group name" if collective_group_name?
       parts << main_status
       parts << 'ichnotaxon' if ichnotaxon?
       parts.join(', ').html_safe
@@ -21,7 +22,7 @@ module Taxa
       attr_reader :taxon
 
       delegate :status, :incertae_sedis_in, :homonym_replaced_by, :unresolved_homonym?, :ichnotaxon?,
-        :current_valid_taxon, :nomen_nudum?, to: :taxon
+        :current_valid_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon
 
       def main_status
         return "homonym replaced by #{link_homonym_replaced_by}" if homonym_replaced_by
@@ -32,6 +33,7 @@ module Taxa
         when Status::ORIGINAL_COMBINATION      then "see #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
+        when Status::COLLECTIVE_GROUP_NAME     then "<span class='bold-warning'>[collective group name with wrong status]</span>"
         else                                        status
         end
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041340) do
+ActiveRecord::Schema.define(version: 2019_07_13_041341) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -302,6 +302,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_041340) do
     t.text "secondary_type_information"
     t.text "type_notes"
     t.integer "type_taxon_id"
+    t.boolean "collective_group_name", default: false, null: false
     t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"

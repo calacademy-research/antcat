@@ -75,13 +75,16 @@
         =tooltip_icon "fossil", scope: :taxa
 
       =form.check_box :nomen_nudum
-      =form.label :nomen_nudum, 'Nomen nudum'
+      =form.label :nomen_nudum
 
       =form.check_box :unresolved_homonym
       =form.label :unresolved_homonym, 'Unresolved junior homonym'
 
       =form.check_box :ichnotaxon
-      =form.label :ichnotaxon, 'Ichnotaxon'
+      =form.label :ichnotaxon
+
+      =form.check_box :collective_group_name
+      =form.label :collective_group_name
 
       =form.check_box :hong
       =form.label :hong do

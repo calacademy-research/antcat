@@ -60,7 +60,7 @@ module Taxa
         label << 'Hong (2002) ' if label_options[:hong]
 
         label << if label_options[:collective_group_names]
-                   Status::COLLECTIVE_GROUP_NAME.pluralize(children.size).humanize
+                   "collective group name".pluralize(children.size).humanize
                  else
                    children.first.rank.pluralize(children.size).titleize
                  end
