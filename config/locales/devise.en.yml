@@ -17,7 +17,7 @@ en:
       invalid: "Sorry - either the email address or the password wasn't right"
       invalid_token: 'Invalid authentication token'
       timeout: 'Your session expired. Please log in again to continue'
-      inactive: "Your account hasn't been activated yet"
+      inactive: "Your account has not been activated yet, or it been deactivated"
     sessions:
       link: 'Log in'
       signed_in: ""

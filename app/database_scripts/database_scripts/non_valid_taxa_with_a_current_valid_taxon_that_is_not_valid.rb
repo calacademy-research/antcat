@@ -26,5 +26,5 @@ end
 
 __END__
 
-tags: [updated!, slow]
+tags: []
 topic_areas: [catalog]

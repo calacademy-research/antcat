@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041340) do
+ActiveRecord::Schema.define(version: 2019_07_13_041343) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -259,16 +259,6 @@ ActiveRecord::Schema.define(version: 2019_07_13_041340) do
     t.index ["user_id"], name: "index_site_notices_on_user_id"
   end
 
-  create_table "synonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "senior_synonym_id", null: false
-    t.integer "junior_synonym_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["junior_synonym_id", "senior_synonym_id"], name: "index_synonyms_on_junior_synonym_id_and_senior_synonym_id", unique: true
-    t.index ["junior_synonym_id"], name: "index_synonyms_on_junior_synonym_id"
-    t.index ["senior_synonym_id"], name: "index_synonyms_on_senior_synonym_id"
-  end
-
   create_table "taxa", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "type"
     t.datetime "created_at"
@@ -302,6 +292,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_041340) do
     t.text "secondary_type_information"
     t.text "type_notes"
     t.integer "type_taxon_id"
+    t.boolean "collective_group_name", default: false, null: false
     t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"
@@ -372,6 +363,7 @@ ActiveRecord::Schema.define(version: 2019_07_13_041340) do
     t.datetime "invitation_created_at"
     t.boolean "superadmin", default: false, null: false
     t.boolean "helper", default: false, null: false
+    t.boolean "locked", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token"
     t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"
@@ -408,8 +400,6 @@ ActiveRecord::Schema.define(version: 2019_07_13_041340) do
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "site_notices", "users"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
-  add_foreign_key "synonyms", "taxa", column: "junior_synonym_id", name: "fk_synonyms__junior_synonym_id__taxa__id"
-  add_foreign_key "synonyms", "taxa", column: "senior_synonym_id", name: "fk_synonyms__senior_synonym_id__taxa__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
   add_foreign_key "taxa", "taxa", column: "current_valid_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "family_id", name: "fk_taxa__family_id__taxa__id"

@@ -22,4 +22,9 @@
 
   .row
     .medium-6.columns.end
+      =f.check_box :locked
+      =f.label :locked_account
+
+  .row
+    .medium-6.columns.end
       =button_tag append_superadmin_icon("Save"), class: "btn-saves"

@@ -60,7 +60,5 @@ end
 
 __END__
 description: >
-  Note: Valid species in genera classified as collective group name is not a data
-  issue. It has to do with how CGNs are stored in the database, please ignore.
 tags: [regression-test]
 topic_areas: [catalog]

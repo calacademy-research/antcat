@@ -12,6 +12,9 @@
   %strong Name:
   =@user.name
   =@user.decorate.user_badge
+  -if user_is_superadmin?
+    -if @user.locked?
+      %span.warning-label.rounded-badge locked
 
 %p
   %strong Email:
