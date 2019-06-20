@@ -4,23 +4,18 @@ class JournalsController < ApplicationController
 
   def index
     order = params[:order] == "reference_count" ? "reference_count DESC" : :name
-
-    @journals = Journal.includes_reference_count.order(order).
-      paginate(page: params[:page], per_page: 100)
+    @journals = Journal.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
   end
 
   def show
-    @references = @journal.references.
-      order_by_author_names_and_year.
-      includes_document.
-      paginate(page: params[:page])
+    @references = @journal.references.order(:year).includes_document.paginate(page: params[:page])
   end
 
   def edit
   end
 
   def update
-    if @journal.update journal_params
+    if @journal.update(journal_params)
       @journal.create_activity :update
       redirect_to @journal, notice: "Successfully updated journal."
     else
