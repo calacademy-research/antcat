@@ -1,6 +1,6 @@
 Feature: Adding a taxon successfully
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor named "Archibald"
     And this reference exists
       | author | citation_year |
       | Fisher | 2004          |
@@ -54,7 +54,7 @@ Feature: Adding a taxon successfully
     And I follow "Subgenera"
     Then I should see "Mayria" in the taxon browser
 
-  Scenario: Adding a species
+  Scenario: Adding a species (with edit summary)
     Given there is a genus "Eciton"
 
     When I go to the catalog page for "Eciton"
@@ -62,10 +62,15 @@ Feature: Adding a taxon successfully
     And I set the name to "Eciton major"
     And I set the protonym name to "Eciton major"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
+    And I fill in "edit_summary" with "cool new species"
     And I press "Save"
     Then I should be on the catalog page for "Eciton major"
     And I should see "Eciton major" in the protonym
     And I should see "Add another"
+
+    When I go to the activity feed
+    Then I should see "Archibald added the species Eciton major to the genus Eciton" and no other feed items
+    And I should see the edit summary "cool new species"
 
   Scenario: Adding a species to a subgenus
     Given there is a subgenus "Dolichoderus (Subdolichoderus)"
