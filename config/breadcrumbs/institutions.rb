@@ -14,7 +14,7 @@ end
       parent :institution, institution
     end
 
-  crumb :new_institution do |_institution|
+  crumb :new_institution do
     link "New"
     parent :institutions
   end
