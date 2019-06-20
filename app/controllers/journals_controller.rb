@@ -8,7 +8,7 @@ class JournalsController < ApplicationController
   end
 
   def show
-    @references = @journal.references.order(:year).includes_document.paginate(page: params[:page])
+    @references = @journal.references.order(:year).includes(:document).paginate(page: params[:page])
   end
 
   def edit

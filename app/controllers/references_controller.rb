@@ -1,13 +1,12 @@
 class ReferencesController < ApplicationController
   SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
 
-  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete, :linkable_autocomplete]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
-    @references = Reference.no_missing.order_by_author_names_and_year.
-      includes_document.paginate(page: params[:page])
+    @references = Reference.no_missing.order_by_author_names_and_year.includes(:document).paginate(page: params[:page])
   end
 
   def show
@@ -32,7 +31,7 @@ class ReferencesController < ApplicationController
   end
 
   def create
-    @reference = new_reference
+    @reference = reference_type_from_params.new
 
     if save
       @reference.create_activity :create, edit_summary: params[:edit_summary]
@@ -90,10 +89,6 @@ class ReferencesController < ApplicationController
 
     def save
       ReferenceForm.new(@reference, reference_params, params, request.host).save
-    end
-
-    def new_reference
-      reference_type_from_params.new
     end
 
     def set_reference_type
