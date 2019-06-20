@@ -7,7 +7,7 @@ describe My::DefaultReferenceController do
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     let(:reference) { create :article_reference }
 
     before do

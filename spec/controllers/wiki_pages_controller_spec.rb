@@ -6,7 +6,7 @@ describe WikiPagesController do
       specify { expect(get(:new)).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:create)).to redirect_to_signin_form }
-      specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
     end
 
     context "when signed in as an editor" do
@@ -46,7 +46,7 @@ describe WikiPagesController do
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     let!(:wiki_page) { create :wiki_page }
     let!(:wiki_page_params) do
       {
@@ -58,7 +58,7 @@ describe WikiPagesController do
     before { sign_in create(:user, :helper) }
 
     it 'updates the wiki page' do
-      post(:update, params: { id: wiki_page.id, wiki_page: wiki_page_params })
+      put(:update, params: { id: wiki_page.id, wiki_page: wiki_page_params })
 
       wiki_page.reload
       expect(wiki_page.title).to eq wiki_page_params[:title]
