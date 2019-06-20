@@ -72,6 +72,7 @@ GEM
     ast (2.4.0)
     awesome_nested_set (3.1.4)
       activerecord (>= 4.0.0, < 5.3)
+    awesome_print (1.8.0)
     aws-eventstream (1.0.2)
     aws-sdk (2.11.250)
       aws-sdk-resources (= 2.11.250)
@@ -469,6 +470,7 @@ PLATFORMS
 DEPENDENCIES
   acts_as_commentable_with_threading
   acts_as_list
+  awesome_print
   aws-sdk (< 3.0)
   bootsnap
   brakeman

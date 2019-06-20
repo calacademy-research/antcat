@@ -81,6 +81,10 @@ module DevMonkeyPatches
       end
     end
 
+    def dd_ap
+      AwesomePrint.irb!
+    end
+
     # Log/not SQL queries in the console.
     def dd_no_log
       ActiveRecord::Base.logger = nil

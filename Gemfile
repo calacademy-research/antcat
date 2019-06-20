@@ -50,6 +50,7 @@ gem 'will_paginate'
 gem 'workflow', '< 2'
 
 group :development do
+  gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
 end
