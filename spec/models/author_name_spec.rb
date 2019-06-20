@@ -10,15 +10,6 @@ describe AuthorName do
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
   end
 
-  describe "editing" do
-    it "updates associated references when the name is changed" do
-      author_name = create :author_name, name: 'Ward'
-      reference = create :reference, author_names: [author_name]
-      author_name.update name: 'Fisher'
-      expect(reference.reload.author_names_string).to eq 'Fisher'
-    end
-  end
-
   describe "#last_name and #first_name_and_initials" do
     context "when there's only one word" do
       let(:author_name) { described_class.new name: 'Bolton' }
