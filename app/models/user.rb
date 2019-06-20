@@ -15,6 +15,7 @@ class User < ApplicationRecord
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }
+  scope :active, -> { where(deleted: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,

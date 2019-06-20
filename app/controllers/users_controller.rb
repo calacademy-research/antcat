@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
-  before_action :set_user, only: [:show, :edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
-    @users = User.order_by_name
+    @users = user_scope.order_by_name
   end
 
   def show
@@ -36,10 +36,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def destroy
+    if @user.update(deleted: true, locked: true)
+      redirect_to @user, notice: "Successfully soft-deleted and locked user."
+    else
+      redirect_to @user, alert: 'Could not soft-delete user.'
+    end
+  end
+
   def mentionables
     respond_to do |format|
       format.json do
-        render json: User.all.to_json(root: false, only: [:id, :email, :name])
+        render json: User.active.all.to_json(root: false, only: [:id, :email, :name])
       end
     end
   end
@@ -47,10 +55,15 @@ class UsersController < ApplicationController
   private
 
     def set_user
-      @user = User.find(params[:id])
+      @user = user_scope.find(params[:id])
     end
 
     def user_params
       params.require(:user).permit(:name, :email, :password, :superadmin, :editor, :helper, :locked)
+    end
+
+    def user_scope
+      return User.all if user_is_superadmin?
+      User.active
     end
 end

@@ -9,6 +9,7 @@ describe UsersController do
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
       specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as an editor" do
@@ -18,6 +19,7 @@ describe UsersController do
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
       specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -82,6 +84,20 @@ describe UsersController do
 
     it 'does not create an activity' do
       expect { post(:update, params: { id: user.id, user: user_params }) }.to_not change { Activity.count }
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:user) { create :user }
+
+    before { sign_in create(:user, :superadmin) }
+
+    it 'soft-deletes the user' do
+      expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.deleted }.to(true)
+    end
+
+    it 'locks the user' do
+      expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.locked }.to(true)
     end
   end
 end

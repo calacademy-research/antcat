@@ -136,7 +136,7 @@ Rails.application.routes.draw do
   end
 
   devise_for :users, path_prefix: 'my', controllers: { registrations: "my/registrations" }
-  resources :users, only: [:index, :show, :new, :create, :edit, :update] do
+  resources :users do
     collection do
       get :mentionables
     end
