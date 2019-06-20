@@ -1,6 +1,7 @@
 Feature: Signing up
-  Scenario: Sign up
-    When I go to the sign up page
+  Scenario: Sign up (with feed)
+    When I go to the main page
+    And I follow the first "Sign up"
     And I fill in "user_email" with "pizza@example.com"
     And I fill in "user_name" with "Quintus Batiatus"
     And I fill in "user_password" with "secret123"
@@ -10,4 +11,4 @@ Feature: Signing up
     And I should see "Welcome! You have signed up successfully."
 
     When I go to the activity feed
-    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!"
+    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!" and no other feed items

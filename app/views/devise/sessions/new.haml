@@ -12,9 +12,13 @@
       =f.check_box :remember_me, checked: true
       =f.label :remember_me
 
-  .row
+  .row.margin-bottom
     .medium-6.columns
       =button_tag "Login", class: "btn-normal"
       -# TODO: Fix outgoing email.
       -# =link_to 'Forgot password?', new_user_password_path
 
+  .row
+    .medium-6.columns
+      Don't have an account?
+      =link_to 'Join AntCat!', new_user_registration_path
