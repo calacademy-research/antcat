@@ -30,7 +30,7 @@
 
     .row
       .medium-3.columns
-        =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+        =edit_summary_text_field_tag
 
       .medium-3.columns.end
         =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves button has-spinner' do
