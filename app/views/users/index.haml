@@ -12,6 +12,9 @@
       %td=user.decorate.user_page_link
       %td
         =user.decorate.user_badge
-        -if user_is_superadmin? && user.superadmin?
-          %span.warning-label.rounded-badge superadmin
+        -if user_is_superadmin?
+          -if user.superadmin?
+            %span.warning-label.rounded-badge superadmin
+          -if user.locked?
+            %span.warning-label.rounded-badge locked
       %td=user.email
