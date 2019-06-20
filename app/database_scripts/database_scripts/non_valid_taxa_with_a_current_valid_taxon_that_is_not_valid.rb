@@ -26,5 +26,5 @@ end
 
 __END__
 
-tags: [regression-test]
+tags: []
 topic_areas: [catalog]
