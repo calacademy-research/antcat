@@ -89,6 +89,17 @@ describe Taxa::CallbacksAndValidations do
     end
   end
 
+  describe "#unresolved_homonym" do
+    context 'when taxon is a homonym' do
+      let(:taxon) { build_stubbed :family, unresolved_homonym: true }
+
+      specify do
+        expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to false
+        expect(taxon.errors.messages).to include(unresolved_homonym: ["can't be set for homonyms"])
+      end
+    end
+  end
+
   describe "#current_valid_taxon_validation" do
     context "when taxon has a `#current_valid_taxon`" do
       [
