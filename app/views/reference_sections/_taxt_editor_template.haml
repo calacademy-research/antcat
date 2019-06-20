@@ -1,14 +1,14 @@
-.taxt-editor{data: { url: "/reference_sections/#{item.id}" }}
+.taxt-editor{data: { url: "/reference_sections/#{reference_section.id}" }}
   .taxt-presenter
-    %h6.title_taxt=markdown item.title_taxt, no_wrapping_p: true
-    %h6.subtitle_taxt=Detax[item.subtitle_taxt]
+    %h6.title_taxt=markdown reference_section.title_taxt, no_wrapping_p: true
+    %h6.subtitle_taxt=Detax[reference_section.subtitle_taxt]
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
-    =markdown item.references_taxt, no_wrapping_p: true
+    =markdown reference_section.references_taxt, no_wrapping_p: true
 
   .taxt-editor-editor{style: 'display: none' }
-    =text_area_tag :title_taxt, item.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
-    =text_area_tag :subtitle_taxt, item.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
-    =text_area_tag :references_taxt, item.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
+    =text_area_tag :title_taxt, reference_section.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
+    =text_area_tag :subtitle_taxt, reference_section.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
+    =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }
 
     .row
       .medium-3.columns.end
