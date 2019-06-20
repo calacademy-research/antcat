@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
+  IGNORED_TRACKABLE_TYPES_FOR_UNCONFIRMED_USER_EDIT_LIMIT = %w[Feedback]
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
   has_many :activities
@@ -49,7 +50,10 @@ class User < ApplicationRecord
   end
 
   def remaining_edits_for_unconfirmed_user
-    edit_count = activities.where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).count
+    edit_count = activities.
+                   where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).
+                   where.not(trackable_type: IGNORED_TRACKABLE_TYPES_FOR_UNCONFIRMED_USER_EDIT_LIMIT).
+                   count
     raise "unconfirmed user #{id} has negative remaining edits" if edit_count > UNCONFIRMED_USER_EDIT_LIMIT_COUNT
     UNCONFIRMED_USER_EDIT_LIMIT_COUNT - edit_count
   end

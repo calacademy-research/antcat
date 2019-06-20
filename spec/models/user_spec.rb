@@ -19,6 +19,26 @@ describe User do
     specify { expect(build_stubbed(:user, :editor)).to_not be_unconfirmed }
   end
 
+  describe '#remaining_edits_for_unconfirmed_user' do
+    let!(:user) { create :user }
+
+    context 'when user has no activities' do
+      specify { expect(user.remaining_edits_for_unconfirmed_user).to eq User::UNCONFIRMED_USER_EDIT_LIMIT_COUNT }
+    end
+
+    context 'when user had recent activity' do
+      it 'counts an activity as an edit' do
+        expect { create :activity, user: user }.
+          to change { user.remaining_edits_for_unconfirmed_user }.by(-1)
+      end
+
+      it 'does not count submitted feedbacks towards the limit' do
+        expect { create :activity, user: user, trackable: create(:feedback) }.
+          to_not change { user.remaining_edits_for_unconfirmed_user }
+      end
+    end
+  end
+
   describe "#notify_because" do
     let(:user) { create :user }
     let(:notifier) { create :user }
