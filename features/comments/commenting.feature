@@ -4,11 +4,14 @@ Feature: Commenting
     And a visitor has submitted a feedback
     And I go to the most recent feedback item
 
-  Scenario: Leaving a comment
+  Scenario: Leaving a comment (with feed)
     When I write a new comment "Fixed, closing issue."
     And I press "Post Comment"
     Then I should see "Comment was successfully added"
     And I should see "Fixed, closing issue."
+
+    When I go to the activity feed
+    Then I should see "Batiatus commented on the feedback #"
 
   @javascript
   Scenario: Replying to a comment
