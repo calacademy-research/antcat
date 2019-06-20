@@ -23,5 +23,5 @@ __END__
 description: >
   This is not necessarily incorrect.
 
-tags: [new!]
+tags: []
 topic_areas: [protonyms]
