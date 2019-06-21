@@ -25,6 +25,9 @@
       =f.check_box :locked
       =f.label :locked_account
 
+      =f.check_box :deleted
+      =f.label 'Soft-deleted'
+
   .row
     .medium-6.columns.end
       =button_tag append_superadmin_icon("Save"), class: "btn-saves"

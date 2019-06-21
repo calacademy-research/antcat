@@ -37,6 +37,15 @@ describe My::RegistrationsController do
       expect(Activity.last.parameters).to eq(user_id: User.last.id)
     end
 
+    context "when the New contributors' help page exists" do
+      let!(:wiki_page) { create :wiki_page, id: 1 }
+
+      it 'redirects to it' do
+        post(:create, params: { user: user_params })
+        expect(response).to redirect_to '/wiki_pages/1'
+      end
+    end
+
     context 'when submitting unpermitted attributes' do
       let!(:with_unpermitted_params) do
         user_params.merge(helper: true, editor: true, superadmin: true)

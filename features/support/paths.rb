@@ -106,15 +106,12 @@ module NavigationHelpers
     when /^the page of the most recent history item$/
       taxon_history_item_path(TaxonHistoryItem.last)
 
-    # User
+    # Users
     when /^the user page for "([^"]*)"$/
       user = User.find_by(name: $1)
       "/users/#{user.id}"
     when /^the login page$/
       '/my/users/sign_in'
-    when /^the sign up page$/
-      '/my/users/sign_up'
-
     when /^the users page$/
       '/users'
 

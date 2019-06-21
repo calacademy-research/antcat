@@ -3,6 +3,7 @@ class User < ApplicationRecord
 
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
+  IGNORED_TRACKABLE_TYPES_FOR_UNCONFIRMED_USER_EDIT_LIMIT = %w[Feedback]
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
   has_many :activities
@@ -10,10 +11,11 @@ class User < ApplicationRecord
   has_many :notifications
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true, format: { with: /\A[^<>]*\z/ }
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }
+  scope :active, -> { where(deleted: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
@@ -49,7 +51,10 @@ class User < ApplicationRecord
   end
 
   def remaining_edits_for_unconfirmed_user
-    edit_count = activities.where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).count
+    edit_count = activities.
+                   where(created_at: UNCONFIRMED_USER_EDIT_LIMIT_PERIOD.ago..Time.current).
+                   where.not(trackable_type: IGNORED_TRACKABLE_TYPES_FOR_UNCONFIRMED_USER_EDIT_LIMIT).
+                   count
     raise "unconfirmed user #{id} has negative remaining edits" if edit_count > UNCONFIRMED_USER_EDIT_LIMIT_COUNT
     UNCONFIRMED_USER_EDIT_LIMIT_COUNT - edit_count
   end

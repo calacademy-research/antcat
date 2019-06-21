@@ -4,7 +4,6 @@ Feature: Feed (comments)
 
   Scenario: Added comment
     Given a visitor has submitted a feedback with the comment "Fix spelling"
-    And I log in as a catalog editor named "Archibald"
 
     When I go to the most recent feedback item
       And I write a new comment "Fixed."
