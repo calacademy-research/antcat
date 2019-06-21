@@ -65,8 +65,8 @@
             -current_valid_taxon_of.each do |taxon|
               %tr
                 %td.no-wrap
-                  =taxon.decorate.link_to_taxon
-                  =taxon.decorate.author_citation
+                  =taxon.link_to_taxon
+                  =taxon.author_citation
                 %td=taxon.status
                 %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                 %td
@@ -102,7 +102,7 @@
 
             -same_protonym_taxa.each do |taxon|
               %tr
-                %td.no-wrap=taxon.decorate.link_to_taxon
+                %td.no-wrap=taxon.link_to_taxon
                 %td=taxon.status
                 %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                 %td
@@ -130,8 +130,8 @@
               -valid_subspecies.each do |taxon|
                 %tr
                   %td.no-wrap
-                    =taxon.decorate.link_to_taxon
-                    =taxon.decorate.author_citation
+                    =taxon.link_to_taxon
+                    =taxon.author_citation
                   %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                   %td
                     -if taxon.history_items.exists?

@@ -1,10 +1,6 @@
 class TaxonDecorator < Draper::Decorator
   delegate_all
 
-  def link_to_taxon
-    link_to_taxon_with_label taxon.name_with_fossil
-  end
-
   def link_to_taxon_with_label label
     helpers.link_to label, helpers.catalog_path(taxon)
   end

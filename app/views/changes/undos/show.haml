@@ -12,7 +12,7 @@
       %tr
         %td
           -taxon = undo_item[:taxon]
-          =taxon.name ? taxon.decorate.link_to_taxon : taxon.name_html_cache.html_safe
+          =taxon.name ? taxon.link_to_taxon : taxon.name_html_cache.html_safe
           =undo_item[:change_type]
           by
           =undo_item[:user].decorate.user_page_link

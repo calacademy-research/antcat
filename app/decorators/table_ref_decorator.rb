@@ -26,10 +26,10 @@ class TableRefDecorator
     case table
     when "citations"           then related_citation_link
     when "protonyms"           then related_protonym_link
-    when "reference_sections"  then ReferenceSection.find(id).taxon.decorate.link_to_taxon
+    when "reference_sections"  then ReferenceSection.find(id).taxon.link_to_taxon
     when "references"          then Reference.find(id).decorate.expandable_reference
-    when "taxon_history_items" then TaxonHistoryItem.find(id).taxon.decorate.link_to_taxon
-    when "taxa"                then Taxon.find(id).decorate.link_to_taxon
+    when "taxon_history_items" then TaxonHistoryItem.find(id).taxon.link_to_taxon
+    when "taxa"                then Taxon.find(id).link_to_taxon
     else                            "#{table} ???"
     end
   end
@@ -42,10 +42,7 @@ class TableRefDecorator
 
     def related_citation_link
       citation = Citation.find(id)
-
-      citation.protonym.taxa.map do |taxon|
-        taxon.decorate.link_to_taxon
-      end.join(', ').html_safe
+      citation.protonym.taxa.map(&:link_to_taxon).join(', ').html_safe
     end
 
     def related_protonym_link

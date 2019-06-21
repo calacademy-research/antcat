@@ -105,6 +105,14 @@ describe Taxon do
     end
   end
 
+  describe "#link_to_taxon" do
+    let!(:taxon) { build_stubbed :subfamily }
+
+    specify do
+      expect(taxon.link_to_taxon).to eq %(<a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>)
+    end
+  end
+
   describe "#author_citation" do
     context "when a recombination in a different genus" do
       let(:species) { create_species 'Atta minor' }
