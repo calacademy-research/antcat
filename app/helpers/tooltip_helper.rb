@@ -9,10 +9,10 @@ module TooltipHelper
     tooltip = Tooltip.find_by(key: key, scope: scope)
 
     return new_db_tooltip(key, scope) unless tooltip
-    link_to tooltip_help_icon(tooltip.text), tooltip
+    link_to tooltip_icon(tooltip.text), tooltip
   end
 
-  def tooltip_help_icon text
+  def tooltip_icon text
     content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
   end
 
@@ -20,6 +20,6 @@ module TooltipHelper
 
     def new_db_tooltip key, scope
       text = "Could not find tooltip with key '#{key}' with page scope '#{scope}'. Click icon to create."
-      link_to tooltip_help_icon(text), new_tooltip_path(key: key, scope: scope)
+      link_to tooltip_icon(text), new_tooltip_path(key: key, scope: scope)
     end
 end
