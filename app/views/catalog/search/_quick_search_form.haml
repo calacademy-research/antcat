@@ -1,7 +1,7 @@
 =form_tag catalog_quick_search_path, method: :get do
   .row
     .medium-3.columns
-      =search_type_selector params[:search_type]
+      =select_tag :search_type, options_for_select([['Matching', 'matching'], ['Beginning with', 'beginning_with'], ['Containing', 'containing']], params[:search_type] || "beginning_with")
     .medium-3.columns.end
       =text_field_tag "qq", params[:qq], class: "input-group-field"
 

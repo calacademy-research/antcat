@@ -38,46 +38,6 @@ crumb :search_reference_sections do
   parent :catalog
 end
 
-crumb :taxon_history_items do |taxon|
-  link "History Items"
-  parent taxon
-end
-
-  crumb :taxon_history_item do |taxon_history_item|
-    link "##{taxon_history_item.id}", taxon_history_item
-    parent :taxon_history_items, taxon_history_item.taxon
-  end
-
-  crumb :new_taxon_history_item do |taxon_history_item|
-    link "New"
-    parent :taxon_history_items, taxon_history_item.taxon
-  end
-
-  crumb :edit_taxon_history_item do |taxon_history_item|
-    link "Edit"
-    parent :taxon_history_item, taxon_history_item
-  end
-
-crumb :reference_sections do |taxon|
-  link "Reference Sections"
-  parent taxon
-end
-
-  crumb :reference_section do |reference_section|
-    link "##{reference_section.id}", reference_section
-    parent :reference_sections, reference_section.taxon
-  end
-
-  crumb :new_reference_section do |reference_section|
-    link "New"
-    parent :reference_sections, reference_section.taxon
-  end
-
-  crumb :edit_reference_section do |reference_section|
-    link "Edit"
-    parent :reference_section, reference_section
-  end
-
 crumb :create_combination do |taxon|
   link "Create combination help"
   parent :edit_taxon, taxon

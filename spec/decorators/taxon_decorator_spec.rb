@@ -4,14 +4,6 @@ describe TaxonDecorator do
   let(:taxon) { build_stubbed :family }
   let(:decorated) { taxon.decorate }
 
-  describe "#link_to_taxon" do
-    specify do
-      expect(decorated.link_to_taxon).to eq <<~HTML.squish
-        <a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>
-      HTML
-    end
-  end
-
   describe "#id_and_name_and_author_citation" do
     specify do
       expect(decorated.id_and_name_and_author_citation).to eq <<~HTML.squish

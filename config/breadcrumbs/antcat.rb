@@ -1,4 +1,3 @@
-# rubocop:disable Layout/IndentationConsistency
 crumb :antcat do
   link "AntCat", root_path
 end
@@ -12,31 +11,6 @@ crumb :contribute do
   link "Contribute", page_path('contribute')
   parent :antcat
 end
-
-crumb :users do
-  link "Users", users_path
-  parent :antcat
-end
-
-  crumb :user do |user|
-    link user.name, user_path(user)
-    parent :users
-  end
-
-    crumb :superadmin_edit_user do |user|
-      link "Edit as Superadmin"
-      parent :user, user
-    end
-
-    crumb :edit_my_details do |user|
-      link "Edit My Details"
-      parent :user, user
-    end
-
-  crumb :new_user do
-    link "New"
-    parent :users
-  end
 
 crumb :sign_up do
   link "Sign Up"
@@ -57,4 +31,3 @@ crumb :change_password do
   link "Change Password"
   parent :antcat
 end
-# rubocop:enable Layout/IndentationConsistency

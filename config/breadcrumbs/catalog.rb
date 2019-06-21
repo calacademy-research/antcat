@@ -40,49 +40,4 @@ crumb :catalog_search do
   link "Search"
   parent :catalog
 end
-
-crumb :protonyms do
-  link "Protonyms", protonyms_path
-  parent :catalog
-end
-
-  crumb :protonym do |protonym|
-    link protonym.decorate.format_name, protonym_path(protonym)
-    parent :protonyms
-  end
-
-    crumb :edit_protonym do |protonym|
-      link 'Edit', edit_protonym_path(protonym)
-      parent :protonym, protonym
-    end
-
-    crumb :protonym_history do |protonym|
-      link "History"
-      parent :protonym, protonym
-    end
-
-  crumb :new_protonym do
-    link "New"
-    parent :protonyms
-  end
-
-crumb :names do
-  link "Names records"
-  parent :catalog
-end
-
-  crumb :name do |name|
-    link "#{name.name_html} (##{name.id})".html_safe, name_path(name)
-    parent :names
-  end
-
-  crumb :edit_name do |name|
-    link "Edit"
-    parent :name, name
-  end
-
-  crumb :name_history do |name|
-    link "History"
-    parent :name, name
-  end
 # rubocop:enable Layout/IndentationConsistency

@@ -77,7 +77,7 @@ module DatabaseScripts
 
       def link_taxon taxon
         return unless taxon
-        taxon.decorate.link_to_taxon
+        taxon.link_to_taxon
       end
   end
 end

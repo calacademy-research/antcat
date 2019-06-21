@@ -1,17 +1,17 @@
 Feature: Logging in
-  Background:
+  Scenario: Logging and returning to previous page
     Given this user exists
       | email              | name     | password |
       | quintus@antcat.org | Batiatus | secret   |
 
-  Scenario: Logging in successfully from the login page
-    When I go to the login page
+    When I go to the references page
     Then I should not see "Logout"
 
-    When I fill in "user_email" with "quintus@antcat.org"
+    When I follow the first "Login"
+    And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "secret"
     And I press "Login"
-    Then I should be on the main page
+    Then I should be on the references page
     And I should see "Logout"
 
   Scenario: Logging in unsuccessfully
@@ -22,10 +22,15 @@ Feature: Logging in
     And I press "Login"
     Then I should be on the login page
 
-  Scenario: Returning to previous page
-    When I go to the references page
+  Scenario: Logging with a locked account
+    Given this user exists
+      | email              | name     | password | locked |
+      | quintus@antcat.org | Batiatus | secret   | true   |
+
+    When I go to the main page
     And I follow the first "Login"
     And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "secret"
     And I press "Login"
-    Then I should be on the references page
+    Then I should be on the login page
+    And I should see "Your account has not been activated yet, or it been deactivated"

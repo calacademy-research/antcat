@@ -14,8 +14,6 @@ class Author < ApplicationRecord
   end
 
   def merge authors_to_merge
-    new_names_string = authors_to_merge.map { |author| author.names.map(&:name) }.flatten.join(", ")
-
     transaction do
       authors_to_merge.each do |author|
         author.names.each do |name|
@@ -25,8 +23,6 @@ class Author < ApplicationRecord
         author.reload.destroy
       end
     end
-
-    create_activity :merge_authors, parameters: { names: new_names_string }
   end
 
   # NOTE that "first" doesn't mean "primary", or "most correct", it

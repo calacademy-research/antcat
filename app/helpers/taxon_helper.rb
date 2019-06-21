@@ -2,7 +2,7 @@ module TaxonHelper
   def taxon_link_or_deleted_string id, deleted_label = nil
     taxon = Taxon.find_by(id: id)
     if taxon
-      taxon.decorate.link_to_taxon
+      taxon.link_to_taxon
     else
       deleted_label || "##{id} [deleted]"
     end

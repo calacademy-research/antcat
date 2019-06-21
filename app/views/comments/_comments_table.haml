@@ -1,14 +1,7 @@
--include_head ||= false
-
 -if comments.empty?
   No comments.
 -else
   %table.stack
-    -if include_head
-      %thead
-        %tr
-          %th What
-          %th When
     -comments.each do |comment|
       %tbody
         %tr

@@ -8,8 +8,8 @@
       =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
 
     -if current_user
-      =link_to "History", reference_history_index_path(@reference), class: "btn-normal"
-      =link_to "What Links Here", reference_what_links_here_index_path(@reference), class: "btn-normal"
+      =link_to "History", reference_history_path(@reference), class: "btn-normal"
+      =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
       =set_as_default_reference_button @reference
       =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
 

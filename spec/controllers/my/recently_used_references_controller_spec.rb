@@ -1,18 +1,18 @@
 require 'spec_helper'
 
 describe My::RecentlyUsedReferencesController do
-  describe "GET index" do
+  describe "GET show" do
     let(:recently_used_references) { [] }
 
     it "calls `Autocomplete::FormatLinkableReferences`" do
       expect(Autocomplete::FormatLinkableReferences).
         to receive(:new).with(recently_used_references).and_call_original
-      get :index
+      get :show
     end
 
     context 'when user has no recently used references' do
       it 'returns an empty JSON array' do
-        get :index
+        get :show
         expect(json_response).to eq []
       end
     end
@@ -25,7 +25,7 @@ describe My::RecentlyUsedReferencesController do
       end
 
       it 'returns the references as a JSON array' do
-        get :index
+        get :show
         expect(json_response).to eq(
           [
             {

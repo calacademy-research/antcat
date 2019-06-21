@@ -1,10 +1,15 @@
--@title = "Reference Section ##{@comparer.most_recent.id}"
--breadcrumb :reference_section, @comparer.most_recent
+-@title = "Reference Section ##{@reference_section.id}"
+-breadcrumb :reference_section, @reference_section
 
 -content_for :application do
   =content_for :breadcrumbs_right do
-    -if user_is_at_least_helper? && @comparer.most_recent.persisted?
-      =link_to "Edit", edit_reference_section_path(@comparer.most_recent), class: "btn-normal"
-    =activities_link_for_trackable @comparer.most_recent
+    -if user_is_at_least_helper?
+      =link_to "Edit", edit_reference_section_path(@reference_section), class: "btn-normal"
+    =link_to "History", reference_section_history_path(@reference_section), class: "btn-normal"
+    =activities_link_for_trackable @reference_section
 
-=render file: "compare_revisions/show", locals: { comparer: @comparer }
+-[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+  -if @reference_section[field].present?
+    %h6=field.to_s
+    %p
+      =Detax[@reference_section[field]]

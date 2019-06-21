@@ -14,7 +14,7 @@ module DatabaseScripts
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            species_record.decorate.link_to_taxon,
+            species_record.link_to_taxon,
             (taxon.history_items.any? ? 'Yes' : '-'),
             ('Yes: ' + what_links_here_link(taxon) if taxon.what_links_here(predicate: true))
           ]

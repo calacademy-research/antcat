@@ -14,14 +14,14 @@ describe TableRefDecorator do
 
     specify { expect(decorated.item_link).to eq id }
     specify do
-      expect(decorated.related_links).to eq taxon.decorate.link_to_taxon
+      expect(decorated.related_links).to eq taxon.link_to_taxon
     end
 
     context 'when citation has a protonym that has many taxa' do
       let!(:second_taxon) { create :family, protonym: protonym }
 
       specify do
-        expected = taxon.decorate.link_to_taxon << ", " << second_taxon.decorate.link_to_taxon
+        expected = taxon.link_to_taxon << ", " << second_taxon.link_to_taxon
         expect(decorated.related_links).to eq expected
       end
     end
@@ -42,7 +42,7 @@ describe TableRefDecorator do
     let!(:taxon) { object.taxon }
 
     specify { expect(decorated.item_link).to eq %(<a href="/reference_sections/#{id}">#{id}</a>) }
-    specify { expect(decorated.related_links).to eq taxon.decorate.link_to_taxon }
+    specify { expect(decorated.related_links).to eq taxon.link_to_taxon }
   end
 
   context "when table is `references`" do
@@ -60,7 +60,7 @@ describe TableRefDecorator do
     let!(:taxon) { object }
 
     specify { expect(decorated.item_link).to eq %(<a href="/catalog/#{id}">#{id}</a>) }
-    specify { expect(decorated.related_links).to eq taxon.decorate.link_to_taxon }
+    specify { expect(decorated.related_links).to eq taxon.link_to_taxon }
   end
 
   context "when table is `taxon_history_items`" do
@@ -69,6 +69,6 @@ describe TableRefDecorator do
     let!(:taxon) { object.taxon }
 
     specify { expect(decorated.item_link).to eq %(<a href="/taxon_history_items/#{id}">#{id}</a>) }
-    specify { expect(decorated.related_links).to eq taxon.decorate.link_to_taxon }
+    specify { expect(decorated.related_links).to eq taxon.link_to_taxon }
   end
 end

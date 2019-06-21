@@ -1,6 +1,11 @@
 -@title = "Add Taxon"
 -breadcrumb :new_taxon, params[:parent_id], params[:rank_to_create]
 
+-content_for :head do
+  =javascript_include_tag 'reference_select'
+  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
+  =javascript_include_tag 'check_name_conflicts'
+
 -@default_name_string = default_name_string @taxon
 
 =render 'form'

@@ -1,4 +1,4 @@
-Feature: User page
+Feature: Browse
   Background:
     Given I log in as a catalog editor named "Batiatus"
 

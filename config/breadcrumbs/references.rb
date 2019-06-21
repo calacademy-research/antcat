@@ -8,29 +8,29 @@ end
     parent :references
   end
 
+    crumb :edit_reference do |reference|
+      link "Edit"
+      parent :reference, reference
+    end
+
+    crumb :reference_history do |reference|
+      link "History"
+      parent :reference, reference
+    end
+
+    crumb :reference_what_links_here do |reference|
+      link "What Links Here"
+      parent :reference, reference
+    end
+
+    crumb :replace_missing_reference do |reference|
+      link "Replace"
+      parent :reference, reference
+    end
+
   crumb :new_reference do
     link "New"
     parent :references
-  end
-
-  crumb :edit_reference do |reference|
-    link "Edit"
-    parent :reference, reference
-  end
-
-  crumb :reference_history do |reference|
-    link "History"
-    parent :reference, reference
-  end
-
-  crumb :reference_what_links_here do |reference|
-    link "What Links Here"
-    parent :reference, reference
-  end
-
-  crumb :replace_missing_reference do |reference|
-    link "Replace"
-    parent :reference, reference
   end
 
 crumb :references_search_results do
@@ -57,44 +57,4 @@ crumb :references_latest_changes do
   link "Latest Changes", references_latest_changes_path
   parent :references
 end
-
-crumb :journals do
-  link "Journals", journals_path
-  parent :references
-end
-
-  crumb :journal do |journal|
-    link italicize(journal.name), journal_path(journal)
-    parent :journals
-  end
-
-    crumb :edit_journal do |journal|
-      link "Edit"
-      parent :journal, journal
-    end
-
-crumb :authors do
-  link "Authors", authors_path
-  parent :references
-end
-
-  crumb :author do |author|
-    link author.first_author_name_name, author
-    parent :authors
-  end
-
-    crumb :new_author_name do |author|
-      link "Add author name"
-      parent :author, author
-    end
-
-    crumb :edit_author_name do |author_name|
-      link "Edit author name"
-      parent :author, author_name.author
-    end
-
-  crumb :merge_authors do
-    link "Merge Authors"
-    parent :authors
-  end
 # rubocop:enable Layout/IndentationConsistency

@@ -1,7 +1,7 @@
 class TaxonHistoryItemsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
   before_action :ensure_user_is_editor, only: [:destroy]
-  before_action :set_taxon_history_item, only: [:edit, :update, :destroy]
+  before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
     @taxon_history_items = TaxonHistoryItem.all
@@ -10,8 +10,6 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def show
-    @comparer = TaxonHistoryItem.revision_comparer_for params[:id],
-      params[:selected_id], params[:diff_with_id]
   end
 
   def new

@@ -39,8 +39,8 @@ Rails.application.routes.draw do
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
-  get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
-  get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
+  get 'catalog/:id/history' => 'catalog/histories#show', as: :taxon_history
+  get 'catalog/:id/what_links_here' => 'catalog/what_links_heres#show', as: :taxon_what_links_here
 
   get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
 
@@ -63,8 +63,8 @@ Rails.application.routes.draw do
     end
 
     scope module: :references do
-      resources :history, only: :index
-      resources :what_links_here, only: :index
+      resource :history, only: :show
+      resource :what_links_here, only: :show
 
       member do
         scope :reviews, controller: :reviews, as: :reviewing do
@@ -104,7 +104,7 @@ Rails.application.routes.draw do
       get :autocomplete
     end
     scope module: :protonyms do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
   scope module: :protonyms do
@@ -131,7 +131,7 @@ Rails.application.routes.draw do
   get 'names/check_name_conflicts' => 'names/check_name_conflicts#show'
   resources :names, only: [:show, :edit, :update, :destroy] do
     scope module: :names do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
 
@@ -198,18 +198,26 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy]
-  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
+  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy] do
+    scope module: :taxon_history_items do
+      resource :history, only: :show
+    end
+  end
+  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy] do
+    scope module: :reference_sections do
+      resource :history, only: :show
+    end
+  end
 
   resources :tooltips do
     scope module: :tooltips do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
 
   resources :issues, except: :destroy do
     scope module: :issues do
-      resources :history, only: :index
+      resource :history, only: :show
     end
     member do
       put :close
@@ -233,7 +241,7 @@ Rails.application.routes.draw do
   resources :database_scripts, only: [:index, :show]
 
   namespace :my do
-    resources :recently_used_references, only: [:index, :create]
+    resource :recently_used_references, only: [:show, :create]
     resource :default_reference, only: :update, controller: :default_reference
   end
 

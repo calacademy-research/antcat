@@ -2,7 +2,7 @@
 -breadcrumb :protonym, @protonym
 
 =content_for :breadcrumbs_right do
-  =link_to "History", protonym_history_index_path(@protonym), class: "btn-normal"
+  =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?

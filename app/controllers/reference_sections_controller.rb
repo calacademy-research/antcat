@@ -1,7 +1,7 @@
 class ReferenceSectionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
   before_action :ensure_user_is_editor, only: [:destroy]
-  before_action :set_reference_section, only: [:edit, :update, :destroy]
+  before_action :set_reference_section, only: [:show, :edit, :update, :destroy]
 
   def index
     @reference_sections = ReferenceSection.all
@@ -10,8 +10,6 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def show
-    @comparer = ReferenceSection.revision_comparer_for params[:id],
-      params[:selected_id], params[:diff_with_id]
   end
 
   def new

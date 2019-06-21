@@ -59,11 +59,13 @@ class FeedbackController < ApplicationController
 
   def close
     @feedback.close
+    @feedback.create_activity :close_feedback
     redirect_to @feedback, notice: "Successfully closed feedback item."
   end
 
   def reopen
     @feedback.reopen
+    @feedback.create_activity :reopen_feedback
     redirect_to @feedback, notice: "Successfully re-opened feedback item."
   end
 

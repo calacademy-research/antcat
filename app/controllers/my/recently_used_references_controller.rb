@@ -2,7 +2,7 @@ module My
   class RecentlyUsedReferencesController < ApplicationController
     NUMBER_OF_RECENT_REFERENCES = 15
 
-    def index
+    def show
       render json: Autocomplete::FormatLinkableReferences[recently_used_references]
     end
 

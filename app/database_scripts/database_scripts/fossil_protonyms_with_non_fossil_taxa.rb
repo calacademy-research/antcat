@@ -10,7 +10,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             link_to(protonym.decorate.format_name, protonym_path(protonym)),
-            protonym.taxa.map { |taxon| taxon.decorate.link_to_taxon }.join('<br>')
+            protonym.taxa.map(&:link_to_taxon).join('<br>')
           ]
         end
       end
