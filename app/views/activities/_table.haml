@@ -1,18 +1,10 @@
 -show_delete_button ||= false
--include_head ||= false
 -page ||= nil
 
 -if activities.empty?
   No activities.
 -else
   %table.activities.stack
-    -if include_head
-      %thead
-        %tr
-          %th
-          %th What
-          %th
-          %th When
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
