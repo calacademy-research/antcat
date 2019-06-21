@@ -56,7 +56,7 @@
             %td
               =name_form.label :name do
                 Name
-                =tooltip_icon "protonym", scope: :taxa
+                =db_tooltip_icon "protonym", scope: :taxa
             %td
               =text_field_tag :protonym_name_string, (taxon.protonym.name.name || default_name_string), style: "display: inline-block"
               %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny{style: "margin-left: 1rem"} Same as name (copy)
@@ -74,21 +74,21 @@
             =protonym_form.check_box :sic
             =form.label :sic do
               Sic
-              =tooltip_icon "sic", scope: :taxa
+              =db_tooltip_icon "sic", scope: :taxa
 
         =protonym_form.fields_for :authorship do |authorship_form|
           %tr
             %td
               =authorship_form.label :reference do
                 Authorship
-                =tooltip_icon "authorship", scope: :taxa
+                =db_tooltip_icon "authorship", scope: :taxa
             %td=authorship_form.reference_select :reference
 
           %tr
             %td
               =authorship_form.label :pages do
                 Pages
-                =tooltip_icon "pages", scope: :taxa
+                =db_tooltip_icon "pages", scope: :taxa
             %td=authorship_form.text_field :pages
 
           -unless taxon.is_a? Tribe
@@ -96,21 +96,21 @@
               %td
                 =authorship_form.label :forms do
                   Forms
-                  =tooltip_icon "forms", scope: :taxa
+                  =db_tooltip_icon "forms", scope: :taxa
               %td=authorship_form.text_field :forms
 
           %tr
             %td
               =protonym_form.label :biogeographic_region do
                 Biogeographic region
-                =tooltip_icon "type.biogeographic_region", scope: :taxa
+                =db_tooltip_icon "type.biogeographic_region", scope: :taxa
             %td=protonym_form.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, taxon.protonym.biogeographic_region), include_blank: true
 
             %tr
               %td
                 =protonym_form.label :locality do
                   Locality
-                  =tooltip_icon "locality", scope: :taxa
+                  =db_tooltip_icon "locality", scope: :taxa
               %td=protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
 
           %tr

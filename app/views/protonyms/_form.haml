@@ -47,42 +47,42 @@
         =f.check_box :sic
         =f.label :sic do
           Sic
-          =tooltip_icon "sic", scope: :taxa
+          =db_tooltip_icon "sic", scope: :taxa
 
     =f.fields_for :authorship do |authorship_fields|
       %tr
         %td
           =authorship_fields.label :reference do
             Authorship
-            =tooltip_icon "authorship", scope: :taxa
+            =db_tooltip_icon "authorship", scope: :taxa
         %td=authorship_fields.reference_select :reference
 
       %tr
         %td
           =authorship_fields.label :pages do
             Pages
-            =tooltip_icon "pages", scope: :taxa
+            =db_tooltip_icon "pages", scope: :taxa
         %td=authorship_fields.text_field :pages
 
       %tr
         %td
           =authorship_fields.label :forms do
             Forms
-            =tooltip_icon "forms", scope: :taxa
+            =db_tooltip_icon "forms", scope: :taxa
         %td=authorship_fields.text_field :forms
 
     %tr
       %td
         =f.label :biogeographic_region do
           Biogeographic region
-          =tooltip_icon "type.biogeographic_region", scope: :taxa
+          =db_tooltip_icon "type.biogeographic_region", scope: :taxa
       %td=f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, protonym.biogeographic_region), include_blank: true
 
     %tr
       %td
         =f.label :locality do
           Locality
-          =tooltip_icon "locality", scope: :taxa
+          =db_tooltip_icon "locality", scope: :taxa
       %td=f.text_field :locality, class: 'locality-autocomplete-js-hook'
 
     %tr

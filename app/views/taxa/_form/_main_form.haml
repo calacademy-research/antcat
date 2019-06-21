@@ -4,7 +4,7 @@
       %td
         =name_form.label :name do
           Name
-          =tooltip_icon "name", scope: :taxa
+          =db_tooltip_icon "name", scope: :taxa
       %td
         -if taxon.name.persisted?
           =taxon.name.name_html
@@ -72,7 +72,7 @@
       =form.check_box :fossil
       =form.label :fossil do
         Fossil
-        =tooltip_icon "fossil", scope: :taxa
+        =db_tooltip_icon "fossil", scope: :taxa
 
       =form.check_box :nomen_nudum
       =form.label :nomen_nudum
@@ -89,7 +89,7 @@
       =form.check_box :hong
       =form.label :hong do
         Hong
-        =tooltip_icon "hong", scope: :taxa
+        =db_tooltip_icon "hong", scope: :taxa
 
   %tr
     %td=form.label :headline_notes_taxt, 'Notes'

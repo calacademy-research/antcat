@@ -6,7 +6,7 @@
         %td
           =form.label :type_name do
             Type name
-            =tooltip_icon "type.type_taxon", scope: :taxa
+            =db_tooltip_icon "type.type_taxon", scope: :taxa
         %td=form.taxon_select :type_taxon
       %tr
         %td=form.label :type_taxt, 'Notes'
