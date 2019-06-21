@@ -11,7 +11,6 @@
         %tr
           %th
           %th What
-          %th Edit&nbsp;summary
           %th
           %th When
     %tbody
@@ -25,7 +24,11 @@
             -# Don't show user who created other users' accounts.
             =decorated.link_user unless activity.trackable_type == 'User'
             =decorated.did_something
-          %td=markdown activity.edit_summary, no_wrapping_p: true
+            -if activity.edit_summary.present?
+              %div
+                %small
+                  Edit summary:
+                  =markdown activity.edit_summary, no_wrapping_p: true
           %td=decorated.revision_history_link
           %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
