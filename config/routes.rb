@@ -63,7 +63,7 @@ Rails.application.routes.draw do
     end
 
     scope module: :references do
-      resources :history, only: :index
+      resource :history, only: :show
       resources :what_links_here, only: :index
 
       member do
@@ -104,7 +104,7 @@ Rails.application.routes.draw do
       get :autocomplete
     end
     scope module: :protonyms do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
   scope module: :protonyms do
@@ -131,7 +131,7 @@ Rails.application.routes.draw do
   get 'names/check_name_conflicts' => 'names/check_name_conflicts#show'
   resources :names, only: [:show, :edit, :update, :destroy] do
     scope module: :names do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
 
@@ -203,13 +203,13 @@ Rails.application.routes.draw do
 
   resources :tooltips do
     scope module: :tooltips do
-      resources :history, only: :index
+      resource :history, only: :show
     end
   end
 
   resources :issues, except: :destroy do
     scope module: :issues do
-      resources :history, only: :index
+      resource :history, only: :show
     end
     member do
       put :close

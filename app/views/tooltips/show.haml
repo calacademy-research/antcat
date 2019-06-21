@@ -4,7 +4,7 @@
 -breadcrumb :tooltip, @tooltip
 
 =content_for :breadcrumbs_right do
-  =link_to "History", tooltip_history_index_path(@tooltip), class: "btn-normal"
+  =link_to "History", tooltip_history_path(@tooltip), class: "btn-normal"
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Delete"), @tooltip, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 

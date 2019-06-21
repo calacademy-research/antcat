@@ -8,7 +8,7 @@
     =link_to "Edit", edit_name_path(@name), class: "btn-normal"
     -if @name.orphaned?
       =link_to "Delete", name_path(@name), method: :delete, class: "btn-warning", data: { confirm: "Are you sure?" }
-  =link_to "History", name_history_index_path(@name), class: "btn-normal"
+  =link_to "History", name_history_path(@name), class: "btn-normal"
 
 .row.margin-bottom
   .small-12.columns
