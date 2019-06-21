@@ -125,7 +125,8 @@ describe Taxa::CallbacksAndValidations do
         Status::VALID,
         Status::UNIDENTIFIABLE,
         Status::UNAVAILABLE,
-        Status::EXCLUDED_FROM_FORMICIDAE
+        Status::EXCLUDED_FROM_FORMICIDAE,
+        Status::HOMONYM
       ].each do |status|
         context "when status is #{status}" do
           let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
