@@ -18,14 +18,3 @@ Feature: Editing journals
 
     When I go to the activity feed
     Then I should see "Archibald edited the journal Science (changed journal name from Psyche)" and no other feed items
-
-  Scenario: Deleting an unused journal
-    When I follow "Delete"
-    Then I should see "Journal was successfully deleted"
-
-    When I go to the references page
-    And I follow "Journals"
-    Then I should not see "Psyche"
-
-    When I go to the activity feed
-    Then I should see "Archibald deleted the journal Psyche" and no other feed items

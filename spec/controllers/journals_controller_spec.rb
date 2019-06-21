@@ -11,6 +11,25 @@ describe JournalsController do
     end
   end
 
+  describe "DELETE destroy" do
+    let!(:journal) { create :journal }
+
+    before { sign_in create(:user, :helper) }
+
+    it 'deletes the journal' do
+      expect { delete(:destroy, params: { id: journal.id }) }.to change { Journal.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      expect { delete(:destroy, params: { id: journal.id }) }.
+        to change { Activity.where(action: :destroy, trackable: journal).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.trackable_id).to eq journal.id
+      expect(activity.parameters).to eq(name: journal.name, name_was: nil)
+    end
+  end
+
   describe "GET autocomplete" do
     let(:term) { "zootaxa" }
 
