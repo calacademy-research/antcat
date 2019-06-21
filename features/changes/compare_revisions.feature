@@ -55,6 +55,7 @@ Feature: Compare revisions
     Given there is a reference section with the references_taxt "test"
 
     When I go to the page of the most recent reference section
+    And I follow "History"
     Then I should see "This item does not have any previous revisions"
 
   @javascript

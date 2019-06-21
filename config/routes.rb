@@ -203,7 +203,11 @@ Rails.application.routes.draw do
       resource :history, only: :show
     end
   end
-  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
+  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy] do
+    scope module: :reference_sections do
+      resource :history, only: :show
+    end
+  end
 
   resources :tooltips do
     scope module: :tooltips do

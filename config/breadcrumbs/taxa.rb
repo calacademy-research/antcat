@@ -83,6 +83,11 @@ end
     parent :reference_section, reference_section
   end
 
+  crumb :reference_section_history do |reference_section|
+    link "History"
+    parent :reference_section, reference_section
+  end
+
 crumb :create_combination do |taxon|
   link "Create combination help"
   parent :edit_taxon, taxon
