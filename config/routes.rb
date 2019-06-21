@@ -64,7 +64,7 @@ Rails.application.routes.draw do
 
     scope module: :references do
       resource :history, only: :show
-      resources :what_links_here, only: :index
+      resource :what_links_here, only: :show
 
       member do
         scope :reviews, controller: :reviews, as: :reviewing do
