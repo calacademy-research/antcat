@@ -5,7 +5,13 @@ module DatabaseScripts
       as_current_valid_taxon = Taxon.where(current_valid_taxon: collective_group_names)
       as_species = Taxon.where(genus_id: collective_group_names)
 
-      Taxon.where(id: collective_group_names + as_current_valid_taxon + as_species)
+      boolean_collective_group_names = Taxon.where(collective_group_name: true)
+      boolean_as_current_valid_taxon = Taxon.where(current_valid_taxon: boolean_collective_group_names)
+      boolean_as_species = Taxon.where(genus_id: boolean_collective_group_names)
+
+      Taxon.where(
+        id: collective_group_names + as_current_valid_taxon + as_species + boolean_collective_group_names + boolean_as_current_valid_taxon + boolean_as_species
+      )
     end
 
     def render
