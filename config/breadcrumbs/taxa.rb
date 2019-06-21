@@ -58,6 +58,11 @@ end
     parent :taxon_history_item, taxon_history_item
   end
 
+  crumb :taxon_history_item_history do |taxon_history_item|
+    link "History"
+    parent :taxon_history_item, taxon_history_item
+  end
+
 crumb :reference_sections do |taxon|
   link "Reference Sections"
   parent taxon

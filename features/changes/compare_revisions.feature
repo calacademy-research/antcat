@@ -18,6 +18,7 @@ Feature: Compare revisions
     And I wait
     And I go to the activity feed
     And I follow the first linked history item
+    And I follow "History"
     Then I should see "This item does not have any previous revisions"
 
     # Edited.
@@ -25,6 +26,7 @@ Feature: Compare revisions
     And I update the history item to say "second revision content"
     And I go to the activity feed
     And I follow the first linked history item
+    And I follow "History"
     Then I should see "Current version"
     And I should see "second revision content"
     And I should not see "initial content"
@@ -41,7 +43,7 @@ Feature: Compare revisions
     Then I should be on the edit page for "Atta"
 
     When I go to the activity feed
-    And I follow the first linked history item
+    And I follow the first "History"
     Then I should see "Version before item was deleted"
     And I should see "second revision content"
 
@@ -65,6 +67,7 @@ Feature: Compare revisions
 
     When I go to the activity feed
     And I follow the first linked history item
+    And I follow "History"
     And I press "Compare selected revisions"
     Then I should see "second version" in the left side of the diff
     And I should see "last version" in the right side of the diff

@@ -65,7 +65,7 @@
           %span.show-on-hover
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-            =link_to "History", history_item, class: "btn-normal btn-very-tiny"
+            =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms.exists?
   %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}

@@ -198,7 +198,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy]
+  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy] do
+    scope module: :taxon_history_items do
+      resource :history, only: :show
+    end
+  end
   resources :reference_sections, only: [:index, :show, :edit, :update, :destroy]
 
   resources :tooltips do
