@@ -43,5 +43,6 @@
 -unless @taxon.new_record?
   .not-really-taxon-form
     =render 'taxa/_not_really_form/history_items_section', taxon: @taxon
+    =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
     =render 'taxa/_not_really_form/children_section', taxon: @taxon, max_number: 50
     =render 'taxa/_not_really_form/references_section', taxon: @taxon
