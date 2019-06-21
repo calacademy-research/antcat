@@ -15,24 +15,24 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def new
-    @item = ReferenceSection.new(taxon_id: params[:taxa_id])
+    @reference_section = ReferenceSection.new(taxon_id: params[:taxa_id])
   end
 
   def edit
   end
 
   def update
-    updated = @item.update(reference_section_params)
+    updated = @reference_section.update(reference_section_params)
 
     if updated
-      @item.create_activity :update, edit_summary: params[:edit_summary]
+      @reference_section.create_activity :update, edit_summary: params[:edit_summary]
     end
 
     respond_to do |format|
-      format.json { render_json @item }
+      format.json { render_json @reference_section }
       format.html do
         if updated
-          redirect_to catalog_path(@item.taxon), notice: "Successfully updated reference section."
+          redirect_to catalog_path(@reference_section.taxon), notice: "Successfully updated reference section."
         else
           render :edit
         end
@@ -41,20 +41,20 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def create
-    @item = ReferenceSection.new(reference_section_params)
-    @item.taxon_id = params[:taxa_id]
+    @reference_section = ReferenceSection.new(reference_section_params)
+    @reference_section.taxon_id = params[:taxa_id]
 
-    if @item.save
-      @item.create_activity :create, edit_summary: params[:edit_summary]
-      redirect_to edit_taxa_path(@item.taxon), notice: "Successfully added reference section."
+    if @reference_section.save
+      @reference_section.create_activity :create, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@reference_section.taxon), notice: "Successfully added reference section."
     else
       render :new
     end
   end
 
   def destroy
-    @item.destroy
-    @item.create_activity :destroy, edit_summary: params[:edit_summary]
+    @reference_section.destroy
+    @reference_section.create_activity :destroy, edit_summary: params[:edit_summary]
 
     render json: { success: true }
   end
@@ -62,7 +62,7 @@ class ReferenceSectionsController < ApplicationController
   private
 
     def set_reference_section
-      @item = ReferenceSection.find(params[:id])
+      @reference_section = ReferenceSection.find(params[:id])
     end
 
     def search_params
@@ -73,10 +73,10 @@ class ReferenceSectionsController < ApplicationController
       params.require(:reference_section).permit(:title_taxt, :subtitle_taxt, :references_taxt)
     end
 
-    def render_json item
+    def render_json reference_section
       render json: {
-        content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { item: item }),
-        error: item.errors.full_messages.to_sentence
+        content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { reference_section: reference_section }),
+        error: reference_section.errors.full_messages.to_sentence
       }
     end
 end

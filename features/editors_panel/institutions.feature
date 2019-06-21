@@ -1,8 +1,8 @@
 Feature: Institutions
   Background:
+  Scenario: Adding an institution (with feed)
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Adding an institution (with feed)
     When I go to the Editor's Panel
     And I follow "Edit institutions"
     Then I should not see "CASC"
@@ -25,6 +25,7 @@ Feature: Institutions
 
   Scenario: Editing an institution (with feed)
     Given there is an institution "CASC" ("California Academy of Sciences")
+    And I log in as a catalog editor named "Archibald"
 
     When I go to the institutions page
     And I follow "CASC"

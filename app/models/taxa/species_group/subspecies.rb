@@ -23,7 +23,6 @@ class Subspecies < SpeciesGroupTaxon
     self.parent = new_parent
   end
 
-  # TODO remove?
   def children
     Subspecies.none
   end

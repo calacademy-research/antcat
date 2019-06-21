@@ -1,5 +1,7 @@
 module My
   class RegistrationsController < Devise::RegistrationsController
+    NEW_CONTRIBUTORS_HELP_PAGE_WIKI_PAGE_ID = 1
+
     before_action :check_if_too_many_registrations_today, only: :create
 
     # TODO: Revisit.
@@ -31,9 +33,12 @@ module My
         resource.update(params)
       end
 
-      # TODO: Create welcome page for new contributors.
       def after_sign_up_path_for _resource
-        root_path
+        if (wiki_page = WikiPage.find_by(id: NEW_CONTRIBUTORS_HELP_PAGE_WIKI_PAGE_ID))
+          wiki_page_path wiki_page
+        else
+          root_path
+        end
       end
 
     private

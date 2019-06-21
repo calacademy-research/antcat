@@ -9,7 +9,7 @@ describe TooltipsController do
       specify { expect(get(:show, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as an editor" do

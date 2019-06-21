@@ -2,24 +2,18 @@ require 'spec_helper'
 
 describe AuthorNamesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
+    context "when signed in as a helper" do
+      before { sign_in create(:user, :helper) }
 
       specify { expect(get(:new, params: { author_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { author_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
-    end
-
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe '#create' do
+  describe 'POST create' do
     let!(:author) { create :author }
 
     before { sign_in create(:user, :editor) }
@@ -36,14 +30,14 @@ describe AuthorNamesController do
     end
   end
 
-  describe '#update' do
+  describe 'PUT update' do
     let!(:author_name) { create :author_name }
 
     before { sign_in create(:user, :editor) }
 
     it 'creates an activity' do
       expect do
-        post(:update, params: { author_name: { name: 'Batiatus' }, id: author_name.id, edit_summary: 'Edit name' })
+        put(:update, params: { author_name: { name: 'Batiatus' }, id: author_name.id, edit_summary: 'Edit name' })
       end.to change { Activity.count }.by(1)
 
       activity = Activity.last
@@ -53,7 +47,7 @@ describe AuthorNamesController do
     end
   end
 
-  describe '#destroy' do
+  describe 'DELETE destroy' do
     let!(:author) { create :author }
     let!(:author_name) { create :author_name, author: author }
     let!(:second_author_name) { create :author_name, author: author }

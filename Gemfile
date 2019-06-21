@@ -50,6 +50,7 @@ gem 'will_paginate'
 gem 'workflow', '< 2'
 
 group :development do
+  gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
 end
@@ -72,7 +73,7 @@ group :development, :test do
 end
 
 group :test do
-  gem 'capybara'
+  gem 'capybara', '< 3.16.0' # 3.16.0 requires Ruby 2.4.
   gem 'capybara-screenshot'
   # TODO: sourced to GitHub because `DEPRECATED: Capybara::Helpers::normalize_whitespace`.
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git', ref: '77fdac424'

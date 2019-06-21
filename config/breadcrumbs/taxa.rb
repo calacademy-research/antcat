@@ -43,19 +43,19 @@ crumb :taxon_history_items do |taxon|
   parent taxon
 end
 
-  crumb :taxon_history_item do |item|
-    link "##{item.id}", item
-    parent :taxon_history_items, item.taxon
+  crumb :taxon_history_item do |taxon_history_item|
+    link "##{taxon_history_item.id}", taxon_history_item
+    parent :taxon_history_items, taxon_history_item.taxon
   end
 
-  crumb :new_taxon_history_item do |item|
+  crumb :new_taxon_history_item do |taxon_history_item|
     link "New"
-    parent :taxon_history_items, item.taxon
+    parent :taxon_history_items, taxon_history_item.taxon
   end
 
-  crumb :edit_taxon_history_item do |item|
+  crumb :edit_taxon_history_item do |taxon_history_item|
     link "Edit"
-    parent :taxon_history_item, item
+    parent :taxon_history_item, taxon_history_item
   end
 
 crumb :reference_sections do |taxon|

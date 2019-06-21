@@ -8,7 +8,8 @@ describe UsersController do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as an editor" do
@@ -17,7 +18,8 @@ describe UsersController do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -47,13 +49,9 @@ describe UsersController do
       expect(user.superadmin).to eq user_params[:superadmin]
       expect(user.locked).to eq user_params[:locked]
     end
-
-    it 'does not create an activity' do
-      expect { post(:create, params: { user: user_params }) }.to_not change { Activity.count }
-    end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     let!(:user) { create :user }
     let!(:user_params) do
       {
@@ -69,7 +67,7 @@ describe UsersController do
     before { sign_in create(:user, :superadmin) }
 
     it 'updates the user' do
-      post(:update, params: { id: user.id, user: user_params })
+      put(:update, params: { id: user.id, user: user_params })
 
       user.reload
       expect(user.name).to eq user_params[:name]
@@ -79,9 +77,19 @@ describe UsersController do
       expect(user.superadmin).to eq user_params[:superadmin]
       expect(user.locked).to eq user_params[:locked]
     end
+  end
 
-    it 'does not create an activity' do
-      expect { post(:update, params: { id: user.id, user: user_params }) }.to_not change { Activity.count }
+  describe "DELETE destroy" do
+    let!(:user) { create :user }
+
+    before { sign_in create(:user, :superadmin) }
+
+    it 'soft-deletes the user' do
+      expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.deleted }.to(true)
+    end
+
+    it 'locks the user' do
+      expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.locked }.to(true)
     end
   end
 end

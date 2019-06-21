@@ -1,4 +1,11 @@
 -@title = "Children of #{@taxon.name_cache}"
 -breadcrumb :edit_taxon_show_children, @taxon
 
-=render 'taxa/_not_really_form/children_section', taxon: @taxon
+-if @taxon.children.present?
+  %table
+    -@children.each do |child|
+      %tr
+        %td=child.link_to_taxon
+        %td=child.decorate.taxon_status
+
+=will_paginate @children

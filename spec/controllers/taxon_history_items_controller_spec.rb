@@ -8,7 +8,7 @@ describe TaxonHistoryItemsController do
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as a helper editor" do

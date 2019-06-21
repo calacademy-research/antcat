@@ -9,7 +9,7 @@ describe Taxa::ElevateToSpeciesController do
     end
   end
 
-  describe '#create' do
+  describe 'POST create' do
     let!(:subspecies) { create :subspecies }
 
     before { sign_in create(:user, :editor) }

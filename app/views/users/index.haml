@@ -8,13 +8,17 @@
 %table.stack
   %tbody
   -@users.each do |user|
-    %tr
+    %tr{style: ('background-color: #fce6e2' if (user.locked? || user.deleted?))}
       %td=user.decorate.user_page_link
       %td
         =user.decorate.user_badge
         -if user_is_superadmin?
           -if user.superadmin?
-            %span.warning-label.rounded-badge superadmin
+            %span.secondary-label.rounded-badge superadmin
+      -if user_is_superadmin?
+        %td
           -if user.locked?
             %span.warning-label.rounded-badge locked
+          -if user.deleted?
+            %span.warning-label.rounded-badge soft-deleted
       %td=user.email
