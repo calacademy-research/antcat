@@ -40,7 +40,7 @@ Rails.application.routes.draw do
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
   get 'catalog/:id/history' => 'catalog/history#show', as: :taxon_history
-  get 'catalog/:id/what_links_here' => 'catalog/what_links_here#index', as: :taxon_what_links_here
+  get 'catalog/:id/what_links_here' => 'catalog/what_links_heres#show', as: :taxon_what_links_here
 
   get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
 
