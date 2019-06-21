@@ -11,7 +11,10 @@ class MergeAuthorsController < ApplicationController
     create_panels
 
     target_author, *authors_to_merge = @authors
+
+    names_for_activity = authors_to_merge.map { |author| author.names.map(&:name) }.flatten.join(", ")
     target_author.merge authors_to_merge
+    target_author.create_activity :merge_authors, parameters: { names: names_for_activity }
 
     params[:terms] = [term]
     index

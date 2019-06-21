@@ -28,13 +28,11 @@ class Feedback < ApplicationRecord
   def close
     self.open = false
     save!
-    create_activity :close_feedback
   end
 
   def reopen
     self.open = true
     save!
-    create_activity :reopen_feedback
   end
 
   private
