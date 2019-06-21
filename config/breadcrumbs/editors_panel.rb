@@ -88,11 +88,6 @@ crumb :markdown_formatting_help do
   parent :editors_panel
 end
 
-crumb :lazy_links do
-  link "Lazy Links"
-  parent :editors_panel
-end
-
 crumb :beta_and_such do
   link "Beta and such (testing, debugging)"
   parent :editors_panel
