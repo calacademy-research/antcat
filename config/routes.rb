@@ -241,7 +241,7 @@ Rails.application.routes.draw do
   resources :database_scripts, only: [:index, :show]
 
   namespace :my do
-    resources :recently_used_references, only: [:index, :create]
+    resource :recently_used_references, only: [:show, :create]
     resource :default_reference, only: :update, controller: :default_reference
   end
 
