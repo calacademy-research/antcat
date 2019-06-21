@@ -1,11 +1,8 @@
 =enable_tooltips
 
 -content_for :head do
-  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
-  =javascript_include_tag 'controllers/taxa/not_really_form/reorder_history_items'
-  =javascript_include_tag 'taxon_select', 'reference_select', 'markdown_and_friends', 'taxt_editor'
+  =javascript_include_tag 'taxon_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'protonym_select'
-  =javascript_include_tag 'check_name_conflicts'
 
 =render 'shared/taxt_editor/taxon_and_ancestors', taxon: @taxon
 =render "shared/default_reference"
@@ -39,10 +36,3 @@
         -cancel_link = @taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(@taxon)
         =link_to 'Cancel', cancel_link, class: 'button btn-nodanger'
         =db_tooltip_icon :cancel, scope: :taxa
-
--unless @taxon.new_record?
-  .not-really-taxon-form
-    =render 'taxa/_not_really_form/history_items_section', taxon: @taxon
-    =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
-    =render 'taxa/_not_really_form/children_section', taxon: @taxon
-    =render 'taxa/_not_really_form/references_section', taxon: @taxon

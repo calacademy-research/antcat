@@ -26,7 +26,7 @@ module Taxa
       strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
 
       def soft_validation_warnings
-        @soft_validation_warnings = Taxa::CheckIfInDatabaseResults[self]
+        @soft_validation_warnings ||= Taxa::CheckIfInDatabaseResults[self]
       end
     end
 
