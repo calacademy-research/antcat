@@ -8,7 +8,7 @@ module References
 
     def call
       new_reference = original.class.new
-      original.send :copy_attributes_to, new_reference, *to_copy
+      new_reference.attributes = original.slice(to_copy)
       new_reference
     end
 

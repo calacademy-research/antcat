@@ -18,13 +18,10 @@
   =render 'shared/errors_for', resource: @taxon
 
   -if @taxon.soft_validation_warnings.present?
-    #soft-validations.callout.warning.small-12.medium-6{data: { closable: true }}
+    #soft-validations.callout.warning.small-12.medium-6
       %h6 Issues
       %p These issues will not prevent you from saving the form. Just so you know :)
       =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
-
-      %button.close-button{"aria-label" => "Dismiss alert", data: { close: true }, type: "button"}
-        %span{"aria-hidden" => "true"} &times;
 
   .callout
     =render 'taxa/_form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
@@ -33,7 +30,7 @@
 
     .row
       .medium-3.columns
-        =text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+        =edit_summary_text_field_tag
 
       .medium-3.columns.end
         =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves button has-spinner' do
@@ -46,5 +43,6 @@
 -unless @taxon.new_record?
   .not-really-taxon-form
     =render 'taxa/_not_really_form/history_items_section', taxon: @taxon
-    =render 'taxa/_not_really_form/children_section', taxon: @taxon, max_number: 50
+    =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
+    =render 'taxa/_not_really_form/children_section', taxon: @taxon
     =render 'taxa/_not_really_form/references_section', taxon: @taxon

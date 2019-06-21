@@ -15,24 +15,24 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def new
-    @item = TaxonHistoryItem.new(taxon_id: params[:taxa_id])
+    @taxon_history_item = TaxonHistoryItem.new(taxon_id: params[:taxa_id])
   end
 
   def edit
   end
 
   def update
-    updated = @item.update(taxon_history_item_params)
+    updated = @taxon_history_item.update(taxon_history_item_params)
 
     if updated
-      @item.create_activity :update, edit_summary: params[:edit_summary]
+      @taxon_history_item.create_activity :update, edit_summary: params[:edit_summary]
     end
 
     respond_to do |format|
-      format.json { render_json @item }
+      format.json { render_json @taxon_history_item }
       format.html do
         if updated
-          redirect_to catalog_path(@item.taxon), notice: "Successfully updated history item."
+          redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully updated history item."
         else
           render :edit
         end
@@ -41,20 +41,20 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def create
-    @item = TaxonHistoryItem.new(taxon_history_item_params)
-    @item.taxon_id = params[:taxa_id]
+    @taxon_history_item = TaxonHistoryItem.new(taxon_history_item_params)
+    @taxon_history_item.taxon_id = params[:taxa_id]
 
-    if @item.save
-      @item.create_activity :create, edit_summary: params[:edit_summary]
-      redirect_to edit_taxa_path(@item.taxon), notice: "Successfully added history item."
+    if @taxon_history_item.save
+      @taxon_history_item.create_activity :create, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@taxon_history_item.taxon), notice: "Successfully added history item."
     else
       render :new
     end
   end
 
   def destroy
-    @item.destroy
-    @item.create_activity :destroy, edit_summary: params[:edit_summary]
+    @taxon_history_item.destroy
+    @taxon_history_item.create_activity :destroy, edit_summary: params[:edit_summary]
 
     render json: { success: true }
   end
@@ -62,7 +62,7 @@ class TaxonHistoryItemsController < ApplicationController
   private
 
     def set_taxon_history_item
-      @item = TaxonHistoryItem.find(params[:id])
+      @taxon_history_item = TaxonHistoryItem.find(params[:id])
     end
 
     def search_params
@@ -73,10 +73,10 @@ class TaxonHistoryItemsController < ApplicationController
       params.require(:taxon_history_item).permit(:taxt)
     end
 
-    def render_json item
+    def render_json taxon_history_item
       render json: {
-        content: render_to_string(partial: 'taxon_history_items/taxt_editor_template', locals: { item: item }),
-        error: item.errors.full_messages.to_sentence
+        content: render_to_string(partial: 'taxon_history_items/taxt_editor_template', locals: { taxon_history_item: taxon_history_item }),
+        error: taxon_history_item.errors.full_messages.to_sentence
       }
     end
 end

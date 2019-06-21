@@ -6,7 +6,7 @@ describe CommentsController do
       specify { expect(get(:index)).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:create)).to redirect_to_signin_form }
-      specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
     end
   end
 end

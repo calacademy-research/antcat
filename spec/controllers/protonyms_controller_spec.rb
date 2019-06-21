@@ -6,7 +6,7 @@ describe ProtonymsController do
       specify { expect(get(:new)).to redirect_to_signin_form }
       specify { expect(post(:create, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
-      specify { expect(post(:update, params: { id: 1 })).to redirect_to_signin_form }
+      specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(delete(:destroy, params: { id: 1 })).to redirect_to_signin_form }
     end
 
@@ -16,7 +16,7 @@ describe ProtonymsController do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(post(:create, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
@@ -79,7 +79,7 @@ describe ProtonymsController do
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     let!(:protonym) { create :protonym }
 
     before { sign_in create(:user, :helper) }
@@ -101,7 +101,7 @@ describe ProtonymsController do
         }
       }
 
-      post(:update, params: { id: protonym.id, protonym: protonym_params })
+      put(:update, params: { id: protonym.id, protonym: protonym_params })
 
       protonym.reload
       expect(protonym.fossil).to eq protonym_params[:fossil]
@@ -128,7 +128,7 @@ describe ProtonymsController do
       }
 
       expect(protonym.authorship.pages).to_not eq new_pages
-      expect { post(:update, params: { id: protonym.id, protonym: protonym_params }) }.
+      expect { put(:update, params: { id: protonym.id, protonym: protonym_params }) }.
         to_not change { protonym.reload.authorship.id }
       expect(protonym.authorship.pages).to_not eq new_pages
     end

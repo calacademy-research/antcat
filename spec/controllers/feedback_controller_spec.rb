@@ -19,7 +19,7 @@ describe FeedbackController do
     end
   end
 
-  describe "#create" do
+  describe "POST create" do
     around do |example|
       InvisibleCaptcha.setup { |config| config.timestamp_enabled = false }
       example.run

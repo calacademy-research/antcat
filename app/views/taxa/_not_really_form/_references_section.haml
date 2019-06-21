@@ -6,5 +6,5 @@
         =link_to 'Add', new_taxa_reference_section_path(taxon), class: 'btn-normal btn-tiny jquery-tooltip', id: 'add-reference-section-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them."
 
     .reference-sections
-      -taxon.reference_sections.each do |item|
-        =render 'reference_sections/taxt_editor_template', item: item
+      -taxon.reference_sections.each do |reference_section|
+        =render 'reference_sections/taxt_editor_template', reference_section: reference_section

@@ -1,15 +1,14 @@
 Feature: Deleting a taxon
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Deleting a taxon that was just added
-    Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+  Scenario: Deleted taxon (with edit summary)
+    Given there is a subfamily "Antcatinae"
 
-    When I go to the catalog page for "Atta"
-    And I will confirm on the next step
+    When I go to the catalog page for "Antcatinae"
     And I follow "Delete"
-    Then I should be on the catalog page for "Dolichoderinae"
-    And I should see "Taxon was successfully deleted"
+    And I go to the activity feed
+    Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
 
   Scenario: Can delete even if taxon is referred to by child records
     Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"

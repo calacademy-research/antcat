@@ -6,7 +6,7 @@ describe NamesController do
       before { sign_in create(:user) }
 
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
@@ -14,12 +14,12 @@ describe NamesController do
       before { sign_in create(:user, :helper) }
 
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:update, params: { id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     before { sign_in create(:user, :editor) }
 
     context 'with valid params' do
@@ -35,7 +35,7 @@ describe NamesController do
       end
 
       it 'updates the name' do
-        post :update, params: params
+        put :update, params: params
 
         name.reload
         expect(name.name).to eq 'Brandus noviusia nameus'
@@ -44,7 +44,7 @@ describe NamesController do
       end
 
       it 'creates an activity' do
-        expect { post :update, params: params }.to change { Activity.count }.by(1)
+        expect { put :update, params: params }.to change { Activity.count }.by(1)
 
         activity = Activity.last
         expect(activity.trackable).to eq name

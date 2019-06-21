@@ -7,7 +7,7 @@ describe Taxa::MoveItemsController do
 
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(get(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 end

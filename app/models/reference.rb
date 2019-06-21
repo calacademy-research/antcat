@@ -34,7 +34,6 @@ class Reference < ApplicationRecord
   before_save :set_author_names_caches
   before_destroy :check_not_referenced
 
-  scope :includes_document, -> { includes(:document) }
   scope :latest_additions, -> { order(created_at: :desc) }
   scope :latest_changes, -> { order(updated_at: :desc) }
   scope :no_missing, -> { where.not(type: "MissingReference") }
@@ -163,15 +162,13 @@ class Reference < ApplicationRecord
     # TODO: Revisit once missing references have been cleared.
     # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
     def set_year_from_citation_year
-      # rubocop:disable Lint/AssignmentInCondition
       self.year = if citation_year.blank?
                     nil
-                  elsif match = citation_year.match(/\["(\d{4})"\]/)
+                  elsif (match = citation_year.match(/\["(\d{4})"\]/))
                     match[1]
                   else
                     citation_year.to_i
                   end
-      # rubocop:enable Lint/AssignmentInCondition
     end
 
     def set_author_names_caches(*)

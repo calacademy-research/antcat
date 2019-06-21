@@ -97,6 +97,10 @@ module ApplicationHelper
     end
   end
 
+  def edit_summary_text_field_tag
+    text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+  end
+
   def search_icon
     antcat_icon "search"
   end

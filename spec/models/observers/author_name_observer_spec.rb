@@ -10,6 +10,14 @@ describe AuthorNameObserver do
       bolton.save!
     end
 
+    it "refreshes `author_names_string_cache` of associated references" do
+      author_name = create :author_name, name: 'Ward'
+      reference = create :reference, author_names: [author_name]
+
+      expect { author_name.update(name: 'Fisher') }.
+        to change { reference.reload.author_names_string }.from('Ward').to('Fisher')
+    end
+
     it "invalidates the cache for all references that use the data" do
       fisher = create :author_name, name: 'Fisher'
 
