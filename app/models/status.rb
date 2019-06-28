@@ -8,8 +8,6 @@ class Status
     UNAVAILABLE               = "unavailable",
     EXCLUDED_FROM_FORMICIDAE  = "excluded from Formicidae",
     ORIGINAL_COMBINATION      = "original combination",
-    # TODO: Remove `COLLECTIVE_GROUP_NAME` after clearing `CollectiveGroupNamesAndFriends`.
-    COLLECTIVE_GROUP_NAME     = "collective group name",
     OBSOLETE_COMBINATION      = "obsolete combination",
     UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
     UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
@@ -19,7 +17,6 @@ class Status
     SYNONYM                   => 'synonyms',
     HOMONYM                   => 'homonyms',
     ORIGINAL_COMBINATION      => 'original combinations',
-    COLLECTIVE_GROUP_NAME     => 'collective group names',
     OBSOLETE_COMBINATION      => 'obsolete combinations',
     UNAVAILABLE_MISSPELLING   => 'unavailable misspellings',
     UNAVAILABLE_UNCATEGORIZED => 'unavailable uncategorized'

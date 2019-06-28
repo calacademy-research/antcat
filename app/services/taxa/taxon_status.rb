@@ -33,7 +33,6 @@ module Taxa
         when Status::ORIGINAL_COMBINATION      then "see #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
-        when Status::COLLECTIVE_GROUP_NAME     then "<span class='bold-warning'>[collective group name with wrong status]</span>"
         else                                        status
         end
       end

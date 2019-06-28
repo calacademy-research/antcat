@@ -2,7 +2,7 @@ module Taxa
   module PredicateMethods
     extend ActiveSupport::Concern
 
-    (Status::STATUSES - [Status::VALID, Status::COLLECTIVE_GROUP_NAME]).each do |status|
+    (Status::STATUSES - [Status::VALID]).each do |status|
       define_method "#{status.downcase.tr(' ', '_')}?" do
         self.status == status
       end
