@@ -28,7 +28,6 @@ module DatabaseScripts
           ]
         end
       end <<
-
         as_table do |t|
           t.header :species, :species_status, :genus, :genus_status
 
@@ -41,7 +40,6 @@ module DatabaseScripts
             ]
           end
         end <<
-
         as_table do |t|
           t.header :subspecies, :subspecies_status, :species, :species_status
 

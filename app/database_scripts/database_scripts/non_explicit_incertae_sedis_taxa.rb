@@ -27,7 +27,6 @@ module DatabaseScripts
           ]
         end
       end <<
-
         as_table do |t|
           t.caption "Genera without tribe"
           t.header :species, :status, :subfamily
@@ -40,7 +39,6 @@ module DatabaseScripts
             ]
           end
         end <<
-
         as_table do |t|
           t.caption "Species without subfamily"
           t.header :species, :status

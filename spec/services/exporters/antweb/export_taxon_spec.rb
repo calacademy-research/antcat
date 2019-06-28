@@ -291,7 +291,6 @@ describe Exporters::Antweb::ExportTaxon do
         # rubocop:disable Layout/MultilineOperationIndentation
         expected =
           %(<div class="antcat_taxon">) +
-
             # statistics
             %(<p>Extant: 1 valid species</p>) +
 
@@ -315,7 +314,6 @@ describe Exporters::Antweb::ExportTaxon do
               %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
               %( ) +
               %(<a class="external-link" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
-
             %(</div>) +
 
             # taxonomic history
@@ -339,7 +337,6 @@ describe Exporters::Antweb::ExportTaxon do
                 %(</div>) +
               %(</div>) +
             %(</div>) +
-
           %(</div>)
         # rubocop:enable Layout/MultilineOperationIndentation
 
