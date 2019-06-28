@@ -4,7 +4,8 @@
 -if user_is_superadmin?
   =content_for :breadcrumbs_right do
     =link_to append_superadmin_icon("Edit"), edit_user_path(@user), class: "btn-normal"
-    =link_to append_superadmin_icon("Delete"), user_path(@user), method: :delete, data: { confirm: 'Are you sure? This will soft-delete the user and lock the account.' }, class: "btn-normal btn-warning"
+    -unless @user.deleted?
+      =link_to append_superadmin_icon("Delete"), user_path(@user), method: :delete, data: { confirm: 'Are you sure? This will soft-delete the user and lock the account.' }, class: "btn-normal btn-warning"
 
 -if current_user == @user
   =content_for :breadcrumbs_right do
