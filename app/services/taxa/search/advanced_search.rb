@@ -4,7 +4,7 @@ module Taxa
       include Service
 
       RANKS = %w[Subfamily Tribe Genus Subgenus Species Subspecies]
-      TAXA_COLUMNS = %i[fossil nomen_nudum unresolved_homonym ichnotaxon hong status type]
+      TAXA_COLUMNS = %i[fossil nomen_nudum unresolved_homonym ichnotaxon hong status type collective_group_name]
 
       def initialize params
         @params = params.delete_if { |_key, value| value.blank? }

@@ -37,16 +37,22 @@
     .medium-2.columns
       Fossil
       =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
-    .medium-2.columns
-      Nomen nudum
-      =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
-    .medium-3.columns
+
+    .medium-3.columns.end
       Unresolved junior homonym
       =select_tag :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
+
+  .row
+    .medium-2.columns
+      Collective group name
+      =select_tag :collective_group_name, yes_no_options_for_select(params[:collective_group_name]), include_blank: "Either"
     .medium-2.columns
       Ichnotaxon
       =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
-    .medium-1.columns.end
+    .medium-2.columns
+      Nomen nudum
+      =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
+    .medium-2.columns.end
       Hong
       =select_tag :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
 
