@@ -17,10 +17,9 @@
             =decorated.link_user unless activity.trackable_type == 'User'
             =decorated.did_something
             -if activity.edit_summary.present?
-              %div
-                %small
-                  Edit summary:
-                  =markdown activity.edit_summary, no_wrapping_p: true
+              %div.gray-text.with-gray-links
+                Edit summary:
+                =markdown activity.edit_summary, no_wrapping_p: true
           %td=decorated.revision_history_link
           %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
