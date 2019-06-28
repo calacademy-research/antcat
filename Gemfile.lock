@@ -66,8 +66,6 @@ GEM
       activerecord (>= 3.0)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
-    archive-zip (0.12.0)
-      io-like (~> 0.3.0)
     arel (9.0.0)
     ast (2.4.0)
     awesome_nested_set (3.1.4)
@@ -109,9 +107,6 @@ GEM
       launchy
     childprocess (0.9.0)
       ffi (~> 1.0, >= 1.0.11)
-    chromedriver-helper (2.1.1)
-      archive-zip (~> 0.10)
-      nokogiri (~> 1.8)
     citrus (3.0.2)
     climate_control (0.2.0)
     coderay (1.1.2)
@@ -229,7 +224,6 @@ GEM
       concurrent-ruby (~> 1.0)
     invisible_captcha (0.12.0)
       rails (>= 3.2.0)
-    io-like (0.3.0)
     jaro_winkler (1.5.2)
     jmespath (1.4.0)
     jquery-atwho-rails (1.5.4)
@@ -478,7 +472,6 @@ DEPENDENCIES
   capybara
   capybara-screenshot
   capybara-webkit!
-  chromedriver-helper
   citrus
   coffee-rails
   colorize

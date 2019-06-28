@@ -77,7 +77,6 @@ group :test do
   gem 'capybara-screenshot'
   # TODO: sourced to GitHub because `DEPRECATED: Capybara::Helpers::normalize_whitespace`.
   gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git', ref: '77fdac424'
-  gem 'chromedriver-helper'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
