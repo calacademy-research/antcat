@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041345) do
+ActiveRecord::Schema.define(version: 2019_07_13_041346) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -284,7 +284,6 @@ ActiveRecord::Schema.define(version: 2019_07_13_041345) do
     t.boolean "ichnotaxon", default: false, null: false
     t.boolean "nomen_nudum", default: false, null: false
     t.integer "family_id"
-    t.string "biogeographic_region"
     t.boolean "auto_generated", default: false, null: false
     t.string "origin"
     t.integer "hol_id"

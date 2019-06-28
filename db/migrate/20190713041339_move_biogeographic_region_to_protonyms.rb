@@ -1,5 +1,3 @@
-# TODO: Remove `taxa.biogeographic_region`.
-
 class MoveBiogeographicRegionToProtonyms < ActiveRecord::Migration[5.2]
   def change
     add_column :protonyms, :biogeographic_region, :string
