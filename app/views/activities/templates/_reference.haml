@@ -1,3 +1,12 @@
-=activity.action_to_verb
+-case activity.action
+-when 'restart_reviewing'
+  restarted reviewing
+-when 'finish_reviewing'
+  finished reviewing
+-when 'start_reviewing'
+  started reviewing
+-else
+  =activity.action_to_verb
+
 the reference
 =activity.link_trackable_if_exists sanitize(activity.parameters[:name]), path: reference_path(activity.trackable_id)

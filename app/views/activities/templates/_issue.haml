@@ -1,3 +1,10 @@
-=activity.action_to_verb
+-case activity.action
+-when 'close_issue'
+  closed
+-when 'reopen_issue'
+  re-opened
+-else
+  =activity.action_to_verb
+
 the issue
 =activity.link_trackable_if_exists activity.parameters[:title]
