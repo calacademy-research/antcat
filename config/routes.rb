@@ -29,12 +29,11 @@ Rails.application.routes.draw do
 
   namespace :catalog do
     get :autocomplete
-    get :show_invalid
-    get :show_valid_only
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
     get "search", to: "search#index"
     get "search/quick_search", to: "search#quick_search", as: "quick_search"
+    resource :toggle_display, only: :update
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'

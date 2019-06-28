@@ -31,4 +31,4 @@
         -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
           -unless taxon_browser.show_invalid? # Link unless already showing invalid.
-            %li=toggle_invalid_or_valid_only_link taxon_browser.show_invalid?, "Show invalid?"
+            %li=toggle_invalid_or_valid_only_link taxon_browser.show_invalid?

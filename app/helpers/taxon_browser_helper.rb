@@ -4,12 +4,13 @@ module TaxonBrowserHelper
     link_to taxon.epithet_with_fossil, catalog_path(taxon), class: classes
   end
 
-  def toggle_invalid_or_valid_only_link showing_invalid, label = nil
-    if showing_invalid
-      link_to append_refresh_icon(label || "show valid only"), catalog_show_valid_only_path
-    else
-      link_to append_refresh_icon(label || "show invalid"), catalog_show_invalid_path
-    end
+  def toggle_invalid_or_valid_only_link showing_invalid
+    label, show_param = if showing_invalid
+                          ['show valid only', Catalog::ToggleDisplaysController::VALID_ONLY]
+                        else
+                          ['show invalid', Catalog::ToggleDisplaysController::VALID_AND_INVALID]
+                        end
+    link_to append_refresh_icon(label), catalog_toggle_display_path(show: show_param), method: :put
   end
 
   def load_tab_button taxon, tab

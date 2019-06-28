@@ -34,16 +34,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  def show_valid_only
-    session[:show_invalid] = false
-    redirect_back fallback_location: root_path
-  end
-
-  def show_invalid
-    session[:show_invalid] = true
-    redirect_back fallback_location: root_path
-  end
-
   def autocomplete
     search_query = params[:q] || params[:qq] || ''
     rank = params[:rank]
