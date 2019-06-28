@@ -3,7 +3,6 @@ class Taxon < ApplicationRecord
   include Workflow::ExternalTable
 
   include Taxa::CallbacksAndValidations
-  include Taxa::PredicateMethods
   include RevisionsCanBeCompared
   include Trackable
 
@@ -81,6 +80,26 @@ class Taxon < ApplicationRecord
 
   def self.name_clash? name
     where(name_cache: name).exists?
+  end
+
+  (Status::STATUSES - [Status::VALID]).each do |status|
+    define_method "#{status.downcase.tr(' ', '_')}?" do
+      self.status == status
+    end
+  end
+
+  # Because `#valid?` clashes with ActiveModel.
+  def valid_taxon?
+    status == Status::VALID
+  end
+
+  def invalid?
+    status != Status::VALID
+  end
+
+  # Overridden in `SpeciesGroupTaxon` (only species and subspecies can be recombinations)
+  def recombination?
+    false
   end
 
   def rank
