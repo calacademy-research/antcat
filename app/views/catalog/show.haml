@@ -1,4 +1,6 @@
--@title = "#{@taxon.name_cache}"
+-# Use "AntCat" for the landing page title, since it's prettier than "Formicidae".
+-unless @is_formicidae_landing_page
+  -@title = "#{@taxon.name_cache}"
 -breadcrumb @taxon
 
 -content_for :head do
