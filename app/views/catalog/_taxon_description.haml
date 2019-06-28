@@ -78,10 +78,9 @@
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon
 
--# Special case because the root view pulls in too much data.
--if action_name == "index"
+-if is_formicidae_landing_page
   %br
-  =link_to "Formicidae family references", catalog_path(429011)
+  =link_to "Formicidae family references", catalog_path(@taxon)
 -else
   -if taxon.reference_sections.present?
     .reference-sections
