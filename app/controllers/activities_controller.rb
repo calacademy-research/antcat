@@ -20,6 +20,7 @@ class ActivitiesController < ApplicationController
     TaxonHistoryItem
     Tooltip
     User
+    WikiPage
   ]
 
   before_action :ensure_user_is_superadmin, only: :destroy
