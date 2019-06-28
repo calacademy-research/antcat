@@ -57,8 +57,6 @@ class Taxon < ApplicationRecord
   scope :self_join_on, ->(model) {
     joins("LEFT OUTER JOIN `taxa` `taxa_self_join_alias` ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`")
   }
-  scope :ranks, ->(*ranks) { where(type: ranks) }
-  scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym

@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ExtantTaxaInFossilGenera < DatabaseScript
     def results
-      Taxon.extant.ranks(Species, Subspecies).
+      Taxon.extant.where(type: ['Species', 'Subspecies']).
         self_join_on(:genus).
         where(taxa_self_join_alias: { fossil: true })
     end

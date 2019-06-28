@@ -28,44 +28,6 @@ describe Taxon do
         expect(query.call).to eq []
       end
     end
-
-    describe ".ranks and .exclude_ranks" do
-      before do
-        create :subfamily
-        create :genus
-        create :species
-        create :subspecies
-      end
-
-      def unique_ranks query
-        query.distinct.pluck(:type).sort
-      end
-
-      describe ".ranks" do
-        it "only returns taxa of the specified types" do
-          results = unique_ranks described_class.ranks(Species, Genus)
-          expect(results.sort).to eq ["Genus", "Species"]
-        end
-
-        it "handles symbols" do
-          expect(unique_ranks(described_class.ranks(:species, :Genus))).
-            to eq ["Genus", "Species"]
-        end
-
-        it "handles strings" do
-          expect(unique_ranks(described_class.ranks("Species", "genus"))).
-            to eq ["Genus", "Species"]
-        end
-      end
-
-      describe ".exclude_ranks" do
-        it "excludes taxa of the specified types" do
-          results = unique_ranks described_class.exclude_ranks(Species, Genus)
-          expected = unique_ranks(described_class) - ["Species", "Genus"]
-          expect(results).to eq expected
-        end
-      end
-    end
   end
 
   describe "workflow" do
