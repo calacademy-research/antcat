@@ -17,7 +17,7 @@ module ProtonymSelectHelper
       include ProtonymSelectHelper
 
       def protonym_select protonym_attribute_name
-        protonym = object.send protonym_attribute_name
+        protonym = object.public_send protonym_attribute_name
         protonym_id = protonym&.id
 
         select "#{protonym_attribute_name}_id".to_sym,
@@ -28,4 +28,4 @@ module ProtonymSelectHelper
     end
 end
 
-ActionView::Helpers::FormBuilder.send(:include, ProtonymSelectHelper::FormBuilderAdditions)
+ActionView::Helpers::FormBuilder.include ProtonymSelectHelper::FormBuilderAdditions

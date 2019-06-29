@@ -67,7 +67,7 @@ describe Taxa::Operations::ElevateToSpecies do
             :nomen_nudum,
             :type_taxon
           ].each do |attribute|
-            expect(new_species.send(attribute)).to eq subspecies.send(attribute)
+            expect(new_species.public_send(attribute)).to eq subspecies.public_send(attribute)
           end
         end
 

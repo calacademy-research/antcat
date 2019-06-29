@@ -63,7 +63,7 @@ module Taxa
 
         def ranks_with_taxa
           case ranks
-          when Array then ranks.map { |rank| [rank, taxon.send(rank)] }
+          when Array then ranks.map { |rank| [rank, taxon.public_send(rank)] }
           when Hash  then ranks.map { |rank, klass| [rank, klass] }
           end
         end
