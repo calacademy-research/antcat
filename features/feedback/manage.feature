@@ -4,9 +4,9 @@ Feature: Managing user feedback
   So that editors can track issues
 
   Background:
-    Given I log in as a catalog editor
+    Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Closing a feedback item
+  Scenario: Closing a feedback item (with feed)
     Given a visitor has submitted a feedback
 
     When I go to the most recent feedback item
@@ -18,7 +18,10 @@ Feature: Managing user feedback
     And I should see "Re-open"
     And I should not see "This feedback item is still open"
 
-  Scenario: Re-opening a closed feedback item
+    When I go to the activity feed
+    Then I should see "Archibald closed the feedback item #"
+
+  Scenario: Re-opening a closed feedback item (with feed)
     Given there is a closed feedback item
 
     When I go to the most recent feedback item
@@ -30,7 +33,10 @@ Feature: Managing user feedback
     And I should see "This feedback item is still open"
     And I should not see "Re-open"
 
-  Scenario: Deleting a feedback item
+    When I go to the activity feed
+    Then I should see "Archibald re-opened the feedback item #"
+
+  Scenario: Deleting a feedback item (with feed)
     Given a visitor has submitted a feedback with the comment "buy r0lex spam"
     And I log in as a superadmin named "Batiatus"
 
@@ -38,8 +44,5 @@ Feature: Managing user feedback
     And I follow "Delete"
     Then I should see "Feedback item was successfully deleted."
 
-  Scenario: Only superadmins should be able to delete feedback
-    Given a visitor has submitted a feedback
-
-    When I go to the most recent feedback item
-    Then I should not see "Delete"
+    When I go to the activity feed
+    Then I should see "Batiatus deleted the feedback item #"
