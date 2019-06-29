@@ -51,43 +51,25 @@ describe Name do
   end
 
   describe "#set_taxon_caches" do
-    let!(:atta_name) { create :genus_name, name: 'Atta' }
+    let!(:eciton_name) { create :genus_name, name: 'Eciton' }
 
     context 'when name is assigned to a taxon' do
-      let!(:taxon) { create :genus, name_string: 'Eciton' }
+      let!(:taxon) { create :genus }
 
       it "sets the taxons's `name_cache` and `name_html_cache`" do
-        expect(taxon.name_cache).to eq 'Eciton'
-        expect(taxon.name_html_cache).to eq '<i>Eciton</i>'
-
-        taxon.name = atta_name
-        taxon.save!
-        expect(taxon.name_cache).to eq 'Atta'
-        expect(taxon.name_html_cache).to eq '<i>Atta</i>'
+        expect { taxon.update!(name: eciton_name) }.
+          to change { taxon.reload.name_cache }.to('Eciton').
+          and change { taxon.reload.name_html_cache }.to('<i>Eciton</i>')
       end
     end
 
     context 'when the contents of the name change' do
-      let!(:taxon) { create :genus, name: atta_name }
+      let!(:taxon) { create :genus, name: eciton_name }
 
       it "changes the cache" do
-        expect(taxon.name_cache).to eq 'Atta'
-        expect(taxon.name_html_cache).to eq '<i>Atta</i>'
-        atta_name.update! name: 'Betta'
-        taxon.reload
-        expect(taxon.name_cache).to eq 'Betta'
-        expect(taxon.name_html_cache).to eq '<i>Betta</i>'
-      end
-    end
-
-    context 'when a different name is assigned' do
-      let!(:betta_name) { create :genus_name, name: 'Betta' }
-      let!(:taxon) { create :genus, name: atta_name }
-
-      it "changes the cache" do
-        taxon.update! name: betta_name
-        expect(taxon.name_cache).to eq 'Betta'
-        expect(taxon.name_html_cache).to eq '<i>Betta</i>'
+        expect { eciton_name.update!(name: 'Atta') }.
+          to change { taxon.reload.name_cache }.to('Atta').
+          and change { taxon.reload.name_html_cache }.to('<i>Atta</i>')
       end
     end
   end

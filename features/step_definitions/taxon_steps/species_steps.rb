@@ -4,10 +4,8 @@ end
 
 Given("a species exists with a name of {string} and a genus of {string}") do |name, parent_name|
   genus = Genus.find_by(name_cache: parent_name)
-  genus ||= create :genus, name: create(:genus_name, name: parent_name)
-  @species = create :species,
-    name: create(:species_name, name: "#{parent_name} #{name}"),
-    genus: genus
+  genus ||= create :genus, name_string: parent_name
+  @species = create :species, name_string: "#{parent_name} #{name}", genus: genus
 end
 
 Given("there is a species {string} with genus {string}") do |species_name, genus_name|

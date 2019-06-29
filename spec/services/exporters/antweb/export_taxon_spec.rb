@@ -74,7 +74,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       it "can export a Subgenus" do
-        taxon = create :subgenus, name: create(:subgenus_name, name: 'Atta (Boyo)')
+        taxon = create :subgenus, name_string: 'Atta (Boyo)'
         expect(export_taxon(taxon)[4]).to eq 'Boyo'
       end
 
@@ -253,7 +253,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[17]: `taxonomic history html`" do
-      let!(:atta_name) { create :genus_name, name: 'Atta' }
       let!(:authorship_reference) do
         author_name = create :author_name, name: 'Bolton, B.'
         create :article_reference, author_names: [author_name],
@@ -264,10 +263,11 @@ describe Exporters::Antweb::ExportTaxon do
           pagination: '2'
       end
       let!(:protonym) do
+        atta_name = create :genus_name, name: 'Atta'
         authorship = create :citation, reference: authorship_reference, pages: '12'
         create :protonym, name: atta_name, authorship: authorship
       end
-      let!(:genus) { create :genus, name: atta_name, protonym: protonym, hol_id: 9999 }
+      let!(:genus) { create :genus, name_string: 'Atta', protonym: protonym, hol_id: 9999 }
       let!(:type_species) { create :species, name_string: 'Atta major', genus: genus }
       let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
 

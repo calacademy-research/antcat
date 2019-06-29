@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Names::CheckNameConflictsController do
   describe 'GET show' do
     let!(:protonym) { create :protonym, name: create(:subfamily_name, name: 'Antcatinae') }
-    let!(:taxon) { create :family, name: create(:family_name, name: 'Antcatidae'), protonym: protonym }
+    let!(:taxon) { create :family, name_string: 'Antcatidae', protonym: protonym }
 
     specify do
       get :show, params: { qq: 'Antc' }

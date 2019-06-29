@@ -12,8 +12,7 @@ describe Taxa::Operations::ElevateToSpecies do
       context "when a species with this name already exists" do
         let!(:genus) { create :genus, name_string: 'Atta' }
         let!(:species) { create :species, name_string: 'Atta major', genus: genus }
-        let!(:subspecies_name) { SubspeciesName.create! name: 'Atta batta major' }
-        let!(:subspecies) { create :subspecies, name: subspecies_name, species: species }
+        let!(:subspecies) { create :subspecies, name_string: 'Atta batta major', species: species }
 
         it "returns the new new non-persister species with errors" do
           new_species = described_class[subspecies]
@@ -99,9 +98,8 @@ describe Taxa::Operations::ElevateToSpecies do
     # because we should stop reusing `Name`s once we're ready for that.
     context "old specs" do
       let!(:genus) { create :genus, name_string: 'Atta' }
-      let!(:subspecies_name) { SubspeciesName.create!(name: 'Atta major colobopsis') }
       let!(:species) { create :species, name_string: 'Atta major', genus: genus }
-      let!(:taxon) { create :subspecies, name: subspecies_name, genus: genus, species: species }
+      let!(:taxon) { create :subspecies, name_string: 'Atta major colobopsis', genus: genus, species: species }
 
       it "forms the new species name from the epithet" do
         described_class[taxon]
