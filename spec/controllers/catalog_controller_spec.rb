@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe CatalogController do
   describe "GET autocomplete" do
-    let!(:atta) { create_genus "Atta" }
-    let!(:ratta) { create_genus "Ratta" }
+    let!(:atta) { create :genus, name_string: "Atta" }
+    let!(:ratta) { create :genus, name_string: "Ratta" }
 
     before do
-      create_genus "Nylanderia"
+      create :genus, name_string: "Nylanderia"
       get :autocomplete, params: { q: "att", format: :json }
     end
 

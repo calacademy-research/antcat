@@ -54,7 +54,7 @@ describe Name do
     let!(:atta_name) { create :genus_name, name: 'Atta' }
 
     context 'when name is assigned to a taxon' do
-      let!(:taxon) { create_genus 'Eciton' }
+      let!(:taxon) { create :genus, name_string: 'Eciton' }
 
       it "sets the taxons's `name_cache` and `name_html_cache`" do
         expect(taxon.name_cache).to eq 'Eciton'

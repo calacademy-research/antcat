@@ -77,7 +77,7 @@ describe Taxon do
 
   describe "#author_citation" do
     context "when a recombination in a different genus" do
-      let(:species) { create_species 'Atta minor' }
+      let(:species) { create :species, name_string: 'Atta minor' }
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
       before do
@@ -93,7 +93,7 @@ describe Taxon do
     end
 
     context "when the name simply differs" do
-      let(:species) { create_species 'Atta minor maxus' }
+      let(:species) { create :species, name_string: 'Atta minor maxus' }
       let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround in parentheses" do

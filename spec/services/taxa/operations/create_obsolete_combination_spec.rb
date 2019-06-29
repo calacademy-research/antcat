@@ -4,11 +4,11 @@ describe Taxa::Operations::CreateObsoleteCombination do
   describe "#call" do
     describe "unsuccessful case" do
       context "when a species with this name already exists" do
-        let!(:current_valid_taxon) { create_species 'Strumigenys ravidura' }
-        let!(:obsolete_genus) { create_genus 'Pyramica' }
+        let!(:current_valid_taxon) { create :species, name_string: 'Strumigenys ravidura' }
+        let!(:obsolete_genus) { create :genus, name_string: 'Pyramica' }
 
         before do
-          create_species 'Pyramica ravidura'
+          create :species, name_string: 'Pyramica ravidura'
         end
 
         it "does not create a new taxon" do

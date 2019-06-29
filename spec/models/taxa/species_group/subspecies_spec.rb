@@ -46,7 +46,7 @@ describe Subspecies do
       let(:subspecies) do
         create :subspecies, name: create(:subspecies_name, name: 'Atta major medius minor')
       end
-      let(:new_parent) { create_species 'Eciton nigrus' }
+      let(:new_parent) { create :species, name_string: 'Eciton nigrus' }
 
       specify do
         subspecies.update_parent new_parent

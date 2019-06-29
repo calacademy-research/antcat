@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Taxa::Operations::ConvertToSubspecies do
   describe "#call" do
     describe "unsuccessful conversion" do
-      let!(:genus) { create_genus 'Atta' }
+      let!(:genus) { create :genus, name_string: 'Atta' }
 
       context "when species has subspecies" do
         let!(:species) { create :species }
@@ -19,10 +19,10 @@ describe Taxa::Operations::ConvertToSubspecies do
       end
 
       context "when a subspecies with this name already exists" do
-        let!(:species) { create_species 'Camponotus dallatorrei', genus: genus }
-        let!(:target_species_parent) { create_species 'Camponotus alii', genus: genus }
+        let!(:species) { create :species, name_string: 'Camponotus dallatorrei', genus: genus }
+        let!(:target_species_parent) { create :species, name_string: 'Camponotus alii', genus: genus }
 
-        before { create_subspecies 'Atta alii dallatorrei', genus: genus }
+        before { create :subspecies, name_string: 'Atta alii dallatorrei', genus: genus }
 
         it "does not create a new taxon" do
           expect { described_class[species, target_species_parent] }.to_not change { Taxon.count }

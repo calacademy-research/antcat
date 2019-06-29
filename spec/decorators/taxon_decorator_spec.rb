@@ -72,7 +72,7 @@ describe TaxonDecorator do
     end
 
     it "handles genera" do
-      taxon = create_genus 'Atta'
+      taxon = create :genus, name_string: 'Atta'
       expect(taxon.decorate.link_to_antweb).
         to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants">AntWeb</a>'
     end
@@ -83,15 +83,15 @@ describe TaxonDecorator do
     end
 
     it "handles species" do
-      taxon = create_species 'Atta major', genus: create_genus('Atta')
+      taxon = create :species, name_string: 'Atta major', genus: create(:genus, name_string: 'Atta')
       expect(taxon.decorate.link_to_antweb).
         to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
     end
 
     it "handles subspecies" do
-      genus = create_genus 'Atta'
-      species = create_species 'Atta major', genus: genus
-      taxon = create_subspecies 'Atta major minor', species: species, genus: genus
+      genus = create :genus, name_string: 'Atta'
+      species = create :species, name_string: 'Atta major', genus: genus
+      taxon = create :subspecies, name_string: 'Atta major minor', species: species, genus: genus
       expect(taxon.decorate.link_to_antweb).
         to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
     end

@@ -3,7 +3,7 @@ Given("SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG is true") do
 end
 
 Given("there is a Lasius subspecies without a species") do
-  subspecies = create_subspecies "Lasius specius subspecius", species: nil
+  subspecies = create :subspecies, name_string: "Lasius specius subspecius", species: nil
   expect(subspecies.species).to be nil
 end
 

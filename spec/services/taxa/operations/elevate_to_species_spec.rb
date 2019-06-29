@@ -10,8 +10,8 @@ describe Taxa::Operations::ElevateToSpecies do
       end
 
       context "when a species with this name already exists" do
-        let!(:genus) { create_genus 'Atta' }
-        let!(:species) { create_species 'Atta major', genus: genus }
+        let!(:genus) { create :genus, name_string: 'Atta' }
+        let!(:species) { create :species, name_string: 'Atta major', genus: genus }
         let!(:subspecies_name) { SubspeciesName.create! name: 'Atta batta major' }
         let!(:subspecies) { create :subspecies, name: subspecies_name, species: species }
 
@@ -98,9 +98,9 @@ describe Taxa::Operations::ElevateToSpecies do
     # TODO these specs were left as is after rewriting this service
     # because we should stop reusing `Name`s once we're ready for that.
     context "old specs" do
-      let!(:genus) { create_genus 'Atta' }
+      let!(:genus) { create :genus, name_string: 'Atta' }
       let!(:subspecies_name) { SubspeciesName.create!(name: 'Atta major colobopsis') }
-      let!(:species) { create_species 'Atta major', genus: genus }
+      let!(:species) { create :species, name_string: 'Atta major', genus: genus }
       let!(:taxon) { create :subspecies, name: subspecies_name, genus: genus, species: species }
 
       it "forms the new species name from the epithet" do

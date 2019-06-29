@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Wikipedia::CiteTemplate do
-  let(:species) { create_species "Atta texana" }
+  let(:species) { create :species, name_string: "Atta texana" }
 
   describe "#call" do
     context "when without with_ref_tag" do

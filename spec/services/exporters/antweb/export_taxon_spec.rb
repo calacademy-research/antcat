@@ -81,7 +81,7 @@ describe Exporters::Antweb::ExportTaxon do
       describe "Exporting species" do
         it "exports one correctly" do
           genus = create :genus, tribe: tribe
-          species = create_species 'Atta robustus', genus: genus
+          species = create :species, name_string: 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
             subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', nil
@@ -90,7 +90,7 @@ describe Exporters::Antweb::ExportTaxon do
 
         it "can export a species without a tribe" do
           genus = create :genus, subfamily: subfamily, tribe: nil
-          species = create_species 'Atta robustus', genus: genus
+          species = create :species, name_string: 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
             subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', nil
@@ -99,7 +99,7 @@ describe Exporters::Antweb::ExportTaxon do
 
         it "exports a species without a subfamily as being in the 'incertae sedis' subfamily" do
           genus = create :genus, subfamily: nil, tribe: nil
-          species = create_species 'Atta robustus', genus: genus
+          species = create :species, name_string: 'Atta robustus', genus: genus
 
           expect(export_taxon(species)[1..6]).to eq [
             'incertae_sedis', nil, genus.name_cache, nil, 'robustus', nil
@@ -110,8 +110,8 @@ describe Exporters::Antweb::ExportTaxon do
       describe "Exporting subspecies" do
         it "exports one correctly" do
           genus = create :genus, subfamily: subfamily, tribe: tribe
-          species = create_species 'Atta robustus', subfamily: subfamily, genus: genus
-          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
+          species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
+          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
             subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
@@ -120,8 +120,8 @@ describe Exporters::Antweb::ExportTaxon do
 
         it "can export a subspecies without a tribe" do
           genus = create :genus, subfamily: subfamily, tribe: nil
-          species = create_species 'Atta robustus', subfamily: subfamily, genus: genus
-          subspecies = create_subspecies 'Atta robustus emeryii', genus: genus, species: species
+          species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
+          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
             subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', 'emeryii'
@@ -130,8 +130,8 @@ describe Exporters::Antweb::ExportTaxon do
 
         it "exports a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
           genus = create :genus, subfamily: nil, tribe: nil
-          species = create_species 'Atta robustus', subfamily: nil, genus: genus
-          subspecies = create_subspecies 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
+          species = create :species, name_string: 'Atta robustus', subfamily: nil, genus: genus
+          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
 
           expect(export_taxon(subspecies)[1..6]).to eq [
             'incertae_sedis', nil, genus.name_cache, nil, 'robustus', 'emeryii'
@@ -184,7 +184,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       context 'when taxon is a synonym' do
         context "when there are senior synonyms" do
-          let!(:senior_synonym) { create_species 'Eciton major' }
+          let!(:senior_synonym) { create :species, name_string: 'Eciton major' }
           let!(:taxon) { create :species, :synonym, current_valid_taxon: senior_synonym }
 
           it "looks at synonyms" do
@@ -268,7 +268,7 @@ describe Exporters::Antweb::ExportTaxon do
         create :protonym, name: atta_name, authorship: authorship
       end
       let!(:genus) { create :genus, name: atta_name, protonym: protonym, hol_id: 9999 }
-      let!(:type_species) { create_species 'Atta major', genus: genus }
+      let!(:type_species) { create :species, name_string: 'Atta major', genus: genus }
       let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
 
       before do
@@ -376,9 +376,9 @@ describe Exporters::Antweb::ExportTaxon do
     describe "[23]: `current valid parent`" do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
-      let(:genus) { create_genus 'Atta', tribe: tribe, subfamily: subfamily }
+      let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
       let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
-      let(:species) { create_species 'Atta betta', genus: genus, subfamily: subfamily }
+      let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
 
       it "doesn't punt on a subfamily's family" do
         expect(export_taxon(subfamily)[23]).to eq 'Formicidae'

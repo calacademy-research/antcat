@@ -3,7 +3,7 @@ require "spec_helper"
 describe Exporters::Antweb::ExportHeadlineType do
   describe "#call" do
     context "when taxon has a type name" do
-      let(:type_species) { create_species 'Atta major' }
+      let(:type_species) { create :species, name_string: 'Atta major' }
       let(:taxon) { create :genus, type_taxon: type_species }
       let(:taxon_link) { %(<a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>) }
 
