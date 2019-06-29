@@ -19,11 +19,6 @@ Given("there is a genus located in {string}") do |locality|
   create :genus, protonym: protonym
 end
 
-Given("there is a species located in {string}") do |locality|
-  protonym = create :protonym, locality: locality
-  create :species, protonym: protonym
-end
-
 Given("there is a species with biogeographic region {string}") do |biogeographic_region|
   protonym = create :protonym, biogeographic_region: biogeographic_region
   create :species, protonym: protonym

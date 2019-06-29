@@ -63,13 +63,12 @@ Feature: Searching the catalog
   Scenario: Searching for 'None' biogeographic_region
     Given there is a species with biogeographic region "Malagasy"
     And there is a species with biogeographic region "Afrotropic"
-    And there is a species located in "Africa"
+    And there is a species with biogeographic region ""
 
     When I select "Species" from "type"
     And I select "None" from "biogeographic_region"
     And I press "Go" in the search section
     Then I should see "1 result"
-    And I should see "Africa" within the search results
 
   Scenario: Searching in type fields
     Given there is a species with primary type information "Madagascar: Prov. Toliara"
