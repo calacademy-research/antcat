@@ -41,10 +41,11 @@
                   %i.inline-search-icon.fa.fa-search
 
           %li
-            =form_tag catalog_quick_search_path, method: :get, id: "catalog-search-form-test-hook" do
+            =form_tag catalog_search_path, method: :get do
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
-                =hidden_field_tag :im_feeling_lucky, true
+                =hidden_field_tag :submit_search, true
+                =hidden_field_tag Catalog::SearchController::SEARCHING_FROM_HEADER, true
                 =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook" do
                   %i.inline-search-icon.fa.fa-search
 
@@ -67,16 +68,16 @@
           .row#search-row
             .small-9.columns
               =text_field_tag 'reference_q', params[:reference_q], class: "typeahead-references-js", placeholder: "Search References"
-              =hidden_field_tag :im_feeling_lucky, true
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 
       %li.has-form
-        =form_tag catalog_quick_search_path, method: :get do
+        =form_tag catalog_search_path, method: :get do
           .row#search-row
             .small-9.columns
               =text_field_tag 'qq', params[:qq], class: "typeahead-taxa-js-hook", placeholder: "Search Catalog"
-              =hidden_field_tag :im_feeling_lucky, true
+              =hidden_field_tag :submit_search, true
+              =hidden_field_tag Catalog::SearchController::SEARCHING_FROM_HEADER, true
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 

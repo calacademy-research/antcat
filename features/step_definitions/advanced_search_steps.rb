@@ -30,10 +30,6 @@ Given("there is a species with forms {string}") do |forms|
   create :species, protonym: protonym
 end
 
-When("I check valid only in the advanced search form") do
-  find(:css, "#advanced_search input[type='checkbox']").set true
-end
-
 Then("I should get a download with the filename {string} and today's date") do |filename|
   date = Time.current.strftime("%Y-%m-%d")
   content_disposition = page.response_headers['Content-Disposition']

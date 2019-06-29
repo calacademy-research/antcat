@@ -1,16 +1,25 @@
 module Catalog
   class SearchController < ApplicationController
     DEFAULT_PER_PAGE = 30
+    SEARCHING_FROM_HEADER = "searching_from_header"
 
-    before_action :antweb_legacy_route, only: [:index]
-
-    # This is the "Advanced Search" page.
     def index
-      return if not_searching_yet? # Just render the form.
+      return if not_searching_yet? || searching_for_nothing_from_header? # Just render the form.
 
-      if author_search_with_no_matching_authors?
+      if redirect_if_single_exact_match? && (single_match = Taxa::Search::SingleMatchToRedirectTo[params[:qq]])
+        return redirect_to catalog_path(single_match, qq: params[:qq]), notice: <<~MSG
+          You were redirected to an exact match. <a href='/catalog/search?submit_search=true&name=#{params[:qq]}'>Show more results.</a>
+        MSG
+      end
+
+      if searching_for_non_existent_author?
         flash.now[:alert] = "If you're choosing an author, make sure you pick the name from the dropdown list."
         return
+      end
+
+      # TODO: Hmm.
+      if params[:qq].present?
+        params[:name] = params[:qq]
       end
 
       @taxa = Taxa::Search::AdvancedSearch[advanced_search_params]
@@ -29,63 +38,41 @@ module Catalog
       end
     end
 
-    # The "quick search" shares the same view as the "Advanced Search".
-    # The forms could be merged, but having two is pretty nice too.
-    def quick_search
-      if searching_for_nothing_from_the_header?
-        redirect_to action: :index
-        return
-      end
-
-      taxa = Taxa::Search::QuickSearch[
-        params[:qq],
-        search_type: params[:search_type],
-        valid_only: params[:valid_only]
-      ]
-
-      if single_match_we_should_redirect_to? taxa
-        return redirect_to catalog_path(taxa.first, qq: params[:qq])
-      end
-
-      @taxa = taxa.paginate(page: params[:page], per_page: (params[:per_page] || DEFAULT_PER_PAGE))
-
-      @is_quick_search = true
-      render "index"
-    end
-
     private
 
-      # AntWeb's "View in AntCat" links are hardcoded to use the now
-      # deprecated param "st" (starts_with). Links look like this:
-      # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go
-      # (from https://www.antweb.org/images.do?subfamily=agroecomyrmecinae)
-      def antweb_legacy_route
-        if params[:st].present? && params[:qq].present?
-          redirect_to catalog_quick_search_path(qq: params[:qq], im_feeling_lucky: true)
-        end
+      def advanced_search_params
+        params.slice(:author_name, :type, :year, :name, :locality, :valid_only,
+          :biogeographic_region, :genus, :forms, :type_information, :status, :fossil,
+          :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name)
       end
 
       def not_searching_yet?
         params[:submit_search].nil?
       end
 
-      def searching_for_nothing_from_the_header?
-        params[:qq].blank? && params[:im_feeling_lucky].present?
+      def searching_for_nothing_from_header?
+        params[:qq].blank? && searching_from_header?
       end
 
-      def advanced_search_params
-        params.slice :author_name, :type, :year, :name, :locality, :valid_only,
-          :biogeographic_region, :genus, :forms, :type_information, :status, :fossil,
-          :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name
-      end
-
-      def author_search_with_no_matching_authors?
+      def searching_for_non_existent_author?
         return if params[:author_name].blank?
         !AuthorName.where(name: params[:author_name]).exists?
       end
 
-      def single_match_we_should_redirect_to? taxa
-        params[:im_feeling_lucky] && taxa.count == 1
+      def redirect_if_single_exact_match?
+        searching_from_header? || antweb_legacy_route?
+      end
+
+      def searching_from_header?
+        params[SEARCHING_FROM_HEADER].present?
+      end
+
+      # AntWeb's "View in AntCat" links are hardcoded to use the now
+      # deprecated param "st" (starts_with). Links look like this:
+      # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go
+      # (from https://www.antweb.org/images.do?subfamily=agroecomyrmecinae)
+      def antweb_legacy_route?
+        params[:st].present? && params[:qq].present?
       end
 
       def download_filename
