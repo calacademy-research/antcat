@@ -31,7 +31,7 @@ Rails.application.routes.draw do
     get :autocomplete
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
-    get "search", to: "search#index"
+    resource :search, only: :show
     resource :toggle_display, only: :update
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog

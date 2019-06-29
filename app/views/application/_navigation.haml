@@ -45,7 +45,7 @@
               .input-group
                 =text_field_tag 'qq', params[:qq], class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook', placeholder: "Search Catalog"
                 =hidden_field_tag :submit_search, true
-                =hidden_field_tag Catalog::SearchController::SEARCHING_FROM_HEADER, true
+                =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true
                 =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook" do
                   %i.inline-search-icon.fa.fa-search
 
@@ -77,7 +77,7 @@
             .small-9.columns
               =text_field_tag 'qq', params[:qq], class: "typeahead-taxa-js-hook", placeholder: "Search Catalog"
               =hidden_field_tag :submit_search, true
-              =hidden_field_tag Catalog::SearchController::SEARCHING_FROM_HEADER, true
+              =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 

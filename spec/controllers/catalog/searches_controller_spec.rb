@@ -1,20 +1,20 @@
 require 'spec_helper'
 
-describe Catalog::SearchController do
-  describe "GET index" do
+describe Catalog::SearchesController do
+  describe "GET show" do
     context 'when not searching yet' do
       context 'when just visiting the page' do
         it 'renders the search form' do
-          get :index, params: { searching_from_header: 'y', submit_search: 'y', qq: '' }
-          expect(response).to render_template 'index'
+          get :show, params: { searching_from_header: 'y', submit_search: 'y', qq: '' }
+          expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq nil
         end
       end
 
       context 'when searching for nothing from the header' do
         it 'renders the search form' do
-          get :index
-          expect(response).to render_template 'index'
+          get :show
+          expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq nil
         end
       end
@@ -25,23 +25,23 @@ describe Catalog::SearchController do
 
       context 'when searching from the header' do
         it 'redirects to the match' do
-          get :index, params: { searching_from_header: 'y', submit_search: 'y', qq: 'Lasius niger' }
+          get :show, params: { searching_from_header: 'y', submit_search: 'y', qq: 'Lasius niger' }
           expect(response).to redirect_to catalog_path(exact_match, qq: 'Lasius niger')
         end
       end
 
       context 'when following links from AntWeb' do
         it 'redirects to the match' do
-          get :index, params: { st: 'y', submit_search: 'y', qq: 'Lasius niger' }
+          get :show, params: { st: 'y', submit_search: 'y', qq: 'Lasius niger' }
           expect(response).to redirect_to catalog_path(exact_match, qq: 'Lasius niger')
         end
       end
 
       context 'when searching from the search form' do
         it 'shows the results' do
-          get :index, params: { submit_search: 'y', qq: 'Lasius niger' }
+          get :show, params: { submit_search: 'y', qq: 'Lasius niger' }
           expect(response).to_not redirect_to catalog_path(exact_match, qq: 'Lasius niger')
-          expect(response).to render_template 'index'
+          expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq [exact_match]
         end
       end
@@ -49,7 +49,7 @@ describe Catalog::SearchController do
 
     context 'when searching for an author name that does not exist' do
       it 'shows a warning message' do
-        get :index, params: { submit_search: 'y', author_name: 'Pizza Man' }
+        get :show, params: { submit_search: 'y', author_name: 'Pizza Man' }
         expect(response.request.flash[:alert]).
           to eq "If you're choosing an author, make sure you pick the name from the dropdown list."
       end

@@ -1,8 +1,8 @@
 module Catalog
-  class SearchController < ApplicationController
+  class SearchesController < ApplicationController
     SEARCHING_FROM_HEADER = "searching_from_header"
 
-    def index
+    def show
       return if not_searching_yet? || searching_for_nothing_from_header? # Just render the form.
 
       if redirect_if_single_exact_match? && (single_match = Taxa::Search::SingleMatchToRedirectTo[params[:qq]])
