@@ -1,6 +1,5 @@
 module Catalog
   class SearchController < ApplicationController
-    DEFAULT_PER_PAGE = 30
     SEARCHING_FROM_HEADER = "searching_from_header"
 
     def index
@@ -26,7 +25,7 @@ module Catalog
 
       respond_to do |format|
         format.html do
-          @taxa = @taxa.paginate(page: params[:page], per_page: (params[:per_page] || DEFAULT_PER_PAGE))
+          @taxa = @taxa.paginate(page: params[:page], per_page: params[:per_page])
         end
 
         format.text do

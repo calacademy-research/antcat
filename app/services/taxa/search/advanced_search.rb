@@ -29,8 +29,7 @@ module Taxa
           query = query.valid if params[:valid_only]
 
           if params[:author_name].present?
-            author_name = AuthorName.find_by(name: params[:author_name])
-            return Taxon.none if author_name.blank?
+            author_name = AuthorName.find_by!(name: params[:author_name])
             query = query.
               where('reference_author_names.author_name_id' => author_name.author.names).
               joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
@@ -62,8 +61,8 @@ module Taxa
 
           if params[:genus]
             query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
-                      joins('JOIN names AS genus_names ON  genera.name_id = genus_names.id').
-                      where('genus_names.name like ?', "%#{params[:genus]}%")
+                      joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
+                      where('genus_names.name LIKE ?', "%#{params[:genus]}%")
           end
 
           search_term = params[:biogeographic_region]
