@@ -8,8 +8,8 @@ describe Taxa::Statistics::FetchStatistics do
       before do
         subfamily = create :subfamily
         tribe = create :tribe, subfamily: subfamily
-        create :genus, subfamily: subfamily, tribe: tribe
-        create :genus, :homonym, subfamily: subfamily, tribe: tribe
+        homonym_replaced_by = create :genus, subfamily: subfamily, tribe: tribe
+        create :genus, :homonym, homonym_replaced_by: homonym_replaced_by, subfamily: subfamily, tribe: tribe
         2.times { create :subfamily, fossil: true }
       end
 

@@ -25,10 +25,6 @@ Before "@no_travis" do
   end
 end
 
-Before "@chrome_only" do
-  skip_this_scenario unless ENV['DRIVER'] == "chrome"
-end
-
 Before "@skip" do
   skip_this_scenario
 end

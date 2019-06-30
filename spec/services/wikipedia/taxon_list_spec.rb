@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe Wikipedia::TaxonList do
   let!(:taxon) { create :genus }
-  let!(:extant_species) { create_species "Atta cephalotes", genus: taxon }
-  let!(:fossil_species) { create_species "Atta mexicana", genus: taxon, fossil: true }
+  let!(:extant_species) { create :species, name_string: "Atta cephalotes", genus: taxon }
+  let!(:fossil_species) { create :species, name_string: "Atta mexicana", genus: taxon, fossil: true }
 
   describe "#call" do
     it "outputs a wiki-formatted list" do

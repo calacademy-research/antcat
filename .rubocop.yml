@@ -66,17 +66,11 @@ Layout/DotPosition:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
-Layout/EmptyLinesAroundArguments:
-  Enabled: false
-
 Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: rails
 
 Layout/IndentFirstHashElement:
-  Enabled: false
-
-Layout/IndentHeredoc:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:

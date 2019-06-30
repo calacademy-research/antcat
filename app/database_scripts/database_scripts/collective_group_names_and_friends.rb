@@ -1,16 +1,12 @@
 module DatabaseScripts
   class CollectiveGroupNamesAndFriends < DatabaseScript
     def results
-      collective_group_names = Taxon.where(status: Status::COLLECTIVE_GROUP_NAME)
-      as_current_valid_taxon = Taxon.where(current_valid_taxon: collective_group_names)
-      as_species = Taxon.where(genus_id: collective_group_names)
-
       boolean_collective_group_names = Taxon.where(collective_group_name: true)
       boolean_as_current_valid_taxon = Taxon.where(current_valid_taxon: boolean_collective_group_names)
       boolean_as_species = Taxon.where(genus_id: boolean_collective_group_names)
 
       Taxon.where(
-        id: collective_group_names + as_current_valid_taxon + as_species + boolean_collective_group_names + boolean_as_current_valid_taxon + boolean_as_species
+        id: boolean_collective_group_names + boolean_as_current_valid_taxon + boolean_as_species
       )
     end
 
@@ -28,11 +24,7 @@ end
 __END__
 
 description: >
-  Edit the "friends" first, since they will disappear from this list once
-  the status of the collective group name they are referencing is changed.
-
-
   `collective_group_name?` refers to the new parallel status.
 
-tags: [new!]
+tags: []
 topic_areas: [catalog]

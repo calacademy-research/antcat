@@ -1,6 +1,13 @@
 -unless activity.user
   An unregistered user
 
-=activity.action_to_verb
+-case activity.action
+-when 'close_feedback'
+  closed
+-when 'reopen_feedback'
+  re-opened
+-else
+  =activity.action_to_verb
+
 the feedback item
 =activity.link_trackable_if_exists

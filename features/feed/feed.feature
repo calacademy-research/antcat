@@ -1,19 +1,4 @@
 Feature: Feed
-  Background:
-    Given I log in as a catalog editor named "Archibald"
-
-  @javascript
-  Scenario: Deleting activities
-    Given I log in as a superadmin
-    And there is a "create" journal activity
-
-    When I go to the activity feed
-    Then I should see 1 item in the feed
-
-    When I hover the first activity item
-    And I follow "Delete"
-    Then I should see "No activities"
-
   @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin

@@ -23,7 +23,8 @@ Feature: Taxon selector
     And I go to the edit page for "Atta"
     Then the homonym replaced by name should be "Eciton"
 
-    When I set the homonym replaced by name to ""
+    When I select "valid" from "taxon_status"
+    And I set the homonym replaced by name to ""
     And I press "Save"
     And I go to the edit page for "Atta"
     Then the homonym replaced by name should be "(none)"

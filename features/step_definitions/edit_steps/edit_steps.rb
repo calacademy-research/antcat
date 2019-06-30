@@ -90,7 +90,7 @@ Then("the {string} of {string} should be {string}") do |association, taxon_name,
   taxon = Taxon.find_by(name_cache: taxon_name)
   other_taxon = Taxon.find_by(name_cache: other_taxon_name)
 
-  expect(taxon.send(association.to_sym)).to eq other_taxon
+  expect(taxon.public_send(association.to_sym)).to eq other_taxon
 end
 
 When("I set the new parent field to {string}") do |name|

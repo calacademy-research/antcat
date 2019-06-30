@@ -76,7 +76,7 @@ module Catalog
       def advanced_search_params
         params.slice :author_name, :type, :year, :name, :locality, :valid_only,
           :biogeographic_region, :genus, :forms, :type_information, :status, :fossil,
-          :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong
+          :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name
       end
 
       def author_search_with_no_matching_authors?

@@ -58,29 +58,13 @@ class ActivityDecorator < Draper::Decorator
     activity.trackable_type.titleize.downcase
   end
 
-  # TODO move non-general actions to the templates.
+  # Upcase missing actions to make sure they are ugly.
   def action_to_verb
     {
       create: "added",
       update: "edited",
-      destroy: "deleted",
-
-      restart_reviewing: "restarted reviewing",
-      finish_reviewing: "finished reviewing",
-      start_reviewing: "started reviewing",
-
-      approve_change: "approved",
-      undo_change: "undid",
-
-      close_issue: "closed",
-      reopen_issue: "re-opened",
-
-      close_feedback: "closed",
-      reopen_feedback: "re-opened"
+      destroy: "deleted"
     }[activity.action.to_sym] || activity.action.upcase
-
-    # Default to the action name for missing actions (and upcase
-    # upcase to make sure that they are readable but ugly).
   end
 
   private

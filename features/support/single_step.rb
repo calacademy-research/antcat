@@ -1,4 +1,3 @@
-# Use @javascript and `DRIVER=selenium --format pretty` for the full experience
 AfterStep '@single_step' do
   single_step
 end

@@ -23,11 +23,11 @@ describe Taxa::Operations::ForceParentChange do
     end
 
     context "when there is a name collision" do
-      let!(:subspecies) { create :subspecies, name: create(:subspecies_name, name: 'Atta major minor') }
-      let!(:new_parent) { create :species, name: create(:species_name, name: 'Eciton niger') }
+      let!(:subspecies) { create :subspecies, name_string: 'Atta major minor' }
+      let!(:new_parent) { create :species, name_string: 'Eciton niger' }
 
       before do
-        create :subspecies, name: create(:subspecies_name, name: 'Eciton niger minor')
+        create :subspecies, name_string: 'Eciton niger minor'
       end
 
       it "raises" do

@@ -134,7 +134,7 @@ describe Genus do
   end
 
   describe "#find_epithet_in_genus" do
-    let!(:species) { create_species 'Atta serratula' }
+    let!(:species) { create :species, name_string: 'Atta serratula' }
 
     context "when nothing matches" do
       specify { expect(genus.find_epithet_in_genus('sdfsdf')).to eq [] }

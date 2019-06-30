@@ -1,5 +1,15 @@
 FactoryBot.define do
   factory :taxon do
+    transient do
+      name_string {}
+    end
+
+    before(:create) do |taxon, evaluator|
+      if evaluator.name_string
+        taxon.name.name = evaluator.name_string
+      end
+    end
+
     protonym
     valid
 
@@ -88,19 +98,4 @@ FactoryBot.define do
       association :taxon_state, review_state: TaxonState::APPROVED
     end
   end
-end
-
-def create_genus name_string, attributes = {}
-  attributes = attributes.reverse_merge(name: create(:genus_name, name: name_string))
-  FactoryBot.create :genus, attributes
-end
-
-def create_species name_string, attributes = {}
-  attributes = attributes.reverse_merge(name: create(:species_name, name: name_string))
-  FactoryBot.create :species, attributes
-end
-
-def create_subspecies name_string, attributes = {}
-  attributes = attributes.reverse_merge(name: create(:subspecies_name, name: name_string))
-  FactoryBot.create :subspecies, attributes
 end

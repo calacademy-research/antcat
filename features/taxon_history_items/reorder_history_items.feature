@@ -1,4 +1,4 @@
-@javascript @chrome_only
+@skip @javascript
 Feature: Reorder history items
   As an editor of AntCat
   I want to change the order of taxonomic history items

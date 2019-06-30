@@ -3,11 +3,9 @@ require 'spec_helper'
 describe Taxa::Search::QuickSearch do
   describe "#call" do
     let!(:rufa) do
-      create :species,
-        genus: create(:genus, name: create(:genus_name, name: 'Monoceros')),
-        name: create(:species_name, name: 'Monoceros rufa')
+      create :species, name_string: 'Monoceros rufa', genus: create(:genus, name_string: 'Monoceros')
     end
-    let!(:monomorium) { create :genus, name: create(:genus_name, name: 'Monomorium') }
+    let!(:monomorium) { create :genus, name_string: 'Monomorium' }
 
     it "returns an empty array if nothing matches" do
       expect(described_class['sdfsdf']).to eq []
@@ -31,9 +29,9 @@ describe Taxa::Search::QuickSearch do
     end
 
     it "sorts results by name" do
-      lepti = create :subfamily, name: create(:subfamily_name, name: "Lepti")
-      lepta = create :subfamily, name: create(:subfamily_name, name: "Lepta")
-      lepte = create :subfamily, name: create(:subfamily_name, name: "Lepte")
+      lepti = create :subfamily, name_string: "Lepti"
+      lepta = create :subfamily, name_string: "Lepta"
+      lepte = create :subfamily, name_string: "Lepte"
 
       expect(described_class['Lept', search_type: 'beginning_with']).to eq [lepta, lepte, lepti]
     end

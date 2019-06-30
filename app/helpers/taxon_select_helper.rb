@@ -27,7 +27,7 @@ module TaxonSelectHelper
       include TaxonSelectHelper
 
       def taxon_select taxon_attribute_name, rank: nil
-        taxon = object.send taxon_attribute_name
+        taxon = object.public_send taxon_attribute_name
         taxon_id = taxon&.id
 
         select "#{taxon_attribute_name}_id".to_sym,
@@ -38,4 +38,4 @@ module TaxonSelectHelper
     end
 end
 
-ActionView::Helpers::FormBuilder.send(:include, TaxonSelectHelper::FormBuilderAdditions)
+ActionView::Helpers::FormBuilder.include TaxonSelectHelper::FormBuilderAdditions
