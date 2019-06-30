@@ -7,11 +7,17 @@
       Status
       =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
     .medium-2.columns
-      Name contains
+      Name...
       =text_field_tag :name, params[:name]
-    .medium-2.columns.end
+    .medium-2.columns
+      %br
+      =select_tag :name_search_type, options_for_select([['...contains', 'contains'], ['...matches', 'matches'], ['...begins with', 'begins_with']], params[:name_search_type] || "contains")
+    .medium-2.columns
       Genus contains
       =text_field_tag :genus, params[:genus]
+    .medium-2.columns.end
+      Epithet
+      =text_field_tag :epithet, params[:epithet]
 
   .row
     .medium-2.columns
@@ -71,4 +77,4 @@
         =spinner_icon + "Go"
       -if taxa.present?
         &nbsp;
-        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"
+        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"

@@ -40,7 +40,7 @@ module Catalog
     private
 
       def advanced_search_params
-        params.slice(:author_name, :type, :year, :name, :locality, :valid_only,
+        params.slice(:author_name, :type, :year, :name, :name_search_type, :epithet, :locality, :valid_only,
           :biogeographic_region, :genus, :forms, :type_information, :status, :fossil,
           :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name)
       end

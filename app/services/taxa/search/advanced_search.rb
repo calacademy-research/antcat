@@ -19,7 +19,7 @@ module Taxa
 
         attr_reader :params
 
-        def search_results
+        def search_results # rubocop:disable Metrics/PerceivedComplexity
           query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
 
           TAXA_COLUMNS.each do |column|
@@ -57,7 +57,21 @@ module Taxa
               OR type_notes_taxt LIKE :search_term
           SQL
 
-          query = query.where('taxa.name_cache LIKE ?', "%#{params[:name]}%") if params[:name]
+          if params[:name]
+            query = query.joins(:name)
+            query = case params[:name_search_type]
+                    when 'matches'
+                      query.where("names.name = ?", params[:name])
+                    when 'begins_with'
+                      query.where("names.name LIKE ?", params[:name] + '%')
+                    else
+                      query.where("names.name LIKE ?", '%' + params[:name] + '%')
+                    end
+          end
+
+          if params[:epithet]
+            query = query.joins(:name).where('names.epithet = ?', params[:epithet])
+          end
 
           if params[:genus]
             query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
