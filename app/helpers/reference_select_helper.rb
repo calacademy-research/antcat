@@ -27,7 +27,7 @@ module ReferenceSelectHelper
       include ReferenceSelectHelper
 
       def reference_select reference_attribute_name
-        reference = object.send reference_attribute_name
+        reference = object.public_send reference_attribute_name
         reference_id = reference&.id
 
         select "#{reference_attribute_name}_id".to_sym,
@@ -38,4 +38,4 @@ module ReferenceSelectHelper
     end
 end
 
-ActionView::Helpers::FormBuilder.send(:include, ReferenceSelectHelper::FormBuilderAdditions)
+ActionView::Helpers::FormBuilder.include ReferenceSelectHelper::FormBuilderAdditions

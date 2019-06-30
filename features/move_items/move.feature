@@ -3,7 +3,7 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Moving history items
+  Scenario: Moving history items (with feed)
     Given there is a genus "Lasius" with taxonomic history "Best ant in the world"
     And there is a genus "Formica"
 
@@ -28,15 +28,5 @@ Feature: Move items
     When I go to the catalog page for "Formica"
     And I should see "Best ant in the world"
 
-  Scenario: Creating activity feed items when moving items
-    Given there is a genus "Lasius" with taxonomic history "Best ant in the world"
-    And there is a genus "Formica"
-
-    When I go to the catalog page for "Lasius"
-    And I follow "Move items"
-    And I pick "Formica" from the "to_taxon_id" taxon selector
-    And I press "Select..."
-    And I follow "Select all"
-    And I press "Move selected items"
-    And I go to the activity feed
+    When I go to the activity feed
     Then I should see "Archibald moved items belonging to Lasius to Formica" and no other feed items

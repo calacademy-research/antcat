@@ -1,0 +1,10 @@
+-case activity.action
+-when 'approve_change'
+  approved
+-when 'undo_change'
+  undid
+-else
+  =activity.action_to_verb
+
+the change
+=activity.link_trackable_if_exists

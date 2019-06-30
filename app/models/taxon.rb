@@ -3,7 +3,6 @@ class Taxon < ApplicationRecord
   include Workflow::ExternalTable
 
   include Taxa::CallbacksAndValidations
-  include Taxa::PredicateMethods
   include RevisionsCanBeCompared
   include Trackable
 
@@ -58,8 +57,6 @@ class Taxon < ApplicationRecord
   scope :self_join_on, ->(model) {
     joins("LEFT OUTER JOIN `taxa` `taxa_self_join_alias` ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`")
   }
-  scope :ranks, ->(*ranks) { where(type: ranks) }
-  scope :exclude_ranks, ->(*ranks) { where.not(type: ranks) }
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
@@ -81,6 +78,26 @@ class Taxon < ApplicationRecord
 
   def self.name_clash? name
     where(name_cache: name).exists?
+  end
+
+  (Status::STATUSES - [Status::VALID]).each do |status|
+    define_method "#{status.downcase.tr(' ', '_')}?" do
+      self.status == status
+    end
+  end
+
+  # Because `#valid?` clashes with ActiveModel.
+  def valid_taxon?
+    status == Status::VALID
+  end
+
+  def invalid?
+    status != Status::VALID
+  end
+
+  # Overridden in `SpeciesGroupTaxon` (only species and subspecies can be recombinations)
+  def recombination?
+    false
   end
 
   def rank

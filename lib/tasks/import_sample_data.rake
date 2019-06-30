@@ -25,34 +25,34 @@ namespace :antcat do
       antcatini = create :tribe, subfamily: antcatinae, name: create(:tribe_name, name: 'Antcatini')
 
       # a bunch of species
-      pseudoantcatia = create_genus 'Pseudoantcatia', tribe: antcatini
+      pseudoantcatia = create :genus, name_string: 'Pseudoantcatia', tribe: antcatini
       %w[africana maximus indicus celebensis columbi].each do |species|
-        create_species "Pseudoantcatia #{species}", genus: pseudoantcatia
+        create :species, name_string: "Pseudoantcatia #{species}", genus: pseudoantcatia
       end
 
       # a bunch of subspecies
-      antcatia = create_genus 'Antcatia', tribe: antcatini
-      antcatia_tigris = create_species 'Antcatia tigris', genus: antcatia
+      antcatia = create :genus, name_string: 'Antcatia', tribe: antcatini
+      antcatia_tigris = create :species, name_string: 'Antcatia tigris', genus: antcatia
       %w[corbetti jacksoni sumatrae].each do |subspecies|
-        create_subspecies "Antcatia tigris #{subspecies}",
+        create :subspecies, name_string: "Antcatia tigris #{subspecies}",
           subfamily: antcatinae,
           genus: antcatia,
           species: antcatia_tigris
       end
 
       # fossil genus
-      tactania = create_genus 'Tactania', tribe: antcatini, fossil: true
+      tactania = create :genus, name_string: 'Tactania', tribe: antcatini, fossil: true
       %w[sisneopmos sisneuhsnihs silatneiro snorfinalpbus].each do |species|
-        create_species "Tactania #{species}", genus: tactania, fossil: true
+        create :species, name_string: "Tactania #{species}", genus: tactania, fossil: true
       end
 
       # fossil subfamily
       paraantcatinae = create :subfamily, name: create(:subfamily_name, name: 'Paraantcatinae')
       paraantcatini = create :tribe, subfamily: paraantcatinae, name: create(:tribe_name, name: 'Paraantcatini')
 
-      paraantcatia = create_genus 'Paraantcatia', tribe: paraantcatini, fossil: true
+      paraantcatia = create :genus, name_string: 'Paraantcatia', tribe: paraantcatini, fossil: true
       %w[subplanifrons orientalis shinshuensis sompoensis].each do |species|
-        create_species "Paraantcatia #{species}", genus: paraantcatia, fossil: true
+        create :species, name_string: "Paraantcatia #{species}", genus: paraantcatia, fossil: true
       end
 
       puts "Creating user..."

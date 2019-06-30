@@ -102,10 +102,6 @@ class Change < ApplicationRecord
     def whodunnit_via_change_id
       version = versions.where.not(whodunnit: nil).first
       version&.user
-    # TODO: There are two deleted users with associated versions:
-    # `PaperTrail::Version.where.not(whodunnit: User.select(:id)).distinct.pluck(:whodunnit)` # ["55", "59"]
-    rescue ActiveRecord::RecordNotFound
-      nil
     end
 
     def most_recent_valid_taxon_version

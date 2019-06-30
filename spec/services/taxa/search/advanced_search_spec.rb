@@ -51,6 +51,36 @@ describe Taxa::Search::AdvancedSearch do
       end
     end
 
+    describe "searching by name" do
+      let!(:f_fusca) { create :species, name_string: 'Formica fusca' }
+      let!(:f_fusca_rufa) { create :subspecies, name_string: 'Formica fusca rufa' }
+      let!(:l_fusca) { create :species, name_string: 'Lasius fusca' }
+
+      specify do
+        expect(described_class[name: 'fusca', name_search_type: 'contains']).
+          to match_array [f_fusca, f_fusca_rufa, l_fusca]
+      end
+
+      specify do
+        expect(described_class[name: 'Formica fusca', name_search_type: 'matches']).
+          to match_array [f_fusca]
+      end
+
+      specify do
+        expect(described_class[name: 'Formica fusca', name_search_type: 'begins_with']).
+          to match_array [f_fusca, f_fusca_rufa]
+      end
+    end
+
+    describe "searching by epithet" do
+      let!(:taxon) { create :species, name_string: 'Lasius niger' }
+
+      it 'only considers exact matches' do
+        expect(described_class[epithet: 'niger']).to eq [taxon]
+        expect(described_class[epithet: 'nige']).to eq []
+      end
+    end
+
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = create :reference, author_name: 'Bolton'
@@ -196,6 +226,15 @@ describe Taxa::Search::AdvancedSearch do
       specify { expect(described_class[hong: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[hong: "true"]).to match_array [yes_match] }
       specify { expect(described_class[hong: "false"]).to match_array [no_match] }
+    end
+
+    describe "searching by collective group name" do
+      let!(:no_match) { create :family }
+      let!(:yes_match) { create :family, collective_group_name: true }
+
+      specify { expect(described_class[collective_group_name: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[collective_group_name: "true"]).to match_array [yes_match] }
+      specify { expect(described_class[collective_group_name: "false"]).to match_array [no_match] }
     end
   end
 end

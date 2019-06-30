@@ -26,6 +26,7 @@ module EditorsPanels
       TaxonHistoryItem
       TaxonState
       Tooltip
+      WikiPage
     ]
 
     before_action :ensure_user_is_editor

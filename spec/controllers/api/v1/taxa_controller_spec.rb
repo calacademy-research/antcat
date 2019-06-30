@@ -42,7 +42,7 @@ describe Api::V1::TaxaController do
   end
 
   describe "GET search" do
-    before { create_species 'Atta minor maxus' }
+    before { create :species, name_string: 'Atta minor maxus' }
 
     it "searches for taxa" do
       get :search, params: { string: 'maxus' }

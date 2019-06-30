@@ -4,7 +4,7 @@ module Taxa
       include Service
 
       RANKS = %w[Subfamily Tribe Genus Subgenus Species Subspecies]
-      TAXA_COLUMNS = %i[fossil nomen_nudum unresolved_homonym ichnotaxon hong status type]
+      TAXA_COLUMNS = %i[fossil nomen_nudum unresolved_homonym ichnotaxon hong status type collective_group_name]
 
       def initialize params
         @params = params.delete_if { |_key, value| value.blank? }
@@ -19,7 +19,7 @@ module Taxa
 
         attr_reader :params
 
-        def search_results
+        def search_results # rubocop:disable Metrics/PerceivedComplexity
           query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
 
           TAXA_COLUMNS.each do |column|
@@ -29,8 +29,7 @@ module Taxa
           query = query.valid if params[:valid_only]
 
           if params[:author_name].present?
-            author_name = AuthorName.find_by(name: params[:author_name])
-            return Taxon.none if author_name.blank?
+            author_name = AuthorName.find_by!(name: params[:author_name])
             query = query.
               where('reference_author_names.author_name_id' => author_name.author.names).
               joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
@@ -58,12 +57,26 @@ module Taxa
               OR type_notes_taxt LIKE :search_term
           SQL
 
-          query = query.where('taxa.name_cache LIKE ?', "%#{params[:name]}%") if params[:name]
+          if params[:name]
+            query = query.joins(:name)
+            query = case params[:name_search_type]
+                    when 'matches'
+                      query.where("names.name = ?", params[:name])
+                    when 'begins_with'
+                      query.where("names.name LIKE ?", params[:name] + '%')
+                    else
+                      query.where("names.name LIKE ?", '%' + params[:name] + '%')
+                    end
+          end
+
+          if params[:epithet]
+            query = query.joins(:name).where('names.epithet = ?', params[:epithet])
+          end
 
           if params[:genus]
             query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
-                      joins('JOIN names AS genus_names ON  genera.name_id = genus_names.id').
-                      where('genus_names.name like ?', "%#{params[:genus]}%")
+                      joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
+                      where('genus_names.name LIKE ?', "%#{params[:genus]}%")
           end
 
           search_term = params[:biogeographic_region]

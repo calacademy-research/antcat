@@ -1,0 +1,11 @@
+-@title = 'Advanced Search'
+-breadcrumb :catalog_search
+
+-content_for :head do
+  =javascript_include_tag 'controllers/catalog/search/authors_autocompletion'
+
+=render "advanced_search_form", taxa: @taxa
+
+-if @taxa
+  %hr
+  =render 'results', taxa: @taxa

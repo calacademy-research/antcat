@@ -19,11 +19,6 @@ Given("there is a genus located in {string}") do |locality|
   create :genus, protonym: protonym
 end
 
-Given("there is a species located in {string}") do |locality|
-  protonym = create :protonym, locality: locality
-  create :species, protonym: protonym
-end
-
 Given("there is a species with biogeographic region {string}") do |biogeographic_region|
   protonym = create :protonym, biogeographic_region: biogeographic_region
   create :species, protonym: protonym
@@ -33,10 +28,6 @@ Given("there is a species with forms {string}") do |forms|
   citation = create :citation, forms: forms
   protonym = create :protonym, authorship: citation
   create :species, protonym: protonym
-end
-
-When("I check valid only in the advanced search form") do
-  find(:css, "#advanced_search input[type='checkbox']").set true
 end
 
 Then("I should get a download with the filename {string} and today's date") do |filename|

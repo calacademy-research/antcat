@@ -7,7 +7,7 @@ module LayoutsHelper
     string = ''.html_safe
     string << "#{title} - " if title
     string << "AntCat"
-    string << (Rails.env.production? ? '' : " (#{Rails.env})")
+    string << " (#{Rails.env})" unless Rails.env.production?
     string
   end
 end

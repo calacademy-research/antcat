@@ -40,18 +40,10 @@ RSpec.configure do |config|
 end
 
 # "webkit" is our default driver. It's headless.
-# "selenium" really means Firefox. It's usually broken, and not headless.
-# "chrome" is from the gem 'chromedriver-helper'. Not headless.
 def set_driver
   driver = ENV['DRIVER'] || "webkit"
   puts "Using driver: #{driver}.".blue
   case driver
-  when "selenium"
-    Capybara.javascript_driver = :selenium
-  when "chrome"
-    Capybara.register_driver :selenium do |app|
-      Capybara::Selenium::Driver.new app, browser: :chrome
-    end
   when "webkit"
     Capybara.javascript_driver = :webkit
   end

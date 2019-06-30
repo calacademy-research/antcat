@@ -3,15 +3,20 @@ require "spec_helper"
 describe Taxa::AnyNonTaxtReferences do
   describe "#call" do
     let!(:taxon) { create :family }
-    let!(:other_taxon) { create :family, :homonym, type_taxt: "{tax #{taxon.id}}" }
 
     context "when taxon has non-taxt references" do
-      before { other_taxon.update homonym_replaced_by: taxon }
+      before do
+        create :family, :homonym, homonym_replaced_by: taxon
+      end
 
       it { expect(described_class[taxon]).to be true }
     end
 
     context "when taxon has no non-taxt references" do
+      before do
+        create :family, type_taxt: "{tax #{taxon.id}}"
+      end
+
       it { expect(described_class[taxon]).to be false }
     end
   end

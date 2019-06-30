@@ -1,5 +1,5 @@
 Given("the Formicidae family exists") do
-  create :family, name: create(:family_name, name: "Formicidae")
+  create :family, name_string: "Formicidae"
 end
 
 Given("Formicidae has a history item {string}") do |string|

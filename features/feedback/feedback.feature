@@ -48,7 +48,7 @@ Feature: Feedback
     Then I should see "Message sent"
     And I should see "Thanks for helping us make AntCat better!"
 
-  Scenario: Unregistered user submitting feedback
+  Scenario: Unregistered user submitting feedback (with feed)
     When I click on the Feedback link
       And I fill in "feedback_comment" with "Great site!!!"
       And I click "#submit-feedback-js"
@@ -58,7 +58,10 @@ Feature: Feedback
     And I go to the feedback index
     Then I should see "[no name] <[no email];"
 
-  Scenario: Registered user submitting feedback
+    When I go to the activity feed
+    Then I should see "An unregistered user added the feedback item #"
+
+  Scenario: Registered user submitting feedback (with feed)
     Given I log in as a catalog editor named "Archibald"
 
     When I click on the Feedback link
@@ -68,6 +71,9 @@ Feature: Feedback
 
     When I go to the feedback index
     Then I should see "Archibald submitted"
+
+    When I go to the activity feed
+    Then I should see "Archibald added the feedback item #"
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"

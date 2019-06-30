@@ -12,6 +12,9 @@ class CatalogController < ApplicationController
   def index
     @taxon = Family.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).first
 
+    # NOTE: Special case to avoid showing ~6 A4 pages of Formicidae references and use a different title.
+    @is_formicidae_landing_page = true
+
     setup_taxon_browser
     render 'show'
   end
@@ -29,16 +32,6 @@ class CatalogController < ApplicationController
         render partial: "taxon_browser/tab", locals: { tab: tab, cap: false }
       end
     end
-  end
-
-  def show_valid_only
-    session[:show_invalid] = false
-    redirect_back fallback_location: root_path
-  end
-
-  def show_invalid
-    session[:show_invalid] = true
-    redirect_back fallback_location: root_path
   end
 
   def autocomplete
