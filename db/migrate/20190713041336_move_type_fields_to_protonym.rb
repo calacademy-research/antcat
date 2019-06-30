@@ -1,9 +1,3 @@
-# TODO:
-# rails g migration remove_type_information_from_taxa
-#    remove_column :taxa, :primary_type_information, :text
-#    remove_column :taxa, :secondary_type_information, :text
-#    remove_column :taxa, :type_notes, :text
-
 class MoveTypeFieldsToProtonym < ActiveRecord::Migration[5.2]
   def change
     add_column :protonyms, :primary_type_information_taxt, :text
