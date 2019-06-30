@@ -19,11 +19,11 @@ Feature: Editing a taxon
 
   @javascript
   Scenario: Changing the type name
-    Given there is a genus "Atta" with type name "Lasius niger"
+    Given there is a genus "Atta"
     And there is a species "Eciton minor"
 
     When I go to the catalog page for "Atta"
-    Then I should see "Type-species: Lasius niger"
+    Then I should not see "Type-speciesr"
 
     When I follow "Edit"
     And I set the type name to "Eciton minor"

@@ -4,8 +4,8 @@ Feature: Converting a species to a subspecies
 
   @javascript
   Scenario: Converting a species to a subspecies (with feed)
-    Given there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
+    And there is a species "Camponotus alii" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
@@ -22,9 +22,8 @@ Feature: Converting a species to a subspecies
 
   @javascript
   Scenario: Converting a species to a subspecies when it already exists
-    Given there is a subspecies "Camponotus alii dallatorei" with genus "Camponotus" and no species
-    And there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii" in the genus "Camponotus"
+    And there is a species "Camponotus dallatorei" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
@@ -35,7 +34,7 @@ Feature: Converting a species to a subspecies
   @javascript
   Scenario: Converting a species to a subspecies when the species has subspecies
     Given there is a species "Camponotus alii"
-    And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
+    And there is a subspecies "Camponotus alii major" in the species "Camponotus alii"
 
     When I go to the catalog page for "Camponotus alii"
     And I follow "Convert to subspecies"
@@ -44,8 +43,8 @@ Feature: Converting a species to a subspecies
     Then I should see "This species has subspecies of its own"
 
   Scenario: Leaving the species blank
-    Given there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
+    And there is a species "Camponotus alii" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"

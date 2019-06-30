@@ -2,10 +2,10 @@ Feature: Using the catalog
   Background:
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae"
-    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
-    And there is a species "Dolichoderus abruptus" with genus "Dolichoderus"
-    And there is a subspecies "Dolichoderus abruptus minor" which is a subspecies of "Dolichoderus abruptus"
+    And there is a tribe "Dolichoderini" in the subfamily "Dolichoderinae"
+    And there is a genus "Dolichoderus" in the tribe "Dolichoderini"
+    And there is a species "Dolichoderus abruptus" in the genus "Dolichoderus"
+    And there is a subspecies "Dolichoderus abruptus minor" in the species "Dolichoderus abruptus"
     And I go to the catalog
 
   Scenario: Going to the main page

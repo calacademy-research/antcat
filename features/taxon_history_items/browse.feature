@@ -3,8 +3,8 @@ Feature: Taxon history items
     Given I am logged in
 
   Scenario: Filtering taxon history items by search query
-    Given there is a taxon history item with the taxt "typo of Forel"
-    And there is a taxon history item with the taxt "typo of August"
+    Given there is a history item "typo of Forel"
+    And there is a history item "typo of August"
 
     When I go to the taxon history items page
     Then I should see "typo of Forel"

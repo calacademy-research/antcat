@@ -84,7 +84,7 @@ Feature: Adding a taxon successfully
     And I should see "Dolichoderus major" in the protonym
 
   Scenario: Adding a subspecies
-    Given there is a species "Eciton major" with genus "Eciton"
+    Given there is a species "Eciton major" in the genus "Eciton"
 
     When I go to the catalog page for "Eciton major"
     And I follow "Add subspecies"

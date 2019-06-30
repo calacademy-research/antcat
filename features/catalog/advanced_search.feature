@@ -29,7 +29,7 @@ Feature: Searching the catalog
     Then I should see "1 result"
 
   Scenario: Finding a genus
-    Given there is a species "Atta major" with genus "Atta"
+    Given there is a species "Atta major" in the genus "Atta"
 
     When I fill in "genus" with "Atta"
     And I press "Go"
