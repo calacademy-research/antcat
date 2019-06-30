@@ -2,6 +2,34 @@ Feature: Editing a history item
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  Scenario: Adding a history item (with edit summary)
+    Given there is a genus "Atta"
+
+    When I go to the edit page for "Atta"
+    Then the history should be empty
+
+    When I click the add taxon history item button
+    And I fill in "taxt" with "Abc"
+    And I fill in "edit_summary" with "added new stuff"
+    And I press "Save"
+    Then the history should be "Abc"
+
+    When I go to the activity feed
+    Then I should see "Archibald added the history item #" and no other feed items
+    And I should see "belonging to Atta"
+    And I should see the edit summary "added new stuff"
+
+  @javascript
+  Scenario: Adding a history item with blank taxt
+    Given there is a genus "Atta"
+
+    When I go to the edit page for "Atta"
+    Then the history should be empty
+
+    When I click the add taxon history item button
+    And I press "Save"
+    Then I should see "Taxt can't be blank"
+
   @javascript
   Scenario: Editing a history item (with feed)
     Given the Formicidae family exists
@@ -62,34 +90,6 @@ Feature: Editing a history item
     And I fill in "taxt" with ""
     And I save the taxon history item
     Then I should see an alert "Taxt can't be blank"
-
-  Scenario: Adding a history item (with edit summary)
-    Given there is a genus "Atta"
-
-    When I go to the edit page for "Atta"
-    Then the history should be empty
-
-    When I click the add taxon history item button
-    And I fill in "taxt" with "Abc"
-    And I fill in "edit_summary" with "added new stuff"
-    And I press "Save"
-    Then the history should be "Abc"
-
-    When I go to the activity feed
-    Then I should see "Archibald added the history item #" and no other feed items
-    And I should see "belonging to Atta"
-    And I should see the edit summary "added new stuff"
-
-  @javascript
-  Scenario: Adding a history item with blank taxt
-    Given there is a genus "Atta"
-
-    When I go to the edit page for "Atta"
-    Then the history should be empty
-
-    When I click the add taxon history item button
-    And I press "Save"
-    Then I should see "Taxt can't be blank"
 
   @javascript
   Scenario: Deleting a history item
