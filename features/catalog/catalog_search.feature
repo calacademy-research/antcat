@@ -1,7 +1,6 @@
 Feature: Searching the catalog
   Background:
-    Given there is a subfamily "Dolichoderinae"
-    And there is a species "Dolichoderus major" with genus "Dolichoderus"
+    Given there is a species "Lasius niger"
     And I go to the catalog
 
   Scenario: Searching when no results
@@ -9,26 +8,27 @@ Feature: Searching the catalog
     And I press the search button by the catalog search box
     Then I should see "No results found."
 
-  Scenario: Searching for a 'beginning with' match
-    When I fill in the catalog search box with "doli"
-    And I press the search button by the catalog search box
-    Then I should see "Dolichoderinae" in the search results
-    And I should see "Dolichoderus" in the search results
-    And I should not see "Dolichoderus major" in the search results
+  Scenario: Searching with results
+    Given there is a species "Formica niger"
 
-  Scenario: Searching for a 'containing' match
-    When I fill in the catalog search box with "jor"
+    When I fill in the catalog search box with "niger"
     And I press the search button by the catalog search box
-    Then I should see "No results"
+    Then I should see "Formica niger" in the search results
+    And I should see "Lasius niger" in the search results
 
-    When I select "Containing" from "search_type"
-    And I press "Go" in "#quick_search"
-    Then I should see "Dolichoderus major"
+  Scenario: Searching for an exact match
+    When I fill in the catalog search box with "Lasius niger"
+    And I press the search button by the catalog search box
+    Then I should be on the catalog page for "Lasius niger"
+    And I should see "You were redirected to an exact match"
+    And I should see "Show more results"
 
   @javascript
   Scenario: Search using autocomplete
-    When I fill in the catalog search box with "majo"
+    Given there is a species "Lasius flavus"
+
+    When I fill in the catalog search box with "nig"
     Then I should see the following autocomplete suggestions:
-      | Dolichoderus major |
+      | Lasius niger |
     And I should not see the following autocomplete suggestions:
-      | Dolichoderini |
+      | Lasius flavus |

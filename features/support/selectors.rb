@@ -23,14 +23,10 @@ module HtmlSelectorsHelpers
       '.headline'
 
     # Catalog search.
-    when /the search box/
-      "#q"
     when /the catalog search box/
       "#qq"
     when /the search results/
       "table"
-    when /the search section/
-      "#advanced_search"
 
     # Merge authors.
     when /the author panel/, /the first author panel/

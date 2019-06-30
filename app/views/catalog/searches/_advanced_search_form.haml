@@ -4,45 +4,51 @@
       Rank
       =select_tag :type, options_for_select(Taxa::Search::AdvancedSearch::RANKS, params[:type]), include_blank: "Any"
     .medium-2.columns
-      Described by
-      =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
+      Status
+      =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
     .medium-2.columns
-      Described year
-      =text_field_tag :year, params[:year], placeholder: "eg 1990, or 2000-2005"
-    .medium-3.columns
-      Name contains
+      Name...
       =text_field_tag :name, params[:name]
-    .medium-3.columns.end
+    .medium-2.columns
+      %br
+      =select_tag :name_search_type, options_for_select([['...contains', 'contains'], ['...matches', 'matches'], ['...begins with', 'begins_with']], params[:name_search_type] || "contains")
+    .medium-2.columns
       Genus contains
       =text_field_tag :genus, params[:genus]
+    .medium-2.columns.end
+      Epithet
+      =text_field_tag :epithet, params[:epithet]
 
   .row
-    .medium-3.columns
+    .medium-2.columns
+      Fossil
+      =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
+    .medium-2.columns
+      Described by
+      =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
+    .medium-2.columns.end
+      Described year
+      =text_field_tag :year, params[:year], placeholder: "eg 1990, or 2000-2005"
+
+  .row
+    .medium-2.columns
       Biogeographic region
       =select_tag :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + ['None'], params[:biogeographic_region]), include_blank: "Any"
-    .medium-3.columns
+    .medium-2.columns
       Locality contains
       =text_field_tag :locality, params[:locality]
     .medium-3.columns
       Type information contains
       =text_field_tag :type_information, params[:type_information]
-    .medium-3.columns.end
+    .medium-2.columns.end
       Forms contains
       =text_field_tag :forms, params[:forms]
 
   .row
-    .medium-2.columns
-      Status
-      =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
-    .medium-2.columns
-      Fossil
-      =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
-
-    .medium-3.columns.end
+    .medium-3.columns
       Unresolved junior homonym
       =select_tag :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
 
-  .row
     .medium-2.columns
       Collective group name
       =select_tag :collective_group_name, yes_no_options_for_select(params[:collective_group_name]), include_blank: "Either"
@@ -71,4 +77,4 @@
         =spinner_icon + "Go"
       -if taxa.present?
         &nbsp;
-        =link_to 'Download (advanced search only)', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"
+        =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"
