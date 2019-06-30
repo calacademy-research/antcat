@@ -31,7 +31,7 @@ Feature: Force-changing parent
   Scenario: Changing a genus's subfamily
     Given the Formicidae family exists
     And there is a subfamily "Attininae"
-    And genus "Atta" exists in that subfamily
+    And a genus exists with a name of "Atta" and a subfamily of "Attininae"
     And there is a subfamily "Ecitoninae"
 
     When I go to the catalog page for "Atta"

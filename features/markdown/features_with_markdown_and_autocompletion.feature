@@ -12,7 +12,7 @@ Feature: Features with markdown and autocompletion
     Then there should be a textarea with markdown and autocompletion
 
   Scenario: Comments
-    Given a visitor has submitted a feedback with the comment "Cool."
+    Given a visitor has submitted a feedback
     And I go to the most recent feedback item
 
     Then there should be a textarea with markdown and autocompletion

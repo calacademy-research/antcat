@@ -12,15 +12,8 @@ Then("I should see {string} and no other feed items") do |text|
 end
 
 Then("I should see {int} item(s) in the feed") do |expected_count|
+  feed_items_count = all("table.activities > tbody tr").size
   expect(feed_items_count).to eq expected_count.to_i
-end
-
-Then("I should see at least {int} item(s) in the feed") do |expected_count|
-  expect(feed_items_count).to be >= expected_count.to_i
-end
-
-def feed_items_count
-  all("table.activities > tbody tr").size
 end
 
 When("I hover the first activity item") do
@@ -35,9 +28,8 @@ end
 
 # Journal
 Given("there is a {string} journal activity") do |action|
-  cheat_and_set_user_for_feed
-  journal = create :journal, name: "Archibald Bulletin"
-  journal.create_activity action.to_sym
+  journal = create :journal
+  create :activity, action: action.to_sym, trackable: journal, user: User.last # TODO.
 end
 
 When("I click on Show more") do
@@ -59,9 +51,4 @@ Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, conta
   else
     expect(match).to be_truthy
   end
-end
-
-# TODO: Remove.
-def cheat_and_set_user_for_feed
-  User.current = User.last
 end

@@ -1,7 +1,7 @@
 Feature: Prompts with edit summaries
   @javascript
   Scenario: Entering an edit summary in the prompt
-    Given there is a feedback item
+    Given a visitor has submitted a feedback
     And I log in as a superadmin named "Archibald"
 
     When I go to the most recent feedback item

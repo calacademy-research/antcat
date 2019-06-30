@@ -1,9 +1,7 @@
-Given("Eciton has a taxonomic history item that mentions Atta and a Batiatus reference") do
-  atta = Taxon.find_by(name_cache: "Atta")
+Given("Eciton has a taxonomic history item that references Atta and a reference") do
   eciton = Taxon.find_by(name_cache: "Eciton")
-  reference = create :article_reference, citation_year: 2000,
-    author_names: [create(:author_name, name: "Batiatus, Q.")]
+  atta = Taxon.find_by(name_cache: "Atta")
+  reference = create :article_reference
 
-  taxt = "As a synonym of {tax #{atta.id}}: {ref #{reference.id}}"
-  eciton.history_items.create! taxt: taxt
+  create :taxon_history_item, taxt: "{tax #{atta.id}}: {ref #{reference.id}}", taxon: eciton
 end

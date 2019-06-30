@@ -40,15 +40,11 @@ Then("the history should be empty") do
   expect(page).to_not have_css '.history-items .history-item'
 end
 
-When(/^I add a history item to "([^"]*)"(?: that includes a tag for "([^"]*)"?$)?/) do |name, tagged_name|
+When("I add a history item to {string} that includes a tag for {string}") do |name, tagged_name|
   taxon = Taxon.find_by(name_cache: name)
-  taxt =  if tagged_name
-            tag_taxon = Taxon.find_by(name_cache: tagged_name)
-            "{tax #{tag_taxon.id}}"
-          else
-            'Tag'
-          end
-  taxon.history_items.create! taxt: taxt
+  tag_taxon = Taxon.find_by(name_cache: tagged_name)
+
+  create :taxon_history_item, taxt: "{tax #{tag_taxon.id}}", taxon: taxon
 end
 
 When("I add a history item {string}") do |text|

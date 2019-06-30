@@ -4,7 +4,7 @@ Feature: Move items
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Moving history items (with feed)
-    Given there is a genus "Lasius" with taxonomic history "Best ant in the world"
+    Given there is a genus "Lasius" with a history item "Best ant in the world"
     And there is a genus "Formica"
 
     When I go to the catalog page for "Lasius"

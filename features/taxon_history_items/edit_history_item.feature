@@ -32,8 +32,7 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Editing a history item (with feed)
-    Given the Formicidae family exists
-    And Formicidae has a history item "Formicidae as family"
+    Given Formicidae exists with a history item "Formicidae as family"
 
     When I go to the edit page for "Formicidae"
     Then the history should be "Formicidae as family"
@@ -54,8 +53,7 @@ Feature: Editing a history item
     And I should see the edit summary "fix typo"
 
   Scenario: Editing a history item (without JavaScript)
-    Given the Formicidae family exists
-    And Formicidae has a history item "Formicidae as family"
+    Given Formicidae exists with a history item "Formicidae as family"
 
     When I go to the page of the most recent history item
     And I follow "Edit"
@@ -68,8 +66,7 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Editing a history item, but cancelling
-    Given the Formicidae family exists
-    And Formicidae has a history item "Formicidae as family"
+    Given Formicidae exists with a history item "Formicidae as family"
 
     When I go to the edit page for "Formicidae"
     And I click on the edit taxon history item button
@@ -82,8 +79,7 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Editing an item so it's blank
-    Given the Formicidae family exists
-    And Formicidae has a history item "Formicidae as family"
+    Given Formicidae exists with a history item "Formicidae as family"
 
     When I go to the edit page for "Formicidae"
     And I click on the edit taxon history item button
@@ -93,7 +89,7 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Deleting a history item
-    Given there is a genus "Eciton" with taxonomic history "Eciton history"
+    Given there is a genus "Eciton" with a history item "Eciton history"
 
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history"
@@ -113,7 +109,7 @@ Feature: Editing a history item
   @javascript
   Scenario: Seeing the markdown preview (and cancelling)
     Given there is a Giovanni reference
-    And there is a genus "Eciton" with taxonomic history "Eciton history, {ref 7777}"
+    And there is a genus "Eciton" with a history item "Eciton history, {ref 7777}"
 
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history, Giovanni, 1809"

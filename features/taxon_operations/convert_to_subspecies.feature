@@ -13,9 +13,7 @@ Feature: Converting a species to a subspecies
     And I should see "to be a subspecies of"
 
     When I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
     And "Camponotus alii dallatorei" should be of the rank of "subspecies"
 
@@ -31,9 +29,7 @@ Feature: Converting a species to a subspecies
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should see "This name is in use by another taxon"
 
   @javascript
@@ -44,9 +40,7 @@ Feature: Converting a species to a subspecies
     When I go to the catalog page for "Camponotus alii"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should see "This species has subspecies of its own"
 
   Scenario: Leaving the species blank

@@ -1,5 +1,9 @@
 # TODO DRY w.r.t `notifications_steps.rb`.
 
+def markdown_textarea
+  find ".preview-area textarea"
+end
+
 Given("I am on a page with a textarea with markdown preview and autocompletion") do
   step 'I go to the open issues page'
   step 'I follow "New"'
@@ -49,8 +53,4 @@ Then("there should be a textarea with markdown and autocompletion") do
   find "textarea[data-previewable]"
   find "textarea[data-has-mentionables]"
   find "textarea[data-has-linkables]"
-end
-
-def markdown_textarea
-  find ".preview-area textarea"
 end

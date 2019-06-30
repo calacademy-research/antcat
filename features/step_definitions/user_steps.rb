@@ -1,10 +1,9 @@
-Given("this/these user(s) exists") do |table|
-  table.hashes.each { |hash| create :user, hash }
-end
-
 def login_programmatically user
   login_as user, scope: :user, run_callbacks: false
-  @current_cucumber_user = user # Add as instance variable to make it available for other steps.
+end
+
+Given("this/these user(s) exists") do |table|
+  table.hashes.each { |hash| create :user, hash }
 end
 
 When("I log in as {string}") do |name|

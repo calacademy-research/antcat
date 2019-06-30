@@ -17,7 +17,7 @@ Feature: Editor's Panel
     And I should see "Batiatus commented on the issue Typos:"
 
   Scenario: See number of unreviewed changes
-    Given a visitor has submitted a feedback with the comment "Fix spelling"
+    Given a visitor has submitted a feedback
     And Batiatus has commented "Cool" on an issue with the title "Typos"
 
     When I go to the Editor's Panel

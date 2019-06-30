@@ -1,7 +1,7 @@
 Feature: Site notices
   Background:
     Given I log in as a catalog editor named "Batiatus"
-    And there is a site notice I haven't read yet
+    And there is a site notice "A Site Notice" I haven't read yet
     And I go to the users page
 
   Scenario: Adding a site notice
@@ -20,7 +20,6 @@ Feature: Site notices
     When I follow the first "new notice!"
     And I follow "A Site Notice"
     Then I should see "A Site Notice"
-    And I should see "Cash is King, that's the message."
     And I should not see any unread site notices
 
   Scenario: Mark all as read from the site notices page

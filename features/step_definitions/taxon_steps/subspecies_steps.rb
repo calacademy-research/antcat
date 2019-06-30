@@ -1,9 +1,6 @@
 Given("there is a subspecies {string} which is a subspecies of {string}") do |subspecies_name, species_name|
-  create :subspecies, name_string: subspecies_name, species: Species.find_by(name_cache: species_name)
-end
-
-Given("a subspecies exists for that species with a name of {string}") do |name|
-  create :subspecies, name_string: name, species: @species, genus: @species.genus
+  species = Species.find_by(name_cache: species_name)
+  create :subspecies, name_string: subspecies_name, species: species, genus: species.genus
 end
 
 Given("there is a subspecies {string} which is a subspecies of {string} in the genus {string}") do |subspecies, species, genus|
