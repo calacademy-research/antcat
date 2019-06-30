@@ -1,6 +1,6 @@
 Feature: Institutions
   Background:
-  Scenario: Adding an institution (with feed)
+  Scenario: Adding an institution (with edit summary)
     Given I log in as a catalog editor named "Archibald"
 
     When I go to the Editor's Panel
@@ -20,10 +20,10 @@ Feature: Institutions
     And I should see "California Academy of Sciences"
 
     When I go to the activity feed
-    Then I should see "Archibald added the institution CASC" and no other feed items
+    Then I should see "Archibald added the institution CASC" in the feed
     And I should see the edit summary "fix typo"
 
-  Scenario: Editing an institution (with feed)
+  Scenario: Editing an institution (with edit summary)
     Given there is an institution "CASC" ("California Academy of Sciences")
     And I log in as a catalog editor named "Archibald"
 
@@ -41,7 +41,7 @@ Feature: Institutions
     And I should see "Sweden Academy of Sciences"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the institution SASC" and no other feed items
+    Then I should see "Archibald edited the institution SASC" in the feed
     And I should see the edit summary "fix typo"
 
   Scenario: Deleting an institution (with feed)
@@ -56,4 +56,4 @@ Feature: Institutions
     And I should not see "CASC"
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the institution CASC" and no other feed items
+    Then I should see "Archibald deleted the institution CASC" in the feed

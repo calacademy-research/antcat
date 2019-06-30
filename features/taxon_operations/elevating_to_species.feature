@@ -11,7 +11,7 @@ Feature: Elevating subspecies to species
     And "Solenopsis subbus" should be of the rank of "species"
 
     When I go to the activity feed
-    Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" and no other feed items
+    Then I should see "Archibald elevated the subspecies Solenopsis speccus subbus to the rank of species (now Solenopsis subbus)" in the feed
 
   Scenario: Elevating to species when the species name exists
     Given there is a species "Solenopsis subbus"

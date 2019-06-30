@@ -28,6 +28,10 @@ module HtmlSelectorsHelpers
     when /the search results/
       "table"
 
+    # Editor's Panel.
+    when /the feed/
+      'table.activities'
+
     # Merge authors.
     when /the author panel/, /the first author panel/
       find ".author_panel", match: :first

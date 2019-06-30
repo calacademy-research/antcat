@@ -68,7 +68,7 @@ Feature: Adding a taxon successfully
     And I should see "Add another"
 
     When I go to the activity feed
-    Then I should see "Archibald added the species Eciton major to the genus Eciton" and no other feed items
+    Then I should see "Archibald added the species Eciton major to the genus Eciton" in the feed
     And I should see the edit summary "cool new species"
 
   Scenario: Adding a species to a subgenus

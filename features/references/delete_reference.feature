@@ -12,7 +12,7 @@ Feature: Delete reference
     Then I should see "Reference was successfully deleted"
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the reference Fisher, 2004" and no other feed items
+    Then I should see "Archibald deleted the reference Fisher, 2004" in the feed
 
   Scenario: Try to delete a reference when there are references to it
     Given there is a reference associated with a protonym

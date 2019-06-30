@@ -57,7 +57,7 @@ Feature: Editing a taxon
     And I should see "incertae sedis in subfamily"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the genus Atta" and no other feed items
+    Then I should see "Archibald edited the genus Atta" in the feed
     And I should see the edit summary "fix incertae sedis"
 
   Scenario: Changing gender of genus-group name

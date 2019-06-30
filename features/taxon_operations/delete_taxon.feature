@@ -8,7 +8,7 @@ Feature: Deleting a taxon
     When I go to the catalog page for "Antcatinae"
     And I follow "Delete"
     And I go to the activity feed
-    Then I should see "Archibald deleted the subfamily Antcatinae" and no other feed items
+    Then I should see "Archibald deleted the subfamily Antcatinae" in the feed
 
   Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
     Given there is a genus "Atta"

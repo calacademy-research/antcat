@@ -6,11 +6,6 @@ Given("there is an automated activity with the edit summary {string}") do |edit_
   create :activity, :custom, edit_summary: edit_summary, automated_edit: true
 end
 
-Then("I should see {string} and no other feed items") do |text|
-  step %(I should see "#{text}")
-  step "I should see 1 item in the feed"
-end
-
 Then("I should see {int} item(s) in the feed") do |expected_count|
   feed_items_count = all("table.activities > tbody tr").size
   expect(feed_items_count).to eq expected_count.to_i
