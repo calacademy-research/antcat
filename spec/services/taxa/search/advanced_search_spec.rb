@@ -35,19 +35,9 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by ranks" do
       let!(:subfamily) { create :subfamily }
-      let!(:tribe) { create :tribe, subfamily: subfamily }
-      let!(:genus) { create :genus, tribe: tribe }
-      let!(:subgenus) { create :subgenus, genus: genus }
-      let!(:species) { create :species, genus: genus }
-      let!(:subspecies) { create :subspecies, species: species, genus: genus }
 
       specify do
         expect(described_class[type: 'Subfamily']).to match_array [subfamily]
-        expect(described_class[type: 'Tribe']).to match_array [tribe]
-        expect(described_class[type: 'Genus']).to match_array [genus]
-        expect(described_class[type: 'Subgenus']).to match_array [subgenus]
-        expect(described_class[type: 'Species']).to match_array [species]
-        expect(described_class[type: 'Subspecies']).to match_array [subspecies]
       end
     end
 
@@ -83,18 +73,10 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
-        reference = create :reference, author_name: 'Bolton'
-        taxon = create :family
-        taxon.protonym.authorship.update! reference: reference
-
-        expect(described_class[author_name: 'Bolton']).to eq [taxon]
-      end
-
-      it "finds the taxa for the author's references, even if he's not the principal author" do
         reference = create :reference,
           author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
         taxon = create :family
-        taxon.protonym.authorship.update! reference: reference
+        taxon.protonym.authorship.update!(reference: reference)
 
         expect(described_class[author_name: 'Fisher']).to eq [taxon]
       end
@@ -111,8 +93,8 @@ describe Taxa::Search::AdvancedSearch do
         end
 
         before do
-          barry_taxon.protonym.authorship.update! reference: barry_reference
-          bolton_taxon.protonym.authorship.update! reference: bolton_reference
+          barry_taxon.protonym.authorship.update!(reference: barry_reference)
+          bolton_taxon.protonym.authorship.update!(reference: bolton_reference)
         end
 
         specify do

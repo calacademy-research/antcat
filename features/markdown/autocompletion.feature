@@ -18,7 +18,7 @@ Feature: Markdown autocompletion
 
     When I fill in "issue_description" with "{rbro"
     And I click the suggestion containing "Giovanni's Brother's Favorite Ants"
-    Then the markdown textarea should contain "{ref 7778}"
+    Then the markdown textarea should contain a markdown link to the Brother's reference
 
   @search
   Scenario: Recently used references (added by inserting in a markdown textarea)

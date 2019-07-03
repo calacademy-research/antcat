@@ -7,7 +7,7 @@ Feature: Preview markdown
     Given there is a Giovanni reference
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "issue_description" with "See: %reference7777"
+    When I fill in "issue_description" with "See:" and a markdown link to Giovanni's reference
     And I press "Rerender preview"
     Then I should see "See: Giovanni, 1809"
 

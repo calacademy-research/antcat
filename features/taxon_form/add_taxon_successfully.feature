@@ -5,11 +5,11 @@ Feature: Adding a taxon successfully
       | author | citation_year |
       | Fisher | 2004          |
     And the default reference is "Fisher, 2004"
-    And there is a subfamily "Formicinae"
 
   @javascript
   Scenario: Adding a genus (with type name)
-    Given there is a species "Atta major"
+    Given there is a subfamily "Formicinae"
+    And there is a species "Lasius niger"
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
@@ -17,18 +17,17 @@ Feature: Adding a taxon successfully
     And I set the protonym name to "Eciton"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
 
-    When I set the type name to "Atta major"
-    Then the type name field should contain "Atta major"
-
-    When I press "Save"
+    When I set the type name to "Lasius niger"
+    And I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "Eciton" in the protonym
+    And I should see "Type-species: Lasius niger"
 
     When I go to the catalog page for "Formicinae"
     Then I should see "Atta" in the taxon browser
 
   Scenario: Adding a genus which has a tribe
-    Given tribe "Ecitonini" exists in that subfamily
+    Given there is a tribe "Ecitonini"
 
     When I go to the catalog page for "Ecitonini"
     And I follow "Add genus"
@@ -69,7 +68,7 @@ Feature: Adding a taxon successfully
     And I should see "Add another"
 
     When I go to the activity feed
-    Then I should see "Archibald added the species Eciton major to the genus Eciton" and no other feed items
+    Then I should see "Archibald added the species Eciton major to the genus Eciton" in the feed
     And I should see the edit summary "cool new species"
 
   Scenario: Adding a species to a subgenus
@@ -85,7 +84,7 @@ Feature: Adding a taxon successfully
     And I should see "Dolichoderus major" in the protonym
 
   Scenario: Adding a subspecies
-    Given there is a species "Eciton major" with genus "Eciton"
+    Given there is a species "Eciton major" in the genus "Eciton"
 
     When I go to the catalog page for "Eciton major"
     And I follow "Add subspecies"
@@ -109,13 +108,13 @@ Feature: Adding a taxon successfully
     Then I should be on the catalog page for "Dorylinae"
     And I should see "Dorylinae" in the protonym
 
-    When I go to the catalog page for "Formicinae"
-    And I follow "Formicidae subfamilies"
+    When I follow "Formicidae subfamilies"
     Then I should see "Dorylinae" in the taxon browser
-    And I should not see "Add another"
 
   @javascript
   Scenario: Adding a tribe (and copy name to protonym)
+    Given there is a subfamily "Formicinae"
+
     When I go to the catalog page for "Formicinae"
     And I follow "Add tribe"
     And I set the name to "Dorylini"

@@ -4,8 +4,8 @@ Feature: Converting a species to a subspecies
 
   @javascript
   Scenario: Converting a species to a subspecies (with feed)
-    Given there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
+    And there is a species "Camponotus alii" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
@@ -13,45 +13,38 @@ Feature: Converting a species to a subspecies
     And I should see "to be a subspecies of"
 
     When I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should be on the catalog page for "Camponotus alii dallatorei"
     And "Camponotus alii dallatorei" should be of the rank of "subspecies"
 
     When I go to the activity feed
-    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" and no other feed items
+    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" in the feed
 
   @javascript
   Scenario: Converting a species to a subspecies when it already exists
-    Given there is a subspecies "Camponotus alii dallatorei" with genus "Camponotus" and no species
-    And there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii" in the genus "Camponotus"
+    And there is a species "Camponotus dallatorei" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should see "This name is in use by another taxon"
 
   @javascript
   Scenario: Converting a species to a subspecies when the species has subspecies
     Given there is a species "Camponotus alii"
-    And there is a subspecies "Camponotus alii major" which is a subspecies of "Camponotus alii"
+    And there is a subspecies "Camponotus alii major" in the species "Camponotus alii"
 
     When I go to the catalog page for "Camponotus alii"
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
-    Then the new species field should contain "Camponotus alii"
-
-    When I press "Convert"
+    And I press "Convert"
     Then I should see "This species has subspecies of its own"
 
   Scenario: Leaving the species blank
-    Given there is a species "Camponotus dallatorei" with genus "Camponotus"
-    And there is a species "Camponotus alii" with genus "Camponotus"
+    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
+    And there is a species "Camponotus alii" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"
     And I follow "Convert to subspecies"

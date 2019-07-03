@@ -26,20 +26,10 @@ Then("I pretend to be a bot by filling in the invisible work email field") do
   page.execute_script "$('#feedback_work_email').val('spammer@bots.ru');"
 end
 
-Given("a visitor has submitted a feedback with the comment {string}") do |comment|
-  cheat_and_set_user_for_feed
-  feedback = create :feedback, comment: comment
-  feedback.create_activity :create
-end
-
 Given("a visitor has submitted a feedback") do
-  step 'a visitor has submitted a feedback with the comment "Cool."'
+  create :feedback, user: nil
 end
 
-Given("there is a closed feedback item with the comment {string}") do |comment|
-  create :feedback, comment: comment, open: false
-end
-
-Given("there is a (closed )feedback item") do
-  step 'there is a closed feedback item with the comment "Cool."'
+Given("there is a closed feedback item") do
+  create :feedback, open: false
 end

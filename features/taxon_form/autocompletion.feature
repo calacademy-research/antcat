@@ -2,7 +2,7 @@
 Feature: Autocompletion (taxon-related)
   Background:
     Given I am logged in as a catalog editor
-    And a species exists with a name of "major" and a genus of "Atta"
+    And there is a species "Atta major" in the genus "Atta"
 
   Scenario: Autocompleting protonym localities
     Given there is a genus located in "Africa"

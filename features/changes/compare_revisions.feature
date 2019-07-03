@@ -85,11 +85,8 @@ Feature: Compare revisions
     And I fill in "institution_abbreviation" with "CASC"
     And I fill in "institution_name" with "California Academy of Sciences"
     And I press "Save"
-    And I go to the activity feed
-    Then I should see "Archibald added the institution CASC" and no other feed items
-
-    When I follow "History"
-    Then I should see "Current version"
+    Then I should see "Successfully created institution"
+    And I should see "Current version"
 
   Scenario: Comparing reference revisions
     When I go to the references page

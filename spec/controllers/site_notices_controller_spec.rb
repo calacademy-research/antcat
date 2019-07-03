@@ -35,17 +35,12 @@ describe SiteNoticesController do
 
   describe "GET show" do
     let!(:site_notice) { create :site_notice }
+    # Manually specify `created_at` due to how the `unread` gem's usage of timestamps.
+    let!(:another_site_notice) { create :site_notice, created_at: 1.second.from_now }
 
-    before do
-      # TODO this may be safe to remove or replaced with `travel_to`.
-      # I believe I added it because the `unread` gem's use of timestamps caused issues.
-      sleep 1 # HACK
-      @another_site_notice = create :site_notice
-    end
-
-    it "marks as read" do
-      expect { get :show, params: { id: @another_site_notice.id } }.
-        to change { SiteNotice.unread_by(editor).count }.by -1
+    it "marks it as read" do
+      expect { get :show, params: { id: another_site_notice.id } }.
+        to change { SiteNotice.unread_by(editor).count }.by(-1)
     end
   end
 

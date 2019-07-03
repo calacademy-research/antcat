@@ -2,7 +2,7 @@ Feature: Add and edit wiki pages
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Adding a wiki page (with feed)
+  Scenario: Adding a wiki page (with edit summary)
     When I go to the wiki pages index
     Then I should see "There are currently no wiki pages"
 
@@ -20,10 +20,10 @@ Feature: Add and edit wiki pages
     Then I should see "In the title, use capitals only"
 
     When I go to the activity feed
-    Then I should see "Archibald added the wiki page Bibliography guidelines" and no other feed items
-    And I should see "added help page"
+    Then I should see "Archibald added the wiki page Bibliography guidelines" in the feed
+    And I should see the edit summary "added help page"
 
-  Scenario: Editing a wiki page (with feed)
+  Scenario: Editing a wiki page (with edit summary)
     Given there is a wiki page "Catalog guidelines"
 
     When I go to the wiki pages index
@@ -42,5 +42,5 @@ Feature: Add and edit wiki pages
     Then I should see "Genus names must start with a capital letter"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the wiki page Name guidelines" and no other feed items
-    And I should see "updated info"
+    Then I should see "Archibald edited the wiki page Name guidelines" in the feed
+    And I should see the edit summary "updated info"

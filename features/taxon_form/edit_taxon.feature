@@ -17,31 +17,57 @@ Feature: Editing a taxon
     Then I should see "Formica" in the headline
     And I should see "page 9 (dealate queen)" in the headline
 
+  @javascript
+  Scenario: Changing the type name
+    Given there is a genus "Atta"
+    And there is a species "Eciton minor"
+
+    When I go to the catalog page for "Atta"
+    Then I should not see "Type-speciesr"
+
+    When I follow "Edit"
+    And I set the type name to "Eciton minor"
+    And I press "Save"
+    Then I should see "Type-species: Eciton minor"
+
+  @javascript
+  Scenario: Changing current valid name
+    Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
+    And there is a species "Eciton minor"
+
+    When I go to the catalog page for "Atta major"
+    Then I should see "synonym of current valid taxon Lasius niger"
+
+    When I follow "Edit"
+    And I set the current valid taxon name to "Eciton minor"
+    And I press "Save"
+    Then I should see "synonym of current valid taxon Eciton minor"
+
   Scenario: Changing incertae sedis (with edit summary)
-    Given there is a genus "Atta" that is incertae sedis in the subfamily
+    Given there is a genus "Atta"
 
     When  I go to the catalog page for "Atta"
-    Then I should see "incertae sedis in subfamily"
+    Then I should not see "incertae sedis in subfamily"
 
     When I go to the edit page for "Atta"
-    And I select "(none)" from "taxon_incertae_sedis_in"
+    And I select "subfamily" from "taxon_incertae_sedis_in"
     And I fill in "edit_summary" with "fix incertae sedis"
     And I save the taxon form
     Then I should be on the catalog page for "Atta"
-    And I should not see "incertae sedis in subfamily"
+    And I should see "incertae sedis in subfamily"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the genus Atta" and no other feed items
+    Then I should see "Archibald edited the genus Atta" in the feed
     And I should see the edit summary "fix incertae sedis"
 
   Scenario: Changing gender of genus-group name
-    Given there is a genus "Atta" with "masculine" name
+    Given there is a genus "Atta"
 
     When I go to the catalog page for "Atta"
-    Then I should see "masculine"
+    Then I should not see "masculine"
 
     When I go to the edit page for "Atta"
-    And I select "neuter" from "taxon_name_attributes_gender"
+    And I select "masculine" from "taxon_name_attributes_gender"
     And I save the taxon form
     Then I should be on the catalog page for "Atta"
-    And I should see "neuter"
+    And I should see "masculine"

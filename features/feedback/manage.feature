@@ -35,14 +35,3 @@ Feature: Managing user feedback
 
     When I go to the activity feed
     Then I should see "Archibald re-opened the feedback item #"
-
-  Scenario: Deleting a feedback item (with feed)
-    Given a visitor has submitted a feedback with the comment "buy r0lex spam"
-    And I log in as a superadmin named "Batiatus"
-
-    When I go to the most recent feedback item
-    And I follow "Delete"
-    Then I should see "Feedback item was successfully deleted."
-
-    When I go to the activity feed
-    Then I should see "Batiatus deleted the feedback item #"

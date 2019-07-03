@@ -73,10 +73,8 @@ describe Author do
 
     before { create :species } # Unrelated.
 
-    describe "#call" do
-      it "returns taxa described by the author" do
-        expect(author.described_taxa).to eq [species, genus]
-      end
+    it "returns taxa described by the author" do
+      expect(author.described_taxa).to eq [species, genus]
     end
   end
 end

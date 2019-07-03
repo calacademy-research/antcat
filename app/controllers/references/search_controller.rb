@@ -22,7 +22,7 @@ module References
         return if params[:reference_q].blank?
 
         id = params[:reference_q].strip
-        if id =~ /^\d{5,}$/
+        if id =~ /^\d+$/
           return redirect_to reference_path(id) if Reference.exists?(id.to_i)
         end
       end

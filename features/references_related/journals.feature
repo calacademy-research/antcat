@@ -6,7 +6,7 @@ Feature: Editing journals
     And I follow "Journals"
     And I follow "Psyche"
 
-  Scenario: Edit a journal's name
+  Scenario: Edit a journal's name (with feed)
     When I follow "Edit journal name"
     And I fill in "journal_name" with "Science"
     And I press "Save"
@@ -17,4 +17,4 @@ Feature: Editing journals
     Then I should see "Science"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the journal Science (changed journal name from Psyche)" and no other feed items
+    Then I should see "Archibald edited the journal Science (changed journal name from Psyche)" in the feed

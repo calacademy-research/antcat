@@ -86,19 +86,13 @@ class FeedbackController < ApplicationController
     end
 
     def maybe_rate_throttle
-      return if current_user # Logged-in users are never throttled.
+      return if current_user
 
-      timespan = 5.minutes.ago
-      max_feedbacks_in_timespan = 5
-
-      if @feedback.from_the_same_ip.recently_created(timespan).
-          count >= max_feedbacks_in_timespan
-
-        @feedback.errors.add :rate_limited, <<-ERROR_MSG
-          you have already posted #{max_feedbacks_in_timespan} feedbacks in the last
-          #{time_ago_in_words Time.zone.at(timespan)}. Thanks for that! Please wait for
-          a few minutes while we are trying to figure out if you are a bot...
-        ERROR_MSG
+      if @feedback.from_the_same_ip.recent.count >= 5
+        @feedback.errors.add :rate_limited, <<-MSG
+          you have already posted a couple of feedbacks in the last few minutes. Thanks for that!
+          Please wait for a few minutes while we are trying to figure out if you are a bot...
+        MSG
       end
     end
 
