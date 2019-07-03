@@ -1,17 +1,3 @@
-When(/^I resize the browser window to (mobile|tablet|desktop)$/) do |device|
-  resize_window_to_device device
-end
-
-Then("I should see the desktop layout") do
-  expect(page).to have_css "#desktop-only"
-  expect(page).to have_no_css "#mobile-only"
-end
-
-Then("I should see the mobile layout") do
-  expect(page).to have_css "#mobile-only"
-  expect(page).to have_no_css "#desktop-only"
-end
-
 def resize_window_to_device device
   size = case device.to_sym
          when :mobile then  [640, 480]
@@ -33,4 +19,18 @@ def resize_window width, height
     raise NotImplementedError,
       "resize_window is not supported for #{Capybara.current_driver} driver"
   end
+end
+
+When(/^I resize the browser window to (mobile|tablet|desktop)$/) do |device|
+  resize_window_to_device device
+end
+
+Then("I should see the desktop layout") do
+  expect(page).to have_css "#desktop-only"
+  expect(page).to have_no_css "#mobile-only"
+end
+
+Then("I should see the mobile layout") do
+  expect(page).to have_css "#mobile-only"
+  expect(page).to have_no_css "#desktop-only"
 end

@@ -3,8 +3,8 @@ Feature: Create obsolete combination
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Creating a missing obsolete combination (and see it in the activity feed)
-    Given a genus exists with a name of "Pyramica" and no subfamily
+  Scenario: Creating a missing obsolete combination (with feed)
+    Given there is a genus "Pyramica"
     And there is a species "Strumigenys ravidura"
 
     When I go to the catalog page for "Strumigenys ravidura"
@@ -15,4 +15,4 @@ Feature: Create obsolete combination
     And the "genus" of "Pyramica ravidura" should be "Pyramica"
 
     When I go to the activity feed
-    Then I should see "Archibald created the obsolete combination Pyramica ravidura" and no other feed items
+    Then I should see "Archibald created the obsolete combination Pyramica ravidura" in the feed

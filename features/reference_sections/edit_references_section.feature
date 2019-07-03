@@ -3,7 +3,25 @@ Feature: Editing references sections
     Given I log in as a catalog editor named "Archibald"
 
   @javascript
-  Scenario: Editing a reference section (with feed)
+  Scenario: Adding a reference section (with edit summary)
+    Given there is a genus "Atta"
+
+    When I go to the edit page for "Atta"
+    Then the reference section should be empty
+
+    When I click the add reference section button
+    And I fill in the references field with "New reference"
+    And I fill in "edit_summary" with "added new stuff"
+    And I press "Save"
+    Then the reference section should be "New reference"
+
+    When I go to the activity feed
+    Then I should see "Archibald added the reference section #" in the feed
+    And I should see "belonging to Atta"
+    And I should see the edit summary "added new stuff"
+
+  @javascript
+  Scenario: Editing a reference section (with edit summary)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
     When I go to the edit page for "Dolichoderinae"
@@ -17,7 +35,7 @@ Feature: Editing references sections
     And the reference section should be "(none)"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the reference section #" and no other feed items
+    Then I should see "Archibald edited the reference section #" in the feed
     And I should see "belonging to Dolichoderinae"
     Then I should see the edit summary "fix typo"
 
@@ -44,24 +62,6 @@ Feature: Editing references sections
     Then the reference section should be "Original reference"
 
   @javascript
-  Scenario: Adding a reference section (with feed)
-    Given there is a genus "Atta"
-
-    When I go to the edit page for "Atta"
-    Then the reference section should be empty
-
-    When I click the add reference section button
-    And I fill in the references field with "New reference"
-    And I fill in "edit_summary" with "added new stuff"
-    And I press "Save"
-    Then the reference section should be "New reference"
-
-    When I go to the activity feed
-    Then I should see "Archibald added the reference section #" and no other feed items
-    And I should see "belonging to Atta"
-    And I should see the edit summary "added new stuff"
-
-  @javascript
   Scenario: Deleting a reference section (with feed)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
@@ -73,5 +73,5 @@ Feature: Editing references sections
     Then the reference section should be empty
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the reference section #" and no other feed items
+    Then I should see "Archibald deleted the reference section #" in the feed
     And I should see "belonging to Dolichoderinae"

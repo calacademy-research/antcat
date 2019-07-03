@@ -2,7 +2,7 @@ Feature: Manage names
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Editing a name (with feed)
+  Scenario: Editing a name (with edit summary)
     Given there is a genus protonym "Formica"
 
     When I go to the protonyms page
@@ -22,7 +22,7 @@ Feature: Manage names
     And I should see "Name record: Lasius"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the name Lasius" and no other feed items
+    Then I should see "Archibald edited the name Lasius" in the feed
     And I should see the edit summary "fix name"
 
   @javascript

@@ -16,17 +16,13 @@ Feature: Edit reference successfully
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
   Scenario: See the correct tab initially (book reference)
-    Given this book reference exists
-      | author     | title | citation                |
-      | Fisher, B. | Ants  | New York: Wiley, 22 pp. |
+    Given there is a book reference
 
     When I go to the edit page for the most recent reference
     Then the "Book" tab should be selected
 
   Scenario: See the correct tab initially (unknown reference)
-    Given this unknown reference exists
-      | author     |
-      | Fisher, B. |
+    Given there is an unknown reference
 
     When I go to the edit page for the most recent reference
     Then the "Other" tab should be selected

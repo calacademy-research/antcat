@@ -2,50 +2,37 @@ Feature: Using the catalog
   Background:
     Given the Formicidae family exists
     And there is a subfamily "Dolichoderinae"
-    And a tribe exists with a name of "Dolichoderini" and a subfamily of "Dolichoderinae"
-    And a genus exists with a name of "Dolichoderus" and a tribe of "Dolichoderini"
-    And a genus exists with a name of "Atta" and no subfamily
-    And a fossil genus exists with a name of "Brownerus" and a tribe of "Dolichoderini"
-    And a species exists with a name of "abruptus" and a genus of "Dolichoderus"
-    And a subspecies exists for that species with a name of "Dolichoderus abruptus minor"
-    And a genus exists with a name of "Camponotus" and a subfamily of "Dolichoderinae"
-    And a species exists with a name of "abruptus" and a genus of "Camponotus"
+    And there is a tribe "Dolichoderini" in the subfamily "Dolichoderinae"
+    And there is a genus "Dolichoderus" in the tribe "Dolichoderini"
+    And there is a species "Dolichoderus abruptus" in the genus "Dolichoderus"
+    And there is a subspecies "Dolichoderus abruptus minor" in the species "Dolichoderus abruptus"
+    And I go to the catalog
 
-  Scenario: Going to the root
-    When I go to the catalog
+  Scenario: Going to the main page
     Then I should see "Formicidae"
-    And I should see "Extant: 1 valid subfamily, 1 valid tribe, 3 valid genera, 2 valid species, 1 valid subspecies"
-    And I should see "Fossil: 1 valid genus"
     And I should see "Subfamily of Formicidae: Dolichoderinae"
 
   Scenario: Selecting a subfamily
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
+    When I follow "Dolichoderinae" in the taxon browser
     Then "Dolichoderinae" should be selected
-    And I should see "Extant: 1 valid tribe, 2 valid genera, 2 valid species, 1 valid subspecies"
-    And I should see "Fossil: 1 valid genus"
 
   Scenario: Selecting a tribe
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
+    When I follow "Dolichoderinae" in the taxon browser
     And I follow "Dolichoderini" in the taxon browser
     Then "Dolichoderinae" should be selected
     And "Dolichoderini" should be selected
     And I should see "Dolichoderus" in the taxon browser
 
   Scenario: Selecting a genus
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
+    When I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected
     And "Dolichoderus" should be selected
-    And I should see "1 valid species, 1 valid subspecies"
     And I should see "abruptus" in the taxon browser
 
   Scenario: Selecting a species
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
+    When I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     And I follow "abruptus"
@@ -54,8 +41,7 @@ Feature: Using the catalog
     And "abruptus" should be selected
 
   Scenario: Selecting a subspecies
-    When I go to the catalog
-    And I follow "Dolichoderinae" in the taxon browser
+    When I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     Then I should see "abruptus" in the taxon browser

@@ -7,11 +7,9 @@ class Feedback < ApplicationRecord
   validates :comment, presence: true, length: { maximum: 10_000 }
   validate :comment_has_not_previously_been_submitted, on: :create
 
-  scope :pending_count, -> { where(open: true).count }
+  scope :pending, -> { where(open: true) }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
-  scope :recently_created, ->(time_ago = 5.minutes.ago) {
-    where('created_at >= ?', time_ago)
-  }
+  scope :recent, -> { where('created_at >= ?', 5.minutes.ago) }
 
   acts_as_commentable
   has_paper_trail

@@ -41,39 +41,33 @@ Feature: Feedback
     And I click "#submit-feedback-js"
     Then I should see "Message sent"
 
-  Scenario: Showing a thank-you notice
-    When I click on the Feedback link
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I click "#submit-feedback-js"
-    Then I should see "Message sent"
-    And I should see "Thanks for helping us make AntCat better!"
-
   Scenario: Unregistered user submitting feedback (with feed)
     When I click on the Feedback link
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I click "#submit-feedback-js"
+    And I fill in "feedback_comment" with "Great site!!!"
+    And I click "#submit-feedback-js"
     Then I should see "Message sent"
+    And I should see "Thanks for helping us make AntCat better!"
 
     When I log in as a catalog editor
     And I go to the feedback index
     Then I should see "[no name] <[no email];"
 
     When I go to the activity feed
-    Then I should see "An unregistered user added the feedback item #"
+    Then I should see "An unregistered user added the feedback item #" in the feed
 
   Scenario: Registered user submitting feedback (with feed)
     Given I log in as a catalog editor named "Archibald"
 
     When I click on the Feedback link
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I click "#submit-feedback-js"
+    And I fill in "feedback_comment" with "Great site!!!"
+    And I click "#submit-feedback-js"
     Then I should see "Message sent"
 
     When I go to the feedback index
     Then I should see "Archibald submitted"
 
     When I go to the activity feed
-    Then I should see "Archibald added the feedback item #"
+    Then I should see "Archibald added the feedback item #" in the feed
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"
@@ -82,32 +76,13 @@ Feature: Feedback
     And I click on the Feedback link
     Then the page field within the feedback form should contain "catalog/"
 
-  Scenario: Resetting the form after submit, but remember name/email
-    When I click on the Feedback link
-    And I click "#submit-feedback-js"
-    Then I should see "Whoops, error: Comment can't be blank"
-
-    When I fill in "feedback_comment" with "Great site!!!"
-    And I click "#submit-feedback-js"
-    Then I should see "Message sent"
-    And I should see "Thanks for helping us make AntCat better!"
-
   Scenario: Unregistered users may be throttled
     Given I have already posted 5 feedbacks in the last 5 minutes
 
     When I click on the Feedback link
     And I click "#submit-feedback-js"
-    Then I should see "you have already posted 5 feedbacks"
+    Then I should see "you have already posted a couple of feedbacks in the last few minutes"
     And I should not see "Message sent"
-
-  Scenario: Registered users are not throttled
-    Given I am logged in
-    And I have already posted 5 feedbacks in the last 5 minutes
-
-    When I click on the Feedback link
-    And I fill in "feedback_comment" with "Great site!!!"
-    And I click "#submit-feedback-js"
-    Then I should see "Message sent"
 
   # TODO: Disabled in test env in controller.
   @skip

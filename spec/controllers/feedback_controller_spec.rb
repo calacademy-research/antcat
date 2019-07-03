@@ -51,4 +51,22 @@ describe FeedbackController do
       end
     end
   end
+
+  describe "DELETE destroy" do
+    let!(:feedback) { create :feedback }
+
+    before { sign_in create(:user, :superadmin, :helper) }
+
+    it 'deletes the feedback' do
+      expect { delete(:destroy, params: { id: feedback.id }) }.to change { Feedback.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      expect { delete(:destroy, params: { id: feedback.id, edit_summary: 'Duplicate' }) }.
+        to change { Activity.where(action: :destroy, trackable: feedback).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.edit_summary).to eq "Duplicate"
+    end
+  end
 end

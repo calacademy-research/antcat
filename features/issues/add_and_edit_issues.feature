@@ -21,7 +21,7 @@ Feature: Add and edit open issues
     Then I should see "Resolve homonyms"
 
     And I go to the activity feed
-    Then I should see "Archibald added the issue Resolve homonyms" and no other feed items
+    Then I should see "Archibald added the issue Resolve homonyms" in the feed
     And I should see "added question"
 
   Scenario: Editing an issue (with feed)
@@ -44,7 +44,7 @@ Feature: Add and edit open issues
     And I should not see "Restore deleted species"
 
     And I go to the activity feed
-    Then I should see "Archibald edited the issue Restore deleted genera" and no other feed items
+    Then I should see "Archibald edited the issue Restore deleted genera" in the feed
     And I should see "added info"
 
   Scenario: Closing and re-opening an issue (with feed)
@@ -56,7 +56,7 @@ Feature: Add and edit open issues
     Then I should see "Successfully closed issue"
 
     When I go to the activity feed
-    Then I should see "Archibald closed the issue Add taxa from Aldous 2007" and no other feed items
+    Then I should see "Archibald closed the issue Add taxa from Aldous 2007" in the feed
 
     When I go to the open issues page
     Then I should see "There are currently no open issues."
@@ -69,5 +69,4 @@ Feature: Add and edit open issues
     Then I should see the open issue "Add taxa from Aldous 2007"
 
     When I go to the activity feed
-    Then I should see "Archibald re-opened the issue Add taxa from Aldous 2007"
-    And I should see 2 items in the feed
+    Then I should see "Archibald re-opened the issue Add taxa from Aldous 2007" in the feed

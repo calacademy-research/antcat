@@ -29,17 +29,11 @@ Feature: Searching the catalog
     Then I should see "1 result"
 
   Scenario: Finding a genus
-    Given there is a species "Atta major" with genus "Atta"
-    And there is a species "Ophthalmopone major" with genus "Ophthalmopone"
+    Given there is a species "Atta major" in the genus "Atta"
 
     When I fill in "genus" with "Atta"
     And I press "Go"
     Then I should see "Atta major"
-
-  Scenario: Manually entering an unknown name instead of using picklist
-    When I fill in "author_name" with "asdasdasd"
-    And I press "Go"
-    Then I should see "If you're choosing an author, make sure you pick the name from the dropdown list."
 
   Scenario: Searching for locality
     Given there is a genus located in "Africa"

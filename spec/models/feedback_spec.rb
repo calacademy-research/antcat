@@ -3,25 +3,6 @@ require 'spec_helper'
 describe Feedback do
   it { is_expected.to validate_presence_of :comment }
 
-  describe "scopes" do
-    describe ".recently_created" do
-      before do
-        create :feedback
-        create :feedback, created_at: 8.minutes.ago
-        create :feedback, created_at: 3.days.ago
-      end
-
-      it "defaults to 5 minutes" do
-        expect(described_class.recently_created.count).to eq 1
-      end
-
-      it "accepts any value" do
-        expect(described_class.recently_created(10.minutes.ago).count).to eq 2
-        expect(described_class.recently_created(7.days.ago).count).to eq 3
-      end
-    end
-  end
-
   describe "#from_the_same_ip" do
     let!(:feedback) { build_stubbed :feedback, ip: "255.255.255.255" }
 

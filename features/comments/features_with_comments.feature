@@ -14,13 +14,13 @@ Feature: Features with comments
     Then I should see a comments section
 
   Scenario: Commenting on user feedbacks
-    Given a visitor has submitted a feedback with the comment "Fix spelling"
+    Given a visitor has submitted a feedback
 
     When I go to the most recent feedback item
     Then I should see a comments section
 
   Scenario: Commenting on site notices
-    Given there is a site notice I haven't read yet
+    Given there is a site notice "A Site Notice"
 
     When I go to the site notices page
     And I follow "A Site Notice" within "table"

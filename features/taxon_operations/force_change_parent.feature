@@ -3,8 +3,8 @@ Feature: Force-changing parent
   Background:
     Given I log in as a superadmin named "Archibald"
 
-  Scenario: Forcing a parent change (and see it in the activity feed)
-    Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+  Scenario: Forcing a parent change (with feed)
+    Given there is a genus "Atta" in the subfamily "Dolichoderinae"
     And there is a subfamily "Formicinae"
 
     When I go to the catalog page for "Atta"
@@ -15,10 +15,10 @@ Feature: Force-changing parent
     And the "subfamily" of "Atta" should be "Formicinae"
 
     When I go to the activity feed
-    Then I should see "Archibald force-changed the parent of Atta" and no other feed items
+    Then I should see "Archibald force-changed the parent of Atta" in the feed
 
   Scenario: Changing a genus's tribe
-    Given a genus exists with a name of "Atta" and a subfamily of "Dolichoderinae"
+    Given there is a genus "Atta" in the subfamily "Dolichoderinae"
     And there is a tribe "Ecitonini"
 
     When I go to the catalog page for "Atta"
@@ -31,7 +31,7 @@ Feature: Force-changing parent
   Scenario: Changing a genus's subfamily
     Given the Formicidae family exists
     And there is a subfamily "Attininae"
-    And genus "Atta" exists in that subfamily
+    And there is a genus "Atta" in the subfamily "Attininae"
     And there is a subfamily "Ecitoninae"
 
     When I go to the catalog page for "Atta"

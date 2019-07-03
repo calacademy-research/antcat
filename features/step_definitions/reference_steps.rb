@@ -1,3 +1,10 @@
+def find_reference_by_keey keey
+  parts = keey.split ','
+  last_name = parts[0]
+  year = parts[1]
+  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
+end
+
 Given("there is a reference") do
   create :article_reference
 end
@@ -10,57 +17,39 @@ Given("there is a book reference") do
   create :book_reference
 end
 
+Given("there is an unknown reference") do
+  create :unknown_reference
+end
+
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
     citation = hash.delete('citation') || "Psyche 1:1"
     matches = citation.match /(\w+) (\d+):([\d\-]+)/
     journal = create :journal, name: matches[1]
 
-    hash.merge! journal: journal, series_volume_issue: matches[2], pagination: matches[3]
+    hash.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
 
-    create_reference :article_reference, hash
-  end
-end
+    if (author = hash.delete 'author')
+      author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
+      hash.merge!(author_names: [author_name])
+    end
 
-Given("these/this book reference(s) exist(s)") do |table|
-  table.hashes.each do |hash|
-    citation = hash.delete 'citation'
-    matches = citation.match /([^:]+): (\w+), (.*)/
-
-    publisher = create :publisher, name: matches[2], place_name: matches[1]
-    hash.merge! publisher: publisher, pagination: matches[3]
-    create_reference :book_reference, hash
+    create :article_reference, hash
   end
 end
 
 # HACK because I could not get it to work in any other way.
 # Special cases because we want specific IDs.
 Given("there is a Giovanni reference") do
-  reference = create :article_reference,
-    citation_year: '1809',
-    title: "Giovanni's Favorite Ants"
-
+  reference = create :article_reference, citation_year: '1809', title: "Giovanni's Favorite Ants"
   reference.update_column :id, 7777
   reference.author_names << create(:author_name, name: 'Giovanni, S.')
 end
 
 Given("there is a reference by Giovanni's brother") do
   reference = create :article_reference, title: "Giovanni's Brother's Favorite Ants"
-
   reference.update_column :id, 7778
   reference.author_names << create(:author_name, name: 'Giovanni, J.')
-end
-
-Given("these/this unknown reference(s) exist(s)") do |table|
-  table.hashes.each { |hash| create_reference :unknown_reference, hash }
-end
-
-def create_reference type, hash
-  author = hash.delete 'author'
-  author_name = if author
-                  AuthorName.find_by(name: author) || create(:author_name, name: author)
-                end
-  create type, hash.merge(author_names: [author_name])
 end
 
 Given("the following entry nests it") do |table|
@@ -101,13 +90,6 @@ When("I fill in {string} with a URL to a document that exists") do |field|
   step %(I fill in "#{field}" with "google\.com/foo")
 end
 
-def find_reference_by_keey keey
-  parts = keey.split ','
-  last_name = parts[0]
-  year = parts[1]
-  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
-end
-
 Given("the default reference is {string}") do |keey|
   reference = find_reference_by_keey keey
   References::DefaultReference.stub(:get).and_return reference
@@ -128,11 +110,8 @@ Then("nesting_reference_id should contain a valid reference id") do
   expect(Reference.exists?(id)).to be true
 end
 
-Given("there is a taxon with that reference as its protonym's reference") do
-  reference = Reference.last
-  taxon = create :genus
-  taxon.protonym.authorship.reference = reference
-  taxon.protonym.authorship.save!
+Given("there is a reference associated with a protonym") do
+  create :protonym
 end
 
 Then("the {string} tab should be selected") do |tab_name|
