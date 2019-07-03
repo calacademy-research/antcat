@@ -8,6 +8,6 @@ Feature: Markdown
 
     When I go to the issue page for "Merge 'Giovanni' authors"
     And I follow "Edit"
-    And I fill in "issue_description" with "See: %reference7777"
+    And I fill in "issue_description" with "See:" and a markdown link to Giovanni's reference
     And I press "Save"
     Then I should see "See: Giovanni, 1809"

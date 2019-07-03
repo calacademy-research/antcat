@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_13_041346) do
+ActiveRecord::Schema.define(version: 2019_07_13_041347) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -390,11 +390,16 @@ ActiveRecord::Schema.define(version: 2019_07_13_041346) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"
   add_foreign_key "citations", "references", name: "fk_citations__reference_id__references__id"
   add_foreign_key "issues", "users", column: "adder_id", name: "fk_issues__adder_id__users__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
+  add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
+  add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
+  add_foreign_key "references", "journals", name: "fk_references__journal_id__journals__id"
+  add_foreign_key "references", "publishers", name: "fk_references__publisher_id__publishers__id"
   add_foreign_key "site_notices", "users"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"

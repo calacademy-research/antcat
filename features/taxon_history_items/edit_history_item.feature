@@ -109,7 +109,7 @@ Feature: Editing a history item
   @javascript
   Scenario: Seeing the markdown preview (and cancelling)
     Given there is a Giovanni reference
-    And there is a genus "Eciton" with a history item "Eciton history, {ref 7777}"
+    And there is a genus "Eciton" with a history item "Eciton history," and a markdown link to Giovanni's reference
 
     When I go to the edit page for "Eciton"
     Then I should see "Eciton history, Giovanni, 1809"
@@ -119,7 +119,7 @@ Feature: Editing a history item
     Then I should still see "Eciton history, Giovanni, 1809"
     And the history item field should be visible
 
-    When I fill in "taxt" with "Lasius history, {ref 7777}"
+    When I fill in "taxt" with "Lasius history," and a markdown link to Giovanni's reference
     And I press all "Rerender preview"
     Then I should see "Lasius history, Giovanni, 1809"
 
