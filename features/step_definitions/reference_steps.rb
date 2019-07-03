@@ -38,18 +38,16 @@ Given("this/these reference(s) exist(s)") do |table|
   end
 end
 
-# HACK because I could not get it to work in any other way.
+# TODO: Less Giovanni.
 # Special cases because we want specific IDs.
 Given("there is a Giovanni reference") do
-  reference = create :article_reference, citation_year: '1809', title: "Giovanni's Favorite Ants"
-  reference.update_column :id, 7777
-  reference.author_names << create(:author_name, name: 'Giovanni, S.')
+  create :article_reference, citation_year: '1809', title: "Giovanni's Favorite Ants",
+    author_names: [create(:author_name, name: 'Giovanni, S.')]
 end
 
+# TODO: Less Giovanni.
 Given("there is a reference by Giovanni's brother") do
-  reference = create :article_reference, title: "Giovanni's Brother's Favorite Ants"
-  reference.update_column :id, 7778
-  reference.author_names << create(:author_name, name: 'Giovanni, J.')
+  create :article_reference, title: "Giovanni's Brother's Favorite Ants"
 end
 
 Given("the following entry nests it") do |table|
