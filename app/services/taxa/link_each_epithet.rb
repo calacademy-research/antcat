@@ -16,14 +16,8 @@ module Taxa
         return genus_link << header_link(@taxon, @taxon.name.epithet_html.html_safe)
       end
 
-      species = @taxon.species
-
       string = genus_link
-      string << if species
-                  header_link(species, species.name.epithet_html.html_safe)
-                else
-                  no_species_warning
-                end
+      string << header_link(@taxon.species, @taxon.species.name.epithet_html.html_safe)
       string << ' '.html_safe
       string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
       string
@@ -39,11 +33,6 @@ module Taxa
 
       def header_link taxon, label
         taxon.decorate.link_to_taxon_with_label label
-      end
-
-      # TODO: remove once http://localhost:3000/database_scripts/subspecies_without_species has been cleared.
-      def no_species_warning
-        '<span class="bold-warning">[species missing]</span>'.html_safe
       end
   end
 end

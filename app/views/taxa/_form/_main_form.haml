@@ -35,15 +35,6 @@
     %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
     %td=form.taxon_select :homonym_replaced_by
 
-  -unless taxon.new_record?
-    -if taxon.is_a?(Subspecies) && !taxon.species
-      %tr
-        %td Species
-        %td
-          %span.bold-warning warning!
-          this subspecies has no species, please set one
-          =form.taxon_select :species, rank: :species
-
   %tr
     %td=form.label :parent, 'Parent'
     %td

@@ -95,10 +95,5 @@ describe TaxonDecorator do
       expect(taxon.decorate.link_to_antweb).
         to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
     end
-
-    it "just returns nil for subspecies without species" do
-      taxon = build_stubbed :subspecies, species: nil
-      expect(taxon.decorate.link_to_antweb).to be_nil
-    end
   end
 end

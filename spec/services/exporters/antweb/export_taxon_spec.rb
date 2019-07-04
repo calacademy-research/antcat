@@ -423,11 +423,6 @@ describe Exporters::Antweb::ExportTaxon do
         taxon = create :genus, tribe: nil, subfamily: nil
         expect(export_taxon(taxon)[23]).to eq 'Formicidae'
       end
-
-      it "handles a subspecies without a species" do
-        taxon = create :subspecies, genus: genus, species: nil
-        expect(export_taxon(taxon)[23]).to eq genus.name_cache
-      end
     end
   end
 end

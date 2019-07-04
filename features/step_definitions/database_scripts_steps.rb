@@ -2,8 +2,9 @@ Given("SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG is true") do
   stub_const "AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG", true
 end
 
-Given("there is a Lasius subspecies without a species") do
-  create :subspecies, name_string: "Lasius specius subspecius", species: nil
+Given("there is an extant species Lasius niger in an fossil genus") do
+  genus = create :genus, :fossil
+  create :species, name_string: "Lasius niger", genus: genus
 end
 
 When("I open all database scripts once by one") do
