@@ -16,7 +16,7 @@ describe Exporters::Antweb::AntwebInlineCitation do
   before { allow(reference).to receive(:url).and_return 'example.com' }
 
   describe "#call" do
-    context "PDF is not available to the user" do
+    context "when PDF is not available to the user" do
       it "doesn't include the PDF link" do
         allow(reference).to receive(:downloadable?).and_return false
 

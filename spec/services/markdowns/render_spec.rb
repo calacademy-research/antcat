@@ -32,7 +32,7 @@ describe Markdowns::Render do
     end
 
     describe "reference ids" do
-      context "existing reference" do
+      context "when reference exists" do
         let(:reference) { create :article_reference }
         let(:markdown) { "%reference#{reference.id}" }
         let(:taxt_markdown) { "{ref #{reference.id}}" }
@@ -45,7 +45,7 @@ describe Markdowns::Render do
         end
       end
 
-      context "missing (non-existing) reference" do
+      context "when reference does not exists" do
         let(:markdown) { "%reference9999999" }
         let(:taxt_markdown) { '{ref 9999999}' }
 

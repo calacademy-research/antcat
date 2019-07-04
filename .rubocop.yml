@@ -110,9 +110,6 @@ FactoryBot/CreateList:
 RSpec/AnyInstance:
   Enabled: false
 
-RSpec/ContextWording:
-  Enabled: false
-
 RSpec/EmptyExampleGroup:
   Enabled: false
 
