@@ -5,7 +5,7 @@ class AddForeignKeysToTaxa < ActiveRecord::Migration[5.1]
     add_foreign_key :taxa, :taxa, column: :genus_id,               name: :fk_taxa__genus_id__taxa__id
     add_foreign_key :taxa, :taxa, column: :homonym_replaced_by_id, name: :fk_taxa__homonym_replaced_by_id__taxa__id
 
-    # TODO: Contains broken foreign keys which must be fixed.
+    # This was left as a TODO due to broken foreign keys, and added later in `AddSpeciesIdForeignKeyToTaxa`.
     # add_foreign_key :taxa, :taxa, column: :species_id,             name: :fk_taxa__species_id__taxa__id
     add_foreign_key :taxa, :taxa, column: :subgenus_id,            name: :fk_taxa__subgenus_id__taxa__id
     add_foreign_key :taxa, :taxa, column: :current_valid_taxon_id, name: :fk_taxa__current_valid_taxon_id__taxa__id
