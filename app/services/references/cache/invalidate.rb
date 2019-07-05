@@ -7,6 +7,7 @@ module References
         @reference = reference
       end
 
+      # rubocop:disable Rails/SkipsModelValidations
       def call
         return if reference.new_record?
 
@@ -15,6 +16,7 @@ module References
         reference.update_column :expanded_reference_cache, nil
         reference.nestees.each &:invalidate_caches
       end
+      # rubocop:enable Rails/SkipsModelValidations
 
       private
 

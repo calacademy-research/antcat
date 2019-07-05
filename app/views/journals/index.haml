@@ -17,7 +17,7 @@
     %tr
       %td
         %em=link_to journal.name, journal
-      -# TODO fix N+1 query.
+      -# TODO: Fix N+1 query.
       %td=or_dash journal.decorate.publications_between
       %td=or_dash journal.reference_count
 

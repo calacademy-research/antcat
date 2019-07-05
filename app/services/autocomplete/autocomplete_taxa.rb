@@ -1,4 +1,4 @@
-# TODO use Solr.
+# TODO: Use Solr or ElasticSearch.
 
 module Autocomplete
   class AutocompleteTaxa
@@ -32,7 +32,7 @@ module Autocomplete
           references(:reference_author_names).limit(10)
       end
 
-      # TODO not tested.
+      # TODO: Not tested.
       def crazy_search_query
         search_query.split('').join('%') + '%'
       end

@@ -4,6 +4,6 @@ class DropSynonyms < ActiveRecord::Migration[5.2]
   end
 
   def down
-    fail ActiveRecord::IrreversibleMigration
+    raise ActiveRecord::IrreversibleMigration
   end
 end

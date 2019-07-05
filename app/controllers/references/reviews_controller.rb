@@ -4,7 +4,7 @@ module References
     before_action :ensure_user_is_editor
     before_action :set_reference, only: [:start, :finish, :restart]
 
-    # TODO allow JSON requests.
+    # TODO: Allow JSON requests.
     def start
       @reference.start_reviewing!
       @reference.create_activity :start_reviewing

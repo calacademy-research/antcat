@@ -11,6 +11,42 @@ describe JournalsController do
     end
   end
 
+  describe "PUT update" do
+    let!(:journal) { create :journal, name: 'Science' }
+    let(:journal_params) do
+      {
+        name: 'New name'
+      }
+    end
+
+    before { sign_in create(:user, :helper) }
+
+    it 'updates the journal' do
+      put(:update, params: { id: journal.id, journal: journal_params })
+
+      journal.reload
+      expect(journal.name).to eq journal_params[:name]
+    end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: journal.id, journal: journal_params }) }.
+        to change { Activity.where(action: :update).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.trackable).to eq journal
+      expect(activity.parameters).to eq(name: 'New name', name_was: "Science")
+    end
+
+    context 'when journal has references' do
+      let!(:reference) { create :article_reference, journal: journal }
+
+      it 'invalidates reference caches' do
+        expect(References::Cache::Invalidate).to receive(:new).with(reference).and_call_original
+        put(:update, params: { id: journal.id, journal: journal_params })
+      end
+    end
+  end
+
   describe "DELETE destroy" do
     let!(:journal) { create :journal }
 

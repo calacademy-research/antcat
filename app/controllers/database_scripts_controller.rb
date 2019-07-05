@@ -1,4 +1,4 @@
-# TODO implement pagination for lists inside scripts.
+# TODO: Implement pagination for lists inside scripts.
 
 class DatabaseScriptsController < ApplicationController
   before_action :authenticate_user!

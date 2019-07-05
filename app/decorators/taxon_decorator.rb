@@ -20,8 +20,7 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def type_taxon_rank
-    type_rank = type_taxon.is_a?(Subgenus) ? 'genus' : type_taxon.rank
-    "Type-#{type_rank}: ".html_safe
+    "Type-#{type_taxon.rank}: ".html_safe
   end
 
   # NOTE: We need this becuase `type_taxt` is stripped of leading whitespace.
@@ -64,7 +63,6 @@ class TaxonDecorator < Draper::Decorator
                     {      genus: taxon.genus.name.name.downcase,
                          species: taxon.name.epithet.downcase }
                   when Subspecies
-                    return unless taxon.species
                     {      genus: taxon.genus.name.name.downcase,
                          species: taxon.species.name.epithet,
                       subspecies: taxon.name.subspecies_epithets.downcase }

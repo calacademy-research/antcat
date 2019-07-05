@@ -36,7 +36,7 @@ class CommentsController < ApplicationController
         was successfully added.
       MSG
     else
-      # TODO add proper error messages.
+      # TODO: Add proper error messages.
       redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
     end
   end

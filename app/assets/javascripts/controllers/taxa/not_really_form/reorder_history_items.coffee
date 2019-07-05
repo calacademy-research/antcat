@@ -76,7 +76,7 @@ saveNewOrder = ->
       $(SORTABLE).sortable "refreshPositions"
       disableReordering()
     error: (error) ->
-      # TODO create modal for this and other errors.
+      # TODO: Create modal for this and other errors.
       pleaseSee = "Please check the feed and see if there is a 'User reordered the history
         items...' and let us know via the Feedback link or create an issue on GitHub."
 

@@ -53,7 +53,7 @@ describe ReferencesController do
     end
 
     describe "author queries not wrapped in quotes" do
-      context "queries containing non-English characters" do
+      context "when query contains non-English characters" do
         before do
           create :reference, author_name: 'Bert Hölldobler'
           Sunspot.commit
@@ -67,7 +67,7 @@ describe ReferencesController do
         end
       end
 
-      context "queries containing hyphens" do
+      context "when query contains hyphens" do
         before do
           create :reference, author_name: 'M.S. Abdul-Rassoul'
           Sunspot.commit

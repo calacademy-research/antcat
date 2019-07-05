@@ -79,7 +79,6 @@ class TaxaController < ApplicationController
     def taxon_params
       params.require(:taxon).permit(
         :status,
-        :species_id,
         :protonym_id,
         { name_attributes: [:gender] },
         :homonym_replaced_by_id,

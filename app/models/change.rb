@@ -21,7 +21,7 @@ class Change < ApplicationRecord
     count = TaxonState.waiting.count
 
     TaxonState.waiting.each do |taxon_state|
-      # TODO maybe something like `TaxonState#approve_related_changes`?
+      # TODO: Maybe something like `TaxonState#approve_related_changes`?
       Change.where(taxon: taxon_state.taxon).find_each do |change|
         change.approve user
       end
@@ -38,8 +38,8 @@ class Change < ApplicationRecord
       taxon.approve!
       update! approver: user, approved_at: Time.current
     else
-      # This case is for approving a delete
-      # TODO? approving deletions doesn't set `approver` or `approved_at`.
+      # This case is for approving a delete.
+      # TODO: Approving deletions doesn't set `approver` or `approved_at`.
       taxon_state.review_state = TaxonState::APPROVED
       taxon_state.save!
     end
@@ -63,7 +63,7 @@ class Change < ApplicationRecord
     end
   end
 
-  # TODO return as ActiveRecord instead of hash.
+  # TODO: Return as ActiveRecord instead of hash.
   def undo_items
     changes = []
     change_id_set = find_future_changes
@@ -149,7 +149,7 @@ class Change < ApplicationRecord
         raise UndoNameIdConflict, item.name_id if Protonym.where.not(id: item.id).where(name_id: item.name_id).exists?
       end
 
-      # NOTE may raise `ActiveRecord::RecordInvalid`.
+      # NOTE: May raise `ActiveRecord::RecordInvalid`.
       item.save! validate: false if item
     end
 

@@ -66,7 +66,7 @@ module DatabaseScripts
 
     private
 
-      # HACK to fix `as_table` issue...
+      # HACK: To fix `as_table` issue...
       def cached_render
         nil
       end
@@ -91,7 +91,7 @@ description: >
   (only the first species is shown as an example).
 
 
-  `# TODO make catalog search results exportable as CSV, making this script redundant.`
+  `# TODO: Make catalog search results exportable as CSV, making this script redundant.`
 
 tags: [list, very-slow, csv]
 topic_areas: [catalog]

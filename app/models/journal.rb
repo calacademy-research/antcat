@@ -14,4 +14,8 @@ class Journal < ApplicationRecord
   trackable parameters: proc {
     { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }
+
+  def invalidate_reference_caches!
+    references.find_each &:invalidate_caches
+  end
 end

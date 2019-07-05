@@ -1,4 +1,4 @@
-# TODO DRY w.r.t `notifications_steps.rb`.
+# TODO: DRY w.r.t `notifications_steps.rb`.
 
 def markdown_textarea
   find ".preview-area textarea"
@@ -24,7 +24,7 @@ When('I fill in the markdown textarea with "@taxon" followed by Eciton\'s id') d
   step %(I fill in "issue_description" with "%taxon#{eciton.id}")
 end
 
-# HACK because the below selects the wrong suggestion (which is hidden).
+# HACK: Because the below selects the wrong suggestion (which is hidden).
 #   `first(".atwho-view-ul li.cur", visible: true).click`
 When("I click the suggestion containing {string}") do |text|
   find(".atwho-view-ul li", text: text).click

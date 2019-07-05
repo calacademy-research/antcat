@@ -2,7 +2,7 @@ module HtmlSelectorsHelpers
   def selector_for locator
     case locator
 
-    # TODO change this or wherever the "default element" is defined to
+    # TODO: Change this or wherever the "default element" is defined to
     # "html > body #content" and use "I should see in the header" where required.
     # It would make error messages easier to read and steps easier to read/write
     # (less "I follow the first").

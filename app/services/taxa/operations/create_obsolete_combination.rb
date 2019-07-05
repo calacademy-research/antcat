@@ -9,7 +9,7 @@ module Taxa
       end
 
       def call
-        # NOTE raises are not tested nor handled because we don't care that much and this is Temporary Code (tm).
+        # NOTE: Raises are not tested nor handled because we don't care that much and this is Temporary Code (tm).
         raise "current_valid_taxon must be a species" unless current_valid_taxon.is_a?(Species)
         raise "current_valid_taxon must have a genus" unless current_valid_taxon.genus
         raise "obsolete_genus must be a genus" unless obsolete_genus.is_a?(Genus)

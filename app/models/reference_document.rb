@@ -24,7 +24,8 @@ class ReferenceDocument < ApplicationRecord
 
   def host= host
     return unless hosted_by_us?
-    update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}"
+    # TODO: Investigate `Rails/SkipsModelValidations`.
+    update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}" # rubocop:disable Rails/SkipsModelValidations
   end
 
   def downloadable?

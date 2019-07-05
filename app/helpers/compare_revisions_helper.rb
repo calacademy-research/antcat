@@ -7,7 +7,7 @@ module CompareRevisionsHelper
       "<br><br><pre>#{diff_format item}</pre>".html_safe
   end
 
-  # TODO DRY w.r.t `RevisionComparer#diff_format`.
+  # TODO: DRY w.r.t `RevisionComparer#diff_format`.
   def diff_format item
     JSON.pretty_generate JSON.parse(item.to_json)
   end

@@ -4,19 +4,19 @@ describe Exporters::Antweb::AntwebInlineCitation do
   let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
   let!(:reference) do
     create :article_reference,
+      :with_doi,
       author_names: [latreille],
       citation_year: '1809',
       title: "*Atta*",
       journal: create(:journal, name: 'Science'),
       series_volume_issue: '(1)',
-      pagination: '3',
-      doi: "10.10.1038/nphys1170"
+      pagination: '3'
   end
 
   before { allow(reference).to receive(:url).and_return 'example.com' }
 
   describe "#call" do
-    context "PDF is not available to the user" do
+    context "when PDF is not available to the user" do
       it "doesn't include the PDF link" do
         allow(reference).to receive(:downloadable?).and_return false
 

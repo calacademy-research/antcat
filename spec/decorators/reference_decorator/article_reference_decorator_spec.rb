@@ -5,9 +5,8 @@ describe ArticleReferenceDecorator do
 
   let(:author_name) { create :author_name, name: "Forel, A." }
   let!(:reference) do
-    create :article_reference, author_names: [author_name], citation_year: '1874',
-      title: "*Atta* <i>and such</i>",
-      series_volume_issue: '(1)', pagination: '3', doi: "10.10.1038/nphys1170"
+    create :article_reference, :with_doi, author_names: [author_name], citation_year: '1874',
+      title: "*Atta* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
   end
 
   describe "#plain_text" do

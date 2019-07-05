@@ -4,7 +4,7 @@ describe DatabaseScripts::Rendering do
   let(:script) { DatabaseScripts::DatabaseTestScript.new }
 
   describe "#render" do
-    context "the script has not defined #render" do
+    context "when the script has not defined `#render`" do
       it "can render an ActiveRecord::Relation" do
         create :article_reference
         allow(script).to receive(:results).and_return Reference.all

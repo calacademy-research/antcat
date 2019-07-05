@@ -15,7 +15,7 @@ module References
         # Skip if cache is already up to date.
         return value if reference.send(field) == value
 
-        reference.update_column field, value
+        reference.update_column(field, value) # rubocop:disable Rails/SkipsModelValidations
         value
       end
 

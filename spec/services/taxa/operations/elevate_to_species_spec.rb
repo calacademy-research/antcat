@@ -3,12 +3,6 @@ require 'spec_helper'
 describe Taxa::Operations::ElevateToSpecies do
   describe "#call" do
     describe "unuccessfully elevating" do
-      context "when subspecies has no species" do
-        let!(:subspecies) { create :subspecies, species: nil }
-
-        specify { expect { described_class[subspecies] }.to raise_error(NoMethodError) }
-      end
-
       context "when a species with this name already exists" do
         let!(:genus) { create :genus, name_string: 'Atta' }
         let!(:species) { create :species, name_string: 'Atta major', genus: genus }
@@ -94,9 +88,9 @@ describe Taxa::Operations::ElevateToSpecies do
       end
     end
 
-    # TODO these specs were left as is after rewriting this service
+    # TODO: These specs were left as is after rewriting this service
     # because we should stop reusing `Name`s once we're ready for that.
-    context "old specs" do
+    context "old specs" do # rubocop:disable RSpec/ContextWording
       let!(:genus) { create :genus, name_string: 'Atta' }
       let!(:species) { create :species, name_string: 'Atta major', genus: genus }
       let!(:taxon) { create :subspecies, name_string: 'Atta major colobopsis', genus: genus, species: species }

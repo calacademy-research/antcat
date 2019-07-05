@@ -6,9 +6,8 @@ describe Wikipedia::ReferenceExporter do
 
   describe "when reference is an `ArticleReference`" do
     let(:reference) do
-      build_stubbed :article_reference,
-        author_names: [batiatus], title: "*Formica* and Apples",
-        pagination: "7-14", year: "2000", doi: "10.10.1038/nphys1170"
+      build_stubbed :article_reference, :with_doi, author_names: [batiatus], title: "*Formica* and Apples",
+        pagination: "7-14", year: "2000"
     end
 
     specify do
@@ -23,8 +22,7 @@ describe Wikipedia::ReferenceExporter do
 
   describe "when reference is a `BookReference`" do
     let(:reference) do
-      build_stubbed :book_reference,
-        author_names: [batiatus, glaber], title: "*Formica* and Apples",
+      build_stubbed :book_reference, author_names: [batiatus, glaber], title: "*Formica* and Apples",
         pagination: "7-14", year: "2000"
     end
 

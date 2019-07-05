@@ -75,11 +75,11 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is an unavailable misspelling" do
-      # TODO
+      # TODO: ?
     end
 
     context 'when taxon is "unavailable uncategorized"' do
-      # TODO what to do?
+      # TODO: What to do?
     end
 
     context "when taxon is `invalid?`" do

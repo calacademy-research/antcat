@@ -4,9 +4,7 @@ describe Autocomplete::FormatLinkableReferences do
   describe "#call" do
     describe "output format" do
       context "when a nested reference" do
-        let(:reference) do
-          create :nested_reference, pages_in: "Pp. 105-111 in:", bolton_key: "Smith, 1858b"
-        end
+        let(:reference) { create :nested_reference, bolton_key: "Smith, 1858b" }
 
         specify do
           expect(described_class[[reference]]).to eq [
