@@ -55,7 +55,7 @@ module Comments
         Markdowns::MentionedUsers[body]
       end
 
-      # TODO improve and move somewhere.
+      # TODO: Improve and move somewhere.
       def notify_creator?
         # These are the only models for which we want to notify
         # the creator about. TODO see if we can make use of

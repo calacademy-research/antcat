@@ -34,7 +34,7 @@ class JournalsController < ApplicationController
   end
 
   def autocomplete
-    search_query = params[:term] || '' # TODO standardize all "q/qq/query/term".
+    search_query = params[:term] || '' # TODO: Standardize all "q/qq/query/term".
 
     respond_to do |format|
       format.json { render json: Autocomplete::AutocompleteJournals[search_query] }

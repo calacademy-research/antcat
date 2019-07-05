@@ -13,7 +13,7 @@ $ ->
 
   dataSet =
     name: 'taxa'
-    limit: Infinity # TODO bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity # TODO: Bug in typeahead.js v0.11.1; limited on server-side anyway.
     displayKey: 'name'
     source: taxa.ttAdapter()
     templates:

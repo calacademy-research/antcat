@@ -1,4 +1,4 @@
-# TODO cleanup after extracting into service object.
+# TODO: Cleanup after extracting into service object.
 
 require "spec_helper"
 

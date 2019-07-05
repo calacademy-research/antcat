@@ -94,7 +94,7 @@ describe Taxa::Operations::ElevateToSpecies do
       end
     end
 
-    # TODO these specs were left as is after rewriting this service
+    # TODO: These specs were left as is after rewriting this service
     # because we should stop reusing `Name`s once we're ready for that.
     context "old specs" do # rubocop:disable RSpec/ContextWording
       let!(:genus) { create :genus, name_string: 'Atta' }

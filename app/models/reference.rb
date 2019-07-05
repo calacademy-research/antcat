@@ -89,7 +89,7 @@ class Reference < ApplicationRecord
     References::Cache::Set[self, value, field]
   end
 
-  # TODO something. "_cache" vs not.
+  # TODO: Something. "_cache" vs not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
     author_names_string_cache

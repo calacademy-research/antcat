@@ -1,4 +1,4 @@
-# NOTE that this service mutates `params`, but that's OK for now.
+# NOTE: This service mutates `params`, but that's OK for now.
 
 class ReferenceForm
   def initialize reference, reference_params, original_params, request_host

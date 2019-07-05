@@ -36,7 +36,7 @@ hideUnavailableRadios = ->
 # All left-mosts radios ("DIFF_WITH_ID") above the checked "SELECTED_ID",
 # ie those having a higher value, should be hidden.
 unavailable_DIFF_WITH_ID_radios = ->
-  # HACK because the `most_recent` revision doesn't have a version id.
+  # HACK: Because the `most_recent` revision doesn't have a version id.
   SELECTED_ID_value = parseInt $("#{SELECTED_ID}:checked").prop("value") || 99999999
   $ jQuery.grep $(DIFF_WITH_ID), (v) -> v.value >= SELECTED_ID_value
 
@@ -46,5 +46,5 @@ unavailable_SELECTED_ID_radios = ->
   DIFF_WITH_ID_value = parseInt  $("#{DIFF_WITH_ID}:checked").prop("value")
 
   $ jQuery.grep $(SELECTED_ID), (v) ->
-    return false if v.value == "" # Same HACK as below.
+    return false if v.value == "" # HACK: Same as above.
     v.value <= DIFF_WITH_ID_value

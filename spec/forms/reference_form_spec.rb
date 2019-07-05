@@ -74,7 +74,7 @@ describe ReferenceForm do
               }
             end
 
-            # TODO we may want this.
+            # TODO: We may want this.
             xit "creates a single version for the reference" do
               with_versioning do
                 expect { described_class.new(reference, reference_params, original_params, request_host).save }.

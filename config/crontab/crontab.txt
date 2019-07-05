@@ -1,4 +1,4 @@
-# TODO *may* not be used. We should probably start using it unless we
+# TODO: May not be used. We should probably start using it unless we
 # already do. Either way, this file should be updated.
 
 # This is the output of crontab -l on production

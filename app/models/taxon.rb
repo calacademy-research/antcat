@@ -13,7 +13,7 @@ class Taxon < ApplicationRecord
 
   class TaxonExists < StandardError; end
 
-  # TODO extract this and all `#update_parent`s into `ForceParentChange`.
+  # TODO: Extract this and all `#update_parent`s into `ForceParentChange`.
   class InvalidParent < StandardError
     attr_reader :taxon, :new_parent
 

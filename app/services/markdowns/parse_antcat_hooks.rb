@@ -41,7 +41,7 @@ module Markdowns
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_taxon_ids!
-        # HACK to eager load records in a single query for performance reasons.
+        # HACK: To eager load records in a single query for performance reasons.
         ids = content.scan(TAXON_TAG_REGEX).flatten.compact
         return if ids.blank?
 
@@ -61,7 +61,7 @@ module Markdowns
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_reference_ids!
-        # HACK to eager load records in a single query for performance reasons.
+        # HACK: To eager load records in a single query for performance reasons.
         refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
         return if refs_ids.blank?
 

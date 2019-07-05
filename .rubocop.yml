@@ -25,11 +25,11 @@ Rails/DynamicFindBy:
 Rails/FilePath:
   Enabled: false
 
-# TODO we want to enable this when the database is ready for it.
+# TODO: We want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# TODO investigate if this would be useful.
+# TODO: Investigate if this would be useful.
 Rails/InverseOf:
   Enabled: false
 
@@ -157,9 +157,6 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
-
-Style/CommentAnnotation:
-  Enabled: false
 
 Style/Documentation:
   Enabled: false

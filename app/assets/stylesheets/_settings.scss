@@ -50,7 +50,7 @@
 $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
-// NOTE changed.
+// NOTE: Changed.
 // Kept commented out to make upgrades easier.
 // $foundation-palette: (
 //  primary: #1779ba,
@@ -67,7 +67,7 @@ $foundation-palette: (
   warning: #ffae00,
   alert: $color_danger,
 );
-// NOTE changed.
+// NOTE: Changed.
 // $light-gray: #e6e6e6;
 $light-gray: $color_light_gray;
 // $medium-gray: #cacaca;
@@ -77,7 +77,7 @@ $black: #0a0a0a;
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-// NOTE changed.
+// NOTE: Changed.
 // $body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-font-family: Montserrat, 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
@@ -85,7 +85,7 @@ $global-margin: 1rem;
 $global-padding: 1rem;
 $global-weight-normal: normal;
 $global-weight-bold: bold;
-// NOTE changed.
+// NOTE: Changed.
 // $global-radius: 0;
 $global-radius: 3px;
 $global-text-direction: ltr;
@@ -97,8 +97,8 @@ $print-transparent-backgrounds: true;
 // 2. Breakpoints
 // --------------
 
-// NOTE changed.
-// HACK should be "large: 1024px" but the default Capybara window is 1000px // wide, so.. yeah it's a quick fix that may stay with us for a while;
+// NOTE: Changed.
+// HACK: Should be "large: 1024px" but the default Capybara window is 1000px // wide, so.. yeah it's a quick fix that may stay with us for a while;
 // not very pretty but fairly harmless.
 $breakpoints: (
   small: 0,
@@ -638,7 +638,7 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-// NOTE changed.
+// NOTE: Changed.
 // $topbar-background: $light-gray;
 $topbar-background: inherit;
 $topbar-submenu-background: $topbar-background;

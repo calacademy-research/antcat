@@ -21,7 +21,7 @@ class FeedbackController < ApplicationController
     }
   )
 
-  # TODO probably remove `by_status_and_date` now that we have filters.
+  # TODO: Probably remove `by_status_and_date` now that we have filters.
   def index
     @feedbacks = Feedback.by_status_and_date.filter(filter_params)
     @feedbacks = @feedbacks.includes(:user).paginate(page: params[:page], per_page: 10)

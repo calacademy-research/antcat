@@ -25,7 +25,7 @@ class Author < ApplicationRecord
     end
   end
 
-  # NOTE that "first" doesn't mean "primary", or "most correct", it
+  # NOTE: "first" doesn't mean "primary", or "most correct", it
   # simply refers to the name with the oldest ID.
   def first_author_name_name
     names.first&.name || '[no author name]'

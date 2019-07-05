@@ -1,4 +1,4 @@
-# TODO: do not cache in database.
+# TODO: Do not cache in database.
 
 class ReferenceDecorator < Draper::Decorator
   delegate_all
@@ -20,7 +20,7 @@ class ReferenceDecorator < Draper::Decorator
     format_italics sanitize reference.taxonomic_notes
   end
 
-  # TODO store denormalized value in the database?
+  # TODO: Store denormalized value in the database?
   def format_date
     reference_date = reference.date
     return unless reference_date
@@ -42,7 +42,7 @@ class ReferenceDecorator < Draper::Decorator
     prefix + date + suffix
   end
 
-  # TODO rename as it also links DOIs, not just reference documents.
+  # TODO: Rename as it also links DOIs, not just reference documents.
   def format_reference_document_link
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end

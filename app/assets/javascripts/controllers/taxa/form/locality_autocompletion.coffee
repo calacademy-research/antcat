@@ -1,4 +1,4 @@
-# TODO DRY various `Bloodhound`s.
+# TODO: DRY various `Bloodhound`s.
 
 $ ->
   localities = new Bloodhound
