@@ -3,7 +3,7 @@ class ArticleReference < Reference
 
   validates :year, :journal, :series_volume_issue, :pagination, presence: true
 
-  # TODO not used (since at least December 2016).
+  # TODO: Not used (since at least December 2016).
   def series
     series_volume_issue_parts[:series]
   end

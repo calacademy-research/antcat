@@ -1,6 +1,6 @@
 # Fulltext search, but not all fields. Used by at.js.
-# TODO this class is building up more and more duplication w.r.t `References::Search::Fulltext`.
-# TODO we may want to use the same order/boost for `References::Search::Fulltext`.
+# TODO: This class is building up more and more duplication w.r.t `References::Search::Fulltext`.
+# TODO: We may want to use the same order/boost for `References::Search::Fulltext`.
 
 module References
   module Search

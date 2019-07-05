@@ -80,7 +80,7 @@ class ActivityDecorator < Draper::Decorator
     #
     # 4) Else --> `_default.haml`
     #
-    # TODO probably change to this:
+    # TODO: Probably change to this:
     # 1) Activites with non-default actions (ie not create/update/destroy)
     #    --> `actions/_<action>.haml` (assume the template exists)
     #

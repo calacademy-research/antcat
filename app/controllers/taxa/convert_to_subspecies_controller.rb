@@ -6,7 +6,7 @@ module Taxa
     def new
     end
 
-    # TODO move validations to service.
+    # TODO: Move validations to service.
     def create
       unless @taxon.is_a? Species
         @taxon.errors.add :base,
@@ -34,7 +34,7 @@ module Taxa
         render :new and return
       end
 
-      # TODO allow moving to incerae sedis genera
+      # TODO: Allow moving to incerae sedis genera.
       unless @new_species.genus
         @taxon.errors.add :base, "The new parent must have a genus."
         render :new and return

@@ -1,4 +1,4 @@
-# TODO DRY
+# TODO: DRY.
 
 Feature: User notifications
   Background:

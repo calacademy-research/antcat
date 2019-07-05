@@ -80,7 +80,7 @@ module References
           @normalized_search_keywords ||= begin
             keywords = options[:keywords] || ""
 
-            # TODO very ugly to make some queries work. Fix in Solr.
+            # TODO: Very ugly to make some queries work. Fix in Solr.
             substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
             substrings_to_remove.each { |substring| keywords.gsub! /#{substring}/, '' }
 

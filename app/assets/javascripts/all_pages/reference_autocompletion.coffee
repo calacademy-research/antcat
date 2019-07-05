@@ -8,7 +8,7 @@ $ ->
 
   authorsDataSet =
     name: 'authors'
-    limit: 5 # NOTE limited on client-side to not interfer with other author autocompletions and because lazy.
+    limit: 5 # NOTE: Limited on client-side to not interfer with other author autocompletions and because lazy.
     display: (authorName) -> "author:'#{authorName}'"
     source: authors.ttAdapter()
     templates:
@@ -29,7 +29,7 @@ $ ->
 
   referencesDataSet =
     name: 'references'
-    limit: Infinity # TODO bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity # TODO: Bug in typeahead.js v0.11.1; limited on server-side anyway.
     displayKey: 'search_query'
     source: references.ttAdapter()
     templates:

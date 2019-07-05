@@ -69,9 +69,8 @@ end
 
 Given("that the entry has a URL that's on our site") do
   reference = Reference.last
-  reference.update_attribute :document, ReferenceDocument.create!
-  reference.document.update file_file_name: '123.pdf',
-    url: "localhost/documents/#{reference.document.id}/123.pdf"
+  reference.update!(document: ReferenceDocument.create!)
+  reference.document.update!(file_file_name: '123.pdf', url: "localhost/documents/#{reference.document.id}/123.pdf")
 end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
@@ -108,8 +107,9 @@ Then("nesting_reference_id should contain a valid reference id") do
   expect(Reference.exists?(id)).to be true
 end
 
-Given("there is a reference associated with a protonym") do
-  create :protonym
+Given("there is a reference referenced in a history item") do
+  reference = create :article_reference
+  create :taxon_history_item, taxt: "{ref #{reference.id}}"
 end
 
 Then("the {string} tab should be selected") do |tab_name|

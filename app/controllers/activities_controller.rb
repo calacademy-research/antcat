@@ -67,7 +67,7 @@ class ActivitiesController < ApplicationController
       end
     end
 
-    # HACK to make this work at the same time:
+    # HACK: To make this work at the same time:
     # * Highlight single activity item in context.
     # * Not showing `params[:page]` in single-activity-links.
     # * Make the delete button return to the previous page.
@@ -84,7 +84,7 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
     end
 
-    # HACK because `params[:action]` (to filter on `activitie.actions`) gets
+    # HACK: Because `params[:action]` (to filter on `activitie.actions`) gets
     # overridden by Rails (controller action param).
     def hacked_filter_params
       filter_params.tap do |hsh|

@@ -18,7 +18,7 @@ describe Subspecies do
   it "has its genus assigned from its species, if there is one" do
     species = create :species, genus: genus
     subspecies = create :subspecies, genus: nil, species: species
-    subspecies.save # Trigger callbacks. TODO fix factories.
+    subspecies.save # Trigger callbacks. TODO: Fix factories.
 
     expect(subspecies.genus).to eq genus
   end

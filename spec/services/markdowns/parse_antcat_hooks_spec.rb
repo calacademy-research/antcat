@@ -1,4 +1,4 @@
-# TODO consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
+# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
 
 require "spec_helper"
 

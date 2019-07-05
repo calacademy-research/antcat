@@ -14,7 +14,7 @@ class AddTypeTaxonIdToTaxa < ActiveRecord::Migration[5.1]
         add_foreign_key :taxa, :taxa, column: :type_taxon_id, name: :fk_taxa__type_taxon_id__taxa__id
       end
 
-      dir.down do |dir|
+      dir.down do
         remove_foreign_key :taxa, name: :fk_taxa__type_taxon_id__taxa__id
       end
     end

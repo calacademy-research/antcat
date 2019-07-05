@@ -68,7 +68,7 @@ module References
         return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
       end
 
-      # NOTE using `#type` to make the service more general.
+      # NOTE: Using `#type` to make the service more general.
       def match_article
         return unless rhs.type == 'ArticleReference' && type == 'ArticleReference'
         return unless rhs.series_volume_issue.present? && series_volume_issue.present?
@@ -78,7 +78,7 @@ module References
           normalize_series_volume_issue(series_volume_issue)
       end
 
-      # NOTE using `#type` to make the service more general.
+      # NOTE: Using `#type` to make the service more general.
       def match_book
         return unless rhs.type == 'BookReference' && type == 'BookReference'
         return unless rhs.pagination.present? && pagination.present?

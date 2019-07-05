@@ -12,8 +12,8 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus unless ENV['TRAVIS']
   config.use_transactional_fixtures = true
   Kernel.srand config.seed
-  # TODO enable? `config.disable_monkey_patching!`
-  # TODO maybe add `config.render_views = true`.
+  # TODO: Enable? `config.disable_monkey_patching!`
+  # TODO: Maybe add `config.render_views = true`.
   # config.profile_examples = 10 # Uncomment to show slow specs.
 
   # Allows RSpec to persist some state between runs in order to support

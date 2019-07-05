@@ -15,7 +15,7 @@ class Genus < GenusGroupTaxon
   def parent= parent_taxon
     case parent_taxon
     when Family, nil
-      # NOTE we don't have to clear `family_id` since we do not store that for genera.
+      # NOTE: We don't have to clear `family_id` since we do not store that for genera.
       self.subfamily = nil
       self.tribe = nil
     when Subfamily
@@ -51,9 +51,9 @@ class Genus < GenusGroupTaxon
       where(names: { epithet: Names::EpithetSearchSet[target_epithet_string] })
   end
 
-  # TODO this is the same as `#find_epithet_in_genus`.
+  # TODO: This is the same as `#find_epithet_in_genus`.
   # Found this in the git history:
-  # results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])
+  # `results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])`
   def find_subspecies_in_genus target_subspecies_string
     Taxon.joins(:name).where(genus: self).
       where(names: { epithet: Names::EpithetSearchSet[target_subspecies_string] })

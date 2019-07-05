@@ -8,12 +8,16 @@ AllCops:
     - 'config.ru'
     - 'db/schema.rb'
     - 'bin/**/*'
-    - 'db/migrate/**/*'
+    - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'vendor/**/*'
 
 Rails:
   Enabled: true
+
+# TODO: Investigate.
+Rails/BulkChangeTable:
+  Enabled: false
 
 Rails/DynamicFindBy:
   Whitelist: find_by_sql find_by_names
@@ -21,25 +25,15 @@ Rails/DynamicFindBy:
 Rails/FilePath:
   Enabled: false
 
-Rails/HasAndBelongsToMany:
-  Enabled: false
-
-# TODO we want to enable this when the database is ready for it.
+# TODO: We want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# TODO investigate if this would be useful.
+# TODO: Investigate if this would be useful.
 Rails/InverseOf:
   Enabled: false
 
 Rails/OutputSafety:
-  Enabled: false
-
-# TODO investigate.
-Rails/SkipsModelValidations:
-  Enabled: false
-
-Rails/Validation:
   Enabled: false
 
 Layout/AlignArguments:
@@ -110,9 +104,6 @@ FactoryBot/CreateList:
 RSpec/AnyInstance:
   Enabled: false
 
-RSpec/ContextWording:
-  Enabled: false
-
 RSpec/EmptyExampleGroup:
   Enabled: false
 
@@ -166,9 +157,6 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
-
-Style/CommentAnnotation:
-  Enabled: false
 
 Style/Documentation:
   Enabled: false

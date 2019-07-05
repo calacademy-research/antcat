@@ -140,11 +140,11 @@ describe Genus do
       specify { expect(genus.find_epithet_in_genus('sdfsdf')).to eq [] }
     end
 
-    it "returns the one item" do
+    it "returns matches" do
       expect(species.genus.find_epithet_in_genus('serratula')).to eq [species]
     end
 
-    context "mandatory spelling changes" do
+    describe "mandatory spelling changes" do
       it "finds -a when asked to find -us" do
         expect(species.genus.find_epithet_in_genus('serratulus')).to eq [species]
       end

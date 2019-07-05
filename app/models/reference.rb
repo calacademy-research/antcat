@@ -20,8 +20,8 @@ class Reference < ApplicationRecord
     after_add: :refresh_author_names_caches,
     after_remove: :refresh_author_names_caches
   has_many :authors, through: :author_names
-  has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id"
-  has_many :citations
+  has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id", dependent: :restrict_with_error
+  has_many :citations, dependent: :restrict_with_error
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument'
@@ -89,7 +89,7 @@ class Reference < ApplicationRecord
     References::Cache::Set[self, value, field]
   end
 
-  # TODO something. "_cache" vs not.
+  # TODO: Something. "_cache" vs not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
     author_names_string_cache

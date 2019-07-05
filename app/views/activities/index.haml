@@ -12,5 +12,5 @@
 
 =render "table", activities: @activities, show_delete_button: true, page: @page
 
--# HACK so that the id param isn't included in pagination links.
+-# HACK: So that the id param isn't included in pagination links.
 =will_paginate @activities, params: { id: nil }

@@ -17,7 +17,7 @@ Then("I should see a comments section") do
   find ".comments-container"
 end
 
-# HACK x 2:
+# HACK: x 2:
 #   * We're only checking that the URL contains the string "#comment-" (anchor tag).
 #   * We're getting the URL via JavaScript because I could not get Capybara to do it.
 Then("I should see my comment highlighted in the comments section") do

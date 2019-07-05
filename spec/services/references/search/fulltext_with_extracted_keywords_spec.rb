@@ -35,7 +35,7 @@ describe References::Search::FulltextWithExtractedKeywords do
       end
     end
 
-    # TODO may be duplicated and/or not needed.
+    # TODO: May be duplicated and/or not needed.
     describe "searching for text and/or years" do
       it "extracts the starting and ending years" do
         expect(References::Search::Fulltext).to receive(:new).

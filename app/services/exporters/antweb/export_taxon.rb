@@ -129,7 +129,7 @@ module Exporters
         def export_history
           decorated = taxon.decorate
 
-          content_tag :div, class: 'antcat_taxon' do # NOTE `.antcat_taxon` is used on AntWeb.
+          content_tag :div, class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.
             content = ''.html_safe
             content << decorated.statistics(valid_only: true)
             content << Exporters::Antweb::ExportHeadline[taxon]
