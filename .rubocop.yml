@@ -8,12 +8,16 @@ AllCops:
     - 'config.ru'
     - 'db/schema.rb'
     - 'bin/**/*'
-    - 'db/migrate/**/*'
+    - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
     - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'vendor/**/*'
 
 Rails:
   Enabled: true
+
+# TODO: Investigate.
+Rails/BulkChangeTable:
+  Enabled: false
 
 Rails/DynamicFindBy:
   Whitelist: find_by_sql find_by_names
