@@ -3,6 +3,12 @@ require 'spec_helper'
 describe User do
   it { is_expected.to be_versioned }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:activities).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:comments).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:notifications).dependent(:restrict_with_error) }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to_not allow_values('<', '>').for(:name) }

@@ -6,9 +6,9 @@ class User < ApplicationRecord
   IGNORED_TRACKABLE_TYPES_FOR_UNCONFIRMED_USER_EDIT_LIMIT = %w[Feedback]
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
-  has_many :activities
-  has_many :comments
-  has_many :notifications
+  has_many :activities, dependent: :restrict_with_error
+  has_many :comments, dependent: :restrict_with_error
+  has_many :notifications, dependent: :restrict_with_error
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
   validates :name, presence: true, uniqueness: true, format: { with: /\A[^<>]*\z/ }
