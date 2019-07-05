@@ -5,9 +5,7 @@ module Taxa
     WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
-      DatabaseScripts::PassThroughNamesWithTaxts,
-      DatabaseScripts::SubspeciesWithoutSpecies,
-      DatabaseScripts::TaxaReferencingNonExistingTaxa
+      DatabaseScripts::PassThroughNamesWithTaxts
     ]
 
     def initialize taxon
