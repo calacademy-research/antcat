@@ -33,12 +33,10 @@ describe ReferenceDocument do
   end
 
   describe "#actual_url" do
-    let!(:document) { create :reference_document }
-
-    before { document.update_attribute :url, 'foo' }
+    let!(:document) { create :reference_document, url: 'localhost/document.pdf' }
 
     it "simply be the url, if the document's not on Amazon" do
-      expect(document.reload.actual_url).to eq 'foo'
+      expect(document.reload.actual_url).to eq 'http://localhost/document.pdf'
     end
   end
 

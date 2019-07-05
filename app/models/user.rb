@@ -75,7 +75,7 @@ class User < ApplicationRecord
   end
 
   def mark_unseen_notifications_as_seen
-    unseen_notifications.update_all(seen: true)
+    unseen_notifications.find_each { |notification| notification.update(seen: true) }
   end
 
   private

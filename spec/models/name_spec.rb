@@ -22,10 +22,10 @@ describe Name do
   end
 
   describe '`set_epithet` and `#set_epithets`' do
-    let!(:name) { create :subspecies_name, name: 'Lasius niger fusca' }
+    let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
 
     before do
-      name.update_columns(epithet: 'pizza', epithets: 'pescatore')
+      name.attributes = { epithet: 'pizza', epithets: 'pescatore' }
     end
 
     specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
