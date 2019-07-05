@@ -36,6 +36,15 @@ describe JournalsController do
       expect(activity.trackable).to eq journal
       expect(activity.parameters).to eq(name: 'New name', name_was: "Science")
     end
+
+    context 'when journal has references' do
+      let!(:reference) { create :article_reference, journal: journal }
+
+      it 'invalidates reference caches' do
+        expect(References::Cache::Invalidate).to receive(:new).with(reference).and_call_original
+        put(:update, params: { id: journal.id, journal: journal_params })
+      end
+    end
   end
 
   describe "DELETE destroy" do
