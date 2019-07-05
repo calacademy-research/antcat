@@ -63,7 +63,6 @@ class TaxonDecorator < Draper::Decorator
                     {      genus: taxon.genus.name.name.downcase,
                          species: taxon.name.epithet.downcase }
                   when Subspecies
-                    return unless taxon.species
                     {      genus: taxon.genus.name.name.downcase,
                          species: taxon.species.name.epithet,
                       subspecies: taxon.name.subspecies_epithets.downcase }

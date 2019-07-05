@@ -3,8 +3,8 @@ require "spec_helper"
 describe DatabaseScript do
   describe ".new_from_filename_without_extension" do
     it "initializes" do
-      results = described_class.new_from_filename_without_extension "SubspeciesWithoutSpecies"
-      expect(results).to be_a DatabaseScripts::SubspeciesWithoutSpecies
+      results = described_class.new_from_filename_without_extension "ExtantTaxaInFossilGenera"
+      expect(results).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
     end
   end
 

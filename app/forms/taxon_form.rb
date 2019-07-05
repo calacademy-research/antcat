@@ -21,7 +21,6 @@ class TaxonForm
         # There is no `UndoTracker#get_current_change_id` at this point, so if
         # anything in the "update_*" methods triggers a save for any reason,
         # the versions' `change_id`s will be nil.
-        subspecies_without_species_special_case
 
         if taxon_name_string
           taxon.name = Names::BuildNameFromString[taxon_name_string]
@@ -45,16 +44,6 @@ class TaxonForm
 
         save_and_create_change!
       end
-    end
-
-    # TODO: remove once http://localhost:3000/database_scripts/subspecies_without_species has been cleared.
-    def subspecies_without_species_special_case
-      if taxon.is_a?(Subspecies) && !taxon.species && params[:species_id].present?
-        taxon.update_parent Taxon.find(params[:species_id])
-      end
-    rescue Taxon::TaxonExists
-      taxon.errors.add :base, "This name is in use by another taxon"
-      raise
     end
 
     def save_and_create_change!
