@@ -12,6 +12,10 @@ FactoryBot.define do
       sequence(:name, 'a') { |n| "Tribe#{n}" }
     end
 
+    factory :subtribe_name, class: SubtribeName do
+      sequence(:name, 'a') { |n| "Subtribe#{n}" }
+    end
+
     factory :genus_name, class: GenusName do
       sequence(:name, 'a') { |n| "Genus#{n}" }
     end

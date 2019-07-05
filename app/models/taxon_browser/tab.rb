@@ -12,6 +12,8 @@ module TaxonBrowser
       WITHOUT_TRIBE               = :without_tribe,
       ALL_GENERA_IN_FAMILY        = :all_genera_in_family,
       ALL_GENERA_IN_SUBFAMILY     = :all_genera_in_subfamily,
+      SUBTRIBES_IN_TRIBE          = :subtribes_in_tribe,
+      SUBTRIBES_IN_PARENT_TRIBE   = :subtribes_in_parent_tribe,
       ALL_TAXA_IN_GENUS           = :all_taxa_in_genus,
       SUBGENERA_IN_GENUS          = :subgenera_in_genus,
       SUBGENERA_IN_PARENT_GENUS   = :subgenera_in_parent_genus

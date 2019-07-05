@@ -38,6 +38,7 @@ module TaxonBrowser
       def default_or_display display
         case @taxon
         when Subfamily then Tab::ALL_GENERA_IN_SUBFAMILY if display.blank?
+        when Subtribe  then Tab::SUBTRIBES_IN_PARENT_TRIBE
         when Subgenus  then Tab::SUBGENERA_IN_PARENT_GENUS
         end || display
       end
@@ -64,7 +65,10 @@ module TaxonBrowser
             (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
             # Hide [species in] subgenus tab because there are none as of 2016.
-            taxon.is_a?(Subgenus)
+            taxon.is_a?(Subgenus) ||
+
+            # Never show the [children of] subtribe tab (has no children).
+            taxon.is_a?(Subtribe)
         end
       end
 

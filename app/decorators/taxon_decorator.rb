@@ -54,7 +54,7 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def link_to_antweb
-    return if taxon.class.in? [Family, Tribe, Subgenus]
+    return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus]
 
     url = "http://www.antweb.org/description.do?"
     params = { rank: taxon.rank }

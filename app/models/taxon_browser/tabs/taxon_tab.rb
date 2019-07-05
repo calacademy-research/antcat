@@ -20,7 +20,7 @@ module TaxonBrowser
       end
 
       def title
-        return tab_taxon.name_with_fossil if show_only_genus_name?
+        return tab_taxon.name_with_fossil if use_epithet_as_title?
         "#{tab_taxon.name_with_fossil} #{tab_taxon.childrens_rank_in_words}".html_safe
       end
 
@@ -37,11 +37,16 @@ module TaxonBrowser
           tab_taxon.genera_incertae_sedis_in.valid.exists?
         end
 
-        # Tweak for the [species in] genus tab title to change eg
-        # "Lasius species > Lasius subgenera" to "Lasius > Lasius subgenera".
-        def show_only_genus_name?
-          return unless tab_taxon.is_a? Genus
-          display.in? [ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS]
+        # Changes "Formicinae tribes > ... > Lasiini genera > Lasiini subtribes" to
+        #         "Formicinae tribes > ... > Lasiini > Lasiini subtribes".
+        #
+        # Changes "Formicinae tribes > ... > Lasius species > Lasius subgenera" to
+        #         "Formicinae tribes > ... > Lasius > Lasius subgenera".
+        def use_epithet_as_title?
+          return unless tab_taxon.is_a?(Tribe) || tab_taxon.is_a?(Genus)
+
+          display.in?([SUBTRIBES_IN_TRIBE, SUBTRIBES_IN_PARENT_TRIBE]) ||
+            display.in?([ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS])
         end
     end
   end

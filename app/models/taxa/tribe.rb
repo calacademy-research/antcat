@@ -1,6 +1,7 @@
 class Tribe < Taxon
   belongs_to :subfamily
 
+  has_many :subtribes
   has_many :genera
   has_many :species, through: :genera
 
@@ -18,6 +19,10 @@ class Tribe < Taxon
   def update_parent new_parent
     self.parent = new_parent
     update_descendants_subfamilies
+  end
+
+  def displayable_subtribes
+    subtribes.displayable
   end
 
   def children

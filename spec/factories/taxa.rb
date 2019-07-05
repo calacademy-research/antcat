@@ -64,6 +64,12 @@ FactoryBot.define do
       subfamily
     end
 
+    factory :subtribe, class: Subtribe do
+      association :name, factory: :subtribe_name
+      tribe
+      subfamily { |a| a.tribe.subfamily }
+    end
+
     factory :genus, class: Genus do
       association :name, factory: :genus_name
       tribe
