@@ -165,12 +165,10 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[13]: `current valid name`" do
-      context 'when taxon is valid' do
+      context "when taxon dhas no `current_valid_taxon`" do
         let(:taxon) { create :genus }
 
-        it "returns nil" do
-          expect(export_taxon(taxon)[13]).to be_nil
-        end
+        specify { expect(export_taxon(taxon)[13]).to eq nil }
       end
 
       context "when taxon has a `current_valid_taxon`" do
@@ -178,18 +176,7 @@ describe Exporters::Antweb::ExportTaxon do
         let(:taxon) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
 
         it "exports the current valid name of the taxon" do
-          expect(export_taxon(taxon)[13]).to end_with current_valid_taxon.name.name
-        end
-      end
-
-      context 'when taxon is a synonym' do
-        context "when there are senior synonyms" do
-          let!(:senior_synonym) { create :species, name_string: 'Eciton major' }
-          let!(:taxon) { create :species, :synonym, current_valid_taxon: senior_synonym }
-
-          it "looks at synonyms" do
-            expect(export_taxon(taxon)[13]).to end_with 'Eciton major'
-          end
+          expect(export_taxon(taxon)[13]).to eq "#{taxon.subfamily.name.name} #{current_valid_taxon.name.name}"
         end
       end
     end
@@ -269,7 +256,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
       let!(:genus) { create :genus, name_string: 'Atta', protonym: protonym, hol_id: 9999 }
       let!(:type_species) { create :species, name_string: 'Atta major', genus: genus }
-      let!(:a_reference) { create :article_reference, doi: "10.10.1038/nphys1170" }
+      let!(:a_reference) { create :article_reference, :with_doi }
 
       before do
         create :species, :unavailable, genus: genus # For the statistics.

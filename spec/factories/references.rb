@@ -44,5 +44,9 @@ FactoryBot.define do
       pages_in { 'In: ' }
       nesting_reference { create :book_reference }
     end
+
+    trait :with_doi do
+      sequence(:doi) { |n| "10.10.1038/nphys117#{n}" }
+    end
   end
 end

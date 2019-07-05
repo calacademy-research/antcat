@@ -1,5 +1,5 @@
 @papertrail
-Feature: Workflow
+Feature: Undo
   As an editor of AntCat
   I want to edit a taxon
   and then undo that change
