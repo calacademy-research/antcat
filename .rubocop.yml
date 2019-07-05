@@ -21,9 +21,6 @@ Rails/DynamicFindBy:
 Rails/FilePath:
   Enabled: false
 
-Rails/HasAndBelongsToMany:
-  Enabled: false
-
 # TODO we want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
@@ -37,9 +34,6 @@ Rails/OutputSafety:
 
 # TODO investigate.
 Rails/SkipsModelValidations:
-  Enabled: false
-
-Rails/Validation:
   Enabled: false
 
 Layout/AlignArguments:
