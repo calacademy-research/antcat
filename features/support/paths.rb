@@ -37,6 +37,8 @@ module NavigationHelpers
       references_latest_additions_path
     when /^the page of the most recent reference$/
       reference_path(Reference.last)
+    when /^the page of the oldest reference$/
+      reference_path(Reference.first)
     when /^the page of the reference "([^"]*)"$/
       reference = find_reference_by_keey $1
       reference_path(reference)

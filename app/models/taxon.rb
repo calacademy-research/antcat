@@ -39,7 +39,7 @@ class Taxon < ApplicationRecord
   belongs_to :homonym_replaced_by, class_name: 'Taxon'
   belongs_to :current_valid_taxon, class_name: 'Taxon'
 
-  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id
+  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
   has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, class_name: 'Taxon', foreign_key: :current_valid_taxon_id

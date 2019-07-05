@@ -108,8 +108,9 @@ Then("nesting_reference_id should contain a valid reference id") do
   expect(Reference.exists?(id)).to be true
 end
 
-Given("there is a reference associated with a protonym") do
-  create :protonym
+Given("there is a reference referenced in a history item") do
+  reference = create :article_reference
+  create :taxon_history_item, taxt: "{ref #{reference.id}}"
 end
 
 Then("the {string} tab should be selected") do |tab_name|
