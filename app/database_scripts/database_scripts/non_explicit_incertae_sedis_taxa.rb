@@ -5,6 +5,11 @@ module DatabaseScripts
         where.not(status: Status::EXCLUDED_FROM_FORMICIDAE)
     end
 
+    def subgenera_without_subfamily
+      Subgenus.where(subfamily_id: nil).where(incertae_sedis_in: nil).
+        where.not(status: Status::EXCLUDED_FROM_FORMICIDAE)
+    end
+
     def genera_without_tribe
       Genus.where(tribe_id: nil).where(incertae_sedis_in: nil).
         where.not(status: Status::EXCLUDED_FROM_FORMICIDAE)
@@ -27,6 +32,18 @@ module DatabaseScripts
           ]
         end
       end <<
+        as_table do |t|
+          t.caption "Subgenera without subfamily"
+          t.header :species, :status, :subfamily_of_genus
+
+          t.rows(subgenera_without_subfamily) do |taxon|
+            [
+              markdown_taxon_link(taxon),
+              taxon.status,
+              markdown_taxon_link(taxon.genus.subfamily)
+            ]
+          end
+        end <<
         as_table do |t|
           t.caption "Genera without tribe"
           t.header :species, :status, :subfamily
