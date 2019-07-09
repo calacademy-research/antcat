@@ -27,11 +27,20 @@ describe Exporters::Antweb::Exporter do
 
   describe "#call" do
     let(:filename) { "antweb_export_test" }
+    let(:file) { instance_double('File') }
 
     it "writes data to the specified file" do
-      file = instance_double('File')
       expect(File).to receive(:open).with(filename, "w").and_yield(file)
       expect(file).to receive(:puts).with(anything)
+      described_class[filename]
+    end
+
+    it "calls `Exporters::Antweb::ExportTaxon`" do
+      allow(File).to receive(:open).with(filename, "w").and_yield(file)
+      allow(file).to receive(:puts).with(anything)
+
+      taxon = create :family
+      expect(Exporters::Antweb::ExportTaxon).to receive(:new).with(taxon).and_call_original
       described_class[filename]
     end
   end
