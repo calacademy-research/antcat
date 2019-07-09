@@ -5,7 +5,7 @@ Feature: Compare revisions
   So I can see what has been changed
 
   Background:
-    Given I log in as a catalog editor named "Archibald"
+    Given I log in as a catalog editor
 
   # One big scenario for "reasons".
   @javascript

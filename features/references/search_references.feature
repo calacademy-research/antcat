@@ -40,12 +40,6 @@ Feature: Searching references
     And I should not see the following autocomplete suggestions:
       | Hölldobler's Ants |
 
-  @javascript @search
-  Scenario: Expanding autocomplete suggestions
-    When I fill in the references search box with "author:fish"
-    Then I should see the following autocomplete suggestions:
-      | Fisher's Ants |
-
     When I click the first autocomplete suggestion
     Then the search box should contain "author:'Fisher, B.'"
 
