@@ -1,6 +1,8 @@
 # `ExtraTab`s are used for things where calling `#children` would
 # not work or make sense. Everything here is a special case.
 
+# TODO: Refactor.
+
 module TaxonBrowser
   module Tabs
     class ExtraTab < Tab
@@ -23,20 +25,22 @@ module TaxonBrowser
           when ALL_TAXA_IN_GENUS
             ["All #{name_html} taxa", taxon.displayable_child_taxa]
 
-          # Special case because:
-          #   1) A genus' children are its species.
-          #   2) There are no taxa with a `subgenus_id` as of 2016.
-          #
-          # The catalog page in this case will be that of a genus.
-          when SUBGENERA_IN_GENUS
+          # Special case because subgenera are outside of the "main progression".
+          when SUBGENERA_IN_GENUS # The catalog page in this case will be that of a genus.
             ["#{name_html} subgenera", taxon.displayable_subgenera]
 
-          # Like above, but for subgenus catalog pages.
-          when SUBGENERA_IN_PARENT_GENUS
+          when SUBGENERA_IN_PARENT_GENUS # Like above, but for subgenus catalog pages.
             ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.displayable_subgenera]
 
+          # Special case because subtribes are outside of the "main progression".
+          when SUBTRIBES_IN_TRIBE # The catalog page in this case will be that of a tribe.
+            ["#{name_html} subtribes", taxon.displayable_subtribes]
+
+          when SUBTRIBES_IN_PARENT_TRIBE # Like above, but for subtribe catalog pages.
+            ["#{taxon.tribe.name_with_fossil} subtribes", taxon.tribe.displayable_subtribes]
+
           else
-            raise "It should not be possible to get here via the GUI."
+            raise "Unknown display option '#{display}' for <#{taxon.type} id: #{taxon.id}>"
           end
 
         new title, taxa_in_tab, taxon_browser
