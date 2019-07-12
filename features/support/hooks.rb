@@ -1,8 +1,6 @@
-# Evaluate if this is faster.
 Before { DatabaseCleaner.strategy = :transaction }
 Before "@javascript" do
-  # "When set to true this will check each table for existing rows before truncating it."
-  DatabaseCleaner.strategy = :truncation, { pre_count: true }
+  DatabaseCleaner.strategy = :deletion
 end
 
 # Disable PaperTrail a lot.

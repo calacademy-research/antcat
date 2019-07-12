@@ -33,11 +33,10 @@ module Exporters
 
             taxa_ids.each_slice(1000) do |chunk|
               Taxon.where(id: chunk).
-                order("field(taxa.id, #{chunk.join(',')})").
+                order(Arel.sql("field(taxa.id, #{chunk.join(',')})")).
                 joins(protonym: [{ authorship: :reference }]).
                 includes(protonym: [{ authorship: :reference }]).
                 each do |taxon|
-                STDOUT.puts "Processing: #{taxon.id}" if ENV['DEBUG']
                 progress.increment unless Rails.env.test?
 
                 begin
@@ -49,12 +48,14 @@ module Exporters
                     end
                   end
                   file.puts row.join("\t")
+                # :nocov:
                 rescue StandardError => e
                   warn "========================#{taxon.id}===================="
                   warn "An error of type #{e} happened, message is #{e.message}"
                   warn e.backtrace
                   warn "======================================================="
                 end
+                # :nocov:
               end
             end
           end

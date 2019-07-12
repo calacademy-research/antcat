@@ -44,6 +44,53 @@ describe SiteNoticesController do
     end
   end
 
+  describe "POST create" do
+    let!(:site_notice_params) do
+      {
+        title: 'Title',
+        message: 'message'
+      }
+    end
+
+    before { sign_in create(:user, :editor) }
+
+    it 'creates a site notice' do
+      expect { post(:create, params: { site_notice: site_notice_params }) }.to change { SiteNotice.count }.by(1)
+
+      site_notice = SiteNotice.last
+      expect(site_notice.title).to eq site_notice_params[:title]
+      expect(site_notice.message).to eq site_notice_params[:message]
+    end
+
+    it 'creates an activity' do
+      expect { post(:create, params: { site_notice: site_notice_params }) }.
+        to change { Activity.where(action: :create).count }.by(1)
+
+      activity = Activity.last
+      site_notice = SiteNotice.last
+      expect(activity.trackable).to eq site_notice
+      expect(activity.parameters).to eq(title: site_notice.title)
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:site_notice) { create :site_notice }
+
+    before { sign_in create(:user, :superadmin, :editor) }
+
+    it 'deletes the site notice' do
+      expect { delete(:destroy, params: { id: site_notice.id }) }.to change { SiteNotice.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      expect { delete(:destroy, params: { id: site_notice.id }) }.
+        to change { Activity.where(action: :destroy, trackable: site_notice).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.parameters).to eq(title: site_notice.title)
+    end
+  end
+
   describe "POST #mark_all_as_read" do
     after { post :mark_all_as_read }
 

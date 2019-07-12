@@ -28,8 +28,7 @@ describe Taxa::TaxonStatus do
         let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
 
         specify do
-          expect(described_class[taxon]).
-            to include %(homonym replaced by #{taxon_link homonym_replaced_by})
+          expect(described_class[taxon]).to include %(homonym replaced by #{taxon_link homonym_replaced_by})
         end
       end
     end
@@ -75,11 +74,21 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is an unavailable misspelling" do
-      # TODO: ?
+      let!(:current_valid_taxon) { build_stubbed :family }
+      let!(:taxon) { build_stubbed :family, :unavailable_misspelling, current_valid_taxon: current_valid_taxon }
+
+      specify do
+        expect(described_class[taxon]).to include %(a misspelling of #{taxon_link current_valid_taxon})
+      end
     end
 
     context 'when taxon is "unavailable uncategorized"' do
-      # TODO: What to do?
+      let!(:current_valid_taxon) { build_stubbed :family }
+      let!(:taxon) { build_stubbed :family, :unavailable_uncategorized, current_valid_taxon: current_valid_taxon }
+
+      specify do
+        expect(described_class[taxon]).to include %(see #{taxon_link current_valid_taxon})
+      end
     end
 
     context "when taxon is `invalid?`" do

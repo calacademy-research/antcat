@@ -34,14 +34,6 @@ describe Taxa::Statistics::FetchStatistics do
         specify { expect(described_class[subfamily]).to eq({}) }
       end
 
-      context "when 1 valid genus" do
-        before { create :genus, subfamily: subfamily }
-
-        specify do
-          expect(described_class[subfamily]).to eq extant: { genera: { 'valid' => 1 } }
-        end
-      end
-
       context "when 1 valid genus and 2 synonyms" do
         before do
           create :genus, subfamily: subfamily
