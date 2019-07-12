@@ -184,4 +184,48 @@ describe TaxaController do
       end
     end
   end
+
+  describe "PUT update" do
+    let!(:taxon) { create :subfamily, family: create(:family) }
+    let!(:taxon_params) do
+      {
+        status:  Status::EXCLUDED_FROM_FORMICIDAE
+      }
+    end
+
+    before { sign_in create(:user, :editor) }
+
+    it 'updates the taxon' do
+      put(:update, params: { id: taxon.id, taxon: taxon_params })
+
+      taxon.reload
+      expect(taxon.status).to eq taxon_params[:status]
+    end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: taxon.id, taxon: taxon_params, edit_summary: 'Fix status' }) }.
+        to change { Activity.where(action: :update, trackable: taxon).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.edit_summary).to eq "Fix status"
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:taxon) { create :subfamily, family: create(:family) }
+
+    before { sign_in create(:user, :editor) }
+
+    it 'deletes the taxon' do
+      expect { delete(:destroy, params: { id: taxon.id }) }.to change { Taxon.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      expect { delete(:destroy, params: { id: taxon.id, edit_summary: 'Duplicate' }) }.
+        to change { Activity.where(action: :destroy, trackable: taxon).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.edit_summary).to eq "Duplicate"
+    end
+  end
 end

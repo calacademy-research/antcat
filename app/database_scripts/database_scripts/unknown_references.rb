@@ -24,5 +24,5 @@ __END__
 description: >
   These are called "Other" in the reference form.
 
-tags: [new!]
+tags: []
 topic_areas: [references]

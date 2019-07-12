@@ -53,5 +53,21 @@ describe TaxonBrowser::LinksToExtraTabs do
         end
       end
     end
+
+    context 'when taxon is a tribe' do
+      context 'when tribe has subtribes' do
+        let!(:taxon) { create :tribe }
+
+        before { create :subtribe, tribe: taxon }
+
+        specify do
+          expect(described_class[taxon]).to eq(
+            [
+              { label: "Subtribes", display: TaxonBrowser::Tab::SUBTRIBES_IN_TRIBE }
+            ]
+          )
+        end
+      end
+    end
   end
 end

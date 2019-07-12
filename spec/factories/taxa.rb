@@ -43,6 +43,14 @@ FactoryBot.define do
       status { Status::EXCLUDED_FROM_FORMICIDAE }
     end
 
+    trait :unavailable_misspelling do
+      status { Status::UNAVAILABLE_MISSPELLING }
+    end
+
+    trait :unavailable_uncategorized do
+      status { Status::UNAVAILABLE_UNCATEGORIZED }
+    end
+
     trait :fossil do
       fossil { true }
     end
@@ -62,6 +70,12 @@ FactoryBot.define do
     factory :tribe, class: Tribe do
       association :name, factory: :tribe_name
       subfamily
+    end
+
+    factory :subtribe, class: Subtribe do
+      association :name, factory: :subtribe_name
+      tribe
+      subfamily { |a| a.tribe.subfamily }
     end
 
     factory :genus, class: Genus do

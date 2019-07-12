@@ -10,6 +10,13 @@ describe Taxa::ReorderHistoryItemsController do
   end
 
   describe "POST create" do
-    # TODO: Add specs since the Cucumber tests are flaky.
+    let(:taxon) { create :family }
+
+    before { sign_in create(:user, :editor) }
+
+    it "calls `Taxa::Operations::ReorderHistoryItems`" do
+      expect(Taxa::Operations::ReorderHistoryItems).to receive(:new).with(taxon, ['1']).and_call_original
+      post :create, params: { taxa_id: taxon.id, taxon_history_item: ['1'] }
+    end
   end
 end
