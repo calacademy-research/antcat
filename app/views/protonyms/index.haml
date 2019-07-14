@@ -2,6 +2,10 @@
 -breadcrumb :protonyms
 
 =content_for :breadcrumbs_right do
+  -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
+    =link_to "Order by name", protonyms_path, class: "btn-normal"
+  -else
+    =link_to "Order by taxon count", protonyms_path(order: ProtonymsController::TAXON_COUNT_ORDER), class: "btn-normal"
   -if user_is_editor?
     =link_to "New", new_protonym_path, class: "btn-normal"
 

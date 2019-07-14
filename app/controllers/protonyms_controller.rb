@@ -1,10 +1,16 @@
 class ProtonymsController < ApplicationController
+  TAXON_COUNT_ORDER = "taxon_count"
+
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :set_protonym, only: [:show, :edit, :update, :destroy]
 
   def index
-    @protonyms = Protonym.includes(:name, authorship: :reference).
-      order_by_name.paginate(page: params[:page], per_page: 50)
+    @protonyms = Protonym.includes(:name, authorship: :reference)
+    @protonyms = if params[:order] == TAXON_COUNT_ORDER
+                   @protonyms.joins(:taxa).group(:id).order("COUNT(protonyms.id) DESC")
+                 else
+                   @protonyms.order_by_name
+                 end.paginate(page: params[:page], per_page: 50)
   end
 
   def show
