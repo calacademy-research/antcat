@@ -13,7 +13,7 @@ describe My::RegistrationsController do
   describe "POST create" do
     let!(:user_params) do
       {
-        email: 'pizza@example.com"',
+        email: 'pizza@example.com',
         name: 'Quintus Batiatus',
         password: 'secret123',
         password_confirmation: 'secret123'
@@ -59,6 +59,27 @@ describe My::RegistrationsController do
         expect(user.editor).to eq false
         expect(user.superadmin).to eq false
       end
+    end
+  end
+
+  describe "PUT update" do
+    let!(:user) { create :user }
+    let!(:user_params) do
+      {
+        email: 'pizza2@example.com',
+        name: 'Quintus Batiatus II'
+      }
+    end
+
+    before { sign_in user }
+
+    it 'updates the user' do
+      put(:update, params: { id: user.id, user: user_params })
+
+      user.reload
+
+      expect(user.email).to eq user_params[:email]
+      expect(user.name).to eq user_params[:name]
     end
   end
 end
