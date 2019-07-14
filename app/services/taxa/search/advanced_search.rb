@@ -27,6 +27,7 @@ module Taxa
           end
 
           query = query.valid if params[:valid_only]
+          query = query.distinct.joins(:history_items) if params[:must_have_history_items]
 
           if params[:author_name].present?
             author_name = AuthorName.find_by!(name: params[:author_name])

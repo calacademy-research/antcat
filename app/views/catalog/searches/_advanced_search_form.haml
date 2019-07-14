@@ -66,6 +66,10 @@
     .medium-2.columns.end
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
+  .row
+    .medium-3.columns.end
+      =check_box_tag :must_have_history_items, true, !!params[:must_have_history_items]
+      =label_tag 'Must have history items?'
 
   .row
     .medium-3.columns.end

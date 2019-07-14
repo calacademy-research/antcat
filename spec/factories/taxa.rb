@@ -111,5 +111,11 @@ FactoryBot.define do
     trait :approved do
       association :taxon_state, review_state: TaxonState::APPROVED
     end
+
+    trait :with_history_item do
+      after :create do |taxon|
+        create :taxon_history_item, taxon: taxon
+      end
+    end
   end
 end
