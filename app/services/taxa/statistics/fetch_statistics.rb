@@ -24,11 +24,10 @@ module Taxa
                          subfamilies: ::Subfamily,
                          tribes: ::Tribe,
                          genera: ::Genus,
-                         species: ::Species,
-                         subspecies: ::Subspecies
+                         species: ::Species
                        }
                      when ::Subfamily
-                       [:tribes, :genera, :species, :subspecies]
+                       [:tribes, :genera, :species]
                      when ::Tribe
                        [:genera, :species]
                      when ::Genus

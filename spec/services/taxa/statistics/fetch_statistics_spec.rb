@@ -61,43 +61,23 @@ describe Taxa::Statistics::FetchStatistics do
         end
       end
 
-      context "when 1 valid genus with 2 valid species, one of which has a subspecies" do
-        before do
-          genus = create :genus, subfamily: subfamily
-          create :species, genus: genus
-          create :subspecies, genus: genus, species: create(:species, genus: genus)
-        end
-
-        specify do
-          expect(described_class[subfamily]).to eq extant: {
-            genera: { 'valid' => 1 },
-            species: { 'valid' => 2 },
-            subspecies: { 'valid' => 1 }
-          }
-        end
-      end
-
-      context "when there are extinct genera, species and subspecies" do
+      context "when there are extinct genera and species" do
         before do
           genus = create :genus, subfamily: subfamily
           create :genus, subfamily: subfamily, fossil: true
           create :species, genus: genus
           create :species, genus: genus, fossil: true
-          create :subspecies, genus: genus, species: create(:species, genus: genus)
-          create :subspecies, genus: genus, species: create(:species, genus: genus), fossil: true
         end
 
-        it "differentiates between extinct genera, species and subspecies" do
+        it "differentiates between extinct genera and species" do
           expect(described_class[subfamily]).to eq(
             extant: {
               genera: { 'valid' => 1 },
-              species: { 'valid' => 3 },
-              subspecies: { 'valid' => 1 }
+              species: { 'valid' => 1 }
             },
             fossil: {
               genera: { 'valid' => 1 },
-              species: { 'valid' => 1 },
-              subspecies: { 'valid' => 1 }
+              species: { 'valid' => 1 }
             }
           )
         end
