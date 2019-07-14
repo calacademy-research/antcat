@@ -1,5 +1,3 @@
-# Secret page. Append "/wikipedia" after the taxon id.
-
 module Catalog
   class WikipediaController < ApplicationController
     before_action :set_taxon, only: :show
