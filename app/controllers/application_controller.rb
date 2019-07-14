@@ -18,11 +18,13 @@ class ApplicationController < ActionController::Base
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
   end
 
+  # :nocov:
   if Rails.env.development?
     rescue_from RSolr::Error::ConnectionRefused do
       render plain: "Start Solr: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
     end
   end
+  # :nocov:
 
   def user_for_paper_trail
     current_user&.id
