@@ -9,6 +9,11 @@
 -if current_user
   =enable_tooltips
   =content_for :breadcrumbs_right do
+    %small.gray-text.right-margin
+      =logged_in_only_tooltip_icon
+      rank:
+      =@taxon.rank
+
     =render "catalog/_show/editor_buttons", taxon: @taxon
 
 .row
