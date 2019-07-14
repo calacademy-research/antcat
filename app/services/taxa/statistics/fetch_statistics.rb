@@ -10,7 +10,7 @@ module Taxa
 
       def call
         return unless ranks
-        get_statistics
+        fetch_statistics
       end
 
       private
@@ -27,16 +27,12 @@ module Taxa
                        [:genera, :species]
                      when ::Genus
                        [:species, :subspecies]
-                     when ::Subgenus
-                       nil
                      when ::Species
                        [:subspecies]
-                     when ::Subspecies
-                       nil
                      end
         end
 
-        def get_statistics
+        def fetch_statistics
           statistics = {}
 
           ranks.each do |rank|

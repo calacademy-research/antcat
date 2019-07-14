@@ -186,14 +186,6 @@ describe Taxa::Statistics::FetchStatistics do
       end
     end
 
-    context "when subgenus" do
-      let(:subgenus) { create :subgenus }
-
-      it "has none" do
-        expect(described_class[subgenus]).to be_nil
-      end
-    end
-
     context "when species" do
       let(:species) { create :species }
 
@@ -236,12 +228,6 @@ describe Taxa::Statistics::FetchStatistics do
             subspecies: { 'valid' => 1, 'synonym' => 2 }
           }
         end
-      end
-    end
-
-    context "when subspecies" do
-      it "has no statistics" do
-        expect(described_class[Subspecies.new]).to be_nil
       end
     end
   end
