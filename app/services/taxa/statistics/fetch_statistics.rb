@@ -20,12 +20,7 @@ module Taxa
         def ranks
           @ranks ||= case taxon
                      when ::Family
-                       {
-                         subfamilies: ::Subfamily,
-                         tribes: ::Tribe,
-                         genera: ::Genus,
-                         species: ::Species
-                       }
+                       [:subfamilies, :tribes, :genera, :species]
                      when ::Subfamily
                        [:tribes, :genera, :species]
                      when ::Tribe
@@ -44,7 +39,9 @@ module Taxa
         def get_statistics
           statistics = {}
 
-          ranks_with_taxa.each do |rank, taxa|
+          ranks.each do |rank|
+            taxa = taxon.public_send(rank)
+
             # NOTE: regarding `order('NULL')` http://dev.housetrip.com/2013/04/19/mysql-order-by-null/
             count =
               if valid_only
@@ -58,13 +55,6 @@ module Taxa
             massage_count count, rank, statistics
           end
           statistics
-        end
-
-        def ranks_with_taxa
-          case ranks
-          when Array then ranks.map { |rank| [rank, taxon.public_send(rank)] }
-          when Hash  then ranks.map { |rank, klass| [rank, klass] }
-          end
         end
 
         def delete_original_combinations count
