@@ -1,9 +1,11 @@
 class JournalsController < ApplicationController
+  REFERENCE_COUNT_ORDER = "reference_count"
+
   before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
   def index
-    order = params[:order] == "reference_count" ? "reference_count DESC" : :name
+    order = params[:order] == REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
     @journals = Journal.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
   end
 

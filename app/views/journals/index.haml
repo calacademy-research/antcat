@@ -2,10 +2,10 @@
 -breadcrumb :journals
 
 =content_for :breadcrumbs_right do
-  -if params[:order] == "reference_count"
+  -if params[:order] == JournalsController::REFERENCE_COUNT_ORDER
     =link_to "Order by name", journals_path, class: "btn-normal"
   -else
-    =link_to "Order by reference count", journals_path(order: "reference_count"), class: "btn-normal"
+    =link_to "Order by reference count", journals_path(order: JournalsController::REFERENCE_COUNT_ORDER), class: "btn-normal"
 
 %table
   %thead
