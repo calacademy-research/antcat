@@ -14,7 +14,7 @@ module HasWhereFilters
   end
 
   module ClassMethods
-    def has_filters filters
+    def has_filters filters # rubocop:disable Naming/PredicateName
       self.filters = filters
     end
   end
