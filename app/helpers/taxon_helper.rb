@@ -8,15 +8,6 @@ module TaxonHelper
     end
   end
 
-  def reference_link_or_deleted_string id, deleted_label = nil
-    reference = Reference.find_by(id: id)
-    if reference
-      reference.decorate.expandable_reference
-    else
-      deleted_label || "##{id} [deleted]"
-    end
-  end
-
   def default_name_string taxon
     return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
     return taxon.species.name.name + ' ' if taxon.is_a?(Subspecies)
