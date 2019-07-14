@@ -7,6 +7,7 @@
   =javascript_include_tag "controllers/catalog/show/taxon_browser_tab"
 
 -if current_user
+  =enable_tooltips
   =content_for :breadcrumbs_right do
     =render "catalog/_show/editor_buttons", taxon: @taxon
 
@@ -22,6 +23,7 @@
         #soft-validations.callout.warning
           %h6
             Issues
+            =logged_in_only_tooltip_icon
             .right
               =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
           =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings

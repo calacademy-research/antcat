@@ -16,6 +16,11 @@ module TooltipHelper
     content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
   end
 
+  # For content that which it is not obvious it is for logged-in users only.
+  def logged_in_only_tooltip_icon
+    content_tag :span, nil, class: "antcat_icon logged-in-only-icon jquery-tooltip", title: 'This section is only visible to logged-in users'
+  end
+
   private
 
     def new_db_tooltip key, scope
