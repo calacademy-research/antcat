@@ -1,6 +1,8 @@
 -@title = "#{@protonym.name.name} - Protonyms"
 -breadcrumb :protonym, @protonym
 
+=enable_tooltips
+
 =content_for :breadcrumbs_right do
   =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
   -if user_is_at_least_helper?
@@ -57,3 +59,27 @@
             %td=taxon.link_to_taxon
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
+
+-# TODO: See https://github.com/calacademy-research/antcat/issues/702
+-if current_user
+  -if @protonym.taxa_with_history_items.present?
+    .row.margin-bottom
+      .small-12.columns
+        %h5
+          Taxonomic history
+          =logged_in_only_tooltip_icon
+        -@protonym.taxa_with_history_items.each do |taxon|
+          %h6
+            =taxon.link_to_taxon
+            %span.small-text=taxon.decorate.taxon_status
+
+          .left-margin
+            %ul.history.margin-bottom
+              -taxon.history_items.each do |history_item|
+                %li
+                  =add_period_if_necessary Detax[history_item.taxt]
+                  -if current_user
+                    %span.show-on-hover
+                      -if user_is_at_least_helper?
+                        =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+                      =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

@@ -10,6 +10,8 @@ class Protonym < ApplicationRecord
   belongs_to :name, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
+  # TODO: See https://github.com/calacademy-research/antcat/issues/702
+  has_many :taxa_with_history_items, -> { distinct.joins(:history_items) }, class_name: 'Taxon'
 
   validates :authorship, presence: true
   validates :name, presence: true
