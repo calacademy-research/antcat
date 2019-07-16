@@ -6,6 +6,7 @@ class ProtonymsController < ApplicationController
 
   def index
     @protonyms = Protonym.includes(:name, authorship: :reference)
+    @protonyms = @protonyms.joins(:name).where('names.name LIKE ?', "%#{params[:q]}%") if params[:q].present?
     @protonyms = if params[:order] == TAXON_COUNT_ORDER
                    @protonyms.joins(:taxa).group(:id).order("COUNT(protonyms.id) DESC")
                  else
