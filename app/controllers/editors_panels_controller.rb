@@ -4,7 +4,7 @@ class EditorsPanelsController < ApplicationController
 
   def index
     @count = unreviewed_changes_counts
-    @recent_activities = Activity.most_recent(10).includes(:user)
+    @recent_activities = Activity.non_automated_edits.most_recent(10).includes(:user)
     @recent_comments = Comment.most_recent 5
     @recent_unconfirmed_activities = Activity.unconfirmed.most_recent(5).includes(:user)
   end
