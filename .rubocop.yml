@@ -92,12 +92,6 @@ Performance/RedundantMerge:
 Naming/AccessorMethodName:
   Enabled: false
 
-Naming/PredicateName:
-  Enabled: false
-
-Naming/VariableNumber:
-  Enabled: false
-
 FactoryBot/CreateList:
   Enabled: false
 

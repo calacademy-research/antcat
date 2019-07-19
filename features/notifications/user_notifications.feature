@@ -117,7 +117,6 @@ Feature: User notifications
     Then I should see "Archibald mentioned you in the issue My Favorite Ants"
     And I should only see 1 notification
 
-
   Scenario: Mentioning users in "things" (issue description)
     # Mention Batiatus in the description of an issue.
     When I go to the new issue page

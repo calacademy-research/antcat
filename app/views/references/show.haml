@@ -2,6 +2,9 @@
 -@title = "#{strip_tags @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
+-if current_user
+  =enable_tooltips
+
 =content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
@@ -131,12 +134,17 @@
           %tr
             %th Public notes
             %td=or_dash @reference.public_notes
-          %tr
-            %th Editor notes
-            %td=or_dash @reference.editor_notes
-          %tr
-            %th Taxonomic notes
-            %td=or_dash @reference.taxonomic_notes
+          -if current_user
+            %tr
+              %th
+                Editor notes
+                =logged_in_only_tooltip_icon
+              %td=or_dash @reference.editor_notes
+            %tr
+              %th
+                Taxonomic notes
+                =logged_in_only_tooltip_icon
+              %td=or_dash @reference.taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom

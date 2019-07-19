@@ -31,4 +31,17 @@ class Family < Taxon
   def subfamilies
     Subfamily.all
   end
+
+  # TODO: See what do to with these `Taxon.all` methods; added for `FetchStatistics`.
+  def tribes
+    Tribe.all
+  end
+
+  def genera
+    Genus.all
+  end
+
+  def species
+    Species.all
+  end
 end

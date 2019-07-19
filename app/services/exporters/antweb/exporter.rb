@@ -62,7 +62,9 @@ module Exporters
         end
 
         def taxa_ids
-          Taxon.joins(protonym: [{ authorship: :reference }]).order(:status).pluck(:id).reverse
+          Taxon.where.not(type: 'Subtribe').
+            joins(protonym: [{ authorship: :reference }]).
+            order(:status).pluck(:id).reverse
         end
     end
   end

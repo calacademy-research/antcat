@@ -1,6 +1,9 @@
 -@title = 'Latest Changes'
 -breadcrumb :references_latest_changes
 
+-if current_user
+  =enable_tooltips
+
 =content_for :breadcrumbs_right do
   =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
   -if user_is_superadmin?

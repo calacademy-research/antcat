@@ -2,8 +2,21 @@
 -breadcrumb :protonyms
 
 =content_for :breadcrumbs_right do
+  =link_to "Hide/show search", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "search-form" }
+  -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
+    =link_to "Order by name", protonyms_path, class: "btn-normal"
+  -else
+    =link_to "Order by taxon count", protonyms_path(order: ProtonymsController::TAXON_COUNT_ORDER), class: "btn-normal"
   -if user_is_editor?
     =link_to "New", new_protonym_path, class: "btn-normal"
+
+.margin-bottom{class: ('show-hide-toggable-starts-open' if params[:q].present?), data: { show_hide_toggable_id: "search-form" } }
+  .row
+    .medium-12.columns
+      =form_tag protonyms_path, method: :get do
+        =text_field_tag :q, params[:q], class: 'input-group-field', placeholder: "Search Protonyms"
+        =button_tag type: 'submit', class: 'btn-normal' do
+          ="Search ".html_safe + search_icon
 
 %table
   %thead

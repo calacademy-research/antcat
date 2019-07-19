@@ -20,9 +20,13 @@
   -if current_user
     -if reference.editor_notes?
       %p.notes
-        %span.note Editor notes:
+        %span.note
+          Editor notes:
+          =logged_in_only_tooltip_icon
         =reference.editor_notes
     -if reference.taxonomic_notes?
       %p.notes
-        %span.note Taxonomic notes:
+        %span.note
+          Taxonomic notes:
+          =logged_in_only_tooltip_icon
         =reference.taxonomic_notes

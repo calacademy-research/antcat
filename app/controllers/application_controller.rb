@@ -18,11 +18,13 @@ class ApplicationController < ActionController::Base
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
   end
 
+  # :nocov:
   if Rails.env.development?
     rescue_from RSolr::Error::ConnectionRefused do
       render plain: "Start Solr: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
     end
   end
+  # :nocov:
 
   def user_for_paper_trail
     current_user&.id
@@ -31,9 +33,9 @@ class ApplicationController < ActionController::Base
   protected
 
     def configure_permitted_parameters
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:username, :email, :name, :password, :password_confirmation, :remember_me])
-      devise_parameter_sanitizer.permit(:sign_in, keys: [:login, :username, :email, :password, :remember_me])
-      devise_parameter_sanitizer.permit(:account_update, keys: [:username, :email, :name, :password, :password_confirmation, :current_password])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
+      devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password, :remember_me])
+      devise_parameter_sanitizer.permit(:account_update, keys: [:email, :name, :password, :password_confirmation, :current_password])
     end
 
   private

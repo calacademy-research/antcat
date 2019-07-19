@@ -18,6 +18,15 @@ describe Taxa::Search::AdvancedSearch do
       end
     end
 
+    describe "searching for taxa with history items" do
+      let!(:with_history) { create :family, :with_history_item }
+      let!(:without_history) { create :family }
+
+      specify do
+        expect(described_class[type: 'Family', must_have_history_items: true]).to match_array [with_history]
+      end
+    end
+
     describe "searching by year" do
       let!(:subfamily) { create :subfamily }
       let!(:another_subfamily) { create :subfamily }

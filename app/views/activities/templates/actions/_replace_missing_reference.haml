@@ -4,4 +4,8 @@ replaced the missing reference
 
 with
 
-=reference_link_or_deleted_string activity.parameters[:target_reference_id]
+-reference = Reference.find_by(id: activity.parameters[:target_reference_id])
+-if reference
+  =reference.decorate.expandable_reference
+-else
+  [deleted]

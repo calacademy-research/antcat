@@ -66,6 +66,10 @@
     .medium-2.columns.end
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
+  .row
+    .medium-3.columns.end
+      =check_box_tag :must_have_history_items, true, !!params[:must_have_history_items]
+      =label_tag 'Must have history items?'
 
   .row
     .medium-3.columns.end
@@ -74,7 +78,7 @@
   .row
     .medium-12.columns
       =button_tag type: 'submit', name: 'submit_search', class: 'btn-normal has-spinner' do
-        =spinner_icon + "Go"
+        =spinner_icon + "Search " + search_icon
       -if taxa.present?
         &nbsp;
         =link_to 'Download', "/catalog/search.txt?#{request.parameters.to_param}", class: "button btn-normal"

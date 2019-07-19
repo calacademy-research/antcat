@@ -1,9 +1,3 @@
-Given("these/this tooltip(s) (also )exist(s)") do |table|
-  table.hashes.each do |hash|
-    create :tooltip, hash
-  end
-end
-
 When("I hover the tooltip next to the text {string}") do |text|
   find('*', text: /^#{text}$/, match: :first).first('.tooltip-icon').hover
 end

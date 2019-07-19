@@ -16,7 +16,7 @@ module PrimitiveSearch
   end
 
   module ClassMethods
-    def has_primitive_search(where:)
+    def has_primitive_search(where:) # rubocop:disable Naming/PredicateName
       self.primitive_search_where = where
     end
   end
