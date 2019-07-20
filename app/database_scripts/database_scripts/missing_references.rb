@@ -23,3 +23,6 @@ end
 __END__
 
 topic_areas: [references]
+related_scripts:
+  - MissingReferences
+  - UnknownReferences

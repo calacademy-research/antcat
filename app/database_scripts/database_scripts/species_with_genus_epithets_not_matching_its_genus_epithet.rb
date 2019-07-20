@@ -27,3 +27,9 @@ description: >
 
 tags: [new!]
 topic_areas: [catalog]
+related_scripts:
+  - SpeciesDisagreeingWithGenusRegardingSubfamily
+  - SubspeciesDisagreeingWithSpeciesRegardingGenus
+  - SubspeciesDisagreeingWithSpeciesRegardingSubfamily
+  - SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet
+  - SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet

@@ -26,3 +26,6 @@ description: >
 
 tags: [list]
 topic_areas: [references]
+related_scripts:
+  - OrphanedAuthors
+  - OrphanedProtonyms

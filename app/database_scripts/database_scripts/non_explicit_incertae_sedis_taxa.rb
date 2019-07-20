@@ -83,3 +83,5 @@ description: >
   Issue: %github453
 
 topic_areas: [catalog]
+related_scripts:
+  - NonIncertaeSedisTaxaWithoutSubfamily

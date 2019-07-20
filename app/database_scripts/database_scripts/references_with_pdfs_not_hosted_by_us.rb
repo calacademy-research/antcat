@@ -37,3 +37,7 @@ description: >
 
 tags: [new!, slow]
 topic_areas: [references]
+related_scripts:
+  - ReferencesWithoutPdfs
+  - ProtonymReferencesWithoutPdfs
+  - ReferencesWithPdfsNotHostedByUs

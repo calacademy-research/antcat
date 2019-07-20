@@ -60,3 +60,6 @@ __END__
 description: >
 tags: [regression-test]
 topic_areas: [catalog]
+related_scripts:
+  - ExtantTaxaInFossilGenera
+  - ValidTaxaWithNonValidParents

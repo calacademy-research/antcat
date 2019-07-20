@@ -26,3 +26,7 @@ description: >
 
 tags: [new!]
 topic_areas: [references]
+related_scripts:
+  - ReferencesWithoutPdfs
+  - ProtonymReferencesWithoutPdfs
+  - ReferencesWithPdfsNotHostedByUs

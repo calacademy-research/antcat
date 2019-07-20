@@ -50,3 +50,7 @@ description: >
 
 tags: [list, slow]
 topic_areas: [protonyms]
+related_scripts:
+  - TaxaWithSameName
+  - TaxaWithSameNameAndStatus
+  - ProtonymsWithSameName

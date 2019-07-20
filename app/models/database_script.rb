@@ -67,6 +67,22 @@ class DatabaseScript
     end_data[:topic_areas] || []
   end
 
+  def related_scripts
+    (end_data[:related_scripts] || []).map do |class_name|
+      begin
+        DatabaseScript.new_from_filename_without_extension(class_name)
+      rescue DatabaseScript::ScriptNotFound
+        Struct.new(:class_name) do
+          def title
+            "Error: Could not find database script with class name '#{class_name}'"
+          end
+
+          alias_method :to_param, :class_name
+        end.new(class_name)
+      end
+    end
+  end
+
   def title
     filename_without_extension.humanize
   end

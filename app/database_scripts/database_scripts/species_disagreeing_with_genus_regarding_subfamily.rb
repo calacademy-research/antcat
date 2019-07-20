@@ -29,3 +29,9 @@ description: >
 tags: [new!]
 topic_areas: [catalog]
 issue_description: This species is not in the same subfamily as its genus.
+related_scripts:
+  - SpeciesDisagreeingWithGenusRegardingSubfamily
+  - SubspeciesDisagreeingWithSpeciesRegardingGenus
+  - SubspeciesDisagreeingWithSpeciesRegardingSubfamily
+  - SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet
+  - SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
