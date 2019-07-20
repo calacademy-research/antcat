@@ -32,16 +32,6 @@ module HtmlSelectorsHelpers
     when /the feed/
       'table.activities'
 
-    # Merge authors.
-    when /the author panel/, /the first author panel/
-      find ".author_panel", match: :first
-    when /the last author panel/
-      all(".author_panel").last
-    when /the second author panel/
-      all(".author_panel")[1]
-    when /another author panel/
-      all(".author_panel").last
-
     # Test pages.
     when /the name field/
       '#test_name_field .display'

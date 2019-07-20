@@ -6,6 +6,7 @@ module Autocomplete
       @search_query = search_query
     end
 
+    # TODO: Return IDs too.
     def call
       AuthorName.where('name LIKE ?', "%#{search_query}%").
         includes(:reference_author_names).

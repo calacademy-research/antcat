@@ -2,7 +2,7 @@ $ ->
   setupAuthorAutocomplete()
 
 setupAuthorAutocomplete = ->
-  $('input[type=text]').autocomplete
+  $('.authors-autocompletion').autocomplete
     autoFocus: true
     minLength: 3
     source: '/authors/autocomplete'

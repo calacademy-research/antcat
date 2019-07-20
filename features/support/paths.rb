@@ -45,8 +45,6 @@ module NavigationHelpers
     when /^the edit page for the most recent reference$/
       edit_reference_path(Reference.last)
 
-    when /^the merge authors page$/
-      merge_authors_path
     when /^the authors page$/
       authors_path
     when /^the author page for "(.*)"$/

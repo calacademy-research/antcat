@@ -7,49 +7,32 @@ Feature: Merging authors
     Given I am logged in as a catalog editor
     And the following names exist for an author
       | Bolton, B. |
-      | Bolton,B.  |
+    And the following names exist for another author
+      | Bolton,B. |
     And these references exist
       | author     | title          |
       | Bolton, B. | Annals of Ants |
       | Bolton,B.  | More ants      |
-    And the following names exist for another author
-      | Fisher, B. |
-    And I go to the merge authors page
+    And I go to the author page for "Bolton, B."
 
-  Scenario: Searching for an author
-    When I search for "Bolton, B." in the author panel
-    Then I should see "Bolton, B." in the author panel
-    And I should see "Bolton,B." in the author panel
-    And I should see "Annals of Ants" in the author panel
-    And I should see "More ants" in the author panel
+  Scenario: Merging two authors
+    Then I should see "Bolton, B."
+    And I should not see "Bolton,B."
+
+    When I follow "Merge"
+    And I fill in "author_to_merge_name" with "Bolton,B."
+    And I press "Next"
+    Then I should see "Annals of Ants"
+    And I should see "More ants"
+
+    When I press "Merge these authors"
+    Then I should see "Probably merged authors"
+    And I should be on the author page for "Bolton, B."
+    And I should see "Bolton,B."
+    And I should see "Bolton, B."
 
   Scenario: Searching for an author that isn't found
-    When I search for "asdf" in the author panel
-    Then I should see "No results found" in the author panel
-
-  Scenario: Opening more than one search panel
-    When I search for "Bolton, B." in the author panel
-    And I search for "Fisher, B." in another author panel
-    Then I should see "Bolton, B." in the first author panel
-    And I should see "Fisher, B." in the second author panel
-
-  Scenario: Searching for an author that's already open in another panel
-    When I search for "Bolton, B." in the author panel
-    And I search for "Bolton, B." in another author panel
-    Then I should see "Bolton, B." in the first author panel
-    And I should see "This author is open in another panel" in the second author panel
-
-  Scenario: Closing a panel
-    Given I search for "Bolton, B." in the author panel
-
-    When I search for "Fisher, B." in another author panel
-    And I close the first author panel
-    Then I should see "Fisher, B." in the first author panel
-    And I should not see "Bolton, B."
-
-  Scenario: Merging
-    When I search for "Bolton, B." in the author panel
-    And I search for "Fisher, B." in another author panel
-    And I merge the authors
-    Then I should see "Bolton, B." in the first author panel
-    And I should see "Fisher, B." in the first author panel
+    When I follow "Merge"
+    And I fill in "author_to_merge_name" with "asdf"
+    And I press "Next"
+    Then I should see "Author to merge must be specified"

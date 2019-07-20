@@ -1,8 +1,7 @@
 -author.names.each do |author_name|
   -references = author_name.references
-  %div
-    %span.name=author_name.name
-    %span.reference-count #{references.count} reference(s)
+  %strong=author_name.name
+  %small #{references.count} reference(s)
   -if references.present?
     .callout.references
       -references.each do |reference|
