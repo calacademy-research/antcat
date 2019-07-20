@@ -13,15 +13,12 @@ class Author < ApplicationRecord
     Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a
   end
 
-  def merge authors_to_merge
+  def merge author_to_merge
     transaction do
-      authors_to_merge.each do |author|
-        author.names.each do |name|
-          name.update(author: self)
-        end
-        # Reload first to avoid deleting transferred `AuthorName`s.
-        author.reload.destroy
+      author_to_merge.names.each do |name|
+        name.update!(author: self)
       end
+      author_to_merge.reload.destroy # Reload first to avoid deleting transferred `AuthorName`s.
     end
   end
 
