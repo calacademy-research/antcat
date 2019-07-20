@@ -86,9 +86,6 @@ Lint/AmbiguousRegexpLiteral:
 Performance/RedundantBlockCall:
   Enabled: false
 
-Performance/RedundantMerge:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Enabled: false
 
@@ -158,9 +155,6 @@ Style/Documentation:
 Style/DoubleNegation:
   Enabled: false
 
-Style/EmptyCaseCondition:
-  Enabled: false
-
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
@@ -197,9 +191,6 @@ Style/NumericLiterals:
 Style/NumericPredicate:
   Enabled: false
 
-Style/OneLineConditional:
-  Enabled: false
-
 Style/PercentLiteralDelimiters:
   Enabled: false
 
@@ -207,9 +198,6 @@ Style/PerlBackrefs:
   Enabled: false
 
 Style/RegexpLiteral:
-  Enabled: false
-
-Style/RescueModifier:
   Enabled: false
 
 Style/SafeNavigation:

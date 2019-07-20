@@ -19,7 +19,9 @@ module Markdowns
       attr_reader :content
 
       def strip_wrapping_p rendered
-        Regexp.new(P_HTML_ELEMENT_REGEX).match(rendered)[1] rescue rendered
+        Regexp.new(P_HTML_ELEMENT_REGEX).match(rendered)[1]
+      rescue StandardError # TODO: Do not rescue `StandardError`.
+        rendered
       end
   end
 end

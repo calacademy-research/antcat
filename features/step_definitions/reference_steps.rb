@@ -31,7 +31,7 @@ Given("this/these reference(s) exist(s)") do |table|
 
     if (author = hash.delete 'author')
       author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
-      hash.merge!(author_names: [author_name])
+      hash[:author_names] = [author_name]
     end
 
     create :article_reference, hash

@@ -1,3 +1,5 @@
+# TODO: Use Solr or Elasticsearch instead of this class.
+
 # Requires that the client have:
 #   :type, :principal_author_last_name, :title
 #
@@ -36,7 +38,7 @@ module References
         year_matches = year_matches?
         pagination_matches = pagination_matches?
 
-        case
+        case # rubocop:disable Style/EmptyCaseCondition
         when !result && !year_matches      then 0.00
         when !result && year_matches       then 0.10
         when result && !year_matches       then result - 0.50

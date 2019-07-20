@@ -32,7 +32,7 @@ module DatabaseScripts
         def rows results = nil, find_each: false, &block
           results ||= @cached_results
 
-          method_name = if find_each then :find_each else :each end
+          method_name = find_each ? :find_each : :each
 
           results.send(method_name) do |object|
             @rows.push block.call(object)

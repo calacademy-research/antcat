@@ -66,7 +66,7 @@ module Taxa
                  end
 
         if show_extinct_or_extant
-          label << if label_options[:fossil] then ' (extinct)' else ' (extant)' end
+          label << (label_options[:fossil] ? ' (extinct)' : ' (extant)')
         end
 
         label << if label_options[:incertae_sedis_in]

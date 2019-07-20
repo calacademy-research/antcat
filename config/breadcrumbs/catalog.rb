@@ -17,7 +17,7 @@ end
         link '[deleted name]'
       end
       parent_as_symbol = taxon.parent.class.name.downcase.to_sym
-      parent parent_as_symbol, taxon.parent rescue :family
+      parent parent_as_symbol, taxon.parent rescue :family # rubocop:disable Style/RescueModifier
     end
   end
 

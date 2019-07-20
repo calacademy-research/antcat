@@ -48,7 +48,7 @@ module DatabaseScripts
             return
           end
 
-          method_name = if find_each then :find_each else :each end
+          method_name = find_each ? :find_each : :each
 
           results.send(method_name) do |object|
             row object, *block.call(object)
