@@ -2,36 +2,38 @@ require "spec_helper"
 
 describe References::Search::FulltextWithExtractedKeywords do
   describe "#call", :search do
-    describe "authors" do
-      context 'when nothing is found for the author names' do
-        it "returns an empty array" do
-          expect(described_class[q: "author:Balou"]).to be_empty
-        end
+    describe "searching by author" do
+      context 'when there are no matches' do
+        specify { expect(described_class["author:Balou"]).to be_empty }
       end
 
-      context 'when a given author_name exists' do
+      context 'when there are matches' do
         let!(:bolton) { create :author_name, name: "Bolton Barry" }
-        let!(:reference) { create :book_reference, author_names: [bolton] }
 
-        before do
-          create :book_reference, author_names: [create(:author_name, name: 'Fisher')]
-          Sunspot.commit
+        context 'when searching for a single author' do
+          let!(:reference) { create :book_reference, author_names: [bolton] }
+
+          before do
+            Sunspot.commit
+          end
+
+          it "returns references by the author" do
+            expect(described_class["author:'#{bolton.name}'"]).to eq [reference]
+          end
         end
 
-        it "finds the reference for " do
-          expect(described_class[q: "author:'#{bolton.name}'"]).to eq [reference]
+        context 'when searching for multiple authors' do
+          let!(:fisher) { create :author_name, name: "Brian Fisher" }
+          let!(:reference) { create :book_reference, author_names: [bolton, fisher] }
+
+          before do
+            Sunspot.commit
+          end
+
+          it "returns references by the authors" do
+            expect(described_class['author:"Bolton Fisher"']).to eq [reference]
+          end
         end
-      end
-
-      it "finds the reference with both author names, but not just one" do
-        bolton = create :author_name, name: 'Bolton'
-        fisher = create :author_name, name: 'Fisher'
-        create :reference, author_names: [bolton]
-        create :reference, author_names: [fisher]
-        reference = create :reference, author_names: [bolton, fisher]
-        Sunspot.commit
-
-        expect(described_class[q: 'author:"Bolton Fisher"']).to eq [reference]
       end
     end
 
@@ -41,21 +43,21 @@ describe References::Search::FulltextWithExtractedKeywords do
         expect(References::Search::Fulltext).to receive(:new).
           with(hash_including(keywords: '', start_year: "1992", end_year: "1993")).
           and_call_original
-        described_class[q: 'year:1992-1993']
+        described_class['year:1992-1993']
       end
 
       it "extracts the starting year" do
         expect(References::Search::Fulltext).to receive(:new).
           with(hash_including(keywords: '', year: "1992")).
           and_call_original
-        described_class[q: 'year:1992']
+        described_class['year:1992']
       end
 
       it "can distinguish between years and citation years" do
         expect(References::Search::Fulltext).to receive(:new).
           with(hash_including(keywords: '1970a', year: "1970")).
           and_call_original
-        described_class[q: '1970a year:1970']
+        described_class['1970a year:1970']
       end
     end
 
@@ -64,7 +66,7 @@ describe References::Search::FulltextWithExtractedKeywords do
         expect(References::Search::Fulltext).to receive(:new).
           with(hash_including(keywords: 'Monroe', reference_type: :unknown)).
           and_call_original
-        described_class[q: 'Monroe type:unknown']
+        described_class['Monroe type:unknown']
       end
     end
   end

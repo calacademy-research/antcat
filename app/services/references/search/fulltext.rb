@@ -65,6 +65,7 @@ module References
 
             if options[:endnote_export]
               paginate page: 1, per_page: 9999999 # Hehhehe.
+              without :type, 'MissingReference'
             elsif page
               paginate page: page, per_page: items_per_page
             end

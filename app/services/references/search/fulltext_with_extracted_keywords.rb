@@ -3,8 +3,10 @@ module References
     class FulltextWithExtractedKeywords
       include Service
 
-      def initialize options = {}
-        @options = options
+      def initialize search_query, page: nil, endnote_export: false
+        @search_query = search_query.dup
+        @page = page
+        @endnote_export = endnote_export
       end
 
       def call
@@ -13,23 +15,15 @@ module References
 
       private
 
-        attr_reader :options
+        attr_reader :search_query, :page, :endnote_export
 
         def keyword_params
           References::Search::ExtractKeywords[search_query].
             merge(search_options)
         end
 
-        def search_query
-          if options[:q].present? then options[:q].dup else "" end
-        end
-
-        # TODO: Extract `options[:q]` to a params and improve this.
         def search_options
-          {
-            page: options[:page],
-            endnote_export: options[:endnote_export]
-          }
+          { page: page, endnote_export: endnote_export }
         end
     end
   end
