@@ -20,7 +20,7 @@ Feature: Merging authors
     And I should not see "Bolton,B."
 
     When I follow "Merge"
-    And I fill in "author_to_merge_name" with "Bolton,B."
+    And I set author_to_merge_id to the ID of "Bolton,B."
     And I press "Next"
     Then I should see "Annals of Ants"
     And I should see "More ants"

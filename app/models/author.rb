@@ -9,10 +9,6 @@ class Author < ApplicationRecord
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   trackable
 
-  def self.find_by_names names
-    Author.joins(:names).where('name IN (?)', names).group('authors.id').to_a
-  end
-
   def merge author_to_merge
     transaction do
       author_to_merge.names.each do |name|

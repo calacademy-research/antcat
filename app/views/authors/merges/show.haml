@@ -1,9 +1,6 @@
 -@title = 'Merge Authors'
 -breadcrumb :merge_authors, @author
 
--content_for :head do
-  =javascript_include_tag 'controllers/authors/merges'
-
 =form_tag author_merges_path do
   =hidden_field_tag :author_to_merge_id, @author_to_merge.id
   .row

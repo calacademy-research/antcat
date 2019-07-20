@@ -48,7 +48,8 @@ module NavigationHelpers
     when /^the authors page$/
       authors_path
     when /^the author page for "(.*)"$/
-      "/authors/#{Author.find_by_names($1).first.id}"
+      author = AuthorName.find_by(name: $1).author
+      "/authors/#{author.id}"
 
     # Editor's Panel
     when /^the Editor's Panel$/

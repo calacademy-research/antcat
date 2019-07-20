@@ -20,7 +20,7 @@ Rails/BulkChangeTable:
   Enabled: false
 
 Rails/DynamicFindBy:
-  Whitelist: find_by_sql find_by_names
+  Whitelist: find_by_sql
 
 Rails/FilePath:
   Enabled: false
