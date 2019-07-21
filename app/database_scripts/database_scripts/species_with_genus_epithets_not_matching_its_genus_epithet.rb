@@ -32,4 +32,5 @@ related_scripts:
   - SubspeciesDisagreeingWithSpeciesRegardingGenus
   - SubspeciesDisagreeingWithSpeciesRegardingSubfamily
   - SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet
+  - SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet
   - SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
