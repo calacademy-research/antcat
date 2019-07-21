@@ -12,28 +12,11 @@ describe Author do
     describe ".sorted_by_name" do
       let!(:ward) { create :author_name, name: 'Ward' }
       let!(:bolton) { create :author_name, name: 'Bolton' }
-      let!(:fisher) do
-        fisher_b_l = create :author_name, name: 'Fisher, B. L.'
-        create :author_name, name: 'Fisher', author: fisher_b_l.author
-      end
+      let!(:fisher) { create :author_name, name: 'Fisher, B. L.' }
 
       it "sorts by first author name" do
         expect(described_class.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
       end
-    end
-  end
-
-  describe ".find_by_names" do
-    let!(:bolton) { create :author_name, name: 'Bolton' }
-    let!(:fisher) { create :author_name, name: 'Fisher' }
-
-    it "returns `Author`s" do
-      expect(described_class.find_by_names(['Bolton', 'Fisher'])).
-        to match_array [bolton.author, fisher.author]
-    end
-
-    it "handles empty lists" do
-      expect(described_class.find_by_names([])).to eq []
     end
   end
 
@@ -47,7 +30,7 @@ describe Author do
 
       all_names = (target_author.names + author_to_merge.names).uniq.sort
 
-      target_author.merge [author_to_merge]
+      target_author.merge author_to_merge
       expect(all_names.all? { |name| name.author == target_author }).to be true
 
       expect(described_class.count).to eq 1

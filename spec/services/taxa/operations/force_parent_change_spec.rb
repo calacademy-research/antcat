@@ -33,11 +33,6 @@ describe Taxa::Operations::ForceParentChange do
       it "raises" do
         expect { described_class[subspecies, new_parent] }.to raise_error Taxon::TaxonExists
       end
-
-      it "does not create a change" do
-        expect { described_class[subspecies, new_parent] rescue nil }.
-          to_not change { Change.where(taxon: subspecies).count }
-      end
     end
   end
 end

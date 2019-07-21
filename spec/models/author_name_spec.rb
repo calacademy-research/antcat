@@ -55,4 +55,20 @@ describe AuthorName do
       expect { author_name.destroy }.to_not change { described_class.count }
     end
   end
+
+  describe '#invalidate_reference_caches!' do
+    let!(:author_name) { create :author_name, name: 'Ward' }
+    let!(:reference) { create :article_reference, author_names: [author_name] }
+
+    it "refreshes `author_names_string_cache` its references" do
+      expect { author_name.update(name: 'Fisher') }.
+        to change { reference.reload.author_names_string }.from('Ward').to('Fisher')
+    end
+
+    it "invalidates caches for its references" do
+      References::Cache::Regenerate[reference]
+
+      expect { reference.save! }.to change { reference.reload.plain_text_cache }.to(nil)
+    end
+  end
 end

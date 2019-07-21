@@ -1,9 +1,11 @@
 -@title = @author.first_author_name_name
 -breadcrumb :author, @author
 
--if user_is_at_least_helper? && @author.references.empty?
-  =content_for :breadcrumbs_right do
+=content_for :breadcrumbs_right do
+  -if user_is_at_least_helper? && @author.references.empty?
     =link_to "Delete", author_path(@author), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+  -if user_is_editor?
+    =link_to "Merge", new_author_merges_path(@author), class: "btn-normal"
 
 #references.margin-bottom
   %a{name: 'references'}

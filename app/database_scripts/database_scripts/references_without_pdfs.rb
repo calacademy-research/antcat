@@ -21,6 +21,11 @@ end
 __END__
 
 description: >
+  Issues: %github387, %github324, %github371
 
 tags: [new!, slow]
 topic_areas: [references]
+related_scripts:
+  - ReferencesWithoutPdfs
+  - ProtonymReferencesWithoutPdfs
+  - ReferencesWithPdfsNotHostedByUs

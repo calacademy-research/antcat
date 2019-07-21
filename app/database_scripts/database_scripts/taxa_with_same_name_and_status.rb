@@ -26,3 +26,7 @@ end
 __END__
 topic_areas: [catalog]
 tags: [list]
+related_scripts:
+  - TaxaWithSameName
+  - TaxaWithSameNameAndStatus
+  - ProtonymsWithSameName

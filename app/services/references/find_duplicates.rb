@@ -1,3 +1,5 @@
+# TODO: Use Solr or Elasticsearch instead of this class.
+
 module References
   class FindDuplicates
     include Service

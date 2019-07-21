@@ -23,7 +23,6 @@ module AntCat
     config.action_mailer.delivery_method = :sendmail
     config.action_mailer.sendmail_settings = { arguments: '-i' }
     config.active_record.observers = [
-      :author_name_observer,
       :reference_author_name_observer,
       :reference_document_observer,
       :reference_observer

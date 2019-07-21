@@ -26,3 +26,8 @@ description: >
 
 tags: []
 topic_areas: [protonyms]
+related_scripts:
+  - FossilProtonymsWithNonFossilTaxa
+  - FossilTaxaWithNonFossilProtonyms
+  - NonFossilProtonymsWithFossilTaxa
+  - NonFossilTaxaWithFossilProtonyms

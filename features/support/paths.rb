@@ -45,12 +45,11 @@ module NavigationHelpers
     when /^the edit page for the most recent reference$/
       edit_reference_path(Reference.last)
 
-    when /^the merge authors page$/
-      merge_authors_path
     when /^the authors page$/
       authors_path
     when /^the author page for "(.*)"$/
-      "/authors/#{Author.find_by_names($1).first.id}"
+      author = AuthorName.find_by(name: $1).author
+      "/authors/#{author.id}"
 
     # Editor's Panel
     when /^the Editor's Panel$/

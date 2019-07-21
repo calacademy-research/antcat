@@ -22,10 +22,11 @@ Rails.application.routes.draw do
     collection do
       get :autocomplete
     end
+    scope module: :authors do
+      resource :merges, only: [:new, :show, :create]
+    end
     resources :author_names, except: [:show, :index], shallow: true
   end
-  resources :merge_authors, only: [:index, :merge]
-  post '/merge_authors/merge', to: 'merge_authors#merge'
 
   namespace :catalog do
     get :autocomplete

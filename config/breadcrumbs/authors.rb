@@ -19,8 +19,8 @@ end
       parent :author, author_name.author
     end
 
-  crumb :merge_authors do
+  crumb :merge_authors do |author|
     link "Merge Authors"
-    parent :authors
+    parent :author, author
   end
 # rubocop:enable Layout/IndentationConsistency

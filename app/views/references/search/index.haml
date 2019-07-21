@@ -1,10 +1,9 @@
 -@title = 'Search Results'
 -breadcrumb :references_search_results
 
--if user_is_editor?
+-if current_user
   =content_for :breadcrumbs_right do
-    -# TODO: Probably allow anyone to export search results.
-    =link_to 'Export to EndNote', endnote_export_references_path(q: params[:q]), class: "btn-normal"
+    =link_to 'Export to EndNote', endnote_export_references_path(reference_q: params[:reference_q]), class: "btn-normal"
 
 .callout.primary
   %p

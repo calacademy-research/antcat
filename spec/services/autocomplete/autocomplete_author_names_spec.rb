@@ -8,14 +8,14 @@ describe Autocomplete::AutocompleteAuthorNames do
       bolton = create :author_name, name: 'Bolton', author: author
       create :author_name, name: 'Fisher', author: author
 
-      expect(described_class['bol']).to eq [bolton.name]
+      expect(described_class['bol']).to eq [bolton]
     end
 
     it "matches substrings" do
       bolton = create :author_name, name: 'Bolton', author: author
       create :author_name, name: 'Fisher', author: author
 
-      expect(described_class['ol']).to eq [bolton.name]
+      expect(described_class['ol']).to eq [bolton]
     end
 
     it "returns authors in order of most recently used" do
@@ -28,7 +28,7 @@ describe Autocomplete::AutocompleteAuthorNames do
       create :reference_author_name, created_at: 5.seconds.ago, author_name: recent, reference: reference
       create :reference_author_name, created_at: 10.seconds.ago, author_name: old, reference: reference
 
-      expect(described_class[]).to eq [most_recent.name, recent.name, old.name, never_used.name]
+      expect(described_class[]).to eq [most_recent, recent, old, never_used]
     end
   end
 end

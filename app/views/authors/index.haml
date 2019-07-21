@@ -1,10 +1,6 @@
 -@title = 'Authors'
 -breadcrumb :authors
 
--if user_is_editor?
-  =content_for :breadcrumbs_right do
-    =link_to 'Merge Authors', merge_authors_path, class: 'btn-normal'
-
 %table
   %thead
     %th Author (and author names)

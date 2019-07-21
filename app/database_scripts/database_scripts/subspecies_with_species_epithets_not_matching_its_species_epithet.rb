@@ -1,19 +1,22 @@
 module DatabaseScripts
-  class SpeciesDisagreeingWithGenusRegardingSubfamily < DatabaseScript
+  class SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet < DatabaseScript
     def results
-      Species.self_join_on(:genus).where("taxa_self_join_alias.subfamily_id != taxa.subfamily_id")
+      Subspecies.joins(:name).self_join_on(:species).
+        joins("JOIN names species_names ON species_names.id = taxa_self_join_alias.name_id").
+        where(<<~SQL)
+          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
+          SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
+        SQL
     end
 
     def render
       as_table do |t|
-        t.header :species, :status, :genus, :subfamily_of_species, :subfamily_of_genus
+        t.header :taxon, :status, :species_name
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(taxon.genus),
-            markdown_taxon_link(taxon.subfamily),
-            markdown_taxon_link(taxon.genus.subfamily)
+            taxon.species.name_html_cache
           ]
         end
       end
@@ -24,11 +27,9 @@ end
 __END__
 
 description: >
-  Note: It may or may not currently be possible to fix all records listed here.
 
 tags: [new!]
 topic_areas: [catalog]
-issue_description: This species is not in the same subfamily as its genus.
 related_scripts:
   - SpeciesDisagreeingWithGenusRegardingSubfamily
   - SubspeciesDisagreeingWithSpeciesRegardingGenus

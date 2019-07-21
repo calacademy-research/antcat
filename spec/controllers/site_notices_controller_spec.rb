@@ -73,6 +73,35 @@ describe SiteNoticesController do
     end
   end
 
+  describe "POST update" do
+    let!(:site_notice) { create :site_notice }
+    let!(:site_notice_params) do
+      {
+        title: 'Title',
+        message: 'message'
+      }
+    end
+
+    before { sign_in create(:user, :editor) }
+
+    it 'updates the site notice' do
+      post(:update, params: { id: site_notice.id, site_notice: site_notice_params })
+
+      site_notice.reload
+      expect(site_notice.title).to eq site_notice_params[:title]
+      expect(site_notice.message).to eq site_notice_params[:message]
+    end
+
+    it 'creates an activity' do
+      expect { post(:update, params: { id: site_notice.id, site_notice: site_notice_params }) }.
+        to change { Activity.where(action: :update, trackable: site_notice).count }.by(1)
+
+      activity = Activity.last
+      site_notice.reload
+      expect(activity.parameters).to eq(title: site_notice.title)
+    end
+  end
+
   describe "DELETE destroy" do
     let!(:site_notice) { create :site_notice }
 

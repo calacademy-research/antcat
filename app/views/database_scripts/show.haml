@@ -19,6 +19,15 @@
       =@database_script.decorate.format_tags
     %p=markdown @database_script.description, sanitize_content: false
 
+    -if @database_script.related_scripts.present?
+      %h6
+        %strong Related scripts
+      %ul
+        -@database_script.related_scripts.each do|related_script|
+          -# NOTE: Hide links to itself, to make it easier to copy-paste `related_scripts`s.
+          -next if related_script.is_a? @database_script.class
+          %li=link_to related_script.title, database_script_path(related_script)
+
 .row.column
   .callout
     =@rendered

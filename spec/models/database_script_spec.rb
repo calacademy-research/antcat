@@ -62,7 +62,7 @@ describe DatabaseScript do
     end
   end
 
-  describe "testsing with a real script" do
+  describe "testing with a real script" do
     let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     describe "#to_param" do
@@ -76,7 +76,7 @@ describe DatabaseScript do
         expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
       end
 
-      it "doesn't require a description" do
+      it "defaults to a blank string" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
         expect(script.description).to eq ""
       end
@@ -93,9 +93,32 @@ describe DatabaseScript do
         expect(script.tags).to eq ["regression-test"]
       end
 
-      it "doesn't require tags" do
+      it "defaults to an empty array" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
         expect(script.tags).to eq []
+      end
+    end
+
+    describe "#related_scripts" do
+      it "can have related scripts" do
+        end_data = HashWithIndifferentAccess.new(related_scripts: ['ExtantTaxaInFossilGenera'])
+        allow(script).to receive(:end_data).and_return end_data
+        expect(script.related_scripts.first).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+      end
+
+      context 'when related scripts include a non-existing script' do
+        it "returns a bening value" do
+          end_data = HashWithIndifferentAccess.new(related_scripts: ['CountriesInEurope'])
+          allow(script).to receive(:end_data).and_return end_data
+          related_script = script.related_scripts.first
+          expect(related_script.title).to include "Error: Could not find database script with class name"
+          expect(related_script.to_param).to eq 'CountriesInEurope'
+        end
+      end
+
+      it "defaults to an empty array" do
+        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
+        expect(script.related_scripts).to eq []
       end
     end
   end

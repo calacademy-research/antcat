@@ -112,6 +112,19 @@ describe Taxa::Search::AdvancedSearch do
       end
     end
 
+    describe "searching by `incertae_sedis_in`" do
+      let!(:taxon) { create :species, incertae_sedis_in: 'family' }
+
+      before do
+        create :species
+      end
+
+      specify do
+        expect(described_class[incertae_sedis_in: 'family']).to eq [taxon]
+        expect(described_class[incertae_sedis_in: 'subfamily']).to eq []
+      end
+    end
+
     describe "searching for locality" do
       let!(:indonesia) { create :protonym, locality: 'Indonesia (Bhutan)' }
       let!(:china) { create :protonym, locality: 'China' }

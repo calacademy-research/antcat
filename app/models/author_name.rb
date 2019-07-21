@@ -10,6 +10,7 @@ class AuthorName < ApplicationRecord
   validates :name, uniqueness: true
 
   before_destroy :ensure_not_authors_only_author_name
+  after_update :invalidate_reference_caches!
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
   trackable
@@ -29,6 +30,13 @@ class AuthorName < ApplicationRecord
     def ensure_not_authors_only_author_name
       return if author.names.count > 1
       throw :abort
+    end
+
+    def invalidate_reference_caches!
+      references.reload.find_each do |reference|
+        reference.refresh_author_names_caches
+        reference.invalidate_caches
+      end
     end
 
     def name_parts

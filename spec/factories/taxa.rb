@@ -13,6 +13,47 @@ FactoryBot.define do
     protonym
     valid
 
+    factory :family, class: Family do
+      association :name, factory: :family_name
+    end
+
+    factory :subfamily, class: Subfamily do
+      association :name, factory: :subfamily_name
+    end
+
+    factory :tribe, class: Tribe do
+      association :name, factory: :tribe_name
+      subfamily
+    end
+
+    factory :subtribe, class: Subtribe do
+      association :name, factory: :subtribe_name
+      tribe
+      subfamily { |a| a.tribe.subfamily }
+    end
+
+    factory :genus, class: Genus do
+      association :name, factory: :genus_name
+      tribe
+      subfamily { |a| a.tribe && a.tribe.subfamily }
+    end
+
+    factory :subgenus, class: Subgenus do
+      association :name, factory: :subgenus_name
+      genus
+    end
+
+    factory :species, class: Species do
+      association :name, factory: :species_name
+      genus
+    end
+
+    factory :subspecies, class: Subspecies do
+      association :name, factory: :subspecies_name
+      species
+      genus
+    end
+
     trait :valid do
       status { Status::VALID }
     end
@@ -57,47 +98,6 @@ FactoryBot.define do
 
     trait :with_current_valid_taxon do
       current_valid_taxon { Family.first || FactoryBot.create(:family) } # TODO: See if we want to do this.
-    end
-
-    factory :family, class: Family do
-      association :name, factory: :family_name
-    end
-
-    factory :subfamily, class: Subfamily do
-      association :name, factory: :subfamily_name
-    end
-
-    factory :tribe, class: Tribe do
-      association :name, factory: :tribe_name
-      subfamily
-    end
-
-    factory :subtribe, class: Subtribe do
-      association :name, factory: :subtribe_name
-      tribe
-      subfamily { |a| a.tribe.subfamily }
-    end
-
-    factory :genus, class: Genus do
-      association :name, factory: :genus_name
-      tribe
-      subfamily { |a| a.tribe && a.tribe.subfamily }
-    end
-
-    factory :subgenus, class: Subgenus do
-      association :name, factory: :subgenus_name
-      genus
-    end
-
-    factory :species, class: Species do
-      association :name, factory: :species_name
-      genus
-    end
-
-    factory :subspecies, class: Subspecies do
-      association :name, factory: :subspecies_name
-      species
-      genus
     end
 
     trait :old do
