@@ -43,16 +43,6 @@ class WikiPagesController < ApplicationController
     redirect_to wiki_pages_path, notice: "Wiki page was successfully deleted."
   end
 
-  def autocomplete
-    search_query = params[:q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteWikiPages[search_query]
-      end
-    end
-  end
-
   private
 
     def set_wiki_page

@@ -65,13 +65,4 @@ describe JournalsController do
       expect(activity.parameters).to eq(name: journal.name, name_was: nil)
     end
   end
-
-  describe "GET autocomplete" do
-    let(:term) { "zootaxa" }
-
-    it "calls `Autocomplete::AutocompleteJournals`" do
-      expect(Autocomplete::AutocompleteJournals).to receive(:new).with(term).and_call_original
-      get :autocomplete, params: { term: term, format: :json }
-    end
-  end
 end

@@ -1,7 +1,7 @@
 class JournalsController < ApplicationController
   REFERENCE_COUNT_ORDER = "reference_count"
 
-  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -32,14 +32,6 @@ class JournalsController < ApplicationController
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
       redirect_to @journal, alert: @journal.errors.full_messages.to_sentence
-    end
-  end
-
-  def autocomplete
-    search_query = params[:term] || '' # TODO: Standardize all "q/qq/query/term".
-
-    respond_to do |format|
-      format.json { render json: Autocomplete::AutocompleteJournals[search_query] }
     end
   end
 

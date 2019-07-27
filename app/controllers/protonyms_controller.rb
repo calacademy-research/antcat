@@ -60,16 +60,6 @@ class ProtonymsController < ApplicationController
     end
   end
 
-  def autocomplete
-    search_query = params[:qq] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteProtonyms[search_query]
-      end
-    end
-  end
-
   private
 
     def set_protonym
