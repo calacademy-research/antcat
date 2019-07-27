@@ -26,6 +26,17 @@
           %li
             Rank:
             =@taxon.rank
+          %li
+            Status:
+            =@taxon.status
+          -if @taxon.auto_generated?
+            %li
+              Auto-generated
+              =antcat_icon 'check'
+          -if @taxon.origin
+            %li
+              Origin:
+              =@taxon.origin
 
   .medium-3.columns
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
