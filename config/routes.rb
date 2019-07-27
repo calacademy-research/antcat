@@ -45,7 +45,7 @@ Rails.application.routes.draw do
 
   resources :institutions
 
-  resources :journals, only: [:index, :show, :edit, :update, :destroy] do
+  resources :journals, except: [:new, :create] do
     scope module: :journals do
       collection do
         resource :autocomplete, only: :show
@@ -114,7 +114,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxa, only: [:new, :create, :edit, :update, :destroy] do
+  resources :taxa, except: [:index, :show] do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
@@ -199,12 +199,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy] do
+  resources :taxon_history_items, except: [:new, :create] do
     scope module: :taxon_history_items do
       resource :history, only: :show
     end
   end
-  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy] do
+  resources :reference_sections, except: [:new, :create] do
     scope module: :reference_sections do
       resource :history, only: :show
     end
