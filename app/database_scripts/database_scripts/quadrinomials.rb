@@ -20,5 +20,5 @@ description: >
 
   Issue: %github714
 
-tags: [new!]
+tags: []
 topic_areas: [catalog]
