@@ -3,7 +3,7 @@
 
 .row
   .medium-8.columns
-    -if @name.what_links_here.size > 1
+    -if name.what_links_here.size > 1
       .callout.alert
         =antcat_icon 'warning-icon'
         %strong Warning!
@@ -13,13 +13,13 @@
 
     =form_for name, url: name_path(name), as: :name do |f|
       =render 'shared/errors_for', resource: name
-      =hidden_field_tag :type, @name.type
+      =hidden_field_tag :type, name.type
 
       %table.unstriped
         %tbody
           %tr
             %th=f.label :name
-            %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: @name.id }
+            %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: name.id }
           %tr
             %td
             %td

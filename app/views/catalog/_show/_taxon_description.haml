@@ -67,7 +67,7 @@
 
 -if is_formicidae_landing_page
   %br
-  =link_to "Formicidae family references", catalog_path(@taxon)
+  =link_to "Formicidae family references", catalog_path(taxon)
 -else
   -if taxon.reference_sections.present?
     .reference-sections

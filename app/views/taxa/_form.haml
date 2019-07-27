@@ -4,26 +4,26 @@
   =javascript_include_tag 'taxon_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'protonym_select'
 
-=render 'shared/taxt_editor/taxon_and_ancestors', taxon: @taxon
+=render 'shared/taxt_editor/taxon_and_ancestors', taxon: taxon
 =render "shared/default_reference"
 
--url = @taxon.new_record? ?  '/taxa': "/taxa/#{@taxon.id}"
-=form_for @taxon, as: :taxon, url: url do |form|
+-url = taxon.new_record? ?  '/taxa': "/taxa/#{taxon.id}"
+=form_for taxon, as: :taxon, url: url do |form|
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
 
-  =render 'shared/errors_for', resource: @taxon
+  =render 'shared/errors_for', resource: taxon
 
-  -if @taxon.soft_validation_warnings.present?
+  -if taxon.soft_validation_warnings.present?
     #soft-validations.callout.warning.small-12.medium-6
       %h6 Issues
       %p These issues will not prevent you from saving the form. Just so you know :)
-      =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
+      =render 'shared/soft_validation_warnings', soft_validation_warnings: taxon.soft_validation_warnings
 
   .callout
-    =render 'taxa/_form/main_form',        taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'taxa/_form/protonym_section', taxon: @taxon, form: form, default_name_string: @default_name_string
-    =render 'taxa/_form/type_section',     taxon: @taxon, form: form
+    =render 'taxa/_form/main_form',        taxon: taxon, form: form, default_name_string: default_name_string
+    =render 'taxa/_form/protonym_section', taxon: taxon, form: form, default_name_string: default_name_string
+    =render 'taxa/_form/type_section',     taxon: taxon, form: form
 
     .row
       .medium-3.columns
@@ -33,6 +33,6 @@
         =button_tag type: 'submit', id: "save-taxon-form", class: 'btn-saves button has-spinner' do
           =spinner_icon + 'Save'
         &nbsp;
-        -cancel_link = @taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(@taxon)
+        -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
         =link_to 'Cancel', cancel_link, class: 'button btn-nodanger'
         =db_tooltip_icon :cancel, scope: :taxa

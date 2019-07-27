@@ -20,7 +20,7 @@
 
       %ul.snaked.no-bullet.mr-scrollbary
         -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-          =extra_tab_link tab.tab_taxon, link[:label], link[:display], @taxon_browser.display
+          =extra_tab_link tab.tab_taxon, link[:label], link[:display], taxon_browser.display
 
         .section-that-can-be-capped
           =render "taxon_browser/tab", tab: tab, cap: true
