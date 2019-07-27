@@ -45,13 +45,6 @@ class CommentsController < ApplicationController
   end
 
   def update
-    unless @comment.user == current_user
-      # It's only possible to get here if a user is logged in, starts editing
-      # a comment, logs in as another user, and then tries to save.
-      render action: :edit, notice: "You can only edit your own comments."
-      return
-    end
-
     @comment.body = comment_params[:body]
     @comment.edited = true
 
@@ -67,7 +60,7 @@ class CommentsController < ApplicationController
   private
 
     def set_comment
-      @comment = Comment.find(params[:id])
+      @comment = current_user.comments.find(params[:id])
     end
 
     def commentable
