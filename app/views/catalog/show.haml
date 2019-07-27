@@ -9,17 +9,23 @@
 -if current_user
   =enable_tooltips
   =content_for :breadcrumbs_right do
-    %small.gray-text.right-margin
-      =logged_in_only_tooltip_icon
-      rank:
-      =@taxon.rank
-
     =render "catalog/_show/editor_buttons", taxon: @taxon
 
 .row
   .medium-9.columns
     #taxon_description
       =render "catalog/_show/taxon_description", taxon: @taxon, is_formicidae_landing_page: @is_formicidae_landing_page
+
+  -if current_user
+    .medium-3.columns
+      #additional-editor-data.callout
+        %h6
+          Additional data for editors
+          =logged_in_only_tooltip_icon
+        %ul
+          %li
+            Rank:
+            =@taxon.rank
 
   .medium-3.columns
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
