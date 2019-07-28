@@ -5,7 +5,7 @@ class Publisher < ApplicationRecord
 
   has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
 
-  def self.create_form_string string
+  def self.create_from_string string
     place_name, name = string.match(/(?<place_name>[^a-z:\d][^:\d]{2,})(?:: )(?<name>.+)/)&.captures
     return unless name && place_name
 
