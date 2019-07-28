@@ -9,13 +9,13 @@ describe Comment do
     context "when it is a reply" do
       let(:reply) { build_stubbed :comment, :reply }
 
-      it { expect(reply.a_reply?).to be true }
+      specify { expect(reply.a_reply?).to eq true }
     end
 
     context "when it is not a reply" do
       let(:comment) { build_stubbed :comment }
 
-      it { expect(comment.a_reply?).to be false }
+      specify { expect(comment.a_reply?).to eq false }
     end
   end
 end

@@ -33,7 +33,7 @@ describe Taxa::Search::AdvancedSearch do
 
       before do
         reference = create :reference, citation_year: '1977'
-        subfamily.protonym.authorship.update! reference: reference
+        subfamily.protonym.authorship.update!(reference: reference)
       end
 
       specify do

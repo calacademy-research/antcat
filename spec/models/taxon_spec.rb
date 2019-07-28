@@ -25,7 +25,7 @@ describe Taxon do
         end
 
         expect(query.call).to eq [species]
-        genus.update fossil: false
+        genus.update!(fossil: false)
         expect(query.call).to eq []
       end
     end

@@ -12,7 +12,7 @@ describe AuthorName do
 
   describe "#last_name and #first_name_and_initials" do
     context "when there's only one word" do
-      let(:author_name) { described_class.new name: 'Bolton' }
+      let(:author_name) { described_class.new(name: 'Bolton') }
 
       it "simply returns the name" do
         expect(author_name.last_name).to eq 'Bolton'
@@ -21,7 +21,7 @@ describe AuthorName do
     end
 
     context 'when there are multiple words' do
-      let(:author_name) { described_class.new name: 'Bolton, B.L.' }
+      let(:author_name) { described_class.new(name: 'Bolton, B.L.') }
 
       it "separates the words" do
         expect(author_name.last_name).to eq 'Bolton'
@@ -30,7 +30,7 @@ describe AuthorName do
     end
 
     context 'when there is no comma' do
-      let(:author_name) { described_class.new name: 'Royal Academy' }
+      let(:author_name) { described_class.new(name: 'Royal Academy') }
 
       it "uses all words" do
         expect(author_name.last_name).to eq 'Royal Academy'
@@ -39,7 +39,7 @@ describe AuthorName do
     end
 
     context 'when there are multiple commas' do
-      let(:author_name) { described_class.new name: 'Baroni Urbani, C.' }
+      let(:author_name) { described_class.new(name: 'Baroni Urbani, C.') }
 
       it "uses all words before the comma" do
         expect(author_name.last_name).to eq 'Baroni Urbani'
@@ -61,7 +61,7 @@ describe AuthorName do
     let!(:reference) { create :article_reference, author_names: [author_name] }
 
     it "refreshes `author_names_string_cache` its references" do
-      expect { author_name.update(name: 'Fisher') }.
+      expect { author_name.update!(name: 'Fisher') }.
         to change { reference.reload.author_names_string }.from('Ward').to('Fisher')
     end
 

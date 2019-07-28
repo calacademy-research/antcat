@@ -9,7 +9,7 @@ describe Taxa::AnyNonTaxtReferences do
         create :family, :homonym, homonym_replaced_by: taxon
       end
 
-      it { expect(described_class[taxon]).to be true }
+      specify { expect(described_class[taxon]).to eq true }
     end
 
     context "when taxon has no non-taxt references" do
@@ -17,7 +17,7 @@ describe Taxa::AnyNonTaxtReferences do
         create :family, type_taxt: "{tax #{taxon.id}}"
       end
 
-      it { expect(described_class[taxon]).to be false }
+      specify { expect(described_class[taxon]).to eq false }
     end
   end
 end
