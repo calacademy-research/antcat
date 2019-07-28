@@ -8,7 +8,7 @@ describe Taxa::Operations::ElevateToSpecies do
         let!(:species) { create :species, name_string: 'Atta major', genus: genus }
         let!(:subspecies) { create :subspecies, name_string: 'Atta batta major', species: species }
 
-        it "returns the new new non-persister species with errors" do
+        it "returns the new new non-persisted species with errors" do
           new_species = described_class[subspecies]
           expect(new_species.errors[:base]).to eq ["This name is in use by another taxon"]
         end
@@ -27,19 +27,12 @@ describe Taxa::Operations::ElevateToSpecies do
           expect { described_class[subspecies] }.to_not change { subspecies.reload.attributes }
         end
 
-        it "creates a new taxon" do
-          expect { described_class[subspecies] }.to change { Taxon.count }.by(1)
+        it "creates a new species" do
+          expect { described_class[subspecies] }.to change { Species.count }.by(1)
         end
 
         it "returns the new species" do
           expect(described_class[subspecies]).to be_a Species
-        end
-
-        it "creates a new species with a species name" do
-          new_species = described_class[subspecies]
-
-          expect(new_species).to be_a Species
-          expect(new_species.name).to be_a SpeciesName
         end
 
         it "copies relevant attributes from the original subspecies record" do
@@ -86,27 +79,19 @@ describe Taxa::Operations::ElevateToSpecies do
           end
         end
       end
-    end
 
-    # TODO: These specs were left as is after rewriting this service
-    # because we should stop reusing `Name`s once we're ready for that.
-    context "old specs" do # rubocop:disable RSpec/ContextWording
-      let!(:genus) { create :genus, name_string: 'Atta' }
-      let!(:species) { create :species, name_string: 'Atta major', genus: genus }
-      let!(:taxon) { create :subspecies, name_string: 'Atta major colobopsis', genus: genus, species: species }
+      describe "new name" do
+        let!(:genus) { create :genus, name_string: 'Atta' }
+        let!(:species) { create :species, name_string: 'Atta major', genus: genus }
+        let!(:taxon) { create :subspecies, name_string: 'Atta major colobopsis', genus: genus, species: species }
 
-      it "forms the new species name from the epithet" do
-        described_class[taxon]
+        it "forms the new species name from the epithet" do
+          new_species = described_class[taxon]
 
-        new_species = Taxon.last
-
-        expect(new_species.name.name).to eq 'Atta colobopsis'
-        expect(new_species.name.epithet).to eq 'colobopsis'
-        expect(new_species.name.epithets).to be_nil
-      end
-
-      it "creates a new species namey" do
-        expect { described_class[taxon] }.to change { Name.count }.by(1)
+          expect(new_species.name.name).to eq 'Atta colobopsis'
+          expect(new_species.name.epithet).to eq 'colobopsis'
+          expect(new_species.name.epithets).to eq nil
+        end
       end
     end
   end
