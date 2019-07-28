@@ -1,19 +1,21 @@
 -@title = "User Feedback"
 -breadcrumb :user_feedback
 
-=render_filters
-
-%table.feedbacks.unstriped.stack
-  %tbody
-  -@feedbacks.each do |feedback|
-    %tr{class: ("closed" if feedback.closed?)}
-      %td=link_to "##{feedback.id}", feedback
-      -if feedback.open?
-        %td Open
-      -else
-        %td.gray Closed
-      %td=render "feedback", feedback: feedback
-      %td.center-text.no-wrap=CommentableDecorator.new(feedback).link_existing_comments_section
-      %td=link_to "Details", feedback, class: "btn-normal btn-tiny"
+-if @feedbacks.blank?
+  %p
+    There are currently no pending feedbacks.
+-else
+  %table.feedbacks.unstriped.stack
+    %tbody
+    -@feedbacks.each do |feedback|
+      %tr{class: ("closed" if feedback.closed?)}
+        %td=link_to "##{feedback.id}", feedback
+        -if feedback.open?
+          %td Open
+        -else
+          %td.gray Closed
+        %td=render "feedback", feedback: feedback
+        %td.center-text.no-wrap=CommentableDecorator.new(feedback).link_existing_comments_section
+        %td=link_to "Details", feedback, class: "btn-normal btn-tiny"
 
 =will_paginate @feedbacks
