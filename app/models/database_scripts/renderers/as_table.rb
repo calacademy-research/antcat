@@ -40,7 +40,7 @@ module DatabaseScripts
         end
 
         # Gets the results from `#results` unless specified.
-        def rows results = nil, find_each: false, &block
+        def rows results = nil, &block
           results ||= @cached_results
 
           if results.blank?
@@ -48,9 +48,7 @@ module DatabaseScripts
             return
           end
 
-          method_name = find_each ? :find_each : :each
-
-          results.send(method_name) do |object|
+          results.each do |object|
             row object, *block.call(object)
           end
         end
