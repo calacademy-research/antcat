@@ -12,7 +12,6 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus unless ENV['TRAVIS']
   config.use_transactional_fixtures = true
   Kernel.srand config.seed
-  # TODO: Enable? `config.disable_monkey_patching!`
   # TODO: Maybe add `config.render_views = true`.
   # config.profile_examples = 10 # Uncomment to show slow specs.
 

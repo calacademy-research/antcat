@@ -32,11 +32,9 @@ class CommentsController < ApplicationController
       @comment.create_activity :create
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
-        <a href="#comment-#{@comment.id}">Comment</a>
-        was successfully added.
+        <a href="#comment-#{@comment.id}">Comment</a> was successfully added.
       MSG
     else
-      # TODO: Add proper error messages.
       redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
     end
   end
