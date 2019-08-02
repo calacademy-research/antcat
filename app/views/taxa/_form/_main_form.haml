@@ -60,16 +60,24 @@
   %tr
     %td
     %td
-      =form.check_box :fossil
-      =form.label :fossil do
-        Fossil
-        =db_tooltip_icon "fossil", scope: :taxa
+      =form.check_box :original_combination
+      =form.label :original_combination do
+        Original combination
+        =db_tooltip_icon "original_combination", scope: :taxa
+
+      =form.check_box :unresolved_homonym
+      =form.label :unresolved_homonym, 'Unresolved junior homonym'
 
       =form.check_box :nomen_nudum
       =form.label :nomen_nudum
 
-      =form.check_box :unresolved_homonym
-      =form.label :unresolved_homonym, 'Unresolved junior homonym'
+  %tr
+    %td
+    %td
+      =form.check_box :fossil
+      =form.label :fossil do
+        Fossil
+        =db_tooltip_icon "fossil", scope: :taxa
 
       =form.check_box :ichnotaxon
       =form.label :ichnotaxon

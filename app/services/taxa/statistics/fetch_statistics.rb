@@ -46,16 +46,9 @@ module Taxa
                 taxa.group(:fossil, :status).order('NULL').count
               end
 
-            delete_original_combinations count unless valid_only
-
             massage_count count, rank, statistics
           end
           statistics
-        end
-
-        def delete_original_combinations count
-          count.delete [true, Status::ORIGINAL_COMBINATION]
-          count.delete [false, Status::ORIGINAL_COMBINATION]
         end
 
         def massage_count count, rank, statistics

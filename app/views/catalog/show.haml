@@ -29,6 +29,10 @@
           %li
             Status:
             =@taxon.status
+          -if @taxon.original_combination?
+            %li
+              Original combination
+              =antcat_icon 'check'
           -if @taxon.auto_generated?
             %li
               Auto-generated
@@ -50,8 +54,7 @@
               =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
           =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
 
-    -unless @taxon.original_combination?
-      =render 'catalog/_show/statistics', taxon: @taxon
+    =render 'catalog/_show/statistics', taxon: @taxon
 
     .callout#external-links
       =@taxon.decorate.link_to_antweb

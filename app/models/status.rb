@@ -7,7 +7,7 @@ class Status
     UNIDENTIFIABLE            = "unidentifiable",
     UNAVAILABLE               = "unavailable",
     EXCLUDED_FROM_FORMICIDAE  = "excluded from Formicidae",
-    ORIGINAL_COMBINATION      = "original combination",
+    ORIGINAL_COMBINATION      = "original combination", # TODO: Remove.
     OBSOLETE_COMBINATION      = "obsolete combination",
     UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
     UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
