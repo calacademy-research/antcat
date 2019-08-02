@@ -22,7 +22,8 @@ Feature: Converting a species to a subspecies
 
   @javascript
   Scenario: Converting a species to a subspecies when it already exists
-    Given there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii" in the genus "Camponotus"
+    Given there is a species "Camponotus alii" in the genus "Camponotus"
+    And there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii"
     And there is a species "Camponotus dallatorei" in the genus "Camponotus"
 
     When I go to the catalog page for "Camponotus dallatorei"

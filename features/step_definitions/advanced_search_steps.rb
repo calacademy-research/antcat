@@ -1,13 +1,13 @@
 Given("there is a species described in {int}") do |year|
   reference = create :article_reference, citation_year: year
   taxon = create :species
-  taxon.protonym.authorship.update! reference: reference
+  taxon.protonym.authorship.update!(reference: reference)
 end
 
 Given("there is a species described by Bolton") do
   reference = create :article_reference, author_names: [create(:author_name, name: 'Bolton')]
   taxon = create :species
-  taxon.protonym.authorship.update! reference: reference
+  taxon.protonym.authorship.update!(reference: reference)
 end
 
 Given("there is an invalid family") do

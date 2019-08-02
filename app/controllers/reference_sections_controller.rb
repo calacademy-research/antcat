@@ -1,6 +1,7 @@
 class ReferenceSectionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
   before_action :ensure_user_is_editor, only: [:destroy]
+  before_action :set_taxon, only: [:new, :create]
   before_action :set_reference_section, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -13,7 +14,7 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def new
-    @reference_section = ReferenceSection.new(taxon_id: params[:taxa_id])
+    @reference_section = @taxon.reference_sections.new
   end
 
   def edit
@@ -39,8 +40,7 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def create
-    @reference_section = ReferenceSection.new(reference_section_params)
-    @reference_section.taxon_id = params[:taxa_id]
+    @reference_section = @taxon.reference_sections.new(reference_section_params)
 
     if @reference_section.save
       @reference_section.create_activity :create, edit_summary: params[:edit_summary]
@@ -58,6 +58,10 @@ class ReferenceSectionsController < ApplicationController
   end
 
   private
+
+    def set_taxon
+      @taxon = Taxon.find(params[:taxa_id])
+    end
 
     def set_reference_section
       @reference_section = ReferenceSection.find(params[:id])

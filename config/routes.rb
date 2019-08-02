@@ -19,21 +19,21 @@ Rails.application.routes.draw do
   end
 
   resources :authors, only: [:index, :show, :destroy] do
-    collection do
-      get :autocomplete
-    end
     scope module: :authors do
+      collection do
+        resource :autocomplete, only: :show
+      end
       resource :merges, only: [:new, :show, :create]
     end
     resources :author_names, except: [:show, :index], shallow: true
   end
 
   namespace :catalog do
-    get :autocomplete
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
     resource :search, only: :show
     resource :toggle_display, only: :update
+    resource :autocomplete, only: :show
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
@@ -45,23 +45,25 @@ Rails.application.routes.draw do
 
   resources :institutions
 
-  resources :journals, only: [:index, :show, :edit, :update, :destroy] do
-    collection do
-      get :autocomplete
+  resources :journals, except: [:new, :create] do
+    scope module: :journals do
+      collection do
+        resource :autocomplete, only: :show
+      end
     end
   end
 
   namespace :publishers do
-    get :autocomplete
+    resource :autocomplete, only: :show
   end
 
   resources :references do
-    collection do
-      get :autocomplete
-      get :linkable_autocomplete
-    end
-
     scope module: :references do
+      collection do
+        resource :autocomplete, only: :show
+        resource :linkable_autocomplete, only: :show
+      end
+
       resource :history, only: :show
       resource :what_links_here, only: :show
 
@@ -99,20 +101,20 @@ Rails.application.routes.draw do
   end
 
   resources :protonyms do
-    collection do
-      get :autocomplete
-    end
     scope module: :protonyms do
+      collection do
+        resource :autocomplete, only: :show
+      end
       resource :history, only: :show
     end
   end
-  scope module: :protonyms do
-    scope controller: :localities, path: "/protonyms/localities" do
-      get :autocomplete
+  namespace :protonyms do
+    namespace :localities do
+      resource :autocomplete, only: :show
     end
   end
 
-  resources :taxa, only: [:new, :create, :edit, :update, :destroy] do
+  resources :taxa, except: [:index, :show] do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
@@ -197,12 +199,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, only: [:index, :show, :edit, :update, :destroy] do
+  resources :taxon_history_items, except: [:new, :create] do
     scope module: :taxon_history_items do
       resource :history, only: :show
     end
   end
-  resources :reference_sections, only: [:index, :show, :edit, :update, :destroy] do
+  resources :reference_sections, except: [:new, :create] do
     scope module: :reference_sections do
       resource :history, only: :show
     end
@@ -225,10 +227,10 @@ Rails.application.routes.draw do
   end
 
   resources :wiki_pages do
-    collection do
-      get :autocomplete
-    end
     scope module: :wiki_pages do
+      collection do
+        resource :autocomplete, only: :show
+      end
       resource :history, only: :show
     end
   end

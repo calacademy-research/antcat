@@ -1,5 +1,4 @@
 class CommentDecorator < Draper::Decorator
-  # TODO: Default `label` to "commented"
   def link_comment label
     return "commented" unless comment.try :commentable
     helpers.link_to label, commentable_anchor_link

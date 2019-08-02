@@ -19,7 +19,7 @@ describe Autocomplete::AutocompleteJournals do
       rarely_used = create :journal
 
       2.times { create :article_reference, journal: rarely_used }
-      4.times { create :article_reference, journal: most_used }
+      3.times { create :article_reference, journal: most_used }
 
       expect(described_class['']).to eq [most_used.name, rarely_used.name, never_used.name]
     end

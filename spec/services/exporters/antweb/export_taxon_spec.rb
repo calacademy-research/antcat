@@ -260,9 +260,9 @@ describe Exporters::Antweb::ExportTaxon do
 
       before do
         create :species, :unavailable, genus: genus # For the statistics.
-        genus.update! type_taxon: type_species, type_taxt: ', by monotypy'
-        genus.history_items.create taxt: "Taxon: {tax #{type_species.id}}"
-        genus.reference_sections.create title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;"
+        genus.update!(type_taxon: type_species, type_taxt: ', by monotypy')
+        genus.history_items.create!(taxt: "Taxon: {tax #{type_species.id}}")
+        genus.reference_sections.create!(title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;")
       end
 
       it "formats a taxon's history for AntWeb" do

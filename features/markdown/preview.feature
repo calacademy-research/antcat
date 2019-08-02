@@ -4,16 +4,20 @@ Feature: Preview markdown
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Previewing references markdown
-    Given there is a Giovanni reference
+    Given this reference exists
+      | author       | citation_year |
+      | Giovanni, S. | 1809          |
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "issue_description" with "See:" and a markdown link to Giovanni's reference
+    When I fill in "issue_description" with "See:" and a markdown link to "Giovanni, 1809"
     And I press "Rerender preview"
     Then I should see "See: Giovanni, 1809"
 
   @skip
   Scenario: Previewing references markdown (click to expand)
-    Given there is a Giovanni reference
+    Given this reference exists
+      | author       | title                    | citation_year |
+      | Giovanni, S. | Giovanni's Favorite Ants | 1809          |
     And I am on a page with a textarea with markdown preview and autocompletion
 
     When I fill in "issue_description" with "See: %reference7777"

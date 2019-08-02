@@ -18,7 +18,7 @@ describe ReferenceObserver do
         expect(reference.plain_text_cache).not_to be_nil
         expect(nestee.plain_text_cache).not_to be_nil
 
-        reference.update! title: "New Title"
+        reference.update!(title: "New Title")
 
         expect(reference.reload.plain_text_cache).to be_nil
         expect(nestee.reload.plain_text_cache).to be_nil

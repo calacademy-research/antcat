@@ -28,17 +28,17 @@
   -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
     -protonym = taxon.protonym
-    -if protonym.primary_type_information_taxt.present?
+    -if protonym.primary_type_information_taxt?
       .truncate-disabled-todo
         %strong Primary type information:
         =add_period_if_necessary ::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
-    -if protonym.secondary_type_information_taxt.present?
+    -if protonym.secondary_type_information_taxt?
       .truncate-disabled-todo
         %strong Secondary type information:
         =add_period_if_necessary ::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
-    -if protonym.type_notes_taxt.present?
+    -if protonym.type_notes_taxt?
       .truncate-disabled-todo
         %strong Type notes:
         =add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
@@ -67,19 +67,19 @@
 
 -if is_formicidae_landing_page
   %br
-  =link_to "Formicidae family references", catalog_path(@taxon)
+  =link_to "Formicidae family references", catalog_path(taxon)
 -else
   -if taxon.reference_sections.present?
     .reference-sections
       -taxon.reference_sections.each do |reference_section|
         .section.small-margin-bottom
-          -if reference_section.title_taxt.present?
+          -if reference_section.title_taxt?
             %h6=Detax[reference_section.title_taxt]
 
-          -if reference_section.subtitle_taxt.present?
+          -if reference_section.subtitle_taxt?
             %h7=Detax[reference_section.subtitle_taxt]
 
-          -if reference_section.references_taxt.present?
+          -if reference_section.references_taxt?
             %p=Detax[reference_section.references_taxt]
 
           -if current_user

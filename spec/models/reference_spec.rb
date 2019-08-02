@@ -149,7 +149,7 @@ describe Reference do
         before { reference.author_names = [ward_ps] }
 
         it "updates its `author_names_string`" do
-          expect { ward_ps.update name: 'Fisher' }.
+          expect { ward_ps.update!(name: 'Fisher') }.
             to change { reference.reload.author_names_string }.
             from('Ward, P.S.').to('Fisher')
         end
@@ -188,7 +188,7 @@ describe Reference do
       let(:reference) { create :reference, citation_year: '1910a' }
 
       it "sets `year` to the stated year, if present" do
-        expect { reference.update! citation_year: '2010b' }.
+        expect { reference.update!(citation_year: '2010b') }.
           to change { reference.reload.year }.from(1910).to(2010)
       end
     end
@@ -197,7 +197,7 @@ describe Reference do
       let(:reference) { create :reference, citation_year: '1910a ["1958"]' }
 
       it "sets `year` to the stated year, if present" do
-        expect { reference.update! citation_year: '2010b ["2009"]' }.
+        expect { reference.update!(citation_year: '2010b ["2009"]') }.
           to change { reference.reload.year }.from(1958).to(2009)
       end
     end

@@ -39,21 +39,18 @@ Then("the markdown textarea should contain a markdown link to Archibald's user p
   expect(markdown_textarea.value).to include "@user#{archibald.id}"
 end
 
-# TODO: Less Giovanni.
-Then("the markdown textarea should contain a markdown link to the Brother's reference") do
-  reference = Reference.find_by(title: "Giovanni's Brother's Favorite Ants")
+Then("the markdown textarea should contain a markdown link to {string}") do |keey|
+  reference = find_reference_by_keey keey
   expect(markdown_textarea.value).to include "{ref #{reference.id}}"
 end
 
-# TODO: Less Giovanni.
-When("I fill in {string} with {string} and a markdown link to Giovanni's reference") do |element, string|
-  reference = Reference.find_by(title: "Giovanni's Favorite Ants")
+When("I fill in {string} with {string} and a markdown link to {string}") do |element, string, keey|
+  reference = find_reference_by_keey keey
   step %(I fill in "#{element}" with "#{string} %reference#{reference.id}}")
 end
 
-# TODO: Less Giovanni.
-Given("there is a genus {string} with a history item {string} and a markdown link to Giovanni's reference") do |genus, string|
-  reference = Reference.find_by(title: "Giovanni's Favorite Ants")
+Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, string, keey|
+  reference = find_reference_by_keey keey
   taxt = "#{string} {ref #{reference.id}}"
   step %(there is a genus "#{genus}" with a history item "#{taxt}")
 end

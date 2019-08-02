@@ -1,7 +1,8 @@
 Feature: Elevating subspecies to species
   Background:
     Given I log in as a catalog editor named "Archibald"
-    And there is a subspecies "Solenopsis speccus subbus" in the species "Solenopsis speccus" in the genus "Solenopsis"
+    And there is a species "Solenopsis speccus" in the genus "Solenopsis"
+    And there is a subspecies "Solenopsis speccus subbus" in the species "Solenopsis speccus"
 
   Scenario: Elevating subspecies to species (with feed)
     When I go to the catalog page for "Solenopsis speccus subbus"

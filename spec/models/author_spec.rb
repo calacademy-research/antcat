@@ -44,13 +44,13 @@ describe Author do
     let!(:species) do
       reference = create :article_reference, author_names: [author_name]
       species = create :species
-      species.protonym.authorship.update! reference: reference
+      species.protonym.authorship.update!(reference: reference)
       species
     end
     let!(:genus) do
       reference = create :book_reference, author_names: [author_name]
       genus = create :genus
-      genus.protonym.authorship.update! reference: reference
+      genus.protonym.authorship.update!(reference: reference)
       genus
     end
 

@@ -23,11 +23,11 @@ class Issue < ApplicationRecord
   end
 
   def close! user
-    update! open: false, closer: user
+    update!(open: false, closer: user)
   end
 
   def reopen!
-    update! open: true, closer: nil
+    update!(open: true, closer: nil)
   end
 
   # Read-only alias for `Comment#notify_commentable_creator`.

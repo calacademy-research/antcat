@@ -24,8 +24,7 @@ module DatabaseScripts
       as_table do |t|
         t.header *HEADERS
 
-        # Disabled for performance reasons, but it should be:
-        # `t.rows(find_each: true) do |taxon|`
+        # Limited to 1 for performance reasons, just to show an example.
         t.rows(cached_results.limit(1)) do |taxon|
           [
             taxon&.subfamily&.name_cache,
@@ -47,7 +46,7 @@ module DatabaseScripts
       as_csv do |c|
         c.header *HEADERS
 
-        c.rows(find_each: true) do |taxon|
+        c.rows do |taxon|
           [
             taxon&.subfamily&.name_cache,
             taxon&.genus&.name_cache,

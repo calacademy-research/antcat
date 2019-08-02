@@ -9,19 +9,14 @@ describe References::WhatLinksHere do
     end
 
     context 'when there are taxt references' do
-      specify do
-        citation = create :citation, reference: reference, notes_taxt: "{ref #{reference.id}}"
-        protonym = create :protonym, authorship: citation
-        taxon = create :genus,
-          protonym: protonym,
-          type_taxt: "{ref #{reference.id}}",
-          headline_notes_taxt: "{ref #{reference.id}}"
-        history_item = taxon.history_items.create! taxt: "{ref #{reference.id}}"
-        reference_section = create :reference_section,
-          title_taxt: "{ref #{reference.id}}",
-          subtitle_taxt: "{ref #{reference.id}}",
-          references_taxt: "{ref #{reference.id}}"
+      let(:ref_tag) { "{ref #{reference.id}}" }
 
+      let!(:citation) { create :citation, reference: reference, notes_taxt: ref_tag }
+      let!(:taxon) { create :genus, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: ref_tag }
+      let!(:history_item) { taxon.history_items.create!(taxt: ref_tag) }
+      let!(:reference_section) { create :reference_section, title_taxt: ref_tag, subtitle_taxt: ref_tag, references_taxt: ref_tag }
+
+      specify do
         expect(reference.reload.what_links_here).to match_array [
           TableRef.new('taxa',                :type_taxt,           taxon.id),
           TableRef.new('taxa',                :headline_notes_taxt, taxon.id),
@@ -35,12 +30,12 @@ describe References::WhatLinksHere do
       end
     end
 
-    describe "references in reference fields" do
+    context 'when there are references in relations' do
       let!(:taxon) { create :family }
       let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
 
       before do
-        taxon.protonym.authorship.update! reference: reference
+        taxon.protonym.authorship.update!(reference: reference)
       end
 
       specify do
