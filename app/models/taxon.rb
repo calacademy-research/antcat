@@ -80,7 +80,7 @@ class Taxon < ApplicationRecord
     where(name_cache: name).exists?
   end
 
-  (Status::STATUSES - [Status::VALID, Status::ORIGINAL_COMBINATION]).each do |status|
+  (Status::STATUSES - [Status::VALID]).each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end

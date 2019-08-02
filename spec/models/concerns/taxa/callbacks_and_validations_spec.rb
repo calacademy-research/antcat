@@ -152,7 +152,6 @@ describe Taxa::CallbacksAndValidations do
     context "when taxon has no `#current_valid_taxon`" do
       [
         Status::SYNONYM,
-        Status::ORIGINAL_COMBINATION,
         Status::OBSOLETE_COMBINATION,
         Status::UNAVAILABLE_MISSPELLING,
         Status::UNAVAILABLE_UNCATEGORIZED

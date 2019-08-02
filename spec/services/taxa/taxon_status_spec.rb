@@ -38,7 +38,7 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is an unresolved homonym" do
-      context "when there is no senior synonym" do
+      context "when there is no current valid taxon" do
         let(:taxon) { build_stubbed :family, unresolved_homonym: true }
 
         specify { expect(described_class[taxon]).to eq 'unresolved junior homonym, valid' }
@@ -68,6 +68,16 @@ describe Taxa::TaxonStatus do
       specify do
         expect(described_class[taxon]).
           to include %(junior synonym of current valid taxon #{taxon_link senior})
+      end
+    end
+
+    context "when taxon is an obsolete combination" do
+      let!(:current_valid_taxon) { create :genus }
+      let!(:taxon) { create :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
+
+      specify do
+        expect(described_class[taxon]).
+          to include %(an obsolete combination of #{taxon_link current_valid_taxon})
       end
     end
 

@@ -30,7 +30,6 @@ module Taxa
         case status
         when Status::SYNONYM                   then "junior synonym of current valid taxon #{link_current_valid_taxon}"
         when Status::OBSOLETE_COMBINATION      then "an obsolete combination of #{link_current_valid_taxon}"
-        when Status::ORIGINAL_COMBINATION      then "see #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
         else                                        status
