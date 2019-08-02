@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag 'controllers/taxa/not_really_form/reorder_history_items'
 
-=render 'form'
+=render 'form', taxon: @taxon, default_name_string: nil
 
 .not-really-taxon-form
   =render 'taxa/_not_really_form/history_items_section', taxon: @taxon

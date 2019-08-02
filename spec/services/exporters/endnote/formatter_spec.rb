@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Exporters::Endnote::Formatter do
-  subject(:formatter) { described_class }
-
   it "formats a book reference correctly" do
     reference = create :book_reference,
       author_names: [create(:author_name, name: 'Bolton, B.')],
@@ -10,7 +8,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %(%0 Book
+    expect(described_class.format([reference])).to eq %(%0 Book
 %A Bolton, B.
 %D 1933
 %T Ants Are My Life
@@ -29,7 +27,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %(%0 Book
+    expect(described_class.format([reference])).to eq %(%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
 %D 1933
@@ -49,7 +47,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
       pagination: 'ix + 33pp.'
-    expect(formatter.format([reference])).to eq %(%0 Book
+    expect(described_class.format([reference])).to eq %(%0 Book
 %D 1933
 %T Ants Are My Life
 %C Dresden
@@ -69,7 +67,7 @@ describe Exporters::Endnote::Formatter do
       series_volume_issue: '1(2)',
       pagination: '3-4'
     reference.create_document url: 'http://antcat.org/article.pdf'
-    results = formatter.format [reference]
+    results = described_class.format [reference]
     expect(results).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
@@ -91,7 +89,7 @@ describe Exporters::Endnote::Formatter do
       journal: create(:journal, name: 'Psyche'),
       series_volume_issue: '1(2)',
       pagination: '3-4'
-    expect(formatter.format([reference])).to eq %{%0 Journal Article
+    expect(described_class.format([reference])).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -113,7 +111,7 @@ describe Exporters::Endnote::Formatter do
       pagination: '3-4',
       public_notes: 'Public notes.',
       taxonomic_notes: 'Taxonomic notes'
-    expect(formatter.format([reference])).to eq %{%0 Journal Article
+    expect(described_class.format([reference])).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -137,7 +135,7 @@ describe Exporters::Endnote::Formatter do
       pagination: '3-4',
       public_notes: '',
       taxonomic_notes: ''
-    expect(formatter.format([reference])).to eq %{%0 Journal Article
+    expect(described_class.format([reference])).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -150,8 +148,7 @@ describe Exporters::Endnote::Formatter do
   end
 
   it "bails on a class it doesn't know about " do
-    expect { formatter.format(['']) }.
-      to raise_error(/Don't know what kind of reference this is/)
+    expect { described_class.format(['']) }.to raise_error(/Don't know what kind of reference this is/)
   end
 
   it "formats an unknown reference correctly" do
@@ -160,7 +157,7 @@ describe Exporters::Endnote::Formatter do
       citation_year: '1933',
       title: 'Another title',
       citation: 'Dresden'
-    expect(formatter.format([reference])).to eq %(%0 Generic
+    expect(described_class.format([reference])).to eq %(%0 Generic
 %A MacKay, W.
 %D 1933
 %T Another title
@@ -172,6 +169,6 @@ describe Exporters::Endnote::Formatter do
 
   it "doesn't output nested references" do
     reference = create :nested_reference
-    expect(formatter.format([reference])).to eq "\n"
+    expect(described_class.format([reference])).to eq "\n"
   end
 end

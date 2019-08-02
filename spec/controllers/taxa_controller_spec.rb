@@ -60,6 +60,7 @@ describe TaxaController do
             base_params.deep_merge(
               incertae_sedis_in: "family",
               fossil: true,
+              original_combination: true,
               collective_group_name: true,
               unresolved_homonym: true,
               ichnotaxon: true,
@@ -78,6 +79,7 @@ describe TaxaController do
             expect(taxon.status).to eq taxon_params[:status]
             expect(taxon.incertae_sedis_in).to eq taxon_params[:incertae_sedis_in]
             expect(taxon.fossil).to eq taxon_params[:fossil]
+            expect(taxon.original_combination).to eq taxon_params[:original_combination]
             expect(taxon.collective_group_name).to eq taxon_params[:collective_group_name]
             expect(taxon.unresolved_homonym).to eq taxon_params[:unresolved_homonym]
             expect(taxon.ichnotaxon).to eq taxon_params[:ichnotaxon]

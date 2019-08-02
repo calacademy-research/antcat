@@ -32,11 +32,9 @@ class CommentsController < ApplicationController
       @comment.create_activity :create
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
-        <a href="#comment-#{@comment.id}">Comment</a>
-        was successfully added.
+        <a href="#comment-#{@comment.id}">Comment</a> was successfully added.
       MSG
     else
-      # TODO: Add proper error messages.
       redirect_back fallback_location: root_path, notice: "Something went wrong. Email us?"
     end
   end
@@ -45,13 +43,6 @@ class CommentsController < ApplicationController
   end
 
   def update
-    unless @comment.user == current_user
-      # It's only possible to get here if a user is logged in, starts editing
-      # a comment, logs in as another user, and then tries to save.
-      render action: :edit, notice: "You can only edit your own comments."
-      return
-    end
-
     @comment.body = comment_params[:body]
     @comment.edited = true
 
@@ -67,7 +58,7 @@ class CommentsController < ApplicationController
   private
 
     def set_comment
-      @comment = Comment.find(params[:id])
+      @comment = current_user.comments.find(params[:id])
     end
 
     def commentable

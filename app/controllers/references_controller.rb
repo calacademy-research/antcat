@@ -1,7 +1,7 @@
 class ReferencesController < ApplicationController
   SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
 
-  before_action :ensure_user_is_at_least_helper, except: [:index, :show, :autocomplete, :linkable_autocomplete]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
@@ -61,27 +61,6 @@ class ReferencesController < ApplicationController
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
       redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence
-    end
-  end
-
-  # For at.js. Not as advanced as `#autocomplete`.
-  def linkable_autocomplete
-    search_query = params[:q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteLinkableReferences[search_query]
-      end
-    end
-  end
-
-  def autocomplete
-    search_query = params[:reference_q] || ''
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteReferences[search_query]
-      end
     end
   end
 

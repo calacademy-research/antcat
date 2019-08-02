@@ -30,7 +30,7 @@ describe RevisionComparer, :versioning do
     let!(:selected_id) { item.tap { |item| item.update!(taxt: "last version") }.versions.last.id }
 
     describe "#diff_with" do
-      subject(:comparer) { described_class.new model, item.id, nil, diff_with_id }
+      let(:comparer) { described_class.new(model, item.id, nil, diff_with_id) }
 
       it "returns reified objects from the versions" do
         expect(comparer.diff_with.taxt).to eq "initial content"
@@ -44,7 +44,7 @@ describe RevisionComparer, :versioning do
     end
 
     describe "#selected" do
-      subject(:comparer) { described_class.new model, item.id, selected_id }
+      let(:comparer) { described_class.new(model, item.id, selected_id) }
 
       it "returns reified objects from the versions" do
         expect(comparer.selected.taxt).to eq "second version"
@@ -56,7 +56,7 @@ describe RevisionComparer, :versioning do
     end
 
     describe "using #selected and #diff_with at the same time" do
-      subject(:comparer) { described_class.new model, item.id, selected_id, diff_with_id }
+      let(:comparer) { described_class.new(model, item.id, selected_id, diff_with_id) }
 
       it "handles #most_recent, #selected and #diff_with" do
         expect(comparer.diff_with.taxt).to eq "initial content"
@@ -79,7 +79,7 @@ describe RevisionComparer, :versioning do
       before { item.destroy }
 
       it "returns a diff for side-by-side comparison" do
-        comparer = described_class.new model, item_id, nil, diff_with_id
+        comparer = described_class.new(model, item_id, nil, diff_with_id)
         diff = comparer.html_split_diff
 
         expect(diff.left).to match "<strong>initial</strong> content"
@@ -96,7 +96,7 @@ describe RevisionComparer, :versioning do
     let(:selected) { PaperTrail::Version.find(selected_id) }
 
     context 'when nothing is loaded' do
-      subject(:comparer) { described_class.new model, item.id }
+      let(:comparer) { described_class.new(model, item.id) }
 
       specify { expect(comparer.looking_at_most_recent?).to eq true }
       specify { expect(comparer.looking_at_a_single_old_revision?).to eq false }
@@ -107,7 +107,7 @@ describe RevisionComparer, :versioning do
     end
 
     context 'when only `selected_id` is loaded' do
-      subject(:comparer) { described_class.new model, item.id, selected_id }
+      let(:comparer) { described_class.new(model, item.id, selected_id) }
 
       specify { expect(comparer.looking_at_most_recent?).to eq false }
       specify { expect(comparer.looking_at_a_single_old_revision?).to eq true }
@@ -118,7 +118,7 @@ describe RevisionComparer, :versioning do
     end
 
     context 'when `selected_id` and `diff_with_id` are loaded' do
-      subject(:comparer) { described_class.new model, item.id, selected_id, diff_with_id }
+      let(:comparer) { described_class.new(model, item.id, selected_id, diff_with_id) }
 
       specify { expect(comparer.looking_at_most_recent?).to eq false }
       specify { expect(comparer.looking_at_a_single_old_revision?).to eq false }

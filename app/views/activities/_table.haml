@@ -16,7 +16,7 @@
             -# Don't show user who created other users' accounts.
             =decorated.link_user unless activity.trackable_type == 'User'
             =decorated.did_something
-            -if activity.edit_summary.present?
+            -if activity.edit_summary?
               %div.gray-text.with-gray-links
                 Edit summary:
                 =markdown activity.edit_summary, no_wrapping_p: true

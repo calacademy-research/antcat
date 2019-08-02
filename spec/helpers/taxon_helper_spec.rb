@@ -48,7 +48,7 @@ describe TaxonHelper do
       create :version, item: taxon, whodunnit: adder.id, change: change
 
       change = Change.find taxon.last_change.id
-      change.update! approver: approver, approved_at: Time.current
+      change.update!(approver: approver, approved_at: Time.current)
       taxon.approve!
 
       change_history = helper.taxon_change_history taxon

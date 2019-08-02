@@ -44,19 +44,12 @@ describe Taxa::Operations::ConvertToSubspecies do
           expect { described_class[species, target_species_parent] }.to_not change { species.reload.attributes }
         end
 
-        it "creates a new taxon" do
-          expect { described_class[species, target_species_parent] }.to change { Taxon.count }.by(1)
+        it "creates a new subspecies" do
+          expect { described_class[species, target_species_parent] }.to change { Subspecies.count }.by(1)
         end
 
         it "returns the new subspecies" do
           expect(described_class[species, target_species_parent]).to be_a Subspecies
-        end
-
-        it "creates a new species with a subspecies name" do
-          new_subspecies = described_class[species, target_species_parent]
-
-          expect(new_subspecies).to be_a Subspecies
-          expect(new_subspecies.name).to be_a SubspeciesName
         end
 
         it "copies relevant attributes from the original species record" do

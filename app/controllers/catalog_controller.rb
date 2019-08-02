@@ -34,17 +34,6 @@ class CatalogController < ApplicationController
     end
   end
 
-  def autocomplete
-    search_query = params[:q] || params[:qq] || ''
-    rank = params[:rank]
-
-    respond_to do |format|
-      format.json do
-        render json: Autocomplete::AutocompleteTaxa[search_query, rank: rank]
-      end
-    end
-  end
-
   private
 
     def set_taxon

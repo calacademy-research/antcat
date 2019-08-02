@@ -33,7 +33,7 @@ describe User do
       specify { expect(user.remaining_edits_for_unconfirmed_user).to eq User::UNCONFIRMED_USER_EDIT_LIMIT_COUNT }
     end
 
-    context 'when user had recent activity' do
+    context 'when user has recent activity' do
       it 'counts an activity as an edit' do
         expect { create :activity, user: user }.
           to change { user.remaining_edits_for_unconfirmed_user }.by(-1)

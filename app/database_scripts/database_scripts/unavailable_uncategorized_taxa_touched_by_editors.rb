@@ -10,5 +10,5 @@ __END__
 
 description: >
 
-tags: [new!]
+tags: []
 topic_areas: [catalog]

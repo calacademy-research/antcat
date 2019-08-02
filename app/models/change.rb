@@ -36,7 +36,7 @@ class Change < ApplicationRecord
 
     if taxon
       taxon.approve!
-      update! approver: user, approved_at: Time.current
+      update!(approver: user, approved_at: Time.current)
     else
       # This case is for approving a delete.
       # TODO: Approving deletions doesn't set `approver` or `approved_at`.

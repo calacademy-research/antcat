@@ -104,5 +104,5 @@ description: >
 
   `Statuses of extracted taxa: {"homonym"=>1, "obsolete combination"=>26, "original combination"=>1, "synonym"=>51, "unavailable"=>5, "valid"=>1832}`
 
-tags: [new!, slow]
+tags: [slow]
 topic_areas: [taxt]

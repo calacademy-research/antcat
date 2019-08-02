@@ -38,18 +38,6 @@ Given("this/these reference(s) exist(s)") do |table|
   end
 end
 
-# TODO: Less Giovanni.
-# Special cases because we want specific IDs.
-Given("there is a Giovanni reference") do
-  create :article_reference, citation_year: '1809', title: "Giovanni's Favorite Ants",
-    author_names: [create(:author_name, name: 'Giovanni, S.')]
-end
-
-# TODO: Less Giovanni.
-Given("there is a reference by Giovanni's brother") do
-  create :article_reference, title: "Giovanni's Brother's Favorite Ants"
-end
-
 Given("the following entry nests it") do |table|
   data = table.hashes.first
   NestedReference.create! title: data[:title],

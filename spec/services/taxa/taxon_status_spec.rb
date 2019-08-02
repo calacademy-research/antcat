@@ -11,9 +11,7 @@ describe Taxa::TaxonStatus do
     context "when taxon is valid" do
       let(:taxon) { build_stubbed :family }
 
-      it "returns 'valid' if the status is valid" do
-        expect(described_class[taxon]).to eq 'valid'
-      end
+      specify { expect(described_class[taxon]).to eq 'valid' }
     end
 
     context "when taxon is a homonym" do

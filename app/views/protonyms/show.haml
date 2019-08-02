@@ -54,11 +54,16 @@
           %th Taxon
           %th Rank
           %th Status
+          %th
         -@protonym.taxa.each do |taxon|
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
+            %td
+              -if taxon.original_combination?
+                Original combination
+                =antcat_icon 'check'
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/702
 -if current_user

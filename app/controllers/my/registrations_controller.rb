@@ -43,7 +43,6 @@ module My
 
     private
 
-      # TODO: Revisit and probably remove.
       def check_if_too_many_registrations_today
         return unless User.too_many_registrations_today?
         redirect_to root_path, alert: 'Sorry, we have had too many new registrations today. Email us?'

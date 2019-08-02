@@ -14,13 +14,13 @@ describe ReferenceAuthorNameObserver do
 
     it "invalidates the cache for the reference involved" do
       # Setup.
-      reference.reference_author_names.create! position: 1, author_name: create(:author_name)
+      reference.reference_author_names.create!(position: 1, author_name: create(:author_name))
       References::Cache::Regenerate[reference]
       reference.reload
       expect(reference.plain_text_cache).not_to be_nil
 
       # Act and test.
-      reference.reference_author_names.first.update position: 1000
+      reference.reference_author_names.first.update!(position: 1000)
       reference.reload
       expect(reference.plain_text_cache).to be_nil
     end
@@ -33,7 +33,7 @@ describe ReferenceAuthorNameObserver do
         expect(reference.plain_text_cache).not_to be_nil
 
         # Act and test.
-        reference.reference_author_names.create! position: 1, author_name: create(:author_name)
+        reference.reference_author_names.create!(position: 1, author_name: create(:author_name))
         reference.reload
         expect(reference.plain_text_cache).to be_nil
       end
@@ -42,7 +42,7 @@ describe ReferenceAuthorNameObserver do
     context "when a reference_author_name is deleted" do
       it "invalidates the cache for the reference involved " do
         # Setup.
-        reference.reference_author_names.create! position: 1, author_name: create(:author_name)
+        reference.reference_author_names.create!(position: 1, author_name: create(:author_name))
         References::Cache::Regenerate[reference]
         reference.reload
         expect(reference.plain_text_cache).not_to be_nil

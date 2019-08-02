@@ -8,7 +8,7 @@ class AddPlaceToPublishers < ActiveRecord::Migration[5.1]
     #     PaperTrail.whodunnit = antcat_bot.id
     #
     #     Publisher.find_each do |publisher|
-    #       publisher.update place_name: publisher.place.name
+    #       publisher.update!(place_name: publisher.place.name)
     #     end
     #   end
     # end

@@ -48,7 +48,7 @@ describe DatabaseScript do
       let(:extant_species) { create :species }
 
       specify do
-        expect { extant_species.genus.update! fossil: true }.
+        expect { extant_species.genus.update!(fossil: true) }.
           to change { script.taxon_in_results?(extant_species) }.
           from(false).to(true)
       end

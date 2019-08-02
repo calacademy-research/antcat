@@ -63,7 +63,7 @@ description: >
 
   Taxa that are "Excluded from Formicidae" are not included here.
 
-tags: [new!]
+tags: []
 topic_areas: [catalog]
 related_scripts:
   - NonExplicitIncertaeSedisTaxa

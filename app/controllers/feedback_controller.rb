@@ -1,7 +1,4 @@
 class FeedbackController < ApplicationController
-  include ActionView::Helpers::DateHelper
-  include HasWhereFilters
-
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 
   before_action :ensure_user_is_superadmin, only: [:destroy]
@@ -13,18 +10,8 @@ class FeedbackController < ApplicationController
     invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
   end
 
-  has_filters(
-    open: {
-      tag: :select_tag,
-      options: -> { [["Open", 1], ["Closed", 0]] },
-      prompt: "Status"
-    }
-  )
-
-  # TODO: Probably remove `by_status_and_date` now that we have filters.
   def index
-    @feedbacks = Feedback.by_status_and_date.filter(filter_params)
-    @feedbacks = @feedbacks.includes(:user).paginate(page: params[:page], per_page: 10)
+    @feedbacks = Feedback.by_status_and_date.includes(:user).paginate(page: params[:page], per_page: 10)
   end
 
   def show
@@ -105,7 +92,7 @@ class FeedbackController < ApplicationController
     end
 
     def feedback_params
-      params[:feedback].delete :work_email
+      params[:feedback].delete(:work_email) # Honeypot.
       params.require(:feedback).permit(:comment, :name, :email, :user, :page)
     end
 end

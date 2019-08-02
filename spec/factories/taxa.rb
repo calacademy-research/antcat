@@ -60,16 +60,16 @@ FactoryBot.define do
 
     trait :synonym do
       status { Status::SYNONYM }
-      with_current_valid_taxon # TODO: See if we want to do this.
+      with_current_valid_taxon
     end
 
     trait :homonym do
       status { Status::HOMONYM }
     end
 
-    trait :original_combination do
-      status { Status::ORIGINAL_COMBINATION }
-      with_current_valid_taxon # TODO: See if we want to do this.
+    trait :obsolete_combination do
+      status { Status::OBSOLETE_COMBINATION }
+      with_current_valid_taxon
     end
 
     trait :unidentifiable do
@@ -96,8 +96,12 @@ FactoryBot.define do
       fossil { true }
     end
 
+    trait :original_combination do
+      original_combination { true }
+    end
+
     trait :with_current_valid_taxon do
-      current_valid_taxon { Family.first || FactoryBot.create(:family) } # TODO: See if we want to do this.
+      current_valid_taxon { Family.first || FactoryBot.create(:family) }
     end
 
     trait :old do

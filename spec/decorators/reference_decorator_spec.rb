@@ -50,13 +50,13 @@ describe ReferenceDecorator do
       end
 
       it "escapes the citation year" do
-        reference.update citation_year: '<script>'
+        reference.update!(citation_year: '<script>')
         expect(reference.decorate.plain_text).
           to eq 'Ward, P. S. . Les fourmis de la Suisse. 32 pp.'
       end
 
       it "escapes the title" do
-        reference.update title: '*foo*<script>'
+        reference.update!(title: '*foo*<script>')
         expect(reference.decorate.plain_text).to eq 'Ward, P. S. 1874. foo. 32 pp.'
       end
     end

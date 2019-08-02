@@ -84,6 +84,7 @@ class TaxaController < ApplicationController
         :homonym_replaced_by_id,
         :current_valid_taxon_id,
         :incertae_sedis_in,
+        :original_combination,
         :fossil,
         :collective_group_name,
         :nomen_nudum,

@@ -1,5 +1,3 @@
-# TODO: DRY various `Bloodhound`s.
-
 $ ->
   localities = new Bloodhound
     datumTokenizer: Bloodhound.tokenizers.whitespace

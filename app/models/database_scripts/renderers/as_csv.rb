@@ -29,12 +29,10 @@ module DatabaseScripts
           @headers = items
         end
 
-        def rows results = nil, find_each: false, &block
+        def rows results = nil, &block
           results ||= @cached_results
 
-          method_name = find_each ? :find_each : :each
-
-          results.send(method_name) do |object|
+          results.each do |object|
             @rows.push block.call(object)
           end
         end

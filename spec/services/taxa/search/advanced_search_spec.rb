@@ -33,12 +33,23 @@ describe Taxa::Search::AdvancedSearch do
 
       before do
         reference = create :reference, citation_year: '1977'
-        subfamily.protonym.authorship.update! reference: reference
+        subfamily.protonym.authorship.update!(reference: reference)
       end
 
       specify do
         expect(described_class[year: "1977"]).to match_array [subfamily]
         expect(described_class[year: "1979"]).to be_empty
+      end
+    end
+
+    describe "searching by protonym" do
+      let!(:protonym) { create :protonym, name: create(:species_name, name: 'Formica fusca') }
+      let!(:taxon) { create :species, name_string: 'Lasius niger', protonym: protonym }
+
+      specify do
+        expect(described_class[protonym: 'fusca']).to eq [taxon]
+        expect(described_class[protonym: 'fusc']).to eq [taxon]
+        expect(described_class[protonym: 'niger']).to eq []
       end
     end
 

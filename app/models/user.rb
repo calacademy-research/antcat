@@ -31,8 +31,7 @@ class User < ApplicationRecord
     RequestStore.store[:current_user] = user
   end
 
-  # TODO: Super primitive way of preventing mass registrations once we switch to open registration.
-  # TODO: Revisit shortly after that.
+  # NOTE: Super primitive way of preventing mass registrations.
   def self.too_many_registrations_today?
     where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY
   end

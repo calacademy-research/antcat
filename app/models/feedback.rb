@@ -1,5 +1,4 @@
 class Feedback < ApplicationRecord
-  include FilterableWhere
   include Trackable
 
   belongs_to :user

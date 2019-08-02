@@ -2,31 +2,25 @@ require "spec_helper"
 
 describe Exporters::Antweb::AntwebDetax do
   describe "#call" do
-    let(:taxt) { "{tax #{create(:family).id}}" }
+    describe "tax tags (taxa)" do
+      let!(:taxon) { create :family }
 
-    it "uses a different link formatter" do
-      expect(described_class[taxt]).to match "antcat.org"
+      specify do
+        results = described_class["{tax #{taxon.id}}"]
+
+        expect(results).to include taxon.name_cache
+        expect(results).to include "antcat.org"
+      end
     end
 
-    describe 'broken taxt tags' do
-      describe "ref tags (references)" do
-        let(:results) { described_class["{ref 999}"] }
+    describe "ref tags (references)" do
+      let!(:reference) { create :article_reference }
 
-        context "when the ref points to a reference that doesn't exist" do
-          it "adds a warning" do
-            expect(results).to eq "CANNOT FIND REFERENCE WITH ID 999"
-          end
-        end
-      end
+      specify do
+        results = described_class["{ref #{reference.id}}"]
 
-      describe "tax tags (taxa)" do
-        let(:results) { described_class["{tax 999}"] }
-
-        context "when the taxon can't be found" do
-          it "adds a warning" do
-            expect(results).to eq "CANNOT FIND TAXON WITH ID 999"
-          end
-        end
+        expect(results).to include reference.title
+        expect(results).to include "antcat.org"
       end
     end
   end

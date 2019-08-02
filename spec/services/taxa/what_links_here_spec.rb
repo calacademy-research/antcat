@@ -9,7 +9,7 @@ describe Taxa::WhatLinksHere do
       specify { expect(described_class[taxon, predicate: true]).to be false }
     end
 
-    describe "references in taxon fields" do
+    context 'when there are references in relations' do
       context "when there are references in a subfamily" do
         specify do
           expect(described_class[taxon.subfamily]).to match_array [
@@ -45,7 +45,7 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "when reference in its authorship taxt" do
-      before { taxon.protonym.authorship.update notes_taxt: "{tax #{taxon.id}}" }
+      before { taxon.protonym.authorship.update!(notes_taxt: "{tax #{taxon.id}}") }
 
       specify do
         expect(described_class[taxon]).to match_array [

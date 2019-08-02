@@ -1,6 +1,7 @@
 class TaxonHistoryItemsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
   before_action :ensure_user_is_editor, only: [:destroy]
+  before_action :set_taxon, only: [:new, :create]
   before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
@@ -13,7 +14,7 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def new
-    @taxon_history_item = TaxonHistoryItem.new(taxon_id: params[:taxa_id])
+    @taxon_history_item = @taxon.history_items.new
   end
 
   def edit
@@ -39,8 +40,7 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def create
-    @taxon_history_item = TaxonHistoryItem.new(taxon_history_item_params)
-    @taxon_history_item.taxon_id = params[:taxa_id]
+    @taxon_history_item = @taxon.history_items.new(taxon_history_item_params)
 
     if @taxon_history_item.save
       @taxon_history_item.create_activity :create, edit_summary: params[:edit_summary]
@@ -58,6 +58,10 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   private
+
+    def set_taxon
+      @taxon = Taxon.find(params[:taxa_id])
+    end
 
     def set_taxon_history_item
       @taxon_history_item = TaxonHistoryItem.find(params[:id])

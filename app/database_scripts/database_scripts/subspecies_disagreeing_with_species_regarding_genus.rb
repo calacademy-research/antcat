@@ -26,7 +26,7 @@ __END__
 description: >
   Note: It may or may not currently be possible to fix all records listed here.
 
-tags: [new!]
+tags: []
 topic_areas: [catalog]
 issue_description: This subspecies is not in the same genus as its species.
 related_scripts:
