@@ -125,17 +125,6 @@ describe Taxa::Statistics::FetchStatistics do
         end
       end
 
-      context "when there are original combinations" do
-        before do
-          create :species, genus: genus
-          create :species, :original_combination, genus: genus
-        end
-
-        it "ignores the original combinations" do
-          expect(described_class[genus]).to eq extant: { species: { 'valid' => 1 } }
-        end
-      end
-
       context "when 1 valid species and 2 synonyms" do
         before do
           create :species, genus: genus

@@ -2,7 +2,6 @@ class AdvancedSearchPresenter
   include ApplicationHelper
 
   def format_status_reference taxon
-    return format_original_combination_status taxon if taxon.original_combination?
     labels = []
     labels << "#{italicize 'incertae sedis'} in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
     if taxon.homonym? && taxon.homonym_replaced_by
@@ -35,12 +34,6 @@ class AdvancedSearchPresenter
   end
 
   private
-
-    def format_original_combination_status taxon
-      string = 'see '.html_safe
-      string << format_name(taxon.current_valid_taxon)
-      string
-    end
 
     def senior_synonym_list taxon
       return '' unless taxon.synonym? && taxon.current_valid_taxon
