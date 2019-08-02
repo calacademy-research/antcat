@@ -5,20 +5,22 @@ Feature: Markdown autocompletion
 
   @search
   Scenario: References markdown autocompletion
-    Given there is a Giovanni reference
-    And there is a reference by Giovanni's brother
+    Given these references exist
+      | author       | title                    | citation_year |
+      | Giovanni, S. | Giovanni's Favorite Ants | 1810          |
+      | Joffre, J.   | Joffre's Favorite Ants   | 1810          |
     And I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in "issue_description" with "{rgio"
+    When I fill in "issue_description" with "{rfav"
     Then I should see "Giovanni's Favorite Ants"
-    And I should see "Giovanni's Brother's Favorite Ants"
+    And I should see "Joffre's Favorite Ants"
 
     When I clear the markdown textarea
     Then I should not see "Favorite Ants"
 
-    When I fill in "issue_description" with "{rbro"
-    And I click the suggestion containing "Giovanni's Brother's Favorite Ants"
-    Then the markdown textarea should contain a markdown link to the Brother's reference
+    When I fill in "issue_description" with "{rjof"
+    And I click the suggestion containing "Joffre's Favorite Ants"
+    Then the markdown textarea should contain a markdown link to "Joffre, 1810"
 
   @search
   Scenario: Recently used references (added by inserting in a markdown textarea)
