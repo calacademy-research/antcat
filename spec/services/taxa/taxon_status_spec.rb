@@ -15,19 +15,11 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a homonym" do
-      context "when taxon does not have a `homonym_replaced_by`" do
-        let!(:taxon) { build_stubbed :family, :homonym }
+      let!(:homonym_replaced_by) { build_stubbed :family }
+      let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
 
-        specify { expect(described_class[taxon]).to eq 'homonym' }
-      end
-
-      context "when taxon has a `homonym_replaced_by`" do
-        let!(:homonym_replaced_by) { build_stubbed :family }
-        let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
-
-        specify do
-          expect(described_class[taxon]).to include %(homonym replaced by #{taxon_link homonym_replaced_by})
-        end
+      specify do
+        expect(described_class[taxon]).to include %(homonym replaced by #{taxon_link homonym_replaced_by})
       end
     end
 
@@ -62,8 +54,8 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a synonym" do
-      let!(:senior) { create :genus }
-      let!(:taxon) { create :genus, :synonym, current_valid_taxon: senior }
+      let!(:senior) { build_stubbed :genus }
+      let!(:taxon) { build_stubbed :genus, :synonym, current_valid_taxon: senior }
 
       specify do
         expect(described_class[taxon]).
@@ -72,8 +64,8 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is an obsolete combination" do
-      let!(:current_valid_taxon) { create :genus }
-      let!(:taxon) { create :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
+      let!(:current_valid_taxon) { build_stubbed :genus }
+      let!(:taxon) { build_stubbed :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
 
       specify do
         expect(described_class[taxon]).

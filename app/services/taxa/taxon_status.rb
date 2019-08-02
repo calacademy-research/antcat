@@ -25,10 +25,9 @@ module Taxa
         :current_valid_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon
 
       def main_status
-        return "homonym replaced by #{link_homonym_replaced_by}" if homonym_replaced_by
-
         case status
         when Status::SYNONYM                   then "junior synonym of current valid taxon #{link_current_valid_taxon}"
+        when Status::HOMONYM                   then "homonym replaced by #{link_homonym_replaced_by}"
         when Status::OBSOLETE_COMBINATION      then "an obsolete combination of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
