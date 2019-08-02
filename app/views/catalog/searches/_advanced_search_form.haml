@@ -26,9 +26,12 @@
     .medium-2.columns
       Described by
       =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
-    .medium-2.columns.end
+    .medium-2.columns
       Described year
       =text_field_tag :year, params[:year], placeholder: "eg 1990, or 2000-2005"
+    .medium-2.columns.end
+      Protonym contains
+      =text_field_tag :protonym, params[:protonym]
 
   .row
     .medium-2.columns

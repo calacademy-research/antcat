@@ -42,6 +42,17 @@ describe Taxa::Search::AdvancedSearch do
       end
     end
 
+    describe "searching by protonym" do
+      let!(:protonym) { create :protonym, name: create(:species_name, name: 'Formica fusca') }
+      let!(:taxon) { create :species, name_string: 'Lasius niger', protonym: protonym }
+
+      specify do
+        expect(described_class[protonym: 'fusca']).to eq [taxon]
+        expect(described_class[protonym: 'fusc']).to eq [taxon]
+        expect(described_class[protonym: 'niger']).to eq []
+      end
+    end
+
     describe "searching by ranks" do
       let!(:subfamily) { create :subfamily }
 

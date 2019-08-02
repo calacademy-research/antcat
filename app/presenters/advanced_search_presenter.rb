@@ -13,6 +13,8 @@ class AdvancedSearchPresenter
       labels << "unresolved junior homonym"
     elsif taxon.nomen_nudum?
       labels << italicize('nomen nudum')
+    elsif taxon.valid_taxon?
+      labels << "valid"
     elsif taxon.invalid?
       label = taxon.status
       label << senior_synonym_list(taxon)

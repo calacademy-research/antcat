@@ -83,6 +83,11 @@ module Taxa
                       where('genus_names.name LIKE ?', "%#{params[:genus]}%")
           end
 
+          if params[:protonym]
+            query = query.joins('JOIN names AS protonym_names ON protonyms.name_id = protonym_names.id').
+                      where('protonym_names.name LIKE ?', "%#{params[:protonym]}%")
+          end
+
           search_term = params[:biogeographic_region]
           if search_term == 'None'
             query = query.where(protonyms: { biogeographic_region: nil })
