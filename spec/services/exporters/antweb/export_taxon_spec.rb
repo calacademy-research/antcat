@@ -202,7 +202,9 @@ describe Exporters::Antweb::ExportTaxon do
 
       context "when there has been some recombining" do
         let(:recombination) { create :species }
-        let(:original_combination) { create :species, :original_combination, current_valid_taxon: recombination }
+        let(:original_combination) do
+          create :species, :obsolete_combination, :original_combination, current_valid_taxon: recombination
+        end
 
         before do
           recombination.protonym.name = original_combination.name

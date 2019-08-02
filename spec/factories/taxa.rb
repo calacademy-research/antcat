@@ -67,8 +67,8 @@ FactoryBot.define do
       status { Status::HOMONYM }
     end
 
-    trait :original_combination do
-      status { Status::ORIGINAL_COMBINATION }
+    trait :obsolete_combination do
+      status { Status::OBSOLETE_COMBINATION }
       with_current_valid_taxon
     end
 
@@ -94,6 +94,10 @@ FactoryBot.define do
 
     trait :fossil do
       fossil { true }
+    end
+
+    trait :original_combination do
+      original_combination { true }
     end
 
     trait :with_current_valid_taxon do

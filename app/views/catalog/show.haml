@@ -29,6 +29,10 @@
           %li
             Status:
             =@taxon.status
+          -if @taxon.original_combination?
+            %li
+              Original combination
+              =antcat_icon 'check'
           -if @taxon.auto_generated?
             %li
               Auto-generated

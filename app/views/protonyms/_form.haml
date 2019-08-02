@@ -14,15 +14,18 @@
     %table.pale-table
       %thead
         %th Taxon
-        %th Authorship
         %th Rank
         %th Status
+        %th
       -protonym.taxa.each do |taxon|
         %tr
           %td=taxon.link_to_taxon
-          %td=taxon.authorship_reference.decorate.expandable_reference
           %td=taxon.rank.capitalize
           %td=taxon.status.capitalize
+          %td
+            -if taxon.original_combination?
+              Original combination
+              =antcat_icon 'check'
 
 =form_for protonym do |f|
   =render 'shared/errors_for', resource: protonym

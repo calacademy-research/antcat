@@ -123,7 +123,7 @@ module Exporters
         end
 
         def original_combination
-          taxon.class.where(status: Status::ORIGINAL_COMBINATION, current_valid_taxon: taxon).first
+          taxon.class.where(original_combination: true, current_valid_taxon: taxon).first
         end
 
         def export_history
