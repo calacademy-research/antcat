@@ -15,7 +15,6 @@ AllCops:
 Rails:
   Enabled: true
 
-# TODO: Investigate.
 Rails/BulkChangeTable:
   Enabled: false
 

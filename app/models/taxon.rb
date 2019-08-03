@@ -32,17 +32,21 @@ class Taxon < ApplicationRecord
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
 
+  with_options class_name: 'Taxon' do
+    belongs_to :type_taxon, foreign_key: :type_taxon_id
+    belongs_to :genus
+    belongs_to :homonym_replaced_by
+    belongs_to :current_valid_taxon
+
+    has_one :homonym_replaced, foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
+    has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, foreign_key: :current_valid_taxon_id
+  end
+
   belongs_to :name, dependent: :destroy
   belongs_to :protonym, -> { includes :authorship }
-  belongs_to :type_taxon, class_name: 'Taxon', foreign_key: :type_taxon_id
-  belongs_to :genus, class_name: 'Taxon'
-  belongs_to :homonym_replaced_by, class_name: 'Taxon'
-  belongs_to :current_valid_taxon, class_name: 'Taxon'
 
-  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-  has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, class_name: 'Taxon', foreign_key: :current_valid_taxon_id
   has_one :taxon_state
 
   scope :displayable, -> { where.not(status: Status::UNDISPLAYABLE) }
