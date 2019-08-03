@@ -15,7 +15,7 @@ describe Taxon do
 
   describe "scopes" do
     describe ".self_join_on" do
-      let!(:genus) { create :genus, fossil: true }
+      let!(:genus) { create :genus, :fossil }
       let!(:species) { create :species, genus: genus }
 
       it "handles self-referential condition" do

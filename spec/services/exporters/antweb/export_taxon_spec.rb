@@ -223,7 +223,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       context "when taxon is fossil" do
-        let(:taxon) { create :family, fossil: true }
+        let(:taxon) { create :family, :fossil }
 
         specify { expect(export_taxon(taxon)[16]).to eq 'TRUE' }
       end
