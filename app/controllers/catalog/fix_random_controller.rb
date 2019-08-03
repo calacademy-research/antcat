@@ -1,7 +1,12 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
-      DatabaseScripts::PassThroughNamesWithTaxts
+      DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
+      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
+      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
+      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
+      DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
+      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
     ]
 
     def show
