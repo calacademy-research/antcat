@@ -1,6 +1,4 @@
-# TODO: Something is broken in the `@responsive` tag:
-# @javascript @responsive
-@skip
+@javascript @responsive
 Feature: Responsive navigation
   As a user of AntCat
   I want be able to browse the site from any device
