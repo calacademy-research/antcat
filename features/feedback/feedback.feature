@@ -84,8 +84,6 @@ Feature: Feedback
     Then I should see "you have already posted a couple of feedbacks in the last few minutes"
     And I should not see "Message sent"
 
-  # TODO: Disabled in test env in controller.
-  @skip
   Scenario: Combating spambots with honeypots
     When I click on the Feedback link
     And I fill in "feedback_comment" with "buy rolex plz"

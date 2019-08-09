@@ -20,12 +20,6 @@ describe FeedbackController do
   end
 
   describe "POST create" do
-    around do |example|
-      InvisibleCaptcha.setup { |config| config.timestamp_enabled = false }
-      example.run
-      InvisibleCaptcha.setup { |config| config.timestamp_enabled = true }
-    end
-
     let(:valid_params) do
       { feedback: { comment: "Cool site", name: "Batiatus" }, format: :json }
     end
