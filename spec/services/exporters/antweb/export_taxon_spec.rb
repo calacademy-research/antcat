@@ -182,7 +182,6 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     # So that AntWeb knows when to use parentheses around authorship.
-    # NOTE: This and `was original combination` have been mixed up, but it's been like that forever.
     describe "[14]: `original combination`" do
       specify do
         taxon = create :genus, :original_combination
@@ -194,7 +193,6 @@ describe Exporters::Antweb::ExportTaxon do
       end
     end
 
-    # NOTE: See above.
     describe "[15]: `was original combination`" do
       context "when there was no recombining" do
         specify { expect(export_taxon(taxon)[15]).to eq nil }
@@ -388,9 +386,7 @@ describe Exporters::Antweb::ExportTaxon do
         expect(export_taxon(taxon)[23]).to eq subfamily.name_cache
       end
 
-      it "skips over subgenus and return the genus", :pending do
-        skip "broke a long time ago"
-
+      it "skips over subgenus parents" do
         taxon = create :species, genus: genus, subgenus: subgenus
         expect(export_taxon(taxon)[23]).to eq genus.name_cache
       end

@@ -138,7 +138,9 @@ module Exporters
         end
 
         def current_valid_parent
-          taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
+          return unless taxon.parent
+          parent = taxon.parent.is_a?(Subgenus) ? taxon.parent.parent : taxon.parent
+          parent.current_valid_taxon || parent
         end
     end
   end
