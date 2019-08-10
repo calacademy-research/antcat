@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe Exporters::Antweb::ExportTaxon do
-  def export_taxon taxon
-    described_class[taxon]
-  end
-
   describe "HEADER" do
     it "is the same as the code" do
       expected = "antcat id\t" +
@@ -39,7 +35,7 @@ describe Exporters::Antweb::ExportTaxon do
     describe "[0]: `antcat_id`" do
       let(:taxon) { create :family }
 
-      specify { expect(export_taxon(taxon)[0]).to eq taxon.id }
+      specify { expect(described_class[taxon][0]).to eq taxon.id }
     end
 
     describe "[1-6]: `subfamily`, ``tribe, `genus`, `subgenus`, `species` and `subspecies`" do
@@ -47,35 +43,35 @@ describe Exporters::Antweb::ExportTaxon do
       let(:tribe) { create :tribe, subfamily: subfamily }
 
       it "can export a subfamily" do
-        expect(export_taxon(subfamily)[1..6]).to eq [
+        expect(described_class[subfamily][1..6]).to eq [
           subfamily.name_cache, nil, nil, nil, nil, nil
         ]
       end
 
       it "can export a genus" do
         genus = create :genus, subfamily: subfamily, tribe: tribe
-        expect(export_taxon(genus)[1..6]).to eq [
+        expect(described_class[genus][1..6]).to eq [
           subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, nil, nil
         ]
       end
 
       it "can export a genus without a tribe" do
         genus = create :genus, subfamily: subfamily, tribe: nil
-        expect(export_taxon(genus)[1..6]).to eq [
+        expect(described_class[genus][1..6]).to eq [
           subfamily.name_cache, nil, genus.name_cache, nil, nil, nil
         ]
       end
 
       it "can export a genus without a subfamily as being in 'incertae_sedis'" do
         genus = create :genus, tribe: nil, subfamily: nil
-        expect(export_taxon(genus)[1..6]).to eq [
+        expect(described_class[genus][1..6]).to eq [
           'incertae_sedis', nil, genus.name_cache, nil, nil, nil
         ]
       end
 
       it "can export a Subgenus" do
         taxon = create :subgenus, name_string: 'Atta (Boyo)'
-        expect(export_taxon(taxon)[4]).to eq 'Boyo'
+        expect(described_class[taxon][4]).to eq 'Boyo'
       end
 
       describe "Exporting species" do
@@ -83,7 +79,7 @@ describe Exporters::Antweb::ExportTaxon do
           genus = create :genus, tribe: tribe
           species = create :species, name_string: 'Atta robustus', genus: genus
 
-          expect(export_taxon(species)[1..6]).to eq [
+          expect(described_class[species][1..6]).to eq [
             subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', nil
           ]
         end
@@ -92,7 +88,7 @@ describe Exporters::Antweb::ExportTaxon do
           genus = create :genus, subfamily: subfamily, tribe: nil
           species = create :species, name_string: 'Atta robustus', genus: genus
 
-          expect(export_taxon(species)[1..6]).to eq [
+          expect(described_class[species][1..6]).to eq [
             subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', nil
           ]
         end
@@ -101,7 +97,7 @@ describe Exporters::Antweb::ExportTaxon do
           genus = create :genus, subfamily: nil, tribe: nil
           species = create :species, name_string: 'Atta robustus', genus: genus
 
-          expect(export_taxon(species)[1..6]).to eq [
+          expect(described_class[species][1..6]).to eq [
             'incertae_sedis', nil, genus.name_cache, nil, 'robustus', nil
           ]
         end
@@ -113,7 +109,7 @@ describe Exporters::Antweb::ExportTaxon do
           species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
           subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
 
-          expect(export_taxon(subspecies)[1..6]).to eq [
+          expect(described_class[subspecies][1..6]).to eq [
             subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
@@ -123,7 +119,7 @@ describe Exporters::Antweb::ExportTaxon do
           species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
           subspecies = create :subspecies, name_string: 'Atta robustus emeryii', genus: genus, species: species
 
-          expect(export_taxon(subspecies)[1..6]).to eq [
+          expect(described_class[subspecies][1..6]).to eq [
             subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
@@ -133,7 +129,7 @@ describe Exporters::Antweb::ExportTaxon do
           species = create :species, name_string: 'Atta robustus', subfamily: nil, genus: genus
           subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
 
-          expect(export_taxon(subspecies)[1..6]).to eq [
+          expect(described_class[subspecies][1..6]).to eq [
             'incertae_sedis', nil, genus.name_cache, nil, 'robustus', 'emeryii'
           ]
         end
@@ -145,7 +141,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       specify do
         reference = taxon.authorship_reference
-        expect(export_taxon(taxon)[8]).
+        expect(described_class[taxon][8]).
           to eq %(<span title="#{reference.decorate.plain_text}">#{reference.keey}</span>)
       end
     end
@@ -153,20 +149,20 @@ describe Exporters::Antweb::ExportTaxon do
     describe "[11]: `status`" do
       let(:taxon) { create :family }
 
-      specify { expect(export_taxon(taxon)[11]).to eq taxon.status }
+      specify { expect(described_class[taxon][11]).to eq taxon.status }
     end
 
     describe "[12]: `available`" do
       context "when taxon is valid" do
         let(:taxon) { create :family }
 
-        specify { expect(export_taxon(taxon)[12]).to eq 'TRUE' }
+        specify { expect(described_class[taxon][12]).to eq 'TRUE' }
       end
 
       context "when taxon is not valid" do
         let(:taxon) { create :family, :synonym }
 
-        specify { expect(export_taxon(taxon)[12]).to eq 'FALSE' }
+        specify { expect(described_class[taxon][12]).to eq 'FALSE' }
       end
     end
 
@@ -174,7 +170,7 @@ describe Exporters::Antweb::ExportTaxon do
       context "when taxon dhas no `current_valid_taxon`" do
         let(:taxon) { create :genus }
 
-        specify { expect(export_taxon(taxon)[13]).to eq nil }
+        specify { expect(described_class[taxon][13]).to eq nil }
       end
 
       context "when taxon has a `current_valid_taxon`" do
@@ -182,7 +178,7 @@ describe Exporters::Antweb::ExportTaxon do
         let(:taxon) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
 
         it "exports the current valid name of the taxon" do
-          expect(export_taxon(taxon)[13]).to eq "#{taxon.subfamily.name.name} #{current_valid_taxon.name.name}"
+          expect(described_class[taxon][13]).to eq "#{taxon.subfamily.name.name} #{current_valid_taxon.name.name}"
         end
       end
     end
@@ -191,12 +187,12 @@ describe Exporters::Antweb::ExportTaxon do
     describe "[14]: `original combination`" do
       specify do
         taxon = create :genus, :original_combination
-        expect(export_taxon(taxon)[14]).to eq 'TRUE'
+        expect(described_class[taxon][14]).to eq 'TRUE'
       end
 
       specify do
         taxon = create :genus
-        expect(export_taxon(taxon)[14]).to eq 'FALSE'
+        expect(described_class[taxon][14]).to eq 'FALSE'
       end
     end
 
@@ -204,7 +200,7 @@ describe Exporters::Antweb::ExportTaxon do
       context "when there was no recombining" do
         let(:taxon) { create :family }
 
-        specify { expect(export_taxon(taxon)[15]).to eq nil }
+        specify { expect(described_class[taxon][15]).to eq nil }
       end
 
       context "when there has been some recombining" do
@@ -219,7 +215,7 @@ describe Exporters::Antweb::ExportTaxon do
         end
 
         it "is the protonym" do
-          expect(export_taxon(recombination)[15]).to eq original_combination.name.name
+          expect(described_class[recombination][15]).to eq original_combination.name.name
         end
       end
     end
@@ -228,13 +224,13 @@ describe Exporters::Antweb::ExportTaxon do
       context "when taxon is not fossil" do
         let(:taxon) { create :family }
 
-        specify { expect(export_taxon(taxon)[16]).to eq 'FALSE' }
+        specify { expect(described_class[taxon][16]).to eq 'FALSE' }
       end
 
       context "when taxon is fossil" do
         let(:taxon) { create :family, :fossil }
 
-        specify { expect(export_taxon(taxon)[16]).to eq 'TRUE' }
+        specify { expect(described_class[taxon][16]).to eq 'TRUE' }
       end
     end
 
@@ -246,7 +242,7 @@ describe Exporters::Antweb::ExportTaxon do
         expected =
           %{<div><span class="caption">Tribe of #{subfamily.name_cache}</span>: } +
           %{<a href="http://www.antcat.org/catalog/#{tribe.id}">#{tribe.name_cache}</a></div>}
-        expect(export_taxon(subfamily)[17]).to include(expected)
+        expect(described_class[subfamily][17]).to include(expected)
       end
     end
 
@@ -338,7 +334,7 @@ describe Exporters::Antweb::ExportTaxon do
           %(</div>)
         # rubocop:enable Layout/MultilineOperationIndentation
 
-        expect(export_taxon(genus)[17]).to eq expected
+        expect(described_class[genus][17]).to eq expected
       end
     end
 
@@ -346,7 +342,7 @@ describe Exporters::Antweb::ExportTaxon do
       let(:taxon) { create :family }
 
       it "sends the protonym's reference ID" do
-        expect(export_taxon(taxon)[18]).to eq taxon.authorship_reference.id
+        expect(described_class[taxon][18]).to eq taxon.authorship_reference.id
       end
     end
 
@@ -354,23 +350,19 @@ describe Exporters::Antweb::ExportTaxon do
       let!(:protonym) { create :protonym, biogeographic_region: 'Neotropic' }
       let!(:taxon) { create :species, protonym: protonym }
 
-      specify { expect(export_taxon(taxon)[19]).to eq 'Neotropic' }
+      specify { expect(described_class[taxon][19]).to eq 'Neotropic' }
     end
 
     describe "[20]: `country`" do
       let!(:taxon) { create :genus, protonym: create(:protonym, locality: 'Canada') }
 
-      specify { expect(export_taxon(taxon)[20]).to eq 'Canada' }
+      specify { expect(described_class[taxon][20]).to eq 'Canada' }
     end
 
     describe "[21]: `current valid rank`" do
-      it "sends the right value for each class" do
-        expect(export_taxon(create(:subfamily))[21]).to eq 'Subfamily'
-        expect(export_taxon(create(:genus))[21]).to eq 'Genus'
-        expect(export_taxon(create(:subgenus))[21]).to eq 'Subgenus'
-        expect(export_taxon(create(:species))[21]).to eq 'Species'
-        expect(export_taxon(create(:subspecies))[21]).to eq 'Subspecies'
-      end
+      let(:taxon) { create :subfamily }
+
+      specify { expect(described_class[taxon][21]).to eq 'Subfamily' }
     end
 
     describe "[23]: `current valid parent`" do
@@ -381,32 +373,32 @@ describe Exporters::Antweb::ExportTaxon do
       let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
 
       it "doesn't punt on a subfamily's family" do
-        expect(export_taxon(subfamily)[23]).to eq 'Formicidae'
+        expect(described_class[subfamily][23]).to eq 'Formicidae'
       end
 
       it "handles a taxon's subfamily" do
         taxon = create :tribe, subfamily: subfamily
-        expect(export_taxon(taxon)[23]).to eq subfamily.name_cache
+        expect(described_class[taxon][23]).to eq subfamily.name_cache
       end
 
       it "doesn't skip over tribe and return the subfamily" do
         taxon = create :genus, tribe: tribe
-        expect(export_taxon(taxon)[23]).to eq tribe.name_cache
+        expect(described_class[taxon][23]).to eq tribe.name_cache
       end
 
       it "returns the subfamily only if there's no tribe" do
         taxon = create :genus, subfamily: subfamily, tribe: nil
-        expect(export_taxon(taxon)[23]).to eq subfamily.name_cache
+        expect(described_class[taxon][23]).to eq subfamily.name_cache
       end
 
       it "skips over subgenus parents" do
         taxon = create :species, genus: genus, subgenus: subgenus
-        expect(export_taxon(taxon)[23]).to eq genus.name_cache
+        expect(described_class[taxon][23]).to eq genus.name_cache
       end
 
       it "handles a taxon's species" do
         taxon = create :subspecies, species: species
-        expect(export_taxon(taxon)[23]).to eq 'Atta betta'
+        expect(described_class[taxon][23]).to eq 'Atta betta'
       end
 
       it "handles a synonym" do
@@ -414,12 +406,12 @@ describe Exporters::Antweb::ExportTaxon do
         junior = create :genus, :synonym, current_valid_taxon: senior
         taxon = create :species, genus: junior
 
-        expect(export_taxon(taxon)[23]).to eq senior.name_cache
+        expect(described_class[taxon][23]).to eq senior.name_cache
       end
 
       it "handles a genus without a subfamily" do
         taxon = create :genus, tribe: nil, subfamily: nil
-        expect(export_taxon(taxon)[23]).to eq 'Formicidae'
+        expect(described_class[taxon][23]).to eq 'Formicidae'
       end
     end
   end
