@@ -18,6 +18,9 @@ Rails:
 Rails/BulkChangeTable:
   Enabled: false
 
+Rails/Delegate:
+  Enabled: false
+
 Rails/DynamicFindBy:
   Whitelist: find_by_sql
 

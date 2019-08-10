@@ -20,24 +20,24 @@ module TaxonBrowser
             ["#{name_html} genera without tribe", taxon.genera_without_tribe]
 
           when ALL_GENERA_IN_FAMILY, ALL_GENERA_IN_SUBFAMILY
-            ["All #{name_html} genera", taxon.all_displayable_genera]
+            ["All #{name_html} genera", taxon.genera]
 
           when ALL_TAXA_IN_GENUS
-            ["All #{name_html} taxa", taxon.displayable_child_taxa]
+            ["All #{name_html} taxa", taxon.child_taxa]
 
           # Special case because subgenera are outside of the "main progression".
           when SUBGENERA_IN_GENUS # The catalog page in this case will be that of a genus.
-            ["#{name_html} subgenera", taxon.displayable_subgenera]
+            ["#{name_html} subgenera", taxon.subgenera]
 
           when SUBGENERA_IN_PARENT_GENUS # Like above, but for subgenus catalog pages.
-            ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.displayable_subgenera]
+            ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.subgenera]
 
           # Special case because subtribes are outside of the "main progression".
           when SUBTRIBES_IN_TRIBE # The catalog page in this case will be that of a tribe.
-            ["#{name_html} subtribes", taxon.displayable_subtribes]
+            ["#{name_html} subtribes", taxon.subtribes]
 
           when SUBTRIBES_IN_PARENT_TRIBE # Like above, but for subtribe catalog pages.
-            ["#{taxon.tribe.name_with_fossil} subtribes", taxon.tribe.displayable_subtribes]
+            ["#{taxon.tribe.name_with_fossil} subtribes", taxon.tribe.subtribes]
 
           else
             raise "Unknown display option '#{display}' for <#{taxon.type} id: #{taxon.id}>"

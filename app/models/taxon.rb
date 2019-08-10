@@ -49,7 +49,6 @@ class Taxon < ApplicationRecord
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
   has_one :taxon_state
 
-  scope :displayable, -> { where.not(status: Status::UNDISPLAYABLE) }
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }

@@ -18,14 +18,10 @@ class Family < Taxon
     "subfamilies"
   end
 
-  def all_displayable_genera
-    Genus.displayable
-  end
-
   # TODO: See https://github.com/calacademy-research/antcat/issues/453
   # See also `ChildList` and `Subfamily`.
   def genera_incertae_sedis_in
-    Genus.where(incertae_sedis_in: 'family').displayable
+    Genus.where(incertae_sedis_in: 'family')
   end
 
   def subfamilies

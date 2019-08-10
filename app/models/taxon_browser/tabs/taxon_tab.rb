@@ -12,7 +12,7 @@ module TaxonBrowser
 
       def initialize tab_taxon, taxon_browser
         @tab_taxon = tab_taxon
-        super tab_taxon.children.displayable, taxon_browser
+        super tab_taxon.children, taxon_browser
       end
 
       def id
