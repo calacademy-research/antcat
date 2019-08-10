@@ -63,7 +63,7 @@ class UsersController < ApplicationController
     end
 
     def user_scope
-      return User.all if user_is_superadmin?
+      return User.all if user_is_editor?
       User.active
     end
 end
