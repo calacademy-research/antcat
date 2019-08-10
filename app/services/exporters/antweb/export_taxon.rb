@@ -45,7 +45,6 @@ module Exporters
 
         def export_taxon
           authorship_reference = taxon.authorship_reference
-          parent = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
 
           attributes = {
             antcat_id:              taxon.id,
@@ -64,7 +63,7 @@ module Exporters
             locality:               taxon.protonym.locality,
             rank:                   taxon.class.to_s,
             hol_id:                 taxon.hol_id,
-            parent:                 parent&.name&.name || 'Formicidae'
+            current_valid_parent:   current_valid_parent&.name&.name || 'Formicidae'
           }
 
           attributes[:current_valid_name] = taxon.current_valid_taxon&.name&.name
@@ -106,7 +105,7 @@ module Exporters
             values[:locality],
             values[:rank],
             values[:hol_id],
-            values[:parent]
+            values[:current_valid_parent]
           ]
         end
 
@@ -137,6 +136,10 @@ module Exporters
             content << Exporters::Antweb::ExportChildList[taxon]
             content << Exporters::Antweb::ExportReferenceSections[taxon]
           end
+        end
+
+        def current_valid_parent
+          taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
         end
     end
   end
