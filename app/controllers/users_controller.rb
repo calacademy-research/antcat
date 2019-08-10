@@ -59,11 +59,11 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:name, :email, :password, :superadmin, :editor, :helper, :locked)
+      params.require(:user).permit(:name, :email, :password, :superadmin, :editor, :helper, :locked, :hidden)
     end
 
     def user_scope
       return User.all if user_is_editor?
-      User.active
+      User.active.non_hidden
     end
 end

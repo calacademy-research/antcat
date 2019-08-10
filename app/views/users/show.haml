@@ -15,6 +15,8 @@
   .callout.alert This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
 -elsif @user.locked?
   .callout.alert This user is locked. Edit user to unlock account.
+-elsif @user.hidden?
+  .callout.alert This user is hidden from the users list. Edit user to show it.
 
 %p
   %strong Name:
@@ -25,6 +27,8 @@
       %span.warning-label.rounded-badge locked
     -if @user.deleted?
       %span.warning-label.rounded-badge soft-deleted
+    -if @user.hidden?
+      %span.warning-label.rounded-badge hidden
 
 %p
   %strong Email:
