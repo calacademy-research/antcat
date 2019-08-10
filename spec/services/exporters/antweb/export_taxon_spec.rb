@@ -36,9 +36,9 @@ describe Exporters::Antweb::ExportTaxon do
   end
 
   describe "#call" do
-    let(:taxon) { create :family }
-
     describe "[0]: `antcat_id`" do
+      let(:taxon) { create :family }
+
       specify { expect(export_taxon(taxon)[0]).to eq taxon.id }
     end
 
@@ -141,6 +141,8 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[8]: `author date html`" do
+      let(:taxon) { create :family }
+
       specify do
         reference = taxon.authorship_reference
         expect(export_taxon(taxon)[8]).
@@ -149,11 +151,15 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[11]: `status`" do
+      let(:taxon) { create :family }
+
       specify { expect(export_taxon(taxon)[11]).to eq taxon.status }
     end
 
     describe "[12]: `available`" do
       context "when taxon is valid" do
+        let(:taxon) { create :family }
+
         specify { expect(export_taxon(taxon)[12]).to eq 'TRUE' }
       end
 
@@ -189,12 +195,15 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       specify do
+        taxon = create :genus
         expect(export_taxon(taxon)[14]).to eq 'FALSE'
       end
     end
 
     describe "[15]: `was original combination`" do
       context "when there was no recombining" do
+        let(:taxon) { create :family }
+
         specify { expect(export_taxon(taxon)[15]).to eq nil }
       end
 
@@ -217,6 +226,8 @@ describe Exporters::Antweb::ExportTaxon do
 
     describe "[16]: `fossil`" do
       context "when taxon is not fossil" do
+        let(:taxon) { create :family }
+
         specify { expect(export_taxon(taxon)[16]).to eq 'FALSE' }
       end
 
@@ -332,6 +343,8 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[18]: `reference id`" do
+      let(:taxon) { create :family }
+
       it "sends the protonym's reference ID" do
         expect(export_taxon(taxon)[18]).to eq taxon.authorship_reference.id
       end
