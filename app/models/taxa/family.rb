@@ -21,7 +21,7 @@ class Family < Taxon
   # TODO: See https://github.com/calacademy-research/antcat/issues/453
   # See also `ChildList` and `Subfamily`.
   def genera_incertae_sedis_in
-    Genus.where(incertae_sedis_in: 'family')
+    Genus.where(incertae_sedis_in: INCERTAE_SEDIS_IN_FAMILY)
   end
 
   def subfamilies

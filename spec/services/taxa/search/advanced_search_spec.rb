@@ -124,7 +124,7 @@ describe Taxa::Search::AdvancedSearch do
     end
 
     describe "searching by `incertae_sedis_in`" do
-      let!(:taxon) { create :species, incertae_sedis_in: 'family' }
+      let!(:taxon) { create :species, :incertae_sedis_in_family }
 
       before do
         create :species

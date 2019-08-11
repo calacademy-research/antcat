@@ -98,7 +98,7 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is incertae sedis" do
-      let(:taxon) { build_stubbed :genus, incertae_sedis_in: 'family' }
+      let(:taxon) { build_stubbed :genus, :incertae_sedis_in_family }
 
       specify do
         expect(described_class[taxon]).to eq '<i>incertae sedis</i> in family, valid'

@@ -10,7 +10,12 @@ class Taxon < ApplicationRecord
   ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
-  INCERTAE_SEDIS_IN_RANKS = %w[family subfamily tribe genus]
+  INCERTAE_SEDIS_IN_RANKS = [
+    INCERTAE_SEDIS_IN_FAMILY = 'family',
+    INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
+    'tribe',
+    'genus'
+  ]
 
   class TaxonExists < StandardError; end
 
