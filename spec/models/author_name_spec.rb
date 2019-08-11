@@ -68,7 +68,7 @@ describe AuthorName do
     it "invalidates caches for its references" do
       References::Cache::Regenerate[reference]
 
-      expect { reference.save! }.to change { reference.reload.plain_text_cache }.to(nil)
+      expect { author_name.save! }.to change { reference.reload.plain_text_cache }.to(nil)
     end
   end
 end
