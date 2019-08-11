@@ -10,6 +10,7 @@ class Taxon < ApplicationRecord
   ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
+  INCERTAE_SEDIS_IN_RANKS = %w[family subfamily tribe genus]
 
   class TaxonExists < StandardError; end
 
@@ -48,6 +49,8 @@ class Taxon < ApplicationRecord
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
   has_one :taxon_state
+
+  validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
 
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }

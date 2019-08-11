@@ -49,7 +49,7 @@
     .medium-2.columns.end
       %em Incertae sedis
       in
-      =select_tag :incertae_sedis_in, options_for_select(Taxa::CallbacksAndValidations::INCERTAE_SEDIS_IN_RANKS, params[:incertae_sedis_in]), include_blank: true
+      =select_tag :incertae_sedis_in, options_for_select(Taxon::INCERTAE_SEDIS_IN_RANKS, params[:incertae_sedis_in]), include_blank: true
 
   .row
     .medium-3.columns
