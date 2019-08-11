@@ -32,12 +32,6 @@ module HtmlSelectorsHelpers
     when /the feed/
       'table.activities'
 
-    # Test pages.
-    when /the name field/
-      '#test_name_field .display'
-    when /the new_or_homonym name field/
-      '#test_new_or_homonym_name_field .display'
-
     when /the left side of the diff/
       all(".callout .diff")[0]
     when /the right side of the diff/

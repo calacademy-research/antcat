@@ -1,9 +1,9 @@
 class AdvancedSearchPresenter
   class Text < AdvancedSearchPresenter
     def format taxon
-      string = convert_to_text(format_name(taxon))
-      status = format_status_reference(taxon).html_safe
-      string << convert_to_text(' ' + status) if status.present?
+      string = format_name(taxon).html_safe
+      string << ' '
+      string << convert_to_text(format_status_reference(taxon).html_safe)
       type_localities = format_type_localities(taxon)
       string << convert_to_text(' ' + type_localities) if type_localities.present?
       string << "\n"

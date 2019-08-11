@@ -8,7 +8,7 @@
 %table.stack
   %tbody
   -@users.each do |user|
-    %tr{style: ('background-color: #fce6e2' if (user.locked? || user.deleted? || user.hidden?))}
+    %tr{class: ('pale-alert-background' if (user.locked? || user.deleted? || user.hidden?))}
       %td=user.decorate.user_page_link
       %td
         =user.decorate.user_badge

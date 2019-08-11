@@ -15,8 +15,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def when
-    sometime = helpers.time_ago_in_words activity.created_at
-    "#{sometime} ago"
+    helpers.time_ago_in_words(activity.created_at) + ' ago'
   end
 
   def anchor_path
