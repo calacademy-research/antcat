@@ -27,6 +27,18 @@ class AdvancedSearchPresenter
         string
       end
 
+      def format_type_localities taxon
+        string = ''
+        if taxon.protonym.locality
+          string << add_period_if_necessary(taxon.protonym.locality)
+        end
+        if taxon.protonym.biogeographic_region
+          string << ' ' << taxon.protonym.biogeographic_region
+          string = add_period_if_necessary string
+        end
+        string
+      end
+
       def italicize string
         string
       end

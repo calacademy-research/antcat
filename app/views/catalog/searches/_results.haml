@@ -18,7 +18,9 @@
         %td=presenter.format_name taxon
         %td=presenter.format_status_reference taxon
         %td=taxon.authorship_reference.decorate.expandable_reference
-        %td=or_dash presenter.format_type_localities(taxon)
+        %td
+          =taxon.protonym.decorate.format_locality
+          =add_period_if_necessary(taxon.protonym.biogeographic_region)
         %td=or_dash taxon.protonym.authorship.forms
         %td=link_to taxon.protonym.decorate.format_name, taxon.protonym
 
