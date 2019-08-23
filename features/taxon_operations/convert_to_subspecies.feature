@@ -41,7 +41,7 @@ Feature: Converting a species to a subspecies
     And I follow "Convert to subspecies"
     And I set the new species field to "Camponotus alii"
     And I press "Convert"
-    Then I should see "This species has subspecies of its own"
+    Then I should see "Species with subspecies of its own cannot be converted to subspecies"
 
   Scenario: Leaving the species blank
     Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
