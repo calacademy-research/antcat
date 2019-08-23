@@ -24,14 +24,10 @@ Rails/Delegate:
 Rails/DynamicFindBy:
   Whitelist: find_by_sql
 
-Rails/FilePath:
-  Enabled: false
-
 # TODO: We want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# TODO: Investigate if this would be useful.
 Rails/InverseOf:
   Enabled: false
 
