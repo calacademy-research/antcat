@@ -126,4 +126,4 @@ Feature: Adding a taxon successfully
 
     When I go to the catalog page for "Formicinae"
     And I follow "Formicinae tribes"
-    Then I should see "Tribe of Formicinae: Dorylini"
+    Then I should see "Tribes of Formicinae: Dorylini"

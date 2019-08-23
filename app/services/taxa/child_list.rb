@@ -60,9 +60,9 @@ module Taxa
         label << 'Hong (2002) ' if label_options[:hong]
 
         label << if label_options[:collective_group_names]
-                   "collective group name".pluralize(children.size).humanize
+                   "Collective group names"
                  else
-                   children.first.rank.pluralize(children.size).titleize
+                   children.first.rank.pluralize.titleize
                  end
 
         if show_extinct_or_extant

@@ -11,8 +11,8 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[family]).to eq(
             [
-              { label: "Subfamily of Formicidae", children: [Subfamily.first] },
-              { label: "Genus <i>incertae sedis</i> in Formicidae", children: [taxon] }
+              { label: "Subfamilies of Formicidae", children: [Subfamily.first] },
+              { label: "Genera <i>incertae sedis</i> in Formicidae", children: [taxon] }
             ]
           )
         end
@@ -29,8 +29,8 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Tribe (extant) of #{subfamily.name_cache}", children: [taxon] },
-              { label: "Tribe (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
+              { label: "Tribes (extant) of #{subfamily.name_cache}", children: [taxon] },
+              { label: "Tribes (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
             ]
           )
         end
@@ -42,7 +42,7 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Genus <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
+              { label: "Genera <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
             ]
           )
         end
@@ -54,7 +54,7 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Collective group name in #{subfamily.name_cache}", children: [taxon] }
+              { label: "Collective group names in #{subfamily.name_cache}", children: [taxon] }
             ]
           )
         end

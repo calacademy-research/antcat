@@ -10,7 +10,7 @@ Feature: Using the catalog
 
   Scenario: Going to the main page
     Then I should see "Formicidae"
-    And I should see "Subfamily of Formicidae: Dolichoderinae"
+    And I should see "Subfamilies of Formicidae: Dolichoderinae"
 
   Scenario: Selecting a subfamily
     When I follow "Dolichoderinae" in the taxon browser
