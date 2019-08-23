@@ -20,7 +20,6 @@ class ReferenceForm
       Reference.transaction do
         clear_document_params_if_necessary
         set_pagination
-        clear_nesting_reference_id unless reference.is_a? ::NestedReference
         parse_author_names_string
         set_journal if reference.is_a? ::ArticleReference
         set_publisher if reference.is_a? ::BookReference
@@ -102,10 +101,6 @@ class ReferenceForm
       else
         params[:publisher] = publisher
       end
-    end
-
-    def clear_nesting_reference_id
-      params[:nesting_reference_id] = nil
     end
 
     def clear_document_params_if_necessary
