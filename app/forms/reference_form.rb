@@ -116,7 +116,7 @@ class ReferenceForm
       duplicate = Reference.find(duplicates.first[:match].id)
       reference.errors.add :base, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
-        To save, click "Save Anyway"
+        To save, click "Save".
       MSG
       true
     end
