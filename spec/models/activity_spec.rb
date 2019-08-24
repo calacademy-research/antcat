@@ -7,7 +7,7 @@ describe Activity do
 
   describe ".create_for_trackable" do
     it "creates activities" do
-      expect { described_class.create_for_trackable(nil, :custom) }.
+      expect { described_class.create_for_trackable(nil, :execute_script) }.
         to change { described_class.count }.by 1
     end
   end
