@@ -8,9 +8,8 @@ module Taxa
     end
 
     def show
-      unless @to_taxon
-        redirect_to({ action: :new }, alert: "Target must be specified.")
-      end
+      return if @to_taxon
+      redirect_to({ action: :new }, alert: "Target must be specified.")
     end
 
     def create

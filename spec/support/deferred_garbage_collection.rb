@@ -9,12 +9,12 @@ class DeferredGarbageCollection
   end
 
   def self.reconsider
-    if DEFERRED_GC_THRESHOLD > 0 && Time.now - @@last_gc_run >= DEFERRED_GC_THRESHOLD
-      GC.enable
-      GC.start
-      GC.disable
-      @@last_gc_run = Time.now # rubocop:disable Style/ClassVars
-    end
+    return unless DEFERRED_GC_THRESHOLD > 0 && Time.now - @@last_gc_run >= DEFERRED_GC_THRESHOLD
+
+    GC.enable
+    GC.start
+    GC.disable
+    @@last_gc_run = Time.now # rubocop:disable Style/ClassVars
   end
 end
 # rubocop:enable Rails/TimeZone

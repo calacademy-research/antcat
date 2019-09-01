@@ -137,9 +137,6 @@ Style/DoubleNegation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/GuardClause:
-  Enabled: false
-
 Style/FrozenStringLiteralComment:
   Enabled: false
 

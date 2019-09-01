@@ -119,11 +119,10 @@ class Name < ApplicationRecord
 
     def ensure_no_spaces_in_single_word_names
       return unless single_word_name?
+      return unless name.include?(" ")
 
-      if name.include?(" ")
-        errors.add :name, "of type #{type} may not contain spaces"
-        throw :abort
-      end
+      errors.add :name, "of type #{type} may not contain spaces"
+      throw :abort
     end
 
     def ensure_starts_with_upper_case_letter
