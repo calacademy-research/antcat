@@ -89,9 +89,6 @@ Naming/AccessorMethodName:
 FactoryBot/CreateList:
   Enabled: false
 
-RSpec/AnyInstance:
-  Enabled: false
-
 RSpec/EmptyExampleGroup:
   Enabled: false
 
