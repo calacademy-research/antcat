@@ -55,9 +55,9 @@ class Reference < ApplicationRecord
     text    :author_names_string
     text    :citation_year
     text    :title
-    text    :journal_name do journal.name if journal end
-    text    :publisher_name do publisher.name if publisher end
-    text    :year_as_string do year.to_s if year end
+    text    :journal_name do journal&.name end
+    text    :publisher_name do publisher&.name end
+    text    :year_as_string do year&.to_s end
     text    :citation
     text    :editor_notes
     text    :public_notes

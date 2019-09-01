@@ -22,6 +22,6 @@ class SpeciesGroupTaxon < Taxon
   private
 
     def set_subfamily
-      self.subfamily = genus.subfamily if genus && genus.subfamily
+      self.subfamily = genus.subfamily if genus&.subfamily
     end
 end

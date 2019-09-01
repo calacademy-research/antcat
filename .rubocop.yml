@@ -164,9 +164,6 @@ Style/PerlBackrefs:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/SafeNavigation:
-  Enabled: false
-
 Style/StringLiterals:
   Enabled: false
 
