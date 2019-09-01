@@ -170,9 +170,6 @@ Style/NumericLiterals:
 Style/NumericPredicate:
   Enabled: false
 
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
 Style/PerlBackrefs:
   Enabled: false
 
