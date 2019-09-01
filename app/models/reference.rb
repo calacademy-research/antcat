@@ -50,23 +50,23 @@ class Reference < ApplicationRecord
   trackable parameters: proc { { name: keey } }
 
   searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
-    string  :type
-    integer :year
-    text    :author_names_string
-    text    :citation_year
-    text    :title
-    text    :journal_name do journal&.name end
-    text    :publisher_name do publisher&.name end
-    text    :year_as_string do year&.to_s end
-    text    :citation
-    text    :editor_notes
-    text    :public_notes
-    text    :taxonomic_notes
-    text    :bolton_key
-    text    :authors_for_keey do authors_for_keey end # To find "et al".
-    string  :citation_year
-    string  :doi
-    string  :author_names_string
+    string(:type)
+    integer(:year)
+    text(:author_names_string)
+    text(:citation_year)
+    text(:title)
+    text(:journal_name) { journal&.name }
+    text(:publisher_name) { publisher&.name }
+    text(:year_as_string) { year&.to_s }
+    text(:citation)
+    text(:editor_notes)
+    text(:public_notes)
+    text(:taxonomic_notes)
+    text(:bolton_key)
+    text(:authors_for_keey) { authors_for_keey } # To find "et al".
+    string(:citation_year)
+    string(:doi)
+    string(:author_names_string)
   end
 
   workflow_column :review_state
