@@ -119,7 +119,7 @@ class Reference < ApplicationRecord
   end
 
   def authors_for_keey
-    names = author_names.map &:last_name
+    names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]'
     when 1 then "#{names.first}"

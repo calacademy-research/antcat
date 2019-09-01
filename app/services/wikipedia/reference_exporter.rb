@@ -42,7 +42,7 @@ module Wikipedia
       end
 
       def reference_name
-        names = reference.author_names.map &:last_name
+        names = reference.author_names.map(&:last_name)
         ref_names =
           case names.size
           when 1 then "#{names.first}"

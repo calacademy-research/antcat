@@ -16,6 +16,6 @@ class Journal < ApplicationRecord
   }
 
   def invalidate_reference_caches!
-    references.find_each &:invalidate_caches
+    references.find_each(&:invalidate_caches)
   end
 end

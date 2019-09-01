@@ -4,7 +4,7 @@ def resize_window_to_device device
          when :tablet then  [960, 640]
          when :desktop then [1024, 768]
          end
-  resize_window *size
+  resize_window(*size)
 end
 
 # From http://railsware.com/blog/2015/02/11/responsive-layout-tests-with-capybara-and-rspec/

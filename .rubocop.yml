@@ -74,9 +74,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
 
-Lint/AmbiguousOperator:
-  Enabled: false
-
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 

@@ -22,6 +22,6 @@ module HasWhereFilters
   private
 
     def filter_params
-      params.slice *filters.keys
+      params.slice(*filters.keys)
     end
 end

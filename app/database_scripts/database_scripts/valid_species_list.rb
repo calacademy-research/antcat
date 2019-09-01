@@ -22,7 +22,7 @@ module DatabaseScripts
 
     def to_html
       as_table do |t|
-        t.header *HEADERS
+        t.header(*HEADERS)
 
         # Limited to 1 for performance reasons, just to show an example.
         t.rows(cached_results.limit(1)) do |taxon|
@@ -44,7 +44,7 @@ module DatabaseScripts
 
     def to_csv
       as_csv do |c|
-        c.header *HEADERS
+        c.header(*HEADERS)
 
         c.rows do |taxon|
           [
