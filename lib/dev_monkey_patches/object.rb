@@ -39,7 +39,7 @@ module DevMonkeyPatches
     %w[green red blue yellow].each do |color|
       method = "ddp#{color.to_s.first}".to_sym
       define_method method do |string|
-        $stdout.puts "#{string}".send color
+        $stdout.puts string.to_s.public_send color
       end
     end
 

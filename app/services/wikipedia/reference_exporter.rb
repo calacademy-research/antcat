@@ -45,7 +45,7 @@ module Wikipedia
         names = reference.author_names.map(&:last_name)
         ref_names =
           case names.size
-          when 1 then "#{names.first}"
+          when 1 then names.first.to_s
           when 2 then "#{names.first}_&_#{names.second}"
           else        "#{names.first}_et_al"
           end

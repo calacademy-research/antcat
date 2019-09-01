@@ -24,8 +24,8 @@ class NotificationDecorator < Draper::Decorator
 
     def item_link_label item
       case item
-      when Issue      then "#{item.title}"
-      when SiteNotice then "#{item.title}"
+      when Issue      then item.title.to_s
+      when SiteNotice then item.title.to_s
       when Feedback   then "##{item.id}"
       end
     end

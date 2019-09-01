@@ -167,9 +167,6 @@ Style/StringLiterals:
 Style/SymbolArray:
   Enabled: false
 
-Style/UnneededInterpolation:
-  Enabled: false
-
 Style/WordArray:
   Enabled: false
 

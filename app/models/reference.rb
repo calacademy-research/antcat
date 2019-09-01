@@ -122,7 +122,7 @@ class Reference < ApplicationRecord
     names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]'
-    when 1 then "#{names.first}"
+    when 1 then names.first.to_s
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"
     end.html_safe
