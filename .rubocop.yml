@@ -161,19 +161,10 @@ Style/IfUnlessModifier:
 Style/Lambda:
   Enabled: false
 
-Style/LineEndConcatenation:
-  Enabled: false
-
 Style/MethodDefParentheses:
   Enabled: false
 
-Style/MultilineBlockChain:
-  Enabled: false
-
 Style/MutableConstant:
-  Enabled: false
-
-Style/IfInsideElse:
   Enabled: false
 
 Style/NumericLiterals:

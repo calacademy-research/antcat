@@ -3,29 +3,29 @@ require 'spec_helper'
 describe Exporters::Antweb::ExportTaxon do
   describe "HEADER" do
     it "is the same as the code" do
-      expected = "antcat id\t" +
-        "subfamily\t" +
-        "tribe\t" +
-        "genus\t" +
-        "subgenus\t" +
-        "species\t" +
-        "subspecies\t" +
-        "author date\t" +
-        "author date html\t" +
-        "authors\t" +
-        "year\t" +
-        "status\t" +
-        "available\t" +
-        "current valid name\t" +
-        "original combination\t" +
-        "was original combination\t" +
-        "fossil\t" +
-        "taxonomic history html\t" +
-        "reference id\t" +
-        "bioregion\t" +
-        "country\t" +
-        "current valid rank\t" +
-        "hol id\t" +
+      expected = "antcat id\t" \
+        "subfamily\t" \
+        "tribe\t" \
+        "genus\t" \
+        "subgenus\t" \
+        "species\t" \
+        "subspecies\t" \
+        "author date\t" \
+        "author date html\t" \
+        "authors\t" \
+        "year\t" \
+        "status\t" \
+        "available\t" \
+        "current valid name\t" \
+        "original combination\t" \
+        "was original combination\t" \
+        "fossil\t" \
+        "taxonomic history html\t" \
+        "reference id\t" \
+        "bioregion\t" \
+        "country\t" \
+        "current valid rank\t" \
+        "hol id\t" \
         "current valid parent"
       expect(described_class::HEADER).to eq expected
     end

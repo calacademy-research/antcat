@@ -28,10 +28,8 @@ class TaxonForm
 
         if params[:protonym_id].present?
           params.delete :protonym_attributes
-        else
-          if protonym_name_string
-            taxon.protonym.name = Names::BuildNameFromString[protonym_name_string]
-          end
+        elsif protonym_name_string
+          taxon.protonym.name = Names::BuildNameFromString[protonym_name_string]
         end
 
         taxon.attributes = params

@@ -35,7 +35,7 @@ module Wikipedia
         authors = ''
         reference.author_names.each.with_index(1) do |name, index|
           authors <<
-            "|first#{index}=#{name.first_name_and_initials} " <<
+            "|first#{index}=#{name.first_name_and_initials} " \
             "|last#{index}=#{name.last_name} "
         end
         authors

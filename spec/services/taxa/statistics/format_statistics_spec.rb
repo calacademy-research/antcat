@@ -23,7 +23,7 @@ describe Taxa::Statistics::FormatStatistics do
 
       it "handles both extant and fossil statistics" do
         expect(described_class[statistics]).
-          to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' +
+          to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' \
           '<p>Fossil: 2 valid subfamilies</p>'
       end
     end
@@ -69,8 +69,7 @@ describe Taxa::Statistics::FormatStatistics do
       statistics = {
         extant: { genera: { 'valid' => 1 } }
       }
-      expect(described_class[statistics]).
-        to eq '<p>Extant: 1 valid genus</p>'
+      expect(described_class[statistics]).to eq '<p>Extant: 1 valid genus</p>'
     end
 
     it "formats a genus's statistics correctly" do
