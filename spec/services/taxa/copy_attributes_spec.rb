@@ -5,7 +5,7 @@ describe Taxa::CopyAttributes do
     let!(:taxon) { build_stubbed :species }
 
     it "returns a hash with the copied attriutes" do
-      expect(described_class[taxon]).to eq({
+      expect(described_class[taxon]).to eq(
         "fossil" => taxon.fossil,
         "status" => taxon.status,
         "homonym_replaced_by_id" => taxon.homonym_replaced_by_id,
@@ -19,7 +19,7 @@ describe Taxa::CopyAttributes do
         "ichnotaxon" => taxon.ichnotaxon,
         "nomen_nudum" => taxon.nomen_nudum,
         "type_taxon_id" => taxon.type_taxon_id
-      })
+      )
     end
   end
 end

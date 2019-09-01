@@ -125,9 +125,6 @@ Style/Attr:
 Style/BlockDelimiters:
   Enabled: false
 
-Style/BracesAroundHashParameters:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: true
 
