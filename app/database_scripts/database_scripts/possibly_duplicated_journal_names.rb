@@ -7,7 +7,7 @@ module DatabaseScripts
     def results
       # Build list of all journal names as strings.
       # Similar names are be converted back to journal objects in `#render`.
-      @journal_names = Journal.pluck :name
+      @journal_names = Journal.pluck(:name)
 
       @results = []
       while @journal_names.present?
@@ -22,12 +22,13 @@ module DatabaseScripts
         t.header :journal_1, :journal_2
 
         t.rows do |first, second|
-          [ link_to_journal(first), link_to_journal(second) ]
+          [link_to_journal(first), link_to_journal(second)]
         end
       end
     end
 
     private
+
       def check_similarity first
         @journal_names.each do |second|
           next unless distance(first, second) > MIN_DISTANCE
@@ -54,6 +55,8 @@ module DatabaseScripts
       # The key is the name of a journal for which we want to exclude false
       # positives. Note that the values are arrays, but they kept on the same
       # to make the list more readable.
+      # rubocop:disable Layout/IndentFirstArrayElement
+      # rubocop:disable Layout/MultilineArrayBraceLayout
       def false_positives
         @false_positives ||= {
           "Acta Entomologica Chilena" => [
@@ -186,9 +189,11 @@ module DatabaseScripts
           "Zeitschrift für Angewandte Zoologie"],
 
           "Zoologische Jahrbücher. Abteilung für Systematik, Geographie und Biologie der Tiere" => [
-          "Zoologische Jahrbücher. Abteilung für Systematik, Ökologie und Geographie der Tiere"],
+          "Zoologische Jahrbücher. Abteilung für Systematik, Ökologie und Geographie der Tiere"]
         }
       end
+      # rubocop:enable Layout/MultilineArrayBraceLayout
+      # rubocop:enable Layout/IndentFirstArrayElement
 
       def link_to_journal journal_name
         journal = Journal.find_by(name: journal_name)

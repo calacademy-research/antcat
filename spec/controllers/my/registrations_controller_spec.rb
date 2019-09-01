@@ -7,7 +7,7 @@ describe My::RegistrationsController do
   #   2) You are testing a Devise controller bypassing the router.
   #      If so, you can explicitly tell Devise which mapping to use ...
   before do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
+    request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
   describe "POST create" do

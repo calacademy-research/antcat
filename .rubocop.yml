@@ -9,7 +9,6 @@ AllCops:
     - 'db/schema.rb'
     - 'bin/**/*'
     - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
-    - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'vendor/**/*'
 
 Rails:
@@ -103,9 +102,6 @@ RSpec/ExpectChange:
   EnforcedStyle: block
 
 RSpec/ExpectInHook:
-  Enabled: false
-
-RSpec/InstanceVariable:
   Enabled: false
 
 RSpec/LetSetup:
