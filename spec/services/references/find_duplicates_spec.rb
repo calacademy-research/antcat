@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable RSpec/ExpectInHook
 describe References::FindDuplicates do
   let(:reference_similarity) { double }
 
@@ -44,3 +45,4 @@ describe References::FindDuplicates do
     end
   end
 end
+# rubocop:enable RSpec/ExpectInHook

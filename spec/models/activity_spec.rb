@@ -20,7 +20,9 @@ describe Activity do
     let!(:activity_5)  { create :activity }
 
     before do
+      # rubocop:disable RSpec/ExpectInHook
       expect(described_class).to receive(:per_page).at_least(:once).and_return(2)
+      # rubocop:enable RSpec/ExpectInHook
     end
 
     context 'when not using filters' do

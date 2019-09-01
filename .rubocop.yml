@@ -98,9 +98,6 @@ RSpec/ExampleLength:
 RSpec/ExpectChange:
   EnforcedStyle: block
 
-RSpec/ExpectInHook:
-  Enabled: false
-
 RSpec/MessageSpies:
   Enabled: false
 

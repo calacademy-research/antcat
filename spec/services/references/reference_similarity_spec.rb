@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+# rubocop:disable RSpec/ExpectInHook
 describe References::ReferenceSimilarity do
   context "when type mismatch" do
     let(:lhs) { ArticleReference.new title: 'Ants', year: '1975' }
@@ -287,3 +288,4 @@ describe References::ReferenceSimilarity do
     end
   end
 end
+# rubocop:enable RSpec/ExpectInHook
