@@ -41,7 +41,7 @@ class Name < ApplicationRecord
   scope :orphaned, -> { Name.left_outer_joins(:taxa, :protonyms).where("protonyms.id IS NULL AND taxa.id IS NULL") }
   scope :not_orphaned, -> { Name.where.not(id: orphaned.select(:id)) } # `Taxon.count + Protonym.count`
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 

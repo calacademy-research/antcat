@@ -16,7 +16,7 @@ class ReferenceDocument < ApplicationRecord
     s3_protocol: 'http'
   before_post_process :transliterate_file_name
   do_not_validate_attachment_file_type :pdf
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
 
   def pdf
     true

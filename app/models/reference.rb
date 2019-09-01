@@ -43,7 +43,7 @@ class Reference < ApplicationRecord
 
   accepts_nested_attributes_for :document, reject_if: :all_blank
   delegate :url, :downloadable?, to: :document, allow_nil: true
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
     :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
