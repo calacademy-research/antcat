@@ -15,8 +15,12 @@ describe Taxa::CheckIfInDatabaseResults do
   end
 
   describe '#call' do
-    context 'when taxon is a species in a fossil genus' do
-      let(:taxon) { create :species, genus: create(:genus, :fossil) }
+    context 'when taxon is an extant species in a fossil genus' do
+      let!(:taxon) { create :species, genus: create(:genus, :fossil) }
+
+      specify do
+        expect { taxon.update!(fossil: true) }.to change { described_class[taxon].size }.by(-1)
+      end
 
       specify do
         warning = described_class[taxon].first

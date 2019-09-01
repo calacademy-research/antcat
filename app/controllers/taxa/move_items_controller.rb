@@ -43,7 +43,7 @@ module Taxa
       end
 
       def history_items
-        TaxonHistoryItem.where(id: params[:history_item_ids])
+        @history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids])
       end
 
       def create_activity(parameters)
