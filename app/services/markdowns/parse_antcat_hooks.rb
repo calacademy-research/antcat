@@ -48,12 +48,12 @@ module Markdowns
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(TAXON_TAG_REGEX) do
-          taxon = taxa[$~[:id].to_i]
+          taxon = taxa[$LAST_MATCH_INFO[:id].to_i]
 
           if taxon
             taxon.link_to_taxon
           else
-            broken_markdown_link "taxon", $~[:id]
+            broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
           end
         end
       end
@@ -69,7 +69,7 @@ module Markdowns
         refs = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(REFERENCE_TAG_REGEX) do
-          id = $~[:id]
+          id = $LAST_MATCH_INFO[:id]
           begin
             refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
           rescue ActiveRecord::RecordNotFound

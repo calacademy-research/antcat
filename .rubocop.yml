@@ -182,9 +182,6 @@ Style/RegexpLiteral:
 Style/SafeNavigation:
   Enabled: false
 
-Style/SpecialGlobalVars:
-  Enabled: false
-
 Style/StringLiterals:
   Enabled: false
 

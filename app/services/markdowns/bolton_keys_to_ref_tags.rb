@@ -17,7 +17,7 @@ module Markdowns
       def replace_with_ref_tags
         split_by_semicolon.map do |part|
           part.gsub(/(?<bolton_key>.*?):/) do
-            reference = find_reference $~[:bolton_key]
+            reference = find_reference $LAST_MATCH_INFO[:bolton_key]
             if reference
               "{ref #{reference.id}}:"
             else
