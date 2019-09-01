@@ -119,6 +119,7 @@ describe References::Search::Fulltext, :search do
     specify do
       expect(described_class[reference_type: :unknown]).to eq [unknown]
       expect(described_class[reference_type: :nomissing]).to match_array [unknown, nested, article]
+      expect(described_class[reference_type: :missing]).to eq [missing]
       expect(described_class[reference_type: :nested]).to eq [nested]
     end
   end

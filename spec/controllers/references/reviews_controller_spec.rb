@@ -19,9 +19,10 @@ describe References::ReviewsController do
   end
 
   describe 'PUT approve_all' do
-    before { sign_in create(:user, :superadmin, :editor) }
-
-    let!(:reference) { create :article_reference, review_state: 'none' }
+    before do
+      sign_in create(:user, :superadmin, :editor)
+      create :article_reference, review_state: 'none'
+    end
 
     it 'approves all references' do
       expect { put :approve_all }.to change { Reference.unreviewed.count }.from(1).to(0)

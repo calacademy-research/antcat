@@ -78,7 +78,10 @@ describe User do
 
   describe "#mark_unseen_notifications_as_seen" do
     let!(:user) { create :user }
-    let!(:notification) { create :notification, :unread, user: user }
+
+    before do
+      create :notification, :unread, user: user
+    end
 
     specify do
       expect { user.mark_unseen_notifications_as_seen }.

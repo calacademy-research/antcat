@@ -9,10 +9,13 @@ describe Types::ExpandInstitutionAbbreviations do
     end
 
     context 'when there are institutions in the database' do
-      let!(:casc) { create :institution, :casc }
-      let!(:casc_expanded) { "<abbr title='California Academy of Sciences'>CASC</abbr>" }
+      before do
+        create :institution, :casc
+      end
 
       it 'expands institution abbreviations' do
+        casc_expanded = "<abbr title='California Academy of Sciences'>CASC</abbr>"
+
         expect(described_class['CASC']).to eq casc_expanded
         expect(described_class['CASC CASC']).to eq "#{casc_expanded} #{casc_expanded}"
         expect(described_class['one (CASC) three']).to eq "one (#{casc_expanded}) three"
@@ -31,7 +34,7 @@ describe Types::ExpandInstitutionAbbreviations do
       end
 
       context 'when institution name contains apostrophes' do
-        let!(:mh) { create :institution, abbreviation: 'MH', name: "Musee d'Histoire" }
+        before { create :institution, abbreviation: 'MH', name: "Musee d'Histoire" }
 
         it 'escapes the expansion with HTML entities' do
           expect(described_class['MH']).to eq "<abbr title='Musee d&#39;Histoire'>MH</abbr>"

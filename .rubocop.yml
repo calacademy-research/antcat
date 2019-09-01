@@ -104,9 +104,6 @@ RSpec/ExpectChange:
 RSpec/ExpectInHook:
   Enabled: false
 
-RSpec/LetSetup:
-  Enabled: false
-
 RSpec/MessageSpies:
   Enabled: false
 

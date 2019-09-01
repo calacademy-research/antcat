@@ -38,11 +38,11 @@ describe My::RegistrationsController do
     end
 
     context "when the New contributors' help page exists" do
-      let!(:wiki_page) { create :wiki_page, id: 1 }
+      let!(:wiki_page) { create :wiki_page, :new_contributors_help_page }
 
       it 'redirects to it' do
         post(:create, params: { user: user_params })
-        expect(response).to redirect_to '/wiki_pages/1'
+        expect(response).to redirect_to "/wiki_pages/#{wiki_page.id}"
       end
     end
 

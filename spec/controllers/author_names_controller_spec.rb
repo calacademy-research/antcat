@@ -50,9 +50,15 @@ describe AuthorNamesController do
   describe 'DELETE destroy' do
     let!(:author) { create :author }
     let!(:author_name) { create :author_name, author: author }
-    let!(:second_author_name) { create :author_name, author: author }
 
-    before { sign_in create(:user, :editor, :superadmin) }
+    before do
+      sign_in create(:user, :editor, :superadmin)
+      create :author_name, author: author # Ensure author still has at least one name.
+    end
+
+    it 'deletes the author name' do
+      expect { delete(:destroy, params: { id: author_name.id }) }.to change { AuthorName.count }.by(-1)
+    end
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: author_name.id }) }.to change { Activity.count }.by(1)

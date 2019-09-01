@@ -20,7 +20,10 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching for taxa with history items" do
       let!(:with_history) { create :family, :with_history_item }
-      let!(:without_history) { create :family }
+
+      before do
+        create :family # Without history.
+      end
 
       specify do
         expect(described_class[type: 'Family', must_have_history_items: true]).to match_array [with_history]
@@ -29,11 +32,12 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by year" do
       let!(:subfamily) { create :subfamily }
-      let!(:another_subfamily) { create :subfamily }
 
       before do
         reference = create :reference, citation_year: '1977'
         subfamily.protonym.authorship.update!(reference: reference)
+
+        create :subfamily # Another subfamily.
       end
 
       specify do
@@ -138,12 +142,15 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching for locality" do
       let!(:indonesia) { create :protonym, locality: 'Indonesia (Bhutan)' }
-      let!(:china) { create :protonym, locality: 'China' }
-      let!(:atta) { create :genus, protonym: indonesia }
-      let!(:eciton) { create :genus, protonym: china }
+      let!(:taxon) { create :genus, protonym: indonesia }
+
+      before do
+        china = create :protonym, locality: 'China'
+        create :genus, protonym: china
+      end
 
       it "only returns taxa with that locality" do
-        expect(described_class[locality: 'Indonesia']).to eq [atta]
+        expect(described_class[locality: 'Indonesia']).to eq [taxon]
       end
     end
 
