@@ -1,7 +1,12 @@
 require 'spec_helper'
 
 describe Subfamily do
-  let(:subfamily) { create :subfamily }
+  describe 'relations' do
+    it { is_expected.to have_many(:tribes).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:genera).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
+  end
 
   describe "#update_parent" do
     specify do
@@ -10,6 +15,7 @@ describe Subfamily do
   end
 
   it "can have tribes, which are its children" do
+    subfamily = create :subfamily
     tribe = create :tribe, subfamily: subfamily
     other_tribe = create :tribe, subfamily: subfamily
 

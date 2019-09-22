@@ -1,5 +1,5 @@
 class Species < SpeciesGroupTaxon
-  has_many :subspecies
+  has_many :subspecies, dependent: :restrict_with_error
 
   def parent
     subgenus || genus

@@ -6,6 +6,12 @@ describe Tribe do
 
   it { is_expected.to validate_presence_of :subfamily }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:subtribes).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:genera).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
+  end
+
   it "can have genera, which are its children" do
     genus = create :genus, tribe: tribe
     another_genus = create :genus, tribe: tribe
