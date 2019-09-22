@@ -2,20 +2,18 @@ require 'spec_helper'
 
 describe Api::V1::NamesController do
   describe "GET index" do
-    before do
-      create :family
-    end
-
+    let!(:family_name) { create :family_name }
     let!(:species_name) { create :species_name }
 
-    it "gets all author names keys" do
+    it "gets all names keys" do
       get :index
 
-      expect(response.body.to_s).to include "Atta"
-      expect(json_response.count).to eq 3 # TODO.
+      expect(response.body.to_s).to include family_name.name
+      expect(response.body.to_s).to include species_name.name
+      expect(json_response.count).to eq 2
     end
 
-    it "gets all author names keys (starts_at)" do
+    it "gets all names keys (starts_at)" do
       get :index, params: { starts_at: species_name.id }
 
       expect(json_response[0]['species_name']['id']).to eq species_name.id

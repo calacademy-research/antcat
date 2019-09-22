@@ -8,7 +8,7 @@ describe Api::V1::ProtonymsController do
     end
 
     it "gets all protonyms" do
-      expect(json_response.count).to eq 1 # TODO.
+      expect(json_response.count).to eq 1
     end
 
     specify { expect(response).to have_http_status :ok }
