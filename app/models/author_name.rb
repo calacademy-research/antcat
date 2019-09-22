@@ -3,7 +3,7 @@ class AuthorName < ApplicationRecord
 
   belongs_to :author
 
-  has_many :reference_author_names
+  has_many :reference_author_names, dependent: :restrict_with_error
   has_many :references, through: :reference_author_names, dependent: :restrict_with_error
 
   validates :author, :name, presence: true

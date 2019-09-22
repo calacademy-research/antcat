@@ -7,6 +7,7 @@ describe AuthorName do
   it { is_expected.to validate_uniqueness_of :name }
 
   describe 'relations' do
+    it { is_expected.to have_many(:reference_author_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
   end
 
