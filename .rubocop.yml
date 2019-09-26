@@ -95,7 +95,7 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/NestedGroups:
-  Enabled: false
+  Max: 5
 
 RSpec/NotToNot:
   Enabled: false
