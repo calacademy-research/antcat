@@ -73,9 +73,6 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
-Performance/RedundantBlockCall:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Enabled: false
 
