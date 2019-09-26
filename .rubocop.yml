@@ -118,6 +118,9 @@ Style/ClassAndModuleChildren:
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
+Style/CollectionMethods:
+  Enabled: true
+
 Style/Documentation:
   Enabled: false
 
