@@ -77,7 +77,7 @@ Naming/AccessorMethodName:
   Enabled: false
 
 FactoryBot/CreateList:
-  Enabled: false
+  EnforcedStyle: n_times
 
 RSpec/EmptyExampleGroup:
   Enabled: false
