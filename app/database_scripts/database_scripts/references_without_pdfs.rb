@@ -24,7 +24,7 @@ description: >
   Issues: %github387, %github324, %github371
 
 tags: [slow]
-topic_areas: [references]
+topic_areas: [pdfs]
 related_scripts:
   - ReferencesWithoutPdfs
   - ProtonymReferencesWithoutPdfs
