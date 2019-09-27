@@ -4,7 +4,10 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
-.row.margin-bottom
+=content_for :breadcrumbs_right do
+  =link_to "Hide/show help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "help" }
+
+.row.margin-bottom{data: { show_hide_toggable_id: "help" }}
   .small-12.medium-9.columns.end
     .callout.primary
       %p
