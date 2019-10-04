@@ -1,9 +1,10 @@
 class TaxonForm
-  def initialize taxon, taxon_params, taxon_name_string: nil, protonym_name_string: nil
+  def initialize taxon, taxon_params, taxon_name_string: nil, protonym_name_string: nil, user:
     @taxon = taxon
     @params = taxon_params
     @taxon_name_string = taxon_name_string
     @protonym_name_string = protonym_name_string
+    @user = user
   end
 
   def save
@@ -12,7 +13,7 @@ class TaxonForm
 
   private
 
-    attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string
+    attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string, :user
 
     def save_taxon
       taxon.save_initiator = true
@@ -46,11 +47,11 @@ class TaxonForm
 
     def save_and_create_change!
       if taxon.new_record?
-        change = UndoTracker.setup_change taxon, :create
+        change = UndoTracker.setup_change taxon, :create, user: user
         taxon.save!
         change.update(taxon: taxon)
       else
-        UndoTracker.setup_change taxon, :update
+        UndoTracker.setup_change taxon, :update, user: user
         taxon.save!
       end
     end

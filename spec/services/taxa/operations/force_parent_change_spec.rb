@@ -1,23 +1,21 @@
 require 'spec_helper'
 
 describe Taxa::Operations::ForceParentChange do
-  before do
-    fake_current_user
-  end
-
   describe "#call" do
+    let(:user) { create :user }
+
     context "when there is no name collision" do
       let!(:old_species) { create :species }
       let!(:subspecies) { create :subspecies, species: old_species }
       let!(:new_parent) { create :species }
 
       it "updates the parent of the taxon" do
-        expect { described_class[subspecies, new_parent] }.
+        expect { described_class[subspecies, new_parent, user: user] }.
           to change { subspecies.reload.species }.from(old_species).to(new_parent)
       end
 
       it "creates a change" do
-        expect { described_class[subspecies, new_parent] }.
+        expect { described_class[subspecies, new_parent, user: user] }.
           to change { Change.where(taxon: subspecies).count }.by(1)
       end
     end
@@ -31,7 +29,7 @@ describe Taxa::Operations::ForceParentChange do
       end
 
       it "raises" do
-        expect { described_class[subspecies, new_parent] }.to raise_error Taxon::TaxonExists
+        expect { described_class[subspecies, new_parent, user: user] }.to raise_error Taxon::TaxonExists
       end
     end
   end
