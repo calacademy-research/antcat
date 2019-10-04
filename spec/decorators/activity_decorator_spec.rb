@@ -77,9 +77,9 @@ describe ActivityDecorator do
     end
 
     context 'when there is no trackable' do
-      context 'when action is `execute_script`' do
-        let!(:user) { create :user }
+      let(:user) { build_stubbed :user }
 
+      context 'when action is `execute_script`' do
         specify do
           activity = Activity.execute_script_activity(user, "an edit summary")
           expect(activity.decorate.did_something.squish).to eq "executed a script"
@@ -88,7 +88,7 @@ describe ActivityDecorator do
 
       context 'when action is `approve_all_changes`' do
         specify do
-          activity = Activity.create_without_trackable :approve_all_changes, parameters: { count: 1 }
+          activity = Activity.create_without_trackable :approve_all_changes, user, parameters: { count: 1 }
           expect(activity.decorate.did_something.squish).
             to eq "approved all unreviewed catalog changes (1 in total)."
         end
@@ -96,7 +96,7 @@ describe ActivityDecorator do
 
       context 'when action is `approve_all_changes`' do
         specify do
-          activity = Activity.create_without_trackable :approve_all_references, parameters: { count: 1 }
+          activity = Activity.create_without_trackable :approve_all_references, user, parameters: { count: 1 }
           expect(activity.decorate.did_something.squish).
             to eq "approved all unreviewed references (1 in total)."
         end

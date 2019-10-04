@@ -23,7 +23,7 @@ class ChangesController < ApplicationController
   def approve_all
     count = TaxonState.waiting.count
     Change.approve_all current_user
-    Activity.create_without_trackable :approve_all_changes, parameters: { count: count }
+    Activity.create_without_trackable :approve_all_changes, current_user, parameters: { count: count }
 
     redirect_to changes_path, notice: "Approved all changes."
   end

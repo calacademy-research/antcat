@@ -31,7 +31,7 @@ module References
         reference.update!(review_state: "reviewed")
       end
 
-      Activity.create_without_trackable :approve_all_references, parameters: { count: count }
+      Activity.create_without_trackable :approve_all_references, current_user, parameters: { count: count }
       redirect_to references_latest_changes_path, notice: "Approved all references."
     end
 
