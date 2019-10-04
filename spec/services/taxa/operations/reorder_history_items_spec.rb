@@ -3,49 +3,53 @@ require "spec_helper"
 describe Taxa::Operations::ReorderHistoryItems do
   describe "#call" do
     let(:taxon) { create :family }
+    let(:original_order) { item_ids taxon }
     let!(:first) { taxon.history_items.create!(taxt: "A") }
     let!(:second) { taxon.history_items.create!(taxt: "B") }
     let!(:third) { taxon.history_items.create!(taxt: "C") }
 
-    def item_ids_to_s taxon
-      taxon.history_items.pluck(:id).map(&:to_s)
-    end
-
-    it "*test setup*" do
-      expected = [first.id, second.id, third.id].map(&:to_s)
-      expect(item_ids_to_s(taxon)).to eq expected
+    def item_ids taxon
+      taxon.history_items.pluck(:id)
     end
 
     context "when valid and different" do
+      let(:reordered_ids) { [second.id, third.id, first.id] }
+
+      it 'returns true' do
+        expect(described_class[taxon, reordered_ids]).to eq true
+      end
+
       it "updates the positions" do
-        reordered_ids = [second.id, third.id, first.id].map(&:to_s)
-        expect(item_ids_to_s(taxon)).not_to eq reordered_ids
-
-        described_class[taxon, reordered_ids]
-
-        expect(item_ids_to_s(taxon)).to eq reordered_ids
+        expect { described_class[taxon, reordered_ids] }.
+          to change { item_ids(taxon) }.from(original_order).to(reordered_ids)
       end
     end
 
     context "when valid but not different" do
+      let(:reordered_ids) { [first.id, second.id, third.id] }
+
       it "doesn't update the positions" do
-        reordered_ids = [first.id, second.id, third.id].map(&:to_s)
+        expect { described_class[taxon, reordered_ids] }.
+          to_not change { item_ids(taxon) }.from(original_order)
+      end
 
-        described_class[taxon, reordered_ids]
-
-        error_message = taxon.errors.messages[:history_items]
-        expect(error_message).to include(/already ordered like this/)
+      it 'adds an error to the taxon' do
+        expect(described_class[taxon, reordered_ids]).to eq false
+        expect(taxon.errors.messages[:history_items]).to include(/already ordered like this/)
       end
     end
 
     context "when reordered ids are invalid" do
+      let(:reordered_ids) { [second.id, third.id, 9999999] }
+
       it "doesn't update the positions" do
-        reordered_ids = [second.id, third.id, 9999999].map(&:to_s)
+        expect { described_class[taxon, reordered_ids] }.
+          to_not change { item_ids(taxon) }.from(original_order)
+      end
 
-        described_class[taxon, reordered_ids]
-
-        error_message = taxon.errors.messages[:history_items]
-        expect(error_message).to include(/doesn't match current IDs/)
+      it 'adds an error to the taxon' do
+        expect(described_class[taxon, reordered_ids]).to eq false
+        expect(taxon.errors.messages[:history_items]).to include(/doesn't match current IDs/)
       end
     end
   end

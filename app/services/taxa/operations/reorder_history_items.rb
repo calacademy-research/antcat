@@ -19,7 +19,7 @@ module Taxa
         delegate :history_items, :create_activity, :errors, to: :taxon
 
         def reorder_history_items reordered_ids
-          return unless reordered_ids_valid? reordered_ids
+          return false unless reordered_ids_valid? reordered_ids
 
           previous_ids = history_items.pluck :id
 
