@@ -2,35 +2,38 @@ require "spec_helper"
 
 describe Authors::FindOrCreateNamesFromString do
   describe "#call" do
-    it "finds or creates authors with names in the string" do
-      AuthorName.create! name: 'Bolton, B.', author: Author.create!
-      author_names = described_class['Ward, P.S.; Bolton, B.']
-      expect(author_names.first.name).to eq 'Ward, P.S.'
-      expect(author_names.second.name).to eq 'Bolton, B.'
-      expect(AuthorName.count).to eq 2
+    describe 're-using and creating names' do
+      let!(:bolton) { AuthorName.create!(name: 'Bolton, B.', author: Author.create!) }
+
+      it "finds or creates authors with names in the string" do
+        expect { described_class['Ward, P.S.; Bolton, B.'] }.
+          to change { AuthorName.count }.by(1)
+
+        author_names = described_class['Ward, P.S.; Bolton, B.']
+        expect(author_names.map(&:name)).to eq ['Ward, P.S.', 'Bolton, B.']
+        expect(author_names.second.author).to eq bolton.author
+      end
     end
 
-    it "returns the authors suffix" do
-      author_names = described_class['Ward, P.S.; Bolton, B. (eds.)']
-      expect(author_names.first.name).to eq 'Ward, P.S.'
-      expect(author_names.second.name).to eq 'Bolton, B.'
+    context 'when there are suffixes' do
+      it "ignores them" do
+        author_names = described_class['Bolton, B. (eds.)']
+        expect(author_names.map(&:name)).to eq ['Bolton, B.']
+      end
     end
 
-    it "handles 'the Andres'" do
-      author_names = described_class['Andre, Edm.; Andre, Ern.']
-      expect(author_names.first.name).to eq 'Andre, Edm.'
-      expect(author_names.second.name).to eq 'Andre, Ern.'
+    context 'when input is invalid' do
+      it "returns an empty array" do
+        author_names = described_class[' ; ']
+        expect(author_names).to eq []
+      end
     end
 
-    it "handles invalid input" do
-      author_names = described_class[' ; ']
-      expect(author_names).to eq []
-    end
-
-    it "handles a semicolon followed by a space at the end" do
-      author_names = described_class['Ward, P. S.; ']
-      expect(author_names.size).to eq 1
-      expect(author_names.first.name).to eq 'Ward, P. S.'
+    context 'when the last semicolon is followed by a space' do
+      it "ignores it" do
+        author_names = described_class['Ward, P. S.; ']
+        expect(author_names.map(&:name)).to eq ["Ward, P. S."]
+      end
     end
   end
 end
