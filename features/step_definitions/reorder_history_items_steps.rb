@@ -1,8 +1,8 @@
 Given('there is a genus Orderia with the history items "AAA", "BBB" and "CCC"') do
   taxon = create :genus, name_string: "Orderia"
-  taxon.history_items.create! taxt: "AAA"
-  taxon.history_items.create! taxt: "BBB"
-  taxon.history_items.create! taxt: "CCC"
+  taxon.history_items.create!(taxt: "AAA")
+  taxon.history_items.create!(taxt: "BBB")
+  taxon.history_items.create!(taxt: "CCC")
 end
 
 When("I drag the AAA history item a bit") do

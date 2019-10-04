@@ -40,11 +40,13 @@ end
 
 Given("the following entry nests it") do |table|
   data = table.hashes.first
-  NestedReference.create! title: data[:title],
+  NestedReference.create!(
+    title: data[:title],
     author_names: [create(:author_name, name: data[:author])],
     citation_year: data[:citation_year],
     pages_in: data[:pages_in],
     nesting_reference: Reference.last
+  )
 end
 
 Given("a Hölldobler-Fisher reference exists with the title {string}") do |title|

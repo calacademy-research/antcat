@@ -1,8 +1,10 @@
 Given("I have an(other) unseen notification") do
-  Notification.create! reason: :mentioned_in_thing,
+  Notification.create!(
+    reason: :mentioned_in_thing,
     attached: create(:issue),
     user: User.find_by(name: "Archibald"),
     notifier: create(:user)
+  )
 end
 
 Then(/^I should (?:only see|see) (\d+) notifications?(?: in total)?$/) do |expected_count|
