@@ -26,6 +26,9 @@ description: >
 tags: [slow]
 topic_areas: [pdfs]
 related_scripts:
-  - ReferencesWithoutPdfs
+  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
+  - ReferencesWithBlankPdfUrlsAndFilenames
+  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
+  - ReferencesWithUndownloadablePdfs
