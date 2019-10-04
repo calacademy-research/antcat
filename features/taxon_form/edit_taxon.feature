@@ -12,8 +12,9 @@ Feature: Editing a taxon
 
     When I go to the edit page for "Eciton"
     And I pick "Formica" from the protonym selector
-    And WAIT
-    And I press "Save"
+    Then I should see "Formica"
+
+    When I press "Save"
     Then I should see "Formica" in the headline
     And I should see "page 9 (dealate queen)" in the headline
 
@@ -23,11 +24,13 @@ Feature: Editing a taxon
     And there is a species "Eciton minor"
 
     When I go to the catalog page for "Atta"
-    Then I should not see "Type-speciesr"
+    Then I should not see "Type-species"
 
     When I follow "Edit"
     And I set the type name to "Eciton minor"
-    And I press "Save"
+    Then I should see "Eciton minor"
+
+    When I press "Save"
     Then I should see "Type-species: Eciton minor"
 
   @javascript
@@ -40,7 +43,9 @@ Feature: Editing a taxon
 
     When I follow "Edit"
     And I set the current valid taxon name to "Eciton minor"
-    And I press "Save"
+    Then I should see "Eciton minor"
+
+    When I press "Save"
     Then I should see "synonym of current valid taxon Eciton minor"
 
   Scenario: Changing incertae sedis (with edit summary)
