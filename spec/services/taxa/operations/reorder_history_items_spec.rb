@@ -23,6 +23,25 @@ describe Taxa::Operations::ReorderHistoryItems do
         expect { described_class[taxon, reordered_ids] }.
           to change { item_ids(taxon) }.from(original_order).to(reordered_ids)
       end
+
+      context 'when a history item cannot be saved due to validations' do
+        let(:reordered_ids) { [second.id, third.id, first.id] }
+
+        before do
+          third.update_columns(taxt: '') # rubocop:disable Rails/SkipsModelValidations
+        end
+
+        it "doesn't update the positions" do
+          expect(third.valid?).to eq false
+          expect { described_class[taxon, reordered_ids] }.
+            to_not change { item_ids(taxon) }.from(original_order)
+        end
+
+        it 'adds an error to the taxon' do
+          expect(described_class[taxon, reordered_ids]).to eq false
+          expect(taxon.errors.messages[:history_items]).to include(/are not valid, please fix them first/)
+        end
+      end
     end
 
     context "when valid but not different" do

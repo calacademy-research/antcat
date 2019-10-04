@@ -23,15 +23,20 @@ module Taxa
 
           previous_ids = history_items.pluck :id
 
-          reordered_ids.each_with_index do |id, index|
-            item = TaxonHistoryItem.find(id)
-            item.update(position: (index + 1))
+          taxon.transaction do
+            reordered_ids.each_with_index do |id, index|
+              item = TaxonHistoryItem.find(id)
+              item.update!(position: (index + 1))
+            end
           end
 
           create_activity :reorder_taxon_history_items,
             parameters: { previous_ids: previous_ids, reordered_ids: history_items.pluck(:id) }
 
           true
+        rescue ActiveRecord::RecordInvalid
+          errors.add :history_items, "History items are not valid, please fix them first"
+          false
         end
 
         def reordered_ids_valid? reordered_ids_strings
