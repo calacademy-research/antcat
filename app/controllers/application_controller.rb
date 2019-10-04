@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_action :save_location, :set_user_for_feed
+  before_action :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit
 
@@ -44,10 +44,6 @@ class ApplicationController < ActionController::Base
     def save_location
       return if request.xhr? || request.url =~ %r{/users/}
       session[:user_return_to] = request.url
-    end
-
-    def set_user_for_feed
-      User.current = current_user
     end
 
     def cors_set_access_control_headers
