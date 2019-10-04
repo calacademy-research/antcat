@@ -21,7 +21,7 @@ class WikiPagesController < ApplicationController
     @wiki_page = WikiPage.new(wiki_page_params)
 
     if @wiki_page.save
-      @wiki_page.create_activity :create, edit_summary: params[:edit_summary]
+      @wiki_page.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to @wiki_page, notice: "Successfully created wiki page."
     else
       render :new
@@ -30,7 +30,7 @@ class WikiPagesController < ApplicationController
 
   def update
     if @wiki_page.update(wiki_page_params)
-      @wiki_page.create_activity :update, edit_summary: params[:edit_summary]
+      @wiki_page.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @wiki_page, notice: "Successfully updated wiki page."
     else
       render :edit
@@ -39,7 +39,7 @@ class WikiPagesController < ApplicationController
 
   def destroy
     @wiki_page.destroy
-    @wiki_page.create_activity :destroy, edit_summary: params[:edit_summary]
+    @wiki_page.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
     redirect_to wiki_pages_path, notice: "Wiki page was successfully deleted."
   end
 

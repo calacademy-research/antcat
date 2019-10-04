@@ -53,7 +53,7 @@ module Taxa
       end
 
       def create_activity
-        @taxon.create_activity :force_parent_change
+        @taxon.create_activity :force_parent_change, current_user
       end
   end
 end

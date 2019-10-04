@@ -28,7 +28,7 @@ class ProtonymsController < ApplicationController
     @protonym.name = Names::BuildNameFromString[params[:protonym_name_string]]
 
     if @protonym.save
-      @protonym.create_activity :create, edit_summary: params[:edit_summary]
+      @protonym.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'
     else
       render :new
@@ -44,7 +44,7 @@ class ProtonymsController < ApplicationController
 
   def update
     if @protonym.update(protonym_params)
-      @protonym.create_activity :update, edit_summary: params[:edit_summary]
+      @protonym.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
     else
       render :edit
@@ -53,7 +53,7 @@ class ProtonymsController < ApplicationController
 
   def destroy
     if @protonym.destroy
-      @protonym.create_activity :destroy, edit_summary: params[:edit_summary]
+      @protonym.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
       redirect_to protonyms_path, notice: "Successfully deleted protonym."
     else
       redirect_to @protonym, alert: @protonym.errors.full_messages.to_sentence

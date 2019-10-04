@@ -6,8 +6,10 @@ describe Activity do
   it { is_expected.to validate_inclusion_of(:action).in_array Activity::ACTIONS }
 
   describe ".create_for_trackable" do
+    let(:trackable) { nil }
+
     it "creates activities" do
-      expect { described_class.create_for_trackable(nil, :execute_script) }.
+      expect { described_class.create_for_trackable(trackable, :execute_script, user: nil) }.
         to change { described_class.count }.by 1
     end
   end

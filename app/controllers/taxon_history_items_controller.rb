@@ -24,7 +24,7 @@ class TaxonHistoryItemsController < ApplicationController
     updated = @taxon_history_item.update(taxon_history_item_params)
 
     if updated
-      @taxon_history_item.create_activity :update, edit_summary: params[:edit_summary]
+      @taxon_history_item.create_activity :update, current_user, edit_summary: params[:edit_summary]
     end
 
     respond_to do |format|
@@ -43,7 +43,7 @@ class TaxonHistoryItemsController < ApplicationController
     @taxon_history_item = @taxon.history_items.new(taxon_history_item_params)
 
     if @taxon_history_item.save
-      @taxon_history_item.create_activity :create, edit_summary: params[:edit_summary]
+      @taxon_history_item.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to edit_taxa_path(@taxon_history_item.taxon), notice: "Successfully added history item."
     else
       render :new
@@ -52,7 +52,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def destroy
     @taxon_history_item.destroy
-    @taxon_history_item.create_activity :destroy, edit_summary: params[:edit_summary]
+    @taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     render json: { success: true }
   end

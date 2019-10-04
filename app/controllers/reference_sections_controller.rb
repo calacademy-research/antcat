@@ -24,7 +24,7 @@ class ReferenceSectionsController < ApplicationController
     updated = @reference_section.update(reference_section_params)
 
     if updated
-      @reference_section.create_activity :update, edit_summary: params[:edit_summary]
+      @reference_section.create_activity :update, current_user, edit_summary: params[:edit_summary]
     end
 
     respond_to do |format|
@@ -43,7 +43,7 @@ class ReferenceSectionsController < ApplicationController
     @reference_section = @taxon.reference_sections.new(reference_section_params)
 
     if @reference_section.save
-      @reference_section.create_activity :create, edit_summary: params[:edit_summary]
+      @reference_section.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to edit_taxa_path(@reference_section.taxon), notice: "Successfully added reference section."
     else
       render :new
@@ -52,7 +52,7 @@ class ReferenceSectionsController < ApplicationController
 
   def destroy
     @reference_section.destroy
-    @reference_section.create_activity :destroy, edit_summary: params[:edit_summary]
+    @reference_section.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     render json: { success: true }
   end

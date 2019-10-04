@@ -21,7 +21,7 @@ module Taxa
       end
 
       def create_activity previous_ids
-        @taxon.create_activity :reorder_taxon_history_items,
+        @taxon.create_activity :reorder_taxon_history_items, current_user,
           parameters: { previous_ids: previous_ids, reordered_ids: @taxon.history_items.pluck(:id) }
       end
   end

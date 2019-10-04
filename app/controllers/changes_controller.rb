@@ -16,7 +16,7 @@ class ChangesController < ApplicationController
 
   def approve
     @change.approve current_user
-    @change.create_activity :approve_change
+    @change.create_activity :approve_change, current_user
     redirect_back fallback_location: changes_path, notice: "Approved change."
   end
 

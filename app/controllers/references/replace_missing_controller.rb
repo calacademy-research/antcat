@@ -39,7 +39,7 @@ module References
       end
 
       def create_activity
-        @missing_reference.create_activity :replace_missing_reference, parameters: {
+        @missing_reference.create_activity :replace_missing_reference, current_user, parameters: {
           citation: @missing_reference.citation,
           target_reference_id: @target_reference.id
         }
@@ -47,7 +47,7 @@ module References
 
       def destroy_missing_reference
         @missing_reference.destroy
-        @missing_reference.create_activity :destroy
+        @missing_reference.create_activity :destroy, current_user
       end
   end
 end

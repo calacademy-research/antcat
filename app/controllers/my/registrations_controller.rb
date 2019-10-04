@@ -9,7 +9,7 @@ module My
     def create
       super do |user|
         if user.persisted?
-          user.create_activity :create
+          user.create_activity :create, current_user
         end
       end
     end

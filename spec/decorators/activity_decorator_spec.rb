@@ -22,13 +22,15 @@ describe ActivityDecorator do
   describe "#did_something" do
     include TestLinksHelpers
 
+    let(:user) { build_stubbed :user }
+
     context 'when there is a trackable' do
       context 'when trackable is a `Reference`' do
         context 'when action is `update`' do
           let!(:trackable) { create :article_reference }
 
           specify do
-            activity = trackable.create_activity :update
+            activity = trackable.create_activity :update, user
             expect(activity.decorate.did_something.squish).
               to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -38,7 +40,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'none' }
 
           specify do
-            activity = trackable.create_activity :start_reviewing
+            activity = trackable.create_activity :start_reviewing, user
             expect(activity.decorate.did_something.squish).
               to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -48,7 +50,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewing' }
 
           specify do
-            activity = trackable.create_activity :finish_reviewing
+            activity = trackable.create_activity :finish_reviewing, user
             expect(activity.decorate.did_something.squish).
               to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -58,7 +60,7 @@ describe ActivityDecorator do
           let!(:trackable) { create :article_reference, review_state: 'reviewed' }
 
           specify do
-            activity = trackable.create_activity :restart_reviewing
+            activity = trackable.create_activity :restart_reviewing, user
             expect(activity.decorate.did_something.squish).
               to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.keey}</a>)
           end
@@ -69,7 +71,7 @@ describe ActivityDecorator do
         let!(:trackable) { create :tooltip, scope: 'taxa', key: 'authors' }
 
         specify do
-          activity = trackable.create_activity :update
+          activity = trackable.create_activity :update, user
           expect(activity.decorate.did_something.squish).
             to eq %(edited the tooltip <a href="/tooltips/#{trackable.id}">#{trackable.scope}.#{trackable.key}</a>)
         end
@@ -77,8 +79,6 @@ describe ActivityDecorator do
     end
 
     context 'when there is no trackable' do
-      let(:user) { build_stubbed :user }
-
       context 'when action is `execute_script`' do
         specify do
           activity = Activity.execute_script_activity(user, "an edit summary")

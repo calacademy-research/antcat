@@ -1,5 +1,3 @@
-# TODO: Move `user` to controllers.
-#
 # NOTE: "automated edits" are currently simply activities with `automated_edits`
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 
@@ -51,7 +49,7 @@ class Activity < ApplicationRecord
   serialize :parameters, Hash
   strip_attributes only: [:edit_summary]
 
-  def self.create_for_trackable trackable, action, user: User.current, edit_summary: nil, parameters: {}
+  def self.create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}
     create!(
       trackable: trackable,
       action: action,
