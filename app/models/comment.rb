@@ -11,8 +11,7 @@ class Comment < ApplicationRecord
   scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
   scope :include_associations, -> { includes(:commentable, :user) }
 
-  validates :user, presence: true
-  validates :body, presence: true
+  validates :user, :body, presence: true
 
   after_save { set_parent if set_parent_to.present? }
   after_save :notify_relevant_users
@@ -22,8 +21,8 @@ class Comment < ApplicationRecord
   has_paper_trail
   trackable
 
-  def self.build_comment commentable, user, body = ""
-    new commentable: commentable, body: body, user: user
+  def self.build_comment commentable, user, body: nil
+    new(commentable: commentable, body: body, user: user)
   end
 
   def a_reply?

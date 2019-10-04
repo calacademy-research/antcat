@@ -25,7 +25,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.build_comment commentable, current_user, comment_params[:body]
+    @comment = Comment.build_comment commentable, current_user, body: comment_params[:body]
     @comment.set_parent_to = comment_params[:comment_id]
 
     if @comment.save
