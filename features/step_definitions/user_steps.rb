@@ -16,7 +16,7 @@ Given('I am logged in') do
   login_programmatically user
 end
 
-Given('I am logged in as a helper editor') do
+Given('I log in as a helper editor') do
   user = create :user, :helper
   login_programmatically user
 end

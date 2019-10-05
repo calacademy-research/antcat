@@ -4,7 +4,7 @@ Feature: Author name case-sensitivity
   So that the bibliography is accurate
 
   Scenario: Using the name that was entered
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
     And there is a reference
     And an author name exists with a name of "Mackay"
     And an author name exists with a name of "MACKAY"
