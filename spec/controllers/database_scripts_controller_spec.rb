@@ -7,4 +7,16 @@ describe DatabaseScriptsController do
       specify { expect(get(:show, params: { id: 1 })).to redirect_to_signin_form }
     end
   end
+
+  describe "GET index" do
+    before { sign_in create(:user) }
+
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show" do
+    before { sign_in create(:user) }
+
+    specify { expect(get(:show, params: { id: 'orphaned_protonyms' })).to render_template :show }
+  end
 end

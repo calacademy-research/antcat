@@ -11,4 +11,10 @@ describe Catalog::FixRandomController do
       expect([DatabaseScripts::OrphanedProtonyms] - soft_validated).to_not eq []
     end
   end
+
+  describe "GET show" do
+    context 'when there are no randomizable ants' do
+      specify { expect(get(:show)).to redirect_to database_scripts_path }
+    end
+  end
 end
