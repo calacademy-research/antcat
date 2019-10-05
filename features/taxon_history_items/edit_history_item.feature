@@ -122,7 +122,7 @@ Feature: Editing a history item
     And the history item field should be visible
 
     When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
-    And I press all "Rerender preview"
+    And I press "Rerender preview"
     Then I should see "Lasius history, Giovanni, 1809"
 
     When I click on the cancel taxon history item button

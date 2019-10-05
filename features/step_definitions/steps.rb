@@ -23,11 +23,6 @@ When("I press {string}") do |button|
   click_button button
 end
 
-# TODO. Remove hack.
-When("I press all {string}") do |button|
-  all(:button, button).each(&:click)
-end
-
 When("I follow the first {string}") do |link|
   first(:link, link).click
 end
