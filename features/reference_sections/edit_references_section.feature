@@ -10,7 +10,7 @@ Feature: Editing references sections
     Then the reference section should be empty
 
     When I click the add reference section button
-    And I fill in the references field with "New reference"
+    And I fill in "references_taxt" with "New reference"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
     Then the reference section should be "New reference"
@@ -28,7 +28,7 @@ Feature: Editing references sections
     Then the reference section should be "Original reference"
 
     When I click on the edit reference section button
-    And I fill in the references field with "(none)"
+    And I fill in "references_taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".references-section"
     And I save the reference section
     Then I should not see "Original reference"
@@ -46,7 +46,7 @@ Feature: Editing references sections
     Then I should see "California checklist"
 
     When I follow "Edit"
-    And I fill in the references field with "reference section content"
+    And I fill in "references_taxt" with "reference section content"
     And I press "Save"
     Then I should see "Successfully updated reference section."
     And I should see "reference section content"
@@ -57,7 +57,7 @@ Feature: Editing references sections
 
     When I go to the edit page for "Dolichoderinae"
     And I click on the edit reference section button
-    And I fill in the references field with "(none)"
+    And I fill in "references_taxt" with "(none)"
     And I click on the cancel reference section button
     Then the reference section should be "Original reference"
 

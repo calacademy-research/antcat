@@ -18,10 +18,6 @@ When("I delete the reference section") do
   find('.references-section a.taxt-editor-delete-button').click
 end
 
-When("I fill in the references field with {string}") do |references|
-  step %(I fill in "references_taxt" with "#{references}")
-end
-
 Then("the reference section should be empty") do
   expect(page).to_not have_css '.reference-sections .reference_section'
 end
