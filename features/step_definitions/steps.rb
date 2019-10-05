@@ -45,12 +45,6 @@ When(/I follow "(.*?)" within (.*)$/) do |link, location|
   end
 end
 
-When(/^I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
-  with_scope location do
-    step %(I press "#{button}")
-  end
-end
-
 # Interact with form elements
 When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
