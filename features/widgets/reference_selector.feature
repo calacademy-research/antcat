@@ -1,6 +1,6 @@
 Feature: Reference selector
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And these references exists
       | author   | citation_year |
       | Fisher   | 2004          |

@@ -1,7 +1,7 @@
 @javascript
 Feature: Taxon selector
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And there is a genus "Atta"
     And there is a genus "Eciton"
 
