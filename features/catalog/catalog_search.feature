@@ -13,8 +13,8 @@ Feature: Searching the catalog
 
     When I fill in the catalog search box with "niger"
     And I press the search button by the catalog search box
-    Then I should see "Formica niger" in the search results
-    And I should see "Lasius niger" in the search results
+    Then I should see "Formica niger" within the search results
+    And I should see "Lasius niger" within the search results
 
   Scenario: Searching for an exact match
     When I fill in the catalog search box with "Lasius niger"

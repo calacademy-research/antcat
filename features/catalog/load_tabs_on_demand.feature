@@ -7,8 +7,8 @@ Feature: Load taxon browser tabs on demand
 
   Scenario: Under the maximum number
     When I go to the catalog
-    Then I should see "Aninae" in the taxon browser
-    And I should see "Baninae" in the taxon browser
+    Then I should see "Aninae" within the taxon browser
+    And I should see "Baninae" within the taxon browser
     And I should not see "Load all?"
 
   @javascript
@@ -16,11 +16,11 @@ Feature: Load taxon browser tabs on demand
     Given there is a subfamily "Caninae"
 
     When I go to the catalog
-    Then I should see "Aninae" in the taxon browser
-    And I should see "Baninae" in the taxon browser
-    And I should not see "Caninae" in the taxon browser
+    Then I should see "Aninae" within the taxon browser
+    And I should see "Baninae" within the taxon browser
+    And I should not see "Caninae" within the taxon browser
     And I should see "Showing 2 of 3 taxa"
 
     When I follow "Load all?"
-    Then I should see "Caninae" in the taxon browser
+    Then I should see "Caninae" within the taxon browser
     And I should not see "Load all?"

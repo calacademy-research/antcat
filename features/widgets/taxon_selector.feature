@@ -12,7 +12,7 @@ Feature: Taxon selector
     Then I should see "Eciton"
 
     When I press "Save"
-    Then I should see "Eciton" in the header
+    Then I should see "Eciton" within the header
 
   Scenario: Clearing a taxon field
     When I go to the edit page for "Atta"

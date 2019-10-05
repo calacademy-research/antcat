@@ -89,7 +89,7 @@ Feature: Searching the catalog
     And I press "Search"
     Then I should see "2 result"
     And I should see "2010" within the search results
-    And I should see "2010" within the search results
+    And I should see "2011" within the search results
 
   Scenario: Download search results
     Given there is a species described in 2010

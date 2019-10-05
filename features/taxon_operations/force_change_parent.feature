@@ -15,7 +15,7 @@ Feature: Force-changing parent
     And the "subfamily" of "Atta" should be "Formicinae"
 
     When I go to the activity feed
-    Then I should see "Archibald force-changed the parent of Atta" in the feed
+    Then I should see "Archibald force-changed the parent of Atta" within the feed
 
   Scenario: Changing a genus's tribe
     Given there is a genus "Atta" in the subfamily "Dolichoderinae"

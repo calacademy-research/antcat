@@ -11,7 +11,7 @@ Feature: Feed (filtering)
 
     When I select "Destroy" from "activity_action"
     And I press "Filter"
-    Then I should see "Archibald deleted the journal" in the feed
+    Then I should see "Archibald deleted the journal" within the feed
 
   Scenario: Showing/hiding automated edits
     Given there is an activity with the edit summary "Not automated"

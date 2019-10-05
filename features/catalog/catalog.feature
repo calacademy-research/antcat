@@ -21,7 +21,7 @@ Feature: Using the catalog
     And I follow "Dolichoderini" within the taxon browser
     Then "Dolichoderinae" should be selected in the taxon browser
     And "Dolichoderini" should be selected in the taxon browser
-    And I should see "Dolichoderus" in the taxon browser
+    And I should see "Dolichoderus" within the taxon browser
 
   Scenario: Selecting a genus
     When I follow "Dolichoderinae" within the taxon browser
@@ -29,7 +29,7 @@ Feature: Using the catalog
     And I follow "Dolichoderus"
     Then "Dolichoderinae" should be selected in the taxon browser
     And "Dolichoderus" should be selected in the taxon browser
-    And I should see "abruptus" in the taxon browser
+    And I should see "abruptus" within the taxon browser
 
   Scenario: Selecting a species
     When I follow "Dolichoderinae" within the taxon browser
@@ -44,7 +44,7 @@ Feature: Using the catalog
     When I follow "Dolichoderinae" within the taxon browser
     And I follow "All genera" within the subfamilies taxon browser tab
     And I follow "Dolichoderus"
-    Then I should see "abruptus" in the taxon browser
+    Then I should see "abruptus" within the taxon browser
 
     When I follow "abruptus"
-    Then I should see "minor" in the taxon browser
+    Then I should see "minor" within the taxon browser

@@ -15,8 +15,8 @@ Feature: Editing a taxon
     Then I should see "Formica"
 
     When I press "Save"
-    Then I should see "Formica" in the headline
-    And I should see "page 9 (dealate queen)" in the headline
+    Then I should see "Formica" within the headline
+    And I should see "page 9 (dealate queen)" within the headline
 
   @javascript
   Scenario: Changing the type name
@@ -62,7 +62,7 @@ Feature: Editing a taxon
     And I should see "incertae sedis in subfamily"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the genus Atta" in the feed
+    Then I should see "Archibald edited the genus Atta" within the feed
     And I should see the edit summary "fix incertae sedis"
 
   Scenario: Changing gender of genus-group name

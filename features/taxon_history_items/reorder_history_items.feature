@@ -38,7 +38,7 @@ Feature: Reorder history items
     Then I should see "BBB. AAA. CCC."
 
     When I go to the activity feed
-    Then I should see "Archibald reordered the history items of Orderia" in the feed
+    Then I should see "Archibald reordered the history items of Orderia" within the feed
     And I should not see "Order was changed from"
 
     When I click on Show more
