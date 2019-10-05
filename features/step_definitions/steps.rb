@@ -79,7 +79,7 @@ When("I choose {string}") do |field|
 end
 
 # "I should see / should contain".
-Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
+Then("I should see {string}") do |text|
   expect(page).to have_content text, normalize_ws: true
 end
 

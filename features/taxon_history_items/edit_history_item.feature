@@ -118,7 +118,7 @@ Feature: Editing a history item
     And the history item field should not be visible
 
     When I click on the edit taxon history item button
-    Then I should still see "Eciton history, Giovanni, 1809"
+    Then I should see "Eciton history, Giovanni, 1809"
     And the history item field should be visible
 
     When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
