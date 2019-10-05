@@ -14,14 +14,14 @@ if ENV["SHOW_SHOW_SCENARIOS"]
     }
   end
 
+  def sort_scenarios_by_runtime scenarios
+    scenarios.sort { |a, b| b[1][:duration] <=> a[1][:duration] }
+  end
+
   at_exit do
     puts "Slowest scenarios:".blue
     sort_scenarios_by_runtime(scenarios).each do |key, value|
       puts "#{value[:duration].round(2)} #{key.green} #{value[:name]}"
     end
   end
-end
-
-def sort_scenarios_by_runtime scenarios
-  scenarios.sort { |a, b| b[1][:duration] <=> a[1][:duration] }
 end
