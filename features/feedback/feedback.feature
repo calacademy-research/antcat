@@ -49,7 +49,7 @@ Feature: Feedback
     And I should see "Thanks for helping us make AntCat better!"
 
     When I log in as a catalog editor
-    And I go to the feedback index
+    And I go to the feedback page
     Then I should see "[no name] <[no email];"
 
     When I go to the activity feed
@@ -63,7 +63,7 @@ Feature: Feedback
     And I click "#submit-feedback-js"
     Then I should see "Message sent"
 
-    When I go to the feedback index
+    When I go to the feedback page
     Then I should see "Archibald submitted"
 
     When I go to the activity feed
