@@ -81,17 +81,27 @@ Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
   expect(page).to have_no_content text
 end
 
-Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
-  with_scope(parent) do
+Then("the {string} field should contain {string}") do |field, value|
+  field = find_field field
+  expect(field.value).to match value
+end
+
+Then("the {string} field within {string} should contain {string}") do |field, parent_element, value|
+  within parent_element do
     field = find_field field
-    field_value = field.tag_name == 'textarea' ? field.text : field.value
-    expect(field_value).to match /#{value}/
+    expect(field.value).to match value
   end
 end
 
-Then(/I should (not )?see "(.*?)" within (.*)$/) do |do_not, contents, location|
+Then(/^I should see "(.*?)" within (.*)$/) do |contents, location|
   with_scope location do
-    step %(I should #{do_not}see "#{contents}")
+    step %(I should see "#{contents}")
+  end
+end
+
+Then(/^I should not see "(.*?)" within (.*)$/) do |contents, location|
+  with_scope location do
+    step %(I should not see "#{contents}")
   end
 end
 
