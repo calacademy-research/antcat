@@ -39,7 +39,7 @@ When("I click {string}") do |selector|
   find(selector).click
 end
 
-When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
+When(/I follow "(.*?)" within (.*)$/) do |link, location|
   with_scope location do
     step %(I follow "#{link}")
   end
