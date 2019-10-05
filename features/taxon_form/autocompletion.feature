@@ -5,7 +5,7 @@ Feature: Autocompletion (taxon-related)
     And there is a species "Atta major" in the genus "Atta"
 
   Scenario: Autocompleting protonym localities
-    Given there is a genus located in "Mexico"
+    Given there is a genus with locality "Mexico"
 
     When I go to the catalog page for "Atta"
     And I follow "Add species"

@@ -36,8 +36,8 @@ Feature: Searching the catalog
     Then I should see "Atta major"
 
   Scenario: Searching for locality
-    Given there is a genus located in "Mexico"
-    And there is a genus located in "Zimbabwe"
+    Given there is a genus with locality "Mexico"
+    And there is a genus with locality "Zimbabwe"
 
     When I fill in "locality" with "Mexico"
     And I press "Search"
