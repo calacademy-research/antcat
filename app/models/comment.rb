@@ -14,7 +14,6 @@ class Comment < ApplicationRecord
   validates :user, :body, presence: true
 
   after_save { set_parent if set_parent_to.present? }
-  after_save :notify_relevant_users
 
   acts_as_nested_set scope: [:commentable_id, :commentable_type]
   alias_method :commenter, :user # Read-only, for `Comments::NotifyRelevantUsers`.
@@ -29,13 +28,13 @@ class Comment < ApplicationRecord
     !parent.nil? || set_parent_to.present?
   end
 
+  def notify_relevant_users
+    Comments::NotifyRelevantUsers[self]
+  end
+
   private
 
     def set_parent
       move_to_child_of Comment.find(set_parent_to)
-    end
-
-    def notify_relevant_users
-      Comments::NotifyRelevantUsers[self]
     end
 end

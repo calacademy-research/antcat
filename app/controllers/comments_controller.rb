@@ -30,6 +30,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       @comment.create_activity :create, current_user
+      @comment.notify_relevant_users
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a> was successfully added.
@@ -47,6 +48,7 @@ class CommentsController < ApplicationController
     @comment.edited = true
 
     if @comment.save
+      @comment.notify_relevant_users
       redirect_to @comment.commentable, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
       MSG
