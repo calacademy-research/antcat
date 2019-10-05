@@ -14,21 +14,21 @@ Feature: Using the catalog
 
   Scenario: Selecting a subfamily
     When I follow "Dolichoderinae" in the taxon browser
-    Then "Dolichoderinae" should be selected
+    Then "Dolichoderinae" should be selected in the taxon browser
 
   Scenario: Selecting a tribe
     When I follow "Dolichoderinae" in the taxon browser
     And I follow "Dolichoderini" in the taxon browser
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderini" should be selected
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderini" should be selected in the taxon browser
     And I should see "Dolichoderus" in the taxon browser
 
   Scenario: Selecting a genus
     When I follow "Dolichoderinae" in the taxon browser
     And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderus" should be selected
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderus" should be selected in the taxon browser
     And I should see "abruptus" in the taxon browser
 
   Scenario: Selecting a species
@@ -36,9 +36,9 @@ Feature: Using the catalog
     And I follow "All genera" in the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     And I follow "abruptus"
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderus" should be selected
-    And "abruptus" should be selected
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderus" should be selected in the taxon browser
+    And "abruptus" should be selected in the taxon browser
 
   Scenario: Selecting a subspecies
     When I follow "Dolichoderinae" in the taxon browser

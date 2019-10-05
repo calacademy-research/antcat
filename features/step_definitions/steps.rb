@@ -83,7 +83,7 @@ When("I choose {string}") do |field|
   choose field
 end
 
-# "I should see/contain/selected ..."
+# "I should see / should contain".
 Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
   expect(page).to have_content text, normalize_ws: true
 end
@@ -103,12 +103,6 @@ end
 Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
   with_scope location do
     step %(I should #{do_not}see "#{contents}")
-  end
-end
-
-Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
-  with_scope location do
-    expect(page).to have_css ".selected", text: word
   end
 end
 
