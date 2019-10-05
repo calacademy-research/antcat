@@ -3,6 +3,10 @@ module CucumberHelpers
     def selector_for locator
       case locator
 
+      # Navigation.
+      when 'the desktop menu'
+        "#desktop-menu"
+
       # Catalog.
       when 'the taxon browser'
         "#taxon_browser"
@@ -16,8 +20,6 @@ module CucumberHelpers
         '.headline'
 
       # Catalog search.
-      when 'the catalog search box/'
-        "#qq"
       when 'the search results'
         "table"
 

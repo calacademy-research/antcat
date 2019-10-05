@@ -58,8 +58,8 @@ When("I fill in {string} with {string}") do |field, value|
   fill_in field, with: value
 end
 
-When("I fill in {string} with {string} within {string}") do |field, value, within_element|
-  within(within_element) do
+When(/^I fill in "(.*?)" with "(.*?)" within (.*)$/) do |field, value, within_element|
+  with_scope within_element do
     fill_in field, with: value
   end
 end

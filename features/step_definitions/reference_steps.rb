@@ -82,12 +82,6 @@ Given("the default reference is {string}") do |keey|
   References::DefaultReference.stub(:get).and_return reference
 end
 
-When("I fill in the references search box with {string}") do |search_term|
-  within('#desktop-menu') do
-    step %(I fill in "reference_q" with "#{search_term}")
-  end
-end
-
 When('I press "Go" by the references search box') do
   find("#header-reference-search-button-test-hook").click
 end
