@@ -99,7 +99,7 @@ Feature: Editing a history item
     And I delete the taxon history item
     Then I should be on the edit page for "Eciton"
 
-    When I refresh the page (JavaScript)
+    When I reload the page
     Then the history should be empty
 
     When I go to the activity feed

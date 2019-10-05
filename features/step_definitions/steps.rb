@@ -1,14 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "selectors"))
+# General steps, not specific to AntCat.
 
-module WithinHelpers
-  def with_scope locator
-    locator ? within(*selector_for(locator)) { yield } : yield
-  end
-end
-World WithinHelpers
-
-# Go to / be on
+# Browser/navigation.
 When(/^I go to (.+)$/) do |page_name|
   visit path_to(page_name)
 end
@@ -18,7 +10,27 @@ Then(/^I should be on (.+)$/) do |page_name|
   expect(current_path).to eq path_to(page_name)
 end
 
-# Click/press
+Then("the page title should have {string} in it") do |title|
+  expect(page.title).to have_content title, normalize_ws: true
+end
+
+When("I reload the page") do
+  visit current_path
+end
+
+When("I wait") do
+  sleep 1
+end
+
+Given("RESET SESSION") do
+  Capybara.reset_sessions!
+end
+
+# Click/press/follow.
+When("I click {string}") do |selector|
+  find(selector).click
+end
+
 When("I press {string}") do |button|
   click_button button
 end
@@ -35,17 +47,13 @@ When("I follow {string}") do |link|
   click_link link
 end
 
-When("I click {string}") do |selector|
-  find(selector).click
-end
-
 When(/^I follow "(.*?)" within (.*)$/) do |link, location|
   with_scope location do
     step %(I follow "#{link}")
   end
 end
 
-# Interact with form elements
+# Interact with form elements.
 When("I fill in {string} with {string}") do |field, value|
   fill_in field, with: value
 end
@@ -81,18 +89,6 @@ Then("I should not see {string}") do |text|
   expect(page).to have_no_content text
 end
 
-Then("the {string} field should contain {string}") do |field, value|
-  field = find_field field
-  expect(field.value).to match value
-end
-
-Then("the {string} field within {string} should contain {string}") do |field, parent_element, value|
-  within parent_element do
-    field = find_field field
-    expect(field.value).to match value
-  end
-end
-
 Then(/^I should see "(.*?)" within (.*)$/) do |contents, location|
   with_scope location do
     step %(I should see "#{contents}")
@@ -105,7 +101,25 @@ Then(/^I should not see "(.*?)" within (.*)$/) do |contents, location|
   end
 end
 
-# Misc
+Then("the {string} field should contain {string}") do |field, value|
+  field = find_field field
+  expect(field.value).to match value
+end
+
+Then("the {string} field within {string} should contain {string}") do |field, parent_element, value|
+  within parent_element do
+    field = find_field field
+    expect(field.value).to match value
+  end
+end
+
+# JavaScript alerts and prompts.
+Then("I should see an alert {string}") do |message|
+  accept_alert(message) do
+    # No-op.
+  end
+end
+
 And('I will confirm on the next step') do
   begin
     evaluate_script "window.alert = function(msg) { return true; }"
@@ -121,41 +135,4 @@ When("I will enter {string} in the prompt and confirm on the next step") do |str
   rescue Capybara::NotSupportedByDriverError => e
     warn e
   end
-end
-
-When("I wait") do
-  sleep 1
-end
-
-Given("RESET SESSION") do
-  Capybara.reset_sessions!
-end
-
-Then("I should see an alert {string}") do |message|
-  accept_alert(message) do
-    # No-op.
-  end
-end
-
-Then("the page title should have {string} in it") do |title|
-  expect(page.title).to have_content title, normalize_ws: true
-end
-
-When("I reload the page") do
-  visit current_path
-end
-
-When("I follow {string} inside the breadcrumb") do |link|
-  within "#breadcrumbs" do
-    step %(I follow "#{link}")
-  end
-end
-
-# HACK: To prevent the driver from navigating away from the page before completing the request.
-And('I wait for the "success" message') do
-  step 'I should see "uccess"' # "[Ss]uccess(fully)?"
-end
-
-When(/^I refresh the page \(JavaScript\)$/) do
-  page.evaluate_script 'window.location.reload()'
 end

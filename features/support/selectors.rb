@@ -39,4 +39,3 @@ module HtmlSelectorsHelpers
 end
 
 World HtmlSelectorsHelpers
-World FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
