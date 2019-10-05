@@ -24,7 +24,7 @@ Feature: User notifications
     Given I have another unseen notification
     When I reload the page
     Then I should see 1 unread notification
-    And I should see 2 notifications in total
+    And I should see 2 notifications
 
   Scenario: Mentioning users in comments
     # Create issue by a third user.
@@ -43,7 +43,7 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald mentioned you in the comment on the issue Ghost Stories"
-    And I should only see 1 notification
+    And I should see 1 notification
 
   Scenario: Notifying creators, and replying to comments (without mentioning their names)
     Given there is an open issue "My Favorite Ants" created by "Batiatus"
@@ -58,7 +58,7 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald commented on the issue My Favorite Ants which you created"
-    And I should only see 1 notification
+    And I should see 1 notification
 
     # Reply to Archibald's comment as Batiatus.
     When I go to the issue page for "My Favorite Ants"
@@ -71,7 +71,7 @@ Feature: User notifications
     When I log in as "Archibald"
     And I go to my notifications page
     Then I should see "Batiatus replied to your comment on the issue My Favorite Ants"
-    And I should only see 1 notification
+    And I should see 1 notification
 
   Scenario: Send at most one notification to a user for the same comment
     # Make Batiatus the issue creator and a participant of the discussion.
@@ -94,7 +94,7 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald replied to your comment on the issue My Favorite Ants"
-    And I should only see 1 notification
+    And I should see 1 notification
 
   Scenario: Do not repeat notifications for any given attached/notifier combination
     Given there is an open issue "My Favorite Ants" created by "Batiatus"
@@ -115,7 +115,7 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald mentioned you in the issue My Favorite Ants"
-    And I should only see 1 notification
+    And I should see 1 notification
 
   Scenario: Mentioning users in "things" (issue description)
     # Mention Batiatus in the description of an issue.
@@ -129,7 +129,7 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald mentioned you in the issue Resolve homonyms"
-    And I should only see 1 notification
+    And I should see 1 notification
 
   Scenario: Mentioning users in "things" (site notice messages)
     # Mention Batiatus in the message of a site notice.
@@ -144,4 +144,4 @@ Feature: User notifications
     When I log in as "Batiatus"
     And I go to my notifications page
     Then I should see "Archibald mentioned you in the site notice New AntCat features"
-    And I should only see 1 notification
+    And I should see 1 notification
