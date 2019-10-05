@@ -39,14 +39,14 @@ When("I click {string}") do |selector|
   find(selector).click
 end
 
-When(/I follow "(.*?)" within (.*)$/) do |link, location|
+When(/^I follow "(.*?)" within (.*)$/) do |link, location|
   with_scope location do
     step %(I follow "#{link}")
   end
 end
 
 # Interact with form elements
-When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+When("I fill in {string} with {string}") do |field, value|
   fill_in field, with: value
 end
 
@@ -77,7 +77,7 @@ Then("I should see {string}") do |text|
   expect(page).to have_content text, normalize_ws: true
 end
 
-Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
+Then("I should not see {string}") do |text|
   expect(page).to have_no_content text
 end
 

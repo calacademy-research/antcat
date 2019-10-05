@@ -3,30 +3,30 @@ module HtmlSelectorsHelpers
     case locator
 
     # Catalog.
-    when /^the taxon browser$/
+    when 'the taxon browser'
       "#taxon_browser"
     when /^the (\w*) taxon browser tab$/
       find(:link, $1)[:href]
-    when /the protonym/
+    when 'the protonym'
       "#taxon_description .headline > span.name"
-    when /the header/
+    when 'the header'
       "div.header"
-    when /the headline/
+    when 'the headline'
       '.headline'
 
     # Catalog search.
-    when /the catalog search box/
+    when 'the catalog search box/'
       "#qq"
-    when /the search results/
+    when 'the search results'
       "table"
 
     # Editor's Panel.
-    when /the feed/
+    when 'the feed'
       'table.activities'
 
-    when /the left side of the diff/
+    when 'the left side of the diff'
       all(".callout .diff")[0]
-    when /the right side of the diff/
+    when 'the right side of the diff'
       all(".callout .diff")[1]
 
     when /"(.+)"/

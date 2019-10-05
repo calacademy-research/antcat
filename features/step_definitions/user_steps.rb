@@ -26,14 +26,22 @@ Given('I am logged in as a helper editor') do
   login_programmatically user
 end
 
-When(/^I log in as a catalog editor(?: named "([^"]+)")?$/) do |name|
-  name ||= "Quintus Batiatus"
-  user = create(:user, :editor, name: name)
+When('I log in as a catalog editor') do
+  user = create :user, :editor
   login_programmatically user
 end
 
-When(/^I log in as a superadmin(?: named "([^"]+)")?$/) do |name|
-  name ||= "Quintus Batiatus"
+When('I log in as a catalog editor named {string}') do |name|
+  user = create :user, :editor, name: name
+  login_programmatically user
+end
+
+When('I log in as a superadmin') do
+  user = create :user, :editor, :superadmin
+  login_programmatically user
+end
+
+When('I log in as a superadmin named {string}') do |name|
   user = create :user, :editor, :superadmin, name: name
   login_programmatically user
 end
