@@ -63,7 +63,7 @@ Feature: User notifications
     # Reply to Archibald's comment as Batiatus.
     When I go to the issue page for "My Favorite Ants"
     And I follow "reply"
-    And I write a reply with the text "Oh, and I've also replied to the submitter's email."
+    And I write a reply with the body "Oh, and I've also replied to the submitter's email."
     And I press "Post Reply"
     And I wait for the "success" message
 

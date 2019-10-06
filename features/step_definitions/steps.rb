@@ -36,84 +36,84 @@ When("I click css {string}") do |css_selector|
   find(css_selector).click
 end
 
-When("I press {string}") do |button|
-  click_button button
+When("I press {string}") do |button_text|
+  click_button button_text
 end
 
-When("I follow the first {string}") do |link|
-  first(:link, link).click
+When("I follow the first {string}") do |link_text|
+  first(:link, link_text).click
 end
 
-When("I follow the second {string}") do |link|
-  all(:link, link)[1].click
+When("I follow the second {string}") do |link_text|
+  all(:link, link_text)[1].click
 end
 
-When("I follow {string}") do |link|
-  click_link link
+When("I follow {string}") do |link_text|
+  click_link link_text
 end
 
-When(/^I follow "(.*?)" within (.*)$/) do |link, location|
+When(/^I follow "(.*?)" within (.*)$/) do |link_text, location|
   with_scope location do
-    step %(I follow "#{link}")
+    step %(I follow "#{link_text}")
   end
 end
 
 # Interact with form elements.
-When("I fill in {string} with {string}") do |field, value|
-  fill_in field, with: value
+When("I fill in {string} with {string}") do |field_name, value|
+  fill_in field_name, with: value
 end
 
-When(/^I fill in "(.*?)" with "(.*?)" within (.*)$/) do |field, value, within_element|
-  with_scope within_element do
-    fill_in field, with: value
+When(/^I fill in "(.*?)" with "(.*?)" within (.*)$/) do |field_name, value, location|
+  with_scope location do
+    fill_in field_name, with: value
   end
 end
 
-When("I select {string} from {string}") do |value, field|
-  select value, from: field
+When("I select {string} from {string}") do |value, field_name|
+  select value, from: field_name
 end
 
-When("I check {string}") do |field|
-  check field
+When("I check {string}") do |field_name|
+  check field_name
 end
 
-When("I uncheck {string}") do |field|
-  uncheck field
+When("I uncheck {string}") do |field_name|
+  uncheck field_name
 end
 
-When("I choose {string}") do |field|
-  choose field
+When("I choose {string}") do |field_name|
+  choose field_name
 end
 
 # "I should see / should contain".
-Then("I should see {string}") do |text|
-  expect(page).to have_content text, normalize_ws: true
+Then("I should see {string}") do |content|
+  expect(page).to have_content content, normalize_ws: true
 end
 
-Then("I should not see {string}") do |text|
-  expect(page).to have_no_content text
+Then("I should not see {string}") do |content|
+  expect(page).to have_no_content content
 end
 
-Then(/^I should see "(.*?)" within (.*)$/) do |contents, location|
+Then(/^I should see "(.*?)" within (.*)$/) do |content, location|
   with_scope location do
-    step %(I should see "#{contents}")
+    step %(I should see "#{content}")
   end
 end
 
-Then(/^I should not see "(.*?)" within (.*)$/) do |contents, location|
+Then(/^I should not see "(.*?)" within (.*)$/) do |content, location|
   with_scope location do
-    step %(I should not see "#{contents}")
+    step %(I should not see "#{content}")
   end
 end
 
-Then("the {string} field should contain {string}") do |field, value|
-  field = find_field field
+Then("the {string} field should contain {string}") do |field_name, value|
+  field = find_field field_name
   expect(field.value).to match value
 end
 
-Then("the {string} field within {string} should contain {string}") do |field, parent_element, value|
-  within parent_element do
-    field = find_field field
+Then("the {string} field within {string} should contain {string}") do |field_name, parent_css_selector, value|
+  within parent_css_selector do
+    field = find_field field_name
     expect(field.value).to match value
   end
 end

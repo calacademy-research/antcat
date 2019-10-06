@@ -44,14 +44,14 @@ Then("the markdown textarea should contain a markdown link to {string}") do |kee
   expect(markdown_textarea.value).to include "{ref #{reference.id}}"
 end
 
-When("I fill in {string} with {string} and a markdown link to {string}") do |element, string, keey|
+When("I fill in {string} with {string} and a markdown link to {string}") do |field_name, value, keey|
   reference = find_reference_by_keey keey
-  step %(I fill in "#{element}" with "#{string} %reference#{reference.id}}")
+  step %(I fill in "#{field_name}" with "#{value} %reference#{reference.id}}")
 end
 
-Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, string, keey|
+Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, content, keey|
   reference = find_reference_by_keey keey
-  taxt = "#{string} {ref #{reference.id}}"
+  taxt = "#{content} {ref #{reference.id}}"
   step %(there is a genus "#{genus}" with a history item "#{taxt}")
 end
 

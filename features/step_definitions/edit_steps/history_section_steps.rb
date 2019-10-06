@@ -1,11 +1,11 @@
-Then("the history should be {string}") do |history|
+Then("the history should be {string}") do |content|
   element = first('.history-items').find('.taxt-presenter')
-  expect(element.text).to match /#{history}/
+  expect(element.text).to match /#{content}/
 end
 
-Then("the history item field should be {string}") do |history|
+Then("the history item field should be {string}") do |content|
   element = first('.history-items').find('textarea')
-  expect(element.text).to match /#{history}/
+  expect(element.text).to match /#{content}/
 end
 
 Then("the history item field should not be visible") do
@@ -27,16 +27,16 @@ When("I add a history item to {string} that includes a tag for {string}") do |na
   create :taxon_history_item, taxt: "{tax #{tag_taxon.id}}", taxon: taxon
 end
 
-When("I add a history item {string}") do |text|
+When("I add a history item {string}") do |content|
   step %(I click on the add taxon history item button)
-  step %(I fill in "taxt" with "#{text}")
+  step %(I fill in "taxt" with "#{content}")
   step %(I press "Save")
 end
 
-When("I update the history item to say {string}") do |text|
+When("I update the history item to say {string}") do |content|
   steps %(
     And I click on the edit taxon history item button
-    And I fill in "taxt" with "#{text}"
+    And I fill in "taxt" with "#{content}"
     And I click on the save taxon history item button
     And I wait
   )
