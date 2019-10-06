@@ -58,7 +58,7 @@ Feature: Changes
     When I log in as a catalog editor named "Stan Blum"
     And I go to the changes page
     And I follow "Atta"
-    And I follow "Edit" inside the breadcrumb
+    And I follow "Edit" within the breadcrumbs
     And I select "genus" from "taxon_incertae_sedis_in"
     And I save the taxon form
     And I follow "Review change"

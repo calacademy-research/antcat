@@ -6,6 +6,8 @@ module CucumberHelpers
       # Navigation.
       when 'the desktop menu'
         "#desktop-menu"
+      when 'the breadcrumbs'
+        "#breadcrumbs"
 
       # Catalog.
       when 'the taxon browser'

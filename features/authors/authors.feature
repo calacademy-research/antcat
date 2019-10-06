@@ -20,7 +20,7 @@ Feature: Working with authors and their names
     And I fill in "author_name_name" with "Fisher, B."
     And I press "Save"
     And I wait
-    And I follow "Authors" inside the breadcrumb
+    And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, B.; Fisher, B."
 
   Scenario: Entering an existing author name
@@ -44,6 +44,6 @@ Feature: Working with authors and their names
     And I fill in "author_name_name" with "Bolton, Z."
     And I press "Save"
     And I wait
-    And I follow "Authors" inside the breadcrumb
+    And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, Z."
     And I should not see "Bolton, B."
