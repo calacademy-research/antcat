@@ -82,7 +82,7 @@ Given("the default reference is {string}") do |keey|
   References::DefaultReference.stub(:get).and_return reference
 end
 
-When('I press "Go" by the references search box') do
+When('I press the search button by the reference search box') do
   find("#header-reference-search-button-test-hook").click
 end
 

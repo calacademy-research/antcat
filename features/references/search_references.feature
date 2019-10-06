@@ -9,18 +9,18 @@ Feature: Searching references
   @search
   Scenario: Searching for an author name with diacritics, using the diacritics in the query
     When I fill in "reference_q" with "Hölldobler" within the desktop menu
-    And I press "Go" by the references search box
+    And I press the search button by the reference search box
     Then I should see "Hölldobler, B."
     Then I should not see "Fisher, B."
 
   Scenario: Finding nothing
     When I fill in "reference_q" with "zzzzzz" within the desktop menu
-    And I press "Go" by the references search box
+    And I press the search button by the reference search box
     And I should see "No results found"
 
   Scenario: Maintaining search box contents
     When I fill in "reference_q" with "zzzzzz year:1972-1980" within the desktop menu
-    And I press "Go" by the references search box
+    And I press the search button by the reference search box
     Then I should see "No results found"
     And the "reference_q" field within "#desktop-menu" should contain "zzzzzz year:1972-1980"
 
@@ -48,7 +48,7 @@ Feature: Searching references
     Given a Hölldobler-Fisher reference exists with the title "Hölldobler and Fisher's Favorite Ants"
 
     When I fill in "reference_q" with "author:'Fisher, B.'" within the desktop menu
-    And I press "Go" by the references search box
+    And I press the search button by the reference search box
     Then I should see "Hölldobler and Fisher's Favorite Ants"
     And I should not see "Hölldobler's Ants"
     And I should see "Fisher's Ants"
