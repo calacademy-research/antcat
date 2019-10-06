@@ -1,27 +1,3 @@
-Then(/^I should ?(not)? see the reference key$/) do |should_not|
-  if should_not == "not"
-    expect(page).to have_no_css ".expandable-reference-key"
-  else
-    expect(page).to have_css ".expandable-reference-key"
-  end
-end
-
-Then(/^I should (not )?see the reference key expansion$/) do |should_not|
-  if should_not
-    expect(page).to have_no_css ".expandable-reference-content"
-  else
-    expect(page).to have_css ".expandable-reference-content"
-  end
-end
-
-When("I click the reference key") do
-  find(".expandable-reference-key").click
-end
-
-When("I click the reference key expansion") do
-  find(".expandable-reference-content").click
-end
-
 When('I press the search button by the catalog search box') do
   find("#header-catalog-search-button-test-hook").click
 end
