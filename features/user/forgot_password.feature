@@ -7,6 +7,6 @@ Feature: Forgot password
 
   Scenario: Visiting the forgot password page
     When I go to the main page
-    And I follow the first "Login"
+    And I follow "Login" within the desktop menu
     And I follow "Forgot password"
     Then I should see "Send me reset password instructions"
