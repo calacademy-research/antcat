@@ -34,17 +34,17 @@ Feature: Feedback
 
   Scenario: Nothing except a comment is required
     When I click on the Feedback link
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "Whoops, error: Comment can't be blank"
 
     When I fill in "feedback_comment" with "Great site!!!"
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "Message sent"
 
   Scenario: Unregistered user submitting feedback (with feed)
     When I click on the Feedback link
     And I fill in "feedback_comment" with "Great site!!!"
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "Message sent"
     And I should see "Thanks for helping us make AntCat better!"
 
@@ -60,7 +60,7 @@ Feature: Feedback
 
     When I click on the Feedback link
     And I fill in "feedback_comment" with "Great site!!!"
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "Message sent"
 
     When I go to the feedback page
@@ -80,7 +80,7 @@ Feature: Feedback
     Given I have already posted 5 feedbacks in the last 5 minutes
 
     When I click on the Feedback link
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "you have already posted a couple of feedbacks in the last few minutes"
     And I should not see "Message sent"
 
@@ -88,6 +88,6 @@ Feature: Feedback
     When I click on the Feedback link
     And I fill in "feedback_comment" with "buy rolex plz"
     And I pretend to be a bot by filling in the invisible work email field
-    And I click "#submit-feedback-js"
+    And I click css "#submit-feedback-js"
     Then I should see "you're not a bot are you?"
     And I should not see "Message sent"

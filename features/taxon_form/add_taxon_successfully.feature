@@ -118,7 +118,7 @@ Feature: Adding a taxon successfully
     When I go to the catalog page for "Formicinae"
     And I follow "Add tribe"
     And I set the name to "Dorylini"
-    And I click "#copy-name-to-protonym-js-hook"
+    And I click css "#copy-name-to-protonym-js-hook"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
     And I press "Save"
     Then I should be on the catalog page for "Dorylini"

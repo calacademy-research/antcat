@@ -27,8 +27,8 @@ Given("RESET SESSION") do
 end
 
 # Click/press/follow.
-When("I click {string}") do |selector|
-  find(selector).click
+When("I click css {string}") do |css_selector|
+  find(css_selector).click
 end
 
 When("I press {string}") do |button|
