@@ -8,7 +8,7 @@ Feature: Editing a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
 
-    When I click the add taxon history item button
+    When I click on the add taxon history item button
     And I fill in "taxt" with "Abc"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
@@ -26,7 +26,7 @@ Feature: Editing a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
 
-    When I click the add taxon history item button
+    When I click on the add taxon history item button
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
@@ -40,7 +40,7 @@ Feature: Editing a history item
     When I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".history-items"
-    And I save the taxon history item
+    And I click on the save taxon history item button
     Then I should not see "Formicidae as family"
     And the history should be "(none)"
 
@@ -84,7 +84,7 @@ Feature: Editing a history item
     When I go to the edit page for "Formicidae"
     And I click on the edit taxon history item button
     And I fill in "taxt" with ""
-    And I save the taxon history item
+    And I click on the save taxon history item button
     Then I should see an alert "Taxt can't be blank"
 
   @javascript
@@ -96,7 +96,7 @@ Feature: Editing a history item
 
     When I click on the edit taxon history item button
     And I will confirm on the next step
-    And I delete the taxon history item
+    And I click on the delete taxon history item button
     Then I should be on the edit page for "Eciton"
 
     When I reload the page

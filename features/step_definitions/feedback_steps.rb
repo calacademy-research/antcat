@@ -1,4 +1,4 @@
-When("I click on the Feedback link") do
+When("I click the Feedback link") do
   first('#feedback-button').click
 end
 

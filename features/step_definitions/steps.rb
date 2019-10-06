@@ -27,6 +27,11 @@ Given("RESET SESSION") do
 end
 
 # Click/press/follow.
+When(/^I click on (.*)$/) do |location|
+  css_selector = selector_for location
+  find(css_selector).click
+end
+
 When("I click css {string}") do |css_selector|
   find(css_selector).click
 end

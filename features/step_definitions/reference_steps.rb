@@ -82,10 +82,6 @@ Given("the default reference is {string}") do |keey|
   References::DefaultReference.stub(:get).and_return reference
 end
 
-When('I press the search button by the reference search box') do
-  find("#header-reference-search-button-test-hook").click
-end
-
 Then("nesting_reference_id should contain a valid reference id") do
   id = find("#reference_nesting_reference_id").value
   expect(Reference.exists?(id)).to be true
@@ -99,8 +95,4 @@ end
 Then("the {string} tab should be selected") do |tab_name|
   tab_name = 'Unknown' if tab_name == 'Other'
   find("#tabs-#{tab_name.downcase}.is-active")
-end
-
-When("I click the Add to Recently Used button") do
-  find("a.add-to-recently-used-references-js-hook").click
 end

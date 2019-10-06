@@ -9,7 +9,7 @@ Feature: Editing references sections
     When I go to the edit page for "Atta"
     Then the reference section should be empty
 
-    When I click the add reference section button
+    When I click on the add reference section button
     And I fill in "references_taxt" with "New reference"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
@@ -30,7 +30,7 @@ Feature: Editing references sections
     When I click on the edit reference section button
     And I fill in "references_taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".references-section"
-    And I save the reference section
+    When I click on the save reference section button
     Then I should not see "Original reference"
     And the reference section should be "(none)"
 
@@ -68,7 +68,7 @@ Feature: Editing references sections
     When I go to the edit page for "Dolichoderinae"
     And I click on the edit reference section button
     And I will confirm on the next step
-    And I delete the reference section
+    And I click on the delete reference section button
     And WAIT_FOR_JQUERY
     Then the reference section should be empty
 
