@@ -15,7 +15,10 @@ It will modify load.sh and reset.sh to access the docker database.
 
 It also adds the gem "rubytheracer" to the gemfile.
 
-the file id_rsa must be current and exist in this directory. It must be set 
+Security - generate an ssh keypair, and add the public_key to the authorized_keys
+file on the deployed antcat instance. 
+
+The corresponding file id_rsa must be current and exist in this directory. It must be set 
 `chmod 600`
 
 to get a shell prompt (for debugging) run debug_export.sh.
