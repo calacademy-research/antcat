@@ -19,7 +19,7 @@ command="$runcommand sudo -i eybackup -e mysql -d $download_id:antcat"
 $runcommand sudo -i eybackup -e mysql -d $download_id:antcat
 mkdir -p /code/database_export
 scp -i ././docker/id_rsa -o StrictHostKeyChecking=no $username@$host_name:/mnt/tmp/$filename /code/database_export
-
+$runcommand rm /mnt/tmp/$filename
 mkdir -p /code/database_archive
 cp /code/database_export/$filename /code/database_archive
 gunzip -f /code/database_export/$filename
