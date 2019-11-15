@@ -17,9 +17,6 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new
   end
 
-  def edit
-  end
-
   def create
     @institution = Institution.new(institution_params)
 
@@ -29,6 +26,9 @@ class InstitutionsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update

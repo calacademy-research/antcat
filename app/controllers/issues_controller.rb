@@ -15,9 +15,6 @@ class IssuesController < ApplicationController
     @issue = Issue.new
   end
 
-  def edit
-  end
-
   def create
     @issue = Issue.new(issue_params)
     @issue.adder = current_user
@@ -28,6 +25,9 @@ class IssuesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update
