@@ -12,7 +12,9 @@ describe Taxa::Operations::MoveItems do
     end
 
     context 'when `to_taxon` has history items of its own' do
-      let!(:old_history_item) { create :taxon_history_item, taxon: to_taxon }
+      before do
+        create :taxon_history_item, taxon: to_taxon
+      end
 
       it 'places moved history items last' do
         expect { described_class[to_taxon, [history_item]] }.

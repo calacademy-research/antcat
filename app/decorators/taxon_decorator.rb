@@ -23,7 +23,7 @@ class TaxonDecorator < Draper::Decorator
     "Type-#{type_taxon.rank}: ".html_safe
   end
 
-  # NOTE: We need this becuase `type_taxt` is stripped of leading whitespace.
+  # NOTE: We need this because `type_taxt` is stripped of leading whitespace.
   def format_type_taxt
     return if type_taxt.blank?
     return type_taxt if type_taxt.start_with?(",")

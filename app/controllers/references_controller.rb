@@ -99,7 +99,7 @@ class ReferencesController < ApplicationController
         :citation,
         :author_names_string,
         :author_names_suffix,
-        { document_attributes: [:id, :file, :url, :public] }
+        document_attributes: [:id, :file, :url, :public]
       )
     end
 

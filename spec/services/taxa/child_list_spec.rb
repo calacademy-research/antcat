@@ -6,13 +6,13 @@ describe Taxa::ChildList do
       let!(:family) { create :family }
 
       context "when children are genera incertae sedis in Formicidae" do
-        let!(:taxon) { create :genus, incertae_sedis_in: 'family', subfamily: nil }
+        let!(:taxon) { create :genus, :incertae_sedis_in_family, subfamily: nil }
 
         specify do
           expect(described_class[family]).to eq(
             [
-              { label: "Subfamily of Formicidae", children: [Subfamily.first] },
-              { label: "Genus <i>incertae sedis</i> in Formicidae", children: [taxon] }
+              { label: "Subfamilies of Formicidae", children: [Subfamily.first] },
+              { label: "Genera <i>incertae sedis</i> in Formicidae", children: [taxon] }
             ]
           )
         end
@@ -29,20 +29,20 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Tribe (extant) of #{subfamily.name_cache}", children: [taxon] },
-              { label: "Tribe (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
+              { label: "Tribes (extant) of #{subfamily.name_cache}", children: [taxon] },
+              { label: "Tribes (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
             ]
           )
         end
       end
 
       context "when taxon has genera incertae sedis" do
-        let!(:taxon) { create :genus, subfamily: subfamily, incertae_sedis_in: 'subfamily' }
+        let!(:taxon) { create :genus, :incertae_sedis_in_subfamily, subfamily: subfamily }
 
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Genus <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
+              { label: "Genera <i>incertae sedis</i> in #{subfamily.name_cache}", children: [taxon] }
             ]
           )
         end
@@ -54,7 +54,7 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Collective group name in #{subfamily.name_cache}", children: [taxon] }
+              { label: "Collective group names in #{subfamily.name_cache}", children: [taxon] }
             ]
           )
         end

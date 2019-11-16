@@ -30,6 +30,7 @@ description: >
 
 tags: []
 topic_areas: [catalog]
+issue_description: The species epithet of this subspecies is not the same as its species' epithet.
 related_scripts:
   - SpeciesDisagreeingWithGenusRegardingSubfamily
   - SubspeciesDisagreeingWithSpeciesRegardingGenus

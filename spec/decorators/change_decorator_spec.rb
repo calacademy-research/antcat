@@ -39,7 +39,10 @@ describe ChangeDecorator do
     context "when an approved record" do
       let(:taxon) { create :family, :approved }
       let(:a_change) { create :change, taxon: taxon, user: adder, approver: approver, approved_at: Time.current }
-      let!(:version) { create :version, change_id: a_change.id, item: taxon }
+
+      before do
+        create :version, change_id: a_change.id, item: taxon
+      end
 
       it "cannot be approved" do
         expect(a_change.decorate.can_be_approved_by?(taxon, approver)).to be false

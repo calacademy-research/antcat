@@ -41,7 +41,7 @@ class Name < ApplicationRecord
   scope :orphaned, -> { Name.left_outer_joins(:taxa, :protonyms).where("protonyms.id IS NULL AND taxa.id IS NULL") }
   scope :not_orphaned, -> { Name.where.not(id: orphaned.select(:id)) } # `Taxon.count + Protonym.count`
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 
@@ -119,11 +119,10 @@ class Name < ApplicationRecord
 
     def ensure_no_spaces_in_single_word_names
       return unless single_word_name?
+      return unless name.include?(" ")
 
-      if name.include?(" ")
-        errors.add :name, "of type #{type} may not contain spaces"
-        throw :abort
-      end
+      errors.add :name, "of type #{type} may not contain spaces"
+      throw :abort
     end
 
     def ensure_starts_with_upper_case_letter

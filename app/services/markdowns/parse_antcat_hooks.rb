@@ -25,11 +25,11 @@ module Markdowns
     end
 
     def call
-      parse_taxon_ids!
-      parse_reference_ids!
-      parse_github_ids!
-      parse_wiki_pages_ids!
-      parse_user_ids!
+      parse_taxon_ids
+      parse_reference_ids
+      parse_github_ids
+      parse_wiki_pages_ids
+      parse_user_ids
 
       content
     end
@@ -40,7 +40,7 @@ module Markdowns
 
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
-      def parse_taxon_ids!
+      def parse_taxon_ids
         # HACK: To eager load records in a single query for performance reasons.
         ids = content.scan(TAXON_TAG_REGEX).flatten.compact
         return if ids.blank?
@@ -48,19 +48,19 @@ module Markdowns
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(TAXON_TAG_REGEX) do
-          taxon = taxa[$~[:id].to_i]
+          taxon = taxa[$LAST_MATCH_INFO[:id].to_i]
 
           if taxon
             taxon.link_to_taxon
           else
-            broken_markdown_link "taxon", $~[:id]
+            broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
           end
         end
       end
 
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
-      def parse_reference_ids!
+      def parse_reference_ids
         # HACK: To eager load records in a single query for performance reasons.
         refs_ids = content.scan(REFERENCE_TAG_REGEX).flatten.compact
         return if refs_ids.blank?
@@ -69,7 +69,7 @@ module Markdowns
         refs = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(REFERENCE_TAG_REGEX) do
-          id = $~[:id]
+          id = $LAST_MATCH_INFO[:id]
           begin
             refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
           rescue ActiveRecord::RecordNotFound
@@ -80,7 +80,7 @@ module Markdowns
 
       # Matches: %github123
       # renders: a link to the GitHub issue (including non-existing and PRs).
-      def parse_github_ids!
+      def parse_github_ids
         content.gsub!(/%github(\d+)/) do
           # Also works for PRs because GH figures that out.
           url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
@@ -90,7 +90,7 @@ module Markdowns
 
       # Matches: %wiki123
       # Renders: a link to the wiki page.
-      def parse_wiki_pages_ids!
+      def parse_wiki_pages_ids
         content.gsub!(/%wiki(\d+)/) do
           begin
             wiki_page = WikiPage.find($1)
@@ -103,7 +103,7 @@ module Markdowns
 
       # Matches: %user123
       # Renders: a link to the user's user page.
-      def parse_user_ids!
+      def parse_user_ids
         content.gsub!(/@user(\d+)/) do
           user = User.find_by(id: $1)
           if user

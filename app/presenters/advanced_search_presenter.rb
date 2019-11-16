@@ -23,18 +23,6 @@ class AdvancedSearchPresenter
     labels.join(', ').html_safe
   end
 
-  def format_type_localities taxon
-    string = ''
-    if taxon.protonym.locality
-      string << add_period_if_necessary(taxon.protonym.locality)
-    end
-    if taxon.protonym.biogeographic_region
-      string << ' ' << taxon.protonym.biogeographic_region
-      string = add_period_if_necessary string
-    end
-    string
-  end
-
   private
 
     def senior_synonym_list taxon

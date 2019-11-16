@@ -42,8 +42,7 @@ class ReferenceDecorator < Draper::Decorator
     prefix + date + suffix
   end
 
-  # TODO: Rename as it also links DOIs, not just reference documents.
-  def format_reference_document_link
+  def format_document_links
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end
 
@@ -113,7 +112,7 @@ class ReferenceDecorator < Draper::Decorator
     def generate_expandable_reference
       inner_content = []
       inner_content << generate_expanded_reference
-      inner_content << format_reference_document_link
+      inner_content << format_document_links
       content = inner_content.reject(&:blank?).join(' ')
 
       # TODO: `tabindex: 2` is required or tooltips won't stay open even with `data-click-open="true"`.

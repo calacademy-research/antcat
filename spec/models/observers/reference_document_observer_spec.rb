@@ -4,7 +4,9 @@ describe ReferenceDocumentObserver do
   context "when a reference document is changed" do
     it "is notified" do
       reference_document = create :reference_document
+      # rubocop:disable RSpec/AnyInstance
       expect_any_instance_of(described_class).to receive :before_update
+      # rubocop:enable RSpec/AnyInstance
       reference_document.url = 'antcat.org'
       reference_document.save!
     end

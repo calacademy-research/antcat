@@ -2,7 +2,6 @@ class Taxon < ApplicationRecord
   include Workflow
   include Workflow::ExternalTable
 
-  include Taxa::CallbacksAndValidations
   include RevisionsCanBeCompared
   include Trackable
 
@@ -10,6 +9,12 @@ class Taxon < ApplicationRecord
   ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
+  INCERTAE_SEDIS_IN_RANKS = [
+    INCERTAE_SEDIS_IN_FAMILY = 'family',
+    INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
+    'tribe',
+    'genus'
+  ]
 
   class TaxonExists < StandardError; end
 
@@ -32,20 +37,37 @@ class Taxon < ApplicationRecord
   # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
   attr_accessor :save_initiator
 
+  with_options class_name: 'Taxon' do
+    belongs_to :type_taxon, foreign_key: :type_taxon_id
+    belongs_to :genus
+    belongs_to :homonym_replaced_by
+    belongs_to :current_valid_taxon
+
+    has_one :homonym_replaced, foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
+    has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, foreign_key: :current_valid_taxon_id
+  end
+
   belongs_to :name, dependent: :destroy
   belongs_to :protonym, -> { includes :authorship }
-  belongs_to :type_taxon, class_name: 'Taxon', foreign_key: :type_taxon_id
-  belongs_to :genus, class_name: 'Taxon'
-  belongs_to :homonym_replaced_by, class_name: 'Taxon'
-  belongs_to :current_valid_taxon, class_name: 'Taxon'
 
-  has_one :homonym_replaced, class_name: 'Taxon', foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-  has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, class_name: 'Taxon', foreign_key: :current_valid_taxon_id
   has_one :taxon_state
 
-  scope :displayable, -> { where.not(status: Status::UNDISPLAYABLE) }
+  validates :name, :protonym, presence: true
+  validates :status, inclusion: { in: Status::STATUSES }
+  validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
+  validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
+  validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
+  validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
+  validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
+
+  validate :current_valid_taxon_validation, :ensure_correct_name_type
+
+  before_save :set_name_caches
+  before_save { remove_auto_generated if save_initiator } # TODO: Move or remove.
+  before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
+
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
@@ -61,7 +83,8 @@ class Taxon < ApplicationRecord
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     if parent
       parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }
@@ -80,7 +103,7 @@ class Taxon < ApplicationRecord
     where(name_cache: name).exists?
   end
 
-  (Status::STATUSES - [Status::VALID, Status::ORIGINAL_COMBINATION]).each do |status|
+  (Status::STATUSES - [Status::VALID]).each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end
@@ -138,7 +161,50 @@ class Taxon < ApplicationRecord
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
+  def soft_validation_warnings
+    @soft_validation_warnings ||= Taxa::CheckIfInDatabaseResults[self]
+  end
+
   def what_links_here predicate: false
     Taxa::WhatLinksHere[self, predicate: predicate]
   end
+
+  private
+
+    def set_name_caches
+      self.name_cache = name.name
+      self.name_html_cache = name.name_html
+    end
+
+    def remove_auto_generated
+      self.auto_generated = false
+    end
+
+    def set_taxon_state_to_waiting
+      taxon_state.review_state = TaxonState::WAITING
+      taxon_state.save
+    end
+
+    def current_valid_taxon_validation
+      if cannot_have_current_valid_taxon? && current_valid_taxon
+        errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
+      elsif requires_current_valid_taxon? && !current_valid_taxon
+        errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
+      end
+    end
+
+    def cannot_have_current_valid_taxon?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:absence]
+    end
+
+    def requires_current_valid_taxon?
+      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:presence]
+    end
+
+    def ensure_correct_name_type
+      return if name.is_a? name_class
+      return if name.class.name.in? Name::BROKEN_ISH_NAME_TYPES # Make sure taxa already in this state can be saved.
+      error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
+      errors.add :base, error_message unless errors.added? :base, error_message
+    end
 end

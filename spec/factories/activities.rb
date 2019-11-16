@@ -4,9 +4,9 @@ FactoryBot.define do
     trackable factory: :journal
     action { "create" }
 
-    trait :custom do
+    trait :execute_script do
       trackable { nil }
-      action { :custom }
+      action { :execute_script }
     end
   end
 end

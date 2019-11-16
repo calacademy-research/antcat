@@ -12,17 +12,23 @@
     =link_to "Change my password/name/email", edit_user_registration_path, class: "btn-normal"
 
 -if @user.deleted?
-  .callout.alert This user has been soft-deleted. This page can only be seen by superadmins. Edit user to restore account.
+  .callout.alert This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
 -elsif @user.locked?
   .callout.alert This user is locked. Edit user to unlock account.
+-elsif @user.hidden?
+  .callout.alert This user is hidden from the users list. Edit user to show it.
 
 %p
   %strong Name:
   =@user.name
   =@user.decorate.user_badge
-  -if user_is_superadmin?
+  -if user_is_editor?
     -if @user.locked?
       %span.warning-label.rounded-badge locked
+    -if @user.deleted?
+      %span.warning-label.rounded-badge soft-deleted
+    -if @user.hidden?
+      %span.warning-label.rounded-badge hidden
 
 %p
   %strong Email:

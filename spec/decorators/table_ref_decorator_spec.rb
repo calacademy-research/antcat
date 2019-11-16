@@ -6,11 +6,10 @@ describe TableRefDecorator do
   let(:decorated) { described_class.new(table_ref) }
 
   context "when table is `citations`" do
-    let!(:table) { "citations" }
+    let(:table) { "citations" }
     let!(:protonym) { create :protonym }
-    let!(:object) { protonym.authorship }
+    let(:object) { protonym.authorship }
     let!(:taxon) { create :family, protonym: protonym }
-    let!(:reference) { object.reference }
 
     specify { expect(decorated.item_link).to eq id }
     specify do
@@ -28,7 +27,7 @@ describe TableRefDecorator do
   end
 
   context "when table is `protonyms`" do
-    let!(:table) { "protonyms" }
+    let(:table) { "protonyms" }
     let!(:object) { create :protonym }
     let!(:name) { object.name }
 
@@ -37,7 +36,7 @@ describe TableRefDecorator do
   end
 
   context "when table is `reference_sections`" do
-    let!(:table) { "reference_sections" }
+    let(:table) { "reference_sections" }
     let!(:object) { create :reference_section }
     let!(:taxon) { object.taxon }
 
@@ -46,7 +45,7 @@ describe TableRefDecorator do
   end
 
   context "when table is `references`" do
-    let!(:table) { "references" }
+    let(:table) { "references" }
     let!(:object) { create :article_reference }
     let!(:reference) { object }
 
@@ -55,7 +54,7 @@ describe TableRefDecorator do
   end
 
   context "when table is `taxa`" do
-    let!(:table) { "taxa" }
+    let(:table) { "taxa" }
     let!(:object) { create :family }
     let!(:taxon) { object }
 
@@ -64,7 +63,7 @@ describe TableRefDecorator do
   end
 
   context "when table is `taxon_history_items`" do
-    let!(:table) { "taxon_history_items" }
+    let(:table) { "taxon_history_items" }
     let!(:object) { create :taxon_history_item }
     let!(:taxon) { object.taxon }
 

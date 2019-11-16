@@ -43,7 +43,13 @@
           -database_scripts.each do |database_script|
             %tr
               %td.shrink=database_script.decorate.format_topic_areas
-              %td=link_to database_script.title, database_script_path(database_script)
+              %td
+                =link_to database_script.title, database_script_path(database_script)
+                -if database_script.issue_description.present?
+                  %div
+                    %small.gray-text
+                      Issue description:
+                      =database_script.issue_description
               %td=database_script.decorate.format_tags
               %td.shrink
                 -if database_script.soft_validated?

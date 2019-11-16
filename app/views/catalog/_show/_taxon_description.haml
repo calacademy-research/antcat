@@ -17,11 +17,11 @@
   =taxon.protonym.decorate.format_pages_and_forms
   =Detax[taxon.protonym.authorship.notes_taxt]
   =taxon.protonym.decorate.format_locality
+  =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   -if taxon.type_taxon
     =taxon.decorate.type_taxon_rank
     =add_period_if_necessary(taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt])
-  =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   =Detax[taxon.headline_notes_taxt]
 

@@ -21,10 +21,6 @@ class Tribe < Taxon
     update_descendants_subfamilies
   end
 
-  def displayable_subtribes
-    subtribes.displayable
-  end
-
   def children
     genera
   end

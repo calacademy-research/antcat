@@ -10,7 +10,7 @@ describe Taxa::Statistics::FetchStatistics do
         tribe = create :tribe, subfamily: subfamily
         homonym_replaced_by = create :genus, subfamily: subfamily, tribe: tribe
         create :genus, :homonym, homonym_replaced_by: homonym_replaced_by, subfamily: subfamily, tribe: tribe
-        2.times { create :subfamily, fossil: true }
+        2.times { create :subfamily, :fossil }
       end
 
       it "returns the statistics for each status of each rank" do
@@ -64,9 +64,9 @@ describe Taxa::Statistics::FetchStatistics do
       context "when there are extinct genera and species" do
         before do
           genus = create :genus, subfamily: subfamily
-          create :genus, subfamily: subfamily, fossil: true
+          create :genus, :fossil, subfamily: subfamily
           create :species, genus: genus
-          create :species, genus: genus, fossil: true
+          create :species, :fossil, genus: genus
         end
 
         it "differentiates between extinct genera and species" do
@@ -154,10 +154,11 @@ describe Taxa::Statistics::FetchStatistics do
       context "when there are extinct species and subspecies" do
         before do
           species = create :species, genus: genus
-          fossil_species = create :species, genus: genus, fossil: true
-          create :subspecies, genus: genus, species: species, fossil: true
+          create :subspecies, :fossil, genus: genus, species: species
           create :subspecies, genus: genus, species: species
-          create :subspecies, genus: genus, species: fossil_species, fossil: true
+
+          fossil_species = create :species, :fossil, genus: genus
+          create :subspecies, :fossil, genus: genus, species: fossil_species
         end
 
         it "can differentiate extinct species and subspecies" do
@@ -195,7 +196,7 @@ describe Taxa::Statistics::FetchStatistics do
       context "when there are extant and fossil subspecies" do
         before do
           create :subspecies, species: species
-          create :subspecies, species: species, fossil: true
+          create :subspecies, :fossil, species: species
         end
 
         specify do

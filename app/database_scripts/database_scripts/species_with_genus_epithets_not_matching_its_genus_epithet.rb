@@ -27,6 +27,7 @@ description: >
 
 tags: []
 topic_areas: [catalog]
+issue_description: The genus epithet of this species is not the same as its genus' epithet.
 related_scripts:
   - SpeciesDisagreeingWithGenusRegardingSubfamily
   - SubspeciesDisagreeingWithSpeciesRegardingGenus

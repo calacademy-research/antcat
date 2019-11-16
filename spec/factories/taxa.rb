@@ -35,7 +35,7 @@ FactoryBot.define do
     factory :genus, class: Genus do
       association :name, factory: :genus_name
       tribe
-      subfamily { |a| a.tribe && a.tribe.subfamily }
+      subfamily { |a| a.tribe&.subfamily }
     end
 
     factory :subgenus, class: Subgenus do
@@ -102,6 +102,14 @@ FactoryBot.define do
 
     trait :with_current_valid_taxon do
       current_valid_taxon { Family.first || FactoryBot.create(:family) }
+    end
+
+    trait :incertae_sedis_in_family do
+      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_FAMILY }
+    end
+
+    trait :incertae_sedis_in_subfamily do
+      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_SUBFAMILY }
     end
 
     trait :old do

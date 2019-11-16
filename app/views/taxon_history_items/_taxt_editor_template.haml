@@ -3,7 +3,7 @@
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
     =Detax[taxon_history_item.taxt]
 
-  .taxt-editor-editor{style: 'display: none' }
+  .taxt-editor-editor
     =text_area_tag :taxt, taxon_history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
 
     .row

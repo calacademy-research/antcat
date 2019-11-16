@@ -34,7 +34,8 @@ module Wikipedia
       end
 
       def generate rank
-        set_children rank
+        @children_rank = rank
+        @children = @taxon.public_send(@children_rank).valid.order_by_name
 
         output = taxobox_extras
         output << "\n"
@@ -46,11 +47,6 @@ module Wikipedia
         output
       end
 
-      def set_children rank
-        @children_rank = rank
-        @children = @taxon.public_send(@children_rank).valid.order_by_name
-      end
-
       def divider
         "\n-------------------\n\n"
       end
@@ -58,10 +54,9 @@ module Wikipedia
       # For https://en.wikipedia.org/wiki/Template:Taxobox
       def taxobox_extras
         diversity_ref = Wikipedia::CiteTemplate[taxon, with_ref_tag: true]
-        children_count = children.count
 
         string =  "|diversity_link = ##{children_rank.to_s.capitalize}\n"
-        string << "|diversity = #{children_count} #{children_rank}\n"
+        string << "|diversity = #{children.count} #{children_rank}\n"
         string << "|diversity_ref = #{diversity_ref}\n"
       end
 

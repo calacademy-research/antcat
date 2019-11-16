@@ -19,7 +19,6 @@ class Activity < ApplicationRecord
     close_issue
     convert_species_to_subspecies
     create_obsolete_combination
-    custom
     elevate_subspecies_to_species
     execute_script
     finish_reviewing

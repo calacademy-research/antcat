@@ -2,6 +2,8 @@ module Autocomplete
   class AutocompleteReferences
     include Service
 
+    PER_PAGE = 10
+
     def initialize search_query
       @search_query = search_query
     end
@@ -39,7 +41,7 @@ module Autocomplete
       end
 
       def default_search_options
-        { reference_type: :nomissing, items_per_page: 10 }
+        { reference_type: :nomissing, items_per_page: PER_PAGE }
       end
 
       def keyword_params

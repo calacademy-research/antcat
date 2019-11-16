@@ -38,7 +38,7 @@
   %tr
     %td=form.label :parent, 'Parent'
     %td
-      -if taxon.parent && taxon.incertae_sedis_in != 'family'
+      -if taxon.parent && taxon.incertae_sedis_in != Taxon::INCERTAE_SEDIS_IN_FAMILY
         =taxon.parent.decorate.id_and_name_and_author_citation
         -unless taxon.new_record?
           -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
@@ -55,7 +55,7 @@
     %td.no-wrap
       =form.label :incertae_sedis_in
     %td
-      =form.select :incertae_sedis_in, [['(none)', nil], *Taxa::CallbacksAndValidations::INCERTAE_SEDIS_IN_RANKS]
+      =form.select :incertae_sedis_in, [['(none)', nil], *Taxon::INCERTAE_SEDIS_IN_RANKS]
 
   %tr
     %td
@@ -92,4 +92,4 @@
 
   %tr
     %td=form.label :headline_notes_taxt, 'Notes'
-    %td=render 'shared/taxt_editor/template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt
+    %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt

@@ -9,11 +9,8 @@ end
 
 __END__
 description: >
-  Original combinations, obsolete combination and unavailable misspellings with
+  Obsolete combination and unavailable misspellings with
   history items or reference sections.
-
-
-  See also [Pass through names with synonyms](/database_scripts/pass_through_names_with_synonyms).
 
 
   See %github375.

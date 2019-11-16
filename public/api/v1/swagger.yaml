@@ -637,7 +637,6 @@ definitions:
             - collective group name
             - obsolete combination
             - unavailable misspelling
-            - original combination
             - unavailable uncategorized
           protonym_id:
             type: integer

@@ -22,7 +22,7 @@ module Exporters
         end
 
         def document_links
-          reference.decorate.format_reference_document_link
+          reference.decorate.format_document_links
         end
 
         # Hardcoded, or we must set `host` + use `reference_url(reference)`.

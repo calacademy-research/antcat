@@ -5,7 +5,7 @@
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
     =markdown reference_section.references_taxt, no_wrapping_p: true
 
-  .taxt-editor-editor{style: 'display: none' }
+  .taxt-editor-editor
     =text_area_tag :title_taxt, reference_section.title_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Title", use_extras: true }
     =text_area_tag :subtitle_taxt, reference_section.subtitle_taxt, rows: 1, data: { has_linkables: true, previewable: true, previewable_title: "Subtitle", use_extras: true }
     =text_area_tag :references_taxt, reference_section.references_taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: "References", use_extras: true }

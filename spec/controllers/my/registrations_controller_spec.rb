@@ -7,7 +7,7 @@ describe My::RegistrationsController do
   #   2) You are testing a Devise controller bypassing the router.
   #      If so, you can explicitly tell Devise which mapping to use ...
   before do
-    @request.env["devise.mapping"] = Devise.mappings[:user]
+    request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
   describe "POST create" do
@@ -38,11 +38,11 @@ describe My::RegistrationsController do
     end
 
     context "when the New contributors' help page exists" do
-      let!(:wiki_page) { create :wiki_page, id: 1 }
+      let!(:wiki_page) { create :wiki_page, :new_contributors_help_page }
 
       it 'redirects to it' do
         post(:create, params: { user: user_params })
-        expect(response).to redirect_to '/wiki_pages/1'
+        expect(response).to redirect_to "/wiki_pages/#{wiki_page.id}"
       end
     end
 

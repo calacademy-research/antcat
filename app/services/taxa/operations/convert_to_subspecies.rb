@@ -10,6 +10,7 @@ module Taxa
 
       def call
         return false if original_species.subspecies.exists?
+        raise unless original_species.is_a?(Species) && new_species_parent.is_a?(Species)
 
         new_subspecies = build_new_subspecies
 

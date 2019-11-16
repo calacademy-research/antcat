@@ -21,7 +21,7 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#format_reference_document_link" do
+  describe "#format_document_links" do
     let!(:reference) { build_stubbed :reference }
 
     before do
@@ -30,7 +30,7 @@ describe ReferenceDecorator do
     end
 
     it "creates a link" do
-      expect(reference.decorate.format_reference_document_link).
+      expect(reference.decorate.format_document_links).
         to eq '<a class="pdf-link" href="example.com">PDF</a>'
     end
   end

@@ -4,10 +4,7 @@ module My
 
     before_action :check_if_too_many_registrations_today, only: :create
 
-    # TODO: Revisit.
-    unless Rails.env.test?
-      invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
-    end
+    invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
     def create
       super do |user|

@@ -9,27 +9,24 @@ AllCops:
     - 'db/schema.rb'
     - 'bin/**/*'
     - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
-    - 'app/database_scripts/database_scripts/possibly_duplicated_journal_names.rb'
     - 'vendor/**/*'
 
 Rails:
   Enabled: true
 
-# TODO: Investigate.
 Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/Delegate:
   Enabled: false
 
 Rails/DynamicFindBy:
   Whitelist: find_by_sql
 
-Rails/FilePath:
-  Enabled: false
-
 # TODO: We want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# TODO: Investigate if this would be useful.
 Rails/InverseOf:
   Enabled: false
 
@@ -62,7 +59,7 @@ Layout/EmptyLineAfterGuardClause:
 
 Layout/IndentationConsistency:
   Enabled: true
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 Layout/IndentFirstHashElement:
   Enabled: false
@@ -77,9 +74,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
 
-Lint/AmbiguousOperator:
-  Enabled: false
-
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
@@ -92,9 +86,6 @@ Naming/AccessorMethodName:
 FactoryBot/CreateList:
   Enabled: false
 
-RSpec/AnyInstance:
-  Enabled: false
-
 RSpec/EmptyExampleGroup:
   Enabled: false
 
@@ -103,15 +94,6 @@ RSpec/ExampleLength:
 
 RSpec/ExpectChange:
   EnforcedStyle: block
-
-RSpec/ExpectInHook:
-  Enabled: false
-
-RSpec/InstanceVariable:
-  Enabled: false
-
-RSpec/LetSetup:
-  Enabled: false
 
 RSpec/MessageSpies:
   Enabled: false
@@ -137,12 +119,6 @@ Style/AsciiComments:
 Style/Attr:
   Enabled: false
 
-Style/BlockDelimiters:
-  Enabled: false
-
-Style/BracesAroundHashParameters:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: true
 
@@ -158,9 +134,6 @@ Style/DoubleNegation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/GuardClause:
-  Enabled: false
-
 Style/FrozenStringLiteralComment:
   Enabled: false
 
@@ -170,19 +143,10 @@ Style/IfUnlessModifier:
 Style/Lambda:
   Enabled: false
 
-Style/LineEndConcatenation:
-  Enabled: false
-
 Style/MethodDefParentheses:
   Enabled: false
 
-Style/MultilineBlockChain:
-  Enabled: false
-
 Style/MutableConstant:
-  Enabled: false
-
-Style/IfInsideElse:
   Enabled: false
 
 Style/NumericLiterals:
@@ -191,31 +155,16 @@ Style/NumericLiterals:
 Style/NumericPredicate:
   Enabled: false
 
-Style/PercentLiteralDelimiters:
-  Enabled: false
-
 Style/PerlBackrefs:
   Enabled: false
 
 Style/RegexpLiteral:
   Enabled: false
 
-Style/SafeNavigation:
-  Enabled: false
-
-Style/SpecialGlobalVars:
-  Enabled: false
-
 Style/StringLiterals:
   Enabled: false
 
 Style/SymbolArray:
-  Enabled: false
-
-Style/TrivialAccessors:
-  Enabled: false
-
-Style/UnneededInterpolation:
   Enabled: false
 
 Style/WordArray:

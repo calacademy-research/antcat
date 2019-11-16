@@ -1,4 +1,6 @@
 class ActivityDecorator < Draper::Decorator
+  TEMPLATES_PATH = "activities/templates/"
+
   delegate :user, :trackable_id, :trackable, :trackable_type,
     :parameters, :action, :edit_summary, :edit_summary?
 
@@ -15,8 +17,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def when
-    sometime = helpers.time_ago_in_words activity.created_at
-    "#{sometime} ago"
+    helpers.time_ago_in_words(activity.created_at) + ' ago'
   end
 
   def anchor_path
@@ -79,23 +80,14 @@ class ActivityDecorator < Draper::Decorator
     # 3) There is a partial named `_<trackable_type>.haml`? --> use that
     #
     # 4) Else --> `_default.haml`
-    #
-    # TODO: Probably change to this:
-    # 1) Activites with non-default actions (ie not create/update/destroy)
-    #    --> `actions/_<action>.haml` (assume the template exists)
-    #
-    # 2) Else, just render --> "_<trackable_type>.haml"
-    #
-    # 3) Catch `ActionView::MissingTemplate` in `#did_something` --> `_default.haml`
     def template_partial
-      templates_path = "activities/templates/"
-      return "#{templates_path}actions/#{activity.action}" unless activity.trackable_type
+      return "#{TEMPLATES_PATH}actions/#{activity.action}" unless activity.trackable_type
 
       action_partial_name = activity.action
-      action_partial_path = "#{templates_path}/actions/_#{action_partial_name}"
+      action_partial_path = "#{TEMPLATES_PATH}/actions/_#{action_partial_name}"
 
       type_partial_name = activity.trackable_type.underscore
-      type_partial_path = "#{templates_path}_#{type_partial_name}"
+      type_partial_path = "#{TEMPLATES_PATH}_#{type_partial_name}"
 
       partial = if partial_exists? action_partial_path
                   "actions/#{action_partial_name}"
@@ -104,7 +96,7 @@ class ActivityDecorator < Draper::Decorator
                 else
                   "default"
                 end
-      "#{templates_path}#{partial}"
+      "#{TEMPLATES_PATH}#{partial}"
     end
 
     def partial_exists? path

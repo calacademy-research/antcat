@@ -1,9 +1,9 @@
 class AdvancedSearchPresenter
   class Text < AdvancedSearchPresenter
     def format taxon
-      string = convert_to_text(format_name(taxon))
-      status = format_status_reference(taxon).html_safe
-      string << convert_to_text(' ' + status) if status.present?
+      string = format_name(taxon).html_safe
+      string << ' '
+      string << convert_to_text(format_status_reference(taxon).html_safe)
       type_localities = format_type_localities(taxon)
       string << convert_to_text(' ' + type_localities) if type_localities.present?
       string << "\n"
@@ -24,6 +24,18 @@ class AdvancedSearchPresenter
         string << reference.decorate.plain_text
         string << " DOI: " << reference.doi if reference.doi?
         string << "   #{reference.id}"
+        string
+      end
+
+      def format_type_localities taxon
+        string = ''
+        if taxon.protonym.locality
+          string << add_period_if_necessary(taxon.protonym.locality)
+        end
+        if taxon.protonym.biogeographic_region
+          string << ' ' << taxon.protonym.biogeographic_region
+          string = add_period_if_necessary string
+        end
         string
       end
 
