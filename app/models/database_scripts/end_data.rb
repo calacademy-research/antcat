@@ -16,7 +16,7 @@ module DatabaseScripts
           begin
             line = f.gets
           end until line.nil? || line.match(/^__END__$/)
-          while line = f.gets # rubocop:disable Lint/AssignmentInCondition
+          while (line = f.gets)
             data << line
           end
         end
