@@ -46,7 +46,7 @@ module Taxa
       end
 
       def create_activity parameters
-        @taxon.create_activity :move_items, parameters: parameters
+        @taxon.create_activity :move_items, current_user, parameters: parameters
       end
 
       def activity_parameters_before_change

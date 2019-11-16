@@ -1,20 +1,18 @@
 class Issue < ApplicationRecord
+  include HasUserNotifications
   include RevisionsCanBeCompared
   include Trackable
-  include SendsNotifications
 
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
 
-  validates :adder, presence: true
-  validates :description, presence: true
+  validates :adder, :description, presence: true
   validates :title, presence: true, length: { maximum: 70 }
 
   scope :open, -> { where(open: true) }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
 
   acts_as_commentable
-  enable_user_notifications_for :description
   has_paper_trail
   trackable parameters: proc { { title: title } }
 

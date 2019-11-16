@@ -28,7 +28,7 @@ class FeedbackController < ApplicationController
     end
 
     if @feedback.save
-      @feedback.create_activity :create
+      @feedback.create_activity :create, current_user
       render json: feedback_success_callout, status: :created
     else
       render_unprocessable
@@ -37,19 +37,19 @@ class FeedbackController < ApplicationController
 
   def destroy
     @feedback.destroy
-    @feedback.create_activity :destroy, edit_summary: params[:edit_summary]
+    @feedback.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
     redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
   end
 
   def close
     @feedback.close
-    @feedback.create_activity :close_feedback
+    @feedback.create_activity :close_feedback, current_user
     redirect_to @feedback, notice: "Successfully closed feedback item."
   end
 
   def reopen
     @feedback.reopen
-    @feedback.create_activity :reopen_feedback
+    @feedback.create_activity :reopen_feedback, current_user
     redirect_to @feedback, notice: "Successfully re-opened feedback item."
   end
 

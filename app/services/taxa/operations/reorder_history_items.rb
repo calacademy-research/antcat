@@ -16,12 +16,10 @@ module Taxa
 
         attr_reader :taxon, :reordered_ids
 
-        delegate :history_items, :create_activity, :errors, to: :taxon
+        delegate :history_items, :errors, to: :taxon
 
         def reorder_history_items reordered_ids
           return false unless reordered_ids_valid? reordered_ids
-
-          previous_ids = history_items.pluck :id
 
           taxon.transaction do
             reordered_ids.each_with_index do |id, index|
@@ -29,9 +27,6 @@ module Taxa
               item.update!(position: (index + 1))
             end
           end
-
-          create_activity :reorder_taxon_history_items,
-            parameters: { previous_ids: previous_ids, reordered_ids: history_items.pluck(:id) }
 
           true
         rescue ActiveRecord::RecordInvalid

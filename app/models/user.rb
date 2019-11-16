@@ -24,14 +24,6 @@ class User < ApplicationRecord
   has_paper_trail
   trackable parameters: proc { { user_id: id } }
 
-  def self.current
-    RequestStore.store[:current_user]
-  end
-
-  def self.current=(user)
-    RequestStore.store[:current_user] = user
-  end
-
   # NOTE: Super primitive way of preventing mass registrations.
   def self.too_many_registrations_today?
     where(created_at: 1.day.ago..Time.current).count > MAX_NEW_REGISTRATIONS_PER_DAY

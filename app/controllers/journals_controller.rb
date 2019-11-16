@@ -18,7 +18,7 @@ class JournalsController < ApplicationController
 
   def update
     if @journal.update(journal_params)
-      @journal.create_activity :update
+      @journal.create_activity :update, current_user
       @journal.invalidate_reference_caches!
       redirect_to @journal, notice: "Successfully updated journal."
     else
@@ -28,7 +28,7 @@ class JournalsController < ApplicationController
 
   def destroy
     if @journal.destroy
-      @journal.create_activity :destroy
+      @journal.create_activity :destroy, current_user
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
       redirect_to @journal, alert: @journal.errors.full_messages.to_sentence

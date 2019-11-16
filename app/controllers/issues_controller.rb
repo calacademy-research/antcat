@@ -20,7 +20,8 @@ class IssuesController < ApplicationController
     @issue.adder = current_user
 
     if @issue.save
-      @issue.create_activity :create, edit_summary: params[:edit_summary]
+      @issue.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @issue.notify_users_mentioned_in @issue.description, notifier: current_user
       redirect_to @issue, notice: "Successfully created issue."
     else
       render :new
@@ -32,7 +33,8 @@ class IssuesController < ApplicationController
 
   def update
     if @issue.update(issue_params)
-      @issue.create_activity :update, edit_summary: params[:edit_summary]
+      @issue.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @issue.notify_users_mentioned_in @issue.description, notifier: current_user
       redirect_to @issue, notice: "Successfully updated issue."
     else
       render :edit
@@ -41,14 +43,14 @@ class IssuesController < ApplicationController
 
   def close
     @issue.close! current_user
-    @issue.create_activity :close_issue
+    @issue.create_activity :close_issue, current_user
 
     redirect_to @issue, notice: "Successfully closed issue."
   end
 
   def reopen
     @issue.reopen!
-    @issue.create_activity :reopen_issue
+    @issue.create_activity :reopen_issue, current_user
 
     redirect_to @issue, notice: "Successfully re-opened issue."
   end

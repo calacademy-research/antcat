@@ -17,7 +17,7 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
-      @tooltip.create_activity :create
+      @tooltip.create_activity :create, current_user
       redirect_to @tooltip, notice: 'Tooltip was successfully created.'
     else
       render :new
@@ -30,7 +30,7 @@ class TooltipsController < ApplicationController
 
   def update
     if @tooltip.update(tooltip_params)
-      @tooltip.create_activity :update
+      @tooltip.create_activity :update, current_user
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
       render :show
@@ -39,7 +39,7 @@ class TooltipsController < ApplicationController
 
   def destroy
     @tooltip.destroy
-    @tooltip.create_activity :destroy
+    @tooltip.create_activity :destroy, current_user
     redirect_to tooltips_path, notice: 'Tooltip was successfully deleted.'
   end
 

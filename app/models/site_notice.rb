@@ -1,6 +1,6 @@
 class SiteNotice < ApplicationRecord
+  include HasUserNotifications
   include Trackable
-  include SendsNotifications
 
   belongs_to :user
 
@@ -14,5 +14,4 @@ class SiteNotice < ApplicationRecord
   acts_as_readable on: :created_at
   has_paper_trail
   trackable parameters: proc { { title: title } }
-  enable_user_notifications_for :message
 end

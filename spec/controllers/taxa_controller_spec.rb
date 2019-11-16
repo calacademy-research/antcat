@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe TaxaController do
+  let(:user) { create :user, :editor }
+
   describe "forbidden actions" do
     context "when signed in as a user" do
       before { sign_in create(:user) }
@@ -15,7 +17,7 @@ describe TaxaController do
 
   describe "POST create" do
     before do
-      sign_in create(:user, :editor)
+      sign_in user
     end
 
     let(:authorship_reference) { create :article_reference }
@@ -191,7 +193,7 @@ describe TaxaController do
       }
     end
 
-    before { sign_in create(:user, :editor) }
+    before { sign_in user }
 
     it 'updates the taxon' do
       put(:update, params: { id: taxon.id, taxon: taxon_params })
@@ -212,7 +214,7 @@ describe TaxaController do
   describe "DELETE destroy" do
     let!(:taxon) { create :subfamily, family: create(:family) }
 
-    before { sign_in create(:user, :editor) }
+    before { sign_in user }
 
     it 'deletes the taxon' do
       expect { delete(:destroy, params: { id: taxon.id }) }.to change { Taxon.count }.by(-1)
