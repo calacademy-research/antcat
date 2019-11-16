@@ -1,4 +1,4 @@
-When("I click on the Feedback link") do
+When("I click the Feedback link") do
   first('#feedback-button').click
 end
 
@@ -6,11 +6,11 @@ When("I close the feedback form") do
   find("#feedback_modal .close-button").click
 end
 
-Then(/^I should not see the feedback form$/) do
+Then('I should not see the feedback form') do
   expect(page).to have_css '#submit-feedback-js', visible: false
 end
 
-Then(/^I should see the feedback form$/) do
+Then('I should see the feedback form') do
   expect(page).to have_css '#submit-feedback-js', visible: true
 end
 

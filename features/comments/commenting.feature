@@ -21,7 +21,7 @@ Feature: Commenting
     Then I should see my comment highlighted in the comments section
 
     When I follow "reply"
-    And I write a reply with the text "Oh, and I've also replied to the submitter's email."
+    And I write a reply with the body "Oh, and I've also replied to the submitter's email."
     And I press "Post Reply"
     Then I should see "Comment was successfully added"
     And I should see "Fixed, closing issue."

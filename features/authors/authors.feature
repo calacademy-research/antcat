@@ -13,20 +13,20 @@ Feature: Working with authors and their names
   Scenario: Adding an alternative spelling of an author name
     Given the following names exist for an author
       | Bolton, B. |
-    And I am logged in as a catalog editor
+    And I log in as a catalog editor
 
     When I go to the author page for "Bolton, B."
     And I follow "Add alternative spelling"
     And I fill in "author_name_name" with "Fisher, B."
     And I press "Save"
     And I wait
-    And I follow "Authors" inside the breadcrumb
+    And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, B.; Fisher, B."
 
   Scenario: Entering an existing author name
     Given the following names exist for an author
       | Bolton, B. |
-    And I am logged in as a catalog editor
+    And I log in as a catalog editor
 
     When I go to the author page for "Bolton, B."
     And I follow "Add alternative spelling"
@@ -37,13 +37,13 @@ Feature: Working with authors and their names
   Scenario: Updating an existing author name
     Given the following names exist for an author
       | Bolton, B. |
-    And I am logged in as a catalog editor
+    And I log in as a catalog editor
 
     When I go to the author page for "Bolton, B."
     And I follow "Edit"
     And I fill in "author_name_name" with "Bolton, Z."
     And I press "Save"
     And I wait
-    And I follow "Authors" inside the breadcrumb
+    And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, Z."
     And I should not see "Bolton, B."

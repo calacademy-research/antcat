@@ -24,7 +24,7 @@ class Reference < ApplicationRecord
   has_many :citations, dependent: :restrict_with_error
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxa
-  has_one :document, class_name: 'ReferenceDocument'
+  has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
   validates :title, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }

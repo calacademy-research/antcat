@@ -20,12 +20,16 @@ end
 
 __END__
 
+title: References without PDFs
 description: >
   Issues: %github387, %github324, %github371
 
 tags: [slow]
-topic_areas: [references]
+topic_areas: [pdfs]
 related_scripts:
-  - ReferencesWithoutPdfs
+  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
+  - ReferencesWithBlankPdfUrlsAndFilenames
+  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
+  - ReferencesWithUndownloadablePdfs

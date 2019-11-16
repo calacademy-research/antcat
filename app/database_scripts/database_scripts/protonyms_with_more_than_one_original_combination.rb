@@ -11,5 +11,5 @@ __END__
 description: >
   Where "protonym" means `Protonym` record, and "original combination" means `Taxon` record where `original_combination` is true.
 
-tags: [new!]
+tags: []
 topic_areas: [protonyms]

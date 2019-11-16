@@ -62,8 +62,10 @@ describe TaxonDecorator do
   describe "#link_to_antweb" do
     it "handles subfamilies" do
       taxon = build_stubbed :subfamily
+
+      query_params = "rank=subfamily&subfamily=#{taxon.name.name.downcase}&project=worldants"
       expect(taxon.decorate.link_to_antweb).
-        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?rank=subfamily&subfamily=#{taxon.name.name.downcase}&project=worldants">AntWeb</a>)
+        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?#{query_params}">AntWeb</a>)
     end
 
     it "outputs nothing for tribes" do
@@ -73,8 +75,10 @@ describe TaxonDecorator do
 
     it "handles genera" do
       taxon = create :genus, name_string: 'Atta'
+
+      query_params = 'rank=genus&genus=atta&project=worldants'
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=genus&genus=atta&project=worldants">AntWeb</a>'
+        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?#{query_params}">AntWeb</a>)
     end
 
     it "outputs nothing for subgenera" do
@@ -84,16 +88,20 @@ describe TaxonDecorator do
 
     it "handles species" do
       taxon = create :species, name_string: 'Atta major', genus: create(:genus, name_string: 'Atta')
+
+      query_params = 'rank=species&genus=atta&species=major&project=worldants'
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=species&genus=atta&species=major&project=worldants">AntWeb</a>'
+        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?#{query_params}">AntWeb</a>)
     end
 
     it "handles subspecies" do
       genus = create :genus, name_string: 'Atta'
       species = create :species, name_string: 'Atta major', genus: genus
       taxon = create :subspecies, name_string: 'Atta major minor', species: species, genus: genus
+
+      query_params = 'rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants'
       expect(taxon.decorate.link_to_antweb).
-        to eq '<a class="external-link" href="http://www.antweb.org/description.do?rank=subspecies&genus=atta&species=major&subspecies=minor&project=worldants">AntWeb</a>'
+        to eq %(<a class="external-link" href="http://www.antweb.org/description.do?#{query_params}">AntWeb</a>)
     end
   end
 end

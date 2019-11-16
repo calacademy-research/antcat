@@ -12,7 +12,7 @@ Feature: Delete reference
     Then I should see "Reference was successfully deleted"
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the reference Fisher, 2004" in the feed
+    Then I should see "Archibald deleted the reference Fisher, 2004" within the feed
 
   Scenario: Try to delete a reference when there are references to it
     Given there is a reference referenced in a history item

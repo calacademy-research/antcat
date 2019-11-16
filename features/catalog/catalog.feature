@@ -13,38 +13,38 @@ Feature: Using the catalog
     And I should see "Subfamilies of Formicidae: Dolichoderinae"
 
   Scenario: Selecting a subfamily
-    When I follow "Dolichoderinae" in the taxon browser
-    Then "Dolichoderinae" should be selected
+    When I follow "Dolichoderinae" within the taxon browser
+    Then "Dolichoderinae" should be selected in the taxon browser
 
   Scenario: Selecting a tribe
-    When I follow "Dolichoderinae" in the taxon browser
-    And I follow "Dolichoderini" in the taxon browser
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderini" should be selected
-    And I should see "Dolichoderus" in the taxon browser
+    When I follow "Dolichoderinae" within the taxon browser
+    And I follow "Dolichoderini" within the taxon browser
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderini" should be selected in the taxon browser
+    And I should see "Dolichoderus" within the taxon browser
 
   Scenario: Selecting a genus
-    When I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies taxon browser tab
+    When I follow "Dolichoderinae" within the taxon browser
+    And I follow "All genera" within the subfamilies taxon browser tab
     And I follow "Dolichoderus"
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderus" should be selected
-    And I should see "abruptus" in the taxon browser
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderus" should be selected in the taxon browser
+    And I should see "abruptus" within the taxon browser
 
   Scenario: Selecting a species
-    When I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies taxon browser tab
+    When I follow "Dolichoderinae" within the taxon browser
+    And I follow "All genera" within the subfamilies taxon browser tab
     And I follow "Dolichoderus"
     And I follow "abruptus"
-    Then "Dolichoderinae" should be selected
-    And "Dolichoderus" should be selected
-    And "abruptus" should be selected
+    Then "Dolichoderinae" should be selected in the taxon browser
+    And "Dolichoderus" should be selected in the taxon browser
+    And "abruptus" should be selected in the taxon browser
 
   Scenario: Selecting a subspecies
-    When I follow "Dolichoderinae" in the taxon browser
-    And I follow "All genera" in the subfamilies taxon browser tab
+    When I follow "Dolichoderinae" within the taxon browser
+    And I follow "All genera" within the subfamilies taxon browser tab
     And I follow "Dolichoderus"
-    Then I should see "abruptus" in the taxon browser
+    Then I should see "abruptus" within the taxon browser
 
     When I follow "abruptus"
-    Then I should see "minor" in the taxon browser
+    Then I should see "minor" within the taxon browser

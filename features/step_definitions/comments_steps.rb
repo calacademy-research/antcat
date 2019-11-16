@@ -1,16 +1,15 @@
-When("I write a new comment {string}") do |text|
-  first("#comment_body").set text
+When("I write a new comment {string}") do |body|
+  first("#comment_body").set body
 end
 
-When("I write a reply with the text {string}") do |text|
-  all("#comment_body").last.set text
+When("I write a reply with the body {string}") do |body|
+  all("#comment_body").last.set body
 end
 
 Given('Batiatus has commented "Cool" on an issue with the title "Typos"') do
   issue = create :issue, title: "Typos"
   batiatus = User.find_by(name: "Batiatus")
-  User.current = batiatus # HACK
-  Comment.build_comment(issue, batiatus, "Cool").save!
+  Comment.build_comment(issue, batiatus, body: "Cool").save!
 end
 
 Then("I should see a comments section") do

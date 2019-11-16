@@ -40,7 +40,7 @@ module DatabaseScripts
         end
 
         # Gets the results from `#results` unless specified.
-        def rows results = nil, &block
+        def rows results = nil
           results ||= @cached_results
 
           if results.blank?
@@ -49,7 +49,7 @@ module DatabaseScripts
           end
 
           results.each do |object|
-            row object, *block.call(object)
+            row object, *yield(object)
           end
         end
 

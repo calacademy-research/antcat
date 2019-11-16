@@ -8,14 +8,14 @@ Feature: Editing a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
 
-    When I click the add taxon history item button
+    When I click on the add taxon history item button
     And I fill in "taxt" with "Abc"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
     Then the history should be "Abc"
 
     When I go to the activity feed
-    Then I should see "Archibald added the history item #" in the feed
+    Then I should see "Archibald added the history item #" within the feed
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
@@ -26,7 +26,7 @@ Feature: Editing a history item
     When I go to the edit page for "Atta"
     Then the history should be empty
 
-    When I click the add taxon history item button
+    When I click on the add taxon history item button
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
@@ -40,7 +40,7 @@ Feature: Editing a history item
     When I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".history-items"
-    And I save the taxon history item
+    And I click on the save taxon history item button
     Then I should not see "Formicidae as family"
     And the history should be "(none)"
 
@@ -48,7 +48,7 @@ Feature: Editing a history item
     Then the history item field should be "(none)"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the history item #" in the feed
+    Then I should see "Archibald edited the history item #" within the feed
     And I should see "belonging to Formicidae"
     And I should see the edit summary "fix typo"
 
@@ -84,7 +84,7 @@ Feature: Editing a history item
     When I go to the edit page for "Formicidae"
     And I click on the edit taxon history item button
     And I fill in "taxt" with ""
-    And I save the taxon history item
+    And I click on the save taxon history item button
     Then I should see an alert "Taxt can't be blank"
 
   @javascript
@@ -96,14 +96,14 @@ Feature: Editing a history item
 
     When I click on the edit taxon history item button
     And I will confirm on the next step
-    And I delete the taxon history item
+    And I click on the delete taxon history item button
     Then I should be on the edit page for "Eciton"
 
-    When I refresh the page (JavaScript)
+    When I reload the page
     Then the history should be empty
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the history item #" in the feed
+    Then I should see "Archibald deleted the history item #" within the feed
     And I should see "belonging to Eciton"
 
   @javascript
@@ -118,11 +118,11 @@ Feature: Editing a history item
     And the history item field should not be visible
 
     When I click on the edit taxon history item button
-    Then I should still see "Eciton history, Giovanni, 1809"
+    Then I should see "Eciton history, Giovanni, 1809"
     And the history item field should be visible
 
     When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
-    And I press all "Rerender preview"
+    And I press "Rerender preview"
     Then I should see "Lasius history, Giovanni, 1809"
 
     When I click on the cancel taxon history item button

@@ -27,25 +27,25 @@ class ReferencesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def create
     @reference = reference_type_from_params.new
 
     if save
-      @reference.create_activity :create, edit_summary: params[:edit_summary]
+      @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
       render :new
     end
   end
 
+  def edit
+  end
+
   def update
     @reference = set_reference_type
 
     if save
-      @reference.create_activity :update, edit_summary: params[:edit_summary]
+      @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       render :edit
@@ -57,7 +57,8 @@ class ReferencesController < ApplicationController
     activity_parameters = { name: @reference.keey }
 
     if @reference.destroy
-      @reference.create_activity :destroy, edit_summary: params[:edit_summary], parameters: activity_parameters
+      @reference.create_activity :destroy, current_user, edit_summary: params[:edit_summary],
+        parameters: activity_parameters
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
       redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence

@@ -29,11 +29,11 @@ module DatabaseScripts
           @headers = items
         end
 
-        def rows results = nil, &block
+        def rows results = nil
           results ||= @cached_results
 
           results.each do |object|
-            @rows.push block.call(object)
+            @rows.push yield(object)
           end
         end
       end

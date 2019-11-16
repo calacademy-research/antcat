@@ -40,11 +40,13 @@ end
 
 Given("the following entry nests it") do |table|
   data = table.hashes.first
-  NestedReference.create! title: data[:title],
+  NestedReference.create!(
+    title: data[:title],
     author_names: [create(:author_name, name: data[:author])],
     citation_year: data[:citation_year],
     pages_in: data[:pages_in],
     nesting_reference: Reference.last
+  )
 end
 
 Given("a Hölldobler-Fisher reference exists with the title {string}") do |title|
@@ -70,24 +72,14 @@ Then("I should see a PDF link") do
   find "a", text: "PDF", match: :first
 end
 
-When("I fill in {string} with a URL to a document that exists") do |field|
+When("I fill in {string} with a URL to a document that exists") do |field_name|
   stub_request :any, "google.com/foo"
-  step %(I fill in "#{field}" with "google\.com/foo")
+  step %(I fill in "#{field_name}" with "google\.com/foo")
 end
 
 Given("the default reference is {string}") do |keey|
   reference = find_reference_by_keey keey
   References::DefaultReference.stub(:get).and_return reference
-end
-
-When("I fill in the references search box with {string}") do |search_term|
-  within('#desktop-menu') do
-    step %(I fill in "reference_q" with "#{search_term}")
-  end
-end
-
-When('I press "Go" by the references search box') do
-  find("#header-reference-search-button-test-hook").click
 end
 
 Then("nesting_reference_id should contain a valid reference id") do
@@ -103,8 +95,4 @@ end
 Then("the {string} tab should be selected") do |tab_name|
   tab_name = 'Unknown' if tab_name == 'Other'
   find("#tabs-#{tab_name.downcase}.is-active")
-end
-
-When("I click the Add to Recently Used button") do
-  find("a.add-to-recently-used-references-js-hook").click
 end

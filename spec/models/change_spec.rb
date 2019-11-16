@@ -5,6 +5,10 @@ describe Change do
     it { is_expected.to validate_presence_of(:user).on(:create) }
   end
 
+  describe 'relations' do
+    it { is_expected.to have_many(:versions).dependent(false) }
+  end
+
   describe "scopes" do
     describe ".waiting" do
       let!(:unreviewed_change) { create :change, taxon: create(:family, :waiting) }

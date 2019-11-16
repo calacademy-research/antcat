@@ -49,11 +49,11 @@ module Taxa
       end
 
       def update_parent_and_save
-        Taxa::Operations::ForceParentChange[@taxon, @new_parent]
+        Taxa::Operations::ForceParentChange[@taxon, @new_parent, user: current_user]
       end
 
       def create_activity
-        @taxon.create_activity :force_parent_change
+        @taxon.create_activity :force_parent_change, current_user
       end
   end
 end

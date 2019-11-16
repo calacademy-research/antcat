@@ -11,7 +11,7 @@ class NamesController < ApplicationController
 
   def update
     if @name.update(name_params)
-      @name.create_activity :update, edit_summary: params[:edit_summary]
+      @name.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to name_path(@name), notice: "Successfully updated name."
     else
       render :edit
@@ -20,7 +20,7 @@ class NamesController < ApplicationController
 
   def destroy
     if @name.destroy
-      @name.create_activity :destroy
+      @name.create_activity :destroy, current_user
       redirect_to root_path, notice: "Successfully deleted name."
     else
       redirect_to name_path(@name), alert: @name.errors.full_messages.to_sentence

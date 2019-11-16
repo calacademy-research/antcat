@@ -5,7 +5,7 @@ Feature: Latest Additions
 
   Background:
     Given there is a reference
-    And I am logged in as a catalog editor
+    And I log in as a catalog editor
     And I go to the latest reference additions page
 
   Scenario: Start reviewing

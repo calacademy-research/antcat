@@ -8,6 +8,7 @@ describe Taxon do
   describe 'relations' do
     it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
+    it { is_expected.to have_one(:taxon_state).dependent(false) }
     it { is_expected.to have_one(:homonym_replaced).dependent(:restrict_with_error) }
     it { is_expected.to belong_to(:protonym).dependent(false) }
     it { is_expected.to belong_to(:name).dependent(:destroy) }

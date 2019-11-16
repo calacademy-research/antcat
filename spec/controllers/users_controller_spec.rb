@@ -23,6 +23,12 @@ describe UsersController do
     end
   end
 
+  describe "GET new" do
+    before { sign_in create(:user, :superadmin) }
+
+    specify { expect(get(:new)).to render_template :new }
+  end
+
   describe "POST create" do
     let!(:user_params) do
       {

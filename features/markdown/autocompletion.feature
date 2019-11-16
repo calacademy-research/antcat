@@ -55,7 +55,7 @@ Feature: Markdown autocompletion
       | Bolton | Bolton's Ants | 2003          |
 
     When I go to the page of the reference "Bolton, 2003"
-    And I click the Add to Recently Used button
+    And I click css "a.add-to-recently-used-references-js-hook"
     Then I should see "Added to recently used references"
 
     When I am on a page with a textarea with markdown preview and autocompletion

@@ -7,7 +7,7 @@ class Change < ApplicationRecord
   belongs_to :taxon, class_name: 'Taxon'
   belongs_to :user
 
-  has_many :versions, class_name: 'PaperTrail::Version'
+  has_many :versions, class_name: 'PaperTrail::Version', dependent: false
 
   validates :user, presence: true, on: :create
 
@@ -18,16 +18,12 @@ class Change < ApplicationRecord
   trackable
 
   def self.approve_all user
-    count = TaxonState.waiting.count
-
     TaxonState.waiting.each do |taxon_state|
       # TODO: Maybe something like `TaxonState#approve_related_changes`?
       Change.where(taxon: taxon_state.taxon).find_each do |change|
         change.approve user
       end
     end
-
-    Activity.create_without_trackable :approve_all_changes, parameters: { count: count }
   end
 
   def approve user

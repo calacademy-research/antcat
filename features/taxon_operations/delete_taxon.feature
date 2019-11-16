@@ -3,12 +3,17 @@ Feature: Deleting a taxon
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Deleted taxon (with feed)
-    Given there is a subfamily "Antcatinae"
+    # Create Formicidae to make sure the deleted taxon has a parent.
+    Given the Formicidae family exists
+    And there is a subfamily "Antcatinae"
 
     When I go to the catalog page for "Antcatinae"
+    And I will confirm on the next step
     And I follow "Delete"
-    And I go to the activity feed
-    Then I should see "Archibald deleted the subfamily Antcatinae" in the feed
+    Then I should see "Taxon was successfully deleted."
+
+    When I go to the activity feed
+    Then I should see "Archibald deleted the subfamily Antcatinae" within the feed
 
   Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
     Given there is a genus "Atta"

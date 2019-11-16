@@ -53,7 +53,7 @@ module Taxa
       end
 
       def create_activity original_species, new_subspecies
-        original_species.create_activity :convert_species_to_subspecies,
+        original_species.create_activity :convert_species_to_subspecies, current_user,
           parameters: {
             original_species_id: original_species.id,
             name_was: original_species.name_html_cache,

@@ -71,6 +71,19 @@ describe DatabaseScript do
       end
     end
 
+    describe "#title" do
+      let(:script) { DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new }
+
+      it "can have a custom title" do
+        expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
+      end
+
+      it "defaults to the humanized filename" do
+        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
+        expect(script.title).to eq "Fossil protonyms with non fossil taxa"
+      end
+    end
+
     describe "#description" do
       it "can have a description" do
         expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"

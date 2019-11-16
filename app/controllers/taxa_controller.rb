@@ -17,10 +17,11 @@ class TaxaController < ApplicationController
       @taxon,
       taxon_params,
       taxon_name_string: params[:taxon_name_string].presence,
-      protonym_name_string: params[:protonym_name_string].presence
+      protonym_name_string: params[:protonym_name_string].presence,
+      user: current_user
     ).save
 
-    @taxon.create_activity :create, edit_summary: params[:edit_summary]
+    @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :new
@@ -36,9 +37,9 @@ class TaxaController < ApplicationController
   end
 
   def update
-    TaxonForm.new(@taxon, taxon_params).save
+    TaxonForm.new(@taxon, taxon_params, user: current_user).save
 
-    @taxon.create_activity :update, edit_summary: params[:edit_summary]
+    @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
   rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
     render :edit
@@ -52,12 +53,16 @@ class TaxaController < ApplicationController
       MSG
     else
       Taxon.transaction do
-        UndoTracker.setup_change @taxon, :delete
+        UndoTracker.setup_change @taxon, :delete, user: current_user
         @taxon.taxon_state.update!(deleted: true, review_state: TaxonState::WAITING)
-        @taxon.destroy!
-        @taxon.create_activity :destroy, edit_summary: params[:edit_summary]
+
+        if @taxon.destroy
+          @taxon.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+          redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
+        else
+          redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
+        end
       end
-      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
     end
   end
 

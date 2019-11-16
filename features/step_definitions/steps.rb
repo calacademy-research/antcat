@@ -1,14 +1,6 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "selectors"))
+# General steps, not specific to AntCat.
 
-module WithinHelpers
-  def with_scope locator
-    locator ? within(*selector_for(locator)) { yield } : yield
-  end
-end
-World WithinHelpers
-
-# Go to / be on
+# Browser/navigation.
 When(/^I go to (.+)$/) do |page_name|
   visit path_to(page_name)
 end
@@ -18,101 +10,121 @@ Then(/^I should be on (.+)$/) do |page_name|
   expect(current_path).to eq path_to(page_name)
 end
 
-# Click/press
-When("I press {string}") do |button|
-  click_button button
+Then("the page title should have {string} in it") do |title|
+  expect(page.title).to have_content title, normalize_ws: true
 end
 
-# TODO. Remove hack.
-When("I press all {string}") do |button|
-  all(:button, button).each(&:click)
+When("I reload the page") do
+  visit current_path
 end
 
-When("I follow the first {string}") do |link|
-  first(:link, link).click
+When("I wait") do
+  sleep 1
 end
 
-When("I follow the second {string}") do |link|
-  all(:link, link)[1].click
+Given("RESET SESSION") do
+  Capybara.reset_sessions!
 end
 
-When("I follow {string}") do |link|
-  click_link link
+# Click/press/follow.
+When(/^I click on (.*)$/) do |location|
+  css_selector = selector_for location
+  find(css_selector).click
 end
 
-When("I click {string}") do |selector|
-  find(selector).click
+When("I click css {string}") do |css_selector|
+  find(css_selector).click
 end
 
-When(/I follow "(.*?)" (?:with)?in (.*)$/) do |link, location|
+When("I press {string}") do |button_text|
+  click_button button_text
+end
+
+When("I follow the first {string}") do |link_text|
+  first(:link, link_text).click
+end
+
+When("I follow the second {string}") do |link_text|
+  all(:link, link_text)[1].click
+end
+
+When("I follow {string}") do |link_text|
+  click_link link_text
+end
+
+When(/^I follow "(.*?)" within (.*)$/) do |link_text, location|
   with_scope location do
-    step %(I follow "#{link}")
+    step %(I follow "#{link_text}")
   end
 end
 
-When(/^I press "(.*?)" (?:with)?in (.*)$/) do |button, location|
+# Interact with form elements.
+When("I fill in {string} with {string}") do |field_name, value|
+  fill_in field_name, with: value
+end
+
+When(/^I fill in "(.*?)" with "(.*?)" within (.*)$/) do |field_name, value, location|
   with_scope location do
-    step %(I press "#{button}")
+    fill_in field_name, with: value
   end
 end
 
-# Interact with form elements
-When(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
-  fill_in field, with: value
+When("I select {string} from {string}") do |value, field_name|
+  select value, from: field_name
 end
 
-When("I fill in {string} with {string} within {string}") do |field, value, within_element|
-  within(within_element) do
-    fill_in field, with: value
-  end
+When("I check {string}") do |field_name|
+  check field_name
 end
 
-When("I select {string} from {string}") do |value, field|
-  select value, from: field
+When("I uncheck {string}") do |field_name|
+  uncheck field_name
 end
 
-When("I check {string}") do |field|
-  check field
+When("I choose {string}") do |field_name|
+  choose field_name
 end
 
-When("I uncheck {string}") do |field|
-  uncheck field
+# "I should see / should contain".
+Then("I should see {string}") do |content|
+  expect(page).to have_content content, normalize_ws: true
 end
 
-When("I choose {string}") do |field|
-  choose field
+Then("I should not see {string}") do |content|
+  expect(page).to have_no_content content
 end
 
-# "I should see/contain/selected ..."
-Then(/^(?:|I )should (?:|still )see "([^"]*)"$/) do |text|
-  expect(page).to have_content text, normalize_ws: true
-end
-
-Then(/^(?:|I )should not see "([^"]*)"$/) do |text|
-  expect(page).to have_no_content text
-end
-
-Then(/^the "([^"]*)" field(?: within (.*))? should contain "([^"]*)"$/) do |field, parent, value|
-  with_scope(parent) do
-    field = find_field field
-    field_value = field.tag_name == 'textarea' ? field.text : field.value
-    expect(field_value).to match /#{value}/
-  end
-end
-
-Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, location|
+Then(/^I should see "(.*?)" within (.*)$/) do |content, location|
   with_scope location do
-    step %(I should #{do_not}see "#{contents}")
+    step %(I should see "#{content}")
   end
 end
 
-Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
+Then(/^I should not see "(.*?)" within (.*)$/) do |content, location|
   with_scope location do
-    expect(page).to have_css ".selected", text: word
+    step %(I should not see "#{content}")
   end
 end
 
-# Misc
+Then("the {string} field should contain {string}") do |field_name, value|
+  field = find_field field_name
+  expect(field.value).to match value
+end
+
+Then("the {string} field within {string} should contain {string}") do |field_name, parent_css_selector, value|
+  within parent_css_selector do
+    field = find_field field_name
+    expect(field.value).to match value
+  end
+end
+
+# JavaScript alerts and prompts.
+Then("I should see an alert {string}") do |message|
+  accept_alert(message) do
+    # No-op.
+  end
+end
+
 And('I will confirm on the next step') do
   begin
     evaluate_script "window.alert = function(msg) { return true; }"
@@ -128,41 +140,4 @@ When("I will enter {string} in the prompt and confirm on the next step") do |str
   rescue Capybara::NotSupportedByDriverError => e
     warn e
   end
-end
-
-When("I wait") do
-  sleep 1
-end
-
-Given("RESET SESSION") do
-  Capybara.reset_sessions!
-end
-
-Then("I should see an alert {string}") do |message|
-  accept_alert(message) do
-    # No-op.
-  end
-end
-
-Then("the page title should have {string} in it") do |title|
-  expect(page.title).to have_content title, normalize_ws: true
-end
-
-When("I reload the page") do
-  visit current_path
-end
-
-When("I follow {string} inside the breadcrumb") do |link|
-  within "#breadcrumbs" do
-    step %(I follow "#{link}")
-  end
-end
-
-# HACK: To prevent the driver from navigating away from the page before completing the request.
-And('I wait for the "success" message') do
-  step 'I should see "uccess"' # "[Ss]uccess(fully)?"
-end
-
-When(/^I refresh the page \(JavaScript\)$/) do
-  page.evaluate_script 'window.location.reload()'
 end

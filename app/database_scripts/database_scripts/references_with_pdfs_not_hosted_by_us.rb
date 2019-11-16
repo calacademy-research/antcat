@@ -24,6 +24,7 @@ end
 
 __END__
 
+title: References with PDFs not hosted by us
 description: >
   There may be more references not hosted by us, but these definitely are not.
 
@@ -35,8 +36,11 @@ description: >
 
 
 tags: [slow]
-topic_areas: [references]
+topic_areas: [pdfs]
 related_scripts:
-  - ReferencesWithoutPdfs
+  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
+  - ReferencesWithBlankPdfUrlsAndFilenames
+  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
+  - ReferencesWithUndownloadablePdfs

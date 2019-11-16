@@ -27,5 +27,6 @@ description: >
 tags: [list]
 topic_areas: [references]
 related_scripts:
+  - OrphanedAuthorNames
   - OrphanedAuthors
   - OrphanedProtonyms

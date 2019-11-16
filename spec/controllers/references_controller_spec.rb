@@ -17,15 +17,33 @@ describe ReferencesController do
   end
 
   describe "GET index" do
-    it "renders the index template" do
-      get :index
-      expect(response).to render_template :index
-    end
+    specify { expect(get(:index)).to render_template :index }
 
     it "assigns @references" do
       reference = create :article_reference
       get :index
       expect(assigns(:references)).to eq [reference]
+    end
+  end
+
+  describe "DELETE destroy" do
+    let!(:reference) { create :unknown_reference }
+
+    before { sign_in create(:user, :editor) }
+
+    it 'deletes the reference' do
+      expect { delete(:destroy, params: { id: reference.id }) }.to change { Reference.count }.by(-1)
+    end
+
+    it 'creates an activity' do
+      reference_keey = reference.keey
+
+      expect { delete(:destroy, params: { id: reference.id, edit_summary: 'Duplicate' }) }.
+        to change { Activity.where(action: :destroy, trackable: reference).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.edit_summary).to eq "Duplicate"
+      expect(activity.parameters).to eq(name: reference_keey)
     end
   end
 end

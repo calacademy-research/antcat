@@ -57,9 +57,7 @@ module Comments
 
       # TODO: Improve and move somewhere.
       def notify_creator?
-        # These are the only models for which we want to notify
-        # the creator about. TODO see if we can make use of
-        # `enable_user_notifications_for` instead of this.
+        # These are the only models for which we want to notify the creator about.
         return unless commentable.class.in? [Issue, SiteNotice, Feedback]
 
         # Unregistered users can submit feedback, but we only want to

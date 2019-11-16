@@ -42,5 +42,7 @@ module DatabaseScripts
 end
 
 __END__
+
+title: Non-standard reference sections
 description: See %github452 for why we want this.
 topic_areas: [taxt]

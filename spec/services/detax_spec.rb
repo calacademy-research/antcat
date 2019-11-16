@@ -10,8 +10,8 @@ describe Detax do
       end
     end
 
-    it "handles nil" do
-      expect(described_class[nil]).to eq ''
+    context "when input is nil" do
+      specify { expect(described_class[nil]).to eq '' }
     end
 
     specify { expect(described_class['string']).to be_html_safe }

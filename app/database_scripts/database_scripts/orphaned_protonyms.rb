@@ -13,5 +13,6 @@ description: >
 tags: [list]
 topic_areas: [protonyms]
 related_scripts:
+  - OrphanedAuthorNames
   - OrphanedAuthors
   - OrphanedProtonyms

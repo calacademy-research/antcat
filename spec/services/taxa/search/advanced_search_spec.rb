@@ -31,17 +31,15 @@ describe Taxa::Search::AdvancedSearch do
     end
 
     describe "searching by year" do
-      let!(:subfamily) { create :subfamily }
+      let!(:taxon) { create :subfamily }
 
       before do
         reference = create :reference, citation_year: '1977'
-        subfamily.protonym.authorship.update!(reference: reference)
-
-        create :subfamily # Another subfamily.
+        taxon.protonym.authorship.update!(reference: reference)
       end
 
       specify do
-        expect(described_class[year: "1977"]).to match_array [subfamily]
+        expect(described_class[year: "1977"]).to match_array [taxon]
         expect(described_class[year: "1979"]).to be_empty
       end
     end

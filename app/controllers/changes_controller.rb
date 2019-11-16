@@ -16,12 +16,15 @@ class ChangesController < ApplicationController
 
   def approve
     @change.approve current_user
-    @change.create_activity :approve_change
+    @change.create_activity :approve_change, current_user
     redirect_back fallback_location: changes_path, notice: "Approved change."
   end
 
   def approve_all
+    count = TaxonState.waiting.count
     Change.approve_all current_user
+    Activity.create_without_trackable :approve_all_changes, current_user, parameters: { count: count }
+
     redirect_to changes_path, notice: "Approved all changes."
   end
 

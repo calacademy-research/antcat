@@ -17,23 +17,23 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new
   end
 
-  def edit
-  end
-
   def create
     @institution = Institution.new(institution_params)
 
     if @institution.save
-      @institution.create_activity :create, edit_summary: params[:edit_summary]
+      @institution.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: 'Successfully created institution.'
     else
       render :new
     end
   end
 
+  def edit
+  end
+
   def update
     if @institution.update(institution_params)
-      @institution.create_activity :update, edit_summary: params[:edit_summary]
+      @institution.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
       render :edit
@@ -42,7 +42,7 @@ class InstitutionsController < ApplicationController
 
   def destroy
     @institution.destroy
-    @institution.create_activity :destroy, edit_summary: params[:edit_summary]
+    @institution.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'
   end
 

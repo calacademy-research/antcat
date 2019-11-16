@@ -57,6 +57,8 @@ module DatabaseScripts
 end
 
 __END__
+
+title: Valid taxa with non-valid parents
 description: >
 tags: [regression-test]
 topic_areas: [catalog]

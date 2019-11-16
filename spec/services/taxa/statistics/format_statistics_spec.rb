@@ -2,12 +2,14 @@ require 'spec_helper'
 
 describe Taxa::Statistics::FormatStatistics do
   describe '#call' do
-    it "handles nil and {}" do
-      expect(described_class[nil]).to eq nil
-      expect(described_class[{}]).to eq nil
+    context 'when statistics is blank' do
+      specify do
+        expect(described_class[nil]).to eq nil
+        expect(described_class[{}]).to eq nil
+      end
     end
 
-    describe "extant and fossil statistics" do
+    context "when there is both extant and fossil statistics" do
       let(:statistics) do
         {
           extant: {
@@ -21,18 +23,23 @@ describe Taxa::Statistics::FormatStatistics do
         }
       end
 
-      it "handles both extant and fossil statistics" do
+      specify do
         expect(described_class[statistics]).
           to eq '<p>Extant: 1 valid subfamily, 2 valid genera (1 synonym, 2 homonyms), 1 valid species</p>' \
           '<p>Fossil: 2 valid subfamilies</p>'
       end
     end
 
-    it "handles just fossil statistics" do
-      statistics = {
-        fossil: { subfamilies: { 'valid' => 2 } }
-      }
-      expect(described_class[statistics]).to eq '<p>Fossil: 2 valid subfamilies</p>'
+    context "when there fossil statistics only" do
+      let(:statistics) do
+        {
+          fossil: { subfamilies: { 'valid' => 2 } }
+        }
+      end
+
+      specify do
+        expect(described_class[statistics]).to eq '<p>Fossil: 2 valid subfamilies</p>'
+      end
     end
 
     it "formats the family's statistics correctly" do

@@ -29,7 +29,7 @@ module References
           title = title.gsub(/-|:|\*/, ' ') if title
           author = author.gsub(/-|:/, ' ') if author
 
-          Reference.search(include: [:document]) do
+          Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
             keywords normalized_search_keywords
 
             if title

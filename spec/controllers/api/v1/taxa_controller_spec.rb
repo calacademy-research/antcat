@@ -14,12 +14,12 @@ describe Api::V1::TaxaController do
     end
 
     it "gets all taxa" do
-      genus = create :genus
+      taxon = create :family
 
       get :index
 
-      expect(response.body.to_s).to include genus.name.name
-      expect(json_response.count).to eq 3 # TODO.
+      expect(response.body.to_s).to include taxon.name.name
+      expect(json_response.count).to eq 1
     end
 
     it 'returns HTTP 200' do

@@ -15,7 +15,7 @@ class AuthorsController < ApplicationController
 
   def destroy
     if @author.destroy
-      @author.create_activity :destroy
+      @author.create_activity :destroy, current_user
       redirect_to authors_path, notice: 'Author was successfully deleted.'
     else
       redirect_to authors_path, alert: 'Could not delete author.'

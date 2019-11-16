@@ -1,5 +1,3 @@
-# TODO: Move `user` to controllers.
-#
 # NOTE: "automated edits" are currently simply activities with `automated_edits`
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 
@@ -51,14 +49,18 @@ class Activity < ApplicationRecord
   serialize :parameters, Hash
   strip_attributes only: [:edit_summary]
 
-  def self.create_for_trackable trackable, action, edit_summary: nil, parameters: {}
-    create! trackable: trackable, action: action,
-      user: User.current, edit_summary: edit_summary,
+  def self.create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}
+    create!(
+      trackable: trackable,
+      action: action,
+      user: user,
+      edit_summary: edit_summary,
       parameters: parameters
+    )
   end
 
-  def self.create_without_trackable action, edit_summary: nil, parameters: {}
-    create_for_trackable nil, action, edit_summary: edit_summary, parameters: parameters
+  def self.create_without_trackable action, user, edit_summary: nil, parameters: {}
+    create_for_trackable nil, action, user: user, edit_summary: edit_summary, parameters: parameters
   end
 
   # :nocov:
@@ -66,7 +68,7 @@ class Activity < ApplicationRecord
   def self.execute_script_activity user, edit_summary
     raise "You must assign a user." unless user
     raise "You must include an edit summary." unless edit_summary
-    create! trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary
+    create!(trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary)
   end
   # :nocov:
 

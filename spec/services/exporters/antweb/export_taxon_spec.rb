@@ -294,7 +294,8 @@ describe Exporters::Antweb::ExportTaxon do
               %(<b><i>Atta</i></b> ) +
 
               # authorship
-              %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
+              %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." ) +
+              %(href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
               %(: 12) +
               %(. ) +
 
