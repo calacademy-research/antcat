@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TooltipsController do
   describe "forbidden actions" do

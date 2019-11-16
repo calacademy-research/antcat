@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TaxonBrowserHelper do
   describe "#taxon_browser_link" do

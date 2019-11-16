@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe UserDecorator do
   let(:user) { build_stubbed :user, name: "First Last", email: "email@example.com" }

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe EditorsPanels::VersionsController do
   describe "forbidden actions" do

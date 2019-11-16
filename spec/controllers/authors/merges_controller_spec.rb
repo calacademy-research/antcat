@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Authors::MergesController do
   describe "forbidden actions" do

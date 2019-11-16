@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Taxa::Statistics::FormatStatistics do
   describe '#call' do

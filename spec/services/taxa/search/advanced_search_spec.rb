@@ -1,6 +1,6 @@
 # TODO: Cleanup after extracting into service object.
 
-require "spec_helper"
+require 'rails_helper'
 
 describe Taxa::Search::AdvancedSearch do
   describe "#call" do

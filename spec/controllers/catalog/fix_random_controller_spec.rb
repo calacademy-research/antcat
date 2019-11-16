@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Catalog::FixRandomController do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do

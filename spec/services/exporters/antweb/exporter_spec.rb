@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Exporters::Antweb::Exporter do
   describe ".antcat_taxon_link" do

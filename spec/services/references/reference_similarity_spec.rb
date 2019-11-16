@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 # rubocop:disable RSpec/ExpectInHook
 describe References::ReferenceSimilarity do

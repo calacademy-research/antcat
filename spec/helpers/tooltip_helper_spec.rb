@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TooltipHelper do
   describe "#db_tooltip_icon" do

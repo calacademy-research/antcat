@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Names::CheckNameConflictsController do
   describe 'GET show' do

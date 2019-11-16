@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe DatabaseScript do
   describe ".new_from_filename_without_extension" do

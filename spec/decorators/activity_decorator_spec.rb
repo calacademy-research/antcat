@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe ActivityDecorator do
   describe "#link_user" do

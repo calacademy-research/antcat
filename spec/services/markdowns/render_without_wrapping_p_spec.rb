@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Markdowns::RenderWithoutWrappingP do
   describe "#call" do

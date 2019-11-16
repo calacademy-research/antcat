@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Autocomplete::AutocompleteReferences do
   describe "#format_autosuggest_keywords" do

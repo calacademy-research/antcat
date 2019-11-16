@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe References::ReviewsController do
   describe "forbidden actions" do

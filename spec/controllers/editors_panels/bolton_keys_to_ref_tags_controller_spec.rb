@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe EditorsPanels::BoltonKeysToRefTagsController do
   describe "GET show" do

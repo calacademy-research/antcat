@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 class AsCSVDummy < DatabaseScripts::DatabaseTestScript
   include DatabaseScripts::Renderers::AsCSV

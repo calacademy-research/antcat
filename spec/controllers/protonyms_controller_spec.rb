@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ProtonymsController do
   describe "forbidden actions" do
