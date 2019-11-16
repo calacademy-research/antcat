@@ -43,30 +43,30 @@ class Reference < ApplicationRecord
 
   accepts_nested_attributes_for :document, reject_if: :all_blank
   delegate :url, :downloadable?, to: :document, allow_nil: true
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
     :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
   searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
-    string  :type
-    integer :year
-    text    :author_names_string
-    text    :citation_year
-    text    :title
-    text    :journal_name do journal.name if journal end
-    text    :publisher_name do publisher.name if publisher end
-    text    :year_as_string do year.to_s if year end
-    text    :citation
-    text    :editor_notes
-    text    :public_notes
-    text    :taxonomic_notes
-    text    :bolton_key
-    text    :authors_for_keey do authors_for_keey end # To find "et al".
-    string  :citation_year
-    string  :doi
-    string  :author_names_string
+    string(:type)
+    integer(:year)
+    text(:author_names_string)
+    text(:citation_year)
+    text(:title)
+    text(:journal_name) { journal&.name }
+    text(:publisher_name) { publisher&.name }
+    text(:year_as_string) { year&.to_s }
+    text(:citation)
+    text(:editor_notes)
+    text(:public_notes)
+    text(:taxonomic_notes)
+    text(:bolton_key)
+    text(:authors_for_keey) { authors_for_keey } # To find "et al".
+    string(:citation_year)
+    string(:doi)
+    string(:author_names_string)
   end
 
   workflow_column :review_state
@@ -119,10 +119,10 @@ class Reference < ApplicationRecord
   end
 
   def authors_for_keey
-    names = author_names.map &:last_name
+    names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]'
-    when 1 then "#{names.first}"
+    when 1 then names.first.to_s
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"
     end.html_safe

@@ -35,7 +35,7 @@ FactoryBot.define do
     factory :genus, class: Genus do
       association :name, factory: :genus_name
       tribe
-      subfamily { |a| a.tribe && a.tribe.subfamily }
+      subfamily { |a| a.tribe&.subfamily }
     end
 
     factory :subgenus, class: Subgenus do

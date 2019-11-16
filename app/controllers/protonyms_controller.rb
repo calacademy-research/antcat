@@ -75,15 +75,13 @@ class ProtonymsController < ApplicationController
         :primary_type_information_taxt,
         :secondary_type_information_taxt,
         :type_notes_taxt,
-        {
-          authorship_attributes: [
-            :id,
-            :pages,
-            :forms,
-            :notes_taxt,
-            :reference_id
-          ]
-        }
+        authorship_attributes: [
+          :id,
+          :pages,
+          :forms,
+          :notes_taxt,
+          :reference_id
+        ]
       )
     end
 end

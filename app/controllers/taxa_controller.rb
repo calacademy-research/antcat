@@ -119,7 +119,7 @@ class TaxaController < ApplicationController
     end
 
     def build_taxon rank
-      taxon_class = "#{rank}".titlecase.constantize
+      taxon_class = rank.to_s.titlecase.constantize
 
       taxon = taxon_class.new
       taxon.build_name

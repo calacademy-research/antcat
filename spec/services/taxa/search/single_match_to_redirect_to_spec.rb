@@ -23,14 +23,14 @@ describe Taxa::Search::SingleMatchToRedirectTo do
     context 'when there are more than one exact match for the name' do
       specify do
         expect { create :species, name_string: exact_match.name.name }.
-         to change { described_class['Lasius niger'] }.from(exact_match).to(nil)
+          to change { described_class['Lasius niger'] }.from(exact_match).to(nil)
       end
     end
 
     context 'when there is more than one exact match for the epithet' do
       specify do
         expect { create :species, name_string: exact_match.name.name }.
-         to change { described_class['niger'] }.from(exact_match).to(nil)
+          to change { described_class['niger'] }.from(exact_match).to(nil)
       end
     end
   end

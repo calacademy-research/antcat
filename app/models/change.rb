@@ -150,7 +150,7 @@ class Change < ApplicationRecord
       end
 
       # NOTE: May raise `ActiveRecord::RecordInvalid`.
-      item.save! validate: false if item
+      item&.save!(validate: false)
     end
 
     def get_future_change_ids version

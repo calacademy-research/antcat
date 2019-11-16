@@ -8,9 +8,8 @@ module Authors
     end
 
     def show
-      unless @author_to_merge
-        redirect_to({ action: :new }, alert: "Author to merge must be specified.")
-      end
+      return if @author_to_merge
+      redirect_to({ action: :new }, alert: "Author to merge must be specified.")
     end
 
     def create

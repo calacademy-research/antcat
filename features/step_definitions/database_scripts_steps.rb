@@ -10,7 +10,7 @@ end
 When("I open all database scripts once by one") do
   @browsed_scripts_count = 0
 
-  script_names = DatabaseScript.all.map &:to_param
+  script_names = DatabaseScript.all.map(&:to_param)
   script_names.each do |script_name|
     step %(I open the database script "#{script_name}")
   end

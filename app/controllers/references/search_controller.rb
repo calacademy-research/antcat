@@ -21,9 +21,8 @@ module References
         return if params[:reference_q].blank?
 
         id = params[:reference_q].strip
-        if id =~ /^\d+$/
-          return redirect_to reference_path(id) if Reference.exists?(id.to_i)
-        end
+        return unless id =~ /^\d+$/ && Reference.exists?(id.to_i)
+        redirect_to reference_path(id)
       end
   end
 end

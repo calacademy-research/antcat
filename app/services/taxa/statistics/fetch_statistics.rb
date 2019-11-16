@@ -41,7 +41,7 @@ module Taxa
             # NOTE: regarding `order('NULL')` http://dev.housetrip.com/2013/04/19/mysql-order-by-null/
             by_fossil_and_status =
               if valid_only
-                taxa.valid.group(:fossil).order('NULL').count.transform_keys do |k| [k, "valid"] end
+                taxa.valid.group(:fossil).order('NULL').count.transform_keys { |k| [k, "valid"] }
               else
                 taxa.group(:fossil, :status).order('NULL').count
               end

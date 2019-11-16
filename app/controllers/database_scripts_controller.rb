@@ -4,6 +4,7 @@ class DatabaseScriptsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_database_script, only: [:show]
 
+  # rubocop:disable Style/MultilineBlockChain
   def index
     @grouped_database_scripts = DatabaseScript.all.group_by do |script|
       if DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
@@ -15,6 +16,7 @@ class DatabaseScriptsController < ApplicationController
       end
     end.sort_by { |(sort_order, _title), _scripts| sort_order }
   end
+  # rubocop:enable Style/MultilineBlockChain
 
   def show
     respond_to do |format|

@@ -14,8 +14,8 @@ describe Exporters::Antweb::ExportTypeFields do
 
       it "links the type name" do
         expect(described_class[protonym]).to eq(
-          "Primary type information: uno #{taxon_link}. " +
-          "Secondary type information: dos #{taxon_link}. " +
+          "Primary type information: uno #{taxon_link}. " \
+          "Secondary type information: dos #{taxon_link}. " \
           "Type notes: tres #{taxon_link}."
         )
       end

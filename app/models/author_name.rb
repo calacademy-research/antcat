@@ -12,7 +12,7 @@ class AuthorName < ApplicationRecord
   before_destroy :ensure_not_authors_only_author_name
   after_update :invalidate_reference_caches!
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   trackable
 
   # TODO: Store in db?

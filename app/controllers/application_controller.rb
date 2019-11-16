@@ -42,9 +42,8 @@ class ApplicationController < ActionController::Base
 
     # Save location to redirect back to after signing in.
     def save_location
-      unless request.xhr? || request.url =~ %r{/users/}
-        session[:user_return_to] = request.url
-      end
+      return if request.xhr? || request.url =~ %r{/users/}
+      session[:user_return_to] = request.url
     end
 
     def set_user_for_feed
@@ -59,14 +58,14 @@ class ApplicationController < ActionController::Base
     end
 
     def cors_preflight_check
-      if request.method == 'OPTIONS'
-        headers['Access-Control-Allow-Origin'] = '*'
-        headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-        headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-        headers['Access-Control-Max-Age'] = '1728000'
+      return unless request.method == 'OPTIONS'
 
-        render plain: ''
-      end
+      headers['Access-Control-Allow-Origin'] = '*'
+      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
+      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
+      headers['Access-Control-Max-Age'] = '1728000'
+
+      render plain: ''
     end
 
     def ensure_unconfirmed_user_is_not_over_edit_limit

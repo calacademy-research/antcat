@@ -10,7 +10,7 @@ class UndoTracker
     RequestStore.store[:current_change_id] = nil
   end
 
-  def self.get_current_change_id
+  def self.current_change_id
     RequestStore.read :current_change_id
   end
 end

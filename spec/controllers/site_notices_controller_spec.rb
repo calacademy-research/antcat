@@ -5,7 +5,7 @@ describe SiteNoticesController do
 
   before do
     sign_in editor
-    @request.env["HTTP_REFERER"] = "http://antcat.org"
+    request.env["HTTP_REFERER"] = "http://antcat.org"
   end
 
   describe "forbidden actions" do
@@ -34,12 +34,14 @@ describe SiteNoticesController do
   end
 
   describe "GET show" do
-    let!(:site_notice) { create :site_notice }
-    # Manually specify `created_at` due to how the `unread` gem's usage of timestamps.
-    let!(:another_site_notice) { create :site_notice, created_at: 1.second.from_now }
+    before do
+      create :site_notice
+      # Manually specify `created_at` due to how the `unread` gem works.
+      create :site_notice, created_at: 1.second.from_now
+    end
 
     it "marks it as read" do
-      expect { get :show, params: { id: another_site_notice.id } }.
+      expect { get :show, params: { id: SiteNotice.last.id } }.
         to change { SiteNotice.unread_by(editor).count }.by(-1)
     end
   end

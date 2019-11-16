@@ -270,32 +270,30 @@ describe Taxon do
   end
 
   describe "#author_citation" do
+    let!(:reference) { create :reference, author_name: 'Bolton', citation_year: '2005' }
+
+    before do
+      taxon.protonym.update!(name: protonym_name)
+      taxon.protonym.authorship.update!(reference: reference)
+    end
+
     context "when a recombination in a different genus" do
-      let(:species) { create :species, name_string: 'Atta minor' }
+      let(:taxon) { create :species, name_string: 'Atta minor' }
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
-      before do
-        expect_any_instance_of(Reference).
-          to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
-      end
-
       it "surrounds it in parentheses" do
-        expect(species.author_citation).to eq '(Bolton, 2005)'
+        expect(taxon.author_citation).to eq '(Bolton, 2005)'
       end
 
-      specify { expect(species.author_citation).to be_html_safe }
+      specify { expect(taxon.author_citation).to be_html_safe }
     end
 
     context "when the name simply differs" do
-      let(:species) { create :species, name_string: 'Atta minor maxus' }
+      let(:taxon) { create :species, name_string: 'Atta minor maxus' }
       let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround in parentheses" do
-        expect_any_instance_of(Reference).
-          to receive(:keey_without_letters_in_year).and_return 'Bolton, 2005'
-
-        expect(species.protonym).to receive(:name).and_return protonym_name
-        expect(species.author_citation).to eq 'Bolton, 2005'
+        expect(taxon.author_citation).to eq 'Bolton, 2005'
       end
     end
   end

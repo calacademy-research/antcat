@@ -83,7 +83,7 @@ class Taxon < ApplicationRecord
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     if parent
@@ -188,8 +188,7 @@ class Taxon < ApplicationRecord
     def current_valid_taxon_validation
       if cannot_have_current_valid_taxon? && current_valid_taxon
         errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
-      end
-      if requires_current_valid_taxon? && !current_valid_taxon
+      elsif requires_current_valid_taxon? && !current_valid_taxon
         errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
       end
     end

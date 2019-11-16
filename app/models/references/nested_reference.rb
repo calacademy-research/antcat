@@ -9,7 +9,7 @@ class NestedReference < Reference
 
     def validate_nested_reference_doesnt_point_to_itself
       comparison = self
-      while comparison && comparison.nesting_reference_id
+      while comparison&.nesting_reference_id
         if comparison.nesting_reference_id == id
           errors.add :nesting_reference_id, "can't point to itself"
           break

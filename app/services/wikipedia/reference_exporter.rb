@@ -28,24 +28,24 @@ module Wikipedia
 
       def pages
         # Replace hyphens with en dashes, enwp.org/WP:ENDASH
-        reference.pagination.tr "-", "\u2013" if reference.pagination
+        reference.pagination&.tr("-", "\u2013")
       end
 
       def author_params
         authors = ''
         reference.author_names.each.with_index(1) do |name, index|
           authors <<
-            "|first#{index}=#{name.first_name_and_initials} " <<
+            "|first#{index}=#{name.first_name_and_initials} " \
             "|last#{index}=#{name.last_name} "
         end
         authors
       end
 
       def reference_name
-        names = reference.author_names.map &:last_name
+        names = reference.author_names.map(&:last_name)
         ref_names =
           case names.size
-          when 1 then "#{names.first}"
+          when 1 then names.first.to_s
           when 2 then "#{names.first}_&_#{names.second}"
           else        "#{names.first}_et_al"
           end

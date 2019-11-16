@@ -12,7 +12,7 @@ class Citation < ApplicationRecord
   validate :no_missing_references
 
   strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
 
   private
 

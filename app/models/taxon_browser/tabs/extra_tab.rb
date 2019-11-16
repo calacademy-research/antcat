@@ -6,6 +6,8 @@
 module TaxonBrowser
   module Tabs
     class ExtraTab < Tab
+      attr_reader :title
+
       def self.create taxon, display, taxon_browser
         return if display.blank?
 
@@ -53,10 +55,6 @@ module TaxonBrowser
 
       def id
         "extra-tab"
-      end
-
-      def title
-        @title
       end
 
       def tab_taxon

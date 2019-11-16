@@ -18,7 +18,7 @@ class TaxonForm
       taxon.save_initiator = true
 
       Taxon.transaction do
-        # There is no `UndoTracker#get_current_change_id` at this point, so if
+        # There is no `UndoTracker#current_change_id` at this point, so if
         # anything in the "update_*" methods triggers a save for any reason,
         # the versions' `change_id`s will be nil.
 
@@ -28,10 +28,8 @@ class TaxonForm
 
         if params[:protonym_id].present?
           params.delete :protonym_attributes
-        else
-          if protonym_name_string
-            taxon.protonym.name = Names::BuildNameFromString[protonym_name_string]
-          end
+        elsif protonym_name_string
+          taxon.protonym.name = Names::BuildNameFromString[protonym_name_string]
         end
 
         taxon.attributes = params

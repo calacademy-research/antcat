@@ -3,7 +3,7 @@ class Publisher < ApplicationRecord
 
   validates :name, :place_name, presence: true
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.get_current_change_id } }
+  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
 
   def self.create_from_string string
     place_name, name = string.match(/(?<place_name>[^a-z:\d][^:\d]{2,})(?:: )(?<name>.+)/)&.captures
