@@ -12,6 +12,7 @@ describe TableRefDecorator do
     let!(:taxon) { create :family, protonym: protonym }
 
     specify { expect(decorated.item_link).to eq id }
+
     specify do
       expect(decorated.related_links).to eq taxon.link_to_taxon
     end
