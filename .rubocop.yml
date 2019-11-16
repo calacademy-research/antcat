@@ -59,7 +59,7 @@ Layout/EmptyLineAfterGuardClause:
 
 Layout/IndentationConsistency:
   Enabled: true
-  EnforcedStyle: indented_internal_methods
+  EnforcedStyle: rails
 
 Layout/IndentFirstHashElement:
   Enabled: false
