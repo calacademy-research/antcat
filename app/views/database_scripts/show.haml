@@ -19,6 +19,11 @@
       =@database_script.decorate.format_tags
     %p=markdown @database_script.description, sanitize_content: false
 
+    -if @database_script.issue_description.present?
+      %h6
+        %strong Issue description
+        %p=@database_script.issue_description
+
     -if @database_script.related_scripts.present?
       %h6
         %strong Related scripts

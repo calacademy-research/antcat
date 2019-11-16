@@ -17,7 +17,7 @@ Feature: Database scripts
     When I go to the catalog page for "Lasius niger"
     Then I should see "The parent of this taxon is fossil, but this taxon is extant"
 
-    When I follow "See more similiar."
+    When I follow the first "See more similiar."
     Then I should see "Catalog: Extant taxa in fossil genera"
 
   Scenario: Clicking on all scripts just to see if the page renders

@@ -15,19 +15,11 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a homonym" do
-      context "when taxon does not have a `homonym_replaced_by`" do
-        let!(:taxon) { build_stubbed :family, :homonym }
+      let!(:homonym_replaced_by) { build_stubbed :family }
+      let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
 
-        specify { expect(described_class[taxon]).to eq 'homonym' }
-      end
-
-      context "when taxon has a `homonym_replaced_by`" do
-        let!(:homonym_replaced_by) { build_stubbed :family }
-        let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
-
-        specify do
-          expect(described_class[taxon]).to include %(homonym replaced by #{taxon_link homonym_replaced_by})
-        end
+      specify do
+        expect(described_class[taxon]).to include %(homonym replaced by #{taxon_link homonym_replaced_by})
       end
     end
 
@@ -38,7 +30,7 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is an unresolved homonym" do
-      context "when there is no senior synonym" do
+      context "when there is no current valid taxon" do
         let(:taxon) { build_stubbed :family, unresolved_homonym: true }
 
         specify { expect(described_class[taxon]).to eq 'unresolved junior homonym, valid' }
@@ -62,12 +54,22 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is a synonym" do
-      let!(:senior) { create :genus }
-      let!(:taxon) { create :genus, :synonym, current_valid_taxon: senior }
+      let!(:senior) { build_stubbed :genus }
+      let!(:taxon) { build_stubbed :genus, :synonym, current_valid_taxon: senior }
 
       specify do
         expect(described_class[taxon]).
           to include %(junior synonym of current valid taxon #{taxon_link senior})
+      end
+    end
+
+    context "when taxon is an obsolete combination" do
+      let!(:current_valid_taxon) { build_stubbed :genus }
+      let!(:taxon) { build_stubbed :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
+
+      specify do
+        expect(described_class[taxon]).
+          to include %(an obsolete combination of #{taxon_link current_valid_taxon})
       end
     end
 
@@ -96,7 +98,7 @@ describe Taxa::TaxonStatus do
     end
 
     context "when taxon is incertae sedis" do
-      let(:taxon) { build_stubbed :genus, incertae_sedis_in: 'family' }
+      let(:taxon) { build_stubbed :genus, :incertae_sedis_in_family }
 
       specify do
         expect(described_class[taxon]).to eq '<i>incertae sedis</i> in family, valid'

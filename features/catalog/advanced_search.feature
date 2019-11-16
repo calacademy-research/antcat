@@ -36,13 +36,13 @@ Feature: Searching the catalog
     Then I should see "Atta major"
 
   Scenario: Searching for locality
-    Given there is a genus located in "Africa"
+    Given there is a genus located in "Mexico"
     And there is a genus located in "Zimbabwe"
 
-    When I fill in "locality" with "Africa"
+    When I fill in "locality" with "Mexico"
     And I press "Search"
     Then I should see "1 result"
-    And I should see "Africa" within the search results
+    And I should see "MEXICO" within the search results
 
   Scenario: Searching for biogeographic_region
     Given there is a species with biogeographic region "Malagasy"

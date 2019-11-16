@@ -107,7 +107,7 @@ Then(/I should (not )?see "(.*?)" (?:with)?in (.*)$/) do |do_not, contents, loca
 end
 
 Then(/^"([^"]+)" should be selected(?: in (.*))?$/) do |word, location|
-  with_scope location || 'the page' do
+  with_scope location do
     expect(page).to have_css ".selected", text: word
   end
 end

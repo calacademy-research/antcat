@@ -5,10 +5,7 @@ class FeedbackController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:create]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
-  # TODO: This was tricky in Capybara tests.
-  unless Rails.env.test?
-    invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
-  end
+  invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
   def index
     @feedbacks = Feedback.by_status_and_date.includes(:user).paginate(page: params[:page], per_page: 10)

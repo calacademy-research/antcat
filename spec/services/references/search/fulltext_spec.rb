@@ -31,18 +31,18 @@ describe References::Search::Fulltext, :search do
     end
 
     describe 'notes' do
-      let!(:public) { create :reference, public_notes: 'public' }
-      let!(:editor) { create :reference, editor_notes: 'editor' }
-      let!(:taxonomic) { create :reference, taxonomic_notes: 'taxonomic' }
+      let!(:with_public_notes) { create :reference, public_notes: 'public' }
+      let!(:with_editor_notes) { create :reference, editor_notes: 'editor' }
+      let!(:with_taxonomic_notes) { create :reference, taxonomic_notes: 'taxonomic' }
 
       before do
         Sunspot.commit
       end
 
       specify do
-        expect(described_class[keywords: 'public']).to eq [public]
-        expect(described_class[keywords: 'editor']).to eq [editor]
-        expect(described_class[keywords: 'taxonomic']).to eq [taxonomic]
+        expect(described_class[keywords: 'public']).to eq [with_public_notes]
+        expect(described_class[keywords: 'editor']).to eq [with_editor_notes]
+        expect(described_class[keywords: 'taxonomic']).to eq [with_taxonomic_notes]
       end
     end
 

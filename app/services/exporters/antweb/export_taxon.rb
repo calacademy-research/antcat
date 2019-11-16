@@ -45,29 +45,27 @@ module Exporters
 
         def export_taxon
           authorship_reference = taxon.authorship_reference
-          parent = taxon.parent && (taxon.parent.current_valid_taxon || taxon.parent)
 
           attributes = {
-            antcat_id:              taxon.id,
-            status:                 taxon.status,
-            available?:             !taxon.invalid?,
-            fossil?:                taxon.fossil,
-            history:                export_history,
-            author_date:            taxon.author_citation,
-            author_date_html:       authorship_html_string,
-            original_combination?:  taxon.original_combination?,
-            original_combination:   original_combination&.name&.name,
-            authors:                authorship_reference.authors_for_keey,
-            year:                   authorship_reference.year,
-            reference_id:           authorship_reference.id,
-            biogeographic_region:   taxon.protonym.biogeographic_region,
-            locality:               taxon.protonym.locality,
-            rank:                   taxon.class.to_s,
-            hol_id:                 taxon.hol_id,
-            parent:                 parent&.name&.name || 'Formicidae'
+            antcat_id:                taxon.id,
+            author_date:              taxon.author_citation,
+            author_date_html:         authorship_html_string,
+            authors:                  authorship_reference.authors_for_keey,
+            year:                     authorship_reference.year,
+            status:                   taxon.status,
+            available:                !taxon.invalid?,
+            current_valid_name:       taxon.current_valid_taxon&.name&.name,
+            original_combination:     taxon.original_combination?,
+            was_original_combination: original_combination&.name&.name,
+            fossil:                   taxon.fossil?,
+            taxonomic_history_html:   export_history,
+            reference_id:             authorship_reference.id,
+            bioregion:                taxon.protonym.biogeographic_region,
+            country:                  taxon.protonym.locality,
+            current_valid_rank:       taxon.class.to_s,
+            hol_id:                   taxon.hol_id,
+            current_valid_parent:     current_valid_parent&.name&.name || 'Formicidae'
           }
-
-          attributes[:current_valid_name] = taxon.current_valid_taxon&.name&.name
 
           convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
         end
@@ -95,18 +93,18 @@ module Exporters
             values[:authors],
             values[:year],
             values[:status],
-            boolean_to_antweb(values[:available?]),
+            boolean_to_antweb(values[:available]),
             add_subfamily_to_current_valid(values[:subfamily], values[:current_valid_name]),
-            boolean_to_antweb(values[:original_combination?]),
-            values[:original_combination],
-            boolean_to_antweb(values[:fossil?]),
-            values[:history],
+            boolean_to_antweb(values[:original_combination]),
+            values[:was_original_combination],
+            boolean_to_antweb(values[:fossil]),
+            values[:taxonomic_history_html],
             values[:reference_id],
-            values[:biogeographic_region],
-            values[:locality],
-            values[:rank],
+            values[:bioregion],
+            values[:country],
+            values[:current_valid_rank],
             values[:hol_id],
-            values[:parent]
+            values[:current_valid_parent]
           ]
         end
 
@@ -137,6 +135,12 @@ module Exporters
             content << Exporters::Antweb::ExportChildList[taxon]
             content << Exporters::Antweb::ExportReferenceSections[taxon]
           end
+        end
+
+        def current_valid_parent
+          return unless taxon.parent
+          parent = taxon.parent.is_a?(Subgenus) ? taxon.parent.parent : taxon.parent
+          parent.current_valid_taxon || parent
         end
     end
   end

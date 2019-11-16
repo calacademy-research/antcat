@@ -3,6 +3,20 @@ module DatabaseScripts
     def results
       Taxon.joins(:name).where("(LENGTH(names.name) - LENGTH(REPLACE(names.name, ' ', '')) >= 3) ")
     end
+
+    def render
+      as_table do |t|
+        t.header :taxon, :status, :db_script_issues?
+
+        t.rows do |taxon|
+          [
+            markdown_taxon_link(taxon),
+            taxon.status,
+            ('Yes' if taxon.soft_validation_warnings.size.positive?)
+          ]
+        end
+      end
+    end
   end
 end
 
@@ -18,7 +32,10 @@ description: >
   record may not even exist at all.
 
 
+  Quadrinomials with db script issues must be fixed before we can attempt to migrate records by script.
+
+
   Issue: %github714
 
-tags: []
+tags: [updated!, slow]
 topic_areas: [catalog]

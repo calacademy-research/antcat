@@ -67,6 +67,8 @@ WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 
 Capybara.app = Rack::ShowExceptions.new AntCat::Application
 
+InvisibleCaptcha.timestamp_enabled = false
+
 # Warden is what Devise uses for authorization.
 include Warden::Test::Helpers # rubocop:disable Style/MixinUsage
 Warden.test_mode!

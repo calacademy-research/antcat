@@ -12,8 +12,7 @@ module DatabaseScripts
         t.header :reference, :url, :protonym_reference?
         t.rows do |reference|
           [
-            link_to(reference.keey,
-            reference_path(reference)),
+            link_to(reference.keey, reference_path(reference)),
             link_to(reference.document.url, reference.document.url),
             ('Yes' if reference.protonyms.any?)
           ]

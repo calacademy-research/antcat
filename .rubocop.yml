@@ -15,21 +15,19 @@ AllCops:
 Rails:
   Enabled: true
 
-# TODO: Investigate.
 Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/Delegate:
   Enabled: false
 
 Rails/DynamicFindBy:
   Whitelist: find_by_sql
 
-Rails/FilePath:
-  Enabled: false
-
 # TODO: We want to enable this when the database is ready for it.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
-# TODO: Investigate if this would be useful.
 Rails/InverseOf:
   Enabled: false
 
@@ -62,7 +60,7 @@ Layout/EmptyLineAfterGuardClause:
 
 Layout/IndentationConsistency:
   Enabled: true
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 
 Layout/IndentFirstHashElement:
   Enabled: false

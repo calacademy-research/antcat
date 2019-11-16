@@ -104,6 +104,14 @@ FactoryBot.define do
       current_valid_taxon { Family.first || FactoryBot.create(:family) }
     end
 
+    trait :incertae_sedis_in_family do
+      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_FAMILY }
+    end
+
+    trait :incertae_sedis_in_subfamily do
+      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_SUBFAMILY }
+    end
+
     trait :old do
       association :taxon_state, review_state: TaxonState::OLD
     end

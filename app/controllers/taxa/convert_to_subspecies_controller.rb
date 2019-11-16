@@ -8,17 +8,8 @@ module Taxa
 
     # TODO: Move validations to service.
     def create
-      unless @taxon.is_a? Species
-        @taxon.errors.add :base,
-          "Taxon to be converted to a subspecies must be of rank species."
-        render :new and return
-      end
-
       if @taxon.subspecies.present?
-        @taxon.errors.add :base, <<-MSG
-          This species has subspecies of its own,
-          so it can't be converted to a subspecies
-        MSG
+        @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"
         render :new and return
       end
 
@@ -27,18 +18,7 @@ module Taxa
         render :new and return
       end
 
-      @new_species = Taxon.find(params[:new_species_id])
-
-      unless @new_species.is_a? Species
-        @taxon.errors.add :base, "The new parent must be of rank species."
-        render :new and return
-      end
-
-      # TODO: Allow moving to incerae sedis genera.
-      unless @new_species.genus
-        @taxon.errors.add :base, "The new parent must have a genus."
-        render :new and return
-      end
+      @new_species = Species.find(params[:new_species_id])
 
       unless @new_species.genus == @taxon.genus
         @taxon.errors.add :base, "The new parent must be in the same genus."
@@ -69,7 +49,7 @@ module Taxa
     private
 
       def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+        @taxon = Species.find(params[:taxa_id])
       end
 
       def create_activity original_species, new_subspecies

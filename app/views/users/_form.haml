@@ -30,4 +30,9 @@
 
   .row
     .medium-6.columns.end
+      =f.check_box :hidden
+      =f.label 'Hide from users list'
+
+  .row
+    .medium-6.columns.end
       =button_tag append_superadmin_icon("Save"), class: "btn-saves"

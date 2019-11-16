@@ -21,7 +21,7 @@ Feature: Checking for duplicates during data entry
     And I press "Save"
     Then I should see "This may be a duplicate of Ward, 2010"
 
-    When I press "Save Anyway"
+    When I press "Save"
     Then I should see "Reference was successfully added"
 
   Scenario: Editing a reference that makes it a duplicate
@@ -36,5 +36,5 @@ Feature: Checking for duplicates during data entry
     And I press "Save"
     Then I should see "This may be a duplicate of Ward, 2010"
 
-    When I press "Save Anyway"
+    When I press "Save"
     Then I should see "Reference was successfully updated"

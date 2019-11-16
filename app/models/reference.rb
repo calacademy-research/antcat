@@ -27,6 +27,7 @@ class Reference < ApplicationRecord
   has_one :document, class_name: 'ReferenceDocument'
 
   validates :title, presence: true
+  validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 

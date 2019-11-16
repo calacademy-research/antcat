@@ -14,9 +14,11 @@ require 'paper_trail/frameworks/rspec'
 
 abort "The Rails environment is running in production mode!" if Rails.env.production?
 
-Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
+Dir[Rails.root.join("spec", "support", "**", "*.rb")].each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
+
+InvisibleCaptcha.timestamp_enabled = false
 
 # Uncomment for bonus stuff.
 # DevMonkeyPatches.enable!

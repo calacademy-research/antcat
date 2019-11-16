@@ -34,12 +34,8 @@ class Genus < GenusGroupTaxon
     update_descendants_subfamilies
   end
 
-  def displayable_child_taxa
-    descendants.displayable
-  end
-
-  def displayable_subgenera
-    Subgenus.where(genus: self).displayable
+  def child_taxa
+    descendants
   end
 
   def descendants

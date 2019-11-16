@@ -6,7 +6,7 @@ describe TaxonBrowser::LinksToExtraTabs do
       context 'when family has incertae sedis genera' do
         let!(:taxon) { create :family }
 
-        before { create :genus, incertae_sedis_in: 'family' }
+        before { create :genus, :incertae_sedis_in_family }
 
         specify do
           expect(described_class[taxon]).to eq(
@@ -23,7 +23,7 @@ describe TaxonBrowser::LinksToExtraTabs do
       context 'when subfamily has incertae sedis genera' do
         let!(:taxon) { create :subfamily }
 
-        before { create :genus, subfamily: taxon, incertae_sedis_in: 'subfamily' }
+        before { create :genus, :incertae_sedis_in_subfamily, subfamily: taxon }
 
         specify do
           expect(described_class[taxon]).to eq(

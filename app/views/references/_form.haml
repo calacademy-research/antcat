@@ -159,8 +159,7 @@
 
     .medium-3.columns.end
       %button.submit.btn-saves.has-spinner
-        -save_text = ignore_possible_duplicate.present? ? 'Save Anyway' : 'Save'
-        =spinner_icon + save_text
+        =spinner_icon + 'Save'
 
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "button btn-nodanger"

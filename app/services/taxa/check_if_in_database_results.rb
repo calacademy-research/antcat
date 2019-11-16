@@ -2,13 +2,17 @@ module Taxa
   class CheckIfInDatabaseResults
     include Service
 
+    # Check runtime since this is shown on all catalog pages (logged-in users only).
     WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::PassThroughNamesWithTaxts,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
-      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily
+      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
+      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
+      DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
+      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
     ]
 
     def initialize taxon
