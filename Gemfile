@@ -65,9 +65,10 @@ group :development, :test do
   gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.71.0', require: false
+  gem 'rubocop', '~> 0.74.0', require: false
   gem 'rubocop-performance'
-  gem 'rubocop-rails'
+  # TODO: https://github.com/toshimaru/rubocop-rails_config vs. https://github.com/rubocop-hq/rubocop-rails
+  gem 'rubocop-rails_config'
   gem 'rubocop-rspec'
   gem 'sunspot_test'
 end
