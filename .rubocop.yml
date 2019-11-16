@@ -73,14 +73,11 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
-Performance/RedundantBlockCall:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Enabled: false
 
 FactoryBot/CreateList:
-  Enabled: false
+  EnforcedStyle: n_times
 
 RSpec/EmptyExampleGroup:
   Enabled: false
@@ -98,7 +95,7 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/NestedGroups:
-  Enabled: false
+  Max: 5
 
 RSpec/NotToNot:
   Enabled: false
@@ -120,6 +117,9 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
+
+Style/CollectionMethods:
+  Enabled: true
 
 Style/Documentation:
   Enabled: false
@@ -170,19 +170,18 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/BlockLength:
-  Max: 337
-  Enabled: false
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
 
 Metrics/ClassLength:
-  Max: 190
+  Max: 160
 
 Metrics/CyclomaticComplexity:
   Enabled: false
 
 Metrics/MethodLength:
-  Enabled: false
-
-Metrics/ModuleLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
@@ -191,4 +190,4 @@ Metrics/PerceivedComplexity:
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 200
+  Max: 160

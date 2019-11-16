@@ -27,7 +27,7 @@ module Catalog
         @taxon ||= DATABASE_SCRIPTS_TO_CHECK.
                      map(&:new).shuffle.lazy.
                      map { |script| script.results.sample }.
-                     detect { |taxon| taxon }
+                     find { |taxon| taxon }
       end
   end
 end
