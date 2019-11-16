@@ -21,6 +21,8 @@ module DatabaseScripts
 end
 
 __END__
+
+title: <code>FamilyOrSubfamilyName</code>s
 description: >
   That is, name records with the type `FamilyOrSubfamilyName`. See %github635.
 

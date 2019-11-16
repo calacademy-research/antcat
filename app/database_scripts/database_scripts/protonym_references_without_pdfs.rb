@@ -21,6 +21,7 @@ end
 
 __END__
 
+title: Protonym references without PDFs
 description: >
   Issues: %github387, %github324, %github371
 

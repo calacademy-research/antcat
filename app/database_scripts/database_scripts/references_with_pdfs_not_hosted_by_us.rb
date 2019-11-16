@@ -24,6 +24,7 @@ end
 
 __END__
 
+title: References with PDFs not hosted by us
 description: >
   There may be more references not hosted by us, but these definitely are not.
 

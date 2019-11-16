@@ -33,6 +33,8 @@ module DatabaseScripts
 end
 
 __END__
+
+title: Same-named pass-through names
 description: >
   See %github283
 

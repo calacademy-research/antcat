@@ -8,6 +8,7 @@ end
 
 __END__
 
+title: Auto-generated taxa
 description: >
 
 tags: [new!]

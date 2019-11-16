@@ -8,6 +8,8 @@ module DatabaseScripts
 end
 
 __END__
+
+title: Pass-through names with taxts
 description: >
   Obsolete combination and unavailable misspellings with
   history items or reference sections.

@@ -35,6 +35,7 @@ end
 
 __END__
 
+title: References with undownloadable PDFs
 description: >
   "Downloadable" is defined as `url.present? && !hosted_by_antbase? && !hosted_by_hol?`,
 

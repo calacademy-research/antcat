@@ -20,6 +20,7 @@ end
 
 __END__
 
+title: References without PDFs
 description: >
   Issues: %github387, %github324, %github371
 

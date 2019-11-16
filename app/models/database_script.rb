@@ -51,6 +51,10 @@ class DatabaseScript
     self.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
   end
 
+  def title
+    end_data[:title]&.html_safe || filename_without_extension.humanize
+  end
+
   def description
     end_data[:description] || ""
   end
@@ -81,10 +85,6 @@ class DatabaseScript
         end.new(class_name)
       end
     end
-  end
-
-  def title
-    filename_without_extension.humanize
   end
 
   def filename_without_extension
