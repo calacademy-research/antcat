@@ -1,6 +1,6 @@
 Feature: Edit reference successfully
   Background:
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
 
   @javascript
   Scenario: Change a reference's type

@@ -20,7 +20,7 @@ Feature: Institutions
     And I should see "California Academy of Sciences"
 
     When I go to the activity feed
-    Then I should see "Archibald added the institution CASC" in the feed
+    Then I should see "Archibald added the institution CASC" within the feed
     And I should see the edit summary "fix typo"
 
   Scenario: Editing an institution (with edit summary)
@@ -41,7 +41,7 @@ Feature: Institutions
     And I should see "Sweden Academy of Sciences"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the institution SASC" in the feed
+    Then I should see "Archibald edited the institution SASC" within the feed
     And I should see the edit summary "fix typo"
 
   Scenario: Deleting an institution (with feed)
@@ -56,4 +56,4 @@ Feature: Institutions
     And I should not see "CASC"
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the institution CASC" in the feed
+    Then I should see "Archibald deleted the institution CASC" within the feed

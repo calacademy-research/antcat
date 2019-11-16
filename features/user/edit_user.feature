@@ -11,7 +11,7 @@ Feature: Editing a user
 
   Scenario: Changing my password
     When I go to the main page
-    And I follow the first "Batiatus"
+    And I follow "Batiatus" within the desktop menu
     And I follow "Change my password/name/email"
     And I fill in "user_password" with "new password"
     And I fill in "user_password_confirmation" with "new password"
@@ -21,10 +21,10 @@ Feature: Editing a user
     And I should see "Your account has been updated"
 
     # Logging in with changed password.
-    When I follow the first "Logout"
+    When I follow "Logout" within the desktop menu
     Then I should not see "Batiatus"
 
-    When I follow the first "Login"
+    When I follow "Login" within the desktop menu
     And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "new password"
     And I press "Login"
@@ -36,7 +36,7 @@ Feature: Editing a user
     Then I should see "Batiatus"
     And I should not see "Quintus, B."
 
-    When I follow the first "Batiatus"
+    When I follow "Batiatus" within the desktop menu
     And I follow "Change my password/name/email"
     And I fill in "user_name" with "Quintus, B."
     And I fill in "user_current_password" with "secret"

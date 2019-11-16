@@ -16,8 +16,8 @@ When("I open all database scripts once by one") do
   end
 end
 
-When("I open the database script {string}") do |script_name|
-  visit "/database_scripts/#{script_name}"
+When("I open the database script {string}") do |database_script_name|
+  visit "/database_scripts/#{database_script_name}"
   step 'I should see "Show source"' # Anything to confirm the page was rendered.
   @browsed_scripts_count += 1
 end

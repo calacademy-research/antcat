@@ -14,7 +14,7 @@ Given("there is an invalid family") do
   create :family, :excluded_from_formicidae
 end
 
-Given("there is a genus located in {string}") do |locality|
+Given("there is a genus with locality {string}") do |locality|
   protonym = create :protonym, locality: locality
   create :genus, protonym: protonym
 end

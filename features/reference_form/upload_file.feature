@@ -7,7 +7,7 @@ Feature: Upload a file
   # servers are cleared, but not files stored on S3.
   @skip
   Scenario: Clearing the URL after uploading the file
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
     And there is a reference
     And that the entry has a URL that's on our site
 

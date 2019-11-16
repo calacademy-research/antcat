@@ -4,7 +4,7 @@ Feature: Editing tooltips
   So that other editors can understand how to edit the catalog
 
   Background:
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
 
   @javascript
   Scenario: Hovering a tooltip
@@ -13,7 +13,7 @@ Feature: Editing tooltips
     And I hover the tooltip next to the text "Authors"
     Then I should not see the tooltip text "Separate author names by semicolons"
 
-    When I go to the tooltips editing page
+    When I go to the tooltips page
     And I follow "New Tooltip"
       And I fill in "tooltip[key]" with "authors"
       And I fill in "tooltip[scope]" with "references"

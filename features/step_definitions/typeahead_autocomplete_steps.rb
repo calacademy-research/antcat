@@ -12,11 +12,11 @@ When("I click the first autocomplete suggestion") do
   first('.tt-suggestion').click
 end
 
-Then("the search box should contain {string}") do |text|
-  expect(page.evaluate_script("$('input#reference_q').val()")).to eq text
+Then("the search box should contain {string}") do |content|
+  expect(page.evaluate_script("$('input#reference_q').val()")).to eq content
 end
 
-When("I start filling in {string} with {string}") do |field, value|
+When("I start filling in {string} with {string}") do |css_selector, value|
   wait_for_jquery
-  find(field).set value
+  find(css_selector).set value
 end

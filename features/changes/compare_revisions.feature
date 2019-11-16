@@ -39,7 +39,7 @@ Feature: Compare revisions
     When I go to the edit page for "Atta"
     And I click on the edit taxon history item button
     And I will confirm on the next step
-    And I delete the taxon history item
+    And I click on the delete taxon history item button
     Then I should be on the edit page for "Atta"
 
     When I go to the activity feed
@@ -70,11 +70,11 @@ Feature: Compare revisions
     And I follow the first linked history item
     And I follow "History"
     And I press "Compare selected revisions"
-    Then I should see "second version" in the left side of the diff
-    And I should see "last version" in the right side of the diff
+    Then I should see "second version" within the left side of the diff
+    And I should see "last version" within the right side of the diff
     And I should not see "initial version"
 
     When I follow the second "cur"
-    Then I should see "initial version" in the left side of the diff
-    And I should see "last version" in the right side of the diff
+    Then I should see "initial version" within the left side of the diff
+    And I should see "last version" within the right side of the diff
     And I should not see "second version"

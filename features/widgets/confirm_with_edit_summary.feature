@@ -8,5 +8,5 @@ Feature: Prompts with edit summaries
     And I will enter "spam feedback" in the prompt and confirm on the next step
     And I follow "Delete"
     And I go to the activity feed
-    Then I should see "Archibald deleted the feedback item #" in the feed
+    Then I should see "Archibald deleted the feedback item #" within the feed
     And I should see the edit summary "spam feedback"

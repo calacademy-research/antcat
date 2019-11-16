@@ -4,7 +4,7 @@ Feature: Merging authors
   So that they are correct
 
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And the following names exist for an author
       | Bolton, B. |
     And the following names exist for another author

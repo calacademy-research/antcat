@@ -1,6 +1,6 @@
 Feature: Reference selector
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And these references exists
       | author   | citation_year |
       | Fisher   | 2004          |
@@ -23,4 +23,4 @@ Feature: Reference selector
 
     When I press "Save"
     Then I should be on the catalog page for "Atta"
-    And I should see "Batiatus, 2004" in the header
+    And I should see "Batiatus, 2004" within the header

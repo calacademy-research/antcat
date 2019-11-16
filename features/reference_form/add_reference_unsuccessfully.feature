@@ -1,6 +1,6 @@
 Feature: Add reference unsuccessfully
   Background:
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
     And I go to the references page
     And I follow "New"
 

@@ -1,6 +1,6 @@
 Feature: Adding a taxon unsuccessfully
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And there is a subfamily "Formicinae"
 
   Scenario: Having an error, but leave fields as user entered them

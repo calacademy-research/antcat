@@ -1,6 +1,6 @@
 Feature: Manage protonyms
   Background:
-    Given I am logged in as a helper editor
+    Given I log in as a helper editor
 
   Scenario: Editing a protonym
     Given there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'

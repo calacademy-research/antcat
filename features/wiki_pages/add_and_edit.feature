@@ -20,7 +20,7 @@ Feature: Add and edit wiki pages
     Then I should see "In the title, use capitals only"
 
     When I go to the activity feed
-    Then I should see "Archibald added the wiki page Bibliography guidelines" in the feed
+    Then I should see "Archibald added the wiki page Bibliography guidelines" within the feed
     And I should see the edit summary "added help page"
 
   Scenario: Editing a wiki page (with edit summary)
@@ -42,5 +42,5 @@ Feature: Add and edit wiki pages
     Then I should see "Genus names must start with a capital letter"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the wiki page Name guidelines" in the feed
+    Then I should see "Archibald edited the wiki page Name guidelines" within the feed
     And I should see the edit summary "updated info"

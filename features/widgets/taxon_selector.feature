@@ -1,7 +1,7 @@
 @javascript
 Feature: Taxon selector
   Background:
-    Given I am logged in as a catalog editor
+    Given I log in as a catalog editor
     And there is a genus "Atta"
     And there is a genus "Eciton"
 
@@ -12,7 +12,7 @@ Feature: Taxon selector
     Then I should see "Eciton"
 
     When I press "Save"
-    Then I should see "Eciton" in the header
+    Then I should see "Eciton" within the header
 
   Scenario: Clearing a taxon field
     When I go to the edit page for "Atta"

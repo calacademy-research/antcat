@@ -34,7 +34,7 @@ Feature: Preview markdown
     Then I should see "Forel, 1878:"
     And I should not see "Forel, 1878b:"
 
-    When I click "#convert-bolton-keys-button"
+    When I click css "#convert-bolton-keys-button"
     Then I should see "Forel, 1878b:"
     And I should not see "Forel, 1878:"
 

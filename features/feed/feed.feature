@@ -2,7 +2,7 @@ Feature: Feed
   @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin
-    And the activities are paginated with 2 per page
+    And activities are paginated with 2 per page
     And there are 5 activity items
 
     # Using pagination as usual.
@@ -26,12 +26,12 @@ Feature: Feed
     Then the query string should contain "id="
 
     # Restore for future tests.
-    Given the activities are paginated with 30 per page
+    Given activities are paginated with 30 per page
 
   @javascript
   Scenario: Pagination with filtering quirks
     Given I am logged in
-    And the activities are paginated with 2 per page
+    And activities are paginated with 2 per page
     And there is an automated activity with the edit summary "[1] fix URL by script"
     And there is an automated activity with the edit summary "[2] fix URL by script"
     And there is an activity with the edit summary "[3] updated pagination"
@@ -57,4 +57,4 @@ Feature: Feed
     And I should see "[4] updated pagination"
     And I should see "[3] updated pagination"
 
-    Given the activities are paginated with 30 per page
+    Given activities are paginated with 30 per page

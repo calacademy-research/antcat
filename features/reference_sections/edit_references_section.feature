@@ -9,14 +9,14 @@ Feature: Editing references sections
     When I go to the edit page for "Atta"
     Then the reference section should be empty
 
-    When I click the add reference section button
-    And I fill in the references field with "New reference"
+    When I click on the add reference section button
+    And I fill in "references_taxt" with "New reference"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
     Then the reference section should be "New reference"
 
     When I go to the activity feed
-    Then I should see "Archibald added the reference section #" in the feed
+    Then I should see "Archibald added the reference section #" within the feed
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
@@ -28,14 +28,14 @@ Feature: Editing references sections
     Then the reference section should be "Original reference"
 
     When I click on the edit reference section button
-    And I fill in the references field with "(none)"
+    And I fill in "references_taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within ".references-section"
-    And I save the reference section
+    When I click on the save reference section button
     Then I should not see "Original reference"
     And the reference section should be "(none)"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the reference section #" in the feed
+    Then I should see "Archibald edited the reference section #" within the feed
     And I should see "belonging to Dolichoderinae"
     Then I should see the edit summary "fix typo"
 
@@ -46,7 +46,7 @@ Feature: Editing references sections
     Then I should see "California checklist"
 
     When I follow "Edit"
-    And I fill in the references field with "reference section content"
+    And I fill in "references_taxt" with "reference section content"
     And I press "Save"
     Then I should see "Successfully updated reference section."
     And I should see "reference section content"
@@ -57,7 +57,7 @@ Feature: Editing references sections
 
     When I go to the edit page for "Dolichoderinae"
     And I click on the edit reference section button
-    And I fill in the references field with "(none)"
+    And I fill in "references_taxt" with "(none)"
     And I click on the cancel reference section button
     Then the reference section should be "Original reference"
 
@@ -68,10 +68,10 @@ Feature: Editing references sections
     When I go to the edit page for "Dolichoderinae"
     And I click on the edit reference section button
     And I will confirm on the next step
-    And I delete the reference section
+    And I click on the delete reference section button
     And WAIT_FOR_JQUERY
     Then the reference section should be empty
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the reference section #" in the feed
+    Then I should see "Archibald deleted the reference section #" within the feed
     And I should see "belonging to Dolichoderinae"

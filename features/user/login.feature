@@ -7,7 +7,7 @@ Feature: Logging in
     When I go to the references page
     Then I should not see "Logout"
 
-    When I follow the first "Login"
+    When I follow "Login" within the desktop menu
     And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "secret"
     And I press "Login"
@@ -16,7 +16,7 @@ Feature: Logging in
 
   Scenario: Logging in unsuccessfully
     When I go to the main page
-    And I follow the first "Login"
+    And I follow "Login" within the desktop menu
     And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "asd;fljl;jsdfljsdfj"
     And I press "Login"
@@ -28,7 +28,7 @@ Feature: Logging in
       | quintus@antcat.org | Batiatus | secret   | true   |
 
     When I go to the main page
-    And I follow the first "Login"
+    And I follow "Login" within the desktop menu
     And I fill in "user_email" with "quintus@antcat.org"
     And I fill in "user_password" with "secret"
     And I press "Login"

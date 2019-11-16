@@ -3,7 +3,7 @@ Feature: Add new nested reference button
     Given this reference exists
       | citation_year | citation   |
       | 2010          | Psyche 1:1 |
-    And I am logged in as a helper editor
+    And I log in as a helper editor
 
     When I go to the page of the most recent reference
     And I follow "New Nested Reference"
