@@ -1,3 +1,4 @@
+# rubocop:disable Performance/Detect
 module DatabaseScripts
   class ValidTaxaThatMayBeSynonyms < DatabaseScript
     VALID_INDICATORS = Regexp.union(
@@ -44,6 +45,7 @@ module DatabaseScripts
       end
   end
 end
+# rubocop:enable Performance/Detect
 
 __END__
 description: >
