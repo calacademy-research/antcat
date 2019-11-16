@@ -6,7 +6,7 @@
 class Citation < ApplicationRecord
   belongs_to :reference
 
-  has_one :protonym, foreign_key: :authorship_id # See note above.
+  has_one :protonym, foreign_key: :authorship_id, dependent: :restrict_with_error
 
   validates :reference, :pages, presence: true
   validate :no_missing_references

@@ -21,12 +21,16 @@ end
 
 __END__
 
+title: Protonym references without PDFs
 description: >
   Issues: %github387, %github324, %github371
 
 tags: []
-topic_areas: [references]
+topic_areas: [pdfs]
 related_scripts:
-  - ReferencesWithoutPdfs
+  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
+  - ReferencesWithBlankPdfUrlsAndFilenames
+  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
+  - ReferencesWithUndownloadablePdfs

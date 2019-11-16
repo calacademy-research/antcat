@@ -8,6 +8,7 @@ describe Reference do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
     it { is_expected.to have_many(:citations).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:nestees).dependent(:restrict_with_error) }
+    it { is_expected.to have_one(:document).dependent(false) }
   end
 
   describe 'validations' do

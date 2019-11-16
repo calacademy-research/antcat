@@ -52,9 +52,13 @@ class Activity < ApplicationRecord
   strip_attributes only: [:edit_summary]
 
   def self.create_for_trackable trackable, action, edit_summary: nil, parameters: {}
-    create! trackable: trackable, action: action,
-      user: User.current, edit_summary: edit_summary,
+    create!(
+      trackable: trackable,
+      action: action,
+      user: User.current,
+      edit_summary: edit_summary,
       parameters: parameters
+    )
   end
 
   def self.create_without_trackable action, edit_summary: nil, parameters: {}
@@ -66,7 +70,7 @@ class Activity < ApplicationRecord
   def self.execute_script_activity user, edit_summary
     raise "You must assign a user." unless user
     raise "You must include an edit summary." unless edit_summary
-    create! trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary
+    create!(trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary)
   end
   # :nocov:
 

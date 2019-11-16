@@ -1,9 +1,11 @@
 class Tribe < Taxon
   belongs_to :subfamily
 
-  has_many :subtribes
-  has_many :genera
-  has_many :species, through: :genera
+  with_options dependent: :restrict_with_error do
+    has_many :subtribes
+    has_many :genera
+    has_many :species, through: :genera
+  end
 
   validates :subfamily, presence: true
 

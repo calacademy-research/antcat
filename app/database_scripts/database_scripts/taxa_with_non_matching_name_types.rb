@@ -48,6 +48,8 @@ module DatabaseScripts
 end
 
 __END__
+
+title: Taxa with non-matching name types
 description: >
   Where "name type" is the type/class a taxon's name is stored in the database
   as -- this is unrelated to "type name" or any other "type" as used in

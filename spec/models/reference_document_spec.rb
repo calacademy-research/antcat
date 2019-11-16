@@ -14,14 +14,14 @@ describe ReferenceDocument do
   end
 
   it "validates the URL" do
-    document = described_class.new url: ':::'
+    document = described_class.new(url: ':::')
     expect(document).not_to be_valid
     expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
   end
 
   it "accepts URLs with spaces" do
     stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
-    document = described_class.new url: 'http://antwiki.org/a url'
+    document = described_class.new(url: 'http://antwiki.org/a url')
     expect(document).to be_valid
   end
 
@@ -54,18 +54,18 @@ describe ReferenceDocument do
     end
 
     it "is downloadable by anyone if it's public" do
-      document = described_class.new url: 'foo', file_file_name: 'bar', public: true
+      document = described_class.new(url: 'foo', file_file_name: 'bar', public: true)
       expect(document).to be_downloadable
     end
 
     it "is not downloadable if it is on http://128.146.250.117" do
-      document = described_class.new url: 'http://128.146.250.117/pdfs/4096/4096.pdf'
+      document = described_class.new(url: 'http://128.146.250.117/pdfs/4096/4096.pdf')
       expect(document).not_to be_downloadable
     end
 
     it "doesn't consider antbase PDFs downloadable by anybody" do
       url = 'http://antbase.org/ants/publications/4495/4495.pdf'
-      document = described_class.new url: url, file_file_name: 'bar'
+      document = described_class.new(url: url, file_file_name: 'bar')
       expect(document).not_to be_downloadable
     end
   end
@@ -81,7 +81,7 @@ describe ReferenceDocument do
     end
 
     context "when the file isn't hosted by us" do
-      let(:document) { described_class.new url: 'foo' }
+      let(:document) { described_class.new(url: 'foo') }
 
       it "does nothing" do
         document.host = 'localhost'
@@ -90,7 +90,7 @@ describe ReferenceDocument do
     end
 
     context "when the file is hosted by us" do
-      let(:document) { described_class.create! file_file_name: 'foo' }
+      let(:document) { described_class.create!(file_file_name: 'foo') }
 
       it "inserts the host in the url" do
         document.host = 'localhost'

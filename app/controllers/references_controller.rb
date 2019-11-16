@@ -27,9 +27,6 @@ class ReferencesController < ApplicationController
     end
   end
 
-  def edit
-  end
-
   def create
     @reference = reference_type_from_params.new
 
@@ -39,6 +36,9 @@ class ReferencesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update

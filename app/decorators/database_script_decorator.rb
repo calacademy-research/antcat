@@ -16,6 +16,7 @@ class DatabaseScriptDecorator < Draper::Decorator
     self.class.format_tags tags
   end
 
+  # TODO: Support only a single topic area per database script.
   def format_topic_areas
     topic_areas.join(", ").capitalize
   end

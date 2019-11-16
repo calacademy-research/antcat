@@ -23,10 +23,6 @@ Rails/Delegate:
 Rails/DynamicFindBy:
   Whitelist: find_by_sql
 
-# TODO: We want to enable this when the database is ready for it.
-Rails/HasManyOrHasOneDependent:
-  Enabled: false
-
 Rails/InverseOf:
   Enabled: false
 

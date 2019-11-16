@@ -1,9 +1,11 @@
 class Genus < GenusGroupTaxon
   belongs_to :tribe
 
-  has_many :species
-  has_many :subspecies
-  has_many :subgenera
+  with_options dependent: :restrict_with_error do
+    has_many :species
+    has_many :subspecies
+    has_many :subgenera
+  end
 
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }

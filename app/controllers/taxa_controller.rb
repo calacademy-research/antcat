@@ -54,10 +54,14 @@ class TaxaController < ApplicationController
       Taxon.transaction do
         UndoTracker.setup_change @taxon, :delete
         @taxon.taxon_state.update!(deleted: true, review_state: TaxonState::WAITING)
-        @taxon.destroy!
-        @taxon.create_activity :destroy, edit_summary: params[:edit_summary]
+
+        if @taxon.destroy
+          @taxon.create_activity :destroy, edit_summary: params[:edit_summary]
+          redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
+        else
+          redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
+        end
       end
-      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
     end
   end
 

@@ -1,10 +1,12 @@
 class Subfamily < Taxon
   belongs_to :family
 
-  has_many :tribes
-  has_many :genera
-  has_many :species
-  has_many :subspecies
+  with_options dependent: :restrict_with_error do
+    has_many :tribes
+    has_many :genera
+    has_many :species
+    has_many :subspecies
+  end
   has_many :collective_group_names, -> { where(collective_group_name: true) }, class_name: 'Genus'
 
   def parent

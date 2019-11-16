@@ -17,9 +17,6 @@ class TaxonHistoryItemsController < ApplicationController
     @taxon_history_item = @taxon.history_items.new
   end
 
-  def edit
-  end
-
   def update
     updated = @taxon_history_item.update(taxon_history_item_params)
 
@@ -37,6 +34,9 @@ class TaxonHistoryItemsController < ApplicationController
         end
       end
     end
+  end
+
+  def edit
   end
 
   def create

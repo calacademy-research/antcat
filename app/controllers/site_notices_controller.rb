@@ -17,9 +17,6 @@ class SiteNoticesController < ApplicationController
     @site_notice = SiteNotice.new
   end
 
-  def edit
-  end
-
   def create
     @site_notice = SiteNotice.new(site_notice_params)
     @site_notice.user = current_user
@@ -30,6 +27,9 @@ class SiteNoticesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update

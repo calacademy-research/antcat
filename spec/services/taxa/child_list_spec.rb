@@ -22,7 +22,7 @@ describe Taxa::ChildList do
     context 'when taxon is a subfamily' do
       let!(:subfamily) { create :subfamily }
 
-      context "when taxon has extant and exting tribes" do
+      context "when taxon has extant and extinct tribes" do
         let!(:taxon) { create :tribe, subfamily: subfamily }
         let!(:fossil_taxon) { create :tribe, :fossil, subfamily: subfamily }
 

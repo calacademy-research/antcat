@@ -17,9 +17,6 @@ class ReferenceSectionsController < ApplicationController
     @reference_section = @taxon.reference_sections.new
   end
 
-  def edit
-  end
-
   def update
     updated = @reference_section.update(reference_section_params)
 
@@ -37,6 +34,9 @@ class ReferenceSectionsController < ApplicationController
         end
       end
     end
+  end
+
+  def edit
   end
 
   def create

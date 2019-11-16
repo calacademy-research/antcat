@@ -52,7 +52,7 @@ class Taxon < ApplicationRecord
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-  has_one :taxon_state
+  has_one :taxon_state, dependent: false
 
   validates :name, :protonym, presence: true
   validates :status, inclusion: { in: Status::STATUSES }

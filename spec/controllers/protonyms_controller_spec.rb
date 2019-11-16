@@ -21,6 +21,12 @@ describe ProtonymsController do
     end
   end
 
+  describe "GET new" do
+    before { sign_in create(:user, :helper) }
+
+    specify { expect(get(:new)).to render_template :new }
+  end
+
   describe "POST create" do
     let!(:protonym_params) do
       {

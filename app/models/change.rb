@@ -7,7 +7,7 @@ class Change < ApplicationRecord
   belongs_to :taxon, class_name: 'Taxon'
   belongs_to :user
 
-  has_many :versions, class_name: 'PaperTrail::Version'
+  has_many :versions, class_name: 'PaperTrail::Version', dependent: false
 
   validates :user, presence: true, on: :create
 

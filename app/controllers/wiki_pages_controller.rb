@@ -14,9 +14,6 @@ class WikiPagesController < ApplicationController
     @wiki_page = WikiPage.new
   end
 
-  def edit
-  end
-
   def create
     @wiki_page = WikiPage.new(wiki_page_params)
 
@@ -26,6 +23,9 @@ class WikiPagesController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
   end
 
   def update

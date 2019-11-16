@@ -5,6 +5,12 @@ describe Genus do
   let(:subfamily) { create :subfamily }
   let(:genus) { create :genus }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:subgenera).dependent(:restrict_with_error) }
+  end
+
   it "can have species, which are its children" do
     species = create :species, genus: genus
     other_species = create :species, genus: genus

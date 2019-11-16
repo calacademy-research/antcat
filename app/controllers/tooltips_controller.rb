@@ -14,10 +14,6 @@ class TooltipsController < ApplicationController
     @tooltip = Tooltip.new(key: params[:key], scope: params[:scope])
   end
 
-  def edit
-    redirect_to action: :show
-  end
-
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
@@ -26,6 +22,10 @@ class TooltipsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def edit
+    redirect_to action: :show
   end
 
   def update

@@ -45,7 +45,7 @@ module Taxa
         @history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids])
       end
 
-      def create_activity(parameters)
+      def create_activity parameters
         @taxon.create_activity :move_items, parameters: parameters
       end
 

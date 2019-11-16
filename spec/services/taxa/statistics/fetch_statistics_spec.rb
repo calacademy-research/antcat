@@ -2,6 +2,32 @@ require 'spec_helper'
 
 describe Taxa::Statistics::FetchStatistics do
   describe "#call" do
+    context 'when taxon has no children' do
+      let(:taxon) { create :family }
+
+      specify { expect(described_class[taxon]).to eq({}) }
+    end
+
+    context "when there are extant and fossil children" do
+      let(:family) { create :family }
+
+      before do
+        create :subfamily
+        create :subfamily, :fossil
+      end
+
+      it "separates extant and fossil children in groups" do
+        expect(described_class[family]).to eq(
+          extant: {
+            subfamilies: { 'valid' => 1 }
+          },
+          fossil: {
+            subfamilies: { 'valid' => 1 }
+          }
+        )
+      end
+    end
+
     context "when family" do
       let(:family) { create :family }
 
@@ -30,62 +56,21 @@ describe Taxa::Statistics::FetchStatistics do
     context "when subfamily" do
       let(:subfamily) { create :subfamily }
 
-      context "when 0 children" do
-        specify { expect(described_class[subfamily]).to eq({}) }
-      end
-
-      context "when 1 valid genus and 2 synonyms" do
+      context "when 1 valid genus, 2 synonyms, and 2 valid species" do
         before do
-          create :genus, subfamily: subfamily
-          2.times { create :genus, :synonym, subfamily: subfamily }
-        end
-
-        specify do
-          expect(described_class[subfamily]).to eq extant: {
-            genera: { 'valid' => 1, 'synonym' => 2 }
-          }
-        end
-      end
-
-      context "when 1 valid genus with 2 valid species" do
-        before do
+          create :tribe, subfamily: subfamily
+          create :genus, :synonym, subfamily: subfamily
           genus = create :genus, subfamily: subfamily
           2.times { create :species, genus: genus, subfamily: subfamily }
         end
 
         specify do
           expect(described_class[subfamily]).to eq extant: {
-            genera: { 'valid' => 1 },
+            tribes: { 'valid' => 1 },
+            genera: { 'valid' => 1, 'synonym' => 1 },
             species: { 'valid' => 2 }
           }
         end
-      end
-
-      context "when there are extinct genera and species" do
-        before do
-          genus = create :genus, subfamily: subfamily
-          create :genus, :fossil, subfamily: subfamily
-          create :species, genus: genus
-          create :species, :fossil, genus: genus
-        end
-
-        it "differentiates between extinct genera and species" do
-          expect(described_class[subfamily]).to eq(
-            extant: {
-              genera: { 'valid' => 1 },
-              species: { 'valid' => 1 }
-            },
-            fossil: {
-              genera: { 'valid' => 1 },
-              species: { 'valid' => 1 }
-            }
-          )
-        end
-      end
-
-      it "can count tribes" do
-        create :tribe, subfamily: subfamily
-        expect(described_class[subfamily]).to eq extant: { tribes: { 'valid' => 1 } }
       end
     end
 
@@ -93,12 +78,7 @@ describe Taxa::Statistics::FetchStatistics do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
 
-      it "includes the number of genera" do
-        create :genus, tribe: tribe
-        expect(described_class[tribe]).to eq extant: { genera: { 'valid' => 1 } }
-      end
-
-      it "includes the number of species" do
+      it "includes the number of genera and species" do
         genus = create :genus, tribe: tribe
         create :species, genus: genus
         create :species, :synonym, genus: genus
@@ -113,10 +93,6 @@ describe Taxa::Statistics::FetchStatistics do
     context "when genus" do
       let(:genus) { create :genus }
 
-      context "when 0 children" do
-        specify { expect(described_class[genus]).to eq({}) }
-      end
-
       context "when 1 valid species" do
         before { create :species, genus: genus }
 
@@ -125,20 +101,7 @@ describe Taxa::Statistics::FetchStatistics do
         end
       end
 
-      context "when 1 valid species and 2 synonyms" do
-        before do
-          create :species, genus: genus
-          2.times { create :species, :synonym, genus: genus }
-        end
-
-        specify do
-          expect(described_class[genus]).to eq extant: {
-            species: { 'valid' => 1, 'synonym' => 2 }
-          }
-        end
-      end
-
-      context "when 1 valid species with 2 valid subspecies" do
+      context "when there are species and subspecies" do
         before do
           species = create :species, genus: genus
           2.times { create :subspecies, species: species, genus: genus }
@@ -146,32 +109,9 @@ describe Taxa::Statistics::FetchStatistics do
 
         specify do
           expect(described_class[genus]).to eq extant: {
-            species: { 'valid' => 1 }, subspecies: { 'valid' => 2 }
+            species: { 'valid' => 1 },
+            subspecies: { 'valid' => 2 }
           }
-        end
-      end
-
-      context "when there are extinct species and subspecies" do
-        before do
-          species = create :species, genus: genus
-          create :subspecies, :fossil, genus: genus, species: species
-          create :subspecies, genus: genus, species: species
-
-          fossil_species = create :species, :fossil, genus: genus
-          create :subspecies, :fossil, genus: genus, species: fossil_species
-        end
-
-        it "can differentiate extinct species and subspecies" do
-          expect(described_class[genus]).to eq(
-            extant: {
-              species: { 'valid' => 1 },
-              subspecies: { 'valid' => 1 }
-            },
-            fossil: {
-              species: { 'valid' => 1 },
-              subspecies: { 'valid' => 2 }
-            }
-          )
         end
       end
     end
@@ -179,43 +119,12 @@ describe Taxa::Statistics::FetchStatistics do
     context "when species" do
       let(:species) { create :species }
 
-      context "when 0 children" do
-        specify { expect(described_class[species]).to eq({}) }
-      end
-
       context "when 1 valid subspecies" do
         before { create :subspecies, species: species }
 
         specify do
           expect(described_class[species]).to eq extant: {
             subspecies: { 'valid' => 1 }
-          }
-        end
-      end
-
-      context "when there are extant and fossil subspecies" do
-        before do
-          create :subspecies, species: species
-          create :subspecies, :fossil, species: species
-        end
-
-        specify do
-          expect(described_class[species]).to eq(
-            extant: { subspecies: { 'valid' => 1 } },
-            fossil: { subspecies: { 'valid' => 1 } }
-          )
-        end
-      end
-
-      context "when 1 valid subspecies and 2 synonyms" do
-        before do
-          create :subspecies, species: species
-          2.times { create :subspecies, :synonym, species: species }
-        end
-
-        specify do
-          expect(described_class[species]).to eq extant: {
-            subspecies: { 'valid' => 1, 'synonym' => 2 }
           }
         end
       end
