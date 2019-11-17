@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_000740) do
+ActiveRecord::Schema.define(version: 2019_11_17_004103) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -27,10 +27,10 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
   end
 
   create_table "author_names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "author_id"
+    t.integer "author_id", null: false
     t.index ["author_id"], name: "author_names_author_id_idx"
     t.index ["created_at", "name"], name: "author_created_at_name"
     t.index ["name"], name: "author_name_idx"
@@ -114,7 +114,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
   end
 
   create_table "journals", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "journals_name_idx"
@@ -187,7 +187,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
     t.integer "reference_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "position"
+    t.integer "position", null: false
     t.index ["author_name_id"], name: "author_participations_author_id_idx"
     t.index ["reference_id", "position"], name: "author_participations_reference_id_position_idx"
     t.index ["reference_id"], name: "author_participations_reference_id_idx"
@@ -204,8 +204,8 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
   end
 
   create_table "reference_sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "taxon_id"
-    t.integer "position"
+    t.integer "taxon_id", null: false
+    t.integer "position", null: false
     t.string "title_taxt"
     t.text "references_taxt"
     t.datetime "created_at", null: false
@@ -260,18 +260,18 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
   end
 
   create_table "taxa", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "type"
+    t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "fossil", default: false, null: false
-    t.string "status"
+    t.string "status", null: false
     t.integer "subfamily_id"
     t.integer "tribe_id"
     t.integer "genus_id"
     t.integer "homonym_replaced_by_id"
     t.string "incertae_sedis_in"
     t.integer "species_id"
-    t.integer "protonym_id"
+    t.integer "protonym_id", null: false
     t.text "type_taxt"
     t.text "headline_notes_taxt"
     t.integer "subgenus_id"
@@ -312,8 +312,8 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
     t.text "taxt", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "taxon_id"
-    t.integer "position"
+    t.integer "taxon_id", null: false
+    t.integer "position", null: false
     t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
   end
 
@@ -356,7 +356,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_000740) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.string "name"
+    t.string "name", null: false
     t.datetime "invitation_created_at"
     t.boolean "superadmin", default: false, null: false
     t.boolean "helper", default: false, null: false
