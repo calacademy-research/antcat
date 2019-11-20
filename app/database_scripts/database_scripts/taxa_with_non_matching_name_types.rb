@@ -50,6 +50,9 @@ end
 __END__
 
 title: Taxa with non-matching name types
+category: Names
+tags: [list]
+
 description: >
   Where "name type" is the type/class a taxon's name is stored in the database
   as -- this is unrelated to "type name" or any other "type" as used in
@@ -57,5 +60,3 @@ description: >
   it may be the other way around, that the name type is correct but the
   taxon's type is not.
 
-topic_areas: [names]
-tags: [list]

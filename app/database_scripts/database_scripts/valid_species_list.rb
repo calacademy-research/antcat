@@ -82,6 +82,10 @@ module DatabaseScripts
 end
 
 __END__
+
+category: Catalog
+tags: [list, very-slow, csv]
+
 description: >
   List of all valid species. Suitable for exporting to `.csv` (see %github161).
 
@@ -91,6 +95,3 @@ description: >
 
 
   `# TODO: Make catalog search results exportable as CSV, making this script redundant.`
-
-tags: [list, very-slow, csv]
-topic_areas: [catalog]

@@ -74,6 +74,8 @@ end
 __END__
 
 title: Non-explicit <i>incertae sedis</i> taxa
+category: Catalog
+
 description: >
   This list contains taxa that are "_incertae sedis_ by implication" but have no
   value for "Incertae sedis in".
@@ -84,6 +86,5 @@ description: >
 
   Issue: %github453
 
-topic_areas: [catalog]
 related_scripts:
   - NonIncertaeSedisTaxaWithoutSubfamily

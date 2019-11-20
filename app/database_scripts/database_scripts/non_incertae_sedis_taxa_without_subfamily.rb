@@ -59,13 +59,14 @@ end
 __END__
 
 title: Non-<i>incertae sedis</i> taxa without subfamily
+category: Catalog
+tags: []
+
 description: >
   Note: It may or may not currently be possible to fix all records listed here.
 
 
   Taxa that are "Excluded from Formicidae" are not included here.
 
-tags: []
-topic_areas: [catalog]
 related_scripts:
   - NonExplicitIncertaeSedisTaxa

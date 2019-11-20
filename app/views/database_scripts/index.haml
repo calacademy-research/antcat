@@ -37,7 +37,7 @@
       %table.tablesorter.margin-bottom
         %thead
           %tr
-            %th.no-wrap Topic area
+            %th.no-wrap Category
             %th Script
             %th.no-wrap Tags
             %th Soft-validated
@@ -45,7 +45,7 @@
         %tbody
           -database_scripts.each do |database_script|
             %tr
-              %td.shrink=database_script.decorate.format_topic_areas
+              %td.shrink=database_script.category
               %td
                 =link_to database_script.title, database_script_path(database_script)
                 -if database_script.issue_description.present?

@@ -23,12 +23,14 @@ end
 
 __END__
 
+category: Catalog
+tags: []
+
+issue_description: This subspecies is not in the same subfamily as its species.
+
 description: >
   Note: It may or may not currently be possible to fix all records listed here.
 
-tags: []
-topic_areas: [catalog]
-issue_description: This subspecies is not in the same subfamily as its species.
 related_scripts:
   - SpeciesDisagreeingWithGenusRegardingSubfamily
   - SubspeciesDisagreeingWithSpeciesRegardingGenus

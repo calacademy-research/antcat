@@ -52,6 +52,9 @@ module DatabaseScripts
 end
 
 __END__
+
+category: Taxt
+
 description: >
   This script contains all taxt items containing the string `hardcoded_name`.
 
@@ -63,5 +66,3 @@ description: >
   removing the `hardcoded_name` HTML comment, likewise, items can be added to this list by
   including `hardcoded_name` anywhere in the content of a taxt (these HTML comments
   are hidden in the catalog).
-
-topic_areas: [taxt]

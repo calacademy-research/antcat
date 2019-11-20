@@ -40,10 +40,11 @@ end
 __END__
 
 title: References with blank PDF URLs and filenames
+category: PDFs
+tags: [new!, slow]
+
 description: >
 
-tags: [new!, slow]
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

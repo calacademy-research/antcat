@@ -8,10 +8,11 @@ end
 
 __END__
 
+category: Protonyms
+tags: [list]
+
 description: >
 
-tags: [list]
-topic_areas: [protonyms]
 related_scripts:
   - OrphanedAuthorNames
   - OrphanedAuthors

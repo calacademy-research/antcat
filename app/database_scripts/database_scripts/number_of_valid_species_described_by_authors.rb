@@ -31,9 +31,10 @@ module DatabaseScripts
 end
 
 __END__
+
+category: Catalog
+tags: [list]
+
 description: >
   Only valid taxa at the rank of species are included in this list.
   This also affects the year range and count.
-
-tags: [list]
-topic_areas: [catalog]

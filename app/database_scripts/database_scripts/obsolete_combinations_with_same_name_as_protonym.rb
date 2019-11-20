@@ -11,7 +11,7 @@ end
 
 __END__
 
+category: Catalog
+
 description: >
   Taxa where `original_combination` is checked are not included.
-
-topic_areas: [catalog]

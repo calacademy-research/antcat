@@ -21,11 +21,11 @@ end
 __END__
 
 title: Non-fossil protonyms with fossil taxa
+category: Protonyms
+
 description: >
   This is not necessarily incorrect.
 
-tags: []
-topic_areas: [protonyms]
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms

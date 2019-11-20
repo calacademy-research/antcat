@@ -47,11 +47,11 @@ end
 
 __END__
 
+category: Catalog
+tags: [list]
+
 description: >
   This script creates a list of all taxa with history items that mention
   `junior synonym`. Taxa with items containing "valid indicators" (eg.
   `as genus`, see source) after the `junior synonym` entry are removed
   from the list; the rest are shown in this table.
-
-topic_areas: [catalog]
-tags: [list]

@@ -67,8 +67,8 @@ class DatabaseScript
     end_data[:tags] || []
   end
 
-  def topic_areas
-    end_data[:topic_areas] || []
+  def category
+    end_data[:category] || ""
   end
 
   def related_scripts

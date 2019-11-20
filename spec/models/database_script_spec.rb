@@ -84,6 +84,17 @@ describe DatabaseScript do
       end
     end
 
+    describe "#category" do
+      it "can have a category" do
+        expect(script.category).to eq "Catalog"
+      end
+
+      it "defaults to a blank string" do
+        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
+        expect(script.category).to eq ""
+      end
+    end
+
     describe "#description" do
       it "can have a description" do
         expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"

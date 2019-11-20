@@ -74,6 +74,9 @@ end
 
 __END__
 
+category: Taxt
+tags: [slow]
+
 description: >
   The goal of this script is to eliminate data inconsistencies and duplication, so we can either create a "virtual history item" or list subspecies outside of the history section.
 
@@ -103,6 +106,3 @@ description: >
   `Total valid subspecies: 1897`
 
   `Statuses of extracted taxa: {"homonym"=>1, "obsolete combination"=>26, "original combination"=>1, "synonym"=>51, "unavailable"=>5, "valid"=>1832}`
-
-tags: [slow]
-topic_areas: [taxt]
