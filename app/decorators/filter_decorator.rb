@@ -8,7 +8,7 @@ class FilterDecorator
   end
 
   def render_html
-    send values[:tag], column, *args
+    public_send values[:tag], column, *args
   end
 
   private
