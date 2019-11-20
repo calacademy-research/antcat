@@ -95,14 +95,14 @@ describe DatabaseScript do
       end
     end
 
-    describe "#description" do
-      it "can have a description" do
-        expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
+    describe "#tags" do
+      it "can have tags" do
+        expect(script.tags).to eq ["regression-test"]
       end
 
-      it "defaults to a blank string" do
+      it "defaults to an empty array" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.description).to eq ""
+        expect(script.tags).to eq []
       end
     end
 
@@ -112,14 +112,14 @@ describe DatabaseScript do
       end
     end
 
-    describe "#tags" do
-      it "can have tags" do
-        expect(script.tags).to eq ["regression-test"]
+    describe "#description" do
+      it "can have a description" do
+        expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
       end
 
-      it "defaults to an empty array" do
+      it "defaults to a blank string" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.tags).to eq []
+        expect(script.description).to eq ""
       end
     end
 

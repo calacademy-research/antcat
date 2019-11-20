@@ -55,20 +55,20 @@ class DatabaseScript
     end_data[:title]&.html_safe || filename_without_extension.humanize
   end
 
-  def description
-    end_data[:description] || ""
-  end
-
-  def issue_description
-    end_data[:issue_description]
+  def category
+    end_data[:category] || ""
   end
 
   def tags
     end_data[:tags] || []
   end
 
-  def category
-    end_data[:category] || ""
+  def issue_description
+    end_data[:issue_description]
+  end
+
+  def description
+    end_data[:description] || ""
   end
 
   def related_scripts
