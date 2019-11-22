@@ -53,7 +53,9 @@ paths:
         "200":
           description: matching taxa records
           schema:
-            $ref: '#/definitions/Taxa'
+            type: array
+            items:
+              $ref: '#/definitions/Taxa'
         "404":
           description: Record not found
 
@@ -74,7 +76,9 @@ paths:
         "200":
           description: Returns 100 taxa at a time starting at the specified taxon id. If no id is supplied, starts at zero
           schema:
-            $ref: '#/definitions/Taxon'
+            type: array
+            items:
+              $ref: '#/definitions/Taxon'
         "404":
           description: Record not found
 
@@ -88,7 +92,9 @@ paths:
         "200":
           description: the first hundred citation records.
           schema:
-            $ref: '#/definitions/Protonym'
+            type: array
+            items:
+              $ref: '#/definitions/Protonym'
         "404":
           description: Record not found
 
@@ -130,7 +136,9 @@ paths:
         "200":
           description: a single author record
           schema:
-            $ref: '#/definitions/Author'
+            type: array
+            items:
+              $ref: '#/definitions/Author'
         "404":
           description: Record not found
 
@@ -145,7 +153,9 @@ paths:
         "200":
           description: Array of Ids of all authors and their create/update dates
           schema:
-            $ref: '#/definitions/Author'
+            type: array
+            items:
+              $ref: '#/definitions/Author'
         "404":
           description: Record not found
 
@@ -175,13 +185,15 @@ paths:
       summary: Get all author names
       operationId: getAuthorNames
       tags:
-        - authors
+        - author_names
 
       responses:
         "200":
           description: Array of all author names
           schema:
-            $ref: '#/definitions/AuthorName'
+            type: array
+            items:
+              $ref: '#/definitions/AuthorName'
         "404":
           description: Record not found
 
@@ -223,7 +235,9 @@ paths:
         "200":
           description: Array of all author names
           schema:
-            $ref: '#/definitions/AuthorName'
+            type: array
+            items:
+              $ref: '#/definitions/Name'
         "404":
           description: Record not found
 
@@ -245,7 +259,9 @@ paths:
           description: Returns 100 citations at a time starting at the specified citation id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Citation'
+            type: array
+            items:
+              $ref: '#/definitions/Citation'
         "404":
           description: Record not found
 
@@ -288,7 +304,9 @@ paths:
           description: Returns 100 taxon history items at a time starting at the specified taxon_history_item_id id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/TaxonHistoryItem'
+            type: array
+            items:
+              $ref: '#/definitions/TaxonHistoryItem'
         "404":
           description: Record not found
 
@@ -331,7 +349,9 @@ paths:
           description: Returns 100 journals at a time starting the specified journal id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Journal'
+            type: array
+            items:
+              $ref: '#/definitions/Journal'
         "404":
           description: Record not found
 
@@ -374,7 +394,9 @@ paths:
           description: Returns 100 publishers at a time starting the specified publisher id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Publisher'
+            type: array
+            items:
+              $ref: '#/definitions/Publisher'
         "404":
           description: Record not found
 
@@ -417,7 +439,9 @@ paths:
           description: Returns 100 references at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/Reference'
         "404":
           description: Record not found
 
@@ -460,7 +484,9 @@ paths:
           description: Returns 100 referenceAuthorNames at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceAuthorName'
         "404":
           description: Record not found
 
@@ -503,7 +529,9 @@ paths:
           description: Returns 100 referenceDocuments at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceDocument'
         "404":
           description: Record not found
 
@@ -546,7 +574,9 @@ paths:
           description: Returns 100 referenceSections at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceSection'
         "404":
           description: Record not found
 
