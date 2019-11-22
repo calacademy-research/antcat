@@ -20,7 +20,7 @@ paths:
       summary: Get a single taxon
       operationId: getTaxon
       tags:
-        - taxon
+        - taxa
       parameters:
         - name: id
           in: path
@@ -84,7 +84,6 @@ paths:
       operationId: getProtonyms
       tags:
         - protonyms
-        - protonym
       responses:
         "200":
           description: the first hundred citation records.
@@ -98,7 +97,7 @@ paths:
       summary: Get a protonym
       operationId: getProtonym
       tags:
-        - protonym
+        - protonyms
       parameters:
         - name: id
           in: path
@@ -191,7 +190,7 @@ paths:
       summary: Get an author name by author id
       operationId: getName
       tags:
-        - name
+        - names
       parameters:
         - name: id
           in: path
@@ -213,7 +212,6 @@ paths:
       operationId: getNames
       tags:
         - names
-        - name
       parameters:
         - name: starts_at
           in: query
@@ -235,7 +233,6 @@ paths:
       operationId: getCitations
       tags:
         - citations
-        - citation
       parameters:
           - name: starts_at
             in: query
@@ -257,7 +254,7 @@ paths:
       summary: Get a citation
       operationId: getCitation
       tags:
-        - citation
+        - citations
       parameters:
         - name: id
           in: path
@@ -278,8 +275,7 @@ paths:
       summary: Get all taxon_history_items
       operationId: getTaxonHistoryItems
       tags:
-        - TaxonHistoryItems
-        - TaxonHistoryItem
+        - taxon_history_items
       parameters:
           - name: starts_at
             in: query
@@ -301,7 +297,7 @@ paths:
       summary: Get a single taxon_history_item
       operationId: getTaxonHistoryItem
       tags:
-        - TaxonHistoryItem
+        - taxon_history_items
       parameters:
         - name: id
           in: path
@@ -322,8 +318,7 @@ paths:
       summary: Get all journals
       operationId: getJournals
       tags:
-        - Journals
-        - Journal
+        - journals
       parameters:
           - name: starts_at
             in: query
@@ -345,7 +340,7 @@ paths:
       summary: Get a single journal
       operationId: getJournal
       tags:
-        - Journal
+        - journals
       parameters:
         - name: id
           in: path
@@ -366,8 +361,7 @@ paths:
       summary: Get all publishers
       operationId: getPublishers
       tags:
-        - Publishers
-        - Publisher
+        - publishers
       parameters:
           - name: starts_at
             in: query
@@ -389,7 +383,7 @@ paths:
       summary: Get a single publisher
       operationId: getpublisher
       tags:
-        - Publisher
+        - publishers
       parameters:
         - name: id
           in: path
@@ -410,8 +404,7 @@ paths:
       summary: Get all references
       operationId: getReferences
       tags:
-        - References
-        - Reference
+        - references
       parameters:
           - name: starts_at
             in: query
@@ -433,7 +426,7 @@ paths:
       summary: Get a single reference
       operationId: getreference
       tags:
-        - Reference
+        - references
       parameters:
         - name: id
           in: path
@@ -454,8 +447,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceAuthorNames
       tags:
-        - ReferenceAuthorNames
-        - Reference
+        - reference_author_names
       parameters:
           - name: starts_at
             in: query
@@ -477,7 +469,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceAuthorName
       tags:
-        - ReferenceAuthorName
+        - reference_author_names
       parameters:
         - name: id
           in: path
@@ -498,8 +490,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceDocuments
       tags:
-        - ReferenceDocuments
-        - ReferenceDocument
+        - reference_documents
       parameters:
           - name: starts_at
             in: query
@@ -521,7 +512,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceDocument
       tags:
-        - ReferenceDocument
+        - reference_documents
       parameters:
         - name: id
           in: path
@@ -542,8 +533,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceSections
       tags:
-        - ReferenceSections
-        - ReferenceSection
+        - reference_sections
       parameters:
           - name: starts_at
             in: query
@@ -565,7 +555,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceSection
       tags:
-        - ReferenceSection
+        - reference_sections
       parameters:
         - name: id
           in: path
