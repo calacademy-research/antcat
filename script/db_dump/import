@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ "${RAILS_ENV:-}" != "development" ] && echo "RAILS_ENV must be 'development'" && exit 1
+
+echo "*** Executing $0"
+
+db_dump_path="${1:-}"
+[ -z "${db_dump_path}" ] && echo "missing arg for db dump file" && exit 1
+
+# To fix:
+#   ERROR 3167 (HY000) at line 17: The 'INFORMATION_SCHEMA.SESSION_VARIABLES'
+#   feature is disabled; see the documentation for 'show_compatibility_56'
+# for mysql-client-5.7, but allow to fail for compatability with mysql-client-5.5.
+set +e
+echo 'SET GLOBAL show_compatibility_56 = ON;' | RAILS_ENV=development bundle exec rails db -p
+set -e
+
+# Import.
+zcat "$db_dump_path" | RAILS_ENV=development bundle exec rails db -p
+
+# Set environment because `SELECT * FROM ar_internal_metadata;` is set to "production" in exported db dumps.
+RAILS_ENV=development bundle exec rake db:environment:set
+
+echo "Import done."

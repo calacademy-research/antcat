@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ "${RAILS_ENV:-}" != "development" ] && echo "RAILS_ENV must be 'development'" && exit 1
+
+echo "*** Executing $0"
+
+full_path=$(realpath "$0")
+dir_path=$(dirname "$full_path")
+
+download_latest_results=$(bash "$dir_path/download_latest" | tee /dev/tty)
+most_recent_local_path=$(echo "$download_latest_results" | grep 'Latest db dump -->' | awk -F"--> " '{print $2}')
+
+if [ ! -f "$most_recent_local_path" ]; then
+  echo "Could not find dump on local machine."
+  exit 1
+fi
+
+bash "$dir_path/reset_db"
+bash "$dir_path/import" "$most_recent_local_path"

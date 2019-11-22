@@ -1,0 +1,74 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ "${RAILS_ENV:-}" != "development" ] && echo "RAILS_ENV must be 'development'" && exit 1
+
+echo "*** Executing $0"
+
+full_path=$(realpath "$0")
+dir_path=$(dirname "$full_path")
+
+antweb_exports_path="$dir_path/../../data/antweb_exports"
+
+export_filename="$antweb_exports_path/antcat.antweb.txt"
+export_filename_tmp="$export_filename.tmp"
+export_stdout_log_filename="$export_filename.stdout.log"
+export_stderr_log_filename="$export_filename.stderr.log"
+
+function log_export() {
+  echo "$1"
+  echo "$(LC_TIME=en_US date) $1" >> "$export_stdout_log_filename"
+}
+
+function log_export_runtime() {
+  end_time=$(date +%s)
+  runtime=$((end_time-start_time))
+  log_export "Runtime: $runtime seconds"
+}
+
+# Cleanup logs and tmp file.
+[ -e "$export_filename_tmp" ] && rm "$export_filename_tmp"
+[ -e "$export_stdout_log_filename" ] && rm "$export_stdout_log_filename"
+[ -e "$export_stderr_log_filename" ] && rm "$export_stderr_log_filename"
+
+# Download and import latest db dump.
+bash "$dir_path/import_latest"
+
+start_time=$(date +%s)
+log_export "Exporting to $export_filename_tmp ..."
+
+set +e
+
+# Export, and redirect stdout and stderr to logs, AND show in terminal, from https://unix.stackexchange.com/a/6431
+(
+  RAILS_ENV=development bundle exec rake "antweb:export[$export_filename_tmp]" | tee "$export_stdout_log_filename"
+) 3>&1 1>&2 2>&3 | tee "$export_stderr_log_filename"
+
+if [ $? -ne 0 ]; then
+  log_export "Export failed with unrecoverable error. Please see $export_stderr_log_filename."
+  log_export_runtime
+  exit 1
+else
+  if [ -s "$export_stderr_log_filename" ]; then
+    log_export "Generated export with recoverable-ish errors. Please see $export_stderr_log_filename."
+  else
+    log_export "Generated export without errors."
+  fi
+
+  log_export "Line count: $(wc -l $export_filename_tmp | cut -d' ' -f1)"
+  log_export "Filesize: $(ls -sh $export_filename_tmp | cut -d' ' -f1)"
+  log_export_runtime
+
+  log_export "Moving file to $export_filename ..."
+  if mv "$export_filename_tmp" "$export_filename"; then
+    log_export "File moved."
+  else
+    log_export "File could not be moved to the target location."
+    exit 1
+  fi
+fi
+
+set -e
+
+log_export "Export done."
