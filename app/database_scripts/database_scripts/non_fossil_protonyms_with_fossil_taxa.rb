@@ -1,7 +1,7 @@
 module DatabaseScripts
   class NonFossilProtonymsWithFossilTaxa < DatabaseScript
     def results
-      Protonym.where(fossil: false).joins(:taxa).where(taxa: { fossil: true }).includes(:taxa)
+      Protonym.extant.joins(:taxa).where(taxa: { fossil: true }).includes(:taxa)
     end
 
     def render
