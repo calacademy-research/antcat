@@ -44,7 +44,7 @@ class Taxon < ApplicationRecord
     belongs_to :current_valid_taxon
 
     has_one :homonym_replaced, foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
-    has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, foreign_key: :current_valid_taxon_id
+    has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id
   end
 
   belongs_to :name, dependent: :destroy
@@ -71,6 +71,8 @@ class Taxon < ApplicationRecord
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
+  scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
+  scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }

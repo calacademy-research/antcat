@@ -2,7 +2,7 @@ module DatabaseScripts
   class ObsoleteCombinationsWithSameNameAsProtonym < DatabaseScript
     def results
       Taxon.joins(:name, protonym: :name).
-        where(status: Status::OBSOLETE_COMBINATION).
+        obsolete_combinations.
         where.not(original_combination: true).
         where("names.name = names_protonyms.name")
     end
