@@ -1,7 +1,7 @@
 -if taxon.junior_synonyms.present?
   .callout
     %h5.callout-header Junior synonyms
-    %ul#junior-synonyms
+    %ul.compact-list
       -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
         %li
           =synonym.link_to_taxon
