@@ -87,3 +87,11 @@
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
+
+-if taxon.obsolete_combinations.exists?
+  %h6 Obsolete combinations
+  %ul.compact-list.small-margin-bottom
+    -taxon.obsolete_combinations.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |obsolete_combination|
+      %li
+        =obsolete_combination.link_to_taxon
+        =obsolete_combination.author_citation
