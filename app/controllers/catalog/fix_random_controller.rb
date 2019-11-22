@@ -1,6 +1,7 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
+      DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
