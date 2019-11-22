@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -u
+
+echo "*** Executing $0"
+
+solr_pid=$(pgrep -f 'solr.solr.home')
+
+digits='^[0-9]+$'
+if ! [[ $solr_pid =~ $digits ]]; then
+  echo "solr is not running" >&2; exit 1
+else
+  echo "killing solr (pid $solr_pid)..."
+  kill "$solr_pid"
+fi
