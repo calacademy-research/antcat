@@ -1,5 +1,5 @@
 module Taxa
-  class CreateCombinationsController < ApplicationController
+  class CreateCombinationHelpsController < ApplicationController
     before_action :set_taxon
     before_action :set_new_parent, only: :show
 

@@ -1,5 +1,5 @@
 -@title = "Create combination help"
--breadcrumb :create_combination, @taxon
+-breadcrumb :create_combination_help, @taxon
 
 -content_for :head do
   =javascript_include_tag "taxon_select"
@@ -7,7 +7,7 @@
 =content_for :breadcrumbs_right do
   =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
-=form_tag taxa_create_combination_path, method: :get do
+=form_tag taxa_create_combination_help_path, method: :get do
   .row{data: { show_hide_toggable_id: "help" }}
     .medium-12.columns
       .callout

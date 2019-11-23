@@ -38,7 +38,7 @@ crumb :search_reference_sections do
   parent :catalog
 end
 
-crumb :create_combination do |taxon|
+crumb :create_combination_help do |taxon|
   link "Create combination help"
   parent :edit_taxon, taxon
 end
