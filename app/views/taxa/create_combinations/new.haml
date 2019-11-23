@@ -48,8 +48,7 @@
     .medium-12.columns
       %h5 Taxa where this taxon is set as the current valid taxon
       .callout
-        -current_valid_taxon_of = Taxon.where(current_valid_taxon: @taxon)
-        -if current_valid_taxon_of.empty?
+        -if @taxon.current_valid_taxon_of.empty?
           None
           =antcat_icon("check")
         -else
@@ -62,7 +61,7 @@
                 %th Same protonym?
                 %th Has history items?
 
-            -current_valid_taxon_of.each do |taxon|
+            -@taxon.current_valid_taxon_of.each do |taxon|
               %tr
                 %td.no-wrap
                   =taxon.link_to_taxon
