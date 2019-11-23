@@ -2,7 +2,7 @@
 -breadcrumb :protonyms
 
 =content_for :breadcrumbs_right do
-  =link_to "Hide/show search", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "search-form" }
+  =link_to "Hide/show search", "#", data: { show_hide_toggler_for: "search-form" }, class: "btn-nodanger"
   -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
     =link_to "Order by name", protonyms_path, class: "btn-normal"
   -else
@@ -14,7 +14,7 @@
   .row
     .medium-12.columns
       =form_tag protonyms_path, method: :get do
-        =text_field_tag :q, params[:q], class: 'input-group-field', placeholder: "Search Protonyms"
+        =text_field_tag :q, params[:q], placeholder: "Search Protonyms", class: 'input-group-field'
         =button_tag type: 'submit', class: 'btn-normal' do
           ="Search ".html_safe + search_icon
 

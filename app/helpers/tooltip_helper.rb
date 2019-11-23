@@ -13,12 +13,13 @@ module TooltipHelper
   end
 
   def tooltip_icon text
-    content_tag :span, nil, class: "antcat_icon tooltip-icon jquery-tooltip", title: sanitize(text)
+    content_tag :span, nil, title: sanitize(text), class: "antcat_icon tooltip-icon jquery-tooltip"
   end
 
   # For content that which it is not obvious it is for logged-in users only.
   def logged_in_only_tooltip_icon
-    content_tag :span, nil, class: "antcat_icon logged-in-only-icon jquery-tooltip", title: 'This section is only visible to logged-in users'
+    content_tag :span, nil, title: 'This section is only visible to logged-in users',
+      class: "antcat_icon logged-in-only-icon jquery-tooltip"
   end
 
   private

@@ -10,7 +10,7 @@
   =content_for :breadcrumbs_right do
     -if user_is_superadmin?
 
-      =link_to append_superadmin_icon("Approve all"), approve_all_changes_path, method: :put, class: "btn-warning", data: { confirm: "Are you sure you want to approve all changes?" }
+      =link_to append_superadmin_icon("Approve all"), approve_all_changes_path, method: :put, data: { confirm: "Are you sure you want to approve all changes?" }, class: "btn-warning"
 
   =render layout: 'table_header' do
     =render partial: 'change', collection: @changes

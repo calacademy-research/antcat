@@ -2,7 +2,7 @@
 -breadcrumb :create_combination, @taxon
 
 =content_for :breadcrumbs_right do
-  =link_to "Hide/show help", "#", class: "btn-nodanger", data: { show_hide_toggler_for: "help" }
+  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
 =form_tag taxa_move_items_path do
   =hidden_field_tag :new_parent_id, @new_parent.id
