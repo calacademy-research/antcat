@@ -1,5 +1,4 @@
 class Comment < ApplicationRecord
-  include FilterableWhere
   include Trackable
 
   attr_accessor :set_parent_to

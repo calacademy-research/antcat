@@ -1,26 +1,14 @@
 class CommentsController < ApplicationController
-  include HasWhereFilters
-
   before_action :authenticate_user!
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index]
   before_action :set_comment, only: [:edit, :update]
 
-  has_filters(
-    user_id: {
-      tag: :select_tag,
-      options: -> { User.order(:name).pluck(:name, :id) }
-    },
-    commentable_type: {
-      tag: :select_tag,
-      options: -> { %w[Issue Feedback] }
-    },
-    commentable_id: {
-      tag: :number_field_tag
-    }
-  )
-
   def index
-    @comments = Comment.filter(filter_params)
+    @comments = if params[:user_id]
+                  Comment.where(user_id: params[:user_id])
+                else
+                  Comment.all
+                end
     @comments = @comments.order_by_date.include_associations.paginate(page: params[:page])
   end
 
