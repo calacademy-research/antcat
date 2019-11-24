@@ -27,3 +27,7 @@ tags: [regression-test]
 description: >
    It is fine for a protonym to have more than one valid taxa if it is above the rank of
    genus (one valid taxa in rank: tribe, subfamily or family).
+
+related_scripts:
+  - ProtonymsWithMoreThanOneValidTaxon
+  - TypeTaxaAssignedToMoreThanOneTaxon
