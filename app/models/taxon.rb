@@ -43,7 +43,6 @@ class Taxon < ApplicationRecord
     belongs_to :homonym_replaced_by
     belongs_to :current_valid_taxon
 
-    has_one :homonym_replaced, foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
     has_many :current_valid_taxon_of, foreign_key: :current_valid_taxon_id, dependent: :restrict_with_error
     has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id
     has_many :obsolete_combinations, -> { obsolete_combinations }, foreign_key: :current_valid_taxon_id
