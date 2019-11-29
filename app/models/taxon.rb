@@ -5,8 +5,6 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  ALLOW_CREATE_COMBINATION_RANKS = %w[species subspecies]
-  ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -150,6 +148,10 @@ class Taxon < ApplicationRecord
     else
       citation
     end
+  end
+
+  def policy
+    @policy ||= TaxonPolicy.new(self)
   end
 
   def link_to_taxon
