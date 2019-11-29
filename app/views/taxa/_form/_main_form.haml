@@ -38,7 +38,7 @@
   %tr
     %td=form.label :parent, 'Parent'
     %td
-      -if taxon.parent && taxon.incertae_sedis_in != Taxon::INCERTAE_SEDIS_IN_FAMILY
+      -if taxon.parent
         =taxon.parent.decorate.id_and_name_and_author_citation
         -unless taxon.new_record?
           -if taxon.rank.in?(Taxon::ALLOW_CREATE_COMBINATION_RANKS)
