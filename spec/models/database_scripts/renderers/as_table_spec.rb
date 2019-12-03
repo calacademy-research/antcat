@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 class AsTableDummy < DatabaseScripts::DatabaseTestScript
   include DatabaseScripts::Renderers::AsTable

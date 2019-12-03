@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Wikipedia::TaxonList do
   let!(:taxon) { create :genus }

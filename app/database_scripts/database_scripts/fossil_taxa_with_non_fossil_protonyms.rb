@@ -1,7 +1,7 @@
 module DatabaseScripts
   class FossilTaxaWithNonFossilProtonyms < DatabaseScript
     def results
-      Taxon.where(fossil: true).joins(:protonym).where(protonyms: { fossil: false }).includes(:protonym)
+      Taxon.fossil.joins(:protonym).where(protonyms: { fossil: false }).includes(:protonym)
     end
 
     def render
@@ -22,11 +22,11 @@ end
 __END__
 
 title: Fossil taxa with non-fossil protonyms
+category: Protonyms
+
 description: >
   This is not necessarily incorrect.
 
-tags: []
-topic_areas: [protonyms]
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms

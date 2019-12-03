@@ -21,11 +21,12 @@ end
 
 __END__
 
+category: References
+
 description: >
   Non-orphaned authors with references in this list indicates that at least one of their author names has no references.
 
 tags: [list]
-topic_areas: [references]
 related_scripts:
   - OrphanedAuthorNames
   - OrphanedAuthors

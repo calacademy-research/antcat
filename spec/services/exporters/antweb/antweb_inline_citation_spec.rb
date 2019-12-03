@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Exporters::Antweb::AntwebInlineCitation do
   let(:latreille) { create :author_name, name: 'Latreille, P. A.' }

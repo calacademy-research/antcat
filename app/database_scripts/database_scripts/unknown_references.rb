@@ -21,11 +21,12 @@ end
 
 __END__
 
+category: References
+tags: []
+
 description: >
   These are called "Other" in the reference form.
 
-tags: []
-topic_areas: [references]
 related_scripts:
   - MissingReferences
   - UnknownReferences

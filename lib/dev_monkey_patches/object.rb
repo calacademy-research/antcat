@@ -5,7 +5,7 @@ module DevMonkeyPatches
     end
 
     def self.dev_dev_define_send_field_to_klass_as field, klass, method_name
-      define_method(method_name) { klass.send field }
+      define_method(method_name) { klass.public_send field }
     end
 
     def dev_dev_mixed_in?

@@ -8,8 +8,7 @@ end
 
 __END__
 
+category: Protonyms
+
 description: >
   Where "protonym" means `Protonym` record, and "original combination" means `Taxon` record where `original_combination` is true.
-
-tags: []
-topic_areas: [protonyms]

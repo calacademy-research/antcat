@@ -20,5 +20,6 @@ module DatabaseScripts
 end
 
 __END__
+
+category: References
 tags: [list]
-topic_areas: [references]

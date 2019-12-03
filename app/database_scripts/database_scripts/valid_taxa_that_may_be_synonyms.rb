@@ -1,4 +1,3 @@
-# rubocop:disable Performance/Detect
 module DatabaseScripts
   class ValidTaxaThatMayBeSynonyms < DatabaseScript
     VALID_INDICATORS = Regexp.union(
@@ -37,22 +36,22 @@ module DatabaseScripts
       end
 
       def last_junior_synonym_indication items
-        items.select { |item| item.taxt =~ /junior synonym/i }.last.position
+        items.reverse.find { |item| item.taxt =~ /junior synonym/i }.position
       end
 
       def last_valid_indication items
-        items.select { |item| item.taxt =~ VALID_INDICATORS }.last.try(:position) || -1
+        items.reverse.find { |item| item.taxt =~ VALID_INDICATORS }.try(:position) || -1
       end
   end
 end
-# rubocop:enable Performance/Detect
 
 __END__
+
+category: Catalog
+tags: [list]
+
 description: >
   This script creates a list of all taxa with history items that mention
   `junior synonym`. Taxa with items containing "valid indicators" (eg.
   `as genus`, see source) after the `junior synonym` entry are removed
   from the list; the rest are shown in this table.
-
-topic_areas: [catalog]
-tags: [list]

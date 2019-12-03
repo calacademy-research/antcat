@@ -25,6 +25,9 @@ end
 __END__
 
 title: References with PDFs not hosted by us
+category: PDFs
+tags: [slow]
+
 description: >
   There may be more references not hosted by us, but these definitely are not.
 
@@ -34,9 +37,6 @@ description: >
 
   Issues: %github387, %github324, %github371
 
-
-tags: [slow]
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

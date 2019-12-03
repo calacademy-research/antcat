@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Names::EpithetSearchSet do
   describe "masculine-feminine-neuter" do

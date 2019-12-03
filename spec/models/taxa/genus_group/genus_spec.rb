@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Genus do
   let(:tribe) { create :tribe, subfamily: subfamily }

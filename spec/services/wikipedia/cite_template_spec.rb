@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Wikipedia::CiteTemplate do
   let(:species) { create :species, name_string: "Atta texana" }

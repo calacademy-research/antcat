@@ -1,10 +1,16 @@
 #!/bin/bash
 
+set -u
+
+echo "*** Executing $0"
+
+full_path=$(realpath "$0")
+dir_path=$(dirname "$full_path")
+
 function restart_production() {
   pushd /data/antcat/current
 
-  script_path=$(dirname "$0")
-  eval "$script_path/kill_solr"
+  bash "$dir_path/kill"
 
   RAILS_ENV=production bundle exec rake sunspot:solr:start
   RAILS_ENV=production bundle exec rake sunspot:solr:reindex
@@ -13,14 +19,13 @@ function restart_production() {
 }
 
 function restart_development() {
-  script_path=$(dirname "$0")
-  eval "$script_path/kill_solr"
+  bash "$dir_path/kill"
 
   RAILS_ENV=development bundle exec rake sunspot:solr:start
   RAILS_ENV=development bundle exec rake sunspot:solr:reindex
 }
 
-if [ "$1" = "prod" ]; then
+if [ "${1:-}" = "prod" ]; then
   restart_production
 else
   restart_development

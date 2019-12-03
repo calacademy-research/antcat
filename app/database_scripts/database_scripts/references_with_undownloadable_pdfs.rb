@@ -36,6 +36,9 @@ end
 __END__
 
 title: References with undownloadable PDFs
+category: PDFs
+tags: [new!, slow]
+
 description: >
   "Downloadable" is defined as `url.present? && !hosted_by_antbase? && !hosted_by_hol?`,
 
@@ -44,8 +47,6 @@ description: >
 
   `hosted_by_hol?` means URLs starting with `http(s)://128.146.250.117`.
 
-tags: [new!, slow]
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TaxonBrowser::LinksToExtraTabs do
   describe '#call' do

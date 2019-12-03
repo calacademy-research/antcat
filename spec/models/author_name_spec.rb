@@ -1,10 +1,15 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AuthorName do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :author }
   it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_uniqueness_of :name }
+
+  describe "uniqueness validation" do
+    subject { create :author_name }
+
+    it { is_expected.to validate_uniqueness_of :name }
+  end
 
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:restrict_with_error) }

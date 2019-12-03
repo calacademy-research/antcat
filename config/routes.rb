@@ -119,7 +119,7 @@ Rails.application.routes.draw do
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
       resource :children, only: [:show]
-      resource :create_combination, only: [:new, :show]
+      resource :create_combination_help, only: [:new, :show]
       resource :convert_to_subspecies, only: [:new, :create]
       resource :force_parent_change, only: [:show, :create]
       resource :elevate_to_species, only: [:create]

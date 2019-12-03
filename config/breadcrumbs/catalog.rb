@@ -8,16 +8,18 @@ end
     parent :catalog
   end
 
-  ranks = [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies]
-  ranks.each do |rank|
+  [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies].each do |rank|
     crumb rank do |taxon|
       if taxon.name
         link taxon.link_to_taxon
       else
         link '[deleted name]'
       end
-      parent_as_symbol = taxon.parent.class.name.downcase.to_sym
-      parent parent_as_symbol, taxon.parent rescue :family # rubocop:disable Style/RescueModifier
+
+      if (taxon_parent = taxon.parent)
+        parent_as_symbol = taxon_parent.class.name.downcase.to_sym
+        parent parent_as_symbol, taxon_parent
+      end
     end
   end
 

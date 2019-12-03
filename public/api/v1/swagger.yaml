@@ -1,10 +1,10 @@
 swagger: '2.0'
 
 info:
-  version: "1.0.0"
-  title: ANTCAT Rest API
+  version: "1.1.0"
+  title: AntCat REST API
   description: Read only API to access antcat.org
-  contact: 
+  contact:
     name: Joe Russack
     email: JRussack@calacademy.org
 
@@ -20,7 +20,7 @@ paths:
       summary: Get a single taxon
       operationId: getTaxon
       tags:
-        - taxon
+        - taxa
       parameters:
         - name: id
           in: path
@@ -53,7 +53,9 @@ paths:
         "200":
           description: matching taxa records
           schema:
-            $ref: '#/definitions/Taxa'
+            type: array
+            items:
+              $ref: '#/definitions/Taxa'
         "404":
           description: Record not found
 
@@ -74,7 +76,9 @@ paths:
         "200":
           description: Returns 100 taxa at a time starting at the specified taxon id. If no id is supplied, starts at zero
           schema:
-            $ref: '#/definitions/Taxon'
+            type: array
+            items:
+              $ref: '#/definitions/Taxon'
         "404":
           description: Record not found
 
@@ -84,12 +88,13 @@ paths:
       operationId: getProtonyms
       tags:
         - protonyms
-        - protonym
       responses:
         "200":
           description: the first hundred citation records.
           schema:
-            $ref: '#/definitions/Protonym'
+            type: array
+            items:
+              $ref: '#/definitions/Protonym'
         "404":
           description: Record not found
 
@@ -98,7 +103,7 @@ paths:
       summary: Get a protonym
       operationId: getProtonym
       tags:
-        - protonym
+        - protonyms
       parameters:
         - name: id
           in: path
@@ -131,7 +136,9 @@ paths:
         "200":
           description: a single author record
           schema:
-            $ref: '#/definitions/Author'
+            type: array
+            items:
+              $ref: '#/definitions/Author'
         "404":
           description: Record not found
 
@@ -146,7 +153,9 @@ paths:
         "200":
           description: Array of Ids of all authors and their create/update dates
           schema:
-            $ref: '#/definitions/Author'
+            type: array
+            items:
+              $ref: '#/definitions/Author'
         "404":
           description: Record not found
 
@@ -176,13 +185,15 @@ paths:
       summary: Get all author names
       operationId: getAuthorNames
       tags:
-        - authors
+        - author_names
 
       responses:
         "200":
           description: Array of all author names
           schema:
-            $ref: '#/definitions/AuthorName'
+            type: array
+            items:
+              $ref: '#/definitions/AuthorName'
         "404":
           description: Record not found
 
@@ -191,7 +202,7 @@ paths:
       summary: Get an author name by author id
       operationId: getName
       tags:
-        - name
+        - names
       parameters:
         - name: id
           in: path
@@ -213,7 +224,6 @@ paths:
       operationId: getNames
       tags:
         - names
-        - name
       parameters:
         - name: starts_at
           in: query
@@ -225,7 +235,9 @@ paths:
         "200":
           description: Array of all author names
           schema:
-            $ref: '#/definitions/AuthorName'
+            type: array
+            items:
+              $ref: '#/definitions/Name'
         "404":
           description: Record not found
 
@@ -235,7 +247,6 @@ paths:
       operationId: getCitations
       tags:
         - citations
-        - citation
       parameters:
           - name: starts_at
             in: query
@@ -248,7 +259,9 @@ paths:
           description: Returns 100 citations at a time starting at the specified citation id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Citation'
+            type: array
+            items:
+              $ref: '#/definitions/Citation'
         "404":
           description: Record not found
 
@@ -257,7 +270,7 @@ paths:
       summary: Get a citation
       operationId: getCitation
       tags:
-        - citation
+        - citations
       parameters:
         - name: id
           in: path
@@ -278,8 +291,7 @@ paths:
       summary: Get all taxon_history_items
       operationId: getTaxonHistoryItems
       tags:
-        - TaxonHistoryItems
-        - TaxonHistoryItem
+        - taxon_history_items
       parameters:
           - name: starts_at
             in: query
@@ -292,7 +304,9 @@ paths:
           description: Returns 100 taxon history items at a time starting at the specified taxon_history_item_id id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/TaxonHistoryItem'
+            type: array
+            items:
+              $ref: '#/definitions/TaxonHistoryItem'
         "404":
           description: Record not found
 
@@ -301,7 +315,7 @@ paths:
       summary: Get a single taxon_history_item
       operationId: getTaxonHistoryItem
       tags:
-        - TaxonHistoryItem
+        - taxon_history_items
       parameters:
         - name: id
           in: path
@@ -322,8 +336,7 @@ paths:
       summary: Get all journals
       operationId: getJournals
       tags:
-        - Journals
-        - Journal
+        - journals
       parameters:
           - name: starts_at
             in: query
@@ -336,7 +349,9 @@ paths:
           description: Returns 100 journals at a time starting the specified journal id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Journal'
+            type: array
+            items:
+              $ref: '#/definitions/Journal'
         "404":
           description: Record not found
 
@@ -345,7 +360,7 @@ paths:
       summary: Get a single journal
       operationId: getJournal
       tags:
-        - Journal
+        - journals
       parameters:
         - name: id
           in: path
@@ -366,8 +381,7 @@ paths:
       summary: Get all publishers
       operationId: getPublishers
       tags:
-        - Publishers
-        - Publisher
+        - publishers
       parameters:
           - name: starts_at
             in: query
@@ -380,7 +394,9 @@ paths:
           description: Returns 100 publishers at a time starting the specified publisher id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Publisher'
+            type: array
+            items:
+              $ref: '#/definitions/Publisher'
         "404":
           description: Record not found
 
@@ -389,7 +405,7 @@ paths:
       summary: Get a single publisher
       operationId: getpublisher
       tags:
-        - Publisher
+        - publishers
       parameters:
         - name: id
           in: path
@@ -410,8 +426,7 @@ paths:
       summary: Get all references
       operationId: getReferences
       tags:
-        - References
-        - Reference
+        - references
       parameters:
           - name: starts_at
             in: query
@@ -424,7 +439,9 @@ paths:
           description: Returns 100 references at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/Reference'
         "404":
           description: Record not found
 
@@ -433,7 +450,7 @@ paths:
       summary: Get a single reference
       operationId: getreference
       tags:
-        - Reference
+        - references
       parameters:
         - name: id
           in: path
@@ -454,8 +471,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceAuthorNames
       tags:
-        - ReferenceAuthorNames
-        - Reference
+        - reference_author_names
       parameters:
           - name: starts_at
             in: query
@@ -468,7 +484,9 @@ paths:
           description: Returns 100 referenceAuthorNames at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceAuthorName'
         "404":
           description: Record not found
 
@@ -477,7 +495,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceAuthorName
       tags:
-        - ReferenceAuthorName
+        - reference_author_names
       parameters:
         - name: id
           in: path
@@ -498,8 +516,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceDocuments
       tags:
-        - ReferenceDocuments
-        - ReferenceDocument
+        - reference_documents
       parameters:
           - name: starts_at
             in: query
@@ -512,7 +529,9 @@ paths:
           description: Returns 100 referenceDocuments at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceDocument'
         "404":
           description: Record not found
 
@@ -521,7 +540,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceDocument
       tags:
-        - ReferenceDocument
+        - reference_documents
       parameters:
         - name: id
           in: path
@@ -542,8 +561,7 @@ paths:
       summary: Get all reference/Author Name association records
       operationId: getReferenceSections
       tags:
-        - ReferenceSections
-        - ReferenceSection
+        - reference_sections
       parameters:
           - name: starts_at
             in: query
@@ -556,7 +574,9 @@ paths:
           description: Returns 100 referenceSections at a time starting the specified reference id. If no id is supplied, starts at zero
 
           schema:
-            $ref: '#/definitions/Reference'
+            type: array
+            items:
+              $ref: '#/definitions/ReferenceSection'
         "404":
           description: Record not found
 
@@ -565,7 +585,7 @@ paths:
       summary: Get a single reference/author name association
       operationId: getReferenceSection
       tags:
-        - ReferenceSection
+        - reference_sections
       parameters:
         - name: id
           in: path
@@ -606,6 +626,7 @@ definitions:
         - subfamily
         - subgenus
         - subspecies
+        - subtribe
         - tribe
       body:
         type: object
@@ -634,7 +655,6 @@ definitions:
             - homonym
             - unavailable
             - synonym
-            - collective group name
             - obsolete combination
             - unavailable misspelling
             - unavailable uncategorized
@@ -656,8 +676,6 @@ definitions:
           name_id:
             type: integer
             description: Link to the name record
-          foo:
-            type: integer
           homonym_replaced_by_id:
             type: integer
             description: Populated only if this is a homonym that has been superseded by another taxa.
@@ -668,7 +686,7 @@ definitions:
           headline_notes_taxt:
             type: string
           hong:
-            type: string
+            type: boolean
           type_taxon_id:
             type: integer
           name_cache:
@@ -682,9 +700,9 @@ definitions:
           current_valid_taxon_id:
             type: integer
           ichnotaxon:
-            type: string
+            type: boolean
           nomen_nudum:
-            type: string
+            type: boolean
           auto_generated:
             type: boolean
             description: True if this was generated by an automatic import. Changed to false if a human has touched it.
@@ -777,6 +795,7 @@ definitions:
         - SubfamilyName
         - SubgenusName
         - SubspeciesName
+        - SubtribeName
       name:
         type: string
         description: Plain text name

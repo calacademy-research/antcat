@@ -87,5 +87,6 @@ module DatabaseScripts
 end
 
 __END__
+
+category: Names
 tags: [list, slow]
-topic_areas: [names]

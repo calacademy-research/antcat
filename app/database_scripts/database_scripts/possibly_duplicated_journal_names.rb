@@ -203,9 +203,11 @@ module DatabaseScripts
 end
 
 __END__
+
+category: References
+
 description: >
   Additional false positives (see the script's source)
   can be added to the exclusion list on request.
 
 tags: [list, slow]
-topic_areas: [references]

@@ -25,7 +25,9 @@ module DatabaseScripts
 end
 
 __END__
+
+category: Types
+tags: [list]
+
 description: >
   This script is just lists of all unique protonym `locality`s.
-tags: [list]
-topic_areas: [types]

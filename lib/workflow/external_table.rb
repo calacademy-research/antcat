@@ -20,7 +20,7 @@ module Workflow
     end
 
     def self.included klass
-      klass.send :include, InstanceMethods
+      klass.include InstanceMethods
     end
   end
 end

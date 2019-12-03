@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 # We never really enable the patch in this spec beause it's very hard
 # to remove modules have been mixed in.

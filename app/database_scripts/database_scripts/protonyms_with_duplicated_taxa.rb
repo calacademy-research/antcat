@@ -21,5 +21,5 @@ end
 
 __END__
 
+category: Protonyms
 tags: [regression-test]
-topic_areas: [protonyms]

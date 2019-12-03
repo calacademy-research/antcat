@@ -70,7 +70,7 @@ Capybara.app = Rack::ShowExceptions.new AntCat::Application
 InvisibleCaptcha.timestamp_enabled = false
 
 # Warden is what Devise uses for authorization.
-include Warden::Test::Helpers # rubocop:disable Style/MixinUsage
+World Warden::Test::Helpers
 Warden.test_mode!
 Warden::Manager.serialize_into_session(&:email)
 Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }

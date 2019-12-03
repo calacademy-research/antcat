@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe References::Cache::Invalidate do
   describe "#call" do

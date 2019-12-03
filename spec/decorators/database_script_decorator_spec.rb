@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe DatabaseScriptDecorator do
   let(:decorated) { database_script.decorate }
@@ -13,12 +13,6 @@ describe DatabaseScriptDecorator do
     let(:database_script) { DatabaseScripts::OrphanedProtonyms.new }
 
     specify { expect(decorated.format_tags).to eq '<span class="white-label rounded-badge">list</span>' }
-  end
-
-  describe "#format_topic_areas" do
-    let(:database_script) { DatabaseScripts::OrphanedProtonyms.new }
-
-    specify { expect(decorated.format_topic_areas).to eq "Protonyms" }
   end
 
   describe "#github_url" do

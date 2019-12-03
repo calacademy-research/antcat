@@ -22,7 +22,7 @@ end
 
 __END__
 
-topic_areas: [references]
+category: References
 related_scripts:
   - MissingReferences
   - UnknownReferences

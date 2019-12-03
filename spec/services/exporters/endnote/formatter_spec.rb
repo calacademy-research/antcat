@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Exporters::Endnote::Formatter do
   it "formats a book reference correctly" do

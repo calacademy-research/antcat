@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Feedback do
   it { is_expected.to validate_presence_of :comment }

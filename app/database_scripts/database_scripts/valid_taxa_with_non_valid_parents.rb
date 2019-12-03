@@ -59,9 +59,11 @@ end
 __END__
 
 title: Valid taxa with non-valid parents
-description: >
+category: Catalog
 tags: [regression-test]
-topic_areas: [catalog]
+
+description: >
+
 related_scripts:
   - ExtantTaxaInFossilGenera
   - ValidTaxaWithNonValidParents

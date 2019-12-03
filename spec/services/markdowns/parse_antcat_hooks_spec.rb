@@ -1,6 +1,6 @@
 # TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
 
-require "spec_helper"
+require 'rails_helper'
 
 describe Markdowns::ParseAntcatHooks do
   describe "#call" do

@@ -22,11 +22,11 @@ end
 __END__
 
 title: Protonym references without PDFs
+category: PDFs
+
 description: >
   Issues: %github387, %github324, %github371
 
-tags: []
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

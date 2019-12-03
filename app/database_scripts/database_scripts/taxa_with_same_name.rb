@@ -23,8 +23,9 @@ end
 
 __END__
 
-topic_areas: [catalog]
+category: Catalog
 tags: [list]
+
 related_scripts:
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus

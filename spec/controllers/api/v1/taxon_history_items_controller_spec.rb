@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Api::V1::TaxonHistoryItemsController do
   before { 2.times { create :taxon_history_item } }

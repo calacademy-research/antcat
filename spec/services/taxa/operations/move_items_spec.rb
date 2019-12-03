@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Taxa::Operations::MoveItems do
   describe "#call" do
@@ -6,7 +6,7 @@ describe Taxa::Operations::MoveItems do
     let!(:to_taxon) { create :family }
     let!(:history_item) { create :taxon_history_item, taxon: from_taxon }
 
-    it 'moves history items from a taxon to antoher' do
+    it 'moves history items from a taxon to another' do
       expect { described_class[to_taxon, [history_item]] }.
         to change { history_item.reload.taxon }.from(from_taxon).to(to_taxon)
     end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Reference do
   let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }

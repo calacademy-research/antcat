@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe DatabaseScripts::Rendering do
   let(:script) { DatabaseScripts::DatabaseTestScript.new }

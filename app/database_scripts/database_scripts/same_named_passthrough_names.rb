@@ -35,8 +35,8 @@ end
 __END__
 
 title: Same-named pass-through names
+category: Catalog
+tags: [regression-test]
+
 description: >
   See %github283
-
-tags: [regression-test]
-topic_areas: [catalog]

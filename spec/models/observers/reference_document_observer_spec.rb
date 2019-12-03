@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ReferenceDocumentObserver do
   context "when a reference document is changed" do

@@ -56,7 +56,7 @@
 
 -if taxon.junior_synonyms.exists?
   %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
-  %ul.junior-synonyms.small-margin-bottom
+  %ul.compact-list.small-margin-bottom
     -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
       %li
         =synonym.link_to_taxon
@@ -87,3 +87,27 @@
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
+
+-if taxon.obsolete_combinations.exists?
+  %h6 Obsolete combinations
+  %ul.compact-list.small-margin-bottom
+    -taxon.obsolete_combinations.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |obsolete_combination|
+      %li
+        =obsolete_combination.link_to_taxon
+        =obsolete_combination.author_citation
+
+-if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
+  .callout
+    %h6
+      Subspecies
+      =logged_in_only_tooltip_icon
+    %p
+      This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but
+      we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table.
+      See
+      =link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
+    %ul.compact-list.small-margin-bottom
+      -taxon.subspecies.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+        %li
+          =subspecies.link_to_taxon
+          =subspecies.author_citation

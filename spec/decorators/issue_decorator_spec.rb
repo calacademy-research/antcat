@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe IssueDecorator do
   let(:open_issue) { build_stubbed(:issue, :open).decorate }

@@ -9,7 +9,7 @@ end
 __END__
 
 title: Auto-generated taxa
-description: >
-
+category: Catalog
 tags: [new!]
-topic_areas: [catalog]
+
+description: >

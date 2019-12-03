@@ -18,6 +18,8 @@ class Protonym < ApplicationRecord
   # TODO: See if wa want to validate this w.r.t. rank of name and fossil status.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
 
+  scope :extant, -> { where(fossil: false) }
+  scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
 
   accepts_nested_attributes_for :name, :authorship
