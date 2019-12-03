@@ -64,7 +64,8 @@ describe Api::V1::TaxaController do
         "type_taxon_id" => nil,
         "type_taxt" => nil,
         "unresolved_homonym" => false,
-        "updated_at" => taxon.updated_at.as_json
+        "updated_at" => taxon.updated_at.as_json,
+        "author_citation" => taxon.author_citation
       )
     end
 

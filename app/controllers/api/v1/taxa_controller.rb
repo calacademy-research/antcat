@@ -6,7 +6,14 @@ module Api
       end
 
       def show
-        super Taxon
+        begin
+          item = Taxon.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+          render nothing: true, status: :not_found
+          return
+        end
+
+        render json: item.to_json(methods: :author_citation), status: :ok
       end
 
       def search
