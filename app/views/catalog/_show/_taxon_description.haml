@@ -95,3 +95,19 @@
       %li
         =obsolete_combination.link_to_taxon
         =obsolete_combination.author_citation
+
+-if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
+  .callout
+    %h6
+      Subspecies
+      =logged_in_only_tooltip_icon
+    %p
+      This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but
+      we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table.
+      See
+      =link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
+    %ul.compact-list.small-margin-bottom
+      -taxon.subspecies.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+        %li
+          =subspecies.link_to_taxon
+          =subspecies.author_citation
