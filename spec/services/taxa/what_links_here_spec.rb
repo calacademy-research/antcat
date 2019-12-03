@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Taxa::WhatLinksHere do
   describe "#call" do

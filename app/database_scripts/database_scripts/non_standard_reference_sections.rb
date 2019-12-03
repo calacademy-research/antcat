@@ -44,5 +44,6 @@ end
 __END__
 
 title: Non-standard reference sections
+category: Taxt
+
 description: See %github452 for why we want this.
-topic_areas: [taxt]

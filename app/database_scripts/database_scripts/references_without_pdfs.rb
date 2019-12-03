@@ -21,11 +21,12 @@ end
 __END__
 
 title: References without PDFs
+category: PDFs
+tags: [slow]
+
 description: >
   Issues: %github387, %github324, %github371
 
-tags: [slow]
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

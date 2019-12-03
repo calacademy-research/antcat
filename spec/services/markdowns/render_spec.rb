@@ -1,6 +1,6 @@
 # TODO: Move most specs here to `parse_antcat_hooks_spec.rb`.
 
-require "spec_helper"
+require 'rails_helper'
 
 describe Markdowns::Render do
   include TestLinksHelpers

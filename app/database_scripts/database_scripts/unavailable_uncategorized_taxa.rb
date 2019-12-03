@@ -8,11 +8,12 @@ end
 
 __END__
 
+category: Catalog
+tags: [new!]
+
 description: >
   Taxa with the status `unavailable uncategorized`. We want to convert these to other statuses.
 
-tags: [new!]
-topic_areas: [catalog]
 related_scripts:
   - UnavailableUncategorizedTaxaTouchedByEditors
   - UnavailableUncategorizedTaxa

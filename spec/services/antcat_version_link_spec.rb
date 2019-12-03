@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AntcatVersionLink do
   describe "#call" do

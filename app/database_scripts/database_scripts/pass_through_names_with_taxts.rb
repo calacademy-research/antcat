@@ -10,13 +10,14 @@ end
 __END__
 
 title: Pass-through names with taxts
+category: Synonyms
+tags: [regression-test]
+
+issue_description: This taxon is a "pass-through name", but is has history items or reference sections.
+
 description: >
   Obsolete combination and unavailable misspellings with
   history items or reference sections.
 
 
   See %github375.
-
-topic_areas: [synonyms]
-tags: [regression-test]
-issue_description: This taxon is a "pass-through name", but is has history items or reference sections.

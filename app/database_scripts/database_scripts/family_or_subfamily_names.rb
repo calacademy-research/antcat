@@ -23,8 +23,8 @@ end
 __END__
 
 title: <code>FamilyOrSubfamilyName</code>s
+category: Names
+tags: [list]
+
 description: >
   That is, name records with the type `FamilyOrSubfamilyName`. See %github635.
-
-topic_areas: [names]
-tags: [list]

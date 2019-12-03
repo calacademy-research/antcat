@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ReferenceForm do
   describe "#save" do

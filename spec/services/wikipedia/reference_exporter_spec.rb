@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Wikipedia::ReferenceExporter do
   let(:batiatus) { create :author_name, name: "Batiatus, Q. L." }

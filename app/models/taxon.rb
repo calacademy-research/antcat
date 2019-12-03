@@ -5,8 +5,6 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  ALLOW_CREATE_COMBINATION_RANKS = %w[species subspecies]
-  ALLOW_FORCE_CHANGE_PARENT_RANKS = %w[tribe genus subgenus species subspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -43,8 +41,9 @@ class Taxon < ApplicationRecord
     belongs_to :homonym_replaced_by
     belongs_to :current_valid_taxon
 
-    has_one :homonym_replaced, foreign_key: :homonym_replaced_by_id, dependent: :restrict_with_error
-    has_many :junior_synonyms, -> { where(status: Status::SYNONYM) }, foreign_key: :current_valid_taxon_id
+    has_many :current_valid_taxon_of, foreign_key: :current_valid_taxon_id, dependent: :restrict_with_error
+    has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id
+    has_many :obsolete_combinations, -> { obsolete_combinations }, foreign_key: :current_valid_taxon_id
   end
 
   belongs_to :name, dependent: :destroy
@@ -71,6 +70,8 @@ class Taxon < ApplicationRecord
   scope :valid, -> { where(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
+  scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
+  scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
@@ -147,6 +148,10 @@ class Taxon < ApplicationRecord
     else
       citation
     end
+  end
+
+  def policy
+    @policy ||= TaxonPolicy.new(self)
   end
 
   def link_to_taxon

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Publishers::AutocompletesController do
   describe "GET show" do

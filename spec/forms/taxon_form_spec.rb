@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TaxonForm do
   describe "#save" do

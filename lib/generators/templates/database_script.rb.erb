@@ -23,10 +23,16 @@ end
 __END__
 
 # title: Defaults to `DatabaseScript#filename_without_extension.humanize`.
+category: Catalog, References... see the script index page
+tags: [new!, example-tag]
+
+issue_description: Optional short description.
+
 description: >
   Optional script description; parsed as **markdown**.
 
   Tags are optional (some have special meanings, see `DatabaseScript`).
 
-tags: [new!, example-tag]
-topic_areas: [catalog, references... see the script index page]
+related_scripts:
+  - TaxaWithSameName
+  - OptionalClassNamesOfOtherScript

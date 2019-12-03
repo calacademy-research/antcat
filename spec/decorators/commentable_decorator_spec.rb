@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe CommentableDecorator do
   let(:decorated) { described_class.new(commentable) }

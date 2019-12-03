@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Autocomplete::AutocompleteAuthorNames do
   describe "#call" do

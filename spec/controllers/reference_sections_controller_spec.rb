@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ReferenceSectionsController do
   describe "forbidden actions" do

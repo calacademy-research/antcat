@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe TaxonDecorator do
   let(:taxon) { build_stubbed :family }

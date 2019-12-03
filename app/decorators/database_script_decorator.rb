@@ -1,7 +1,7 @@
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
-  delegate :tags, :topic_areas, :filename_without_extension
+  delegate :tags, :filename_without_extension
 
   # Decorate class because we want to be able to call this without a script.
   def self.format_tags tags
@@ -14,11 +14,6 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   def format_tags
     self.class.format_tags tags
-  end
-
-  # TODO: Support only a single topic area per database script.
-  def format_topic_areas
-    topic_areas.join(", ").capitalize
   end
 
   def github_url

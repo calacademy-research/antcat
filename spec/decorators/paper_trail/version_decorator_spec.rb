@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PaperTrail::VersionDecorator do
   describe "#revision_history_link" do

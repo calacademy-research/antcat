@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ReferenceObserver do
   let(:reference) { create :article_reference }

@@ -16,8 +16,8 @@
     #taxon_description
       =render "catalog/_show/taxon_description", taxon: @taxon, is_formicidae_landing_page: @is_formicidae_landing_page
 
-  -if current_user
-    .medium-3.columns
+  .medium-3.columns
+    -if current_user
       #additional-editor-data.callout
         %h6
           Additional data for editors
@@ -42,7 +42,6 @@
               Origin:
               =@taxon.origin
 
-  .medium-3.columns
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
     -if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !@taxon.is_a?(Family)
       -if current_user && @taxon.soft_validation_warnings.present?

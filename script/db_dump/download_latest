@@ -1,0 +1,45 @@
+#!/bin/bash
+
+set -euo pipefail
+
+echo "*** Executing $0"
+
+full_path=$(realpath "$0")
+dir_path=$(dirname "$full_path")
+
+db_dumps_path="$dir_path/../../data/db_dumps"
+
+# SSH config.
+# This script relies on the current user having ssh access to EngineYard.
+# You may need edit these commands to include "ssh -i /path/to/your/id_rsa".
+hostname="antcat.org"
+username="deploy"
+ssh_command="ssh -o StrictHostKeyChecking=no $username@$hostname"
+scp_command="scp -o StrictHostKeyChecking=no $username@$hostname"
+
+# Get "backup index" and figure out filenames and such.
+# `most_recent_db_dump looks` like this: "9:antcat antcat.2019-10-11T10-15-04.sql.gz"
+most_recent_db_dump=$($ssh_command sudo -i eybackup --list-backup antcat | grep -P "\d:antcat" | tail -n 1)
+ey_most_recent_backup_index=$(echo "$most_recent_db_dump" | cut -d ' ' -f 1) # <-- "9:antcat".
+most_recent_filename=$(echo "$most_recent_db_dump" | cut -d ' ' -f 2) # <-- "antcat.2019-10-11T10-15-04.sql.gz".
+most_recent_remote_path="/mnt/tmp/$most_recent_filename"
+most_recent_local_path="$db_dumps_path/$most_recent_filename"
+
+# Export db dump on EngineYard unless it already exists.
+if $ssh_command "test -e $most_recent_remote_path"; then
+  echo "Most recent db dump has already been exported to EngineYard."
+else
+  $ssh_command sudo -i eybackup --download "$ey_most_recent_backup_index"
+fi
+
+# Download db dump to localhost unless it already exists.
+if [ -f "$most_recent_local_path" ]; then
+  echo "Most recent db dump has already been downloaded to localhost."
+else
+  $scp_command:$most_recent_remote_path "$most_recent_local_path"
+fi
+
+# This line is `grep`ed for in other scripts. It looks like this:
+# "Latest db dump --> /home/jonkerz/Code/antcat/script/../data/db_dumps/antcat.2019-10-12T10-15-04.sql.gz"
+echo "Latest db dump --> $most_recent_local_path"
+echo "To import, run: RAILS_ENV=development ./script/db_dump/import $most_recent_local_path"

@@ -41,6 +41,9 @@ end
 
 __END__
 
+category: PDFs
+tags: [new!]
+
 description: >
    These can only be deleted by script.
 
@@ -48,9 +51,6 @@ description: >
    They can probably be safely deleted, but new cases can still appear when
    references with PDFs are deleted.
 
-
-tags: [new!]
-topic_areas: [pdfs]
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs

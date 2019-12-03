@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe SpeciesGroupTaxon do
   it "has its subfamily set from its genus" do

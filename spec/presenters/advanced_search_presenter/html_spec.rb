@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe AdvancedSearchPresenter::HTML do
   let(:taxon) { create :genus, :unavailable, :incertae_sedis_in_subfamily, nomen_nudum: true }

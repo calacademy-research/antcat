@@ -8,7 +8,7 @@ module DatabaseScripts
       all_extracted_ids = []
 
       as_table do |t|
-        t.header :id, :species, :taxon_status, :history_item, :ids_same?,
+        t.header :convertable?, :id, :species, :taxon_status, :history_item, :ids_same?,
           :additional, :all_extracted_are_subspecies?,
           :non_valid_statuses_of_extracted, :valid_subspecies_ids, :extracted_ids
 
@@ -17,15 +17,23 @@ module DatabaseScripts
 
           all_extracted_ids.concat extracted_ids
 
+          ids_same = ids_same?(history_item, extracted_ids)
+          additional = extract_additional(history_item)
+          all_extracted_are_subspecies = all_extracted_are_subspecies?(extracted_ids)
+          non_valid_statuses_of_extracted = Taxon.where.not(status: Status::VALID).where(id: extracted_ids).pluck(:status).presence
+
+          convertable = ids_same && additional.blank? && all_extracted_are_subspecies && non_valid_statuses_of_extracted.blank?
+
           [
+            (convertable ? 'Yes' : '<span class="bold-warning">No</span>'),
             link_to(history_item.id, taxon_history_item_path(history_item)),
             markdown_taxon_link(history_item.taxon),
             history_item.taxon.status,
             history_item.taxt,
-            ('No' unless ids_same?(history_item, extracted_ids)),
-            additional(history_item),
-            ('No' unless all_extracted_are_subspecies?(extracted_ids)),
-            Taxon.where.not(status: Status::VALID).where(id: extracted_ids).pluck(:status).presence,
+            ('No' unless ids_same),
+            additional,
+            ('No' unless all_extracted_are_subspecies),
+            non_valid_statuses_of_extracted,
             valid_subspecies_ids(history_item),
             extracted_ids
           ]
@@ -42,7 +50,7 @@ module DatabaseScripts
 
     private
 
-      def additional history_item
+      def extract_additional history_item
         cleaned = history_item.taxt
         cleaned = cleaned.gsub(/Current subspecies: nominal plus /, '')
 
@@ -74,6 +82,9 @@ end
 
 __END__
 
+category: Taxt
+tags: [slow, updated!]
+
 description: >
   The goal of this script is to eliminate data inconsistencies and duplication, so we can either create a "virtual history item" or list subspecies outside of the history section.
 
@@ -103,6 +114,3 @@ description: >
   `Total valid subspecies: 1897`
 
   `Statuses of extracted taxa: {"homonym"=>1, "obsolete combination"=>26, "original combination"=>1, "synonym"=>51, "unavailable"=>5, "valid"=>1832}`
-
-tags: [slow]
-topic_areas: [taxt]

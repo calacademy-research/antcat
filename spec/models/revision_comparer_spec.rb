@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe RevisionComparer, :versioning do
   let(:item) { create :taxon_history_item, taxt: "initial content" }

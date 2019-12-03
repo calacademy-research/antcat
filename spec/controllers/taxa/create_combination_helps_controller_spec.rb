@@ -1,6 +1,6 @@
-require 'spec_helper'
+require 'rails_helper'
 
-describe Taxa::CreateCombinationsController do
+describe Taxa::CreateCombinationHelpsController do
   describe "GET new" do
     let(:taxon) { create :species }
 

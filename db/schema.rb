@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_21_224219) do
+ActiveRecord::Schema.define(version: 2019_11_17_004103) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -18,8 +18,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.integer "user_id"
     t.string "action"
     t.text "parameters"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "edit_summary"
     t.boolean "automated_edit", default: false, null: false
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
@@ -27,18 +27,18 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   end
 
   create_table "author_names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "author_id"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "author_id", null: false
     t.index ["author_id"], name: "author_names_author_id_idx"
     t.index ["created_at", "name"], name: "author_created_at_name"
     t.index ["name"], name: "author_name_idx"
   end
 
   create_table "authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "changes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   create_table "citations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "reference_id", null: false
     t.string "pages", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "notes_taxt"
     t.string "forms"
     t.index ["reference_id"], name: "index_authorships_on_reference_id"
@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.integer "parent_id"
     t.integer "lft"
     t.integer "rgt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "edited", default: false, null: false
     t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -87,8 +87,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.text "comment", null: false
     t.string "ip"
     t.string "page"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
@@ -114,9 +114,9 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   end
 
   create_table "journals", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "journals_name_idx"
   end
 
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.string "name"
     t.string "epithet"
     t.string "epithets"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "gender"
     t.boolean "auto_generated", default: false
     t.string "origin"
@@ -150,8 +150,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   end
 
   create_table "protonyms", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "authorship_id", null: false
     t.boolean "fossil", default: false, null: false
     t.boolean "sic", default: false, null: false
@@ -167,8 +167,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
 
   create_table "publishers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "place_name", null: false
     t.index ["name"], name: "publishers_name_idx"
   end
@@ -185,9 +185,9 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   create_table "reference_author_names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "author_name_id", null: false
     t.integer "reference_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position", null: false
     t.index ["author_name_id"], name: "author_participations_author_id_idx"
     t.index ["reference_id", "position"], name: "author_participations_reference_id_position_idx"
     t.index ["reference_id"], name: "author_participations_reference_id_idx"
@@ -196,20 +196,20 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   create_table "reference_documents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "url"
     t.string "file_file_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "reference_id"
     t.boolean "public"
     t.index ["reference_id"], name: "documents_reference_id_idx"
   end
 
   create_table "reference_sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.integer "taxon_id"
-    t.integer "position"
+    t.integer "taxon_id", null: false
+    t.integer "position", null: false
     t.string "title_taxt"
     t.text "references_taxt"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "subtitle_taxt"
     t.index ["taxon_id", "position"], name: "index_reference_sections_on_taxon_id_and_position"
   end
@@ -217,8 +217,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   create_table "references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "year"
     t.string "date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "citation_year"
     t.string "type"
     t.integer "publisher_id"
@@ -260,18 +260,18 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   end
 
   create_table "taxa", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.string "type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string "type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "fossil", default: false, null: false
-    t.string "status"
+    t.string "status", null: false
     t.integer "subfamily_id"
     t.integer "tribe_id"
     t.integer "genus_id"
     t.integer "homonym_replaced_by_id"
     t.string "incertae_sedis_in"
     t.integer "species_id"
-    t.integer "protonym_id"
+    t.integer "protonym_id", null: false
     t.text "type_taxt"
     t.text "headline_notes_taxt"
     t.integer "subgenus_id"
@@ -310,10 +310,10 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
 
   create_table "taxon_history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.text "taxt", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "taxon_id"
-    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "taxon_id", null: false
+    t.integer "position", null: false
     t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
   end
 
@@ -329,8 +329,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "key", null: false
     t.text "text", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "scope", null: false
   end
 
@@ -346,8 +346,8 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "invitation_token"
     t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
@@ -356,7 +356,7 @@ ActiveRecord::Schema.define(version: 2019_09_21_224219) do
     t.integer "invitation_limit"
     t.integer "invited_by_id"
     t.string "invited_by_type"
-    t.string "name"
+    t.string "name", null: false
     t.datetime "invitation_created_at"
     t.boolean "superadmin", default: false, null: false
     t.boolean "helper", default: false, null: false

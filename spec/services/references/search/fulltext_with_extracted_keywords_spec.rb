@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe References::Search::FulltextWithExtractedKeywords do
   describe "#call", :search do

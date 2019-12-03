@@ -10,7 +10,6 @@ end
 
 __END__
 
-description: >
+category: Protonyms
 
-tags: []
-topic_areas: [protonyms]
+description: >

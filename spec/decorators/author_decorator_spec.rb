@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe AuthorDecorator do
   let(:author) { create :author }

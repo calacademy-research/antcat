@@ -23,11 +23,12 @@ end
 
 __END__
 
+category: Catalog
+
+issue_description: The genus epithet of this subspecies is not the same as its genus' epithet.
+
 description: >
 
-tags: []
-topic_areas: [catalog]
-issue_description: The genus epithet of this subspecies is not the same as its genus' epithet.
 related_scripts:
   - SpeciesDisagreeingWithGenusRegardingSubfamily
   - SubspeciesDisagreeingWithSpeciesRegardingGenus

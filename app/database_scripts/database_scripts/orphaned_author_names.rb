@@ -20,11 +20,12 @@ end
 
 __END__
 
+category: References
+tags: [list, new!]
+
 description: >
   `AuthorName` records without `ReferenceAuthorName` records.
 
-tags: [list, new!]
-topic_areas: [references]
 related_scripts:
   - OrphanedAuthorNames
   - OrphanedAuthors

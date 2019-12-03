@@ -33,7 +33,7 @@
             %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
 
           -if user_is_editor?
-            %li=link_to "Delete", reference_path(@reference), class: "btn-warning", method: :delete, data: { confirm_with_edit_summary: true }
+            %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
           =activities_link_for_trackable @reference
 
 -@reference = @reference.decorate

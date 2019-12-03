@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Taxa::CheckIfInDatabaseResults do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do

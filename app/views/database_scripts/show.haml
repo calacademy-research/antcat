@@ -12,9 +12,9 @@
 .row.collapse
   .medium-8.columns
     %h5
-      -if @database_script.topic_areas.present?
+      -if @database_script.category.present?
         =succeed ":" do
-          =@database_script.decorate.format_topic_areas
+          =@database_script.category
       =@database_script.title
       =@database_script.decorate.format_tags
     %p=markdown @database_script.description, sanitize_content: false

@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe WikiPage do
   it { is_expected.to be_versioned }

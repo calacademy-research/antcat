@@ -1,7 +1,7 @@
 module CucumberHelpers
   module WithinHelpers
     def with_scope locator
-      locator ? within(*selector_for(locator)) { yield } : yield
+      within(*selector_for(locator)) { yield }
     end
   end
 end

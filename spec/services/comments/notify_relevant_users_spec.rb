@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'rails_helper'
 
 describe Comments::NotifyRelevantUsers do
   describe "#notify_replied_to_user" do
