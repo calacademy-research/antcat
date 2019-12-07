@@ -1,0 +1,46 @@
+-@title = "Create combination"
+-breadcrumb :create_combination, @taxon
+
+-content_for :head do
+  =javascript_include_tag "taxon_select"
+
+.row
+  .small-12.columns
+    .callout
+      %p
+        This feature is still being developed and I'm not 100% sure how it will evolve or what we can expect.
+        Implementing support for handling some of the currently unsupported cases will be easier than others.
+        Ideas and suggestions how to improve this tool can discussed with the AntCat Team, or on this issue on Github:
+        =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+
+.row
+  .small-12.columns
+    -unless @create_combination_policy.allowed?
+      .callout.alert
+        %p
+          =antcat_icon "warning-icon"
+          Cannot create combination
+        %p Creating combinations for this taxon is not supported because:
+        %ul
+          -@create_combination_policy.errors.each do |error|
+            %li=error
+    -else
+      =form_tag taxa_create_combination_path, method: :get do
+        %table.unstriped
+          %tr
+            %td Create new combination for
+            %td=@taxon.decorate.id_and_name_and_author_citation
+
+          %tr
+            %td Combine in genus
+            %td=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: :genus
+
+          %tr
+            %td Species epithet
+            %td=text_field_tag :species_epithet, params[:species_epithet] || @taxon.name.species_epithet
+
+          %tr
+            %td
+            %td
+              =button_tag type: "submit", class: "btn-normal has-spinner" do
+                =spinner_icon + "Continue"

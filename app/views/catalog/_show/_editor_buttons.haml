@@ -14,6 +14,9 @@
         %li=elevate_to_species_button taxon
         %li=convert_to_subspecies_button taxon
 
+        -if taxon.policy.show_create_combination_button?
+          %li=link_to "Create combination#{' (blocked)' unless taxon.policy.allow_create_combination? }", new_taxa_create_combination_path(taxon), class: "btn-normal"
+
         -if taxon.policy.show_create_combination_help_button?
           %li=link_to "Create combination help", new_taxa_create_combination_help_path(taxon), class: "btn-normal"
 

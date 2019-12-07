@@ -1,0 +1,7 @@
+created the combination
+=taxon_link_or_deleted_string activity.trackable_id
+
+-if activity.parameters[:previous_combination_id]
+  =surround "(", ")" do
+    previous combination:
+    =taxon_link_or_deleted_string activity.parameters[:previous_combination_id]

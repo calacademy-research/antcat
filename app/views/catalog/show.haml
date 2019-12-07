@@ -17,6 +17,25 @@
       =render "catalog/_show/taxon_description", taxon: @taxon, is_formicidae_landing_page: @is_formicidae_landing_page
 
   .medium-3.columns
+    -if current_user && @taxon.policy.show_create_combination_button?
+      #additional-editor-data.callout
+        %h6
+          Can be combined?
+          =logged_in_only_tooltip_icon
+
+        -policy = CreateCombinationPolicy.new(@taxon)
+        -if policy.allowed?
+          %p
+            Probably!
+            =link_to "Create combination", new_taxa_create_combination_path(@taxon), class: "btn-normal btn-tiny"
+        -else
+          No, because:
+          %ul
+            -policy.errors.each do |error|
+              %li=error
+          See also this issue on GitHub
+          =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+
     -if current_user
       #additional-editor-data.callout
         %h6
