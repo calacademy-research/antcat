@@ -1,6 +1,15 @@
 require 'rails_helper'
 
 describe TaxonPolicy do
+  describe '#allow_create_combination?' do
+    let(:taxon) { build_stubbed :family }
+
+    it 'calls `CreateCombinationPolicy`' do
+      expect(CreateCombinationPolicy).to receive(:new).with(taxon).and_call_original
+      described_class.new(taxon).allow_create_combination?
+    end
+  end
+
   describe '#show_create_combination_help_button?' do
     %i[family subfamily tribe subtribe genus subgenus].each do |rank|
       specify do
