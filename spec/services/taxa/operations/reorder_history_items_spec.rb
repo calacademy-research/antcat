@@ -28,7 +28,7 @@ describe Taxa::Operations::ReorderHistoryItems do
         let(:reordered_ids) { [second.id, third.id, first.id] }
 
         before do
-          third.update_columns(taxt: '') # rubocop:disable Rails/SkipsModelValidations
+          third.update_columns(taxt: '')
         end
 
         it "doesn't update the positions" do

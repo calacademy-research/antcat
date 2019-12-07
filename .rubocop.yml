@@ -29,6 +29,10 @@ Rails/InverseOf:
 Rails/OutputSafety:
   Enabled: false
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'spec/**/*'
+
 Layout/AlignArguments:
   Enabled: false
 
