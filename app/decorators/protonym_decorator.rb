@@ -1,6 +1,10 @@
 class ProtonymDecorator < Draper::Decorator
   delegate :locality, :authorship, :name, :fossil?
 
+  def link_to_protonym
+    h.link_to format_name, h.protonym_path(protonym)
+  end
+
   def format_name
     name.name_with_fossil_html fossil?
   end
