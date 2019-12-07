@@ -16,6 +16,7 @@ class Activity < ApplicationRecord
     close_feedback
     close_issue
     convert_species_to_subspecies
+    create_new_combination
     create_obsolete_combination
     elevate_subspecies_to_species
     execute_script

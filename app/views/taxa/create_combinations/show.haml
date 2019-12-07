@@ -1,0 +1,20 @@
+-@title = "Create combination"
+-breadcrumb :create_combination, @taxon
+
+.row
+  .small-12.columns
+    %p Click on "Create combination" to execute the following operations. This action is not undoable from the Changes page.
+
+.row
+  .small-12.columns
+    .callout
+      =markdown Operations::CreateNewCombination.description(current_valid_taxon: @taxon, new_combination_name: @target_name.name_html, new_genus: @new_parent).html_safe
+
+.row
+  .small-12.columns
+    =form_tag(taxa_create_combination_path, method: :post) do
+      =hidden_field_tag :new_parent_id, @new_parent.id
+      =hidden_field_tag :target_name_string, @target_name_string
+      =hidden_field_tag :species_epithet, params[:species_epithet]
+      =button_tag type: "submit", class: "btn-warning has-spinner" do
+        =spinner_icon + "Create combination"

@@ -3,6 +3,14 @@ class TaxonPolicy
     @taxon = taxon
   end
 
+  def show_create_combination_button?
+    rank.in?(%w[species])
+  end
+
+  def allow_create_combination?
+    CreateCombinationPolicy.new(taxon).allowed?
+  end
+
   def show_create_combination_help_button?
     rank.in?(%w[species subspecies])
   end
