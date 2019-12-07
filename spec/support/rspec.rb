@@ -30,4 +30,6 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
+
+  RSpec::Matchers.define_negated_matcher :not_change, :change
 end

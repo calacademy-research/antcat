@@ -80,6 +80,10 @@ Lint/AmbiguousRegexpLiteral:
 Naming/AccessorMethodName:
   Enabled: false
 
+Naming/VariableNumber:
+  Exclude:
+    - 'spec/**/*'
+
 FactoryBot/CreateList:
   EnforcedStyle: n_times
 
@@ -91,6 +95,10 @@ RSpec/ExampleLength:
 
 RSpec/ExpectChange:
   EnforcedStyle: block
+
+RSpec/LetSetup:
+  Exclude:
+    - 'spec/operations/**/*'
 
 RSpec/MessageSpies:
   Enabled: false
@@ -135,6 +143,9 @@ Style/EmptyMethod:
   EnforcedStyle: expanded
 
 Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/GuardClause:
   Enabled: false
 
 Style/IfUnlessModifier:
