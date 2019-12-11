@@ -1,3 +1,5 @@
+# TODO: These specs are overly verbose. To be tweaked after testing `Operation`s more.
+
 require 'rails_helper'
 
 describe Operations::CreateNewCombination do
@@ -67,7 +69,7 @@ describe Operations::CreateNewCombination do
         end
       end
 
-      context "when obsolete update fails" do
+      context "when updating the now obsolete combination fails" do
         before do
           current_valid_taxon.update_columns(homonym_replaced_by_id: Taxon.first.id)
         end
@@ -89,6 +91,48 @@ describe Operations::CreateNewCombination do
 
         it "does not modify the original species record" do
           expect { operation.run }.to_not change { current_valid_taxon.reload.attributes }
+        end
+      end
+
+      context 'when taxon has obsolete combinations which cannot be updated' do
+        let!(:obsolete_combination_1) do
+          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+        end
+        let!(:obsolete_combination_2) do
+          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+        end
+
+        before do
+          obsolete_combination_2.update_columns(nomen_nudum: true) # Invalid state to prevent saving.
+        end
+
+        specify { expect(operation.run).to be_a_failure }
+
+        it "returns errors" do
+          expect(operation.run.context.errors).to eq ["Nomen nudum can only be set for unavailable taxa"]
+        end
+
+        it "does not create a new taxon" do
+          expect { operation.run }.to_not change { Taxon.count }
+        end
+
+        it 'does not move any history items' do
+          expect { operation.run }.
+            to_not change { history_item.reload.taxon }.from(current_valid_taxon)
+        end
+
+        it "does not modify the original species record" do
+          expect { operation.run }.to_not change { current_valid_taxon.reload.attributes }
+        end
+
+        it 'does not update the `current_valid_taxon` of the obsolete combinations' do
+          expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
+
+          expect { operation.run }.
+            to_not change { obsolete_combination_1.reload.current_valid_taxon }.
+            from(current_valid_taxon)
+
+          expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
         end
       end
     end

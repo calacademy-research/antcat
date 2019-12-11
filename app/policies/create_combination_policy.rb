@@ -19,8 +19,7 @@ class CreateCombinationPolicy
       errors << 'taxon is not a species' unless taxon.is_a?(Species)
       errors << 'taxon has soft-validation warnings' if taxon.soft_validation_warnings.present?
       errors << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
-      errors << 'taxon has obsolete combinations' if taxon.obsolete_combinations.exists?
-      errors << "taxon has 'What Links Here's" if taxon.what_links_here(predicate: true)
+      errors << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
       errors << "taxon does not have the status 'valid'" if taxon.invalid?
       errors << 'taxon has junior synonyms' if taxon.junior_synonyms.any?
       errors << "taxon has 'unavailable misspelling's" if any_unavailable_misspellings?
@@ -40,5 +39,23 @@ class CreateCombinationPolicy
     # TODO: Model knowlegde, but we don't want it there (we want to remove it).
     def any_unavailable_uncategorizeds?
       taxon.current_valid_taxon_of.where(status: Status::UNAVAILABLE_UNCATEGORIZED).any?
+    end
+
+    # TODO: Probably split WLHs into `TAXA_FIELDS_REFERENCING_TAXA` / "taxt references".
+    def what_links_heres_ok?
+      what_links_here_except_obsolete_combinations.empty?
+    end
+
+    # TODO: Reaching into `table_ref` like this is meh, but let's keep it until we know more.
+    def what_links_here_except_obsolete_combinations
+      taxon.what_links_here.reject do |table_ref|
+        table_ref.table == 'taxa' &&
+          table_ref.field == :current_valid_taxon_id &&
+          table_ref.id.in?(obsolete_combinations_ids)
+      end
+    end
+
+    def obsolete_combinations_ids
+      @obsolete_combinations_ids ||= taxon.obsolete_combinations.pluck(:id)
     end
 end
