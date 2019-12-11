@@ -9,7 +9,6 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
 
 description: >
   Taxa with the status `unavailable uncategorized`. We want to convert these to other statuses.

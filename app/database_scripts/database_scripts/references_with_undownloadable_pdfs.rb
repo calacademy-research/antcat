@@ -37,7 +37,7 @@ __END__
 
 title: References with undownloadable PDFs
 category: PDFs
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   "Downloadable" is defined as `url.present? && !hosted_by_antbase? && !hosted_by_hol?`,

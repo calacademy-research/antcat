@@ -41,7 +41,7 @@ __END__
 
 title: References with blank PDF URLs and filenames
 category: PDFs
-tags: [new!, slow]
+tags: [slow]
 
 description: >
 

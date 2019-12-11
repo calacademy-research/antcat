@@ -83,7 +83,7 @@ end
 __END__
 
 category: Taxt
-tags: [slow, updated!]
+tags: [slow]
 
 description: >
   The goal of this script is to eliminate data inconsistencies and duplication, so we can either create a "virtual history item" or list subspecies outside of the history section.
