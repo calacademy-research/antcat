@@ -25,6 +25,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: [regression-test]
 
 description: >
+  %taxon447315 can be ignored. It is a very rare case where a replacement name was applied twice.

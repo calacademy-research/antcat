@@ -21,7 +21,7 @@ end
 __END__
 
 category: References
-tags: [list, new!]
+tags: [list]
 
 description: >
   `AuthorName` records without `ReferenceAuthorName` records.

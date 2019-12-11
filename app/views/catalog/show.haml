@@ -60,6 +60,12 @@
             %li
               Origin:
               =@taxon.origin
+          %li
+            Created at:
+            =@taxon.created_at.to_formatted_s(:db)
+          %li
+            Updated at:
+            =@taxon.updated_at.to_formatted_s(:db)
 
     -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
     -if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !@taxon.is_a?(Family)

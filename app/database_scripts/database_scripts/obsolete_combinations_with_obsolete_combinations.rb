@@ -21,7 +21,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: [regression-test]
 
 issue_description: This taxon has obsolete combinations, but it is itself an obsolete combination.
 
