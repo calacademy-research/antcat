@@ -10,6 +10,5 @@ __END__
 
 title: Auto-generated taxa
 category: Catalog
-tags: [new!]
 
 description: >

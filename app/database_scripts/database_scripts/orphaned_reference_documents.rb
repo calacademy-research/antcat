@@ -42,7 +42,6 @@ end
 __END__
 
 category: PDFs
-tags: [new!]
 
 description: >
    These can only be deleted by script.
