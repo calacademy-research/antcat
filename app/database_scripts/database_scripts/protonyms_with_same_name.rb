@@ -55,3 +55,4 @@ related_scripts:
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName
+  - ProtonymsWithSameNameExcludingSubgenusPart
