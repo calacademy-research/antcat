@@ -25,7 +25,7 @@ function restart_development() {
   RAILS_ENV=development bundle exec rake sunspot:solr:reindex
 }
 
-if [ "${1:-}" = "prod" ]; then
+if [ "${1:-}" = "production" ]; then
   restart_production
 else
   restart_development
