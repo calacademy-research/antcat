@@ -1,5 +1,5 @@
 module DatabaseScripts
-  class SameNamedPassthroughNames < DatabaseScript
+  class SameNamedPassThroughNames < DatabaseScript
     def results
       Taxon.pass_through_names.
         self_join_on(:current_valid_taxon).
