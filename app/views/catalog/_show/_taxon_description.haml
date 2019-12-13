@@ -97,7 +97,7 @@
         =obsolete_combination.author_citation
 
 -if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
-  .callout
+  .callout.no-border-callout.logged-in-only-background
     %h6
       Subspecies
       =logged_in_only_tooltip_icon

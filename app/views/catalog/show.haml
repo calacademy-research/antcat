@@ -18,7 +18,7 @@
 
   .medium-3.columns
     -if current_user && @taxon.policy.show_create_combination_button?
-      #additional-editor-data.callout
+      #additional-editor-data.callout.no-border-callout.logged-in-only-background
         %h6
           Can be combined?
           =logged_in_only_tooltip_icon
@@ -37,7 +37,7 @@
           =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
 
     -if current_user
-      #additional-editor-data.callout
+      #additional-editor-data.callout.no-border-callout.logged-in-only-background
         %h6
           Additional data for editors
           =logged_in_only_tooltip_icon
