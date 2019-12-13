@@ -30,6 +30,7 @@ category: Catalog
 tags: [list]
 
 related_scripts:
+  - SameNamedPassThroughNames
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName

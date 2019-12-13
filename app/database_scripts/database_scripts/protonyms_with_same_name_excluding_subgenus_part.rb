@@ -55,6 +55,7 @@ description: >
   Initial order is by epithet.
 
 related_scripts:
+  - SameNamedPassThroughNames
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName
