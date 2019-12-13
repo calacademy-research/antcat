@@ -1,10 +1,7 @@
 module DatabaseScripts
   class NonValidTaxaWithACurrentValidTaxonThatIsNotValid < DatabaseScript
-    # TODO: Codify this somewhere.
-    IGNORE_STATUSES = Status::PASS_THROUGH_NAMES + [Status::UNAVAILABLE_UNCATEGORIZED]
-
     def results
-      Taxon.where.not(current_valid_taxon: nil).where.not(status: IGNORE_STATUSES).
+      Taxon.where.not(current_valid_taxon: nil).where.not(status: Status::PASS_THROUGH_NAMES).
         self_join_on(:current_valid_taxon).where.not(taxa_self_join_alias: { status: Status::VALID })
     end
 
@@ -28,4 +25,11 @@ __END__
 
 title: Non-valid taxa with a current valid taxon that is not valid
 category: Catalog
-tags: [regression-test]
+tags: [updated]
+
+description: >
+  Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).
+
+related_scripts:
+  - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
+  - NonValidTaxaWithACurrentValidTaxonThatIsNotValid
