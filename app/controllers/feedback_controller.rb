@@ -71,7 +71,7 @@ class FeedbackController < ApplicationController
 
     def maybe_rate_throttle
       return if current_user
-      return unless @feedback.from_the_same_ip.recent.count >= 5
+      return unless Feedback.submitted_by_ip(@feedback.ip).recent.count >= 5
 
       @feedback.errors.add :rate_limited, <<-MSG
         you have already posted a couple of feedbacks in the last few minutes. Thanks for that!

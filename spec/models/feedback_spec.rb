@@ -3,17 +3,15 @@ require 'rails_helper'
 describe Feedback do
   it { is_expected.to validate_presence_of :comment }
 
-  describe "#from_the_same_ip" do
-    let!(:feedback) { build_stubbed :feedback, ip: "255.255.255.255" }
+  describe ".submitted_by_ip" do
+    let!(:ip) { "255.255.255.255" }
+    let!(:feedback) { create :feedback, ip: ip }
 
     before do
       create :feedback
-      create :feedback, ip: "255.255.255.255"
     end
 
-    it "returns feedbacks from the same IP" do
-      expect(feedback.from_the_same_ip.count).to eq 1
-    end
+    specify { expect(described_class.submitted_by_ip(ip)).to eq [feedback] }
   end
 
   describe "open/closed" do
