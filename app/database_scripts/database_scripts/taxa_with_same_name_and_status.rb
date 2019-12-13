@@ -10,12 +10,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :authorship, :status
+        t.header :taxon, :authorship, :status, :unresolved_homonym?
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),
             taxon.authorship_reference.decorate.expandable_reference,
-            taxon.status
+            taxon.status,
+            ('Yes' if taxon.unresolved_homonym?)
           ]
         end
       end
