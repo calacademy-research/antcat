@@ -30,6 +30,7 @@ module Markdowns
       parse_github_ids
       parse_wiki_pages_ids
       parse_user_ids
+      parse_database_script_ids
 
       content
     end
@@ -111,6 +112,15 @@ module Markdowns
           else
             broken_markdown_link "user", $1
           end
+        end
+      end
+
+      # Matches: %dbscript:filename_without_extension or %dbscript:FilenameWithoutExtension
+      # Renders: a link to the database script.
+      def parse_database_script_ids
+        content.gsub!(/%dbscript:([A-Z][A-Za-z0-9_]+)/) do
+          database_script = DatabaseScript.safe_new_from_filename_without_extension($1)
+          link_to database_script.title, database_script_path(database_script)
         end
       end
 

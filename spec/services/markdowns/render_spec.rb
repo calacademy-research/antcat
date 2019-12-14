@@ -72,5 +72,21 @@ describe Markdowns::Render do
       expect(results).to include user.name
       expect(results).to include "users/#{user.id}"
     end
+
+    describe 'database script links' do
+      context 'when database script exists' do
+        specify do
+          expect(described_class["%dbscript:OrphanedProtonyms"]).
+            to eq %(<p><a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a></p>\n)
+        end
+      end
+
+      context 'when database script does not exist' do
+        specify do
+          expect(described_class["%dbscript:BestPizzas"]).
+            to eq %(<p><a href="/database_scripts/best_pizzas">Error: Could not find database script with class name &#39;BestPizzas&#39;</a></p>\n)
+        end
+      end
+    end
   end
 end
