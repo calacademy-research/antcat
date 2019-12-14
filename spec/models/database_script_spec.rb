@@ -150,7 +150,7 @@ describe DatabaseScript do
           allow(script).to receive(:end_data).and_return end_data
           related_script = script.related_scripts.first
           expect(related_script.title).to include "Error: Could not find database script with class name"
-          expect(related_script.to_param).to eq 'CountriesInEurope'
+          expect(related_script.to_param).to eq 'countries_in_europe'
         end
       end
 

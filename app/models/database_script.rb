@@ -25,7 +25,11 @@ class DatabaseScript
       "Error: Could not find database script with class name '#{class_name}'"
     end
 
-    alias_method :to_param, :class_name
+    def filename_without_extension
+      @filename_without_extension ||= class_name.underscore
+    end
+
+    alias_method :to_param, :filename_without_extension
   end
 
   def self.inherited(subclass)
