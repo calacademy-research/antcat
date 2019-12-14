@@ -2,6 +2,6 @@
 -@title = "#{strip_tags @reference.keey.html_safe} - References"
 -breadcrumb :reference_what_links_here, @reference
 
-=render "shared/what_links_here", table_refs: @table_refs
+=render "shared/what_links_here", table_refs: @table_refs, highlight_text: @reference.keey
 
 =will_paginate @table_refs

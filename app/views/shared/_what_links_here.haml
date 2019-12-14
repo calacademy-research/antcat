@@ -1,3 +1,5 @@
+-highlight_text ||= nil
+
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
@@ -23,4 +25,5 @@
           %td
             %code=table_ref.field
           %td=decorated.related_links
-          %td.grow.small-text=table_ref.detax
+          %td.grow.small-text{data: { highlight_text: highlight_text }}
+            =table_ref.detax

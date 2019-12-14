@@ -1,6 +1,6 @@
 -@title = "#{@taxon.name_cache} - What Links Here"
 -breadcrumb :taxon_what_links_here, @taxon
 
-=render "shared/what_links_here", table_refs: @table_refs
+=render "shared/what_links_here", table_refs: @table_refs, highlight_text: @taxon.name_cache
 
 =will_paginate @table_refs
