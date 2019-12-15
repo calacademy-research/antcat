@@ -20,6 +20,18 @@ class DatabaseScript
 
   ScriptNotFound = Class.new StandardError
 
+  UnfoundDatabaseScript = Struct.new(:class_name) do
+    def title
+      "Error: Could not find database script with class name '#{class_name}'"
+    end
+
+    def filename_without_extension
+      @filename_without_extension ||= class_name.underscore
+    end
+
+    alias_method :to_param, :filename_without_extension
+  end
+
   def self.inherited(subclass)
     subclass.include Rails.application.routes.url_helpers
     subclass.include ActionView::Helpers::UrlHelper
@@ -30,6 +42,12 @@ class DatabaseScript
     raise ScriptNotFound unless script_class
 
     script_class.new
+  end
+
+  def self.safe_new_from_filename_without_extension class_name
+    new_from_filename_without_extension class_name
+  rescue DatabaseScript::ScriptNotFound
+    UnfoundDatabaseScript.new(class_name)
   end
 
   def self.all
@@ -73,17 +91,7 @@ class DatabaseScript
 
   def related_scripts
     (end_data[:related_scripts] || []).map do |class_name|
-      begin
-        DatabaseScript.new_from_filename_without_extension(class_name)
-      rescue DatabaseScript::ScriptNotFound
-        Struct.new(:class_name) do
-          def title
-            "Error: Could not find database script with class name '#{class_name}'"
-          end
-
-          alias_method :to_param, :class_name
-        end.new(class_name)
-      end
+      self.class.safe_new_from_filename_without_extension class_name
     end
   end
 

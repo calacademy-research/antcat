@@ -1,3 +1,5 @@
+-highlight_text ||= nil
+
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
@@ -8,6 +10,7 @@
       %th.no-wrap Table
       %th.no-wrap Field
       %th.no-wrap Related taxon
+      %th.no-wrap Taxt
   %tbody
     -if table_refs.empty?
       %tr
@@ -21,4 +24,6 @@
             %code=table_ref.table
           %td
             %code=table_ref.field
-          %td.grow=decorated.related_links
+          %td=decorated.related_links
+          %td.grow.small-text{data: { highlight_text: highlight_text }}
+            =table_ref.detax

@@ -19,13 +19,13 @@
       =reference.public_notes
   -if current_user
     -if reference.editor_notes?
-      %p.notes
+      %p.notes.logged-in-only-background
         %span.note
           Editor notes:
           =logged_in_only_tooltip_icon
         =reference.editor_notes
     -if reference.taxonomic_notes?
-      %p.notes
+      %p.notes.logged-in-only-background
         %span.note
           Taxonomic notes:
           =logged_in_only_tooltip_icon

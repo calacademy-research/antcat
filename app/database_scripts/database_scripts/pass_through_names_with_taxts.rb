@@ -10,7 +10,7 @@ end
 __END__
 
 title: Pass-through names with taxts
-category: Synonyms
+category: Catalog
 tags: [regression-test]
 
 issue_description: This taxon is a "pass-through name", but is has history items or reference sections.

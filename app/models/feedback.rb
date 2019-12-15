@@ -14,8 +14,8 @@ class Feedback < ApplicationRecord
   has_paper_trail
   trackable
 
-  def from_the_same_ip
-    self.class.where(ip: ip)
+  def self.submitted_by_ip ip
+    where(ip: ip)
   end
 
   def closed?

@@ -52,6 +52,8 @@ description: >
   * If the authorship is identical: change protonym of one and delete the now orphaned protonym
 
 related_scripts:
+  - SameNamedPassThroughNames
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName
+  - ProtonymsWithSameNameExcludingSubgenusPart

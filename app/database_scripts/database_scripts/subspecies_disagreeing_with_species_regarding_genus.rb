@@ -24,6 +24,7 @@ end
 __END__
 
 category: Catalog
+tags: [high-priority]
 
 issue_description: This subspecies is not in the same genus as its species.
 

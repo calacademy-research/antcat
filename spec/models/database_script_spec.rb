@@ -2,9 +2,23 @@ require 'rails_helper'
 
 describe DatabaseScript do
   describe ".new_from_filename_without_extension" do
-    it "initializes" do
+    it "returns a database script" do
       results = described_class.new_from_filename_without_extension "ExtantTaxaInFossilGenera"
       expect(results).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+    end
+  end
+
+  describe ".safe_new_from_filename_without_extension" do
+    it "returns a database script" do
+      results = described_class.safe_new_from_filename_without_extension "ExtantTaxaInFossilGenera"
+      expect(results).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+    end
+
+    context 'when database script does not exists' do
+      it 'returns an "unfound database script"' do
+        results = described_class.safe_new_from_filename_without_extension "BestPizza"
+        expect(results).to be_a DatabaseScript::UnfoundDatabaseScript
+      end
     end
   end
 
@@ -136,7 +150,7 @@ describe DatabaseScript do
           allow(script).to receive(:end_data).and_return end_data
           related_script = script.related_scripts.first
           expect(related_script.title).to include "Error: Could not find database script with class name"
-          expect(related_script.to_param).to eq 'CountriesInEurope'
+          expect(related_script.to_param).to eq 'countries_in_europe'
         end
       end
 

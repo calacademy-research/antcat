@@ -135,12 +135,12 @@
             %th Public notes
             %td=or_dash @reference.public_notes
           -if current_user
-            %tr
+            %tr.logged-in-only-background
               %th
                 Editor notes
                 =logged_in_only_tooltip_icon
               %td=or_dash @reference.editor_notes
-            %tr
+            %tr.logged-in-only-background
               %th
                 Taxonomic notes
                 =logged_in_only_tooltip_icon
