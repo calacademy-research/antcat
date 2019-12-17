@@ -13,6 +13,21 @@
   -if user_is_at_least_helper?
     =link_to "New", new_reference_path, class: "btn-normal"
 
+-if current_user
+  .callout.alert.medium-6.columns
+    %h6
+      AntCat needs your help!
+      .right=logged_in_only_tooltip_icon
+    %p
+      =antcat_icon 'warning-icon'
+      There are currently
+      %strong
+        =MissingReference.count
+        missing references
+      (incomplete references) that are being used in the catalog. See
+      =link_to 'this database script', database_script_path(DatabaseScripts::MissingReferences.new)
+      for more info on how to replace them.
+
 =render "shared/reference_table", references: @references
 
 =will_paginate @references
