@@ -36,16 +36,16 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   Enabled: false
 
-Layout/AlignArray:
+Layout/ArrayAlignment:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   Enabled: false
 
 Layout/BlockAlignment:
@@ -64,7 +64,7 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: indented_internal_methods
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:

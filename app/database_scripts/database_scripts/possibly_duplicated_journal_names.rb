@@ -55,7 +55,7 @@ module DatabaseScripts
       # The key is the name of a journal for which we want to exclude false
       # positives. Note that the values are arrays, but they kept on the same
       # to make the list more readable.
-      # rubocop:disable Layout/IndentFirstArrayElement
+      # rubocop:disable Layout/FirstArrayElementIndentation
       # rubocop:disable Layout/MultilineArrayBraceLayout
       def false_positives
         @false_positives ||= {
@@ -193,7 +193,7 @@ module DatabaseScripts
         }
       end
       # rubocop:enable Layout/MultilineArrayBraceLayout
-      # rubocop:enable Layout/IndentFirstArrayElement
+      # rubocop:enable Layout/FirstArrayElementIndentation
 
       def link_to_journal journal_name
         journal = Journal.find_by(name: journal_name)
