@@ -6,9 +6,12 @@ require:
 AllCops:
   Exclude:
     - 'config.ru'
-    - 'db/schema.rb'
     - 'bin/**/*'
+    - 'data/**/*'
     - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
+    - 'db/schema.rb'
+    - 'solr/**/*'
+    - 'tmp/**/*'
     - 'vendor/**/*'
 
 Rails:
