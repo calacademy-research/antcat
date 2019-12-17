@@ -29,6 +29,9 @@ Rails/InverseOf:
 Rails/OutputSafety:
   Enabled: false
 
+Rails/RakeEnvironment:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
