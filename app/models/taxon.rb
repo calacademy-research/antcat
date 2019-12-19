@@ -22,6 +22,9 @@ class Taxon < ApplicationRecord
     end
   end
 
+  # TODO: Decide what do do with these.
+  class TaxonHasSubspecies < StandardError; end
+
   # TODO: Extract this and all `#update_parent`s into `ForceParentChange`.
   class InvalidParent < StandardError
     attr_reader :taxon, :new_parent

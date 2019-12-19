@@ -22,7 +22,7 @@ module Taxa
         flash.now[:alert] = "Something went wrong... ?"
         render :show
       end
-    rescue Taxon::InvalidParent => e
+    rescue Taxon::InvalidParent, Taxon::TaxonHasSubspecies => e
       flash.now[:alert] = e.message
       render :show
     rescue Taxon::TaxonExists => e
