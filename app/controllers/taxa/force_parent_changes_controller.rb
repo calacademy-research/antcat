@@ -25,6 +25,10 @@ module Taxa
     rescue Taxon::InvalidParent => e
       flash.now[:alert] = e.message
       render :show
+    rescue Taxon::TaxonExists => e
+      name_links = e.names.map { |name| view_context.link_to(name.name_html, name_path(name)) }
+      flash.now[:alert] = "Name conflict: #{name_links.join}"
+      render :show
     end
 
     private
