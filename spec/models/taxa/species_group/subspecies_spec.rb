@@ -6,6 +6,10 @@ describe Subspecies do
   it { is_expected.to validate_presence_of :genus }
   it { is_expected.to validate_presence_of :species }
 
+  describe 'relations' do
+    it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
+  end
+
   it "has its subfamily assigned from its genus" do
     subspecies = create :subspecies, genus: genus, subfamily: nil
     expect(subspecies.subfamily).to eq genus.subfamily
@@ -43,6 +47,19 @@ describe Subspecies do
         expect(subspecies_name.name).to eq 'Eciton nigrus medius minor'
         expect(subspecies_name.epithet).to eq 'minor'
         expect(subspecies_name.epithets).to eq 'nigrus medius minor'
+      end
+    end
+
+    context 'when subspecies has infrasubspeices' do
+      let(:subspecies) { create :subspecies }
+
+      before do
+        create :infrasubspecies, subspecies: subspecies
+      end
+
+      specify do
+        new_species = create :species
+        expect { subspecies.update_parent new_species }.to raise_error(Taxon::TaxonHasInfrasubspecies)
       end
     end
   end

@@ -28,6 +28,8 @@ module Taxa
         # This case may not be possible as of writing, but once we add more validations it may be.
         redirect_to catalog_path(@taxon), alert: new_species.errors.full_messages.to_sentence
       end
+    rescue Taxon::TaxonHasInfrasubspecies => e
+      redirect_to catalog_path(@taxon), alert: e.message
     end
 
     private

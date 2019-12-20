@@ -1,6 +1,8 @@
 class Subspecies < SpeciesGroupTaxon
   belongs_to :species
 
+  has_many :infrasubspecies, dependent: :restrict_with_error
+
   validates :species, presence: true
 
   before_validation :set_genus
@@ -19,12 +21,18 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def update_parent new_parent
+    raise TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if infrasubspecies.any?
+
     name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent
   end
 
   def children
-    Subspecies.none
+    infrasubspecies
+  end
+
+  def childrens_rank_in_words
+    "infrasubspecies"
   end
 
   private

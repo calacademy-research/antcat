@@ -9,12 +9,13 @@ module TaxonButtonsHelper
   end
 
   def add_child_button taxon
-    child_ranks = { family:    "subfamily",
-                    subfamily: "genus",
-                    tribe:     "genus",
-                    genus:     "species",
-                    subgenus:  "species",
-                    species:   "subspecies" }
+    child_ranks = { family:     "subfamily",
+                    subfamily:  "genus",
+                    tribe:      "genus",
+                    genus:      "species",
+                    subgenus:   "species",
+                    species:    "subspecies",
+                    subspecies: "infrasubspecies" }
 
     rank_to_add = child_ranks[taxon.rank.to_sym]
     return if rank_to_add.blank?

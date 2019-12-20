@@ -90,11 +90,6 @@ describe Names::BuildNameFromString do
       end
     end
 
-    # TODO: This should also cover subspecies names with 4 name parts:
-    # * "Lasius (Forelophilus) niger fusca"
-    # * "Lasius (Forelophilus) niger var. fusca"
-    # * "Lasius niger var. fusca"
-    # It works for now since we treat infrasubspecific names as `SubspeciesName`s.
     context 'when name is a subspecies name' do
       specify do
         name = described_class['Lasius niger fusca']
@@ -115,16 +110,36 @@ describe Names::BuildNameFromString do
           expect(name.epithets).to eq 'niger var. fusca'
         end
       end
+
+      context 'when name includes subgenus' do
+        specify do
+          name = described_class['Lasius (Forelophilus) niger fusca']
+
+          expect(name).to be_a SubspeciesName
+          expect(name.name).to eq 'Lasius (Forelophilus) niger fusca'
+          expect(name.epithet).to eq 'fusca'
+          expect(name.epithets).to eq '(Forelophilus) niger fusca'
+        end
+      end
+
+      context 'when name contains abbreivations and includes subgenus' do
+        specify do
+          name = described_class['Lasius (Forelophilus) niger var. fusca']
+
+          expect(name).to be_a SubspeciesName
+          expect(name.name).to eq 'Lasius (Forelophilus) niger var. fusca'
+          expect(name.epithet).to eq 'fusca'
+          expect(name.epithets).to eq '(Forelophilus) niger var. fusca'
+        end
+      end
     end
 
-    # TODO: We're parsing these as `SubspeciesName` because we don't fully support
-    # infrasubspecific name yet, and there are already ~2k of them in the database.
     context 'when name is an infrasubspecies name' do
       context 'when 4 name parts' do
         specify do
           name = described_class['Leptothorax rottenbergi scabrosus kabyla']
 
-          expect(name).to be_a SubspeciesName
+          expect(name).to be_a InfrasubspeciesName
           expect(name.name).to eq 'Leptothorax rottenbergi scabrosus kabyla'
           expect(name.epithet).to eq 'kabyla'
           expect(name.epithets).to eq 'rottenbergi scabrosus kabyla'
@@ -135,7 +150,7 @@ describe Names::BuildNameFromString do
         specify do
           name = described_class['Leptothorax (Hypochira) rottenbergi scabrosus kabyla']
 
-          expect(name).to be_a SubspeciesName
+          expect(name).to be_a InfrasubspeciesName
           expect(name.name).to eq 'Leptothorax (Hypochira) rottenbergi scabrosus kabyla'
           expect(name.epithet).to eq 'kabyla'
           expect(name.epithets).to eq '(Hypochira) rottenbergi scabrosus kabyla'
@@ -146,7 +161,7 @@ describe Names::BuildNameFromString do
         specify do
           name = described_class['Camponotus herculeanus subsp. pennsylvanicus var. mahican']
 
-          expect(name).to be_a SubspeciesName
+          expect(name).to be_a InfrasubspeciesName
           expect(name.name).to eq 'Camponotus herculeanus subsp. pennsylvanicus var. mahican'
           expect(name.epithet).to eq 'mahican'
           expect(name.epithets).to eq 'herculeanus subsp. pennsylvanicus var. mahican'
@@ -173,6 +188,10 @@ describe Names::BuildNameFromString do
           expect(name.epithet).to eq nil
           expect(name.epithets).to eq nil
         end
+      end
+
+      context 'when name contains unknown rank abbreivations' do
+        specify { expect { described_class['Lasius niger very. fusca'] }.to raise_error described_class::UnparsableName }
       end
 
       # TODO: We want to support this for protonyms like

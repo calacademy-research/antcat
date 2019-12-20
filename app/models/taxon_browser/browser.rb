@@ -58,17 +58,17 @@ module TaxonBrowser
       def taxa_for_tabs
         # We do not want to include all ranks in the tabs.
         taxon_and_ancestors.reject do |taxon|
-          # Never show the [children of] subspecies tab (has no children).
-          taxon.is_a?(Subspecies) ||
-
-            # Don't show [subspecies in] species tab unless the species has subspecies.
-            (taxon.is_a?(Species) && !taxon.children.exists?) ||
+          # Don't show [subspecies in] species tab unless the species has subspecies.
+          (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
             # Hide [species in] subgenus tab because there are none as of 2016.
             taxon.is_a?(Subgenus) ||
 
             # Never show the [children of] subtribe tab (has no children).
-            taxon.is_a?(Subtribe)
+            taxon.is_a?(Subtribe) ||
+
+            # Never show the [children of] subtribe tab (has no children).
+            taxon.is_a?(Infrasubspecies)
         end
       end
 

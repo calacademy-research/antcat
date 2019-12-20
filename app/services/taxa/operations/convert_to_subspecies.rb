@@ -9,6 +9,9 @@ module Taxa
       end
 
       def call
+        # TODO: Revisit after converting broken subspecies to infrasubspecies.
+        raise Taxon::TaxonHasInfrasubspecies, 'Species has infrasubspecies' if original_species.infrasubspecies.any?
+
         return false if original_species.subspecies.exists?
         raise unless original_species.is_a?(Species) && new_species_parent.is_a?(Species)
 

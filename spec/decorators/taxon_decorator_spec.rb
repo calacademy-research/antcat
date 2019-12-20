@@ -103,5 +103,13 @@ describe TaxonDecorator do
       expect(taxon.decorate.link_to_antweb).
         to eq %(<a class="external-link" href="http://www.antweb.org/description.do?#{query_params}">AntWeb</a>)
     end
+
+    context 'when taxon is an infrasubspecies' do
+      let(:taxon) { build_stubbed :infrasubspecies }
+
+      it 'does not render a link' do
+        expect(taxon.decorate.link_to_antweb).to eq nil
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_004103) do
+ActiveRecord::Schema.define(version: 2019_12_11_141349) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -290,6 +290,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_004103) do
     t.integer "type_taxon_id"
     t.boolean "collective_group_name", default: false, null: false
     t.boolean "original_combination", default: false, null: false
+    t.integer "subspecies_id"
     t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"
@@ -303,6 +304,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_004103) do
     t.index ["status"], name: "index_taxa_on_status"
     t.index ["subfamily_id"], name: "taxa_subfamily_id_idx"
     t.index ["subgenus_id"], name: "index_taxa_on_subgenus_id"
+    t.index ["subspecies_id"], name: "fk_taxa__subspecies_id__taxa__id"
     t.index ["tribe_id"], name: "taxa_tribe_id_idx"
     t.index ["type"], name: "taxa_type_idx"
     t.index ["type_taxon_id"], name: "fk_taxa__type_taxon_id__taxa__id"
@@ -412,6 +414,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_004103) do
   add_foreign_key "taxa", "taxa", column: "species_id", name: "fk_taxa__species_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subfamily_id", name: "fk_taxa__subfamily_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "subspecies_id", name: "fk_taxa__subspecies_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
   add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"

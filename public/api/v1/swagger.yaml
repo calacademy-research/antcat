@@ -622,6 +622,7 @@ definitions:
         enum:
         - family
         - genus
+        - infrasubspecies
         - species
         - subfamily
         - subgenus
@@ -795,6 +796,7 @@ definitions:
         - SubfamilyName
         - SubgenusName
         - SubspeciesName
+        - InfrasubspeciesName
         - SubtribeName
       name:
         type: string

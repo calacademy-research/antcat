@@ -31,5 +31,9 @@ FactoryBot.define do
     factory :subspecies_name, class: 'SubspeciesName' do
       sequence(:name, 'a') { |n| "Atta species subspecies#{n}" }
     end
+
+    factory :infrasubspecies_name, class: 'InfrasubspeciesName' do
+      sequence(:name, 'a') { |n| "Atta species subspecies#{n} infrasubspecies" }
+    end
   end
 end

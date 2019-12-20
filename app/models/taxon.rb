@@ -24,6 +24,7 @@ class Taxon < ApplicationRecord
 
   # TODO: Decide what do do with these.
   class TaxonHasSubspecies < StandardError; end
+  class TaxonHasInfrasubspecies < StandardError; end
 
   # TODO: Extract this and all `#update_parent`s into `ForceParentChange`.
   class InvalidParent < StandardError

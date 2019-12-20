@@ -1,5 +1,6 @@
 class Species < SpeciesGroupTaxon
   has_many :subspecies, dependent: :restrict_with_error
+  has_many :infrasubspecies, dependent: :restrict_with_error
 
   def parent
     subgenus || genus
@@ -20,7 +21,8 @@ class Species < SpeciesGroupTaxon
 
   def update_parent new_parent
     # TODO: This does not update names of subspecies.
-    raise TaxonHasSubspecies if subspecies.any?
+    raise TaxonHasSubspecies, 'Species has subspecies' if subspecies.any?
+    raise TaxonHasInfrasubspecies, 'Species has infrasubspecies' if infrasubspecies.any?
 
     name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent

@@ -3,16 +3,21 @@
 # Non-standard names like: Dacetiti (author tried to create a new trend)
 # Names I don't know what they are: Formicariae,  Dorylida
 # Probably tribes or subtribes: Acanthostichii, Bregmatomyrminii, Dorylii,  Strumigeniti, Thaumatomyrmii
-# Very infrasubspecific names:
-# ```
-# Name.where.not('name LIKE ?', '%(%').where("LENGTH(name) = (LENGTH(REPLACE(name, ' ', '')) + 5)").first.name
-#   => "Acromyrmex aspersus st. mesonotalis var. clarus"
-#
-# Name.where('name LIKE ?', '%(%').where("LENGTH(name) = (LENGTH(REPLACE(name, ' ', '')) + 6)").first.name
-#   => "Atta (Acromyrmex) moelleri subsp. panamensis var. angustata"
-# ```
 
 module Names
+  RANK_ABBREVIATIONS = [
+    'var.',
+    'r.',
+    'n.',
+    'st.',
+    'subsp.',
+    'f.',
+    'm.',
+    'morph.',
+    'ab.',
+    'nat.'
+  ]
+
   class BuildNameFromString
     include Service
 
@@ -32,35 +37,42 @@ module Names
       attr_reader :name
 
       def name_class
-        return SubgenusName if subgenus_name?
+        return ::SubgenusName if subgenus_name?
 
-        case num_words_without_subgenus
-        when 1    then genus_or_tribe_or_subfamily
-        when 2    then SpeciesName
-        when 3..6 then SubspeciesName
-        else      raise UnparsableName, name
+        raise UnparsableName, name unless countable_words.join(' ') =~ /^[[:alpha:][:blank:]-]+$/
+
+        case countable_words.size
+        when 1 then genus_or_tribe_or_subfamily
+        when 2 then ::SpeciesName
+        when 3 then ::SubspeciesName
+        when 4 then ::InfrasubspeciesName
+        else   raise UnparsableName, name
         end
       end
 
-      def num_words
-        @num_words ||= name.split.size
+      def words
+        @words ||= name.split
       end
 
-      def num_words_without_subgenus
-        @num_words_without_subgenus ||= name.gsub(/\(.*?\)/, '').squish.split.size
+      def words_without_subgenus
+        @words_without_subgenus ||= words.reject { |word| word =~ /^\(.+?\)$/ }
+      end
+
+      def countable_words
+        words_without_subgenus.reject { |word| word.in?(RANK_ABBREVIATIONS) }
       end
 
       def subgenus_name?
-        num_words == 2 && num_words_without_subgenus == 1
+        words.size == 2 && words_without_subgenus.size == 1
       end
 
       # TODO: It could also be subtribe.
       def genus_or_tribe_or_subfamily
         case name
-        when /idae$/ then FamilyName
-        when /inae$/ then SubfamilyName
-        when /ini$/  then TribeName
-        else              GenusName
+        when /idae$/ then ::FamilyName
+        when /inae$/ then ::SubfamilyName
+        when /ini$/  then ::TribeName
+        else              ::GenusName
         end
       end
   end

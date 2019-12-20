@@ -60,6 +60,7 @@ describe Api::V1::TaxaController do
         "status" => "valid",
         "subfamily_id" => taxon.subfamily_id,
         "subgenus_id" => nil,
+        "subspecies_id" => nil,
         "tribe_id" => taxon.tribe_id,
         "type_taxon_id" => nil,
         "type_taxt" => nil,

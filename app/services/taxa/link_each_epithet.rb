@@ -9,8 +9,9 @@ module Taxa
 
     # This links the different parts of the binomial name. Only applicable to
     # species and below, since higher ranks consists of a single word.
+    # NOTE: This only works for modern names (rank abbreviations and subgenus parts are ignored).
     def call
-      return @taxon.link_to_taxon unless @taxon.is_a? SpeciesGroupTaxon
+      return @taxon.link_to_taxon unless @taxon.is_a? ::SpeciesGroupTaxon
 
       if @taxon.is_a? Species
         return genus_link << header_link(@taxon, @taxon.name.epithet_html.html_safe)
@@ -19,8 +20,20 @@ module Taxa
       string = genus_link
       string << header_link(@taxon.species, @taxon.species.name.epithet_html.html_safe)
       string << ' '.html_safe
-      string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
-      string
+
+      if @taxon.is_a? Subspecies
+        string << header_link(@taxon, italicize(@taxon.name.subspecies_epithets))
+        return string
+      end
+
+      if @taxon.is_a? Infrasubspecies
+        string << header_link(@taxon.subspecies, italicize(@taxon.subspecies.name.epithet))
+        string << ' '.html_safe
+        string << header_link(@taxon, italicize(@taxon.name.epithet))
+        return string
+      end
+
+      raise '???'
     end
 
     private
