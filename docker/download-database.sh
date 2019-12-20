@@ -3,6 +3,7 @@ cd /code
 
 grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
 
+rm ./db/schema.rb
 git checkout db/schema.rb
 gem install bundler
 bundle install
@@ -37,9 +38,12 @@ echo -e "development:\n\
   port: 3306\n" > /code/config/database.yml
 
 cd /code/script
+echo "Resetting database..."
 ./reset_database.sh
+echo "Loading new data..."
 ./load.sh /code/database_export/$unzipped
 cd /code
+echo "Starting export..."
 bundle exec rake antweb:export
 cp /code/data/output/antcat.antweb.txt /code/database_export/antcat.antweb.txt
 rm /code/database_export/$unzipped
