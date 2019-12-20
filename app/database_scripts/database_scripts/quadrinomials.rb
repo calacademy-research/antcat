@@ -1,7 +1,7 @@
 module DatabaseScripts
   class Quadrinomials < DatabaseScript
     def results
-      Taxon.joins(:name).where("(LENGTH(names.name) - LENGTH(REPLACE(names.name, ' ', '')) >= 3) ")
+      Subspecies.joins(:name).where("(LENGTH(names.name) - LENGTH(REPLACE(names.name, ' ', '')) >= 3) ")
     end
 
     def render
@@ -38,4 +38,8 @@ description: >
   Quadrinomials with db script issues must be fixed before we can attempt to migrate records by script.
 
 
-  Issue: %github714
+  Issues: %github714, %github819
+
+related_scripts:
+  - Quadrinomials
+  - QuadrinomialsToBeConverted
