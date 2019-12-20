@@ -6,6 +6,8 @@ grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
 rm ./db/schema.rb
 git checkout db/schema.rb
 gem install bundler
+gem install bundler -v '~> 1.14'
+bundle install --binstubs
 bundle install
 
 chmod 600 ./docker/id_rsa
