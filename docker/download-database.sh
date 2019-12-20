@@ -3,11 +3,6 @@ cd /code
 
 grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
 
-rm ./db/schema.rb
-git checkout db/schema.rb
-gem install bundler
-gem install bundler -v '~> 1.14'
-bundle binstubs
 bundle install
 
 chmod 600 ./docker/id_rsa
@@ -45,11 +40,12 @@ echo "Resetting database..."
 echo "Loading new data..."
 ./load.sh /code/database_export/$unzipped
 cd /code
-echo "Removling lockfile..."
-rm /code/Gemfile.lock
-echo "reinstalling bundle hack..."
-bundle install
+#echo "Removling lockfile..."
+#rm /code/Gemfile.lock
+#echo "reinstalling bundle hack..."
+#bundle install
 echo "Starting export..."
-bundle exec rake antweb:export
+#bundle exec rake antweb:export
+rake antweb:export
 cp /code/data/output/antcat.antweb.txt /code/database_export/antcat.antweb.txt
 rm /code/database_export/$unzipped
