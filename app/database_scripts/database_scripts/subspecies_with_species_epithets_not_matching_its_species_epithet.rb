@@ -27,7 +27,7 @@ end
 __END__
 
 category: Catalog
-tags: [high-priority]
+tags: [regression-test]
 
 issue_description: The species epithet of this subspecies is not the same as its species' epithet.
 
