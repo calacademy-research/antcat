@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo "Starting download database inside docker..."
 cd /code
 
 grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
