@@ -55,7 +55,7 @@ module EditorsPanels
     def index
       @versions = PaperTrail::Version.without_user_versions
       @versions = @versions.filter(filter_params)
-      @versions = @versions.search_objects(search_params) if params[:q].present?
+      @versions = @versions.search(params[:q], params[:search_type]) if params[:q].present?
       @versions = @versions.order(:id).paginate(page: params[:page], per_page: 50)
 
       @version_count = PaperTrail::Version.count
@@ -64,11 +64,5 @@ module EditorsPanels
     def show
       @version = PaperTrail::Version.without_user_versions.find(params[:id])
     end
-
-    private
-
-      def search_params
-        params.slice :search_type, :q
-      end
   end
 end
