@@ -36,6 +36,7 @@ describe Taxa::LinkEachEpithet do
         end
       end
 
+      # TODO: Revisit once `DatabaseScripts::QuadrinomialsToBeConverted` has been cleared.
       context "when taxon has more than 3 epithets" do
         let!(:genus) { create :genus, name_string: 'Formica' }
         let!(:species) { create :species, name_string: 'NOTUSED rufa', genus: genus }
@@ -50,6 +51,26 @@ describe Taxa::LinkEachEpithet do
             taxon_link(subspecies, '<i>pratensis major</i>')
           )
         end
+      end
+    end
+
+    context 'when taxon is an infrasubspecies`' do
+      let!(:genus) { create :genus, name_string: 'Formica' }
+      let!(:species) { create :species, name_string: 'NOTUSED rufa', genus: genus }
+      let!(:subspecies) do
+        create :subspecies, name_string: 'NOTUSED NOTUSED pratensis', species: species, genus: genus
+      end
+      let(:infrasubspecies) do
+        create :infrasubspecies, name_string: 'NOTUSED NOTUSED pratensis major', subspecies: subspecies, species: species, genus: genus
+      end
+
+      specify do
+        expect(described_class[infrasubspecies]).to eq(
+          taxon_link(genus, '<i>Formica</i>') + ' ' +
+          taxon_link(species, '<i>rufa</i>') + ' ' +
+          taxon_link(subspecies, '<i>pratensis</i>') + ' ' +
+          taxon_link(infrasubspecies, '<i>major</i>')
+        )
       end
     end
   end

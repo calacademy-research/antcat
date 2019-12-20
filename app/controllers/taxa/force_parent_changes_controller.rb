@@ -22,7 +22,7 @@ module Taxa
         flash.now[:alert] = "Something went wrong... ?"
         render :show
       end
-    rescue Taxon::InvalidParent, Taxon::TaxonHasSubspecies => e
+    rescue Taxon::InvalidParent, Taxon::TaxonHasSubspecies, Taxon::TaxonHasInfrasubspecies => e
       flash.now[:alert] = e.message
       render :show
     rescue Taxon::TaxonExists => e
@@ -40,11 +40,11 @@ module Taxa
       def set_valid_parent_ranks
         @valid_parent_ranks =
           case @taxon
-          when Tribe      then [:subfamily]
-          when Genus      then [:family, :subfamily, :tribe]
-          when Subgenus   then [:genus]
-          when Species    then [:genus, :subgenus]
-          when Subspecies then [:species]
+          when ::Tribe      then [:subfamily]
+          when ::Genus      then [:family, :subfamily, :tribe]
+          when ::Subgenus   then [:genus]
+          when ::Species    then [:genus, :subgenus]
+          when ::Subspecies then [:species]
           end
       end
 

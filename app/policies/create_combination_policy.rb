@@ -15,10 +15,12 @@ class CreateCombinationPolicy
 
     attr_reader :taxon
 
-    def validate!
+    def validate! # rubocop:disable Metrics/PerceivedComplexity
       errors << 'taxon is not a species' unless taxon.is_a?(Species)
       errors << 'taxon has soft-validation warnings' if taxon.soft_validation_warnings.present?
       errors << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
+      errors << 'taxon has infrasubspecices' if taxon.is_a?(Species) && taxon.infrasubspecies.exists?
+      errors << 'taxon has infrasubspecices' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?
       errors << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
       errors << "taxon does not have the status 'valid'" if taxon.invalid?
       errors << 'taxon has junior synonyms' if taxon.junior_synonyms.any?

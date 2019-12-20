@@ -8,7 +8,7 @@ end
     parent :catalog
   end
 
-  [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies].each do |rank|
+  [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies, :infrasubspecies].each do |rank|
     crumb rank do |taxon|
       if taxon.name
         link taxon.link_to_taxon

@@ -3,7 +3,7 @@ module Taxa
     class AdvancedSearch
       include Service
 
-      RANKS = %w[Subfamily Tribe Subtribe Genus Subgenus Species Subspecies]
+      RANKS = %w[Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
       TAXA_COLUMNS = %i[
         fossil nomen_nudum unresolved_homonym ichnotaxon hong status type collective_group_name
         incertae_sedis_in

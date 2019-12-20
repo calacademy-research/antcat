@@ -1,0 +1,2 @@
+class InfrasubspeciesName < SpeciesGroupName
+end

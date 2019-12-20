@@ -54,6 +54,13 @@ FactoryBot.define do
       genus
     end
 
+    factory :infrasubspecies, class: 'Infrasubspecies' do
+      association :name, factory: :infrasubspecies_name
+      subspecies
+      species
+      genus
+    end
+
     trait :valid do
       status { Status::VALID }
     end

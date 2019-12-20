@@ -5,6 +5,7 @@ describe Species do
 
   describe 'relations' do
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
   end
 
   it "can have subspecies, which are its children" do
