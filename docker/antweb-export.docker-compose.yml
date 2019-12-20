@@ -1,0 +1,37 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.6
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+      MYSQL_USER: root
+      MYSQL_DATABASE: antcat_docker
+    volumes:
+      - mysql:/var/lib/mysql
+
+  antweb_export:
+    depends_on:
+      - db
+    build:
+      context: ../
+      dockerfile: ./docker/antweb-export.Dockerfile
+    ports:
+      - "3002:3000"
+    entrypoint: ./docker/antweb-export.entrypoint
+    environment:
+      DB_USERNAME: root
+      DB_DATABASE: antcat_docker
+      DB_PORT: 3306
+      DB_HOST: db
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      NO_DEV_MONKEY_PATCHES: "true"
+    volumes:
+      - ../data/:/antcat/data/
+
+volumes:
+  mysql:

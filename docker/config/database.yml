@@ -1,0 +1,20 @@
+default: &default
+  adapter: mysql2
+  pool: 5
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  port: <%= ENV['DB_PORT'] %>
+  host: <%= ENV['DB_HOST'] %>
+  socket: /var/run/mysqld/mysqlx.sock
+
+development:
+  <<: *default
+  database: <%= ENV['DB_DATABASE'] %>_development
+
+test:
+  <<: *default
+  database: <%= ENV['DB_DATABASE'] %>_test
+
+production:
+  <<: *default
+  database: <%= ENV['DB_DATABASE'] %>

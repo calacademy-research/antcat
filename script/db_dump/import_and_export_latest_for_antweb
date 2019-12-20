@@ -10,6 +10,7 @@ full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
 
 antweb_exports_path="$dir_path/../../data/antweb_exports"
+mkdir -p "$antweb_exports_path"
 
 export_filename="$antweb_exports_path/antcat.antweb.txt"
 export_filename_tmp="$export_filename.tmp"

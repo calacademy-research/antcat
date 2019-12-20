@@ -1,0 +1,20 @@
+.git/
+
+# Secrets.
+/config/database.yml
+
+# Generated AntCat output.
+/data/output/
+/data/db_dumps/*.sql.gz
+/data/db_dumps/*.sql
+
+# Temp/cache.
+/tmp/
+/log/
+/pids/
+/coverage/
+
+# Solr data.
+/solr/
+!/solr/conf/
+!/solr/solr.xml
