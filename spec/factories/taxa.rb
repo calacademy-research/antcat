@@ -13,42 +13,42 @@ FactoryBot.define do
     protonym
     valid
 
-    factory :family, class: Family do
+    factory :family, class: 'Family' do
       association :name, factory: :family_name
     end
 
-    factory :subfamily, class: Subfamily do
+    factory :subfamily, class: 'Subfamily' do
       association :name, factory: :subfamily_name
     end
 
-    factory :tribe, class: Tribe do
+    factory :tribe, class: 'Tribe' do
       association :name, factory: :tribe_name
       subfamily
     end
 
-    factory :subtribe, class: Subtribe do
+    factory :subtribe, class: 'Subtribe' do
       association :name, factory: :subtribe_name
       tribe
       subfamily { |a| a.tribe.subfamily }
     end
 
-    factory :genus, class: Genus do
+    factory :genus, class: 'Genus' do
       association :name, factory: :genus_name
       tribe
       subfamily { |a| a.tribe&.subfamily }
     end
 
-    factory :subgenus, class: Subgenus do
+    factory :subgenus, class: 'Subgenus' do
       association :name, factory: :subgenus_name
       genus
     end
 
-    factory :species, class: Species do
+    factory :species, class: 'Species' do
       association :name, factory: :species_name
       genus
     end
 
-    factory :subspecies, class: Subspecies do
+    factory :subspecies, class: 'Subspecies' do
       association :name, factory: :subspecies_name
       species
       genus

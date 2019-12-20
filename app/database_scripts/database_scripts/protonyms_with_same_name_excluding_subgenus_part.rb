@@ -45,12 +45,15 @@ end
 __END__
 
 category: Catalog
-tags: [new!, slow]
+tags: [regression-test, slow]
 
 description: >
   This script checks all species and subspecies protonyms which includes a subgenus part in the name.
 
+
   Names are compared without the subgenus part, and any duplicates are listed here.
+  Duplicates with different authorships are likely homonyms, which is not an issue.
+
 
   Initial order is by epithet.
 

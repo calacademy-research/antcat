@@ -27,4 +27,10 @@
   %div{data: { show_hide_toggable_id: "guidelines_for_editors" }}
     =render "guidelines_for_editors"
 
+.callout.primary.no-border-callout.medium-9
+  %p Registered users will receive notifications for comments posted here (next time they sign in).
+  %p
+    Non-logged in submitters will not receive any notification. This is a good opportunity to recruit new editors; if you have some extra time,
+    you can invite them to the site (click on 'Hide/show formatted for email' for a template).
+
 =render "comments/comments_area", commentable: @feedback, new_comment: @new_comment

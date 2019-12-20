@@ -1,5 +1,4 @@
 class SiteNotice < ApplicationRecord
-  include HasUserNotifications
   include Trackable
 
   belongs_to :user

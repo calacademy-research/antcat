@@ -77,6 +77,11 @@ class Name < ApplicationRecord
     '&dagger;'.html_safe
   end
 
+  def owner
+    taxa.first || protonyms.first
+  end
+
+  # TODO: Remove. But let's wait until we know if we want inline names: https://github.com/calacademy-research/antcat/issues/767
   def what_links_here
     Names::WhatLinksHere[self]
   end

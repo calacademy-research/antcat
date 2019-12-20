@@ -6,9 +6,12 @@ require:
 AllCops:
   Exclude:
     - 'config.ru'
-    - 'db/schema.rb'
     - 'bin/**/*'
+    - 'data/**/*'
     - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
+    - 'db/schema.rb'
+    - 'solr/**/*'
+    - 'tmp/**/*'
     - 'vendor/**/*'
 
 Rails:
@@ -29,20 +32,23 @@ Rails/InverseOf:
 Rails/OutputSafety:
   Enabled: false
 
+Rails/RakeEnvironment:
+  Enabled: false
+
 Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
-Layout/AlignArguments:
+Layout/ArgumentAlignment:
   Enabled: false
 
-Layout/AlignArray:
+Layout/ArrayAlignment:
   Enabled: false
 
-Layout/AlignHash:
+Layout/HashAlignment:
   Enabled: false
 
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   Enabled: false
 
 Layout/BlockAlignment:
@@ -61,7 +67,7 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: indented_internal_methods
 
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   Enabled: false
 
 Layout/MultilineMethodCallIndentation:

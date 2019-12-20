@@ -24,7 +24,7 @@ end
 __END__
 
 category: Catalog
-tags: [high-priority]
+tags: [regression-test]
 
 issue_description: This species is not in the same subfamily as its genus.
 

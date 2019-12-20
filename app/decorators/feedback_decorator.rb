@@ -25,6 +25,10 @@ class FeedbackDecorator < Draper::Decorator
            end
 
     <<~MESSAGE
+      Thank you for contributing to AntCat.
+
+      If you wish to register an account, sign up at #{h.new_user_registration_url(host: 'antcat.org')}
+
       -------- Original Message --------
       From: #{from}
       Sent: #{created_at}

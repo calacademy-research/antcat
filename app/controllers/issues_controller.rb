@@ -21,7 +21,7 @@ class IssuesController < ApplicationController
 
     if @issue.save
       @issue.create_activity :create, current_user, edit_summary: params[:edit_summary]
-      @issue.notify_users_mentioned_in @issue.description, notifier: current_user
+      NotifyUsersMentionedIn[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully created issue."
     else
       render :new
@@ -34,7 +34,7 @@ class IssuesController < ApplicationController
   def update
     if @issue.update(issue_params)
       @issue.create_activity :update, current_user, edit_summary: params[:edit_summary]
-      @issue.notify_users_mentioned_in @issue.description, notifier: current_user
+      NotifyUsersMentionedIn[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully updated issue."
     else
       render :edit

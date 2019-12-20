@@ -25,7 +25,7 @@ __END__
 
 title: Non-valid taxa with a current valid taxon that is not valid
 category: Catalog
-tags: [updated]
+tags: []
 
 description: >
   Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).

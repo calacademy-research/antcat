@@ -22,7 +22,8 @@ describe Species do
     let!(:species) { create :species, subfamily: subfamily, genus: genus }
 
     it "assigns the subfamily of its descendants" do
-      subspecies = create :subspecies, species: species, genus: genus, subfamily: subfamily
+      # TODO: Commented out (hmm) because it's not supported and will raise (since subspecies names are not updated).
+      # subspecies = create :subspecies, species: species, genus: genus, subfamily: subfamily
       new_genus = create :genus
 
       expect(new_genus.subfamily).to_not eq subfamily
@@ -30,8 +31,9 @@ describe Species do
       # Test initial.
       expect(species.reload.subfamily).to eq subfamily
       expect(species.reload.genus).to eq genus
-      expect(subspecies.reload.genus).to eq genus
-      expect(subspecies.reload.subfamily).to eq subfamily
+      # TODO: Commented out, see above.
+      # expect(subspecies.reload.genus).to eq genus
+      # expect(subspecies.reload.subfamily).to eq subfamily
 
       # Act.
       species.update_parent new_genus
@@ -40,8 +42,20 @@ describe Species do
       # Assert.
       expect(species.reload.subfamily).to eq new_genus.subfamily
       expect(species.reload.genus).to eq new_genus
-      expect(subspecies.reload.genus).to eq new_genus
-      expect(subspecies.reload.subfamily).to eq new_genus.subfamily
+      # TODO: Commented out, see above.
+      # expect(subspecies.reload.genus).to eq new_genus
+      # expect(subspecies.reload.subfamily).to eq new_genus.subfamily
+    end
+
+    context 'when species has subspeices' do
+      before do
+        create :subspecies, species: species, genus: genus, subfamily: subfamily
+      end
+
+      specify do
+        new_genus = create :genus
+        expect { species.update_parent new_genus }.to raise_error(Taxon::TaxonHasSubspecies)
+      end
     end
   end
 end

@@ -20,6 +20,8 @@ class Species < SpeciesGroupTaxon
 
   def update_parent new_parent
     # TODO: This does not update names of subspecies.
+    raise TaxonHasSubspecies if subspecies.any?
+
     name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent
     update_descendants
