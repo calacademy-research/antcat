@@ -32,7 +32,4 @@
           %th Epithets
           %td=or_dash @name.epithets
 
-.row.margin-bottom
-  .small-12.columns
-    %h5 What Links Here
-    =render "shared/what_links_here", table_refs: @table_refs
+    %p=render(NameBelongsToComponent, name: @name)

@@ -81,9 +81,8 @@ class Name < ApplicationRecord
     taxa.first || protonyms.first
   end
 
-  # TODO: Remove. But let's wait until we know if we want inline names: https://github.com/calacademy-research/antcat/issues/767
-  def what_links_here
-    Names::WhatLinksHere[self]
+  def too_many_owners?
+    (taxa.count + protonyms.count) > 1
   end
 
   def orphaned?
