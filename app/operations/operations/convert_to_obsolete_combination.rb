@@ -10,7 +10,7 @@ module Operations
     def self.description current_valid_taxon:, new_combination:
       obsolete_combinations_description = current_valid_taxon.obsolete_combinations.map do |taxon|
         "  * #{taxon.link_to_taxon} (#{taxon.status})"
-      end.join("\n")
+      end.join("\n").presence || "  * #{current_valid_taxon} has no obsolete combinations"
 
       <<~TEXT
         * Change #{current_valid_taxon} status from #{current_valid_taxon.status} to obsolete combination

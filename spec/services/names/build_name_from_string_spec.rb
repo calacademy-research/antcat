@@ -167,6 +167,17 @@ describe Names::BuildNameFromString do
           expect(name.epithets).to eq 'herculeanus subsp. pennsylvanicus var. mahican'
         end
       end
+
+      context 'when 7 name parts' do
+        specify do
+          name = described_class['Atta (Acromyrmex) moelleri subsp. panamensis var. angustata']
+
+          expect(name).to be_a InfrasubspeciesName
+          expect(name.name).to eq 'Atta (Acromyrmex) moelleri subsp. panamensis var. angustata'
+          expect(name.epithet).to eq 'angustata'
+          expect(name.epithets).to eq '(Acromyrmex) moelleri subsp. panamensis var. angustata'
+        end
+      end
     end
 
     context 'when input cannot be parsed into a `Name`' do
@@ -194,11 +205,8 @@ describe Names::BuildNameFromString do
         specify { expect { described_class['Lasius niger very. fusca'] }.to raise_error described_class::UnparsableName }
       end
 
-      # TODO: We want to support this for protonyms like
-      # "Atta (Acromyrmex) moelleri subsp. panamensis var. angustata" which has this many parts since it concists of
-      # [Genus] [(subgenus)] [species] [old-style notation] subspecies [old-style notation] [infrasubspecific]
-      context 'when name has seven name parts' do
-        specify { expect { described_class['One two three four five six seven'] }.to raise_error described_class::UnparsableName }
+      context 'when name has too many countable name parts' do
+        specify { expect { described_class['One two three four five'] }.to raise_error described_class::UnparsableName }
       end
     end
   end

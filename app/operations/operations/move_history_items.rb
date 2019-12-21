@@ -10,7 +10,7 @@ module Operations
     def self.description to_taxon:, history_items:
       history_items_description = history_items.map do |history_item|
         "  * From #{history_item.taxon.link_to_taxon}: #{Detax[history_item.taxt]}"
-      end.join("\n")
+      end.join("\n").presence || "  * No history items"
 
       <<~TEXT
         * Move history items to #{to_taxon}

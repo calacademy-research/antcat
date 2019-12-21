@@ -3,7 +3,7 @@ module Taxa
     include Service
 
     # Check runtime since this is shown on all catalog pages (logged-in users only).
-    WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.1.seconds
+    WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.2.seconds
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
