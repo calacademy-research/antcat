@@ -46,7 +46,6 @@ class TableRefDecorator
     end
 
     def related_protonym_link
-      protonym = Protonym.find(id)
-      link_to "Protonym: ".html_safe << protonym.decorate.format_name, protonym_path(protonym)
+      "Protonym: ".html_safe << Protonym.find(id).decorate.link_to_protonym
     end
 end

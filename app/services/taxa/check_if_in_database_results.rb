@@ -39,7 +39,7 @@ module Taxa
 
       def database_scripts_results
         DATABASE_SCRIPTS_TO_CHECK.each_with_object([]) do |database_script_klass, results|
-          next unless database_script_klass.taxon_in_results?(taxon)
+          next unless database_script_klass.record_in_results?(taxon)
 
           database_script = database_script_klass.new
           results << { message: database_script.issue_description, database_script: database_script }
