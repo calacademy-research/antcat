@@ -23,3 +23,5 @@ __END__
 
 category: Protonyms
 tags: [regression-test]
+
+issue_description: This protonym has duplicated taxa.

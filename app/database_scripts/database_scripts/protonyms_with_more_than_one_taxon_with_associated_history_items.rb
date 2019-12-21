@@ -26,5 +26,7 @@ __END__
 
 category: Protonyms
 
+issue_description: (possibly ok) More than one of this protonym's taxa have history items.
+
 description: >
   Go to the protonym's page to see all history items in one place.

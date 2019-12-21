@@ -10,6 +10,16 @@
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
 
+-if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG
+  -if current_user && @protonym.soft_validation_warnings.present?
+    .row
+      .medium-9.columns
+        #soft-validations.callout.warning
+          %h6
+            Issues
+            =logged_in_only_tooltip_icon
+          =render 'shared/soft_validation_warnings', soft_validation_warnings: @protonym.soft_validation_warnings
+
 .row.margin-bottom
   .small-12.columns
     %h5

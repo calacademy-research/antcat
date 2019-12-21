@@ -11,6 +11,8 @@ __END__
 category: Protonyms
 tags: [list]
 
+issue_description: This protonym is orphaned.
+
 description: >
 
 related_scripts:
