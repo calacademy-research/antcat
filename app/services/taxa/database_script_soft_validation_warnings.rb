@@ -1,5 +1,5 @@
 module Taxa
-  class CheckIfInDatabaseResults
+  class DatabaseScriptSoftValidationWarnings
     include Service
 
     # Check runtime since this is shown on all catalog pages (logged-in users only).

@@ -62,7 +62,7 @@ class DatabaseScript
   end
 
   def soft_validated?
-    self.class.in?(Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK) ||
+    self.class.in?(Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK) ||
       self.class.in?(Protonyms::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK)
   end
 

@@ -177,7 +177,7 @@ class Taxon < ApplicationRecord
   end
 
   def soft_validation_warnings
-    @soft_validation_warnings ||= Taxa::CheckIfInDatabaseResults[self]
+    @soft_validation_warnings ||= Taxa::DatabaseScriptSoftValidationWarnings[self]
   end
 
   def what_links_here predicate: false

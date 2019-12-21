@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe Taxa::CheckIfInDatabaseResults do
+describe Taxa::DatabaseScriptSoftValidationWarnings do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do
-    Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK.each do |klass|
+    Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK.each do |klass|
       context klass.name do
         it 'only includes database scripts with `issue_description`s (since issues will be shown in a list)' do
           expect(klass.new.issue_description.present?).to eq true
