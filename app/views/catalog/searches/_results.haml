@@ -7,21 +7,21 @@
     %thead
       %tr
         %th Name
-        %th Status
         %th Authorship
-        %th Type locality
-        %th Forms
         %th Protonym
     -taxa.each do |taxon|
       %tr
-        -presenter = AdvancedSearchPresenter::HTML.new
-        %td=presenter.format_name taxon
-        %td=presenter.format_status_reference taxon
+        %td
+          =taxon.link_to_taxon
+          %br
+          .small-text=taxon.decorate.taxon_status
         %td=taxon.authorship_reference.decorate.expandable_reference
         %td
-          =taxon.protonym.decorate.format_locality
-          =add_period_if_necessary(taxon.protonym.biogeographic_region)
-        %td=or_dash taxon.protonym.authorship.forms
-        %td=link_to taxon.protonym.decorate.format_name, taxon.protonym
+          =link_to taxon.protonym.decorate.format_name, taxon.protonym
+          .small-text
+            =surround "(", ")" do
+              =or_dash taxon.protonym.authorship.forms
+            =taxon.protonym.decorate.format_locality
+            =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   =will_paginate taxa
