@@ -14,4 +14,7 @@ module Taxt
     [Taxon,            'taxa',                'type_taxt'],
     [TaxonHistoryItem, 'taxon_history_items', 'taxt']
   ]
+
+  TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
+  REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 end
