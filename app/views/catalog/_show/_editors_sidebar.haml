@@ -48,3 +48,18 @@
       %li Origin: #{taxon.origin}
     %li Created at: #{taxon.created_at.to_formatted_s(:db)}
     %li Updated at: #{taxon.updated_at.to_formatted_s(:db)}
+
+  -# Show name to make it easier to spot inconsistent names, since `Taxa::LinkEachEpithet` uses parents' name parts.
+  %ul
+    %li
+      Name (from name record):
+      =link_to taxon.name.name_html, name_path(taxon.name)
+
+  -# Show genus/species/subspecies to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
+  %ul
+    -if taxon.is_a?(SpeciesGroupTaxon)
+      %li Genus: #{taxon.genus.link_to_taxon}
+    -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)
+      %li Species: #{taxon.species.link_to_taxon}
+    -if taxon.is_a?(Infrasubspecies)
+      %li Subspecies: #{taxon.subspecies.link_to_taxon}
