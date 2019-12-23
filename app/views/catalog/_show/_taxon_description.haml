@@ -55,7 +55,7 @@
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms.exists?
-  %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
+  %h6 Junior synonyms
   %ul.compact-list.small-margin-bottom
     -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
       %li
