@@ -29,6 +29,10 @@ class DatabaseScript
       @filename_without_extension ||= class_name.underscore
     end
 
+    def tags
+      []
+    end
+
     alias_method :to_param, :filename_without_extension
   end
 

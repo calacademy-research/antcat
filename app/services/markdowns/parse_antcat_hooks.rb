@@ -117,7 +117,8 @@ module Markdowns
       def parse_database_script_ids
         content.gsub!(/%dbscript:([A-Z][A-Za-z0-9_]+)/) do
           database_script = DatabaseScript.safe_new_from_filename_without_extension($1)
-          link_to database_script.title, database_script_path(database_script)
+          formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags
+          link_to(database_script.title, database_script_path(database_script)) << ' ' << formatted_tags
         end
       end
 
