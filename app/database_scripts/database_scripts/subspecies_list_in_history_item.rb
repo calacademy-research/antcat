@@ -114,3 +114,10 @@ description: >
   `Total valid subspecies: 1897`
 
   `Statuses of extracted taxa: {"homonym"=>1, "obsolete combination"=>26, "original combination"=>1, "synonym"=>51, "unavailable"=>5, "valid"=>1832}`
+
+
+  Issue: %github780
+
+related_scripts:
+  - SubspeciesListInHistoryItem
+  - SubspeciesListInHistoryItemVsSubspeciesFromDatabase

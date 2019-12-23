@@ -35,3 +35,4 @@ description: >
 related_scripts:
   - ProtonymsWithMoreThanOneValidTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon
+  - TypeTaxaWithIssues
