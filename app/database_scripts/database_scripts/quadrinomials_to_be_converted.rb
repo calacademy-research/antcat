@@ -31,7 +31,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 description: >
   To be converted by script.

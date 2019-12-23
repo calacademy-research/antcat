@@ -19,7 +19,7 @@ __END__
 
 title: Obsolete combinations with protonyms not matching its current valid taxon's protonym
 category: Catalog
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   This script shows taxa that are set at the `current_valid_taxon` of other taxa.
