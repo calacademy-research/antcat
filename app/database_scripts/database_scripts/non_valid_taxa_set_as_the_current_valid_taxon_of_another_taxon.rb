@@ -1,7 +1,7 @@
 module DatabaseScripts
   class NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon < DatabaseScript
     def results
-      taxa_set_as_current_valid_taxon.where.not(status: Status::VALID)
+      taxa_set_as_current_valid_taxon.invalid
     end
 
     private

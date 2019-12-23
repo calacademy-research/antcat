@@ -78,6 +78,7 @@ class Taxon < ApplicationRecord
   before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
 
   scope :valid, -> { where(status: Status::VALID) }
+  scope :invalid, -> { where.not(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
