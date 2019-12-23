@@ -8,12 +8,14 @@ module Taxa
       DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
       DatabaseScripts::PassThroughNamesWithTaxts,
+      DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
+      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
-      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
-      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
+      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet,
+      DatabaseScripts::ValidSubspeciesInInvalidSpecies
     ]
 
     def initialize taxon

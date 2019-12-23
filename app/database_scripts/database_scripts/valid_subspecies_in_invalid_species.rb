@@ -11,6 +11,8 @@ __END__
 category: Catalog
 tags: [new!]
 
+issue_description: This subspecies is valid, but its species is not valid.
+
 description: >
 
 related_scripts:
