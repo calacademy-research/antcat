@@ -79,7 +79,7 @@ end
 
 Given("the default reference is {string}") do |keey|
   reference = find_reference_by_keey keey
-  References::DefaultReference.stub(:get).and_return reference
+  DefaultReference.stub(:get).and_return reference
 end
 
 Then("nesting_reference_id should contain a valid reference id") do
