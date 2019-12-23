@@ -17,7 +17,7 @@
           .small-text=taxon.decorate.taxon_status
         %td=taxon.authorship_reference.decorate.expandable_reference
         %td
-          =link_to taxon.protonym.decorate.format_name, taxon.protonym
+          =taxon.protonym.decorate.link_to_protonym
           .small-text
             =surround "(", ")" do
               =or_dash taxon.protonym.authorship.forms

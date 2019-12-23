@@ -5,7 +5,7 @@ crumb :protonyms do
 end
 
   crumb :protonym do |protonym|
-    link protonym.decorate.format_name, protonym_path(protonym)
+    link protonym.decorate.link_to_protonym
     parent :protonyms
   end
 

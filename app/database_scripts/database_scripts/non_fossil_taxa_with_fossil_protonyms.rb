@@ -11,7 +11,7 @@ module DatabaseScripts
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            protonym_link(taxon.protonym)
+            taxon.protonym.decorate.link_to_protonym
           ]
         end
       end
