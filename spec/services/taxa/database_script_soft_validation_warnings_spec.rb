@@ -7,11 +7,16 @@ describe Taxa::DatabaseScriptSoftValidationWarnings do
         it 'only includes database scripts with `issue_description`s (since issues will be shown in a list)' do
           expect(klass.new.issue_description.present?).to eq true
         end
+
+        it "does not include slow database scripts (since it's checked in the catalog)" do
+          expect(klass.new.slow?).to eq false
+        end
       end
     end
 
-    # Sanity check.
+    # Sanity checks.
     specify { expect(DatabaseScripts::ValidSpeciesList.new.issue_description).to eq nil }
+    specify { expect(DatabaseScripts::ValidSpeciesList.new.slow?).to eq true }
   end
 
   describe '#call' do

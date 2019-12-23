@@ -100,6 +100,10 @@ class DatabaseScript
     end
   end
 
+  def slow?
+    tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
+  end
+
   def filename_without_extension
     @filename_without_extension ||= self.class.name.demodulize.underscore
   end
