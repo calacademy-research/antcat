@@ -185,6 +185,12 @@ class Taxon < ApplicationRecord
     Taxa::WhatLinksHere[self, predicate: predicate]
   end
 
+  # TODO: Remove once subspecies lists have been cleaned up.
+  # See https://github.com/calacademy-research/antcat/issues/780
+  def subspecies_list_in_history_items
+    history_items.where('taxt LIKE ?', "%Current subspecies%")
+  end
+
   private
 
     def set_name_caches

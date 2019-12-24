@@ -1,3 +1,5 @@
+# TODO: See copy-pasta in `SubspeciesHistoryItemIssues`.
+
 module DatabaseScripts
   class SubspeciesListInHistoryItem < DatabaseScript
     def results
@@ -5,9 +7,11 @@ module DatabaseScripts
     end
 
     def render
-      all_extracted_ids = []
+      @all_extracted_ids = []
+      @convertable_count = 0
+      @not_convertable_count = 0
 
-      as_table do |t|
+      table = as_table do |t| # rubocop:disable Metrics/BlockLength
         t.header :convertable?, :id, :species, :taxon_status, :history_item, :ids_same?,
           :additional, :all_extracted_are_subspecies?,
           :non_valid_statuses_of_extracted, :valid_subspecies_ids, :extracted_ids
@@ -15,7 +19,7 @@ module DatabaseScripts
         t.rows do |history_item|
           extracted_ids = extract_taxt_ids history_item
 
-          all_extracted_ids.concat extracted_ids
+          @all_extracted_ids.concat extracted_ids
 
           ids_same = ids_same?(history_item, extracted_ids)
           additional = extract_additional(history_item)
@@ -23,6 +27,12 @@ module DatabaseScripts
           non_valid_statuses_of_extracted = Taxon.where.not(status: Status::VALID).where(id: extracted_ids).pluck(:status).presence
 
           convertable = ids_same && additional.blank? && all_extracted_are_subspecies && non_valid_statuses_of_extracted.blank?
+
+          if convertable
+            @convertable_count += 1
+          else
+            @not_convertable_count += 1
+          end
 
           [
             (convertable ? 'Yes' : '<span class="bold-warning">No</span>'),
@@ -38,17 +48,37 @@ module DatabaseScripts
             extracted_ids
           ]
         end
-
-        # $stdout.puts "Total extracted IDs: #{all_extracted_ids.size}"
-        # $stdout.puts "Total unique extracted IDs: #{all_extracted_ids.uniq.size}"
-        # $stdout.puts "...of which are species: #{Species.where(id: all_extracted_ids).count}"
-        # $stdout.puts "...of which are subspecies: #{Subspecies.where(id: all_extracted_ids).count}"
-        # $stdout.puts "Total valid subspecies: #{Subspecies.valid.count}"
-        # $stdout.puts "Statuses of extracted taxa: #{Taxon.where(id: all_extracted_ids).group(:status).count}"
       end
+
+      bonus_stats << table
     end
 
     private
+
+      def bonus_stats
+        <<~HTML.html_safe
+          <div class='callout no-border-callout logged-in-only-background'>
+            Convertable: #{@convertable_count}
+            <br>
+            Not convertable: #{@not_convertable_count}
+            <br>
+
+            <br>
+
+            Total extracted IDs: #{@all_extracted_ids.size}
+            <br>
+            Total unique extracted IDs: #{@all_extracted_ids.uniq.size}
+            <br>
+            ...of which are species: #{Species.where(id: @all_extracted_ids).count}
+            <br>
+            ...of which are subspecies: #{Subspecies.where(id: @all_extracted_ids).count}
+            <br>
+            Total valid subspecies: #{Subspecies.valid.count}
+            <br>
+            Statuses of extracted taxa: #{Taxon.where(id: @all_extracted_ids).group(:status).count}
+          </div>
+        HTML
+      end
 
       def extract_additional history_item
         cleaned = history_item.taxt
@@ -99,21 +129,6 @@ description: >
 
 
   * This script can be considered empty when there are no "No"s in the "IDs same" or "All extracted are subspecies" columns, and all "Additional" fields are blank. "Non-valid statuses of extracted" should probably also be all blank.
-
-
-  **Some stats as of writing:**
-
-  `Total extracted IDs: 1919`
-
-  `Total unique extracted IDs: 1916`
-
-  `...of which are species: 45`
-
-  `...of which are subspecies: 1871`
-
-  `Total valid subspecies: 1897`
-
-  `Statuses of extracted taxa: {"homonym"=>1, "obsolete combination"=>26, "original combination"=>1, "synonym"=>51, "unavailable"=>5, "valid"=>1832}`
 
 
   Issue: %github780

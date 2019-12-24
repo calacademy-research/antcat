@@ -96,19 +96,51 @@
         =obsolete_combination.link_to_taxon
         =obsolete_combination.author_citation
 
--if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
-  .callout.no-border-callout.logged-in-only-background
+-# TODO: See https://github.com/calacademy-research/antcat/issues/780
+-if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
+  -issues = Taxa::SubspeciesHistoryItemIssues[taxon]
+  .callout.no-border-callout{class: issues ? 'alert' : 'logged-in-only-background' }
     %h6
-      Subspecies
+      This species has a subspecies list in a history item
       =logged_in_only_tooltip_icon
     %p.small-text
+      -if issues
+        %ul.small-text
+          -issues.each do |issue|
+            %li=issue.html_safe
+      -else
+        =antcat_icon 'check'
+        The subspecies list in the history items can be dynamically generated from the database. It can be ignored.
+    %p.small-text
+      See
+      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
+      for more subspecies lists in history items.
+
+-# TODO: See https://github.com/calacademy-research/antcat/issues/780
+-if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
+  .callout.no-border-callout.logged-in-only-background
+    %p.small-text
+      =logged_in_only_tooltip_icon
       This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but
       we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table.
       See
       =link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
-    %ul.compact-list.small-margin-bottom
-      -taxon.subspecies.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
-        %li
-          =subspecies.link_to_taxon
-          =subspecies.author_citation
-          %span.small-text=subspecies.decorate.taxon_status
+
+      The plan is to show "Current subspecies (nominal plus)" to all visitors.
+
+    -if taxon.valid_taxon? && taxon.subspecies.valid.exists?
+      %h6 Current subspecies (nominal plus)
+      %ul.compact-list.small-margin-bottom
+        -taxon.subspecies.valid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+          %li
+            =subspecies.link_to_taxon
+            =subspecies.author_citation
+
+    -if taxon.subspecies.invalid.exists?
+      %h6 Invalid subspecies
+      %ul.compact-list.small-margin-bottom
+        -taxon.subspecies.invalid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+          %li
+            =subspecies.link_to_taxon
+            =subspecies.author_citation
+            %span.small-text=subspecies.decorate.taxon_status
