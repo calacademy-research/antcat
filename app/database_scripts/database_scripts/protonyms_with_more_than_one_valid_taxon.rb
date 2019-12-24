@@ -29,5 +29,6 @@ description: >
    genus (one valid taxa in rank: tribe, subfamily or family).
 
 related_scripts:
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon

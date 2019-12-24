@@ -30,3 +30,8 @@ issue_description: (possibly ok) More than one of this protonym's taxa have hist
 
 description: >
   Go to the protonym's page to see all history items in one place.
+
+related_scripts:
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneValidTaxon
+  - TypeTaxaAssignedToMoreThanOneTaxon
