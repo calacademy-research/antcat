@@ -15,6 +15,7 @@ module Taxa
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
       DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet,
+      DatabaseScripts::TaxaWithNonModernCapitalization,
       DatabaseScripts::ValidSubspeciesInInvalidSpecies
     ]
 
