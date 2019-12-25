@@ -28,7 +28,7 @@ class TaxonHistoryItemsController < ApplicationController
       format.json { render_json @taxon_history_item }
       format.html do
         if updated
-          redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully updated history item."
+          redirect_to @taxon_history_item, notice: "Successfully updated history item."
         else
           render :edit
         end
