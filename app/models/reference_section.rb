@@ -2,6 +2,8 @@ class ReferenceSection < ApplicationRecord
   include Trackable
   include RevisionsCanBeCompared
 
+  TAXON_TYPES_WITH_REFERENCE_SECTIONS = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
+
   belongs_to :taxon
 
   validates :taxon, presence: true
