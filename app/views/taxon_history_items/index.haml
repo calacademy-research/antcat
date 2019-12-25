@@ -7,6 +7,8 @@
       =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP (slow)", "REGEXP"]], params[:search_type]), prompt: "Search type"
     .small-6.medium-4.large-2.columns
       =text_field_tag :q, params[:q], placeholder: "Search query"
+    .small-6.medium-4.large-2.columns
+      =select_tag :taxon_type, options_for_select(Taxon::TYPES, params[:taxon_type]), include_blank: "Any Taxon Type"
     .small-6.medium-4.large-2.columns.end
       =button_tag type: "submit", name: nil, class: "btn-normal has-spinner" do
         =spinner_icon + "Filter"

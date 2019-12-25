@@ -6,6 +6,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def index
     @taxon_history_items = TaxonHistoryItem.all
+    @taxon_history_items = @taxon_history_items.joins(:taxon).where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
     @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
     @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
   end
