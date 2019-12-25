@@ -19,6 +19,7 @@
   =render "shared/note_on_taxt_references"
 
 %table
+  %caption=pluralize_with_delimiters @taxon_history_items.count, 'results'
   %thead
     %tr
       %th ID
