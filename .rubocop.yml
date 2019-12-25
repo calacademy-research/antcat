@@ -197,7 +197,7 @@ Metrics/BlockLength:
     - 'config/environments/**/*'
 
 Metrics/ClassLength:
-  Max: 160
+  Max: 170
 
 Metrics/CyclomaticComplexity:
   Enabled: false
