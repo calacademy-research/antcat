@@ -66,6 +66,22 @@
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon
 
+-if current_user
+  -if taxon.is_a?(Subgenus) && taxon.species.exists?
+    .callout.no-border-callout.logged-in-only-background
+      %h6
+        Species in subgenus
+        =logged_in_only_tooltip_icon
+      %p.small-text
+        This section is only shown to logged-in users, since very few species are assined to a subgenus,
+        and we have to decide how to handle subgenera.
+      %ul.compact-list.small-margin-bottom
+        -taxon.species.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |species|
+          %li
+            =species.link_to_taxon
+            =species.author_citation
+            %span.small-text=species.decorate.taxon_status
+
 -if is_formicidae_landing_page
   %br
   =link_to "Formicidae family references", catalog_path(taxon)

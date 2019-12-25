@@ -1,7 +1,6 @@
 class Subgenus < GenusGroupTaxon
   belongs_to :genus
 
-  # No taxa have a `subgenus_id` as of 2016.
   has_many :species, dependent: :restrict_with_error
 
   validates :genus, presence: true

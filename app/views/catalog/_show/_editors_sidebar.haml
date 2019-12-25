@@ -55,8 +55,15 @@
       Name (from name record):
       =link_to taxon.name.name_html, name_path(taxon.name)
 
-  -# Show genus/species/subspecies to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
+  -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
   %ul
+    -if taxon.is_a?(Species)
+      %li
+        Subgenus:
+        -if taxon.subgenus
+          =taxon.subgenus.link_to_taxon
+        -else
+          (none)
     -if taxon.is_a?(SpeciesGroupTaxon)
       %li Genus: #{taxon.genus.link_to_taxon}
     -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)
