@@ -44,5 +44,6 @@ description: >
 
 related_scripts:
   - TaxaWithTypeTaxa
+  - TaxaWithTypeTaxt
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues
