@@ -68,6 +68,9 @@ description: >
 
   "Taxon is not an ancestor of TTN (but it's genus matches taxon's genus)" can be fixed by script.
 
+
+  This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
+
 related_scripts:
   - TaxaWithTypeTaxa
   - TaxaWithTypeTaxt
