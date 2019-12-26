@@ -56,14 +56,14 @@ describe DatabaseScript do
     end
   end
 
-  describe '.taxon_in_results?' do
+  describe '.record_in_results?' do
     context "when taxon is in the script's results" do
       let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
       let(:extant_species) { create :species }
 
       specify do
         expect { extant_species.genus.update!(fossil: true) }.
-          to change { script.taxon_in_results?(extant_species) }.
+          to change { script.record_in_results?(extant_species) }.
           from(false).to(true)
       end
     end
@@ -71,7 +71,7 @@ describe DatabaseScript do
 
   describe '#soft_validated?' do
     it 'returns true if the script is used for taxon soft-validations' do
-      expect(Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
+      expect(Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
       expect(DatabaseScripts::ValidSpeciesList.new.soft_validated?).to eq false
     end
   end

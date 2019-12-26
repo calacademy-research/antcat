@@ -6,7 +6,7 @@
 
 .headline
   %span.name
-    =link_to taxon.protonym.decorate.format_name, taxon.protonym
+    =taxon.protonym.decorate.link_to_protonym
   -if user_is_at_least_helper?
     %span.show-on-hover
       =link_to "Edit", edit_protonym_path(taxon.protonym), class: "btn-normal btn-very-tiny"
@@ -50,12 +50,13 @@
         =add_period_if_necessary Detax[history_item.taxt]
         -if current_user
           %span.show-on-hover
+            =link_to "Show", history_item, class: "btn-normal btn-very-tiny"
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms.exists?
-  %h6 #{pluralize(taxon.junior_synonyms.count, 'junior synonym')}
+  %h6 Junior synonyms
   %ul.compact-list.small-margin-bottom
     -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
       %li
@@ -64,6 +65,22 @@
 
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon
+
+-if current_user
+  -if taxon.is_a?(Subgenus) && taxon.species.exists?
+    .callout.no-border-callout.logged-in-only-background
+      %h6
+        Species in subgenus
+        =logged_in_only_tooltip_icon
+      %p.small-text
+        This section is only shown to logged-in users, since very few species are assined to a subgenus,
+        and we have to decide how to handle subgenera.
+      %ul.compact-list.small-margin-bottom
+        -taxon.species.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |species|
+          %li
+            =species.link_to_taxon
+            =species.author_citation
+            %span.small-text=species.decorate.taxon_status
 
 -if is_formicidae_landing_page
   %br
@@ -96,18 +113,51 @@
         =obsolete_combination.link_to_taxon
         =obsolete_combination.author_citation
 
--if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
-  .callout.no-border-callout.logged-in-only-background
+-# TODO: See https://github.com/calacademy-research/antcat/issues/780
+-if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
+  -issues = Taxa::SubspeciesHistoryItemIssues[taxon]
+  .callout.no-border-callout{class: issues ? 'alert' : 'logged-in-only-background' }
     %h6
-      Subspecies
+      This species has a subspecies list in a history item
       =logged_in_only_tooltip_icon
     %p.small-text
+      -if issues
+        %ul.small-text
+          -issues.each do |issue|
+            %li=issue.html_safe
+      -else
+        =antcat_icon 'check'
+        The subspecies list in the history items can be dynamically generated from the database. It can be ignored.
+    %p.small-text
+      See
+      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
+      for more subspecies lists in history items.
+
+-# TODO: See https://github.com/calacademy-research/antcat/issues/780
+-if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
+  .callout.no-border-callout.logged-in-only-background
+    %p.small-text
+      =logged_in_only_tooltip_icon
       This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but
       we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table.
       See
       =link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
-    %ul.compact-list.small-margin-bottom
-      -taxon.subspecies.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
-        %li
-          =subspecies.link_to_taxon
-          =subspecies.author_citation
+
+      The plan is to show "Current subspecies (nominal plus)" to all visitors.
+
+    -if taxon.valid_taxon? && taxon.subspecies.valid.exists?
+      %h6 Current subspecies (nominal plus)
+      %ul.compact-list.small-margin-bottom
+        -taxon.subspecies.valid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+          %li
+            =subspecies.link_to_taxon
+            =subspecies.author_citation
+
+    -if taxon.subspecies.invalid.exists?
+      %h6 Invalid subspecies
+      %ul.compact-list.small-margin-bottom
+        -taxon.subspecies.invalid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+          %li
+            =subspecies.link_to_taxon
+            =subspecies.author_citation
+            %span.small-text=subspecies.decorate.taxon_status

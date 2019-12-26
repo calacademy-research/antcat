@@ -23,6 +23,16 @@ end
     parent :activity_feed
   end
 
+crumb :search_taxon_history_items do
+  link "Search History Items"
+  parent :editors_panel
+end
+
+crumb :search_reference_sections do
+  link "Search Reference Sections"
+  parent :editors_panel
+end
+
 crumb :comments do
   link "Comments"
   parent :editors_panel

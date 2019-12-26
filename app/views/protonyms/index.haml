@@ -31,7 +31,7 @@
     -@protonyms.each do |protonym|
       %tr
         %td
-          =link_to protonym.decorate.format_name, protonym
+          =protonym.decorate.link_to_protonym
           -if protonym.sic?
             [sic]
         %td=protonym.authorship.reference.decorate.expandable_reference

@@ -7,7 +7,7 @@ class TaxaController < ApplicationController
 
   def new
     @taxon = build_taxon_with_parent
-    @taxon.protonym.authorship.reference ||= References::DefaultReference.get session
+    @taxon.protonym.authorship.reference ||= DefaultReference.get session
   end
 
   def create
@@ -46,7 +46,7 @@ class TaxaController < ApplicationController
   end
 
   def destroy
-    if @taxon.what_links_here predicate: true
+    if @taxon.what_links_here.present?
       redirect_to taxon_what_links_here_path(@taxon), alert: <<~MSG
         Other taxa refer to this taxon, so it can't be deleted.
         Please see the table on this page for items referring to it.

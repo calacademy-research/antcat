@@ -54,7 +54,7 @@ module TaxonButtonsHelper
   end
 
   def delete_unreferenced_taxon_button taxon
-    return if taxon.is_a?(Family) || Taxa::AnyNonTaxtReferences[taxon]
+    return if taxon.is_a?(Family) || Taxa::WhatLinksHereColumns[taxon, predicate: true]
 
     link_to 'Delete', taxa_path(taxon), method: :delete, class: "btn-warning",
       data: { confirm_with_edit_summary: true }

@@ -16,7 +16,7 @@ module ReferenceHelper
   end
 
   def set_as_default_reference_button reference
-    if reference == References::DefaultReference.get(session)
+    if reference == DefaultReference.get(session)
       content_tag :span, 'Default reference', class: "btn-nodanger btn-tiny",
         title: "This referece is set as the default reference."
     else

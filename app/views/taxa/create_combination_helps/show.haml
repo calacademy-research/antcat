@@ -42,4 +42,4 @@
                 -@possibly_existing_combinations.each do |taxon|
                   %tr
                     %td=taxon.decorate.id_and_name_and_author_citation
-                    %td=link_to taxon.protonym.decorate.format_name, taxon.protonym
+                    %td=taxon.protonym.decorate.link_to_protonym

@@ -35,7 +35,7 @@ module DatabaseScripts
       as_table do |t|
         t.header :id, :protonym
         t.rows do |protonym|
-          [protonym.id, protonym_link(protonym)]
+          [protonym.id, protonym.decorate.link_to_protonym]
         end
       end
     end
@@ -47,11 +47,5 @@ module DatabaseScripts
       end
       markdown list
     end
-
-    private
-
-      def protonym_link protonym
-        "<a href='/protonyms/#{protonym.id}'>#{protonym.decorate.format_name}</a>"
-      end
   end
 end

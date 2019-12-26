@@ -25,7 +25,7 @@ class SpeciesGroupName < Name
 
     def change name_string
       existing_names = Name.joins(:taxa).where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists, existing_names if existing_names.any? { |name| !name.what_links_here.empty? }
+      raise Taxon::TaxonExists, existing_names if existing_names.any?
       self.name = name_string
     end
 end

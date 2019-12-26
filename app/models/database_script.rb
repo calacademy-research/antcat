@@ -29,6 +29,10 @@ class DatabaseScript
       @filename_without_extension ||= class_name.underscore
     end
 
+    def tags
+      []
+    end
+
     alias_method :to_param, :filename_without_extension
   end
 
@@ -57,12 +61,13 @@ class DatabaseScript
              end
   end
 
-  def self.taxon_in_results? taxon
+  def self.record_in_results? taxon
     new.results.where(id: taxon.id).exists?
   end
 
   def soft_validated?
-    self.class.in?(Taxa::CheckIfInDatabaseResults::DATABASE_SCRIPTS_TO_CHECK)
+    self.class.in?(Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK) ||
+      self.class.in?(Protonyms::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def fix_random?
@@ -93,6 +98,10 @@ class DatabaseScript
     (end_data[:related_scripts] || []).map do |class_name|
       self.class.safe_new_from_filename_without_extension class_name
     end
+  end
+
+  def slow?
+    tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
   end
 
   def filename_without_extension

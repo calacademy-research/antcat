@@ -74,7 +74,7 @@
                     =antcat_icon("check")
                   -else
                     No,
-                    =link_to taxon.protonym.decorate.format_name, taxon.protonym
+                    =taxon.protonym.decorate.link_to_protonym
                 %td
                   -if taxon.history_items.present?
                     =antcat_icon("check")
@@ -84,7 +84,7 @@
       %h5
         Taxa with the same protonym
         =surround '(', ')' do
-          =link_to @taxon.protonym.decorate.format_name, @taxon.protonym
+          =@taxon.protonym.decorate.link_to_protonym
       .callout
         -same_protonym_taxa = @taxon.protonym.taxa.where.not(id: @taxon.id)
         -if same_protonym_taxa.empty?

@@ -6,4 +6,8 @@
 
     =extra_fields if extra_fields
 
-    =render "shared/filter_buttons"
+  .small-6.medium-4.large-2.columns.end
+    =button_tag type: "submit", name: nil, class: "btn-normal has-spinner" do
+      =spinner_icon + "Filter"
+    &nbsp;
+    =link_to "Clear", request.path, class: "button btn-nodanger"

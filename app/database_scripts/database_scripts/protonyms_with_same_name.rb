@@ -12,7 +12,7 @@ module DatabaseScripts
           taxa_statuses = protonym.taxa.pluck(:status)
 
           [
-            link_to(protonym.decorate.format_name, protonym_path(protonym)),
+            protonym.decorate.link_to_protonym,
             protonym.authorship.reference.decorate.expandable_reference,
             taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : '<span class="bold-warning">Orphaned protonym</span>',
             protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
@@ -53,6 +53,7 @@ description: >
 
 related_scripts:
   - SameNamedPassThroughNames
+  - TaxaWithNonModernCapitalization
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName

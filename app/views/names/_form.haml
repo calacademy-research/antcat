@@ -3,23 +3,7 @@
 
 .row
   .medium-8.columns
-    %p
-      This name belongs to
-      the
-      %code=name.owner.class.name
-      record
-      -if name.owner.is_a?(Taxon)
-        =name.owner.decorate.id_and_name_and_author_citation
-      -else
-        =name.owner.decorate.link_to_protonym
-
-    -if name.what_links_here.size > 1
-      .callout.alert
-        =antcat_icon 'warning-icon'
-        %strong Warning!
-        This name is used by more than one taxon/protonym.
-        Please check
-        =link_to 'What Links Here', name_path(name), class: 'btn-normal btn-very-tiny'
+    %p=render(NameBelongsToComponent, name: name)
 
     =form_for name, url: name_path(name), as: :name do |f|
       =render 'shared/errors_for', resource: name

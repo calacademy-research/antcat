@@ -36,6 +36,7 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.0, >= 1.0.3)
+    actionview-component (1.6.0)
     activejob (5.2.4)
       activesupport (= 5.2.4)
       globalid (>= 0.3.6)
@@ -459,6 +460,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  actionview-component
   acts_as_commentable_with_threading
   acts_as_list
   awesome_print

@@ -31,16 +31,22 @@ class CreateCombinationPolicy
       errors << 'taxon is an ichnotaxon' if taxon.ichnotaxon?
       errors << 'taxon is a nomen nudum' if taxon.nomen_nudum?
       errors << 'taxon has a type taxon' if taxon.type_taxon
+      errors << 'taxon is a replacement for a homonym' if any_homonym_replaced_bys?
     end
 
-    # TODO: Model knowlegde, but we don't want it there (we want to remove it).
+    # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_misspellings?
       taxon.current_valid_taxon_of.where(status: Status::UNAVAILABLE_MISSPELLING).any?
     end
 
-    # TODO: Model knowlegde, but we don't want it there (we want to remove it).
+    # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_uncategorizeds?
       taxon.current_valid_taxon_of.where(status: Status::UNAVAILABLE_UNCATEGORIZED).any?
+    end
+
+    # TODO: Model knowledge, but we don't want it there (we don't know what we want).
+    def any_homonym_replaced_bys?
+      Taxon.where(homonym_replaced_by: taxon).any?
     end
 
     # TODO: Probably split WLHs into `TAXA_FIELDS_REFERENCING_TAXA` / "taxt references".

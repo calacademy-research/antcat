@@ -27,5 +27,7 @@ __END__
 category: Catalog
 tags: [regression-test]
 
+issue_description: Taxon has a replacement name that is also the replacement name of another taxon.
+
 description: >
-  %taxon447315 can be ignored. It is a very rare case where a replacement name was applied twice.
+  %taxon447315 can be ignored. It is a very case where a replacement name was applied twice.

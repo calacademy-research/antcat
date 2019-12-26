@@ -56,7 +56,9 @@
               %td=database_script.decorate.format_tags
               %td.shrink
                 -if database_script.soft_validated?
+                  %span.hidden-sort Yes
                   =antcat_icon("check")
               %td.shrink
                 -if database_script.fix_random?
+                  %span.hidden-sort Yes
                   =antcat_icon("check")

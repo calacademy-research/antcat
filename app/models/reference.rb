@@ -154,7 +154,7 @@ class Reference < ApplicationRecord
     end
 
     def check_not_referenced
-      return unless what_links_here(predicate: true)
+      return if what_links_here.empty?
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       throw :abort

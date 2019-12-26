@@ -27,4 +27,8 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.format_name } }
+
+  def soft_validation_warnings
+    @soft_validation_warnings ||= Protonyms::DatabaseScriptSoftValidationWarnings[self]
+  end
 end

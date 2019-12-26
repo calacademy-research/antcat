@@ -6,7 +6,8 @@ class TaxonHistoryItemsController < ApplicationController
 
   def index
     @taxon_history_items = TaxonHistoryItem.all
-    @taxon_history_items = @taxon_history_items.search_objects(search_params) if params[:q].present?
+    @taxon_history_items = @taxon_history_items.joins(:taxon).where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
     @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
   end
 
@@ -28,7 +29,7 @@ class TaxonHistoryItemsController < ApplicationController
       format.json { render_json @taxon_history_item }
       format.html do
         if updated
-          redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully updated history item."
+          redirect_to @taxon_history_item, notice: "Successfully updated history item."
         else
           render :edit
         end
@@ -65,10 +66,6 @@ class TaxonHistoryItemsController < ApplicationController
 
     def set_taxon_history_item
       @taxon_history_item = TaxonHistoryItem.find(params[:id])
-    end
-
-    def search_params
-      params.slice :search_type, :q
     end
 
     def taxon_history_item_params

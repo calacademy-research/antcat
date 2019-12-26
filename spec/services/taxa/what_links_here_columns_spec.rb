@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Taxa::AnyNonTaxtReferences do
+describe Taxa::WhatLinksHereColumns do
   describe "#call" do
     let!(:taxon) { create :family }
 
@@ -9,7 +9,7 @@ describe Taxa::AnyNonTaxtReferences do
         create :family, :homonym, homonym_replaced_by: taxon
       end
 
-      specify { expect(described_class[taxon]).to eq true }
+      specify { expect(described_class[taxon, predicate: true]).to eq true }
     end
 
     context "when taxon has no non-taxt references" do
@@ -17,7 +17,7 @@ describe Taxa::AnyNonTaxtReferences do
         create :family, type_taxt: "{tax #{taxon.id}}"
       end
 
-      specify { expect(described_class[taxon]).to eq false }
+      specify { expect(described_class[taxon, predicate: true]).to eq false }
     end
   end
 end

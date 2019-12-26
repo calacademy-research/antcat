@@ -3,7 +3,7 @@ module DatabaseScripts
     def results
       models_and_ids = {}
 
-      Detax::TAXT_MODELS_AND_FIELDS.each do |(model, _table, field)|
+      Taxt::TAXTABLES.each do |(model, _table, field)|
         models_and_ids[model] ||= []
         models_and_ids[model] += model.where("#{field} LIKE '%hardcoded_name%'").pluck(:id)
       end

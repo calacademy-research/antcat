@@ -1,7 +1,7 @@
 module DatabaseScripts
   class NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon < DatabaseScript
     def results
-      taxa_set_as_current_valid_taxon.where.not(status: Status::VALID)
+      taxa_set_as_current_valid_taxon.invalid
     end
 
     private
@@ -17,7 +17,7 @@ __END__
 
 title: Non-valid taxa set as the current valid taxon of another taxon
 category: Catalog
-tags: [new!, list]
+tags: [list]
 
 description: >
   This is not necessarily incorrect, but the name of the database column is `current_valid_taxon_id`,

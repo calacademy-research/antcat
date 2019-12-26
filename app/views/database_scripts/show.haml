@@ -1,4 +1,4 @@
--@title = @database_script.title
+-@title = strip_tags @database_script.title
 -breadcrumb :database_script, @database_script
 
 -content_for :head do
@@ -31,7 +31,9 @@
         -@database_script.related_scripts.each do|related_script|
           -# NOTE: Hide links to itself, to make it easier to copy-paste `related_scripts`s.
           -next if related_script.is_a? @database_script.class
-          %li=link_to related_script.title, database_script_path(related_script)
+          %li
+            =link_to related_script.title, database_script_path(related_script)
+            =DatabaseScriptDecorator.new(related_script).format_tags
 
 .row.column
   .callout

@@ -73,13 +73,4 @@ describe Name do
       end
     end
   end
-
-  describe "#what_links_here" do
-    let(:name) { described_class.new }
-
-    it "calls `Names::WhatLinksHere`" do
-      expect(Names::WhatLinksHere).to receive(:new).with(name).and_call_original
-      name.what_links_here
-    end
-  end
 end

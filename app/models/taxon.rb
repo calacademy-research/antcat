@@ -5,6 +5,7 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -78,6 +79,7 @@ class Taxon < ApplicationRecord
   before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
 
   scope :valid, -> { where(status: Status::VALID) }
+  scope :invalid, -> { where.not(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
@@ -177,11 +179,17 @@ class Taxon < ApplicationRecord
   end
 
   def soft_validation_warnings
-    @soft_validation_warnings ||= Taxa::CheckIfInDatabaseResults[self]
+    @soft_validation_warnings ||= Taxa::DatabaseScriptSoftValidationWarnings[self]
   end
 
   def what_links_here predicate: false
     Taxa::WhatLinksHere[self, predicate: predicate]
+  end
+
+  # TODO: Remove once subspecies lists have been cleaned up.
+  # See https://github.com/calacademy-research/antcat/issues/780
+  def subspecies_list_in_history_items
+    history_items.where('taxt LIKE ?', "%Current subspecies%")
   end
 
   private

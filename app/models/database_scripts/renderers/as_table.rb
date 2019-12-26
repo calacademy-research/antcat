@@ -58,6 +58,8 @@ module DatabaseScripts
           attr_accessor :caption_content, :header_content, :body_content
 
           def row _result, *fields
+            return if fields.empty?
+
             string = "<tr>"
             fields.each { |item| string << "<td>#{item}</td>" }
             body_content << string << "</tr>\n"
