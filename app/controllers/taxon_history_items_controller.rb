@@ -7,8 +7,9 @@ class TaxonHistoryItemsController < ApplicationController
   before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
-    @taxon_history_items = TaxonHistoryItem.all
-    @taxon_history_items = @taxon_history_items.joins(:taxon).where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = TaxonHistoryItem.joins(:taxon)
+    @taxon_history_items = @taxon_history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = @taxon_history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
     @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
     @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: per_page)
   end
