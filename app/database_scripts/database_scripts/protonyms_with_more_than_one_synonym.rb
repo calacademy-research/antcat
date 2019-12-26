@@ -1,7 +1,7 @@
 module DatabaseScripts
-  class ProtonymsWithMoreThanOneValidTaxon < DatabaseScript
+  class ProtonymsWithMoreThanOneSynonym < DatabaseScript
     def results
-      Protonym.joins(:taxa).where(taxa: { status: Status::VALID }).group(:protonym_id).having('COUNT(protonym_id) > 1')
+      Protonym.joins(:taxa).where(taxa: { status: Status::SYNONYM }).group(:protonym_id).having('COUNT(protonym_id) > 1')
     end
 
     def render
@@ -22,10 +22,10 @@ end
 __END__
 
 category: Protonyms
-tags: [regression-test]
+tags: [new!]
 
 description: >
-   It is fine for a protonym to have more than one valid taxa if it is above the rank of
+   It is fine for a protonym to have more than one synonym if it is above the rank of
    genus (one valid taxa in rank: tribe, subfamily or family).
 
 related_scripts:
