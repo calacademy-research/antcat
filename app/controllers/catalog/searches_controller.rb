@@ -46,6 +46,10 @@ module Catalog
           :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name, :incertae_sedis_in, :protonym)
       end
 
+      def per_page
+        params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
+      end
+
       def not_searching_yet?
         params[:submit_search].nil?
       end
