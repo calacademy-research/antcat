@@ -1,5 +1,6 @@
 module Catalog
   class SearchesController < ApplicationController
+    PER_PAGE_OPTIONS = [30, 100, 500, 1000]
     SEARCHING_FROM_HEADER = "searching_from_header"
 
     def show
