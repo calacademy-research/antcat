@@ -10,7 +10,7 @@ module DatabaseScripts
         t.header :taxon, :rank, :type_taxon, :tt_rank, :tt_status, :type_taxon_now, :ttn_rank, :ttn_status, :issue
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
-          type_taxon_now = type_taxon.current_valid_taxon || type_taxon # TODO: Not 100% fool-proof, due to "current_valid_taxon" chains.
+          type_taxon_now = type_taxon.now
           issue = check_issue(taxon, type_taxon_now)
           next unless issue
 
