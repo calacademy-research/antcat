@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :target_subspecies_has_soft_validation_warnings?
+        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :target_subspecies_validation_warnings
 
         t.rows do |taxon|
           name_string = taxon.name_cache
@@ -22,11 +22,17 @@ module DatabaseScripts
             target_subspecies_name_string,
             ('Yes' if convertable),
             (target_subspecies.link_to_taxon if convertable),
-            ('Yes' if convertable && target_subspecies.soft_validation_warnings.present?)
+            (format_soft_validation_warnings(target_subspecies) if convertable && target_subspecies.soft_validation_warnings.present?)
           ]
         end
       end
     end
+
+    private
+
+      def format_soft_validation_warnings target_subspecies
+        target_subspecies.soft_validation_warnings.map { |warning| warning[:message] }.join('<br><br>')
+      end
   end
 end
 
