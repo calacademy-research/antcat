@@ -6,6 +6,8 @@
     =link_to "Edit", edit_taxon_history_item_path(@taxon_history_item), class: "btn-normal"
   =link_to "History", taxon_history_item_history_path(@taxon_history_item), class: "btn-normal"
   =activities_link_for_trackable @taxon_history_item
+  -if user_is_editor?
+    =link_to "Delete", taxon_history_item_path(@taxon_history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
 %p
   =Detax[@taxon_history_item.taxt]

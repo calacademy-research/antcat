@@ -58,7 +58,14 @@ class TaxonHistoryItemsController < ApplicationController
     @taxon_history_item.destroy
     @taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
-    render json: { success: true }
+    respond_to do |format|
+      format.json do
+        render json: { success: true }
+      end
+      format.html do
+        redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully deleted history item."
+      end
+    end
   end
 
   private
