@@ -64,6 +64,7 @@
           =taxon.subgenus.link_to_taxon
         -else
           (none)
+          =link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
     -if taxon.is_a?(SpeciesGroupTaxon)
       %li Genus: #{taxon.genus.link_to_taxon}
     -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)

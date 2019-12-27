@@ -11,6 +11,10 @@
         %li=add_child_button taxon
         %li=add_tribe_button taxon
         %li=add_subgenus_button taxon
+
+        -if taxon.is_a?(Species)
+          %li=link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal"
+
         %li=elevate_to_species_button taxon
         %li=convert_to_subspecies_button taxon
 
