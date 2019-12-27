@@ -69,7 +69,11 @@
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.rank.capitalize
-            %td=taxon.status.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::TaxonStatus::SELF_STATUSES)
+                %br
+                %small=taxon.decorate.taxon_status
             %td
               -if taxon.original_combination?
                 Original combination

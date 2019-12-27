@@ -2,6 +2,13 @@ module Taxa
   class TaxonStatus
     include Service
 
+    SELF_STATUSES = [
+      Status::VALID,
+      Status::UNIDENTIFIABLE,
+      Status::UNAVAILABLE,
+      Status::EXCLUDED_FROM_FORMICIDAE
+    ]
+
     def initialize taxon
       @taxon = taxon
     end

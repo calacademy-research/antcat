@@ -28,6 +28,7 @@
     %tr
       %th ID
       %th Taxon
+      %th Taxon status
       %th Taxt
   -if @taxon_history_items.empty?
     %tr
@@ -36,6 +37,7 @@
     %tr
       %td=link_to "##{history_item.id}", history_item
       %td=history_item.taxon.link_to_taxon
+      %td=history_item.taxon.status
       %td=Detax[history_item.taxt]
 
 =will_paginate @taxon_history_items
