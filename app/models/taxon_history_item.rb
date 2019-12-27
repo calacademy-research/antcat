@@ -6,6 +6,8 @@ class TaxonHistoryItem < ApplicationRecord
 
   validates :taxt, :taxon, presence: true
 
+  before_validation :cleanup_taxts
+
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:taxt], replace_newlines: true
@@ -25,4 +27,10 @@ class TaxonHistoryItem < ApplicationRecord
       taxt #{search_type} :q
     SQL
   end
+
+  private
+
+    def cleanup_taxts
+      self.taxt = Taxt::Cleanup[taxt]
+    end
 end

@@ -206,6 +206,14 @@ describe Taxon do
     end
   end
 
+  it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
+    subject { build :family }
+  end
+
+  it_behaves_like "a taxt column with cleanup", :type_taxt do
+    subject { build :family }
+  end
+
   describe "scopes" do
     describe ".self_join_on" do
       let!(:genus) { create :genus, :fossil }

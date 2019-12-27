@@ -18,6 +18,8 @@ class Protonym < ApplicationRecord
   # TODO: See if wa want to validate this w.r.t. rank of name and fossil status.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
 
+  before_validation :cleanup_taxts
+
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
@@ -31,4 +33,12 @@ class Protonym < ApplicationRecord
   def soft_validation_warnings
     @soft_validation_warnings ||= Protonyms::DatabaseScriptSoftValidationWarnings[self]
   end
+
+  private
+
+    def cleanup_taxts
+      self.primary_type_information_taxt = Taxt::Cleanup[primary_type_information_taxt]
+      self.secondary_type_information_taxt = Taxt::Cleanup[secondary_type_information_taxt]
+      self.type_notes_taxt = Taxt::Cleanup[type_notes_taxt]
+    end
 end

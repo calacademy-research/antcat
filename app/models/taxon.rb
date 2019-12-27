@@ -74,6 +74,7 @@ class Taxon < ApplicationRecord
 
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
+  before_validation :cleanup_taxts
   before_save :set_name_caches
   before_save { remove_auto_generated if save_initiator } # TODO: Move or remove.
   before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
@@ -212,6 +213,11 @@ class Taxon < ApplicationRecord
     def set_taxon_state_to_waiting
       taxon_state.review_state = TaxonState::WAITING
       taxon_state.save
+    end
+
+    def cleanup_taxts
+      self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
+      self.type_taxt = Taxt::Cleanup[type_taxt]
     end
 
     def current_valid_taxon_validation
