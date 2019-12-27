@@ -7,11 +7,11 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :rank, :type_taxon, :tt_rank, :tt_status, :type_taxon_now, :ttn_rank, :ttn_status, :issue
+        t.header :taxon, :rank, :type_taxon, :tt_rank, :tt_status, :type_taxon_now, :ttn_rank, :ttn_status, :issue, :suggested_script_action
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxon_now = type_taxon.now
-          issue = check_issue(taxon, type_taxon_now)
+          issue, suggested_script_action = check_issue(taxon, type_taxon, type_taxon_now)
           next unless issue
 
           [
@@ -23,7 +23,8 @@ module DatabaseScripts
             markdown_taxon_link(type_taxon_now),
             type_taxon_now.rank,
             type_taxon_now.status,
-            issue
+            issue,
+            suggested_script_action
           ]
         end
       end
@@ -31,21 +32,30 @@ module DatabaseScripts
 
     private
 
-      def check_issue taxon, type_taxon_now
+      def check_issue taxon, type_taxon, type_taxon_now
         ancestors = Taxa::TaxonAndAncestors[type_taxon_now]
 
         same_ranked_ancestor = ancestors.find { |ancestor| ancestor.type == taxon.type }
 
         unless same_ranked_ancestor
           if taxon.is_a?(Subgenus) && type_taxon_now.genus == taxon.genus && type_taxon_now.subgenus.nil?
-            return "<span style='color: darkblue'>Taxon is not an ancestor of TTN (but it's genus matches taxon's genus)</span>"
+            suggested_script_action = "Set the subgenus of #{type_taxon.name.name_html} to #{taxon.name.name_html}"
+
+            if type_taxon != type_taxon_now && type_taxon_now.is_a?(Species)
+              suggested_script_action << "; <b>and set the subgenus of #{type_taxon_now.name.name_html} to #{taxon.name.name_html}<b>"
+            end
+
+            return [
+              "<span style='color: darkblue'>Taxon is not an ancestor of TTN (but it's genus matches taxon's genus)</span>",
+              suggested_script_action
+            ]
           else
-            return "<span style='color: red'><b>Taxon is not an ancestor of TTN</b></span>"
+            return ["<span style='color: red'><b>Taxon is not an ancestor of TTN</b></span>"]
           end
         end
 
         unless same_ranked_ancestor == taxon
-          return "<span style='color: purple'><b>TTN's #{taxon.rank} should be #{taxon.name.name_html} but is is #{same_ranked_ancestor.name.name_html}</b></span>"
+          return ["<span style='color: purple'><b>TTN's #{taxon.rank} should be #{taxon.name.name_html} but is is #{same_ranked_ancestor.name.name_html}</b></span>"]
         end
 
         false
