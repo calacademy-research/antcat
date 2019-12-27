@@ -15,6 +15,7 @@ class DatabaseScriptsController < ApplicationController
         [1, 'Main scripts']
       end
     end.sort_by { |(sort_order, _title), _scripts| sort_order }
+    @check_if_empty = params[:check_if_empty]
   end
   # rubocop:enable Style/MultilineBlockChain
 

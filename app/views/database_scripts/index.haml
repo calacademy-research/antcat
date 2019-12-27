@@ -5,6 +5,8 @@
   =javascript_include_tag "sortable_tables"
 
 =content_for :breadcrumbs_right do
+  -unless @check_if_empty
+    =link_to "Show empty/not (beta)", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
   =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
 .row.margin-bottom{data: { show_hide_toggable_id: "help" }}
@@ -42,6 +44,8 @@
             %th.no-wrap Tags
             %th Soft-validated
             %th Fix random
+            -if @check_if_empty
+              %th Empty?
         %tbody
           -database_scripts.each do |database_script|
             %tr
@@ -62,3 +66,5 @@
                 -if database_script.fix_random?
                   %span.hidden-sort Yes
                   =antcat_icon("check")
+              -if @check_if_empty
+                %td.shrink=database_script.decorate.empty_status
