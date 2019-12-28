@@ -98,9 +98,10 @@ table.notifications
   &.comment
     @extend .fa-comment-o
 
-  &.info
+  &.info-tooltip
     @extend .fa-info-circle
     color: $color_primary
+    cursor: help
 
   &.closed.issue, &.unread
     @extend .fa-check
@@ -113,10 +114,12 @@ table.notifications
   &.tooltip-icon
     @extend .fa-question-circle
     color: $color_primary
+    cursor: pointer
 
   &.logged-in-only-icon
     @extend .fa-user-circle
     color: $color_primary
+    cursor: help
 
   &.warning-icon
     @extend .fa-exclamation-triangle
