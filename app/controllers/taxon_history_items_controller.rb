@@ -15,6 +15,7 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def show
+    @taxon = @taxon_history_item.taxon
   end
 
   def new

@@ -10,13 +10,18 @@
     =link_to "Delete", taxon_history_item_path(@taxon_history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
 %p
-  =Detax[@taxon_history_item.taxt]
+  This history item belongs to
+  =@taxon.decorate.link_to_taxon_with_author_citation
 
--if @taxon_history_item.taxon.history_items.count > 1
+.callout
+  %p
+    =Detax[@taxon_history_item.taxt]
+
+-if @taxon.history_items.count > 1
   %table.margin-top
-    %caption Highlighted in context with other history items belonging to #{@taxon_history_item.taxon.link_to_taxon}
+    %caption Highlighted in context with other history items belonging to #{@taxon.name.name_html}
     %tbody
-      -@taxon_history_item.taxon.history_items.each do |history_item|
+      -@taxon.history_items.each do |history_item|
         %tr{class: ('pale-background' if history_item == @taxon_history_item)}
           %td
             =link_to "##{history_item.id}", history_item
