@@ -1,0 +1,28 @@
+require 'rails_helper'
+
+describe Exporters::Antweb::ExportHistoryItems do
+  include TestLinksHelpers
+
+  let(:header) { "<p><b>Taxonomic history</b></p>" }
+
+  context 'when taxon has no history items' do
+    let(:taxon) { build_stubbed :family }
+
+    specify { expect(described_class[taxon]).to eq nil }
+  end
+
+  context 'when taxon has history items' do
+    let(:taxon) { create :family }
+
+    before do
+      create :taxon_history_item, taxon: taxon, taxt: "Taxon: {tax #{taxon.id}}"
+    end
+
+    specify do
+      item = "<div>Taxon: #{antweb_taxon_link(taxon)}.</div>"
+      expect(described_class[taxon]).to eq(header + '<div>' + item + '</div>')
+    end
+
+    specify { expect(described_class[taxon]).to be_html_safe }
+  end
+end

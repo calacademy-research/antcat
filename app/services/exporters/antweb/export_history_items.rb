@@ -11,14 +11,7 @@ module Exporters
       end
 
       def call
-        return if taxon.history_items.blank?
-
-        history_content = content_tag :div do
-          taxon.history_items.reduce(''.html_safe) do |content, item|
-            content << history_item(item)
-          end
-        end
-
+        return if history_items.blank?
         '<p><b>Taxonomic history</b></p>'.html_safe + history_content
       end
 
@@ -26,9 +19,17 @@ module Exporters
 
         attr_reader :taxon
 
-        def history_item item
+        delegate :history_items, to: :taxon
+
+        def history_content
           content_tag :div do
-            add_period_if_necessary AntwebDetax[item.taxt]
+            string = ''.html_safe
+
+            history_items.each do |history_item|
+              string << content_tag(:div, add_period_if_necessary(AntwebDetax[history_item.taxt]))
+            end
+
+            string
           end
         end
     end
