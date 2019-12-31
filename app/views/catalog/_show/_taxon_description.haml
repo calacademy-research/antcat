@@ -43,7 +43,7 @@
         %strong Type notes:
         =add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
 
--if taxon.history_items.present?
+-if taxon.all_virtual_history_items.present? || taxon.history_items.present?
   %ul.history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
@@ -54,6 +54,20 @@
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+    -# TODO: This can be replaced by `taxon.all_virtual_history_items.each ...` once
+    -# `DatabaseScripts::SubspeciesListInHistoryItem` has been cleared.
+    -taxon.all_virtual_history_items.each do |history_item|
+      -if history_item.publicly_visible?
+        %li{class: ('virtual-taxt-item' if current_user)}
+          =history_item.render
+          =info_tooltip_icon 'This is a virtual history item.'
+      -else
+        -if current_user
+          %li{class: ('virtual-taxt-item' if current_user)}
+            =history_item.render
+            =info_tooltip_icon 'This is a virtual history item.'
+            %small.bold-warning=history_item.reason_hidden
+            =logged_in_only_tooltip_icon
 
 -if taxon.junior_synonyms.exists?
   %h6 Junior synonyms
