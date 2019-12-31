@@ -6,4 +6,8 @@ module TestLinksHelpers
   def taxon_link taxon, label = nil
     %(<a href="/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>)
   end
+
+  def antweb_taxon_link taxon, label = nil
+    %(<a href="http://www.antcat.org/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>)
+  end
 end

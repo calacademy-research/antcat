@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::ExportTaxon do
+  include TestLinksHelpers
+
   describe "HEADER" do
     it "is the same as the code" do
       expected = "antcat id\t" \
@@ -239,10 +241,8 @@ describe Exporters::Antweb::ExportTaxon do
       let!(:tribe) { create :tribe, subfamily: subfamily }
 
       specify do
-        expected =
-          %(<div><span class="caption">Tribes of #{subfamily.name_cache}</span>: ) +
-          %(<a href="http://www.antcat.org/catalog/#{tribe.id}">#{tribe.name_cache}</a></div>)
-        expect(described_class[subfamily][17]).to include(expected)
+        expect(described_class[subfamily][17]).
+          to include(%(<div><span class="caption">Tribes of #{subfamily.name_cache}</span>: #{antweb_taxon_link(tribe)}</div>))
       end
     end
 
@@ -300,14 +300,12 @@ describe Exporters::Antweb::ExportTaxon do
               %(. ) +
 
               # type
-              %(Type-species: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>, by monotypy.) +
+              %(Type-species: #{antweb_taxon_link(type_species)}, by monotypy.) +
               %(  ) +
 
               # links
-              %(<a href="http://www.antcat.org/catalog/#{genus.id}">AntCat</a>) +
-              %( ) +
-              %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a>) +
-              %( ) +
+              %(#{antweb_taxon_link(genus, 'AntCat')} ) +
+              %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a> ) +
               %(<a class="external-link" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
             %(</div>) +
 
@@ -315,7 +313,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(<p><b>Taxonomic history</b></p>) +
             %(<div>) +
               %(<div>) +
-                %(Taxon: <a href="http://www.antcat.org/catalog/#{type_species.id}"><i>Atta major</i></a>.) +
+                %(Taxon: #{antweb_taxon_link(type_species)}.) +
               %(</div>) +
             %(</div>) +
 
