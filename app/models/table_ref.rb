@@ -1,4 +1,5 @@
 # rubocop:disable Style/RedundantSelf
+# rubocop:disable Metrics/BlockLength
 
 # TODO: Decide what to do with this.
 TableRef = Struct.new(:table, :field, :id) do
@@ -13,6 +14,19 @@ TableRef = Struct.new(:table, :field, :id) do
     end
   end
 
+  def owner
+    @owner ||=
+      case table
+      when "citations"           then Citation.find(id).protonym
+      when "protonyms"           then Protonym.find(id)
+      when "reference_sections"  then ReferenceSection.find(id).taxon
+      when "references"          then Reference.find(id)
+      when "taxon_history_items" then TaxonHistoryItem.find(id).taxon
+      when "taxa"                then Taxon.find(id)
+      else                       raise "unknown table #{table}"
+      end
+  end
+
   private
 
     def model
@@ -21,4 +35,5 @@ TableRef = Struct.new(:table, :field, :id) do
       end.first
     end
 end
+# rubocop:enable Metrics/BlockLength
 # rubocop:enable Style/RedundantSelf

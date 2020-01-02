@@ -7,8 +7,6 @@ class TableRefDecorator
   end
 
   def item_link
-    return "id_missing" unless id
-
     case table
     when "citations"           then id
     when "protonyms"           then link_to(id, protonym_path(id))
@@ -16,21 +14,16 @@ class TableRefDecorator
     when "references"          then link_to(id, reference_path(id))
     when "taxa"                then link_to(id, catalog_path(id))
     when "taxon_history_items" then link_to(id, taxon_history_item_path(id))
-    else                            "#{id} ???"
+    else                       raise "unknown table #{table}"
     end
   end
 
-  def related_links
-    return "id_missing" unless id
-
-    case table
-    when "citations"           then related_citation_link
-    when "protonyms"           then related_protonym_link
-    when "reference_sections"  then ReferenceSection.find(id).taxon.link_to_taxon
-    when "references"          then Reference.find(id).decorate.expandable_reference
-    when "taxon_history_items" then TaxonHistoryItem.find(id).taxon.link_to_taxon
-    when "taxa"                then Taxon.find(id).link_to_taxon
-    else                            "#{table} ???"
+  def owner_link
+    case owner
+    when Taxon     then owner.link_to_taxon
+    when Reference then owner.decorate.expandable_reference
+    when Protonym  then ("Protonym: ".html_safe << owner.decorate.link_to_protonym)
+    else           raise "unknown owner #{owner.class.name}"
     end
   end
 
@@ -38,14 +31,5 @@ class TableRefDecorator
 
     attr_reader :table_ref
 
-    delegate :table, :field, :id, to: :table_ref
-
-    def related_citation_link
-      citation = Citation.find(id)
-      citation.protonym.taxa.map(&:link_to_taxon).join(', ').html_safe
-    end
-
-    def related_protonym_link
-      "Protonym: ".html_safe << Protonym.find(id).decorate.link_to_protonym
-    end
+    delegate :table, :id, :owner, to: :table_ref
 end
