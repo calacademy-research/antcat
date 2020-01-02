@@ -78,10 +78,7 @@ module Wikipedia
     private
 
       def title
-        title = reference.title
-        return unless title
-
-        convert_to_wikipedia_italics title
+        convert_to_wikipedia_italics reference.title
       end
 
       # Asterix to double quotes (two single quotes mean "start italics" on WP);
@@ -116,12 +113,9 @@ module Wikipedia
 
     private
 
+      # The whole book title is italicized on WP.
       def title
-        title = reference.title
-        return unless title
-
-        # The whole book title is italicized on WP.
-        remove_italics title
+        remove_italics reference.title
       end
 
       def remove_italics string

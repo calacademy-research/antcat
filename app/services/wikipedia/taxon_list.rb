@@ -53,7 +53,7 @@ module Wikipedia
 
       # For https://en.wikipedia.org/wiki/Template:Taxobox
       def taxobox_extras
-        diversity_ref = Wikipedia::CiteTemplate[taxon, with_ref_tag: true]
+        diversity_ref = Wikipedia::CiteTemplate[taxon]
 
         string =  "|diversity_link = ##{children_rank.to_s.capitalize}\n"
         string << "|diversity = #{children.count} #{children_rank}\n"
