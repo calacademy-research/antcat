@@ -5,6 +5,13 @@ class Protonym < ApplicationRecord
   BIOGEOGRAPHIC_REGIONS = %w[
     Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
   ]
+  # TODO: These are currently stored in `taxa.type_taxt`; we want to move them to `protonyms` or a new model,
+  # and normalize the values (see `DatabaseScripts::TaxaWithTypeTaxa`).
+  COMMON_TYPE_TAXTS = [
+    BY_MONOTYPY = ", by monotypy.",
+    BY_ORIGINAL_DESIGNATION = ", by original designation.",
+    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/
+  ]
 
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy
   belongs_to :name, dependent: :destroy
