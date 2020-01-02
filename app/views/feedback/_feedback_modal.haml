@@ -37,7 +37,7 @@
       .medium-12.columns
         =f.invisible_captcha :work_email
         =f.label :comment
-        =f.text_area :comment, rows: 5
+        =f.text_area :comment, rows: 5, maxlength: Feedback::COMMENT_MAX_LENGTH
     .row
       .medium-12.columns
         .input-group

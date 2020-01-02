@@ -16,7 +16,7 @@
       .row
         .medium-8.columns.end
           =f.label :title
-          =f.text_field :title, { maxlength: 70 }
+          =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
 
       .row
         .medium-12.columns

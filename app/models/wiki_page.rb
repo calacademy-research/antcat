@@ -2,7 +2,9 @@ class WikiPage < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  validates :title, presence: true, length: { maximum: 70 }, uniqueness: true
+  TITLE_MAX_LENGTH = 70
+
+  validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: true
   validates :content, presence: true
 
   has_paper_trail
