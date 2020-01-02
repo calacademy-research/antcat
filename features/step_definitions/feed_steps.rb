@@ -42,7 +42,7 @@ end
 Then(/^the query string should (not )?contain "([^"]*)"$/) do |should_not, contain|
   match = page.current_url[contain]
   if should_not
-    expect(match).to be nil
+    expect(match).to eq nil
   else
     expect(match).to be_truthy
   end

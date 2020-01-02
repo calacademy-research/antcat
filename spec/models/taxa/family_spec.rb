@@ -4,7 +4,7 @@ describe Family do
   let(:family) { create :family }
 
   describe "#parent" do
-    specify { expect(family.parent).to be_nil }
+    specify { expect(family.parent).to eq nil }
   end
 
   describe "#parent=" do

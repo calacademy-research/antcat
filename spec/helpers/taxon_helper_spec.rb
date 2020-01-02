@@ -28,7 +28,7 @@ describe TaxonHelper do
     let(:adder) { create :user }
 
     it "shows nothing for old taxa" do
-      expect(helper.taxon_change_history(taxon)).to be_nil
+      expect(helper.taxon_change_history(taxon)).to eq nil
     end
 
     it "shows the adder for waiting taxa" do

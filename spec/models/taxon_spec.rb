@@ -19,9 +19,9 @@ describe Taxon do
         let(:taxon) { build :family }
 
         it "creates a taxon_state" do
-          expect(taxon.taxon_state).to be nil
+          expect(taxon.taxon_state).to eq nil
           taxon.save
-          expect(taxon.taxon_state).not_to be nil
+          expect(taxon.taxon_state).not_to eq nil
         end
 
         it "sets the review_status to 'waiting'" do
@@ -249,7 +249,7 @@ describe Taxon do
       let(:taxon) { create :family }
 
       it "returns nil if no changes have been created for it" do
-        expect(taxon.last_change).to be_nil
+        expect(taxon.last_change).to eq nil
       end
 
       it "returns the change, if any" do

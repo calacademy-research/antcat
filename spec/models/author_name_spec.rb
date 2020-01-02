@@ -22,7 +22,7 @@ describe AuthorName do
 
       it "simply returns the name" do
         expect(author_name.last_name).to eq 'Bolton'
-        expect(author_name.first_name_and_initials).to be_nil
+        expect(author_name.first_name_and_initials).to eq nil
       end
     end
 
@@ -40,7 +40,7 @@ describe AuthorName do
 
       it "uses all words" do
         expect(author_name.last_name).to eq 'Royal Academy'
-        expect(author_name.first_name_and_initials).to be_nil
+        expect(author_name.first_name_and_initials).to eq nil
       end
     end
 

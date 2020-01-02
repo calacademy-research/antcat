@@ -51,7 +51,7 @@ describe RevisionComparer, :versioning do
       end
 
       it "cannot be diffed by #html_split_diff" do
-        expect(comparer.html_split_diff).to be nil
+        expect(comparer.html_split_diff).to eq nil
       end
     end
 
