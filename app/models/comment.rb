@@ -1,6 +1,8 @@
 class Comment < ApplicationRecord
   include Trackable
 
+  BODY_MAX_LENGTH = 100_000
+
   attr_accessor :set_parent_to
 
   belongs_to :commentable, polymorphic: true
@@ -11,6 +13,7 @@ class Comment < ApplicationRecord
   scope :include_associations, -> { includes(:commentable, :user) }
 
   validates :user, :body, presence: true
+  validates :body, length: { maximum: BODY_MAX_LENGTH }
 
   after_save { set_parent if set_parent_to.present? }
 
