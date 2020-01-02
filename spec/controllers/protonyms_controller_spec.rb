@@ -87,11 +87,8 @@ describe ProtonymsController do
 
   describe "PUT update" do
     let!(:protonym) { create :protonym }
-
-    before { sign_in create(:user, :helper) }
-
-    it 'updates the protonym' do
-      protonym_params = {
+    let(:protonym_params) do
+      {
         fossil: false,
         sic: false,
         biogeographic_region: 'Malagasy',
@@ -106,7 +103,11 @@ describe ProtonymsController do
           reference_id: create(:article_reference).id
         }
       }
+    end
 
+    before { sign_in create(:user, :helper) }
+
+    it 'updates the protonym' do
       put(:update, params: { id: protonym.id, protonym: protonym_params })
 
       protonym.reload
@@ -123,6 +124,15 @@ describe ProtonymsController do
       expect(authorship.forms).to eq protonym_params[:authorship_attributes][:forms]
       expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
+    end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: protonym.id, protonym: protonym_params, edit_summary: 'edited' }) }.
+        to change { Activity.where(action: :update, trackable: protonym).count }.by(1)
+
+      activity = Activity.last
+      expect(activity.edit_summary).to eq "edited"
+      expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
 
     it 'updates the authorship in place without creating a new record' do
