@@ -1,7 +1,7 @@
 class TaxonHistoryItemsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100, 500]
 
-  before_action :ensure_user_is_at_least_helper, except: [:show, :index]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_taxon, only: [:new, :create]
   before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
@@ -22,6 +22,20 @@ class TaxonHistoryItemsController < ApplicationController
     @taxon_history_item = @taxon.history_items.new
   end
 
+  def create
+    @taxon_history_item = @taxon.history_items.new(taxon_history_item_params)
+
+    if @taxon_history_item.save
+      @taxon_history_item.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@taxon_history_item.taxon), notice: "Successfully added history item."
+    else
+      render :new
+    end
+  end
+
+  def edit
+  end
+
   def update
     updated = @taxon_history_item.update(taxon_history_item_params)
 
@@ -38,20 +52,6 @@ class TaxonHistoryItemsController < ApplicationController
           render :edit
         end
       end
-    end
-  end
-
-  def edit
-  end
-
-  def create
-    @taxon_history_item = @taxon.history_items.new(taxon_history_item_params)
-
-    if @taxon_history_item.save
-      @taxon_history_item.create_activity :create, current_user, edit_summary: params[:edit_summary]
-      redirect_to edit_taxa_path(@taxon_history_item.taxon), notice: "Successfully added history item."
-    else
-      render :new
     end
   end
 

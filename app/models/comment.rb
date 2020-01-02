@@ -8,14 +8,14 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
-  scope :order_by_date, -> { order(created_at: :desc) }
-  scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
-  scope :include_associations, -> { includes(:commentable, :user) }
-
   validates :user, :body, presence: true
   validates :body, length: { maximum: BODY_MAX_LENGTH }
 
   after_save { set_parent if set_parent_to.present? }
+
+  scope :order_by_date, -> { order(created_at: :desc) }
+  scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
+  scope :include_associations, -> { includes(:commentable, :user) }
 
   acts_as_nested_set scope: [:commentable_id, :commentable_type]
   alias_method :commenter, :user # Read-only, for `Comments::NotifyRelevantUsers`.

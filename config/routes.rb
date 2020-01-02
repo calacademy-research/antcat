@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       end
       resource :merges, only: [:new, :show, :create]
     end
-    resources :author_names, except: [:show, :index], shallow: true
+    resources :author_names, except: [:index, :show], shallow: true
   end
 
   namespace :catalog do
