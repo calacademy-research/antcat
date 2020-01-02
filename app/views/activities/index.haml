@@ -6,9 +6,26 @@
   -@title = "Activity Feed"
   -breadcrumb :activity_feed
 
-=render_filters do
-  =check_box_tag :show_automated_edits, false, !!params[:show_automated_edits]
-  Show automated edits?
+=form_tag request.path, method: :get do
+  .row
+    .small-6.medium-4.large-2.columns
+      =select_tag :user_id, options_for_select(User.order(:name).pluck(:name, :id), params[:user_id]), prompt: 'User'
+    .small-6.medium-4.large-2.columns
+      =select_tag :trackable_type, options_for_select(ActivitiesController::FILTER_TRACKABLE_TYPES, params[:trackable_type]), prompt: 'Trackable type'
+    .small-6.medium-4.large-2.columns
+      =number_field_tag :trackable_id, params[:trackable_id], placeholder: 'Trackable ID'
+    .small-6.medium-4.large-2.columns
+      =select_tag :activity_action, options_for_select(Activity::ACTIONS.map(&:humanize).zip(Activity::ACTIONS), params[:activity_action]), prompt: 'Action'
+
+    .small-6.medium-4.large-2.columns
+      =check_box_tag :show_automated_edits, false, !!params[:show_automated_edits]
+      Show automated?
+
+    .small-6.medium-4.large-2.columns.end
+      =button_tag type: "submit", name: nil, class: "btn-normal has-spinner" do
+        =spinner_icon + "Filter"
+      &nbsp;
+      =link_to "Clear", request.path, class: "button btn-nodanger"
 
 =render "table", activities: @activities, show_delete_button: true, page: @page
 
