@@ -34,8 +34,11 @@
           %th Authorship
           %td=@protonym.authorship.reference.decorate.expandable_reference
         %tr
-          %th Pages and forms
-          %td=@protonym.decorate.format_pages_and_forms
+          %th Pages
+          %td=@protonym.authorship.pages
+        %tr
+          %th Forms
+          %td=or_dash @protonym.authorship.forms
         %tr
           %th Biogeographic region
           %td=@protonym.biogeographic_region
