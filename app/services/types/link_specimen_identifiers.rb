@@ -38,7 +38,7 @@ module Types
 
     private
 
-      attr :content
+      attr_reader :content
 
       def link_specimen_identifiers!
         SPECIMEN_IDENTIFIER_PREFIXES.each do |prefix|

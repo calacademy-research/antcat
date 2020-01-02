@@ -115,16 +115,10 @@ Rails/BulkChangeTable:
 Rails/Delegate:
   Enabled: false
 
-Rails/DynamicFindBy:
-  Whitelist: find_by_sql
-
 Rails/InverseOf:
   Enabled: false
 
 Rails/OutputSafety:
-  Enabled: false
-
-Rails/RakeEnvironment:
   Enabled: false
 
 Rails/SkipsModelValidations:
@@ -167,9 +161,6 @@ Style/AndOr:
   EnforcedStyle: conditionals
 
 Style/AsciiComments:
-  Enabled: false
-
-Style/Attr:
   Enabled: false
 
 Style/ClassAndModuleChildren:
