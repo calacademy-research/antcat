@@ -34,7 +34,7 @@ class User < ApplicationRecord
   end
 
   def unconfirmed_user_over_edit_limit?
-    return unless unconfirmed?
+    return false unless unconfirmed?
     remaining_edits_for_unconfirmed_user <= 0
   end
 

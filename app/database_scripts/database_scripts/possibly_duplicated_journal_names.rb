@@ -48,7 +48,7 @@ module DatabaseScripts
 
       def false_positive? first, second
         false_positives_matches = false_positives[first]
-        return unless false_positives_matches # Return if `first` is not in the list at all.
+        return false unless false_positives_matches # Return if `first` is not in the list at all.
         return true if second.in? false_positives_matches
       end
 

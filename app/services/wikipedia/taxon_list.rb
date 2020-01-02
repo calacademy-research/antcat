@@ -97,10 +97,10 @@ module Wikipedia
 
       def wikilink_child? child
         # Don't link species in fossil genera per WP:PALEO.
-        return if taxon.fossil? && child.is_a?(Species)
+        return false if taxon.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
-        return if child.is_a? Subspecies
+        return false if child.is_a? Subspecies
 
         true
       end
