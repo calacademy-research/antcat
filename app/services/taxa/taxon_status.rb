@@ -38,7 +38,8 @@ module Taxa
         when Status::OBSOLETE_COMBINATION      then "an obsolete combination of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
         when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
-        else                                        status
+        when *SELF_STATUSES                    then status
+        else                                   raise "unknown status: #{status}"
         end
       end
 
