@@ -21,10 +21,10 @@ Then("I should see the edit summary {string}") do |content|
   end
 end
 
-# Journal
-Given("there is a {string} journal activity") do |action|
+Given("there is a {string} journal activity by {string}") do |action, name|
   journal = create :journal
-  create :activity, action: action.to_sym, trackable: journal, user: User.last # TODO.
+  user = User.find_by(name: name) || create(:user, name: name)
+  create :activity, action: action.to_sym, trackable: journal, user: user
 end
 
 When("I click on Show more") do
