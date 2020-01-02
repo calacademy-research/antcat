@@ -14,6 +14,98 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
+### FactoryBot.
+
+FactoryBot/CreateList:
+  EnforcedStyle: n_times
+
+### Layout.
+
+Layout/ArgumentAlignment:
+  Enabled: false
+
+Layout/ArrayAlignment:
+  Enabled: false
+
+Layout/BlockAlignment:
+  Enabled: false
+
+Layout/ClassStructure:
+  Enabled: true
+
+Layout/DotPosition:
+  EnforcedStyle: trailing
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
+Layout/IndentationConsistency:
+  Enabled: true
+  EnforcedStyle: indented_internal_methods
+
+Layout/MultilineMethodCallIndentation:
+  Enabled: false
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: indented
+
+Layout/ParameterAlignment:
+  Enabled: false
+
+### Lint.
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+# Metrics.
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
+
+Metrics/ClassLength:
+  Max: 180
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 160
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 17
+
+### Naming.
+
+Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/VariableNumber:
+  Exclude:
+    - 'spec/**/*'
+
+### Rails.
+
 Rails:
   Enabled: true
 
@@ -39,59 +131,7 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
-Layout/ArgumentAlignment:
-  Enabled: false
-
-Layout/ArrayAlignment:
-  Enabled: false
-
-Layout/HashAlignment:
-  Enabled: false
-
-Layout/ParameterAlignment:
-  Enabled: false
-
-Layout/BlockAlignment:
-  Enabled: false
-
-Layout/ClassStructure:
-  Enabled: true
-
-Layout/DotPosition:
-  EnforcedStyle: trailing
-
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-
-Layout/IndentationConsistency:
-  Enabled: true
-  EnforcedStyle: indented_internal_methods
-
-Layout/FirstHashElementIndentation:
-  Enabled: false
-
-Layout/MultilineMethodCallIndentation:
-  Enabled: false
-
-Layout/MultilineOperationIndentation:
-  EnforcedStyle: indented
-
-Lint/AmbiguousBlockAssociation:
-  Exclude:
-    - 'spec/**/*'
-
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-Naming/AccessorMethodName:
-  Enabled: false
-
-Naming/VariableNumber:
-  Exclude:
-    - 'spec/**/*'
-
-FactoryBot/CreateList:
-  EnforcedStyle: n_times
+### RSpec.
 
 RSpec/EmptyExampleGroup:
   Enabled: false
@@ -117,6 +157,8 @@ RSpec/NestedGroups:
 
 RSpec/NotToNot:
   Enabled: false
+
+### Style.
 
 Style/Alias:
   Enabled: false
@@ -186,29 +228,3 @@ Style/SymbolArray:
 
 Style/WordArray:
   Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'config/routes.rb'
-    - 'config/environments/**/*'
-
-Metrics/ClassLength:
-  Max: 180
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/PerceivedComplexity:
-  Max: 17
-
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 160
