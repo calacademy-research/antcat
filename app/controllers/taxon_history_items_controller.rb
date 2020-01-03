@@ -34,9 +34,12 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def edit
+    @taxon = @taxon_history_item.taxon
   end
 
   def update
+    @taxon = @taxon_history_item.taxon
+
     updated = @taxon_history_item.update(taxon_history_item_params)
 
     if updated
