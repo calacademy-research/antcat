@@ -126,6 +126,7 @@ Rails.application.routes.draw do
       resource :elevate_to_species, only: [:create]
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
+      resource :set_subgenus, only: [:show, :create, :destroy]
       resource :reorder_history_items, only: [:create]
     end
   end

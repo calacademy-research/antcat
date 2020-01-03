@@ -24,5 +24,6 @@ description: >
   which does refect how it's used. This script was added as a part of investigating %github814.
 
 related_scripts:
+  - CurrentValidTaxonChains
   - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
   - NonValidTaxaWithACurrentValidTaxonThatIsNotValid

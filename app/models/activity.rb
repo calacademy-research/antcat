@@ -13,6 +13,7 @@ class Activity < ApplicationRecord
     approve_all_changes
     approve_all_references
     approve_change
+    set_subgenus
     close_feedback
     close_issue
     convert_species_to_subspecies

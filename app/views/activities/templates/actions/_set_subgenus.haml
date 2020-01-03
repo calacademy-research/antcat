@@ -1,0 +1,14 @@
+-if activity.parameters[:removed_subgenus_id]
+  removed the subgenus from
+  =taxon_link_or_deleted_string activity.trackable_id
+  =surround "(", ")" do
+    subgenus was
+    =taxon_link_or_deleted_string activity.parameters[:removed_subgenus_id]
+-elsif activity.parameters[:set_subgenus_id_to]
+  set the subgenus of
+  =taxon_link_or_deleted_string activity.trackable_id
+  to
+  =taxon_link_or_deleted_string activity.parameters[:set_subgenus_id_to]
+-else
+  changed the subgenus of
+  =taxon_link_or_deleted_string activity.trackable_id

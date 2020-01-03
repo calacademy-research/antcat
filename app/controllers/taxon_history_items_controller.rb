@@ -1,14 +1,17 @@
 class TaxonHistoryItemsController < ApplicationController
+  PER_PAGE_OPTIONS = [30, 100, 500]
+
   before_action :ensure_user_is_at_least_helper, except: [:show, :index]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_taxon, only: [:new, :create]
   before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
-    @taxon_history_items = TaxonHistoryItem.all
-    @taxon_history_items = @taxon_history_items.joins(:taxon).where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = TaxonHistoryItem.joins(:taxon)
+    @taxon_history_items = @taxon_history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = @taxon_history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
     @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
-    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
+    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
   def show
@@ -70,6 +73,10 @@ class TaxonHistoryItemsController < ApplicationController
 
     def taxon_history_item_params
       params.require(:taxon_history_item).permit(:taxt)
+    end
+
+    def per_page
+      params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
     end
 
     def render_json taxon_history_item
