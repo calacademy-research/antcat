@@ -126,6 +126,16 @@
       %li
         =obsolete_combination.link_to_taxon
         =obsolete_combination.author_citation
+        -if current_user && obsolete_combination.protonym != taxon.protonym
+          %span.logged-in-only-background
+            %small
+              %span.bold-warning
+                this obsolete combination does not have the same protonym as the current taxon
+              =surround "(", ")" do
+                =taxon.protonym.decorate.link_to_protonym
+                vs.
+                =obsolete_combination.protonym.decorate.link_to_protonym
+              =logged_in_only_tooltip_icon
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/780
 -if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
