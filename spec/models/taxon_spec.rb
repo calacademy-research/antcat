@@ -144,6 +144,25 @@ describe Taxon do
       end
     end
 
+    describe "#type_taxt" do
+      context 'when taxon does not have a type taxon' do
+        let(:taxon) { build_stubbed :family }
+
+        specify do
+          expect { taxon.type_taxt = 'by monotypy' }.to change { taxon.valid? }.to(false)
+          expect(taxon.errors.messages).to include(type_taxt: ["(type notes) can't be set unless taxon has a type name"])
+        end
+      end
+
+      context 'when taxon has a type taxon' do
+        let(:taxon) { build_stubbed :family, type_taxon: create(:family) }
+
+        specify do
+          expect { taxon.type_taxt = 'by monotypy' }.to_not change { taxon.valid? }.from(true)
+        end
+      end
+    end
+
     describe "#current_valid_taxon_validation" do
       context "when taxon has a `#current_valid_taxon`" do
         [
