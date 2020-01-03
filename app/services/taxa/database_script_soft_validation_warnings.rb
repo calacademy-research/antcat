@@ -1,3 +1,5 @@
+# TODO: DRY this and `Protonyms::DatabaseScriptSoftValidationWarnings`.
+
 module Taxa
   class DatabaseScriptSoftValidationWarnings
     include Service
@@ -6,7 +8,9 @@ module Taxa
     WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.2.seconds
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
+      DatabaseScripts::NonValidTaxaWithACurrentValidTaxonThatIsNotValid,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
+      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
       DatabaseScripts::PassThroughNamesWithTaxts,
       DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
@@ -15,7 +19,9 @@ module Taxa
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
       DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet,
+      DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
       DatabaseScripts::TaxaWithNonModernCapitalization,
+      DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
       DatabaseScripts::ValidSubspeciesInInvalidSpecies
     ]
 
