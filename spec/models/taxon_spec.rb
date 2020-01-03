@@ -13,7 +13,7 @@ describe Taxon do
     it { is_expected.to belong_to(:name).dependent(:destroy) }
   end
 
-  describe 'validations' do
+  describe 'callbacks' do
     describe "#set_taxon_state_to_waiting" do
       context "when creating a taxon" do
         let(:taxon) { build :family }
@@ -89,7 +89,9 @@ describe Taxon do
         end
       end
     end
+  end
 
+  describe 'validations' do
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
         let(:replaced_by) { build_stubbed :family }

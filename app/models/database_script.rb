@@ -117,10 +117,7 @@ class DatabaseScript
 
     def cached_results
       return @_results if defined? @_results
-
-      @_results = if respond_to? :results
-                    results
-                  end
+      @_results = results if respond_to?(:results)
     end
 
   private
