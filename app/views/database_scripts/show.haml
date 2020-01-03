@@ -9,7 +9,7 @@
   -if @database_script.respond_to? :to_csv
     =link_to "Export as CSV", database_script_path(@database_script, format: :csv), class: "btn-normal"
 
-.row.collapse
+.row.collapse.margin-bottom
   .medium-8.columns
     %h5
       -if @database_script.category.present?
@@ -22,7 +22,7 @@
     -if @database_script.issue_description.present?
       %h6
         %strong Issue description
-        %p=@database_script.issue_description
+        %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
       %h6
