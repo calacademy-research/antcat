@@ -1,11 +1,11 @@
 module DatabaseScripts
   class SubspeciesListInHistoryItemVsSubspeciesFromDatabase < DatabaseScript
-    def in_database_but_no_history_item
-      Taxon.where(id: valid_species_with_valid_subspecies - species_with_subspecies_history_items)
-    end
-
     def with_history_item_but_not_in_database
       Taxon.where(id: species_with_subspecies_history_items - valid_species_with_valid_subspecies)
+    end
+
+    def in_database_but_no_history_item
+      Taxon.where(id: valid_species_with_valid_subspecies - species_with_subspecies_history_items)
     end
 
     def render

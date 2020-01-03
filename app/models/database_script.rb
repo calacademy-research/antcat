@@ -97,7 +97,7 @@ class DatabaseScript
   def related_scripts
     (end_data[:related_scripts] || []).map do |class_name|
       self.class.safe_new_from_filename_without_extension class_name
-    end
+    end.reject { |database_script| database_script.is_a?(self.class) }
   end
 
   def slow?

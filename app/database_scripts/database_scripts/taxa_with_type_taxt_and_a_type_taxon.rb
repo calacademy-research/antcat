@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :type_taxon, :type_taxon_status, :type_taxt, :tt_now, :tt_now_status, :different?
+        t.header :taxon, :status, :type_taxon, :type_taxon_status, :type_taxt, :tt_now, :tt_now_status, :different?, :misc_notes
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxon_now = type_taxon.now
@@ -22,11 +22,20 @@ module DatabaseScripts
 
             markdown_taxon_link(type_taxon_now),
             type_taxon_now.status,
-            ('yes' if type_taxon_now_different)
+            ('Yes' if type_taxon_now_different),
+            misc_notes(type_taxon)
           ]
         end
       end
     end
+
+    private
+
+      def misc_notes type_taxon
+        if type_taxon.nomen_nudum?
+          'TT is a <i>Nomen nudum</i>'
+        end
+      end
   end
 end
 
