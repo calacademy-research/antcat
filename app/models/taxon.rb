@@ -186,6 +186,12 @@ class Taxon < ApplicationRecord
     Taxa::WhatLinksHere[self, predicate: predicate]
   end
 
+  # TODO: Experimental.
+  def now
+    return self unless current_valid_taxon
+    current_valid_taxon.now
+  end
+
   # TODO: Remove once subspecies lists have been cleaned up.
   # See https://github.com/calacademy-research/antcat/issues/780
   def subspecies_list_in_history_items

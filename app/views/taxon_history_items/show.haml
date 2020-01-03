@@ -9,3 +9,16 @@
 
 %p
   =Detax[@taxon_history_item.taxt]
+
+-if @taxon_history_item.taxon.history_items.count > 1
+  %table.margin-top
+    %caption Highlighted in context with other history items belonging to #{@taxon_history_item.taxon.link_to_taxon}
+    %tbody
+      -@taxon_history_item.taxon.history_items.each do |history_item|
+        %tr{class: ('pale-background' if history_item == @taxon_history_item)}
+          %td
+            =link_to "##{history_item.id}", history_item
+            -if history_item == @taxon_history_item
+              %strong (selected)
+          %td.grow
+            %small=Detax[history_item.taxt]

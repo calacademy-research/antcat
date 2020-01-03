@@ -31,5 +31,6 @@ description: >
   Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).
 
 related_scripts:
+  - CurrentValidTaxonChains
   - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
   - NonValidTaxaWithACurrentValidTaxonThatIsNotValid

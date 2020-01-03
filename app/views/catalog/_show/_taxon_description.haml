@@ -152,6 +152,8 @@
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
+            -if subspecies.unresolved_homonym?
+              (unresolved homonym)
 
     -if taxon.subspecies.invalid.exists?
       %h6 Invalid subspecies

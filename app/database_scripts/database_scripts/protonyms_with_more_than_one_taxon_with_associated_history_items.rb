@@ -33,5 +33,8 @@ description: >
 
 related_scripts:
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneValidTaxon
+  - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon
