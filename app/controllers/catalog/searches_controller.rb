@@ -59,7 +59,7 @@ module Catalog
       end
 
       def searching_for_non_existent_author?
-        return if params[:author_name].blank?
+        return false if params[:author_name].blank?
         !AuthorName.where(name: params[:author_name]).exists?
       end
 

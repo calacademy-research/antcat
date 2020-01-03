@@ -25,7 +25,7 @@ class ActivitiesController < ApplicationController
   before_action :set_activity, only: :destroy
 
   def index
-    @activities = unpaginated_activities.ids_desc.includes(:user).paginate(page: page)
+    @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: page)
   end
 
   def destroy
@@ -63,6 +63,7 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
     end
 
+    # TODO: Rename `activities.action` --> `activities.action_name`.
     # HACK: Because `params[:action]` (to filter on `activitie.actions`) gets
     # overridden by Rails (controller action param).
     def hacked_filter_params
