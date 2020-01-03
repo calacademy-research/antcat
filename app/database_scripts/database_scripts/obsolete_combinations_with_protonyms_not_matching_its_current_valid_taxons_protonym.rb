@@ -42,4 +42,5 @@ description: >
 
 related_scripts:
   - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
+  - SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon
   - TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
