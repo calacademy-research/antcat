@@ -1,4 +1,30 @@
-Feature: Feed
+Feature: Activity feed
+  Scenario: Filtering activities by action
+    Given there is a "destroy" journal activity by "Batiatus"
+    And there is a "update" journal activity by "Batiatus"
+
+    When I go to the activity feed
+    Then I should see 2 items in the feed
+
+    When I select "Destroy" from "activity_action"
+    And I press "Filter"
+    Then I should see 1 items in the feed
+    And I should see "Batiatus deleted the journal" within the feed
+
+  Scenario: Showing/hiding automated edits
+    Given there is an activity with the edit summary "Not automated"
+    And there is an automated activity with the edit summary "Automated edit"
+
+    When I go to the activity feed
+    Then I should see "Not automated"
+    And I should not see "Automated edit"
+
+    When I check "show_automated_edits"
+    And I press "Filter"
+    Then I should see "Not automated"
+    And I should see "Automated edit"
+
+  # NOTE: JavaScript is required for "I hover the first activity item".
   @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin
@@ -28,10 +54,10 @@ Feature: Feed
     # Restore for future tests.
     Given activities are paginated with 30 per page
 
+  # NOTE: JavaScript is required for "I hover the first activity item".
   @javascript
   Scenario: Pagination with filtering quirks
-    Given I am logged in
-    And activities are paginated with 2 per page
+    Given activities are paginated with 2 per page
     And there is an automated activity with the edit summary "[1] fix URL by script"
     And there is an automated activity with the edit summary "[2] fix URL by script"
     And there is an activity with the edit summary "[3] updated pagination"

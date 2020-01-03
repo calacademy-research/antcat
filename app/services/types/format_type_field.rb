@@ -19,6 +19,6 @@ module Types
 
     private
 
-      attr :content
+      attr_reader :content
   end
 end

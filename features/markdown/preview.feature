@@ -49,6 +49,6 @@ Feature: Preview markdown
   Scenario: Previewing users markdown
     Given I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in the markdown textarea with "@user" followed by my user id
+    When I fill in the markdown textarea with "@user" followed by the user id of "Archibald"
     And I press "Rerender preview"
     Then I should see a link to the user page for "Archibald"

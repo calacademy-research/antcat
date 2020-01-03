@@ -32,8 +32,7 @@ module References
 
     private
 
-      attr :table_refs
-      attr_reader :reference, :predicate
+      attr_reader :table_refs, :reference, :predicate
 
       delegate :nestees, :citations, :id, to: :reference
 

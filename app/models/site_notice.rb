@@ -1,11 +1,13 @@
 class SiteNotice < ApplicationRecord
   include Trackable
 
+  TITLE_MAX_LENGTH = 100
+
   belongs_to :user
 
   validates :user, presence: true
   validates :message, presence: true
-  validates :title, presence: true, length: { maximum: 70 }
+  validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }
 
   scope :order_by_date, -> { order(created_at: :desc) }
 

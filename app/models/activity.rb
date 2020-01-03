@@ -2,8 +2,6 @@
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 
 class Activity < ApplicationRecord
-  include FilterableWhere
-
   EDIT_SUMMARY_MAX_LENGTH = 255
   ACTIONS = %w[
     create
@@ -42,6 +40,13 @@ class Activity < ApplicationRecord
 
   validates :action, presence: true, inclusion: { in: ACTIONS }
 
+  scope :filter_where, ->(filter_params) do
+    results = where(nil)
+    filter_params.each do |key, value|
+      results = results.where(key => value) if value.present?
+    end
+    results
+  end
   scope :ids_desc, -> { order(id: :desc) }
   scope :most_recent, ->(number = 5) { ids_desc.limit(number) }
   scope :non_automated_edits, -> { where(automated_edit: false) }

@@ -8,9 +8,9 @@
     .small-6.medium-4.large-2.columns
       =text_field_tag :q, params[:q], placeholder: "Search query"
     .small-6.medium-4.large-2.columns
-      =select_tag :taxon_type, options_for_select(Taxon::TYPES, params[:taxon_type]), include_blank: "Any Taxon Type"
+      =select_tag :taxon_type, options_for_select(Taxon::TYPES, params[:taxon_type]), include_blank: "Taxon rank"
     .small-6.medium-4.large-2.columns
-      =select_tag :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), include_blank: "Any Taxon Status"
+      =select_tag :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), include_blank: "Taxon status"
     .small-6.medium-4.large-2.columns
       =per_page_select TaxonHistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-4.large-2.columns.end
@@ -28,6 +28,7 @@
     %tr
       %th ID
       %th Taxon
+      %th Taxon status
       %th Taxt
   -if @taxon_history_items.empty?
     %tr
@@ -36,6 +37,7 @@
     %tr
       %td=link_to "##{history_item.id}", history_item
       %td=history_item.taxon.link_to_taxon
+      %td=history_item.taxon.status
       %td=Detax[history_item.taxt]
 
 =will_paginate @taxon_history_items

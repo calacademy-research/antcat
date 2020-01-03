@@ -58,11 +58,11 @@ module Comments
       # TODO: Improve and move somewhere.
       def notify_creator?
         # These are the only models for which we want to notify the creator about.
-        return unless commentable.class.in? [Issue, SiteNotice, Feedback]
+        return false unless commentable.class.in? [Issue, SiteNotice, Feedback]
 
         # Unregistered users can submit feedback, but we only want to
         # notify submitters who are registered users.
-        return if commentable.is_a?(Feedback) && commentable.user.blank?
+        return false if commentable.is_a?(Feedback) && commentable.user.blank?
         true
       end
 

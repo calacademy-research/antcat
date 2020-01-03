@@ -5,9 +5,9 @@ describe References::Cache::Regenerate do
     let!(:reference) { create :article_reference }
 
     it "calls `ReferenceDecorator` to get the value" do
-      expect(reference.plain_text_cache).to be_nil
-      expect(reference.expandable_reference_cache).to be_nil
-      expect(reference.expanded_reference_cache).to be_nil
+      expect(reference.plain_text_cache).to eq nil
+      expect(reference.expandable_reference_cache).to eq nil
+      expect(reference.expanded_reference_cache).to eq nil
 
       decorated = reference.decorate
       generated_plain_text_cache = decorated.send :generate_plain_text

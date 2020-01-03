@@ -5,26 +5,21 @@ module Wikipedia
   class CiteTemplate
     include Service
 
-    def initialize taxon, with_ref_tag: false
+    def initialize taxon
       @taxon = taxon
-      @with_ref_tag = with_ref_tag
     end
 
     def call
-      if with_ref_tag
-        %(<ref name="AntCat">#{cite_template}</ref>)
-      else
-        cite_template
-      end
+      %(<ref name="AntCat">#{cite_template}</ref>)
     end
 
     private
 
-      attr_reader :taxon, :with_ref_tag
+      attr_reader :taxon
 
       def cite_template
         <<-TEMPLATE.squish
-           {{AntCat|#{taxon.id}|#{taxon_name}|#{year}|accessdate=#{accessdate}}}
+          {{AntCat|#{taxon.id}|#{taxon_name}|#{year}|accessdate=#{accessdate}}}
         TEMPLATE
       end
 

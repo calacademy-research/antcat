@@ -1,10 +1,16 @@
 module PaperTrail
   class Version < ApplicationRecord
     include PaperTrail::VersionConcern
-    include FilterableWhere
 
     belongs_to :change
 
+    scope :filter_where, ->(filter_params) do
+      results = where(nil)
+      filter_params.each do |key, value|
+        results = results.where(key => value) if value.present?
+      end
+      results
+    end
     scope :without_user_versions, -> { where.not(item_type: "User") }
 
     def self.search(search_query, search_type)

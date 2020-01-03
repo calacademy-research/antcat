@@ -40,4 +40,52 @@ describe TableRef do
       specify { expect(table_ref.detax).to eq "&ndash;" }
     end
   end
+
+  describe '#owner' do
+    subject(:table_ref) { described_class.new(table, "_field", id) }
+
+    let(:id) { object.id }
+
+    context "when table is `citations`" do
+      let(:table) { "citations" }
+      let(:object) { create(:protonym).authorship }
+
+      specify { expect(table_ref.owner).to eq object.protonym }
+    end
+
+    context "when table is `protonyms`" do
+      let(:table) { "protonyms" }
+      let!(:object) { create :protonym }
+
+      specify { expect(table_ref.owner).to eq object }
+    end
+
+    context "when table is `reference_sections`" do
+      let(:table) { "reference_sections" }
+      let!(:object) { create :reference_section }
+
+      specify { expect(table_ref.owner).to eq object.taxon }
+    end
+
+    context "when table is `references`" do
+      let(:table) { "references" }
+      let!(:object) { create :article_reference }
+
+      specify { expect(table_ref.owner).to eq object }
+    end
+
+    context "when table is `taxa`" do
+      let(:table) { "taxa" }
+      let!(:object) { create :family }
+
+      specify { expect(table_ref.owner).to eq object }
+    end
+
+    context "when table is `taxon_history_items`" do
+      let(:table) { "taxon_history_items" }
+      let!(:object) { create :taxon_history_item }
+
+      specify { expect(table_ref.owner).to eq object.taxon }
+    end
+  end
 end

@@ -41,7 +41,7 @@ describe CommentsController do
     end
   end
 
-  describe 'POST update' do
+  describe 'PUT update' do
     let!(:comment) { create :comment }
     let!(:comment_params) do
       {

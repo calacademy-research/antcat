@@ -1,7 +1,7 @@
 class ReferenceSectionsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100]
 
-  before_action :ensure_user_is_at_least_helper, except: [:show, :index]
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_taxon, only: [:new, :create]
   before_action :set_reference_section, only: [:show, :edit, :update, :destroy]
@@ -20,6 +20,20 @@ class ReferenceSectionsController < ApplicationController
     @reference_section = @taxon.reference_sections.new
   end
 
+  def create
+    @reference_section = @taxon.reference_sections.new(reference_section_params)
+
+    if @reference_section.save
+      @reference_section.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      redirect_to edit_taxa_path(@reference_section.taxon), notice: "Successfully added reference section."
+    else
+      render :new
+    end
+  end
+
+  def edit
+  end
+
   def update
     updated = @reference_section.update(reference_section_params)
 
@@ -36,20 +50,6 @@ class ReferenceSectionsController < ApplicationController
           render :edit
         end
       end
-    end
-  end
-
-  def edit
-  end
-
-  def create
-    @reference_section = @taxon.reference_sections.new(reference_section_params)
-
-    if @reference_section.save
-      @reference_section.create_activity :create, current_user, edit_summary: params[:edit_summary]
-      redirect_to edit_taxa_path(@reference_section.taxon), notice: "Successfully added reference section."
-    else
-      render :new
     end
   end
 

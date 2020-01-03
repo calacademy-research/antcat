@@ -21,7 +21,7 @@ module Types
 
     private
 
-      attr :content
+      attr_reader :content
 
       def expand_institution_abbreviations!
         content.gsub!(/\b(#{institutions_regex})#{STOP_REGEX}/) do |abbr|

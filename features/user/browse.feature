@@ -17,7 +17,7 @@ Feature: Browse
     And I should see "No comments"
 
   Scenario: See user's most recent feed activities
-    Given there is a "destroy" journal activity
+    Given there is a "destroy" journal activity by "Batiatus"
 
     When I go to the user page for "Batiatus"
     Then I should see "Batiatus's most recent activity"

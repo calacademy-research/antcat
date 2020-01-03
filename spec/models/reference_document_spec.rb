@@ -76,7 +76,7 @@ describe ReferenceDocument do
 
       it "does nothing" do
         document.host = 'localhost'
-        expect(document.url).to be_nil
+        expect(document.url).to eq nil
       end
     end
 

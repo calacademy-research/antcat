@@ -34,8 +34,11 @@
           %th Authorship
           %td=@protonym.authorship.reference.decorate.expandable_reference
         %tr
-          %th Pages and forms
-          %td=@protonym.decorate.format_pages_and_forms
+          %th Pages
+          %td=@protonym.authorship.pages
+        %tr
+          %th Forms
+          %td=or_dash @protonym.authorship.forms
         %tr
           %th Biogeographic region
           %td=@protonym.biogeographic_region
@@ -69,7 +72,11 @@
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.rank.capitalize
-            %td=taxon.status.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::TaxonStatus::SELF_STATUSES)
+                %br
+                %small=taxon.decorate.taxon_status
             %td
               -if taxon.original_combination?
                 Original combination

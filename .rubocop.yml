@@ -14,41 +14,17 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
 
-Rails:
-  Enabled: true
+### FactoryBot.
 
-Rails/BulkChangeTable:
-  Enabled: false
+FactoryBot/CreateList:
+  EnforcedStyle: n_times
 
-Rails/Delegate:
-  Enabled: false
-
-Rails/DynamicFindBy:
-  Whitelist: find_by_sql
-
-Rails/InverseOf:
-  Enabled: false
-
-Rails/OutputSafety:
-  Enabled: false
-
-Rails/RakeEnvironment:
-  Enabled: false
-
-Rails/SkipsModelValidations:
-  Exclude:
-    - 'spec/**/*'
+### Layout.
 
 Layout/ArgumentAlignment:
   Enabled: false
 
 Layout/ArrayAlignment:
-  Enabled: false
-
-Layout/HashAlignment:
-  Enabled: false
-
-Layout/ParameterAlignment:
   Enabled: false
 
 Layout/BlockAlignment:
@@ -63,18 +39,26 @@ Layout/DotPosition:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
+Layout/FirstHashElementIndentation:
+  Enabled: false
+
+Layout/HashAlignment:
+  Enabled: false
+
 Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: indented_internal_methods
-
-Layout/FirstHashElementIndentation:
-  Enabled: false
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
+
+Layout/ParameterAlignment:
+  Enabled: false
+
+### Lint.
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
@@ -83,6 +67,36 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+# Metrics.
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+    - 'config/routes.rb'
+    - 'config/environments/**/*'
+
+Metrics/ClassLength:
+  Max: 180
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 160
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Max: 17
+
+### Naming.
+
 Naming/AccessorMethodName:
   Enabled: false
 
@@ -90,8 +104,28 @@ Naming/VariableNumber:
   Exclude:
     - 'spec/**/*'
 
-FactoryBot/CreateList:
-  EnforcedStyle: n_times
+### Rails.
+
+Rails:
+  Enabled: true
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/Delegate:
+  Enabled: false
+
+Rails/InverseOf:
+  Enabled: false
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'spec/**/*'
+
+### RSpec.
 
 RSpec/EmptyExampleGroup:
   Enabled: false
@@ -118,6 +152,8 @@ RSpec/NestedGroups:
 RSpec/NotToNot:
   Enabled: false
 
+### Style.
+
 Style/Alias:
   Enabled: false
 
@@ -125,9 +161,6 @@ Style/AndOr:
   EnforcedStyle: conditionals
 
 Style/AsciiComments:
-  Enabled: false
-
-Style/Attr:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -186,29 +219,3 @@ Style/SymbolArray:
 
 Style/WordArray:
   Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*'
-    - 'config/routes.rb'
-    - 'config/environments/**/*'
-
-Metrics/ClassLength:
-  Max: 170
-
-Metrics/CyclomaticComplexity:
-  Enabled: false
-
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/PerceivedComplexity:
-  Max: 17
-
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 160

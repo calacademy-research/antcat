@@ -8,6 +8,8 @@ class ReferenceSection < ApplicationRecord
 
   validates :taxon, presence: true
 
+  before_validation :cleanup_taxts
+
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:title_taxt, :subtitle_taxt, :references_taxt], replace_newlines: true
@@ -29,4 +31,12 @@ class ReferenceSection < ApplicationRecord
         OR subtitle_taxt #{search_type} :q
     SQL
   end
+
+  private
+
+    def cleanup_taxts
+      self.references_taxt = Taxt::Cleanup[references_taxt]
+      self.subtitle_taxt = Taxt::Cleanup[subtitle_taxt]
+      self.title_taxt = Taxt::Cleanup[title_taxt]
+    end
 end

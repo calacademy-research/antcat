@@ -21,6 +21,17 @@ class DatabaseScriptDecorator < Draper::Decorator
     "#{GITHUB_MASTER_URL}/#{scripts_path}/#{filename_without_extension}.rb"
   end
 
+  def empty_status
+    return '??' unless database_script.respond_to?(:results)
+    return 'Excluded (slow/list)' if database_script.tags.include?('list') || database_script.slow?
+
+    if database_script.results.any?
+      'Not empty'
+    else
+      'Empty'
+    end
+  end
+
   private
 
     def self.tag_css_class tag

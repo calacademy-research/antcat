@@ -6,16 +6,27 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :type_taxt
+        t.header :taxon, :status, :type_taxt, :common_taxt?
         t.rows do |taxon|
+          type_taxt = taxon.type_taxt
+
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            Detax[taxon.type_taxt]
+            Detax[type_taxt],
+            ('Yes' if common_taxt?(type_taxt))
           ]
         end
       end
     end
+
+    private
+
+      def common_taxt? type_taxt
+        return true if type_taxt.in?([Protonym::BY_MONOTYPY, Protonym::BY_ORIGINAL_DESIGNATION])
+        return true if type_taxt =~ Protonym::BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
+        false
+      end
   end
 end
 

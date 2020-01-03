@@ -15,7 +15,7 @@ describe ReferenceForm do
       end
 
       specify do
-        expect(reference.bolton_key).to be nil
+        expect(reference.bolton_key).to eq nil
 
         described_class.new(reference, reference_params, original_params, request_host).save
 
@@ -110,7 +110,7 @@ describe ReferenceForm do
 
       it "checks possible duplication and add to errors, if any found" do
         expect(duplicate.errors).to be_empty
-        expect(described_class.new(duplicate, reference_params, original_params, request_host).save).to be nil
+        expect(described_class.new(duplicate, reference_params, original_params, request_host).save).to eq nil
         expect(duplicate.errors[:base].first).to include "This may be a duplicate of Fisher"
       end
     end

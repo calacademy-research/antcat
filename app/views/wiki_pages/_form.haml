@@ -2,7 +2,7 @@
   =javascript_include_tag "markdown_and_friends"
 
 =content_for :breadcrumbs_right do
-  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
+  =link_to "Hide/show markdown formatting help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
 .row{data: { show_hide_toggable_id: "help" }}
   .medium-12.columns
@@ -16,7 +16,7 @@
       .row
         .medium-8.columns.end
           =f.label :title
-          =f.text_field :title, { maxlength: 70 }
+          =f.text_field :title, maxlength: WikiPage::TITLE_MAX_LENGTH
 
       .row
         .medium-12.columns

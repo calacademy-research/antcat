@@ -33,7 +33,7 @@ module TaxonBrowser
         # Exception for subfamilies *only* containing genera that are
         # incertae sedis in that subfamily (that is Martialinae, #430173).
         def subfamily_with_valid_genera_incertae_sedis?
-          return unless tab_taxon.is_a? Subfamily
+          return false unless tab_taxon.is_a? Subfamily
           tab_taxon.genera_incertae_sedis_in.valid.exists?
         end
 
@@ -43,7 +43,7 @@ module TaxonBrowser
         # Changes "Formicinae tribes > ... > Lasius species > Lasius subgenera" to
         #         "Formicinae tribes > ... > Lasius > Lasius subgenera".
         def use_epithet_as_title?
-          return unless tab_taxon.is_a?(Tribe) || tab_taxon.is_a?(Genus)
+          return false unless tab_taxon.is_a?(Tribe) || tab_taxon.is_a?(Genus)
 
           display.in?([SUBTRIBES_IN_TRIBE, SUBTRIBES_IN_PARENT_TRIBE]) ||
             display.in?([ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS])
