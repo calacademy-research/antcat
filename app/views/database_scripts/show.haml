@@ -37,5 +37,11 @@
   .callout
     =@rendered
 
+%small.left
+  Soft-validated
+  =antcat_icon(@database_script.soft_validated? ? "check" : "nope")
+  Fix random
+  =antcat_icon(@database_script.fix_random? ? "check" : "nope")
+
 %small.right
   Script runtime: #{@render_duration} seconds
