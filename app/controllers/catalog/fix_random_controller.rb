@@ -1,6 +1,7 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
+      DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
       DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,

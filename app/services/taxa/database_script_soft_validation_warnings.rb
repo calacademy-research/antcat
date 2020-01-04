@@ -9,6 +9,7 @@ module Taxa
     DATABASE_SCRIPTS_TO_CHECK = [
       DatabaseScripts::ExtantTaxaInFossilGenera,
       DatabaseScripts::NonValidTaxaWithACurrentValidTaxonThatIsNotValid,
+      DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
       DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
       DatabaseScripts::PassThroughNamesWithTaxts,
