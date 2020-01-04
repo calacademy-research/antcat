@@ -11,9 +11,10 @@
       =number_field_tag :item_id, params[:item_id], placeholder: 'Item ID'
     .small-6.medium-4.large-2.columns
       =select_tag :event, options_for_select(%w[create destroy update], params[:event]), prompt: 'Event'
-    .small-6.medium-4.large-2.columns
+    .small-6.medium-4.large-2.columns.end
       =number_field_tag :change_id, params[:change_id], placeholder: 'Change ID'
 
+  .row
     .small-6.medium-4.large-2.columns
       =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP (slow)", "REGEXP"]], params[:search_type]), prompt: "Search type"
     .small-6.medium-4.large-2.columns
@@ -24,9 +25,6 @@
         =spinner_icon + "Filter"
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
-
-.callout
-  Total versions: #{@version_count} (#{Time.zone.now}).
 
 -if @versions.first
   .center-text
@@ -65,5 +63,8 @@
     -last_version_date = @versions.last.created_at
     %h5=time_ago_in_words last_version_date
     %h6=last_version_date
+
+%p
+  %small.right Total versions: #{@version_count} (#{Time.zone.now})
 
 =will_paginate @versions

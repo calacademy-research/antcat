@@ -27,3 +27,4 @@ related_scripts:
   - CurrentValidTaxonChains
   - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
   - NonValidTaxaWithACurrentValidTaxonThatIsNotValid
+  - NonValidTaxaWithJuniorSynonyms

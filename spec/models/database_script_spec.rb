@@ -25,25 +25,31 @@ describe DatabaseScript do
   describe "#cached_results" do
     let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
-    it "doesn't call `#result` more than once" do
-      expect(database_script).to receive(:results).once.and_return :stubbed
+    context 'when results is present' do
+      it "doesn't call `#result` more than once" do
+        expect(database_script).to receive(:results).once.and_return :stubbed
 
-      database_script.send :cached_results
-      database_script.send :cached_results
+        database_script.send :cached_results
+        database_script.send :cached_results
+      end
     end
 
-    it "handles nil" do
-      expect(database_script).to receive(:results).once.and_return nil
+    context 'when results is `nil`' do
+      it "doesn't call `#result` more than once" do
+        expect(database_script).to receive(:results).once.and_return nil
 
-      database_script.send :cached_results
-      database_script.send :cached_results
+        database_script.send :cached_results
+        database_script.send :cached_results
+      end
     end
 
-    it "handles false" do
-      expect(database_script).to receive(:results).once.and_return false
+    context 'when results is `false`' do
+      it "doesn't call `#result` more than once" do
+        expect(database_script).to receive(:results).once.and_return false
 
-      database_script.send :cached_results
-      database_script.send :cached_results
+        database_script.send :cached_results
+        database_script.send :cached_results
+      end
     end
 
     described_class.all.each do |database_script|
@@ -80,7 +86,7 @@ describe DatabaseScript do
     let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     describe "#to_param" do
-      it "is the filename without extension" do
+      it "returns the filename without extension" do
         expect(script.to_param).to eq "extant_taxa_in_fossil_genera"
       end
     end
@@ -88,7 +94,7 @@ describe DatabaseScript do
     describe "#title" do
       let(:script) { DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new }
 
-      it "can have a custom title" do
+      it "fetches the title from the END data" do
         expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
       end
 
@@ -99,7 +105,7 @@ describe DatabaseScript do
     end
 
     describe "#category" do
-      it "can have a category" do
+      it "fetches the category from the END data" do
         expect(script.category).to eq "Catalog"
       end
 
@@ -110,7 +116,7 @@ describe DatabaseScript do
     end
 
     describe "#tags" do
-      it "can have tags" do
+      it "fetches the tags from the END data" do
         expect(script.tags).to eq ["regression-test"]
       end
 
@@ -121,13 +127,18 @@ describe DatabaseScript do
     end
 
     describe "#issue_description" do
-      it "can have a description" do
+      it "fetches the issue description from the END data" do
         expect(script.issue_description).to eq "The parent of this taxon is fossil, but this taxon is extant."
+      end
+
+      it "defaults to nil" do
+        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
+        expect(script.issue_description).to eq nil
       end
     end
 
     describe "#description" do
-      it "can have a description" do
+      it "fetches the description from the END data" do
         expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
       end
 
@@ -138,14 +149,24 @@ describe DatabaseScript do
     end
 
     describe "#related_scripts" do
-      it "can have related scripts" do
-        end_data = HashWithIndifferentAccess.new(related_scripts: ['ExtantTaxaInFossilGenera'])
+      it "fetches the related scripts from the END data" do
+        end_data = HashWithIndifferentAccess.new(related_scripts: ['ValidSubspeciesInInvalidSpecies'])
         allow(script).to receive(:end_data).and_return end_data
-        expect(script.related_scripts.first).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+        expect(script.related_scripts.size).to eq 1
+        expect(script.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
+      end
+
+      context 'when the script itself is included in the related scripts' do
+        it "does not include itself (to make it easier to copy-paste related scripts)" do
+          end_data = HashWithIndifferentAccess.new(related_scripts: ['ValidSubspeciesInInvalidSpecies', 'ExtantTaxaInFossilGenera'])
+          allow(script).to receive(:end_data).and_return end_data
+          expect(script.related_scripts.size).to eq 1
+          expect(script.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
+        end
       end
 
       context 'when related scripts include a non-existing script' do
-        it "returns a bening value" do
+        it 'returns an "unfound database script"' do
           end_data = HashWithIndifferentAccess.new(related_scripts: ['CountriesInEurope'])
           allow(script).to receive(:end_data).and_return end_data
           related_script = script.related_scripts.first
@@ -157,6 +178,34 @@ describe DatabaseScript do
       it "defaults to an empty array" do
         allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
         expect(script.related_scripts).to eq []
+      end
+    end
+
+    describe '#statistics' do
+      context 'when script has no custom statistics' do
+        it 'returns default statistics' do
+          expect(script.statistics).to eq "Results: 0"
+        end
+
+        context 'when script has `hide_statistics`' do
+          it 'returns nil' do
+            end_data = HashWithIndifferentAccess.new(hide_statistics: true)
+            allow(script).to receive(:end_data).and_return end_data
+            expect(script.statistics).to eq nil
+          end
+        end
+      end
+
+      context 'when script has custom statistics' do
+        before do
+          def script.statistics
+            'Custom results'
+          end
+        end
+
+        it "returns the script's `#statistics`" do
+          expect(script.statistics).to eq 'Custom results'
+        end
       end
     end
   end

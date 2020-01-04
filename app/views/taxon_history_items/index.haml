@@ -1,6 +1,13 @@
 -@title = "Search History Items"
 -breadcrumb :search_taxon_history_items
 
+-content_for :breadcrumbs_right do
+  -# NOTE: Added as a downdown because that was less confusing.
+  .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} Other Search forms
+  #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+    %ul.no-bullet
+      %li=link_to "Search Reference Sections form", reference_sections_path, class: 'btn-normal'
+
 =form_tag request.path, method: :get do
   .row
     .small-6.medium-4.large-2.columns
@@ -15,7 +22,7 @@
       =per_page_select TaxonHistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-4.large-2.columns.end
       =button_tag type: "submit", name: nil, class: "btn-normal has-spinner" do
-        =spinner_icon + "Filter"
+        =spinner_icon + "Search " + search_icon
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 

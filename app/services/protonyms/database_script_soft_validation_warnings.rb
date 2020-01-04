@@ -1,3 +1,5 @@
+# TODO: DRY this and `Taxa::DatabaseScriptSoftValidationWarnings`.
+
 module Protonyms
   class DatabaseScriptSoftValidationWarnings
     include Service

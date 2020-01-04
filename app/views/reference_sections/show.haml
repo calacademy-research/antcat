@@ -1,15 +1,21 @@
 -@title = "Reference Section ##{@reference_section.id}"
 -breadcrumb :reference_section, @reference_section
 
--content_for :application do
-  =content_for :breadcrumbs_right do
-    -if user_is_at_least_helper?
-      =link_to "Edit", edit_reference_section_path(@reference_section), class: "btn-normal"
-    =link_to "History", reference_section_history_path(@reference_section), class: "btn-normal"
-    =activities_link_for_trackable @reference_section
+=content_for :breadcrumbs_right do
+  -if user_is_at_least_helper?
+    =link_to "Edit", edit_reference_section_path(@reference_section), class: "btn-normal"
+  =link_to "History", reference_section_history_path(@reference_section), class: "btn-normal"
+  =activities_link_for_trackable @reference_section
+  -if user_is_editor?
+    =link_to "Delete", reference_section_path(@reference_section), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+
+%p
+  This reference section belongs to
+  =@reference_section.taxon.decorate.link_to_taxon_with_author_citation
 
 -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
   -if @reference_section[field].present?
-    %h6=field.to_s
-    %p
-      =Detax[@reference_section[field]]
+    .callout
+      %h6=field.to_s
+      %p
+        =Detax[@reference_section[field]]

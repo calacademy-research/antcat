@@ -11,11 +11,11 @@ Feature: Taxon history items
     And I should see "typo of August"
 
     When I fill in "q" with "Forel"
-    And I press "Filter"
+    And I press "Search"
     Then I should see "typo of Forel"
     And I should not see "typo of August"
 
     When I fill in "q" with "asdasdasd"
-    And I press "Filter"
+    And I press "Search"
     Then I should not see "typo of Forel"
     And I should not see "typo of August"

@@ -21,26 +21,21 @@ module DatabaseScripts
         where("taxon_history_items.taxt REGEXP ?", "junior synonym").
         order(:name_cache).distinct
 
-      taxa.to_a.reject { |taxon| probably_valid? taxon }
-    end
-
-    def render
-      as_taxon_table # Call explicitly because `#results` is an array.
+      taxa.to_a.reject { |taxon| probably_valid? taxon.history_items }
     end
 
     private
 
-      def probably_valid? taxon
-        items = taxon.history_items
-        last_valid_indication(items) >= last_junior_synonym_indication(items)
+      def probably_valid? history_items
+        last_valid_indication(history_items) >= last_junior_synonym_indication(history_items)
       end
 
-      def last_junior_synonym_indication items
-        items.reverse.find { |item| item.taxt =~ /junior synonym/i }.position
+      def last_junior_synonym_indication history_items
+        history_items.reverse.find { |item| item.taxt =~ /junior synonym/i }.position
       end
 
-      def last_valid_indication items
-        items.reverse.find { |item| item.taxt =~ VALID_INDICATORS }.try(:position) || -1
+      def last_valid_indication history_items
+        history_items.reverse.find { |item| item.taxt =~ VALID_INDICATORS }.try(:position) || -1
       end
   end
 end

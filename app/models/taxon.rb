@@ -58,6 +58,7 @@ class Taxon < ApplicationRecord
   end
 
   belongs_to :name, dependent: :destroy
+  # TODO: Do not include authorship.
   belongs_to :protonym, -> { includes :authorship }
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
@@ -71,6 +72,7 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
+  validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
 
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
@@ -86,6 +88,7 @@ class Taxon < ApplicationRecord
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
+  scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
 

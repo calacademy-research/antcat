@@ -115,6 +115,7 @@
 
           -if current_user
             %span.show-on-hover
+              =link_to "Show", reference_section, class: "btn-normal btn-very-tiny"
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
@@ -126,6 +127,16 @@
       %li
         =obsolete_combination.link_to_taxon
         =obsolete_combination.author_citation
+        -if current_user && obsolete_combination.protonym != taxon.protonym
+          %span.logged-in-only-background
+            %small
+              %span.bold-warning
+                this obsolete combination does not have the same protonym as the current taxon
+              =surround "(", ")" do
+                =taxon.protonym.decorate.link_to_protonym
+                vs.
+                =obsolete_combination.protonym.decorate.link_to_protonym
+              =logged_in_only_tooltip_icon
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/780
 -if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?

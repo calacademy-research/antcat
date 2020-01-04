@@ -41,11 +41,11 @@ When("I press {string}") do |button_text|
 end
 
 When("I follow the first {string}") do |link_text|
-  first(:link, link_text).click
+  first(:link, link_text, exact: true).click
 end
 
 When("I follow the second {string}") do |link_text|
-  all(:link, link_text)[1].click
+  all(:link, link_text, exact: true)[1].click
 end
 
 When("I follow {string}") do |link_text|

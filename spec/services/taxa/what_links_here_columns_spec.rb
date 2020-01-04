@@ -14,7 +14,7 @@ describe Taxa::WhatLinksHereColumns do
 
     context "when taxon has no non-taxt references" do
       before do
-        create :family, type_taxt: "{tax #{taxon.id}}"
+        create :family, type_taxt: "{tax #{taxon.id}}", type_taxon: create(:family)
       end
 
       specify { expect(described_class[taxon, predicate: true]).to eq false }

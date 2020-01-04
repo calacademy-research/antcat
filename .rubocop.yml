@@ -196,6 +196,9 @@ Style/Lambda:
 Style/MethodDefParentheses:
   Enabled: false
 
+Style/MultilineBlockChain:
+  Enabled: false
+
 Style/MutableConstant:
   Enabled: false
 
