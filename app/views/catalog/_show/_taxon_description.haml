@@ -115,6 +115,7 @@
 
           -if current_user
             %span.show-on-hover
+              =link_to "Show", reference_section, class: "btn-normal btn-very-tiny"
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
