@@ -23,7 +23,7 @@ __END__
 
 title: Taxa with <code>type_taxt</code> but no type taxon
 category: Inline taxt
-tags: [new!]
+tags: [regression-test, validated]
 
 description: >
   Table/column: `taxa.type_taxt` (called "Notes" in the "Type" section of the taxon form)

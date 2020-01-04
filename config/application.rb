@@ -10,7 +10,7 @@ Bundler.require(*Rails.groups)
 module AntCat
   # TODO: Very primitive feature toggling.
   # Added to make is easier to disable 'Fix Random!' in case of performance issues.
-  SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG = true
+  SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG = true
 
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

@@ -12,7 +12,7 @@ module DatabaseScripts
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            ('Yes' if taxon.soft_validation_warnings.size.positive?)
+            ('Yes' if taxon.soft_validations.failed?)
           ]
         end
       end

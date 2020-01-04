@@ -8,6 +8,8 @@ class TaxonHistoryItem < ApplicationRecord
 
   before_validation :cleanup_taxts
 
+  scope :persisted, -> { where.not(id: nil) }
+
   acts_as_list scope: :taxon
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:taxt], replace_newlines: true

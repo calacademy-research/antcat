@@ -24,7 +24,7 @@ describe Taxa::WhatLinksHere do
 
     describe "references in taxt" do
       context "when there are references in taxts" do
-        let!(:other_taxon) { create :family, type_taxt: "{tax #{taxon.id}}" }
+        let!(:other_taxon) { create :family, type_taxt: "{tax #{taxon.id}}", type_taxon: create(:family) }
 
         specify do
           expect(described_class[taxon]).to match_array [

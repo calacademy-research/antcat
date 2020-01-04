@@ -1,0 +1,15 @@
+-@title = "#{@taxon.name_cache} - Soft validations"
+-breadcrumb :taxon_soft_validations, @taxon
+
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
+%p.margin-bottom
+  =antcat_icon(@soft_validations.failed? ? "nope" : "check")
+  =@taxon.link_to_taxon
+  -if @soft_validations.failed?
+    has soft validation issues.
+  -else
+    has no soft validation issues!
+
+=render 'shared/soft_validations_table', soft_validations: @soft_validations

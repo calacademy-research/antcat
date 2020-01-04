@@ -57,7 +57,14 @@ class ReferenceSectionsController < ApplicationController
     @reference_section.destroy
     @reference_section.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
-    render json: { success: true }
+    respond_to do |format|
+      format.json do
+        render json: { success: true }
+      end
+      format.html do
+        redirect_to catalog_path(@reference_section.taxon), notice: "Successfully deleted reference section."
+      end
+    end
   end
 
   private

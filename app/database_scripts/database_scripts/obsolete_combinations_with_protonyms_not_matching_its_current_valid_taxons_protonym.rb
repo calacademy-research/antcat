@@ -1,17 +1,31 @@
 module DatabaseScripts
   class ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym < DatabaseScript
     def results
-      taxa_with_obsolete_combinations.joins(:obsolete_combinations).
-        where("taxa.protonym_id <> obsolete_combinations_taxa.protonym_id").distinct
+      Taxon.obsolete_combinations.joins(:current_valid_taxon).
+        where("taxa.protonym_id <> current_valid_taxons_taxa.protonym_id").
+        includes(protonym: [:name], current_valid_taxon: { protonym: [:name] })
     end
 
-    private
+    def render
+      as_table do |t|
+        t.header :taxon, :status, :protonym, :current_valid_taxon_protonym, :current_valid_taxon, :current_valid_taxon_status
 
-      def taxa_with_obsolete_combinations
-        obsolete_combinations = Taxon.where.not(current_valid_taxon_id: nil).
-          where(status: Status::OBSOLETE_COMBINATION).select(:current_valid_taxon_id)
-        Taxon.where(id: obsolete_combinations)
+        t.rows do |taxon|
+          current_valid_taxon = taxon.current_valid_taxon
+
+          [
+            markdown_taxon_link(taxon),
+            taxon.status,
+
+            taxon.protonym.decorate.link_to_protonym,
+            current_valid_taxon.protonym.decorate.link_to_protonym,
+
+            markdown_taxon_link(current_valid_taxon),
+            current_valid_taxon.status
+          ]
+        end
       end
+    end
   end
 end
 
@@ -19,8 +33,14 @@ __END__
 
 title: Obsolete combinations with protonyms not matching its current valid taxon's protonym
 category: Catalog
-tags: [slow]
+tags: []
+
+issue_description: This obsolete combination and its `current_valid_taxon` do not share the same protonym.
 
 description: >
-  This script shows taxa that are set at the `current_valid_taxon` of other taxa.
-  Click on a taxon to see the obsolete combinations on the catalog page.
+  This script is the reverse of %dbscript:TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
+
+related_scripts:
+  - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
+  - SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon
+  - TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms

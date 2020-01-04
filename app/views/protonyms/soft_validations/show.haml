@@ -1,0 +1,15 @@
+-@title = "#{@protonym.name.name} - Soft validations"
+-breadcrumb :protonym_soft_validations, @protonym
+
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
+%p.margin-bottom
+  =antcat_icon(@soft_validations.failed? ? "nope" : "check")
+  =@protonym.decorate.link_to_protonym
+  -if @soft_validations.failed?
+    has soft validation issues.
+  -else
+    has no soft validation issues!
+
+=render 'shared/soft_validations_table', soft_validations: @soft_validations

@@ -1,3 +1,14 @@
+-# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
+-if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
+  -if taxon.soft_validations.failed?
+    #soft-validations-callout.callout.warning
+      %h6
+        =link_to 'Issues', taxon_soft_validations_path(taxon)
+        =logged_in_only_tooltip_icon
+        .right
+          =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
+      =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
+
 -if taxon.policy.show_create_combination_button?
   #additional-editor-data.callout.no-border-callout.logged-in-only-background
     %h6
@@ -16,17 +27,6 @@
           %li=error
       See also this issue on GitHub
       =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
-
--# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
--if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !taxon.is_a?(Family)
-  -if taxon.soft_validation_warnings.present?
-    #soft-validations.callout.warning
-      %h6
-        Issues
-        =logged_in_only_tooltip_icon
-        .right
-          =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
-      =render 'shared/soft_validation_warnings', soft_validation_warnings: taxon.soft_validation_warnings
 
 #additional-editor-data.callout.no-border-callout.logged-in-only-background
   %h6

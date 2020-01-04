@@ -129,7 +129,7 @@ body.is-reveal-open
 // | Green | Everything else, "ok whatever"   | .btn-normal
 //  ---------------------------------------------------------------------------
 
-.btn-normal, .btn-saves, .btn-warning, .btn-nodanger
+.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav
   @include normal-sized-button
 
 .btn-saves
@@ -150,6 +150,14 @@ body.is-reveal-open
   @include button-style(#fff, auto, #000)
   border: 1px solid #000 !important
   cursor: pointer
+
+.btn-lower-nav
+  @include button-style($color_primary, auto, auto)
+  border: 1px $color_pale solid
+  color: #fff
+
+  &:active, &:hover, &:focus
+    color: #fff
 
 // Make button styles work for links too. Some link button have the class ".button"
 // because I did not manage to align them buton button elements in any other way.

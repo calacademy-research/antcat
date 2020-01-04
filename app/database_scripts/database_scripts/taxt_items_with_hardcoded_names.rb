@@ -11,6 +11,10 @@ module DatabaseScripts
       models_and_ids.reject { |_model, ids| ids.empty? }
     end
 
+    def statistics
+      "Results: #{cached_results.values.sum(&:size)}"
+    end
+
     def render
       as_table do |t|
         t.header :item_type, :item_id

@@ -81,6 +81,8 @@ description: >
 
   This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
 
+hide_statistics: true # Because results are filtered in `#render`.
+
 related_scripts:
   - TaxaWithTypeTaxa
   - TaxaWithTypeTaxt

@@ -9,10 +9,11 @@
     =link_to 'New', new_institution_path, class: 'btn-normal'
 
 %table.tablesorter
-  %tr
-    %th.no-wrap Abbreviation
-    %th Name
-    %th.no-wrap.sorter-false
+  %thead
+    %tr
+      %th.no-wrap Abbreviation
+      %th Name
+      %th.no-wrap.sorter-false
   %tbody
     -@institutions.each do |institution|
       %tr

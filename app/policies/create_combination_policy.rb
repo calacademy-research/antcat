@@ -17,7 +17,7 @@ class CreateCombinationPolicy
 
     def validate! # rubocop:disable Metrics/PerceivedComplexity
       errors << 'taxon is not a species' unless taxon.is_a?(Species)
-      errors << 'taxon has soft-validation warnings' if taxon.soft_validation_warnings.present?
+      errors << 'taxon has soft validation issues' if taxon.soft_validations.failed?
       errors << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
       errors << 'taxon has infrasubspecices' if taxon.is_a?(Species) && taxon.infrasubspecies.exists?
       errors << 'taxon has infrasubspecices' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?

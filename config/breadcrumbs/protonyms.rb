@@ -23,4 +23,10 @@ end
     link "New"
     parent :protonyms
   end
+
+  crumb :protonym_soft_validations do |protonym|
+    link "Soft validations"
+    parent :protonym, protonym
+  end
+
 # rubocop:enable Layout/IndentationConsistency

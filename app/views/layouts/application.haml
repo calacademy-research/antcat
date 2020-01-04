@@ -39,7 +39,12 @@
           .row.collapse
             .small-12.columns
               =render "navigation"
-              =render "tagline"
+              .left=render "tagline"
+              -if current_user
+                .right.show-for-large
+                  =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav btn-tiny'
+                  =link_to "Activities", activities_path, class: 'btn-lower-nav btn-tiny'
+                  =link_to "Search History Items", taxon_history_items_path, class: 'btn-lower-nav btn-tiny'
 
         %section#content
           .row.collapse

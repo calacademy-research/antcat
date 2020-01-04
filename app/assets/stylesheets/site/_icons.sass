@@ -88,6 +88,10 @@ table.notifications
     @extend .fa-check
     color: $color_primary
 
+  &.nope
+    @extend .fa-close
+    color: $color_danger
+
   &.superadmin
     @extend .fa-unlock-alt
     color: #fff
@@ -124,13 +128,3 @@ table.notifications
   &.warning-icon
     @extend .fa-exclamation-triangle
     color: $color_danger
-
-table.tablesorter thead
-  th
-    cursor: pointer
-
-  th:before
-    margin-right: 0.4rem
-    @extend .fa
-    &:before
-      @extend .fa-sort

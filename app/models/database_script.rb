@@ -61,13 +61,13 @@ class DatabaseScript
              end
   end
 
+  # TODO: Indicate record type in scripts.
   def self.record_in_results? taxon
     new.results.where(id: taxon.id).exists?
   end
 
   def soft_validated?
-    self.class.in?(Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK) ||
-      self.class.in?(Protonyms::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK)
+    self.class.in?(SoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def fix_random?
@@ -97,7 +97,11 @@ class DatabaseScript
   def related_scripts
     (end_data[:related_scripts] || []).map do |class_name|
       self.class.safe_new_from_filename_without_extension class_name
-    end
+    end.reject { |database_script| database_script.is_a?(self.class) }
+  end
+
+  def statistics
+    @statistics ||= default_statistics
   end
 
   def slow?
@@ -117,15 +121,24 @@ class DatabaseScript
 
     def cached_results
       return @_results if defined? @_results
-
-      @_results = if respond_to? :results
-                    results
-                  end
+      @_results = results if respond_to?(:results)
     end
 
   private
 
     def script_path
       "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
+    end
+
+    def default_statistics
+      return if hide_statistics?
+      return unless respond_to? :results
+      count = cached_results.count
+      count = count.count if count.is_a?(Hash) # HACK: For grouped queries.
+      "Results: #{count}"
+    end
+
+    def hide_statistics?
+      end_data[:hide_statistics] || false
     end
 end

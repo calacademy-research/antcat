@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     resources :author_names, except: [:index, :show], shallow: true
   end
 
+  # TODO: Use `resources` et al.
   namespace :catalog do
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
@@ -40,6 +41,7 @@ Rails.application.routes.draw do
   get 'catalog/:id/tab/:tab_id' => 'catalog#tab', as: :catalog_tab
   get 'catalog/:id/history' => 'catalog/histories#show', as: :taxon_history
   get 'catalog/:id/what_links_here' => 'catalog/what_links_heres#show', as: :taxon_what_links_here
+  get 'catalog/:id/soft_validations' => 'catalog/soft_validations#show', as: :taxon_soft_validations
 
   get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
 
@@ -106,6 +108,7 @@ Rails.application.routes.draw do
         resource :autocomplete, only: :show
       end
       resource :history, only: :show
+      resource :soft_validations, only: :show
     end
   end
   namespace :protonyms do

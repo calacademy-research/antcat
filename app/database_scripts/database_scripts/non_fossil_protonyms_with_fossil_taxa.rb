@@ -23,13 +23,17 @@ __END__
 title: Non-fossil protonyms with fossil taxa
 category: Protonyms
 
-issue_description: (possibly ok) This protonym is not fossil, but one of its taxa is.
+issue_description: This protonym is not fossil, but one of its taxa is.
 
 description: >
   This is not necessarily incorrect.
+
+
+  This script is the reverse of %dbscript:FossilTaxaWithNonFossilProtonyms
 
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms
+  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

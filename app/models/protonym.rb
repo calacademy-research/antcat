@@ -1,3 +1,5 @@
+# TODO: Add rank to make validations easier.
+
 class Protonym < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
@@ -37,8 +39,8 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.format_name } }
 
-  def soft_validation_warnings
-    @soft_validation_warnings ||= Protonyms::DatabaseScriptSoftValidationWarnings[self]
+  def soft_validations
+    @soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   private

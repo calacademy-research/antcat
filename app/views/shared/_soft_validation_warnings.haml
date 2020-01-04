@@ -1,7 +1,0 @@
-%ul
-  -soft_validation_warnings.each do |warning|
-    %li
-      =sanitize(warning[:message])
-      -database_script = warning[:database_script]
-      -if database_script
-        =link_to 'See more similiar.', database_script_path(database_script), title: database_script.title
