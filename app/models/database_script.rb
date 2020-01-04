@@ -61,6 +61,7 @@ class DatabaseScript
              end
   end
 
+  # TODO: Indicate record type in scripts.
   def self.record_in_results? taxon
     new.results.where(id: taxon.id).exists?
   end

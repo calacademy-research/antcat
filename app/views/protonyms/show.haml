@@ -17,7 +17,7 @@
       .medium-9.columns
         #soft-validations-callout.callout.warning
           %h6
-            Issues
+            =link_to 'Issues', protonym_soft_validations_path(@protonym)
             =logged_in_only_tooltip_icon
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 

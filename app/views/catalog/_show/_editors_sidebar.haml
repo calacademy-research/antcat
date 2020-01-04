@@ -3,7 +3,7 @@
   -if taxon.soft_validations.failed?
     #soft-validations-callout.callout.warning
       %h6
-        Issues
+        =link_to 'Issues', taxon_soft_validations_path(taxon)
         =logged_in_only_tooltip_icon
         .right
           =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'

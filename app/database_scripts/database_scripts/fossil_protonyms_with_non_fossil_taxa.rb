@@ -24,10 +24,13 @@ title: Fossil protonyms with non-fossil taxa
 category: Protonyms
 tags: []
 
-issue_description: (possibly ok) This protonym is fossil, but one of its taxa is extant.
+issue_description: This protonym is fossil, but one of its taxa is extant.
 
 description: >
   This is not necessarily incorrect.
+
+
+  This script is the reverse of %dbscript:NonFossilTaxaWithFossilProtonyms
 
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa

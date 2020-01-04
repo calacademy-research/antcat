@@ -57,6 +57,13 @@ describe SoftValidations do
 
       describe '#failed?' do
         context 'when taxon is an extant species in a fossil genus' do
+          let(:scripts_to_check) do
+            [
+              DatabaseScripts::ExtantTaxaInFossilGenera,
+              DatabaseScripts::TaxaWithNonModernCapitalization
+            ]
+          end
+
           specify do
             expect { taxon_with_issues.update!(fossil: true) }.to change { soft_validations.call.failed? }.from(true).to(false)
           end

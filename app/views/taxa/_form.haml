@@ -16,7 +16,7 @@
 
   -if taxon.soft_validations.failed?
     #soft-validations-callout.callout.warning.small-12.medium-6
-      %h6 Issues
+      %h6=link_to 'Issues', taxon_soft_validations_path(taxon)
       %p These issues will not prevent you from saving the form. Just so you know :)
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
