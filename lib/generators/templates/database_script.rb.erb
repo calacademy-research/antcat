@@ -6,17 +6,17 @@ module DatabaseScripts
 
     # When this method isn't implemented, the code tries to figure out
     # how to render `#results` based on its class.
-    # def render
-    #   as_table do |t|
-    #     t.header :taxon, :status
-    #     t.rows do |taxon|
-    #       [
-    #         markdown_taxon_link(taxon),
-    #         taxon.status
-    #       ]
-    #     end
-    #   end
-    # end
+    def render
+      as_table do |t|
+        t.header :taxon, :status
+        t.rows do |taxon|
+          [
+            markdown_taxon_link(taxon),
+            taxon.status
+          ]
+        end
+      end
+    end
   end
 end
 

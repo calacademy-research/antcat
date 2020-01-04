@@ -49,4 +49,4 @@
   =antcat_icon(@database_script.fix_random? ? "check" : "nope")
 
 %small.right
-  Script runtime: #{@render_duration} seconds
+  Script runtime including rendering: #{@render_duration.round(4)} seconds
