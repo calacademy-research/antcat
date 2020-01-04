@@ -47,3 +47,7 @@ title: Non-standard reference sections
 category: Taxt
 
 description: See %github452 for why we want this.
+
+related_scripts:
+  - NonStandardReferenceSections
+  - ReferenceSectionTaxts
