@@ -9,16 +9,17 @@
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
+  =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
--if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG
-  -if current_user && @protonym.soft_validation_warnings.present?
-    .row
+-if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
+  -if current_user && @protonym.soft_validations.failed?
+    .row.margin-bottom
       .medium-9.columns
-        #soft-validations.callout.warning
+        #soft-validations-callout.callout.warning
           %h6
             Issues
             =logged_in_only_tooltip_icon
-          =render 'shared/soft_validation_warnings', soft_validation_warnings: @protonym.soft_validation_warnings
+          =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
 .row.margin-bottom
   .small-12.columns

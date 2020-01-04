@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :target_subspecies_validation_warnings
+        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :target_subspecies_validation_issues
 
         t.rows do |taxon|
           name_string = taxon.name_cache
@@ -22,7 +22,7 @@ module DatabaseScripts
             target_subspecies_name_string,
             ('Yes' if convertable),
             (target_subspecies.link_to_taxon if convertable),
-            (format_soft_validation_warnings(target_subspecies) if convertable && target_subspecies.soft_validation_warnings.present?)
+            (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?)
           ]
         end
       end
@@ -30,8 +30,8 @@ module DatabaseScripts
 
     private
 
-      def format_soft_validation_warnings target_subspecies
-        target_subspecies.soft_validation_warnings.map { |warning| warning[:message] }.join('<br><br>')
+      def format_failed_soft_validations target_subspecies
+        target_subspecies.soft_validations.failed.map(&:issue_description).join('<br><br>')
       end
   end
 end
@@ -52,7 +52,7 @@ description: >
 
   * Step 2) Recreate missing subspecies by script
 
-  * Step 3) Cleanup recreated subspecies (see "Target subspecies has soft validation warnings?")
+  * Step 3) Cleanup recreated subspecies (see "Target subspecies has soft validation issues?")
 
   * Step 4) Convert batch 2: Quadrinomials where a `Subspecies` with the target name exists after missing subspecies were recreated
 
