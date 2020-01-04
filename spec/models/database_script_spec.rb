@@ -180,5 +180,33 @@ describe DatabaseScript do
         expect(script.related_scripts).to eq []
       end
     end
+
+    describe '#statistics' do
+      context 'when script has no custom statistics' do
+        it 'returns default statistics' do
+          expect(script.statistics).to eq "Results: 0"
+        end
+
+        context 'when script has `hide_statistics`' do
+          it 'returns nil' do
+            end_data = HashWithIndifferentAccess.new(hide_statistics: true)
+            allow(script).to receive(:end_data).and_return end_data
+            expect(script.statistics).to eq nil
+          end
+        end
+      end
+
+      context 'when script has custom statistics' do
+        before do
+          def script.statistics
+            'Custom results'
+          end
+        end
+
+        it "returns the script's `#statistics`" do
+          expect(script.statistics).to eq 'Custom results'
+        end
+      end
+    end
   end
 end

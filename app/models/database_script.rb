@@ -100,6 +100,10 @@ class DatabaseScript
     end.reject { |database_script| database_script.is_a?(self.class) }
   end
 
+  def statistics
+    @statistics ||= default_statistics
+  end
+
   def slow?
     tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
   end
@@ -124,5 +128,17 @@ class DatabaseScript
 
     def script_path
       "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
+    end
+
+    def default_statistics
+      return if hide_statistics?
+      return unless respond_to? :results
+      count = cached_results.count
+      count = count.count if count.is_a?(Hash) # HACK: For grouped queries.
+      "Results: #{count}"
+    end
+
+    def hide_statistics?
+      end_data[:hide_statistics] || false
     end
 end

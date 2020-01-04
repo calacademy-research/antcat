@@ -33,6 +33,11 @@
             =link_to related_script.title, database_script_path(related_script)
             =DatabaseScriptDecorator.new(related_script).format_tags
 
+  -if @database_script.statistics
+    .medium-4.columns
+      .callout.no-border-callout.logged-in-only-background
+        %p.small-text=@database_script.statistics
+
 .row.column
   .callout
     =@rendered

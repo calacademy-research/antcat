@@ -8,6 +8,13 @@ module DatabaseScripts
       Taxon.where(id: valid_species_with_valid_subspecies - species_with_subspecies_history_items)
     end
 
+    def statistics
+      <<~HTML.html_safe
+        List #1 results: #{with_history_item_but_not_in_database.count}<br>
+        List #2 results: #{in_database_but_no_history_item.count}
+      HTML
+    end
+
     def render
       as_table do |t|
         t.caption "List #1: Subspecies list in history items, but no subspecies from database (valid species with valid subspecies)"
