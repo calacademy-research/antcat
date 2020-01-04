@@ -4,7 +4,7 @@ describe Catalog::FixRandomController do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do
     it 'only includes database scripts also in `DATABASE_SCRIPTS_TO_CHECK` (to make issues visible in catalog pages)' do
       randomizable = described_class::DATABASE_SCRIPTS_TO_CHECK
-      soft_validated = Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK
+      soft_validated = SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK
       expect(randomizable - soft_validated).to eq []
 
       # Sanity check.

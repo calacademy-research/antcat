@@ -14,11 +14,11 @@
 
   =render 'shared/errors_for', resource: taxon
 
-  -if taxon.soft_validation_warnings.present?
-    #soft-validations.callout.warning.small-12.medium-6
-      %h6 Issues
+  -if taxon.soft_validations.failed?
+    #soft-validations-callout.callout.warning.small-12.medium-6
+      %h6=link_to 'Issues', taxon_soft_validations_path(taxon)
       %p These issues will not prevent you from saving the form. Just so you know :)
-      =render 'shared/soft_validation_warnings', soft_validation_warnings: taxon.soft_validation_warnings
+      =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   .callout
     =render 'taxa/_form/main_form',        taxon: taxon, form: form, default_name_string: default_name_string

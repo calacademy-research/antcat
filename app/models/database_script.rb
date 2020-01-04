@@ -61,13 +61,13 @@ class DatabaseScript
              end
   end
 
+  # TODO: Indicate record type in scripts.
   def self.record_in_results? taxon
     new.results.where(id: taxon.id).exists?
   end
 
   def soft_validated?
-    self.class.in?(Taxa::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK) ||
-      self.class.in?(Protonyms::DatabaseScriptSoftValidationWarnings::DATABASE_SCRIPTS_TO_CHECK)
+    self.class.in?(SoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def fix_random?
