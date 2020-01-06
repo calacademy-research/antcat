@@ -6,6 +6,7 @@ class Taxon < ApplicationRecord
   include Trackable
 
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
