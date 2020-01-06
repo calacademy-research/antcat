@@ -69,6 +69,7 @@
           %th Rank
           %th Status
           %th
+          %th
         -@protonym.taxa.each do |taxon|
           %tr
             %td=taxon.link_to_taxon
@@ -82,6 +83,11 @@
               -if taxon.original_combination?
                 Original combination
                 =antcat_icon 'check'
+            %td
+              -if taxon.type_taxon
+                %small
+                  =taxon.decorate.type_taxon_rank
+                  =taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt]
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/702
 -if current_user
