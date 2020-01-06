@@ -1,7 +1,23 @@
 module DatabaseScripts
   class UnavailableUncategorizedTaxa < DatabaseScript
     def results
-      Taxon.where(status: Status::UNAVAILABLE_UNCATEGORIZED)
+      Taxon.where(status: Status::UNAVAILABLE_UNCATEGORIZED).includes(:current_valid_taxon)
+    end
+
+    def render
+      as_table do |t|
+        t.header :taxon, :status, :current_valid_taxon, :current_valid_taxon_status
+        t.rows do |taxon|
+          current_valid_taxon = taxon.current_valid_taxon
+
+          [
+            markdown_taxon_link(taxon),
+            taxon.status,
+            markdown_taxon_link(current_valid_taxon),
+            current_valid_taxon.status
+          ]
+        end
+      end
     end
   end
 end

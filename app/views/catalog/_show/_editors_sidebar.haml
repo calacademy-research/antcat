@@ -5,8 +5,6 @@
       %h6
         =link_to 'Issues', taxon_soft_validations_path(taxon)
         =logged_in_only_tooltip_icon
-        .right
-          =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
 -if taxon.policy.show_create_combination_button?
