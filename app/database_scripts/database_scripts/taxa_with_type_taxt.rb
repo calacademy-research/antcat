@@ -43,12 +43,9 @@ description: >
   This script was mainly added to investigate how we use the different "inline taxt columns".
 
 
-  This list contain the same records as the two scripts below (which serve different purposes):
+  This list contain the same records as %dbscript:TaxaWithTypeTaxtAndATypeTaxon which was added for
+  investigating "type taxon now" links.
 
-
-  * Added for investigating "type taxon now" links: %dbscript:TaxaWithTypeTaxtAndATypeTaxon
-
-  * Script that should be fixed: %dbscript:TaxaWithTypeTaxtButNoTypeTaxon
 
 related_scripts:
   - ProtonymsWithNotesTaxt
@@ -61,4 +58,3 @@ related_scripts:
   - TypeTaxaWithIssues
 
   - TaxaWithTypeTaxtAndATypeTaxon
-  - TaxaWithTypeTaxtButNoTypeTaxon

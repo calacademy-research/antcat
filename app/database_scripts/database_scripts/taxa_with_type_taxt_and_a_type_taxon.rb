@@ -51,10 +51,6 @@ description: >
 
   "Different?" indicates that the type taxon is not the same as "type taxon now" (not a real thing, yet).
 
-
-  Records without a type taxon are excluded (see %dbscript:TaxaWithTypeTaxtButNoTypeTaxon).
-
 related_scripts:
   - TaxaWithTypeTaxt
   - TaxaWithTypeTaxtAndATypeTaxon
-  - TaxaWithTypeTaxtButNoTypeTaxon
