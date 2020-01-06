@@ -21,9 +21,9 @@
           %td=taxon.rank.capitalize
           %td
             =taxon.status.capitalize
-            -unless taxon.status.in?(Taxa::TaxonStatus::SELF_STATUSES)
+            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
               %br
-              %small=taxon.decorate.taxon_status
+              %small=taxon.expanded_status
           %td
             -if taxon.original_combination?
               Original combination

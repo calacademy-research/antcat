@@ -157,6 +157,10 @@ class Taxon < ApplicationRecord
     name.name_with_fossil_html fossil?
   end
 
+  def expanded_status
+    Taxa::ExpandedStatus[self]
+  end
+
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
 

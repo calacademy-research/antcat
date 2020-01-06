@@ -1,5 +1,5 @@
 module Taxa
-  class TaxonStatus
+  class ExpandedStatus
     include Service
 
     SELF_STATUSES = [

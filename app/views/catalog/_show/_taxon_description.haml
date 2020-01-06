@@ -1,7 +1,7 @@
 .header
   %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
-  =taxon.decorate.taxon_status
+  =taxon.expanded_status
   =taxon.name.gender
 
 .headline
@@ -94,7 +94,7 @@
           %li
             =species.link_to_taxon
             =species.author_citation
-            %span.small-text=species.decorate.taxon_status
+            %span.small-text=species.expanded_status
 
 -if is_formicidae_landing_page
   %br
@@ -187,4 +187,4 @@
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
-            %span.small-text=subspecies.decorate.taxon_status
+            %span.small-text=subspecies.expanded_status
