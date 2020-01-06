@@ -39,6 +39,15 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.format_name } }
 
+  # TODO: This is "hmm", but I don't want to add it to `Taxon`, so it will live here for now.
+  # Migrating all type data will take some time (a lot).
+  def self.common_type_taxt? type_taxt
+    return true unless type_taxt
+    return true if type_taxt.in?([BY_MONOTYPY, BY_ORIGINAL_DESIGNATION])
+    return true if type_taxt =~ BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
+    false
+  end
+
   def soft_validations
     @soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
   end

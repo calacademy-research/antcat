@@ -14,19 +14,11 @@ module DatabaseScripts
             markdown_taxon_link(taxon),
             taxon.status,
             Detax[type_taxt],
-            ('Yes' if common_taxt?(type_taxt))
+            ('Yes' if Protonym.common_type_taxt?(type_taxt))
           ]
         end
       end
     end
-
-    private
-
-      def common_taxt? type_taxt
-        return true if type_taxt.in?([Protonym::BY_MONOTYPY, Protonym::BY_ORIGINAL_DESIGNATION])
-        return true if type_taxt =~ Protonym::BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
-        false
-      end
   end
 end
 
