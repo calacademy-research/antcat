@@ -10,6 +10,8 @@ __END__
 
 category: Catalog
 
+issue_description: This taxon has the status "unavailable uncategorized".
+
 description: >
   Taxa with the status `unavailable uncategorized`. We want to convert these to other statuses.
 

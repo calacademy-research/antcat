@@ -23,6 +23,7 @@ class SoftValidations
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
     DatabaseScripts::TaxaWithNonModernCapitalization,
     DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
+    DatabaseScripts::UnavailableUncategorizedTaxa,
     DatabaseScripts::ValidSubspeciesInInvalidSpecies
   ]
   PROTONYM_DATABASE_SCRIPTS_TO_CHECK = [

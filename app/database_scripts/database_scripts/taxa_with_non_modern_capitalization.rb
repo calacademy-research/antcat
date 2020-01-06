@@ -6,17 +6,26 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :suggested_name
+        t.header :taxon, :status, :suggested_name, :already_existing_taxa
         t.rows do |taxon|
           suggested_name = Names::BuildNameFromString[taxon.name_cache.downcase.capitalize]
+          existing_taxa = Taxon.where("BINARY name_cache = ?", suggested_name.name)
+
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            suggested_name.name_html
+            suggested_name.name_html,
+            format_existing_taxa(existing_taxa)
           ]
         end
       end
     end
+
+    private
+
+      def format_existing_taxa taxa
+        taxa.map(&:link_to_taxon).join('<br>')
+      end
   end
 end
 
@@ -24,12 +33,12 @@ __END__
 
 title: Taxa with non-modern capitalization
 category: Catalog
-tags: [new!]
+tags: [regression-test]
 
 issue_description: The name of this taxon contains non-modern capitalization.
 
 description: >
-  Names can be updated to the suggested name by script.
+  Names can be updated to the suggested name by script (see %github831).
 
 related_scripts:
   - SameNamedPassThroughNames
