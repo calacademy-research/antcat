@@ -21,7 +21,12 @@ class SoftValidation
   end
 
   def failed?
-    in_results
+    in_results && !looks_like_a_false_positive?
+  end
+
+  def looks_like_a_false_positive?
+    return false unless database_script_klass.respond_to?(:looks_like_a_false_positive?)
+    @looks_like_a_false_positive ||= in_results && database_script_klass.looks_like_a_false_positive?(record)
   end
 
   def database_script
