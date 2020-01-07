@@ -55,5 +55,6 @@ related_scripts:
   - TaxaWithTypeTaxt
 
   - TaxaWithTypeTaxa
+  - TaxaWithUncommonTypeTaxts
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues

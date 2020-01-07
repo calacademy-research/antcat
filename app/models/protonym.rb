@@ -12,7 +12,8 @@ class Protonym < ApplicationRecord
   COMMON_TYPE_TAXTS = [
     BY_MONOTYPY = ", by monotypy.",
     BY_ORIGINAL_DESIGNATION = ", by original designation.",
-    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/
+    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/,
+    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF_MYSQL = '^, by subsequent designation of {ref [0-9]+}: [0-9]+.$'
   ]
 
   belongs_to :authorship, class_name: 'Citation', dependent: :destroy

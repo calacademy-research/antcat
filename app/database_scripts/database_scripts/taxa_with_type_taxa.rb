@@ -8,13 +8,14 @@ module DatabaseScripts
       as_table do |t|
         t.header :taxon, :status,
           :type_taxon, :type_taxt, :tt_status,
-          :tt_expansion,
-          :type_taxon_now, :ttn_status,
-          :tt_different_from_ttn?, :cvt_of_tt_if_different_from_ttn
+          :tt_expansion, :failed_tt_expansion,
+          :type_taxon_now_if_different, :ttn_status
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxon_now = type_taxon.now
-          cvt_of_type_taxon = type_taxon.current_valid_taxon
+          tt_same_as_ttn = type_taxon == type_taxon_now
+
+          type_taxon_expander = TypeTaxonExpander.new(taxon)
 
           [
             markdown_taxon_link(taxon),
@@ -24,13 +25,11 @@ module DatabaseScripts
             format_type_taxt(taxon.type_taxt),
             type_taxon.status,
 
-            type_taxon_expansion(taxon.type_taxt, type_taxon),
+            format_type_taxon_expansion(type_taxon_expander),
+            type_taxon_expander.reason_cannot_expand,
 
-            markdown_taxon_link(type_taxon_now),
-            type_taxon_now.status,
-
-            ('Yes' if type_taxon != type_taxon_now),
-            (cvt_of_type_taxon.link_to_taxon + ' (' + cvt_of_type_taxon.status + ')' if cvt_of_type_taxon && type_taxon_now != cvt_of_type_taxon)
+            (markdown_taxon_link(type_taxon_now) unless tt_same_as_ttn),
+            (type_taxon_now.status unless tt_same_as_ttn)
           ]
         end
       end
@@ -48,21 +47,12 @@ module DatabaseScripts
         Detax[type_taxt]
       end
 
-      def type_taxon_expansion _type_taxt, type_taxon
-        string = ''
-
-        case type_taxon.status
-        when Status::VALID
-          string << '[no expansion]'
-        when Status::SYNONYM
-          string << ' (junior synonym of '
-          string << type_taxon.current_valid_taxon.link_to_taxon
-          string << ')'
+      def format_type_taxon_expansion type_taxon_expander
+        if type_taxon_expander.expansion == ''
+          '[blank]'
         else
-          string << '??'
+          type_taxon_expander.expansion
         end
-
-        string
       end
   end
 end
@@ -79,9 +69,6 @@ description: >
   `type_taxon.now` is a new experimental function for resolving taxa.
 
 
-  Ignore "TT expansion", it's very WIP.
-
-
   "CVT of TT if different from TTN" = `current_valid_taxon` of `type_taxon` if different from `type_taxon.now`
 
 
@@ -90,5 +77,6 @@ description: >
 related_scripts:
   - TaxaWithTypeTaxa
   - TaxaWithTypeTaxt
+  - TaxaWithUncommonTypeTaxts
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues

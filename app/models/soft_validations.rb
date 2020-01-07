@@ -24,6 +24,7 @@ class SoftValidations
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
     DatabaseScripts::TaxaWithNonModernCapitalization,
     DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
+    DatabaseScripts::TaxaWithUncommonTypeTaxts,
     DatabaseScripts::UnavailableUncategorizedTaxa,
     DatabaseScripts::ValidSubspeciesInInvalidSpecies
   ]
