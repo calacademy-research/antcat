@@ -1,3 +1,28 @@
+-if DatabaseScripts::SubgeneraWithSameNameAsAGenus.record_in_results?(taxon)
+  #soft-validations-callout.callout.alert.margin-bottom
+    %h6
+      Subgenus warning
+      =logged_in_only_tooltip_icon
+    -same_named_taxon = DatabaseScripts::SubgeneraWithSameNameAsAGenus.same_named_taxa(taxon).first
+    %p
+      A
+      =same_named_taxon.rank
+      with the same name as this taxon but different protonym exists (only comparing subgenus part of name).
+    %p
+      One of them is probably not correct, probably
+      -if taxon.is_a?(Genus)
+        %strong this taxon
+        (the genus).
+      -else
+        %strong the other taxon
+        (the genus).
+    %p
+      Link to other taxon:
+      =same_named_taxon.decorate.link_to_taxon_with_author_citation
+    %p
+      Database script:
+      =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
+
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
