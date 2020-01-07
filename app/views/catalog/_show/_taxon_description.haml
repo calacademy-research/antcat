@@ -20,10 +20,48 @@
   =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   -if taxon.type_taxon
+    -# TODO: Add this to the AntWeb export as well once the data is in a better form.
+    -type_taxon_expander = TypeTaxonExpander.new(taxon)
+
     =taxon.decorate.type_taxon_rank
-    =add_period_if_necessary(taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt])
+    -if type_taxon_expander.can_expand?
+      =add_period_if_necessary(taxon.type_taxon.link_to_taxon + type_taxon_expander.expansion + Detax[taxon.decorate.format_type_taxt])
+    -else
+      =add_period_if_necessary(taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt])
 
   =Detax[taxon.headline_notes_taxt]
+
+  -if current_user && !taxon.is_a?(Family) && taxon.type_taxon
+    .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+      %h6
+        -if type_taxon_expander.can_expand?
+          =antcat_icon 'check'
+        -else
+          =antcat_icon 'nope'
+        Type taxon expansion
+        =logged_in_only_tooltip_icon
+      %p
+        See
+        =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
+        and
+        =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
+        for more info.
+      %p
+        This taxon has a type taxon
+        -if type_taxon_expander.can_expand?
+          -if type_taxon_expander.expansion == ''
+            which does not require any expansion.
+          -else
+            which was successfully expanded with:
+            %br
+            =type_taxon_expander.expansion
+        -else
+          but it could not be expanded because:
+          %br
+          =type_taxon_expander.reason_cannot_expand
+          %br
+          The default expansion is:
+          =type_taxon_expander.expansion(ignore_can_expand: true)
 
   -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
