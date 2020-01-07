@@ -21,7 +21,7 @@ class User < ApplicationRecord
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
     :rememberable, :trackable, :validatable
-  has_paper_trail
+  has_paper_trail ignore: [:encrypted_password, :password_salt, :reset_password_token, :remember_token]
   trackable parameters: proc { { user_id: id } }
 
   # NOTE: Super primitive way of preventing mass registrations.
@@ -34,7 +34,7 @@ class User < ApplicationRecord
   end
 
   def unconfirmed_user_over_edit_limit?
-    return unless unconfirmed?
+    return false unless unconfirmed?
     remaining_edits_for_unconfirmed_user <= 0
   end
 

@@ -3,7 +3,9 @@ module DatabaseScripts
     def results
       same_name = Taxon.joins(:name).group('names.name').having('COUNT(*) > 1')
 
-      Taxon.joins(:name).where(names: { name: same_name.select(:name) }).order('names.name')
+      Taxon.joins(:name).where(names: { name: same_name.select(:name) }).
+        order('names.name').
+        includes(protonym: { authorship: :reference })
     end
 
     def render
@@ -28,6 +30,7 @@ tags: [list]
 
 related_scripts:
   - SameNamedPassThroughNames
+  - TaxaWithNonModernCapitalization
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName

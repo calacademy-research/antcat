@@ -1,6 +1,6 @@
 class AuthorNamesController < ApplicationController
   before_action :ensure_user_is_editor
-  before_action :set_author_name, only: [:update, :edit, :destroy]
+  before_action :set_author_name, only: [:edit, :update, :destroy]
   before_action :set_author, only: [:new, :create]
 
   def new

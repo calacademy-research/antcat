@@ -14,7 +14,7 @@ module DatabaseScripts
             taxon.type,
             markdown_taxon_link(taxon),
             taxon.status,
-            link_to(taxon.protonym.decorate.format_name, protonym_path(taxon.protonym)),
+            taxon.protonym.decorate.link_to_protonym,
             markdown_taxon_link(taxon.type_taxon),
             protonym_ids_of_siblings.size,
             protonym_ids_of_siblings.uniq.size
@@ -33,5 +33,11 @@ description: >
   Some of these are OK, maybe all, I'm not sure about the rules.
 
 related_scripts:
+  - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSynonym
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
+  - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon

@@ -31,12 +31,11 @@ Feature: Preview markdown
 
     When I go to the page of the most recent history item
     And I follow "Edit"
-    Then I should see "Forel, 1878:"
     And I should not see "Forel, 1878b:"
+    Then I should see "Forel, 1878:"
 
     When I click css "#convert-bolton-keys-button"
     Then I should see "Forel, 1878b:"
-    And I should not see "Forel, 1878:"
 
   Scenario: Previewing taxa markdown
     Given there is a genus "Eciton"
@@ -49,6 +48,6 @@ Feature: Preview markdown
   Scenario: Previewing users markdown
     Given I am on a page with a textarea with markdown preview and autocompletion
 
-    When I fill in the markdown textarea with "@user" followed by my user id
+    When I fill in the markdown textarea with "@user" followed by the user id of "Archibald"
     And I press "Rerender preview"
     Then I should see a link to the user page for "Archibald"

@@ -1,13 +1,19 @@
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [
+      DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
+      DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
+      DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
+      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
       DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
+      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
       DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
-      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
       DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
-      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet
+      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet,
+      DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
+      DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
     ]
 
     def show

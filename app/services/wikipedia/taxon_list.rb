@@ -53,7 +53,7 @@ module Wikipedia
 
       # For https://en.wikipedia.org/wiki/Template:Taxobox
       def taxobox_extras
-        diversity_ref = Wikipedia::CiteTemplate[taxon, with_ref_tag: true]
+        diversity_ref = Wikipedia::CiteTemplate[taxon]
 
         string =  "|diversity_link = ##{children_rank.to_s.capitalize}\n"
         string << "|diversity = #{children.count} #{children_rank}\n"
@@ -97,10 +97,10 @@ module Wikipedia
 
       def wikilink_child? child
         # Don't link species in fossil genera per WP:PALEO.
-        return if taxon.fossil? && child.is_a?(Species)
+        return false if taxon.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
-        return if child.is_a? Subspecies
+        return false if child.is_a? Subspecies
 
         true
       end

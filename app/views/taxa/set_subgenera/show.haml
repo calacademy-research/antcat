@@ -1,0 +1,26 @@
+-@title = "Set subgenus"
+-breadcrumb :edit_taxon, @taxon
+
+.row
+  .medium-9.columns
+    -if @taxon.genus.subgenera.empty?
+      %p The genus of this species does not have any subgenera.
+      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxa_path(rank_to_create: 'subgenus', parent_id: @taxon.genus.id), class: "btn-normal btn-tiny"
+    -else
+      %table
+        %caption
+          Subgenera of
+          =@taxon.genus.link_to_taxon
+        %tbody
+          -@taxon.genus.subgenera.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subgenus|
+            %tr
+              %td
+                =subgenus.link_to_taxon
+                =subgenus.author_citation
+              %td
+                -if @taxon.subgenus == subgenus
+                  Current subgenus of
+                  =@taxon.link_to_taxon
+                  =link_to 'Remove', taxa_set_subgenus_path(@taxon), method: :delete,  class: 'btn-warning btn-very-tiny'
+                -else
+                  =link_to 'Set', taxa_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post,  class: 'btn-saves btn-tiny'

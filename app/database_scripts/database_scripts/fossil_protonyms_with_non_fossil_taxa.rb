@@ -9,7 +9,7 @@ module DatabaseScripts
         t.header :protonym, :taxa
         t.rows do |protonym|
           [
-            link_to(protonym.decorate.format_name, protonym_path(protonym)),
+            protonym.decorate.link_to_protonym,
             protonym.taxa.map(&:link_to_taxon).join('<br>')
           ]
         end
@@ -24,11 +24,17 @@ title: Fossil protonyms with non-fossil taxa
 category: Protonyms
 tags: []
 
+issue_description: This protonym is fossil, but one of its taxa is extant.
+
 description: >
   This is not necessarily incorrect.
+
+
+  This script is the reverse of %dbscript:NonFossilTaxaWithFossilProtonyms
 
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms
+  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

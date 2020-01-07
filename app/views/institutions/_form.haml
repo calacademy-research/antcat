@@ -6,11 +6,11 @@
       .row
         .medium-4.columns.end
           =f.label :abbreviation
-          =f.text_field :abbreviation
+          =f.text_field :abbreviation, maxlength: Institution::ABBREVIATION_MAX_LENGTH
       .row
         .medium-8.columns.end
           =f.label :name
-          =f.text_field :name
+          =f.text_field :name, maxlength: Institution::NAME_MAX_LENGTH
       .row
         .medium-4.columns.end
           =edit_summary_text_field_tag

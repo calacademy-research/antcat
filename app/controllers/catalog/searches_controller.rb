@@ -1,5 +1,6 @@
 module Catalog
   class SearchesController < ApplicationController
+    PER_PAGE_OPTIONS = [30, 100, 500, 1000]
     SEARCHING_FROM_HEADER = "searching_from_header"
 
     def show
@@ -45,6 +46,10 @@ module Catalog
           :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name, :incertae_sedis_in, :protonym)
       end
 
+      def per_page
+        params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
+      end
+
       def not_searching_yet?
         params[:submit_search].nil?
       end
@@ -54,7 +59,7 @@ module Catalog
       end
 
       def searching_for_non_existent_author?
-        return if params[:author_name].blank?
+        return false if params[:author_name].blank?
         !AuthorName.where(name: params[:author_name]).exists?
       end
 

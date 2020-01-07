@@ -11,10 +11,16 @@ class Citation < ApplicationRecord
   validates :reference, :pages, presence: true
   validate :no_missing_references
 
+  before_validation :cleanup_taxts
+
   strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
 
   private
+
+    def cleanup_taxts
+      self.notes_taxt = Taxt::Cleanup[notes_taxt]
+    end
 
     def no_missing_references
       return unless reference.is_a? MissingReference

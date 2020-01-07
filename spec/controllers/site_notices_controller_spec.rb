@@ -75,7 +75,7 @@ describe SiteNoticesController do
     end
   end
 
-  describe "POST update" do
+  describe "PUT update" do
     let!(:site_notice) { create :site_notice }
     let!(:site_notice_params) do
       {

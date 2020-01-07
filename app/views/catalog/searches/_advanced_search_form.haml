@@ -2,7 +2,7 @@
   .row
     .medium-2.columns
       Rank
-      =select_tag :type, options_for_select(Taxa::Search::AdvancedSearch::RANKS, params[:type]), include_blank: "Any"
+      =select_tag :type, options_for_select(Taxon::TYPES, params[:type]), include_blank: "Any"
     .medium-2.columns
       Status
       =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
@@ -80,7 +80,7 @@
 
   .row
     .medium-3.columns.end
-      =per_page_select params[:per_page]
+      =per_page_select Catalog::SearchesController::PER_PAGE_OPTIONS, params[:per_page]
 
   .row
     .medium-12.columns

@@ -5,6 +5,9 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
+  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -57,6 +60,7 @@ class Taxon < ApplicationRecord
   end
 
   belongs_to :name, dependent: :destroy
+  # TODO: Do not include authorship.
   belongs_to :protonym, -> { includes :authorship }
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
@@ -70,19 +74,23 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
+  validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
 
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
+  before_validation :cleanup_taxts
   before_save :set_name_caches
   before_save { remove_auto_generated if save_initiator } # TODO: Move or remove.
   before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
 
   scope :valid, -> { where(status: Status::VALID) }
+  scope :invalid, -> { where.not(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
+  scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
 
@@ -150,6 +158,14 @@ class Taxon < ApplicationRecord
     name.name_with_fossil_html fossil?
   end
 
+  def expanded_status
+    Taxa::ExpandedStatus[self]
+  end
+
+  def compact_status
+    Taxa::CompactStatus[self]
+  end
+
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
 
@@ -158,6 +174,17 @@ class Taxon < ApplicationRecord
     else
       citation
     end
+  end
+
+  def virtual_history_items
+    @virtual_history_items ||= all_virtual_history_items.select(&:publicly_visible?)
+  end
+
+  # The reason we have `#virtual_history_items` and `#all_virtual_history_items` is because for as long as
+  # data is being migrated to "virtual history items", we want to be able to "preview" items before we actually make
+  # them publicly visible in the catalog.
+  def all_virtual_history_items
+    @all_virtual_history_items ||= VirtualHistoryItemsForTaxon[self]
   end
 
   def policy
@@ -176,12 +203,24 @@ class Taxon < ApplicationRecord
     Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
-  def soft_validation_warnings
-    @soft_validation_warnings ||= Taxa::CheckIfInDatabaseResults[self]
+  def soft_validations
+    @soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def what_links_here predicate: false
     Taxa::WhatLinksHere[self, predicate: predicate]
+  end
+
+  # TODO: Experimental.
+  def now
+    return self unless current_valid_taxon
+    current_valid_taxon.now
+  end
+
+  # TODO: Remove once subspecies lists have been cleaned up.
+  # See https://github.com/calacademy-research/antcat/issues/780
+  def subspecies_list_in_history_items
+    history_items.where('taxt LIKE ?', "%Current subspecies%")
   end
 
   private
@@ -198,6 +237,11 @@ class Taxon < ApplicationRecord
     def set_taxon_state_to_waiting
       taxon_state.review_state = TaxonState::WAITING
       taxon_state.save
+    end
+
+    def cleanup_taxts
+      self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
+      self.type_taxt = Taxt::Cleanup[type_taxt]
     end
 
     def current_valid_taxon_validation

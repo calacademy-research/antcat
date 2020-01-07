@@ -1,6 +1,4 @@
 class ActivitiesController < ApplicationController
-  include HasWhereFilters
-
   FILTER_TRACKABLE_TYPES = %w[
     Author
     AuthorName
@@ -26,27 +24,8 @@ class ActivitiesController < ApplicationController
   before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_activity, only: :destroy
 
-  has_filters(
-    user_id: {
-      tag: :select_tag,
-      options: -> { User.order(:name).pluck(:name, :id) }
-    },
-    trackable_type: {
-      tag: :select_tag,
-      options: -> { FILTER_TRACKABLE_TYPES }
-    },
-    trackable_id: {
-      tag: :number_field_tag
-    },
-    activity_action: {
-      tag: :select_tag,
-      options: -> { Activity::ACTIONS.map(&:humanize).zip(Activity::ACTIONS) },
-      prompt: "Action"
-    }
-  )
-
   def index
-    @activities = unpaginated_activities.ids_desc.includes(:user).paginate(page: page)
+    @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: page)
   end
 
   def destroy
@@ -59,7 +38,7 @@ class ActivitiesController < ApplicationController
 
     def unpaginated_activities
       @unpaginated_activities ||= begin
-        activities = Activity.filter(hacked_filter_params)
+        activities = Activity.filter_where(hacked_filter_params)
         unless params[:show_automated_edits]
           activities = activities.non_automated_edits
         end
@@ -84,10 +63,11 @@ class ActivitiesController < ApplicationController
       @activity = Activity.find(params[:id])
     end
 
+    # TODO: Rename `activities.action` --> `activities.action_name`.
     # HACK: Because `params[:action]` (to filter on `activitie.actions`) gets
     # overridden by Rails (controller action param).
     def hacked_filter_params
-      filter_params.tap do |hsh|
+      params.permit(:user_id, :trackable_type, :trackable_id, :activity_action).tap do |hsh|
         hsh[:action] = hsh.delete(:activity_action)
       end
     end

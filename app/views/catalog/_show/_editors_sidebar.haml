@@ -1,0 +1,107 @@
+-if DatabaseScripts::SubgeneraWithSameNameAsAGenus.record_in_results?(taxon)
+  #soft-validations-callout.callout.alert.margin-bottom
+    %h6
+      Subgenus warning
+      =logged_in_only_tooltip_icon
+    -same_named_taxon = DatabaseScripts::SubgeneraWithSameNameAsAGenus.same_named_taxa(taxon).first
+    %p
+      A
+      =same_named_taxon.rank
+      with the same name as this taxon but different protonym exists (only comparing subgenus part of name).
+    %p
+      One of them is probably not correct, probably
+      -if taxon.is_a?(Genus)
+        %strong this taxon
+        (the genus).
+      -else
+        %strong the other taxon
+        (the genus).
+    %p
+      Link to other taxon:
+      =same_named_taxon.decorate.link_to_taxon_with_author_citation
+    %p
+      Database script:
+      =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
+
+-# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
+-if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
+  -if taxon.soft_validations.failed?
+    #soft-validations-callout.callout.warning
+      %h6
+        =link_to 'Issues', taxon_soft_validations_path(taxon)
+        =logged_in_only_tooltip_icon
+      =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
+
+  -if taxon.protonym.soft_validations.failed?
+    #soft-validations-callout.callout.warning
+      %h6
+        =link_to 'Protonym issues', protonym_soft_validations_path(taxon.protonym)
+        =logged_in_only_tooltip_icon
+      %p
+        These issues listed here are for the protonym of this taxon,
+        =succeed '.' do
+          =taxon.protonym.decorate.link_to_protonym
+      =render 'shared/failed_soft_validations', soft_validations: taxon.protonym.soft_validations
+
+-if taxon.policy.show_create_combination_button?
+  #additional-editor-data.callout.no-border-callout.logged-in-only-background
+    %h6
+      Can be combined?
+      =logged_in_only_tooltip_icon
+
+    -policy = CreateCombinationPolicy.new(taxon)
+    -if policy.allowed?
+      %p
+        Probably!
+        =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+    -else
+      No, because:
+      %ul
+        -policy.errors.each do |error|
+          %li=error
+      See also this issue on GitHub
+      =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+
+#additional-editor-data.callout.no-border-callout.logged-in-only-background
+  %h6
+    Additional data for editors
+    =logged_in_only_tooltip_icon
+
+  %ul
+    %li Rank: #{taxon.rank}
+    %li Status: #{taxon.status}
+    -if taxon.original_combination?
+      %li
+        Original combination
+        =antcat_icon 'check'
+    -if taxon.auto_generated?
+      %li
+        Auto-generated
+        =antcat_icon 'check'
+    -if taxon.origin
+      %li Origin: #{taxon.origin}
+    %li Created at: #{taxon.created_at.to_formatted_s(:db)}
+    %li Updated at: #{taxon.updated_at.to_formatted_s(:db)}
+
+  -# Show name to make it easier to spot inconsistent names, since `Taxa::LinkEachEpithet` uses parents' name parts.
+  %ul
+    %li
+      Name (from name record):
+      =link_to taxon.name.name_html, name_path(taxon.name)
+
+  -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
+  %ul
+    -if taxon.is_a?(Species)
+      %li
+        Subgenus:
+        -if taxon.subgenus
+          =taxon.subgenus.link_to_taxon
+        -else
+          (none)
+          =link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
+    -if taxon.is_a?(SpeciesGroupTaxon)
+      %li Genus: #{taxon.genus.link_to_taxon}
+    -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)
+      %li Species: #{taxon.species.link_to_taxon}
+    -if taxon.is_a?(Infrasubspecies)
+      %li Subspecies: #{taxon.subspecies.link_to_taxon}

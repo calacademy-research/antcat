@@ -6,6 +6,6 @@
     -@children.each do |child|
       %tr
         %td=child.link_to_taxon
-        %td=child.decorate.taxon_status
+        %td=child.expanded_status
 
 =will_paginate @children

@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Feedback do
   it { is_expected.to validate_presence_of :comment }
+  it { is_expected.to validate_length_of(:comment).is_at_most(described_class::COMMENT_MAX_LENGTH) }
 
   describe ".submitted_by_ip" do
     let!(:ip) { "255.255.255.255" }

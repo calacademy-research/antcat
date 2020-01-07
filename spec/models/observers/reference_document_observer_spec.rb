@@ -17,11 +17,11 @@ describe ReferenceDocumentObserver do
       reference_document = create :reference_document, reference: reference
       References::Cache::Regenerate[reference]
       reference.reload
-      expect(reference.plain_text_cache).not_to be_nil
+      expect(reference.plain_text_cache).not_to eq nil
 
       # Act and test.
       described_class.instance.before_update reference_document
-      expect(reference.plain_text_cache).to be_nil
+      expect(reference.plain_text_cache).to eq nil
     end
 
     context "when reference document has no associated reference" do

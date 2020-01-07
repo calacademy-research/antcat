@@ -14,8 +14,8 @@ When("I fill in {string} with {string} followed by the user id of {string}") do 
   step %(I fill in "#{textarea}" with "#{text}#{user.id}")
 end
 
-When('I fill in the markdown textarea with "@user" followed by my user id') do
-  user = User.last
+When('I fill in the markdown textarea with "@user" followed by the user id of {string}') do |name|
+  user = User.find_by(name: name)
   step %(I fill in "issue_description" with "@user#{user.id}")
 end
 

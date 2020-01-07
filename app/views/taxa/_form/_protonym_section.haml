@@ -2,7 +2,7 @@
   %h5.callout-header
     Protonym:
     -if taxon.persisted?
-      =link_to taxon.protonym.decorate.format_name, taxon.protonym
+      =taxon.protonym.decorate.link_to_protonym
       .right
         =link_to 'Edit', edit_protonym_path(taxon.protonym), title: "Note: Protonyms may be shared and must be edited in a different form. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny jquery-tooltip'
     -else
@@ -21,8 +21,11 @@
           %td Authorship
           %td=protonym.authorship.reference.decorate.expandable_reference
         %tr
-          %td Pages and forms
-          %td=protonym.decorate.format_pages_and_forms
+          %td Pages
+          %td=protonym.authorship.pages
+        %tr
+          %td Forms
+          %td=or_dash protonym.authorship.forms
         %tr
           %td Biogeographic region
           %td=protonym.biogeographic_region

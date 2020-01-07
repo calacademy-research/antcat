@@ -1,0 +1,12 @@
+%ul
+  -soft_validations.failed.each do |soft_validation|
+    %li
+      =markdown soft_validation.issue_description, no_wrapping_p: true
+      =link_to 'See more similiar.', database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
+
+-if soft_validations.warn_about_slow_runtime?
+  %small.bold-warning
+    Checking all scripts took a long time
+    =surround "(", ")." do
+      =soft_validations.total_runtime.round(2)
+      seconds

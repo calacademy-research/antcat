@@ -9,7 +9,7 @@ module DatabaseScripts
         t.header :protonym, :authorship, :statuses_of_taxa
         t.rows do |protonym|
           [
-            link_to(protonym.decorate.format_name, protonym_path(protonym)),
+            protonym.decorate.link_to_protonym,
             protonym.authorship.reference.decorate.expandable_reference,
             protonym.taxa.pluck(:name_cache).join('<br>')
           ]
@@ -23,3 +23,5 @@ __END__
 
 category: Protonyms
 tags: [regression-test]
+
+issue_description: This protonym has duplicated taxa.

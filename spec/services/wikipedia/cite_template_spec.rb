@@ -1,33 +1,23 @@
 require 'rails_helper'
 
 describe Wikipedia::CiteTemplate do
-  let(:species) { create :species, name_string: "Atta texana" }
+  include ActiveSupport::Testing::TimeHelpers
 
   describe "#call" do
-    context "when without with_ref_tag" do
-      include ActiveSupport::Testing::TimeHelpers
+    let(:taxon) { create :species, name_string: "Atta texana" }
 
-      it "outputs a Template:AntCat" do
-        expected = "{{AntCat|#{species.id}|''Atta texana''|2016|accessdate=2 November 2016}}"
-
-        travel_to(Time.zone.parse('2016 November 2')) do
-          expect(described_class[species]).to eq expected
-        end
-      end
-
-      it "handles fossils" do
-        species.fossil = true
-        expect(described_class[species]).to include "†"
+    it "returns a wiki-formatted Template:AntCat" do
+      travel_to(Time.zone.parse('2016 November 2')) do
+        expect(described_class[taxon]).
+          to eq %(<ref name="AntCat">{{AntCat|#{taxon.id}|''Atta texana''|2016|accessdate=2 November 2016}}</ref>)
       end
     end
 
-    context "when with_ref_tag" do
-      it "wraps the output in a named <ref> tag" do
-        results = described_class[species, with_ref_tag: true]
+    context 'when taxon is fossil' do
+      let(:taxon) { create :species, :fossil, name_string: "Atta texana" }
 
-        expect(results).to include '<ref name="AntCat">'
-        expect(results).to include "''Atta texana''"
-        expect(results).to include "</ref>"
+      it 'includes a dagger' do
+        expect(described_class[taxon]).to include "†''Atta texana''"
       end
     end
   end

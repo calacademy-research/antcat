@@ -40,3 +40,11 @@ tags: [regression-test]
 
 description: >
   See %github283
+
+related_scripts:
+  - SameNamedPassThroughNames
+  - TaxaWithNonModernCapitalization
+  - TaxaWithSameName
+  - TaxaWithSameNameAndStatus
+  - ProtonymsWithSameName
+  - ProtonymsWithSameNameExcludingSubgenusPart

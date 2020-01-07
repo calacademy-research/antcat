@@ -48,7 +48,7 @@ module References
       end
 
       def year_matches?
-        return unless rhs.year && year
+        return false unless rhs.year && year
         (rhs.year.to_i - year.to_i).abs <= 1
       end
 

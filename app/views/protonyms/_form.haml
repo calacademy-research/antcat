@@ -8,9 +8,7 @@
 
 -if protonym.taxa.present?
   .callout.primary.margin-bottom.small-12.columns
-    %h5
-      =antcat_icon 'info'
-      Taxa belonging to this protonym
+    %h5 Taxa belonging to this protonym
     %table.pale-table
       %thead
         %th Taxon
@@ -21,7 +19,11 @@
         %tr
           %td=taxon.link_to_taxon
           %td=taxon.rank.capitalize
-          %td=taxon.status.capitalize
+          %td
+            =taxon.status.capitalize
+            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+              %br
+              %small=taxon.expanded_status
           %td
             -if taxon.original_combination?
               Original combination

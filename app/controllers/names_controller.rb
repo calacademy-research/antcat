@@ -3,7 +3,6 @@ class NamesController < ApplicationController
   before_action :set_name, only: [:show, :edit, :update, :destroy]
 
   def show
-    @table_refs = @name.what_links_here
   end
 
   def edit

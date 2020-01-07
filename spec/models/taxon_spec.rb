@@ -13,15 +13,15 @@ describe Taxon do
     it { is_expected.to belong_to(:name).dependent(:destroy) }
   end
 
-  describe 'validations' do
+  describe 'callbacks' do
     describe "#set_taxon_state_to_waiting" do
       context "when creating a taxon" do
         let(:taxon) { build :family }
 
         it "creates a taxon_state" do
-          expect(taxon.taxon_state).to be nil
+          expect(taxon.taxon_state).to eq nil
           taxon.save
-          expect(taxon.taxon_state).not_to be nil
+          expect(taxon.taxon_state).not_to eq nil
         end
 
         it "sets the review_status to 'waiting'" do
@@ -89,7 +89,9 @@ describe Taxon do
         end
       end
     end
+  end
 
+  describe 'validations' do
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
         let(:replaced_by) { build_stubbed :family }
@@ -138,6 +140,25 @@ describe Taxon do
 
         specify do
           expect { taxon.nomen_nudum = true }.to_not change { taxon.valid? }.from(true)
+        end
+      end
+    end
+
+    describe "#type_taxt" do
+      context 'when taxon does not have a type taxon' do
+        let(:taxon) { build_stubbed :family }
+
+        specify do
+          expect { taxon.type_taxt = 'by monotypy' }.to change { taxon.valid? }.to(false)
+          expect(taxon.errors.messages).to include(type_taxt: ["(type notes) can't be set unless taxon has a type name"])
+        end
+      end
+
+      context 'when taxon has a type taxon' do
+        let(:taxon) { build_stubbed :family, type_taxon: create(:family) }
+
+        specify do
+          expect { taxon.type_taxt = 'by monotypy' }.to_not change { taxon.valid? }.from(true)
         end
       end
     end
@@ -206,6 +227,14 @@ describe Taxon do
     end
   end
 
+  it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
+    subject { build :family }
+  end
+
+  it_behaves_like "a taxt column with cleanup", :type_taxt do
+    subject { build :family }
+  end
+
   describe "scopes" do
     describe ".self_join_on" do
       let!(:genus) { create :genus, :fossil }
@@ -241,7 +270,7 @@ describe Taxon do
       let(:taxon) { create :family }
 
       it "returns nil if no changes have been created for it" do
-        expect(taxon.last_change).to be_nil
+        expect(taxon.last_change).to eq nil
       end
 
       it "returns the change, if any" do

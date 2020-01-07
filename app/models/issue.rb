@@ -2,11 +2,13 @@ class Issue < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
+  TITLE_MAX_LENGTH = 70
+
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
 
   validates :adder, :description, presence: true
-  validates :title, presence: true, length: { maximum: 70 }
+  validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }
 
   scope :open, -> { where(open: true) }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }

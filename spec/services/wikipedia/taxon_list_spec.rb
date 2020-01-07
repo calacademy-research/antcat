@@ -1,21 +1,25 @@
 require 'rails_helper'
 
 describe Wikipedia::TaxonList do
-  let!(:taxon) { create :genus }
-
-  before do
-    create :species, name_string: "Atta cephalotes", genus: taxon
-    create :species, :fossil, name_string: "Atta mexicana", genus: taxon
-  end
-
   describe "#call" do
-    it "outputs a wiki-formatted list" do
-      results = described_class[taxon]
+    context 'when taxon is a genus' do
+      let!(:taxon) { create :genus }
+      let!(:species_2) { create :species, name_string: "Atta mexicana", genus: taxon }
+      let!(:species_1) { create :species, :fossil, name_string: "Atta cephalotes", genus: taxon }
 
-      expect(results).to include "diversity_link = #Species"
-      expect(results).to include "==Species=="
-      expect(results).to include "* ''[[Atta cephalotes]]'' <small>"
-      expect(results).to include "* †''[[Atta mexicana]]'' <small>"
+      it "returns a wiki-formatted species list" do
+        expect(described_class[taxon]).to eq <<~STR
+          |diversity_link = #Species
+          |diversity = 2 species
+          |diversity_ref = #{Wikipedia::CiteTemplate[taxon]}
+
+          ==Species==
+          {{div col||25em}}
+          * †''[[Atta cephalotes]]'' <small>#{species_1.author_citation}</small>
+          * ''[[Atta mexicana]]'' <small>#{species_2.author_citation}</small>
+          {{div col end}}
+        STR
+      end
     end
   end
 end

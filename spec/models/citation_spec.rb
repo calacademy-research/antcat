@@ -8,4 +8,8 @@ describe Citation do
   describe 'relations' do
     it { is_expected.to have_one(:protonym).dependent(:restrict_with_error) }
   end
+
+  it_behaves_like "a taxt column with cleanup", :notes_taxt do
+    subject { build :citation }
+  end
 end

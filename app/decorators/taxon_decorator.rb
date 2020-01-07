@@ -35,10 +35,6 @@ class TaxonDecorator < Draper::Decorator
     Taxa::Statistics::FormatStatistics[stats]
   end
 
-  def taxon_status
-    Taxa::TaxonStatus[taxon]
-  end
-
   def link_to_antwiki
     page_title = if taxon.is_a? Subgenus
                    taxon.name.epithet

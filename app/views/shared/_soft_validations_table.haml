@@ -1,0 +1,37 @@
+%table.tablesorter#soft-validations-table
+  %thead
+    %th Passed?
+    %th Database script
+    %th False positive?
+    %th
+      %small Runtime
+    %th.sorter-false
+      %small %
+  %tbody
+    -soft_validations.all.each do |soft_validation|
+      %tr
+        %td
+          =antcat_icon(soft_validation.failed? ? "nope" : "check")
+          =soft_validation.failed? ? "No" : "Yes"
+        %td{class: ('bold-warning' if soft_validation.failed?)}
+          =link_to soft_validation.database_script.title, database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
+          -if soft_validation.failed?
+            %br
+            =markdown soft_validation.issue_description, no_wrapping_p: true
+          -else
+            %small.show-on-hover
+              %br
+              Issue description:
+              %span.gray-text=markdown soft_validation.issue_description, no_wrapping_p: true
+        %td
+          -if soft_validation.looks_like_a_false_positive?
+            Yes, filtered out
+        %td
+          %small=soft_validation.decorate.format_runtime
+        %td
+          %small=soft_validation.decorate.format_runtime_percent soft_validations.total_runtime
+
+%small.right
+  Total runtime:
+  =soft_validations.total_runtime.round(4)
+  seconds

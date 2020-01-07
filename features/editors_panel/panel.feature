@@ -3,7 +3,7 @@ Feature: Editor's Panel
     Given I log in as a catalog editor named "Batiatus"
 
   Scenario: See most recent feed activities
-    Given there is a "destroy" journal activity
+    Given there is a "destroy" journal activity by "Batiatus"
 
     When I go to the Editor's Panel
     Then I should see "Most recent activity"

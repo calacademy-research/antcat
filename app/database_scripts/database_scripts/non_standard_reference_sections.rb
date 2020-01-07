@@ -36,7 +36,7 @@ module DatabaseScripts
     private
 
       def reference_section_link id
-        "<a href='/reference_sections/#{id}>/edit'>#{id}</a>"
+        "<a href='/reference_sections/#{id}/edit'>#{id}</a>"
       end
   end
 end
@@ -47,3 +47,7 @@ title: Non-standard reference sections
 category: Taxt
 
 description: See %github452 for why we want this.
+
+related_scripts:
+  - NonStandardReferenceSections
+  - ReferenceSectionTaxts

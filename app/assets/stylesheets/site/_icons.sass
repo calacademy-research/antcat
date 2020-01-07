@@ -88,6 +88,10 @@ table.notifications
     @extend .fa-check
     color: $color_primary
 
+  &.nope
+    @extend .fa-close
+    color: $color_danger
+
   &.superadmin
     @extend .fa-unlock-alt
     color: #fff
@@ -98,9 +102,10 @@ table.notifications
   &.comment
     @extend .fa-comment-o
 
-  &.info
+  &.info-tooltip
     @extend .fa-info-circle
     color: $color_primary
+    cursor: help
 
   &.closed.issue, &.unread
     @extend .fa-check
@@ -113,21 +118,13 @@ table.notifications
   &.tooltip-icon
     @extend .fa-question-circle
     color: $color_primary
+    cursor: pointer
 
   &.logged-in-only-icon
     @extend .fa-user-circle
     color: $color_primary
+    cursor: help
 
   &.warning-icon
     @extend .fa-exclamation-triangle
     color: $color_danger
-
-table.tablesorter thead
-  th
-    cursor: pointer
-
-  th:before
-    margin-right: 0.4rem
-    @extend .fa
-    &:before
-      @extend .fa-sort

@@ -28,16 +28,6 @@ crumb :convert_species_to_subspecies do |taxon|
   parent :edit_taxon, taxon
 end
 
-crumb :search_taxon_history_items do
-  link "Search History Items"
-  parent :catalog
-end
-
-crumb :search_reference_sections do
-  link "Search Reference Sections"
-  parent :catalog
-end
-
 crumb :create_combination do |taxon|
   link "Create combination"
   parent :edit_taxon, taxon

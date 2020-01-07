@@ -17,67 +17,8 @@
       =render "catalog/_show/taxon_description", taxon: @taxon, is_formicidae_landing_page: @is_formicidae_landing_page
 
   .medium-3.columns
-    -if current_user && @taxon.policy.show_create_combination_button?
-      #additional-editor-data.callout.no-border-callout.logged-in-only-background
-        %h6
-          Can be combined?
-          =logged_in_only_tooltip_icon
-
-        -policy = CreateCombinationPolicy.new(@taxon)
-        -if policy.allowed?
-          %p
-            Probably!
-            =link_to "Create combination", new_taxa_create_combination_path(@taxon), class: "btn-normal btn-tiny"
-        -else
-          No, because:
-          %ul
-            -policy.errors.each do |error|
-              %li=error
-          See also this issue on GitHub
-          =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
-
     -if current_user
-      #additional-editor-data.callout.no-border-callout.logged-in-only-background
-        %h6
-          Additional data for editors
-          =logged_in_only_tooltip_icon
-        %ul
-          %li
-            Rank:
-            =@taxon.rank
-          %li
-            Status:
-            =@taxon.status
-          -if @taxon.original_combination?
-            %li
-              Original combination
-              =antcat_icon 'check'
-          -if @taxon.auto_generated?
-            %li
-              Auto-generated
-              =antcat_icon 'check'
-          -if @taxon.origin
-            %li
-              Origin:
-              =@taxon.origin
-          %li
-            Created at:
-            =@taxon.created_at.to_formatted_s(:db)
-          %li
-            Updated at:
-            =@taxon.updated_at.to_formatted_s(:db)
-
-    -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
-    -if AntCat::SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG && !@taxon.is_a?(Family)
-      -if current_user && @taxon.soft_validation_warnings.present?
-        #soft-validations.callout.warning
-          %h6
-            Issues
-            =logged_in_only_tooltip_icon
-            .right
-              =link_to 'Give me another!', catalog_fix_random_path, class: 'btn-tiny btn-normal'
-          =render 'shared/soft_validation_warnings', soft_validation_warnings: @taxon.soft_validation_warnings
-
+      =render 'catalog/_show/editors_sidebar', taxon: @taxon
     =render 'catalog/_show/statistics', taxon: @taxon
 
     .callout#external-links

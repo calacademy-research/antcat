@@ -1,4 +1,4 @@
--@title = @database_script.title
+-@title = strip_tags @database_script.title
 -breadcrumb :database_script, @database_script
 
 -content_for :head do
@@ -9,7 +9,7 @@
   -if @database_script.respond_to? :to_csv
     =link_to "Export as CSV", database_script_path(@database_script, format: :csv), class: "btn-normal"
 
-.row.collapse
+.row.collapse.margin-bottom
   .medium-8.columns
     %h5
       -if @database_script.category.present?
@@ -22,20 +22,31 @@
     -if @database_script.issue_description.present?
       %h6
         %strong Issue description
-        %p=@database_script.issue_description
+        %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
       %h6
         %strong Related scripts
       %ul
         -@database_script.related_scripts.each do|related_script|
-          -# NOTE: Hide links to itself, to make it easier to copy-paste `related_scripts`s.
-          -next if related_script.is_a? @database_script.class
-          %li=link_to related_script.title, database_script_path(related_script)
+          %li
+            =link_to related_script.title, database_script_path(related_script)
+            =DatabaseScriptDecorator.new(related_script).format_tags
+
+  -if @database_script.statistics
+    .medium-4.columns
+      .callout.no-border-callout.logged-in-only-background
+        %p.small-text=@database_script.statistics
 
 .row.column
   .callout
     =@rendered
 
+%small.left
+  Soft-validated
+  =antcat_icon(@database_script.soft_validated? ? "check" : "nope")
+  Fix random
+  =antcat_icon(@database_script.fix_random? ? "check" : "nope")
+
 %small.right
-  Script runtime: #{@render_duration} seconds
+  Script runtime including rendering: #{@render_duration.round(4)} seconds

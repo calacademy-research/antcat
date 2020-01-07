@@ -53,6 +53,15 @@ module ApplicationHelper
     link_to (antcat_icon("filter") + 'Activities'), url, class: "btn-normal filter-activities-link"
   end
 
+  def yes_no_options_for_select value
+    options_for_select([["Yes", "true"], ["No", "false"]], value)
+  end
+
+  def per_page_select per_page_options, value
+    options = per_page_options.map { |number| ["Show #{number} results per page", number] }
+    select_tag :per_page, options_for_select(options, (value || 30))
+  end
+
   def beta_label
     content_tag :span, "beta", class: "rounded-badge"
   end

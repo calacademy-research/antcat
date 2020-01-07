@@ -1,0 +1,28 @@
+-@title = "#{@taxon.name_cache} - Soft validations"
+-breadcrumb :taxon_soft_validations, @taxon
+
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
+%p.margin-bottom
+  =antcat_icon(@soft_validations.failed? ? "nope" : "check")
+  =@taxon.link_to_taxon
+  -if @soft_validations.failed?
+    has soft validation issues.
+  -else
+    has no soft validation issues!
+
+%p.margin-bottom
+  =antcat_icon(@protonym_soft_validations.failed? ? "nope" : "check")
+  The protonym of this taxon,
+  =succeed ',' do
+    =@taxon.protonym.decorate.link_to_protonym
+  -if @protonym_soft_validations.failed?
+    has soft validation issues. See below.
+    #soft-validations-callout.callout.medium-9.warning.margin-bottom
+      %h6=link_to 'Protonym issues', protonym_soft_validations_path(@taxon.protonym)
+      =render 'shared/failed_soft_validations', soft_validations: @protonym_soft_validations
+  -else
+    has no soft validation issues!
+
+=render 'shared/soft_validations_table', soft_validations: @soft_validations

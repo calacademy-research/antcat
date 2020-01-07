@@ -39,6 +39,9 @@ td.grow
 th.no-wrap, td.no-wrap
   white-space: nowrap
 
+tr.pale-background
+  background-color: $color_pale !important
+
 .center-text
   text-align: center
 
@@ -58,6 +61,9 @@ th.no-wrap, td.no-wrap
 
 tr.logged-in-only-background
   background-color: $color_pale !important
+
+.virtual-taxt-item
+  background-color: $color_green_pale
 
 .highlight
   background-color: $color_highlight !important
@@ -152,8 +158,9 @@ svg.search-icon, .no-left-border-radius
 fieldset
   border-radius: 5px
 
-#soft-validations
-  font-size: 90%
+// To make tables sortable.
+.hidden-sort
+  display: none
 
 .user-mention
   font-weight: bold

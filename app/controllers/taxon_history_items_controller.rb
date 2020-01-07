@@ -1,42 +1,25 @@
 class TaxonHistoryItemsController < ApplicationController
-  before_action :ensure_user_is_at_least_helper, except: [:show, :index]
+  PER_PAGE_OPTIONS = [30, 100, 500]
+
+  before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
   before_action :set_taxon, only: [:new, :create]
   before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
-    @taxon_history_items = TaxonHistoryItem.all
-    @taxon_history_items = @taxon_history_items.search_objects(search_params) if params[:q].present?
-    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: 30)
+    @taxon_history_items = TaxonHistoryItem.joins(:taxon)
+    @taxon_history_items = @taxon_history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    @taxon_history_items = @taxon_history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
+    @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
+    @taxon_history_items = @taxon_history_items.includes(taxon: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
   def show
+    @taxon = @taxon_history_item.taxon
   end
 
   def new
     @taxon_history_item = @taxon.history_items.new
-  end
-
-  def update
-    updated = @taxon_history_item.update(taxon_history_item_params)
-
-    if updated
-      @taxon_history_item.create_activity :update, current_user, edit_summary: params[:edit_summary]
-    end
-
-    respond_to do |format|
-      format.json { render_json @taxon_history_item }
-      format.html do
-        if updated
-          redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully updated history item."
-        else
-          render :edit
-        end
-      end
-    end
-  end
-
-  def edit
   end
 
   def create
@@ -50,11 +33,43 @@ class TaxonHistoryItemsController < ApplicationController
     end
   end
 
+  def edit
+    @taxon = @taxon_history_item.taxon
+  end
+
+  def update
+    @taxon = @taxon_history_item.taxon
+
+    updated = @taxon_history_item.update(taxon_history_item_params)
+
+    if updated
+      @taxon_history_item.create_activity :update, current_user, edit_summary: params[:edit_summary]
+    end
+
+    respond_to do |format|
+      format.json { render_json @taxon_history_item }
+      format.html do
+        if updated
+          redirect_to @taxon_history_item, notice: "Successfully updated history item."
+        else
+          render :edit
+        end
+      end
+    end
+  end
+
   def destroy
     @taxon_history_item.destroy
     @taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
-    render json: { success: true }
+    respond_to do |format|
+      format.json do
+        render json: { success: true }
+      end
+      format.html do
+        redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully deleted history item."
+      end
+    end
   end
 
   private
@@ -67,12 +82,12 @@ class TaxonHistoryItemsController < ApplicationController
       @taxon_history_item = TaxonHistoryItem.find(params[:id])
     end
 
-    def search_params
-      params.slice :search_type, :q
-    end
-
     def taxon_history_item_params
       params.require(:taxon_history_item).permit(:taxt)
+    end
+
+    def per_page
+      params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
     end
 
     def render_json taxon_history_item

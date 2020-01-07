@@ -9,6 +9,17 @@
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
+  =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
+
+-if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
+  -if current_user && @protonym.soft_validations.failed?
+    .row.margin-bottom
+      .medium-9.columns
+        #soft-validations-callout.callout.warning
+          %h6
+            =link_to 'Issues', protonym_soft_validations_path(@protonym)
+            =logged_in_only_tooltip_icon
+          =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
 .row.margin-bottom
   .small-12.columns
@@ -24,8 +35,11 @@
           %th Authorship
           %td=@protonym.authorship.reference.decorate.expandable_reference
         %tr
-          %th Pages and forms
-          %td=@protonym.decorate.format_pages_and_forms
+          %th Pages
+          %td=@protonym.authorship.pages
+        %tr
+          %th Forms
+          %td=or_dash @protonym.authorship.forms
         %tr
           %th Biogeographic region
           %td=@protonym.biogeographic_region
@@ -55,15 +69,25 @@
           %th Rank
           %th Status
           %th
+          %th
         -@protonym.taxa.each do |taxon|
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.rank.capitalize
-            %td=taxon.status.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                %br
+                %small=taxon.expanded_status
             %td
               -if taxon.original_combination?
                 Original combination
                 =antcat_icon 'check'
+            %td
+              -if taxon.type_taxon
+                %small
+                  =taxon.decorate.type_taxon_rank
+                  =taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt]
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/702
 -if current_user
@@ -77,7 +101,7 @@
           -@protonym.taxa_with_history_items.each do |taxon|
             %h6
               =taxon.link_to_taxon
-              %span.small-text=taxon.decorate.taxon_status
+              %span.small-text=taxon.expanded_status
 
             .left-margin
               %ul.history

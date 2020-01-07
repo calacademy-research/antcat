@@ -6,6 +6,22 @@
 =render 'shared/taxt_editor/taxon_and_ancestors', taxon: taxon_history_item.taxon
 =render "shared/default_reference"
 
+%table.margin-bottom
+  %caption Other history items belonging to #{@taxon.name.name_html}
+  %tbody
+    -if @taxon.history_items.persisted.empty?
+      %tr
+        %td{colspan: 2} Taxon has no history items.
+    -else
+      -@taxon.history_items.persisted.each do |history_item|
+        %tr{class: ('pale-background' if history_item == @taxon_history_item)}
+          %td
+            =link_to "##{history_item.id}", history_item
+            -if history_item == taxon_history_item
+              %strong (selected)
+          %td.grow
+            %small=Detax[history_item.taxt]
+
 =form_for taxon_history_item, url: url do |f|
   =render "shared/errors_for", resource: taxon_history_item
   .row

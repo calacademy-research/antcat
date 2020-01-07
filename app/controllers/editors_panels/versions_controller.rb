@@ -1,7 +1,5 @@
 module EditorsPanels
   class VersionsController < ApplicationController
-    include HasWhereFilters
-
     FILTER_ITEM_TYPES = %w[
       Activity
       Author
@@ -31,31 +29,10 @@ module EditorsPanels
 
     before_action :ensure_user_is_editor
 
-    has_filters(
-      whodunnit: {
-        tag: :select_tag,
-        options: -> { User.order(:name).pluck(:name, :id) }
-      },
-      item_type: {
-        tag: :select_tag,
-        options: -> { FILTER_ITEM_TYPES }
-      },
-      item_id: {
-        tag: :number_field_tag
-      },
-      event: {
-        tag: :select_tag,
-        options: -> { %w[create destroy update] }
-      },
-      change_id: {
-        tag: :number_field_tag
-      }
-    )
-
     def index
       @versions = PaperTrail::Version.without_user_versions
-      @versions = @versions.filter(filter_params)
-      @versions = @versions.search_objects(search_params) if params[:q].present?
+      @versions = @versions.filter_where(filter_params)
+      @versions = @versions.search(params[:q], params[:search_type]) if params[:q].present?
       @versions = @versions.order(:id).paginate(page: params[:page], per_page: 50)
 
       @version_count = PaperTrail::Version.count
@@ -67,8 +44,8 @@ module EditorsPanels
 
     private
 
-      def search_params
-        params.slice :search_type, :q
+      def filter_params
+        params.permit(:whodunnit, :item_type, :item_id, :event, :change_id)
       end
   end
 end

@@ -1,9 +1,11 @@
 class Feedback < ApplicationRecord
   include Trackable
 
+  COMMENT_MAX_LENGTH = 10_000
+
   belongs_to :user
 
-  validates :comment, presence: true, length: { maximum: 10_000 }
+  validates :comment, presence: true, length: { maximum: COMMENT_MAX_LENGTH }
   validate :comment_has_not_previously_been_submitted, on: :create
 
   scope :pending, -> { where(open: true) }

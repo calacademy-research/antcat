@@ -29,6 +29,9 @@ tags: [regression-test]
 issue_description: This species is not in the same subfamily as its genus.
 
 description: >
+  This script lists species where the `subfamily_id` does not match its genus' `subfamily_id`.
+
+
   Note: It may or may not currently be possible to fix all records listed here.
 
 related_scripts:

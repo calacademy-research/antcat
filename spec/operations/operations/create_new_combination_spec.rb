@@ -96,10 +96,12 @@ describe Operations::CreateNewCombination do
 
       context 'when taxon has obsolete combinations which cannot be updated' do
         let!(:obsolete_combination_1) do
-          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon,
+            protonym: current_valid_taxon.protonym
         end
         let!(:obsolete_combination_2) do
-          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon,
+            protonym: current_valid_taxon.protonym
         end
 
         before do

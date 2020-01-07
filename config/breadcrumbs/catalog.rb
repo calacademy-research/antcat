@@ -33,6 +33,11 @@ end
     parent taxon
   end
 
+  crumb :taxon_soft_validations do |taxon|
+    link "Soft validations"
+    parent taxon
+  end
+
   crumb :wikipedia_tools do |taxon|
     link "Wikipedia tools"
     parent taxon

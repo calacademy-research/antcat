@@ -1,6 +1,7 @@
 require_relative 'boot'
 
 require 'rails/all'
+require 'action_view/component'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -9,7 +10,7 @@ Bundler.require(*Rails.groups)
 module AntCat
   # TODO: Very primitive feature toggling.
   # Added to make is easier to disable 'Fix Random!' in case of performance issues.
-  SHOW_SOFT_VALIDATION_WARNINGS_IN_CATALOG = true
+  SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG = true
 
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.

@@ -1,3 +1,5 @@
+# TODO: Figure out what to call things. "What Links Here" vs "table ref", etc.
+
 module Taxa
   class WhatLinksHere
     include Service
@@ -9,11 +11,11 @@ module Taxa
 
     def call
       if predicate
-        any_references?
+        any_column_table_refs? || any_taxt_table_refs?
       else
         table_refs = []
-        table_refs.concat references_in_taxa
-        table_refs.concat references_in_taxt
+        table_refs.concat column_table_refs
+        table_refs.concat taxt_table_refs
       end
     end
 
@@ -23,49 +25,20 @@ module Taxa
 
       delegate :id, to: :taxon
 
-      def any_references?
-        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          return true if Taxon.where(field => id).exists?
-        end
-
-        Detax::TAXT_MODELS_AND_FIELDS.each do |(model, _table, field)|
-          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
-            next if exclude_taxt_match? model, matched_id
-            return true
-          end
-        end
-
-        false
+      def any_column_table_refs?
+        Taxa::WhatLinksHereColumns[taxon, predicate: true]
       end
 
-      def references_in_taxa
-        table_refs = []
-        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          Taxon.where(field => id).pluck(:id).each do |taxon_id|
-            table_refs << table_ref('taxa', field, taxon_id)
-          end
-        end
-        table_refs
+      def any_taxt_table_refs?
+        Taxa::WhatLinksHereTaxts[taxon, predicate: true]
       end
 
-      def references_in_taxt
-        table_refs = []
-        Detax::TAXT_MODELS_AND_FIELDS.each do |(model, _table, field)|
-          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
-            next if exclude_taxt_match? model, matched_id
-            table_refs << table_ref(model.table_name, field.to_sym, matched_id)
-          end
-        end
-        table_refs
+      def column_table_refs
+        Taxa::WhatLinksHereColumns[taxon]
       end
 
-      def exclude_taxt_match? model, matched_id
-        return true if model == Taxon && matched_id == id
-        false
-      end
-
-      def table_ref table, field, id
-        TableRef.new(table, field, id)
+      def taxt_table_refs
+        Taxa::WhatLinksHereTaxts[taxon]
       end
   end
 end

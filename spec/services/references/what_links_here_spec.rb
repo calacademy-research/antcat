@@ -12,7 +12,7 @@ describe References::WhatLinksHere do
       let(:ref_tag) { "{ref #{reference.id}}" }
 
       let!(:citation) { create :citation, reference: reference, notes_taxt: ref_tag }
-      let!(:taxon) { create :genus, type_taxt: "{ref #{reference.id}}", headline_notes_taxt: ref_tag }
+      let!(:taxon) { create :genus, type_taxt: "{ref #{reference.id}}", type_taxon: create(:family), headline_notes_taxt: ref_tag }
       let!(:history_item) { taxon.history_items.create!(taxt: ref_tag) }
       let!(:reference_section) { create :reference_section, title_taxt: ref_tag, subtitle_taxt: ref_tag, references_taxt: ref_tag }
 

@@ -11,7 +11,7 @@ module DatabaseScripts
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            protonym_link(taxon.protonym)
+            taxon.protonym.decorate.link_to_protonym
           ]
         end
       end
@@ -24,11 +24,17 @@ __END__
 title: Non-fossil taxa with fossil protonyms
 category: Protonyms
 
+issue_description: This taxon is not fossil, but its protonym is fossil.
+
 description: >
   This is not necessarily incorrect.
+
+
+  This script is the reverse of %dbscript:NonFossilTaxaWithFossilProtonyms
 
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms
+  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

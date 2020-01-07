@@ -77,14 +77,14 @@ describe Markdowns::Render do
       context 'when database script exists' do
         specify do
           expect(described_class["%dbscript:OrphanedProtonyms"]).
-            to eq %(<p><a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a></p>\n)
+            to eq %(<p><a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a> <span class="white-label rounded-badge">list</span></p>\n)
         end
       end
 
       context 'when database script does not exist' do
         specify do
           expect(described_class["%dbscript:BestPizzas"]).
-            to eq %(<p><a href="/database_scripts/best_pizzas">Error: Could not find database script with class name &#39;BestPizzas&#39;</a></p>\n)
+            to eq %(<p><a href="/database_scripts/best_pizzas">Error: Could not find database script with class name &#39;BestPizzas&#39;</a> </p>\n)
         end
       end
     end
