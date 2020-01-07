@@ -3,6 +3,7 @@ class SoftValidations
 
   # These scripts do not 100% belong here since scripts are injected to avoid coupling.
   TAXA_DATABASE_SCRIPTS_TO_CHECK = [
+    DatabaseScripts::CurrentValidTaxonChains,
     DatabaseScripts::ExtantTaxaInFossilGenera,
     DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
     DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
@@ -12,6 +13,7 @@ class SoftValidations
     DatabaseScripts::ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon,
     DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
+    DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets,
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
@@ -23,6 +25,8 @@ class SoftValidations
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
     DatabaseScripts::TaxaWithNonModernCapitalization,
     DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
+    DatabaseScripts::TaxaWithUncommonTypeTaxts,
+    DatabaseScripts::UnavailableUncategorizedTaxa,
     DatabaseScripts::ValidSubspeciesInInvalidSpecies
   ]
   PROTONYM_DATABASE_SCRIPTS_TO_CHECK = [
@@ -31,7 +35,12 @@ class SoftValidations
     DatabaseScripts::OrphanedProtonyms,
     DatabaseScripts::ProtonymsWithDuplicatedTaxa,
     DatabaseScripts::ProtonymsWithMoreThanOneOriginalCombination,
-    DatabaseScripts::ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+    DatabaseScripts::ProtonymsWithMoreThanOneSynonym,
+    DatabaseScripts::ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems,
+    DatabaseScripts::ProtonymsWithMoreThanOneValidTaxon,
+    DatabaseScripts::ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon,
+    DatabaseScripts::ProtonymsWithTaxaWithMoreThanOneTypeTaxon,
+    DatabaseScripts::ProtonymsWithTaxaWithVeryDifferentEpithets
   ]
   ALL_DATABASE_SCRIPTS_TO_CHECK = TAXA_DATABASE_SCRIPTS_TO_CHECK + PROTONYM_DATABASE_SCRIPTS_TO_CHECK
 

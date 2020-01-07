@@ -14,3 +14,13 @@ issue_description: This protonym has more than one original combination.
 
 description: >
   Where "protonym" means `Protonym` record, and "original combination" means `Taxon` record where `original_combination` is true.
+
+related_scripts:
+  - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSynonym
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneValidTaxon
+  - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
+  - TypeTaxaAssignedToMoreThanOneTaxon

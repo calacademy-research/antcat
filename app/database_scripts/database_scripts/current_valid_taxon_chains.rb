@@ -32,6 +32,8 @@ __END__
 category: Catalog
 tags: [new!]
 
+issue_description: This taxon has a `current_valid_taxon` which itself has a `current_valid_taxon`.
+
 description: >
   Taxa with a `current_valid_taxon` that has a `current_valid_taxon`.
 

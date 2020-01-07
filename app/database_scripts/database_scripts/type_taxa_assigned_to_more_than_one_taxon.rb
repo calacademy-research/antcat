@@ -33,10 +33,11 @@ description: >
   Some of these are OK, maybe all, I'm not sure about the rules.
 
 related_scripts:
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSynonym
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon
-  - TypeTaxaWithIssues

@@ -27,13 +27,17 @@ __END__
 category: Catalog
 tags: [new!]
 
+issue_description: This protonym has taxa with different `current_valid_taxon`s (obsolete combinations excluded).
+
 description: >
   Obsolete combinations are excluded.
 
 related_scripts:
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSynonym
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon

@@ -10,7 +10,9 @@ describe SoftValidations do
         end
 
         it "does not include slow database scripts (since it's checked in the catalog)" do
-          expect(klass.new.slow?).to eq false
+          unless klass.methods(false).include?(:record_in_results?)
+            expect(klass.new.slow?).to eq false
+          end
         end
       end
     end

@@ -6,6 +6,8 @@ class Taxon < ApplicationRecord
   include Trackable
 
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
+  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -154,6 +156,14 @@ class Taxon < ApplicationRecord
 
   def name_with_fossil
     name.name_with_fossil_html fossil?
+  end
+
+  def expanded_status
+    Taxa::ExpandedStatus[self]
+  end
+
+  def compact_status
+    Taxa::CompactStatus[self]
   end
 
   def author_citation

@@ -1,5 +1,7 @@
+# `CompactStatus` was added as an alternative to this class. They may or may not be merged in the future.
+
 module Taxa
-  class TaxonStatus
+  class ExpandedStatus
     include Service
 
     SELF_STATUSES = [

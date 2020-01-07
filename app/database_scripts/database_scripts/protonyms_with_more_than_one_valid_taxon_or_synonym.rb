@@ -44,9 +44,11 @@ description: >
   * %dbscript:ProtonymsWithMoreThanOneValidTaxonOrSynonym
 
 related_scripts:
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSynonym
+  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
   - TypeTaxaAssignedToMoreThanOneTaxon

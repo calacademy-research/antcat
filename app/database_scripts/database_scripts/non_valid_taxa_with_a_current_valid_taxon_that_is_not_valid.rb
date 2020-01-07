@@ -10,11 +10,13 @@ module DatabaseScripts
       as_table do |t|
         t.header :taxon, :status, :current_valid_taxon, :current_valid_taxon_status
         t.rows do |taxon|
+          current_valid_taxon = taxon.current_valid_taxon
+
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(taxon.current_valid_taxon),
-            taxon.current_valid_taxon.status
+            markdown_taxon_link(current_valid_taxon),
+            current_valid_taxon.status
           ]
         end
       end

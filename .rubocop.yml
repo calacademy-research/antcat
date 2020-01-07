@@ -5,6 +5,7 @@ require:
 
 AllCops:
   Exclude:
+    - 'app/database_scripts/database_scripts/camponotus_subgenera_to_assign_by_script.rb'
     - 'config.ru'
     - 'bin/**/*'
     - 'data/**/*'
@@ -79,7 +80,7 @@ Metrics/BlockLength:
     - 'config/environments/**/*'
 
 Metrics/ClassLength:
-  Max: 180
+  Max: 250
 
 Metrics/CyclomaticComplexity:
   Enabled: false

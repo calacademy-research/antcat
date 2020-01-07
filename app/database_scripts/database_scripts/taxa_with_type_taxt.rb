@@ -1,32 +1,37 @@
 module DatabaseScripts
   class TaxaWithTypeTaxt < DatabaseScript
     def results
-      Taxon.where.not(type_taxt: nil)
+      Taxon.where.not(type_taxt: nil).includes(:current_valid_taxon)
     end
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :type_taxt, :common_taxt?
+        t.header :taxon, :status,
+          :type_taxon, :type_taxon_status,
+          :cvt_of_type_taxon_if_diffetent, :status_of_cvt_of_type_taxon,
+          :type_taxt, :common_taxt?
         t.rows do |taxon|
           type_taxt = taxon.type_taxt
+          type_taxon = taxon.type_taxon
+          cvt_of_type_taxon = type_taxon.current_valid_taxon
+          different = cvt_of_type_taxon && type_taxon != cvt_of_type_taxon
 
           [
             markdown_taxon_link(taxon),
             taxon.status,
+
+            markdown_taxon_link(type_taxon),
+            type_taxon.status,
+
+            (markdown_taxon_link(cvt_of_type_taxon) if different),
+            (cvt_of_type_taxon.status if different),
+
             Detax[type_taxt],
-            ('Yes' if common_taxt?(type_taxt))
+            ('Yes' if Protonym.common_type_taxt?(type_taxt))
           ]
         end
       end
     end
-
-    private
-
-      def common_taxt? type_taxt
-        return true if type_taxt.in?([Protonym::BY_MONOTYPY, Protonym::BY_ORIGINAL_DESIGNATION])
-        return true if type_taxt =~ Protonym::BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
-        false
-      end
   end
 end
 
@@ -43,13 +48,6 @@ description: >
   This script was mainly added to investigate how we use the different "inline taxt columns".
 
 
-  This list contain the same records as the two scripts below (which serve different purposes):
-
-
-  * Added for investigating "type taxon now" links: %dbscript:TaxaWithTypeTaxtAndATypeTaxon
-
-  * Script that should be fixed: %dbscript:TaxaWithTypeTaxtButNoTypeTaxon
-
 related_scripts:
   - ProtonymsWithNotesTaxt
   - ProtonymsWithTypeNotesTaxt
@@ -57,8 +55,6 @@ related_scripts:
   - TaxaWithTypeTaxt
 
   - TaxaWithTypeTaxa
+  - TaxaWithUncommonTypeTaxts
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues
-
-  - TaxaWithTypeTaxtAndATypeTaxon
-  - TaxaWithTypeTaxtButNoTypeTaxon

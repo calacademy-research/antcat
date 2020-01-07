@@ -62,8 +62,8 @@ class DatabaseScript
   end
 
   # TODO: Indicate record type in scripts.
-  def self.record_in_results? taxon
-    new.results.where(id: taxon.id).exists?
+  def self.record_in_results? record
+    new.results.where(id: record.id).exists?
   end
 
   def soft_validated?

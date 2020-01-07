@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Taxa::TaxonStatus do
+describe Taxa::ExpandedStatus do
   include TestLinksHelpers
 
   describe "#call" do

@@ -4,6 +4,7 @@ module Catalog
 
     def show
       @soft_validations = @taxon.soft_validations
+      @protonym_soft_validations = @taxon.protonym.soft_validations
     end
 
     private

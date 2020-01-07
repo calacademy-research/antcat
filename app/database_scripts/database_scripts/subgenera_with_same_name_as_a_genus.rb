@@ -1,5 +1,21 @@
 module DatabaseScripts
   class SubgeneraWithSameNameAsAGenus < DatabaseScript
+    def self.record_in_results? taxon
+      same_named_taxa(taxon)&.exists?
+    end
+
+    def self.same_named_taxa taxon
+      return unless taxon.persisted? # For the taxon form.
+      return unless taxon.is_a?(Genus) || taxon.is_a?(Subgenus)
+
+      if taxon.is_a?(Subgenus)
+        subgenus_part_of_name = taxon.name.name.scan(/\((.*?)\)/)
+        Genus.where(name_cache: subgenus_part_of_name)
+      elsif taxon.is_a?(Genus)
+        Subgenus.where("name_cache LIKE ?", "%(#{taxon.name.name})%")
+      end.where.not(protonym: taxon.protonym)
+    end
+
     def results
       subgenus_part_of_subgenera = Subgenus.pluck(:name_cache).map { |name| name.scan(/\((.*?)\)/) }.flatten
       Taxon.where(name_cache: subgenus_part_of_subgenera)
@@ -41,6 +57,8 @@ __END__
 
 category: Catalog
 tags: [new!, slow]
+
+issue_description: This genus or subgenus has the same name as another taxon (comparing genus name vs. subgenus part of name).
 
 description: >
   This is not necessarily incorrect, but it seems we have a bunch genus records that were never placed at the rank of genus.
