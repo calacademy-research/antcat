@@ -13,6 +13,7 @@ class SoftValidations
     DatabaseScripts::ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon,
     DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
+    DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets,
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
