@@ -40,7 +40,6 @@ describe NamesController do
         name.reload
         expect(name.name).to eq 'Brandus noviusia nameus'
         expect(name.epithet).to eq 'nameus'
-        expect(name.epithets).to eq 'noviusia nameus'
       end
 
       it 'creates an activity' do

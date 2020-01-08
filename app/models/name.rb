@@ -31,8 +31,8 @@ class Name < ApplicationRecord
   validate :ensure_starts_with_upper_case_letter
 
   after_save :set_taxon_caches
-  # NOTE: Technically we don't need to do this, since they *should* not be different, but let's make sure.
-  before_validation :set_epithet, :set_epithets
+  # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
+  before_validation :set_epithet
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -50,7 +50,6 @@ class Name < ApplicationRecord
   def name=(value)
     self[:name] = value.squish if value
     set_epithet
-    set_epithets
   end
 
   def rank
@@ -102,15 +101,6 @@ class Name < ApplicationRecord
                      else
                        name_parts.last
                      end
-    end
-
-    def set_epithets
-      return unless name
-      return unless is_a?(SpeciesGroupName)
-
-      self.epithets = if name_parts.size > 2
-                        name_parts[1..-1].join(' ')
-                      end
     end
 
     def ensure_epithet_in_name

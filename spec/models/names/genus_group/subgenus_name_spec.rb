@@ -7,7 +7,6 @@ describe SubgenusName do
 
       expect(name.name).to eq 'Lasius (Austrolasius)'
       expect(name.epithet).to eq 'Austrolasius'
-      expect(name.epithets).to eq nil
     end
   end
 end

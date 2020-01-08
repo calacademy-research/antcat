@@ -21,15 +21,14 @@ describe Name do
     end
   end
 
-  describe '`set_epithet` and `#set_epithets`' do
+  describe '#set_epithet' do
     let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
 
     before do
-      name.attributes = { epithet: 'pizza', epithets: 'pescatore' }
+      name.attributes = { epithet: 'pizza' }
     end
 
     specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
-    specify { expect { name.save }.to change { name.epithets }.from('pescatore').to('niger fusca') }
   end
 
   describe "#epithet_with_fossil_html" do

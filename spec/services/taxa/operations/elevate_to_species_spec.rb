@@ -90,7 +90,6 @@ describe Taxa::Operations::ElevateToSpecies do
 
           expect(new_species.name.name).to eq 'Atta colobopsis'
           expect(new_species.name.epithet).to eq 'colobopsis'
-          expect(new_species.name.epithets).to eq nil
         end
       end
     end
