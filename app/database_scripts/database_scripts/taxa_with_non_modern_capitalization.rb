@@ -15,17 +15,11 @@ module DatabaseScripts
             markdown_taxon_link(taxon),
             taxon.status,
             suggested_name.name_html,
-            format_existing_taxa(existing_taxa)
+            taxa_list(existing_taxa)
           ]
         end
       end
     end
-
-    private
-
-      def format_existing_taxa taxa
-        taxa.map(&:link_to_taxon).join('<br>')
-      end
   end
 end
 

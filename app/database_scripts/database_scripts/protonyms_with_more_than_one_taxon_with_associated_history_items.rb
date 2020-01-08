@@ -17,7 +17,7 @@ module DatabaseScripts
           [
             protonym.decorate.link_to_protonym,
             protonym.taxa.distinct.pluck(:type).join(', '),
-            protonym.taxa.map(&:link_to_taxon).join('<br>'),
+            taxa_list(protonym.taxa),
             protonym.taxa.map(&:status).join('<br>'),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
           ]

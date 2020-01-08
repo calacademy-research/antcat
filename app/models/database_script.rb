@@ -4,6 +4,7 @@ class DatabaseScript
   include Draper::Decoratable
   include DatabaseScripts::EndData
   include DatabaseScripts::Rendering
+  include DatabaseScripts::ViewHelpers
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
   TAGS = [
