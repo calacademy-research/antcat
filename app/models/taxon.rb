@@ -206,8 +206,8 @@ class Taxon < ApplicationRecord
     @soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
   end
 
-  def what_links_here predicate: false
-    Taxa::WhatLinksHere[self, predicate: predicate]
+  def what_links_here
+    @what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
   # TODO: Experimental.

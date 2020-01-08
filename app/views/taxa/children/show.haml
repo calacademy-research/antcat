@@ -35,14 +35,11 @@
           %td.shrink
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
             -if @check_what_links_heres
-              -wlh_columns = Taxa::WhatLinksHereColumns[child, predicate: true]
-              -wlh_taxts = Taxa::WhatLinksHereTaxts[child, predicate: true]
-
-              -unless wlh_columns || wlh_taxts
+              -unless child.what_links_here.any?
                 %span.rounded-badge.white-label no WLHs
-              -if wlh_columns
+              -if child.what_links_here.any_columns?
                 %span.rounded-badge.pretty-label columns
-              -if wlh_taxts
+              -if child.what_links_here.any_taxts?
                 %span.rounded-badge.warning-label taxts
 
 =will_paginate @children
