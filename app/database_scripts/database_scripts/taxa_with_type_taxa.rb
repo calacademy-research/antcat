@@ -1,7 +1,7 @@
 module DatabaseScripts
   class TaxaWithTypeTaxa < DatabaseScript
     def results
-      Taxon.where.not(type_taxon_id: nil)
+      Taxon.where.not(type_taxon_id: nil).includes(type_taxon: :name)
     end
 
     def render

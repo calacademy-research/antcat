@@ -3,7 +3,8 @@ module DatabaseScripts
     def results
       Species.obsolete_combinations.joins(:name, current_valid_taxon: :name).
         where(current_valid_taxons_taxa: { type: 'Species' }).
-        where("SUBSTR(names_taxa.epithet, 1, 3) != SUBSTR(names.epithet, 1, 3)")
+        where("SUBSTR(names_taxa.epithet, 1, 3) != SUBSTR(names.epithet, 1, 3)").
+        includes(:name, current_valid_taxon: :name)
     end
 
     def render

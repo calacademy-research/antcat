@@ -4,7 +4,8 @@ module DatabaseScripts
       Reference.left_outer_joins(:document).
         where.not(reference_documents: { url: [nil, ''] }).
         where("url NOT LIKE ?", "%antcat.org/documents%").
-        no_missing.order_by_author_names_and_year
+        no_missing.order_by_author_names_and_year.
+        includes(:author_names).references(:reference_author_names)
     end
 
     def render
@@ -26,7 +27,7 @@ __END__
 
 title: References with PDFs not hosted by us
 category: PDFs
-tags: [slow]
+tags: [slow-render]
 
 description: >
   There may be more references not hosted by us, but these definitely are not.

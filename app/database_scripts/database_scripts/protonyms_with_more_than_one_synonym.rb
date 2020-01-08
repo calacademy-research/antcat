@@ -14,7 +14,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.decorate.expandable_reference,
+            protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
           ]

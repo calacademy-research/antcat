@@ -18,7 +18,7 @@ module DatabaseScripts
 
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.decorate.expandable_reference,
+            protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
             (type_taxts_identical ? 'Yes' : '<span class="bold-warning">No</span>'),

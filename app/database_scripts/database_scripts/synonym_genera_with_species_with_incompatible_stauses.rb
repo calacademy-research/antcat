@@ -11,7 +11,8 @@ module DatabaseScripts
     ]
 
     def results
-      Genus.where(status: Status::SYNONYM).joins(:species).where.not(species_taxa: { status: COMPATIBLE_STATUSES }).distinct
+      Genus.where(status: Status::SYNONYM).joins(:species).where.not(species_taxa: { status: COMPATIBLE_STATUSES }).distinct.
+        includes(:name)
     end
 
     def render
@@ -19,7 +20,7 @@ module DatabaseScripts
         t.header :taxon, :status, :unique_species_statuses, :incompatible_species
         t.rows do |taxon|
           taxa = taxon.species
-          incompatible_taxa = taxa.where.not(status: COMPATIBLE_STATUSES)
+          incompatible_taxa = taxa.where.not(status: COMPATIBLE_STATUSES).includes(:name)
 
           [
             markdown_taxon_link(taxon),
