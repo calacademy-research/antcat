@@ -163,6 +163,25 @@ describe Taxon do
       end
     end
 
+    describe "#collective_group_name" do
+      context 'when taxon is not fossil' do
+        let(:taxon) { build_stubbed :family }
+
+        specify do
+          expect { taxon.collective_group_name = true }.to change { taxon.valid? }.to(false)
+          expect(taxon.errors.messages).to include(collective_group_name: ["can only be set for fossil taxa"])
+        end
+      end
+
+      context 'when taxon is fossil' do
+        let(:taxon) { build_stubbed :family, :fossil }
+
+        specify do
+          expect { taxon.collective_group_name = true }.to_not change { taxon.valid? }.from(true)
+        end
+      end
+    end
+
     describe "#type_taxt" do
       context 'when taxon does not have a type taxon' do
         let(:taxon) { build_stubbed :family }
