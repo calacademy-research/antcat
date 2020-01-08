@@ -11,16 +11,18 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :authorship, :ranks_of_taxa, :statuses_of_taxa, :all_type_taxt_identical?, :looks_like_a_false_positive?
+        t.header :protonym, :authorship, :ranks_of_taxa, :statuses_of_taxa, :all_type_taxa_identical?, :all_type_taxt_identical?, :looks_like_a_false_positive?
         t.rows do |protonym|
           type_taxts = protonym.taxa.pluck(:type_taxt)
           type_taxts_identical = type_taxts.uniq.size == 1
+          type_taxa_identical = protonym.taxa.pluck(:type_taxon_id).uniq.size == 1
 
           [
             protonym.decorate.link_to_protonym,
             protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
+            (type_taxa_identical ? 'Yes' : '<span class="bold-warning">No</span>'),
             (type_taxts_identical ? 'Yes' : '<span class="bold-warning">No</span>'),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
           ]
