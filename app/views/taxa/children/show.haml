@@ -1,11 +1,48 @@
 -@title = "Children of #{@taxon.name_cache}"
--breadcrumb :edit_taxon_show_children, @taxon
+-breadcrumb :taxon_show_children, @taxon
 
--if @taxon.children.present?
-  %table
-    -@children.each do |child|
+-if current_user
+  -unless @check_what_links_heres
+    =content_for :breadcrumbs_right do
+      =link_to "Check 'What Links Here's (slow)", taxa_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
+
+%table
+  %caption
+    Immediate children of
+    =@taxon.decorate.link_to_taxon_with_author_citation
+  %thead
+    %th Taxon
+    %th Rank
+    %th Status
+    %th
+    %th
+    %th
+  %tbody
+    -if @taxon.children.empty?
       %tr
-        %td=child.link_to_taxon
-        %td=child.expanded_status
+        %td{colspan: 5} Found no immediate children.
+    -else
+      -@children.each do |child|
+        %tr
+          %td=child.link_to_taxon
+          %td=child.rank.capitalize
+          %td=child.expanded_status
+          %td.shrink
+            -unless Taxon.is_a?(Infrasubspecies)
+              -# TODO: N+1 query.
+              -if child.children.exists?
+                =link_to "Children", taxa_children_path(child), class: 'btn-normal btn-tiny'
+          %td.shrink
+            =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
+            -if @check_what_links_heres
+              -wlh_columns = Taxa::WhatLinksHereColumns[child, predicate: true]
+              -wlh_taxts = Taxa::WhatLinksHereTaxts[child, predicate: true]
+
+              -unless wlh_columns || wlh_taxts
+                %span.rounded-badge.white-label no WLHs
+              -if wlh_columns
+                %span.rounded-badge.pretty-label columns
+              -if wlh_taxts
+                %span.rounded-badge.warning-label taxts
 
 =will_paginate @children
