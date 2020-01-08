@@ -10,6 +10,7 @@ class DatabaseScript
   TAGS = [
     SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
+    SLOW_RENDER_TAG = "slow-render",
     NEW_TAG = "new!",
     UPDATED = "updated!",
     CSV_TAG = "csv",

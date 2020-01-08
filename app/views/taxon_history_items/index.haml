@@ -1,6 +1,9 @@
 -@title = "Search History Items"
 -breadcrumb :search_taxon_history_items
 
+-content_for :head do
+  =javascript_include_tag "sortable_tables"
+
 -content_for :breadcrumbs_right do
   -# NOTE: Added as a dropdown because that was less confusing.
   .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} Other Search forms
@@ -29,13 +32,14 @@
 .callout
   =render "shared/note_on_taxt_references"
 
-%table
+%table.tablesorter
   %caption=pluralize_with_delimiters @taxon_history_items.count, 'results'
   %thead
     %tr
       %th ID
       %th Taxon
-      %th Taxon status
+      %th Rank
+      %th Status
       %th Taxt
   -if @taxon_history_items.empty?
     %tr
@@ -44,6 +48,7 @@
     %tr
       %td=link_to "##{history_item.id}", history_item
       %td=history_item.taxon.link_to_taxon
+      %td=history_item.taxon.rank
       %td=history_item.taxon.status
       %td=Detax[history_item.taxt]
 
