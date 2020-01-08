@@ -31,7 +31,9 @@ module DatabaseScripts
     private
 
       def format_failed_soft_validations target_subspecies
-        target_subspecies.soft_validations.failed.map(&:issue_description).join('<br><br>')
+        target_subspecies.soft_validations.failed.reject do |validation|
+          validation.database_script.is_a?(DatabaseScripts::UnavailableUncategorizedTaxa)
+        end.map(&:issue_description).join('<br><br>')
       end
   end
 end
