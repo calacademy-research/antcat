@@ -38,6 +38,8 @@ class DatabaseScript
     alias_method :to_param, :filename_without_extension
   end
 
+  attr_accessor :results_runtime
+
   def self.inherited(subclass)
     subclass.include Rails.application.routes.url_helpers
     subclass.include ActionView::Helpers::UrlHelper
@@ -122,8 +124,14 @@ class DatabaseScript
   protected
 
     def cached_results
-      return @_results if defined? @_results
-      @_results = results if respond_to?(:results)
+      return @results if defined? @results
+      if respond_to?(:results)
+        start = Time.current
+        @results = results
+        @results = @results.load if @results.is_a?(ActiveRecord::Relation)
+        self.results_runtime = Time.current - start
+      end
+      @results
     end
 
   private
