@@ -60,8 +60,7 @@ class Taxon < ApplicationRecord
   end
 
   belongs_to :name, dependent: :destroy
-  # TODO: Do not include authorship.
-  belongs_to :protonym, -> { includes :authorship }
+  belongs_to :protonym
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy

@@ -10,9 +10,12 @@ module DevMonkeyPatches
         each do |taxon|
           $stdout.print "#{taxon.id.to_s.bold} "
           $stdout.print "(#{taxon.status[0..4]}) "
-          $stdout.print "#{taxon.rank} ".blue
-          $stdout.puts "#{taxon.name_cache.bold}\t\t".green
+          $stdout.print "#{taxon.rank[0..10]} ".ljust(11).blue
+          $stdout.print "#{taxon.name_cache.bold}\t\t".green
+          yield taxon if block_given?
+          $stdout.puts
         end
+        nil # Suppress echo in console.
       end
       alias_method :peach, :dev_dev_puts_each
     end

@@ -14,7 +14,7 @@
   %tbody
     -if table_refs.empty?
       %tr
-        %td Found no associated items.
+        %td{colspan: 5} Found no associated items.
     -else
       -table_refs.each do |table_ref|
         -decorated = TableRefDecorator.new(table_ref)

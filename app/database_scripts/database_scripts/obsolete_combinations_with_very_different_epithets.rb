@@ -41,3 +41,7 @@ description: >
 
 
   These obsolete combinations should probably have the status 'synonym'.
+
+related_scripts:
+  - ProtonymsWithTaxaWithVeryDifferentEpithets
+  - ObsoleteCombinationsWithVeryDifferentEpithets
