@@ -18,7 +18,7 @@
 
   .medium-3.columns
     -if current_user
-      =render 'catalog/_show/editors_sidebar', taxon: @taxon
+      =render 'catalog/_show/editors_sidebar', taxon: @taxon, editor_taxon_view_object: @editor_taxon_view_object
     =render 'catalog/_show/statistics', taxon: @taxon
 
     .callout#external-links
