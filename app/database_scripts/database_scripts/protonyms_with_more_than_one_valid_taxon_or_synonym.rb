@@ -24,8 +24,8 @@ module DatabaseScripts
     private
 
       def covered_in_related_scripts
-        ProtonymsWithMoreThanOneValidTaxon.new.results.select(:id) +
-          ProtonymsWithMoreThanOneSynonym.new.results.select(:id)
+        DatabaseScripts::ProtonymsWithMoreThanOneValidTaxon.new.results.select(:id) +
+          DatabaseScripts::ProtonymsWithMoreThanOneSynonym.new.results.select(:id)
       end
   end
 end

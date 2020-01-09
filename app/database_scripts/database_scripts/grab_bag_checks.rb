@@ -3,6 +3,7 @@ module DatabaseScripts
     def results
       [
         all_subgenera_have_names_with_parentheses,
+        all_protonyms_have_taxa_with_compatible_ranks,
         name_count_checks,
         name_caches_sync
       ]
@@ -26,6 +27,15 @@ module DatabaseScripts
         {
           title: 'All subgenera have names with parentheses',
           ok?: Subgenus.joins(:name).where('names.name LIKE ?', '%(%').count == Subgenus.count
+        }
+      end
+
+      def all_protonyms_have_taxa_with_compatible_ranks
+        {
+          title: 'All protonyms have taxa with compatible ranks',
+          ok?: !Taxon.group(:protonym_id).having(<<~SQL, Taxon::TYPES_ABOVE_SPECIES).exists?
+            COUNT(DISTINCT CASE WHEN type IN (?) THEN 'higher' ELSE 'lower' END) > 1
+          SQL
         }
       end
 
