@@ -1,7 +1,7 @@
 module DatabaseScripts
   class OrphanedProtonyms < DatabaseScript
     def results
-      Protonym.where.not(id: Taxon.select(:protonym_id))
+      Protonym.where.not(id: Taxon.select(:protonym_id)).includes(:name)
     end
   end
 end

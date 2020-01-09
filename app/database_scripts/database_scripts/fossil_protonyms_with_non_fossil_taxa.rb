@@ -10,7 +10,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.taxa.map(&:link_to_taxon).join('<br>')
+            taxa_list(protonym.taxa)
           ]
         end
       end

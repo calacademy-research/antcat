@@ -1,11 +1,58 @@
 -@title = "Children of #{@taxon.name_cache}"
--breadcrumb :edit_taxon_show_children, @taxon
+-breadcrumb :taxon_show_children, @taxon
 
--if @taxon.children.present?
-  %table
-    -@children.each do |child|
+-if current_user
+  -unless @check_what_links_heres
+    =content_for :breadcrumbs_right do
+      =link_to "Check 'What Links Here's (slow)", taxa_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
+
+-# TODO: Delete this Temporary Code(tm) to cleanup records, or make it presentable.
+-children_has_what_links_heres = false
+
+%table
+  %caption
+    Immediate children of
+    =@taxon.decorate.link_to_taxon_with_author_citation
+  %thead
+    %th Taxon
+    %th Rank
+    %th Status
+    %th
+    %th
+    %th
+  %tbody
+    -if @taxon.children.empty?
       %tr
-        %td=child.link_to_taxon
-        %td=child.expanded_status
+        %td{colspan: 5} Found no immediate children.
+    -else
+      -@children.each do |child|
+        %tr
+          %td=child.link_to_taxon
+          %td=child.rank.capitalize
+          %td=child.expanded_status
+          %td.shrink
+            -unless Taxon.is_a?(Infrasubspecies)
+              -# TODO: N+1 query.
+              -if child.children.exists?
+                =link_to "Children", taxa_children_path(child), class: 'btn-normal btn-tiny'
+          %td.shrink
+            =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
+            -if @check_what_links_heres
+              -if child.what_links_here.any?
+                -children_has_what_links_heres = true
+              -else
+                %span.rounded-badge.white-label no WLHs
+              -if child.what_links_here.any_columns?
+                %span.rounded-badge.pretty-label columns
+              -if child.what_links_here.any_taxts?
+                %span.rounded-badge.warning-label taxts
+
+-# TODO: Hmm.
+-if user_is_editor?
+  -allow_delete_children = @check_what_links_heres && @taxon.type.in?(Taxa::ChildrenController::ALLOW_DELETE_CHILDREN_TYPES) && @taxon.children.present? && !children_has_what_links_heres
+  -if allow_delete_children
+    =content_for :breadcrumbs_right do
+      %small Children has no WLHs
+      =link_to "Delete all", taxa_children_path(@taxon), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-normal btn-warning"
 
 =will_paginate @children

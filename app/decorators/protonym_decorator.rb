@@ -5,6 +5,7 @@ class ProtonymDecorator < Draper::Decorator
     h.link_to format_name, h.protonym_path(protonym)
   end
 
+  # TODO: This does not seem to be `included` when used in `DatabaseScripts::ProtonymsWithNotesTaxt`.
   def format_name
     name.name_with_fossil_html fossil?
   end

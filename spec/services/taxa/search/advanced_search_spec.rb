@@ -232,7 +232,7 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by ichnotaxon" do
       let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, ichnotaxon: true }
+      let!(:yes_match) { create :family, :fossil, ichnotaxon: true }
 
       specify { expect(described_class[ichnotaxon: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to match_array [yes_match] }
@@ -250,7 +250,7 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by collective group name" do
       let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, collective_group_name: true }
+      let!(:yes_match) { create :family, :fossil, collective_group_name: true }
 
       specify { expect(described_class[collective_group_name: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[collective_group_name: "true"]).to match_array [yes_match] }

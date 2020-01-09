@@ -23,7 +23,7 @@ end
 __END__
 
 category: Catalog
-tags: [list, slow]
+tags: [list, slow-render]
 
 description: >
   Quadrinomials cannot be 100% represented on AntCat since the lowest rank is subspecies.
