@@ -4,11 +4,13 @@ class DatabaseScript
   include Draper::Decoratable
   include DatabaseScripts::EndData
   include DatabaseScripts::Rendering
+  include DatabaseScripts::ViewHelpers
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
   TAGS = [
     SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
+    SLOW_RENDER_TAG = "slow-render",
     NEW_TAG = "new!",
     UPDATED = "updated!",
     CSV_TAG = "csv",
@@ -35,6 +37,8 @@ class DatabaseScript
 
     alias_method :to_param, :filename_without_extension
   end
+
+  attr_accessor :results_runtime
 
   def self.inherited(subclass)
     subclass.include Rails.application.routes.url_helpers
@@ -120,8 +124,14 @@ class DatabaseScript
   protected
 
     def cached_results
-      return @_results if defined? @_results
-      @_results = results if respond_to?(:results)
+      return @results if defined? @results
+      if respond_to?(:results)
+        start = Time.current
+        @results = results
+        @results = @results.load if @results.is_a?(ActiveRecord::Relation)
+        self.results_runtime = Time.current - start
+      end
+      @results
     end
 
   private

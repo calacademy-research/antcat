@@ -1,7 +1,8 @@
 module DatabaseScripts
   class AuthorsWithMultipleNames < DatabaseScript
     def results
-      Author.where(id: AuthorName.group(:author_id).having("COUNT(id) > 1").select(:author_id))
+      Author.where(id: AuthorName.group(:author_id).having("COUNT(id) > 1").select(:author_id)).
+        includes(:names)
     end
 
     def render

@@ -47,7 +47,7 @@
       Forms contains
       =text_field_tag :forms, params[:forms]
     .medium-2.columns.end
-      %em Incertae sedis
+      %i Incertae sedis
       in
       =select_tag :incertae_sedis_in, options_for_select(Taxon::INCERTAE_SEDIS_IN_RANKS, params[:incertae_sedis_in]), include_blank: true
 
@@ -63,7 +63,7 @@
       Ichnotaxon
       =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
     .medium-2.columns
-      Nomen nudum
+      %i Nomen nudum
       =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
     .medium-2.columns.end
       Hong

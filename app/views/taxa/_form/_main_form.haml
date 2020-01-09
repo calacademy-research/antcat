@@ -16,7 +16,7 @@
           -if taxon.is_a?(Subgenus)
             %span
               Subgenus name format:
-              %em Genus (Subgenus)
+              %i Genus (Subgenus)
     %tr
       %td
       %td
@@ -48,7 +48,7 @@
 
   %tr
     %td.no-wrap
-      =form.label :incertae_sedis_in
+      =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
     %td
       =form.select :incertae_sedis_in, [['(none)', nil], *Taxon::INCERTAE_SEDIS_IN_RANKS]
 
@@ -64,7 +64,7 @@
       =form.label :unresolved_homonym, 'Unresolved junior homonym'
 
       =form.check_box :nomen_nudum
-      =form.label :nomen_nudum
+      =form.label :nomen_nudum, "<i>Nomen nudum</i>".html_safe
 
   %tr
     %td

@@ -77,7 +77,7 @@ module Taxa
                    ' of '
                  end
 
-        label << taxon.epithet_with_fossil
+        label << taxon.name_with_fossil
       end
   end
 end

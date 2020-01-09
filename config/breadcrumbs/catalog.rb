@@ -33,6 +33,11 @@ end
     parent taxon
   end
 
+  crumb :taxon_show_children do |taxon|
+    link "Show Children"
+    parent taxon
+  end
+
   crumb :taxon_soft_validations do |taxon|
     link "Soft validations"
     parent taxon

@@ -57,7 +57,7 @@ module Exporters
           {
             subfamily: subfamily&.name&.name || 'incertae_sedis',
             genus: genus.name.name,
-            subgenus: name.epithet.gsub(/[\(\)]/, '')
+            subgenus: name.epithet
           }
         end
 
@@ -75,7 +75,7 @@ module Exporters
             subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
             tribe: genus.tribe&.name&.name,
             genus: genus.name.name,
-            species: name.epithets.split.first,
+            species: name.species_epithet,
             subspecies: name.epithet
           }
         end

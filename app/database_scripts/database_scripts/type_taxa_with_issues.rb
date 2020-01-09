@@ -2,7 +2,7 @@
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript
     def results
-      Taxon.valid.where.not(type_taxon_id: nil)
+      Taxon.valid.where.not(type_taxon_id: nil).includes(:type_taxon)
     end
 
     def render

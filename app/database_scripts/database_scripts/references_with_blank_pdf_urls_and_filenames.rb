@@ -6,7 +6,8 @@ module DatabaseScripts
           file_file_name: ['', nil],
           url: ['', nil]
         }
-      )
+      ).
+      includes(:document, :author_names).references(:reference_author_names)
     end
 
     def render
@@ -41,7 +42,7 @@ __END__
 
 title: References with blank PDF URLs and filenames
 category: PDFs
-tags: [slow]
+tags: [slow-render]
 
 description: >
 

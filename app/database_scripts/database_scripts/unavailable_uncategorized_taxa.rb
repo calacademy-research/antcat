@@ -35,13 +35,10 @@ module DatabaseScripts
       def what_links_here_coumns taxon
         return [] unless SHOW_WHAT_LINKS_HERE
 
-        wlh_columns = Taxa::WhatLinksHereColumns[taxon, predicate: true]
-        wlh_taxts = Taxa::WhatLinksHereTaxts[taxon, predicate: true]
-
         [
-          ('Yes' if wlh_columns),
-          ('Yes' if wlh_taxts),
-          ('Yes' if wlh_columns || wlh_taxts),
+          ('Yes' if taxon.what_links_here.any_columns?),
+          ('Yes' if taxon.what_links_here.any_taxts?),
+          ('Yes' if taxon.what_links_here.any?),
           link_to('What Links Here', taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny')
         ]
       end

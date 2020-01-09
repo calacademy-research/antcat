@@ -1,6 +1,14 @@
 # TODO: Implement pagination for lists inside scripts.
 
 class DatabaseScriptsController < ApplicationController
+  # rubocop:disable Style/IdenticalConditionalBranches
+  FLUSH_QUERY_CACHE_DEBUG = if Rails.env.production?
+                              false
+                            else
+                              false
+                            end
+  # rubocop:enable Style/IdenticalConditionalBranches
+
   before_action :authenticate_user!
   before_action :set_database_script, only: [:show]
 
@@ -18,6 +26,10 @@ class DatabaseScriptsController < ApplicationController
   end
 
   def show
+    if FLUSH_QUERY_CACHE_DEBUG
+      ActiveRecord::Base.connection.execute('FLUSH QUERY CACHE;')
+    end
+
     respond_to do |format|
       format.html do
         @rendered, @render_duration = timed_render

@@ -1,4 +1,3 @@
-# rubocop:disable Layout/IndentationConsistency
 crumb :edit_catalog do
   link "Edit Catalog"
 end
@@ -17,11 +16,6 @@ crumb :edit_taxon do |taxon|
     parent :edit_catalog
   end
 end
-
-  crumb :edit_taxon_show_children do |taxon|
-    link "Show Children"
-    parent :edit_taxon, taxon
-  end
 
 crumb :convert_species_to_subspecies do |taxon|
   link "Convert species to subspecies"
@@ -62,4 +56,3 @@ crumb :move_items_to do |taxon, to_taxon|
   link "to #{to_taxon.name_with_fossil}".html_safe, taxa_move_items_path(taxon, to_taxon_id: to_taxon.id)
   parent :move_items, taxon
 end
-# rubocop:enable Layout/IndentationConsistency

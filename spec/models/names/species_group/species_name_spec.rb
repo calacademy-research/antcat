@@ -7,7 +7,6 @@ describe SpeciesName do
 
       expect(name.name).to eq 'Lasius niger'
       expect(name.epithet).to eq 'niger'
-      expect(name.epithets).to eq nil
     end
 
     specify do
@@ -15,7 +14,6 @@ describe SpeciesName do
 
       expect(name.name).to eq 'Lasius (Austrolasius) niger'
       expect(name.epithet).to eq 'niger'
-      expect(name.epithets).to eq '(Austrolasius) niger'
     end
   end
 

@@ -5,7 +5,7 @@ module DatabaseScripts
 
       Taxon.joins(:name).where(names: { name: same_name.select(:name) }).
         order('names.name').
-        includes(protonym: { authorship: :reference })
+        includes(protonym: { authorship: { reference: :author_names } }).references(:reference_author_names)
     end
 
     def render
@@ -14,7 +14,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),
-            taxon.authorship_reference.decorate.expandable_reference,
+            taxon.authorship_reference.keey,
             taxon.status
           ]
         end

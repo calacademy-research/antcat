@@ -38,6 +38,7 @@ class DatabaseScriptDecorator < Draper::Decorator
       case tag
       when DatabaseScript::SLOW_TAG          then "warning-label"
       when DatabaseScript::VERY_SLOW_TAG     then "warning-label"
+      when DatabaseScript::SLOW_RENDER_TAG   then "warning-label"
       when DatabaseScript::NEW_TAG           then "label"
       when DatabaseScript::UPDATED           then "label"
       when DatabaseScript::CSV_TAG           then "pretty-label"

@@ -5,7 +5,8 @@ module DatabaseScripts
 
       Taxon.joins(:name).
         where(names: { name: name_and_status.select(:name) }, status: name_and_status.select(:status)).
-        order('names.name')
+        order('names.name').
+        includes(protonym: { authorship: :reference })
     end
 
     def render
@@ -14,7 +15,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),
-            taxon.authorship_reference.decorate.expandable_reference,
+            taxon.authorship_reference.keey,
             taxon.status,
             ('Yes' if taxon.unresolved_homonym?)
           ]

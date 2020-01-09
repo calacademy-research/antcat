@@ -1,15 +1,12 @@
 require 'rails_helper'
 
 describe SubspeciesName do
-  it { is_expected.to validate_presence_of :epithets }
-
   describe '#name=' do
     specify do
       name = described_class.new(name: 'Lasius niger fusca')
 
       expect(name.name).to eq 'Lasius niger fusca'
       expect(name.epithet).to eq 'fusca'
-      expect(name.epithets).to eq 'niger fusca'
     end
 
     specify do
@@ -17,7 +14,6 @@ describe SubspeciesName do
 
       expect(name.name).to eq 'Lasius niger var. fusca'
       expect(name.epithet).to eq 'fusca'
-      expect(name.epithets).to eq 'niger var. fusca'
     end
 
     specify do
@@ -25,7 +21,6 @@ describe SubspeciesName do
 
       expect(name.name).to eq 'Lasius (Austrolasius) niger fusca'
       expect(name.epithet).to eq 'fusca'
-      expect(name.epithets).to eq '(Austrolasius) niger fusca'
     end
 
     specify do
@@ -33,7 +28,6 @@ describe SubspeciesName do
 
       expect(name.name).to eq 'Lasius (Austrolasius) niger var. fusca'
       expect(name.epithet).to eq 'fusca'
-      expect(name.epithets).to eq '(Austrolasius) niger var. fusca'
     end
   end
 
@@ -66,7 +60,6 @@ describe SubspeciesName do
 
       expect(subspecies_name.name).to eq 'Eciton niger minor'
       expect(subspecies_name.epithet).to eq 'minor'
-      expect(subspecies_name.epithets).to eq 'niger minor'
     end
 
     it "handles more than one subspecies epithet" do
@@ -76,7 +69,6 @@ describe SubspeciesName do
 
       expect(subspecies_name.name).to eq 'Eciton niger minor medii'
       expect(subspecies_name.epithet).to eq 'medii'
-      expect(subspecies_name.epithets).to eq 'niger minor medii'
     end
 
     context "when name already exists" do

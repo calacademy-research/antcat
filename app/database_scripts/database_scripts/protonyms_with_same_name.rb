@@ -16,7 +16,7 @@ module DatabaseScripts
 
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.decorate.expandable_reference,
+            protonym.authorship.reference.keey,
             taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : '<span class="bold-warning">Orphaned protonym</span>',
             protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
           ]

@@ -56,7 +56,7 @@ class CreateCombinationPolicy
 
     # TODO: Reaching into `table_ref` like this is meh, but let's keep it until we know more.
     def what_links_here_except_obsolete_combinations
-      taxon.what_links_here.reject do |table_ref|
+      taxon.what_links_here.all.reject do |table_ref|
         table_ref.table == 'taxa' &&
           table_ref.field == :current_valid_taxon_id &&
           table_ref.id.in?(obsolete_combinations_ids)

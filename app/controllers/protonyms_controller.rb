@@ -1,14 +1,18 @@
 class ProtonymsController < ApplicationController
   TAXON_COUNT_ORDER = "taxon_count"
+  ONLY_WITH_TYPE_TAXON = "only_with_type_taxon"
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :set_protonym, only: [:show, :edit, :update, :destroy]
 
   def index
-    @protonyms = Protonym.includes(:name, authorship: :reference)
+    @protonyms = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
+                  left_outer_joins(:taxa).group(:id).references('taxa_count').
+                  preload(:name, authorship: :reference)
+    @protonyms = @protonyms.where.not(taxa: { type_taxon_id: nil }).distinct if params[ONLY_WITH_TYPE_TAXON].present?
     @protonyms = @protonyms.joins(:name).where('names.name LIKE ?', "%#{params[:q]}%") if params[:q].present?
     @protonyms = if params[:order] == TAXON_COUNT_ORDER
-                   @protonyms.joins(:taxa).group(:id).order("COUNT(protonyms.id) DESC")
+                   @protonyms.order("taxa_count DESC")
                  else
                    @protonyms.order_by_name
                  end.paginate(page: params[:page], per_page: 50)

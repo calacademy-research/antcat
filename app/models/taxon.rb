@@ -60,8 +60,7 @@ class Taxon < ApplicationRecord
   end
 
   belongs_to :name, dependent: :destroy
-  # TODO: Do not include authorship.
-  belongs_to :protonym, -> { includes :authorship }
+  belongs_to :protonym
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
@@ -74,6 +73,8 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
+  validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
+  validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
 
   validate :current_valid_taxon_validation, :ensure_correct_name_type
@@ -207,8 +208,8 @@ class Taxon < ApplicationRecord
     @soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
   end
 
-  def what_links_here predicate: false
-    Taxa::WhatLinksHere[self, predicate: predicate]
+  def what_links_here
+    @what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
   # TODO: Experimental.

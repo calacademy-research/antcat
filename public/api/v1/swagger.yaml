@@ -804,9 +804,6 @@ definitions:
       epithet:
         type: string
         description: Plain text terminal epithet
-      epithets:
-        type: string
-        description: all epithets, plain text
       gender:
         type: string
         description: gender

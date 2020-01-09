@@ -1,7 +1,6 @@
 module DatabaseScripts
   module Rendering
     include DatabaseScripts::Renderers::AsTable
-    include DatabaseScripts::Renderers::Markdown
 
     # Tries to be smart whenever not overridden in the scripts.
     def render

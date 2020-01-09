@@ -10,7 +10,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),
-            taxon.obsolete_combinations.map(&:link_to_taxon).join('<br>')
+            taxa_list(taxon.obsolete_combinations)
           ]
         end
       end
