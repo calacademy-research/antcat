@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :target_subspecies_validation_issues
+        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :status, :target_subspecies_validation_issues
 
         t.rows do |taxon|
           name_string = taxon.name_cache
@@ -22,6 +22,7 @@ module DatabaseScripts
             target_subspecies_name_string,
             ('Yes' if convertable),
             (target_subspecies.link_to_taxon if convertable),
+            (target_subspecies.status if convertable),
             (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?)
           ]
         end
