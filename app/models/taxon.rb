@@ -8,6 +8,9 @@ class Taxon < ApplicationRecord
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
   TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
+  # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
+  CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
+
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
