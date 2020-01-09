@@ -28,3 +28,8 @@ tags: [list]
 
 description: >
   That is, name records with the type `FamilyOrSubfamilyName`. See %github635.
+
+related_scripts:
+  - FamilyOrSubfamilyNames
+  - TaxaWithNonMatchingNameTypes
+  - UnparsableNames

@@ -11,11 +11,15 @@ module Names
     'n.',
     'st.',
     'subsp.',
+    'subp.',
+    'ssp.',
     'f.',
     'm.',
     'morph.',
     'ab.',
-    'nat.'
+    'nat.',
+    'f.interm.',
+    'v.'
   ]
 
   class BuildNameFromString
