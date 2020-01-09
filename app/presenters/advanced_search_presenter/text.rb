@@ -1,11 +1,11 @@
 module AdvancedSearchPresenter
   class Text
-    include ApplicationHelper
+    include ApplicationHelper # For `#add_period_if_necessary`
 
     def format taxon
       string = format_name(taxon).html_safe
       string << ' '
-      string << convert_to_text(format_status_reference(taxon).html_safe)
+      string << convert_to_text(format_status(taxon).html_safe)
       type_localities = format_type_localities(taxon)
       string << convert_to_text(' ' + type_localities) if type_localities.present?
       string << "\n"
@@ -19,9 +19,10 @@ module AdvancedSearchPresenter
         taxon.name_cache
       end
 
-      def format_status_reference taxon
+      # TODO: DRY w.r.t. `ExpandedStatus`.
+      def format_status taxon
         labels = []
-        labels << "#{italicize 'incertae sedis'} in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
+        labels << "incertae sedis in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
         if taxon.homonym? && taxon.homonym_replaced_by
           labels << "homonym replaced by #{format_name taxon.homonym_replaced_by}"
         elsif taxon.unidentifiable?
@@ -29,21 +30,16 @@ module AdvancedSearchPresenter
         elsif taxon.unresolved_homonym?
           labels << "unresolved junior homonym"
         elsif taxon.nomen_nudum?
-          labels << italicize('nomen nudum')
+          labels << 'nomen nudum'
         elsif taxon.valid_taxon?
           labels << "valid"
+        elsif taxon.synonym?
+          labels << "synonym of " << format_name(taxon.current_valid_taxon)
         elsif taxon.invalid?
-          label = taxon.status
-          label << senior_synonym_list(taxon)
-          labels << label
+          labels << taxon.status
         end
         labels << 'ichnotaxon' if taxon.ichnotaxon?
         labels.join(', ').html_safe
-      end
-
-      def senior_synonym_list taxon
-        return '' unless taxon.synonym? && taxon.current_valid_taxon
-        ' of ' << format_name(taxon.current_valid_taxon)
       end
 
       def format_protonym taxon
@@ -65,10 +61,6 @@ module AdvancedSearchPresenter
           string << ' ' << taxon.protonym.biogeographic_region
           string = add_period_if_necessary string
         end
-        string
-      end
-
-      def italicize string
         string
       end
 
