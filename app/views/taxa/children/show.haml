@@ -48,9 +48,11 @@
                 %span.rounded-badge.warning-label taxts
 
 -# TODO: Hmm.
--allow_delete_children = @taxon.type.in?(Taxa::ChildrenController::ALLOW_DELETE_CHILDREN_TYPES) && @taxon.children.present? && @check_what_links_heres && !children_has_what_links_heres
--if user_is_editor? && allow_delete_all_children
-  Children has no WLHs.
-  =link_to "Delete all", taxa_children_path(@taxon), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-normal btn-warning"
+-if user_is_editor?
+  -allow_delete_children = @check_what_links_heres && @taxon.type.in?(Taxa::ChildrenController::ALLOW_DELETE_CHILDREN_TYPES) && @taxon.children.present? && !children_has_what_links_heres
+  -if allow_delete_children
+    =content_for :breadcrumbs_right do
+      %small Children has no WLHs
+      =link_to "Delete all", taxa_children_path(@taxon), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-normal btn-warning"
 
 =will_paginate @children
