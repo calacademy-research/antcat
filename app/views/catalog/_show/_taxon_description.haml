@@ -182,7 +182,7 @@
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/780
 -if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
-  -issues = Taxa::SubspeciesHistoryItemIssues[taxon]
+  -issues = Taxa::SubspeciesHistoryItemIssues[taxon.subspecies_list_in_history_items.first]
   .callout.no-border-callout{class: issues ? 'alert' : 'logged-in-only-background' }
     %h6
       This species has a subspecies list in a history item

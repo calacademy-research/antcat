@@ -4,8 +4,8 @@ module Taxa
   class SubspeciesHistoryItemIssues
     include Service
 
-    def initialize taxon
-      @history_item = taxon.subspecies_list_in_history_items.first
+    def initialize history_item
+      @history_item = history_item
     end
 
     def call
