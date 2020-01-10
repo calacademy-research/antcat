@@ -30,7 +30,7 @@
     -if @taxon.waiting?
       %span.review-state This taxon has been changed; changes awaiting approval.
       -if user_is_editor?
-        =@editors_taxon_view_object.link_to_review_change
+        =@editors_taxon_view_object.review_change_button
     =add_period_if_necessary taxon_change_history(@taxon)
 
 -content_for :after_content do

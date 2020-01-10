@@ -15,50 +15,44 @@ module Editors
       taxon.genus.name.name + ' '
     end
 
-    def link_to_edit_taxon
+    def edit_taxon_button
       link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
     end
 
-    def link_to_review_change
+    def review_change_button
       return unless taxon.waiting? && taxon.last_change
       link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-tiny btn-normal"
     end
 
     def add_child_button
-      child_ranks = { family:     "Subfamily",
-                      subfamily:  "Genus",
-                      tribe:      "Genus",
-                      genus:      "Species",
-                      subgenus:   "Species",
-                      species:    "Subspecies",
-                      subspecies: "Infrasubspecies" }
+      rank_to_create = case taxon
+                       when Family     then "Subfamily"
+                       when Subfamily  then "Genus"
+                       when Tribe      then "Genus"
+                       when Genus      then "Species"
+                       when Subgenus   then "Species"
+                       when Species    then "Subspecies"
+                       when Subspecies then "Infrasubspecies"
+                       end
+      return unless rank_to_create
 
-      rank_to_add = child_ranks[taxon.rank.to_sym]
-      return if rank_to_add.blank?
-
-      url = new_taxa_path rank_to_create: rank_to_add, parent_id: taxon.id
-      link_to "Add #{rank_to_add}", url, class: "btn-normal"
+      link_to "Add #{rank_to_create.downcase}",
+        new_taxa_path(rank_to_create: rank_to_create, parent_id: taxon.id), class: "btn-normal"
     end
 
     def add_tribe_button
       return unless taxon.is_a?(Subfamily)
-
-      url = new_taxa_path rank_to_create: 'Tribe', parent_id: taxon.id
-      link_to "Add tribe", url, class: "btn-normal"
+      link_to "Add tribe", new_taxa_path(rank_to_create: 'Tribe', parent_id: taxon.id), class: "btn-normal"
     end
 
     def add_subgenus_button
       return unless taxon.is_a?(Genus)
-
-      url = new_taxa_path rank_to_create: 'Subgenus', parent_id: taxon.id
-      link_to "Add subgenus", url, class: "btn-normal"
+      link_to "Add subgenus", new_taxa_path(rank_to_create: 'Subgenus', parent_id: taxon.id), class: "btn-normal"
     end
 
     def convert_to_subspecies_button
       return unless taxon.is_a? Species
-
-      url = new_taxa_convert_to_subspecies_path taxon
-      link_to 'Convert to subspecies', url, class: "btn-normal"
+      link_to 'Convert to subspecies', new_taxa_convert_to_subspecies_path(taxon), class: "btn-normal"
     end
 
     def elevate_to_species_button

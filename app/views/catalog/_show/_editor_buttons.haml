@@ -1,6 +1,6 @@
 .right
   -if user_is_editor?
-    =editors_taxon_view_object.link_to_edit_taxon
+    =editors_taxon_view_object.edit_taxon_button
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"
 
