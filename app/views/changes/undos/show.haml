@@ -24,4 +24,6 @@
       =edit_summary_text_field_tag
 
     .medium-3.columns.end
-      =button_tag "Undo!", type: :submit, class: "btn-warning"
+      -if @change.change_too_old_to_be_undone?
+        This change cannot be undone because it was made before breaking database changes.
+      =button_tag "Undo!", type: :submit, disabled: !@change.can_be_undone?, class: "btn-warning"

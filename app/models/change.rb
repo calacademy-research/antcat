@@ -1,6 +1,9 @@
 class Change < ApplicationRecord
   include Trackable
 
+  # Change this after major breaking changes.
+  DISALLOW_UNDOS_CREATED_BEFORE = Date.new(2000, 1, 1)
+
   class UndoNameIdConflict < StandardError; end
 
   belongs_to :approver, class_name: 'User'
@@ -26,6 +29,15 @@ class Change < ApplicationRecord
     end
   end
 
+  def can_be_undone?
+    return false if change_too_old_to_be_undone?
+    true
+  end
+
+  def change_too_old_to_be_undone?
+    created_at < DISALLOW_UNDOS_CREATED_BEFORE
+  end
+
   def approve user
     taxon_state = TaxonState.find_by(taxon: taxon)
     return if taxon_state.review_state == TaxonState::APPROVED
@@ -42,6 +54,8 @@ class Change < ApplicationRecord
   end
 
   def undo
+    raise 'cannot be undone' unless can_be_undone?
+
     UndoTracker.clear_change
     change_id_set = find_future_changes
     versions = SortedSet[]

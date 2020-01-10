@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Change do
+  include ActiveSupport::Testing::TimeHelpers
+
   describe "validations" do
     it { is_expected.to validate_presence_of(:user).on(:create) }
   end
@@ -20,6 +22,44 @@ describe Change do
       it "returns unreviewed changes" do
         expect(described_class.waiting).to eq [unreviewed_change]
       end
+    end
+  end
+
+  describe '#can_be_undone?' do
+    context 'when change was created after the last allowed undo date' do
+      let!(:new_change) do
+        travel_to(described_class::DISALLOW_UNDOS_CREATED_BEFORE + 1.day) do
+          create :change
+        end
+      end
+
+      it 'can be undone' do
+        expect(new_change.can_be_undone?).to eq true
+      end
+    end
+
+    context 'when change was created before the last allowed undo date' do
+      let!(:too_old_change) do
+        travel_to(described_class::DISALLOW_UNDOS_CREATED_BEFORE - 1.day) do
+          create :change
+        end
+      end
+
+      it 'cannot be undone' do
+        expect(too_old_change.can_be_undone?).to eq false
+      end
+    end
+  end
+
+  describe '#undo' do
+    context 'when change is not allowed to be undone' do
+      let!(:too_old_change) do
+        travel_to(described_class::DISALLOW_UNDOS_CREATED_BEFORE - 1.day) do
+          create :change
+        end
+      end
+
+      specify { expect { too_old_change.undo }.to raise_error('cannot be undone') }
     end
   end
 
