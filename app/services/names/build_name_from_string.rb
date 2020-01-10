@@ -1,8 +1,7 @@
 # Not handled:
-# Subtribes: -ina
+# Subtribes: -ina (genera can also end with "ina")
 # Non-standard names like: Dacetiti (author tried to create a new trend)
 # Names I don't know what they are: Formicariae,  Dorylida
-# Probably tribes or subtribes: Acanthostichii, Bregmatomyrminii, Dorylii,  Strumigeniti, Thaumatomyrmii
 
 module Names
   RANK_ABBREVIATIONS = [
@@ -76,6 +75,7 @@ module Names
         when /idae$/ then ::FamilyName
         when /inae$/ then ::SubfamilyName
         when /ini$/  then ::TribeName
+        when /ii$/   then ::TribeName # Emery and Forel among others used this convention.
         else              ::GenusName
         end
       end
