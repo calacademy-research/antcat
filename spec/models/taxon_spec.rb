@@ -13,84 +13,6 @@ describe Taxon do
     it { is_expected.to belong_to(:name).dependent(:destroy) }
   end
 
-  describe 'callbacks' do
-    describe "#set_taxon_state_to_waiting" do
-      context "when creating a taxon" do
-        let(:taxon) { build :family }
-
-        it "creates a taxon_state" do
-          expect(taxon.taxon_state).to eq nil
-          taxon.save
-          expect(taxon.taxon_state).not_to eq nil
-        end
-
-        it "sets the review_status to 'waiting'" do
-          taxon.save
-          expect(taxon.reload.waiting?).to eq true
-        end
-      end
-
-      context "when updating" do
-        let(:taxon) { create :family, :old }
-
-        context "when it `save_initiator`" do
-          it "sets the review_status to 'waiting'" do
-            taxon.save_initiator = true
-            expect { taxon.save }.to change { taxon.reload.waiting? }.to true
-          end
-
-          it "doesn't cascade" do
-            family = create :family, :old
-            subfamily = create :subfamily, :old, family: family
-
-            expect(family.reload.waiting?).to be false
-            expect(subfamily.reload.waiting?).to be false
-
-            family.save_initiator = true
-            family.save
-
-            expect(family.reload.waiting?).to be true
-            expect(subfamily.reload.waiting?).to be false
-          end
-        end
-
-        context "when it not `save_initiator`" do
-          it "doesn't change the review state" do
-            expect { taxon.save }.to_not change { taxon.old? }
-          end
-        end
-      end
-    end
-
-    describe "#remove_auto_generated" do
-      context "when a generated taxon" do
-        it "removes 'auto_generated' flags from things" do
-          # Setup.
-          taxon = create :family, auto_generated: true
-
-          # Act and test.
-          taxon.save_initiator = true
-          taxon.save
-
-          expect(taxon.reload).not_to be_auto_generated
-        end
-
-        it "doesn't cascade" do
-          # Setup.
-          family = create :family, auto_generated: true
-          subfamily = create :subfamily, family: family, auto_generated: true
-
-          # Act and test.
-          family.save_initiator = true
-          family.save
-
-          expect(family.reload).not_to be_auto_generated
-          expect(subfamily.reload).to be_auto_generated
-        end
-      end
-    end
-  end
-
   describe 'validations' do
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
@@ -288,6 +210,19 @@ describe Taxon do
   end
 
   describe "workflow" do
+    describe '`Workflow::ExternalTable`' do
+      context "when taxon is created" do
+        let(:taxon) { build :family }
+
+        it "creates a `TaxonState` with `review_status` 'waiting'" do
+          expect(taxon.taxon_state).to eq nil
+          taxon.save
+          expect(taxon.taxon_state).not_to eq nil
+          expect(taxon.reload.waiting?).to eq true
+        end
+      end
+    end
+
     it "can transition from waiting to approved" do
       taxon = create :family
       create :change, taxon: taxon, change_type: "create"

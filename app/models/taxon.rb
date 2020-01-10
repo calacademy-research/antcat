@@ -22,9 +22,6 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
-  attr_accessor :save_initiator
-
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id
     belongs_to :genus
@@ -58,8 +55,6 @@ class Taxon < ApplicationRecord
 
   before_validation :cleanup_taxts
   before_save :set_name_caches
-  before_save { remove_auto_generated if save_initiator } # TODO: Move or remove.
-  before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
 
   scope :valid, -> { where(status: Status::VALID) }
   scope :invalid, -> { where.not(status: Status::VALID) }
@@ -206,15 +201,6 @@ class Taxon < ApplicationRecord
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html
-    end
-
-    def remove_auto_generated
-      self.auto_generated = false
-    end
-
-    def set_taxon_state_to_waiting
-      taxon_state.review_state = TaxonState::WAITING
-      taxon_state.save
     end
 
     def cleanup_taxts
