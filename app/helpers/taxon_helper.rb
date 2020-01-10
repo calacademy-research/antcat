@@ -8,13 +8,6 @@ module TaxonHelper
     end
   end
 
-  def default_name_string taxon
-    return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
-    return taxon.species.name.name + ' ' if taxon.is_a?(Subspecies)
-    return taxon.subspecies.name.name + ' ' if taxon.is_a?(Infrasubspecies)
-    taxon.genus.name.name + ' '
-  end
-
   def taxon_change_history taxon
     return if taxon.old?
     change = taxon.last_change

@@ -6,4 +6,4 @@
   =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
   =javascript_include_tag 'check_name_conflicts'
 
-=render 'form', taxon: @taxon, default_name_string: default_name_string(@taxon)
+=render 'form', taxon: @taxon, default_name_string: @editors_taxon_view_object.default_name_string

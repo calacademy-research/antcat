@@ -15,14 +15,14 @@ class CatalogController < ApplicationController
     # NOTE: Special case to avoid showing ~6 A4 pages of Formicidae references and use a different title.
     @is_formicidae_landing_page = true
 
-    @editor_taxon_view_object = EditorTaxonViewObject.new(@taxon)
+    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     setup_taxon_browser
 
     render 'show'
   end
 
   def show
-    @editor_taxon_view_object = EditorTaxonViewObject.new(@taxon)
+    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     setup_taxon_browser
   end
 
