@@ -5,7 +5,11 @@ crumb :protonyms do
 end
 
   crumb :protonym do |protonym|
-    link protonym.decorate.link_to_protonym
+    if protonym.persisted?
+      link protonym.decorate.link_to_protonym
+    else
+      link "##{protonym.id} [deleted]"
+    end
     parent :protonyms
   end
 

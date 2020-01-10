@@ -4,7 +4,11 @@ crumb :references do
 end
 
   crumb :reference do |reference|
-    link sanitize(reference.keey), reference_path(reference)
+    if reference.persisted?
+      link sanitize(reference.keey), reference_path(reference)
+    else
+      link "##{reference.id} [deleted]"
+    end
     parent :references
   end
 

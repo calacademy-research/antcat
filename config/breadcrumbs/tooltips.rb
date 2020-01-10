@@ -5,7 +5,11 @@ crumb :tooltips do
 end
 
   crumb :tooltip do |tooltip|
-    link "Tooltip ##{tooltip.id}", tooltip_path(tooltip)
+    if tooltip.persisted?
+      link "Tooltip ##{tooltip.id}", tooltip_path(tooltip)
+    else
+      link "##{tooltip.id} [deleted]"
+    end
     parent :tooltips
   end
 

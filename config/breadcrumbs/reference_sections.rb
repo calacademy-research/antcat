@@ -5,7 +5,11 @@ crumb :reference_sections do |taxon|
 end
 
   crumb :reference_section do |reference_section|
-    link "##{reference_section.id}", reference_section
+    if reference_section.persisted?
+      link "##{reference_section.id}", reference_section
+    else
+      link "##{reference_section.id} [deleted]"
+    end
     parent :reference_sections, reference_section.taxon
   end
 
