@@ -20,7 +20,7 @@ describe SpeciesGroupName do
           expect do
             species.update_parent new_genus
             species.save!
-          end.to raise_error(Taxon::TaxonExists)
+          end.to raise_error(Taxa::TaxonExists)
         end
       end
 

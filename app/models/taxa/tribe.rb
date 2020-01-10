@@ -14,7 +14,7 @@ class Tribe < Taxon
   end
 
   def parent= parent_taxon
-    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Subfamily)
+    raise Taxa::InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Subfamily)
     self.subfamily = parent_taxon
   end
 

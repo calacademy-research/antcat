@@ -9,7 +9,7 @@ module Taxa
 
       def call
         # TODO: Revisit after converting broken subspecies to infrasubspecies.
-        raise Taxon::TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if subspecies.infrasubspecies.any?
+        raise Taxa::TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if subspecies.infrasubspecies.any?
 
         new_species = build_new_species
 

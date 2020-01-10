@@ -30,7 +30,7 @@ describe Infrasubspecies do
     context 'when new parent is not a subspecies' do
       let(:new_parent) { create :family }
 
-      specify { expect { infrasubspecies.parent = new_parent }.to raise_error(Taxon::InvalidParent) }
+      specify { expect { infrasubspecies.parent = new_parent }.to raise_error(Taxa::InvalidParent) }
     end
   end
 

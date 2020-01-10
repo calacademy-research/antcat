@@ -22,10 +22,10 @@ module Taxa
         flash.now[:alert] = "Something went wrong... ?"
         render :show
       end
-    rescue Taxon::InvalidParent, Taxon::TaxonHasSubspecies, Taxon::TaxonHasInfrasubspecies => e
+    rescue Taxa::InvalidParent, Taxa::TaxonHasSubspecies, Taxa::TaxonHasInfrasubspecies => e
       flash.now[:alert] = e.message
       render :show
-    rescue Taxon::TaxonExists => e
+    rescue Taxa::TaxonExists => e
       name_links = e.names.map { |name| view_context.link_to(name.name_html, name_path(name)) }
       flash.now[:alert] = "Name conflict: #{name_links.join}"
       render :show
