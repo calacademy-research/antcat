@@ -25,13 +25,13 @@ module Editors
     end
 
     def add_child_button
-      child_ranks = { family:     "subfamily",
-                      subfamily:  "genus",
-                      tribe:      "genus",
-                      genus:      "species",
-                      subgenus:   "species",
-                      species:    "subspecies",
-                      subspecies: "infrasubspecies" }
+      child_ranks = { family:     "Subfamily",
+                      subfamily:  "Genus",
+                      tribe:      "Genus",
+                      genus:      "Species",
+                      subgenus:   "Species",
+                      species:    "Subspecies",
+                      subspecies: "Infrasubspecies" }
 
       rank_to_add = child_ranks[taxon.rank.to_sym]
       return if rank_to_add.blank?
@@ -43,14 +43,14 @@ module Editors
     def add_tribe_button
       return unless taxon.is_a?(Subfamily)
 
-      url = new_taxa_path rank_to_create: 'tribe', parent_id: taxon.id
+      url = new_taxa_path rank_to_create: 'Tribe', parent_id: taxon.id
       link_to "Add tribe", url, class: "btn-normal"
     end
 
     def add_subgenus_button
       return unless taxon.is_a?(Genus)
 
-      url = new_taxa_path rank_to_create: 'subgenus', parent_id: taxon.id
+      url = new_taxa_path rank_to_create: 'Subgenus', parent_id: taxon.id
       link_to "Add subgenus", url, class: "btn-normal"
     end
 

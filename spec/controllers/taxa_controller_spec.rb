@@ -39,7 +39,7 @@ describe TaxaController do
         let(:genus_params) do
           {
             parent_id: parent.id,
-            rank_to_create: "genus",
+            rank_to_create: "Genus",
             taxon_name_string: "Atta",
             protonym_name_string: "Atta"
           }
@@ -167,7 +167,7 @@ describe TaxaController do
         let(:genus_params) do
           {
             parent_id: parent.id,
-            rank_to_create: "genus",
+            rank_to_create: "Genus",
             taxon_name_string: "Attini",
             protonym_name_string: "Atta"
           }
