@@ -91,8 +91,8 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  def self.name_clash? name
-    where(name_cache: name).exists?
+  def self.name_clash? name_string
+    where(name_cache: name_string).exists?
   end
 
   (Status::STATUSES - [Status::VALID]).each do |status|

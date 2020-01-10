@@ -23,9 +23,13 @@ module DatabaseScripts
 
     def as_taxon_table
       as_table do |t|
-        t.header :taxon, :status
+        t.header :taxon, :rank, :status
         t.rows do |taxon|
-          [markdown_taxon_link(taxon), taxon.status]
+          [
+            markdown_taxon_link(taxon),
+            taxon.rank,
+            taxon.status
+          ]
         end
       end
     end
@@ -34,7 +38,10 @@ module DatabaseScripts
       as_table do |t|
         t.header :id, :protonym
         t.rows do |protonym|
-          [protonym.id, protonym.decorate.link_to_protonym]
+          [
+            protonym.id,
+            protonym.decorate.link_to_protonym
+          ]
         end
       end
     end

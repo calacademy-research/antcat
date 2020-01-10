@@ -13,13 +13,13 @@ describe DevMonkeyPatches do
     before { allow(Rails.env).to receive(:production?).and_return true }
 
     it "cannot be extended" do
-      expect { described_class.enable }.to raise_error /cannot/
+      expect { described_class.enable }.to raise_error("`DevMonkeyPatches` cannot be enabled in production")
     end
   end
 
   context "when in test" do
     it "it's not enabled by default" do
-      expect { described_class.enable }.to raise_error /in test/
+      expect { described_class.enable }.to raise_error("use `DevMonkeyPatches.enable!` in test")
     end
   end
 

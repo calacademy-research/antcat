@@ -1,3 +1,5 @@
+# TODO: (not very important) Series, volume and issue could be stored in their own columns.
+
 class ArticleReference < Reference
   belongs_to :journal
 
