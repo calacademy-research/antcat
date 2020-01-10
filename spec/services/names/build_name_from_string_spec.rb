@@ -54,6 +54,18 @@ describe Names::BuildNameFromString do
       end
     end
 
+    context 'when name is a subtribe name' do
+      context "when name ends with 'iti'" do
+        specify do
+          name = described_class['Dacetiti']
+
+          expect(name).to be_a SubtribeName
+          expect(name.name).to eq 'Dacetiti'
+          expect(name.epithet).to eq 'Dacetiti'
+        end
+      end
+    end
+
     context 'when name is a genus name' do
       specify do
         name = described_class['Lasius']

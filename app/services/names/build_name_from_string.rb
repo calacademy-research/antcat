@@ -1,6 +1,5 @@
 # Not handled:
 # Subtribes: -ina (genera can also end with "ina")
-# Non-standard names like: Dacetiti (author tried to create a new trend)
 # Names I don't know what they are: Formicariae,  Dorylida
 
 module Names
@@ -45,7 +44,7 @@ module Names
         raise UnparsableName, name unless countable_words.join(' ') =~ /^[[:alpha:][:blank:]-]+$/
 
         case countable_words.size
-        when 1 then genus_or_tribe_or_subfamily
+        when 1 then single_word_name
         when 2 then ::SpeciesName
         when 3 then ::SubspeciesName
         when 4 then ::InfrasubspeciesName
@@ -69,14 +68,14 @@ module Names
         words.size == 2 && words_without_subgenus.size == 1
       end
 
-      # TODO: It could also be subtribe.
-      def genus_or_tribe_or_subfamily
+      def single_word_name
         case name
-        when /idae$/ then ::FamilyName
+        when /idae$/ then ::FamilyName    # "idae" has also been used for subfamilies (like Odontomachidae), but it's non-standard.
         when /inae$/ then ::SubfamilyName
         when /ini$/  then ::TribeName
-        when /ii$/   then ::TribeName # Emery and Forel among others used this convention.
-        else              ::GenusName
+        when /ii$/   then ::TribeName     # Emery and Forel among others used this convention.
+        when /iti$/  then ::SubtribeName  # Brown tried to create a new trend.
+        else              ::GenusName     # TODO: It could also be a subtribe (and probably other non-modern ranks).
         end
       end
   end
