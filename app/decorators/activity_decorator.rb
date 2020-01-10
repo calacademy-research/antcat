@@ -49,9 +49,9 @@ class ActivityDecorator < Draper::Decorator
     label ||= "##{activity.trackable_id}"
 
     if activity.trackable
-      helpers.link_to label, path || activity.trackable
+      helpers.link_to(label, (path || activity.trackable))
     else
-      label
+      action == 'destroy' ? label : (label + ' [deleted]')
     end
   end
 

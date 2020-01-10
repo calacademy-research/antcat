@@ -1,6 +1,6 @@
 =activity.action_to_verb
 the reference section
-=link_to "##{activity.trackable_id}", reference_section_path(activity.trackable_id)
+=activity.link_trackable_if_exists
 
 belonging to
 =taxon_link_or_deleted_string activity.parameters[:taxon_id]
