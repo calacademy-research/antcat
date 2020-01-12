@@ -25,8 +25,9 @@ __END__
 
 title: <i>Nomina nuda</i> with children that are not <i>nomina nuda</i>
 category: Catalog
-tags: [new!]
+tags: [regression-test]
 
 issue_description: This *nomen nudum* has children that are not *nomina nuda*.
 
 description: >
+  I'm not quite sure how to handle children that are obsolete combinations, such as is the case with %taxon445101.
