@@ -41,10 +41,16 @@ category: Inline taxt
 tags: [new!, list]
 
 description: >
-  Table/column: `citations.notes_taxt` (called "Notes" in the protonym form)
+  **Table/column:** `citations.notes_taxt` (called "Notes" in the protonym form)
 
 
   This script was mainly added to investigate how we use the different "inline taxt columns".
+
+
+  **Plan for this column:** No plan right now, but it would be nice to normalize it.
+
+
+  Some of the data here belongs more to `protonyms.forms` or `protonyms.type_notes_taxt` (see %dbscript:ProtonymsWithTypeNotesTaxt).
 
 related_scripts:
   - ProtonymsWithNotesTaxt

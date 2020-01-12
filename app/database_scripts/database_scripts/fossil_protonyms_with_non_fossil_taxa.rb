@@ -6,11 +6,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :taxa
+        t.header :protonym, :taxa, :locality
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            taxa_list(protonym.taxa)
+            taxa_list(protonym.taxa),
+            protonym.locality
           ]
         end
       end
@@ -28,6 +29,9 @@ issue_description: This protonym is fossil, but one of its taxa is extant.
 
 description: >
   This is not necessarily incorrect.
+
+
+  Can be fixed by script if all taxa/protonyms should be changed in the same way.
 
 
   This script is the reverse of %dbscript:NonFossilTaxaWithFossilProtonyms

@@ -26,10 +26,19 @@ category: Inline taxt
 tags: [new!, list]
 
 description: >
-  Table/column: `taxa.headline_notes_taxt` (called "Notes" in the upper section of the taxon form)
+  **Table/column:** `taxa.headline_notes_taxt` (called "Notes" in the upper section of the taxon form)
 
 
   This script was mainly added to investigate how we use the different "inline taxt columns".
+
+
+  **Plan for this column:** The goal is to remove this column somehow, since it is too much of a special case and we want to avoid "inline taxts".
+
+
+  As of writing, a lot of the data here belongs to history items or `protonyms.notes_taxt` ("Section designated to include ...", see %dbscript:ProtonymsWithNotesTaxt.
+
+
+  "Genbank accession numbers" do not really belong anywhere, but we could add new column or table for it.
 
 related_scripts:
   - ProtonymsWithNotesTaxt

@@ -25,10 +25,13 @@ category: Inline taxt
 tags: [new!, list]
 
 description: >
-  Table/column: `protonyms.type_notes_taxt` (called "Type notes" in the protonym form)
+  **Table/column:** `protonyms.type_notes_taxt` (called "Type notes" in the protonym form)
 
 
   This script was mainly added to investigate how we use the different "inline taxt columns".
+
+
+  **Plan for this column:** Keep as is.
 
 related_scripts:
   - ProtonymsWithNotesTaxt
