@@ -8,6 +8,11 @@ class Taxon < ApplicationRecord
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
   TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
+  # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
+  CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
+  # TODO: I don't think this is 100% true in the world of taxonomy, but it's close enough for our usage.
+  CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
+
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
@@ -17,36 +22,7 @@ class Taxon < ApplicationRecord
     'genus'
   ]
 
-  class TaxonExists < StandardError
-    attr_reader :names
-
-    def initialize names
-      @names = names
-    end
-  end
-
-  # TODO: Decide what do do with these.
-  class TaxonHasSubspecies < StandardError; end
-  class TaxonHasInfrasubspecies < StandardError; end
-
-  # TODO: Extract this and all `#update_parent`s into `ForceParentChange`.
-  class InvalidParent < StandardError
-    attr_reader :taxon, :new_parent
-
-    def initialize taxon, new_parent = nil
-      @taxon = taxon
-      @new_parent = new_parent
-    end
-
-    def message
-      "Invalid parent: ##{new_parent&.id} (#{new_parent&.rank}) for ##{taxon.id} (#{taxon.rank})"
-    end
-  end
-
   self.table_name = :taxa
-
-  # Set to true enable additional callbacks for this taxon only (set taxon state, etc).
-  attr_accessor :save_initiator
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id
@@ -72,6 +48,7 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
+  validates :original_combination, absence: { message: "can not be set for taxa of this rank" }, unless: -> { type.in?(CAN_BE_A_COMBINATION_TYPES) }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
@@ -81,8 +58,6 @@ class Taxon < ApplicationRecord
 
   before_validation :cleanup_taxts
   before_save :set_name_caches
-  before_save { remove_auto_generated if save_initiator } # TODO: Move or remove.
-  before_save { set_taxon_state_to_waiting if save_initiator } # TODO: Move or remove.
 
   scope :valid, -> { where(status: Status::VALID) }
   scope :invalid, -> { where.not(status: Status::VALID) }
@@ -119,8 +94,8 @@ class Taxon < ApplicationRecord
     state TaxonState::APPROVED
   end
 
-  def self.name_clash? name
-    where(name_cache: name).exists?
+  def self.name_clash? name_string
+    where(name_cache: name_string).exists?
   end
 
   (Status::STATUSES - [Status::VALID]).each do |status|
@@ -229,15 +204,6 @@ class Taxon < ApplicationRecord
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html
-    end
-
-    def remove_auto_generated
-      self.auto_generated = false
-    end
-
-    def set_taxon_state_to_waiting
-      taxon_state.review_state = TaxonState::WAITING
-      taxon_state.save
     end
 
     def cleanup_taxts

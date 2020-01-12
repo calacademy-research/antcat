@@ -5,7 +5,11 @@ crumb :taxon_history_items do |taxon|
 end
 
   crumb :taxon_history_item do |taxon_history_item|
-    link "##{taxon_history_item.id}", taxon_history_item
+    if taxon_history_item.persisted?
+      link "##{taxon_history_item.id}", taxon_history_item
+    else
+      link "##{taxon_history_item.id} [deleted]"
+    end
     parent :taxon_history_items, taxon_history_item.taxon
   end
 

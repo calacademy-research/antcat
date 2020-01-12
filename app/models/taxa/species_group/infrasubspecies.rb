@@ -9,7 +9,7 @@ class Infrasubspecies < SpeciesGroupTaxon
   end
 
   def parent= parent_taxon
-    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Subspecies)
+    raise Taxa::InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Subspecies)
 
     self.subfamily = parent_taxon.subfamily
     self.genus = parent_taxon.genus

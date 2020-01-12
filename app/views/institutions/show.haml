@@ -1,11 +1,11 @@
 -@title = "Institution #{@comparer.most_recent.abbreviation}: #{@comparer.most_recent.name}"
 -breadcrumb :institution, @comparer.most_recent
 
--content_for :application do
+=content_for :breadcrumbs_right do
   -if user_is_at_least_helper? && @comparer.most_recent.persisted?
-    =content_for :breadcrumbs_right do
-      =link_to 'Edit', edit_institution_path(@comparer.most_recent), class: 'btn-normal'
-      -if user_is_superadmin?
-        =link_to append_superadmin_icon("Delete"), @comparer.most_recent, method: :delete, data: { confirm_with_edit_summary: true, message: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'
+    =link_to 'Edit', edit_institution_path(@comparer.most_recent), class: 'btn-normal'
+    -if user_is_superadmin?
+      =link_to append_superadmin_icon("Delete"), @comparer.most_recent, method: :delete, data: { confirm_with_edit_summary: true, message: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'
+  =activities_link_for_trackable @comparer.most_recent
 
 =render file: "compare_revisions/show", locals: { comparer: @comparer }

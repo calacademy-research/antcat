@@ -19,7 +19,7 @@
     =@taxon.protonym.decorate.link_to_protonym
   -if @protonym_soft_validations.failed?
     has soft validation issues. See below.
-    #soft-validations-callout.callout.medium-9.warning.margin-bottom
+    .soft-validations-callout.callout.medium-9.warning.margin-bottom
       %h6=link_to 'Protonym issues', protonym_soft_validations_path(@taxon.protonym)
       =render 'shared/failed_soft_validations', soft_validations: @protonym_soft_validations
   -else

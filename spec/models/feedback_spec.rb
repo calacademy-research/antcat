@@ -16,21 +16,19 @@ describe Feedback do
   end
 
   describe "open/closed" do
-    describe "#close" do
-      let(:open) { create :feedback }
+    describe "#close!" do
+      let(:feedback) { create :feedback }
 
-      it "closes the feedback item" do
-        open.close
-        expect(open.closed?).to be true
+      it "closes the feedback" do
+        expect { feedback.close! }.to change { feedback.closed? }.to(true)
       end
     end
 
-    describe "#reopen" do
-      let(:closed) { create :feedback, open: false }
+    describe "#reopen!" do
+      let(:feedback) { create :feedback, open: false }
 
-      it "reopens the feedback item" do
-        closed.reopen
-        expect(closed.closed?).to be false
+      it "reopens the feedback" do
+        expect { feedback.reopen! }.to change { feedback.closed? }.to(false)
       end
     end
   end

@@ -4,7 +4,7 @@ class TaxonPolicy
   end
 
   def show_create_combination_button?
-    rank.in?(%w[species])
+    taxon.type.in?(%w[Species])
   end
 
   def allow_create_combination?
@@ -12,20 +12,18 @@ class TaxonPolicy
   end
 
   def show_create_combination_help_button?
-    rank.in?(%w[species subspecies])
+    taxon.type.in?(%w[Species Subspecies])
   end
 
   def show_create_obsolete_combination_button?
-    rank.in?(%w[species]) && taxon.valid_taxon?
+    taxon.type.in?(%w[Species]) && taxon.valid_taxon?
   end
 
   def allow_force_change_parent?
-    rank.in?(%w[tribe genus subgenus species subspecies])
+    taxon.type.in?(%w[Tribe Genus Subgenus Species Subspecies])
   end
 
   private
 
     attr_reader :taxon
-
-    delegate :rank, to: :taxon
 end

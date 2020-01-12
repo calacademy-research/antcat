@@ -3,7 +3,7 @@ crumb :edit_catalog do
 end
 
 crumb :new_taxon do |parent_id, rank_to_create|
-  link "Add #{rank_to_create}"
+  link "Add #{rank_to_create.downcase}"
   parent Taxon.find(parent_id)
 end
 

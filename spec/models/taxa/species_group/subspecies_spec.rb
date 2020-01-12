@@ -58,7 +58,7 @@ describe Subspecies do
 
       specify do
         new_species = create :species
-        expect { subspecies.update_parent new_species }.to raise_error(Taxon::TaxonHasInfrasubspecies)
+        expect { subspecies.update_parent new_species }.to raise_error(Taxa::TaxonHasInfrasubspecies)
       end
     end
   end

@@ -94,6 +94,8 @@ class ReferenceDecorator < Draper::Decorator
     reference.set_cache generate_expanded_reference, :expanded_reference_cache
   end
 
+  # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `AdvancedSearchPresenter::Text`).
+  # Example: "Brandão &amp; Martins-Neto" from `Taxon.find(429023).authorshiip.reference.decorate.send(:format_plain_text_title)`.
   def format_plain_text_title
     format_italics helpers.add_period_if_necessary sanitize(reference.title)
   end

@@ -15,7 +15,7 @@
   -if current_user && @protonym.soft_validations.failed?
     .row.margin-bottom
       .medium-9.columns
-        #soft-validations-callout.callout.warning
+        .soft-validations-callout.callout.warning
           %h6
             =link_to 'Issues', protonym_soft_validations_path(@protonym)
             =logged_in_only_tooltip_icon

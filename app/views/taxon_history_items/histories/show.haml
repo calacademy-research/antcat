@@ -2,8 +2,6 @@
 -breadcrumb :taxon_history_item_history, @comparer.most_recent
 
 -content_for :breadcrumbs_right do
-  -if user_is_at_least_helper? && @comparer.most_recent.persisted?
-    =link_to "Edit", edit_taxon_history_item_path(@comparer.most_recent), class: "btn-normal"
   =activities_link_for_trackable @comparer.most_recent
 
 =render file: "compare_revisions/show", locals: { comparer: @comparer }

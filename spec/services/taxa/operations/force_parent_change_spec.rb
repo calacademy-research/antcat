@@ -29,7 +29,7 @@ describe Taxa::Operations::ForceParentChange do
       end
 
       it "raises" do
-        expect { described_class[subspecies, new_parent, user: user] }.to raise_error Taxon::TaxonExists
+        expect { described_class[subspecies, new_parent, user: user] }.to raise_error Taxa::TaxonExists
       end
     end
   end

@@ -158,27 +158,31 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
 
--if taxon.obsolete_combinations.exists?
-  %h6 Obsolete combinations
-  %ul.compact-list.small-margin-bottom
-    -taxon.obsolete_combinations.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |obsolete_combination|
-      %li
-        =obsolete_combination.link_to_taxon
-        =obsolete_combination.author_citation
-        -if current_user && obsolete_combination.protonym != taxon.protonym
-          %span.logged-in-only-background
-            %small
-              %span.bold-warning
-                this obsolete combination does not have the same protonym as the current taxon
-              =surround "(", ")" do
-                =taxon.protonym.decorate.link_to_protonym
-                vs.
-                =obsolete_combination.protonym.decorate.link_to_protonym
-              =logged_in_only_tooltip_icon
+-if current_user && taxon.obsolete_combinations.exists?
+  .callout.no-border-callout.logged-in-only-background
+    %h6
+      Obsolete combinations
+      =logged_in_only_tooltip_icon
+    %p.small-text This is only showed to logged-in users since we don't have very complete data for obsolete combinations.
+    %ul.compact-list.small-margin-botto
+      -taxon.obsolete_combinations.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |obsolete_combination|
+        %li
+          =obsolete_combination.link_to_taxon
+          =obsolete_combination.author_citation
+          -if current_user && obsolete_combination.protonym != taxon.protonym
+            %span.logged-in-only-background
+              %small
+                %span.bold-warning
+                  this obsolete combination does not have the same protonym as the current taxon
+                =surround "(", ")" do
+                  =taxon.protonym.decorate.link_to_protonym
+                  vs.
+                  =obsolete_combination.protonym.decorate.link_to_protonym
+                =logged_in_only_tooltip_icon
 
 -# TODO: See https://github.com/calacademy-research/antcat/issues/780
 -if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
-  -issues = Taxa::SubspeciesHistoryItemIssues[taxon]
+  -issues = Taxa::SubspeciesHistoryItemIssues[taxon.subspecies_list_in_history_items.first]
   .callout.no-border-callout{class: issues ? 'alert' : 'logged-in-only-background' }
     %h6
       This species has a subspecies list in a history item

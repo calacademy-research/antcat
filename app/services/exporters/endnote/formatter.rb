@@ -9,7 +9,7 @@ module Exporters
             when BookReference    then BookFormatter
             when NestedReference  then NestedFormatter
             when UnknownReference then UnknownFormatter
-            else raise "Don't know what kind of reference this is: #{reference.inspect}"
+            else raise "reference type not supported"
             end
           klass.new(reference).call
         end.select(&:present?).join("\n") + "\n"

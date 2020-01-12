@@ -16,8 +16,6 @@ class TaxonForm
     attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string, :user
 
     def save_taxon
-      taxon.save_initiator = true
-
       Taxon.transaction do
         # There is no `UndoTracker#current_change_id` at this point, so if
         # anything in the "update_*" methods triggers a save for any reason,
@@ -52,7 +50,19 @@ class TaxonForm
         change.update(taxon: taxon)
       else
         UndoTracker.setup_change taxon, :update, user: user
+
+        remove_auto_generated
+        set_taxon_state_to_waiting
+
         taxon.save!
       end
+    end
+
+    def remove_auto_generated
+      taxon.auto_generated = false
+    end
+
+    def set_taxon_state_to_waiting
+      taxon.taxon_state.review_state = TaxonState::WAITING
     end
 end

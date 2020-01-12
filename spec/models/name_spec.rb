@@ -21,6 +21,22 @@ describe Name do
     end
   end
 
+  describe "#italics?" do
+    specify do
+      expect(FamilyName.new.italics?).to eq false
+      expect(FamilyOrSubfamilyName.new.italics?).to eq false
+      expect(SubfamilyName.new.italics?).to eq false
+      expect(TribeName.new.italics?).to eq false
+      expect(SubtribeName.new.italics?).to eq false
+
+      expect(GenusName.new.italics?).to eq true
+      expect(SubgenusName.new.italics?).to eq true
+      expect(SpeciesName.new.italics?).to eq true
+      expect(SubspeciesName.new.italics?).to eq true
+      expect(InfrasubspeciesName.new.italics?).to eq true
+    end
+  end
+
   describe '#set_epithet' do
     let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
 

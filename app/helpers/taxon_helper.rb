@@ -1,20 +1,4 @@
 module TaxonHelper
-  def taxon_link_or_deleted_string id, deleted_label = nil
-    taxon = Taxon.find_by(id: id)
-    if taxon
-      taxon.link_to_taxon
-    else
-      deleted_label || "##{id} [deleted]"
-    end
-  end
-
-  def default_name_string taxon
-    return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
-    return taxon.species.name.name + ' ' if taxon.is_a?(Subspecies)
-    return taxon.subspecies.name.name + ' ' if taxon.is_a?(Infrasubspecies)
-    taxon.genus.name.name + ' '
-  end
-
   def taxon_change_history taxon
     return if taxon.old?
     change = taxon.last_change

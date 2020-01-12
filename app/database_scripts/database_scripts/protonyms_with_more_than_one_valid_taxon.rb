@@ -5,8 +5,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.joins(:taxa).where(taxa: { status: Status::VALID }).group(:protonym_id).having('COUNT(protonym_id) > 1').
-        includes(:authorship)
+      Protonym.joins(:taxa).where(taxa: { status: Status::VALID }).group(:protonym_id).having('COUNT(protonym_id) > 1')
     end
 
     def render

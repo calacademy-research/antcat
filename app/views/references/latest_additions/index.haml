@@ -19,6 +19,6 @@
         =reference.decorate.format_review_state
         -if user_is_editor?
           %br
-          =review_reference_button reference
+          =Editors::ReferenceViewObject.new(reference).review_reference_button
 
 =will_paginate @references

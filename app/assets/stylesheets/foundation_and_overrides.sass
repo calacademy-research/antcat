@@ -145,6 +145,10 @@ body.is-reveal-open
   &:active, &:hover, &:focus
     color: #fff
   border: 1px $alert-color solid
+  &:disabled
+    border: 1px $color_danger_pale solid
+    cursor: not-allowed
+    @include button-style($color_danger_pale, auto, auto)
 
 .btn-nodanger
   @include button-style(#fff, auto, #000)

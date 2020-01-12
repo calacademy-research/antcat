@@ -33,12 +33,36 @@ describe Names::BuildNameFromString do
     end
 
     context 'when name is a tribe name' do
-      specify do
-        name = described_class['Attini']
+      context "when name ends with 'ini'" do
+        specify do
+          name = described_class['Attini']
 
-        expect(name).to be_a TribeName
-        expect(name.name).to eq 'Attini'
-        expect(name.epithet).to eq 'Attini'
+          expect(name).to be_a TribeName
+          expect(name.name).to eq 'Attini'
+          expect(name.epithet).to eq 'Attini'
+        end
+      end
+
+      context "when name ends with 'ii'" do
+        specify do
+          name = described_class['Cerapachysii']
+
+          expect(name).to be_a TribeName
+          expect(name.name).to eq 'Cerapachysii'
+          expect(name.epithet).to eq 'Cerapachysii'
+        end
+      end
+    end
+
+    context 'when name is a subtribe name' do
+      context "when name ends with 'iti'" do
+        specify do
+          name = described_class['Dacetiti']
+
+          expect(name).to be_a SubtribeName
+          expect(name.name).to eq 'Dacetiti'
+          expect(name.epithet).to eq 'Dacetiti'
+        end
       end
     end
 

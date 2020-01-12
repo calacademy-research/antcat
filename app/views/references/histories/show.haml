@@ -1,4 +1,7 @@
 -@title = "Revision History - Reference ##{@comparer.most_recent.id}"
 -breadcrumb :reference_history, @comparer.most_recent
 
+=content_for :breadcrumbs_right do
+  =activities_link_for_trackable @comparer.most_recent
+
 =render file: "compare_revisions/show", locals: { comparer: @comparer }

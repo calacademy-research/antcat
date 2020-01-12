@@ -6,12 +6,15 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :protonym
+        t.header :taxon, :status, :protonym, :locality
         t.rows do |taxon|
+          protonym = taxon.protonym
+
           [
             markdown_taxon_link(taxon),
             taxon.status,
-            taxon.protonym.decorate.link_to_protonym
+            protonym.decorate.link_to_protonym,
+            protonym.locality
           ]
         end
       end
@@ -28,6 +31,9 @@ issue_description: This taxon is fossil, but its protonym is not.
 
 description: >
   This is not necessarily incorrect.
+
+
+  Can be fixed by script if all taxa/protonyms should be changed in the same way.
 
 
   This script is the reverse of %dbscript:NonFossilProtonymsWithFossilTaxa

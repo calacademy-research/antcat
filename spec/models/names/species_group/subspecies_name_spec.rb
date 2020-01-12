@@ -80,7 +80,7 @@ describe SubspeciesName do
         end
 
         it "raises" do
-          expect { subspecies_name.change_parent species_name }.to raise_error Taxon::TaxonExists
+          expect { subspecies_name.change_parent species_name }.to raise_error Taxa::TaxonExists
         end
       end
 

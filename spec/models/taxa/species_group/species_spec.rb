@@ -55,7 +55,7 @@ describe Species do
 
       specify do
         new_genus = create :genus
-        expect { species.update_parent new_genus }.to raise_error(Taxon::TaxonHasSubspecies)
+        expect { species.update_parent new_genus }.to raise_error(Taxa::TaxonHasSubspecies)
       end
     end
   end

@@ -13,91 +13,13 @@ describe Taxon do
     it { is_expected.to belong_to(:name).dependent(:destroy) }
   end
 
-  describe 'callbacks' do
-    describe "#set_taxon_state_to_waiting" do
-      context "when creating a taxon" do
-        let(:taxon) { build :family }
-
-        it "creates a taxon_state" do
-          expect(taxon.taxon_state).to eq nil
-          taxon.save
-          expect(taxon.taxon_state).not_to eq nil
-        end
-
-        it "sets the review_status to 'waiting'" do
-          taxon.save
-          expect(taxon.reload.waiting?).to eq true
-        end
-      end
-
-      context "when updating" do
-        let(:taxon) { create :family, :old }
-
-        context "when it `save_initiator`" do
-          it "sets the review_status to 'waiting'" do
-            taxon.save_initiator = true
-            expect { taxon.save }.to change { taxon.reload.waiting? }.to true
-          end
-
-          it "doesn't cascade" do
-            family = create :family, :old
-            subfamily = create :subfamily, :old, family: family
-
-            expect(family.reload.waiting?).to be false
-            expect(subfamily.reload.waiting?).to be false
-
-            family.save_initiator = true
-            family.save
-
-            expect(family.reload.waiting?).to be true
-            expect(subfamily.reload.waiting?).to be false
-          end
-        end
-
-        context "when it not `save_initiator`" do
-          it "doesn't change the review state" do
-            expect { taxon.save }.to_not change { taxon.old? }
-          end
-        end
-      end
-    end
-
-    describe "#remove_auto_generated" do
-      context "when a generated taxon" do
-        it "removes 'auto_generated' flags from things" do
-          # Setup.
-          taxon = create :family, auto_generated: true
-
-          # Act and test.
-          taxon.save_initiator = true
-          taxon.save
-
-          expect(taxon.reload).not_to be_auto_generated
-        end
-
-        it "doesn't cascade" do
-          # Setup.
-          family = create :family, auto_generated: true
-          subfamily = create :subfamily, family: family, auto_generated: true
-
-          # Act and test.
-          family.save_initiator = true
-          family.save
-
-          expect(family.reload).not_to be_auto_generated
-          expect(subfamily.reload).to be_auto_generated
-        end
-      end
-    end
-  end
-
   describe 'validations' do
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
         let(:replaced_by) { build_stubbed :family }
         let(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: replaced_by }
 
-        specify do
+        it 'must have a `homonym_replaced_by`' do
           expect { taxon.homonym_replaced_by = nil }.to change { taxon.valid? }.to false
           expect(taxon.errors.messages).to include(homonym_replaced_by: ["must be set for homonyms"])
         end
@@ -107,7 +29,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family }
         let(:replaced_by) { build_stubbed :family }
 
-        specify do
+        it 'cannot have a `homonym_replaced_by`' do
           expect { taxon.homonym_replaced_by = replaced_by }.to change { taxon.valid? }.to false
           expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
         end
@@ -118,9 +40,28 @@ describe Taxon do
       context 'when taxon is a homonym' do
         let(:taxon) { build_stubbed :family, unresolved_homonym: true }
 
-        specify do
+        it 'cannot be an `unresolved_homonym`' do
           expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to false
           expect(taxon.errors.messages).to include(unresolved_homonym: ["can't be set for homonyms"])
+        end
+      end
+    end
+
+    describe "#original_combination" do
+      context 'when taxon is not in `CAN_BE_A_COMBINATION_TYPES`' do
+        let(:taxon) { build_stubbed :family }
+
+        it 'cannot be an `original_combination`' do
+          expect { taxon.original_combination = true }.to change { taxon.valid? }.to(false)
+          expect(taxon.errors.messages).to include(original_combination: ["can not be set for taxa of this rank"])
+        end
+      end
+
+      context 'when taxon rank is in `CAN_BE_A_COMBINATION_TYPES`' do
+        let(:taxon) { build_stubbed :species }
+
+        it 'may be an `original_combination`' do
+          expect { taxon.original_combination = true }.to_not change { taxon.valid? }.from(true)
         end
       end
     end
@@ -129,7 +70,7 @@ describe Taxon do
       context 'when taxon is not unavailable' do
         let(:taxon) { build_stubbed :family }
 
-        specify do
+        it 'cannot be a `nomen_nudum`' do
           expect { taxon.nomen_nudum = true }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(nomen_nudum: ["can only be set for unavailable taxa"])
         end
@@ -138,7 +79,7 @@ describe Taxon do
       context 'when taxon is unavailable' do
         let(:taxon) { build_stubbed :family, :unavailable }
 
-        specify do
+        it 'may be a `nomen_nudum`' do
           expect { taxon.nomen_nudum = true }.to_not change { taxon.valid? }.from(true)
         end
       end
@@ -148,7 +89,7 @@ describe Taxon do
       context 'when taxon is not fossil' do
         let(:taxon) { build_stubbed :family }
 
-        specify do
+        it 'cannot be a `ichnotaxon`' do
           expect { taxon.ichnotaxon = true }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(ichnotaxon: ["can only be set for fossil taxa"])
         end
@@ -157,7 +98,7 @@ describe Taxon do
       context 'when taxon is fossil' do
         let(:taxon) { build_stubbed :family, :fossil }
 
-        specify do
+        it 'may be a `ichnotaxon`' do
           expect { taxon.ichnotaxon = true }.to_not change { taxon.valid? }.from(true)
         end
       end
@@ -167,7 +108,7 @@ describe Taxon do
       context 'when taxon is not fossil' do
         let(:taxon) { build_stubbed :family }
 
-        specify do
+        it 'cannot be a `collective_group_name`' do
           expect { taxon.collective_group_name = true }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(collective_group_name: ["can only be set for fossil taxa"])
         end
@@ -176,7 +117,7 @@ describe Taxon do
       context 'when taxon is fossil' do
         let(:taxon) { build_stubbed :family, :fossil }
 
-        specify do
+        it 'may be a `collective_group_name`' do
           expect { taxon.collective_group_name = true }.to_not change { taxon.valid? }.from(true)
         end
       end
@@ -186,7 +127,7 @@ describe Taxon do
       context 'when taxon does not have a type taxon' do
         let(:taxon) { build_stubbed :family }
 
-        specify do
+        it 'cannot have a `type_taxt`' do
           expect { taxon.type_taxt = 'by monotypy' }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(type_taxt: ["(type notes) can't be set unless taxon has a type name"])
         end
@@ -195,46 +136,42 @@ describe Taxon do
       context 'when taxon has a type taxon' do
         let(:taxon) { build_stubbed :family, type_taxon: create(:family) }
 
-        specify do
+        it 'may have a `type_taxt`' do
           expect { taxon.type_taxt = 'by monotypy' }.to_not change { taxon.valid? }.from(true)
         end
       end
     end
 
     describe "#current_valid_taxon_validation" do
-      context "when taxon has a `#current_valid_taxon`" do
-        [
-          Status::VALID,
-          Status::UNIDENTIFIABLE,
-          Status::UNAVAILABLE,
-          Status::EXCLUDED_FROM_FORMICIDAE,
-          Status::HOMONYM
-        ].each do |status|
-          context "when status is #{status}" do
-            let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
+      [
+        Status::VALID,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE,
+        Status::HOMONYM
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
 
-            specify do
-              taxon.valid?
-              expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for #{Status.plural(status)} taxa"])
-            end
+          it 'cannot have a `current_valid_taxon`' do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for #{Status.plural(status)} taxa"])
           end
         end
       end
 
-      context "when taxon has no `#current_valid_taxon`" do
-        [
-          Status::SYNONYM,
-          Status::OBSOLETE_COMBINATION,
-          Status::UNAVAILABLE_MISSPELLING,
-          Status::UNAVAILABLE_UNCATEGORIZED
-        ].each do |status|
-          context "when status is #{status}" do
-            let(:taxon) { build :family, status: status }
+      [
+        Status::SYNONYM,
+        Status::OBSOLETE_COMBINATION,
+        Status::UNAVAILABLE_MISSPELLING,
+        Status::UNAVAILABLE_UNCATEGORIZED
+      ].each do |status|
+        context "when status is #{status}" do
+          let(:taxon) { build :family, status: status }
 
-            specify do
-              taxon.valid?
-              expect(taxon.errors.messages).to include(current_valid_name: ["must be set for #{Status.plural(status)}"])
-            end
+          it 'must have a `current_valid_taxon`' do
+            taxon.valid?
+            expect(taxon.errors.messages).to include(current_valid_name: ["must be set for #{Status.plural(status)}"])
           end
         end
       end
@@ -292,6 +229,19 @@ describe Taxon do
   end
 
   describe "workflow" do
+    describe '`Workflow::ExternalTable`' do
+      context "when taxon is created" do
+        let(:taxon) { build :family }
+
+        it "creates a `TaxonState` with `review_status` 'waiting'" do
+          expect(taxon.taxon_state).to eq nil
+          taxon.save
+          expect(taxon.taxon_state).not_to eq nil
+          expect(taxon.reload.waiting?).to eq true
+        end
+      end
+    end
+
     it "can transition from waiting to approved" do
       taxon = create :family
       create :change, taxon: taxon, change_type: "create"

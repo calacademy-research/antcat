@@ -72,5 +72,6 @@ description: >
   Issue: %github780
 
 related_scripts:
+  - SubspeciesHistoryItemsToDeleteByScript
   - SubspeciesListInHistoryItem
   - SubspeciesListInHistoryItemVsSubspeciesFromDatabase

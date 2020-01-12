@@ -1,31 +1,18 @@
 class SpeciesGroupName < Name
-  include Formatters::ItalicsHelper
-
-  def name_html
-    italicize name
-  end
-
-  def epithet_html
-    italicize epithet
-  end
-
   def genus_epithet
     name_parts[0]
   end
 
+  # TODO: This does not work for protonyms with a subgenus in the name (but that's OK for now since we only use it for taxa.)
   def species_epithet
     name_parts[1]
-  end
-
-  def dagger_html
-    italicize super
   end
 
   private
 
     def change name_string
       existing_names = Name.joins(:taxa).where.not(id: id).where(name: name_string)
-      raise Taxon::TaxonExists, existing_names if existing_names.any?
+      raise Taxa::TaxonExists, existing_names if existing_names.any?
       self.name = name_string
     end
 end

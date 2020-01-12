@@ -1,6 +1,6 @@
 =activity.action_to_verb
 the history item
-=link_to "##{activity.trackable_id}", taxon_history_item_path(activity.trackable_id)
+=activity.link_trackable_if_exists
 
 belonging to
 =taxon_link_or_deleted_string activity.parameters[:taxon_id]

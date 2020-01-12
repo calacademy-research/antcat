@@ -6,7 +6,6 @@ class SoftValidations
     DatabaseScripts::CurrentValidTaxonChains,
     DatabaseScripts::ExtantTaxaInFossilGenera,
     DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
-    DatabaseScripts::NominaNudaWithChildrenThatAreNotNominaNuda,
     DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
     DatabaseScripts::NonOriginalCombinationsWithSameNameAsItsProtonym,
     DatabaseScripts::NonValidTaxaWithACurrentValidTaxonThatIsNotValid,

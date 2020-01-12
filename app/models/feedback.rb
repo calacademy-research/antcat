@@ -24,14 +24,12 @@ class Feedback < ApplicationRecord
     !open?
   end
 
-  def close
-    self.open = false
-    save!
+  def close!
+    update!(open: false)
   end
 
-  def reopen
-    self.open = true
-    save!
+  def reopen!
+    update!(open: true)
   end
 
   private

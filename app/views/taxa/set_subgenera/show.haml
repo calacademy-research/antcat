@@ -5,7 +5,7 @@
   .medium-9.columns
     -if @taxon.genus.subgenera.empty?
       %p The genus of this species does not have any subgenera.
-      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxa_path(rank_to_create: 'subgenus', parent_id: @taxon.genus.id), class: "btn-normal btn-tiny"
+      %p=link_to "Add #{@taxon.genus.name.name_html} subgenus".html_safe, new_taxa_path(rank_to_create: 'Subgenus', parent_id: @taxon.genus.id), class: "btn-normal btn-tiny"
     -else
       %table
         %caption

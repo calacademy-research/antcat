@@ -13,7 +13,7 @@
     -if current_user
       =link_to "History", reference_history_path(@reference), class: "btn-normal"
       =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
-      =set_as_default_reference_button @reference
+      =@editors_reference_view_object.set_as_default_reference_button
       =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
 
     .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
@@ -179,4 +179,4 @@
             %td=time_tag @reference.created_at
             %td=time_tag @reference.updated_at
             %td=@reference.decorate.format_review_state
-            %td=review_reference_button @reference
+            %td=@editors_reference_view_object.review_reference_button

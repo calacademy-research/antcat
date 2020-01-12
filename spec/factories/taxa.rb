@@ -1,3 +1,5 @@
+# TODO: Names are randomly generated for each associated rank (for example the genus epithet of a species is not it's genus epithet).
+
 FactoryBot.define do
   factory :taxon do
     transient do

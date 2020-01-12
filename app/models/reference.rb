@@ -26,6 +26,7 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
+  # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
   validates :title, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }

@@ -3,6 +3,11 @@
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
+  include Formatters::ItalicsHelper
+
+  NON_ITALIC_NAME_TYPES = %w[FamilyName FamilyOrSubfamilyName SubfamilyName TribeName SubtribeName]
+  ITALIC_NAME_TYPES = %w[GenusName SubgenusName SpeciesName SubspeciesName InfrasubspeciesName]
+  NAME_TYPES = NON_ITALIC_NAME_TYPES + ITALIC_NAME_TYPES
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
@@ -56,12 +61,16 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
+  def italics?
+    self.class.name.in?(ITALIC_NAME_TYPES)
+  end
+
   def name_html
-    name
+    italicize_if_needed name
   end
 
   def epithet_html
-    epithet
+    italicize_if_needed epithet
   end
 
   def name_with_fossil_html fossil
@@ -70,10 +79,6 @@ class Name < ApplicationRecord
 
   def epithet_with_fossil_html fossil
     "#{dagger_html if fossil}#{epithet_html}".html_safe
-  end
-
-  def dagger_html
-    '&dagger;'.html_safe
   end
 
   def owner
@@ -93,6 +98,15 @@ class Name < ApplicationRecord
   end
 
   private
+
+    def italicize_if_needed string
+      return string unless italics?
+      italicize string
+    end
+
+    def dagger_html
+      italicize_if_needed '&dagger;'.html_safe
+    end
 
     def set_epithet
       return unless name

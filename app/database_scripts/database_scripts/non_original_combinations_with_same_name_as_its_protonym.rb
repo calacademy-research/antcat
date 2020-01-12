@@ -31,3 +31,6 @@ issue_description: This obsolete combination has the same name as its protonym, 
 
 description: >
   Taxa where `original_combination` is checked are not included. Check it in the taxon form to clear a taxon from this script
+
+
+  Can be fixed by script if all taxa should be changed to have the `original_combination` flag.

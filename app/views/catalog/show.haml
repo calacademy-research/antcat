@@ -9,7 +9,7 @@
 -if current_user
   =enable_tooltips
   =content_for :breadcrumbs_right do
-    =render "catalog/_show/editor_buttons", taxon: @taxon
+    =render "catalog/_show/editor_buttons", taxon: @taxon, editors_taxon_view_object: @editors_taxon_view_object
 
 .row
   .medium-9.columns
@@ -18,7 +18,7 @@
 
   .medium-3.columns
     -if current_user
-      =render 'catalog/_show/editors_sidebar', taxon: @taxon
+      =render 'catalog/_show/editors_sidebar', taxon: @taxon, editors_taxon_view_object: @editors_taxon_view_object
     =render 'catalog/_show/statistics', taxon: @taxon
 
     .callout#external-links
@@ -29,7 +29,8 @@
 
     -if @taxon.waiting?
       %span.review-state This taxon has been changed; changes awaiting approval.
-      =link_to_review_change @taxon
+      -if user_is_editor?
+        =@editors_taxon_view_object.review_change_button
     =add_period_if_necessary taxon_change_history(@taxon)
 
 -content_for :after_content do

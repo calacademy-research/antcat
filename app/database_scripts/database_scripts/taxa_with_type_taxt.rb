@@ -42,11 +42,13 @@ category: Inline taxt
 tags: [new!, list, slow]
 
 description: >
-  Table/column: `taxa.type_taxt` (called "Notes" in the "Type" section of the taxon form)
+  **Table/column:** `taxa.type_taxt` (called "Notes" in the "Type" section of the taxon form)
 
 
   This script was mainly added to investigate how we use the different "inline taxt columns".
 
+
+  **Plan for this column:** The goal is to remove this column by first denormalizing this data and then move it to the protonym or a new model (work in progress, see %dbscript:MoveTypeTaxonToProtonymByScript).
 
 related_scripts:
   - ProtonymsWithNotesTaxt

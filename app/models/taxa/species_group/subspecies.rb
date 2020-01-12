@@ -12,7 +12,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def parent= parent_taxon
-    raise InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Species)
+    raise Taxa::InvalidParent.new(self, parent_taxon) unless parent_taxon.is_a?(Species)
 
     self.subfamily = parent_taxon.subfamily
     self.genus = parent_taxon.genus
@@ -21,7 +21,7 @@ class Subspecies < SpeciesGroupTaxon
   end
 
   def update_parent new_parent
-    raise TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if infrasubspecies.any?
+    raise Taxa::TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if infrasubspecies.any?
 
     name.change_parent(new_parent.name) unless new_parent == parent
     self.parent = new_parent

@@ -5,7 +5,11 @@ crumb :names do
 end
 
   crumb :name do |name|
-    link "#{name.name_html} (##{name.id})".html_safe, name_path(name)
+    if name.persisted?
+      link "#{name.name_html} (##{name.id})".html_safe, name_path(name)
+    else
+      link "##{name.id} [deleted]"
+    end
     parent :names
   end
 

@@ -10,6 +10,7 @@ class ReferencesController < ApplicationController
   end
 
   def show
+    @editors_reference_view_object = Editors::ReferenceViewObject.new(@reference, session)
   end
 
   def new

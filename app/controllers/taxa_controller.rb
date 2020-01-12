@@ -8,6 +8,7 @@ class TaxaController < ApplicationController
   def new
     @taxon = build_taxon_with_parent
     @taxon.protonym.authorship.reference ||= DefaultReference.get session
+    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
   end
 
   def create
@@ -23,9 +24,11 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
-  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
+  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
+    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     render :new
   rescue Names::BuildNameFromString::UnparsableName => e
+    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     @taxon.errors.add :base, "Could not parse name #{e.message}"
     # Maintain entered names.
     @taxon.build_name(name: params[:taxon_name_string]) unless @taxon.name.name
@@ -41,7 +44,7 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
-  rescue ActiveRecord::RecordInvalid, Taxon::TaxonExists
+  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
     render :edit
   end
 
@@ -76,7 +79,7 @@ class TaxaController < ApplicationController
       return "" unless @taxon.is_a? Species
 
       link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
-        new_taxa_path(rank_to_create: "species", parent_id: @taxon.genus.id)
+        new_taxa_path(rank_to_create: "Species", parent_id: @taxon.genus.id)
 
       " <strong>#{link}</strong>".html_safe
     end
@@ -124,7 +127,7 @@ class TaxaController < ApplicationController
     end
 
     def build_taxon rank
-      taxon_class = rank.to_s.titlecase.constantize
+      taxon_class = rank.to_s.constantize
 
       taxon = taxon_class.new
       taxon.build_name

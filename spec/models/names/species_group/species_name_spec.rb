@@ -51,7 +51,7 @@ describe SpeciesName do
         end
 
         it "raises" do
-          expect { species_name.change_parent genus_name }.to raise_error Taxon::TaxonExists
+          expect { species_name.change_parent genus_name }.to raise_error Taxa::TaxonExists
         end
       end
     end

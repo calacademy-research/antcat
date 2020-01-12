@@ -27,7 +27,7 @@ class Genus < GenusGroupTaxon
       self.subfamily = parent_taxon.subfamily
       self.tribe = parent_taxon
     else
-      raise InvalidParent.new(self, parent_taxon)
+      raise Taxa::InvalidParent.new(self, parent_taxon)
     end
   end
 
