@@ -83,6 +83,26 @@ describe UsersController do
       expect(user.superadmin).to eq user_params[:superadmin]
       expect(user.locked).to eq user_params[:locked]
     end
+
+    context 'when a new password is included' do
+      let!(:user_params) do
+        {
+          password: 'verysecret123'
+        }
+      end
+
+      it "updates the password" do
+        expect { put(:update, params: { id: user.id, user: user_params }) }.
+          to change { user.reload.encrypted_password }
+      end
+    end
+
+    context 'when no new password not included' do
+      it "does not update the password" do
+        expect { put(:update, params: { id: user.id, user: user_params }) }.
+          to_not change { user.reload.encrypted_password }
+      end
+    end
   end
 
   describe "DELETE destroy" do

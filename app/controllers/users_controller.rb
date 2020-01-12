@@ -29,6 +29,10 @@ class UsersController < ApplicationController
   end
 
   def update
+    if user_params[:password].present?
+      @user.password = user_params[:password] # HACK.
+    end
+
     if @user.update_without_password user_params.except(:current_password)
       redirect_to @user, notice: "Successfully updated user."
     else
