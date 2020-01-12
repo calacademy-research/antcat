@@ -10,6 +10,8 @@ class Taxon < ApplicationRecord
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
   # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
   CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
+  # TODO: I don't think this is 100% true in the world of taxonomy, but it's close enough for our usage.
+  CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
 
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
     :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
@@ -46,6 +48,7 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
+  validates :original_combination, absence: { message: "can not be set for taxa of this rank" }, unless: -> { type.in?(CAN_BE_A_COMBINATION_TYPES) }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
