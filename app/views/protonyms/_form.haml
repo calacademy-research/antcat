@@ -15,7 +15,7 @@
         %th Rank
         %th Status
         %th
-      -protonym.taxa.each do |taxon|
+      -protonym.taxa.order_by_name.each do |taxon|
         %tr
           %td=taxon.link_to_taxon
           %td=taxon.rank.capitalize

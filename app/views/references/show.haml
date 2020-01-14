@@ -152,7 +152,7 @@
 -if @reference.described_taxa.exists?
   .row.margin-bottom
     .small-12.columns
-      %h5 Taxa described in this reference
+      %h5 Taxa originally described in this reference (including combinations)
       %small Note: taxa described in nestees of this reference are not included here.
       %table
         %thead
@@ -160,12 +160,17 @@
           %th Authorship
           %th Rank
           %th Status
-        -@reference.described_taxa.each do |taxon|
+          %th
+        -@reference.described_taxa.order_by_name.each do |taxon|
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.authorship_reference.decorate.expandable_reference
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
+            %td
+              -if taxon.original_combination?
+                Original combination
+                =antcat_icon 'check'
 
 -if user_is_editor?
   .row.margin-bottom

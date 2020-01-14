@@ -18,7 +18,7 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
-%h5 Taxa described by author
+%h5 Taxa originally described by author (including combinations)
 .callout.margin-bottom
   %a{name: 'taxa'}
   -if @taxa.blank?
@@ -30,12 +30,17 @@
         %th Authorship
         %th Rank
         %th Status
+        %th
       -@taxa.each do |taxon|
         %tr
           %td=taxon.link_to_taxon
           %td=taxon.authorship_reference.decorate.expandable_reference
           %td=taxon.rank.capitalize
           %td=taxon.status.capitalize
+          %td
+            -if taxon.original_combination?
+              Original combination
+              =antcat_icon 'check'
     =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
 
 .row
@@ -54,11 +59,14 @@
             %th No. of references
             %td=or_dash @author.references.count
           %tr
-            %th No. of described taxa
+            %th No. of described taxa (including combinations)
             %td=or_dash @author.described_taxa.count
           %tr
-            %th No. of described taxa (valid)
+            %th No. of described taxa (valid, including combinations)
             %td=or_dash @author.described_taxa.valid.count
+          %tr
+            %th No. of described taxa (protonyms only)
+            %td=or_dash @author.described_protonyms.count
 
 .row
   .small-12.medium-6.columns.end
