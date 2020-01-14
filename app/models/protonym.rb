@@ -55,6 +55,10 @@ class Protonym < ApplicationRecord
     (ranks - Taxon::TYPES_ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
   end
 
+  def self.all_statuses_same? taxa
+    taxa.pluck(:status).uniq.size == 1
+  end
+
   # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
   def self.taxa_genus_and_subgenus_pair? taxa
     taxa.pluck(:type).sort == %w[Genus Subgenus]
