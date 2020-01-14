@@ -20,7 +20,7 @@ class ReferenceDecorator < Draper::Decorator
     format_italics sanitize reference.taxonomic_notes
   end
 
-  # TODO: Store denormalized value in the database?
+  # TODO: Store normalized value in the database?
   def format_date
     reference_date = reference.date
     return unless reference_date

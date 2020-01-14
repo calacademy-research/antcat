@@ -1,5 +1,8 @@
--# TODO: Replace `strip_tags` with `unitalicize` once we have no `MissingReference`s.
--@title = "#{strip_tags @reference.keey.html_safe} - References"
+-# TODO: Remove once we have no `MissingReference`s.
+-if @reference.is_a?(MissingReference)
+  -@title = "#{strip_tags @reference.keey.html_safe} - References"
+-else
+  -@title = "#{unitalicize @reference.keey.html_safe} - References"
 -breadcrumb :reference, @reference
 
 -if current_user

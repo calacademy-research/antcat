@@ -1,5 +1,8 @@
--# TODO: Replace `strip_tags` with `unitalicize` once we have no `MissingReference`s.
--@title = "#{strip_tags @reference.keey.html_safe} - References"
+-# TODO: Remove once we have no `MissingReference`s.
+-if @reference.is_a?(MissingReference)
+  -@title = "#{strip_tags @reference.keey.html_safe} - What Links Here"
+-else
+  -@title = "#{unitalicize @reference.keey.html_safe} - What Links Here"
 -breadcrumb :reference_what_links_here, @reference
 
 =render "shared/what_links_here", table_refs: @table_refs, highlight_text: @reference.keey

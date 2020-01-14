@@ -48,7 +48,7 @@ description: >
   This script was mainly added to investigate how we use the different "inline taxt columns".
 
 
-  **Plan for this column:** The goal is to remove this column by first denormalizing this data and then move it to the protonym or a new model (work in progress, see %dbscript:MoveTypeTaxonToProtonymByScript).
+  **Plan for this column:** The goal is to remove this column by first normalizing this data and then move it to the protonym or a new model (work in progress, see %dbscript:MoveTypeTaxonToProtonymByScript).
 
 related_scripts:
   - ProtonymsWithNotesTaxt

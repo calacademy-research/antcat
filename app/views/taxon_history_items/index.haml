@@ -37,6 +37,7 @@
   %thead
     %tr
       %th ID
+      %th Pos.
       %th Taxon
       %th Rank
       %th Status
@@ -47,6 +48,7 @@
   -@taxon_history_items.each do |history_item|
     %tr
       %td=link_to "##{history_item.id}", history_item
+      %td=history_item.position
       %td=history_item.taxon.link_to_taxon
       %td=history_item.taxon.rank
       %td=history_item.taxon.status

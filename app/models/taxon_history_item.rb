@@ -18,8 +18,8 @@ class TaxonHistoryItem < ApplicationRecord
     VHIC_PROVISIONAL_JUNIOR_SYNONYM_OF = ["taxt LIKE ?", "Provisional junior synonym o%"],
 
     # Homonym of.
-    VHIC_JUNIOR_PRIMARY_HOMONYM_OF =              ["taxt LIKE ?", "[Junior primary homonym of%"],
-    VHIC_JUNIOR_SECONDARY_HOMONYM =               ["taxt LIKE ?", "[Junior secondary homonym%"],
+    VHIC_JUNIOR_PRIMARY_HOMONYM_OF =              ["taxt LIKE ?", "[Junior primary homonym of%"], # Also without brackets "Junior primary homonym of%".
+    VHIC_JUNIOR_SECONDARY_HOMONYM =               ["taxt LIKE ?", "[Junior secondary homonym%"], # Also without brackets "Junior secondary homonym of%".
     VHIC_UNRESOLVED_JUNIOR_PRIMARY_HOMONYM_OF =   ["taxt LIKE ?", "[Unresolved junior primary homonym of%"],
     VHIC_UNRESOLVED_JUNIOR_SECONDARY_HOMONYM_OF = ["taxt LIKE ?", "[Unresolved junior secondary homonym of%"],
 
@@ -42,11 +42,11 @@ class TaxonHistoryItem < ApplicationRecord
     VHIC_SUBGENUS_INDETERMINATE =  ["taxt LIKE ?", "Subgenus indeterminate%"],
 
     # Misc.
-    VHIC_ALSO_DESCRIBED_AS_NEW_BY =     ["taxt LIKE ?", "[Also described as new by%"],
+    VHIC_ALSO_DESCRIBED_AS_NEW_BY =     ["taxt LIKE ?", "[Also described as new by%"], # Also "Also given as new in%".
     VHIC_REPLACEMENT_NAME =             ["taxt LIKE ?", "Replacement name%"],
     VHIC_UNNECESSARY_REPLACEMENT_NAME = ["taxt LIKE ?", "Unnecessary replacement name%"],
     VHIC_FIRST_AVAILABLE_USE_OF =       ["taxt LIKE ?", "[First available use of%"],
-    VHIC_MISSPELLED_AS =                ["taxt LIKE ?", "[Misspelled as%"],
+    VHIC_MISSPELLED_AS =                ["taxt LIKE ?", "[Misspelled as%"], # Also without brackets "Name misspelled as%".
     VHIC_COMBINATION_IN =               ["taxt LIKE ?", "Combination in%"]
   ]
 
