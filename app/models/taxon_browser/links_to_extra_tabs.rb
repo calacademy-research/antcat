@@ -25,7 +25,7 @@ module TaxonBrowser
           links << ["Incertae sedis", Tab::INCERTAE_SEDIS_IN_FAMILY] if taxon.genera_incertae_sedis_in.exists?
         when Subfamily
           links << ["All genera",     Tab::ALL_GENERA_IN_SUBFAMILY]
-          links << ["Without tribe",  Tab::WITHOUT_TRIBE]
+          links << ["Without tribe",  Tab::GENERA_WITHOUT_TRIBE]
           links << ["Incertae sedis", Tab::INCERTAE_SEDIS_IN_SUBFAMILY] if taxon.genera_incertae_sedis_in.exists?
         when Tribe
           links << ["Subtribes",      Tab::SUBTRIBES_IN_TRIBE] if taxon.subtribes.exists?

@@ -9,7 +9,7 @@ module TaxonBrowser
     TABS = [
       INCERTAE_SEDIS_IN_FAMILY    = :incertae_sedis_in_family,
       INCERTAE_SEDIS_IN_SUBFAMILY = :incertae_sedis_in_subfamily,
-      WITHOUT_TRIBE               = :without_tribe,
+      GENERA_WITHOUT_TRIBE        = :without_tribe,
       ALL_GENERA_IN_FAMILY        = :all_genera_in_family,
       ALL_GENERA_IN_SUBFAMILY     = :all_genera_in_subfamily,
       SUBTRIBES_IN_TRIBE          = :subtribes_in_tribe,

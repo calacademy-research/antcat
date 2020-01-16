@@ -18,7 +18,7 @@ module TaxonBrowser
           when INCERTAE_SEDIS_IN_FAMILY, INCERTAE_SEDIS_IN_SUBFAMILY
             ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
-          when WITHOUT_TRIBE
+          when GENERA_WITHOUT_TRIBE
             ["#{name_html} genera without tribe", taxon.genera_without_tribe]
 
           when ALL_GENERA_IN_FAMILY, ALL_GENERA_IN_SUBFAMILY

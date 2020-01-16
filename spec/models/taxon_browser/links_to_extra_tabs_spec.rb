@@ -29,7 +29,7 @@ describe TaxonBrowser::LinksToExtraTabs do
           expect(described_class[taxon]).to eq(
             [
               { label: "All genera", display: TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY },
-              { label: "Without tribe", display: TaxonBrowser::Tab::WITHOUT_TRIBE },
+              { label: "Without tribe", display: TaxonBrowser::Tab::GENERA_WITHOUT_TRIBE },
               { label: "Incertae sedis", display: TaxonBrowser::Tab::INCERTAE_SEDIS_IN_SUBFAMILY }
             ]
           )
