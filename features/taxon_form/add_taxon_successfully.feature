@@ -72,7 +72,7 @@ Feature: Adding a taxon successfully
     And I should see the edit summary "cool new species"
 
   Scenario: Adding a species to a subgenus
-    Given there is a subgenus "Dolichoderus (Subdolichoderus)"
+    Given there is a subgenus "Dolichoderus (Subdolichoderus)" in the genus "Dolichoderus"
 
     When I go to the catalog page for "Dolichoderus (Subdolichoderus)"
     And I follow "Add species"
