@@ -12,10 +12,15 @@ class Issue < ApplicationRecord
 
   scope :open, -> { where(open: true) }
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
+  scope :open_help_wanted, -> { open.where(help_wanted: true) }
 
   acts_as_commentable
   has_paper_trail
   trackable parameters: proc { { title: title } }
+
+  def self.help_wanted?
+    open_help_wanted.any?
+  end
 
   def closed?
     !open?

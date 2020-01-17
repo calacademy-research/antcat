@@ -43,9 +43,32 @@ Feature: Add and edit open issues
     Then I should see "Restore deleted genera"
     And I should not see "Restore deleted species"
 
-    And I go to the activity feed
+    When I go to the activity feed
     Then I should see "Archibald edited the issue Restore deleted genera" within the feed
     And I should see "added info"
+
+  Scenario: Flagging an issue with "Help wanted" and show notice in the header
+    Given there is an open issue "Important fix"
+
+    When I go to the catalog
+    Then I should not see "Help Wanted" within the page header
+
+    When I go to the open issues page
+    Then I should not see "One or more open issues are tagged as 'Help wanted'"
+    And I should not see "Important fix Help wanted!"
+
+    When I follow "Important fix"
+    And I follow "Edit"
+    And I check "issue_help_wanted"
+    And I press "Save"
+    Then I should see "Successfully updated issue"
+
+    When I go to the catalog
+    Then I should see "Help Wanted" within the page header
+
+    When I go to the open issues page
+    Then I should see "One or more open issues are tagged as 'Help wanted'"
+    And I should see "Important fix Help wanted!"
 
   Scenario: Closing and re-opening an issue (with feed)
     Given there is an open issue "Add taxa from Aldous 2007"

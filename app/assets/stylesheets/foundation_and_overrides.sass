@@ -129,7 +129,7 @@ body.is-reveal-open
 // | Green | Everything else, "ok whatever"   | .btn-normal
 //  ---------------------------------------------------------------------------
 
-.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav
+.btn-normal, .btn-saves, .btn-warning, .btn-nodanger, .btn-lower-nav, #btn-lower-nav-help-wanted
   @include normal-sized-button
 
 .btn-saves
@@ -159,6 +159,15 @@ body.is-reveal-open
   @include button-style($color_primary, auto, auto)
   border: 1px $color_pale solid
   color: #fff
+
+  &:active, &:hover, &:focus
+    color: #fff
+
+#btn-lower-nav-help-wanted
+  @include button-style($color_high_priority, auto, auto)
+  border: 1px $color_high_priority solid
+  color: #fff
+  font-weight: bold
 
   &:active, &:hover, &:focus
     color: #fff

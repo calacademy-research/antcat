@@ -1,3 +1,5 @@
+=enable_tooltips
+
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
@@ -8,6 +10,12 @@
       =f.label :title
       =f.text_field :title, maxlength: Issue::TITLE_MAX_LENGTH
 
+  .row
+    .medium-12.columns
+      =f.check_box :help_wanted
+      =f.label :help_wanted do
+        Help wanted
+        =tooltip_icon "Use this for high-priority issues. When it is checked, a 'Help Wanted' notice will be visible in the header on all pages to all logged-in users. The notice will disappear once there are no open 'Help wanted' issues."
   .row
     .medium-12.columns
       =f.text_area :description, rows: 7,

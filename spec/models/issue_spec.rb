@@ -25,6 +25,31 @@ describe Issue do
     end
   end
 
+  describe '.help_wanted?' do
+    context 'when there are no issues with `help_wanted` checked' do
+      before do
+        create :issue, :open
+        create :issue, :closed
+      end
+
+      specify { expect(described_class.help_wanted?).to eq false }
+    end
+
+    context 'when there are issues with `help_wanted` checked' do
+      context 'when at least one issue is open' do
+        before { create :issue, :open, :help_wanted }
+
+        specify { expect(described_class.help_wanted?).to eq true }
+      end
+
+      context 'when no issue is open' do
+        before { create :issue, :closed, :help_wanted }
+
+        specify { expect(described_class.help_wanted?).to eq false }
+      end
+    end
+  end
+
   describe "closing and re-opening" do
     describe "#close!" do
       let(:issue) { create :issue, :open }

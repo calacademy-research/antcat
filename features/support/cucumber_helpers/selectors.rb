@@ -4,6 +4,8 @@ module CucumberHelpers
       case locator
 
       # Navigation.
+      when 'the page header'
+        "#header"
       when 'the desktop menu'
         "#desktop-menu"
       when 'the breadcrumbs'

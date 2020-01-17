@@ -12,5 +12,9 @@ FactoryBot.define do
       open { false }
       association :closer, factory: :user
     end
+
+    trait :help_wanted do
+      help_wanted { true }
+    end
   end
 end
