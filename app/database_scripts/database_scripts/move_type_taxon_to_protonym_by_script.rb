@@ -25,7 +25,7 @@ end
 
 __END__
 
-category: Catalog
+category: Script (pending)
 tags: []
 
 description: >

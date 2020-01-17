@@ -1145,8 +1145,12 @@ end
 __END__
 
 title: <i>Camponotus</i> subgenera to assign by script
-category: Catalog
+category: Script (run)
 tags: [slow]
 
 description: >
   *Camponotus* subgenera to assign to species by script.
+
+
+  This script has been run, but we can keep it until records that could not be assigned by script have
+  been fixed manually ("Found more than one species").

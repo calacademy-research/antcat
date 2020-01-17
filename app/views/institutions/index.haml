@@ -17,7 +17,7 @@
   %tbody
     -@institutions.each do |institution|
       %tr
-        %td=link_to institution.abbreviation, institution
+        %td=institution.abbreviation
         %td=link_to institution.name, institution
         %td.no-wrap
           -if user_is_editor?

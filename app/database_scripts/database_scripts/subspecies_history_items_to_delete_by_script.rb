@@ -30,7 +30,7 @@ end
 
 __END__
 
-category: Script
+category: Script (pending)
 tags: [new!, slow]
 
 description: >
