@@ -61,8 +61,10 @@ module TaxonBrowser
           # Don't show [subspecies in] species tab unless the species has subspecies.
           (taxon.is_a?(Species) && !taxon.children.exists?) ||
 
-            # Hide [species in] subgenus tab because there are none as of 2016.
-            taxon.is_a?(Subgenus) ||
+            # Show "Camponotus > Componotus subgenera" instead of
+            # "Camponotus > Camponotus (Myrmentoma) species > Componotus subgenera"
+            # when a subgenus is selected.
+            taxon.is_a?(Subgenus) && @taxon.is_a?(Subgenus) ||
 
             # Never show the [children of] subtribe tab (has no children).
             taxon.is_a?(Subtribe) ||
