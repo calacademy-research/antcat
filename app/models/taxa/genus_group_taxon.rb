@@ -1,5 +1,5 @@
-# Note: This is the superclass of Genus and Subgenus, not to
-# be confused with "genus group" as used in taxonomy.
+# NOTE: This is the superclass of `Genus` and `Subgenus`, not to
+# be confused with "genus group" or "genus-group name" as used in taxonomy.
 
 class GenusGroupTaxon < Taxon
   belongs_to :subfamily

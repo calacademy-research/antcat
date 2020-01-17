@@ -17,6 +17,7 @@ module CucumberHelpers
       when 'the protonym'
         "#taxon_description .headline > span.name"
       when 'the header'
+        # TODO: Find a better name than ".header". Probably also a new name for ".headline".
         "div.header"
       when 'the headline'
         '.headline'
