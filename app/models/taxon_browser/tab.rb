@@ -16,7 +16,8 @@ module TaxonBrowser
       SUBTRIBES_IN_PARENT_TRIBE   = :subtribes_in_parent_tribe,
       ALL_TAXA_IN_GENUS           = :all_taxa_in_genus,
       SUBGENERA_IN_GENUS          = :subgenera_in_genus,
-      SUBGENERA_IN_PARENT_GENUS   = :subgenera_in_parent_genus
+      SUBGENERA_IN_PARENT_GENUS   = :subgenera_in_parent_genus,
+      SPECIES_WITHOUT_SUBGENUS    = :species_without_subgenus
     ]
 
     delegate :display, :selected_in_tab?, :tab_open?,

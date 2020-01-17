@@ -44,6 +44,10 @@ class Genus < GenusGroupTaxon
     Taxon.where(genus: self)
   end
 
+  def species_without_subgenus
+    species.without_subgenus
+  end
+
   def find_epithet_in_genus target_epithet_string
     Taxon.joins(:name).where(genus: self).
       where(names: { epithet: Names::EpithetSearchSet[target_epithet_string] })

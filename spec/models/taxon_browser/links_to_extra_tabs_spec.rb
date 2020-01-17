@@ -38,16 +38,27 @@ describe TaxonBrowser::LinksToExtraTabs do
     end
 
     context 'when taxon is a genus' do
-      context 'when genus has subgenera' do
-        let!(:taxon) { create :genus }
+      let!(:taxon) { create :genus }
 
+      context 'when genus has no subgenera' do
+        specify do
+          expect(described_class[taxon]).to eq(
+            [
+              { label: "All taxa", display: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS }
+            ]
+          )
+        end
+      end
+
+      context 'when genus has subgenera' do
         before { create :subgenus, genus: taxon }
 
         specify do
           expect(described_class[taxon]).to eq(
             [
               { label: "All taxa", display: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS },
-              { label: "Subgenera", display: TaxonBrowser::Tab::SUBGENERA_IN_GENUS }
+              { label: "Subgenera", display: TaxonBrowser::Tab::SUBGENERA_IN_GENUS },
+              { label: "Without subgenus", display: TaxonBrowser::Tab::SPECIES_WITHOUT_SUBGENUS }
             ]
           )
         end

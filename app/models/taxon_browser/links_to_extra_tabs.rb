@@ -31,7 +31,10 @@ module TaxonBrowser
           links << ["Subtribes",      Tab::SUBTRIBES_IN_TRIBE] if taxon.subtribes.exists?
         when Genus
           links << ["All taxa",       Tab::ALL_TAXA_IN_GENUS]
-          links << ["Subgenera",      Tab::SUBGENERA_IN_GENUS] if taxon.subgenera.exists?
+          if taxon.subgenera.exists?
+            links << ["Subgenera",        Tab::SUBGENERA_IN_GENUS]
+            links << ["Without subgenus", Tab::SPECIES_WITHOUT_SUBGENUS]
+          end
         end
 
         links.reject(&:blank?)

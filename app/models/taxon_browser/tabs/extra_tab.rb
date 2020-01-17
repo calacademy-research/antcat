@@ -34,6 +34,9 @@ module TaxonBrowser
           when SUBGENERA_IN_PARENT_GENUS # Like above, but for subgenus catalog pages.
             ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.subgenera]
 
+          when SPECIES_WITHOUT_SUBGENUS
+            ["#{name_html} species without subgenus", taxon.species_without_subgenus]
+
           # Special case because subtribes are outside of the "main progression".
           when SUBTRIBES_IN_TRIBE # The catalog page in this case will be that of a tribe.
             ["#{name_html} subtribes", taxon.subtribes]
