@@ -45,7 +45,11 @@ Rails.application.routes.draw do
 
   get '/documents/:id/:file_name', to: 'references/downloads#show', file_name: /.+/
 
-  resources :institutions
+  resources :institutions do
+    scope module: :institutions do
+      resource :history, only: :show
+    end
+  end
 
   resources :journals, except: [:new, :create] do
     scope module: :journals do
