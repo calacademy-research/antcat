@@ -64,7 +64,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, list]
+tags: [list]
 
 description: >
   Random checks. This can be ignored.

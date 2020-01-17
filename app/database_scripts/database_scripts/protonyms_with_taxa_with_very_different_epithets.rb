@@ -26,7 +26,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 issue_description: The taxa of this protonym have very different epithets.
 

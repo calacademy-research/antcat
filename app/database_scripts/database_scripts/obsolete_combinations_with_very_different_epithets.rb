@@ -30,7 +30,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This obsolete combination has a very different epithet compared to its `current_valid_taxon`.
 

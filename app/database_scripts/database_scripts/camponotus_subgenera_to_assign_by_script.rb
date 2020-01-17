@@ -1146,7 +1146,7 @@ __END__
 
 title: <i>Camponotus</i> subgenera to assign by script
 category: Catalog
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   *Camponotus* subgenera to assign to species by script.

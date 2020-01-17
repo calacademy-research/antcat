@@ -56,7 +56,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, slow]
+tags: [slow]
 
 issue_description: This genus or subgenus has the same name as another taxon (comparing genus name vs. subgenus part of name).
 

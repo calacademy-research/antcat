@@ -35,7 +35,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 issue_description: This protonym has taxa with more than one type taxon.
 

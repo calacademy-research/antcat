@@ -33,7 +33,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 description: >
   Matches already appearing in these two scripts are excluded:

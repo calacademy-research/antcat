@@ -39,7 +39,7 @@ __END__
 
 title: Taxa with <code>type_taxt</code>
 category: Inline taxt
-tags: [new!, list, slow]
+tags: [list, slow]
 
 description: >
   **Table/column:** `taxa.type_taxt` (called "Notes" in the "Type" section of the taxon form)

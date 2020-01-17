@@ -29,7 +29,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This obsolete combination does not have the same fossil status as its `current_valid_taxon`.
 

@@ -67,7 +67,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   This script checks all valid taxa that have a type taxon.

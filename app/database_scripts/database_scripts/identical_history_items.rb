@@ -25,7 +25,7 @@ end
 __END__
 
 category: Taxt
-tags: [new!]
+tags: []
 
 description: >
   Items belonging to species and below, and items with less than 30 characters are excluded (too many false positives).

@@ -58,7 +58,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 description: >
   **List #1** contains species we want to fix.

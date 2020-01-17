@@ -28,7 +28,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, list]
+tags: [list]
 
 description: >
   This is not an issue. Script was added to investigate obsolete combinations and how to move `type_taxon` to the protonym.

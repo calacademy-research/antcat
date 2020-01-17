@@ -36,7 +36,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This species is a synonym with subspecies that have incompatible statuses.
 

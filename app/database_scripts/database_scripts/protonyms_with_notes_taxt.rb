@@ -38,7 +38,7 @@ __END__
 
 title: Protonyms with <code>notes_taxt</code>
 category: Inline taxt
-tags: [new!, list]
+tags: [list]
 
 description: >
   **Table/column:** `citations.notes_taxt` (called "Notes" in the protonym form)

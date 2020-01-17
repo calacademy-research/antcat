@@ -9,7 +9,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This subspecies is valid, but its species is not valid.
 
