@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_08_151027) do
+ActiveRecord::Schema.define(version: 2020_01_17_163647) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -391,6 +391,7 @@ ActiveRecord::Schema.define(version: 2020_01_08_151027) do
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "permanent_identifier"
   end
 
   add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"

@@ -1,7 +1,5 @@
 module My
   class RegistrationsController < Devise::RegistrationsController
-    NEW_CONTRIBUTORS_HELP_PAGE_WIKI_PAGE_ID = 1
-
     before_action :check_if_too_many_registrations_today, only: :create
 
     invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
@@ -31,7 +29,7 @@ module My
       end
 
       def after_sign_up_path_for _resource
-        if (wiki_page = WikiPage.find_by(id: NEW_CONTRIBUTORS_HELP_PAGE_WIKI_PAGE_ID))
+        if (wiki_page = WikiPage.find_by(permanent_identifier: WikiPage::NEW_CONTRIBUTORS_HELP_PAGE))
           wiki_page_path wiki_page
         else
           root_path

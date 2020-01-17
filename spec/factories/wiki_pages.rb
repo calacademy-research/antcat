@@ -4,7 +4,7 @@ FactoryBot.define do
     sequence(:content, 'a') { |n| "Content is: #{n}" }
 
     trait :new_contributors_help_page do
-      id { My::RegistrationsController::NEW_CONTRIBUTORS_HELP_PAGE_WIKI_PAGE_ID }
+      permanent_identifier { WikiPage::NEW_CONTRIBUTORS_HELP_PAGE }
     end
   end
 end
