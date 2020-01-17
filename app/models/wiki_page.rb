@@ -4,6 +4,10 @@ class WikiPage < ApplicationRecord
 
   TITLE_MAX_LENGTH = 70
 
+  PERMANENT_IDENTIFIERS = [
+    NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page'
+  ]
+
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: true
   validates :content, presence: true
 

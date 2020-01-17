@@ -25,7 +25,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This protonym has taxa with different `current_valid_taxon`s (obsolete combinations excluded).
 
@@ -34,10 +34,13 @@ description: >
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
   - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
+
   - TypeTaxaAssignedToMoreThanOneTaxon

@@ -42,6 +42,8 @@
               .left=render "tagline"
               -if current_user
                 .right.show-for-large
+                  -if Issue.help_wanted?
+                    =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, id: 'btn-lower-nav-help-wanted', class: 'btn-tiny'
                   =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav btn-tiny'
                   =link_to "Activities", activities_path, class: 'btn-lower-nav btn-tiny'
                   =link_to "Search History Items", taxon_history_items_path, class: 'btn-lower-nav btn-tiny'

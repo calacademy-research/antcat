@@ -27,7 +27,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 issue_description: More than one of this protonym's taxa is a synonym.
 
@@ -37,10 +37,13 @@ description: >
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
   - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
+
   - TypeTaxaAssignedToMoreThanOneTaxon

@@ -22,7 +22,7 @@ end
 __END__
 
 category: Taxt
-tags: [new!]
+tags: []
 
 description: >
   History items which contains `{tax <own id>}`. This list will contain false positives.

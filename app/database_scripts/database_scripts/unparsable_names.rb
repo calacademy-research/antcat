@@ -51,7 +51,7 @@ end
 __END__
 
 category: Names
-tags: [new!, very-slow]
+tags: [very-slow]
 
 description: >
   These records can only be fixed by script.

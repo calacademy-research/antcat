@@ -60,4 +60,8 @@ describe Author do
       expect(author.described_taxa).to eq [species, genus]
     end
   end
+
+  describe '#described_protonyms' do
+    # TODO
+  end
 end

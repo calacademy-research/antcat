@@ -19,8 +19,9 @@
         %td
           =taxon.protonym.decorate.link_to_protonym
           .small-text
-            =surround "(", ")" do
-              =or_dash taxon.protonym.authorship.forms
+            -if taxon.protonym.authorship.forms
+              =surround "(", ")" do
+                =taxon.protonym.authorship.forms
             =taxon.protonym.decorate.format_locality
             =add_period_if_necessary(taxon.protonym.biogeographic_region)
 

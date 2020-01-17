@@ -37,7 +37,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This genus is a synonym with species that have incompatible statuses.
 

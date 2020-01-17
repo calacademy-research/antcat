@@ -40,10 +40,10 @@ module DatabaseScripts
             markdown_taxon_link(history_item.taxon),
             history_item.taxon.status,
             history_item.taxt,
-            ('No' unless ids_same),
+            (ids_same ? 'Yes' : '<span class="bold-warning">No</span>'),
             additional,
-            ('No' unless all_extracted_are_subspecies),
-            non_valid_statuses_of_extracted,
+            (all_extracted_are_subspecies ? 'Yes' : '<span class="bold-warning">No</span>'),
+            ("<span class='bold-warning'>#{non_valid_statuses_of_extracted.join(', ')}</span>" if non_valid_statuses_of_extracted),
             valid_subspecies_ids(history_item),
             extracted_ids
           ]

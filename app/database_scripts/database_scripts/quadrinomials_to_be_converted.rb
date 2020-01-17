@@ -33,7 +33,8 @@ module DatabaseScripts
 
       def format_failed_soft_validations target_subspecies
         target_subspecies.soft_validations.failed.reject do |validation|
-          validation.database_script.is_a?(DatabaseScripts::UnavailableUncategorizedTaxa)
+          validation.database_script.is_a?(DatabaseScripts::UnavailableUncategorizedTaxa) ||
+            validation.database_script.is_a?(DatabaseScripts::NonValidTaxaWithACurrentValidTaxonThatIsNotValid)
         end.map(&:issue_description).join('<br><br>')
       end
   end
@@ -41,8 +42,8 @@ end
 
 __END__
 
-category: Catalog
-tags: []
+category: Script (pending)
+tags: [slow]
 
 description: >
   To be converted by script.

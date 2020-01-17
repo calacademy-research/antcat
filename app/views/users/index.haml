@@ -14,7 +14,7 @@
         =user.decorate.user_badge
         -if user_is_editor?
           -if user.superadmin?
-            %span.secondary-label.rounded-badge superadmin
+            %span.high-priority-label.rounded-badge superadmin
       -if user_is_editor?
         %td
           -if user.locked?

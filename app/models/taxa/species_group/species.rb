@@ -2,6 +2,8 @@ class Species < SpeciesGroupTaxon
   has_many :subspecies, dependent: :restrict_with_error
   has_many :infrasubspecies, dependent: :restrict_with_error
 
+  scope :without_subgenus, -> { where(subgenus_id: nil) }
+
   def parent
     subgenus || genus
   end

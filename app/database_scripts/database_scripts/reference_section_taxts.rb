@@ -107,7 +107,7 @@ end
 __END__
 
 category: Taxt
-tags: [new!, list]
+tags: [list]
 
 description: >
   Script added to investigate how we can improve reference sections.

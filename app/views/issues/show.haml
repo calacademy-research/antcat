@@ -10,18 +10,20 @@
       =link_to "Re-open", reopen_issue_path(@issue), method: :put, class: "btn-warning"
     =link_to "Edit", edit_issue_path(@issue), class: "btn-normal"
 
+.left.small-margin-bottom
+  %h5
+    #{@issue.decorate.format_status} issue: #{@issue.title}
+    =@issue.decorate.help_wanted_badge
+  %small
+    Added by
+    =@issue.adder.decorate.user_page_link
+    =time_ago_in_words @issue.created_at
+    ago
 
-.left
-  %h5 #{@issue.decorate.format_status} issue: #{@issue.title}
-  Added by
-  =@issue.adder.decorate.user_page_link
-  =time_ago_in_words @issue.created_at
-  ago
-
-  -if @issue.closed?
-    =dash
-    Closed by
-    =@issue.closer.decorate.user_page_link
+    -if @issue.closed?
+      =dash
+      Closed by
+      =@issue.closer.decorate.user_page_link
 
 .row
   .medium-12.columns

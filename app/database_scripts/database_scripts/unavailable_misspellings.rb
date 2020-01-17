@@ -27,7 +27,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   Rows where "Suggested action" is "Delete since no WLHs" can be deleted by script.

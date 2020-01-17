@@ -18,7 +18,7 @@ module TaxonBrowser
           when INCERTAE_SEDIS_IN_FAMILY, INCERTAE_SEDIS_IN_SUBFAMILY
             ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
-          when WITHOUT_TRIBE
+          when GENERA_WITHOUT_TRIBE
             ["#{name_html} genera without tribe", taxon.genera_without_tribe]
 
           when ALL_GENERA_IN_FAMILY, ALL_GENERA_IN_SUBFAMILY
@@ -33,6 +33,9 @@ module TaxonBrowser
 
           when SUBGENERA_IN_PARENT_GENUS # Like above, but for subgenus catalog pages.
             ["#{taxon.genus.name_with_fossil} subgenera", taxon.genus.subgenera]
+
+          when SPECIES_WITHOUT_SUBGENUS
+            ["#{name_html} species without subgenus", taxon.species_without_subgenus]
 
           # Special case because subtribes are outside of the "main progression".
           when SUBTRIBES_IN_TRIBE # The catalog page in this case will be that of a tribe.

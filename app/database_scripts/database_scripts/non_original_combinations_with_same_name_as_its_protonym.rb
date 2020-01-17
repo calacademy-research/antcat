@@ -33,4 +33,12 @@ description: >
   Taxa where `original_combination` is checked are not included. Check it in the taxon form to clear a taxon from this script
 
 
+  Only taxa with the status "original combination" are included here.
+
+
   Can be fixed by script if all taxa should be changed to have the `original_combination` flag.
+
+related_scripts:
+  - NonOriginalCombinationsWithSameNameAsItsProtonym
+  - ProtonymsNoOriginalCombination
+  - ProtonymsWithMoreThanOneOriginalCombination

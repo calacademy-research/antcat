@@ -20,6 +20,7 @@
     %th
     %th
     %th
+    %th
   %tbody
     -if @taxon.children.empty?
       %tr
@@ -46,6 +47,9 @@
                 %span.rounded-badge.pretty-label columns
               -if child.what_links_here.any_taxts?
                 %span.rounded-badge.warning-label taxts
+          %td
+            -if child.origin
+              .bold-warning=child.origin
 
 -# TODO: Hmm.
 -if user_is_editor?

@@ -10,6 +10,12 @@
     There are currently no open issues.
     =link_to "Create one?", new_issue_path, class: "btn-normal btn-tiny"
 
+-if Issue.help_wanted?
+  .callout.primary.medium-9.margin-bottom
+    %p One or more open issues are tagged as 'Help wanted'.
+    %p These issues were deemed important for one or another reason, in many cases because they are blocking improvements we want to make to the code.
+    %p Any help fixing these is much appreciated. Resolved issues can be closed, and then this notice will disappear from this page and the header.
+
 %table.issues.unstriped.stack
   %tbody
     -@issues.each do |issue|
@@ -17,6 +23,7 @@
         %td.icon.vertical-align-top=antcat_icon "issue", issue.decorate.format_status_css
         %td.grow
           =link_to issue.title, issue
+          =issue.decorate.help_wanted_badge
           %br
           %small.gray-text.with-gray-links
             added

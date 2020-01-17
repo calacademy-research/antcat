@@ -33,7 +33,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 description: >
   Matches already appearing in these two scripts are excluded:
@@ -45,10 +45,13 @@ description: >
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
   - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
+
   - TypeTaxaAssignedToMoreThanOneTaxon

@@ -27,4 +27,10 @@ class Author < ApplicationRecord
   def described_taxa
     Taxon.joins(protonym: { authorship: { reference: :authors } }).where(authors: { id: id })
   end
+
+  # TODO: This makes more sense than `#described_taxa` (which includes combinations).
+  # What we really want is "terminal" taxa (at least valid and synonyms, probably other statuses too).
+  def described_protonyms
+    Protonym.joins(authorship: { reference: :authors }).where(authors: { id: id })
+  end
 end

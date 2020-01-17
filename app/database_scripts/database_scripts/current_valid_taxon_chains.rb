@@ -30,7 +30,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This taxon has a `current_valid_taxon` which itself has a `current_valid_taxon`.
 

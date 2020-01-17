@@ -35,7 +35,7 @@ end
 __END__
 
 category: Protonyms
-tags: [new!]
+tags: []
 
 issue_description: This protonym has taxa with more than one type taxon.
 
@@ -44,11 +44,14 @@ description: >
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
   - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
-  - ProtonymsWithoutTypeTaxa
+  - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
+
+  - ProtonymsWithoutTypeTaxa
   - TypeTaxaAssignedToMoreThanOneTaxon

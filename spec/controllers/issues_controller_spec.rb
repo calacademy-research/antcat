@@ -22,7 +22,8 @@ describe IssuesController do
     let!(:issue_params) do
       {
         title: 'title',
-        description: 'description'
+        description: 'description',
+        help_wanted: true
       }
     end
 
@@ -34,6 +35,7 @@ describe IssuesController do
       issue = Issue.last
       expect(issue.title).to eq issue_params[:title]
       expect(issue.description).to eq issue_params[:description]
+      expect(issue.help_wanted).to eq issue_params[:help_wanted]
     end
 
     it 'creates an activity' do

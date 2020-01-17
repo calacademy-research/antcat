@@ -25,7 +25,7 @@
         %p=markdown @database_script.issue_description
 
     -if @database_script.related_scripts.present?
-      %h6
+      %h6.margin-top
         %strong Related scripts
       %ul
         -@database_script.related_scripts.each do|related_script|

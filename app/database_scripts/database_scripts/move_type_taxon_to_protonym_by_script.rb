@@ -25,8 +25,8 @@ end
 
 __END__
 
-category: Catalog
-tags: [new!]
+category: Script (pending)
+tags: []
 
 description: >
   **TODO:**
