@@ -2,7 +2,7 @@ class Issue < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  TITLE_MAX_LENGTH = 70
+  TITLE_MAX_LENGTH = 100
 
   belongs_to :adder, class_name: "User"
   belongs_to :closer, class_name: "User"
