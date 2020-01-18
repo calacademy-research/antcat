@@ -7,6 +7,7 @@ class CreateCombinationPolicy
     validate!
   end
 
+  # TODO: Check lazily.
   def allowed?
     errors.empty?
   end

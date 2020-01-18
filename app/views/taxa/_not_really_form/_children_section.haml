@@ -11,4 +11,4 @@
         -taxon.children.includes(:name).order(status: :desc, name_cache: :asc).each do |child|
           %li
             =child.link_to_taxon
-            =raw "(" + child.expanded_status + ")"
+            %br=child.expanded_status

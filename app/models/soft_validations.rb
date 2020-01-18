@@ -61,6 +61,7 @@ class SoftValidations
     @failed ||= all.select(&:failed?)
   end
 
+  # TODO: Check lazily.
   def failed?
     failed.present?
   end

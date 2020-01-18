@@ -8,7 +8,6 @@
     =link_to "Merge", new_author_merges_path(@author), class: "btn-normal"
 
 #references.margin-bottom
-  %a{name: 'references'}
   %h5
     References by
     =@author.first_author_name_name
@@ -18,9 +17,8 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
-%h5 Taxa originally described by author (including combinations)
-.callout.margin-bottom
-  %a{name: 'taxa'}
+%h5.margin-top Taxa originally described by author (including combinations)
+.callout
   -if @taxa.blank?
     %p Found no taxa described by this author.
   -else
@@ -44,9 +42,9 @@
     =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
 
 .row
-  .small-12.medium-6.columns.end
+  .small-12.medium-6.columns.margin-top.end
     %h5 Statistics
-    .callout.margin-bottom
+    .callout
       %table.table.unstriped
         %tbody
           %tr
@@ -69,7 +67,7 @@
             %td=or_dash @author.described_protonyms.count
 
 .row
-  .small-12.medium-6.columns.end
+  .small-12.medium-6.columns.margin-top.end
     %h5
       Names belonging to author
       -if user_is_editor?

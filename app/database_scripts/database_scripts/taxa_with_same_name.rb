@@ -30,7 +30,6 @@ tags: [list]
 
 related_scripts:
   - SameNamedPassThroughNames
-  - TaxaWithNonModernCapitalization
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName
