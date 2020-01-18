@@ -6,7 +6,9 @@ module Taxa
     before_action :set_taxon
 
     def show
-      @children = @taxon.children.includes(:name).order(status: :desc, name_cache: :asc).paginate(per_page: 100, page: params[:page])
+      @children = @taxon.children.with_common_includes.
+        order(status: :desc, name_cache: :asc).
+        paginate(per_page: 100, page: params[:page])
       @check_what_links_heres = params[:check_what_links_heres]
     end
 

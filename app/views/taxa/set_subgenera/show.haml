@@ -21,7 +21,7 @@
           Subgenera of
           =@taxon.genus.link_to_taxon
         %tbody
-          -@taxon.genus.subgenera.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subgenus|
+          -@taxon.genus.subgenera.order_by_name.with_common_includes.each do |subgenus|
             %tr
               %td
                 -if @taxon.subgenus == subgenus

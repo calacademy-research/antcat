@@ -69,6 +69,14 @@ class Taxon < ApplicationRecord
   scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
+  # TODO: Find a better name for these and figure out how to best use it.
+  scope :with_common_includes, -> do
+    includes(:name, protonym: [:name, { authorship: { reference: :author_names } }]).references(:reference_author_names)
+  end
+  scope :with_common_includes_and_current_valid_taxon_includes, -> do
+    with_common_includes.
+      includes(current_valid_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
+  end
 
   # Example: `Species.self_join_on(:genus).where(fossil: false, taxa_self_join_alias: { fossil: true })`.
   scope :self_join_on, ->(model) {
