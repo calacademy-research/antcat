@@ -9,13 +9,15 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :current_valid_taxon, :current_valid_taxon_status, :taxon_epithet, :current_valid_taxon_epithet
+        t.header :taxon, :status, :origin, :current_valid_taxon,
+          :current_valid_taxon_status, :taxon_epithet, :current_valid_taxon_epithet
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 
           [
             markdown_taxon_link(taxon),
             taxon.status,
+            origin_warning(taxon),
             markdown_taxon_link(current_valid_taxon),
             current_valid_taxon.status,
             taxon.name.epithet,

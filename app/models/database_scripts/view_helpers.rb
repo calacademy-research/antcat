@@ -20,5 +20,10 @@ module DatabaseScripts
     def bold_warning string
       %(<span class="bold-warning">#{string}</span>)
     end
+
+    def origin_warning taxon
+      return '' unless taxon.origin
+      ' ' + bold_warning(taxon.origin)
+    end
   end
 end

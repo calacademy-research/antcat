@@ -8,20 +8,21 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :protonym, :current_valid_taxon_protonym, :current_valid_taxon, :current_valid_taxon_status
+        t.header :taxon, :origin, :status, :protonym,
+          :current_valid_taxon, :current_valid_taxon_status, :current_valid_taxon_protonym
 
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 
           [
             markdown_taxon_link(taxon),
+            origin_warning(taxon),
             taxon.status,
-
             taxon.protonym.decorate.link_to_protonym,
-            current_valid_taxon.protonym.decorate.link_to_protonym,
 
             markdown_taxon_link(current_valid_taxon),
-            current_valid_taxon.status
+            current_valid_taxon.status,
+            current_valid_taxon.protonym.decorate.link_to_protonym
           ]
         end
       end
