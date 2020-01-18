@@ -201,6 +201,21 @@ class Taxon < ApplicationRecord
     current_valid_taxon.now
   end
 
+  # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxons_protonyms_taxa`.
+  def obsolete_combination_that_is_probably_a_synonym?
+    DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym.record_in_results?(self) ||
+      DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets.record_in_results?(self)
+  end
+
+  # TODO: Remove ASAP. Also `#obsolete_combination_that_is_probably_a_synonym`.
+  def synonyms_history_items_containing_taxons_protonyms_taxa taxon
+    taxon.protonym.taxa.each do |protonym_taxon|
+      item = history_items.find_by("taxt LIKE ?", "Senior synonym of%#{protonym_taxon.id}%")
+      return item if item
+    end
+    nil
+  end
+
   # TODO: Remove once subspecies lists have been cleaned up.
   # See https://github.com/calacademy-research/antcat/issues/780
   def subspecies_list_in_history_items

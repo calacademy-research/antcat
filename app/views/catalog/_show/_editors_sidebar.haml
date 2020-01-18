@@ -23,6 +23,20 @@
       Database script:
       =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
 
+-if taxon.obsolete_combination_that_is_probably_a_synonym?
+  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa(taxon)
+  -if synonym_history_item.present?
+    .soft-validations-callout.callout.alert.margin-bottom
+      %h6
+        This taxon is probably a synonym
+        =logged_in_only_tooltip_icon
+      The status of this taxon is 'original combination' but
+      a representation of this taxon (this taxon or another taxon belonging to the same protonym) appears in a
+      synonyms list history item of
+      =taxon.current_valid_taxon.link_to_taxon
+      %hr
+      =Detax[synonym_history_item.taxt]
+
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
