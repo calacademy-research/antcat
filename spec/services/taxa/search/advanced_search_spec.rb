@@ -53,6 +53,10 @@ describe Taxa::Search::AdvancedSearch do
         expect(described_class[protonym: 'fusc']).to eq [taxon]
         expect(described_class[protonym: 'niger']).to eq []
       end
+
+      context 'when query contains redundant spacing' do
+        specify { expect(described_class[protonym: ' Formica fusca ']).to match_array [taxon] }
+      end
     end
 
     describe "searching by ranks" do
@@ -82,6 +86,10 @@ describe Taxa::Search::AdvancedSearch do
         expect(described_class[name: 'Formica fusca', name_search_type: 'begins_with']).
           to match_array [f_fusca, f_fusca_rufa]
       end
+
+      context 'when query contains redundant spacing' do
+        specify { expect(described_class[name: ' Lasius fusca ']).to match_array [l_fusca] }
+      end
     end
 
     describe "searching by epithet" do
@@ -90,6 +98,25 @@ describe Taxa::Search::AdvancedSearch do
       it 'only considers exact matches' do
         expect(described_class[epithet: 'niger']).to eq [taxon]
         expect(described_class[epithet: 'nige']).to eq []
+      end
+
+      context 'when query contains redundant spacing' do
+        specify { expect(described_class[epithet: ' niger ']).to match_array [taxon] }
+      end
+    end
+
+    describe "searching by genus" do
+      let!(:taxon) do
+        create :species, name_string: 'Lasius niger', genus: create(:genus, name_string: 'Lasius')
+      end
+
+      specify do
+        expect(described_class[genus: 'Lasius']).to eq [taxon]
+        expect(described_class[genus: 'Atta']).to eq []
+      end
+
+      context 'when query contains redundant spacing' do
+        specify { expect(described_class[genus: ' Lasius ']).to match_array [taxon] }
       end
     end
 
