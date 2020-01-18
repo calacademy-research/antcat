@@ -56,7 +56,7 @@ description: >
 
   * *Done* - Step 2) Recreate missing subspecies by script
 
-  * Step 3) Cleanup recreated subspecies (see "Target subspecies soft validation issues")
+  * *Done* - Step 3) Cleanup recreated subspecies (see "Target subspecies soft validation issues")
 
   * Step 4) Convert batch 2: Quadrinomials where a `Subspecies` with the target name exists after missing subspecies were recreated
 

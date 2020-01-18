@@ -23,7 +23,7 @@ module DatabaseScripts
 
     def origin_warning taxon
       return '' unless taxon.origin
-      ' ' + bold_warning(taxon.origin)
+      '&nbsp;' + bold_warning(taxon.origin)
     end
   end
 end

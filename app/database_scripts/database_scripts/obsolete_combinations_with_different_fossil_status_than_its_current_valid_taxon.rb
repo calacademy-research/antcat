@@ -7,17 +7,20 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :fossil_status, :current_valid_taxon, :current_valid_taxon_status, :current_valid_taxon_fossil_status
+        t.header :taxon, :status, :locality, :fossil_status,
+          :current_valid_taxon, :CVT_status, :CVT_locality, :CVT_fossil_status
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 
           [
             markdown_taxon_link(taxon),
             taxon.status,
+            taxon.protonym.locality,
             (taxon.fossil? ? 'fossil' : 'extant'),
 
             markdown_taxon_link(current_valid_taxon),
             current_valid_taxon.status,
+            current_valid_taxon.protonym.locality,
             (current_valid_taxon.fossil? ? 'fossil' : 'extant')
           ]
         end
@@ -29,7 +32,7 @@ end
 __END__
 
 category: Catalog
-tags: []
+tags: [regression-test]
 
 issue_description: This obsolete combination does not have the same fossil status as its `current_valid_taxon`.
 
