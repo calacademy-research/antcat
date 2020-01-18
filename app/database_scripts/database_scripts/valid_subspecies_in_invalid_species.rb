@@ -9,7 +9,7 @@ end
 __END__
 
 category: Catalog
-tags: []
+tags: [regression-test]
 
 issue_description: This subspecies is valid, but its species is not valid.
 

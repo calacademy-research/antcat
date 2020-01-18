@@ -35,15 +35,15 @@ module DatabaseScripts
           end
 
           [
-            (convertable ? 'Yes' : '<span class="bold-warning">No</span>'),
+            (convertable ? 'Yes' : bold_warning('No')),
             link_to(history_item.id, taxon_history_item_path(history_item)),
             markdown_taxon_link(history_item.taxon),
             history_item.taxon.status,
             history_item.taxt,
-            (ids_same ? 'Yes' : '<span class="bold-warning">No</span>'),
+            (ids_same ? 'Yes' : bold_warning('No')),
             additional,
-            (all_extracted_are_subspecies ? 'Yes' : '<span class="bold-warning">No</span>'),
-            ("<span class='bold-warning'>#{non_valid_statuses_of_extracted.join(', ')}</span>" if non_valid_statuses_of_extracted),
+            (all_extracted_are_subspecies ? 'Yes' : bold_warning('No')),
+            (bold_warning(non_valid_statuses_of_extracted.join(', ')) if non_valid_statuses_of_extracted),
             valid_subspecies_ids(history_item),
             extracted_ids
           ]

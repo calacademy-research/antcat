@@ -24,7 +24,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header :subgenus, :subgenus_authorship, :subgenus_status,
-                 :taxon, :taxon_authorship, :taxon_status,
+                 :taxon, :taxon_origin, :taxon_authorship, :taxon_status,
                  :same_protonym?, :same_now_taxon?, :single_yes_to_the_left?, :taxons_cvt_is_genus_of_subgenus?
         t.rows do |taxon|
           subgenus = Subgenus.find_by("name_cache LIKE ?", "%(#{taxon.name_cache})%")
@@ -39,6 +39,7 @@ module DatabaseScripts
             subgenus.status,
 
             markdown_taxon_link(taxon),
+            origin_warning(taxon),
             taxon.authorship_reference.keey,
             taxon.status,
 
@@ -71,7 +72,6 @@ description: >
 
 related_scripts:
   - SameNamedPassThroughNames
-  - TaxaWithNonModernCapitalization
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName

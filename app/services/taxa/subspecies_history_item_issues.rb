@@ -22,15 +22,15 @@ module Taxa
 
       result = []
       result << '<span class="bold-warning">History item and valid subspecies in the database do not agree</span>'
-      result << "Valid subspecies IDs from the database: #{valid_subspecies_ids(history_item)}"
-      result << "Extracted IDs: #{extracted_ids}"
+      result << "#{valid_subspecies_ids(history_item).sort} <-- Valid subspecies IDs from the database"
+      result << "#{extracted_ids.sort} <<- Extracted IDs"
 
       unless ids_same
-        result << 'Extracted IDs and IDs from database do not match'
+        result << '<span class="bold-warning">Extracted IDs and IDs from database do not match</span>'
       end
 
       unless all_extracted_are_subspecies
-        result << 'All extracted IDs are not subspecies'
+        result << '<span class="bold-warning">All extracted IDs are not subspecies</span>'
       end
 
       if additional.present?
@@ -38,7 +38,7 @@ module Taxa
       end
 
       if non_valid_statuses_of_extracted
-        result << "Not all extracted subspecies are valid (other statuses: #{non_valid_statuses_of_extracted.join(', ')})"
+        result << "Not all extracted subspecies are valid (<span class='bold-warning'>other statuses: #{non_valid_statuses_of_extracted.join(', ')})</span>"
       end
 
       result

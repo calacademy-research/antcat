@@ -12,7 +12,7 @@ module DatabaseScripts
           current_valid_taxon = taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon),
+            markdown_taxon_link(taxon) + origin_warning(taxon),
             taxon.status,
 
             markdown_taxon_link(current_valid_taxon),

@@ -17,7 +17,7 @@ module DatabaseScripts
           [
             protonym.decorate.link_to_protonym,
             protonym.authorship.reference.keey,
-            taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : '<span class="bold-warning">Orphaned protonym</span>',
+            taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : bold_warning('Orphaned protonym'),
             protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
           ]
         end
@@ -56,7 +56,6 @@ description: >
 
 related_scripts:
   - SameNamedPassThroughNames
-  - TaxaWithNonModernCapitalization
   - TaxaWithSameName
   - TaxaWithSameNameAndStatus
   - ProtonymsWithSameName

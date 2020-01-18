@@ -31,38 +31,6 @@
 
   =Detax[taxon.headline_notes_taxt]
 
-  -if current_user && !taxon.is_a?(Family) && taxon.type_taxon
-    .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-      %h6
-        -if type_taxon_expander.can_expand?
-          =antcat_icon 'check'
-        -else
-          =antcat_icon 'nope'
-        Type taxon expansion
-        =logged_in_only_tooltip_icon
-      %p
-        See
-        =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
-        and
-        =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
-        for more info.
-      %p
-        This taxon has a type taxon
-        -if type_taxon_expander.can_expand?
-          -if type_taxon_expander.expansion == ''
-            which does not require any expansion.
-          -else
-            which was successfully expanded with:
-            %br
-            =type_taxon_expander.expansion
-        -else
-          but it could not be expanded because:
-          %br
-          =type_taxon_expander.reason_cannot_expand
-          %br
-          The default expansion is:
-          =type_taxon_expander.expansion(ignore_can_expand: true)
-
   -# TODO: ".truncate" have been removed because it broke the reference expansion tooltips.
   #type-fields
     -protonym = taxon.protonym
@@ -110,7 +78,7 @@
 -if taxon.junior_synonyms.exists?
   %h6 Junior synonyms
   %ul.compact-list.small-margin-bottom
-    -taxon.junior_synonyms.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |synonym|
+    -taxon.junior_synonyms.order_by_name.with_common_includes.each do |synonym|
       %li
         =synonym.link_to_taxon
         =synonym.author_citation
@@ -122,17 +90,25 @@
   -if taxon.is_a?(Subgenus) && taxon.species.exists?
     .callout.no-border-callout.logged-in-only-background
       %h6
-        Species in subgenus
+        Species and subspecies in subgenus
         =logged_in_only_tooltip_icon
       %p.small-text
         This section is only shown to logged-in users, since very few species are assined to a subgenus,
         and we have to decide how to handle subgenera.
       %ul.compact-list.small-margin-bottom
-        -taxon.species.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |species|
+        -taxon.species.order_by_name.with_common_includes.each do |species|
           %li
             =species.link_to_taxon
             =species.author_citation
             %span.small-text=species.expanded_status
+            -# TODO: N+1 query.
+            -if species.subspecies.present?
+              %ul.compact-list
+                -species.subspecies.order_by_name.with_common_includes.each do |subspecies|
+                  %li
+                    =subspecies.link_to_taxon
+                    =subspecies.author_citation
+                    %span.small-text=subspecies.expanded_status
 
 -if is_formicidae_landing_page
   %br
@@ -165,7 +141,7 @@
       =logged_in_only_tooltip_icon
     %p.small-text This is only showed to logged-in users since we don't have very complete data for obsolete combinations.
     %ul.compact-list.small-margin-botto
-      -taxon.obsolete_combinations.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |obsolete_combination|
+      -taxon.obsolete_combinations.order_by_name.with_common_includes.each do |obsolete_combination|
         %li
           =obsolete_combination.link_to_taxon
           =obsolete_combination.author_citation
@@ -215,7 +191,7 @@
     -if taxon.valid_taxon? && taxon.subspecies.valid.exists?
       %h6 Current subspecies (nominal plus)
       %ul.compact-list.small-margin-bottom
-        -taxon.subspecies.valid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+        -taxon.subspecies.valid.order_by_name.with_common_includes.each do |subspecies|
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
@@ -225,8 +201,25 @@
     -if taxon.subspecies.invalid.exists?
       %h6 Invalid subspecies
       %ul.compact-list.small-margin-bottom
-        -taxon.subspecies.invalid.order_by_name.includes(:name, protonym: [{ authorship: :reference }]).each do |subspecies|
+        -taxon.subspecies.invalid.order_by_name.with_common_includes_and_current_valid_taxon_includes.each do |subspecies|
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
             %span.small-text=subspecies.expanded_status
+
+-# TODO: Experimental.
+-unless is_formicidae_landing_page
+  -if current_user
+    %hr.compact.huge-margin-top
+    %h6.small-margin-top
+      Citations
+      =logged_in_only_tooltip_icon
+    %p.small-text This section is only visible to logged-in users since it's more of an experiment to see how useful it is.
+    %ul.compact-list
+      -taxon.collected_references.order_by_author_names_and_year.includes(:document).each do |reference|
+        -decorated_reference = reference.decorate
+        %li.small-text
+          -if reference.is_a?(MissingReference)
+            %span.bold-warning [missing reference]
+          =decorated_reference.expanded_reference
+          =decorated_reference.format_document_links

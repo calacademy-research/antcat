@@ -30,11 +30,14 @@ end
 
 __END__
 
-category: Script (pending)
-tags: [new!, slow]
+category: Script (run)
+tags: [regression-test]
 
 description: >
   See %github838
+
+
+  This can be deleted once we have removed all subspecies history items.
 
 related_scripts:
   - SubspeciesHistoryItemsToDeleteByScript

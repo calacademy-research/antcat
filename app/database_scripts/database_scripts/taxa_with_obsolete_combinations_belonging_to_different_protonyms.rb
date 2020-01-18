@@ -5,6 +5,19 @@ module DatabaseScripts
         where("taxa.protonym_id <> obsolete_combinations_taxa.protonym_id").distinct
     end
 
+    def render
+      as_table do |t|
+        t.header :taxon, :status, :obsolete_combinations
+        t.rows do |taxon|
+          [
+            markdown_taxon_link(taxon),
+            taxon.status,
+            taxon.obsolete_combinations.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
+          ]
+        end
+      end
+    end
+
     private
 
       def current_valid_taxa_of_obsolete_combinations

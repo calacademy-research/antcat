@@ -26,7 +26,7 @@ module DatabaseScripts
             markdown_taxon_link(taxon),
             taxon.status,
             taxa.pluck(:status).uniq.join(', '),
-            taxa_list(incompatible_taxa)
+            incompatible_taxa.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
           ]
         end
       end

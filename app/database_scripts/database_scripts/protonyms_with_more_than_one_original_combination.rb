@@ -3,6 +3,19 @@ module DatabaseScripts
     def results
       Protonym.joins(:taxa).where(taxa: { original_combination: true }).group(:protonym_id).having('COUNT(taxa.id) > 1')
     end
+
+    def render
+      as_table do |t|
+        t.header :protonym, :authorship, :taxa
+        t.rows do |protonym|
+          [
+            protonym.decorate.link_to_protonym,
+            protonym.authorship.reference.keey,
+            protonym.taxa.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
+          ]
+        end
+      end
+    end
   end
 end
 

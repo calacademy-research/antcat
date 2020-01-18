@@ -33,11 +33,3 @@ issue_description: The name of this taxon contains non-modern capitalization.
 
 description: >
   Names can be updated to the suggested name by script (see %github831).
-
-related_scripts:
-  - SameNamedPassThroughNames
-  - TaxaWithNonModernCapitalization
-  - TaxaWithSameName
-  - TaxaWithSameNameAndStatus
-  - ProtonymsWithSameName
-  - ProtonymsWithSameNameExcludingSubgenusPart

@@ -9,13 +9,14 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :epithets_of_taxa, :ranks_of_taxa, :statuses_of_taxa
+        t.header :protonym, :epithets_of_taxa, :ranks_of_taxa, :statuses_of_taxa, :taxa
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
             protonym.taxa.joins(:name).pluck(:epithet).join(', '),
             protonym.taxa.pluck(:type).join(', '),
-            protonym.taxa.pluck(:status).join(', ')
+            protonym.taxa.pluck(:status).join(', '),
+            protonym.taxa.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
           ]
         end
       end

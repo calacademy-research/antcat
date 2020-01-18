@@ -60,31 +60,31 @@ module Taxa
               OR type_notes_taxt LIKE :search_term
           SQL
 
-          if params[:name]
+          if (name_q = params[:name]&.strip.presence)
             query = query.joins(:name)
             query = case params[:name_search_type]
                     when 'matches'
-                      query.where("names.name = ?", params[:name])
+                      query.where("names.name = ?", name_q)
                     when 'begins_with'
-                      query.where("names.name LIKE ?", params[:name] + '%')
+                      query.where("names.name LIKE ?", name_q + '%')
                     else
-                      query.where("names.name LIKE ?", '%' + params[:name] + '%')
+                      query.where("names.name LIKE ?", '%' + name_q + '%')
                     end
           end
 
-          if params[:epithet]
-            query = query.joins(:name).where('names.epithet = ?', params[:epithet])
+          if (epithet_q = params[:epithet]&.strip.presence)
+            query = query.joins(:name).where('names.epithet = ?', epithet_q)
           end
 
-          if params[:genus]
+          if (genus_q = params[:genus]&.strip.presence)
             query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
                       joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
-                      where('genus_names.name LIKE ?', "%#{params[:genus]}%")
+                      where('genus_names.name LIKE ?', "%#{genus_q}%")
           end
 
-          if params[:protonym]
+          if (protonym_q = params[:protonym]&.strip.presence)
             query = query.joins('JOIN names AS protonym_names ON protonyms.name_id = protonym_names.id').
-                      where('protonym_names.name LIKE ?', "%#{params[:protonym]}%")
+                      where('protonym_names.name LIKE ?', "%#{protonym_q}%")
           end
 
           search_term = params[:biogeographic_region]

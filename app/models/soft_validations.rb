@@ -17,6 +17,7 @@ class SoftValidations
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
+    DatabaseScripts::SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym,
     DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
     DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
     DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
@@ -61,6 +62,7 @@ class SoftValidations
     @failed ||= all.select(&:failed?)
   end
 
+  # TODO: Check lazily.
   def failed?
     failed.present?
   end

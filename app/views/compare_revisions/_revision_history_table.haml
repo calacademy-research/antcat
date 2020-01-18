@@ -2,6 +2,12 @@
 
 -if revisions.empty?
   %p This item does not have any previous revisions.
+  %p
+    %strong Date
+    =render "compare_revisions/revision_info_date", revision: most_recent
+  %p
+    %strong User
+    =render "compare_revisions/revision_info_user", revision: most_recent
 -else
   =form_tag request.original_url, method: :get, enforce_utf8: false do
     %table.revisions

@@ -1,3 +1,4 @@
+-# TODO: Remove after fixing `SubgeneraWithSameNameAsAGenus`.
 -if DatabaseScripts::SubgeneraWithSameNameAsAGenus.record_in_results?(taxon)
   .soft-validations-callout.callout.alert.margin-bottom
     %h6
@@ -23,6 +24,21 @@
       Database script:
       =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
 
+-# TODO: Remove once fixed (see `Taxon#obsolete_combination_that_is_probably_a_synonym?`).
+-if taxon.obsolete_combination_that_is_probably_a_synonym?
+  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa(taxon)
+  -if synonym_history_item.present?
+    .soft-validations-callout.callout.alert.margin-bottom
+      %h6
+        This taxon is probably a synonym
+        =logged_in_only_tooltip_icon
+      The status of this taxon is 'original combination' but
+      a representation of this taxon (this taxon or another taxon belonging to the same protonym) appears in a
+      synonyms list history item of
+      =taxon.current_valid_taxon.link_to_taxon
+      %hr
+      =Detax[synonym_history_item.taxt]
+
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
@@ -42,6 +58,40 @@
         =succeed '.' do
           =taxon.protonym.decorate.link_to_protonym
       =render 'shared/failed_soft_validations', soft_validations: taxon.protonym.soft_validations
+
+-# TODO: Remove after `MoveTypeTaxonToProtonymByScript`.
+-if !taxon.is_a?(Family) && taxon.type_taxon
+  -type_taxon_expander = TypeTaxonExpander.new(taxon)
+  .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+    %h6
+      -if type_taxon_expander.can_expand?
+        =antcat_icon 'check'
+      -else
+        =antcat_icon 'nope'
+      Type taxon expansion
+      =logged_in_only_tooltip_icon
+    %p
+      See
+      =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
+      and
+      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
+      for more info.
+    %p
+      This taxon has a type taxon
+      -if type_taxon_expander.can_expand?
+        -if type_taxon_expander.expansion == ''
+          which does not require any expansion.
+        -else
+          which was successfully expanded with:
+          %br
+          =type_taxon_expander.expansion
+      -else
+        but it could not be expanded because:
+        %br
+        =type_taxon_expander.reason_cannot_expand
+        %br
+        The default expansion is:
+        =type_taxon_expander.expansion(ignore_can_expand: true)
 
 -if editors_taxon_view_object.taxa_with_same_name.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background
