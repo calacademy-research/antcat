@@ -222,6 +222,11 @@ class Taxon < ApplicationRecord
     history_items.where('taxt LIKE ?', "%Current subspecies%")
   end
 
+  # TODO: Experimental.
+  def collected_references
+    @collected_references ||= Taxa::CollectReferences[self]
+  end
+
   private
 
     def set_name_caches
