@@ -23,14 +23,11 @@ __END__
 
 title: Fossil protonyms with non-fossil taxa
 category: Protonyms
-tags: []
+tags: [regression-test]
 
 issue_description: This protonym is fossil, but one of its taxa is extant.
 
 description: >
-  This is not necessarily incorrect.
-
-
   Can be fixed by script if all taxa/protonyms should be changed in the same way.
 
 
