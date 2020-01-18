@@ -17,6 +17,7 @@ class SoftValidations
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
+    DatabaseScripts::SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym,
     DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
     DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
     DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,

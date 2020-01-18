@@ -22,6 +22,9 @@ description: >
 
   There are also records with very different epithets; they also appear in %dbscript:ProtonymsWithTaxaWithVeryDifferentEpithets
 
+
+  This script is the reverse of %dbscript:SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym
+
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
@@ -33,4 +36,5 @@ related_scripts:
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
 
+  - SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym
   - TypeTaxaAssignedToMoreThanOneTaxon
