@@ -16,7 +16,7 @@ module DatabaseScripts
             protonym.decorate.link_to_protonym,
             protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
-            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
+            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]
         end
       end

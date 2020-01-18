@@ -19,7 +19,7 @@ module DatabaseScripts
             protonym.taxa.distinct.pluck(:type).join(', '),
             taxa_list(protonym.taxa),
             protonym.taxa.map(&:status).join('<br>'),
-            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
+            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]
         end
       end

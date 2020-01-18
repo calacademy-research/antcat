@@ -22,9 +22,9 @@ module DatabaseScripts
             protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
-            (type_taxa_identical ? 'Yes' : '<span class="bold-warning">No</span>'),
-            (type_taxts_identical ? 'Yes' : '<span class="bold-warning">No</span>'),
-            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : '<span class="bold-warning">No</span>')
+            (type_taxa_identical ? 'Yes' : bold_warning('No')),
+            (type_taxts_identical ? 'Yes' : bold_warning('No')),
+            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]
         end
       end

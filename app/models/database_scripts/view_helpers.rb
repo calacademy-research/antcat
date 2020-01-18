@@ -16,5 +16,9 @@ module DatabaseScripts
     def markdown_reference_link reference
       "%reference#{reference.id}"
     end
+
+    def bold_warning string
+      %(<span class="bold-warning">#{string}</span>)
+    end
   end
 end

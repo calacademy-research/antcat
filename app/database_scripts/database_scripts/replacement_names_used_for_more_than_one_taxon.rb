@@ -21,7 +21,7 @@ module DatabaseScripts
             taxon.status,
             markdown_taxon_link(taxon.homonym_replaced_by),
             taxon.homonym_replaced_by.status,
-            (self.class.looks_like_a_false_positive?(taxon) ? 'Yes' : '<span class="bold-warning">No</span>')
+            (self.class.looks_like_a_false_positive?(taxon) ? 'Yes' : bold_warning('No'))
           ]
         end
       end
