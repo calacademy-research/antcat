@@ -122,7 +122,7 @@
   -if taxon.is_a?(Subgenus) && taxon.species.exists?
     .callout.no-border-callout.logged-in-only-background
       %h6
-        Species in subgenus
+        Species and subspecies in subgenus
         =logged_in_only_tooltip_icon
       %p.small-text
         This section is only shown to logged-in users, since very few species are assined to a subgenus,
@@ -133,6 +133,14 @@
             =species.link_to_taxon
             =species.author_citation
             %span.small-text=species.expanded_status
+            -# TODO: N+1 query.
+            -if species.subspecies.present?
+              %ul.compact-list
+                -species.subspecies.order_by_name.with_common_includes.each do |subspecies|
+                  %li
+                    =subspecies.link_to_taxon
+                    =subspecies.author_citation
+                    %span.small-text=subspecies.expanded_status
 
 -if is_formicidae_landing_page
   %br
