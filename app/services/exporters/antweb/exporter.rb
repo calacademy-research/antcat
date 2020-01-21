@@ -14,6 +14,11 @@ module Exporters
         antcat_taxon_link taxon, taxon.name_with_fossil
       end
 
+      # TODO: Improve this and related methods. Probably use `AntwebFormatter`.
+      def self.antcat_taxon_link_with_name_and_author_citation taxon
+        antcat_taxon_link_with_name(taxon) << ' ' << taxon.author_citation.html_safe
+      end
+
       def initialize filename
         @filename = filename
         @progress = Progress.create total: taxa_ids.count unless Rails.env.test?

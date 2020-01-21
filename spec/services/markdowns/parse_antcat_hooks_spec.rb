@@ -23,6 +23,20 @@ describe Markdowns::ParseAntcatHooks do
       end
     end
 
+    describe "tax tags with author citaion (taxa)" do
+      it "uses the HTML version of the taxon's name" do
+        taxon = create :genus
+        expect(described_class["{taxac #{taxon.id}}"]).
+          to eq %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a> #{taxon.author_citation})
+      end
+
+      context "when the taxon can't be found" do
+        it "adds a warning" do
+          expect(described_class["{taxac 999}"]).to include "CANNOT FIND TAXON WITH ID 999"
+        end
+      end
+    end
+
     describe "ref tags (references)" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :unknown_reference, citation: 'Latreille, 1809 <script>' }

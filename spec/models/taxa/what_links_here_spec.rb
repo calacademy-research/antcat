@@ -53,6 +53,21 @@ describe Taxa::WhatLinksHere do
 
       specify { expect(what_links_here.any?).to be false }
     end
+
+    context "when 'taxac' tags are used" do
+      let!(:other_taxon) { create :family, type_taxt: "{taxac #{taxon.id}}", type_taxon: create(:family) }
+
+      specify do
+        expect(what_links_here.all).to match_array [
+          TableRef.new('taxa', :type_taxt, other_taxon.id)
+        ]
+        expect(what_links_here.taxts).to match_array what_links_here.taxts
+      end
+
+      specify { expect(what_links_here.any?).to be true }
+      specify { expect(what_links_here.any_taxts?).to be true }
+      specify { expect(what_links_here.any_columns?).to be false }
+    end
   end
 
   describe "when reference in its authorship taxt" do
