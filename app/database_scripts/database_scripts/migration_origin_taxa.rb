@@ -1,16 +1,23 @@
 module DatabaseScripts
   class MigrationOriginTaxa < DatabaseScript
     def results
-      Taxon.where(origin: 'migration')
+      Taxon.where(origin: 'migration').includes(protonym: :name, current_valid_taxon: :name)
     end
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :protonym
+        t.header :taxon, :antwiki, :rank, :status,
+          :current_valid_taxon, :CVT_antwiki, :protonym
         t.rows do |taxon|
+          current_valid_taxon = taxon.current_valid_taxon
+
           [
             markdown_taxon_link(taxon),
+            taxon.decorate.link_to_antwiki,
+            taxon.rank,
             taxon.status,
+            markdown_taxon_link(current_valid_taxon),
+            taxon.current_valid_taxon&.decorate&.link_to_antwiki,
             taxon.protonym.decorate.link_to_protonym
           ]
         end
@@ -23,7 +30,7 @@ __END__
 
 title: Migration-origin taxa
 category: Catalog
-tags: [new!]
+tags: [new!, slow-render]
 
 issue_description:
 
