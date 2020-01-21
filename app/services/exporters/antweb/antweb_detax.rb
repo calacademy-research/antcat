@@ -14,6 +14,7 @@ module Exporters
         return '' if taxt.blank?
 
         parse_taxon_ids!
+        parse_taxon_with_author_citation_ids!
         parse_reference_ids!
 
         sanitize taxt.html_safe
@@ -26,6 +27,17 @@ module Exporters
         # Taxa, "{tax 123}".
         def parse_taxon_ids!
           taxt.gsub!(Taxt::ANTWEB_TAXON_TAG_REGEX) do
+            taxon = Taxon.find_by(id: $1)
+
+            if taxon
+              Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+            end
+          end
+        end
+
+        # Taxa with author citation, "{taxac 123}".
+        def parse_taxon_with_author_citation_ids!
+          taxt.gsub!(Taxt::ANTWEB_TAXON_WITH_AUTHOR_CITATION_TAG_REGEX) do
             taxon = Taxon.find_by(id: $1)
 
             if taxon

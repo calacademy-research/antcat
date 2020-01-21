@@ -23,6 +23,7 @@ module Markdowns
 
     def call
       parse_taxon_ids
+      parse_taxon_with_author_citation_ids
       parse_reference_ids
       parse_github_ids
       parse_wiki_pages_ids
@@ -50,6 +51,20 @@ module Markdowns
 
           if taxon
             taxon.link_to_taxon
+          else
+            broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
+          end
+        end
+      end
+
+      # Matches: {taxac 429349}
+      # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
+      def parse_taxon_with_author_citation_ids
+        content.gsub!(Taxt::TAXON_WITH_AUTHOR_CITATION_TAG_REGEX) do
+          taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id])
+
+          if taxon
+            taxon.decorate.link_to_taxon_with_author_citation
           else
             broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
           end
