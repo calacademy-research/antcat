@@ -23,7 +23,7 @@ module Taxa
 
       def any_table_refs?
         Taxt::TAXTABLES.each do |(model, _table, field)|
-          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
+          model.where("#{field} REGEXP ?", "{tax #{taxon.id}}").pluck(:id).each do |matched_id|
             next if exclude_taxt_match? model, matched_id
             return true
           end
@@ -35,7 +35,7 @@ module Taxa
       def table_refs
         table_refs = []
         Taxt::TAXTABLES.each do |(model, _table, field)|
-          model.where("#{field} LIKE '%{tax #{taxon.id}}%'").pluck(:id).each do |matched_id|
+          model.where("#{field} REGEXP ?", "{tax #{taxon.id}}").pluck(:id).each do |matched_id|
             next if exclude_taxt_match? model, matched_id
             table_refs << table_ref(model.table_name, field.to_sym, matched_id)
           end
