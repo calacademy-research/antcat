@@ -79,3 +79,8 @@ description: >
 
 
   See all [here](/taxon_history_items?utf8=%E2%9C%93&search_type=REGEXP&q=%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D).
+
+
+related_scripts:
+  - HistoryItemsWithRefTagsAsAuthorCitations
+  - HomonymsAsTaxTags
