@@ -4,9 +4,6 @@ module Exporters
       include ActionView::Helpers::SanitizeHelper
       include Service
 
-      TAXON_TAG_REGEX = /{tax (\d+)}/
-      REFERENCE_TAG_REGEX = /{ref (\d+)}/
-
       def initialize taxt
         @taxt = taxt.try :dup
       end
@@ -28,7 +25,7 @@ module Exporters
 
         # Taxa, "{tax 123}".
         def parse_taxon_ids!
-          taxt.gsub!(TAXON_TAG_REGEX) do
+          taxt.gsub!(Taxt::ANTWEB_TAXON_TAG_REGEX) do
             taxon = Taxon.find_by(id: $1)
 
             if taxon
@@ -39,7 +36,7 @@ module Exporters
 
         # References, "{ref 123}".
         def parse_reference_ids!
-          taxt.gsub!(REFERENCE_TAG_REGEX) do
+          taxt.gsub!(Taxt::ANTWEB_REFERENCE_TAG_REGEX) do
             reference = Reference.find_by(id: $1)
 
             if reference

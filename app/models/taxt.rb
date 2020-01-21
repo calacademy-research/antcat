@@ -17,4 +17,7 @@ module Taxt
 
   TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
   REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
+
+  ANTWEB_TAXON_TAG_REGEX = /{tax (\d+)}/
+  ANTWEB_REFERENCE_TAG_REGEX = /{ref (\d+)}/
 end
