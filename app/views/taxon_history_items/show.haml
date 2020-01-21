@@ -18,7 +18,7 @@
     =Detax[@taxon_history_item.taxt]
 
 -if @taxon.history_items.count > 1
-  %table.margin-top
+  %table.huge-margin-top
     %caption Highlighted in context with other history items belonging to #{@taxon.name.name_html}
     %tbody
       -@taxon.history_items.each do |history_item|

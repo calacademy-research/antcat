@@ -10,8 +10,7 @@
           -# HACK: Because lazy.
           -if current_user&.id == 60
             %small.left
-              =link_to_current_page_on_live_site
-              =link_to_current_page_on_localhost
+              =link_to_current_page_on_live_site_or_localhost
           -if user_signed_in?
             =render "unseen_notifications_badge"
             =render "unread_site_notices_badge"

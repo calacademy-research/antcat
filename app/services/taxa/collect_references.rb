@@ -1,6 +1,3 @@
-# TODO: Not all references are included, since this is more of an experiment.
-# Most `Taxt::TAXTABLES` are not included.
-
 module Taxa
   class CollectReferences
     include Service
@@ -31,11 +28,16 @@ module Taxa
         extract_ref_tags(taxt_content)
       end
 
+      # TODO: Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
       def taxt_content
         string = ''
         string << taxon.history_items.pluck(:taxt).join
         string << taxon.reference_sections.pluck(:references_taxt).join
         string << (taxon.type_taxt || '')
+        string << (taxon.headline_notes_taxt || '')
+        string << (taxon.protonym.primary_type_information_taxt || '')
+        string << (taxon.protonym.secondary_type_information_taxt || '')
+        string << (taxon.protonym.type_notes_taxt || '')
         string
       end
 

@@ -25,6 +25,18 @@ describe Exporters::Antweb::Exporter do
     specify { expect(described_class.antcat_taxon_link_with_name(taxon)).to be_html_safe }
   end
 
+  describe ".antcat_taxon_link_with_name_and_author_citation" do
+    let(:taxon) { create :family }
+
+    specify do
+      expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to eq <<-HTML.squish
+        <a href="http://www.antcat.org/catalog/#{taxon.id}">Formicidae</a> #{taxon.author_citation}
+      HTML
+    end
+
+    specify { expect(described_class.antcat_taxon_link_with_name(taxon)).to be_html_safe }
+  end
+
   describe "#call" do
     let(:filename) { "antweb_export_test" }
     let(:file) { instance_double('File') }

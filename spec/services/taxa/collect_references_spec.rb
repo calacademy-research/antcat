@@ -5,14 +5,39 @@ describe Taxa::CollectReferences do
     let!(:taxon) { create :family }
     let!(:reference_1) { create :article_reference }
     let!(:reference_2) { create :article_reference }
+    let!(:reference_3) { create :article_reference }
+    let!(:reference_4) { create :article_reference }
+    let!(:reference_5) { create :article_reference }
+    let!(:reference_6) { create :article_reference }
+    let!(:reference_7) { create :article_reference }
 
     before do
+      taxon.update!(
+        type_taxon: create(:family),
+        type_taxt: "see {ref #{reference_4.id}}",
+        headline_notes_taxt: "see {ref #{reference_3.id}}"
+      )
+      taxon.protonym.update!(
+        primary_type_information_taxt: "see {ref #{reference_5.id}}",
+        secondary_type_information_taxt: "see {ref #{reference_6.id}}",
+        type_notes_taxt: "see {ref #{reference_7.id}}"
+      )
+
       create :taxon_history_item, taxon: taxon, taxt: "see {ref #{reference_1.id}}"
       create :reference_section, taxon: taxon, references_taxt: "see {ref #{reference_2.id}}"
     end
 
-    it 'collects references from various sources' do
-      expect(described_class[taxon]).to match_array [taxon.authorship_reference, reference_1, reference_2]
+    it 'collects references from various sources appearing on its catalog page' do
+      expect(described_class[taxon]).to match_array [
+        taxon.authorship_reference,
+        reference_1,
+        reference_2,
+        reference_3,
+        reference_4,
+        reference_5,
+        reference_6,
+        reference_7
+      ]
     end
   end
 end

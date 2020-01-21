@@ -42,7 +42,7 @@ describe TaxonDecorator do
 
   describe "#link_to_antwiki" do
     context 'when taxon is not a subgenus' do
-      let(:taxon) { build_stubbed :species }
+      let(:taxon) { create :species }
 
       it 'builds the URL from the full name' do
         expect(decorated.link_to_antwiki).

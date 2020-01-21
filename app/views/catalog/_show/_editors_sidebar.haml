@@ -62,7 +62,7 @@
 -# TODO: Remove after `MoveTypeTaxonToProtonymByScript`.
 -if !taxon.is_a?(Family) && taxon.type_taxon
   -type_taxon_expander = TypeTaxonExpander.new(taxon)
-  .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+  .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
     %h6
       -if type_taxon_expander.can_expand?
         =antcat_icon 'check'

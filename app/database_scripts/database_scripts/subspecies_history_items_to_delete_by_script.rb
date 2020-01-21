@@ -30,7 +30,7 @@ end
 
 __END__
 
-category: Script (run)
+category: Taxt2, Script (run)
 tags: [regression-test]
 
 description: >
