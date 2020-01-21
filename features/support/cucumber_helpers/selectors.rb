@@ -23,6 +23,8 @@ module CucumberHelpers
         "div.header"
       when 'the headline'
         '.headline'
+      when 'the citations section'
+        '#citations'
 
       # Catalog search.
       when 'the catalog search button'

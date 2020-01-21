@@ -207,21 +207,15 @@
             =subspecies.author_citation
             %span.small-text=subspecies.expanded_status
 
--# TODO: Experimental.
 -unless is_formicidae_landing_page
-  -if current_user
-    %hr.compact.huge-margin-top
-    %h6.small-margin-top
-      Citations
-      =logged_in_only_tooltip_icon
-    %p.small-text This section is only visible to logged-in users since it's more of an experiment to see how useful it is.
-    %ul#citations.compact-list
-      -taxon.collected_references.order_by_author_names_and_year.includes(:document).each do |reference|
-        -decorated_reference = reference.decorate
-        %li.small-text
-          -if reference.is_a?(MissingReference)
-            %span.bold-warning [missing reference]
-          =decorated_reference.expanded_reference
-          =decorated_reference.format_document_links
-          -# NOTE: Useful for editors.
-          .show-on-hover=reference.id
+  %h6.huge-margin-top Citations
+  %ul#citations.compact-list
+    -taxon.collected_references.order_by_author_names_and_year.includes(:document).each do |reference|
+      -decorated_reference = reference.decorate
+      %li.small-text
+        -if reference.is_a?(MissingReference)
+          %span.bold-warning [missing reference]
+        =decorated_reference.expanded_reference
+        =decorated_reference.format_document_links
+        -# NOTE: Useful for editors.
+        .show-on-hover=reference.id
