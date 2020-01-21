@@ -14,7 +14,7 @@ class Taxon < ApplicationRecord
   CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
 
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
-    :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
+    :species_id, :subspecies_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
     INCERTAE_SEDIS_IN_FAMILY = 'family',
     INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
