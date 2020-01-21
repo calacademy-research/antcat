@@ -21,6 +21,7 @@ class Taxon < ApplicationRecord
     'tribe',
     'genus'
   ]
+  ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
 
   self.table_name = :taxa
 
@@ -87,7 +88,7 @@ class Taxon < ApplicationRecord
   accepts_nested_attributes_for :protonym
 
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
-  strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
+  strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     if parent
       parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }
