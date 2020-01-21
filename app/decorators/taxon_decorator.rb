@@ -39,7 +39,7 @@ class TaxonDecorator < Draper::Decorator
     page_title = if taxon.is_a? Subgenus
                    taxon.name.epithet
                  else
-                   taxon.name.name.tr(" ", '_')
+                   taxon.name_cache.tr(" ", '_')
                  end
     h.external_link_to 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
   end

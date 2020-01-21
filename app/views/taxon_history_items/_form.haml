@@ -21,7 +21,7 @@
     .medium-3.columns.end
       =f.button 'Save', type: :submit, class: "btn-saves"
 
-%table.margin-top
+%table.huge-margin-top
   %caption Other history items belonging to #{@taxon.name.name_html}
   %tbody
     -if @taxon.history_items.persisted.empty?

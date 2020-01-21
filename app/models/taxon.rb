@@ -14,13 +14,14 @@ class Taxon < ApplicationRecord
   CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
 
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
-    :species_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
+    :species_id, :subspecies_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
   INCERTAE_SEDIS_IN_RANKS = [
     INCERTAE_SEDIS_IN_FAMILY = 'family',
     INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
     'tribe',
     'genus'
   ]
+  ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
 
   self.table_name = :taxa
 
@@ -87,7 +88,7 @@ class Taxon < ApplicationRecord
   accepts_nested_attributes_for :protonym
 
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
-  strip_attributes only: [:incertae_sedis_in, :type_taxt, :headline_notes_taxt], replace_newlines: true
+  strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     if parent
       parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }

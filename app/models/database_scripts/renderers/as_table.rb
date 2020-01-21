@@ -33,6 +33,7 @@ module DatabaseScripts
 
         def header *items
           string = "<tr>\n"
+          # TODO: Do not humanize.
           items.each { |item| string << "<th>#{item.to_s.humanize}</th>\n" }
           string << "</tr>\n"
 

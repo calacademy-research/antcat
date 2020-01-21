@@ -21,8 +21,8 @@ module TooltipHelper
   end
 
   # For content that which it is not obvious it is for logged-in users only.
-  def logged_in_only_tooltip_icon
-    content_tag :span, nil, title: 'This section is only visible to logged-in users',
+  def logged_in_only_tooltip_icon text = nil
+    content_tag :span, nil, title: (text || 'This section is only visible to logged-in users'),
       class: "antcat_icon logged-in-only-icon jquery-tooltip"
   end
 
