@@ -64,6 +64,17 @@ class Protonym < ApplicationRecord
     taxa.pluck(:type).sort == %w[Genus Subgenus]
   end
 
+  # TODO: This was added for a db script. Remove once cleared (or make use of it elsewhere).
+  def synopsis
+    formated_locality = decorate.format_locality
+
+    string = ''
+    string << "(#{authorship.forms}) " if authorship.forms
+    string << formated_locality + ' ' if formated_locality
+    string << biogeographic_region if biogeographic_region
+    string
+  end
+
   def soft_validations
     @soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
   end

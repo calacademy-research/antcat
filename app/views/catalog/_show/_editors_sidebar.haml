@@ -62,30 +62,20 @@
 -# TODO: Remove after `MoveTypeTaxonToProtonymByScript`.
 -if !taxon.is_a?(Family) && taxon.type_taxon
   -type_taxon_expander = TypeTaxonExpander.new(taxon)
-  .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-    %h6
-      -if type_taxon_expander.can_expand?
-        =antcat_icon 'check'
-      -else
+  -unless type_taxon_expander.can_expand?
+    .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+      %h6
         =antcat_icon 'nope'
-      Type taxon expansion
-      =logged_in_only_tooltip_icon
-    %p
-      See
-      =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
-      and
-      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
-      for more info.
-    %p
-      This taxon has a type taxon
-      -if type_taxon_expander.can_expand?
-        -if type_taxon_expander.expansion == ''
-          which does not require any expansion.
-        -else
-          which was successfully expanded with:
-          %br
-          =type_taxon_expander.expansion
-      -else
+        Type taxon expansion
+        =logged_in_only_tooltip_icon
+      %p
+        See
+        =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
+        and
+        =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
+        for more info.
+      %p
+        This taxon has a type taxon
         but it could not be expanded because:
         %br
         =type_taxon_expander.reason_cannot_expand
@@ -130,8 +120,7 @@
     =logged_in_only_tooltip_icon
 
   %ul
-    %li Rank: #{taxon.rank}
-    %li Status: #{taxon.status}
+    %li Rank and status: #{taxon.rank}, #{taxon.status}
     -if taxon.original_combination?
       %li
         Original combination
@@ -142,14 +131,17 @@
         =antcat_icon 'check'
     -if taxon.origin
       %li.bold-warning Origin: #{taxon.origin}
-    %li Created at: #{taxon.created_at.to_formatted_s(:db)}
-    %li Updated at: #{taxon.updated_at.to_formatted_s(:db)}
+    %li Created at: #{l taxon.created_at, format: :ymd}
+    %li Updated at: #{l taxon.updated_at, format: :ymd}
 
   -# Show name to make it easier to spot inconsistent names, since `Taxa::LinkEachEpithet` uses parents' name parts.
-  %ul
-    %li
-      Name (from name record):
-      =link_to taxon.name.name_html, name_path(taxon.name)
+  -# Only show for species and below since this has only been an issue with these.
+  -# TODO: Remove once we have made sure this does not happen (when we stop recreating deleted records, mostly).
+  -if taxon.is_a?(SpeciesGroupTaxon)
+    %ul
+      %li
+        Name (from name record):
+        =link_to taxon.name.name_html, name_path(taxon.name)
 
   -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
   %ul
