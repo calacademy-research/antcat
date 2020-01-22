@@ -15,8 +15,11 @@ module Taxt
     [TaxonHistoryItem, 'taxon_history_items', 'taxt']
   ]
 
+  # TODO: Move other variations of these to this file.
+  # TODO: Name these per the tags, eg "TAX_TAG_REGEX".
   TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
   TAXON_WITH_AUTHOR_CITATION_TAG_REGEX = /\{taxac (?<id>\d+)\}/
+  TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
   REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
   ANTWEB_TAXON_TAG_REGEX = /{tax (\d+)}/
