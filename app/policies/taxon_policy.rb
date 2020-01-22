@@ -16,7 +16,7 @@ class TaxonPolicy
   end
 
   def allow_create_obsolete_combination?
-    taxon.type.in?(%w[Species]) && taxon.valid_taxon?
+    taxon.type.in?(%w[Species]) && taxon.valid_taxon? && taxon.genus.present?
   end
 
   def allow_force_change_parent?

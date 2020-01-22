@@ -68,6 +68,14 @@ describe TaxonPolicy do
         end
       end
     end
+
+    context 'when species has no genus' do
+      let(:taxon) { build_stubbed :species, genus: nil }
+
+      specify do
+        expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq false
+      end
+    end
   end
 
   describe '#allow_force_change_parent?' do
