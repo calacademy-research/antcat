@@ -1,7 +1,7 @@
 module DatabaseScripts
-  class TaxaListedAsSynonymOfSelfInHistoryItem < DatabaseScript
+  class TaxaListedAsHomonymOfSelfInHistoryItem < DatabaseScript
     def results
-      TaxonHistoryItem.joins(:taxon).where("taxt LIKE CONCAT('%synonym of {tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci")
+      TaxonHistoryItem.joins(:taxon).where("taxt LIKE CONCAT('%homonym of {tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci")
     end
 
     def render
@@ -25,7 +25,7 @@ category: Taxt
 tags: []
 
 description: >
-  History items which contains `synonym of {tax <own id>}`. This list will contain false positives.
+  History items which contains `homonym of {tax <own id>}`. This list will contain false positives.
 
 related_scripts:
   - TaxaListedAsHomonymOfSelfInHistoryItem

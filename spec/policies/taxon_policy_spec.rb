@@ -42,19 +42,19 @@ describe TaxonPolicy do
     end
   end
 
-  describe '#show_create_obsolete_combination_button?' do
+  describe '#allow_create_obsolete_combination?' do
     context 'when taxon is valid' do
       %i[family subfamily tribe subtribe genus subgenus subspecies].each do |rank|
         specify do
           taxon = build_stubbed rank
-          expect(described_class.new(taxon).show_create_obsolete_combination_button?).to eq false
+          expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq false
         end
       end
 
       %i[species].each do |rank|
         specify do
           taxon = build_stubbed rank
-          expect(described_class.new(taxon).show_create_obsolete_combination_button?).to eq true
+          expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq true
         end
       end
     end
@@ -64,8 +64,16 @@ describe TaxonPolicy do
         specify do
           taxon = build_stubbed rank
           allow(taxon).to receive(:valid_taxon?).and_return(false)
-          expect(described_class.new(taxon).show_create_obsolete_combination_button?).to eq false
+          expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq false
         end
+      end
+    end
+
+    context 'when species has no genus' do
+      let(:taxon) { build_stubbed :species, genus: nil }
+
+      specify do
+        expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq false
       end
     end
   end

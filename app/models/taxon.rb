@@ -223,12 +223,25 @@ class Taxon < ApplicationRecord
     history_items.where('taxt LIKE ?', "%Current subspecies%")
   end
 
-  # TODO: Experimental.
+  def combination_in_according_to_history_items
+    @combination_in_according_to_history_items ||= begin
+      ids = combination_in_history_items.map(&:ids_from_tax_tags).flatten
+      Taxon.where(id: ids)
+    end
+  end
+
   def collected_references
     @collected_references ||= Taxa::CollectReferences[self]
   end
 
   private
+
+    # "Combination in {tax 123}".
+    # TODO: Standardize and move these "xzy_in_history_items" now that we have a bunch of them.
+    # NOTE: Can be removed once we have normalized all 'combination in's.
+    def combination_in_history_items
+      history_items.where('taxt LIKE ?', "Combination in%")
+    end
 
     def set_name_caches
       self.name_cache = name.name

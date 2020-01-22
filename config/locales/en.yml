@@ -29,8 +29,11 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
+# TODO: Improve names. "pretty" hehe :)
+
 en:
   time:
     formats:
       pretty: "%-d %B %Y"
       time_and_pretty: "%H:%M %-d %B %Y"
+      ymd: "%Y-%m-%d"
