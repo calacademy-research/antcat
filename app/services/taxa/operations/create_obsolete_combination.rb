@@ -9,9 +9,8 @@ module Taxa
       end
 
       def call
-        # NOTE: Raises are not tested nor handled because we don't care that much and this is Temporary Code (tm).
-        raise "current_valid_taxon must be a species" unless current_valid_taxon.is_a?(Species)
-        raise "current_valid_taxon must have a genus" unless current_valid_taxon.genus
+        # TODO: Raises are not tested nor handled because it should not happen but probably test anyways.
+        raise "not allowed" unless current_valid_taxon.policy.allow_create_obsolete_combination?
         raise "obsolete_genus must be a genus" unless obsolete_genus.is_a?(Genus)
 
         obsolete_combination = build_obsolete_combination
@@ -33,6 +32,7 @@ module Taxa
           obsolete_combination = Species.new
           obsolete_combination.name = obsolete_combination_name
           obsolete_combination.protonym = current_valid_taxon.protonym
+          obsolete_combination.fossil = current_valid_taxon.fossil
           obsolete_combination.parent = obsolete_genus
           obsolete_combination.current_valid_taxon = current_valid_taxon
           obsolete_combination.status = Status::OBSOLETE_COMBINATION

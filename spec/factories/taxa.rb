@@ -1,4 +1,5 @@
 # TODO: Names are randomly generated for each associated rank (for example the genus epithet of a species is not it's genus epithet).
+# TODO: Assign fossil status of `Taxon` associations per the initial factory.
 
 FactoryBot.define do
   factory :taxon do
