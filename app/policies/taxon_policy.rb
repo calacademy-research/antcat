@@ -15,7 +15,7 @@ class TaxonPolicy
     taxon.type.in?(%w[Species Subspecies])
   end
 
-  def show_create_obsolete_combination_button?
+  def allow_create_obsolete_combination?
     taxon.type.in?(%w[Species]) && taxon.valid_taxon?
   end
 

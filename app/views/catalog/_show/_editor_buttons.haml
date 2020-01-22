@@ -24,7 +24,7 @@
         -if taxon.policy.show_create_combination_help_button?
           %li=link_to "Create combination help", new_taxa_create_combination_help_path(taxon), class: "btn-normal"
 
-        -if taxon.policy.show_create_obsolete_combination_button?
+        -if taxon.policy.allow_create_obsolete_combination?
           %li=link_to "Create obsolete combination", taxa_create_obsolete_combination_path(taxon), class: "btn-normal"
 
         -if taxon.policy.allow_force_change_parent?
