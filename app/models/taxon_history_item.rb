@@ -88,6 +88,10 @@ class TaxonHistoryItem < ApplicationRecord
     SQL
   end
 
+  def ids_from_tax_tags
+    taxt.scan(Taxt::TAX_OR_TAXAC_TAG_REGEX).flatten.map(&:to_i)
+  end
+
   private
 
     def cleanup_taxts
