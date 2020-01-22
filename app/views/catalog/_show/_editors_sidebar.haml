@@ -62,30 +62,20 @@
 -# TODO: Remove after `MoveTypeTaxonToProtonymByScript`.
 -if !taxon.is_a?(Family) && taxon.type_taxon
   -type_taxon_expander = TypeTaxonExpander.new(taxon)
-  .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-    %h6
-      -if type_taxon_expander.can_expand?
-        =antcat_icon 'check'
-      -else
+  -unless type_taxon_expander.can_expand?
+    .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+      %h6
         =antcat_icon 'nope'
-      Type taxon expansion
-      =logged_in_only_tooltip_icon
-    %p
-      See
-      =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
-      and
-      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
-      for more info.
-    %p
-      This taxon has a type taxon
-      -if type_taxon_expander.can_expand?
-        -if type_taxon_expander.expansion == ''
-          which does not require any expansion.
-        -else
-          which was successfully expanded with:
-          %br
-          =type_taxon_expander.expansion
-      -else
+        Type taxon expansion
+        =logged_in_only_tooltip_icon
+      %p
+        See
+        =link_to 'this database script', database_script_path(DatabaseScripts::TaxaWithUncommonTypeTaxts.new)
+        and
+        =link_to 'this database script (slow)', database_script_path(DatabaseScripts::TaxaWithTypeTaxa.new)
+        for more info.
+      %p
+        This taxon has a type taxon
         but it could not be expanded because:
         %br
         =type_taxon_expander.reason_cannot_expand
