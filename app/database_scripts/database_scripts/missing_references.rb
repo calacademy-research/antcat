@@ -29,12 +29,21 @@ description: >
   We want to replace them with proper references.
 
 
+  Be careful when replacing `ref` tags used as author citations -- many of these are incorrect
+  (see %dbscript:HistoryItemsWithRefTagsAsAuthorCitations).
+
+
   **How to fix**
 
   Use the 'What Links Here' button too see where a missing reference is being used.
 
 
-  Once you know which reference it should be replaced with, use the 'Replace' button to replace all occurrences with a different reference.
+  If the `ref` tag is used as an author citation, replace the `tax` tag with a `taxac` tag and click on "Rerender preview"
+  to make sure that the correct taxon was linked. If an incorrect taxon is linked, replace it with the correct one.
+  If the taxon is just a hardcoded string, you need to add it as a `tax`/`taxac` tag first. Then remove the `ref` tag and save.
+
+
+  If all occurences should be replaced with a known reference, use the 'Replace' button to replace all at once with a different reference.
 
 
   If no replacement reference exits, you can [add a new reference to AntCat](/references/new).

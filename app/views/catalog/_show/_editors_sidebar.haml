@@ -24,16 +24,33 @@
       Database script:
       =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
 
--# TODO: Remove once fixed (see `Taxon#obsolete_combination_that_is_probably_a_synonym?`).
--if taxon.obsolete_combination_that_is_probably_a_synonym?
-  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa(taxon)
+-# TODO: Remove once fixed (see `Taxon#obsolete_combination_that_is_shady?`).
+-if taxon.obsolete_combination_that_is_shady?
+  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxon(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
       %h6
-        This taxon is probably a synonym
+        This taxon should probably have the status 'synonym'
         =logged_in_only_tooltip_icon
+      %small.bold-warning [this record is shady, but it can be ignored for now while we're figuring out the correct data model]
       The status of this taxon is 'original combination' but
-      a representation of this taxon (this taxon or another taxon belonging to the same protonym) appears in a
+      it appears in a
+      synonyms list history item of
+      =taxon.current_valid_taxon.link_to_taxon
+      %hr
+      =Detax[synonym_history_item.taxt]
+
+  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
+  -if synonym_history_item.present?
+    .soft-validations-callout.callout.alert.margin-bottom
+      %h6
+        The
+        %code current_valid_taxon
+        of this taxon should probably be changed
+        =logged_in_only_tooltip_icon
+      %small.bold-warning [this record is shady, but it can be ignored for now while we're figuring out the correct data model]
+      The status of this taxon is 'original combination' but
+      a representation of this taxon except itself (another taxon belonging to the same protonym) appears in a
       synonyms list history item of
       =taxon.current_valid_taxon.link_to_taxon
       %hr

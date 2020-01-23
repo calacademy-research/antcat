@@ -202,15 +202,21 @@ class Taxon < ApplicationRecord
     current_valid_taxon.now
   end
 
-  # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxons_protonyms_taxa`.
-  def obsolete_combination_that_is_probably_a_synonym?
+  # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
+  # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
+  def obsolete_combination_that_is_shady?
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym.record_in_results?(self) ||
       DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets.record_in_results?(self)
   end
 
-  # TODO: Remove ASAP. Also `#obsolete_combination_that_is_probably_a_synonym`.
-  def synonyms_history_items_containing_taxons_protonyms_taxa taxon
-    taxon.protonym.taxa.each do |protonym_taxon|
+  # TODO: Remove ASAP.
+  def synonyms_history_items_containing_taxon taxon
+    history_items.find_by("taxt LIKE ?", "Senior synonym of%#{taxon.id}%")
+  end
+
+  # TODO: Remove ASAP.
+  def synonyms_history_items_containing_taxons_protonyms_taxa_except_self taxon
+    taxon.protonym.taxa.where.not(id: taxon.id).find_each do |protonym_taxon|
       item = history_items.find_by("taxt LIKE ?", "Senior synonym of%#{protonym_taxon.id}%")
       return item if item
     end

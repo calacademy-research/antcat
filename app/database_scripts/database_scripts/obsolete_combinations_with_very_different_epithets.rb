@@ -9,15 +9,17 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :origin, :current_valid_taxon,
+        t.header :taxon, :rank, :status, :origin, :current_valid_taxon,
           :current_valid_taxon_status, :taxon_epithet, :current_valid_taxon_epithet,
-          :taxon_or_protonym_taxon_in_synonyms_list?
+          :probably_change_cvt?,
+          :probably_change_status_to_synonym?
 
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 
           [
             markdown_taxon_link(taxon),
+            taxon.rank,
             taxon.status,
             origin_warning(taxon),
             markdown_taxon_link(current_valid_taxon),
@@ -25,7 +27,8 @@ module DatabaseScripts
             taxon.name.epithet,
             current_valid_taxon.name.epithet,
 
-            ('Yes' if taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa(taxon).present?)
+            ('Yes' if taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon).present?),
+            ('Yes' if taxon.current_valid_taxon.synonyms_history_items_containing_taxon(taxon).present?)
           ]
         end
       end
