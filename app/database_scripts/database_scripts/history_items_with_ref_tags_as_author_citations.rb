@@ -62,16 +62,21 @@ description: >
   Taxts like:
 
 
-  * [Replacement name for {tax 429029} {ref 125820}
+  * [Replacement name for {tax 429029} {ref 125820}]
 
 
   can be updated to format:
 
 
-  * [Replacement name for {taxac 429029}
+  * [Replacement name for {taxac 429029}]
 
 
-  just remove the `ref` tag and change the `tax` tag to a `taxac` tag to include the author citation.
+  The first example may look like an improvement since the reference is linked (I decided to no link them to make
+  it easier to tell them apart from `ref` tags), but it's a misuse of `ref` tags, and it means that the data
+  points may not agree (manually specified `ref` tag vs. the actual author citation).
+
+
+  Just remove the `ref` tag and change the `tax` tag to a `taxac` tag to include the author citation.
 
 
   This script includes the first 150 history items where a `tax` tag is followed by a space and a `ref` tag.
