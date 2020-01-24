@@ -24,7 +24,7 @@ module AdvancedSearchPresenter
         labels = []
         labels << "incertae sedis in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
         if taxon.homonym? && taxon.homonym_replaced_by
-          labels << "homonym replaced by #{format_name taxon.homonym_replaced_by}"
+          labels << "homonym replaced by #{format_name(taxon.homonym_replaced_by)}"
         elsif taxon.unidentifiable?
           labels << 'unidentifiable'
         elsif taxon.unresolved_homonym?
@@ -34,7 +34,7 @@ module AdvancedSearchPresenter
         elsif taxon.valid_taxon?
           labels << "valid"
         elsif taxon.synonym?
-          labels << "synonym of " << format_name(taxon.current_valid_taxon)
+          labels << "synonym of #{format_name(taxon.current_valid_taxon)}"
         elsif taxon.invalid?
           labels << taxon.status
         end

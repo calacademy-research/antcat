@@ -16,5 +16,23 @@ describe AdvancedSearchPresenter::Text do
       expect(results).to eq "#{taxon.name_cache} incertae sedis in subfamily, nomen nudum\n" \
         "Latreille, P. A. 1809. Atta. Science (1):3. DOI: 123   #{reference.id}\n\n"
     end
+
+    context 'when taxon is a synonym' do
+      let(:taxon) { create :genus, :synonym, current_valid_taxon: create(:genus) }
+
+      specify do
+        expect(described_class.new.format(taxon)).
+          to include "#{taxon.name_cache} synonym of #{taxon.current_valid_taxon.name_cache}\n"
+      end
+    end
+
+    context 'when taxon is a homonym' do
+      let(:taxon) { create :genus, :homonym, homonym_replaced_by: create(:genus) }
+
+      specify do
+        expect(described_class.new.format(taxon)).
+          to include "#{taxon.name_cache} homonym replaced by #{taxon.homonym_replaced_by.name_cache}\n"
+      end
+    end
   end
 end
