@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_164600) do
+ActiveRecord::Schema.define(version: 2020_01_24_181538) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -241,6 +241,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_164600) do
     t.string "doi"
     t.string "bolton_key"
     t.text "expanded_reference_cache"
+    t.boolean "online_early", default: false, null: false
     t.index ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: { author_names_string_cache: 255 }
     t.index ["created_at"], name: "references_created_at_idx"
     t.index ["id", "type"], name: "index_references_on_id_and_type"

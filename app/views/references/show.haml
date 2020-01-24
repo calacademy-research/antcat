@@ -87,7 +87,10 @@
               =or_dash @reference.pagination
         %tr
           %th Date
-          %td=or_dash @reference.decorate.format_date
+          %td
+            =or_dash @reference.decorate.format_date
+            -if @reference.online_early?
+              [online early]
         %tr
           %th Type
           %td=@reference.type.underscore.humanize

@@ -1,3 +1,5 @@
+-# TODO: See if we can use more `f.label` instead of `label_tag`.
+
 =enable_tooltips
 
 -content_for :head do
@@ -27,11 +29,15 @@
         Year
         =db_tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
-    .medium-2.columns.end
+    .medium-2.columns
       =label_tag :reference_date do
         Date
         =db_tooltip_icon "references.date", scope: :references
       =f.text_field :date
+    .medium-3.columns.end
+      =f.label :online_early, class: 'margin-top' do
+        =f.check_box :online_early
+        Online early
   .row
     .medium-4.columns
       =label_tag :reference_doi do
