@@ -278,7 +278,7 @@ GEM
       mimemagic (~> 0.3.0)
       terrapin (~> 0.6.0)
     parallel (1.19.1)
-    parser (2.6.5.0)
+    parser (2.7.0.2)
       ast (~> 2.4.0)
     pr_geohash (1.0.0)
     pry (0.12.2)
@@ -358,10 +358,10 @@ GEM
       rspec-mocks (~> 3.9.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.77.0)
+    rubocop (0.79.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
-      parser (>= 2.6)
+      parser (>= 2.7.0.1)
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
@@ -439,7 +439,7 @@ GEM
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
-    unicode-display_width (1.6.0)
+    unicode-display_width (1.6.1)
     unread (0.10.1)
       activerecord (>= 3)
     warden (1.2.8)
@@ -511,7 +511,7 @@ DEPENDENCIES
   request_store
   rspec-core
   rspec-rails
-  rubocop (~> 0.77.0)
+  rubocop (~> 0.79.0)
   rubocop-performance
   rubocop-rails_config
   rubocop-rspec
