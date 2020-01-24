@@ -53,4 +53,5 @@ description: >
 
 related_scripts:
   - MissingReferences
+  - OnlineEarlyReferences
   - UnknownReferences
