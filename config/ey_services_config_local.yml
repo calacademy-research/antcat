@@ -1,0 +1,4 @@
+'New Relic':
+  license_key: "NA"
+base:
+  app_environment_name: "AntCat - development"
