@@ -1,6 +1,7 @@
 module PaperTrail
   class Version < ApplicationRecord
     include PaperTrail::VersionConcern
+    include SetRequestUuid
 
     belongs_to :change
 

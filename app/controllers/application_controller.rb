@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   before_action :save_location
   before_action :configure_permitted_parameters, if: :devise_controller?
-  before_action :set_paper_trail_whodunnit
+  before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
   skip_before_action :verify_authenticity_token
   before_action :cors_preflight_check
@@ -62,6 +62,10 @@ class ApplicationController < ActionController::Base
       headers['Access-Control-Max-Age'] = '1728000'
 
       render plain: ''
+    end
+
+    def set_current_request_uuid
+      RequestStore.store[:current_request_uuid] = SecureRandom.uuid
     end
 
     def ensure_unconfirmed_user_is_not_over_edit_limit
