@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe AdvancedSearchPresenter::Text do
-  describe "#format" do
+describe Exporters::TaxaAsTxt do
+  describe "#call" do
     it "formats in text style, rather than HTML" do
       latreille = create :author_name, name: 'Latreille, P. A.'
       science = create :journal, name: 'Science'
@@ -12,8 +12,7 @@ describe AdvancedSearchPresenter::Text do
       taxon = create :genus, :unavailable, :incertae_sedis_in_subfamily, nomen_nudum: true
       taxon.protonym.authorship.update!(reference: reference)
 
-      results = described_class.new.format taxon
-      expect(results).to eq "#{taxon.name_cache} incertae sedis in subfamily, nomen nudum\n" \
+      expect(described_class[[taxon]]).to eq "#{taxon.name_cache} incertae sedis in subfamily, nomen nudum\n" \
         "Latreille, P. A. 1809. Atta. Science (1):3. DOI: 123   #{reference.id}\n\n"
     end
 
@@ -21,7 +20,7 @@ describe AdvancedSearchPresenter::Text do
       let(:taxon) { create :genus, :synonym, current_valid_taxon: create(:genus) }
 
       specify do
-        expect(described_class.new.format(taxon)).
+        expect(described_class[[taxon]]).
           to include "#{taxon.name_cache} synonym of #{taxon.current_valid_taxon.name_cache}\n"
       end
     end
@@ -30,7 +29,7 @@ describe AdvancedSearchPresenter::Text do
       let(:taxon) { create :genus, :homonym, homonym_replaced_by: create(:genus) }
 
       specify do
-        expect(described_class.new.format(taxon)).
+        expect(described_class[[taxon]]).
           to include "#{taxon.name_cache} homonym replaced by #{taxon.homonym_replaced_by.name_cache}\n"
       end
     end

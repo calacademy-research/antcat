@@ -1,19 +1,32 @@
-module AdvancedSearchPresenter
-  class Text
-    include ApplicationHelper # For `#add_period_if_necessary`
+module Exporters
+  class TaxaAsTxt
+    include Service
+    include ApplicationHelper # For `#add_period_if_necessary`.
 
-    def format taxon
-      string = format_name(taxon).html_safe
-      string << ' '
-      string << convert_to_text(format_status(taxon).html_safe)
-      type_localities = format_type_localities(taxon)
-      string << convert_to_text(' ' + type_localities) if type_localities.present?
-      string << "\n"
-      string << convert_to_text(format_protonym(taxon))
-      string << "\n\n"
+    def initialize taxa
+      @taxa = taxa
+    end
+
+    def call
+      taxa.reduce('') do |content, taxon|
+        content << format_taxon(taxon)
+      end
     end
 
     private
+
+      attr_reader :taxa
+
+      def format_taxon taxon
+        string = format_name(taxon).html_safe
+        string << ' '
+        string << convert_to_text(format_status(taxon).html_safe)
+        type_localities = format_type_localities(taxon)
+        string << convert_to_text(' ' + type_localities) if type_localities.present?
+        string << "\n"
+        string << convert_to_text(format_protonym(taxon))
+        string << "\n\n"
+      end
 
       def format_name taxon
         taxon.name_cache
