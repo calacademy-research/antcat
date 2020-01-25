@@ -43,8 +43,7 @@ module TaxonBrowser
 
     def each_taxon cap: false
       limit = max_taxa_to_load if cap
-
-      sorted_taxa.limit(limit).includes(:name).each do |taxon|
+      sorted_taxa.limit(limit).select(:id, :type, :status, :fossil, 'names.epithet AS name_epithet').each do |taxon|
         yield taxon, selected_in_tab?(taxon)
       end
     end

@@ -1,6 +1,6 @@
 module TaxonBrowserHelper
   def taxon_browser_link taxon
-    label = (taxon.fossil? ? '&dagger;'.html_safe : '') << taxon.name.epithet
+    label = (taxon.fossil? ? '&dagger;'.html_safe : '') << taxon.name_epithet
     link_to label, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
   end
 
