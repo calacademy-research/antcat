@@ -30,10 +30,7 @@ module Catalog
         end
 
         format.text do
-          text = @taxa.reduce('') do |content, taxon|
-                   content << AdvancedSearchPresenter::Text.new.format(taxon)
-                 end
-          send_data text, filename: download_filename, type: 'text/plain'
+          send_data Exporters::TaxaAsTxt[@taxa], filename: download_filename, type: 'text/plain'
         end
       end
     end
