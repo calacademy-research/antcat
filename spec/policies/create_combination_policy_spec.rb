@@ -25,11 +25,24 @@ describe CreateCombinationPolicy do
     end
 
     describe 'lazy evaluation' do
-      let(:taxon) { create :family }
+      let(:taxon) { create :species, name_string: 'Lasius niger', genus: create(:genus, name_string: 'Lasius') }
 
-      it 'stops at the first error' do
-        expect(taxon).to_not receive(:soft_validations)
-        expect(policy.allowed?).to eq false
+      context 'when allowed' do
+        it 'run all checks' do
+          expect(taxon).to receive(:soft_validations).and_call_original
+          expect(policy.allowed?).to eq true
+        end
+      end
+
+      context 'when not allowed' do
+        before do
+          taxon.update!(status: Status::UNAVAILABLE)
+        end
+
+        it 'stops at the first error' do
+          expect(taxon).to_not receive(:soft_validations)
+          expect(policy.allowed?).to eq false
+        end
       end
     end
 

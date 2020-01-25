@@ -17,22 +17,27 @@ class CreateCombinationPolicy
 
     def lazy_errors # rubocop:disable Metrics/PerceivedComplexity
       Enumerator.new do |yielder|
+        # Common.
         yielder << 'taxon is not a species' unless taxon.is_a?(Species)
-        yielder << 'taxon has soft validation issues' if taxon.soft_validations.failed?
+        yielder << "taxon does not have the status 'valid'" if taxon.invalid?
         yielder << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
+
+        # Uncommon.
         yielder << 'taxon has infrasubspecices' if taxon.is_a?(Species) && taxon.infrasubspecies.exists?
         yielder << 'taxon has infrasubspecices' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?
-        yielder << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
-        yielder << "taxon does not have the status 'valid'" if taxon.invalid?
         yielder << 'taxon has junior synonyms' if taxon.junior_synonyms.any?
         yielder << "taxon has 'unavailable misspelling's" if any_unavailable_misspellings?
         yielder << "taxon has 'unavailable uncategorized's" if any_unavailable_uncategorizeds?
         yielder << 'taxon is an unresolved homonym' if taxon.unresolved_homonym?
-        yielder << 'taxon is a collective group name' if taxon.collective_group_name?
-        yielder << 'taxon is an ichnotaxon' if taxon.ichnotaxon?
-        yielder << 'taxon is a nomen nudum' if taxon.nomen_nudum?
         yielder << 'taxon has a type taxon' if taxon.type_taxon
         yielder << 'taxon is a replacement for a homonym' if any_homonym_replaced_bys?
+        yielder << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
+        yielder << 'taxon has soft validation issues' if taxon.soft_validations.failed?
+
+        # Rare.
+        yielder << 'taxon is a nomen nudum' if taxon.nomen_nudum?
+        yielder << 'taxon is an ichnotaxon' if taxon.ichnotaxon?
+        yielder << 'taxon is a collective group name' if taxon.collective_group_name?
       end
     end
 
