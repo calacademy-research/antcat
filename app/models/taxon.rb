@@ -135,10 +135,6 @@ class Taxon < ApplicationRecord
     "#{type}Name".constantize
   end
 
-  def epithet_with_fossil
-    name.epithet_with_fossil_html fossil?
-  end
-
   def name_with_fossil
     name.name_with_fossil_html fossil?
   end

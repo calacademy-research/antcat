@@ -1,6 +1,7 @@
 module TaxonBrowserHelper
   def taxon_browser_link taxon
-    link_to taxon.epithet_with_fossil, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
+    label = (taxon.fossil? ? '&dagger;'.html_safe : '') << taxon.name.epithet
+    link_to label, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
   end
 
   def toggle_invalid_or_valid_only_link showing_invalid
