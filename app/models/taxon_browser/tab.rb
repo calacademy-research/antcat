@@ -20,8 +20,7 @@ module TaxonBrowser
       SPECIES_WITHOUT_SUBGENUS    = :species_without_subgenus
     ]
 
-    delegate :display, :selected_in_tab?, :tab_open?,
-      :show_invalid?, :max_taxa_to_load, to: :taxon_browser
+    delegate :display, :selected_in_tab?, :tab_open?, :show_invalid?, to: :taxon_browser
 
     def initialize taxa_in_tab, taxon_browser
       @taxon_browser = taxon_browser
@@ -29,22 +28,8 @@ module TaxonBrowser
       @taxa_in_tab = taxa_in_tab.valid unless show_invalid?
     end
 
-    def to_param
-      id
-    end
-
-    def taxa_count
-      @taxa_count ||= taxa_in_tab.count
-    end
-
-    def too_many_taxa_to_load?
-      taxa_count > max_taxa_to_load
-    end
-
-    def each_taxon cap: false
-      limit = max_taxa_to_load if cap
-
-      sorted_taxa.limit(limit).includes(:name).each do |taxon|
+    def each_taxon
+      sorted_taxa.select(:id, :type, :status, :fossil, 'names.epithet AS name_epithet').each do |taxon|
         yield taxon, selected_in_tab?(taxon)
       end
     end

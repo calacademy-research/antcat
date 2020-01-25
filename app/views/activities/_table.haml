@@ -20,7 +20,10 @@
               .gray-text.with-gray-links
                 Edit summary:
                 =markdown activity.edit_summary, no_wrapping_p: true
-          %td=decorated.revision_history_link
+          %td
+            =decorated.revision_history_link
+            -if activity.request_uuid
+              =link_to 'uuid', versions_path(request_uuid: activity.request_uuid), class: "btn-normal btn-tiny"
           %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
             %span.show-on-hover

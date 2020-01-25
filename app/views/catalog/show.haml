@@ -3,9 +3,6 @@
   -@title = "#{@taxon.name_cache}"
 -breadcrumb @taxon
 
--content_for :head do
-  =javascript_include_tag "controllers/catalog/show/taxon_browser_tab"
-
 -if current_user
   =enable_tooltips
   =content_for :breadcrumbs_right do

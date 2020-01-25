@@ -91,7 +91,8 @@ describe ReferencesController do
       {
         title: 'Newer Ants',
         author_names_string: reference.author_names_string,
-        journal_name: reference.journal.name
+        journal_name: reference.journal.name,
+        online_early: true
       }
     end
     let!(:params) do
@@ -106,10 +107,9 @@ describe ReferencesController do
     before { sign_in create(:user, :helper) }
 
     it 'updates the reference' do
-      put(:update, params: params)
-
-      reference.reload
-      expect(reference.title).to eq reference_params[:title]
+      expect { put(:update, params: params) }.
+        to change { reference.reload.title }.to(reference_params[:title]).
+        and change { reference.online_early }.from(false).to(true)
     end
 
     it 'creates an activity' do

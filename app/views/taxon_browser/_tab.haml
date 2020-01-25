@@ -1,3 +1,3 @@
--tab.each_taxon(cap: cap) do |taxon, is_selected|
+-tab.each_taxon do |taxon, is_selected|
   %li{class: ("selected" if is_selected)}
     =taxon_browser_link taxon

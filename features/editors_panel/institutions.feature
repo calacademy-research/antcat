@@ -1,5 +1,4 @@
 Feature: Institutions
-  Background:
   Scenario: Adding an institution (with edit summary)
     Given I log in as a catalog editor named "Archibald"
 

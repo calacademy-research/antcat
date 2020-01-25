@@ -1,4 +1,4 @@
-# rubocop:disable Metrics/LineLength
+# rubocop:disable Layout/LineLength
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript
     def results
@@ -62,7 +62,7 @@ module DatabaseScripts
       end
   end
 end
-# rubocop:enable Metrics/LineLength
+# rubocop:enable Layout/LineLength
 
 __END__
 

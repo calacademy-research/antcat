@@ -93,6 +93,13 @@ describe ReferenceDecorator do
         end
       end
     end
+
+    context 'when reference is online early' do
+      let(:reference) { create :article_reference, online_early: true }
+
+      specify { expect(reference.decorate.expandable_reference).to include ' [online early]' }
+      specify { expect(reference.decorate.expanded_reference).to include ' [online early]' }
+    end
   end
 
   describe "#format_date" do

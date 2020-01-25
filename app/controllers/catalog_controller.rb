@@ -1,5 +1,5 @@
 class CatalogController < ApplicationController
-  before_action :set_taxon, only: [:show, :tab]
+  before_action :set_taxon, only: [:show]
 
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
@@ -24,17 +24,6 @@ class CatalogController < ApplicationController
   def show
     @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     setup_taxon_browser
-  end
-
-  def tab
-    respond_to do |format|
-      format.json do
-        setup_taxon_browser
-
-        tab = @taxon_browser.tab_by_id params[:tab_id]
-        render partial: "taxon_browser/tab", locals: { tab: tab, cap: false }
-      end
-    end
   end
 
   private

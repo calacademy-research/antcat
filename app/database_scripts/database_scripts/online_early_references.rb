@@ -1,7 +1,7 @@
 module DatabaseScripts
-  class UnknownReferences < DatabaseScript
+  class OnlineEarlyReferences < DatabaseScript
     def results
-      UnknownReference.all
+      Reference.where(online_early: true)
     end
 
     def render
@@ -22,10 +22,13 @@ end
 __END__
 
 category: References
-tags: []
+tags: [new!, list]
 
 description: >
-  These are called "Other" in the reference form.
+  Pages, date, PDF may need to be updated after print publication.
+
+
+  Priority in taxonomy is based on the print version date not online early.
 
 related_scripts:
   - MissingReferences

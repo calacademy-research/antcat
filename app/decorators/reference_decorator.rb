@@ -94,7 +94,7 @@ class ReferenceDecorator < Draper::Decorator
     reference.set_cache generate_expanded_reference, :expanded_reference_cache
   end
 
-  # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `AdvancedSearchPresenter::Text`).
+  # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `Exporters::TaxaAsTxt`).
   # Example: "Brandão &amp; Martins-Neto" from `Taxon.find(429023).authorshiip.reference.decorate.send(:format_plain_text_title)`.
   def format_plain_text_title
     format_italics helpers.add_period_if_necessary sanitize(reference.title)
@@ -114,6 +114,7 @@ class ReferenceDecorator < Draper::Decorator
     def generate_expandable_reference
       inner_content = []
       inner_content << generate_expanded_reference
+      inner_content << '[online early]' if reference.online_early?
       inner_content << format_document_links
       content = inner_content.reject(&:blank?).join(' ')
 
@@ -129,6 +130,7 @@ class ReferenceDecorator < Draper::Decorator
       string << sanitize(reference.citation_year) << '. '
       string << format_title_with_link << ' '
       string << format_italics(helpers.add_period_if_necessary(format_citation))
+      string << ' [online early]' if reference.online_early?
 
       string
     end

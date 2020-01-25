@@ -47,17 +47,6 @@ describe Name do
     specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
   end
 
-  describe "#epithet_with_fossil_html" do
-    it "formats the fossil symbol" do
-      expect(SpeciesName.new(epithet: 'major').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>major</i>'
-      expect(SpeciesName.new(epithet: 'major').epithet_with_fossil_html(false)).to eq '<i>major</i>'
-      expect(GenusName.new(epithet: 'Atta').epithet_with_fossil_html(true)).to eq '<i>&dagger;</i><i>Atta</i>'
-      expect(GenusName.new(epithet: 'Atta').epithet_with_fossil_html(false)).to eq '<i>Atta</i>'
-      expect(SubfamilyName.new(epithet: 'Attanae').epithet_with_fossil_html(true)).to eq '&dagger;Attanae'
-      expect(SubfamilyName.new(epithet: 'Attanae').epithet_with_fossil_html(false)).to eq 'Attanae'
-    end
-  end
-
   describe "#name_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(false)).to eq '<i>Atta major</i>'

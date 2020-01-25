@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_17_164600) do
+ActiveRecord::Schema.define(version: 2020_01_24_181539) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2020_01_17_164600) do
     t.datetime "updated_at", null: false
     t.string "edit_summary"
     t.boolean "automated_edit", default: false, null: false
+    t.string "request_uuid"
+    t.index ["request_uuid"], name: "index_activities_on_request_uuid"
     t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
     t.index ["user_id"], name: "index_activities_on_user_id"
   end
@@ -241,6 +243,7 @@ ActiveRecord::Schema.define(version: 2020_01_17_164600) do
     t.string "doi"
     t.string "bolton_key"
     t.text "expanded_reference_cache"
+    t.boolean "online_early", default: false, null: false
     t.index ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: { author_names_string_cache: 255 }
     t.index ["created_at"], name: "references_created_at_idx"
     t.index ["id", "type"], name: "index_references_on_id_and_type"
@@ -380,10 +383,12 @@ ActiveRecord::Schema.define(version: 2020_01_17_164600) do
     t.datetime "created_at"
     t.text "object_changes"
     t.integer "change_id"
+    t.string "request_uuid"
     t.index ["change_id"], name: "index_versions_on_change_id"
     t.index ["event"], name: "index_versions_on_event"
     t.index ["item_id"], name: "index_versions_on_item_id"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index ["request_uuid"], name: "index_versions_on_request_uuid"
     t.index ["whodunnit"], name: "index_versions_on_whodunnit"
   end
 
