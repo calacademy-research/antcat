@@ -134,11 +134,10 @@ describe ReferencesController do
     it 'creates an activity' do
       reference_keey = reference.keey
 
-      expect { delete(:destroy, params: { id: reference.id, edit_summary: 'Duplicate' }) }.
+      expect { delete(:destroy, params: { id: reference.id }) }.
         to change { Activity.where(action: :destroy, trackable: reference).count }.by(1)
 
       activity = Activity.last
-      expect(activity.edit_summary).to eq "Duplicate"
       expect(activity.parameters).to eq(name: reference_keey)
     end
   end

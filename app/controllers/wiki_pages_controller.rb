@@ -39,7 +39,7 @@ class WikiPagesController < ApplicationController
 
   def destroy
     @wiki_page.destroy
-    @wiki_page.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+    @wiki_page.create_activity :destroy, current_user
     redirect_to wiki_pages_path, notice: "Wiki page was successfully deleted."
   end
 

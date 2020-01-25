@@ -67,7 +67,7 @@ module Editors
       return if taxon.is_a?(Family) || taxon.what_links_here.any_columns?
 
       link_to 'Delete', taxa_path(taxon), method: :delete, class: "btn-warning",
-        data: { confirm_with_edit_summary: true }
+        data: { confirm: 'Are you sure?' }
     end
 
     private

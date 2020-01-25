@@ -8,7 +8,7 @@
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?
-      =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm_with_edit_summary: true }, class: "btn-warning"
+      =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
   =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
 -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
