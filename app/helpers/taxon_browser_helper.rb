@@ -13,11 +13,6 @@ module TaxonBrowserHelper
     link_to append_refresh_icon(label), catalog_toggle_display_path(show: show_param), method: :put
   end
 
-  def load_tab_button taxon, tab
-    link_to "Load all?", catalog_tab_path(taxon, tab),
-      class: "btn-normal btn-tiny load-tab", data: { tab_id: tab.id }
-  end
-
   def extra_tab_link tab_taxon, label, tab_display, taxon_browser_display
     css = if tab_display == taxon_browser_display
             "upcase selected"
