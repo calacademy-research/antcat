@@ -254,15 +254,6 @@ Rails.application.routes.draw do
     resource :default_reference, only: :update, controller: :default_reference
   end
 
-  namespace :beta_and_such do
-    # Empty for now.
-  end
-
-  # Lazy!!
-  if Rails.env.development?
-    get ':id' => 'beta_and_such#attempt_to_find_record_by_id', constraints: { id: /[0-9|]+/ }
-  end
-
   unless Rails.env.production?
     namespace :widget_tests do
       get :toggle_dev_css
