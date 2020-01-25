@@ -77,10 +77,6 @@ class Name < ApplicationRecord
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
-  def epithet_with_fossil_html fossil
-    "#{dagger_html if fossil}#{epithet_html}".html_safe
-  end
-
   def owner
     taxa.first || protonyms.first
   end

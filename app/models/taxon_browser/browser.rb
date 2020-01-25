@@ -13,14 +13,6 @@ module TaxonBrowser
       setup_tabs
     end
 
-    def max_taxa_to_load
-      500
-    end
-
-    def tab_by_id id
-      tabs.find { |tab| tab.id == id }
-    end
-
     def show_invalid?
       @show_invalid
     end

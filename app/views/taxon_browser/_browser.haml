@@ -13,17 +13,11 @@
 .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
   -taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
-      -if tab.too_many_taxa_to_load?
-        %p.remove-after-loading-full-tab
-          Showing #{taxon_browser.max_taxa_to_load} of #{tab.taxa_count} taxa
-          =load_tab_button taxon, tab
-
       %ul.snaked.no-bullet.mr-scrollbary
         -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
           =extra_tab_link tab.tab_taxon, link[:label], link[:display], taxon_browser.display
 
-        .section-that-can-be-capped
-          =render "taxon_browser/tab", tab: tab, cap: true
+        =render "taxon_browser/tab", tab: tab
 
         -# It's possible that `taxa` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling
