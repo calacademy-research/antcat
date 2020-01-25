@@ -1,10 +1,6 @@
 # A `TaxonTab` requires a taxon for which `#children` returns something.
 # TODO: This needs a rehaul.
 
-# Things we may want to show:
-# * Excluded [from Formicidae]
-# * All incertae sedis [in Formicidae]
-
 module TaxonBrowser
   module Tabs
     class TaxonTab < Tab

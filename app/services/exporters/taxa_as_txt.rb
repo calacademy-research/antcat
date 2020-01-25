@@ -72,7 +72,7 @@ module Exporters
         end
         if taxon.protonym.biogeographic_region
           string << ' ' << taxon.protonym.biogeographic_region
-          string = add_period_if_necessary string
+          string << '.'
         end
         string
       end
