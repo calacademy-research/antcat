@@ -24,6 +24,15 @@ describe CreateCombinationPolicy do
       specify { expect(policy.allowed?).to eq false }
     end
 
+    describe 'lazy evaluation' do
+      let(:taxon) { create :family }
+
+      it 'stops at the first error' do
+        expect(taxon).to_not receive(:soft_validations)
+        expect(policy.allowed?).to eq false
+      end
+    end
+
     context "when taxon has 'What Links Here's" do
       context 'when they are obsolete combinations' do
         let(:taxon) { create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma') }
