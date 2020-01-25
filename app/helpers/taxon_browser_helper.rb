@@ -1,7 +1,6 @@
 module TaxonBrowserHelper
   def taxon_browser_link taxon
-    classes = css_classes_for_status(taxon) << taxon.rank
-    link_to taxon.epithet_with_fossil, catalog_path(taxon), class: classes
+    link_to taxon.epithet_with_fossil, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
   end
 
   def toggle_invalid_or_valid_only_link showing_invalid
@@ -31,12 +30,4 @@ module TaxonBrowserHelper
       end
     end
   end
-
-  private
-
-    def css_classes_for_status taxon
-      css_classes = []
-      css_classes << taxon.status.downcase.tr(' ', '_')
-      css_classes
-    end
 end
