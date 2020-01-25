@@ -1,11 +1,10 @@
 require 'rails_helper'
 
-# rubocop:disable RSpec/ExpectInHook
 describe References::FindDuplicates do
   let(:reference_similarity) { double }
 
   before do
-    expect(References::ReferenceSimilarity).to receive(:new).with(target, match).
+    allow(References::ReferenceSimilarity).to receive(:new).with(target, match).
       and_return(reference_similarity)
   end
 
@@ -14,17 +13,15 @@ describe References::FindDuplicates do
     let(:target) { create :reference, author_name: 'Ward' }
 
     context "when an obvious mismatch" do
-      before { expect(reference_similarity).to receive(:call).and_return(0.00) }
-
       it "doesn't match" do
+        expect(reference_similarity).to receive(:call).and_return(0.00)
         expect(described_class[target]).to be_empty
       end
     end
 
     context "when an obvious match" do
-      before { expect(reference_similarity).to receive(:call).and_return(0.10) }
-
       it "matches" do
+        expect(reference_similarity).to receive(:call).and_return(0.10)
         expect(described_class[target]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
@@ -35,9 +32,8 @@ describe References::FindDuplicates do
       let!(:match) { create :reference, author_name: "Arnol'di, G." }
       let(:target) { create :reference, author_name: "Arnol'di" }
 
-      before { expect(reference_similarity).to receive(:call).and_return(0.10) }
-
       it "handles it" do
+        expect(reference_similarity).to receive(:call).and_return(0.10)
         expect(described_class[target]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
@@ -45,4 +41,3 @@ describe References::FindDuplicates do
     end
   end
 end
-# rubocop:enable RSpec/ExpectInHook
