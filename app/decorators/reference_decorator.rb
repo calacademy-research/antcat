@@ -114,6 +114,7 @@ class ReferenceDecorator < Draper::Decorator
     def generate_expandable_reference
       inner_content = []
       inner_content << generate_expanded_reference
+      inner_content << '[online early]' if reference.online_early?
       inner_content << format_document_links
       content = inner_content.reject(&:blank?).join(' ')
 
@@ -129,6 +130,7 @@ class ReferenceDecorator < Draper::Decorator
       string << sanitize(reference.citation_year) << '. '
       string << format_title_with_link << ' '
       string << format_italics(helpers.add_period_if_necessary(format_citation))
+      string << ' [online early]' if reference.online_early?
 
       string
     end

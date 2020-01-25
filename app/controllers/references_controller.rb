@@ -92,6 +92,7 @@ class ReferencesController < ApplicationController
         :title,
         :series_volume_issue,
         :journal_name,
+        :online_early,
         :publisher_string,
         :public_notes,
         :editor_notes,
