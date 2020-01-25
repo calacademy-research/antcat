@@ -28,10 +28,7 @@ describe Taxa::MoveItemsController do
         to change { Activity.where(action: :move_items, trackable: taxon).count }.by(1)
 
       activity = Activity.last
-      expect(activity.parameters).to eq(
-        to_taxon_id: to_taxon.id,
-        history_items_was: [[[taxon_history_item.id, taxon_history_item.position]]] # TODO: Too many brackets?
-      )
+      expect(activity.parameters).to eq(to_taxon_id: to_taxon.id)
     end
   end
 end

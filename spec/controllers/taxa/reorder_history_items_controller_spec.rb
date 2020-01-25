@@ -28,14 +28,11 @@ describe Taxa::ReorderHistoryItemsController do
     end
 
     it 'creates an activity' do
-      previous_ids = taxon.history_items.pluck(:id)
-
       expect { post(:create, params: { taxa_id: taxon.id, taxon_history_item: reordered_ids }) }.
         to change { Activity.where(action: :reorder_taxon_history_items).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable).to eq taxon
-      expect(activity.parameters).to eq previous_ids: previous_ids, reordered_ids: taxon.history_items.pluck(:id)
     end
   end
 end
