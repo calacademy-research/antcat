@@ -5,6 +5,10 @@ describe Activity do
   it { is_expected.to validate_presence_of :action }
   it { is_expected.to validate_inclusion_of(:action).in_array Activity::ACTIONS }
 
+  it_behaves_like "a model that assigns `request_id` on create" do
+    let(:instance) { build :activity }
+  end
+
   describe ".create_for_trackable" do
     let(:trackable) { nil }
 
