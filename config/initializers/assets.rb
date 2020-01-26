@@ -15,7 +15,26 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf *.gif *.png *.ico]
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
-Rails.application.config.assets.precompile += %w[*.js]
+Rails.application.config.assets.precompile += %w[
+  application.js
+  logged_in_only.js
+  check_name_conflicts.js
+  compare_revisions.js
+  markdown_and_friends.js
+  protonym_select.js
+  reference_select.js
+  sortable_tables.js
+  taxon_select.js
+  taxt_editor.js
+  tooltips.js
+  controllers/authors/merges.js
+  controllers/catalog/search/authors_autocompletion.js
+  controllers/feedback/show.js
+  controllers/references/form.js
+  controllers/taxa/form/locality_autocompletion.js
+  controllers/taxa/move_items/select_checkboxes.js
+  controllers/taxa/not_really_form/reorder_history_items.js
+]
 
 Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
 Rails.application.config.assets.precompile += %w[dev_css.css test_css.css]
