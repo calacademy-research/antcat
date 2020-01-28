@@ -58,7 +58,9 @@ description: >
 
   * *Done* - Step 3) Cleanup recreated subspecies (see "Target subspecies soft validation issues")
 
-  * Step 4) Convert batch 2: Quadrinomials where a `Subspecies` with the target name exists after missing subspecies were recreated
+  * *Done* - Step 4) Convert batch 2: Quadrinomials where a `Subspecies` with the target name exists after missing subspecies were recreated
+
+  * Step 5) ???
 
 
   Issues: %github714, %github819
