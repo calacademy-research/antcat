@@ -14,11 +14,11 @@ module Taxa
       return @taxon.link_to_taxon unless @taxon.is_a? ::SpeciesGroupTaxon
 
       if @taxon.is_a? Species
-        return genus_link << header_link(@taxon, @taxon.name.epithet_html.html_safe)
+        return genus_link << header_link(@taxon, italicize(@taxon.name.epithet))
       end
 
       string = genus_link
-      string << header_link(@taxon.species, @taxon.species.name.epithet_html.html_safe)
+      string << header_link(@taxon.species, italicize(@taxon.species.name.epithet))
       string << ' '.html_safe
 
       if @taxon.is_a? Subspecies

@@ -57,7 +57,7 @@ class ProtonymsController < ApplicationController
 
   def destroy
     if @protonym.destroy
-      @protonym.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+      @protonym.create_activity :destroy, current_user
       redirect_to protonyms_path, notice: "Successfully deleted protonym."
     else
       redirect_to @protonym, alert: @protonym.errors.full_messages.to_sentence

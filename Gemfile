@@ -68,8 +68,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.79.0', require: false
   gem 'rubocop-performance'
-  # TODO: https://github.com/toshimaru/rubocop-rails_config vs. https://github.com/rubocop-hq/rubocop-rails
-  gem 'rubocop-rails_config'
+  gem 'rubocop-rails'
   gem 'rubocop-rspec'
   gem 'sunspot_test'
 end

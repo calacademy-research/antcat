@@ -56,11 +56,8 @@ describe FeedbackController do
     end
 
     it 'creates an activity' do
-      expect { delete(:destroy, params: { id: feedback.id, edit_summary: 'Duplicate' }) }.
+      expect { delete(:destroy, params: { id: feedback.id }) }.
         to change { Activity.where(action: :destroy, trackable: feedback).count }.by(1)
-
-      activity = Activity.last
-      expect(activity.edit_summary).to eq "Duplicate"
     end
   end
 end

@@ -160,12 +160,11 @@ describe ProtonymsController do
     end
 
     it 'creates an activity' do
-      expect { delete(:destroy, params: { id: protonym.id, edit_summary: 'Duplicate' }) }.
+      expect { delete(:destroy, params: { id: protonym.id }) }.
         to change { Activity.where(action: :destroy, trackable: protonym).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable_id).to eq protonym.id
-      expect(activity.edit_summary).to eq "Duplicate"
       expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
 

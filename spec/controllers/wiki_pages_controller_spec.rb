@@ -76,11 +76,10 @@ describe WikiPagesController do
     end
 
     it 'creates an activity' do
-      expect { delete(:destroy, params: { id: wiki_page.id, edit_summary: 'Duplicate' }) }.
+      expect { delete(:destroy, params: { id: wiki_page.id }) }.
         to change { Activity.where(action: :destroy, trackable: wiki_page).count }.by(1)
 
       activity = Activity.last
-      expect(activity.edit_summary).to eq "Duplicate"
       expect(activity.parameters).to eq(title: wiki_page.title)
     end
   end

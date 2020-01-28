@@ -19,10 +19,8 @@ module References
 
       def match
         candidates.each_with_object([]) do |candidate, matches|
-          if possible_match? candidate
-            similarity = reference_similarity candidate
-            matches << { target: target, match: candidate, similarity: similarity } if similarity >= min_similarity
-          end
+          similarity = reference_similarity candidate
+          matches << { target: target, match: candidate, similarity: similarity } if similarity >= min_similarity
         end
       end
 
@@ -30,12 +28,8 @@ module References
         return [] unless target.principal_author_last_name
 
         target_author = target.principal_author_last_name
-        Reference.joins(:author_names).where(reference_author_names: { position: 1 }).
+        Reference.where.not(id: target.id).joins(:author_names).where(reference_author_names: { position: 1 }).
           where("author_names.name LIKE ?", "#{target_author}%")
-      end
-
-      def possible_match? candidate
-        target.id != candidate.id
       end
 
       def reference_similarity candidate

@@ -40,7 +40,7 @@ class InstitutionsController < ApplicationController
 
   def destroy
     @institution.destroy
-    @institution.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+    @institution.create_activity :destroy, current_user
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'
   end
 

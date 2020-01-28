@@ -18,9 +18,9 @@ class ProtonymDecorator < Draper::Decorator
       if first_parenthesis
         before = locality[0...first_parenthesis]
         rest = locality[first_parenthesis..-1]
-        before.upcase + rest
+        before.mb_chars.upcase + rest
       else
-        locality.upcase
+        locality.mb_chars.upcase
       end
 
     helpers.add_period_if_necessary capitalized

@@ -143,7 +143,7 @@ class ReferenceDecorator < Draper::Decorator
 
     def author_names_with_links
       string =  reference.author_names.map do |author_name|
-                  helpers.link_to(sanitize(author_name.name), author_name.author)
+                  helpers.link_to(sanitize(author_name.name), helpers.author_path(author_name.author))
                 end.join('; ')
 
       string << sanitize(" #{author_names_suffix}") if author_names_suffix.present?

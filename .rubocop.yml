@@ -14,6 +14,7 @@ AllCops:
     - 'solr/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
+    - 'node_modules/**/*'
 
 ### FactoryBot.
 
@@ -50,8 +51,6 @@ Layout/IndentationConsistency:
   Enabled: true
   EnforcedStyle: indented_internal_methods
 
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
 Layout/LineLength:
   Max: 160
 
