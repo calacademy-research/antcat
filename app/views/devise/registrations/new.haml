@@ -1,6 +1,8 @@
 -@title = "Sign Up"
 -breadcrumb :sign_up
 
+=enable_tooltips
+
 =form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
   =render 'shared/errors_for', resource: resource
   .row
@@ -11,6 +13,7 @@
 
       =f.label :name do
         Name (full name, public)
+        =tooltip_icon "Please use your real name, or your account may be deactivated."
       =f.text_field :name
 
       =f.invisible_captcha :work_email
