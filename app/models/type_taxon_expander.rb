@@ -10,7 +10,6 @@ class TypeTaxonExpander
 
   def can_expand?
     return false if type_taxt.present? && !Protonym.common_type_taxt?(type_taxt)
-    return false if current_valid_taxon_chain?
 
     true
   end
@@ -34,13 +33,8 @@ class TypeTaxonExpander
 
     attr_reader :taxon, :type_taxt, :type_taxon
 
-    def current_valid_taxon_chain?
-      return false unless type_taxon.current_valid_taxon
-      type_taxon.current_valid_taxon.current_valid_taxon.present?
-    end
-
     def compact_status
-      @compact_status ||= type_taxon.compact_status
+      @compact_status ||= type_taxon.most_recent_before_now.compact_status
     end
 
     def reasons_cannot_expand
@@ -50,11 +44,6 @@ class TypeTaxonExpander
         This taxon's <code>type_taxt</code> of not a "common" <code>type_taxt</code>.
         <br>
         This taxon's <code>type_taxt</code>: <code>#{taxon.type_taxt}</code>
-      HTML
-
-      reasons << <<~HTML if current_valid_taxon_chain?
-        the <code>current_valid_taxon</code> of the <code>type_taxon</code> has a
-        <code>current_valid_taxon</code> of its own.
       HTML
 
       if reasons.blank?
