@@ -249,6 +249,10 @@ Rails.application.routes.draw do
 
   resources :database_scripts, only: [:index, :show]
 
+  scope :quick_fixes do
+    post 'clear_type_taxt', to: 'quick_fixes#clear_type_taxt'
+  end
+
   namespace :my do
     resource :recently_used_references, only: [:show, :create]
     resource :default_reference, only: :update, controller: :default_reference

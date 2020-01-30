@@ -20,7 +20,8 @@ module DatabaseScripts
             markdown_taxon_link(type_taxon),
             type_taxon.status,
             Detax[type_taxt],
-            expansion(taxon)
+            expansion(taxon),
+            link_to('Clear!', clear_type_taxt_path(taxon_id: taxon.id), method: :post, remote: true, class: 'btn-warning btn-tiny')
           ]
         end
       end
@@ -43,6 +44,12 @@ tags: []
 issue_description: This taxon has an "uncommon" `type_taxt` (see script for more info).
 
 description: >
+  Experimental: Use the "Clear!" button to quickly remove everything except the "common parts". This button is very primitive.
+  You will not receive any notification that the update was successful (or not!). Refresh the page to get rid cleaned items.
+  Some items may have to be adjusted for punctuation afterwards. The activity feed will include the old and new
+  `type_taxt`, so just try it out and see what happens :)
+
+
   The goal of this script is make data more concistent and more relational (database friendly). This is the first step (basic cleanup).
   The long-term plan is to move the type taxon to the protonym.
 
