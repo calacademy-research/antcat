@@ -198,6 +198,19 @@ class Taxon < ApplicationRecord
     current_valid_taxon.now
   end
 
+  # TODO: Experimental. Used for expanding type taxa (see `TypeTaxonExpander`).
+  def most_recent_before_now
+    taxa = []
+    current_taxon = current_valid_taxon
+
+    while current_taxon
+      taxa << current_taxon
+      current_taxon = current_taxon.current_valid_taxon
+    end
+
+    taxa.second_to_last || self
+  end
+
   # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
   # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
   def obsolete_combination_that_is_shady?
