@@ -8,13 +8,17 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :type_taxt, :default_expansion
+        t.header :taxon, :status, :antwiki, :type_taxon, :tt_status, :type_taxt, :default_expansion
         t.rows do |taxon|
+          type_taxon = taxon.type_taxon
           type_taxt = taxon.type_taxt
 
           [
             markdown_taxon_link(taxon),
             taxon.status,
+            taxon.decorate.link_to_antwiki,
+            markdown_taxon_link(type_taxon),
+            type_taxon.status,
             Detax[type_taxt],
             expansion(taxon)
           ]
