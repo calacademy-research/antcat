@@ -22,7 +22,10 @@ module Taxt
   TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
   REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
-  ANTWEB_TAXON_TAG_REGEX = /{tax (\d+)}/
-  ANTWEB_TAXON_WITH_AUTHOR_CITATION_TAG_REGEX = /{taxac (\d+)}/
-  ANTWEB_REFERENCE_TAG_REGEX = /{ref (\d+)}/
+  # Ignore percent format for AntWeb.
+  # Ideally we would only have a single format, but it's not very important right now
+  # since "taxt"s will be used less and less as we normalize content.
+  ANTWEB_TAX_TAG_REGEX = /{tax (\d+)}/
+  ANTWEB_TAXAC_TAG_REGEX = /{taxac (\d+)}/
+  ANTWEB_REF_TAG_REGEX = /{ref (\d+)}/
 end
