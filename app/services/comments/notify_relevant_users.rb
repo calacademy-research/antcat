@@ -4,7 +4,7 @@ module Comments
 
     def initialize comment
       @comment = comment
-      @do_not_notify = [commenter] # Never notify thyself!
+      @do_not_notify = [comment.user] # Never notify thyself!
     end
 
     # Order matters, because notified users are added to `@do_not_notify`,
@@ -22,7 +22,7 @@ module Comments
 
       attr_accessor :comment, :do_not_notify
 
-      delegate :commenter, :commentable, :body, to: :comment
+      delegate :commentable, :body, to: :comment
 
       def notify_mentioned_users
         users_mentioned_in_comment.each do |mentioned_user|
@@ -61,7 +61,7 @@ module Comments
       def notify user, reason
         return if do_not_notify? user
 
-        user.notify_because reason, attached: comment, notifier: commenter
+        user.notify_because reason, attached: comment, notifier: comment.user
         no_more_notifications_for user
       end
 

@@ -1,6 +1,5 @@
 # This makes all textareas with `data-previewable="true"` previewable.
-# Can also be invoked manually, as is the case with textareas for
-# posting comment replies (not the main comment box visible by default).
+# Can also be invoked manually in case the previewable is not visible by default.
 #
 # "Previewable" means markdown in the textarea can be previewed (rendered
 # server-side as HTML and return to the client).

@@ -17,8 +17,6 @@ class Comment < ApplicationRecord
   scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
   scope :include_associations, -> { includes(:commentable, :user) }
 
-  acts_as_nested_set scope: [:commentable_id, :commentable_type]
-  alias_method :commenter, :user # Read-only, for `Comments::NotifyRelevantUsers`.
   has_paper_trail
   trackable
 
