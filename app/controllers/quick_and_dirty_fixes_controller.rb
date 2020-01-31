@@ -19,6 +19,22 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
+  def convert_bolton_tags
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = Markdowns::BoltonKeysToRefTags[old_taxt]
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Converted Bolton tags, but nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted Bolton tags"
+      render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'", false))
+    else
+      render js: %(AntCat.notifyError("Could convert Bolton tags"))
+    end
+  end
+
   private
 
     def clean_type_taxt type_taxt

@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :history_item, :taxon, :status, :taxt,
+        t.header :history_item, :taxon, :status, :taxt, :quick_actions,
           :looks_like_protonym_data?, :protonym, :protonym_synopsis
         t.rows do |history_item|
           taxt = history_item.taxt
@@ -19,6 +19,7 @@ module DatabaseScripts
             markdown_taxon_link(taxon),
             taxon.status,
             Detax[taxt],
+            convert_bolton_link(history_item),
             ('Yes' if looks_like_it_belongs_to_the_protonym?(taxt)),
             protonym.decorate.link_to_protonym,
             protonym.synopsis
@@ -30,6 +31,11 @@ module DatabaseScripts
     def looks_like_it_belongs_to_the_protonym? taxt
       taxt.starts_with?(',') ||
         taxt =~ /[A-Z]{5,}/
+    end
+
+    def convert_bolton_link history_item
+      link_to 'Convert Bolton!', convert_bolton_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
+        method: :post, remote: true, class: 'btn-warning btn-tiny'
     end
   end
 end
