@@ -33,4 +33,8 @@ module Taxt
     def tax_or_taxac_tag_regex taxon
       "{(tax|taxac) #{taxon.id}}"
     end
+
+    def ref_tag_regex reference
+      "{ref #{reference.id}}"
+    end
 end
