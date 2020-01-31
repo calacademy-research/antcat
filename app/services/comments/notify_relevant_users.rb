@@ -9,11 +9,10 @@ module Comments
 
     # Order matters, because notified users are added to `@do_not_notify`,
     # since we only want to send one notification to each user.
-    # If a user was notified because they were replied to, we're not sending
+    # If a user was notified because they were mentioned in the comment, we're not sending
     # another three notification in case they are also the creator of the
-    # commentable, active in the same discussion, and mentioned in the comment.
+    # commentable and active in the same discussion.
     def call
-      notify_replied_to_user
       notify_mentioned_users
       notify_users_in_the_same_discussion
       notify_commentable_creator
@@ -23,14 +22,7 @@ module Comments
 
       attr_accessor :comment, :do_not_notify
 
-      delegate :commenter, :commentable, :body, :parent, :a_reply?, to: :comment
-
-      def notify_replied_to_user
-        return unless a_reply?
-
-        replied_to_user = parent.commenter
-        notify replied_to_user, :was_replied_to
-      end
+      delegate :commenter, :commentable, :body, to: :comment
 
       def notify_mentioned_users
         users_mentioned_in_comment.each do |mentioned_user|

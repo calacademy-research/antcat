@@ -1,17 +1,18 @@
+# Continue to remove threading. elight/acts_as_commentable_with_threading
+# has been deprecated, and we don't really need it anyways.
+# TODO: Migrate data.
+# TODO: Replace gem or just re-implement the basics.
+
 class Comment < ApplicationRecord
   include Trackable
 
   BODY_MAX_LENGTH = 100_000
-
-  attr_accessor :set_parent_to
 
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
   validates :user, :body, presence: true
   validates :body, length: { maximum: BODY_MAX_LENGTH }
-
-  after_save { set_parent if set_parent_to.present? }
 
   scope :order_by_date, -> { order(created_at: :desc) }
   scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }
@@ -26,17 +27,7 @@ class Comment < ApplicationRecord
     new(commentable: commentable, body: body, user: user)
   end
 
-  def a_reply?
-    !parent.nil? || set_parent_to.present?
-  end
-
   def notify_relevant_users
     Comments::NotifyRelevantUsers[self]
   end
-
-  private
-
-    def set_parent
-      move_to_child_of Comment.find(set_parent_to)
-    end
 end

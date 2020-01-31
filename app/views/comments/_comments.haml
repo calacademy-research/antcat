@@ -4,11 +4,6 @@
 -# Kept in its own partial because it recursively renders itself.
 
 -comments.each do |comment|
-  .comment
+  .comment.margin-bottom
     =render "comments/comment", comment: comment
-    =render "comments/reply_form", comment: comment, new_comment: new_comment
     =render "comments/comments", comments: comment.children, new_comment: new_comment
-
-  -# Draw a pretty ruler between root comments.
-  -unless comment.a_reply?
-    %hr

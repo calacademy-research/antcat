@@ -1,27 +1,6 @@
 require 'rails_helper'
 
 describe Comments::NotifyRelevantUsers do
-  describe "#notify_replied_to_user" do
-    context "when is not a reply" do
-      let(:service) { described_class.new build_stubbed(:comment) }
-
-      it "doesn't try to notify" do
-        expect { service.send :notify_replied_to_user }.not_to change { Notification.count }
-      end
-    end
-
-    context "when is a reply" do
-      let(:service) do
-        reply = build_stubbed :comment, :reply, user: build_stubbed(:user)
-        described_class.new reply
-      end
-
-      it "notifies" do
-        expect { service.send :notify_replied_to_user }.to change { Notification.count }.by 1
-      end
-    end
-  end
-
   describe "#notify_mentioned_users" do
     let(:service) do
       body = "@user#{create(:user).id} @user#{create(:user).id}"

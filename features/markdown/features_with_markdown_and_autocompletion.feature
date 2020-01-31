@@ -16,6 +16,3 @@ Feature: Features with markdown and autocompletion
     And I go to the most recent feedback item
 
     Then there should be a textarea with markdown and autocompletion
-
-  Scenario: Comments (reply form)
-    # Not testing this, it's just too much work.

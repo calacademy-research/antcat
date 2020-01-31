@@ -10,5 +10,5 @@
 %h6.margin-top=CommentableDecorator.new(commentable).comments_count_in_words
 =render "comments/form", new_comment: new_comment
 
-.comments-container.margin-bottom
+.comments-container.margin-top.margin-bottom
   =render "comments/comments", comments: commentable.root_comments.include_associations, new_comment: new_comment
