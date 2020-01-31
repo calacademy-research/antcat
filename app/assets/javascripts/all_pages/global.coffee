@@ -17,6 +17,9 @@ $.fn.disable = -> @.addClass('ui-state-disabled').attr('disabled', 'true')
 $.fn.enableButton = -> @removeClass "disabled"
 $.fn.disableButton = -> @addClass "disabled"
 
+AntCat.notifySuccess = (content) -> $.notify content, className: "success"
+AntCat.notifyError = (content) -> $.notify content
+
 # Defined on `AntCat` to make it possible to re-trigger after generating
 # markdown preview of references (in `preview_markdown.coffee`).
 #

@@ -221,8 +221,8 @@ class ExtrasArea
         success: (parsedContent) =>
           @textarea.val parsedContent
           @taxtEditor.renderPreview()
-          $.notify "Converted Bolton keys", className: "success"
-        error: -> $.notify "Error parsing Bolton keys"
+          AntCat.notifySuccess "Converted Bolton keys"
+        error: -> AntCat.notifyError "Error parsing Bolton keys"
 
 defaultReference = ->
   reference = $('#default-reference')
