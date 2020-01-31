@@ -15,7 +15,6 @@ module Taxt
     [TaxonHistoryItem, 'taxon_history_items', 'taxt']
   ]
 
-  # TODO: Move other variations of these to this file.
   TAX_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
   TAXAC_TAG_REGEX = /\{taxac (?<id>\d+)\}/
   TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
@@ -32,5 +31,9 @@ module Taxt
 
     def tax_or_taxac_tag_regex taxon
       "{(tax|taxac) #{taxon.id}}"
+    end
+
+    def ref_tag_regex reference
+      "{ref #{reference.id}}"
     end
 end

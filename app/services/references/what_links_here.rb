@@ -10,7 +10,7 @@ module References
 
     def call
       Taxt::TAXTABLES.each do |(model, _table, field)|
-        model.where("#{field} REGEXP ?", "{ref #{reference.id}}").pluck(:id).each do |id|
+        model.where("#{field} REGEXP ?", Taxt.ref_tag_regex(reference)).pluck(:id).each do |id|
           table_refs << table_ref(model.table_name, field.to_sym, id)
           return true if predicate
         end
