@@ -27,4 +27,10 @@ module Taxt
   ANTWEB_TAX_TAG_REGEX = /{tax (\d+)}/
   ANTWEB_TAXAC_TAG_REGEX = /{taxac (\d+)}/
   ANTWEB_REF_TAG_REGEX = /{ref (\d+)}/
+
+  module_function
+
+    def tax_or_taxac_tag_regex taxon
+      "{(tax|taxac) #{taxon.id}}"
+    end
 end
