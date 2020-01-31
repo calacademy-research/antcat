@@ -49,8 +49,8 @@ tags: []
 issue_description: This taxon has an "uncommon" `type_taxt` (see script for more info).
 
 description: >
-  Experimental: Use the "Clear!" button to quickly remove everything except the "common parts". This button is very primitive.
-  You will not receive any notification that the update was successful (or not!). Refresh the page to get rid cleaned items.
+  Experimental: Use the "Clear!" button to quickly remove everything except the "common parts".
+  Refresh the page to get rid cleaned items.
   Some items may have to be adjusted for punctuation afterwards. The activity feed will include the old and new
   `type_taxt`, so just try it out and see what happens :)
 
