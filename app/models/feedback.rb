@@ -1,4 +1,5 @@
 class Feedback < ApplicationRecord
+  include Commentable
   include Trackable
 
   COMMENT_MAX_LENGTH = 10_000

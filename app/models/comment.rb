@@ -1,6 +1,5 @@
 # Continue to remove threading. elight/acts_as_commentable_with_threading
 # has been deprecated, and we don't really need it anyways.
-# TODO: Migrate data.
 # TODO: Replace gem or just re-implement the basics.
 
 class Comment < ApplicationRecord

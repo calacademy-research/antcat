@@ -1,4 +1,5 @@
 class Issue < ApplicationRecord
+  include Commentable
   include RevisionsCanBeCompared
   include Trackable
 

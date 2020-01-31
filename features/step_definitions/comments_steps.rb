@@ -9,7 +9,7 @@ Given('Batiatus has commented "Cool" on an issue with the title "Typos"') do
 end
 
 Then("I should see a comments section") do
-  find ".comments-container"
+  find ".comments-section"
 end
 
 # HACK: x 2:

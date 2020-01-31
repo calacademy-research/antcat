@@ -1,9 +1,0 @@
--# `comments` initially holds the `root_comments`,
--# which are looped over together with all their children.
--#
--# Kept in its own partial because it recursively renders itself.
-
--comments.each do |comment|
-  .comment.margin-bottom
-    =render "comments/comment", comment: comment
-    =render "comments/comments", comments: comment.children, new_comment: new_comment

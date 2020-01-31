@@ -1,4 +1,5 @@
 class SiteNotice < ApplicationRecord
+  include Commentable
   include Trackable
 
   TITLE_MAX_LENGTH = 100
