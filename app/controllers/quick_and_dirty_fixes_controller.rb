@@ -1,7 +1,7 @@
 # NOTE: This is for quickly clearing issues (mostly from database scripts).
 # Any action here is supposed to be temporary. There are no other rules. Consider it the Wild West.
 
-class QuickFixesController < ApplicationController
+class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
   def clear_type_taxt

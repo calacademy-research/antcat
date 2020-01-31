@@ -21,7 +21,7 @@ module DatabaseScripts
             type_taxon.status,
             Detax[type_taxt],
             expansion(taxon),
-            link_to('Clear!', clear_type_taxt_path(taxon_id: taxon.id), method: :post, remote: true, class: 'btn-warning btn-tiny')
+            clear_type_taxt_link(taxon)
           ]
         end
       end
@@ -31,6 +31,11 @@ module DatabaseScripts
 
       def expansion taxon
         TypeTaxonExpander.new(taxon).expansion(ignore_can_expand: true)
+      end
+
+      def clear_type_taxt_link taxon
+        link_to 'Clear!', clear_type_taxt_quick_and_dirty_fix_path(taxon_id: taxon.id),
+          method: :post, remote: true, class: 'btn-warning btn-tiny'
       end
   end
 end

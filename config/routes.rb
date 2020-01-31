@@ -249,8 +249,8 @@ Rails.application.routes.draw do
 
   resources :database_scripts, only: [:index, :show]
 
-  scope :quick_fixes do
-    post 'clear_type_taxt', to: 'quick_fixes#clear_type_taxt'
+  scope :quick_and_dirty_fixes do
+    post 'clear_type_taxt_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#clear_type_taxt'
   end
 
   namespace :my do
