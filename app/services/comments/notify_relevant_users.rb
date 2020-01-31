@@ -59,17 +59,9 @@ module Comments
       end
 
       def notify user, reason
-        return if do_not_notify? user
+        return if user.in? do_not_notify
 
         user.notify_because reason, attached: comment, notifier: comment.user
-        no_more_notifications_for user
-      end
-
-      def do_not_notify? user
-        user.in? do_not_notify
-      end
-
-      def no_more_notifications_for user
         do_not_notify << user
       end
   end

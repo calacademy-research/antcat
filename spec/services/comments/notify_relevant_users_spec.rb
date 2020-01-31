@@ -1,108 +1,100 @@
 require 'rails_helper'
 
 describe Comments::NotifyRelevantUsers do
+  let(:service) { described_class.new comment }
+  let(:commentable) { create :issue }
+  let(:notifier) { create :user }
+
   describe "#notify_mentioned_users" do
-    let(:service) do
-      body = "@user#{create(:user).id} @user#{create(:user).id}"
-      comment = build_stubbed :comment, body: body, user: create(:user)
-      described_class.new comment
+    let(:mentioned_user) { create(:user) }
+    let(:comment) { create :comment, body: "@user#{mentioned_user.id}", commentable: commentable, user: notifier }
+
+    before do
+      make_sure_creator_of_commentable_is_already_notified commentable, comment
     end
 
     context "when user has already been notified" do
-      before { allow(service).to receive(:do_not_notify?).and_return true }
+      before do
+        mentioned_user.notify_because :mentioned_in_comment, attached: comment, notifier: comment.user
+      end
 
-      it "doesn't notify" do
-        expect { service.send :notify_mentioned_users }.not_to change { Notification.count }
+      it "doesn't notify for this reason" do
+        expect { service.call }.not_to change { Notification.count }
       end
     end
 
     context "when user has not been notified" do
       it "notifies" do
-        expect { service.send :notify_mentioned_users }.to change { Notification.count }.by 2
+        expect { service.call }.to change { Notification.count }.by 1
+
+        notification = Notification.last
+        expect(notification.user).to eq mentioned_user
+        expect(notification.reason).to eq 'mentioned_in_comment'
+        expect(notification.notifier).to eq notifier
+        expect(notification.attached).to eq comment
       end
     end
   end
 
   describe "#notify_users_in_the_same_discussion" do
-    let(:commentable) { create :issue }
-    let(:service) do
-      comment = build_stubbed :comment, commentable: commentable
-      described_class.new comment
+    let(:same_discussion_user) { create(:user) }
+    let(:comment) { create :comment, commentable: commentable, user: notifier }
+
+    before do
+      create :comment, commentable: commentable, user: same_discussion_user
+      make_sure_creator_of_commentable_is_already_notified commentable, comment
     end
 
-    before { create :comment, commentable: commentable }
-
     context "when user has already been notified" do
-      before { allow(service).to receive(:do_not_notify?).and_return true }
+      before do
+        same_discussion_user.notify_because :active_in_discussion, attached: comment, notifier: comment.user
+      end
 
-      it "doesn't notify" do
-        expect { service.send :notify_users_in_the_same_discussion }.
-          not_to change { Notification.count }
+      it "doesn't notify for this reason" do
+        expect { service.call }.not_to change { Notification.count }
       end
     end
 
     context "when user has not been notified" do
       it "notifies" do
-        expect { service.send :notify_users_in_the_same_discussion }.
-          to change { Notification.count }.by 1
+        expect { service.call }.to change { Notification.count }.by 1
+
+        notification = Notification.last
+        expect(notification.user).to eq same_discussion_user
+        expect(notification.reason).to eq 'active_in_discussion'
+        expect(notification.notifier).to eq notifier
+        expect(notification.attached).to eq comment
       end
     end
   end
 
   describe "#notify_commentable_creator" do
-    let(:service) do
-      comment = build_stubbed :comment, commentable: build_stubbed(:issue)
-      described_class.new comment
-    end
+    let(:comment) { create :comment, commentable: commentable, user: notifier }
 
     context "when user has already been notified" do
-      before { allow(service).to receive(:do_not_notify?).and_return true }
+      before do
+        commentable.user.notify_because :creator_of_commentable, attached: comment, notifier: comment.user
+      end
 
-      it "doesn't notify" do
-        expect { service.send :notify_commentable_creator }.not_to change { Notification.count }
+      it "doesn't notify for this reason" do
+        expect { service.call }.not_to change { Notification.count }
       end
     end
 
     context "when user has not been notified" do
       it "notifies" do
-        expect { service.send :notify_commentable_creator }.to change { Notification.count }.by 1
+        expect { service.call }.to change { Notification.count }.by 1
+
+        notification = Notification.last
+        expect(notification.user).to eq commentable.user
+        expect(notification.reason).to eq 'creator_of_commentable'
+        expect(notification.notifier).to eq notifier
+        expect(notification.attached).to eq comment
       end
     end
   end
 
-  describe "#users_mentioned_in_comment" do
-    let(:comment) { build_stubbed :comment }
-    let(:service) { described_class.new comment }
-
-    it "delegates" do
-      expect(Markdowns::MentionedUsers).to receive(:new).with(comment.body).and_call_original
-      service.send :users_mentioned_in_comment
-    end
-  end
-
-  describe "#do_not_notify? and #no_more_notifications_for" do
-    let(:comment) { build_stubbed :comment }
-    let(:service) { described_class.new comment }
-
-    context "when user is same as commenter" do
-      it "is true (do not notify)" do
-        expect(service.send(:do_not_notify?, comment.user)).to be true
-      end
-    end
-
-    context "when #no_more_notifications_for has not been called for user" do
-      it "is false (do notify)" do
-        expect(service.send(:do_not_notify?, build_stubbed(:user))).to be false
-      end
-    end
-
-    context "when #no_more_notifications_for has been called for user" do
-      let(:user) { build_stubbed :user }
-
-      it "is true (do not notify)" do
-        expect { service.send :no_more_notifications_for, user }.
-          to change { service.send :do_not_notify?, user }.from(false).to(true)
-      end
-    end
+  def make_sure_creator_of_commentable_is_already_notified commentable, comment
+    commentable.user.notify_because :creator_of_commentable, attached: comment, notifier: comment.user
   end
 end
