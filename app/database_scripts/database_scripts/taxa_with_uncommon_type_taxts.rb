@@ -44,7 +44,7 @@ __END__
 
 title: Taxa with uncommon <code>type_taxt</code>s
 category: Catalog
-tags: []
+tags: [has-quick-fix]
 
 issue_description: This taxon has an "uncommon" `type_taxt` (see script for more info).
 
