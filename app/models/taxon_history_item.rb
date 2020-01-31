@@ -50,7 +50,7 @@ class TaxonHistoryItem < ApplicationRecord
     VHIC_COMBINATION_IN =               ["taxt LIKE ?", "Combination in%"]
   ]
 
-  NO_REF_OR_TAX_TAG = "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %'"
+  NO_REF_OR_TAX_TAG = "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %'"
 
   belongs_to :taxon
 
