@@ -17,6 +17,7 @@ class DatabaseScript
     REGRESSION_TEST_TAG = "regression-test",
     LIST_TAG = "list",
     VALIDATED_TAG = "validated",
+    HAS_QUICK_FIX_TAG = "has-quick-fix",
     HIGH_PRIORITY_TAG = "high-priority"
   ]
 
