@@ -30,7 +30,7 @@ __END__
 
 title: Migration-origin taxa
 category: Catalog
-tags: [new!, slow-render]
+tags: [slow-render]
 
 issue_description:
 

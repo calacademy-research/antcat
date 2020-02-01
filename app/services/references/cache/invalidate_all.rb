@@ -1,4 +1,5 @@
-# To run in console: References::Cache::InvalidateAll[]
+# Run in terminal: rake antcat:reference_caches:invalidate
+# To run in Rails console: References::Cache::InvalidateAll[]
 
 module References
   module Cache

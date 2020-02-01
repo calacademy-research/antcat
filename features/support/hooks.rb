@@ -3,17 +3,22 @@ Before "@javascript" do
   DatabaseCleaner.strategy = :deletion
 end
 
-# Disable PaperTrail a lot.
-Before { PaperTrail.enabled = false }
-After  { PaperTrail.enabled = false }
+Around("@papertrail") do |_scenario, block|
+  PaperTrail.enabled = true
+  block.call
+  PaperTrail.enabled = false
+end
 
-# But allow features to enable it.
-Before("@papertrail") { PaperTrail.enabled = true }
-After("@papertrail")  { PaperTrail.enabled = false }
-
-# Some drivers remembers the window size between tests, so always restore.
+# Some drivers remember window size between tests, so always start and end with desktop.
 Before("@responsive") { resize_window_to_device :desktop }
 After("@responsive")  { resize_window_to_device :desktop }
+
+if ENV['PRINT_FEATURE_NAME']
+  Around do |scenario, block|
+    $stdout.puts scenario.location.to_s.green
+    block.call
+  end
+end
 
 Before "@no_travis" do
   if ENV["TRAVIS"]
