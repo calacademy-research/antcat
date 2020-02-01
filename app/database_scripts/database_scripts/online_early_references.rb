@@ -22,7 +22,7 @@ end
 __END__
 
 category: References
-tags: [new!, list]
+tags: [list]
 
 description: >
   Pages, date, PDF may need to be updated after print publication.
