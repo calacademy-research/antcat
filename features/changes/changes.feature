@@ -60,7 +60,7 @@ Feature: Changes
     And I follow "Atta"
     And I follow "Edit" within the breadcrumbs
     And I select "genus" from "taxon_incertae_sedis_in"
-    And I save the taxon form
+    And I press "Save"
     And I follow "Review change"
     Then I should see "Stan Blum changed"
 
@@ -83,7 +83,7 @@ Feature: Changes
 
     When I go to the edit page for "Eciton"
     And I select "genus" from "taxon_incertae_sedis_in"
-    And I save the taxon form
+    And I press "Save"
     Then I should see "This taxon has been changed"
     And I should see "Changed by Mark Wilden"
 

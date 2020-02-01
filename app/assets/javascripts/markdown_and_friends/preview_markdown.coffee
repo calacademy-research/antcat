@@ -1,6 +1,5 @@
 # This makes all textareas with `data-previewable="true"` previewable.
-# Can also be invoked manually, as is the case with textareas for
-# posting comment replies (not the main comment box visible by default).
+# Can also be invoked manually in case the previewable is not visible by default.
 #
 # "Previewable" means markdown in the textarea can be previewed (rendered
 # server-side as HTML and return to the client).
@@ -221,8 +220,8 @@ class ExtrasArea
         success: (parsedContent) =>
           @textarea.val parsedContent
           @taxtEditor.renderPreview()
-          $.notify "Converted Bolton keys", className: "success"
-        error: -> $.notify "Error parsing Bolton keys"
+          AntCat.notifySuccess "Converted Bolton keys"
+        error: -> AntCat.notifyError "Error parsing Bolton keys"
 
 defaultReference = ->
   reference = $('#default-reference')

@@ -22,7 +22,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!, list]
+tags: [list]
 
 description: >
   WIP.

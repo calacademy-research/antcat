@@ -26,7 +26,7 @@ end
 __END__
 
 category: Taxt2
-tags: [new!, list]
+tags: [list]
 
 description: >
   WIP. Issue: %github841

@@ -31,7 +31,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: The genus of this species appears more than once among the protonym's taxa.
 

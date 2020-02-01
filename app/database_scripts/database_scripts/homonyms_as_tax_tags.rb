@@ -28,7 +28,7 @@ __END__
 
 title: Homonyms as <code>tax</code> tags
 category: Taxt
-tags: [new!, slow]
+tags: [slow]
 
 description: >
   Change the `tax` tag to a `taxac` tag to include the author citation when renderend and remove the entry from this script.

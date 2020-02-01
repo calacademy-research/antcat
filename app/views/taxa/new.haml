@@ -3,7 +3,6 @@
 
 -content_for :head do
   =javascript_include_tag 'reference_select'
-  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
-  =javascript_include_tag 'check_name_conflicts'
+  =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
 
 =render 'form', taxon: @taxon, default_name_string: @editors_taxon_view_object.default_name_string

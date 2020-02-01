@@ -62,15 +62,14 @@ Feature: User notifications
 
     # Reply to Archibald's comment as Batiatus.
     When I go to the issue page for "My Favorite Ants"
-    And I follow "reply"
-    And I write a reply with the body "Oh, and I've also replied to the submitter's email."
-    And I press "Post Reply"
+    And I write a new comment "Thanks, Archibald!"
+    And I press "Post Comment"
     And I wait for the "success" message
 
     # Confirm Archibald was notified.
     When I log in as "Archibald"
     And I go to my notifications page
-    Then I should see "Batiatus replied to your comment on the issue My Favorite Ants"
+    Then I should see "Batiatus commented on the issue My Favorite Ants which you also have commented"
     And I should see 1 notification
 
   Scenario: Send at most one notification to a user for the same comment
@@ -82,18 +81,17 @@ Feature: User notifications
     And I press "Post Comment"
     And I wait for the "success" message
 
-    # Comment on Batiatus' issue, mention him, reply to him, in a disussion he is active in.
+    # Comment on Batiatus' issue, mention him, reply to him in a disussion he is active in.
     When I log in as "Archibald"
     And I go to the issue page for "My Favorite Ants"
-    And I follow "reply"
-    And I write a comment reply <at Batiatus's id> "I love you list already!"
-    And I press "Post Reply"
+    And I write a new comment <at Batiatus's id> "Great list already!"
+    And I press "Post Comment"
     And I wait for the "success" message
 
     # Confirm that Batiatus was only mentioned once.
     When I log in as "Batiatus"
     And I go to my notifications page
-    Then I should see "Archibald replied to your comment on the issue My Favorite Ants"
+    Then I should see "Archibald mentioned you in the comment on the issue My Favorite Ants less"
     And I should see 1 notification
 
   Scenario: Do not repeat notifications for any given attached/notifier combination

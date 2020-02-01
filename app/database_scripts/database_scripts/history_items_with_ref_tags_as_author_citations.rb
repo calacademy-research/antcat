@@ -50,7 +50,7 @@ __END__
 
 title: History items with <code>ref</code> tags as author citations
 category: Taxt
-tags: [new!]
+tags: []
 
 description: >
   `ref` tags used to be the only means to to disambiguate homonyms in taxt items.

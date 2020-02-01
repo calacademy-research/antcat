@@ -42,7 +42,7 @@ module Taxa
       end
 
       def extract_ref_tags string
-        string.scan(Taxt::REFERENCE_TAG_REGEX).flatten.compact.map(&:to_i).sort
+        string.scan(Taxt::REF_TAG_REGEX).flatten.compact.map(&:to_i).sort
       end
   end
 end

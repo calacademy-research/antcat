@@ -65,6 +65,8 @@ DatabaseCleaner.strategy = :transaction
 WebMock.disable_net_connect! allow_localhost: true
 WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 
+PaperTrail.enabled = false
+
 Capybara.app = Rack::ShowExceptions.new AntCat::Application
 
 InvisibleCaptcha.timestamp_enabled = false

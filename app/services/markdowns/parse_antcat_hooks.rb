@@ -41,12 +41,12 @@ module Markdowns
       # Renders: link to the taxon (Formica).
       def parse_taxon_ids
         # HACK: To eager load records in a single query for performance reasons.
-        ids = content.scan(Taxt::TAXON_TAG_REGEX).flatten.compact
+        ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
         return if ids.blank?
 
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
-        content.gsub!(Taxt::TAXON_TAG_REGEX) do
+        content.gsub!(Taxt::TAX_TAG_REGEX) do
           taxon = taxa[$LAST_MATCH_INFO[:id].to_i]
 
           if taxon
@@ -60,7 +60,7 @@ module Markdowns
       # Matches: {taxac 429349}
       # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxon_with_author_citation_ids
-        content.gsub!(Taxt::TAXON_WITH_AUTHOR_CITATION_TAG_REGEX) do
+        content.gsub!(Taxt::TAXAC_TAG_REGEX) do
           taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id])
 
           if taxon
@@ -75,13 +75,13 @@ module Markdowns
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_reference_ids
         # HACK: To eager load records in a single query for performance reasons.
-        refs_ids = content.scan(Taxt::REFERENCE_TAG_REGEX).flatten.compact
+        refs_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
         return if refs_ids.blank?
 
         refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
         refs = {} if ENV['NO_REF_CACHE']
 
-        content.gsub!(Taxt::REFERENCE_TAG_REGEX) do
+        content.gsub!(Taxt::REF_TAG_REGEX) do
           id = $LAST_MATCH_INFO[:id]
           begin
             refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe

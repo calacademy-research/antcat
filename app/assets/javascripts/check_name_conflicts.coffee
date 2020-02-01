@@ -44,7 +44,7 @@ $ ->
 
          $("#{nameStringSelector}-possible-conflicts-js-hook").html html
 
-      error: -> $.notify "Error checking for name conflicts"
+      error: -> AntCat.notifyError "Error checking for name conflicts"
 
   $(TAXON_NAME_STRING).keyup ->
     numberOfWords = $(TAXON_NAME_STRING).data('number-of-words')

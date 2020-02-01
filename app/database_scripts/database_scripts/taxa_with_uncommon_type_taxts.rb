@@ -21,7 +21,7 @@ module DatabaseScripts
             type_taxon.status,
             Detax[type_taxt],
             expansion(taxon),
-            link_to('Clear!', clear_type_taxt_path(taxon_id: taxon.id), method: :post, remote: true, class: 'btn-warning btn-tiny')
+            clear_type_taxt_link(taxon)
           ]
         end
       end
@@ -32,6 +32,11 @@ module DatabaseScripts
       def expansion taxon
         TypeTaxonExpander.new(taxon).expansion(ignore_can_expand: true)
       end
+
+      def clear_type_taxt_link taxon
+        link_to 'Clear!', clear_type_taxt_quick_and_dirty_fix_path(taxon_id: taxon.id),
+          method: :post, remote: true, class: 'btn-warning btn-tiny'
+      end
   end
 end
 
@@ -39,13 +44,13 @@ __END__
 
 title: Taxa with uncommon <code>type_taxt</code>s
 category: Catalog
-tags: []
+tags: [updated!, has-quick-fix]
 
 issue_description: This taxon has an "uncommon" `type_taxt` (see script for more info).
 
 description: >
-  Experimental: Use the "Clear!" button to quickly remove everything except the "common parts". This button is very primitive.
-  You will not receive any notification that the update was successful (or not!). Refresh the page to get rid cleaned items.
+  Experimental: Use the "Clear!" button to quickly remove everything except the "common parts".
+  Refresh the page to get rid cleaned items.
   Some items may have to be adjusted for punctuation afterwards. The activity feed will include the old and new
   `type_taxt`, so just try it out and see what happens :)
 

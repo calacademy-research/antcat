@@ -1,7 +1,6 @@
 -content_for :head do
   =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
-  =javascript_include_tag 'controllers/taxa/form/locality_autocompletion'
-  =javascript_include_tag 'check_name_conflicts'
+  =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
 
 =enable_tooltips
 =render "shared/default_reference"

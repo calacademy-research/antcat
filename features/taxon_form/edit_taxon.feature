@@ -57,7 +57,7 @@ Feature: Editing a taxon
     When I go to the edit page for "Atta"
     And I select "subfamily" from "taxon_incertae_sedis_in"
     And I fill in "edit_summary" with "fix incertae sedis"
-    And I save the taxon form
+    And I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "incertae sedis in subfamily"
 
@@ -73,6 +73,6 @@ Feature: Editing a taxon
 
     When I go to the edit page for "Atta"
     And I select "masculine" from "taxon_name_attributes_gender"
-    And I save the taxon form
+    And I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "masculine"

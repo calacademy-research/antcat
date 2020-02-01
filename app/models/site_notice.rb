@@ -1,4 +1,5 @@
 class SiteNotice < ApplicationRecord
+  include Commentable
   include Trackable
 
   TITLE_MAX_LENGTH = 100
@@ -11,7 +12,6 @@ class SiteNotice < ApplicationRecord
 
   scope :order_by_date, -> { order(created_at: :desc) }
 
-  acts_as_commentable
   acts_as_readable on: :created_at
   has_paper_trail
   trackable parameters: proc { { title: title } }

@@ -23,7 +23,7 @@ end
 __END__
 
 category: Catalog
-tags: [new!]
+tags: []
 
 description: >
   Some are misspellings, which I'm not sure how to handle (they do not fit the current database structure 100%).
