@@ -1,4 +1,5 @@
-# To run in console: References::Cache::RegenerateAll[]
+# Run in terminal: rake antcat:reference_caches:regenerate
+# To run in Rails console: References::Cache::RegenerateAll[]
 
 module References
   module Cache
