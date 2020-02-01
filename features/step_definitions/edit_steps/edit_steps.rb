@@ -1,8 +1,3 @@
-# Without JavaScript, `I press "Save"` raises `Capybara::Ambiguous`.
-When("I save the taxon form") do
-  find("#save-taxon-form").click
-end
-
 When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
   select2 name, from: taxon_selector_id
 end

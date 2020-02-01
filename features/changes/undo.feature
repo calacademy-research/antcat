@@ -12,7 +12,7 @@ Feature: Undo
   Scenario: Changing a taxon and seeing it on the Changes page, undoing it
     When I go to the edit page for "Formicinae"
     And I fill in "taxon_headline_notes_taxt" with "asdfgh"
-    And I save the taxon form
+    And I press "Save"
     And I go to the catalog page for "Formicinae"
     Then I should see "This taxon has been changed; changes awaiting approval"
     And I should see "asdfgh"
