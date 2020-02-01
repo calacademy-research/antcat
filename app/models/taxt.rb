@@ -16,13 +16,25 @@ module Taxt
   ]
 
   # TODO: Move other variations of these to this file.
-  # TODO: Name these per the tags, eg "TAX_TAG_REGEX".
-  TAXON_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
-  TAXON_WITH_AUTHOR_CITATION_TAG_REGEX = /\{taxac (?<id>\d+)\}/
+  TAX_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
+  TAXAC_TAG_REGEX = /\{taxac (?<id>\d+)\}/
   TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
-  REFERENCE_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
+  REF_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
-  ANTWEB_TAXON_TAG_REGEX = /{tax (\d+)}/
-  ANTWEB_TAXON_WITH_AUTHOR_CITATION_TAG_REGEX = /{taxac (\d+)}/
-  ANTWEB_REFERENCE_TAG_REGEX = /{ref (\d+)}/
+  # Ignore percent format for AntWeb.
+  # Ideally we would only have a single format, but it's not very important right now
+  # since "taxt"s will be used less and less as we normalize content.
+  ANTWEB_TAX_TAG_REGEX = /{tax (\d+)}/
+  ANTWEB_TAXAC_TAG_REGEX = /{taxac (\d+)}/
+  ANTWEB_REF_TAG_REGEX = /{ref (\d+)}/
+
+  module_function
+
+    def tax_or_taxac_tag_regex taxon
+      "{(tax|taxac) #{taxon.id}}"
+    end
+
+    def ref_tag_regex reference
+      "{ref #{reference.id}}"
+    end
 end
