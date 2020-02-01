@@ -15,7 +15,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        mentioned_user.notify_because :mentioned_in_comment, attached: comment, notifier: comment.user
+        mentioned_user.notify_because Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user
       end
 
       it "doesn't notify for this reason" do
@@ -29,7 +29,7 @@ describe Comments::NotifyRelevantUsers do
 
         notification = Notification.last
         expect(notification.user).to eq mentioned_user
-        expect(notification.reason).to eq 'mentioned_in_comment'
+        expect(notification.reason).to eq Notification::MENTIONED_IN_COMMENT
         expect(notification.notifier).to eq notifier
         expect(notification.attached).to eq comment
       end
@@ -47,7 +47,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        same_discussion_user.notify_because :active_in_discussion, attached: comment, notifier: comment.user
+        same_discussion_user.notify_because Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user
       end
 
       it "doesn't notify for this reason" do
@@ -61,7 +61,7 @@ describe Comments::NotifyRelevantUsers do
 
         notification = Notification.last
         expect(notification.user).to eq same_discussion_user
-        expect(notification.reason).to eq 'active_in_discussion'
+        expect(notification.reason).to eq Notification::ACTIVE_IN_DISCUSSION
         expect(notification.notifier).to eq notifier
         expect(notification.attached).to eq comment
       end
@@ -73,7 +73,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        commentable.user.notify_because :creator_of_commentable, attached: comment, notifier: comment.user
+        make_sure_creator_of_commentable_is_already_notified commentable, comment
       end
 
       it "doesn't notify for this reason" do
@@ -87,7 +87,7 @@ describe Comments::NotifyRelevantUsers do
 
         notification = Notification.last
         expect(notification.user).to eq commentable.user
-        expect(notification.reason).to eq 'creator_of_commentable'
+        expect(notification.reason).to eq Notification::CREATOR_OF_COMMENTABLE
         expect(notification.notifier).to eq notifier
         expect(notification.attached).to eq comment
       end
@@ -95,6 +95,6 @@ describe Comments::NotifyRelevantUsers do
   end
 
   def make_sure_creator_of_commentable_is_already_notified commentable, comment
-    commentable.user.notify_because :creator_of_commentable, attached: comment, notifier: comment.user
+    commentable.user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user
   end
 end

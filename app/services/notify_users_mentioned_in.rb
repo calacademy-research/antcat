@@ -9,7 +9,7 @@ class NotifyUsersMentionedIn
 
   def call
     Markdowns::MentionedUsers[string].each do |user|
-      user.notify_because :mentioned_in_thing, attached: attached, notifier: notifier
+      user.notify_because Notification::MENTIONED_IN_THING, attached: attached, notifier: notifier
     end
   end
 

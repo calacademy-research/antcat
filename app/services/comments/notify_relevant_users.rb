@@ -26,13 +26,13 @@ module Comments
 
       def notify_mentioned_users
         users_mentioned_in_comment.each do |mentioned_user|
-          notify mentioned_user, :mentioned_in_comment
+          notify mentioned_user, Notification::MENTIONED_IN_COMMENT
         end
       end
 
       def notify_users_in_the_same_discussion
         commentable.commenters.each do |co_commenter|
-          notify co_commenter, :active_in_discussion
+          notify co_commenter, Notification::ACTIVE_IN_DISCUSSION
         end
       end
 
