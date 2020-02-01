@@ -21,6 +21,7 @@ Rails.application.config.assets.precompile += %w[
   check_name_conflicts.js
   compare_revisions.js
   markdown_and_friends.js
+  locality_autocompletion.js
   protonym_select.js
   reference_select.js
   sortable_tables.js
@@ -33,7 +34,7 @@ Rails.application.config.assets.precompile += %w[
   controllers/references/form.js
   controllers/taxa/form/locality_autocompletion.js
   controllers/taxa/move_items/select_checkboxes.js
-  controllers/taxa/not_really_form/reorder_history_items.js
+  controllers/taxa/reorder_history_items.js
 ]
 
 Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
