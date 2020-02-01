@@ -1,4 +1,5 @@
 class Feedback < ApplicationRecord
+  include Commentable
   include Trackable
 
   COMMENT_MAX_LENGTH = 10_000
@@ -12,7 +13,6 @@ class Feedback < ApplicationRecord
   scope :by_status_and_date, -> { order(open: :desc, created_at: :desc) }
   scope :recent, -> { where('created_at >= ?', 5.minutes.ago) }
 
-  acts_as_commentable
   has_paper_trail
   trackable
 

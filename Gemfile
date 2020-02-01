@@ -16,7 +16,6 @@ gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
 gem 'actionview-component'
-gem 'acts_as_commentable_with_threading'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'bootsnap', require: false

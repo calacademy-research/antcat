@@ -59,18 +59,12 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    acts_as_commentable_with_threading (2.0.1)
-      activerecord (>= 4.0)
-      activesupport (>= 4.0)
-      awesome_nested_set (>= 3.0)
     acts_as_list (0.9.19)
       activerecord (>= 3.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     arel (9.0.0)
     ast (2.4.0)
-    awesome_nested_set (3.2.0)
-      activerecord (>= 4.0.0, < 7.0)
     awesome_print (1.8.0)
     aws-eventstream (1.0.3)
     aws-sdk (2.11.436)
@@ -456,7 +450,6 @@ PLATFORMS
 
 DEPENDENCIES
   actionview-component
-  acts_as_commentable_with_threading
   acts_as_list
   awesome_print
   aws-sdk (< 3.0)

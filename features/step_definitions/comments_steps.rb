@@ -2,10 +2,6 @@ When("I write a new comment {string}") do |body|
   first("#comment_body").set body
 end
 
-When("I write a reply with the body {string}") do |body|
-  all("#comment_body").last.set body
-end
-
 Given('Batiatus has commented "Cool" on an issue with the title "Typos"') do
   issue = create :issue, title: "Typos"
   batiatus = User.find_by(name: "Batiatus")
@@ -13,7 +9,7 @@ Given('Batiatus has commented "Cool" on an issue with the title "Typos"') do
 end
 
 Then("I should see a comments section") do
-  find ".comments-container"
+  find ".comments-section"
 end
 
 # HACK: x 2:

@@ -14,7 +14,6 @@ class CommentsController < ApplicationController
 
   def create
     @comment = Comment.build_comment commentable, current_user, body: comment_params[:body]
-    @comment.set_parent_to = comment_params[:comment_id]
 
     if @comment.save
       @comment.create_activity :create, current_user
@@ -32,10 +31,7 @@ class CommentsController < ApplicationController
   end
 
   def update
-    @comment.body = comment_params[:body]
-    @comment.edited = true
-
-    if @comment.save
+    if @comment.update(body: comment_params[:body], edited: true)
       @comment.notify_relevant_users
       redirect_to @comment.commentable, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
