@@ -88,7 +88,7 @@
         %tr
           %th Date
           %td
-            =or_dash @reference.decorate.format_date
+            =or_dash References::FormatDate[@reference.date]
             -if @reference.online_early?
               [online early]
         %tr
