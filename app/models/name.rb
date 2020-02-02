@@ -73,10 +73,6 @@ class Name < ApplicationRecord
     taxa.first || protonyms.first
   end
 
-  def too_many_owners?
-    (taxa.count + protonyms.count) > 1
-  end
-
   def single_word_name?
     type.in? SINGLE_WORD_NAMES
   end
