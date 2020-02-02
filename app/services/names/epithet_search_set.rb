@@ -65,11 +65,11 @@ module Names
           if ['ter', 'del'].include? string
             string
           else
-            $1 + 'ae' + $2
+            Regexp.last_match(1) + 'ae' + Regexp.last_match(2)
           end
         end
         epithets << epithet.gsub(/(#{consonants})ae(#{consonants})/) do |_string|
-          $1 + 'e' + $2
+          Regexp.last_match(1) + 'e' + Regexp.last_match(2)
         end
         epithets
       end

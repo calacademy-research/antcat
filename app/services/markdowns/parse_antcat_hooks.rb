@@ -96,8 +96,9 @@ module Markdowns
       def parse_github_ids
         content.gsub!(/%github(\d+)/) do
           # Also works for PRs because GH figures that out.
-          url = "https://github.com/calacademy-research/antcat/issues/#{$1}"
-          link_to "GitHub ##{$1}", url
+          github_issue_id = Regexp.last_match(1)
+          url = "https://github.com/calacademy-research/antcat/issues/#{github_issue_id}"
+          link_to "GitHub ##{github_issue_id}", url
         end
       end
 
@@ -105,11 +106,12 @@ module Markdowns
       # Renders: a link to the wiki page.
       def parse_wiki_pages_ids
         content.gsub!(/%wiki(\d+)/) do
+          wiki_page_id = Regexp.last_match(1)
           begin
-            wiki_page = WikiPage.find($1)
-            link_to wiki_page.title, wiki_page_path($1)
+            wiki_page = WikiPage.find(wiki_page_id)
+            link_to wiki_page.title, wiki_page_path(wiki_page_id)
           rescue ActiveRecord::RecordNotFound
-            broken_markdown_link "wiki_page", $1
+            broken_markdown_link "wiki_page", wiki_page_id
           end
         end
       end
@@ -118,11 +120,12 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_ids
         content.gsub!(/@user(\d+)/) do
-          user = User.find_by(id: $1)
+          user_id = Regexp.last_match(1)
+          user = User.find_by(id: user_id)
           if user
             user.decorate.ping_user_link
           else
-            broken_markdown_link "user", $1
+            broken_markdown_link "user", user_id
           end
         end
       end
@@ -131,7 +134,8 @@ module Markdowns
       # Renders: a link to the database script.
       def parse_database_script_ids
         content.gsub!(/%dbscript:([A-Z][A-Za-z0-9_]+)/) do
-          database_script = DatabaseScript.safe_new_from_filename_without_extension($1)
+          filename = Regexp.last_match(1)
+          database_script = DatabaseScript.safe_new_from_filename_without_extension(filename)
           formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags
           link_to(database_script.title, database_script_path(database_script)) << ' ' << formatted_tags
         end

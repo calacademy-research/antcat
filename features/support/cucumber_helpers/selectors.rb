@@ -15,7 +15,7 @@ module CucumberHelpers
       when 'the taxon browser'
         "#taxon_browser"
       when /^the (\w*) taxon browser tab$/
-        find(:link, $1)[:href]
+        find(:link, Regexp.last_match(1))[:href]
       when 'the protonym'
         "#taxon_description .headline > span.name"
       when 'the header'
@@ -70,7 +70,7 @@ module CucumberHelpers
         all(".callout .diff")[1]
 
       when /"(.+)"/
-        $1
+        Regexp.last_match(1)
 
       else
         raise %(Can't find mapping from "#{locator}" to a selector)
