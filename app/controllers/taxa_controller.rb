@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
   def new
     @taxon = build_taxon_with_parent
     @taxon.protonym.authorship.reference ||= DefaultReference.get session
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
+    @default_name_string = Editors::TaxonFormViewObject.new(@taxon).default_name_string
   end
 
   def create
@@ -25,10 +25,8 @@ class TaxaController < ApplicationController
     @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
   rescue ActiveRecord::RecordInvalid
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     render :new
   rescue Names::BuildNameFromString::UnparsableName => e
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     @taxon.errors.add :base, "Could not parse name #{e.message}"
     # Maintain entered names.
     @taxon.build_name(name: params[:taxon_name_string]) unless @taxon.name.name
