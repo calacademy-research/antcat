@@ -2,7 +2,6 @@
 
 class DatabaseScript
   include Draper::Decoratable
-  include DatabaseScripts::EndData
   include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
 
@@ -120,6 +119,11 @@ class DatabaseScript
     end
 
   private
+
+    # The scripts' description, tags, etc, are stored in `DATA`.
+    def end_data
+      @end_data ||= ReadEndData.new(script_path).call
+    end
 
     def script_path
       "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
