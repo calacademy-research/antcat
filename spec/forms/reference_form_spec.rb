@@ -39,6 +39,11 @@ describe ReferenceForm do
             to_not change { AuthorName.count }
         end
 
+        it "reuses existing `ReferenceAuthorName`s" do
+          expect { described_class.new(reference, reference_params, request_host).save }.
+            to_not change { reference.reload.reference_author_name_ids }
+        end
+
         it "does not create any versions for the reference" do
           with_versioning do
             expect { described_class.new(reference, reference_params, request_host).save }.

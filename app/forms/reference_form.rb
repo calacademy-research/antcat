@@ -54,7 +54,7 @@ class ReferenceForm
       string = params.delete(:author_names_string)
       return if string.strip == reference.author_names_string
 
-      author_names = Authors::FindOrCreateNamesFromString[string.dup]
+      author_names = Authors::FindOrInitializeNamesFromString[string.dup]
 
       if author_names.empty? && string.present?
         reference.errors.add :author_names_string, "couldn't be parsed."
