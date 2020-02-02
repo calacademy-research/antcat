@@ -81,10 +81,6 @@ class Name < ApplicationRecord
     (taxa.count + protonyms.count) > 1
   end
 
-  def orphaned?
-    !(taxa.exists? || protonyms.exists?)
-  end
-
   def single_word_name?
     type.in? SINGLE_WORD_NAMES
   end
