@@ -96,6 +96,7 @@ class ReferencesController < ApplicationController
         :nesting_reference_id,
         :online_early,
         :pages_in,
+        :pagination,
         :public_notes,
         :publisher_string,
         :series_volume_issue,

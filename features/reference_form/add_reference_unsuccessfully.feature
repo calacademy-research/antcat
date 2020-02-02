@@ -7,26 +7,26 @@ Feature: Add reference unsuccessfully
   Scenario: Leaving a required field blank should not affect other fields (article)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"
-    And I fill in "article_pagination" with "2"
+    And I fill in "reference_pagination" with "2"
     And I press "Save"
     Then the "reference_title" field should contain "A reference title"
 
     When I follow "Article"
     Then the "reference_journal_name" field should contain "Ant Journal"
-    And the "article_pagination" field should contain "2"
+    And the "reference_pagination" field should contain "2"
 
   @javascript
   Scenario: Leaving a required field blank should not affect other fields (book)
     When I follow "Book"
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_publisher_string" with "Capua: House of Batiatus"
-    And I fill in "book_pagination" with "2"
+    And I fill in "reference_pagination" with "2"
     And I press "Save"
     Then the "reference_title" field should contain "A reference title"
 
     When I follow "Book"
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
-    And the "book_pagination" field should contain "2"
+    And the "reference_pagination" field should contain "2"
 
   Scenario: Unparseable author string (and maintain already filled in fields)
     When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
@@ -39,25 +39,25 @@ Feature: Add reference unsuccessfully
     When I fill in "reference_title" with "A reference title"
     And I follow "Article"
     And I fill in "reference_journal_name" with ""
-    And I fill in "article_pagination" with "1"
+    And I fill in "reference_pagination" with "1"
     And I press "Save"
     Then I should see "Journal can't be blank"
     And the "reference_title" field should contain "A reference title"
 
     When I follow "Article"
     Then the "reference_journal_name" field should contain ""
-    And the "article_pagination" field should contain "1"
+    And the "reference_pagination" field should contain "1"
 
   @javascript
   Scenario: Unparseable publisher string (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
     And I follow "Book"
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
-    And I fill in "book_pagination" with "1"
+    And I fill in "reference_pagination" with "1"
     And I press "Save"
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
 
     When I follow "Book"
     Then the "reference_title" field should contain "A reference title"
     And the "reference_publisher_string" field should contain "Pensoft, Sophia"
-    And the "book_pagination" field should contain "1"
+    And the "reference_pagination" field should contain "1"

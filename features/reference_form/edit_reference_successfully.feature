@@ -11,7 +11,7 @@ Feature: Edit reference successfully
     When I go to the edit page for the most recent reference
     And I follow "Book"
     And I fill in "reference_publisher_string" with "New York: Wiley"
-    And I fill in "book_pagination" with "22 pp."
+    And I fill in "reference_pagination" with "22 pp."
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 

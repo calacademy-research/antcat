@@ -39,6 +39,12 @@
         =f.check_box :online_early
         Online early
   .row
+    .medium-2.columns
+      =label_tag :reference_pagination do
+        Pagination
+        =db_tooltip_icon "references.journal_pagination", scope: :references
+        =db_tooltip_icon "references.book_pagination", scope: :references
+      =f.text_field :pagination
     .medium-4.columns
       =label_tag :reference_doi do
         DOI
@@ -84,12 +90,6 @@
                 =db_tooltip_icon "references.series_volume_issue", scope: :references
               =f.text_field :series_volume_issue
 
-            .medium-3.columns.end
-              =label_tag :article_pagination do
-                Pagination
-                =db_tooltip_icon "references.journal_pagination", scope: :references
-              =text_field_tag :article_pagination, reference.pagination
-
         #tabs-book.tabs-panel{class: reference_tab_active?(reference, BookReference)}
           .row
             .medium-3.columns
@@ -97,12 +97,6 @@
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
               =f.text_field :publisher_string, value: reference.publisher_string
-
-            .medium-3.columns.end
-              =label_tag :book_pagination do
-                Pagination
-                =db_tooltip_icon "references.book_pagination", scope: :references
-              =text_field_tag :book_pagination, reference.pagination
 
         #tabs-nested.tabs-panel{class: reference_tab_active?(reference, NestedReference)}
           .row

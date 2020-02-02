@@ -19,7 +19,6 @@ class ReferenceForm
     def save_reference
       Reference.transaction do
         clear_document_params_if_necessary
-        set_pagination
         parse_author_names_string
         set_journal if reference.is_a? ::ArticleReference
         set_publisher if reference.is_a? ::BookReference
@@ -45,14 +44,6 @@ class ReferenceForm
       end
     rescue ActiveRecord::RecordInvalid
       false
-    end
-
-    def set_pagination
-      params[:pagination] =
-        case reference
-        when ArticleReference then original_params[:article_pagination]
-        when BookReference    then original_params[:book_pagination]
-        end
     end
 
     def set_document_host

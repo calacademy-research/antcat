@@ -32,6 +32,7 @@ describe ReferencesController do
         title: 'New Ants',
         citation_year: '1999b',
         author_names_string: "Batiatus, B.; Glaber, G.",
+        pagination: '5',
         journal_name: 'Zootaxa',
         series_volume_issue: '6',
         date: "19991220",
@@ -45,7 +46,6 @@ describe ReferencesController do
     let!(:params) do
       {
         reference_type: 'ArticleReference',
-        article_pagination: '5',
         reference: reference_params
       }
     end
@@ -92,13 +92,13 @@ describe ReferencesController do
         title: 'Newer Ants',
         author_names_string: reference.author_names_string,
         journal_name: reference.journal.name,
-        online_early: true
+        online_early: true,
+        pagination: '5'
       }
     end
     let!(:params) do
       {
         reference_type: reference.type,
-        article_pagination: '5',
         id: reference.id,
         reference: reference_params
       }
