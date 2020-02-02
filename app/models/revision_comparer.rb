@@ -52,7 +52,7 @@ class RevisionComparer
   end
 
   def looking_at_a_single_old_revision?
-    !!selected && !diff_with
+    !selected.nil? && !diff_with
   end
 
   def revision_selected? revision
