@@ -186,14 +186,6 @@ describe DatabaseScript do
         it 'returns default statistics' do
           expect(script.statistics).to eq "Results: 0"
         end
-
-        context 'when script has `hide_statistics`' do
-          it 'returns nil' do
-            end_data = HashWithIndifferentAccess.new(hide_statistics: true)
-            allow(script).to receive(:end_data).and_return end_data
-            expect(script.statistics).to eq nil
-          end
-        end
       end
 
       context 'when script has custom statistics' do

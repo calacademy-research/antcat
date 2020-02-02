@@ -142,14 +142,9 @@ class DatabaseScript
     end
 
     def default_statistics
-      return if hide_statistics?
       return unless respond_to? :results
       count = cached_results.count
       count = count.count if count.is_a?(Hash) # HACK: For grouped queries.
       "Results: #{count}"
-    end
-
-    def hide_statistics?
-      end_data[:hide_statistics] || false
     end
 end

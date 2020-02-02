@@ -5,6 +5,10 @@ module DatabaseScripts
       Taxon.valid.where.not(type_taxon_id: nil).includes(:type_taxon)
     end
 
+    def statistics
+      # No-op because results are filtered in `#render`.
+    end
+
     def render
       as_table do |t|
         t.header :taxon, :rank, :type_taxon, :tt_rank, :tt_status, :type_taxon_now, :ttn_rank, :ttn_status, :issue, :suggested_script_action
@@ -80,8 +84,6 @@ description: >
 
 
   This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
-
-hide_statistics: true # Because results are filtered in `#render`.
 
 related_scripts:
   - TaxaWithTypeTaxa
