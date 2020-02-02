@@ -22,53 +22,51 @@
 %h5.margin-top Taxa originally described by author (including combinations)
 -# Anchor for the pagination.
 %a{name: 'taxa'}
-.callout
-  -if @taxa.blank?
-    %p Found no taxa described by this author.
-  -else
-    %table.table.stack
-      %thead
-        %th Taxon
-        %th Authorship
-        %th Rank
-        %th Status
-        %th
-      -@taxa.each do |taxon|
-        %tr
-          %td=taxon.link_to_taxon
-          %td=taxon.authorship_reference.decorate.expandable_reference
-          %td=taxon.rank.capitalize
-          %td=taxon.status.capitalize
-          %td
-            -if taxon.original_combination?
-              Original combination
-              =antcat_icon 'check'
-    =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
+-if @taxa.blank?
+  %p Found no taxa described by this author.
+-else
+  %table.table.stack
+    %thead
+      %th Taxon
+      %th Authorship
+      %th Rank
+      %th Status
+      %th
+    -@taxa.each do |taxon|
+      %tr
+        %td=taxon.link_to_taxon
+        %td=taxon.authorship_reference.decorate.expandable_reference
+        %td=taxon.rank.capitalize
+        %td=taxon.status.capitalize
+        %td
+          -if taxon.original_combination?
+            Original combination
+            =antcat_icon 'check'
+  =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
 
 .row
   .small-12.medium-6.columns.margin-top.end
     %h5 Statistics
-    .callout
-      %table.table.unstriped
-        %tbody
-          %tr
-            %th Published between
-            %td=or_dash @author.decorate.published_between
-          %tr
-            %th Taxon descriptions between
-            %td=or_dash @author.decorate.taxon_descriptions_between
-          %tr
-            %th No. of references
-            %td=or_dash @author.references.count
-          %tr
-            %th No. of described taxa (including combinations)
-            %td=or_dash @author.described_taxa.count
-          %tr
-            %th No. of described taxa (valid, including combinations)
-            %td=or_dash @author.described_taxa.valid.count
-          %tr
-            %th No. of described taxa (protonyms only)
-            %td=or_dash @author.described_protonyms.count
+    %table.table.unstriped
+      %tbody
+        %tr
+          %th Published between
+          %td=or_dash @author.decorate.published_between
+        %tr
+          %th Taxon descriptions between
+          %td=or_dash @author.decorate.taxon_descriptions_between
+        %tr
+          %th No. of references
+          %td=or_dash @author.references.count
+        %tr
+          %th No. of described taxa (including combinations)
+          %td=or_dash @author.described_taxa.count
+        %tr
+          %th No. of described taxa (valid, including combinations)
+          %td=or_dash @author.described_taxa.valid.count
+        %tr
+          %th No. of described taxa (protonyms only)
+          %td=or_dash @author.described_protonyms.count
 
 .row
   .small-12.medium-6.columns.margin-top.end
@@ -76,22 +74,21 @@
       Names belonging to author
       -if user_is_editor?
         =link_to 'Add alternative spelling', new_author_author_name_path(@author), class: 'btn-normal btn-tiny'
-    .callout.margin-bottom
-      %table.unstriped
-        %thead
+    %table.unstriped.margin-bottom
+      %thead
+        %tr
+          %th Author name
+          %th No. of references
+          %th
+      %tbody
+        -hide_delete_author_name_button = @author.names.count == 1
+        -@author.names.each do |author_name|
           %tr
-            %th Author name
-            %th No. of references
-            %th
-        %tbody
-          -hide_delete_author_name_button = @author.names.count == 1
-          -@author.names.each do |author_name|
-            %tr
-              %td=author_name.name
-              %td=author_name.references.count
-              %td
-                -if user_is_editor?
-                  =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
-                -unless hide_delete_author_name_button
-                  -if user_is_editor? && author_name.references.empty?
-                    =link_to append_superadmin_icon("Delete"), author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning btn-tiny"
+            %td=author_name.name
+            %td=author_name.references.count
+            %td
+              -if user_is_editor?
+                =link_to 'Edit', edit_author_name_path(author_name), class: "btn-normal btn-tiny"
+              -unless hide_delete_author_name_button
+                -if user_is_editor? && author_name.references.empty?
+                  =link_to append_superadmin_icon("Delete"), author_name_path(author_name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning btn-tiny"

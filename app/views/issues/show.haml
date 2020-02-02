@@ -27,7 +27,6 @@
 
 .row
   .medium-12.columns
-    .callout
-      =markdown @issue.description
+    =markdown @issue.description
 
 =render "comments/comments_area", commentable: @issue, new_comment: @new_comment

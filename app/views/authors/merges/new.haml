@@ -6,15 +6,13 @@
 
 .row
   .medium-6.columns
-    %fieldset.fieldset
-      %legend Target author
-      =render 'author', author: @author
+    %h6 Target author
+    =render 'author', author: @author
 
   .medium-6.columns
-    %fieldset.fieldset
-      %legend Author to merge into target
-      =text_field_tag :author_to_merge_name, params[:author_to_merge_name]
-      =form_tag author_merges_path, method: :get do
-        =hidden_field_tag :author_to_merge_id, params[:author_to_merge_id]
-        =button_tag type: "submit", class: "btn-normal" do
-          ="Next"
+    %h6 Author to merge into target
+    =text_field_tag :author_to_merge_name, params[:author_to_merge_name]
+    =form_tag author_merges_path, method: :get do
+      =hidden_field_tag :author_to_merge_id, params[:author_to_merge_id]
+      =button_tag type: "submit", class: "btn-normal" do
+        ="Next"

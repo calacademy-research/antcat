@@ -7,14 +7,14 @@
 =form_tag "/taxa/#{@taxon.id}/convert_to_subspecies" do
   =render 'shared/errors_for', resource: @taxon
   .row
-    .medium-6.columns
-      %fieldset.fieldset
-        %legend Convert species
-        %p=@taxon.decorate.id_and_name_and_author_citation
+    .medium-12.columns.margin-bottom
+      %h6 Convert species
+      %p=@taxon.decorate.id_and_name_and_author_citation
 
-      %fieldset.fieldset
-        %legend to be a subspecies of
-        =taxon_select_tag :new_species_id, params[:new_species_id], rank: 'Species'
+    .medium-12.columns.margin-bottom
+      %h6 to be a subspecies of
+      =taxon_select_tag :new_species_id, params[:new_species_id], rank: 'Species'
 
+    .medium-12.columns
       =button_tag type: "submit", class: "btn-saves has-spinner" do
         =spinner_icon + "Convert"
