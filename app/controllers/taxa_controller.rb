@@ -86,36 +86,28 @@ class TaxaController < ApplicationController
 
     def taxon_params
       params.require(:taxon).permit(
-        :status,
-        :protonym_id,
-        { name_attributes: [:gender] },
-        :homonym_replaced_by_id,
-        :current_valid_taxon_id,
-        :incertae_sedis_in,
-        :original_combination,
-        :fossil,
         :collective_group_name,
-        :nomen_nudum,
-        :unresolved_homonym,
-        :ichnotaxon,
-        :hong,
-        :origin,
+        :current_valid_taxon_id,
+        :fossil,
         :headline_notes_taxt,
-        {
-          protonym_attributes: [
-            :fossil,
-            :sic,
-            :primary_type_information_taxt,
-            :secondary_type_information_taxt,
-            :type_notes_taxt,
-            :biogeographic_region,
-            :locality,
-            :id,
-            { authorship_attributes: [:pages, :forms, :notes_taxt, :id, :reference_id] }
-          ]
-        },
+        :homonym_replaced_by_id,
+        :hong,
+        :ichnotaxon,
+        :incertae_sedis_in,
+        :nomen_nudum,
+        :origin,
+        :original_combination,
+        :protonym_id,
+        :status,
         :type_taxon_id,
-        :type_taxt
+        :type_taxt,
+        :unresolved_homonym,
+        name_attributes: [:gender],
+        protonym_attributes: [
+          :id, :biogeographic_region, :fossil, :locality, :primary_type_information_taxt,
+          :secondary_type_information_taxt, :sic, :type_notes_taxt,
+          { authorship_attributes: [:id, :forms, :notes_taxt, :pages, :reference_id] }
+        ]
       )
     end
 

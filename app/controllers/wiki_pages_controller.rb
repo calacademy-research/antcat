@@ -50,6 +50,6 @@ class WikiPagesController < ApplicationController
     end
 
     def wiki_page_params
-      params.require(:wiki_page).permit(:title, :content)
+      params.require(:wiki_page).permit(:content, :title)
     end
 end
