@@ -17,7 +17,7 @@ describe DatabaseScript do
     context 'when database script does not exists' do
       it 'returns an "unfound database script"' do
         results = described_class.safe_new_from_filename_without_extension "BestPizza"
-        expect(results).to be_a DatabaseScript::UnfoundDatabaseScript
+        expect(results).to be_a DatabaseScripts::UnfoundDatabaseScript
       end
     end
   end

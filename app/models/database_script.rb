@@ -23,22 +23,6 @@ class DatabaseScript
 
   ScriptNotFound = Class.new StandardError
 
-  UnfoundDatabaseScript = Struct.new(:class_name) do
-    def title
-      "Error: Could not find database script with class name '#{class_name}'"
-    end
-
-    def filename_without_extension
-      @filename_without_extension ||= class_name.underscore
-    end
-
-    def tags
-      []
-    end
-
-    alias_method :to_param, :filename_without_extension
-  end
-
   attr_accessor :results_runtime
 
   def self.inherited(subclass)
@@ -56,7 +40,7 @@ class DatabaseScript
   def self.safe_new_from_filename_without_extension class_name
     new_from_filename_without_extension class_name
   rescue DatabaseScript::ScriptNotFound
-    UnfoundDatabaseScript.new(class_name)
+    DatabaseScripts::UnfoundDatabaseScript.new(class_name)
   end
 
   def self.all
