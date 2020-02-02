@@ -10,7 +10,7 @@
 
 =form_for reference.becomes(Reference) do |f|
   =hidden_field_tag :reference_type, reference.class.name
-  =hidden_field_tag :ignore_possible_duplicate, ignore_possible_duplicate
+  =hidden_field_tag :ignore_duplicates, ('yes' if reference.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
   =render 'shared/errors_for', resource: reference
 
   .row

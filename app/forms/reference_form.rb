@@ -1,6 +1,6 @@
-# NOTE: This service mutates `params`, but that's OK for now.
-
 class ReferenceForm
+  POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
+
   def initialize reference, reference_params, original_params, request_host
     @reference = reference
     @params = reference_params
@@ -30,9 +30,8 @@ class ReferenceForm
         # before validating, so we need to manually raise here.
         raise ActiveRecord::Rollback if reference.errors.present?
 
-        if original_params[:ignore_possible_duplicate].blank?
+        if original_params[:ignore_duplicates].blank?
           if check_for_duplicates!
-            original_params[:ignore_possible_duplicate] = "yes"
             raise ActiveRecord::Rollback
           end
         end
@@ -105,7 +104,7 @@ class ReferenceForm
       return if duplicates.blank?
 
       duplicate = Reference.find(duplicates.first[:match].id)
-      reference.errors.add :base, <<~MSG.html_safe
+      reference.errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
         To save, click "Save".
       MSG

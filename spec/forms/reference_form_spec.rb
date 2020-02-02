@@ -134,7 +134,7 @@ describe ReferenceForm do
       it "checks possible duplication and add to errors, if any found" do
         expect(duplicate.errors).to be_empty
         expect(described_class.new(duplicate, reference_params, original_params, request_host).save).to eq nil
-        expect(duplicate.errors[:base].first).to include "This may be a duplicate of Fisher"
+        expect(duplicate.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
       end
     end
   end
