@@ -121,20 +121,6 @@ class TaxaController < ApplicationController
 
     def build_taxon_with_parent
       parent = Taxon.find(params[:parent_id])
-
-      taxon = build_taxon params[:rank_to_create]
-      taxon.parent = parent
-      taxon
-    end
-
-    def build_taxon rank
-      taxon_class = rank.to_s.constantize
-
-      taxon = taxon_class.new
-      taxon.build_name
-      taxon.build_protonym
-      taxon.protonym.build_name
-      taxon.protonym.build_authorship
-      taxon
+      Taxa::BuildTaxon[params[:rank_to_create], parent]
     end
 end
