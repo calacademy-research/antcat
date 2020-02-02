@@ -208,9 +208,6 @@ Style/NumericLiterals:
 Style/PerlBackrefs:
   Enabled: false
 
-Style/RegexpLiteral:
-  Enabled: false
-
 Style/StringLiterals:
   Enabled: false
 
