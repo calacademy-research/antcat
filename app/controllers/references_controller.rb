@@ -68,7 +68,7 @@ class ReferencesController < ApplicationController
   private
 
     def save
-      ReferenceForm.new(@reference, reference_params, params, request.host).save
+      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?).save
     end
 
     def set_reference_type

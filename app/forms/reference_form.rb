@@ -1,11 +1,11 @@
 class ReferenceForm
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
 
-  def initialize reference, reference_params, original_params, request_host
+  def initialize reference, params, request_host, ignore_duplicates: false
     @reference = reference
-    @params = reference_params
-    @original_params = original_params
+    @params = params
     @request_host = request_host
+    @ignore_duplicates = ignore_duplicates
   end
 
   def save
@@ -14,7 +14,7 @@ class ReferenceForm
 
   private
 
-    attr_reader :reference, :params, :original_params, :request_host
+    attr_reader :reference, :params, :request_host, :ignore_duplicates
 
     def save_reference
       Reference.transaction do
@@ -30,7 +30,7 @@ class ReferenceForm
         # before validating, so we need to manually raise here.
         raise ActiveRecord::Rollback if reference.errors.present?
 
-        if original_params[:ignore_duplicates].blank?
+        unless ignore_duplicates
           if check_for_duplicates!
             raise ActiveRecord::Rollback
           end

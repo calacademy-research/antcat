@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe ReferenceForm do
   describe "#save" do
-    let(:original_params) { {} }
     let(:request_host) { 123 }
 
     describe "updating attributes" do
@@ -17,7 +16,7 @@ describe ReferenceForm do
       specify do
         expect(reference.bolton_key).to eq nil
 
-        described_class.new(reference, reference_params, original_params, request_host).save
+        described_class.new(reference, reference_params, request_host).save
 
         reference.reload
         expect(reference.bolton_key).to eq reference_params[:bolton_key]
@@ -36,13 +35,13 @@ describe ReferenceForm do
         end
 
         it "does not create new `AuthorName`s for existing authors" do
-          expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+          expect { described_class.new(reference, reference_params, request_host).save }.
             to_not change { AuthorName.count }
         end
 
         it "does not create any versions for the reference" do
           with_versioning do
-            expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+            expect { described_class.new(reference, reference_params, request_host).save }.
               to_not change { reference.versions.count }
           end
         end
@@ -59,7 +58,7 @@ describe ReferenceForm do
 
           it "creates a single version for the reference" do
             with_versioning do
-              expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+              expect { described_class.new(reference, reference_params, request_host).save }.
                 to change { reference.versions.count }.by(1)
             end
           end
@@ -76,13 +75,13 @@ describe ReferenceForm do
           # TODO: We may want this.
           xit "creates a single version for the reference" do
             with_versioning do
-              expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+              expect { described_class.new(reference, reference_params, request_host).save }.
                 to change { reference.versions.count }.by(1)
             end
           end
 
           it "updates `#author_names_string_cache`" do
-            expect { described_class.new(reference, reference_params, original_params, request_host).save }.
+            expect { described_class.new(reference, reference_params, request_host).save }.
               to change { reference.author_names_string_cache }.
               from('Batiatus, B.').to("Batiatus, B.; Glaber, G.")
           end
@@ -128,12 +127,12 @@ describe ReferenceForm do
       let!(:duplicate) { create :article_reference, author_names: original.author_names }
 
       it "allows a duplicate record to be saved" do
-        expect { described_class.new(duplicate, reference_params, original_params, request_host).save }.not_to raise_error
+        expect { described_class.new(duplicate, reference_params, request_host, ignore_duplicates: true).save }.not_to raise_error
       end
 
       it "checks possible duplication and add to errors, if any found" do
         expect(duplicate.errors).to be_empty
-        expect(described_class.new(duplicate, reference_params, original_params, request_host).save).to eq nil
+        expect(described_class.new(duplicate, reference_params, request_host).save).to eq nil
         expect(duplicate.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
       end
     end
