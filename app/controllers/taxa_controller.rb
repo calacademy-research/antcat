@@ -24,7 +24,7 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
-  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
+  rescue ActiveRecord::RecordInvalid
     @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     render :new
   rescue Names::BuildNameFromString::UnparsableName => e
@@ -44,7 +44,7 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
-  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
+  rescue ActiveRecord::RecordInvalid
     render :edit
   end
 
