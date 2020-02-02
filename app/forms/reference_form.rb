@@ -62,7 +62,6 @@ class ReferenceForm
         raise ActiveRecord::RecordInvalid, reference
       end
 
-      reference.author_names.clear
       params[:author_names] = author_names
     end
 

@@ -64,7 +64,7 @@ describe ReferenceForm do
           end
         end
 
-        context "when author names have been added" do
+        context "when an author name have been added" do
           let(:reference_params) do
             {
               bolton_key: "Smith, 1858b",
@@ -72,8 +72,7 @@ describe ReferenceForm do
             }
           end
 
-          # TODO: We may want this.
-          xit "creates a single version for the reference" do
+          it "creates a single version for the reference" do
             with_versioning do
               expect { described_class.new(reference, reference_params, request_host).save }.
                 to change { reference.versions.count }.by(1)
@@ -84,6 +83,57 @@ describe ReferenceForm do
             expect { described_class.new(reference, reference_params, request_host).save }.
               to change { reference.author_names_string_cache }.
               from('Batiatus, B.').to("Batiatus, B.; Glaber, G.")
+          end
+        end
+
+        context "when more than one author names have been added" do
+          let(:reference_params) do
+            {
+              bolton_key: "Smith, 1858b",
+              author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C."
+            }
+          end
+
+          # TODO: We may want this. See `after_add: :refresh_author_names_caches`.
+          xit "creates a single version for the reference" do
+            with_versioning do
+              expect { described_class.new(reference, reference_params, request_host).save }.
+                to change { reference.versions.count }.by(1)
+            end
+          end
+
+          it "updates `#author_names_string_cache`" do
+            expect { described_class.new(reference, reference_params, request_host).save }.
+              to change { reference.author_names_string_cache }.
+              from('Batiatus, B.').to("Batiatus, B.; Glaber, G.; Borgia, C.")
+          end
+        end
+
+        context "when an author name has been removed" do
+          let!(:author_names) do
+            [
+              create(:author_name, name: "Batiatus, B."),
+              create(:author_name, name: "Glaber, G.")
+            ]
+          end
+          let!(:reference) { create :unknown_reference, author_names: author_names }
+          let(:reference_params) do
+            {
+              bolton_key: "Smith, 1858b",
+              author_names_string: "Batiatus, B."
+            }
+          end
+
+          it 'deletes orphaned `ReferenceAuthorName`s' do
+            expect(ReferenceAuthorName.count).to eq 2
+            expect { described_class.new(reference, reference_params, request_host).save }.
+              to change { ReferenceAuthorName.count }.by(-1)
+          end
+
+          it "updates `#author_names_string_cache`" do
+            expect { described_class.new(reference, reference_params, request_host).save }.
+              to change { reference.author_names_string_cache }.
+              from('Batiatus, B.; Glaber, G.').to("Batiatus, B.")
           end
         end
       end
