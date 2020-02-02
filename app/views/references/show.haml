@@ -79,11 +79,7 @@
             %td=@reference.citation
         %tr
           %th Pagination
-          %td
-            -if @reference.is_a? NestedReference
-              =or_dash @reference.pages_in
-            -else
-              =or_dash @reference.pagination
+          %td=or_dash @reference.pagination
         %tr
           %th Date
           %td

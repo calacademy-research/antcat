@@ -121,7 +121,7 @@ describe ReferenceFormatter do
     let(:reference) do
       create :nested_reference, nesting_reference: nestee_reference,
         author_names: [author_name], title: '*Atta* <i>and such</i>',
-        citation_year: '1874', pages_in: 'Pp. 32-45 in'
+        citation_year: '1874', pagination: 'Pp. 32-45 in'
     end
 
     describe "#plain_text" do
@@ -137,7 +137,7 @@ describe ReferenceFormatter do
           journal = create :journal, name: '<script>xss</script>'
           nesting_reference = create :article_reference, journal: journal, pagination: '<script>xss</script>',
             series_volume_issue: '<script>xss</script>'
-          create :nested_reference, nesting_reference: nesting_reference, pages_in: '<script>xss</script>'
+          create :nested_reference, nesting_reference: nesting_reference, pagination: '<script>xss</script>'
         end
 
         it "sanitizes them" do

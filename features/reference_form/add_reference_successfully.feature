@@ -37,7 +37,7 @@ Feature: Add reference
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
     And I follow "Nested"
-    And I fill in "reference_pages_in" with "Pp. 32-33 in:"
+    And I fill in "reference_pagination" with "Pp. 32-33 in:"
     And I fill in "reference_nesting_reference_id" with the ID for "Annals of Ants"
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1"

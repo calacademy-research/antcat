@@ -72,8 +72,8 @@ describe References::NewFromCopy do
 
         expect(copy).to be_a NestedReference
 
-        expect(copy.pages_in).to eq reference.pages_in
-        expect(copy.pages_in).to_not eq nil
+        expect(copy.pagination).to eq reference.pagination
+        expect(copy.pagination).to_not eq nil
         expect(copy.nesting_reference_id).to eq reference.nesting_reference_id
         expect(copy.nesting_reference_id).to_not eq nil
       end

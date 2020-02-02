@@ -17,7 +17,7 @@ class ReferencesController < ApplicationController
     @reference = if params[:nesting_reference_id]
                    NestedReference.new(
                      citation_year: params[:citation_year],
-                     pages_in: "Pp. XX-XX in:",
+                     pagination: "Pp. XX-XX in:",
                      nesting_reference_id: params[:nesting_reference_id]
                    )
                  elsif params[:reference_to_copy]
@@ -95,7 +95,6 @@ class ReferencesController < ApplicationController
         :journal_name,
         :nesting_reference_id,
         :online_early,
-        :pages_in,
         :pagination,
         :public_notes,
         :publisher_string,

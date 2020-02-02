@@ -49,7 +49,7 @@ FactoryBot.define do
     end
 
     factory :nested_reference, class: 'NestedReference' do
-      pages_in { 'In: ' }
+      pagination { 'In: ' }
       nesting_reference { create :book_reference }
     end
 

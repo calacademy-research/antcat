@@ -44,6 +44,7 @@
         Pagination
         =db_tooltip_icon "references.journal_pagination", scope: :references
         =db_tooltip_icon "references.book_pagination", scope: :references
+        =db_tooltip_icon "references.nested_pagination", scope: :references
       =f.text_field :pagination
     .medium-4.columns
       =label_tag :reference_doi do
@@ -100,12 +101,6 @@
 
         #tabs-nested.tabs-panel{class: reference_tab_active?(reference, NestedReference)}
           .row
-            .medium-3.columns
-              =label_tag :reference_pages_in do
-                Pages in
-                =db_tooltip_icon "references.nested_pagination", scope: :references
-              =f.text_field :pages_in
-
             .medium-3.columns.end
               =label_tag :nesting_reference_id do
                 Nesting reference ID

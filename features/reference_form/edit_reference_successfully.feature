@@ -40,13 +40,13 @@ Feature: Edit reference successfully
       | author     | citation   | citation_year | title |
       | Ward, P.S. | Psyche 5:3 | 2001          | Ants  |
     And the following entry nests it
-      | author     | title            | citation_year | pages_in |
-      | Bolton, B. | Ants are my life | 2001          | In:      |
+      | author     | title            | citation_year | pagination |
+      | Bolton, B. | Ants are my life | 2001          | In:        |
 
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
 
     When I go to the edit page for the most recent reference
-    And I fill in "reference_pages_in" with "Pp. 32 in:"
+    And I fill in "reference_pagination" with "Pp. 32 in:"
     And I press "Save"
     Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"
