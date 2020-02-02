@@ -41,7 +41,7 @@ module Exporters
             taxon = Taxon.find_by(id: $1)
 
             if taxon
-              Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+              Exporters::Antweb::Exporter.antcat_taxon_link_with_name_and_author_citation taxon
             end
           end
         end
