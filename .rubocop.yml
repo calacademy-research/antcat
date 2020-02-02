@@ -205,9 +205,6 @@ Style/MutableConstant:
 Style/NumericLiterals:
   Enabled: false
 
-Style/NumericPredicate:
-  Enabled: false
-
 Style/PerlBackrefs:
   Enabled: false
 
