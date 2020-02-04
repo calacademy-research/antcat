@@ -3,9 +3,9 @@ require 'rails_helper'
 describe Autocomplete::AutocompleteJournals do
   describe "#call" do
     it "fuzzy matches journal names" do
-      create :journal, name: 'American Bibliographic Proceedings'
+      abp = create :journal, name: 'American Bibliographic Proceedings'
       create :journal, name: 'Playboy'
-      expect(described_class['ABP']).to eq ['American Bibliographic Proceedings']
+      expect(described_class['ABP']).to eq [abp]
     end
 
     it "requires matching the first letter" do
@@ -21,7 +21,7 @@ describe Autocomplete::AutocompleteJournals do
       2.times { create :article_reference, journal: rarely_used }
       3.times { create :article_reference, journal: most_used }
 
-      expect(described_class['']).to eq [most_used.name, rarely_used.name, never_used.name]
+      expect(described_class['']).to eq [most_used, rarely_used, never_used]
     end
   end
 end
