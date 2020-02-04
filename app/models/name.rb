@@ -32,7 +32,6 @@ class Name < ApplicationRecord
   validates :name, :epithet,
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
   validate :ensure_no_spaces_in_single_word_names
-  validate :ensure_epithet_in_name
   validate :ensure_starts_with_upper_case_letter
 
   after_save :set_taxon_caches
@@ -95,14 +94,6 @@ class Name < ApplicationRecord
                      else
                        name_parts.last
                      end
-    end
-
-    def ensure_epithet_in_name
-      return if name.blank? || epithet.blank?
-      return if name.include?(epithet)
-
-      errors.add :epithet, "must occur in the full name"
-      throw :abort
     end
 
     def ensure_no_spaces_in_single_word_names
