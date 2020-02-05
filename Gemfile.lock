@@ -482,7 +482,6 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
-  launchy
   mysql2
   newrelic_rpm
   paper_trail (~> 10.3)
