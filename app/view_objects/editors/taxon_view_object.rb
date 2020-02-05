@@ -8,13 +8,6 @@ module Editors
       @taxa_with_same_name ||= Taxon.where(name_cache: taxon.name_cache).where.not(id: taxon.id)
     end
 
-    def default_name_string
-      return unless taxon.is_a?(SpeciesGroupTaxon) || taxon.is_a?(Subgenus)
-      return taxon.species.name.name + ' ' if taxon.is_a?(Subspecies)
-      return taxon.subspecies.name.name + ' ' if taxon.is_a?(Infrasubspecies)
-      taxon.genus.name.name + ' '
-    end
-
     def edit_taxon_button
       link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
     end
