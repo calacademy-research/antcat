@@ -4,7 +4,9 @@ module Journals
       search_query = params[:term] || '' # TODO: Standardize all "q/qq/query/term".
 
       respond_to do |format|
-        format.json { render json: Autocomplete::AutocompleteJournals[search_query] }
+        format.json do
+          render json: Autocomplete::AutocompleteJournals[search_query].pluck(:name)
+        end
       end
     end
   end

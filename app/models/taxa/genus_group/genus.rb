@@ -36,10 +36,6 @@ class Genus < GenusGroupTaxon
     update_descendants_subfamilies
   end
 
-  def child_taxa
-    descendants
-  end
-
   def descendants
     Taxon.where(genus: self)
   end

@@ -78,7 +78,7 @@ class ReferenceSectionsController < ApplicationController
     end
 
     def reference_section_params
-      params.require(:reference_section).permit(:title_taxt, :subtitle_taxt, :references_taxt)
+      params.require(:reference_section).permit(:references_taxt, :subtitle_taxt, :title_taxt)
     end
 
     def per_page

@@ -25,7 +25,7 @@ module TaxonBrowser
             ["All #{name_html} genera", taxon.genera]
 
           when ALL_TAXA_IN_GENUS
-            ["All #{name_html} taxa", taxon.child_taxa]
+            ["All #{name_html} taxa", taxon.descendants]
 
           # Special case because subgenera are outside of the "main progression".
           when SUBGENERA_IN_GENUS # The catalog page in this case will be that of a genus.

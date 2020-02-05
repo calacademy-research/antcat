@@ -10,7 +10,7 @@ class QuickAndDirtyFixesController < ApplicationController
     old_type_taxt = taxon.type_taxt
     new_type_taxt = clean_type_taxt old_type_taxt
 
-    if taxon.update(type_taxt: nil)
+    if taxon.update(type_taxt: new_type_taxt)
       taxon.create_activity :update, current_user,
         edit_summary: "[automatic] Set type_taxt to <br>'#{new_type_taxt}' <br>was: <br>'#{old_type_taxt}'"
       render js: %(AntCat.notifySuccess("Changed to: '#{new_type_taxt || '<blank>'}'"))

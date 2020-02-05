@@ -56,9 +56,9 @@
 
 .row.margin-bottom
   .small-12.columns
-    .callout
-      =@reference.expanded_reference
-      =@reference.format_document_links
+    %h5 Reference
+    =@reference.expanded_reference
+    =@reference.format_document_links
 
 .row.margin-bottom
   .small-12.columns
@@ -88,7 +88,7 @@
         %tr
           %th Date
           %td
-            =or_dash @reference.decorate.format_date
+            =or_dash References::FormatDate[@reference.date]
             -if @reference.online_early?
               [online early]
         %tr

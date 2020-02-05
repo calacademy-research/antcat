@@ -26,20 +26,19 @@
     .row
       .medium-12.columns
         %h5 Existing combinations
-        .callout
-          %p
-          -if @possibly_existing_combinations.empty?
-            Found no obvious conflics. Note that subspecies of species are not checked for conflicts when searching for conflicts of a species.
-          -else
-            =antcat_icon 'warning-icon'
-            This new combination looks a lot like existing combinations.
-            %table
-              %thead
+        %p
+        -if @possibly_existing_combinations.empty?
+          Found no obvious conflics. Note that subspecies of species are not checked for conflicts when searching for conflicts of a species.
+        -else
+          =antcat_icon 'warning-icon'
+          This new combination looks a lot like existing combinations.
+          %table
+            %thead
+              %tr
+                %th Taxon
+                %th Existing combination
+            %tbody
+              -@possibly_existing_combinations.each do |taxon|
                 %tr
-                  %th Taxon
-                  %th Existing combination
-              %tbody
-                -@possibly_existing_combinations.each do |taxon|
-                  %tr
-                    %td=taxon.decorate.id_and_name_and_author_citation
-                    %td=taxon.protonym.decorate.link_to_protonym
+                  %td=taxon.decorate.id_and_name_and_author_citation
+                  %td=taxon.protonym.decorate.link_to_protonym

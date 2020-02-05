@@ -1,15 +1,22 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::AntwebDetax do
+  include TestLinksHelpers
+
   describe "#call" do
     describe "tax tags (taxa)" do
       let!(:taxon) { create :family }
 
       specify do
-        results = described_class["{tax #{taxon.id}}"]
+        expect(described_class["{tax #{taxon.id}}"]).to eq antweb_taxon_link(taxon)
+      end
+    end
 
-        expect(results).to include taxon.name_cache
-        expect(results).to include "antcat.org"
+    describe "taxac tags (taxa with author citation)" do
+      let!(:taxon) { create :family }
+
+      specify do
+        expect(described_class["{taxac #{taxon.id}}"]).to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
       end
     end
 
@@ -17,10 +24,7 @@ describe Exporters::Antweb::AntwebDetax do
       let!(:reference) { create :article_reference }
 
       specify do
-        results = described_class["{ref #{reference.id}}"]
-
-        expect(results).to include reference.title
-        expect(results).to include "antcat.org"
+        expect(described_class["{ref #{reference.id}}"]).to eq Exporters::Antweb::AntwebInlineCitation[reference]
       end
     end
   end
