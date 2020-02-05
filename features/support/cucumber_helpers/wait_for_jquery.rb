@@ -4,7 +4,7 @@ module CucumberHelpers
       Timeout.timeout(Capybara.default_max_wait_time) do
         loop do
           active = page.evaluate_script "jQuery.active"
-          break if active == 0
+          break if active == 0 # rubocop:disable Style/NumericPredicate
         end
       end
     end

@@ -175,9 +175,6 @@ Style/CollectionMethods:
 Style/Documentation:
   Enabled: false
 
-Style/DoubleNegation:
-  Enabled: false
-
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
@@ -203,15 +200,6 @@ Style/MutableConstant:
   Enabled: false
 
 Style/NumericLiterals:
-  Enabled: false
-
-Style/NumericPredicate:
-  Enabled: false
-
-Style/PerlBackrefs:
-  Enabled: false
-
-Style/RegexpLiteral:
   Enabled: false
 
 Style/StringLiterals:

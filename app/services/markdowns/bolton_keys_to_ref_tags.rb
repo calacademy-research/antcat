@@ -21,7 +21,7 @@ module Markdowns
             if reference
               "{ref #{reference.id}}:"
             else
-              "#{$1}: "
+              "#{Regexp.last_match(1)}: "
             end
           end
         end.join("; ").gsub("  ", " ")

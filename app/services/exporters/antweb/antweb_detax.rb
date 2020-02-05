@@ -27,7 +27,7 @@ module Exporters
         # Taxa, "{tax 123}".
         def parse_taxon_ids!
           taxt.gsub!(Taxt::ANTWEB_TAX_TAG_REGEX) do
-            taxon = Taxon.find_by(id: $1)
+            taxon = Taxon.find_by(id: Regexp.last_match(1))
 
             if taxon
               Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
@@ -38,7 +38,7 @@ module Exporters
         # Taxa with author citation, "{taxac 123}".
         def parse_taxon_with_author_citation_ids!
           taxt.gsub!(Taxt::ANTWEB_TAXAC_TAG_REGEX) do
-            taxon = Taxon.find_by(id: $1)
+            taxon = Taxon.find_by(id: Regexp.last_match(1))
 
             if taxon
               Exporters::Antweb::Exporter.antcat_taxon_link_with_name_and_author_citation taxon
@@ -49,7 +49,7 @@ module Exporters
         # References, "{ref 123}".
         def parse_reference_ids!
           taxt.gsub!(Taxt::ANTWEB_REF_TAG_REGEX) do
-            reference = Reference.find_by(id: $1)
+            reference = Reference.find_by(id: Regexp.last_match(1))
 
             if reference
               Exporters::Antweb::AntwebInlineCitation[reference]
