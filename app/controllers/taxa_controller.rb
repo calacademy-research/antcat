@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
   def new
     @taxon = build_taxon_with_parent
     @taxon.protonym.authorship.reference ||= DefaultReference.get session
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
+    @default_name_string = Editors::TaxonFormViewObject.new(@taxon).default_name_string
   end
 
   def create
@@ -24,11 +24,9 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
-  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
+  rescue ActiveRecord::RecordInvalid
     render :new
   rescue Names::BuildNameFromString::UnparsableName => e
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
     @taxon.errors.add :base, "Could not parse name #{e.message}"
     # Maintain entered names.
     @taxon.build_name(name: params[:taxon_name_string]) unless @taxon.name.name
@@ -44,7 +42,7 @@ class TaxaController < ApplicationController
 
     @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
-  rescue ActiveRecord::RecordInvalid, Taxa::TaxonExists
+  rescue ActiveRecord::RecordInvalid
     render :edit
   end
 
@@ -86,55 +84,33 @@ class TaxaController < ApplicationController
 
     def taxon_params
       params.require(:taxon).permit(
-        :status,
-        :protonym_id,
-        { name_attributes: [:gender] },
-        :homonym_replaced_by_id,
-        :current_valid_taxon_id,
-        :incertae_sedis_in,
-        :original_combination,
-        :fossil,
         :collective_group_name,
-        :nomen_nudum,
-        :unresolved_homonym,
-        :ichnotaxon,
-        :hong,
-        :origin,
+        :current_valid_taxon_id,
+        :fossil,
         :headline_notes_taxt,
-        {
-          protonym_attributes: [
-            :fossil,
-            :sic,
-            :primary_type_information_taxt,
-            :secondary_type_information_taxt,
-            :type_notes_taxt,
-            :biogeographic_region,
-            :locality,
-            :id,
-            { authorship_attributes: [:pages, :forms, :notes_taxt, :id, :reference_id] }
-          ]
-        },
+        :homonym_replaced_by_id,
+        :hong,
+        :ichnotaxon,
+        :incertae_sedis_in,
+        :nomen_nudum,
+        :origin,
+        :original_combination,
+        :protonym_id,
+        :status,
         :type_taxon_id,
-        :type_taxt
+        :type_taxt,
+        :unresolved_homonym,
+        name_attributes: [:gender],
+        protonym_attributes: [
+          :id, :biogeographic_region, :fossil, :locality, :primary_type_information_taxt,
+          :secondary_type_information_taxt, :sic, :type_notes_taxt,
+          { authorship_attributes: [:id, :forms, :notes_taxt, :pages, :reference_id] }
+        ]
       )
     end
 
     def build_taxon_with_parent
       parent = Taxon.find(params[:parent_id])
-
-      taxon = build_taxon params[:rank_to_create]
-      taxon.parent = parent
-      taxon
-    end
-
-    def build_taxon rank
-      taxon_class = rank.to_s.constantize
-
-      taxon = taxon_class.new
-      taxon.build_name
-      taxon.build_protonym
-      taxon.protonym.build_name
-      taxon.protonym.build_authorship
-      taxon
+      Taxa::BuildTaxon[params[:rank_to_create], parent]
     end
 end

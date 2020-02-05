@@ -38,9 +38,30 @@ module Catalog
     private
 
       def advanced_search_params
-        params.slice(:author_name, :type, :year, :name, :name_search_type, :epithet, :locality, :valid_only,
-          :biogeographic_region, :genus, :forms, :type_information, :status, :fossil, :must_have_history_items,
-          :nomen_nudum, :unresolved_homonym, :ichnotaxon, :hong, :collective_group_name, :incertae_sedis_in, :protonym)
+        params.slice(
+          :author_name,
+          :biogeographic_region,
+          :collective_group_name,
+          :epithet,
+          :forms,
+          :fossil,
+          :genus,
+          :hong,
+          :ichnotaxon,
+          :incertae_sedis_in,
+          :locality,
+          :must_have_history_items,
+          :name,
+          :name_search_type,
+          :nomen_nudum,
+          :protonym,
+          :status,
+          :type,
+          :type_information,
+          :unresolved_homonym,
+          :valid_only,
+          :year
+        )
       end
 
       def per_page

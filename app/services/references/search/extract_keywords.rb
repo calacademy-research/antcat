@@ -21,7 +21,7 @@ module References
           if match.names.empty?
             # If there are no named captures, use the 'keyword' as key.
             # Eg 'year:2004' --> keywords_params[:year] = '2004'
-            keywords_params[keyword.to_sym] = $1
+            keywords_params[keyword.to_sym] = Regexp.last_match(1)
           else
             # If there are named captures, use them as keys.
             # Eg 'year:2004-2005' -->

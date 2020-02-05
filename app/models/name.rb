@@ -32,7 +32,6 @@ class Name < ApplicationRecord
   validates :name, :epithet,
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
   validate :ensure_no_spaces_in_single_word_names
-  validate :ensure_epithet_in_name
   validate :ensure_starts_with_upper_case_letter
 
   after_save :set_taxon_caches
@@ -41,10 +40,6 @@ class Name < ApplicationRecord
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
-
-  # TODO: Remove once we can fully prevent new cases (including name conflicts from undoing changes).
-  scope :orphaned, -> { Name.left_outer_joins(:taxa, :protonyms).where("protonyms.id IS NULL AND taxa.id IS NULL") }
-  scope :not_orphaned, -> { Name.where.not(id: orphaned.select(:id)) } # `Taxon.count + Protonym.count`
 
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes replace_newlines: true
@@ -77,14 +72,6 @@ class Name < ApplicationRecord
     taxa.first || protonyms.first
   end
 
-  def too_many_owners?
-    (taxa.count + protonyms.count) > 1
-  end
-
-  def orphaned?
-    !(taxa.exists? || protonyms.exists?)
-  end
-
   def single_word_name?
     type.in? SINGLE_WORD_NAMES
   end
@@ -107,14 +94,6 @@ class Name < ApplicationRecord
                      else
                        name_parts.last
                      end
-    end
-
-    def ensure_epithet_in_name
-      return if name.blank? || epithet.blank?
-      return if name.include?(epithet)
-
-      errors.add :epithet, "must occur in the full name"
-      throw :abort
     end
 
     def ensure_no_spaces_in_single_word_names

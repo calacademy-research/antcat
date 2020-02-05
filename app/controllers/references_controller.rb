@@ -84,23 +84,23 @@ class ReferencesController < ApplicationController
 
     def reference_params
       params.require(:reference).permit(
-        :citation_year,
-        :bolton_key,
-        :doi,
-        :date,
-        :title,
-        :series_volume_issue,
-        :journal_name,
-        :online_early,
-        :publisher_string,
-        :public_notes,
-        :editor_notes,
-        :taxonomic_notes,
-        :pages_in,
-        :nesting_reference_id,
-        :citation,
         :author_names_string,
         :author_names_suffix,
+        :bolton_key,
+        :citation,
+        :citation_year,
+        :date,
+        :doi,
+        :editor_notes,
+        :journal_name,
+        :nesting_reference_id,
+        :online_early,
+        :pages_in,
+        :public_notes,
+        :publisher_string,
+        :series_volume_issue,
+        :taxonomic_notes,
+        :title,
         document_attributes: [:id, :file, :url, :public]
       )
     end

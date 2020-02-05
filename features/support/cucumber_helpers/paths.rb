@@ -17,14 +17,14 @@ module CucumberHelpers
         catalog_search_path
 
       when /^the catalog page for "([^"]*)"$/
-        taxon = Taxon.find_by(name_cache: $1)
+        taxon = Taxon.find_by(name_cache: Regexp.last_match(1))
         "/catalog/#{taxon.id}"
       when 'the catalog'
         root_path
 
       # Editing (catalog).
       when /^the edit page for "(.*)"$/
-        "/taxa/#{Taxon.find_by(name_cache: $1).id}/edit"
+        "/taxa/#{Taxon.find_by(name_cache: Regexp.last_match(1)).id}/edit"
       when 'the new taxon page'
         "/taxa/new"
 
@@ -41,7 +41,7 @@ module CucumberHelpers
       when 'the page of the oldest reference'
         reference_path(Reference.first)
       when /^the page of the reference "([^"]*)"$/
-        reference = find_reference_by_keey $1
+        reference = find_reference_by_keey Regexp.last_match(1)
         reference_path(reference)
       when 'the edit page for the most recent reference'
         edit_reference_path(Reference.last)
@@ -49,7 +49,7 @@ module CucumberHelpers
       when 'the authors page'
         authors_path
       when /^the author page for "(.*)"$/
-        author = AuthorName.find_by(name: $1).author
+        author = AuthorName.find_by(name: Regexp.last_match(1)).author
         "/authors/#{author.id}"
 
       # Editor's Panel.
@@ -83,7 +83,7 @@ module CucumberHelpers
       when 'the open issues page'
         "/issues"
       when /^the issue page for "([^"]*)"$/
-        issue = Issue.find_by(title: $1)
+        issue = Issue.find_by(title: Regexp.last_match(1))
         "/issues/#{issue.id}"
       when 'the new issue page'
         "/issues/new"
@@ -108,7 +108,7 @@ module CucumberHelpers
 
       # Users.
       when /^the user page for "([^"]*)"$/
-        user = User.find_by(name: $1)
+        user = User.find_by(name: Regexp.last_match(1))
         "/users/#{user.id}"
       when 'the login page'
         '/my/users/sign_in'

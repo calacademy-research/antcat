@@ -1,3 +1,7 @@
+Given("an author name exists with a name of {string}") do |name|
+  create :author_name, name: name
+end
+
 Given("the following names exist for an(other) author") do |table|
   author = create :author
   table.raw.each { |row| author.names.create!(name: row.first) }

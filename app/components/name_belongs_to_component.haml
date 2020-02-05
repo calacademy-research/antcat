@@ -5,14 +5,3 @@ record
   =name.owner.decorate.id_and_name_and_author_citation
 -else
   =name.owner.decorate.link_to_protonym
-
-- # TODO: This should not really happen, but as long as it's possible.
--if name.too_many_owners?
-  .callout.alert
-    =antcat_icon 'warning-icon'
-    %strong Warning!
-    This name is used by more than one taxon/protonym.
-    -name.taxa.each do |taxon|
-      =taxon.decorate.id_and_name_and_author_citation
-    -name.protonyms.each do |protonym|
-      =protonym.decorate.link_to_protonym

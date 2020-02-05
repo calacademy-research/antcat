@@ -10,9 +10,6 @@ GIT
 GEM
   remote: https://rubygems.org/
   specs:
-    RubyInline (3.12.5)
-      ZenTest (~> 4.3)
-    ZenTest (4.12.0)
     actioncable (5.2.4.1)
       actionpack (= 5.2.4.1)
       nio4r (~> 2.0)
@@ -172,8 +169,6 @@ GEM
       railties (>= 3.1.0)
       sass (>= 3.3.0, < 3.5)
       sprockets-es6 (>= 0.9.0)
-    fuzzy-string-match (1.0.1)
-      RubyInline (>= 3.8.6)
     gherkin (5.1.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
@@ -471,7 +466,6 @@ DEPENDENCIES
   factory_bot_rails
   font-awesome-rails
   foundation-rails (= 6.3.1.0)
-  fuzzy-string-match
   gretel
   guard-rspec
   guard-rubocop
@@ -482,7 +476,6 @@ DEPENDENCIES
   jquery-atwho-rails
   jquery-rails (> 4.0)
   jquery-ui-rails (> 5.0)
-  launchy
   mysql2
   newrelic_rpm
   paper_trail (~> 10.3)

@@ -26,7 +26,6 @@ gem 'draper'
 gem 'ey_config' # Required access service configurations through `EY::Config` on EngineYard.
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
-gem 'fuzzy-string-match', require: false
 gem 'gretel'
 gem 'high_voltage'
 gem 'invisible_captcha'
@@ -60,7 +59,6 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'headless'
-  gem 'launchy'
   gem 'pry'
   gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.

@@ -7,12 +7,11 @@ module Autocomplete
     end
 
     def call
-      Journal.select('journals.name, COUNT(*)').
+      Journal.
         left_outer_joins(:references).
         where('journals.name LIKE ?', search_expression).
         group('journals.id').
-        order(Arel.sql('COUNT(*) DESC')).
-        pluck(:name)
+        order(Arel.sql('COUNT(*) DESC'))
     end
 
     private

@@ -6,13 +6,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :name, :name_type, :orphaned?
+        t.header :id, :name, :name_type
         t.rows do |name|
           [
             name.id,
             link_to(name.name_html, name_path(name)),
-            name.type,
-            ('Yes' if name.orphaned?)
+            name.type
           ]
         end
       end

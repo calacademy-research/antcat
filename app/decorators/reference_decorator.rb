@@ -20,28 +20,6 @@ class ReferenceDecorator < Draper::Decorator
     format_italics sanitize reference.taxonomic_notes
   end
 
-  # TODO: Store normalized value in the database?
-  def format_date
-    reference_date = reference.date
-    return unless reference_date
-    return reference_date if reference_date.size < 4
-
-    match = reference_date.match /(.*?)(\d{4,8})(.*)/
-    prefix = match[1]
-    digits = match[2]
-    suffix = match[3]
-
-    year  = digits[0...4]
-    month = digits[4...6]
-    day   = digits[6...8]
-
-    date = year
-    date << '-' + month if month.present?
-    date << '-' + day if day.present?
-
-    prefix + date + suffix
-  end
-
   def format_document_links
     [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
   end

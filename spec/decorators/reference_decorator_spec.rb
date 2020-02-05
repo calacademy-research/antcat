@@ -102,28 +102,6 @@ describe ReferenceDecorator do
     end
   end
 
-  describe "#format_date" do
-    it "uses ISO 8601 format for calendar dates" do
-      reference = build_stubbed :reference, date: '20101213'
-      expect(reference.decorate.format_date).to eq '2010-12-13'
-    end
-
-    it "handles years without months and days" do
-      reference = build_stubbed :reference, date: '201012'
-      expect(reference.decorate.format_date).to eq '2010-12'
-    end
-
-    it "handles years with months but without days" do
-      reference = build_stubbed :reference, date: '2010'
-      expect(reference.decorate.format_date).to eq '2010'
-    end
-
-    it "handles missing dates" do
-      reference = build_stubbed :reference, date: ''
-      expect(reference.decorate.format_date).to eq ''
-    end
-  end
-
   describe "#format_review_state" do
     let(:reference) { build_stubbed :article_reference }
 

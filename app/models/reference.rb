@@ -151,7 +151,7 @@ class Reference < ApplicationRecord
     end
 
     def citation_year_without_extras
-      citation_year.gsub(%r{ .*$}, '')
+      citation_year.gsub(/ .*$/, '')
     end
 
     def check_not_referenced
