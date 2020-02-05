@@ -1,6 +1,6 @@
 class NamesController < ApplicationController
   before_action :ensure_user_is_editor, except: [:show]
-  before_action :set_name, only: [:show, :edit, :update, :destroy]
+  before_action :set_name, only: [:show, :edit, :update]
 
   def show
   end
@@ -14,15 +14,6 @@ class NamesController < ApplicationController
       redirect_to name_path(@name), notice: "Successfully updated name."
     else
       render :edit
-    end
-  end
-
-  def destroy
-    if @name.destroy
-      @name.create_activity :destroy, current_user
-      redirect_to root_path, notice: "Successfully deleted name."
-    else
-      redirect_to name_path(@name), alert: @name.errors.full_messages.to_sentence
     end
   end
 

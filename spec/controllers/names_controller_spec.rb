@@ -7,7 +7,6 @@ describe NamesController do
 
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
     context "when signed in as a helper" do
@@ -15,7 +14,6 @@ describe NamesController do
 
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -49,27 +47,6 @@ describe NamesController do
         expect(activity.trackable).to eq name
         expect(activity.action).to eq 'update'
         expect(activity.parameters).to eq name_html: name.reload.name_html
-      end
-    end
-  end
-
-  describe "DELETE destroy" do
-    before { sign_in create(:user, :editor) }
-
-    context 'when name can be destroyed' do
-      let!(:name) { create :subspecies_name }
-
-      it 'destroys the name' do
-        expect { delete :destroy, params: { id: name.id } }.to change { Name.count }.by(-1)
-      end
-
-      it 'creates an activity' do
-        expect { delete :destroy, params: { id: name.id } }.to change { Activity.count }.by(1)
-
-        activity = Activity.last
-        expect(activity.trackable_id).to eq name.id
-        expect(activity.action).to eq 'destroy'
-        expect(activity.parameters).to eq name_html: name.name_html
       end
     end
   end

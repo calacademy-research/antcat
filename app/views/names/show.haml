@@ -6,8 +6,6 @@
 =content_for :breadcrumbs_right do
   -if user_is_editor?
     =link_to "Edit", edit_name_path(@name), class: "btn-normal"
-    -if @name.orphaned?
-      =link_to "Delete", name_path(@name), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
   =link_to "History", name_history_path(@name), class: "btn-normal"
 
 .row.margin-bottom
