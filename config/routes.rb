@@ -138,7 +138,7 @@ Rails.application.routes.draw do
   end
 
   get 'names/check_name_conflicts' => 'names/check_name_conflicts#show'
-  resources :names, only: [:show, :edit, :update, :destroy] do
+  resources :names, only: [:show, :edit, :update] do
     scope module: :names do
       resource :history, only: :show
     end
