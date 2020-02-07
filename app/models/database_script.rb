@@ -24,6 +24,8 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
+  delegate :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
+
   def self.inherited(subclass)
     subclass.include Rails.application.routes.url_helpers
     subclass.include ActionView::Helpers::UrlHelper
@@ -63,29 +65,7 @@ class DatabaseScript
   end
 
   def title
-    end_data[:title]&.html_safe || filename_without_extension.humanize
-  end
-
-  def category
-    end_data[:category] || ""
-  end
-
-  def tags
-    end_data[:tags] || []
-  end
-
-  def issue_description
-    end_data[:issue_description]
-  end
-
-  def description
-    end_data[:description] || ""
-  end
-
-  def related_scripts
-    (end_data[:related_scripts] || []).map do |class_name|
-      self.class.safe_new_from_filename_without_extension class_name
-    end.reject { |database_script| database_script.is_a?(self.class) }
+    end_data_attributes.title || filename_without_extension.humanize
   end
 
   def statistics
@@ -120,9 +100,8 @@ class DatabaseScript
 
   private
 
-    # The scripts' description, tags, etc, are stored in `DATA`.
-    def end_data
-      @end_data ||= ReadEndData.new(script_path).call
+    def end_data_attributes
+      @end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(script_path)
     end
 
     def script_path
