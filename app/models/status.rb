@@ -38,7 +38,17 @@ class Status
     ]
   }
 
-  def self.plural status
-    PLURALS[status] || status
+  class << self
+    def plural status
+      PLURALS[status] || status
+    end
+
+    def cannot_have_current_valid_taxon? status
+      status.in? CURRENT_VALID_TAXON_VALIDATION[:absence]
+    end
+
+    def requires_current_valid_taxon? status
+      status.in? CURRENT_VALID_TAXON_VALIDATION[:presence]
+    end
   end
 end
