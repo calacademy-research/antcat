@@ -21,7 +21,7 @@ describe Taxa::Operations::ElevateToSpecies do
 
     describe "successfully elevating" do
       context "when there is no name collision" do
-        let!(:subspecies) { create :subspecies }
+        let!(:subspecies) { create :subspecies, subfamily: create(:subfamily) }
 
         it "does not modify the original subspecies record" do
           expect { described_class[subspecies] }.to_not change { subspecies.reload.attributes }
@@ -61,8 +61,10 @@ describe Taxa::Operations::ElevateToSpecies do
           new_species = described_class[subspecies]
 
           expect(new_species.subfamily).to eq subspecies.subfamily
+          expect(new_species.subfamily).to be_a Subfamily
+
           expect(new_species.genus).to eq subspecies.genus
-          expect(new_species.subgenus).to eq subspecies.subgenus
+          expect(new_species.genus).to be_a Genus
         end
 
         it "nilifies `species_id`" do

@@ -5,8 +5,6 @@ class Subspecies < SpeciesGroupTaxon
 
   validates :species, presence: true
 
-  before_validation :set_genus
-
   def parent
     species
   end
@@ -34,13 +32,4 @@ class Subspecies < SpeciesGroupTaxon
   def childrens_rank_in_words
     "infrasubspecies"
   end
-
-  private
-
-    def set_genus
-      return if genus
-      # TODO: `if species` is only here to satisfy specs. See if we want to change `before_validation`
-      # to `before_save`, or simply not store `genus_id` for species.
-      self.genus = species.genus if species
-    end
 end

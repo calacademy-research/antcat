@@ -79,14 +79,14 @@ describe TaxonPolicy do
   end
 
   describe '#allow_force_change_parent?' do
-    %i[family subfamily].each do |rank|
+    %i[family subfamily tribe subgenus].each do |rank|
       specify do
         taxon = build_stubbed rank
         expect(described_class.new(taxon).allow_force_change_parent?).to eq false
       end
     end
 
-    %i[tribe genus subgenus species subspecies].each do |rank|
+    %i[genus species subspecies].each do |rank|
       specify do
         taxon = build_stubbed rank
         expect(described_class.new(taxon).allow_force_change_parent?).to eq true

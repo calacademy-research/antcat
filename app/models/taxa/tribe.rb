@@ -18,9 +18,8 @@ class Tribe < Taxon
     self.subfamily = parent_taxon
   end
 
-  def update_parent new_parent
-    self.parent = new_parent
-    update_descendants_subfamilies
+  def update_parent _new_parent
+    raise "cannot update parent of tribes"
   end
 
   def children
@@ -30,14 +29,4 @@ class Tribe < Taxon
   def childrens_rank_in_words
     "genera"
   end
-
-  private
-
-    def update_descendants_subfamilies
-      genera.each do |genus|
-        genus.update(subfamily: subfamily)
-        genus.species.each { |s| s.update(subfamily: subfamily) }
-        genus.subspecies.each { |s| s.update(subfamily: subfamily) }
-      end
-    end
 end

@@ -38,7 +38,7 @@ describe Taxa::Operations::ConvertToSubspecies do
     describe "successful conversion" do
       context "when there is no name collision" do
         let!(:species) { create :species }
-        let!(:target_species_parent) { create :species }
+        let!(:target_species_parent) { create :species, subfamily: create(:subfamily) }
 
         it "does not modify the original species record" do
           expect { described_class[species, target_species_parent] }.to_not change { species.reload.attributes }
@@ -78,8 +78,13 @@ describe Taxa::Operations::ConvertToSubspecies do
           new_subspecies = described_class[species, target_species_parent]
 
           expect(new_subspecies.subfamily).to eq target_species_parent.subfamily
+          expect(new_subspecies.subfamily).to be_a Subfamily
+
           expect(new_subspecies.genus).to eq target_species_parent.genus
+          expect(new_subspecies.genus).to be_a Genus
+
           expect(new_subspecies.species).to eq target_species_parent
+          expect(new_subspecies.species).to be_a Species
         end
 
         context "when taxon belongs to a subgenus" do

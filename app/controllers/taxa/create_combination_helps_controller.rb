@@ -27,11 +27,8 @@ module Taxa
       end
 
       def possibly_existing_combinations
-        if @taxon.is_a? Subspecies
-          @new_parent.parent.find_subspecies_in_genus(@taxon.name.epithet)
-        else
-          @new_parent.find_epithet_in_genus(@taxon.name.epithet)
-        end
+        genus = @new_parent.is_a?(Genus) ? @new_parent : @new_parent.genus
+        Taxa::FindEpithetInGenus[genus, @taxon.name.epithet]
       end
 
       def target_rank

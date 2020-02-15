@@ -20,7 +20,7 @@ class TaxonPolicy
   end
 
   def allow_force_change_parent?
-    taxon.type.in?(%w[Tribe Genus Subgenus Species Subspecies])
+    taxon.type.in?(%w[Genus Species Subspecies])
   end
 
   private

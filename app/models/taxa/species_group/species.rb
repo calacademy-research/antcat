@@ -21,6 +21,8 @@ class Species < SpeciesGroupTaxon
     self.subfamily = parent_taxon.subfamily
   end
 
+  # TODO: Remove all `#update_parent` once the data is in a better shape since
+  # they are causing issues due to how records are modified in place without leaving any trace.
   def update_parent new_parent
     # TODO: This does not update names of subspecies.
     raise Taxa::TaxonHasSubspecies, 'Species has subspecies' if subspecies.any?

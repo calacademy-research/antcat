@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Infrasubspecies do
-  let(:taxon) { described_class.new }
-
   it { is_expected.to validate_presence_of :genus }
   it { is_expected.to validate_presence_of :species }
   it { is_expected.to validate_presence_of :subspecies }
@@ -35,10 +33,14 @@ describe Infrasubspecies do
   end
 
   describe "#update_parent" do
+    let(:taxon) { described_class.new }
+
     specify { expect { taxon.update_parent(nil) }.to raise_error("cannot update parent of infrasubspecies") }
   end
 
   describe "#children" do
+    let(:taxon) { described_class.new }
+
     specify { expect(taxon.children).to eq Taxon.none }
   end
 end

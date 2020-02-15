@@ -1,25 +1,15 @@
 require 'rails_helper'
 
 describe Subspecies do
-  let(:genus) { create :genus }
+  describe 'validations' do
+    subject(:taxon) { create :subspecies }
 
-  it { is_expected.to validate_presence_of :genus }
-  it { is_expected.to validate_presence_of :species }
+    it { is_expected.to validate_presence_of :genus }
+    it { is_expected.to validate_presence_of :species }
+  end
 
   describe 'relations' do
     it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
-  end
-
-  it "has its subfamily assigned from its genus" do
-    subspecies = create :subspecies, genus: genus, subfamily: nil
-    expect(subspecies.subfamily).to eq genus.subfamily
-  end
-
-  it "has its genus assigned from its species" do
-    species = create :species, genus: genus
-    subspecies = create :subspecies, genus: nil, species: species
-
-    expect(subspecies.genus).to eq genus
   end
 
   describe "#update_parent" do

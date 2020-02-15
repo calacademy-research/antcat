@@ -1,12 +1,19 @@
 class Genus < GenusGroupTaxon
   belongs_to :tribe
 
+  # TODO: Maybe rename to `children` after investigating if we want to keep the methods
+  # currently named `#children` (or rename them to `#direct_children`).
+  has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
+  has_many :species_without_subgenus, -> { without_subgenus }, class_name: 'Species'
+
   with_options dependent: :restrict_with_error do
     has_many :species
     has_many :subspecies
     has_many :subgenera
   end
 
+  scope :incertae_sedis_in_family, -> { where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY) }
+  scope :incertae_sedis_in_subfamily, -> { where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY) }
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }
 
@@ -34,27 +41,6 @@ class Genus < GenusGroupTaxon
   def update_parent new_parent
     self.parent = new_parent
     update_descendants_subfamilies
-  end
-
-  def descendants
-    Taxon.where(genus: self)
-  end
-
-  def species_without_subgenus
-    species.without_subgenus
-  end
-
-  def find_epithet_in_genus target_epithet_string
-    Taxon.joins(:name).where(genus: self).
-      where(names: { epithet: Names::EpithetSearchSet[target_epithet_string] })
-  end
-
-  # TODO: This is the same as `#find_epithet_in_genus`.
-  # Found this in the git history:
-  # `results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])`
-  def find_subspecies_in_genus target_subspecies_string
-    Taxon.joins(:name).where(genus: self).
-      where(names: { epithet: Names::EpithetSearchSet[target_subspecies_string] })
   end
 
   private

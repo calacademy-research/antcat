@@ -11,7 +11,7 @@ describe Taxa::ForceParentChangesController do
   end
 
   describe "GET show" do
-    let(:taxon) { create :tribe }
+    let(:taxon) { create :genus }
 
     before { sign_in create(:user, :editor) }
 
@@ -19,7 +19,7 @@ describe Taxa::ForceParentChangesController do
   end
 
   describe "POST create" do
-    let(:taxon) { create :tribe }
+    let(:taxon) { create :genus }
     let(:new_parent) { create :family }
     let(:user) { create :user, :editor }
 
@@ -33,9 +33,9 @@ describe Taxa::ForceParentChangesController do
 
     context 'when `new_parent_id` is missing' do
       context "when taxon isn't a genus" do
-        let(:taxon) { create :tribe }
+        let(:taxon) { create :species }
 
-        specify do
+        it 'requires a parent' do
           post :create, params: { taxa_id: taxon.id }
 
           expect(response).to render_template :show
@@ -46,7 +46,7 @@ describe Taxa::ForceParentChangesController do
       context 'when taxon is a genus' do
         let(:taxon) { create :genus }
 
-        specify do
+        it 'does not require a parent (genera can be incertae sedis in Formicidae)' do
           post :create, params: { taxa_id: taxon.id }
 
           expect(response).to redirect_to catalog_path(taxon)

@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 describe SpeciesGroupTaxon do
-  it "has its subfamily set from its genus" do
-    genus = create :genus
-    expect(genus.subfamily).not_to eq nil
-
-    taxon = create :species, genus: genus, subfamily: nil
-    expect(taxon.subfamily).to eq genus.subfamily
-  end
-
   describe "#recombination?" do
     context "when genus part of name is different than genus part of protonym" do
       let!(:species) { create :species, name_string: 'Atta minor' }

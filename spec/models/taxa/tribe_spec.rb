@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 describe Tribe do
-  let(:tribe) { create :tribe, subfamily: subfamily }
-  let(:subfamily) { create :subfamily }
-
   it { is_expected.to validate_presence_of :subfamily }
 
   describe 'relations' do
@@ -13,6 +10,8 @@ describe Tribe do
   end
 
   it "can have genera, which are its children" do
+    tribe = create :tribe
+
     genus = create :genus, tribe: tribe
     another_genus = create :genus, tribe: tribe
 
@@ -21,33 +20,8 @@ describe Tribe do
   end
 
   describe "#update_parent" do
-    let!(:new_subfamily) { create :subfamily }
-
-    it "assigns the subfamily when parent is a tribe" do
-      tribe.update_parent new_subfamily
-      expect(tribe.subfamily).to eq new_subfamily
-    end
-
-    it "assigns the subfamily of its descendants" do
-      genus = create :genus, tribe: tribe
-      species = create :species, genus: genus
-      create :subspecies, species: species, genus: genus
-
-      # Test initial.
-      expect(tribe.subfamily).to eq subfamily
-      expect(tribe.reload.genera.first.subfamily).to eq subfamily
-      expect(tribe.reload.genera.first.species.first.subfamily).to eq subfamily
-      expect(tribe.reload.genera.first.subspecies.first.subfamily).to eq subfamily
-
-      # Act.
-      tribe.update_parent new_subfamily
-      tribe.save!
-
-      # Assert.
-      expect(tribe.reload.subfamily).to eq new_subfamily
-      expect(tribe.reload.genera.first.subfamily).to eq new_subfamily
-      expect(tribe.reload.genera.first.species.first.subfamily).to eq new_subfamily
-      expect(tribe.reload.genera.first.subspecies.first.subfamily).to eq new_subfamily
+    specify do
+      expect { described_class.new.update_parent(nil) }.to raise_error("cannot update parent of tribes")
     end
   end
 end

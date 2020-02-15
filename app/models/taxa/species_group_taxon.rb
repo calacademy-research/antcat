@@ -8,8 +8,6 @@ class SpeciesGroupTaxon < Taxon
 
   validates :genus, presence: true
 
-  before_create :set_subfamily
-
   def recombination?
     # TODO: Check if this is true.
     # To avoid `NoMethodError` for records with protonyms above genus rank.
@@ -18,10 +16,4 @@ class SpeciesGroupTaxon < Taxon
 
     name.genus_epithet != protonym_name.genus_epithet
   end
-
-  private
-
-    def set_subfamily
-      self.subfamily = genus.subfamily if genus&.subfamily
-    end
 end

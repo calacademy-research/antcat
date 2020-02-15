@@ -1,17 +1,26 @@
 require 'rails_helper'
 
 describe Genus do
-  let(:tribe) { create :tribe, subfamily: subfamily }
-  let(:subfamily) { create :subfamily }
-  let(:genus) { create :genus }
-
   describe 'relations' do
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subgenera).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:descendants).dependent(:restrict_with_error) }
+  end
+
+  describe "#descendants" do
+    let!(:genus) { create :genus }
+    let!(:species) { create :species, genus: genus }
+    let!(:subgenus) { create :subgenus, genus: genus }
+    let!(:subspecies) { create :subspecies, genus: genus, species: species }
+
+    it "returns all species, subspecies and subgenera of the genus" do
+      expect(genus.descendants).to match_array [species, subgenus, subspecies]
+    end
   end
 
   it "can have species, which are its children" do
+    genus = create :genus
     species = create :species, genus: genus
     other_species = create :species, genus: genus
 
@@ -20,35 +29,22 @@ describe Genus do
   end
 
   describe "#without_subfamily" do
-    let!(:cariridris) { create :genus, subfamily: nil }
+    let!(:genus) { create :genus, subfamily: nil }
 
     it "returns genera with no subfamily" do
-      expect(described_class.without_subfamily.all).to eq [cariridris]
+      expect(described_class.without_subfamily.all).to eq [genus]
     end
   end
 
   describe "#without_tribe" do
+    let!(:genus) { create :genus, tribe: nil }
+
+    before do
+      create :genus, tribe: create(:tribe)
+    end
+
     it "returns genera with no tribe" do
-      create :genus, tribe: tribe, subfamily: tribe.subfamily
-      taxon = create :genus, subfamily: tribe.subfamily, tribe: nil
-
-      expect(described_class.without_tribe.all).to eq [taxon]
-    end
-  end
-
-  describe "#descendants" do
-    context "when there are no descendants" do
-      specify { expect(genus.descendants).to eq [] }
-    end
-
-    context "when there are descendants" do
-      let(:species) { create :species, genus: genus }
-      let(:subgenus) { create :subgenus, genus: genus }
-      let(:subspecies) { create :subspecies, genus: genus, species: species }
-
-      it "returns all the species, subspecies and subgenera of the genus" do
-        expect(genus.descendants).to match_array [species, subgenus, subspecies]
-      end
+      expect(described_class.without_tribe.all).to eq [genus]
     end
   end
 
@@ -60,12 +56,14 @@ describe Genus do
     end
 
     context "when genus has a subfamily" do
+      let!(:subfamily) { create :subfamily }
       let!(:genus) { create :genus, subfamily: subfamily, tribe: nil }
 
       specify { expect(genus.parent).to eq genus.subfamily }
     end
 
     context "when genus has a tribe" do
+      let(:tribe) { create :tribe }
       let(:genus) { create :genus, tribe: tribe }
 
       specify { expect(genus.parent).to eq tribe }
@@ -73,6 +71,8 @@ describe Genus do
   end
 
   describe "#parent=" do
+    let!(:subfamily) { create :subfamily }
+    let!(:tribe) { create :tribe, subfamily: subfamily }
     let!(:genus) { create :genus }
 
     it "assigns to both tribe and subfamily when parent is a tribe" do
@@ -84,6 +84,8 @@ describe Genus do
   end
 
   describe "#update_parent" do
+    let(:subfamily) { create :subfamily }
+    let(:tribe) { create :tribe, subfamily: subfamily }
     let(:genus_with_tribe) { create :genus, tribe: tribe }
 
     it "assigns to both tribe and subfamily when parent is a tribe" do
@@ -117,8 +119,8 @@ describe Genus do
     end
 
     it "assigns the subfamily of its descendants" do
-      species = create :species, genus: genus_with_tribe
-      create :subspecies, species: species, genus: genus_with_tribe
+      species = create :species, genus: genus_with_tribe, subfamily: subfamily
+      create :subspecies, species: species, genus: genus_with_tribe, subfamily: subfamily
 
       # Test initial.
       expect(genus_with_tribe.reload.subfamily).to eq subfamily
@@ -136,24 +138,6 @@ describe Genus do
       expect(genus_with_tribe.reload.tribe).to eq new_tribe
       expect(genus_with_tribe.reload.species.first.subfamily).to eq new_subfamily
       expect(genus_with_tribe.reload.subspecies.first.subfamily).to eq new_subfamily
-    end
-  end
-
-  describe "#find_epithet_in_genus" do
-    let!(:species) { create :species, name_string: 'Atta serratula' }
-
-    context "when nothing matches" do
-      specify { expect(genus.find_epithet_in_genus('sdfsdf')).to eq [] }
-    end
-
-    it "returns matches" do
-      expect(species.genus.find_epithet_in_genus('serratula')).to eq [species]
-    end
-
-    describe "mandatory spelling changes" do
-      it "finds -a when asked to find -us" do
-        expect(species.genus.find_epithet_in_genus('serratulus')).to eq [species]
-      end
     end
   end
 end
