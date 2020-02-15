@@ -1,6 +1,20 @@
 # A  "taxtable" is a database plaintext column which contains "taxt" tags which resolves to a `Taxon` or a `Reference`.
 
 module Taxt
+  # TODO: Required for as long as we have denormalized taxt items.
+  TAXA_FIELDS_REFERENCING_TAXA = %i[
+    subfamily_id
+    tribe_id
+    genus_id
+    subgenus_id
+    species_id
+    subspecies_id
+
+    current_valid_taxon_id
+    homonym_replaced_by_id
+    type_taxon_id
+  ]
+
   # TODO: Decide what to do with this.
   TAXTABLES = [
     [Citation,         'citations',           'notes_taxt'],

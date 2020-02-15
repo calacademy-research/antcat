@@ -1,8 +1,8 @@
 module DatabaseScripts
   class SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet < DatabaseScript
     def results
-      Subspecies.joins(:name).self_join_on(:species).
-        joins("JOIN names species_names ON species_names.id = taxa_self_join_alias.name_id").
+      Subspecies.joins(:name).joins(:species).
+        joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
         where(<<~SQL)
           SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
           SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)

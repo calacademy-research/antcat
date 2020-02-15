@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ValidSubspeciesInInvalidSpecies < DatabaseScript
     def results
-      Subspecies.valid.self_join_on(:species).where.not(taxa_self_join_alias: { status: Status::VALID })
+      Subspecies.valid.joins(:species).where.not(species_taxa: { status: Status::VALID })
     end
   end
 end

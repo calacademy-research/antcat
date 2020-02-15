@@ -210,24 +210,6 @@ describe Taxon do
     subject { build :family }
   end
 
-  describe "scopes" do
-    describe ".self_join_on" do
-      let!(:genus) { create :genus, :fossil }
-      let!(:species) { create :species, genus: genus }
-
-      it "handles self-referential condition" do
-        query = -> do
-          described_class.self_join_on(:genus).
-            where(fossil: false, taxa_self_join_alias: { fossil: true })
-        end
-
-        expect(query.call).to eq [species]
-        genus.update!(fossil: false)
-        expect(query.call).to eq []
-      end
-    end
-  end
-
   describe "workflow" do
     describe '`Workflow::ExternalTable`' do
       context "when taxon is created" do
@@ -252,21 +234,6 @@ describe Taxon do
       taxon.approve!
       expect(taxon).to be_approved
       expect(taxon).not_to be_waiting
-    end
-
-    describe "#last_change" do
-      let(:taxon) { create :family }
-
-      it "returns nil if no changes have been created for it" do
-        expect(taxon.last_change).to eq nil
-      end
-
-      it "returns the change, if any" do
-        a_change = create :change, taxon: taxon
-        create :version, item: taxon, change: a_change
-
-        expect(taxon.last_change).to eq a_change
-      end
     end
   end
 
@@ -312,23 +279,6 @@ describe Taxon do
       it "doesn't surround in parentheses" do
         expect(taxon.author_citation).to eq 'Bolton, 2005'
       end
-    end
-  end
-
-  describe '#combination_in_according_to_history_items' do
-    let!(:obsolete_genus) { create :genus }
-    let!(:taxon) { create :species }
-
-    context "when taxon has no 'Combination in' history item" do
-      specify { expect(taxon.combination_in_according_to_history_items).to eq [] }
-    end
-
-    context "when taxon has 'Combination in' history items" do
-      before do
-        create :taxon_history_item, taxon: taxon, taxt: "Combination in {tax #{obsolete_genus.id}}"
-      end
-
-      specify { expect(taxon.combination_in_according_to_history_items).to eq [obsolete_genus] }
     end
   end
 end

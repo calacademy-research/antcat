@@ -33,7 +33,7 @@ class Subfamily < Taxon
 
   # TODO: See note in `Family` regarding incertae sedis.
   def genera_incertae_sedis_in
-    genera.where(incertae_sedis_in: INCERTAE_SEDIS_IN_SUBFAMILY)
+    genera.where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY)
   end
 
   def genera_without_tribe

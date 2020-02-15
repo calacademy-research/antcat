@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ProtonymsWithoutTypeTaxa < DatabaseScript
     def results
-      Protonym.left_outer_joins(:taxa).where(taxa: { type: Taxon::CAN_HAVE_TYPE_TAXON_TYPES }).group(:id).having('COUNT(taxa.type_taxon_id) = 0')
+      Protonym.left_outer_joins(:taxa).where(taxa: { type: Rank::CAN_HAVE_TYPE_TAXON_TYPES }).group(:id).having('COUNT(taxa.type_taxon_id) = 0')
     end
 
     def render

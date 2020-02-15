@@ -1,29 +1,12 @@
 class Taxon < ApplicationRecord
   include Workflow
   include Workflow::ExternalTable
-
   include RevisionsCanBeCompared
   include Trackable
 
-  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
-  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
-  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
-  # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
-  CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
-  # TODO: I don't think this is 100% true in the world of taxonomy, but it's close enough for our usage.
-  CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
-
-  TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
-    :species_id, :subspecies_id, :homonym_replaced_by_id, :current_valid_taxon_id, :type_taxon_id]
-  INCERTAE_SEDIS_IN_RANKS = [
-    INCERTAE_SEDIS_IN_FAMILY = 'family',
-    INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
-    'tribe',
-    'genus'
-  ]
-  ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
-
   self.table_name = :taxa
+
+  delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id
@@ -45,16 +28,16 @@ class Taxon < ApplicationRecord
 
   validates :name, :protonym, presence: true
   validates :status, inclusion: { in: Status::STATUSES }
-  validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
+  validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
-  validates :original_combination, absence: { message: "can not be set for taxa of this rank" }, unless: -> { type.in?(CAN_BE_A_COMBINATION_TYPES) }
+  validates :original_combination, absence: { message: "can not be set for taxa of this rank" },
+    unless: -> { type.in?(Rank::CAN_BE_A_COMBINATION_TYPES) }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
-
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
   before_validation :cleanup_taxts
@@ -70,7 +53,7 @@ class Taxon < ApplicationRecord
   scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
-  # TODO: Find a better name for these and figure out how to best use it.
+  # TODO: Find a better name and place for these and figure out how to best use them.
   scope :with_common_includes, -> do
     includes(:name, protonym: [:name, { authorship: { reference: :author_names } }]).references(:reference_author_names)
   end
@@ -79,27 +62,17 @@ class Taxon < ApplicationRecord
       includes(current_valid_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
   end
 
-  # Example: `Species.self_join_on(:genus).where(fossil: false, taxa_self_join_alias: { fossil: true })`.
-  scope :self_join_on, ->(model) {
-    joins("LEFT OUTER JOIN `taxa` `taxa_self_join_alias` ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`")
-  }
-
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
-
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
-    if parent
-      parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }
-    end
+    parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
   workflow do
     state TaxonState::OLD
-    state TaxonState::WAITING do
-      event :approve, transitions_to: TaxonState::APPROVED
-    end
+    state(TaxonState::WAITING) { event :approve, transitions_to: TaxonState::APPROVED }
     state TaxonState::APPROVED
   end
 
@@ -107,7 +80,7 @@ class Taxon < ApplicationRecord
     where(name_cache: name_string).exists?
   end
 
-  (Status::STATUSES - [Status::VALID]).each do |status|
+  [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end
@@ -119,12 +92,7 @@ class Taxon < ApplicationRecord
   end
 
   def invalid?
-    status != Status::VALID
-  end
-
-  # Overridden in `SpeciesGroupTaxon` (only species and subspecies can be recombinations)
-  def recombination?
-    false
+    !valid_taxon?
   end
 
   def rank
@@ -149,12 +117,8 @@ class Taxon < ApplicationRecord
 
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
-
-    if recombination?
-      '('.html_safe + citation + ')'
-    else
-      citation
-    end
+    return citation unless is_a?(SpeciesGroupTaxon) && recombination?
+    '('.html_safe + citation + ')'
   end
 
   def virtual_history_items
@@ -172,16 +136,15 @@ class Taxon < ApplicationRecord
     @policy ||= TaxonPolicy.new(self)
   end
 
+  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
+  # and for performance reasons in the taxon browser since decorating a lot of taxa took its toll.
+  # Move somewhere once we have improved `Name` and the taxon browser.
   def link_to_taxon
     %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
   end
 
   def authorship_reference
     protonym.authorship.reference
-  end
-
-  def last_change
-    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
   end
 
   def soft_validations
@@ -192,96 +155,30 @@ class Taxon < ApplicationRecord
     @what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
-  # TODO: Experimental.
-  def now
-    return self unless current_valid_taxon
-    current_valid_taxon.now
-  end
-
-  # TODO: Experimental. Used for expanding type taxa (see `TypeTaxonExpander`).
-  def most_recent_before_now
-    taxa = []
-    current_taxon = current_valid_taxon
-
-    while current_taxon
-      taxa << current_taxon
-      current_taxon = current_taxon.current_valid_taxon
-    end
-
-    taxa.second_to_last || self
-  end
-
-  # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
-  # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
-  def obsolete_combination_that_is_shady?
-    DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym.record_in_results?(self) ||
-      DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets.record_in_results?(self)
-  end
-
-  # TODO: Remove ASAP.
-  def synonyms_history_items_containing_taxon taxon
-    history_items.find_by("taxt LIKE ?", "Senior synonym of%#{taxon.id}%")
-  end
-
-  # TODO: Remove ASAP.
-  def synonyms_history_items_containing_taxons_protonyms_taxa_except_self taxon
-    taxon.protonym.taxa.where.not(id: taxon.id).find_each do |protonym_taxon|
-      item = history_items.find_by("taxt LIKE ?", "Senior synonym of%#{protonym_taxon.id}%")
-      return item if item
-    end
-    nil
-  end
-
-  # TODO: Remove once subspecies lists have been cleaned up.
-  # See https://github.com/calacademy-research/antcat/issues/780
-  def subspecies_list_in_history_items
-    history_items.where('taxt LIKE ?', "%Current subspecies%")
-  end
-
-  def combination_in_according_to_history_items
-    @combination_in_according_to_history_items ||= begin
-      ids = combination_in_history_items.map(&:ids_from_tax_tags).flatten
-      Taxon.where(id: ids)
-    end
-  end
-
-  def collected_references
-    @collected_references ||= Taxa::CollectReferences[self]
+  def cleanup_taxon
+    @cleanup_taxon ||= CleanupTaxon.new(self)
   end
 
   private
-
-    # "Combination in {tax 123}".
-    # TODO: Standardize and move these "xzy_in_history_items" now that we have a bunch of them.
-    # NOTE: Can be removed once we have normalized all 'combination in's.
-    def combination_in_history_items
-      history_items.where('taxt LIKE ?', "Combination in%")
-    end
 
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html
     end
 
+    # TODO: Remove. `taxa.type_taxt` should be moved and normalized; `taxa.headline_notes_taxt` can
+    # be distributed into other taxts.
     def cleanup_taxts
       self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
       self.type_taxt = Taxt::Cleanup[type_taxt]
     end
 
     def current_valid_taxon_validation
-      if cannot_have_current_valid_taxon? && current_valid_taxon
+      if Status.cannot_have_current_valid_taxon?(status) && current_valid_taxon
         errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
-      elsif requires_current_valid_taxon? && !current_valid_taxon
+      elsif Status.requires_current_valid_taxon?(status) && !current_valid_taxon
         errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
       end
-    end
-
-    def cannot_have_current_valid_taxon?
-      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:absence]
-    end
-
-    def requires_current_valid_taxon?
-      status.in? Status::CURRENT_VALID_TAXON_VALIDATION[:presence]
     end
 
     def ensure_correct_name_type

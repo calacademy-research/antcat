@@ -1,7 +1,7 @@
 module DatabaseScripts
   class SubspeciesDisagreeingWithSpeciesRegardingGenus < DatabaseScript
     def results
-      Subspecies.self_join_on(:species).where("taxa_self_join_alias.genus_id != taxa.genus_id")
+      Subspecies.joins(:species).where("species_taxa.genus_id != taxa.genus_id")
     end
 
     def render

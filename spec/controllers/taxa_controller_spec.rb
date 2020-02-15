@@ -60,7 +60,7 @@ describe TaxaController do
           let(:type_taxon) { create :species }
           let(:taxon_params) do
             base_params.deep_merge(
-              incertae_sedis_in: Taxon::INCERTAE_SEDIS_IN_FAMILY,
+              incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY,
               fossil: true,
               original_combination: true,
               collective_group_name: true,

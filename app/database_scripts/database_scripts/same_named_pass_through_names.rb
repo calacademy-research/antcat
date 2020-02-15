@@ -2,8 +2,8 @@ module DatabaseScripts
   class SameNamedPassThroughNames < DatabaseScript
     def results
       Taxon.pass_through_names.
-        self_join_on(:current_valid_taxon).
-        where("taxa_self_join_alias.name_cache = taxa.name_cache").
+        joins(:current_valid_taxon).
+        where("current_valid_taxons_taxa.name_cache = taxa.name_cache").
         includes(
           :name,
           current_valid_taxon: [:name, protonym: [:name, { authorship: :reference }]],

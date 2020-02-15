@@ -117,11 +117,11 @@ FactoryBot.define do
     end
 
     trait :incertae_sedis_in_family do
-      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_FAMILY }
+      incertae_sedis_in { Rank::INCERTAE_SEDIS_IN_FAMILY }
     end
 
     trait :incertae_sedis_in_subfamily do
-      incertae_sedis_in { Taxon::INCERTAE_SEDIS_IN_SUBFAMILY }
+      incertae_sedis_in { Rank::INCERTAE_SEDIS_IN_SUBFAMILY }
     end
 
     trait :old do

@@ -25,7 +25,7 @@ describe TaxonHelper do
       change = create :change, taxon: taxon, change_type: "create", user: adder
       create :version, item: taxon, whodunnit: adder.id, change: change
 
-      change = Change.find taxon.last_change.id
+      change = Change.find(taxon.decorate.last_change.id)
       change.update!(approver: approver, approved_at: Time.current)
       taxon.approve!
 

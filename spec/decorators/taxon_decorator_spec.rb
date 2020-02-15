@@ -40,6 +40,21 @@ describe TaxonDecorator do
     end
   end
 
+  describe "#last_change" do
+    let(:taxon) { create :family }
+
+    it "returns nil if no changes have been created for it" do
+      expect(decorated.last_change).to eq nil
+    end
+
+    it "returns the change, if any" do
+      a_change = create :change, taxon: taxon
+      create :version, item: taxon, change: a_change
+
+      expect(decorated.last_change).to eq a_change
+    end
+  end
+
   describe "#link_to_antwiki" do
     context 'when taxon is not a subgenus' do
       let(:taxon) { create :species }

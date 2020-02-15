@@ -1,7 +1,7 @@
 module TaxonHelper
   def taxon_change_history taxon
     return if taxon.old?
-    change = taxon.last_change
+    change = taxon.decorate.last_change
     return unless change
 
     content_tag :span, class: 'change-history' do

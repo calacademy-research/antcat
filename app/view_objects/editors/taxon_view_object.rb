@@ -13,8 +13,8 @@ module Editors
     end
 
     def review_change_button
-      return unless taxon.waiting? && taxon.last_change
-      link_to 'Review change', "/changes/#{taxon.last_change.id}", class: "btn-tiny btn-normal"
+      return unless taxon.waiting? && taxon.decorate.last_change
+      link_to 'Review change', "/changes/#{taxon.decorate.last_change.id}", class: "btn-tiny btn-normal"
     end
 
     def add_child_button

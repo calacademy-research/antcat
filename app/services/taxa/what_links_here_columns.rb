@@ -22,7 +22,7 @@ module Taxa
       delegate :id, to: :taxon
 
       def any_table_refs?
-        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
+        Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
           return true if Taxon.where(field => id).exists?
         end
         false
@@ -30,7 +30,7 @@ module Taxa
 
       def table_refs
         table_refs = []
-        Taxon::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
+        Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
           Taxon.where(field => id).pluck(:id).each do |taxon_id|
             table_refs << table_ref('taxa', field, taxon_id)
           end

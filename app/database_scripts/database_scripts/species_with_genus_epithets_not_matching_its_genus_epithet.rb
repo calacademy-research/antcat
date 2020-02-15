@@ -1,8 +1,8 @@
 module DatabaseScripts
   class SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet < DatabaseScript
     def results
-      Species.joins(:name).self_join_on(:genus).
-        joins("JOIN names genus_names ON genus_names.id = taxa_self_join_alias.name_id").
+      Species.joins(:name).joins(:genus).
+        joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
         where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name")
     end
 
