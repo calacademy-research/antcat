@@ -95,10 +95,6 @@ class Taxon < ApplicationRecord
     !valid_taxon?
   end
 
-  def recombination?
-    false
-  end
-
   def rank
     type.downcase
   end
@@ -121,7 +117,7 @@ class Taxon < ApplicationRecord
 
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
-    return citation unless recombination?
+    return citation unless is_a?(SpeciesGroupTaxon) && recombination?
     '('.html_safe + citation + ')'
   end
 
