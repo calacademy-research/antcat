@@ -19,14 +19,6 @@ RSpec.configure do |config|
   # the `--only-failures` and `--next-failure` CLI options.
   config.example_status_persistence_file_path = "spec/examples.txt"
 
-  config.before :all do
-    DeferredGarbageCollection.start
-  end
-
-  config.after :all do
-    DeferredGarbageCollection.reconsider
-  end
-
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request

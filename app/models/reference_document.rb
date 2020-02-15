@@ -1,3 +1,6 @@
+# TODO: See https://github.com/calacademy-research/antcat/issues/878
+# TODO: Paperclip has been deprecated, see https://github.com/thoughtbot/paperclip
+
 class ReferenceDocument < ApplicationRecord
   belongs_to :reference
 
@@ -10,7 +13,7 @@ class ReferenceDocument < ApplicationRecord
     path: ':id/:filename',
     bucket: 'antcat',
     storage: :s3,
-    s3_credentials: (Rails.env.production? ? '/data/antcat/shared/config/' : Rails.root + 'config/') + 's3.yml',
+    s3_credentials: Rails.root + 'config/s3.yml',
     s3_permissions: 'authenticated-read',
     s3_region: 'us-east-1',
     s3_protocol: 'http'
@@ -22,6 +25,7 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
+  # TODO: See if we need this (and a lot of other things in this class).
   def host= host
     return unless hosted_by_us?
     # TODO: Investigate `Rails/SkipsModelValidations`.
@@ -74,6 +78,6 @@ class ReferenceDocument < ApplicationRecord
     end
 
     def s3_url
-      file.expiring_url 1.day.to_i # Seconds.
+      file.expiring_url 1.day.seconds.to_i
     end
 end
