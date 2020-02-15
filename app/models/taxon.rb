@@ -21,9 +21,10 @@ class Taxon < ApplicationRecord
     'tribe',
     'genus'
   ]
-  ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
 
   self.table_name = :taxa
+
+  delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id
@@ -192,57 +193,8 @@ class Taxon < ApplicationRecord
     @what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
-  # TODO: Experimental.
-  def now
-    return self unless current_valid_taxon
-    current_valid_taxon.now
-  end
-
-  # TODO: Experimental. Used for expanding type taxa (see `TypeTaxonExpander`).
-  def most_recent_before_now
-    taxa = []
-    current_taxon = current_valid_taxon
-
-    while current_taxon
-      taxa << current_taxon
-      current_taxon = current_taxon.current_valid_taxon
-    end
-
-    taxa.second_to_last || self
-  end
-
-  # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
-  # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
-  def obsolete_combination_that_is_shady?
-    DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym.record_in_results?(self) ||
-      DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets.record_in_results?(self)
-  end
-
-  # TODO: Remove ASAP.
-  def synonyms_history_items_containing_taxon taxon
-    history_items.find_by("taxt LIKE ?", "Senior synonym of%#{taxon.id}%")
-  end
-
-  # TODO: Remove ASAP.
-  def synonyms_history_items_containing_taxons_protonyms_taxa_except_self taxon
-    taxon.protonym.taxa.where.not(id: taxon.id).find_each do |protonym_taxon|
-      item = history_items.find_by("taxt LIKE ?", "Senior synonym of%#{protonym_taxon.id}%")
-      return item if item
-    end
-    nil
-  end
-
-  # TODO: Remove once subspecies lists have been cleaned up.
-  # See https://github.com/calacademy-research/antcat/issues/780
-  def subspecies_list_in_history_items
-    history_items.where('taxt LIKE ?', "%Current subspecies%")
-  end
-
-  def combination_in_according_to_history_items
-    @combination_in_according_to_history_items ||= begin
-      ids = combination_in_history_items.map(&:ids_from_tax_tags).flatten
-      Taxon.where(id: ids)
-    end
+  def cleanup_taxon
+    @cleanup_taxon ||= CleanupTaxon.new(self)
   end
 
   def collected_references
@@ -250,13 +202,6 @@ class Taxon < ApplicationRecord
   end
 
   private
-
-    # "Combination in {tax 123}".
-    # TODO: Standardize and move these "xzy_in_history_items" now that we have a bunch of them.
-    # NOTE: Can be removed once we have normalized all 'combination in's.
-    def combination_in_history_items
-      history_items.where('taxt LIKE ?', "Combination in%")
-    end
 
     def set_name_caches
       self.name_cache = name.name
