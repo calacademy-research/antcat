@@ -1,7 +1,6 @@
 class Taxon < ApplicationRecord
   include Workflow
   include Workflow::ExternalTable
-
   include RevisionsCanBeCompared
   include Trackable
 
@@ -10,7 +9,6 @@ class Taxon < ApplicationRecord
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
   # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
   CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
-  # TODO: I don't think this is 100% true in the world of taxonomy, but it's close enough for our usage.
   CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
 
   TAXA_FIELDS_REFERENCING_TAXA = [:subfamily_id, :tribe_id, :genus_id, :subgenus_id,
@@ -55,7 +53,6 @@ class Taxon < ApplicationRecord
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
-
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
   before_validation :cleanup_taxts
@@ -71,7 +68,7 @@ class Taxon < ApplicationRecord
   scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
   scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
-  # TODO: Find a better name for these and figure out how to best use it.
+  # TODO: Find a better name and place for these and figure out how to best use them.
   scope :with_common_includes, -> do
     includes(:name, protonym: [:name, { authorship: { reference: :author_names } }]).references(:reference_author_names)
   end
@@ -82,20 +79,15 @@ class Taxon < ApplicationRecord
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
-
   has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
   strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
-    if parent
-      parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id }
-    end
+    parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
   workflow do
     state TaxonState::OLD
-    state TaxonState::WAITING do
-      event :approve, transitions_to: TaxonState::APPROVED
-    end
+    state(TaxonState::WAITING) { event :approve, transitions_to: TaxonState::APPROVED }
     state TaxonState::APPROVED
   end
 
@@ -118,7 +110,6 @@ class Taxon < ApplicationRecord
     status != Status::VALID
   end
 
-  # Overridden in `SpeciesGroupTaxon` (only species and subspecies can be recombinations)
   def recombination?
     false
   end
@@ -145,12 +136,8 @@ class Taxon < ApplicationRecord
 
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
-
-    if recombination?
-      '('.html_safe + citation + ')'
-    else
-      citation
-    end
+    return citation unless recombination?
+    '('.html_safe + citation + ')'
   end
 
   def virtual_history_items
@@ -168,6 +155,9 @@ class Taxon < ApplicationRecord
     @policy ||= TaxonPolicy.new(self)
   end
 
+  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
+  # and for performance reasons in the taxon browser since decorating a lot of taxa took its toll.
+  # Move somewhere once we have improved `Name` and the taxon browser.
   def link_to_taxon
     %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
   end
@@ -195,6 +185,8 @@ class Taxon < ApplicationRecord
       self.name_html_cache = name.name_html
     end
 
+    # TODO: Remove. `taxa.type_taxt` should be moved and normalized; `taxa.headline_notes_taxt` can
+    # be distributed into other taxts.
     def cleanup_taxts
       self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
       self.type_taxt = Taxt::Cleanup[type_taxt]
