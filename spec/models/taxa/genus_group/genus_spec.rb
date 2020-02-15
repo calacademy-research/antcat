@@ -9,6 +9,17 @@ describe Genus do
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subgenera).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:descendants).dependent(:restrict_with_error) }
+  end
+
+  describe "#descendants" do
+    let(:species) { create :species, genus: genus }
+    let(:subgenus) { create :subgenus, genus: genus }
+    let(:subspecies) { create :subspecies, genus: genus, species: species }
+
+    it "returns all species, subspecies and subgenera of the genus" do
+      expect(genus.descendants).to match_array [species, subgenus, subspecies]
+    end
   end
 
   it "can have species, which are its children" do
@@ -33,22 +44,6 @@ describe Genus do
       taxon = create :genus, subfamily: tribe.subfamily, tribe: nil
 
       expect(described_class.without_tribe.all).to eq [taxon]
-    end
-  end
-
-  describe "#descendants" do
-    context "when there are no descendants" do
-      specify { expect(genus.descendants).to eq [] }
-    end
-
-    context "when there are descendants" do
-      let(:species) { create :species, genus: genus }
-      let(:subgenus) { create :subgenus, genus: genus }
-      let(:subspecies) { create :subspecies, genus: genus, species: species }
-
-      it "returns all the species, subspecies and subgenera of the genus" do
-        expect(genus.descendants).to match_array [species, subgenus, subspecies]
-      end
     end
   end
 

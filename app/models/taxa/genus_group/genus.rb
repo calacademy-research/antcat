@@ -1,6 +1,10 @@
 class Genus < GenusGroupTaxon
   belongs_to :tribe
 
+  # TODO: Maybe rename to `children` after investigating if we want to keep the methods
+  # currently named `#children` (or rename them to `#direct_children`).
+  has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
+
   with_options dependent: :restrict_with_error do
     has_many :species
     has_many :subspecies
@@ -34,10 +38,6 @@ class Genus < GenusGroupTaxon
   def update_parent new_parent
     self.parent = new_parent
     update_descendants_subfamilies
-  end
-
-  def descendants
-    Taxon.where(genus: self)
   end
 
   def species_without_subgenus
