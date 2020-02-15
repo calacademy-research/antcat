@@ -188,10 +188,6 @@ class Taxon < ApplicationRecord
     @cleanup_taxon ||= CleanupTaxon.new(self)
   end
 
-  def collected_references
-    @collected_references ||= Taxa::CollectReferences[self]
-  end
-
   private
 
     def set_name_caches
