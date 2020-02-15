@@ -12,6 +12,7 @@ class Genus < GenusGroupTaxon
     has_many :subgenera
   end
 
+  scope :incertae_sedis_in_family, -> { where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY) }
   scope :incertae_sedis_in_subfamily, -> { where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY) }
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }
