@@ -1,3 +1,5 @@
+# TODO: Cleanup. This is more of a dumping ground than an actual decorator.
+
 class TaxonDecorator < Draper::Decorator
   delegate_all
 
@@ -17,6 +19,11 @@ class TaxonDecorator < Draper::Decorator
       h.concat " "
       h.concat h.content_tag(:small, author_citation, class: "gray")
     end
+  end
+
+  # TODO: Use AR or remove.
+  def last_change
+    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", taxon.id).last
   end
 
   def type_taxon_rank

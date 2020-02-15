@@ -176,10 +176,6 @@ class Taxon < ApplicationRecord
     protonym.authorship.reference
   end
 
-  def last_change
-    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", id).last
-  end
-
   def soft_validations
     @soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
   end
