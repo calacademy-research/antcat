@@ -1,4 +1,3 @@
-# rubocop:disable Layout/IndentationConsistency
 crumb :editors_panel do
   link "Editor's Panel", editors_panel_path
 end
@@ -13,15 +12,15 @@ crumb :activity_feed do
   parent :editors_panel
 end
 
-  crumb :activity_item do |activity_id|
-    link "Activity Item ##{activity_id}"
-    parent :activity_feed
-  end
+crumb :activity_item do |activity_id|
+  link "Activity Item ##{activity_id}"
+  parent :activity_feed
+end
 
-  crumb :unconfirmed_activities do
-    link "Unconfirmed Activities", unconfirmed_activities_path
-    parent :activity_feed
-  end
+crumb :unconfirmed_activities do
+  link "Unconfirmed Activities", unconfirmed_activities_path
+  parent :activity_feed
+end
 
 crumb :search_taxon_history_items do
   link "Search History Items"
@@ -38,10 +37,10 @@ crumb :comments do
   parent :editors_panel
 end
 
-  crumb :edit_comment do |comment|
-    link "Edit Comment ##{comment.id}"
-    parent :comments
-  end
+crumb :edit_comment do |comment|
+  link "Edit Comment ##{comment.id}"
+  parent :comments
+end
 
 crumb :invite_users do
   link "Invite Users"
@@ -53,30 +52,30 @@ crumb :user_feedback do
   parent :editors_panel
 end
 
-  crumb :user_feedback_details do |feedback|
-    link "Feedback ##{feedback.id}"
-    parent :user_feedback
-  end
+crumb :user_feedback_details do |feedback|
+  link "Feedback ##{feedback.id}"
+  parent :user_feedback
+end
 
 crumb :database_scripts do
   link "Database Scripts", database_scripts_path
   parent :editors_panel
 end
 
-  crumb :database_script do |script|
-    link script.title, database_script_path(script)
-    parent :database_scripts
-  end
+crumb :database_script do |script|
+  link script.title, database_script_path(script)
+  parent :database_scripts
+end
 
 crumb :versions do
   link "PaperTrail Versions", versions_path
   parent :editors_panel
 end
 
-  crumb :version do |version|
-    link "##{version.id}", version_path(version)
-    parent :versions
-  end
+crumb :version do |version|
+  link "##{version.id}", version_path(version)
+  parent :versions
+end
 
 crumb :about_unconfirmed_users do
   link "About Unconfirmed Users", page_path('unconfirmed_user')
@@ -97,4 +96,3 @@ crumb :markdown_formatting_help do
   link "Markdown Formatting Help"
   parent :editors_panel
 end
-# rubocop:enable Layout/IndentationConsistency

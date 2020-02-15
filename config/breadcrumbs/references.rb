@@ -1,41 +1,40 @@
-# rubocop:disable Layout/IndentationConsistency
 crumb :references do
   link "References", references_path
 end
 
-  crumb :reference do |reference|
-    if reference.persisted?
-      link sanitize(reference.keey), reference_path(reference)
-    else
-      link "##{reference.id} [deleted]"
-    end
-    parent :references
+crumb :reference do |reference|
+  if reference.persisted?
+    link sanitize(reference.keey), reference_path(reference)
+  else
+    link "##{reference.id} [deleted]"
   end
+  parent :references
+end
 
-    crumb :edit_reference do |reference|
-      link "Edit"
-      parent :reference, reference
-    end
+crumb :edit_reference do |reference|
+  link "Edit"
+  parent :reference, reference
+end
 
-    crumb :reference_history do |reference|
-      link "History"
-      parent :reference, reference
-    end
+crumb :reference_history do |reference|
+  link "History"
+  parent :reference, reference
+end
 
-    crumb :reference_what_links_here do |reference|
-      link "What Links Here"
-      parent :reference, reference
-    end
+crumb :reference_what_links_here do |reference|
+  link "What Links Here"
+  parent :reference, reference
+end
 
-    crumb :replace_missing_reference do |reference|
-      link "Replace"
-      parent :reference, reference
-    end
+crumb :replace_missing_reference do |reference|
+  link "Replace"
+  parent :reference, reference
+end
 
-  crumb :new_reference do
-    link "New"
-    parent :references
-  end
+crumb :new_reference do
+  link "New"
+  parent :references
+end
 
 crumb :references_search_results do
   link "Search Results"
@@ -61,4 +60,3 @@ crumb :references_latest_changes do
   link "Latest Changes", references_latest_changes_path
   parent :references
 end
-# rubocop:enable Layout/IndentationConsistency
