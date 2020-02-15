@@ -52,7 +52,7 @@ module Taxa
         end
 
         def massage_count by_fossil_and_status, rank, statistics
-          by_fossil_and_status.keys.each do |fossil, status|
+          by_fossil_and_status.each_key do |fossil, status|
             extant_or_fossil = fossil ? :fossil : :extant
             count = by_fossil_and_status[[fossil, status]]
 
