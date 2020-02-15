@@ -22,6 +22,14 @@ describe Name do
     end
   end
 
+  describe "#rank" do
+    let!(:name) { build_stubbed :subfamily_name }
+
+    it "returns a lowercase version'" do
+      expect(name.rank).to eq 'subfamily'
+    end
+  end
+
   describe '#set_epithet' do
     let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
 
