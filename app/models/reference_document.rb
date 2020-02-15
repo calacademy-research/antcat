@@ -74,6 +74,6 @@ class ReferenceDocument < ApplicationRecord
     end
 
     def s3_url
-      file.expiring_url 1.day.to_i # Seconds.
+      file.expiring_url 1.day.seconds.to_i
     end
 end
