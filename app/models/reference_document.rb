@@ -1,3 +1,6 @@
+# TODO: See https://github.com/calacademy-research/antcat/issues/878
+# TODO: Paperclip has been deprecated, see https://github.com/thoughtbot/paperclip
+
 class ReferenceDocument < ApplicationRecord
   belongs_to :reference
 
@@ -22,6 +25,7 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
+  # TODO: See if we need this (and a lot of other things in this class).
   def host= host
     return unless hosted_by_us?
     # TODO: Investigate `Rails/SkipsModelValidations`.
