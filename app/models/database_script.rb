@@ -2,7 +2,6 @@
 
 class DatabaseScript
   include Draper::Decoratable
-  include DatabaseScripts::EndData
   include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
 
@@ -23,23 +22,9 @@ class DatabaseScript
 
   ScriptNotFound = Class.new StandardError
 
-  UnfoundDatabaseScript = Struct.new(:class_name) do
-    def title
-      "Error: Could not find database script with class name '#{class_name}'"
-    end
-
-    def filename_without_extension
-      @filename_without_extension ||= class_name.underscore
-    end
-
-    def tags
-      []
-    end
-
-    alias_method :to_param, :filename_without_extension
-  end
-
   attr_accessor :results_runtime
+
+  delegate :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
   def self.inherited(subclass)
     subclass.include Rails.application.routes.url_helpers
@@ -56,7 +41,7 @@ class DatabaseScript
   def self.safe_new_from_filename_without_extension class_name
     new_from_filename_without_extension class_name
   rescue DatabaseScript::ScriptNotFound
-    UnfoundDatabaseScript.new(class_name)
+    DatabaseScripts::UnfoundDatabaseScript.new(class_name)
   end
 
   def self.all
@@ -80,29 +65,7 @@ class DatabaseScript
   end
 
   def title
-    end_data[:title]&.html_safe || filename_without_extension.humanize
-  end
-
-  def category
-    end_data[:category] || ""
-  end
-
-  def tags
-    end_data[:tags] || []
-  end
-
-  def issue_description
-    end_data[:issue_description]
-  end
-
-  def description
-    end_data[:description] || ""
-  end
-
-  def related_scripts
-    (end_data[:related_scripts] || []).map do |class_name|
-      self.class.safe_new_from_filename_without_extension class_name
-    end.reject { |database_script| database_script.is_a?(self.class) }
+    end_data_attributes.title || filename_without_extension.humanize
   end
 
   def statistics
@@ -137,19 +100,18 @@ class DatabaseScript
 
   private
 
+    def end_data_attributes
+      @end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(script_path)
+    end
+
     def script_path
       "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
     end
 
     def default_statistics
-      return if hide_statistics?
       return unless respond_to? :results
       count = cached_results.count
       count = count.count if count.is_a?(Hash) # HACK: For grouped queries.
       "Results: #{count}"
-    end
-
-    def hide_statistics?
-      end_data[:hide_statistics] || false
     end
 end

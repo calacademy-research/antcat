@@ -17,7 +17,7 @@ describe DatabaseScript do
     context 'when database script does not exists' do
       it 'returns an "unfound database script"' do
         results = described_class.safe_new_from_filename_without_extension "BestPizza"
-        expect(results).to be_a DatabaseScript::UnfoundDatabaseScript
+        expect(results).to be_a DatabaseScripts::UnfoundDatabaseScript
       end
     end
   end
@@ -92,92 +92,14 @@ describe DatabaseScript do
     end
 
     describe "#title" do
-      let(:script) { DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new }
-
       it "fetches the title from the END data" do
+        script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
         expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
       end
 
       it "defaults to the humanized filename" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.title).to eq "Fossil protonyms with non fossil taxa"
-      end
-    end
-
-    describe "#category" do
-      it "fetches the category from the END data" do
-        expect(script.category).to eq "Catalog"
-      end
-
-      it "defaults to a blank string" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.category).to eq ""
-      end
-    end
-
-    describe "#tags" do
-      it "fetches the tags from the END data" do
-        expect(script.tags).to eq ["regression-test"]
-      end
-
-      it "defaults to an empty array" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.tags).to eq []
-      end
-    end
-
-    describe "#issue_description" do
-      it "fetches the issue description from the END data" do
-        expect(script.issue_description).to eq "The parent of this taxon is fossil, but this taxon is extant."
-      end
-
-      it "defaults to nil" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.issue_description).to eq nil
-      end
-    end
-
-    describe "#description" do
-      it "fetches the description from the END data" do
-        expect(script.description).to eq "*Prionomyrmex macrops* can be ignored.\n"
-      end
-
-      it "defaults to a blank string" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.description).to eq ""
-      end
-    end
-
-    describe "#related_scripts" do
-      it "fetches the related scripts from the END data" do
-        end_data = HashWithIndifferentAccess.new(related_scripts: ['ValidSubspeciesInInvalidSpecies'])
-        allow(script).to receive(:end_data).and_return end_data
-        expect(script.related_scripts.size).to eq 1
-        expect(script.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
-      end
-
-      context 'when the script itself is included in the related scripts' do
-        it "does not include itself (to make it easier to copy-paste related scripts)" do
-          end_data = HashWithIndifferentAccess.new(related_scripts: ['ValidSubspeciesInInvalidSpecies', 'ExtantTaxaInFossilGenera'])
-          allow(script).to receive(:end_data).and_return end_data
-          expect(script.related_scripts.size).to eq 1
-          expect(script.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
-        end
-      end
-
-      context 'when related scripts include a non-existing script' do
-        it 'returns an "unfound database script"' do
-          end_data = HashWithIndifferentAccess.new(related_scripts: ['CountriesInEurope'])
-          allow(script).to receive(:end_data).and_return end_data
-          related_script = script.related_scripts.first
-          expect(related_script.title).to include "Error: Could not find database script with class name"
-          expect(related_script.to_param).to eq 'countries_in_europe'
-        end
-      end
-
-      it "defaults to an empty array" do
-        allow(script).to receive(:end_data).and_return HashWithIndifferentAccess.new
-        expect(script.related_scripts).to eq []
+        script = DatabaseScripts::OrphanedProtonyms.new
+        expect(script.title).to eq "Orphaned protonyms"
       end
     end
 
@@ -185,14 +107,6 @@ describe DatabaseScript do
       context 'when script has no custom statistics' do
         it 'returns default statistics' do
           expect(script.statistics).to eq "Results: 0"
-        end
-
-        context 'when script has `hide_statistics`' do
-          it 'returns nil' do
-            end_data = HashWithIndifferentAccess.new(hide_statistics: true)
-            allow(script).to receive(:end_data).and_return end_data
-            expect(script.statistics).to eq nil
-          end
         end
       end
 
