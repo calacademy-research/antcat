@@ -1,8 +1,6 @@
 # TODO: Cleanup. This is more of a dumping ground than an actual decorator.
 
 class TaxonDecorator < Draper::Decorator
-  delegate_all
-
   def link_to_taxon_with_label label
     helpers.link_to label, helpers.catalog_path(taxon)
   end
@@ -15,9 +13,9 @@ class TaxonDecorator < Draper::Decorator
     h.content_tag :span do
       h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
       h.concat " "
-      h.concat link_to_taxon
+      h.concat taxon.link_to_taxon
       h.concat " "
-      h.concat h.content_tag(:small, author_citation, class: "gray")
+      h.concat h.content_tag(:small, taxon.author_citation, class: "gray")
     end
   end
 
@@ -31,11 +29,12 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def type_taxon_rank
-    "Type-#{type_taxon.rank}: ".html_safe
+    "Type-#{taxon.type_taxon.rank}: ".html_safe
   end
 
   # NOTE: We need this because `type_taxt` is stripped of leading whitespace.
   def format_type_taxt
+    type_taxt = taxon.type_taxt
     return if type_taxt.blank?
     return type_taxt if type_taxt.start_with?(",")
     " " << type_taxt
