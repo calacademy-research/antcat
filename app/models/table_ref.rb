@@ -1,7 +1,6 @@
-# rubocop:disable Style/RedundantSelf
-# rubocop:disable Metrics/BlockLength
-
 # TODO: Decide what to do with this.
+
+# rubocop:disable Metrics/BlockLength
 TableRef = Struct.new(:table, :field, :id) do
   def detax
     return "&ndash;".html_safe unless taxt?
@@ -9,8 +8,8 @@ TableRef = Struct.new(:table, :field, :id) do
   end
 
   def taxt?
-    Taxt::TAXTABLES.any? do |(_model, table, field)|
-      self.table == table && self.field.to_s == field
+    Taxt::TAXTABLES.any? do |(_taxtable_model, taxtable_table, taxtable_field)|
+      table == taxtable_table && field.to_s == taxtable_field
     end
   end
 
@@ -30,10 +29,9 @@ TableRef = Struct.new(:table, :field, :id) do
   private
 
     def model
-      Taxt::TAXTABLES.find do |(_model, table, _field)|
-        self.table == table
+      Taxt::TAXTABLES.find do |(_taxtable_model, taxtable_table, _taxtable_field)|
+        table == taxtable_table
       end.first
     end
 end
 # rubocop:enable Metrics/BlockLength
-# rubocop:enable Style/RedundantSelf
