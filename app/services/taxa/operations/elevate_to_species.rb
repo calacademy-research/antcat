@@ -32,7 +32,10 @@ module Taxa
         def build_new_species
           taxon = Species.new
           taxon.attributes = Taxa::CopyAttributes[subspecies]
+
+          taxon.subfamily = subspecies.subfamily
           taxon.genus = subspecies.genus
+
           taxon.name = species_name
           taxon
         end

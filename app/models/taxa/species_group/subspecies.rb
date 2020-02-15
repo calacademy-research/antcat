@@ -5,8 +5,6 @@ class Subspecies < SpeciesGroupTaxon
 
   validates :species, presence: true
 
-  before_validation :set_genus, on: :create # TODO: Remove callback.
-
   def parent
     species
   end
@@ -34,11 +32,4 @@ class Subspecies < SpeciesGroupTaxon
   def childrens_rank_in_words
     "infrasubspecies"
   end
-
-  private
-
-    def set_genus
-      return if genus
-      self.genus = species.genus
-    end
 end

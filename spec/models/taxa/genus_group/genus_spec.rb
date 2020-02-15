@@ -119,8 +119,8 @@ describe Genus do
     end
 
     it "assigns the subfamily of its descendants" do
-      species = create :species, genus: genus_with_tribe
-      create :subspecies, species: species, genus: genus_with_tribe
+      species = create :species, genus: genus_with_tribe, subfamily: subfamily
+      create :subspecies, species: species, genus: genus_with_tribe, subfamily: subfamily
 
       # Test initial.
       expect(genus_with_tribe.reload.subfamily).to eq subfamily

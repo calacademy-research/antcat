@@ -12,18 +12,6 @@ describe Subspecies do
     it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
   end
 
-  describe 'callbacks' do
-    describe '#set_genus' do
-      let(:genus) { create :genus }
-      let(:species) { create :species, genus: genus }
-
-      it "has its genus assigned from its species" do
-        subspecies = build :subspecies, genus: nil, species: species
-        expect { subspecies.save! }.to change { subspecies.genus }.to(genus)
-      end
-    end
-  end
-
   describe "#update_parent" do
     let(:subspecies) { create :subspecies }
     let(:new_parent) { create :species }
