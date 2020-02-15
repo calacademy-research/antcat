@@ -44,19 +44,6 @@ class Genus < GenusGroupTaxon
     species.without_subgenus
   end
 
-  def find_epithet_in_genus target_epithet_string
-    Taxon.joins(:name).where(genus: self).
-      where(names: { epithet: Names::EpithetSearchSet[target_epithet_string] })
-  end
-
-  # TODO: This is the same as `#find_epithet_in_genus`.
-  # Found this in the git history:
-  # `results = with_names.where(['genus_id = ? AND epithet = ? and type="SubspeciesName"', genus.id, epithet])`
-  def find_subspecies_in_genus target_subspecies_string
-    Taxon.joins(:name).where(genus: self).
-      where(names: { epithet: Names::EpithetSearchSet[target_subspecies_string] })
-  end
-
   private
 
     def update_descendants_subfamilies
