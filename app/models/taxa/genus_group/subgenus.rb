@@ -14,7 +14,7 @@ class Subgenus < GenusGroupTaxon
     self.genus = parent_taxon
   end
 
-  def update_parent new_parent
-    self.parent = new_parent
+  def update_parent _new_parent
+    raise "cannot update parent of subgenera"
   end
 end
