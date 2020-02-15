@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Subtribe do
-  let(:subtribe) { described_class.new }
-
   it { is_expected.to validate_presence_of :subfamily }
   it { is_expected.to validate_presence_of :tribe }
 
@@ -13,10 +11,14 @@ describe Subtribe do
   end
 
   describe "#parent=" do
+    let(:subtribe) { described_class.new }
+
     specify { expect { subtribe.parent = nil }.to raise_error("cannot update parent of subtribes") }
   end
 
   describe "#update_parent" do
+    let(:subtribe) { described_class.new }
+
     specify do
       expect { subtribe.update_parent(nil) }.to raise_error("cannot update parent of subtribes")
     end

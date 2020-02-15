@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe Genus do
-  let(:tribe) { create :tribe, subfamily: subfamily }
-  let(:subfamily) { create :subfamily }
-  let(:genus) { create :genus }
-
   describe 'relations' do
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
@@ -13,9 +9,10 @@ describe Genus do
   end
 
   describe "#descendants" do
-    let(:species) { create :species, genus: genus }
-    let(:subgenus) { create :subgenus, genus: genus }
-    let(:subspecies) { create :subspecies, genus: genus, species: species }
+    let!(:genus) { create :genus }
+    let!(:species) { create :species, genus: genus }
+    let!(:subgenus) { create :subgenus, genus: genus }
+    let!(:subspecies) { create :subspecies, genus: genus, species: species }
 
     it "returns all species, subspecies and subgenera of the genus" do
       expect(genus.descendants).to match_array [species, subgenus, subspecies]
@@ -23,6 +20,7 @@ describe Genus do
   end
 
   it "can have species, which are its children" do
+    genus = create :genus
     species = create :species, genus: genus
     other_species = create :species, genus: genus
 
@@ -31,19 +29,22 @@ describe Genus do
   end
 
   describe "#without_subfamily" do
-    let!(:cariridris) { create :genus, subfamily: nil }
+    let!(:genus) { create :genus, subfamily: nil }
 
     it "returns genera with no subfamily" do
-      expect(described_class.without_subfamily.all).to eq [cariridris]
+      expect(described_class.without_subfamily.all).to eq [genus]
     end
   end
 
   describe "#without_tribe" do
-    it "returns genera with no tribe" do
-      create :genus, tribe: tribe, subfamily: tribe.subfamily
-      taxon = create :genus, subfamily: tribe.subfamily, tribe: nil
+    let!(:genus) { create :genus, tribe: nil }
 
-      expect(described_class.without_tribe.all).to eq [taxon]
+    before do
+      create :genus, tribe: create(:tribe)
+    end
+
+    it "returns genera with no tribe" do
+      expect(described_class.without_tribe.all).to eq [genus]
     end
   end
 
@@ -55,12 +56,14 @@ describe Genus do
     end
 
     context "when genus has a subfamily" do
+      let!(:subfamily) { create :subfamily }
       let!(:genus) { create :genus, subfamily: subfamily, tribe: nil }
 
       specify { expect(genus.parent).to eq genus.subfamily }
     end
 
     context "when genus has a tribe" do
+      let(:tribe) { create :tribe }
       let(:genus) { create :genus, tribe: tribe }
 
       specify { expect(genus.parent).to eq tribe }
@@ -68,6 +71,8 @@ describe Genus do
   end
 
   describe "#parent=" do
+    let!(:subfamily) { create :subfamily }
+    let!(:tribe) { create :tribe, subfamily: subfamily }
     let!(:genus) { create :genus }
 
     it "assigns to both tribe and subfamily when parent is a tribe" do
@@ -79,6 +84,8 @@ describe Genus do
   end
 
   describe "#update_parent" do
+    let(:subfamily) { create :subfamily }
+    let(:tribe) { create :tribe, subfamily: subfamily }
     let(:genus_with_tribe) { create :genus, tribe: tribe }
 
     it "assigns to both tribe and subfamily when parent is a tribe" do

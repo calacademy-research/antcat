@@ -1,12 +1,15 @@
 require 'rails_helper'
 
 describe SpeciesGroupTaxon do
-  it "has its subfamily set from its genus" do
-    genus = create :genus
-    expect(genus.subfamily).not_to eq nil
+  describe 'callbacks' do
+    describe '#set_subfamily' do
+      let!(:genus) { create :genus }
 
-    taxon = create :species, genus: genus, subfamily: nil
-    expect(taxon.subfamily).to eq genus.subfamily
+      it "has its subfamily assigned from its genus" do
+        species = create :species, genus: genus, subfamily: nil
+        expect(species.subfamily).to eq genus.subfamily
+      end
+    end
   end
 
   describe "#recombination?" do

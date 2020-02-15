@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe Subspecies do
-  let(:genus) { create :genus }
-
   it { is_expected.to validate_presence_of :genus }
   it { is_expected.to validate_presence_of :species }
 
@@ -10,16 +8,16 @@ describe Subspecies do
     it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
   end
 
-  it "has its subfamily assigned from its genus" do
-    subspecies = create :subspecies, genus: genus, subfamily: nil
-    expect(subspecies.subfamily).to eq genus.subfamily
-  end
+  describe 'callbacks' do
+    describe '#set_genus' do
+      let(:genus) { create :genus }
+      let(:species) { create :species, genus: genus }
 
-  it "has its genus assigned from its species" do
-    species = create :species, genus: genus
-    subspecies = create :subspecies, genus: nil, species: species
-
-    expect(subspecies.genus).to eq genus
+      it "has its genus assigned from its species" do
+        subspecies = create :subspecies, genus: nil, species: species
+        expect(subspecies.genus).to eq genus
+      end
+    end
   end
 
   describe "#update_parent" do

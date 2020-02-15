@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 describe Tribe do
-  let(:tribe) { create :tribe, subfamily: subfamily }
-  let(:subfamily) { create :subfamily }
-
   it { is_expected.to validate_presence_of :subfamily }
 
   describe 'relations' do
@@ -13,6 +10,8 @@ describe Tribe do
   end
 
   it "can have genera, which are its children" do
+    tribe = create :tribe
+
     genus = create :genus, tribe: tribe
     another_genus = create :genus, tribe: tribe
 

@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Family do
-  let(:family) { create :family }
-
   describe "#parent" do
+    let(:family) { create :family }
+
     specify { expect(family.parent).to eq nil }
   end
 
@@ -20,6 +20,7 @@ describe Family do
   end
 
   describe "#subfamilies" do
+    let(:family) { create :family }
     let!(:subfamily) { create :subfamily }
 
     it "includes all subfamilies" do
