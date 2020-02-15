@@ -4,6 +4,7 @@ class Genus < GenusGroupTaxon
   # TODO: Maybe rename to `children` after investigating if we want to keep the methods
   # currently named `#children` (or rename them to `#direct_children`).
   has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
+  has_many :species_without_subgenus, -> { without_subgenus }, class_name: 'Species'
 
   with_options dependent: :restrict_with_error do
     has_many :species
@@ -11,6 +12,7 @@ class Genus < GenusGroupTaxon
     has_many :subgenera
   end
 
+  scope :incertae_sedis_in_subfamily, -> { where(incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY) }
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }
 
@@ -38,10 +40,6 @@ class Genus < GenusGroupTaxon
   def update_parent new_parent
     self.parent = new_parent
     update_descendants_subfamilies
-  end
-
-  def species_without_subgenus
-    species.without_subgenus
   end
 
   private

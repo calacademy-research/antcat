@@ -111,9 +111,6 @@ Rails:
 Rails/BulkChangeTable:
   Enabled: false
 
-Rails/Delegate:
-  Enabled: false
-
 Rails/InverseOf:
   Enabled: false
 
