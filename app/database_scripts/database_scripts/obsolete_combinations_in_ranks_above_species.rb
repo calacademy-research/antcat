@@ -1,7 +1,7 @@
 module DatabaseScripts
   class ObsoleteCombinationsInRanksAboveSpecies < DatabaseScript
     def results
-      Taxon.obsolete_combinations.where(type: Taxon::TYPES_ABOVE_SPECIES).includes(:current_valid_taxon)
+      Taxon.obsolete_combinations.where(type: Rank::TYPES_ABOVE_SPECIES).includes(:current_valid_taxon)
     end
 
     def render

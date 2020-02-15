@@ -2,7 +2,7 @@
   .row
     .medium-2.columns
       Rank
-      =select_tag :type, options_for_select(Taxon::TYPES, params[:type]), include_blank: "Any"
+      =select_tag :type, options_for_select(Rank::TYPES, params[:type]), include_blank: "Any"
     .medium-2.columns
       Status
       =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
@@ -49,7 +49,7 @@
     .medium-2.columns.end
       %i Incertae sedis
       in
-      =select_tag :incertae_sedis_in, options_for_select(Taxon::INCERTAE_SEDIS_IN_RANKS, params[:incertae_sedis_in]), include_blank: true
+      =select_tag :incertae_sedis_in, options_for_select(Rank::INCERTAE_SEDIS_IN_RANKS, params[:incertae_sedis_in]), include_blank: true
 
   .row
     .medium-3.columns

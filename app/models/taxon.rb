@@ -4,19 +4,6 @@ class Taxon < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
-  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
-  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
-  # TODO: Not validated since `taxa.type_taxon_id` will be moved to `protonyms` or a new table.
-  CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
-  CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
-  INCERTAE_SEDIS_IN_RANKS = [
-    INCERTAE_SEDIS_IN_FAMILY = 'family',
-    INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
-    'tribe',
-    'genus'
-  ]
-
   self.table_name = :taxa
 
   delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
@@ -41,11 +28,12 @@ class Taxon < ApplicationRecord
 
   validates :name, :protonym, presence: true
   validates :status, inclusion: { in: Status::STATUSES }
-  validates :incertae_sedis_in, inclusion: { in: INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
+  validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
-  validates :original_combination, absence: { message: "can not be set for taxa of this rank" }, unless: -> { type.in?(CAN_BE_A_COMBINATION_TYPES) }
+  validates :original_combination, absence: { message: "can not be set for taxa of this rank" },
+    unless: -> { type.in?(Rank::CAN_BE_A_COMBINATION_TYPES) }
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
