@@ -92,7 +92,7 @@ class Taxon < ApplicationRecord
   end
 
   def invalid?
-    status != Status::VALID
+    !valid_taxon?
   end
 
   def recombination?
