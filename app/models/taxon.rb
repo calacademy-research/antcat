@@ -80,7 +80,7 @@ class Taxon < ApplicationRecord
     where(name_cache: name_string).exists?
   end
 
-  (Status::STATUSES - [Status::VALID]).each do |status|
+  [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end
