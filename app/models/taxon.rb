@@ -80,11 +80,6 @@ class Taxon < ApplicationRecord
       includes(current_valid_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
   end
 
-  # Example: `Species.self_join_on(:genus).where(fossil: false, taxa_self_join_alias: { fossil: true })`.
-  scope :self_join_on, ->(model) {
-    joins("LEFT OUTER JOIN `taxa` `taxa_self_join_alias` ON `taxa`.`#{model}_id` = `taxa_self_join_alias`.`id`")
-  }
-
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
 

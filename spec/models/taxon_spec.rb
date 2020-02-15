@@ -210,24 +210,6 @@ describe Taxon do
     subject { build :family }
   end
 
-  describe "scopes" do
-    describe ".self_join_on" do
-      let!(:genus) { create :genus, :fossil }
-      let!(:species) { create :species, genus: genus }
-
-      it "handles self-referential condition" do
-        query = -> do
-          described_class.self_join_on(:genus).
-            where(fossil: false, taxa_self_join_alias: { fossil: true })
-        end
-
-        expect(query.call).to eq [species]
-        genus.update!(fossil: false)
-        expect(query.call).to eq []
-      end
-    end
-  end
-
   describe "workflow" do
     describe '`Workflow::ExternalTable`' do
       context "when taxon is created" do

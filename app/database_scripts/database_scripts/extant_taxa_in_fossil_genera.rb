@@ -1,9 +1,7 @@
 module DatabaseScripts
   class ExtantTaxaInFossilGenera < DatabaseScript
     def results
-      Taxon.extant.where(type: ['Species', 'Subspecies']).
-        self_join_on(:genus).
-        where(taxa_self_join_alias: { fossil: true })
+      SpeciesGroupTaxon.extant.joins(:genus).where(genera_taxa: { fossil: true })
     end
 
     def render

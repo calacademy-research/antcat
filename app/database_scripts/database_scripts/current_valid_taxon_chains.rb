@@ -2,8 +2,8 @@ module DatabaseScripts
   class CurrentValidTaxonChains < DatabaseScript
     def results
       Taxon.where.not(current_valid_taxon_id: nil).
-        self_join_on(:current_valid_taxon).
-        where.not(taxa_self_join_alias: { current_valid_taxon_id: nil })
+        joins(:current_valid_taxon).
+        where.not(current_valid_taxons_taxa: { current_valid_taxon_id: nil })
     end
 
     def render
