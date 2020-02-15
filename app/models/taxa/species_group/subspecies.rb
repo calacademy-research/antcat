@@ -5,7 +5,7 @@ class Subspecies < SpeciesGroupTaxon
 
   validates :species, presence: true
 
-  before_validation :set_genus
+  before_validation :set_genus, on: :create # TODO: Remove callback.
 
   def parent
     species
@@ -39,8 +39,6 @@ class Subspecies < SpeciesGroupTaxon
 
     def set_genus
       return if genus
-      # TODO: `if species` is only here to satisfy specs. See if we want to change `before_validation`
-      # to `before_save`, or simply not store `genus_id` for species.
-      self.genus = species.genus if species
+      self.genus = species.genus
     end
 end

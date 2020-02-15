@@ -8,7 +8,7 @@ class SpeciesGroupTaxon < Taxon
 
   validates :genus, presence: true
 
-  before_create :set_subfamily
+  before_create :set_subfamily # TODO: Remove callback.
 
   def recombination?
     # TODO: Check if this is true.

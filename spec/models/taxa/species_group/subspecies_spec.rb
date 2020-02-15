@@ -1,8 +1,12 @@
 require 'rails_helper'
 
 describe Subspecies do
-  it { is_expected.to validate_presence_of :genus }
-  it { is_expected.to validate_presence_of :species }
+  describe 'validations' do
+    subject(:taxon) { create :subspecies }
+
+    it { is_expected.to validate_presence_of :genus }
+    it { is_expected.to validate_presence_of :species }
+  end
 
   describe 'relations' do
     it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
@@ -14,8 +18,8 @@ describe Subspecies do
       let(:species) { create :species, genus: genus }
 
       it "has its genus assigned from its species" do
-        subspecies = create :subspecies, genus: nil, species: species
-        expect(subspecies.genus).to eq genus
+        subspecies = build :subspecies, genus: nil, species: species
+        expect { subspecies.save! }.to change { subspecies.genus }.to(genus)
       end
     end
   end
