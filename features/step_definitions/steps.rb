@@ -130,7 +130,8 @@ And('I will confirm on the next step') do
     evaluate_script "window.alert = function(msg) { return true; }"
     evaluate_script "window.confirm = function(msg) { return true; }"
     evaluate_script "window.prompt = function(msg) { return true; }"
-  rescue Capybara::NotSupportedByDriverError # rubocop:disable Lint/SuppressedException
+  rescue Capybara::NotSupportedByDriverError
+    nil
   end
 end
 
