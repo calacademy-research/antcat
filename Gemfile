@@ -22,7 +22,7 @@ gem 'bootsnap', require: false
 gem 'colorize'
 gem 'devise'
 gem 'diffy', require: false
-gem 'draper'
+gem 'draper', '< 4'
 gem 'ey_config' # Required access service configurations through `EY::Config` on EngineYard.
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
@@ -63,7 +63,7 @@ group :development, :test do
   gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.79.0', require: false
+  gem 'rubocop', '~> 0.80.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'

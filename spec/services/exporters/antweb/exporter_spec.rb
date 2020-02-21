@@ -13,7 +13,7 @@ describe Exporters::Antweb::Exporter do
     end
   end
 
-  describe ".antcat_taxon_link" do
+  describe ".antcat_taxon_link_with_name" do
     let(:taxon) { build_stubbed :family }
 
     it "includes 'antcat.org' in the url" do
@@ -34,7 +34,7 @@ describe Exporters::Antweb::Exporter do
       HTML
     end
 
-    specify { expect(described_class.antcat_taxon_link_with_name(taxon)).to be_html_safe }
+    specify { expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to be_html_safe }
   end
 
   describe "#call" do
