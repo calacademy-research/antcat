@@ -40,6 +40,7 @@ describe Exporters::Antweb::ExportTaxon do
       specify { expect(described_class[taxon][0]).to eq taxon.id }
     end
 
+    # TODO: Cleanup up specs and move to `antweb_attributes_spec.rb`.
     describe "[1-6]: `subfamily`, ``tribe, `genus`, `subgenus`, `species` and `subspecies`" do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
@@ -100,6 +101,18 @@ describe Exporters::Antweb::ExportTaxon do
           end
         end
 
+        context 'when species has a subgenus' do
+          let(:genus) { create :genus, subfamily: subfamily, tribe: tribe }
+          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, tribe: tribe, genus: genus }
+          let(:species) { create :species, name_string: 'Atta robustus', genus: genus, subgenus: subgenus }
+
+          it 'exports the subgenus as the subgenus part of the name' do
+            expect(described_class[species][1..6]).to eq [
+              subfamily.name_cache, tribe.name_cache, genus.name_cache, 'Subgenusia', 'robustus', nil
+            ]
+          end
+        end
+
         context 'when species has no subfamily' do
           it "exports the subfamily as 'incertae sedis'" do
             genus = create :genus, subfamily: nil, tribe: nil
@@ -132,6 +145,22 @@ describe Exporters::Antweb::ExportTaxon do
 
             expect(described_class[subspecies][1..6]).to eq [
               subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
+            ]
+          end
+        end
+
+        context 'when subspecies has a subgenus' do
+          let(:genus) { create :genus, subfamily: subfamily, tribe: tribe }
+          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, tribe: tribe, genus: genus }
+          let(:species) { create :species, name_string: 'Atta robustus', genus: genus, subgenus: subgenus }
+          let(:subspecies) do
+            create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily,
+              genus: genus, subgenus: subgenus, species: species
+          end
+
+          it 'exports the subgenus as the subgenus part of the name' do
+            expect(described_class[subspecies][1..6]).to eq [
+              subfamily.name_cache, tribe.name_cache, genus.name_cache, 'Subgenusia', 'robustus', 'emeryii'
             ]
           end
         end

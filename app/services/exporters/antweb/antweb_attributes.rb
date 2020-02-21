@@ -24,7 +24,7 @@ module Exporters
 
         attr_reader :taxon
 
-        delegate :name, :subfamily, :tribe, :genus, :species, to: :taxon
+        delegate :name, :subfamily, :tribe, :genus, :subgenus, :species, to: :taxon
 
         def family_attributes
           {
@@ -66,6 +66,7 @@ module Exporters
             subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
             tribe: genus.tribe&.name&.name,
             genus: genus.name.name,
+            subgenus: subgenus&.name&.epithet,
             species: name.epithet
           }
         end
@@ -75,6 +76,7 @@ module Exporters
             subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
             tribe: genus.tribe&.name&.name,
             genus: genus.name.name,
+            subgenus: species.subgenus&.name&.epithet,
             species: name.species_epithet,
             subspecies: name.epithet
           }
