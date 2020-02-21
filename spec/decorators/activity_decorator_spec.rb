@@ -94,7 +94,7 @@ describe ActivityDecorator do
         end
       end
 
-      context 'when action is `approve_all_changes`' do
+      context 'when action is `approve_all_references`' do
         specify do
           activity = Activity.create_without_trackable :approve_all_references, user, parameters: { count: 1 }
           expect(activity.decorate.did_something.squish).

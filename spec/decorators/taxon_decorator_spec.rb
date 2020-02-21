@@ -27,13 +27,13 @@ describe TaxonDecorator do
   end
 
   describe "#format_type_taxt" do
-    context 'when `type_taxt` starts with comma' do
+    context 'when `type_taxt` starts with a comma' do
       let(:taxon) { build_stubbed :family, type_taxt: ', pizza' }
 
       specify { expect(decorated.format_type_taxt).to eq ', pizza' }
     end
 
-    context 'when `type_taxt` starts with comma' do
+    context 'when `type_taxt` does not start with a comma' do
       let(:taxon) { build_stubbed :family, type_taxt: 'pizza' }
 
       specify { expect(decorated.format_type_taxt).to eq ' pizza' }
