@@ -61,6 +61,5 @@ description: >
   taxon's type is not.
 
 related_scripts:
-  - FamilyOrSubfamilyNames
   - TaxaWithNonMatchingNameTypes
   - UnparsableNames
