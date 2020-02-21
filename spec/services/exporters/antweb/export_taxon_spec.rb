@@ -44,96 +44,120 @@ describe Exporters::Antweb::ExportTaxon do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
 
-      it "can export a subfamily" do
-        expect(described_class[subfamily][1..6]).to eq [
-          subfamily.name_cache, nil, nil, nil, nil, nil
-        ]
-      end
-
-      it "can export a genus" do
-        genus = create :genus, subfamily: subfamily, tribe: tribe
-        expect(described_class[genus][1..6]).to eq [
-          subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, nil, nil
-        ]
-      end
-
-      it "can export a genus without a tribe" do
-        genus = create :genus, subfamily: subfamily, tribe: nil
-        expect(described_class[genus][1..6]).to eq [
-          subfamily.name_cache, nil, genus.name_cache, nil, nil, nil
-        ]
-      end
-
-      it "can export a genus without a subfamily as being in 'incertae_sedis'" do
-        genus = create :genus, tribe: nil, subfamily: nil
-        expect(described_class[genus][1..6]).to eq [
-          'incertae_sedis', nil, genus.name_cache, nil, nil, nil
-        ]
-      end
-
-      it "can export a Subgenus" do
-        taxon = create :subgenus, name_string: 'Atta (Boyo)'
-        expect(described_class[taxon][4]).to eq 'Boyo'
-      end
-
-      describe "Exporting species" do
-        it "exports one correctly" do
-          genus = create :genus, tribe: tribe
-          species = create :species, name_string: 'Atta robustus', genus: genus
-
-          expect(described_class[species][1..6]).to eq [
-            subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', nil
-          ]
-        end
-
-        it "can export a species without a tribe" do
-          genus = create :genus, subfamily: subfamily, tribe: nil
-          species = create :species, name_string: 'Atta robustus', genus: genus
-
-          expect(described_class[species][1..6]).to eq [
-            subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', nil
-          ]
-        end
-
-        it "exports a species without a subfamily as being in the 'incertae sedis' subfamily" do
-          genus = create :genus, subfamily: nil, tribe: nil
-          species = create :species, name_string: 'Atta robustus', genus: genus
-
-          expect(described_class[species][1..6]).to eq [
-            'incertae_sedis', nil, genus.name_cache, nil, 'robustus', nil
+      context 'when taxon is a subfamily' do
+        specify do
+          expect(described_class[subfamily][1..6]).to eq [
+            subfamily.name_cache, nil, nil, nil, nil, nil
           ]
         end
       end
 
-      describe "Exporting subspecies" do
-        it "exports one correctly" do
-          genus = create :genus, subfamily: subfamily, tribe: tribe
-          species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
-          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
-
-          expect(described_class[subspecies][1..6]).to eq [
-            subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
-          ]
+      context 'when taxon is a genus' do
+        context 'when genus has a subfamily and a tribe' do
+          specify do
+            genus = create :genus, subfamily: subfamily, tribe: tribe
+            expect(described_class[genus][1..6]).to eq [
+              subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, nil, nil
+            ]
+          end
         end
 
-        it "can export a subspecies without a tribe" do
-          genus = create :genus, subfamily: subfamily, tribe: nil
-          species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
-          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', genus: genus, species: species
-
-          expect(described_class[subspecies][1..6]).to eq [
-            subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', 'emeryii'
-          ]
+        context 'when genus has no subfamily' do
+          it "exports the subfamily as 'incertae_sedis'" do
+            genus = create :genus, tribe: nil, subfamily: nil
+            expect(described_class[genus][1..6]).to eq [
+              'incertae_sedis', nil, genus.name_cache, nil, nil, nil
+            ]
+          end
         end
 
-        it "exports a subspecies without a subfamily as being in the 'incertae sedis' subfamily" do
-          genus = create :genus, subfamily: nil, tribe: nil
-          species = create :species, name_string: 'Atta robustus', subfamily: nil, genus: genus
-          subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
+        context 'when the genus has no tribe' do
+          specify do
+            genus = create :genus, subfamily: subfamily, tribe: nil
+            expect(described_class[genus][1..6]).to eq [
+              subfamily.name_cache, nil, genus.name_cache, nil, nil, nil
+            ]
+          end
+        end
+      end
 
-          expect(described_class[subspecies][1..6]).to eq [
-            'incertae_sedis', nil, genus.name_cache, nil, 'robustus', 'emeryii'
-          ]
+      context 'when taxon is a subgenus' do
+        it 'exports the subgenus as the subgenus part of the name' do
+          taxon = create :subgenus, name_string: 'Atta (Boyo)'
+          expect(described_class[taxon][4]).to eq 'Boyo'
+        end
+      end
+
+      context 'when taxon is a species' do
+        context 'when species has a subfamily and a tribe' do
+          specify do
+            genus = create :genus, tribe: tribe
+            species = create :species, name_string: 'Atta robustus', genus: genus
+
+            expect(described_class[species][1..6]).to eq [
+              subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', nil
+            ]
+          end
+        end
+
+        context 'when species has no subfamily' do
+          it "exports the subfamily as 'incertae sedis'" do
+            genus = create :genus, subfamily: nil, tribe: nil
+            species = create :species, name_string: 'Atta robustus', genus: genus
+
+            expect(described_class[species][1..6]).to eq [
+              'incertae_sedis', nil, genus.name_cache, nil, 'robustus', nil
+            ]
+          end
+        end
+
+        context 'when species has no tribe' do
+          specify do
+            genus = create :genus, subfamily: subfamily, tribe: nil
+            species = create :species, name_string: 'Atta robustus', genus: genus
+
+            expect(described_class[species][1..6]).to eq [
+              subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', nil
+            ]
+          end
+        end
+      end
+
+      context 'when taxon is a subspecies' do
+        context 'when subspecies has a subfamily and a tribe' do
+          specify do
+            genus = create :genus, subfamily: subfamily, tribe: tribe
+            species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
+            subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily, genus: genus, species: species
+
+            expect(described_class[subspecies][1..6]).to eq [
+              subfamily.name_cache, tribe.name_cache, genus.name_cache, nil, 'robustus', 'emeryii'
+            ]
+          end
+        end
+
+        context 'when subspecies has no subfamily' do
+          it "exports the subfamily as 'incertae sedis'" do
+            genus = create :genus, subfamily: nil, tribe: nil
+            species = create :species, name_string: 'Atta robustus', subfamily: nil, genus: genus
+            subspecies = create :subspecies, name_string: 'Atta robustus emeryii', subfamily: nil, genus: genus, species: species
+
+            expect(described_class[subspecies][1..6]).to eq [
+              'incertae_sedis', nil, genus.name_cache, nil, 'robustus', 'emeryii'
+            ]
+          end
+        end
+
+        context 'when subspecies has no tribe' do
+          specify do
+            genus = create :genus, subfamily: subfamily, tribe: nil
+            species = create :species, name_string: 'Atta robustus', subfamily: subfamily, genus: genus
+            subspecies = create :subspecies, name_string: 'Atta robustus emeryii', genus: genus, species: species
+
+            expect(described_class[subspecies][1..6]).to eq [
+              subfamily.name_cache, nil, genus.name_cache, nil, 'robustus', 'emeryii'
+            ]
+          end
         end
       end
     end
@@ -400,17 +424,21 @@ describe Exporters::Antweb::ExportTaxon do
         expect(described_class[taxon][23]).to eq 'Atta betta'
       end
 
-      it "handles a synonym" do
-        senior = create :genus
-        junior = create :genus, :synonym, current_valid_taxon: senior
-        taxon = create :species, genus: junior
+      context 'when taxon is a synonym' do
+        specify do
+          senior = create :genus
+          junior = create :genus, :synonym, current_valid_taxon: senior
+          taxon = create :species, genus: junior
 
-        expect(described_class[taxon][23]).to eq senior.name_cache
+          expect(described_class[taxon][23]).to eq senior.name_cache
+        end
       end
 
-      it "handles a genus without a subfamily" do
-        taxon = create :genus, tribe: nil, subfamily: nil
-        expect(described_class[taxon][23]).to eq 'Formicidae'
+      context 'when taxon is a genus without a subfamily' do
+        it "defaults to Formicidae" do
+          taxon = create :genus, tribe: nil, subfamily: nil
+          expect(described_class[taxon][23]).to eq 'Formicidae'
+        end
       end
     end
   end
