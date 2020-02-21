@@ -60,5 +60,4 @@ description: >
   `SubspeciesName`s parsed as `InfrasubspeciesName`s will be fixed once we have converted all quadrinomials.
 
 related_scripts:
-  - TaxaWithNonMatchingNameTypes
   - UnparsableNames
