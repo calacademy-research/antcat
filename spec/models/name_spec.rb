@@ -24,7 +24,6 @@ describe Name do
   describe "#italics?" do
     specify do
       expect(FamilyName.new.italics?).to eq false
-      expect(FamilyOrSubfamilyName.new.italics?).to eq false
       expect(SubfamilyName.new.italics?).to eq false
       expect(TribeName.new.italics?).to eq false
       expect(SubtribeName.new.italics?).to eq false

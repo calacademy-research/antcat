@@ -1,2 +1,0 @@
-class FamilyName < FamilyOrSubfamilyName
-end

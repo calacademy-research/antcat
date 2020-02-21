@@ -5,7 +5,7 @@ class Name < ApplicationRecord
   include Trackable
   include Formatters::ItalicsHelper
 
-  NON_ITALIC_NAME_TYPES = %w[FamilyName FamilyOrSubfamilyName SubfamilyName TribeName SubtribeName]
+  NON_ITALIC_NAME_TYPES = %w[FamilyName SubfamilyName TribeName SubtribeName]
   ITALIC_NAME_TYPES = %w[GenusName SubgenusName SpeciesName SubspeciesName InfrasubspeciesName]
   NAME_TYPES = NON_ITALIC_NAME_TYPES + ITALIC_NAME_TYPES
 
@@ -17,13 +17,11 @@ class Name < ApplicationRecord
   #   `SubspeciesName`
   SINGLE_WORD_NAMES = [
     'FamilyName',
-    'FamilyOrSubfamilyName', # TODO: Split into `FamilyName` and `SubfamilyName` and remove.
     'SubfamilyName',
     'TribeName',
     'SubtribeName',
     'GenusName'
   ]
-  BROKEN_ISH_NAME_TYPES = ['FamilyOrSubfamilyName'] # TODO
 
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error

@@ -1,0 +1,2 @@
+class SubfamilyName < Name
+end
