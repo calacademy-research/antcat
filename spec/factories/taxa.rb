@@ -15,52 +15,60 @@ FactoryBot.define do
       end
     end
 
-    protonym
     valid
 
     factory :family, class: 'Family' do
       association :name, factory: :family_name
+      genus_group_name_protonym
     end
 
     factory :subfamily, class: 'Subfamily' do
       association :name, factory: :subfamily_name
+      genus_group_name_protonym
     end
 
     factory :tribe, class: 'Tribe' do
       association :name, factory: :tribe_name
+      genus_group_name_protonym
       subfamily
     end
 
     factory :subtribe, class: 'Subtribe' do
       association :name, factory: :subtribe_name
+      genus_group_name_protonym
       tribe
       subfamily { |a| a.tribe.subfamily }
     end
 
     factory :genus, class: 'Genus' do
       association :name, factory: :genus_name
+      genus_group_name_protonym
       tribe
       subfamily { |a| a.tribe&.subfamily }
     end
 
     factory :subgenus, class: 'Subgenus' do
       association :name, factory: :subgenus_name
+      genus_group_name_protonym
       genus
     end
 
     factory :species, class: 'Species' do
       association :name, factory: :species_name
+      species_group_name_protonym
       genus
     end
 
     factory :subspecies, class: 'Subspecies' do
       association :name, factory: :subspecies_name
+      species_group_name_protonym
       species
       genus
     end
 
     factory :infrasubspecies, class: 'Infrasubspecies' do
       association :name, factory: :infrasubspecies_name
+      species_group_name_protonym
       subspecies
       species
       genus
@@ -128,6 +136,14 @@ FactoryBot.define do
       after :create do |taxon|
         create :taxon_history_item, taxon: taxon
       end
+    end
+
+    trait :genus_group_name_protonym do
+      association :protonym, :genus_group_name
+    end
+
+    trait :species_group_name_protonym do
+      association :protonym, :species_group_name
     end
   end
 end
