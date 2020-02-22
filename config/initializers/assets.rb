@@ -18,9 +18,10 @@ Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 Rails.application.config.assets.precompile += %w[
   application.js
   logged_in_only.js
+  markdown_and_friends.js
   check_name_conflicts.js
   compare_revisions.js
-  markdown_and_friends.js
+  google_analytics.js
   locality_autocompletion.js
   protonym_select.js
   reference_select.js
