@@ -9,6 +9,7 @@ class Reference < ApplicationRecord
     expanded_reference_cache
   ]
 
+  # TODO: See if we can remove this. Currently required by `ReferenceForm`.
   attr_accessor :journal_name, :publisher_string
 
   belongs_to :journal
@@ -95,6 +96,7 @@ class Reference < ApplicationRecord
     string
   end
 
+  # TODO: See if we can avoid this.
   def refresh_author_names_caches(*args)
     set_author_names_caches args
     save(validate: false)
@@ -121,6 +123,7 @@ class Reference < ApplicationRecord
     end.html_safe
   end
 
+  # TODO: Revisit after removing `MissingReference`.
   def principal_author_last_name
     author_names.first&.last_name
   end
@@ -138,6 +141,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
+    # TODO: Probably just use `references.year` instead of this once `MissingReference` has been remvoed.
     def citation_year_without_extras
       citation_year.gsub(/ .*$/, '')
     end
@@ -151,6 +155,10 @@ class Reference < ApplicationRecord
 
     # TODO: Revisit once missing references have been cleared.
     # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
+    #
+    # `citation_year` [string] looks like this: 2000b ["2001"]
+    # Which means: <published year><disambiguating letter, optional> ("<year in publication>", optional)
+    # TODO: Split into three different columns. See also https://github.com/calacademy-research/antcat/issues/511
     def set_year_from_citation_year
       self.year = if citation_year.blank?
                     nil
