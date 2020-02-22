@@ -1,9 +1,6 @@
 require 'rails_helper'
 
 describe Reference do
-  let(:ward_ps) { create :author_name, name: 'Ward, P.S.' }
-  let(:fisher_bl) { create :author_name, name: 'Fisher, B.L.' }
-
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
     it { is_expected.to have_many(:citations).dependent(:restrict_with_error) }
@@ -116,23 +113,26 @@ describe Reference do
   end
 
   describe "#author_names_string" do
+    let(:ward) { create :author_name, name: 'Ward, P.S.' }
+    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
+
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = build_stubbed :reference, author_names: [fisher_bl]
+        reference = build_stubbed :reference, author_names: [fisher]
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
+        reference = build_stubbed :reference, author_names: [fisher, ward]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
     end
 
     describe "updating, when things change" do
-      let(:reference) { create :reference, author_names: [fisher_bl] }
+      let(:reference) { create :reference, author_names: [fisher] }
 
       context "when an author_name is added" do
-        before { reference.author_names << ward_ps }
+        before { reference.author_names << ward }
 
         it "updates its `author_names_string`" do
           expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
@@ -140,20 +140,20 @@ describe Reference do
       end
 
       context "when an author_name is removed" do
-        before { reference.author_names << ward_ps }
+        before { reference.author_names << ward }
 
         it "updates its `author_names_string`" do
-          expect { reference.author_names.delete ward_ps }.
+          expect { reference.author_names.delete ward }.
             to change { reference.reload.author_names_string }.
             from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
         end
       end
 
       context "when an author_name's name is changed" do
-        before { reference.author_names = [ward_ps] }
+        before { reference.author_names = [ward] }
 
         it "updates its `author_names_string`" do
-          expect { ward_ps.update!(name: 'Fisher') }.
+          expect { ward.update!(name: 'Fisher') }.
             to change { reference.reload.author_names_string }.
             from('Ward, P.S.').to('Fisher')
         end
@@ -161,7 +161,7 @@ describe Reference do
     end
 
     it "maintains the order in which they were added to the reference" do
-      reference = create :reference, author_names: [ward_ps]
+      reference = create :reference, author_names: [ward]
       fisher = create :author_name, name: 'Fisher'
       wilden = create :author_name, name: 'Wilden'
       reference.author_names << wilden
@@ -172,19 +172,22 @@ describe Reference do
   end
 
   describe "#author_names_string_with_suffix" do
+    let(:ward) { create :author_name, name: 'Ward, P.S.' }
+    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
+
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = build_stubbed :reference, author_names: [fisher_bl]
+        reference = build_stubbed :reference, author_names: [fisher]
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        reference = build_stubbed :reference, author_names: [fisher_bl, ward_ps]
+        reference = build_stubbed :reference, author_names: [fisher, ward]
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.; Ward, P.S.'
       end
 
       it "includes the author_names' suffix" do
-        reference = build_stubbed :reference, author_names: [fisher_bl], author_names_suffix: '(ed.)'
+        reference = build_stubbed :reference, author_names: [fisher], author_names_suffix: '(ed.)'
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
       end
     end
@@ -246,6 +249,9 @@ describe Reference do
   end
 
   describe "#principal_author_last_name" do
+    let(:ward) { create :author_name, name: 'Ward, P.S.' }
+    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
+
     context "when there are no authors" do
       let!(:reference) { build_stubbed :reference, author_names: [] }
 
@@ -253,7 +259,7 @@ describe Reference do
     end
 
     context 'when there are authors' do
-      let!(:reference) { build_stubbed :reference, author_names: [ward_ps, fisher_bl] }
+      let!(:reference) { build_stubbed :reference, author_names: [ward, fisher] }
 
       it "is the last name of the principal author" do
         expect(reference.principal_author_last_name).to eq 'Ward'
