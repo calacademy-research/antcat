@@ -1,11 +1,9 @@
 class ReferenceDecorator < Draper::Decorator
-  delegate_all
-
   delegate :sanitize, to: :helpers
   delegate :plain_text, :expandable_reference, :expanded_reference, to: :reference_formatter
 
   def link_to_reference
-    helpers.link_to keey, helpers.reference_path(self)
+    helpers.link_to reference.keey, helpers.reference_path(reference)
   end
 
   def any_notes?
@@ -30,7 +28,7 @@ class ReferenceDecorator < Draper::Decorator
 
   def doi_link
     return unless reference.doi?
-    helpers.external_link_to reference.doi, ("https://doi.org/" + doi)
+    helpers.external_link_to reference.doi, ("https://doi.org/" + reference.doi)
   end
 
   def pdf_link
