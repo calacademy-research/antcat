@@ -168,6 +168,15 @@ Style/ClassCheck:
 Style/CollectionMethods:
   Enabled: true
 
+Style/CommentAnnotation:
+  Keywords:
+    - TODO
+    - FIXME
+    - OPTIMIZE
+    - HACK
+    - REVIEW
+    - NOTE
+
 Style/Documentation:
   Enabled: false
 

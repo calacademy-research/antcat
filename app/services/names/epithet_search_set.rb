@@ -2,7 +2,7 @@ module Names
   class EpithetSearchSet
     include Service
 
-    CONSONANTS = 'bcdfghjklmnprstvxyz' # Note: no 'q' or 'w', but includes 'y'.
+    CONSONANTS = 'bcdfghjklmnprstvxyz' # NOTE: No 'q' or 'w', but includes 'y'.
 
     def initialize epithet
       @epithet = epithet
