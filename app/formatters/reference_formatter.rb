@@ -22,7 +22,7 @@ class ReferenceFormatter
     cached = reference.plain_text_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_plain_text, :plain_text_cache
+    References::Cache::Set[reference, generate_plain_text, :plain_text_cache]
   end
 
   # Formats the reference with HTML, CSS, etc. Click to show expanded.
@@ -32,7 +32,7 @@ class ReferenceFormatter
     cached = reference.expandable_reference_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_expandable_reference, :expandable_reference_cache
+    References::Cache::Set[reference, generate_expandable_reference, :expandable_reference_cache]
   end
 
   # Formats the reference with HTML, CSS, etc.
@@ -42,7 +42,7 @@ class ReferenceFormatter
     cached = reference.expanded_reference_cache
     return cached.html_safe if cached
 
-    reference.set_cache generate_expanded_reference, :expanded_reference_cache
+    References::Cache::Set[reference, generate_expanded_reference, :expanded_reference_cache]
   end
 
   private

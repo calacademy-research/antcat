@@ -1,5 +1,5 @@
 class ReferenceObserver < ActiveRecord::Observer
   def before_update reference
-    reference.invalidate_caches unless reference.new_record?
+    References::Cache::Invalidate[reference] unless reference.new_record?
   end
 end

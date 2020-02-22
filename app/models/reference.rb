@@ -83,14 +83,6 @@ class Reference < ApplicationRecord
     end
   end
 
-  def invalidate_caches
-    References::Cache::Invalidate[self]
-  end
-
-  def set_cache value, field
-    References::Cache::Set[self, value, field]
-  end
-
   # TODO: Something. "_cache" vs not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string

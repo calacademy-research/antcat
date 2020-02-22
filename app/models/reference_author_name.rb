@@ -12,6 +12,6 @@ class ReferenceAuthorName < ApplicationRecord
 
     def invalidate_reference_caches!
       reference.reload
-      reference.invalidate_caches
+      References::Cache::Invalidate[reference]
     end
 end
