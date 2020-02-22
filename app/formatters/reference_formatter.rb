@@ -53,13 +53,13 @@ class ReferenceFormatter
     def format_citation
       case reference
       when ArticleReference
-        sanitize "#{reference.journal.name} #{reference.series_volume_issue}:#{reference.pagination}"
+        "#{reference.journal.name} #{reference.series_volume_issue}:#{reference.pagination}"
       when BookReference
-        sanitize "#{reference.publisher.display_name}, #{reference.pagination}"
+        "#{reference.publisher.display_name}, #{reference.pagination}"
       when NestedReference
-        sanitize "#{reference.pages_in} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
+        "#{reference.pages_in} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
       when MissingReference, UnknownReference
-        sanitize reference.citation
+        reference.citation
       else
         raise
       end
@@ -91,8 +91,8 @@ class ReferenceFormatter
       string = sanitize author_names_with_links
       string << ' ' unless string.empty?
       string << sanitize(reference.citation_year) << '. '
-      string << format_title_with_link << ' '
-      string << format_italics(add_period_if_necessary(format_citation))
+      string << link_to(reference.decorate.format_plain_text_title, reference_path(reference)) << ' '
+      string << format_italics(add_period_if_necessary(sanitize(format_citation)))
       string << ' [online early]' if reference.online_early?
 
       string
@@ -115,10 +115,6 @@ class ReferenceFormatter
 
       string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix.present?
       string
-    end
-
-    def format_title_with_link
-      link_to reference.decorate.format_plain_text_title, reference_path(reference)
     end
 
     def format_italics string
