@@ -9,10 +9,10 @@ describe References::Cache::Regenerate do
       expect(reference.expandable_reference_cache).to eq nil
       expect(reference.expanded_reference_cache).to eq nil
 
-      decorated = reference.decorate
-      generated_plain_text_cache = decorated.send :generate_plain_text
-      generated_expandable_reference_cache = decorated.send :generate_expandable_reference
-      generated_expanded_reference_cache = decorated.send :generate_expanded_reference
+      formatter = ReferenceFormatter.new(reference)
+      generated_plain_text_cache = formatter.send :generate_plain_text
+      generated_expandable_reference_cache = formatter.send :generate_expandable_reference
+      generated_expanded_reference_cache = formatter.send :generate_expanded_reference
 
       described_class[reference]
 

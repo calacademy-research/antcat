@@ -22,15 +22,19 @@ module References
         end
 
         def generate_plain_text
-          reference.decorate.send(:generate_plain_text)
+          formatter.send(:generate_plain_text)
         end
 
         def generate_expandable_reference
-          reference.decorate.send(:generate_expandable_reference)
+          formatter.send(:generate_expandable_reference)
         end
 
         def generate_expanded_reference
-          reference.decorate.send(:generate_expanded_reference)
+          formatter.send(:generate_expanded_reference)
+        end
+
+        def formatter
+          @formatter ||= ReferenceFormatter.new(reference)
         end
     end
   end
