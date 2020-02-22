@@ -18,9 +18,7 @@ class ReferenceFormatter
   # Formats the reference as plaintext (with the exception of <i> tags).
   def plain_text
     return generate_plain_text if ENV['NO_REF_CACHE']
-
-    cached = reference.plain_text_cache
-    return cached.html_safe if cached
+    return plain_text_cache.html_safe if plain_text_cache
 
     References::Cache::Set[reference, generate_plain_text, :plain_text_cache]
   end
@@ -28,9 +26,7 @@ class ReferenceFormatter
   # Formats the reference with HTML, CSS, etc. Click to show expanded.
   def expandable_reference
     return generate_expandable_reference if ENV['NO_REF_CACHE']
-
-    cached = reference.expandable_reference_cache
-    return cached.html_safe if cached
+    return expandable_reference_cache.html_safe if expandable_reference_cache
 
     References::Cache::Set[reference, generate_expandable_reference, :expandable_reference_cache]
   end
@@ -38,9 +34,7 @@ class ReferenceFormatter
   # Formats the reference with HTML, CSS, etc.
   def expanded_reference
     return generate_expanded_reference if ENV['NO_REF_CACHE']
-
-    cached = reference.expanded_reference_cache
-    return cached.html_safe if cached
+    return expanded_reference_cache.html_safe if expanded_reference_cache
 
     References::Cache::Set[reference, generate_expanded_reference, :expanded_reference_cache]
   end
@@ -48,6 +42,8 @@ class ReferenceFormatter
   private
 
     attr_reader :reference
+
+    delegate :plain_text_cache, :expandable_reference_cache, :expanded_reference_cache, to: :reference
 
     # TODO: Very "hmm" case statement.
     def format_citation
@@ -88,7 +84,7 @@ class ReferenceFormatter
     end
 
     def generate_expanded_reference
-      string = sanitize author_names_with_links
+      string = author_names_with_links
       string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
@@ -114,7 +110,7 @@ class ReferenceFormatter
                 end.join('; ')
 
       string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix.present?
-      string
+      string.html_safe
     end
 
     def format_italics string
