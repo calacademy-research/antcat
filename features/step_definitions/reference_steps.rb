@@ -57,12 +57,6 @@ Given("a Hölldobler-Fisher reference exists with the title {string}") do |title
   create :unknown_reference, author_names: author_names, title: title
 end
 
-Given("that the entry has a URL that's on our site") do
-  reference = Reference.last
-  reference.update!(document: ReferenceDocument.create!)
-  reference.document.update!(file_file_name: '123.pdf', url: "localhost/documents/#{reference.document.id}/123.pdf")
-end
-
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by(title: title)
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
