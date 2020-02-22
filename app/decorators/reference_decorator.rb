@@ -133,9 +133,6 @@ class ReferenceDecorator < Draper::Decorator
     end
 
     def format_italics string
-      return unless string
-      raise "Can't call format_italics on an unsafe string" unless string.html_safe?
-      string = string.gsub /\*(.*?)\*/, '<i>\1</i>'
-      string.html_safe
+      References::FormatItalics[string]
     end
 end
