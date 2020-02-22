@@ -57,12 +57,12 @@ describe ReferenceDecorator do
     end
   end
 
-  describe '#format_plain_text_title' do
+  describe '#format_title' do
     context 'with unsafe tags' do
       let(:reference) { create :article_reference, title: '<script>xss</script>' }
 
       it "sanitizes them" do
-        results = decorated.format_plain_text_title
+        results = decorated.format_title
         expect(results).to_not include '<script>xss</script>'
         expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
         expect(results).to include 'xss'

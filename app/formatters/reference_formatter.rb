@@ -69,7 +69,7 @@ class ReferenceFormatter
       string = sanitize(reference.author_names_string_with_suffix)
       string << ' '
       string << sanitize(reference.citation_year) << '. '
-      string << unitalicize(reference.decorate.format_plain_text_title) << ' '
+      string << unitalicize(reference.decorate.format_title) << ' '
       string << add_period_if_necessary(format_plain_text_citation)
       string
     end
@@ -91,7 +91,7 @@ class ReferenceFormatter
       string = sanitize author_names_with_links
       string << ' '
       string << sanitize(reference.citation_year) << '. '
-      string << link_to(reference.decorate.format_plain_text_title, reference_path(reference)) << ' '
+      string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
       string << format_italics(add_period_if_necessary(sanitize(format_citation)))
       string << ' [online early]' if reference.online_early?
 

@@ -72,7 +72,7 @@
                 %li=link_to author_name.name, author_name.author
         %tr
           %th Title
-          %td=decorated.format_plain_text_title
+          %td=decorated.format_title
         -if @reference.is_a? UnknownReference
           %tr
             %th Citation
