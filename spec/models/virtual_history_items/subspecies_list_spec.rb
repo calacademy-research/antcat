@@ -34,12 +34,9 @@ describe VirtualHistoryItems::SubspeciesList do
     include TestLinksHelpers
 
     let!(:species) { create :species }
-    let!(:subspecies) { create :subspecies, species: species }
-    let!(:unresolved_homonym_subspecies) { create :subspecies, species: species, unresolved_homonym: true }
-
-    before do
-      subspecies.name.update!(epithet: 'Aaa')
-      unresolved_homonym_subspecies.name.update!(epithet: 'Zzz')
+    let!(:subspecies) { create :subspecies, name_string: 'Lasius niger aa', species: species }
+    let!(:unresolved_homonym_subspecies) do
+      create :subspecies, name_string: 'Lasius niger zz', species: species, unresolved_homonym: true
     end
 
     context 'when the default formatter is used' do
