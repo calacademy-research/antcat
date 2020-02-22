@@ -90,6 +90,29 @@ describe ReferenceForm do
       end
     end
 
+    describe 'reference documents' do
+      let(:params) do
+        {
+          author_names_string: "Batiatus, B.",
+          document_attributes: {
+            url: "localhost/documents/#{reference.document.id}/123.pdf",
+            id: reference.document.id
+          }
+        }
+      end
+
+      context 'when reference has a document' do
+        let!(:reference) { create :unknown_reference, :with_document }
+
+        # TODO: Do not create new a `ReferenceDocument`s.
+        xit 'does not create a new `ReferenceDocument`s' do
+          expect(ReferenceDocument.count).to eq 1
+          expect { described_class.new(reference, params, request_host).save }.
+            to_not change { ReferenceDocument.count }
+        end
+      end
+    end
+
     describe "duplicate checking" do
       let!(:original) { create :article_reference }
       let(:reference_params) do
