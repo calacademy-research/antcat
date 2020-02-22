@@ -8,6 +8,10 @@ class ReferenceDecorator < Draper::Decorator
     helpers.link_to keey, helpers.reference_path(self)
   end
 
+  def any_notes?
+    [public_notes, editor_notes, taxonomic_notes].reject(&:blank?).any?
+  end
+
   def public_notes
     format_italics sanitize reference.public_notes
   end

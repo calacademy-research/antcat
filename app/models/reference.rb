@@ -133,10 +133,6 @@ class Reference < ApplicationRecord
     author_names.first&.last_name
   end
 
-  def any_notes?
-    [public_notes, editor_notes, taxonomic_notes].reject(&:blank?).any?
-  end
-
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]
   end
