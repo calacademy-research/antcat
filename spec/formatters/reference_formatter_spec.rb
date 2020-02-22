@@ -172,7 +172,7 @@ describe ReferenceFormatter do
       specify { expect(formatter.plain_text).to be_html_safe }
 
       specify do
-        expect(formatter.plain_text).to eq "2010. Tapinoma. Atta and such."
+        expect(formatter.plain_text).to eq " 2010. Tapinoma. Atta and such."
       end
 
       context 'with unsafe tags' do
@@ -191,7 +191,7 @@ describe ReferenceFormatter do
       specify { expect(formatter.expanded_reference).to be_html_safe }
 
       specify do
-        expect(formatter.expanded_reference).to eq <<~HTML.squish
+        expect(formatter.expanded_reference.strip).to eq <<~HTML.squish
           2010. <a href="/references/#{reference.id}">Tapinoma.</a> <i>Atta</i> <i>and such</i>.
         HTML
       end

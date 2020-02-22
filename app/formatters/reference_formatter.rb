@@ -67,7 +67,7 @@ class ReferenceFormatter
 
     def generate_plain_text
       string = sanitize(reference.author_names_string_with_suffix)
-      string << ' ' unless string.empty?
+      string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << unitalicize(reference.decorate.format_plain_text_title) << ' '
       string << add_period_if_necessary(format_plain_text_citation)
@@ -89,7 +89,7 @@ class ReferenceFormatter
 
     def generate_expanded_reference
       string = sanitize author_names_with_links
-      string << ' ' unless string.empty?
+      string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << link_to(reference.decorate.format_plain_text_title, reference_path(reference)) << ' '
       string << format_italics(add_period_if_necessary(sanitize(format_citation)))
