@@ -48,5 +48,9 @@ FactoryBot.define do
     trait :with_doi do
       sequence(:doi) { |n| "10.10.1038/nphys117#{n}" }
     end
+
+    trait :with_document do
+      association :document, factory: :reference_document
+    end
   end
 end

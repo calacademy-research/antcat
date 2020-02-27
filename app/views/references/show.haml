@@ -34,12 +34,11 @@
             %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
           -unless @reference.is_a? MissingReference
             %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
-
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
           =activities_link_for_trackable @reference
 
--@reference = @reference.decorate
+-decorated = @reference.decorate
 
 -if @reference.is_a? MissingReference
   .row.margin-bottom
@@ -57,8 +56,8 @@
 .row.margin-bottom
   .small-12.columns
     %h5 Reference
-    =@reference.expanded_reference
-    =@reference.format_document_links
+    =decorated.expanded_reference
+    =decorated.format_document_links
 
 .row.margin-bottom
   .small-12.columns
@@ -73,7 +72,7 @@
                 %li=link_to author_name.name, author_name.author
         %tr
           %th Title
-          %td=@reference.format_plain_text_title
+          %td=decorated.format_title
         -if @reference.is_a? UnknownReference
           %tr
             %th Citation
@@ -126,12 +125,12 @@
                   %li=nestee.decorate.expandable_reference
         %tr
           %th DOI
-          %td=or_dash @reference.doi_link
+          %td=or_dash decorated.doi_link
         %tr
           %th PDF link
-          %td=or_dash @reference.pdf_link
+          %td=or_dash decorated.pdf_link
 
--if @reference.any_notes?
+-if decorated.any_notes?
   .row.margin-bottom
     .small-12.columns
       %h5 Notes
@@ -139,18 +138,18 @@
         %tbody
           %tr
             %th Public notes
-            %td=or_dash @reference.public_notes
+            %td=or_dash decorated.public_notes
           -if current_user
             %tr.logged-in-only-background
               %th
                 Editor notes
                 =logged_in_only_tooltip_icon
-              %td=or_dash @reference.editor_notes
+              %td=or_dash decorated.editor_notes
             %tr.logged-in-only-background
               %th
                 Taxonomic notes
                 =logged_in_only_tooltip_icon
-              %td=or_dash @reference.taxonomic_notes
+              %td=or_dash decorated.taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom
@@ -189,5 +188,5 @@
           %tr
             %td=time_tag @reference.created_at
             %td=time_tag @reference.updated_at
-            %td=@reference.decorate.format_review_state
+            %td=decorated.format_review_state
             %td=@editors_reference_view_object.review_reference_button

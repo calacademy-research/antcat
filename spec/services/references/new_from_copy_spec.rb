@@ -78,5 +78,15 @@ describe References::NewFromCopy do
         expect(copy.nesting_reference_id).to_not eq nil
       end
     end
+
+    context "when reference has a document" do
+      let!(:reference) { create :article_reference, :with_document }
+
+      it 'does not copy the document' do
+        copy = described_class[reference]
+
+        expect(copy.document).to eq nil
+      end
+    end
   end
 end

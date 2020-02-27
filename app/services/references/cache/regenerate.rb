@@ -8,29 +8,24 @@ module References
       end
 
       def call
-        set generate_plain_text, :plain_text_cache
-        set generate_expandable_reference, :expandable_reference_cache
-        set generate_expanded_reference, :expanded_reference_cache
+        invalidate
+        regenerate
       end
 
       private
 
         attr_reader :reference
 
-        def set value, field
-          References::Cache::Set[reference, value, field]
+        def invalidate
+          References::Cache::Invalidate[reference]
         end
 
-        def generate_plain_text
-          formatter.send(:generate_plain_text)
-        end
-
-        def generate_expandable_reference
-          formatter.send(:generate_expandable_reference)
-        end
-
-        def generate_expanded_reference
-          formatter.send(:generate_expanded_reference)
+        # NOTE: This depends on the formatter setting the caches, which is not
+        # necessarily what we want in the long run.
+        def regenerate
+          formatter.plain_text
+          formatter.expandable_reference
+          formatter.expanded_reference
         end
 
         def formatter

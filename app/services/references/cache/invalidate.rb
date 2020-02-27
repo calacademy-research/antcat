@@ -16,7 +16,9 @@ module References
           expandable_reference_cache: nil,
           expanded_reference_cache: nil
         )
-        reference.nestees.each(&:invalidate_caches)
+        reference.nestees.each do |nestee|
+          References::Cache::Invalidate[nestee]
+        end
       end
       # rubocop:enable Rails/SkipsModelValidations
 

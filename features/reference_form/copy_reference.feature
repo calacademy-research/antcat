@@ -20,12 +20,3 @@ Feature: Copy reference
     And the "article_pagination" field should contain "2"
     And the "reference_journal_name" field should contain "Ants"
     And the "reference_series_volume_issue" field should contain "1"
-
-  @javascript
-  Scenario: Copy a reference with a document
-    Given there is a reference
-    And that the entry has a URL that's on our site
-    And I go to the page of the most recent reference
-
-    When I follow "Copy"
-    Then the "reference_document_attributes_url" field should contain ""

@@ -9,6 +9,7 @@ class Reference < ApplicationRecord
     expanded_reference_cache
   ]
 
+  # TODO: See if we can remove this. Currently required by `ReferenceForm`.
   attr_accessor :journal_name, :publisher_string
 
   belongs_to :journal
@@ -83,14 +84,6 @@ class Reference < ApplicationRecord
     end
   end
 
-  def invalidate_caches
-    References::Cache::Invalidate[self]
-  end
-
-  def set_cache value, field
-    References::Cache::Set[self, value, field]
-  end
-
   # TODO: Something. "_cache" vs not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
   def author_names_string
@@ -103,6 +96,7 @@ class Reference < ApplicationRecord
     string
   end
 
+  # TODO: See if we can avoid this.
   def refresh_author_names_caches(*args)
     set_author_names_caches args
     save(validate: false)
@@ -129,12 +123,9 @@ class Reference < ApplicationRecord
     end.html_safe
   end
 
+  # TODO: Revisit after removing `MissingReference`.
   def principal_author_last_name
     author_names.first&.last_name
-  end
-
-  def any_notes?
-    [public_notes, editor_notes, taxonomic_notes].reject(&:blank?).any?
   end
 
   def what_links_here predicate: false
@@ -150,6 +141,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
+    # TODO: Probably just use `references.year` instead of this once `MissingReference` has been remvoed.
     def citation_year_without_extras
       citation_year.gsub(/ .*$/, '')
     end
@@ -163,6 +155,10 @@ class Reference < ApplicationRecord
 
     # TODO: Revisit once missing references have been cleared.
     # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
+    #
+    # `citation_year` [string] looks like this: 2000b ["2001"]
+    # Which means: <published year><disambiguating letter, optional> ("<year in publication>", optional)
+    # TODO: Split into three different columns. See also https://github.com/calacademy-research/antcat/issues/511
     def set_year_from_citation_year
       self.year = if citation_year.blank?
                     nil

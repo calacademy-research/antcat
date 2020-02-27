@@ -18,48 +18,44 @@ class ReferenceFormatter
   # Formats the reference as plaintext (with the exception of <i> tags).
   def plain_text
     return generate_plain_text if ENV['NO_REF_CACHE']
+    return plain_text_cache.html_safe if plain_text_cache
 
-    cached = reference.plain_text_cache
-    return cached.html_safe if cached
-
-    reference.set_cache generate_plain_text, :plain_text_cache
+    References::Cache::Set[reference, generate_plain_text, :plain_text_cache]
   end
 
   # Formats the reference with HTML, CSS, etc. Click to show expanded.
   def expandable_reference
     return generate_expandable_reference if ENV['NO_REF_CACHE']
+    return expandable_reference_cache.html_safe if expandable_reference_cache
 
-    cached = reference.expandable_reference_cache
-    return cached.html_safe if cached
-
-    reference.set_cache generate_expandable_reference, :expandable_reference_cache
+    References::Cache::Set[reference, generate_expandable_reference, :expandable_reference_cache]
   end
 
   # Formats the reference with HTML, CSS, etc.
   def expanded_reference
     return generate_expanded_reference if ENV['NO_REF_CACHE']
+    return expanded_reference_cache.html_safe if expanded_reference_cache
 
-    cached = reference.expanded_reference_cache
-    return cached.html_safe if cached
-
-    reference.set_cache generate_expanded_reference, :expanded_reference_cache
+    References::Cache::Set[reference, generate_expanded_reference, :expanded_reference_cache]
   end
 
   private
 
     attr_reader :reference
 
+    delegate :plain_text_cache, :expandable_reference_cache, :expanded_reference_cache, to: :reference
+
     # TODO: Very "hmm" case statement.
     def format_citation
       case reference
       when ArticleReference
-        sanitize "#{reference.journal.name} #{reference.series_volume_issue}:#{reference.pagination}"
+        "#{reference.journal.name} #{reference.series_volume_issue}:#{reference.pagination}"
       when BookReference
-        sanitize "#{reference.publisher.display_name}, #{reference.pagination}"
+        "#{reference.publisher.display_name}, #{reference.pagination}"
       when NestedReference
-        sanitize "#{reference.pages_in} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
+        "#{reference.pages_in} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
       when MissingReference, UnknownReference
-        sanitize reference.citation
+        reference.citation
       else
         raise
       end
@@ -67,9 +63,9 @@ class ReferenceFormatter
 
     def generate_plain_text
       string = sanitize(reference.author_names_string_with_suffix)
-      string << ' ' unless string.empty?
+      string << ' '
       string << sanitize(reference.citation_year) << '. '
-      string << unitalicize(reference.decorate.format_plain_text_title) << ' '
+      string << unitalicize(reference.decorate.format_title) << ' '
       string << add_period_if_necessary(format_plain_text_citation)
       string
     end
@@ -88,11 +84,11 @@ class ReferenceFormatter
     end
 
     def generate_expanded_reference
-      string = sanitize author_names_with_links
-      string << ' ' unless string.empty?
+      string = author_names_with_links
+      string << ' '
       string << sanitize(reference.citation_year) << '. '
-      string << format_title_with_link << ' '
-      string << format_italics(add_period_if_necessary(format_citation))
+      string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
+      string << format_italics(add_period_if_necessary(sanitize(format_citation)))
       string << ' [online early]' if reference.online_early?
 
       string
@@ -114,11 +110,7 @@ class ReferenceFormatter
                 end.join('; ')
 
       string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix.present?
-      string
-    end
-
-    def format_title_with_link
-      link_to reference.decorate.format_plain_text_title, reference_path(reference)
+      string.html_safe
     end
 
     def format_italics string
