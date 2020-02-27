@@ -44,7 +44,7 @@ __END__
 
 title: History items without <code>ref</code> or <code>tax</code> tags
 category: Taxt
-tags: [updated!, has-quick-fix]
+tags: [has-quick-fix]
 
 description: >
   "Looks like protonym data" = item starts with a comma, or contains five or more uppercase letters

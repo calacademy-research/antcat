@@ -26,4 +26,4 @@
           %th Epithet
           %td=@name.epithet
 
-    %p=render(NameBelongsToComponent, name: @name)
+    %p=render NameBelongsToComponent.new(name: @name)

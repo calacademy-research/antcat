@@ -49,50 +49,6 @@ module DevMonkeyPatches
       end
     end
 
-    # "ddd" = "dd dash"
-    def dev_dev_dash
-      "-" * 80
-    end
-    alias_method :ddd, :dev_dev_dash
-
-    def dev_dev_random_in_model model
-      offset = rand(model.count)
-      model.offset(offset).first
-    end
-
-    # Prefixes: f, l and r
-    # "ddlar" = "dd last article reference"
-    # First, last and random of type.
-    type_and_alias = {
-      Taxon            => :t,
-      Family           => :f,
-      Subfamily        => :sf,
-      Tribe            => :tr,
-      Genus            => :g,
-      Subgenus         => :sg,
-      Species          => :s,
-      Subspecies       => :ss,
-
-      Reference        => :r,
-      ArticleReference => :ar,
-      BookReference    => :br,
-      UnknownReference => :ur,
-      MissingReference => :mr
-    }.tap { |h| raise "prefix not uniqe" unless h.to_set.size == h.values.uniq.size }
-
-    type_and_alias.each do |type, short_alias|
-      # First of type.
-      dev_dev_define_send_field_to_klass_as :first, type, "ddf#{short_alias}".to_sym
-
-      # Last of type.
-      dev_dev_define_send_field_to_klass_as :last, type, "ddl#{short_alias}".to_sym
-
-      # Random of type.
-      define_method "ddr#{short_alias}".to_sym do
-        dev_dev_random_in_model type
-      end
-    end
-
     def dd_ap
       AwesomePrint.irb!
     end

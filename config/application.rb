@@ -28,21 +28,17 @@ module AntCat
       :reference_observer
     ]
 
-    config.eager_load_paths += Dir["#{config.root}/lib/**/"]
-    config.eager_load_paths += Dir["#{config.root}/lib/tasks/**"]
+    # TODO: Models and decorators are explicitly added to the autoload and eager load
+    # paths since STI models are organized in subdirs without proper modules. This is OK
+    # for now, but we may want to revisit it once we have decreased the number of
+    # subclasses (which was the original motive for this non-Railsy structure).
     config.eager_load_paths += Dir["#{config.root}/app/models/**/*"]
-    config.eager_load_paths += Dir["#{config.root}/app/models/database_scripts/database_scripts/**/*"]
     config.eager_load_paths += Dir["#{config.root}/app/decorators/**/"]
-    config.eager_load_paths += Dir["#{config.root}/app/presenters/**/"]
-    config.eager_load_paths += Dir["#{config.root}/app/services/**/"]
+    config.eager_load_paths += Dir["#{config.root}/lib/**/"]
 
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
-    config.autoload_paths += Dir["#{config.root}/lib/tasks/**"]
     config.autoload_paths += Dir["#{config.root}/app/models/**/*"]
-    config.autoload_paths += Dir["#{config.root}/app/models/database_scripts/database_scripts/**/*"]
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
-    config.autoload_paths += Dir["#{config.root}/app/presenters/**/"]
-    config.autoload_paths += Dir["#{config.root}/app/services/**/"]
+    config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
     config.action_dispatch.cookies_serializer = :hybrid
 

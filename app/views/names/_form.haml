@@ -3,7 +3,7 @@
 
 .row
   .medium-8.columns
-    %p=render(NameBelongsToComponent, name: name)
+    %p=render NameBelongsToComponent.new(name: name)
 
     =form_for name, url: name_path(name), as: :name do |f|
       =render 'shared/errors_for', resource: name
