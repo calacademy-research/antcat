@@ -15,7 +15,7 @@ describe Reference do
 
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :article_reference, bolton_key: 'Batiatus 2000' }
-      let!(:duplicate) { build_stubbed :article_reference }
+      let!(:duplicate) { create :article_reference }
 
       specify do
         expect { duplicate.bolton_key = conflict.bolton_key }.
@@ -65,9 +65,9 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        one = create :reference, author_name: 'Fisher', citation_year: '1910b'
-        two = create :reference, author_name: 'Wheeler', citation_year: '1874'
-        three = create :reference, author_name: 'Fisher', citation_year: '1910a'
+        one = create :article_reference, author_name: 'Fisher', citation_year: '1910b'
+        two = create :article_reference, author_name: 'Wheeler', citation_year: '1874'
+        three = create :article_reference, author_name: 'Fisher', citation_year: '1910a'
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end

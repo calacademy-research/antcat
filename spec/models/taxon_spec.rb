@@ -203,7 +203,7 @@ describe Taxon do
   end
 
   it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
-    subject { build :family }
+    subject { create :family }
   end
 
   it_behaves_like "a taxt column with cleanup", :type_taxt do
@@ -213,11 +213,9 @@ describe Taxon do
   describe "workflow" do
     describe '`Workflow::ExternalTable`' do
       context "when taxon is created" do
-        let(:taxon) { build :family }
+        let!(:taxon) { create :family }
 
         it "creates a `TaxonState` with `review_status` 'waiting'" do
-          expect(taxon.taxon_state).to eq nil
-          taxon.save
           expect(taxon.taxon_state).not_to eq nil
           expect(taxon.reload.waiting?).to eq true
         end
