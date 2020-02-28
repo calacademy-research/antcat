@@ -221,11 +221,8 @@ describe TaxaController do
     end
 
     it 'creates an activity' do
-      expect { delete(:destroy, params: { id: taxon.id, edit_summary: 'Duplicate' }) }.
+      expect { delete(:destroy, params: { id: taxon.id }) }.
         to change { Activity.where(action: :destroy, trackable: taxon).count }.by(1)
-
-      activity = Activity.last
-      expect(activity.edit_summary).to eq "Duplicate"
     end
   end
 end

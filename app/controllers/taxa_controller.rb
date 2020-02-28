@@ -49,13 +49,12 @@ class TaxaController < ApplicationController
     if @taxon.what_links_here.any?
       redirect_to taxon_what_links_here_path(@taxon), alert: <<~MSG
         Other taxa refer to this taxon, so it can't be deleted.
-        Please see the table on this page for items referring to it.
       MSG
       return
     end
 
     if @taxon.destroy
-      @taxon.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+      @taxon.create_activity :destroy, current_user
       redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
     else
       redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
