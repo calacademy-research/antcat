@@ -33,7 +33,7 @@ class Activity < ApplicationRecord
     start_reviewing
     undo_change
   ]
-  DEPRECARD_TRACKABLE_TYPES = %w[Synonym]
+  DEPRECARD_TRACKABLE_TYPES = %w[Change Synonym]
 
   self.per_page = 30 # For `will_paginate`.
 

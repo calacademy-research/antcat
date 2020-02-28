@@ -1,6 +1,4 @@
 class Taxon < ApplicationRecord
-  include Workflow
-  include Workflow::ExternalTable
   include RevisionsCanBeCompared
   include Trackable
 
@@ -24,7 +22,6 @@ class Taxon < ApplicationRecord
 
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
-  has_one :taxon_state, dependent: false
 
   validates :name, :protonym, presence: true
   validates :status, inclusion: { in: Status::STATUSES }
@@ -64,17 +61,12 @@ class Taxon < ApplicationRecord
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
-  workflow do
-    state TaxonState::OLD
-    state(TaxonState::WAITING) { event :approve, transitions_to: TaxonState::APPROVED }
-    state TaxonState::APPROVED
-  end
 
   def self.name_clash? name_string
     where(name_cache: name_string).exists?

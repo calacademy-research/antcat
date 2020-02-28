@@ -18,8 +18,7 @@ class TaxaController < ApplicationController
       @taxon,
       taxon_params,
       taxon_name_string: params[:taxon_name_string].presence,
-      protonym_name_string: params[:protonym_name_string].presence,
-      user: current_user
+      protonym_name_string: params[:protonym_name_string].presence
     ).save
 
     @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
@@ -38,7 +37,7 @@ class TaxaController < ApplicationController
   end
 
   def update
-    TaxonForm.new(@taxon, taxon_params, user: current_user).save
+    TaxonForm.new(@taxon, taxon_params).save
 
     @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
     redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
@@ -52,18 +51,14 @@ class TaxaController < ApplicationController
         Other taxa refer to this taxon, so it can't be deleted.
         Please see the table on this page for items referring to it.
       MSG
-    else
-      Taxon.transaction do
-        UndoTracker.setup_change @taxon, :delete, user: current_user
-        @taxon.taxon_state.update!(deleted: true, review_state: TaxonState::WAITING)
+      return
+    end
 
-        if @taxon.destroy
-          @taxon.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
-          redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
-        else
-          redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
-        end
-      end
+    if @taxon.destroy
+      @taxon.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
+    else
+      redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
     end
   end
 

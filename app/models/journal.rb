@@ -10,7 +10,7 @@ class Journal < ApplicationRecord
       select("journals.*, COUNT(references.id) AS reference_count")
   end
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   trackable parameters: proc {
     { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }

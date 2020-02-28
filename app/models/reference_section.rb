@@ -11,7 +11,7 @@ class ReferenceSection < ApplicationRecord
   before_validation :cleanup_taxts
 
   acts_as_list scope: :taxon
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   strip_attributes only: [:title_taxt, :subtitle_taxt, :references_taxt], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 

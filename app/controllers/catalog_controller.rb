@@ -10,7 +10,7 @@ class CatalogController < ApplicationController
   end
 
   def index
-    @taxon = Family.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).first
+    @taxon = Family.eager_load(:name, protonym: [:name, { authorship: :reference }]).first
 
     # NOTE: Special case to avoid showing ~6 A4 pages of Formicidae references and use a different title.
     @is_formicidae_landing_page = true
@@ -29,7 +29,7 @@ class CatalogController < ApplicationController
   private
 
     def set_taxon
-      @taxon = Taxon.eager_load(:name, :taxon_state, protonym: [:name, { authorship: :reference }]).find(params[:id])
+      @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
     end
 
     def setup_taxon_browser

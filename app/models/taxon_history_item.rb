@@ -69,7 +69,7 @@ class TaxonHistoryItem < ApplicationRecord
   end
 
   acts_as_list scope: :taxon
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   strip_attributes only: [:taxt], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 

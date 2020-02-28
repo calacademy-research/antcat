@@ -6,7 +6,7 @@ class ReferenceAuthorName < ApplicationRecord
   before_destroy :invalidate_reference_caches!
 
   acts_as_list scope: :reference
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
 
   private
 

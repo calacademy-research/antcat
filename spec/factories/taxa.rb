@@ -124,18 +124,6 @@ FactoryBot.define do
       incertae_sedis_in { Rank::INCERTAE_SEDIS_IN_SUBFAMILY }
     end
 
-    trait :old do
-      association :taxon_state, review_state: TaxonState::OLD
-    end
-
-    trait :waiting do
-      association :taxon_state, review_state: TaxonState::WAITING
-    end
-
-    trait :approved do
-      association :taxon_state, review_state: TaxonState::APPROVED
-    end
-
     trait :with_history_item do
       after :create do |taxon|
         create :taxon_history_item, taxon: taxon

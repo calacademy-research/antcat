@@ -45,7 +45,7 @@ module EditorsPanels
     private
 
       def filter_params
-        params.permit(:change_id, :event, :item_id, :item_type, :request_uuid, :whodunnit)
+        params.permit(:event, :item_id, :item_type, :request_uuid, :whodunnit)
       end
   end
 end

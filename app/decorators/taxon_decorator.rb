@@ -23,11 +23,6 @@ class TaxonDecorator < Draper::Decorator
     Taxa::CollectReferences[taxon]
   end
 
-  # TODO: Use AR or remove.
-  def last_change
-    Change.joins(:versions).where("versions.item_id = ? AND versions.item_type = 'Taxon'", taxon.id).last
-  end
-
   def type_taxon_rank
     "Type-#{taxon.type_taxon.rank}: ".html_safe
   end

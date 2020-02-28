@@ -18,7 +18,6 @@ class EditorsPanelsController < ApplicationController
       {
         open_issues:                Issue.open.count,
         unreviewed_references:      Reference.unreviewed.count,
-        unreviewed_catalog_changes: Change.waiting.count,
         pending_user_feedbacks:     Feedback.pending.count,
         unread_site_notices:        current_user&.unread_site_notices&.count
       }

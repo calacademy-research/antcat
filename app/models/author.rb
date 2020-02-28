@@ -6,7 +6,7 @@ class Author < ApplicationRecord
 
   scope :sorted_by_name, -> { joins(:names).group('authors.id').order(Arel.sql('MAX(name)')) }
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   trackable
 
   def merge author_to_merge
