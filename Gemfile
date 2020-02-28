@@ -11,8 +11,7 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
 gem 'request_store'
-gem 'sass-rails'
-gem 'sassc', git: 'https://github.com/sass/sassc-ruby.git', ref: '8378681f3c212bc580ee41e01bf55c6679577292'
+gem 'sass-rails', '5.0.7' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
@@ -43,7 +42,7 @@ gem 'select2-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-gem 'swagger_ui_engine'
+gem 'swagger_ui_engine', '1.1.2' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'

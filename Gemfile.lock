@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/sass/sassc-ruby.git
-  revision: 8378681f3c212bc580ee41e01bf55c6679577292
-  ref: 8378681f3c212bc580ee41e01bf55c6679577292
-  specs:
-    sassc (2.2.1)
-      ffi (~> 1.9)
-
-GIT
   remote: https://github.com/thoughtbot/capybara-webkit.git
   revision: 77fdac424cd6fdb5aa266b229a888cc58da8e95e
   ref: 77fdac424
@@ -377,14 +369,12 @@ GEM
       sexp_processor (~> 4.9)
     safe_yaml (1.0.5)
     sass (3.4.25)
-    sass-rails (6.0.0)
-      sassc-rails (~> 2.1, >= 2.1.1)
-    sassc-rails (2.1.2)
-      railties (>= 4.0.0)
-      sassc (>= 2.0)
-      sprockets (> 3.0)
-      sprockets-rails
-      tilt
+    sass-rails (5.0.7)
+      railties (>= 4.0.0, < 6)
+      sass (~> 3.1)
+      sprockets (>= 2.8, < 4.0)
+      sprockets-rails (>= 2.0, < 4.0)
+      tilt (>= 1.1, < 3)
     select2-rails (4.0.3)
       thor (~> 0.14)
     sexp_processor (4.14.1)
@@ -419,9 +409,9 @@ GEM
     sunspot_test (0.4.1)
       sunspot_rails (>= 2.1.1)
       sunspot_solr
-    swagger_ui_engine (1.1.3)
-      rails (>= 4.2, < 6)
-      sassc-rails
+    swagger_ui_engine (1.1.2)
+      rails (>= 4.2)
+      sass-rails
     temple (0.8.2)
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
@@ -510,8 +500,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   ruby-progressbar
-  sass-rails
-  sassc!
+  sass-rails (= 5.0.7)
   select2-rails
   shoulda-matchers
   simplecov
@@ -520,7 +509,7 @@ DEPENDENCIES
   sunspot_rails
   sunspot_solr (= 2.2.0)
   sunspot_test
-  swagger_ui_engine
+  swagger_ui_engine (= 1.1.2)
   twitter-typeahead-rails
   uglifier
   unread
