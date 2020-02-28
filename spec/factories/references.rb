@@ -7,6 +7,14 @@ FactoryBot.define do
     sequence(:title) { |n| "Ants are my life#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
 
+    after(:build) do |reference, evaluator|
+      if reference.author_names.blank? && evaluator.author_name
+        author_name = AuthorName.find_by(name: evaluator.author_name)
+        author_name ||= create :author_name, name: evaluator.author_name # TODO: Do not `.create`.
+        reference.author_names << author_name
+      end
+    end
+
     after(:create) do |reference, evaluator|
       if reference.author_names.blank? && evaluator.author_name
         author_name = AuthorName.find_by(name: evaluator.author_name)

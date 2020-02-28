@@ -9,6 +9,7 @@ describe Reference do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_presence_of :author_names }
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
@@ -32,7 +33,7 @@ describe Reference do
   describe 'callbacks' do
     describe "changing `citation_year`" do
       context 'when `citation_year` contains a letter' do
-        let(:reference) { create :reference, citation_year: '1910a' }
+        let(:reference) { create :article_reference, citation_year: '1910a' }
 
         it "sets `year` to the stated year, if present" do
           expect { reference.update!(citation_year: '2010b') }.
@@ -41,7 +42,7 @@ describe Reference do
       end
 
       context 'when `citation_year` contains a bracketed year' do
-        let(:reference) { create :reference, citation_year: '1910a ["1958"]' }
+        let(:reference) { create :article_reference, citation_year: '1910a ["1958"]' }
 
         it "sets `year` to the stated year, if present" do
           expect { reference.update!(citation_year: '2010b ["2009"]') }.
@@ -207,7 +208,7 @@ describe Reference do
 
     context 'when no authors' do
       let(:reference) do
-        create :article_reference, author_names: [], citation_year: '1970a'
+        build_stubbed :article_reference, author_names: [], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq '[no authors], 1970a' }

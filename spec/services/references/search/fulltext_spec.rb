@@ -4,10 +4,10 @@ describe References::Search::Fulltext, :search do
   describe "#call" do
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do
-        create :reference, citation_year: '1994'
-        create :reference, citation_year: '1995'
-        create :reference, citation_year: '1996a'
-        create :reference, citation_year: '1998'
+        create :article_reference, citation_year: '1994'
+        create :article_reference, citation_year: '1995'
+        create :article_reference, citation_year: '1996a'
+        create :article_reference, citation_year: '1998'
         Sunspot.commit
       end
 
@@ -18,10 +18,10 @@ describe References::Search::Fulltext, :search do
     end
 
     describe "year" do
-      let!(:reference) { create :reference, citation_year: '2004' }
+      let!(:reference) { create :article_reference, citation_year: '2004' }
 
       before do
-        create :reference, citation_year: '2003'
+        create :article_reference, citation_year: '2003'
         Sunspot.commit
       end
 
@@ -31,9 +31,9 @@ describe References::Search::Fulltext, :search do
     end
 
     describe 'notes' do
-      let!(:with_public_notes) { create :reference, public_notes: 'public' }
-      let!(:with_editor_notes) { create :reference, editor_notes: 'editor' }
-      let!(:with_taxonomic_notes) { create :reference, taxonomic_notes: 'taxonomic' }
+      let!(:with_public_notes) { create :article_reference, public_notes: 'public' }
+      let!(:with_editor_notes) { create :article_reference, editor_notes: 'editor' }
+      let!(:with_taxonomic_notes) { create :article_reference, taxonomic_notes: 'taxonomic' }
 
       before do
         Sunspot.commit
@@ -139,7 +139,7 @@ describe References::Search::Fulltext, :search do
   describe "ignored characters" do
     context "when search query contains ').'" do
       let!(:title) { 'Tetramoriini (Hymenoptera Formicidae).' }
-      let!(:reference) { create :reference, title: title }
+      let!(:reference) { create :article_reference, title: title }
 
       before { Sunspot.commit }
 
@@ -178,7 +178,7 @@ describe References::Search::Fulltext, :search do
 
     describe "replacing some characters to make search work" do
       let!(:title) { '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton' }
-      let!(:reference) { create :reference, title: title }
+      let!(:reference) { create :article_reference, title: title }
 
       it "handles this reference with asterixes and a hyphen" do
         Sunspot.commit

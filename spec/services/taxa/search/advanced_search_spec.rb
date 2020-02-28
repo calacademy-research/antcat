@@ -34,7 +34,7 @@ describe Taxa::Search::AdvancedSearch do
       let!(:taxon) { create :subfamily }
 
       before do
-        reference = create :reference, citation_year: '1977'
+        reference = create :article_reference, citation_year: '1977'
         taxon.protonym.authorship.update!(reference: reference)
       end
 
