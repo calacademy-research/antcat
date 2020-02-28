@@ -12,6 +12,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
 gem 'request_store'
 gem 'sass-rails'
+gem 'sassc', git: 'https://github.com/sass/sassc-ruby.git', ref: '8378681f3c212bc580ee41e01bf55c6679577292'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
