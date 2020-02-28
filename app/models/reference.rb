@@ -29,6 +29,7 @@ class Reference < ApplicationRecord
 
   # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
   validates :title, presence: true
+  validates :author_names, presence: true, unless: -> { is_a?(MissingReference) }
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
@@ -116,7 +117,7 @@ class Reference < ApplicationRecord
   def authors_for_keey
     names = author_names.map(&:last_name)
     case names.size
-    when 0 then '[no authors]'
+    when 0 then '[no authors]' # TODO: This can still happen in the reference form.
     when 1 then names.first.to_s
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"

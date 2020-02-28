@@ -18,7 +18,7 @@ describe My::RecentlyUsedReferencesController do
     end
 
     context 'when user has recently used references' do
-      let!(:reference) { create :reference }
+      let!(:reference) { create :article_reference }
 
       before do
         post :create, params: { id: reference.id }
@@ -26,24 +26,13 @@ describe My::RecentlyUsedReferencesController do
 
       it 'returns the references as a JSON array' do
         get :show
-        expect(json_response).to eq(
-          [
-            {
-              "id" => reference.id,
-              "author" => "",
-              "year" => reference.citation_year,
-              "title" => reference.title + '.',
-              "full_pagination" => "",
-              "bolton_key" => ""
-            }
-          ]
-        )
+        expect(json_response).to eq Autocomplete::FormatLinkableReferences[[reference]].map(&:stringify_keys)
       end
     end
   end
 
   describe 'POST create' do
-    let!(:reference) { create :reference }
+    let!(:reference) { create :article_reference }
 
     it "stores the reference in the user's session" do
       expect { post :create, params: { id: reference.id } }.
@@ -52,8 +41,8 @@ describe My::RecentlyUsedReferencesController do
     end
 
     describe 'adding multiple references' do
-      let!(:second) { create :reference }
-      let!(:third) { create :reference }
+      let!(:second) { create :article_reference }
+      let!(:third) { create :article_reference }
 
       it 'returns the the most recently used references first, unique only' do
         post :create, params: { id: reference.id }

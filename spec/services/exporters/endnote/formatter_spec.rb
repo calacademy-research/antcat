@@ -40,24 +40,6 @@ describe Exporters::Endnote::Formatter do
 )
   end
 
-  it "doesn't emit %A if there is no author" do
-    reference = create :book_reference,
-      author_names: [],
-      title: 'Ants Are My Life',
-      citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place_name: 'Dresden'),
-      pagination: 'ix + 33pp.'
-    expect(described_class.format([reference])).to eq %(%0 Book
-%D 1933
-%T Ants Are My Life
-%C Dresden
-%I Springer Verlag
-%P ix + 33pp.
-%~ AntCat
-
-)
-  end
-
   it "formats a article reference correctly" do
     reference = create :article_reference,
       author_names: [create(:author_name, name: 'MacKay, W.')],
