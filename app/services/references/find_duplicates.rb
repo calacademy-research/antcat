@@ -25,9 +25,8 @@ module References
       end
 
       def candidates
-        return [] unless target.principal_author_last_name
+        return [] unless (target_author = target.author_names.first&.last_name)
 
-        target_author = target.principal_author_last_name
         Reference.where.not(id: target.id).joins(:author_names).where(reference_author_names: { position: 1 }).
           where("author_names.name LIKE ?", "#{target_author}%")
       end

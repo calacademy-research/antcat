@@ -124,11 +124,6 @@ class Reference < ApplicationRecord
     end.html_safe
   end
 
-  # TODO: Revisit after removing `MissingReference`.
-  def principal_author_last_name
-    author_names.first&.last_name
-  end
-
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]
   end

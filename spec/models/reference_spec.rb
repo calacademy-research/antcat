@@ -249,25 +249,6 @@ describe Reference do
     end
   end
 
-  describe "#principal_author_last_name" do
-    let(:ward) { create :author_name, name: 'Ward, P.S.' }
-    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
-
-    context "when there are no authors" do
-      let!(:reference) { build_stubbed :reference, author_names: [] }
-
-      specify { expect(reference.principal_author_last_name).to eq nil }
-    end
-
-    context 'when there are authors' do
-      let!(:reference) { build_stubbed :reference, author_names: [ward, fisher] }
-
-      it "is the last name of the principal author" do
-        expect(reference.principal_author_last_name).to eq 'Ward'
-      end
-    end
-  end
-
   describe "#what_links_here" do
     let(:reference) { build_stubbed :article_reference }
 
