@@ -1,12 +1,4 @@
 GIT
-  remote: https://github.com/sass/sassc-ruby.git
-  revision: 8378681f3c212bc580ee41e01bf55c6679577292
-  ref: 8378681f3c212bc580ee41e01bf55c6679577292
-  specs:
-    sassc (2.2.1)
-      ffi (~> 1.9)
-
-GIT
   remote: https://github.com/thoughtbot/capybara-webkit.git
   revision: 77fdac424cd6fdb5aa266b229a888cc58da8e95e
   ref: 77fdac424
@@ -379,6 +371,8 @@ GEM
     sass (3.4.25)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
+    sassc (2.2.1)
+      ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
       sassc (>= 2.0)
@@ -511,7 +505,6 @@ DEPENDENCIES
   rubocop-rspec
   ruby-progressbar
   sass-rails
-  sassc!
   select2-rails
   shoulda-matchers
   simplecov
