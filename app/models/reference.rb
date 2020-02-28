@@ -98,7 +98,7 @@ class Reference < ApplicationRecord
   end
 
   # TODO: See if we can avoid this.
-  def refresh_author_names_caches(*args)
+  def refresh_author_names_caches *args
     set_author_names_caches args
     save(validate: false)
   end
@@ -165,7 +165,7 @@ class Reference < ApplicationRecord
                   end
     end
 
-    def set_author_names_caches(*)
+    def set_author_names_caches *_args
       self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end

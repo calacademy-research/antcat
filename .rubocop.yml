@@ -47,7 +47,6 @@ Layout/HashAlignment:
   Enabled: false
 
 Layout/IndentationConsistency:
-  Enabled: true
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
@@ -205,7 +204,7 @@ Style/Lambda:
   Enabled: false
 
 Style/MethodDefParentheses:
-  Enabled: false
+  EnforcedStyle: require_no_parentheses_except_multiline
 
 Style/MultilineBlockChain:
   Enabled: false

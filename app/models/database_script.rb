@@ -26,7 +26,7 @@ class DatabaseScript
 
   delegate :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
-  def self.inherited(subclass)
+  def self.inherited subclass
     subclass.include Rails.application.routes.url_helpers
     subclass.include ActionView::Helpers::UrlHelper
   end

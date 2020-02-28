@@ -2,7 +2,7 @@ module Operations
   class CreateNewCombination
     include Operation
 
-    def self.description(current_valid_taxon:, new_combination_name:, new_genus:)
+    def self.description current_valid_taxon:, new_combination_name:, new_genus:
       preview_new_taxon = PreviewString.new(new_combination_name + ' **[NEW TAXON]**')
       preview_existing_taxon = PreviewTaxon.new(current_valid_taxon)
       preview_new_genus = PreviewTaxon.new(new_genus)
@@ -66,11 +66,11 @@ module Operations
         @string
       end
 
-      def method_missing(name, *_args, &_block)
+      def method_missing name, *_args, &_block
         "missing - #{name}" || super
       end
 
-      def respond_to_missing?(_name, *_args)
+      def respond_to_missing? _name, *_args
         super
       end
     end

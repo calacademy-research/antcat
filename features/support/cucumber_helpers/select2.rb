@@ -1,6 +1,6 @@
 module CucumberHelpers
   module Select2
-    def select2(value, from:)
+    def select2 value, from:
       element_id = from
 
       if value == '' # HACK: Because lazy.

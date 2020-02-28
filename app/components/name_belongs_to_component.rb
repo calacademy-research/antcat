@@ -1,5 +1,5 @@
 class NameBelongsToComponent < ActionView::Component::Base
-  def initialize(name:)
+  def initialize name:
     @name = name
   end
 

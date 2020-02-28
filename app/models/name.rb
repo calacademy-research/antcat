@@ -47,7 +47,7 @@ class Name < ApplicationRecord
 
   # NOTE: This may make code harder to debug, but we don't want to have to manually specify epithets,
   # or have them diverge. Consider this to be a factory or persistence-related callback.
-  def name=(value)
+  def name= value
     self[:name] = value.squish if value
     set_epithet
   end
