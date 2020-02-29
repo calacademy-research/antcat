@@ -14,7 +14,7 @@ module PaperTrail
     end
     scope :without_user_versions, -> { where.not(item_type: "User") }
 
-    def self.search(search_query, search_type)
+    def self.search search_query, search_type
       search_type = search_type.presence || 'LIKE'
       raise unless search_type.in? ["LIKE", "REGEXP"]
 

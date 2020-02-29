@@ -18,14 +18,14 @@ describe References::ReferenceSimilarity do
         let(:rhs) { Reference.new year: 2010 }
 
         it "doesn't match if the author name is different" do
-          expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
-          expect(rhs).to receive(:principal_author_last_name).and_return 'Bolton'
+          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Bolton')])
           expect(described_class[lhs, rhs]).to eq 0.00
         end
 
         it "doesn't match if the author name is a prefix" do
-          expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
-          expect(rhs).to receive(:principal_author_last_name).and_return 'Fish'
+          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fish')])
           expect(described_class[lhs, rhs]).to eq 0.00
         end
       end
@@ -35,8 +35,8 @@ describe References::ReferenceSimilarity do
         let(:rhs) { Reference.new title: 'B' }
 
         before do
-          expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
-          expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
+          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
         end
 
         it "doesn't match if the author name is the same but the year is different" do
@@ -57,8 +57,8 @@ describe References::ReferenceSimilarity do
         let(:rhs) { Reference.new title: 'B' }
 
         it "matches if the author names differ by accentation" do
-          expect(lhs).to receive(:principal_author_last_name).and_return 'Csösz'
-          expect(rhs).to receive(:principal_author_last_name).and_return 'Csősz'
+          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csösz')])
+          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csősz')])
           lhs.year = '1979'
           rhs.year = '1980'
 
@@ -66,8 +66,8 @@ describe References::ReferenceSimilarity do
         end
 
         it "matches if the author names differ by case" do
-          expect(lhs).to receive(:principal_author_last_name).and_return 'MacKay'
-          expect(rhs).to receive(:principal_author_last_name).and_return 'Mackay'
+          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'MacKay')])
+          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Mackay')])
           lhs.year = '1979'
           rhs.year = '1980'
 
@@ -81,8 +81,8 @@ describe References::ReferenceSimilarity do
       let(:rhs) { Reference.new }
 
       before do
-        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
-        expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher, B. L.'
+        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
       end
 
       it "matches with much less confidence if the author and title are the same but the year is not within 1" do
@@ -175,8 +175,8 @@ describe References::ReferenceSimilarity do
       let(:rhs) { BookReference.new title: 'Formica', pagination: '1-76' }
 
       before do
-        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
-        expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
+        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       it 'matches with much less confidence when the year does not match' do
@@ -197,8 +197,8 @@ describe References::ReferenceSimilarity do
       let(:rhs) { ArticleReference.new title: 'Formica' }
 
       before do
-        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
-        expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
+        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       context 'when the pagination matches' do
@@ -282,8 +282,8 @@ describe References::ReferenceSimilarity do
       end
 
       before do
-        expect(lhs).to receive(:principal_author_last_name).and_return 'Fisher'
-        expect(rhs).to receive(:principal_author_last_name).and_return 'Fisher'
+        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       it "gives it a 0.99" do

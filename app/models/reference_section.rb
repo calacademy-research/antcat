@@ -15,7 +15,7 @@ class ReferenceSection < ApplicationRecord
   strip_attributes only: [:title_taxt, :subtitle_taxt, :references_taxt], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 
-  def self.search(search_query, search_type)
+  def self.search search_query, search_type
     search_type = search_type.presence || 'LIKE'
     raise unless search_type.in? ["LIKE", "REGEXP"]
 

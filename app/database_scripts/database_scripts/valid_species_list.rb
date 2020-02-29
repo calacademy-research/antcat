@@ -2,9 +2,11 @@ module DatabaseScripts
   class ValidSpeciesList < DatabaseScript
     include DatabaseScripts::Renderers::AsCSV
 
-    HEADERS = [:subfamily, :genus, :species, :author_year,
+    HEADERS = [
+      :subfamily, :genus, :species, :author_year,
       :author_citation, :fossil, :status, :biogeographic_region,
-      :locality, :antcat_id]
+      :locality, :antcat_id
+    ]
 
     def results
       Species.valid.

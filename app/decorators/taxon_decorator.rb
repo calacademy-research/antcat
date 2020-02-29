@@ -61,16 +61,17 @@ class TaxonDecorator < Draper::Decorator
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
-                    {      genus: taxon.genus.name.name.downcase,
-                         species: taxon.name.epithet.downcase }
+                    { genus: taxon.genus.name.name.downcase, species: taxon.name.epithet.downcase }
                   when Subspecies
-                    {      genus: taxon.genus.name.name.downcase,
-                         species: taxon.species.name.epithet,
-                      subspecies: taxon.name.subspecies_epithets.downcase }
+                    {
+                      genus: taxon.genus.name.name.downcase,
+                      species: taxon.species.name.epithet,
+                      subspecies: taxon.name.subspecies_epithets.downcase
+                    }
                   when Genus
-                    {      genus: taxon.name.name.downcase }
+                    { genus: taxon.name.name.downcase }
                   when Subfamily
-                    {  subfamily: taxon.name.name.downcase }
+                    { subfamily: taxon.name.name.downcase }
                   else
                     raise "Don't know how to link #{taxon} to AntWeb"
                   end

@@ -1,5 +1,3 @@
-# The Feedback modal is included on all pages.
-
 $ ->
   setupFeedbackModal()
 

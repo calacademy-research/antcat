@@ -4,15 +4,10 @@ require 'rails_helper'
 # to remove modules have been mixed in.
 
 describe DevMonkeyPatches do
-  before do
-    allow($stdout).to receive :puts # Suppress.
-    allow(described_class).to receive(:enable!).and_return :stubbed
-  end
-
   context "when in production" do
     before { allow(Rails.env).to receive(:production?).and_return true }
 
-    it "cannot be extended" do
+    it "cannot be enabled" do
       expect { described_class.enable }.to raise_error("`DevMonkeyPatches` cannot be enabled in production")
     end
   end

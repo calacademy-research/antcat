@@ -59,7 +59,7 @@ class User < ApplicationRecord
     SiteNotice.unread_by(self)
   end
 
-  def notify_because(reason, attached:, notifier:)
+  def notify_because reason, attached:, notifier:
     return if notifier == self
     return if already_notified_for_attached_by_user? attached, notifier
 

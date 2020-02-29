@@ -43,11 +43,16 @@ Layout/EmptyLineAfterGuardClause:
 Layout/FirstHashElementIndentation:
   Enabled: false
 
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+
+Layout/FirstHashElementLineBreak:
+  Enabled: true
+
 Layout/HashAlignment:
   Enabled: false
 
 Layout/IndentationConsistency:
-  Enabled: true
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
@@ -83,7 +88,7 @@ Metrics/BlockLength:
     - 'config/environments/**/*'
 
 Metrics/ClassLength:
-  Max: 250
+  Max: 150
 
 Metrics/CyclomaticComplexity:
   Enabled: false
@@ -205,7 +210,7 @@ Style/Lambda:
   Enabled: false
 
 Style/MethodDefParentheses:
-  Enabled: false
+  EnforcedStyle: require_no_parentheses_except_multiline
 
 Style/MultilineBlockChain:
   Enabled: false
@@ -215,6 +220,13 @@ Style/MutableConstant:
 
 Style/NumericLiterals:
   Enabled: false
+
+Style/OptionHash:
+  Enabled: true
+
+# TODO: Remove `__send__`s.
+Style/Send:
+  Enabled: true
 
 Style/StringLiterals:
   Enabled: false

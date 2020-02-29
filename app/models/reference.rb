@@ -47,9 +47,11 @@ class Reference < ApplicationRecord
   accepts_nested_attributes_for :document, reject_if: :all_blank
   delegate :url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
-  strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
+  strip_attributes only: [
+    :editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-    :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
+    :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
+  ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
   searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
@@ -98,7 +100,7 @@ class Reference < ApplicationRecord
   end
 
   # TODO: See if we can avoid this.
-  def refresh_author_names_caches(*args)
+  def refresh_author_names_caches *args
     set_author_names_caches args
     save(validate: false)
   end
@@ -122,11 +124,6 @@ class Reference < ApplicationRecord
     when 2 then "#{names.first} & #{names.second}"
     else        "#{names.first} <i>et al.</i>"
     end.html_safe
-  end
-
-  # TODO: Revisit after removing `MissingReference`.
-  def principal_author_last_name
-    author_names.first&.last_name
   end
 
   def what_links_here predicate: false
@@ -170,7 +167,7 @@ class Reference < ApplicationRecord
                   end
     end
 
-    def set_author_names_caches(*)
+    def set_author_names_caches *_args
       self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end

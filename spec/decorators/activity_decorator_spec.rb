@@ -175,7 +175,7 @@ describe ActivityDecorator do
       let(:activity) { build_stubbed :activity, trackable: nil, action: "approve_all_changes" }
 
       it "returns the action" do
-        expect(activity.decorate.send(:template_partial)).
+        expect(activity.decorate.__send__(:template_partial)).
           to eq "activities/templates/actions/approve_all_changes"
       end
     end
@@ -186,7 +186,7 @@ describe ActivityDecorator do
       end
 
       it "returns the action" do
-        expect(activity.decorate.send(:template_partial)).
+        expect(activity.decorate.__send__(:template_partial)).
           to eq "activities/templates/actions/elevate_subspecies_to_species"
       end
     end
@@ -195,7 +195,7 @@ describe ActivityDecorator do
       let(:activity) { build_stubbed :activity }
 
       it "returns that spaced and downcased" do
-        expect(activity.decorate.send(:template_partial)).
+        expect(activity.decorate.__send__(:template_partial)).
           to eq "activities/templates/journal"
       end
     end
@@ -204,7 +204,7 @@ describe ActivityDecorator do
       let(:activity) { build_stubbed :activity, trackable: build_stubbed(:citation) }
 
       it "returns the default template" do
-        expect(activity.decorate.send(:template_partial)).
+        expect(activity.decorate.__send__(:template_partial)).
           to eq "activities/templates/default"
       end
     end

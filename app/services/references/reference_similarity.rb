@@ -1,10 +1,10 @@
 # TODO: Use Solr or Elasticsearch instead of this class.
 
 # Requires that the client have:
-#   :type, :principal_author_last_name, :title
+#   :type, :author_names, :title
 #
 # Compares using these fields:
-#   :type, :principal_author_last_name, :title, :year,
+#   :type, `author_names.first&.last_name`, :title, :year,
 #   :pagination, :series_volume_issue
 #
 # Ignores:
@@ -27,12 +27,11 @@ module References
 
       attr_reader :lhs, :rhs
 
-      delegate :type, :principal_author_last_name, :title, :year, :pagination,
-        :series_volume_issue, to: :lhs
+      delegate :type, :title, :year, :pagination, :series_volume_issue, to: :lhs
 
       def similarity
         return 0.00 unless type == rhs.type
-        return 0.00 unless normalize_author(principal_author_last_name) == normalize_author(rhs.principal_author_last_name)
+        return 0.00 unless normalize_author(principal_author_last_name(lhs)) == normalize_author(principal_author_last_name(rhs))
 
         result = match_title || match_article || match_book
         year_matches = year_matches?
@@ -45,6 +44,10 @@ module References
         when result && !pagination_matches then result - 0.01
         else                                    result
         end
+      end
+
+      def principal_author_last_name reference
+        reference.author_names.first&.last_name
       end
 
       def year_matches?

@@ -3,7 +3,7 @@ module Taxa
     class FetchStatistics
       include Service
 
-      def initialize(taxon, valid_only: false)
+      def initialize taxon, valid_only: false
         @taxon = taxon
         @valid_only = valid_only
       end

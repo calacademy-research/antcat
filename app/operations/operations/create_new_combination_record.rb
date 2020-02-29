@@ -8,7 +8,7 @@ module Operations
       @target_name_string = target_name_string
     end
 
-    def self.description(current_valid_taxon:, new_genus:, target_name_string:)
+    def self.description current_valid_taxon:, new_genus:, target_name_string:
       <<~TEXT
         * Create a new species record: #{target_name_string}
           * Status: #{Status::VALID}

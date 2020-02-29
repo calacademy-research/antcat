@@ -3,9 +3,24 @@ module References
     class Fulltext
       include Service
 
-      def initialize options = {}
-        @options = options
+      # rubocop:disable Metrics/ParameterLists
+      def initialize(
+        keywords: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
+        doi: nil, reference_type: nil, page: 1, per_page: 30
+      )
+        @keywords = keywords
+        # Hyphens, asterixes and colons makes Solr go bananas.
+        @title = title.gsub(/-|:|\*/, ' ') if title
+        @author = author.gsub(/-|:/, ' ') if author
+        @year = year
+        @start_year = start_year
+        @end_year = end_year
+        @doi = doi
+        @reference_type = reference_type
+        @page = page
+        @per_page = per_page
       end
+      # rubocop:enable Metrics/ParameterLists
 
       def call
         fulltext_search
@@ -13,22 +28,10 @@ module References
 
       private
 
-        attr_reader :options
+        attr_reader :keywords, :title, :author, :year, :start_year, :end_year, :doi,
+          :reference_type, :page, :per_page
 
         def fulltext_search
-          page            = options[:page] || 1
-          items_per_page  = options[:items_per_page] || 30
-          year            = options[:year]
-          start_year      = options[:start_year]
-          end_year        = options[:end_year]
-          author          = options[:author]
-          title           = options[:title]
-          doi             = options[:doi]
-
-          # Hyphens, asterixes and colons makes Solr go bananas.
-          title = title.gsub(/-|:|\*/, ' ') if title
-          author = author.gsub(/-|:/, ' ') if author
-
           Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
             keywords normalized_search_keywords
 
@@ -56,19 +59,19 @@ module References
               with(:doi).equal_to doi
             end
 
-            case options[:reference_type]
+            case reference_type
             when :unknown   then with    :type, 'UnknownReference'
             when :nested    then with    :type, 'NestedReference'
             when :missing   then with    :type, 'MissingReference'
             when :nomissing then without :type, 'MissingReference'
             end
 
-            if options[:endnote_export]
-              paginate page: 1, per_page: 9999999 # Hehhehe.
+            # TODO: Super hack that will go away with `MissingReference`s.
+            if per_page == 999_999
               without :type, 'MissingReference'
-            elsif page
-              paginate page: page, per_page: items_per_page
             end
+
+            paginate page: page, per_page: per_page
 
             order_by :score, :desc
             order_by :author_names_string, :desc
@@ -78,18 +81,16 @@ module References
 
         # TODO: This is partially duplicated in `References::Search::FulltextLight`.
         def normalized_search_keywords
-          @normalized_search_keywords ||= begin
-            keywords = options[:keywords] || ""
+          keywords_dup = keywords.dup
 
-            # TODO: Very ugly to make some queries work. Fix in Solr.
-            substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
-            substrings_to_remove.each { |substring| keywords.gsub! /#{substring}/, '' }
+          # TODO: Very ugly to make some queries work. Fix in Solr.
+          substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
+          substrings_to_remove.each { |substring| keywords_dup.gsub!(/#{substring}/, '') }
 
-            # Hyphens, asterixes and colons makes Solr go bananas.
-            keywords.gsub! /-|:/, ' '
+          # Hyphens, asterixes and colons makes Solr go bananas.
+          keywords_dup.gsub!(/-|:/, ' ')
 
-            keywords
-          end
+          keywords_dup
         end
     end
   end
