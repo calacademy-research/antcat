@@ -3,10 +3,10 @@ module References
     class FulltextWithExtractedKeywords
       include Service
 
-      def initialize search_query, page: nil, endnote_export: false
+      def initialize search_query, page: nil, per_page: nil
         @search_query = search_query.dup
         @page = page
-        @endnote_export = endnote_export
+        @per_page = per_page
       end
 
       def call
@@ -15,15 +15,14 @@ module References
 
       private
 
-        attr_reader :search_query, :page, :endnote_export
+        attr_reader :search_query, :page, :per_page
 
         def keyword_params
-          References::Search::ExtractKeywords[search_query].
-            merge(search_options)
+          References::Search::ExtractKeywords[search_query].merge(search_options)
         end
 
         def search_options
-          { page: page, endnote_export: endnote_export }
+          { page: page, per_page: per_page }
         end
     end
   end
