@@ -41,7 +41,7 @@ class Name < ApplicationRecord
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
 
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
   strip_attributes replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 

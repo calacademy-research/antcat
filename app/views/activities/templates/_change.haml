@@ -1,10 +1,8 @@
+-# NOTE: Deprecated. Activities with this `trackable_type` are no longer created.
 -case activity.action
 -when 'approve_change'
   approved
 -when 'undo_change'
   undid
--else
-  =activity.action_to_verb
 
-the change
-=activity.link_trackable_if_exists
+the change ##{activity.trackable_id}

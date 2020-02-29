@@ -6,12 +6,6 @@ module CucumberHelpers
       when 'the main page'
         root_path
 
-      # Changes.
-      when 'the changes page'
-        '/changes'
-      when 'the unreviewed changes page'
-        '/changes/unreviewed'
-
       # Catalog.
       when 'the advanced search page'
         catalog_search_path

@@ -8,7 +8,6 @@ describe Taxon do
   describe 'relations' do
     it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
-    it { is_expected.to have_one(:taxon_state).dependent(false) }
     it { is_expected.to belong_to(:protonym).dependent(false) }
     it { is_expected.to belong_to(:name).dependent(:destroy) }
   end
@@ -208,31 +207,6 @@ describe Taxon do
 
   it_behaves_like "a taxt column with cleanup", :type_taxt do
     subject { build :family }
-  end
-
-  describe "workflow" do
-    describe '`Workflow::ExternalTable`' do
-      context "when taxon is created" do
-        let!(:taxon) { create :family }
-
-        it "creates a `TaxonState` with `review_status` 'waiting'" do
-          expect(taxon.taxon_state).not_to eq nil
-          expect(taxon.reload.waiting?).to eq true
-        end
-      end
-    end
-
-    it "can transition from waiting to approved" do
-      taxon = create :family
-      create :change, taxon: taxon, change_type: "create"
-
-      expect(taxon).to be_waiting
-      expect(taxon.can_approve?).to be true
-
-      taxon.approve!
-      expect(taxon).to be_approved
-      expect(taxon).not_to be_waiting
-    end
   end
 
   describe "#rank" do

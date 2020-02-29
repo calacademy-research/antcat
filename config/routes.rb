@@ -3,21 +3,6 @@ Rails.application.routes.draw do
 
   mount SwaggerUiEngine::Engine, at: "/api_docs"
 
-  resources :changes, only: [:show, :index] do
-    collection do
-      get :unreviewed
-      put :approve_all
-    end
-
-    member do
-      put :approve
-    end
-
-    scope module: :changes do
-      resource :undos, only: [:show, :create]
-    end
-  end
-
   resources :authors, only: [:index, :show, :destroy] do
     scope module: :authors do
       collection do

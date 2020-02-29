@@ -17,7 +17,7 @@
             %li=link_to "Editor's Panel", editors_panel_path, class: "top-header-link #{'very-active' if menu_active?(:editors_panel)}"
             -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
               %li=link_to 'Fix Random!', catalog_fix_random_path, class: "top-header-link"
-            %li=link_to 'Changes', changes_path, class: "top-header-link #{'very-active' if menu_active?(:changes)}"
+            %li=link_to 'Activity Feed', activities_path, class: "top-header-link #{'very-active' if menu_active?(:activity_feed)}"
             %li=link_to current_user.name, current_user, class: "top-header-link"
             %li=link_to 'Logout', destroy_user_session_path, method: :delete, class: "top-header-link"
           -else
@@ -86,7 +86,7 @@
         %li=link_to "Editor's Panel", editors_panel_path
         -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
           %li=link_to 'Fix Random!', catalog_fix_random_path
-        %li=link_to 'Changes', changes_path
+        %li=link_to 'Activity Feed', activities_path
         %li=current_user.decorate.user_page_link
         %li=link_to 'Logout', destroy_user_session_path, method: :delete
       -else

@@ -14,7 +14,7 @@ module ActivitiesHelper
 
   def activities_link trackable_type, trackable_id
     return unless trackable_type
-    return if trackable_type.in? Activity::DEPRECARD_TRACKABLE_TYPES
+    return if trackable_type.in? Activity::DEPRECATED_TRACKABLE_TYPES
 
     type = trackable_type.constantize.base_class
     url = activities_path(trackable_type: type, trackable_id: trackable_id)

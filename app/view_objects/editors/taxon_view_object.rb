@@ -12,11 +12,6 @@ module Editors
       link_to "Edit", edit_taxa_path(taxon), class: "btn-normal"
     end
 
-    def review_change_button
-      return unless taxon.waiting? && taxon.decorate.last_change
-      link_to 'Review change', "/changes/#{taxon.decorate.last_change.id}", class: "btn-tiny btn-normal"
-    end
-
     def add_child_button
       rank_to_create = case taxon
                        when Family     then "Subfamily"

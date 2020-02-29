@@ -14,7 +14,7 @@ class Citation < ApplicationRecord
   before_validation :cleanup_taxts
 
   strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
-  has_paper_trail meta: { change_id: proc { UndoTracker.current_change_id } }
+  has_paper_trail
 
   private
 
