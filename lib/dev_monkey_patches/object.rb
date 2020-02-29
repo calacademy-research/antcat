@@ -4,10 +4,6 @@ module DevMonkeyPatches
       ::Object.include self
     end
 
-    def dev_dev_mixed_in?
-      true
-    end
-
     # Find taxon by name or id.
     def dev_dev_taxon name_or_id
       return Taxon.find(name_or_id) if name_or_id.is_a? Numeric
