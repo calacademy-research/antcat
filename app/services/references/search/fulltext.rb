@@ -6,7 +6,7 @@ module References
       # rubocop:disable Metrics/ParameterLists
       def initialize(
         keywords: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
-        doi: nil, reference_type: nil, endnote_export: false, page: 1, items_per_page: 30
+        doi: nil, reference_type: nil, endnote_export: false, page: 1, per_page: 30
       )
         @keywords = keywords
         # Hyphens, asterixes and colons makes Solr go bananas.
@@ -19,7 +19,7 @@ module References
         @reference_type = reference_type
         @endnote_export = endnote_export
         @page = page
-        @items_per_page = items_per_page
+        @per_page = per_page
       end
       # rubocop:enable Metrics/ParameterLists
 
@@ -30,7 +30,7 @@ module References
       private
 
         attr_reader :keywords, :title, :author, :year, :start_year, :end_year, :doi,
-          :reference_type, :endnote_export, :page, :items_per_page
+          :reference_type, :endnote_export, :page, :per_page
 
         def fulltext_search
           Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
@@ -71,7 +71,7 @@ module References
               paginate page: 1, per_page: 9999999 # Hehhehe.
               without :type, 'MissingReference'
             elsif page
-              paginate page: page, per_page: items_per_page
+              paginate page: page, per_page: per_page
             end
 
             order_by :score, :desc
