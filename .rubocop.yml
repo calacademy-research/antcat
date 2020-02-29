@@ -43,6 +43,9 @@ Layout/EmptyLineAfterGuardClause:
 Layout/FirstHashElementIndentation:
   Enabled: false
 
+Layout/FirstArrayElementLineBreak:
+  Enabled: true
+
 Layout/FirstHashElementLineBreak:
   Enabled: true
 

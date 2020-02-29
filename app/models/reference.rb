@@ -47,9 +47,11 @@ class Reference < ApplicationRecord
   accepts_nested_attributes_for :document, reject_if: :all_blank
   delegate :url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
-  strip_attributes only: [:editor_notes, :public_notes, :taxonomic_notes, :title,
+  strip_attributes only: [
+    :editor_notes, :public_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-    :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix], replace_newlines: true
+    :pages_in, :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
+  ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
   searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
