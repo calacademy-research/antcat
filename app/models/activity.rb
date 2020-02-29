@@ -33,7 +33,10 @@ class Activity < ApplicationRecord
     start_reviewing
     undo_change
   ]
-  DEPRECARD_TRACKABLE_TYPES = %w[Change Synonym]
+  DEPRECATED_TRACKABLE_TYPES = %w[Change Synonym]
+  # NOTE: This list of deprecated actions is not used anywhere in the code,
+  # it's just here for keeping track of which actions we do not care that much about.
+  DEPRECATED_ACTIONS = %w[approve_all_changes approve_change undo_change]
 
   self.per_page = 30 # For `will_paginate`.
 

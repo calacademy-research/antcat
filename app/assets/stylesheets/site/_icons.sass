@@ -25,12 +25,12 @@ table.activities
       color: $color_danger
 
     // Approving actions = green check.
-    &.approve_change, &.finish_reviewing, &.approve_all_references, &.approve_all_changes, &.close_feedback, &.close_issue
+    &.finish_reviewing, &.approve_all_references, &.close_feedback, &.close_issue
       @extend .fa-check
       color: $color_primary
 
     // Mean actions = red exclamation mark.
-    &.undo_change, &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
+    &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
       @extend .fa-exclamation
       color: $color_danger
 
