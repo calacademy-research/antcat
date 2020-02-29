@@ -218,6 +218,10 @@ Style/NumericLiterals:
 Style/OptionHash:
   Enabled: true
 
+# TODO: Remove `__send__`s.
+Style/Send:
+  Enabled: true
+
 Style/StringLiterals:
   Enabled: false
 

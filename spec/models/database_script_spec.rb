@@ -29,8 +29,8 @@ describe DatabaseScript do
       it "doesn't call `#result` more than once" do
         expect(database_script).to receive(:results).once.and_return :stubbed
 
-        database_script.send :cached_results
-        database_script.send :cached_results
+        database_script.__send__ :cached_results
+        database_script.__send__ :cached_results
       end
     end
 
@@ -38,8 +38,8 @@ describe DatabaseScript do
       it "doesn't call `#result` more than once" do
         expect(database_script).to receive(:results).once.and_return nil
 
-        database_script.send :cached_results
-        database_script.send :cached_results
+        database_script.__send__ :cached_results
+        database_script.__send__ :cached_results
       end
     end
 
@@ -47,8 +47,8 @@ describe DatabaseScript do
       it "doesn't call `#result` more than once" do
         expect(database_script).to receive(:results).once.and_return false
 
-        database_script.send :cached_results
-        database_script.send :cached_results
+        database_script.__send__ :cached_results
+        database_script.__send__ :cached_results
       end
     end
 
