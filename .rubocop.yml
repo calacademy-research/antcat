@@ -215,6 +215,9 @@ Style/MutableConstant:
 Style/NumericLiterals:
   Enabled: false
 
+Style/OptionHash:
+  Enabled: true
+
 Style/StringLiterals:
   Enabled: false
 

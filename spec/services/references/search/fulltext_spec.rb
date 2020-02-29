@@ -2,6 +2,35 @@ require 'rails_helper'
 
 describe References::Search::Fulltext, :search do
   describe "#call" do
+    describe 'searching with `title`' do
+      let!(:pescatore_reference) { create :article_reference, title: 'Pizza Pescatore' }
+      let!(:capricciosa_reference) { create :article_reference, title: 'Pizza Capricciosa' }
+
+      before do
+        Sunspot.commit
+      end
+
+      specify do
+        expect(described_class[title: 'Pescatore']).to match_array [pescatore_reference]
+        expect(described_class[title: 'Capricciosa']).to match_array [capricciosa_reference]
+        expect(described_class[title: 'pizza']).to match_array [pescatore_reference, capricciosa_reference]
+      end
+    end
+
+    describe 'searching with `author`' do
+      let!(:bolton_reference) { create :article_reference, author_name: 'Bolton' }
+      let!(:fisher_reference) { create :article_reference, author_name: 'Fisher' }
+
+      before do
+        Sunspot.commit
+      end
+
+      specify do
+        expect(described_class[author: 'Bolton']).to match_array [bolton_reference]
+        expect(described_class[author: 'Fisher']).to match_array [fisher_reference]
+      end
+    end
+
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do
         create :article_reference, citation_year: '1994'
