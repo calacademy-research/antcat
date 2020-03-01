@@ -18,8 +18,8 @@ class Reference < ApplicationRecord
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
     through: :reference_author_names,
-    after_add: :refresh_author_names_caches,
-    after_remove: :refresh_author_names_caches
+    after_add: :refresh_author_names_cache,
+    after_remove: :refresh_author_names_cache
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id", dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
@@ -35,7 +35,7 @@ class Reference < ApplicationRecord
   validate :ensure_bolton_key_unique
 
   before_validation :set_year_from_citation_year
-  before_save :assign_author_names_caches
+  before_save :assign_author_names_cache
   before_destroy :check_not_referenced
 
   scope :latest_additions, -> { order(created_at: :desc) }
@@ -100,8 +100,8 @@ class Reference < ApplicationRecord
   end
 
   # TODO: See if we can avoid this.
-  def refresh_author_names_caches *args
-    assign_author_names_caches args
+  def refresh_author_names_cache *args
+    assign_author_names_cache args
     save(validate: false)
   end
 
@@ -167,7 +167,7 @@ class Reference < ApplicationRecord
                   end
     end
 
-    def assign_author_names_caches *_args
+    def assign_author_names_cache *_args
       self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end
