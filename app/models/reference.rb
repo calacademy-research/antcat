@@ -35,7 +35,7 @@ class Reference < ApplicationRecord
   validate :ensure_bolton_key_unique
 
   before_validation :set_year_from_citation_year
-  before_save :set_author_names_caches
+  before_save :assign_author_names_caches
   before_destroy :check_not_referenced
 
   scope :latest_additions, -> { order(created_at: :desc) }
@@ -101,7 +101,7 @@ class Reference < ApplicationRecord
 
   # TODO: See if we can avoid this.
   def refresh_author_names_caches *args
-    set_author_names_caches args
+    assign_author_names_caches args
     save(validate: false)
   end
 
@@ -167,7 +167,7 @@ class Reference < ApplicationRecord
                   end
     end
 
-    def set_author_names_caches *_args
+    def assign_author_names_caches *_args
       self.author_names_string_cache = author_names.map(&:name).join('; ').strip
     end
 end

@@ -102,7 +102,7 @@ Metrics/PerceivedComplexity:
 ### Naming.
 
 Naming/AccessorMethodName:
-  Enabled: false
+  Enabled: true
 
 Naming/VariableNumber:
   Exclude:
