@@ -2,9 +2,9 @@
 # TODO: Cleanup. Can wait until `MissingReference` has been removed.
 
 class ReferenceFormatter
-  include ActionView::Helpers::TagHelper # For `#content_tag`.
   include ActionView::Context # For `#content_tag`.
-  include ActionView::Helpers::SanitizeHelper # For `#sanitize`.
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Helpers::SanitizeHelper
 
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

@@ -1,8 +1,8 @@
 module Exporters
   module Antweb
     class ExportReferenceSections
-      include ActionView::Helpers::TagHelper # For `#content_tag`.
       include ActionView::Context # For `#content_tag`.
+      include ActionView::Helpers::TagHelper # For `#content_tag`.
       include Service
 
       def initialize taxon

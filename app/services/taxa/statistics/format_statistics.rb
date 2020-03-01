@@ -1,7 +1,7 @@
 module Taxa
   module Statistics
     class FormatStatistics
-      include ActionView::Context
+      include ActionView::Context # For `#content_tag`.
       include ActionView::Helpers::TagHelper # For `#content_tag`.
       include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
       include Service

@@ -1,7 +1,7 @@
 module Exporters
   module Antweb
     class ExportHeadline
-      include ActionView::Context
+      include ActionView::Context # For `#content_tag`.
       include ActionView::Helpers::TagHelper # For `#content_tag`.
       include Service
 
