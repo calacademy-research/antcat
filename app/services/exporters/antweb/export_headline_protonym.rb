@@ -1,8 +1,8 @@
 module Exporters
   module Antweb
     class ExportHeadlineProtonym
-      include ActionView::Helpers
       include ActionView::Context
+      include ActionView::Helpers::TagHelper # For `#content_tag`.`
       include Service
       include ApplicationHelper
 

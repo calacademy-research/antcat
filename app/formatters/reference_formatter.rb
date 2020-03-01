@@ -7,7 +7,7 @@ class ReferenceFormatter
   include ActionView::Helpers::SanitizeHelper # For `#sanitize`.
 
   include Rails.application.routes.url_helpers
-  include ActionView::Helpers
+  include ActionView::Helpers::UrlHelper
 
   include ApplicationHelper # For `#unitalicize`, `#add_period_if_necessary`.
 
