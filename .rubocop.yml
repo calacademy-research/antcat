@@ -158,9 +158,6 @@ RSpec/NotToNot:
 Style/Alias:
   Enabled: false
 
-Style/AndOr:
-  EnforcedStyle: conditionals
-
 Style/AsciiComments:
   Enabled: false
 

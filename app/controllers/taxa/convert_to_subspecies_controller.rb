@@ -10,19 +10,22 @@ module Taxa
     def create
       if @taxon.subspecies.present?
         @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"
-        render :new and return
+        render :new
+        return
       end
 
       if params[:new_species_id].blank?
         @taxon.errors.add :base, 'Please select a species.'
-        render :new and return
+        render :new
+        return
       end
 
       @new_species = Species.find(params[:new_species_id])
 
       unless @new_species.genus == @taxon.genus
         @taxon.errors.add :base, "The new parent must be in the same genus."
-        render :new and return
+        render :new
+        return
       end
 
       new_subspecies = Taxa::Operations::ConvertToSubspecies[@taxon, @new_species]

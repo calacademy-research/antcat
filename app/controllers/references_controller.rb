@@ -78,8 +78,8 @@ class ReferencesController < ApplicationController
     end
 
     def reference_type_from_params
-      reference_type = params[:reference_type]
-      SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == reference_type.classify } or raise "reference type is not supported"
+      reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
+      reference_class || raise("reference type is not supported")
     end
 
     def reference_params
