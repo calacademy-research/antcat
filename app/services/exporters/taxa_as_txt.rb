@@ -1,7 +1,6 @@
 module Exporters
   class TaxaAsTxt
     include Service
-    include ApplicationHelper # For `#add_period_if_necessary`.
 
     def initialize taxa
       @taxa = taxa
@@ -78,7 +77,7 @@ module Exporters
       end
 
       def convert_to_text string
-        unitalicize string.html_safe
+        Unitalicize[string.html_safe]
       end
   end
 end

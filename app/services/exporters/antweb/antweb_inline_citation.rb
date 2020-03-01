@@ -2,7 +2,6 @@ module Exporters
   module Antweb
     class AntwebInlineCitation
       include ActionView::Helpers::UrlHelper
-      include ApplicationHelper
       include Service
 
       def initialize reference
@@ -18,7 +17,7 @@ module Exporters
         attr_reader :reference
 
         def reference_link
-          link_to reference.keey.html_safe, reference_url, title: unitalicize(plain_text)
+          link_to reference.keey.html_safe, reference_url, title: Unitalicize[plain_text]
         end
 
         def document_links

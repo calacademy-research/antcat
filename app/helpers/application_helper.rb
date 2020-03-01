@@ -12,18 +12,6 @@ module ApplicationHelper
     AddPeriodIfNecessary[string]
   end
 
-  def italicize string
-    content_tag :i, string
-  end
-
-  def unitalicize string
-    raise "Can't unitalicize an unsafe string" unless string.html_safe?
-    string = string.dup
-    string.gsub!('<i>', '')
-    string.gsub!('</i>', '')
-    string.html_safe
-  end
-
   # TODO: See if we can use CSS only instead.
   def external_link_to label, url
     link_to label, url, class: 'external-link'
