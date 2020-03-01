@@ -2,7 +2,6 @@ module Exporters
   module Antweb
     class ExportHeadlineType
       include Service
-      include ApplicationHelper
 
       def initialize taxon
         @taxon = taxon
@@ -21,7 +20,7 @@ module Exporters
         def headline_type
           string = ''.html_safe
           string << type_name_and_taxt
-          string << add_period_if_necessary(protonym.biogeographic_region)
+          string << AddPeriodIfNecessary[protonym.biogeographic_region]
           string.html_safe
         end
 
@@ -35,7 +34,7 @@ module Exporters
             string << AntwebDetax[format_type_taxt]
           end
 
-          add_period_if_necessary string
+          AddPeriodIfNecessary[string]
         end
 
         def format_type_taxt

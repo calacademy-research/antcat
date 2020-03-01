@@ -66,7 +66,7 @@ class ReferenceFormatter
       string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << unitalicize(reference.decorate.format_title) << ' '
-      string << add_period_if_necessary(format_plain_text_citation)
+      string << AddPeriodIfNecessary[format_plain_text_citation]
       string
     end
 
@@ -88,7 +88,7 @@ class ReferenceFormatter
       string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
-      string << format_italics(add_period_if_necessary(sanitize(format_citation)))
+      string << format_italics(AddPeriodIfNecessary[sanitize(format_citation)])
       string << ' [online early]' if reference.online_early?
 
       string

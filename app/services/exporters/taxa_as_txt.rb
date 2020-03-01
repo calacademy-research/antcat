@@ -68,7 +68,7 @@ module Exporters
       def format_type_localities taxon
         string = ''
         if taxon.protonym.locality
-          string << add_period_if_necessary(taxon.protonym.locality)
+          string << AddPeriodIfNecessary[taxon.protonym.locality]
         end
         if taxon.protonym.biogeographic_region
           string << ' ' << taxon.protonym.biogeographic_region

@@ -9,9 +9,7 @@ module ApplicationHelper
   end
 
   def add_period_if_necessary string
-    return "".html_safe if string.blank?
-    return string if string[-1..-1] =~ /[.!?]/
-    string + '.'
+    AddPeriodIfNecessary[string]
   end
 
   def italicize string

@@ -10,15 +10,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#add_period_if_necessary" do
-    specify { expect(helper.add_period_if_necessary('Hi')).to eq 'Hi.' }
-    specify { expect(helper.add_period_if_necessary('Hi.')).to eq 'Hi.' }
-    specify { expect(helper.add_period_if_necessary('Hi!')).to eq 'Hi!' }
-    specify { expect(helper.add_period_if_necessary('Hi?')).to eq 'Hi?' }
-    specify { expect(helper.add_period_if_necessary('')).to eq '' }
-    specify { expect(helper.add_period_if_necessary(nil)).to eq '' }
-  end
-
   describe "italicization" do
     describe "#italicize" do
       it "adds <i> tags" do
