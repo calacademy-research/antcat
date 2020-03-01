@@ -10,24 +10,6 @@ describe ApplicationHelper do
     end
   end
 
-  describe "#pluralize_with_delimiters" do
-    it "handles single items" do
-      expect(helper.pluralize_with_delimiters(1, 'bear')).to eq '1 bear'
-    end
-
-    it "pluralizes" do
-      expect(helper.pluralize_with_delimiters(2, 'bear')).to eq '2 bears'
-    end
-
-    it "uses the provided plural" do
-      expect(helper.pluralize_with_delimiters(2, 'genus', 'genera')).to eq '2 genera'
-    end
-
-    it "uses commas" do
-      expect(helper.pluralize_with_delimiters(2000, 'bear')).to eq '2,000 bears'
-    end
-  end
-
   describe "#add_period_if_necessary" do
     specify { expect(helper.add_period_if_necessary('Hi')).to eq 'Hi.' }
     specify { expect(helper.add_period_if_necessary('Hi.')).to eq 'Hi.' }

@@ -8,10 +8,6 @@ module ApplicationHelper
     "&ndash;".html_safe
   end
 
-  def pluralize_with_delimiters count, singular, plural = nil
-    pluralize number_with_delimiter(count), singular, plural
-  end
-
   def add_period_if_necessary string
     return "".html_safe if string.blank?
     return string if string[-1..-1] =~ /[.!?]/
