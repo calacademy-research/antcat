@@ -33,7 +33,9 @@
   =render "shared/note_on_taxt_references"
 
 %table.tablesorter
-  %caption=pluralize_with_delimiters @taxon_history_items.count, 'results'
+  %caption
+    =number_with_delimiter @taxon_history_items.count
+    result(s)
   %thead
     %tr
       %th ID
