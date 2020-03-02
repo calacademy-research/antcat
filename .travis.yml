@@ -4,7 +4,7 @@ cache: bundler
 dist: trusty
 
 rvm:
-  - 2.3.3
+  - 2.6.5
 
 bundler_args: --without development doc --deployment --jobs=3 --retry=3
 
