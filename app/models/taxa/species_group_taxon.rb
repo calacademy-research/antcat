@@ -1,6 +1,3 @@
-# NOTE: This is the superclass of `Species`, `Subspecies` and `Infrasubspecies`, not to
-# be confused with "species group" or "species-group name" as used in taxonomy.
-
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :genus

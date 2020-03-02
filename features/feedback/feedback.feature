@@ -81,7 +81,7 @@ Feature: Feedback
 
     When I click the Feedback link
     And I click css "#submit-feedback-js"
-    Then I should see "you have already posted a couple of feedbacks in the last few minutes"
+    Then I should see "You have already posted a couple of feedbacks in the last few minutes"
     And I should not see "Message sent"
 
   Scenario: Combating spambots with honeypots
@@ -89,5 +89,5 @@ Feature: Feedback
     And I fill in "feedback_comment" with "buy rolex plz"
     And I pretend to be a bot by filling in the invisible work email field
     And I click css "#submit-feedback-js"
-    Then I should see "you're not a bot are you?"
+    Then I should see "You're not a bot are you?"
     And I should not see "Message sent"

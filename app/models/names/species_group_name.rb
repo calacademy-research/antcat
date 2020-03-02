@@ -1,6 +1,3 @@
-# NOTE: This is the `Name` type used for `SpeciesGroupTaxon` records, not to
-# be confused with "species group" or "species-group name" as used in taxonomy.
-
 class SpeciesGroupName < Name
   def genus_epithet
     name_parts[0]

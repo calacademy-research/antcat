@@ -46,7 +46,7 @@ module DatabaseScripts
           !Protonym.where(name_id: Taxon.distinct.select(:name_id)).exists? &&
           !Taxon.where(name_id: Protonym.distinct.select(:name_id)).exists? &&
           (Name.count == Taxon.count + Protonym.count) &&
-          orphaned_names.exists?
+          !orphaned_names.exists?
 
         {
           title: 'Name count checks',

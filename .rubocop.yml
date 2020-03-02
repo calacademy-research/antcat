@@ -102,7 +102,7 @@ Metrics/PerceivedComplexity:
 ### Naming.
 
 Naming/AccessorMethodName:
-  Enabled: false
+  Enabled: true
 
 Naming/VariableNumber:
   Exclude:
@@ -157,9 +157,6 @@ RSpec/NotToNot:
 
 Style/Alias:
   Enabled: false
-
-Style/AndOr:
-  EnforcedStyle: conditionals
 
 Style/AsciiComments:
   Enabled: false

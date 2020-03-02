@@ -58,7 +58,7 @@ class ActivityDecorator < Draper::Decorator
     activity.trackable_type.titleize.downcase
   end
 
-  # Upcase missing actions to make sure they are ugly.
+  # NOTE: Missing actions are upcased to make sure they are ugly.
   def action_to_verb
     {
       create: "added",

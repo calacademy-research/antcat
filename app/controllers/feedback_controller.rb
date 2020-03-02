@@ -18,8 +18,14 @@ class FeedbackController < ApplicationController
   def create
     @feedback = Feedback.new(feedback_params)
     @feedback.ip = request.remote_ip
-    render_unprocessable and return if ip_banned?
-    render_unprocessable and return if maybe_rate_throttle
+
+    if ip_banned? || rate_throttle?
+      render json: <<~MSG, status: :unprocessable_entity
+        You have already posted a couple of feedbacks in the last few minutes. Thanks for that!
+        Please wait for a few minutes while we are trying to figure out if you are a bot...
+      MSG
+      return
+    end
 
     if current_user
       @feedback.user = current_user
@@ -31,7 +37,7 @@ class FeedbackController < ApplicationController
       @feedback.create_activity :create, current_user
       render json: feedback_success_callout, status: :created
     else
-      render_unprocessable
+      render json: @feedback.errors.full_messages.to_sentence, status: :unprocessable_entity
     end
   end
 
@@ -60,27 +66,16 @@ class FeedbackController < ApplicationController
     end
 
     def on_spam _options = {}
-      @feedback = Feedback.new(feedback_params)
-      @feedback.errors.add :hmm, "you're not a bot are you? Feedback not sent. Email us?"
-      render_unprocessable
+      render json: "You're not a bot are you? Feedback not sent. Email us?", status: :unprocessable_entity
     end
 
     def ip_banned?
       request.remote_ip.in? BANNED_IPS
     end
 
-    def maybe_rate_throttle
+    def rate_throttle?
       return if current_user
-      return unless Feedback.submitted_by_ip(@feedback.ip).recent.count >= 5
-
-      @feedback.errors.add :rate_limited, <<-MSG
-        you have already posted a couple of feedbacks in the last few minutes. Thanks for that!
-        Please wait for a few minutes while we are trying to figure out if you are a bot...
-      MSG
-    end
-
-    def render_unprocessable
-      render json: @feedback.errors.full_messages.to_sentence, status: :unprocessable_entity
+      Feedback.submitted_by_ip(@feedback.ip).recent.count >= 5
     end
 
     def feedback_success_callout
