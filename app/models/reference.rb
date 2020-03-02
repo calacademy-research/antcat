@@ -1,5 +1,5 @@
 class Reference < ApplicationRecord
-  include Workflow
+  include WorkflowActiverecord
   include RevisionsCanBeCompared
   include Trackable
 

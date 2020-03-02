@@ -46,7 +46,7 @@ gem 'swagger_ui_engine', '1.1.2' # Locked to avoid sassc-rails, see https://gith
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'
-gem 'workflow', '< 2'
+gem 'workflow-activerecord'
 
 group :development do
   gem 'awesome_print', require: 'ap'
