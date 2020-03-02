@@ -1,10 +1,10 @@
 module Taxa
   module Statistics
     class FormatStatistics
-      include ActionView::Helpers
-      include ActionView::Context
+      include ActionView::Context # For `#content_tag`.
+      include ActionView::Helpers::TagHelper # For `#content_tag`.
+      include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
       include Service
-      include ApplicationHelper # For `#pluralize_with_delimiters`.
 
       def initialize statistics
         @statistics = statistics
@@ -43,7 +43,7 @@ module Taxa
 
           status_strings = sorted_keys.map do |status|
             count = rank_stats[status]
-            pluralize_with_delimiters count, status, Status.plural(status)
+            PluralizeWithDelimiters[count, status, Status.plural(status)]
           end.join(', ')
 
           "(#{status_strings})"

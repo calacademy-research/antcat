@@ -3,7 +3,9 @@
     No results found.
 -else
   %table
-    %caption=pluralize_with_delimiters taxa.count, 'result'
+    %caption
+      =number_with_delimiter taxa.count
+      result(s)
     %thead
       %tr
         %th Name

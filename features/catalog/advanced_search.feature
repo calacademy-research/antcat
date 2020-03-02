@@ -51,7 +51,7 @@ Feature: Searching the catalog
 
     When I select "Afrotropic" from "biogeographic_region"
     And I press "Search"
-    Then I should see "2 results"
+    Then I should see "2 result(s)"
     And I should see "Afrotropic" within the search results
 
   Scenario: Searching for 'None' biogeographic_region

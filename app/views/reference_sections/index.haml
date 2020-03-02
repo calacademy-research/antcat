@@ -28,7 +28,9 @@
   =render "shared/note_on_taxt_references"
 
 %table
-  %caption=pluralize_with_delimiters @reference_sections.count, 'results'
+  %caption
+    =number_with_delimiter @reference_sections.count
+    result(s)
   %thead
     %tr
       %th ID

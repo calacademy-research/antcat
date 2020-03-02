@@ -1,17 +1,16 @@
 module Exporters
   module Antweb
     class ExportHeadlineProtonym
-      include ActionView::Helpers
-      include ActionView::Context
+      include ActionView::Context # For `#content_tag`.`
+      include ActionView::Helpers::TagHelper # For `#content_tag`.`
       include Service
-      include ApplicationHelper
 
       def initialize protonym
         @protonym = protonym
       end
 
       def call
-        add_period_if_necessary headline_protonym
+        AddPeriodIfNecessary[headline_protonym]
       end
 
       private

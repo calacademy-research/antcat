@@ -1,7 +1,6 @@
 module Exporters
   module Antweb
     class ExportTypeFields
-      include ApplicationHelper
       include Service
 
       def initialize protonym
@@ -24,17 +23,17 @@ module Exporters
 
         def primary_type_information
           return unless primary_type_information_taxt
-          add_period_if_necessary "Primary type information: #{detax(primary_type_information_taxt)}"
+          AddPeriodIfNecessary["Primary type information: #{detax(primary_type_information_taxt)}"]
         end
 
         def secondary_type_information
           return unless secondary_type_information_taxt
-          add_period_if_necessary "Secondary type information: #{detax(secondary_type_information_taxt)}"
+          AddPeriodIfNecessary["Secondary type information: #{detax(secondary_type_information_taxt)}"]
         end
 
         def type_notes
           return unless type_notes_taxt
-          add_period_if_necessary "Type notes: #{detax(type_notes_taxt)}"
+          AddPeriodIfNecessary["Type notes: #{detax(type_notes_taxt)}"]
         end
 
         def detax content

@@ -2,14 +2,12 @@
 # TODO: Cleanup. Can wait until `MissingReference` has been removed.
 
 class ReferenceFormatter
-  include ActionView::Helpers::TagHelper # For `#content_tag`.
   include ActionView::Context # For `#content_tag`.
-  include ActionView::Helpers::SanitizeHelper # For `#sanitize`.
+  include ActionView::Helpers::TagHelper # For `#content_tag`.
+  include ActionView::Helpers::SanitizeHelper
 
   include Rails.application.routes.url_helpers
-  include ActionView::Helpers
-
-  include ApplicationHelper # For `#unitalicize`, `#add_period_if_necessary`.
+  include ActionView::Helpers::UrlHelper
 
   def initialize reference
     @reference = reference
@@ -65,8 +63,8 @@ class ReferenceFormatter
       string = sanitize(reference.author_names_string_with_suffix)
       string << ' '
       string << sanitize(reference.citation_year) << '. '
-      string << unitalicize(reference.decorate.format_title) << ' '
-      string << add_period_if_necessary(format_plain_text_citation)
+      string << Unitalicize[reference.decorate.format_title] << ' '
+      string << AddPeriodIfNecessary[format_plain_text_citation]
       string
     end
 
@@ -88,19 +86,19 @@ class ReferenceFormatter
       string << ' '
       string << sanitize(reference.citation_year) << '. '
       string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
-      string << format_italics(add_period_if_necessary(sanitize(format_citation)))
+      string << format_italics(AddPeriodIfNecessary[sanitize(format_citation)])
       string << ' [online early]' if reference.online_early?
 
       string
     end
 
-    # `format_italics` + `unitalicize` is to get rid of "*" italics.
+    # `format_italics` + `Unitalicize` is to get rid of "*" italics.
     def format_plain_text_citation
       case reference
       when NestedReference
         sanitize "#{reference.pages_in} #{ReferenceFormatter.new(reference.nesting_reference).plain_text}"
       else
-        unitalicize format_italics(sanitize(format_citation))
+        Unitalicize[format_italics(sanitize(format_citation))]
       end
     end
 

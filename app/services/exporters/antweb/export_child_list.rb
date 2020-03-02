@@ -1,8 +1,8 @@
 module Exporters
   module Antweb
     class ExportChildList
-      include ActionView::Helpers
-      include ActionView::Context
+      include ActionView::Context # For `#content_tag`.
+      include ActionView::Helpers::TagHelper # For `#content_tag`.
       include Service
 
       def initialize taxon

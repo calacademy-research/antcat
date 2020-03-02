@@ -1,7 +1,6 @@
 module Exporters
   class TaxaAsTxt
     include Service
-    include ApplicationHelper # For `#add_period_if_necessary`.
 
     def initialize taxa
       @taxa = taxa
@@ -68,7 +67,7 @@ module Exporters
       def format_type_localities taxon
         string = ''
         if taxon.protonym.locality
-          string << add_period_if_necessary(taxon.protonym.locality)
+          string << AddPeriodIfNecessary[taxon.protonym.locality]
         end
         if taxon.protonym.biogeographic_region
           string << ' ' << taxon.protonym.biogeographic_region
@@ -78,7 +77,7 @@ module Exporters
       end
 
       def convert_to_text string
-        unitalicize string.html_safe
+        Unitalicize[string.html_safe]
       end
   end
 end

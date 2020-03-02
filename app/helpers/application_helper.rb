@@ -8,26 +8,8 @@ module ApplicationHelper
     "&ndash;".html_safe
   end
 
-  def pluralize_with_delimiters count, singular, plural = nil
-    pluralize number_with_delimiter(count), singular, plural
-  end
-
   def add_period_if_necessary string
-    return "".html_safe if string.blank?
-    return string if string[-1..-1] =~ /[.!?]/
-    string + '.'
-  end
-
-  def italicize string
-    content_tag :i, string
-  end
-
-  def unitalicize string
-    raise "Can't unitalicize an unsafe string" unless string.html_safe?
-    string = string.dup
-    string.gsub!('<i>', '')
-    string.gsub!('</i>', '')
-    string.html_safe
+    AddPeriodIfNecessary[string]
   end
 
   # TODO: See if we can use CSS only instead.

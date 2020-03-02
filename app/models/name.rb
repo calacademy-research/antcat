@@ -3,7 +3,6 @@
 class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
-  include Formatters::ItalicsHelper
 
   NON_ITALIC_NAME_TYPES = %w[FamilyName FamilyOrSubfamilyName SubfamilyName TribeName SubtribeName]
   ITALIC_NAME_TYPES = %w[GenusName SubgenusName SpeciesName SubspeciesName InfrasubspeciesName]
@@ -80,7 +79,7 @@ class Name < ApplicationRecord
 
     def italicize_if_needed string
       return string unless italics?
-      italicize string
+      Italicize[string]
     end
 
     def dagger_html
