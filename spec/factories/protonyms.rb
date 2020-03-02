@@ -3,6 +3,14 @@
 FactoryBot.define do
   factory :protonym do
     authorship factory: :citation
-    association :name, factory: :genus_name
+    genus_group_name
+
+    trait :genus_group_name do
+      association :name, factory: :genus_name
+    end
+
+    trait :species_group_name do
+      association :name, factory: :species_name
+    end
   end
 end

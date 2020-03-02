@@ -175,7 +175,6 @@ class Taxon < ApplicationRecord
 
     def ensure_correct_name_type
       return if name.is_a? name_class
-      return if name.class.name.in? Name::BROKEN_ISH_NAME_TYPES # Make sure taxa already in this state can be saved.
       error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
       errors.add :base, error_message unless errors.added? :base, error_message
     end

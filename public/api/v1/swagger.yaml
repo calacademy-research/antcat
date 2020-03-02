@@ -788,7 +788,6 @@ definitions:
         type: string
         description: Level of name
         enum:
-        - FamilyOrSubfamilyName
         - SubtribeName
         - GenusName
         - SpeciesName
