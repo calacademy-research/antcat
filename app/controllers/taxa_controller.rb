@@ -17,7 +17,7 @@ class TaxaController < ApplicationController
     taxon_form = TaxonForm.new(
       @taxon,
       taxon_params,
-      taxon_name_string: params[:taxon_name_string].presence,
+      taxon_name_string: params[:taxon_name_string],
       protonym_name_string: params[:protonym_name_string].presence
     )
 

@@ -1,5 +1,5 @@
 class TaxonForm
-  def initialize taxon, taxon_params, taxon_name_string: nil, protonym_name_string: nil
+  def initialize taxon, taxon_params, taxon_name_string:, protonym_name_string:
     @taxon = taxon
     @params = taxon_params
     @taxon_name_string = taxon_name_string
