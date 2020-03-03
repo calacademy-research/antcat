@@ -37,12 +37,12 @@ class TaxaController < ApplicationController
   end
 
   def update
-    TaxonForm.new(@taxon, taxon_params).save
-
-    @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
-    redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
-  rescue ActiveRecord::RecordInvalid
-    render :edit
+    if @taxon.update(taxon_params)
+      @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
+    else
+      render :edit
+    end
   end
 
   def destroy
