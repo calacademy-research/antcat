@@ -26,12 +26,6 @@ class TaxonForm
       end
 
       taxon.attributes = params
-
-      remove_auto_generated
       taxon.save!
-    end
-
-    def remove_auto_generated
-      taxon.auto_generated = false
     end
 end
