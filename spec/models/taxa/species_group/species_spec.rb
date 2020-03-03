@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 describe Species do
-  it { is_expected.to validate_presence_of :genus }
+  describe 'validations' do
+    subject(:taxon) { create :species }
+
+    it { is_expected.to validate_presence_of :genus }
+  end
 
   describe 'relations' do
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }

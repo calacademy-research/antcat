@@ -1,9 +1,13 @@
 require 'rails_helper'
 
 describe Infrasubspecies do
-  it { is_expected.to validate_presence_of :genus }
-  it { is_expected.to validate_presence_of :species }
-  it { is_expected.to validate_presence_of :subspecies }
+  describe 'validations' do
+    subject(:taxon) { create :infrasubspecies }
+
+    it { is_expected.to validate_presence_of :genus }
+    it { is_expected.to validate_presence_of :species }
+    it { is_expected.to validate_presence_of :subspecies }
+  end
 
   describe "#parent" do
     let(:taxon) { create :infrasubspecies }

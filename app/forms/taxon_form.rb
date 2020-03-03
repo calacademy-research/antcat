@@ -27,12 +27,6 @@ class TaxonForm
 
       taxon.attributes = params
 
-      # TODO: I don't think this is 100% true, but the current code requires it.
-      if taxon.is_a?(SpeciesGroupTaxon) && taxon.protonym.name.try(:genus_epithet).blank?
-        taxon.errors.add :base, "Species and subspecies must have protonyms with species or subspecies names"
-        raise ActiveRecord::RecordInvalid
-      end
-
       remove_auto_generated
       taxon.save!
     end

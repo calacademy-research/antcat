@@ -1,6 +1,19 @@
 require 'rails_helper'
 
 describe SpeciesGroupTaxon do
+  describe 'validations' do
+    describe 'protonym names' do
+      let(:taxon) { create :species }
+      let(:genus_name) { create :genus_name }
+
+      it 'must have genus-group protonym names' do
+        expect { taxon.protonym.name = genus_name }.to change { taxon.valid? }.to(false)
+        expect(taxon.errors[:base]).
+          to eq ["Species and subspecies must have protonyms with species-group names"]
+      end
+    end
+  end
+
   describe "#recombination?" do
     context "when genus part of name is different than genus part of protonym" do
       let!(:species) { create :species, name_string: 'Atta minor' }

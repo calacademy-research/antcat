@@ -4,6 +4,7 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :subgenus
 
   validates :genus, presence: true
+  validate :ensure_protonym_is_a_species_group_name
 
   def recombination?
     # TODO: Check if this is true.
@@ -13,4 +14,11 @@ class SpeciesGroupTaxon < Taxon
 
     name.genus_epithet != protonym_name.genus_epithet
   end
+
+  private
+
+    def ensure_protonym_is_a_species_group_name
+      return if protonym.name.is_a?(SpeciesGroupName)
+      errors.add :base, "Species and subspecies must have protonyms with species-group names"
+    end
 end
