@@ -26,6 +26,6 @@ class TaxonForm
       end
 
       taxon.attributes = params
-      taxon.save!
+      taxon.save
     end
 end

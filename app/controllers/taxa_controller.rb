@@ -14,18 +14,20 @@ class TaxaController < ApplicationController
   def create
     @taxon = build_taxon_with_parent
 
-    TaxonForm.new(
+    taxon_form = TaxonForm.new(
       @taxon,
       taxon_params,
       taxon_name_string: params[:taxon_name_string].presence,
       protonym_name_string: params[:protonym_name_string].presence
-    ).save
+    )
 
-    @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
-    redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
-  rescue ActiveRecord::RecordInvalid
-    render :new
-  rescue Names::BuildNameFromString::UnparsableName => e
+    if taxon_form.save
+      @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
+    else
+      render :new
+    end
+  rescue Names::BuildNameFromString::UnparsableName => e # TODO: Get rid of this rescue.
     @taxon.errors.add :base, "Could not parse name #{e.message}"
     # Maintain entered names.
     @taxon.build_name(name: params[:taxon_name_string]) unless @taxon.name.name
