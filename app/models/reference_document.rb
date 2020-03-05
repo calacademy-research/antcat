@@ -61,7 +61,7 @@ class ReferenceDocument < ApplicationRecord
       return if file_file_name.present? || url.blank?
       # This is to avoid authentication problems when a URL to one of "our" files is copied
       # to another reference (e.g., nested).
-      return if url =~ /antcat/
+      return if /antcat/.match?(url)
       return if hosted_by_hol? || hosted_by_antbase?
 
       URI.parse(url.gsub(' ', '%20'))

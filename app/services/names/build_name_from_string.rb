@@ -41,7 +41,7 @@ module Names
       def name_class
         return ::SubgenusName if subgenus_name?
 
-        raise UnparsableName, name unless countable_words.join(' ') =~ /^[[:alpha:][:blank:]-]+$/
+        raise UnparsableName, name unless /^[[:alpha:][:blank:]-]+$/.match?(countable_words.join(' '))
 
         case countable_words.size
         when 1 then single_word_name

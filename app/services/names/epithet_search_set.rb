@@ -19,7 +19,7 @@ module Names
       def frequent_misspellings
         epithets = []
         epithets << 'alfari' if epithet == 'alfaroi'
-        epithets << epithet.gsub(/^columbic/, 'colombic') if epithet =~ /^columbic/
+        epithets << epithet.gsub(/^columbic/, 'colombic') if /^columbic/.match?(epithet)
         epithets
       end
 
@@ -49,7 +49,7 @@ module Names
 
       def decline stem, endings
         endings_regexp = '(' + endings.join('|') + ')'
-        return [] unless epithet =~ /#{stem}#{endings_regexp}$/
+        return [] unless /#{stem}#{endings_regexp}$/.match?(epithet)
         endings.map { |ending| epithet.gsub(/(#{stem})#{endings_regexp}$/, "\\1#{ending}") }
       end
 

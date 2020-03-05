@@ -42,7 +42,7 @@ module Taxa
           if params[:year]
             year = params[:year]
 
-            if year =~ /^\d{4,}$/
+            if /^\d{4,}$/.match?(year)
               query = query.where('references.year = ?', year)
             else
               matches = year.match /^(?<start_year>\d{4})-(?<end_year>\d{4})$/

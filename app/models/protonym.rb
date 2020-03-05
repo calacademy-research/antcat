@@ -45,7 +45,7 @@ class Protonym < ApplicationRecord
   def self.common_type_taxt? type_taxt
     return true unless type_taxt
     return true if type_taxt.in?([BY_MONOTYPY, BY_ORIGINAL_DESIGNATION])
-    return true if type_taxt =~ BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
+    return true if BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF.match?(type_taxt)
     false
   end
 
