@@ -12,7 +12,7 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
 gem 'request_store'
-gem 'sass-rails', '5.0.7' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
+gem 'sass-rails', '5.1.0'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
@@ -24,7 +24,7 @@ gem 'colorize'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
-gem 'ey_config' # Required access service configurations through `EY::Config` on EngineYard.
+gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
 gem 'gretel'
@@ -43,7 +43,7 @@ gem 'select2-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-gem 'swagger_ui_engine', '1.1.2' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
+gem 'swagger_ui_engine'
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'
