@@ -196,7 +196,6 @@ GEM
       html2haml (>= 1.0.1)
       railties (>= 5.1)
     hashdiff (1.0.0)
-    headless (2.3.1)
     high_voltage (3.1.2)
     html2haml (2.2.0)
       erubis (~> 2.7.0)
@@ -470,7 +469,6 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   haml-rails
-  headless
   high_voltage
   invisible_captcha
   jquery-atwho-rails
