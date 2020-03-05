@@ -14,6 +14,7 @@ require_relative '../../config/environment'
 
 require 'factory_bot'
 
+require 'capybara/apparition'
 require 'cucumber/rails'
 require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles'
@@ -22,37 +23,17 @@ require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 
-if ENV['HEADLESS']
-  require 'headless'
-
-  headless = Headless.new
-  headless.start
-
-  at_exit do
-    headless.destroy
-  end
-end
-
 RSpec.configure do |config|
   config.expect_with :rspec do |expect_with_config|
     expect_with_config.syntax = [:expect]
   end
 end
 
-# "webkit" is our default driver. It's headless.
-def set_driver
-  driver = ENV['DRIVER'] || "webkit"
-  puts "Using driver: #{driver}.".blue
-  case driver
-  when "webkit"
-    Capybara.javascript_driver = :webkit
-  end
+Capybara.register_driver :apparition do |app|
+  Capybara::Apparition::Driver.new(app, js_errors: false)
 end
 
-set_driver
-
-Capybara::Webkit.configure(&:block_unknown_urls)
-
+Capybara.javascript_driver = :apparition
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
 Capybara.save_path = './tmp/capybara'
