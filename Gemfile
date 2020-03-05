@@ -23,7 +23,7 @@ gem 'bootsnap', require: false
 gem 'colorize'
 gem 'devise'
 gem 'diffy', require: false
-gem 'draper', '< 4'
+gem 'draper'
 gem 'ey_config' # Required access service configurations through `EY::Config` on EngineYard.
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'

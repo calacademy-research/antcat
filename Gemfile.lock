@@ -139,7 +139,7 @@ GEM
     diff-lcs (1.3)
     diffy (3.3.0)
     docile (1.3.2)
-    draper (3.1.0)
+    draper (4.0.0)
       actionpack (>= 5.0)
       activemodel (>= 5.0)
       activemodel-serializers-xml (>= 1.0)
@@ -458,7 +458,7 @@ DEPENDENCIES
   database_cleaner
   devise
   diffy
-  draper (< 4)
+  draper
   ey_config
   factory_bot_rails
   font-awesome-rails
