@@ -16,7 +16,7 @@ gem 'sass-rails', '5.0.7' # Locked to avoid sassc-rails, see https://github.com/
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
-gem 'actionview-component'
+gem 'actionview-component', '1.11.1'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'bootsnap', require: false
@@ -62,7 +62,7 @@ group :development, :test do
   gem 'pry'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.80.0', require: false
+  gem 'rubocop', '~> 0.80.1', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
