@@ -1,4 +1,4 @@
-class PostProcessImport < ActiveRecord::Migration
+class PostProcessImport < ActiveRecord::Migration[4.2]
   def change
     # This makes the type
     execute 'update taxa

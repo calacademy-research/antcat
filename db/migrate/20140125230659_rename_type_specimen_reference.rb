@@ -1,4 +1,4 @@
-class RenameTypeSpecimenReference < ActiveRecord::Migration
+class RenameTypeSpecimenReference < ActiveRecord::Migration[4.2]
   def up
     rename_column :taxa, :type_specimen_reference, :type_specimen_repository rescue nil
   end

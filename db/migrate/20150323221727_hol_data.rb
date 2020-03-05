@@ -1,4 +1,4 @@
-class HolData < ActiveRecord::Migration
+class HolData < ActiveRecord::Migration[4.2]
   def change
     create_table :hol_data do |t|
       t.integer :taxon_id
@@ -15,7 +15,6 @@ class HolData < ActiveRecord::Migration
       t.integer :num_spms
       t.boolean :many_antcat_references
       t.boolean :many_hol_references
-
     end
 
     drop_table :hol_comparisons

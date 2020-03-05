@@ -1,4 +1,4 @@
-class DropBoltonReferences < ActiveRecord::Migration
+class DropBoltonReferences < ActiveRecord::Migration[4.2]
   def up
     remove_column :references, :bolton_key_cache
     drop_table :bolton_matches

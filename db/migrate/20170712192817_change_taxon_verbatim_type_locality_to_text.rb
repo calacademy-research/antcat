@@ -1,6 +1,6 @@
 # See https://github.com/calacademy-research/antcat/issues/163
 
-class ChangeTaxonVerbatimTypeLocalityToText < ActiveRecord::Migration
+class ChangeTaxonVerbatimTypeLocalityToText < ActiveRecord::Migration[4.2]
   def up
     change_column :taxa, :verbatim_type_locality, :text
   end

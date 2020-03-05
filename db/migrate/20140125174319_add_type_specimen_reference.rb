@@ -1,4 +1,4 @@
-class AddTypeSpecimenReference < ActiveRecord::Migration
+class AddTypeSpecimenReference < ActiveRecord::Migration[4.2]
   def up
     add_column :taxa, :type_specimen_repository, :text
   end

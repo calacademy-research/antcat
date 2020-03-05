@@ -1,4 +1,4 @@
-class CreateTaskReference < ActiveRecord::Migration
+class CreateTaskReference < ActiveRecord::Migration[4.2]
   def change
     create_table :task_references do |t|
       t.integer :task_id, index: true

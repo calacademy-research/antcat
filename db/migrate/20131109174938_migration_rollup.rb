@@ -1,4 +1,4 @@
-class MigrationRollup < ActiveRecord::Migration
+class MigrationRollup < ActiveRecord::Migration[4.2]
   def up
     ActiveRecord::Schema.define(version: 20140104014629) do
 

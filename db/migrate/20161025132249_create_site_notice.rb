@@ -1,4 +1,4 @@
-class CreateSiteNotice < ActiveRecord::Migration
+class CreateSiteNotice < ActiveRecord::Migration[4.2]
   def change
     create_table :site_notices do |t|
       t.string :title

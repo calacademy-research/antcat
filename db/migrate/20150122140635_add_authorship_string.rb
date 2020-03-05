@@ -1,4 +1,4 @@
-class AddAuthorshipString < ActiveRecord::Migration
+class AddAuthorshipString < ActiveRecord::Migration[4.2]
   # These two columns are never actually written to the database. The
   # new rails 4 way says that if you're going to add them as hashes to the
   # activerecord object, they had better correspond to table entries.

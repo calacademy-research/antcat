@@ -1,4 +1,4 @@
-class AddHolComparison < ActiveRecord::Migration
+class AddHolComparison < ActiveRecord::Migration[4.2]
   def up
     create_table :hol_comparisons, force: true do |t|
       t.string :name

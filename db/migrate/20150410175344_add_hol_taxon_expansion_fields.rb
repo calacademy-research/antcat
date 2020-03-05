@@ -1,4 +1,4 @@
-class AddHolTaxonExpansionFields < ActiveRecord::Migration
+class AddHolTaxonExpansionFields < ActiveRecord::Migration[4.2]
   def change
     add_column :hol_taxon_data, :antcat_reference_id, :integer
     add_column :hol_taxon_data, :antcat_name_id, :integer

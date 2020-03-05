@@ -1,4 +1,4 @@
-class DropUpdate < ActiveRecord::Migration
+class DropUpdate < ActiveRecord::Migration[4.2]
   def up
     drop_table :updates
   end

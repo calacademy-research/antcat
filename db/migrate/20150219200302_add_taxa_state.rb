@@ -1,4 +1,4 @@
-class AddTaxaState < ActiveRecord::Migration
+class AddTaxaState < ActiveRecord::Migration[4.2]
   def change
     create_table :taxon_states do |t|
       t.integer :taxon_id

@@ -4,7 +4,7 @@
 # We can use any 2016 db dump from before November 8 if we need to recreate.
 # Closes #98. Related closed issue: #108.
 
-class DropHolTables < ActiveRecord::Migration
+class DropHolTables < ActiveRecord::Migration[4.2]
   def up
     drop_table :hol_data
     drop_table :hol_literature_pages

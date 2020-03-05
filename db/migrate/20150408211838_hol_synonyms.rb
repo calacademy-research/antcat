@@ -1,4 +1,4 @@
-class HolSynonyms < ActiveRecord::Migration
+class HolSynonyms < ActiveRecord::Migration[4.2]
   def change
     create_table :hol_synonyms do |t|
       t.integer :tnuid

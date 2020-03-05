@@ -1,4 +1,4 @@
-class AddRecordsToHolDetails < ActiveRecord::Migration
+class AddRecordsToHolDetails < ActiveRecord::Migration[4.2]
   def change
     add_column :hol_taxon_data, :author_last_name, :string
     add_column :hol_taxon_data, :antcat_author_id, :integer

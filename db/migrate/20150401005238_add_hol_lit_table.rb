@@ -1,4 +1,4 @@
-class AddHolLitTable < ActiveRecord::Migration
+class AddHolLitTable < ActiveRecord::Migration[4.2]
   def change
     create_table :hol_literatures do |t|
       t.integer :tnuid
@@ -20,7 +20,6 @@ class AddHolLitTable < ActiveRecord::Migration
       t.integer :literatures_id
       t.string :url
       t.string :page
-
     end
   end
 end

@@ -1,4 +1,4 @@
-class DropTaskReferences < ActiveRecord::Migration
+class DropTaskReferences < ActiveRecord::Migration[4.2]
   def up
     drop_table :task_references
   end

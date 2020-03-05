@@ -1,4 +1,4 @@
-class AddAutogenIndicators < ActiveRecord::Migration
+class AddAutogenIndicators < ActiveRecord::Migration[4.2]
   def change
     add_column :taxa, :auto_generated, :boolean, default: false
     add_column :names, :auto_generated, :boolean, default: false

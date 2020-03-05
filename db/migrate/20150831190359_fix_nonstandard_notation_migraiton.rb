@@ -1,4 +1,4 @@
-class FixNonstandardNotationMigraiton < ActiveRecord::Migration
+class FixNonstandardNotationMigraiton < ActiveRecord::Migration[4.2]
   execute "UPDATE taxa join names
     set taxa.type = substring(names.type, 1, length(names.type) - 4)
     where

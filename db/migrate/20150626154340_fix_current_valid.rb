@@ -1,4 +1,4 @@
-class FixCurrentValid < ActiveRecord::Migration
+class FixCurrentValid < ActiveRecord::Migration[4.2]
   def change
     execute "update taxa
     set taxa.current_valid_taxon_id = null where current_valid_taxon_id = id"

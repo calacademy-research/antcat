@@ -1,4 +1,4 @@
-class RenameNester < ActiveRecord::Migration
+class RenameNester < ActiveRecord::Migration[4.2]
   def up
     rename_column :references, :nester_id, :nesting_reference_id
     remove_column :references, :key_cache_no_commas

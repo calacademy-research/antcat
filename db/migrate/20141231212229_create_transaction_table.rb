@@ -1,4 +1,4 @@
-class CreateTransactionTable < ActiveRecord::Migration
+class CreateTransactionTable < ActiveRecord::Migration[4.2]
   def change
     create_table :transactions do |t|
       t.integer :paper_trail_version_id
