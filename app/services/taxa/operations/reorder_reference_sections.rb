@@ -1,8 +1,8 @@
-# TODO: Copy-pasted into `Taxa::Operations::ReorderReferenceSections`.
+# TODO: Copy-pasted from `Taxa::Operations::ReorderHistoryItems`.
 
 module Taxa
   module Operations
-    class ReorderHistoryItems
+    class ReorderReferenceSections
       include Service
 
       def initialize taxon, reordered_ids
@@ -11,41 +11,41 @@ module Taxa
       end
 
       def call
-        reorder_history_items reordered_ids
+        reorder_reference_sections reordered_ids
       end
 
       private
 
         attr_reader :taxon, :reordered_ids
 
-        delegate :history_items, :errors, to: :taxon
+        delegate :reference_sections, :errors, to: :taxon
 
-        def reorder_history_items reordered_ids
+        def reorder_reference_sections reordered_ids
           return false unless reordered_ids_valid? reordered_ids
 
           taxon.transaction do
             reordered_ids.each_with_index do |id, index|
-              history_item = TaxonHistoryItem.find(id)
-              history_item.update!(position: (index + 1))
+              reference_section = ReferenceSection.find(id)
+              reference_section.update!(position: (index + 1))
             end
           end
 
           true
         rescue ActiveRecord::RecordInvalid
-          errors.add :history_items, "History items are not valid, please fix them first"
+          errors.add :reference_sections, "Reference sections are not valid, please fix them first"
           false
         end
 
         def reordered_ids_valid? reordered_ids_strings
-          current_ids = history_items.pluck :id
+          current_ids = reference_sections.pluck(:id)
           reordered_ids = reordered_ids_strings.map(&:to_i)
 
           if current_ids == reordered_ids
-            errors.add :history_items, "History items are already ordered like this"
+            errors.add :reference_sections, "Reference sections are already ordered like this"
           end
 
           unless current_ids.sort == reordered_ids.sort
-            errors.add :history_items, <<-ERROR.squish
+            errors.add :reference_sections, <<-ERROR.squish
               Reordered IDs '#{reordered_ids}' doesn't match current IDs #{current_ids}.
             ERROR
           end

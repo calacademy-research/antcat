@@ -2,7 +2,7 @@
 -breadcrumb :edit_taxon, @taxon
 
 -content_for :head do
-  =javascript_include_tag 'controllers/taxa/reorder_history_items'
+  =javascript_include_tag 'controllers/taxa/reorder_history_items', 'controllers/taxa/reorder_reference_sections'
 
 =render 'form', taxon: @taxon, default_name_string: nil
 

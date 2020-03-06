@@ -1,3 +1,5 @@
+# TODO: Copy-pasted into `reorder_reference_sections.coffee`.
+
 # Global variables to make it easy to disable other form buttons
 # when interacting with a subform.
 

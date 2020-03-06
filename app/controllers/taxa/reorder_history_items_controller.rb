@@ -1,3 +1,5 @@
+# TODO: Copy-pasted into `Taxa::ReorderReferenceSectionsController`.
+
 module Taxa
   class ReorderHistoryItemsController < ApplicationController
     before_action :ensure_user_is_editor

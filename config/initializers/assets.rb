@@ -36,6 +36,7 @@ Rails.application.config.assets.precompile += %w[
   controllers/taxa/form/locality_autocompletion.js
   controllers/taxa/move_items/select_checkboxes.js
   controllers/taxa/reorder_history_items.js
+  controllers/taxa/reorder_reference_sections.js
 ]
 
 Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
