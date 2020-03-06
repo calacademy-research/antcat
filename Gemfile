@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.3'
+ruby '2.6.5'
 
 gem 'rails', '< 5.3'
 
@@ -7,6 +7,7 @@ gem 'citrus'
 gem 'coffee-rails'
 gem 'haml-rails'
 gem 'mysql2'
+gem 'puma'
 gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
@@ -58,9 +59,8 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
-  gem 'headless'
+  gem 'headless' # TODO: Remove unused.
   gem 'pry'
-  gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.80.0', require: false
@@ -71,10 +71,9 @@ group :development, :test do
 end
 
 group :test do
+  gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  # TODO: sourced to GitHub because `DEPRECATED: Capybara::Helpers::normalize_whitespace`.
-  gem 'capybara-webkit', git: 'https://github.com/thoughtbot/capybara-webkit.git', ref: '77fdac424'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'

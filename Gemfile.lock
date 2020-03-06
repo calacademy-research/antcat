@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/thoughtbot/capybara-webkit.git
-  revision: 77fdac424cd6fdb5aa266b229a888cc58da8e95e
-  ref: 77fdac424
-  specs:
-    capybara-webkit (1.15.1)
-      capybara (>= 2.3, < 4.0)
-      json
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -61,6 +52,9 @@ GEM
       activerecord (>= 3.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    apparition (0.5.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
     arel (9.0.0)
     ast (2.4.0)
     awesome_print (1.8.0)
@@ -452,6 +446,7 @@ PLATFORMS
 DEPENDENCIES
   actionview-component
   acts_as_list
+  apparition
   awesome_print
   aws-sdk (< 3.0)
   bootsnap
@@ -459,7 +454,6 @@ DEPENDENCIES
   bundler-audit
   capybara
   capybara-screenshot
-  capybara-webkit!
   citrus
   coffee-rails
   colorize
@@ -521,7 +515,7 @@ DEPENDENCIES
   workflow-activerecord
 
 RUBY VERSION
-   ruby 2.3.3p222
+   ruby 2.6.5p114
 
 BUNDLED WITH
-   1.16.2
+   1.17.3

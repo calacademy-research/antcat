@@ -41,6 +41,7 @@ Feature: Searching references
       | Hölldobler's Ants |
 
     When I click the first autocomplete suggestion
+    And WAIT
     Then the search box should contain "author:'Fisher, B.'"
 
   @search

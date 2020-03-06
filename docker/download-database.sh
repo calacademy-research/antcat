@@ -2,9 +2,7 @@
 echo "Starting download database inside docker..."
 cd /code
 
-grep -qxF "gem 'therubyracer'" Gemfile || echo "gem 'therubyracer'" >> Gemfile
-
-bundle install
+bundle install # TODO: Probably not required any longer.
 
 chmod 600 ./docker/id_rsa
 

@@ -1,3 +1,7 @@
+# Ignored for EngineYard
+# See https://support.cloud.engineyard.com/hc/en-us/articles/205404118-config-puma-rb-Overwrites-Engine-Yard-Configuration-Options-
+/config/puma.rb
+
 # Secrets.
 /config/secrets.yml
 /config/database.yml

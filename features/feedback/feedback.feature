@@ -16,21 +16,29 @@ Feature: Feedback
     When I close the feedback form
     Then I should not see the feedback form
 
+  # TODO: The "waits" are because this started to happen after switching driver to apparition:
+  # ```
+  # And the email field within the feedback form should contain "flint@antcat.org" # features/step_definitions/feedback_steps.rb:17
+  #   expected "flint@an" to include "flint@antcat.org" (RSpec::Expectations::ExpectationNotMetError)
+  # ```
+  # See https://github.com/teamcapybara/capybara/issues/1890
   Scenario: Remember entered values when toggling show/hide
     When I click the Feedback link
-      And I fill in "feedback_name" with "Captain Flint"
-      And I fill in "feedback_email" with "flint@antcat.org"
-      And I fill in "feedback_comment" with "Great site!!!"
-      And I fill in "feedback_page" with "catalog/123"
-      And I close the feedback form
-    # TODO: Opening the form again fails due to "Failed to click element ... because of overlapping element".
-    # It should include this step: `And I click the Feedback link`
-    # Test still works since the form is still in the DOM with the correct values.
+    And I fill in "feedback_name" with "Captain Flint"
+    And WAIT
+    And I fill in "feedback_email" with "flint@antcat.org"
+    And WAIT
+    And I fill in "feedback_comment" with "Great site!!!"
+    And I fill in "feedback_page" with "catalog/123"
+    And WAIT
+    And I close the feedback form
+
+    When I click the Feedback link
     Then I should see the feedback form
-      And the name field within the feedback form should contain "Captain Flint"
-      And the email field within the feedback form should contain "flint@antcat.org"
-      And the comment field within the feedback form should contain "Great site!!!"
-      And the page field within the feedback form should contain "catalog/123"
+    And the name field within the feedback form should contain "Captain Flint"
+    And the email field within the feedback form should contain "flint@antcat.org"
+    And the comment field within the feedback form should contain "Great site!!!"
+    And the page field within the feedback form should contain "catalog/123"
 
   Scenario: Nothing except a comment is required
     When I click the Feedback link
