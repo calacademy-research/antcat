@@ -23,8 +23,8 @@ module Taxa
 
           taxon.transaction do
             reordered_ids.each_with_index do |id, index|
-              item = TaxonHistoryItem.find(id)
-              item.update!(position: (index + 1))
+              history_item = TaxonHistoryItem.find(id)
+              history_item.update!(position: (index + 1))
             end
           end
 

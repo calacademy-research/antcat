@@ -4,6 +4,7 @@ module Taxa
     before_action :set_taxon
 
     def create
+      # NOTE: "taxon_history_item_ids" would be better, but `params[:taxon_history_item]` is what jQuery sends it as.
       if Taxa::Operations::ReorderHistoryItems[@taxon, params[:taxon_history_item]]
         @taxon.create_activity :reorder_taxon_history_items, current_user
         render json: { success: true }
