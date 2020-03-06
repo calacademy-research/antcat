@@ -119,6 +119,7 @@ Rails.application.routes.draw do
       resource :move_items, only: [:new, :show, :create]
       resource :set_subgenus, only: [:show, :create, :destroy]
       resource :reorder_history_items, only: [:create]
+      resource :reorder_reference_sections, only: [:create]
     end
   end
 

@@ -28,6 +28,7 @@ class Activity < ApplicationRecord
     reopen_feedback
     reopen_issue
     reorder_taxon_history_items
+    reorder_reference_sections
     replace_missing_reference
     restart_reviewing
     start_reviewing

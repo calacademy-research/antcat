@@ -1,3 +1,5 @@
+# TODO: Copy-pasted into `reorder_reference_sections.coffee`.
+
 # Global variables to make it easy to disable other form buttons
 # when interacting with a subform.
 
@@ -11,8 +13,8 @@ $ ->
   setupReorderButton()
 
 # These elements are from the view.
-SORTABLE =       ".history-items"
-SORTABLE_ITEM =  ".history-item"
+SORTABLE =      ".history-items"
+SORTABLE_ITEM = ".history-item"
 
 # Random class to check if the element already is sortable, because jQuery cannot reliably do it.
 IS_SORTABLE = "is-sortable-made-up-class"
