@@ -7,6 +7,7 @@ gem 'citrus'
 gem 'coffee-rails'
 gem 'haml-rails'
 gem 'mysql2'
+gem 'puma'
 gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
@@ -60,7 +61,6 @@ group :development, :test do
   gem 'guard-rubocop'
   gem 'headless' # TODO: Remove unused.
   gem 'pry'
-  gem 'puma'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.80.0', require: false
