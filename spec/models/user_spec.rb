@@ -16,7 +16,7 @@ describe User do
     describe "uniqueness validation" do
       subject { create :user }
 
-      it { is_expected.to validate_uniqueness_of :name }
+      it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
     end
   end
 

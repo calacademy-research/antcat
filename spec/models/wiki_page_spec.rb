@@ -9,6 +9,6 @@ describe WikiPage do
   describe "uniqueness validation" do
     subject { create :wiki_page }
 
-    it { is_expected.to validate_uniqueness_of :title }
+    it { is_expected.to validate_uniqueness_of(:title).ignoring_case_sensitivity }
   end
 end

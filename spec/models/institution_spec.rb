@@ -10,6 +10,6 @@ describe Institution do
   describe "uniqueness validation" do
     subject { create :institution }
 
-    it { is_expected.to validate_uniqueness_of :abbreviation }
+    it { is_expected.to validate_uniqueness_of(:abbreviation).ignoring_case_sensitivity }
   end
 end

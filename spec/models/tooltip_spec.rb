@@ -7,7 +7,7 @@ describe Tooltip do
     describe 'uniqueness' do
       before { create :tooltip }
 
-      it { is_expected.to validate_uniqueness_of :key }
+      it { is_expected.to validate_uniqueness_of(:key).ignoring_case_sensitivity }
     end
 
     it { is_expected.to validate_presence_of :key }
