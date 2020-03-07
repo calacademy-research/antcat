@@ -5,7 +5,6 @@ require:
 
 AllCops:
   Exclude:
-    - 'config.ru'
     - 'bin/**/*'
     - 'data/**/*'
     - 'db/migrate/{2013,2014,2015,2016,2017,2018}*.rb'
