@@ -150,14 +150,6 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#trackabe_type_to_human" do
-    let(:activity) { build_stubbed :activity, trackable_type: "BookReference" }
-
-    it "converts camelcase to spaced downcased" do
-      expect(activity.decorate.trackabe_type_to_human).to eq "book reference"
-    end
-  end
-
   describe "#action_to_verb" do
     it "past participle-ifies defined actions" do
       decorated = build_stubbed(:activity, action: "create").decorate

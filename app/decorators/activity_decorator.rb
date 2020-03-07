@@ -52,10 +52,6 @@ class ActivityDecorator < Draper::Decorator
     end
   end
 
-  def trackabe_type_to_human
-    activity.trackable_type.titleize.downcase
-  end
-
   # NOTE: Missing actions are upcased to make sure they are ugly.
   def action_to_verb
     {
