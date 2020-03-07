@@ -14,7 +14,7 @@ describe ActivityDecorator do
       let(:activity) { build_stubbed :activity, user: nil }
 
       it "handles nil / 'system' activities" do
-        expect(activity.decorate.link_user).to eq ""
+        expect(activity.decorate.link_user).to eq nil
       end
     end
   end

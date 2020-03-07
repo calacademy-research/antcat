@@ -1,4 +1,7 @@
 class ActivityDecorator < Draper::Decorator
+  # Don't show user who created other users' accounts.
+  HIDE_USER_FOR_TRACKABLE_TYPES = ['User']
+
   # Returns the partial's full path like this:
   # 1) The activity has no `#trackable_type` --> `actions/_<action>` (like the action "approve_all_references")
   # 2) There is a partial named `actions/_<action>.haml` --> use that
@@ -47,7 +50,7 @@ class ActivityDecorator < Draper::Decorator
     :parameters, :action, :edit_summary, :edit_summary?
 
   def link_user
-    return '' unless user
+    return if trackable_type.in?(HIDE_USER_FOR_TRACKABLE_TYPES) || user.nil?
     user.decorate.user_page_link
   end
 
