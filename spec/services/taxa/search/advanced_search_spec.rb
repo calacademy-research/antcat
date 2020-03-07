@@ -181,8 +181,9 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
-        create :species, protonym: create(:protonym, biogeographic_region: 'Australasia')
-        indomanayan_species = create :species, protonym: create(:protonym, biogeographic_region: 'Indomalaya')
+        create :species, protonym: create(:protonym, :species_group_name, biogeographic_region: 'Australasia')
+        indomanayan_species = create :species,
+          protonym: create(:protonym, :species_group_name, biogeographic_region: 'Indomalaya')
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: 'Indomalaya']).to eq [indomanayan_species]
@@ -191,11 +192,11 @@ describe Taxa::Search::AdvancedSearch do
     end
 
     describe "searching type fields" do
-      let!(:one) { create :species, protonym: create(:protonym, primary_type_information_taxt: 'one') }
-      let!(:two) { create :species, protonym: create(:protonym, secondary_type_information_taxt: 'one two') }
-      let!(:three) { create :species, protonym: create(:protonym, type_notes_taxt: 'one two three') }
+      let!(:one) { create :species, protonym: create(:protonym, :species_group_name, primary_type_information_taxt: 'one') }
+      let!(:two) { create :species, protonym: create(:protonym, :species_group_name, secondary_type_information_taxt: 'one two') }
+      let!(:three) { create :species, protonym: create(:protonym, :species_group_name, type_notes_taxt: 'one two three') }
 
-      before { create :species, protonym: create(:protonym, primary_type_information_taxt: 'unrelated') }
+      before { create :species, protonym: create(:protonym, :species_group_name, primary_type_information_taxt: 'unrelated') }
 
       it "returns taxa with type fields matching the query" do
         expect(described_class[type_information: 'one']).to match_array [one, two, three]
@@ -206,10 +207,10 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching for forms" do
       it "only returns taxa with those forms" do
-        protonym = create :protonym, authorship: create(:citation, forms: 'w.q.')
+        protonym = create :protonym, :species_group_name, authorship: create(:citation, forms: 'w.q.')
         atta = create :species, protonym: protonym
 
-        protonym = create :protonym, authorship: create(:citation, forms: 'q.')
+        protonym = create :protonym, :species_group_name, authorship: create(:citation, forms: 'q.')
         create :species, protonym: protonym
 
         expect(described_class[forms: 'w.']).to eq [atta]
