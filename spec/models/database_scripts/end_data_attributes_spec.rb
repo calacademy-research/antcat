@@ -4,10 +4,10 @@ describe DatabaseScripts::EndDataAttributes do
   subject(:end_data_attributes) { described_class.new(script_path) }
 
   context 'with a real script' do
-    let(:script_path) { DatabaseScripts::ExtantTaxaInFossilGenera.new.__send__(:script_path) }
+    let(:script_path) { "app/database_scripts/database_scripts/extant_taxa_in_fossil_genera.rb" }
 
     describe "#title" do
-      let(:script_path) { DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new.__send__(:script_path) }
+      let(:script_path) { "app/database_scripts/database_scripts/fossil_protonyms_with_non_fossil_taxa.rb" }
 
       specify { expect(end_data_attributes.title).to eq "Fossil protonyms with non-fossil taxa" }
     end
@@ -33,7 +33,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "#related_scripts" do
-      let(:script_path) { DatabaseScripts::ValidSubspeciesInInvalidSpecies.new.__send__(:script_path) }
+      let(:script_path) { "app/database_scripts/database_scripts/valid_subspecies_in_invalid_species.rb" }
 
       it "fetches the related scripts and excludes itself" do
         expect(end_data_attributes.related_scripts.size).to eq 1
