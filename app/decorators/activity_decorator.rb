@@ -1,7 +1,7 @@
 class ActivityDecorator < Draper::Decorator
   TEMPLATES_PATH = "activities/templates/"
 
-  delegate :user, :trackable_id, :trackable, :trackable_type,
+  delegate :user, :trackable, :trackable_id, :trackable_type,
     :parameters, :action, :edit_summary, :edit_summary?
 
   def link_user
@@ -24,9 +24,7 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def revision_history_link
-    url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id]
-    return unless url
-
+    return unless (url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id])
     helpers.link_to "History", url, class: "btn-normal btn-tiny"
   rescue ActionController::UrlGenerationError
     "<code>???</code>".html_safe
