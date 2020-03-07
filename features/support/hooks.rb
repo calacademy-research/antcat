@@ -9,10 +9,6 @@ Around("@papertrail") do |_scenario, block|
   PaperTrail.enabled = false
 end
 
-# Some drivers remember window size between tests, so always start and end with desktop.
-Before("@responsive") { resize_window_to_device :desktop }
-After("@responsive")  { resize_window_to_device :desktop }
-
 if ENV['PRINT_FEATURE_NAME']
   Around do |scenario, block|
     $stdout.puts scenario.location.to_s.green
