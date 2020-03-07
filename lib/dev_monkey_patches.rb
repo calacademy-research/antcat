@@ -1,4 +1,5 @@
-# Enabled in dev by default. Disable with `rails c NO_DEV_MONKEY_PATCHES=1`.
+# Enabled in the development environment by default. Disable with `NO_DEV_MONKEY_PATCHES=1 rails c`.
+# Enable in other environments with `DEV_MONKEY_PATCHES=1 rails c`.
 #
 # All extensions to `Object` are Poor Man's namespaced under the prefix "dd" or
 # "dev_dev". `Taxon` is extended with single-letter methods, but we do not have
@@ -24,13 +25,15 @@
 module DevMonkeyPatches
   def self.enable
     return if ENV["NO_DEV_MONKEY_PATCHES"]
-    raise "`DevMonkeyPatches` cannot be enabled in production" if ::Rails.env.production?
-    raise "use `DevMonkeyPatches.enable!` in test" if ::Rails.env.test?
+
+    $stdout.puts "`DevMonkeyPatches` was enabled in production!".red if ::Rails.env.production?
+    $stdout.puts "`DevMonkeyPatches` was enabled in test!".red if ::Rails.env.test?
+
     enable!
   end
 
   def self.enable!
-    DevMonkeyPatches.enabled_notice
+    DevMonkeyPatches.puts_enabled_notice
 
     Object.include InstanceMethods
 
@@ -39,7 +42,7 @@ module DevMonkeyPatches
     DevMonkeyPatches::AntCat.patch!
   end
 
-  def self.enabled_notice
+  def self.puts_enabled_notice
     $stdout.puts "Monkey patched `Object` and some Rails classes in `DevMonkeyPatches`.".yellow
     $stdout.puts "That's OK, ".green + "it's enabled in dev only by default. " +
       "See `lib/dev_monkey_patches.rb` for more info.".light_blue
