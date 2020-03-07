@@ -1,5 +1,5 @@
 -# Use "AntCat" for the landing page title, since it's prettier than "Formicidae".
--unless @is_formicidae_landing_page
+-unless @catalog_presenter.formicidae_landing_page?
   -@title = "#{@taxon.name_cache}"
 -breadcrumb @taxon
 
@@ -11,12 +11,17 @@
 .row
   .medium-9.columns
     #taxon_description
-      =render "catalog/_show/taxon_description", taxon: @taxon, is_formicidae_landing_page: @is_formicidae_landing_page
+      =render "catalog/_show/taxon_description", taxon: @taxon, catalog_presenter: @catalog_presenter
 
   .medium-3.columns
     -if current_user
       =render 'catalog/_show/editors_sidebar', taxon: @taxon, editors_taxon_view_object: @editors_taxon_view_object
-    =render 'catalog/_show/statistics', taxon: @taxon
+
+    -if @catalog_presenter.statistics
+      .callout
+        #statistics.small-margin-bottom
+          =@catalog_presenter.statistics
+          =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
 
     .callout#external-links
       =@taxon.decorate.link_to_antweb
@@ -25,4 +30,4 @@
       =@taxon.decorate.link_to_google_scholar
 
 -content_for :after_content do
-  =render "taxon_browser/container", taxon: @taxon, taxon_browser: @taxon_browser
+  =render "taxon_browser/container", taxon: @taxon, taxon_browser: @catalog_presenter.taxon_browser
