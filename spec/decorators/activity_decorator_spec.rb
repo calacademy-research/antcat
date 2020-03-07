@@ -162,42 +162,27 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#template_partial" do
-    context "when  there's no `trackable_type`" do
-      let(:activity) { build_stubbed :activity, trackable: nil, action: "approve_all_changes" }
-
-      it "returns the action" do
-        expect(activity.decorate.__send__(:template_partial)).
-          to eq "activities/templates/actions/approve_all_changes"
-      end
-    end
-
-    context "when there's a partial matching `action`" do
-      let(:activity) do
-        build_stubbed :activity, trackable: build_stubbed(:species), action: "elevate_subspecies_to_species"
-      end
-
-      it "returns the action" do
-        expect(activity.decorate.__send__(:template_partial)).
+  describe ActivityDecorator::ActivityTemplatePartial do
+    context "without a `trackable_type`" do
+      it "returns the template for the `action`" do
+        expect(described_class[action: 'elevate_subspecies_to_species', trackable_type: nil]).
           to eq "activities/templates/actions/elevate_subspecies_to_species"
       end
     end
 
-    context "when there's a partial matching `trackable_type`" do
-      let(:activity) { build_stubbed :activity }
-
-      it "returns that spaced and downcased" do
-        expect(activity.decorate.__send__(:template_partial)).
-          to eq "activities/templates/journal"
+    context "with a `trackable_type`" do
+      context "when there is a partial matching `trackable_type`" do
+        it "returns the template for the `trackable_type`" do
+          expect(described_class[action: nil, trackable_type: 'Journal']).
+            to eq "activities/templates/journal"
+        end
       end
-    end
 
-    context "when there's no partial matching `trackable_type`" do
-      let(:activity) { build_stubbed :activity, trackable: build_stubbed(:citation) }
-
-      it "returns the default template" do
-        expect(activity.decorate.__send__(:template_partial)).
-          to eq "activities/templates/default"
+      context "when there is no partial matching `trackable_type`" do
+        it "returns the default template" do
+          expect(described_class[action: nil, trackable_type: 'Pizza']).
+            to eq "activities/templates/default"
+        end
       end
     end
   end
