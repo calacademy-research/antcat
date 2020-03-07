@@ -15,6 +15,14 @@ RSpec.configure do |config|
   # TODO: Maybe add `config.render_views = true`.
   # config.profile_examples = 10 # Uncomment to show slow specs.
 
+  config.before(:each, :skip_ci) do |_example|
+    if ENV["TRAVIS"]
+      message = "spec disabled on Travis CI"
+      $stdout.puts message.red
+      skip message
+    end
+  end
+
   # Allows RSpec to persist some state between runs in order to support
   # the `--only-failures` and `--next-failure` CLI options.
   config.example_status_persistence_file_path = "spec/examples.txt"

@@ -8,7 +8,7 @@ describe AuthorName do
   describe "uniqueness validation" do
     subject { create :author_name }
 
-    it { is_expected.to validate_uniqueness_of :name }
+    it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
   end
 
   describe 'relations' do

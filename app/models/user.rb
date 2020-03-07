@@ -11,7 +11,7 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :restrict_with_error
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
-  validates :name, presence: true, uniqueness: true, format: { with: /\A[^<>]*\z/ }
+  validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ }
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }

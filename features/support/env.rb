@@ -44,7 +44,6 @@ ActionController::Base.allow_rescue = false
 DatabaseCleaner.strategy = :transaction
 
 WebMock.disable_net_connect! allow_localhost: true
-WebMock.stub_request :put, 'https://antcat.s3.amazonaws.com/1/21105.pdf'
 
 PaperTrail.enabled = false
 

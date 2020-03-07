@@ -11,28 +11,20 @@ class CatalogController < ApplicationController
 
   def index
     @taxon = Family.eager_load(:name, protonym: [:name, { authorship: :reference }]).first
-
-    # NOTE: Special case to avoid showing ~6 A4 pages of Formicidae references and use a different title.
-    @is_formicidae_landing_page = true
-
+    @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session, formicidae_landing_page: true)
     @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
-    setup_taxon_browser
 
     render 'show'
   end
 
   def show
+    @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session)
     @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
-    setup_taxon_browser
   end
 
   private
 
     def set_taxon
       @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
-    end
-
-    def setup_taxon_browser
-      @taxon_browser = TaxonBrowser::Browser.new @taxon, session[:show_invalid], params[:display]&.to_sym
     end
 end
