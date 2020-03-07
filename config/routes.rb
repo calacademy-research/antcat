@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   root to: 'catalog#index'
 
-  mount SwaggerUiEngine::Engine, at: "/api_docs"
+  mount GrapeSwaggerRails::Engine => '/api_docs'
 
   resources :authors, only: [:index, :show, :destroy] do
     scope module: :authors do

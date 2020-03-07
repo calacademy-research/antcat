@@ -12,21 +12,22 @@ gem 'rack'
 gem 'rack-cors', require: 'rack/cors'
 gem 'rake'
 gem 'request_store'
-gem 'sass-rails', '5.0.7' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
+gem 'sass-rails', '5.1.0'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
-gem 'actionview-component'
+gem 'actionview-component', '1.11.1'
 gem 'acts_as_list'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'bootsnap', require: false
 gem 'colorize'
 gem 'devise'
 gem 'diffy', require: false
-gem 'draper', '< 4'
-gem 'ey_config' # Required access service configurations through `EY::Config` on EngineYard.
+gem 'draper'
+gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
+gem 'grape-swagger-rails'
 gem 'gretel'
 gem 'high_voltage'
 gem 'invisible_captcha'
@@ -43,7 +44,6 @@ gem 'select2-rails'
 gem 'strip_attributes'
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
-gem 'swagger_ui_engine', '1.1.2' # Locked to avoid sassc-rails, see https://github.com/calacademy-research/antcat/pull/797
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'
@@ -59,11 +59,10 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
-  gem 'headless' # TODO: Remove unused.
   gem 'pry'
   gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.80.0', require: false
+  gem 'rubocop', '~> 0.80.1', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
