@@ -20,7 +20,7 @@ if ENV['PRINT_FEATURE_NAME']
   end
 end
 
-Before "@no_travis" do
+Before "@skip_ci" do
   if ENV["TRAVIS"]
     message = "scenario disabled on Travis CI"
     $stdout.puts message.red
