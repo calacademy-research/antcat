@@ -42,7 +42,7 @@ module DatabaseScripts
 
         return '<span class="hidden-sort">2</span>M' if type_taxt == Protonym::BY_MONOTYPY
         return '<span class="hidden-sort">3</span>OD' if type_taxt == Protonym::BY_ORIGINAL_DESIGNATION
-        return '<span class="hidden-sort">4</span>SD' if type_taxt =~ Protonym::BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF
+        return '<span class="hidden-sort">4</span>SD' if Protonym::BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF.match?(type_taxt)
 
         Detax[type_taxt]
       end

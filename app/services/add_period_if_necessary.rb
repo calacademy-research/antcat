@@ -7,7 +7,7 @@ class AddPeriodIfNecessary
 
   def call
     return "".html_safe if string.blank?
-    return string if string[-1..-1] =~ /[.!?]/
+    return string if /[.!?]/.match?(string[-1..-1])
     string + '.'
   end
 

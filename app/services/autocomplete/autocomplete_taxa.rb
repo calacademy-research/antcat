@@ -42,7 +42,7 @@ module Autocomplete
       end
 
       def exact_id_match
-        return unless search_query =~ /^\d{6} ?$/
+        return unless /^\d{6} ?$/.match?(search_query)
 
         match = Taxon.find_by(id: search_query)
         [match] if match

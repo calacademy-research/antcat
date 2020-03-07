@@ -42,7 +42,7 @@ class QuickAndDirtyFixesController < ApplicationController
         Protonym::BY_MONOTYPY
       elsif type_taxt.include?(Protonym::BY_ORIGINAL_DESIGNATION)
         Protonym::BY_ORIGINAL_DESIGNATION
-      elsif type_taxt =~ /, by subsequent designation of {ref \d+}: \d+.?/
+      elsif /, by subsequent designation of {ref \d+}: \d+.?/.match?(type_taxt)
         type_taxt[/, by subsequent designation of {ref \d+}: \d+.?/]
       end
     end

@@ -4,13 +4,11 @@ module DatabaseScripts
       unparsable_names = []
 
       Name.all.each do |name|
-        begin
-          parsed_name = Names::BuildNameFromString[name.name]
-          different = (name.name != parsed_name.name) || name.class != parsed_name.class
-          unparsable_names << [name, parsed_name] if different
-        rescue Names::BuildNameFromString::UnparsableName
-          unparsable_names << [name, nil]
-        end
+        parsed_name = Names::BuildNameFromString[name.name]
+        different = (name.name != parsed_name.name) || name.class != parsed_name.class
+        unparsable_names << [name, parsed_name] if different
+      rescue Names::BuildNameFromString::UnparsableName
+        unparsable_names << [name, nil]
       end
 
       unparsable_names
