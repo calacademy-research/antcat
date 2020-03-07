@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 ENV["RAILS_ENV"] ||= 'test'
 
