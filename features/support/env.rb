@@ -23,12 +23,6 @@ require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 
-RSpec.configure do |config|
-  config.expect_with :rspec do |expect_with_config|
-    expect_with_config.syntax = [:expect]
-  end
-end
-
 Capybara.register_driver :apparition do |app|
   Capybara::Apparition::Driver.new(app, js_errors: false)
 end

@@ -483,7 +483,6 @@ DEPENDENCIES
   rake
   redcarpet
   request_store
-  rspec-core
   rspec-rails
   rubocop (~> 0.80.1)
   rubocop-performance
