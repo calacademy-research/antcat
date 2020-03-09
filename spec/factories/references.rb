@@ -39,7 +39,7 @@ FactoryBot.define do
     end
 
     factory :unknown_reference, class: 'UnknownReference' do
-      citation { 'New York' }
+      sequence(:citation) { |n| "New York #{n}" }
     end
 
     factory :missing_reference, class: 'MissingReference' do

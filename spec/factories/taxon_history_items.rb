@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :taxon_history_item do
-    taxt { 'history item content' }
+    sequence(:taxt) { |n| "history item content #{n}" }
     association :taxon, factory: :family
   end
 end
