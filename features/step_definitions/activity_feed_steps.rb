@@ -11,10 +11,6 @@ Then("I should see {int} item(s) in the activity feed") do |expected_count|
   expect(feed_items_count).to eq expected_count.to_i
 end
 
-When("I hover the first activity item") do
-  find("table.activities > tbody > tr:first-of-type .activity-link-wrapper").hover
-end
-
 Then("I should see the edit summary {string}") do |content|
   within "table.activities" do
     step %(I should see "#{content}")

@@ -24,8 +24,6 @@ Feature: Activity feed
     Then I should see "Not automated"
     And I should see "Automated edit"
 
-  # NOTE: JavaScript is required for "I hover the first activity item".
-  @javascript
   Scenario: Pagination with quirks
     Given I log in as a superadmin
     And activities are paginated with 2 per page
@@ -40,22 +38,18 @@ Feature: Activity feed
 
     # Deleting an activity items = return to the same page.
     When I follow "2"
-    And I hover the first activity item
-    And I follow "Delete"
+    And I follow the first "Delete"
     Then I should see "was successfully deleted"
     And the query string should contain "page=2"
 
     # Following an activity item link = the ID param doesn't stick around.
     And the query string should not contain "id="
-    And I hover the first activity item
-    And I follow "Link"
+    And I follow the first "Link"
     Then the query string should contain "id="
 
     # Restore for future tests.
     Given activities are paginated with 30 per page
 
-  # NOTE: JavaScript is required for "I hover the first activity item".
-  @javascript
   Scenario: Pagination with filtering quirks
     Given activities are paginated with 2 per page
     And there is an automated activity with the edit summary "[1] fix URL by script"
@@ -77,8 +71,7 @@ Feature: Activity feed
     And I should see "[4] updated pagination"
     And I should see "[3] updated pagination"
 
-    When I hover the first activity item
-    And I follow "Link"
+    When I follow the first "Link"
     Then I should see 2 item in the activity feed
     And I should see "[4] updated pagination"
     And I should see "[3] updated pagination"

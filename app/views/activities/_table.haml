@@ -25,7 +25,7 @@
               =link_to 'uuid', versions_path(request_uuid: activity.request_uuid), class: "btn-normal btn-tiny"
           %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
-            %span.show-on-hover
+            %span.show-on-hover.show-in-test-test-hook
               =link_to 'Link', decorated.anchor_path, class: 'btn-normal btn-very-tiny'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_superadmin? && show_delete_button
