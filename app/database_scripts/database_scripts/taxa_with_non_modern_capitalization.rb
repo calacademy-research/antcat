@@ -6,16 +6,11 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :suggested_name, :already_existing_taxa
+        t.header :taxon, :status
         t.rows do |taxon|
-          suggested_name = Names::BuildNameFromString[taxon.name_cache.downcase.capitalize]
-          existing_taxa = Taxon.where("BINARY name_cache = ?", suggested_name.name)
-
           [
             markdown_taxon_link(taxon),
-            taxon.status,
-            suggested_name.name_html,
-            taxa_list(existing_taxa)
+            taxon.status
           ]
         end
       end
@@ -32,4 +27,4 @@ tags: [regression-test]
 issue_description: The name of this taxon contains non-modern capitalization.
 
 description: >
-  Names can be updated to the suggested name by script (see %github831).
+  See %github831.
