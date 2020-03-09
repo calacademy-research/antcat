@@ -13,7 +13,7 @@ Feature: Deleting a taxon
     Then I should see "Taxon was successfully deleted."
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the subfamily Antcatinae" within the feed
+    Then I should see "Archibald deleted the subfamily Antcatinae" within the activity feed
 
   Scenario: If taxon has only references from others taxt, still show the Delete button, but don't let them delete
     Given there is a genus "Atta"

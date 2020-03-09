@@ -29,4 +29,4 @@
               =link_to 'Link', decorated.anchor_path, class: 'btn-normal btn-very-tiny'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_superadmin? && show_delete_button
-                =link_to append_superadmin_icon("Delete"), activity_path(activity, page: (params[:page] || page)), method: :delete, data: { confirm: "Delete? Note that this is for deleting feed items that should't had been created in the first place (ie debugging). If someone edits a taxon and then reverts the change, the feed should still display both actions." }, class: "btn-warning btn-very-tiny"
+                =link_to append_superadmin_icon("Delete"), activity_path(activity, page: (params[:page] || page)), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"

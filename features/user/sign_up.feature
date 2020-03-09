@@ -11,4 +11,4 @@ Feature: Signing up
     And I should see "Welcome! You have signed up successfully."
 
     When I go to the activity feed
-    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!" within the feed
+    Then I should see "Quintus Batiatus registered an account, welcome to antcat.org!" within the activity feed

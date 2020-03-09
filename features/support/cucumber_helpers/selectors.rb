@@ -61,7 +61,7 @@ module CucumberHelpers
         '.history-items .history-item a.taxt-editor-delete-button'
 
       # Editor's Panel.
-      when 'the feed'
+      when 'the activity feed'
         'table.activities'
 
       when 'the left side of the diff'

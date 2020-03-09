@@ -6,7 +6,7 @@ Given("there is an automated activity with the edit summary {string}") do |edit_
   create :activity, :execute_script, edit_summary: edit_summary, automated_edit: true
 end
 
-Then("I should see {int} item(s) in the feed") do |expected_count|
+Then("I should see {int} item(s) in the activity feed") do |expected_count|
   feed_items_count = all("table.activities > tbody tr").size
   expect(feed_items_count).to eq expected_count.to_i
 end

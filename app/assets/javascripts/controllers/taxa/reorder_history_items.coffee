@@ -79,8 +79,8 @@ saveNewOrder = ->
       disableReordering()
     error: (error) ->
       # TODO: Create modal for this and other errors.
-      pleaseSee = "Please check the feed and see if there is a 'User reordered the history
-        items...' and let us know via the Feedback link or create an issue on GitHub."
+      pleaseSee = "Please check the activity feed and see if there is a 'User reordered the history
+        items...' and let us know via the 'Suggest edit' link or create an issue on GitHub."
 
       alert """Sorry, something went wrong.
 

@@ -61,7 +61,7 @@ Feature: Feedback
     Then I should see "[no name] <[no email];"
 
     When I go to the activity feed
-    Then I should see "An unregistered user added the feedback item #" within the feed
+    Then I should see "An unregistered user added the feedback item #" within the activity feed
 
   Scenario: Registered user submitting feedback (with feed)
     Given I log in as a catalog editor named "Archibald"
@@ -75,7 +75,7 @@ Feature: Feedback
     Then I should see "Archibald submitted"
 
     When I go to the activity feed
-    Then I should see "Archibald added the feedback item #" within the feed
+    Then I should see "Archibald added the feedback item #" within the activity feed
 
   Scenario: Page field defaults to the current URL
     Given there is a genus "Calyptites"

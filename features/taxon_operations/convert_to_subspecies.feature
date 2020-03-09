@@ -18,7 +18,7 @@ Feature: Converting a species to a subspecies
     And "Camponotus alii dallatorei" should be of the rank of "subspecies"
 
     When I go to the activity feed
-    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" within the feed
+    Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" within the activity feed
 
   @javascript
   Scenario: Converting a species to a subspecies when it already exists

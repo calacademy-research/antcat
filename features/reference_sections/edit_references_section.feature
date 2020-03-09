@@ -16,7 +16,7 @@ Feature: Editing references sections
     Then the reference section should be "New reference"
 
     When I go to the activity feed
-    Then I should see "Archibald added the reference section #" within the feed
+    Then I should see "Archibald added the reference section #" within the activity feed
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
@@ -35,7 +35,7 @@ Feature: Editing references sections
     And the reference section should be "(none)"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the reference section #" within the feed
+    Then I should see "Archibald edited the reference section #" within the activity feed
     And I should see "belonging to Dolichoderinae"
     Then I should see the edit summary "fix typo"
 
@@ -73,5 +73,5 @@ Feature: Editing references sections
     Then the reference section should be empty
 
     When I go to the activity feed
-    Then I should see "Archibald deleted the reference section #" within the feed
+    Then I should see "Archibald deleted the reference section #" within the activity feed
     And I should see "belonging to Dolichoderinae"

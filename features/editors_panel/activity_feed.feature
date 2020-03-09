@@ -4,12 +4,12 @@ Feature: Activity feed
     And there is a "update" journal activity by "Batiatus"
 
     When I go to the activity feed
-    Then I should see 2 items in the feed
+    Then I should see 2 items in the activity feed
 
     When I select "Destroy" from "activity_action"
     And I press "Filter"
-    Then I should see 1 items in the feed
-    And I should see "Batiatus deleted the journal" within the feed
+    Then I should see 1 items in the activity feed
+    And I should see "Batiatus deleted the journal" within the activity feed
 
   Scenario: Showing/hiding automated edits
     Given there is an activity with the edit summary "Not automated"
@@ -33,7 +33,7 @@ Feature: Activity feed
 
     # Using pagination as usual.
     When I go to the activity feed
-    Then I should see 2 item in the feed
+    Then I should see 2 item in the activity feed
     And the query string should not contain "page="
     When I follow "3"
     Then the query string should contain "page=3"
@@ -68,18 +68,18 @@ Feature: Activity feed
     And there is an automated activity with the edit summary "[8] fix URL by script"
 
     When I go to the activity feed
-    Then I should see 2 item in the feed
+    Then I should see 2 item in the activity feed
     And I should see "[6] updated pagination"
     And I should see "[5] updated pagination"
 
     When I follow "2"
-    Then I should see 2 item in the feed
+    Then I should see 2 item in the activity feed
     And I should see "[4] updated pagination"
     And I should see "[3] updated pagination"
 
     When I hover the first activity item
     And I follow "Link"
-    Then I should see 2 item in the feed
+    Then I should see 2 item in the activity feed
     And I should see "[4] updated pagination"
     And I should see "[3] updated pagination"
 

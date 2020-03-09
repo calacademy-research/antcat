@@ -17,7 +17,7 @@ Feature: Manage subgenera
     Then I should see "Camponotus (Myrmentoma)" within the breadcrumbs
 
     When I go to the activity feed
-    Then I should see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)" within the feed
+    Then I should see "Archibald set the subgenus of Camponotus cornis to Camponotus (Myrmentoma)" within the activity feed
 
     When I go to the catalog page for "Camponotus cornis"
     And I follow "Set subgenus" within the breadcrumbs
@@ -28,4 +28,4 @@ Feature: Manage subgenera
     Then I should not see "Camponotus (Myrmentoma)" within the breadcrumbs
 
     When I go to the activity feed
-    Then I should see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))" within the feed
+    Then I should see "Archibald removed the subgenus from Camponotus cornis (subgenus was Camponotus (Myrmentoma))" within the activity feed
