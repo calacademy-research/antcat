@@ -421,8 +421,6 @@ describe Exporters::Antweb::ExportTaxon do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
       let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
-      let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
-      let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
 
       context 'when taxon is a subfamily' do
         it "doesn't punt on a subfamily's family" do
@@ -458,6 +456,7 @@ describe Exporters::Antweb::ExportTaxon do
 
       context 'when taxon is a species' do
         context 'when species has a subgenus' do
+          let(:subgenus) { create :subgenus, genus: genus }
           let(:taxon) { create :species, genus: genus, subgenus: subgenus }
 
           it "skips subgenus and returns the genus" do
@@ -467,6 +466,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       context 'when taxon is a subspecies' do
+        let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
         let(:taxon) { create :subspecies, species: species }
 
         it "handles a taxon's species" do
