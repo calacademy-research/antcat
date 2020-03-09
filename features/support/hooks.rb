@@ -9,6 +9,11 @@ Around("@papertrail") do |_scenario, block|
   PaperTrail.enabled = false
 end
 
+# Make sure PaperTrail is not enabled.
+After("not @papertrail") do
+  $stdout.puts "PaperTrail is enabled but should not be".red if PaperTrail.enabled?
+end
+
 if ENV['PRINT_FEATURE_NAME']
   Around do |scenario, block|
     $stdout.puts scenario.location.to_s.green
