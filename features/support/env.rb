@@ -17,7 +17,7 @@ require 'factory_bot'
 require 'capybara/apparition'
 require 'cucumber/rails'
 require 'cucumber/formatter/progress'
-require 'cucumber/rspec/doubles'
+require 'cucumber/rspec/doubles' # For `stub` and `stub_const`.
 
 require 'capybara-screenshot/cucumber'
 require 'webmock/cucumber'
@@ -37,19 +37,14 @@ Capybara.javascript_driver = :apparition
 Capybara.default_max_wait_time = 5
 Capybara.default_selector = :css
 Capybara.save_path = './tmp/capybara'
+Capybara.app = Rack::ShowExceptions.new AntCat::Application
 Capybara::Screenshot.prune_strategy = :keep_last_run
 
 ActionController::Base.allow_rescue = false
-
 DatabaseCleaner.strategy = :transaction
-
-WebMock.disable_net_connect! allow_localhost: true
-
-PaperTrail.enabled = false
-
-Capybara.app = Rack::ShowExceptions.new AntCat::Application
-
 InvisibleCaptcha.timestamp_enabled = false
+PaperTrail.enabled = false
+WebMock.disable_net_connect!(allow_localhost: true)
 
 # Warden is what Devise uses for authorization.
 World Warden::Test::Helpers
