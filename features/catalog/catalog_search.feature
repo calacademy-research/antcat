@@ -23,7 +23,9 @@ Feature: Searching the catalog
     And I should see "You were redirected to an exact match"
     And I should see "Show more results"
 
-  @javascript
+  # TODO: Reset driver because it randomly fails without it.
+  # Using "WAIT"s or `fill_options: { delay: 0.1 }` did not help (https://github.com/twalpole/apparition/issues/17)
+  @javascript @reset_driver
   Scenario: Search using autocomplete
     Given there is a species "Lasius flavus"
 
