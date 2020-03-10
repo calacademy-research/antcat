@@ -59,7 +59,11 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'pry'
-  gem 'rspec-rails'
+  # TODO: Using '4.0.0.beta4' to get rid of
+  #   DEPRECATION WARNING: formats is deprecated and will be removed from Rails 6.1
+  #   DEPRECATION WARNING: ActionView::Template#initialize requires a locals parameter
+  # which broke the test suite.
+  gem 'rspec-rails', '4.0.0.beta4'
   gem 'rubocop', '~> 0.80.1', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
