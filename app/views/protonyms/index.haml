@@ -1,7 +1,7 @@
 -@title = "Protonyms"
 -breadcrumb :protonyms
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "Hide/show search", "#", data: { show_hide_toggler_for: "search-form" }, class: "btn-nodanger"
   -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
     =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"

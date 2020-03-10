@@ -1,7 +1,7 @@
 -@title = "Issue ##{@issue.id}: #{@issue.title}"
 -breadcrumb :issue, @issue
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "History", issue_history_path(@issue), class: "btn-normal"
   -if current_user
     -if @issue.open?

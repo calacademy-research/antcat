@@ -1,7 +1,7 @@
 -@title = "#{@wiki_page.title} - Wiki Page"
 -breadcrumb :wiki_page, @wiki_page
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "History", wiki_page_history_path(@wiki_page), class: "btn-normal"
   -if current_user
     =link_to("Edit", edit_wiki_page_path(@wiki_page), class: "btn-normal")

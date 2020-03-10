@@ -1,7 +1,7 @@
 -@title = "Institution #{@institution.abbreviation}: #{@institution.name}"
 -breadcrumb :institution, @institution
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "History", institution_history_path(@institution), class: "btn-normal"
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_institution_path(@institution), class: 'btn-normal'

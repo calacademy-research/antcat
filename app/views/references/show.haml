@@ -8,7 +8,7 @@
 -if current_user
   =enable_tooltips
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
       =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"

@@ -1,7 +1,7 @@
 -content_for :head do
   =javascript_include_tag "markdown_and_friends"
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "Hide/show markdown formatting help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
 .row{data: { show_hide_toggable_id: "help" }}

@@ -3,7 +3,7 @@
 
 =enable_tooltips
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   -if user_is_editor?
     =link_to "Edit", edit_name_path(@name), class: "btn-normal"
   =link_to "History", name_history_path(@name), class: "btn-normal"

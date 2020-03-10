@@ -1,7 +1,7 @@
 -@title = "Reference Section ##{@reference_section.id}"
 -breadcrumb :reference_section, @reference_section
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
     =link_to "Edit", edit_reference_section_path(@reference_section), class: "btn-normal"
   =link_to "History", reference_section_history_path(@reference_section), class: "btn-normal"

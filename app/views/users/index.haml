@@ -2,7 +2,7 @@
 -breadcrumb :users
 
 -if user_is_superadmin?
-  =content_for :breadcrumbs_right do
+  -content_for :breadcrumbs_right do
     =link_to append_superadmin_icon("New"), new_user_path, class: "btn-normal"
 
 %table.stack

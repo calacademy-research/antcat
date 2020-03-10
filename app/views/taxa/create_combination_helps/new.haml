@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "taxon_select"
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
 =form_tag taxa_create_combination_help_path, method: :get do
