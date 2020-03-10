@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '< 5.3'
+gem 'rails', '6.0.2.1'
 
 gem 'citrus'
 gem 'coffee-rails'
