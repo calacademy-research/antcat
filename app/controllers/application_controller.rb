@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_action :save_location
+  before_action :store_location_for_devise!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
@@ -39,10 +39,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Save location to redirect back to after signing in.
-    def save_location
-      return if request.xhr? || request.url =~ %r{/users/}
-      session[:user_return_to] = request.url
+    def storable_location?
+      request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
+    end
+
+    # See https://github.com/heartcombo/devise/wiki/How-To:-Redirect-back-to-current-page-after-sign-in,-sign-out,-sign-up,-update
+    def store_location_for_devise!
+      store_location_for(:user, request.fullpath)
     end
 
     def cors_set_access_control_headers
