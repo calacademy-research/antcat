@@ -19,7 +19,7 @@ module Taxa
 
       def build_taxon
         taxon = taxon_class.new
-        taxon.build_name
+        taxon.name = taxon.name_class.new
         taxon.build_protonym
         taxon.protonym.build_name
         taxon.protonym.build_authorship
