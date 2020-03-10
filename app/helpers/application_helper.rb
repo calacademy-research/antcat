@@ -43,11 +43,6 @@ module ApplicationHelper
     "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
   end
 
-  # Used when more than one button can trigger the spinner.
-  def shared_spinner_icon
-    "<span class='shared-spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
-  end
-
   def foundation_class_for flash_type
     case flash_type.to_sym
     when :notice then "primary"

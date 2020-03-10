@@ -46,12 +46,6 @@
         %li=link_to 'Database scripts', database_scripts_path
         %li=link_to "List of users", users_path
         %li=link_to 'Invite people to AntCat', invite_users_path
-        %li
-          =external_link_to 'New Relic', "https://rpm.newrelic.com/accounts/897394/applications"
-          (analytics, account required)
-        %li
-          =external_link_to 'Google Analytics', "http://analytics.google.com/analytics/web/"
-          (account required)
 
 .row.margin-top
   .large-12.columns
@@ -68,9 +62,19 @@
     %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
     =render "activities/table", activities: @recent_unconfirmed_activities
 
--if Rails.env.development?
-  .row.margin-top
-    .medium-12.columns
-      %h5 dev-only links
-      %ul
-        %li=link_to "Toggle dev CSS", widget_tests_toggle_dev_css_path
+.row.margin-top
+  .medium-12.columns
+    %h5 External links
+    %ul
+      -if Rails.env.development?
+        %li
+          =link_to "Toggle dev CSS", widget_tests_toggle_dev_css_path
+          (dev-only link)
+      %li
+        =external_link_to 'New Relic', "https://rpm.newrelic.com/accounts/897394/applications"
+        (analytics, account required)
+      %li
+        =external_link_to 'Google Analytics', "http://analytics.google.com/analytics/web/"
+        (account required)
+      %li
+        =external_link_to 'AntWeb import log', "https://www.antweb.org/query.do?name=worldantsUploads"

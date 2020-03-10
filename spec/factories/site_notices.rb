@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :site_notice do
-    title { "Site notice title" }
-    message { "Site notice message" }
+    sequence(:title) { |n| "Site notice title #{n}" }
+    sequence(:message) { |n| "Site notice message #{n}" }
     association :user, factory: :user
   end
 end

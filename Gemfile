@@ -59,7 +59,6 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'pry'
-  gem 'rspec-core' # Required for configuring RSpec from `env.rb`.
   gem 'rspec-rails'
   gem 'rubocop', '~> 0.80.1', require: false
   gem 'rubocop-performance'

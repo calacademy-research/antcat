@@ -15,4 +15,4 @@ Feature: Create obsolete combination
     And the "genus" of "Pyramica ravidura" should be "Pyramica"
 
     When I go to the activity feed
-    Then I should see "Archibald created the obsolete combination Pyramica ravidura" within the feed
+    Then I should see "Archibald created the obsolete combination Pyramica ravidura" within the activity feed

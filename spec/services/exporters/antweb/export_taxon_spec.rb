@@ -421,36 +421,57 @@ describe Exporters::Antweb::ExportTaxon do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
       let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
-      let(:subgenus) { create :subgenus, genus: genus, tribe: tribe, subfamily: subfamily }
-      let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
 
-      it "doesn't punt on a subfamily's family" do
-        expect(described_class[subfamily][23]).to eq 'Formicidae'
+      context 'when taxon is a subfamily' do
+        it "doesn't punt on a subfamily's family" do
+          expect(described_class[subfamily][23]).to eq 'Formicidae'
+        end
       end
 
-      it "handles a taxon's subfamily" do
-        taxon = create :tribe, subfamily: subfamily
-        expect(described_class[taxon][23]).to eq subfamily.name_cache
+      context 'when taxon is a tribe' do
+        let(:taxon) { create :tribe, subfamily: subfamily }
+
+        it "returns the subfamily" do
+          expect(described_class[taxon][23]).to eq subfamily.name_cache
+        end
       end
 
-      it "doesn't skip over tribe and return the subfamily" do
-        taxon = create :genus, tribe: tribe
-        expect(described_class[taxon][23]).to eq tribe.name_cache
+      context 'when taxon is a genus' do
+        context 'when genus has a tribe' do
+          let(:taxon) { create :genus, tribe: tribe }
+
+          it "returns the tribe" do
+            expect(described_class[taxon][23]).to eq tribe.name_cache
+          end
+        end
+
+        context 'when genus has no tribe' do
+          let(:taxon) { create :genus, subfamily: subfamily, tribe: nil }
+
+          it "returns the subfamily" do
+            expect(described_class[taxon][23]).to eq subfamily.name_cache
+          end
+        end
       end
 
-      it "returns the subfamily only if there's no tribe" do
-        taxon = create :genus, subfamily: subfamily, tribe: nil
-        expect(described_class[taxon][23]).to eq subfamily.name_cache
+      context 'when taxon is a species' do
+        context 'when species has a subgenus' do
+          let(:subgenus) { create :subgenus, genus: genus }
+          let(:taxon) { create :species, genus: genus, subgenus: subgenus }
+
+          it "skips subgenus and returns the genus" do
+            expect(described_class[taxon][23]).to eq genus.name_cache
+          end
+        end
       end
 
-      it "skips over subgenus parents" do
-        taxon = create :species, genus: genus, subgenus: subgenus
-        expect(described_class[taxon][23]).to eq genus.name_cache
-      end
+      context 'when taxon is a subspecies' do
+        let(:species) { create :species, name_string: 'Atta betta', genus: genus, subfamily: subfamily }
+        let(:taxon) { create :subspecies, species: species }
 
-      it "handles a taxon's species" do
-        taxon = create :subspecies, species: species
-        expect(described_class[taxon][23]).to eq 'Atta betta'
+        it "handles a taxon's species" do
+          expect(described_class[taxon][23]).to eq 'Atta betta'
+        end
       end
 
       context 'when taxon is a synonym' do

@@ -8,8 +8,7 @@ module Autocomplete
 
     def call
       Publisher.
-        where("CONCAT(COALESCE(publishers.place_name, ''), ':', publishers.name) LIKE ?", search_expression).
-        map(&:display_name)
+        where("CONCAT(COALESCE(publishers.place_name, ''), ':', publishers.name) LIKE ?", search_expression)
     end
 
     private

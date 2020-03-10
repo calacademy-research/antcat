@@ -21,7 +21,7 @@ Feature: Browse
 
     When I go to the user page for "Batiatus"
     Then I should see "Batiatus's most recent activity"
-    And I should see "Batiatus deleted the journal" within the feed
+    And I should see "Batiatus deleted the journal" within the activity feed
 
   Scenario: See user's most recent comments
     Given Batiatus has commented "Cool" on an issue with the title "Typos"

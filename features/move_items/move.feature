@@ -29,4 +29,4 @@ Feature: Move items
     And I should see "Best ant in the world"
 
     When I go to the activity feed
-    Then I should see "Archibald moved items belonging to Lasius to Formica" within the feed
+    Then I should see "Archibald moved items belonging to Lasius to Formica" within the activity feed

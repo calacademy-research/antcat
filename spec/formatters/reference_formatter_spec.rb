@@ -71,7 +71,8 @@ describe ReferenceFormatter do
     let(:author_name) { create :author_name, name: "Forel, A." }
     let(:reference) do
       create :book_reference, author_names: [author_name],
-        citation_year: "1874", title: '*Ants* <i>and such</i>', pagination: "22 pp."
+        citation_year: "1874", title: '*Ants* <i>and such</i>', pagination: "22 pp.",
+        publisher: create(:publisher, name: 'Wiley', place_name: 'San Francisco')
     end
 
     describe "#plain_text" do

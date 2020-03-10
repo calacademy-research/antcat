@@ -22,7 +22,7 @@ Feature: Manage names
     And I should see "Name record: Lasius"
 
     When I go to the activity feed
-    Then I should see "Archibald edited the name Lasius" within the feed
+    Then I should see "Archibald edited the name Lasius" within the activity feed
     And I should see the edit summary "fix name"
 
   @javascript
