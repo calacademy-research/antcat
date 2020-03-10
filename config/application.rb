@@ -21,6 +21,14 @@ module AntCat
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # TODO: See if we can fine-tune this.
+    config.middleware.insert_before(0, Rack::Cors) do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: [:get, :post, :options]
+      end
+    end
+
     config.active_record.belongs_to_required_by_default = false # TODO: See if we can change this.
     config.action_view.form_with_generates_remote_forms = false
 
