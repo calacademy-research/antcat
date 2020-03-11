@@ -1,14 +1,11 @@
 require 'rails_helper'
 
-describe Authors::FindOrCreateNamesFromString do
+describe Authors::FindOrInitializeNamesFromString do
   describe "#call" do
     describe 're-using and creating names' do
       let!(:bolton) { AuthorName.create!(name: 'Bolton, B.', author: Author.create!) }
 
-      it "finds or creates authors with names in the string" do
-        expect { described_class['Ward, P.S.; Bolton, B.'] }.
-          to change { AuthorName.count }.by(1)
-
+      it "finds or initializes authors with names in the string" do
         author_names = described_class['Ward, P.S.; Bolton, B.']
         expect(author_names.map(&:name)).to eq ['Ward, P.S.', 'Bolton, B.']
         expect(author_names.second.author).to eq bolton.author

@@ -1,11 +1,11 @@
-# NOTE: This service mutates `params`, but that's OK for now.
-
 class ReferenceForm
-  def initialize reference, reference_params, original_params, request_host
+  POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
+
+  def initialize reference, params, request_host, ignore_duplicates: false
     @reference = reference
-    @params = reference_params
-    @original_params = original_params
+    @params = params
     @request_host = request_host
+    @ignore_duplicates = ignore_duplicates
   end
 
   def save
@@ -14,12 +14,11 @@ class ReferenceForm
 
   private
 
-    attr_reader :reference, :params, :original_params, :request_host
+    attr_reader :reference, :params, :request_host, :ignore_duplicates
 
     def save_reference
       Reference.transaction do
         clear_document_params_if_necessary
-        set_pagination
         parse_author_names_string
         set_journal if reference.is_a? ::ArticleReference
         set_publisher if reference.is_a? ::BookReference
@@ -31,9 +30,8 @@ class ReferenceForm
         # before validating, so we need to manually raise here.
         raise ActiveRecord::Rollback if reference.errors.present?
 
-        if original_params[:ignore_possible_duplicate].blank?
+        unless ignore_duplicates
           if check_for_duplicates!
-            original_params[:ignore_possible_duplicate] = "yes"
             raise ActiveRecord::Rollback
           end
         end
@@ -47,14 +45,6 @@ class ReferenceForm
       false
     end
 
-    def set_pagination
-      params[:pagination] =
-        case reference
-        when ArticleReference then original_params[:article_pagination]
-        when BookReference    then original_params[:book_pagination]
-        end
-    end
-
     def set_document_host
       return unless reference.document
       reference.document.host = request_host
@@ -64,7 +54,7 @@ class ReferenceForm
       string = params.delete(:author_names_string)
       return if string.strip == reference.author_names_string
 
-      author_names = Authors::FindOrCreateNamesFromString[string.dup]
+      author_names = Authors::FindOrInitializeNamesFromString[string.dup]
 
       if author_names.empty? && string.present?
         reference.errors.add :author_names_string, "couldn't be parsed."
@@ -72,7 +62,6 @@ class ReferenceForm
         raise ActiveRecord::RecordInvalid, reference
       end
 
-      reference.author_names.clear
       params[:author_names] = author_names
     end
 
@@ -114,7 +103,7 @@ class ReferenceForm
       return if duplicates.blank?
 
       duplicate = Reference.find(duplicates.first[:match].id)
-      reference.errors.add :base, <<~MSG.html_safe
+      reference.errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
         To save, click "Save".
       MSG

@@ -51,7 +51,7 @@ class ReferenceFormatter
       when BookReference
         "#{reference.publisher.display_name}, #{reference.pagination}"
       when NestedReference
-        "#{reference.pages_in} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
+        "#{reference.pagination} #{sanitize ReferenceFormatter.new(reference.nesting_reference).expanded_reference}"
       when MissingReference, UnknownReference
         reference.citation
       else
@@ -96,7 +96,7 @@ class ReferenceFormatter
     def format_plain_text_citation
       case reference
       when NestedReference
-        sanitize "#{reference.pages_in} #{ReferenceFormatter.new(reference.nesting_reference).plain_text}"
+        sanitize "#{reference.pagination} #{ReferenceFormatter.new(reference.nesting_reference).plain_text}"
       else
         Unitalicize[format_italics(sanitize(format_citation))]
       end

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe NestedReference do
   it { is_expected.to validate_presence_of :year }
-  it { is_expected.to validate_presence_of :pages_in }
+  it { is_expected.to validate_presence_of :pagination }
   it { is_expected.to validate_presence_of(:nesting_reference).with_message("does not exist") }
 
   describe "validations" do

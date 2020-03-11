@@ -44,7 +44,7 @@ Given("the following entry nests it") do |table|
     title: data[:title],
     author_names: [create(:author_name, name: data[:author])],
     citation_year: data[:citation_year],
-    pages_in: data[:pages_in],
+    pagination: data[:pagination],
     nesting_reference: Reference.last
   )
 end

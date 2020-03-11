@@ -1,5 +1,5 @@
 module Authors
-  class FindOrCreateNamesFromString
+  class FindOrInitializeNamesFromString
     include Service
 
     def initialize string
@@ -9,7 +9,7 @@ module Authors
     def call
       parsed_author_names.map do |name|
         AuthorName.where(name: name).find { |case_sensitive_name| case_sensitive_name.name == name } ||
-          AuthorName.create!(name: name, author: Author.create!)
+          AuthorName.new(name: name, author: Author.new)
       end
     end
 
