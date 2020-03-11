@@ -39,6 +39,22 @@ describe Subspecies do
       end
     end
 
+    context "when name already exists" do
+      let!(:existing_subspecies_name) { create :subspecies_name, name: 'Eciton niger minor' }
+      let!(:subspecies) { create :subspecies, name_string: 'Atta niger minor' }
+      let(:new_parent) { create :species, name_string: 'Eciton niger' }
+
+      context "when name is used by a different taxon" do
+        before do
+          create :subspecies, name: existing_subspecies_name
+        end
+
+        it "raises" do
+          expect { subspecies.update_parent new_parent }.to raise_error Taxa::TaxonExists
+        end
+      end
+    end
+
     context 'when subspecies has infrasubspeices' do
       let(:subspecies) { create :subspecies }
 

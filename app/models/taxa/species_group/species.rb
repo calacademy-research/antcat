@@ -28,7 +28,7 @@ class Species < SpeciesGroupTaxon
     raise Taxa::TaxonHasSubspecies, 'Species has subspecies' if subspecies.any?
     raise Taxa::TaxonHasInfrasubspecies, 'Species has infrasubspecies' if infrasubspecies.any?
 
-    name.change_parent(new_parent.name) unless new_parent == parent
+    change_name!(new_parent.name) unless new_parent == parent
     self.parent = new_parent
     update_descendants
   end
@@ -47,5 +47,11 @@ class Species < SpeciesGroupTaxon
       subspecies.each do |subspecies|
         subspecies.update(subfamily: subfamily, genus: genus)
       end
+    end
+
+    def change_name! new_parent_name
+      name_string = [new_parent_name.genus_epithet, name.species_epithet].join(' ')
+      ensure_name_can_be_changed! name_string
+      name.name = name_string
     end
 end
