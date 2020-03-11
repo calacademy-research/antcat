@@ -52,7 +52,38 @@ describe Species do
       # expect(subspecies.reload.subfamily).to eq new_genus.subfamily
     end
 
-    context 'when species has subspeices' do
+    describe "updating the name" do
+      let(:species) { create :species, name_string: 'Atta niger' }
+      let(:new_parent) { create :genus, name_string: 'Eciton' }
+
+      it "replaces the genus part of the name" do
+        expect do
+          species.update_parent new_parent
+          species.save!
+        end.
+          to change { species.reload.name.name }.
+          from('Atta niger').
+          to('Eciton niger')
+      end
+    end
+
+    context "when name already exists" do
+      let(:existing_species_name) { create :species_name, name: 'Eciton niger' }
+      let(:species) { create :species, name_string: 'Atta niger' }
+      let(:new_parent) { create :genus, name_string: 'Eciton' }
+
+      context "when name is used by a different taxon" do
+        before do
+          create :species, name: existing_species_name
+        end
+
+        it "raises" do
+          expect { species.update_parent new_parent }.to raise_error Taxa::TaxonExists
+        end
+      end
+    end
+
+    context 'when species has subspecies' do
       before do
         create :subspecies, species: species, genus: genus, subfamily: subfamily
       end

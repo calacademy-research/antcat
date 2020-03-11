@@ -15,9 +15,7 @@ class TaxonForm
     attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string
 
     def save_taxon
-      if taxon_name_string
-        taxon.name = Names::BuildNameFromString[taxon_name_string]
-      end
+      taxon.name = Names::BuildNameFromString[taxon_name_string]
 
       if params[:protonym_id].present?
         params.delete :protonym_attributes
