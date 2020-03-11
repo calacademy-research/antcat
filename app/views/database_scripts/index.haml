@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "sortable_tables"
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   -unless @check_if_empty
     =link_to "Show empty/not (beta)", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
   =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"

@@ -4,9 +4,6 @@ production:
     port: 8983
     log_level: WARNING
     path: /solr/default
-    #url: http://localhost:8983/solr/default
-    # read_timeout: 2
-    # open_timeout: 0.5
 
 development:
   solr:
@@ -14,7 +11,6 @@ development:
     port: 8982
     log_level: INFO
     path: /solr/development
-    #solr_home: solr
 
 test:
   solr:
@@ -22,5 +18,3 @@ test:
     port: 8981
     log_level: WARNING
     path: /solr/test
-    #solr_home: solr
-    #http://hostname:8983/solr/

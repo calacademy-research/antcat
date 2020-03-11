@@ -4,7 +4,7 @@
 -if current_user
   =enable_tooltips
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Approve all"), approve_all_reviewing_references_path, method: :put, data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }, class: "btn-warning"

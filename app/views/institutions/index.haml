@@ -5,7 +5,7 @@
   =javascript_include_tag "sortable_tables"
 
 -if user_is_at_least_helper?
-  =content_for :breadcrumbs_right do
+  -content_for :breadcrumbs_right do
     =link_to 'New', new_institution_path, class: 'btn-normal'
 
 %table.tablesorter

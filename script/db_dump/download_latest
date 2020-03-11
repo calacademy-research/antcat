@@ -29,6 +29,7 @@ most_recent_local_path="$db_dumps_path/$most_recent_filename"
 if $ssh_command "test -e $most_recent_remote_path"; then
   echo "Most recent db dump has already been exported to EngineYard."
 else
+  echo "Exporting file on EngineYard..."
   $ssh_command sudo -i eybackup --download "$ey_most_recent_backup_index"
 fi
 
@@ -36,6 +37,7 @@ fi
 if [ -f "$most_recent_local_path" ]; then
   echo "Most recent db dump has already been downloaded to localhost."
 else
+  echo "Downloading file from EngineYard..."
   $scp_command:$most_recent_remote_path "$most_recent_local_path"
 fi
 

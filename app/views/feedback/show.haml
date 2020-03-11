@@ -4,7 +4,7 @@
 -content_for :head do
   =javascript_include_tag "controllers/feedback/show"
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   -if @feedback.open?
     =link_to "Hide/show 'What you can do...'", "#", data: { show_hide_toggler_for: "guidelines_for_editors" }, class: "btn-nodanger"
   =link_to "Hide/show formatted for email", "#", data: { show_hide_toggler_for: "for_email" }, class: "btn-nodanger"

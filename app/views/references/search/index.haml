@@ -2,7 +2,7 @@
 -breadcrumb :references_search_results
 
 -if current_user
-  =content_for :breadcrumbs_right do
+  -content_for :breadcrumbs_right do
     =link_to 'Export to EndNote', endnote_export_references_path(reference_q: params[:reference_q]), class: "btn-normal"
 
 .callout.primary.medium-6

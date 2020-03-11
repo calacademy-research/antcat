@@ -33,7 +33,6 @@ Before "@skip" do
   skip_this_scenario
 end
 
-# NOTE: Attempt to tackle memory leakage.
-After do
+Before("@reset_driver") do
   page.driver.reset!
 end

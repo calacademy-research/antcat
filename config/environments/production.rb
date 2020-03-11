@@ -141,21 +141,23 @@ Rails.application.configure do
   # # Simulate production locally for debugging/profiling
   # #############################################################################
   #
-  #   Uncomment these lines:
-  #
-  #   config.cache_classes = false
-  #   config.public_file_server.enabled = true
-  #   config.assets.debug = false
-  #   config.log_level = :debug
-  #
-  #   ## See log in console (or run `tail -f log/production.log`)
-  #   ActiveRecord::Base.logger = Logger.new STDOUT
-  #
-  #   Precompile assets: `rake assets:precompile RAILS_ENV=production`
+  #   Precompile assets: `RAILS_ENV=production rake assets:precompile`
   #   (you may also want to `rake assets:clobber`)
   #
-  #   Run server: `rails s -e production`
+  #   Run server: `SIMULATE_PRODUCTION=y rails s -e production`
   #
-  #   To enable `gem 'rack-mini-profiler'` in prod:
+
+  if ENV['SIMULATE_PRODUCTION']
+    config.cache_classes = false
+    config.public_file_server.enabled = true
+    config.assets.debug = false
+    config.log_level = :debug
+
+    ## See log in console (or run `tail -f log/production.log`)
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+  end
+
+  #
+  #   To enable `gem 'rack-mini-profiler'` in "production":
   #   Add `before_action { Rack::MiniProfiler.authorize_request }` to ApplicationController.
 end

@@ -3,12 +3,9 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_action :save_location
+  before_action :store_location_for_devise!, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
-
-  before_action :cors_preflight_check
-  after_action :cors_set_access_control_headers
 
   delegate :editor?, :at_least_helper?, :superadmin?, to: :current_user, prefix: 'user_is', allow_nil: true
   helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
@@ -39,28 +36,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-    # Save location to redirect back to after signing in.
-    def save_location
-      return if request.xhr? || request.url =~ %r{/users/}
-      session[:user_return_to] = request.url
+    def storable_location?
+      request.get? && is_navigational_format? && !devise_controller? && !request.xhr?
     end
 
-    def cors_set_access_control_headers
-      headers['Access-Control-Allow-Origin'] = '*'
-      headers['Access-Control-Allow-Methods'] = 'GET'
-      headers['Access-Control-Allow-Headers'] = 'Origin, Content-Type, Accept, Authorization, Token'
-      headers['Access-Control-Max-Age'] = "1728000"
-    end
-
-    def cors_preflight_check
-      return unless request.method == 'OPTIONS'
-
-      headers['Access-Control-Allow-Origin'] = '*'
-      headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
-      headers['Access-Control-Allow-Headers'] = 'X-Requested-With, X-Prototype-Version, Token'
-      headers['Access-Control-Max-Age'] = '1728000'
-
-      render plain: ''
+    # See https://github.com/heartcombo/devise/wiki/How-To:-Redirect-back-to-current-page-after-sign-in,-sign-out,-sign-up,-update
+    def store_location_for_devise!
+      store_location_for(:user, request.fullpath)
     end
 
     def set_current_request_uuid

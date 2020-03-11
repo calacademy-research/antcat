@@ -1,7 +1,7 @@
 %h5
   .left Difference between revisions
   -unless hide_formatted
-    =content_for :breadcrumbs_right do
+    -content_for :breadcrumbs_right do
       =link_to "Hide/show formatted", "#", data: { show_hide_toggler_for: "formatted" }, class: "btn-nodanger"
   .clearfix
 

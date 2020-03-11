@@ -2,7 +2,7 @@
 -breadcrumb @journal
 
 -if user_is_at_least_helper?
-  =content_for :breadcrumbs_right do
+  -content_for :breadcrumbs_right do
     =link_to "Edit journal name", edit_journal_path(@journal), class: "btn-normal"
     -unless @references.exists?
       =link_to "Delete", @journal, method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"

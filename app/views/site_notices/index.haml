@@ -1,7 +1,7 @@
 -@title = "Site Notices"
 -breadcrumb :site_notices
 
-=content_for :breadcrumbs_right do
+-content_for :breadcrumbs_right do
   -if current_user&.unread_site_notices&.any?
     =link_to "Mark all as read", mark_all_as_read_site_notices_path, method: :post, class: "btn-saves"
   -if user_is_editor?
