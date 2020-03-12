@@ -45,9 +45,10 @@ class ReferenceForm
       false
     end
 
-    def set_document_host
-      return unless reference.document
-      reference.document.host = request_host
+    def clear_document_params_if_necessary
+      return unless params[:document_attributes]
+      return if params[:document_attributes][:url].blank?
+      params[:document_attributes][:id] = nil
     end
 
     def parse_author_names_string
@@ -92,12 +93,6 @@ class ReferenceForm
       end
     end
 
-    def clear_document_params_if_necessary
-      return unless params[:document_attributes]
-      return if params[:document_attributes][:url].blank?
-      params[:document_attributes][:id] = nil
-    end
-
     def check_for_duplicates!
       duplicates = References::FindDuplicates[reference, min_similarity: 0.5]
       return if duplicates.blank?
@@ -108,5 +103,10 @@ class ReferenceForm
         To save, click "Save".
       MSG
       true
+    end
+
+    def set_document_host
+      return unless reference.document
+      reference.document.host = request_host
     end
 end
