@@ -72,7 +72,7 @@ class ReferenceForm
       reference.journal_name = journal_name
 
       # Set nil or valid publisher in the params.
-      journal = Journal.find_or_create_by(name: journal_name)
+      journal = Journal.find_or_initialize_by(name: journal_name)
       params[:journal] = journal.valid? ? journal : nil
     end
 
