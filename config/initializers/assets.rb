@@ -40,6 +40,7 @@ Rails.application.config.assets.precompile += %w[
 ]
 
 Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
+Rails.application.config.assets.precompile += %w[font_awesome_and_custom_icons.css]
 Rails.application.config.assets.precompile += %w[dev_css.css test_css.css]
 Rails.application.config.assets.precompile += %w[jquery_overrides.css]
 Rails.application.config.assets.precompile += %w[catalog_only.css]
