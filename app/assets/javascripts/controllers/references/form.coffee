@@ -18,18 +18,18 @@ setupJournalAutocompletion = ->
   $('#reference_journal_name').autocomplete
     autoFocus: true
     source: '/journals/autocomplete'
-    minLength: 3
+    minLength: 1
 
 setupPublisherAutocompletion = ->
   $('#reference_publisher_string').autocomplete
     autoFocus: true
     source: '/publishers/autocomplete'
-    minLength: 3
+    minLength: 1
 
 setupAdvancedAuthorAutocomplete = ->
   $('#reference_author_names_string').autocomplete
     autoFocus: true
-    minLength: 3
+    minLength: 1
     source: (request, response) ->
       selectionStart = AntCat.getInputSelection(@element.get(0), true)
       searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
