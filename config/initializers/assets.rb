@@ -46,7 +46,6 @@ Rails.application.config.assets.precompile += %w[
   diffy.css
   font_awesome_and_custom_icons.css
   foundation_and_overrides.css
-  jquery_overrides.css
   test_css.css
   vendor.css
 
