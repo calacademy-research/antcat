@@ -22,6 +22,68 @@ describe DatabaseScript do
     end
   end
 
+  describe '.record_in_results?' do
+    context "when taxon is in the script's results" do
+      let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
+      let(:extant_species) { create :species }
+
+      specify do
+        expect { extant_species.genus.update!(fossil: true) }.
+          to change { script.record_in_results?(extant_species) }.
+          from(false).to(true)
+      end
+    end
+  end
+
+  describe '#soft_validated?' do
+    it 'returns true if the script is used for taxon soft-validations' do
+      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
+      expect(DatabaseScripts::ValidSpeciesList.new.soft_validated?).to eq false
+    end
+  end
+
+  describe "#title" do
+    it "fetches the title from the END data" do
+      script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
+      expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
+    end
+
+    it "defaults to the humanized filename" do
+      script = DatabaseScripts::OrphanedProtonyms.new
+      expect(script.title).to eq "Orphaned protonyms"
+    end
+  end
+
+  describe '#statistics' do
+    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+
+    context 'when script has no custom statistics' do
+      it 'returns default statistics' do
+        expect(script.statistics).to eq "Results: 0"
+      end
+    end
+
+    context 'when script has custom statistics' do
+      before do
+        def script.statistics
+          'Custom results'
+        end
+      end
+
+      it "returns the script's `#statistics`" do
+        expect(script.statistics).to eq 'Custom results'
+      end
+    end
+  end
+
+  describe "#to_param" do
+    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+
+    it "returns the filename without extension" do
+      expect(script.to_param).to eq "extant_taxa_in_fossil_genera"
+    end
+  end
+
   describe "#cached_results" do
     let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
@@ -58,68 +120,6 @@ describe DatabaseScript do
           expect(database_script).to receive(:results).at_most(:once).and_call_original
         end
         database_script.render
-      end
-    end
-  end
-
-  describe '.record_in_results?' do
-    context "when taxon is in the script's results" do
-      let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
-      let(:extant_species) { create :species }
-
-      specify do
-        expect { extant_species.genus.update!(fossil: true) }.
-          to change { script.record_in_results?(extant_species) }.
-          from(false).to(true)
-      end
-    end
-  end
-
-  describe '#soft_validated?' do
-    it 'returns true if the script is used for taxon soft-validations' do
-      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
-      expect(DatabaseScripts::ValidSpeciesList.new.soft_validated?).to eq false
-    end
-  end
-
-  describe "testing with a real script" do
-    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
-
-    describe "#to_param" do
-      it "returns the filename without extension" do
-        expect(script.to_param).to eq "extant_taxa_in_fossil_genera"
-      end
-    end
-
-    describe "#title" do
-      it "fetches the title from the END data" do
-        script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
-        expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
-      end
-
-      it "defaults to the humanized filename" do
-        script = DatabaseScripts::OrphanedProtonyms.new
-        expect(script.title).to eq "Orphaned protonyms"
-      end
-    end
-
-    describe '#statistics' do
-      context 'when script has no custom statistics' do
-        it 'returns default statistics' do
-          expect(script.statistics).to eq "Results: 0"
-        end
-      end
-
-      context 'when script has custom statistics' do
-        before do
-          def script.statistics
-            'Custom results'
-          end
-        end
-
-        it "returns the script's `#statistics`" do
-          expect(script.statistics).to eq 'Custom results'
-        end
       end
     end
   end

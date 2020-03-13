@@ -64,16 +64,16 @@ class DatabaseScript
     self.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
   end
 
+  def slow?
+    tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
+  end
+
   def title
     end_data_attributes.title || filename_without_extension.humanize
   end
 
   def statistics
     @statistics ||= default_statistics
-  end
-
-  def slow?
-    tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
   end
 
   def filename_without_extension

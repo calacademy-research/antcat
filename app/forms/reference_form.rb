@@ -45,9 +45,10 @@ class ReferenceForm
       false
     end
 
-    def set_document_host
-      return unless reference.document
-      reference.document.host = request_host
+    def clear_document_params_if_necessary
+      return unless params[:document_attributes]
+      return if params[:document_attributes][:url].blank?
+      params[:document_attributes][:id] = nil
     end
 
     def parse_author_names_string
@@ -72,7 +73,7 @@ class ReferenceForm
       reference.journal_name = journal_name
 
       # Set nil or valid publisher in the params.
-      journal = Journal.find_or_create_by(name: journal_name)
+      journal = Journal.find_or_initialize_by(name: journal_name)
       params[:journal] = journal.valid? ? journal : nil
     end
 
@@ -83,19 +84,13 @@ class ReferenceForm
       reference.publisher_string = publisher_string
 
       # Add error or set valid publisher in the params.
-      publisher = Publisher.create_from_string publisher_string
+      publisher = Publisher.find_or_initialize_from_string(publisher_string)
       if publisher.nil? && publisher_string.present?
         reference.errors.add :publisher_string,
           "couldn't be parsed. In general, use the format 'Place: Publisher'."
       else
         params[:publisher] = publisher
       end
-    end
-
-    def clear_document_params_if_necessary
-      return unless params[:document_attributes]
-      return if params[:document_attributes][:url].blank?
-      params[:document_attributes][:id] = nil
     end
 
     def check_for_duplicates!
@@ -108,5 +103,10 @@ class ReferenceForm
         To save, click "Save".
       MSG
       true
+    end
+
+    def set_document_host
+      return unless reference.document
+      reference.document.host = request_host
     end
 end

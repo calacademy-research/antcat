@@ -2,7 +2,6 @@
 //= require jquery
 //= require rails-ujs
 //= require foundation.core
-//= require foundation.accordion
 //= require foundation.dropdown
 //= require foundation.responsiveMenu
 //= require foundation.responsiveToggle

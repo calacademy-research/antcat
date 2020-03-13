@@ -28,7 +28,7 @@ bundle exec rake db:test:prepare
 
 #### Sample data
 ```bash
-bundle exec rake antcat:db:import_sample_data
+bundle exec rake dev:prime
 ```
 
 ## Run site

@@ -44,7 +44,7 @@ $ ->
 
   options =
     highlight: true
-    minLength: 2
+    minLength: 1
 
    $('input.typeahead-references-js').typeahead(options, authorsDataSet, referencesDataSet)
     .on 'typeahead:selected', (e) ->

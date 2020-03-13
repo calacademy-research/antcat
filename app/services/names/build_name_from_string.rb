@@ -5,7 +5,7 @@ module Names
     class UnparsableName < StandardError; end
 
     def initialize name
-      @name = name
+      @name = name&.squish
     end
 
     def call

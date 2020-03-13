@@ -31,7 +31,7 @@ class ReferencesController < ApplicationController
   def create
     @reference = reference_type_from_params.new
 
-    if save
+    if reference_form.save
       @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
@@ -45,7 +45,7 @@ class ReferencesController < ApplicationController
   def update
     @reference = set_reference_type
 
-    if save
+    if reference_form.save
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
@@ -67,8 +67,8 @@ class ReferencesController < ApplicationController
 
   private
 
-    def save
-      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?).save
+    def reference_form
+      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?)
     end
 
     def set_reference_type

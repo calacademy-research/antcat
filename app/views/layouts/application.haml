@@ -13,8 +13,9 @@
     =javascript_include_tag 'logged_in_only' if current_user
 
     =stylesheet_link_tag 'foundation_and_overrides'
+    =stylesheet_link_tag 'vendor'
     =stylesheet_link_tag 'application'
-    =stylesheet_link_tag 'jquery_overrides'
+    =stylesheet_link_tag 'font_awesome_and_custom_icons'
     =stylesheet_link_tag 'dev_css' if include_dev_css?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 

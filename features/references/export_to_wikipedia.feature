@@ -9,10 +9,3 @@ Feature: Export references to Wikipedia
     When I go to the page of the most recent reference
     And I follow "Wikipedia"
     Then I should see "{{cite journal"
-
-  Scenario: Exporting a book reference
-    Given there is a book reference
-
-    When I go to the page of the most recent reference
-    And I follow "Wikipedia"
-    Then I should see "{{cite book"

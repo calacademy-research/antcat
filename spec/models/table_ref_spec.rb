@@ -1,6 +1,21 @@
 require 'rails_helper'
 
 describe TableRef do
+  describe '#detax' do
+    context 'when table ref is a taxt item' do
+      let!(:taxon_history_item) { create :taxon_history_item }
+      let!(:table_ref) { described_class.new('taxon_history_items', :taxt, taxon_history_item.id) }
+
+      specify { expect(table_ref.detax).to eq Detax[taxon_history_item.taxt] }
+    end
+
+    context 'when table ref is not a taxt item' do
+      let!(:table_ref) { described_class.new('taxa', :species_id, 999) }
+
+      specify { expect(table_ref.detax).to eq "&ndash;" }
+    end
+  end
+
   describe '#taxt?' do
     context 'when table ref is a taxt item' do
       specify do
@@ -23,21 +38,6 @@ describe TableRef do
           expect(described_class.new('taxa', field, 999).taxt?).to eq false
         end
       end
-    end
-  end
-
-  describe '#detax' do
-    context 'when table ref is a taxt item' do
-      let!(:taxon_history_item) { create :taxon_history_item }
-      let!(:table_ref) { described_class.new('taxon_history_items', :taxt, taxon_history_item.id) }
-
-      specify { expect(table_ref.detax).to eq Detax[taxon_history_item.taxt] }
-    end
-
-    context 'when table ref is not a taxt item' do
-      let!(:table_ref) { described_class.new('taxa', :species_id, 999) }
-
-      specify { expect(table_ref.detax).to eq "&ndash;" }
     end
   end
 

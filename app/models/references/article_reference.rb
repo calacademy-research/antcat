@@ -7,20 +7,20 @@ class ArticleReference < Reference
 
   # TODO: Not used (since at least December 2016).
   def series
-    series_volume_issue_parts[:series]
+    series_volume_and_issue_parts[:series]
   end
 
   def volume
-    series_volume_issue_parts[:volume]
+    series_volume_and_issue_parts[:volume]
   end
 
   def issue
-    series_volume_issue_parts[:issue]
+    series_volume_and_issue_parts[:issue]
   end
 
   private
 
-    def series_volume_issue_parts
-      @series_volume_issue_parts ||= Parsers::ArticleCitationParser.get_series_volume_issue_parts series_volume_issue
+    def series_volume_and_issue_parts
+      @series_volume_and_issue_parts ||= References::ExtractSeriesVolumeAndIssue[series_volume_issue]
     end
 end

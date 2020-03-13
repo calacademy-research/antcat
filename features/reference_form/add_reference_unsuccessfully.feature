@@ -34,10 +34,8 @@ Feature: Add reference unsuccessfully
     Then I should see "Author names string couldn't be parsed."
     And the "reference_author_names_string" field should contain "asdf"
 
-  @javascript
   Scenario: Unparseable (blank) journal name (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
-    And I follow "Article"
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_pagination" with "1"
     And I press "Save"

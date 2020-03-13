@@ -9,32 +9,32 @@ describe Publisher do
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
   end
 
-  describe ".create_from_string" do
+  describe ".find_or_initialize_from_string" do
     context "when invalid" do
       context "when string is blank" do
         specify do
-          expect { described_class.create_from_string('') }.to_not change { described_class.count }
+          expect(described_class.find_or_initialize_from_string('')).to eq nil
         end
       end
 
       context "when name or place is missing" do
         specify do
-          expect { described_class.create_from_string('Wiley') }.to_not change { described_class.count }
+          expect(described_class.find_or_initialize_from_string('Wiley')).to eq nil
         end
       end
     end
 
     context "when valid" do
-      it "creates a publisher" do
-        publisher = described_class.create_from_string 'New York: Houghton Mifflin'
+      it "initializes a publisher" do
+        publisher = described_class.find_or_initialize_from_string 'New York: Houghton Mifflin'
         expect(publisher.name).to eq 'Houghton Mifflin'
         expect(publisher.place_name).to eq 'New York'
       end
 
       context "when name/place combination already exists" do
         it "reuses existing publisher" do
-          2.times { described_class.create_from_string("Wiley: Chicago") }
-          expect(described_class.count).to eq 1
+          existing_publisher = described_class.find_or_initialize_from_string("Wiley: Chicago").tap(&:save!)
+          expect(described_class.find_or_initialize_from_string("Wiley: Chicago")).to eq existing_publisher
         end
       end
     end

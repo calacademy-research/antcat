@@ -8,183 +8,6 @@ describe Names::BuildNameFromString do
 
         expect(name).to be_a SubspeciesName
         expect(name.name).to eq 'Lasius niger fusca'
-        expect(name.epithet).to eq 'fusca'
-      end
-    end
-
-    context 'when name is a family name' do
-      specify do
-        name = described_class['Formicidae']
-
-        expect(name).to be_a FamilyName
-        expect(name.name).to eq 'Formicidae'
-        expect(name.epithet).to eq 'Formicidae'
-      end
-    end
-
-    context 'when name is a subfamily name' do
-      specify do
-        name = described_class['Myrmecinae']
-
-        expect(name).to be_a SubfamilyName
-        expect(name.name).to eq 'Myrmecinae'
-        expect(name.epithet).to eq 'Myrmecinae'
-      end
-    end
-
-    context 'when name is a tribe name' do
-      context "when name ends with 'ini'" do
-        specify do
-          name = described_class['Attini']
-
-          expect(name).to be_a TribeName
-          expect(name.name).to eq 'Attini'
-          expect(name.epithet).to eq 'Attini'
-        end
-      end
-
-      context "when name ends with 'ii'" do
-        specify do
-          name = described_class['Cerapachysii']
-
-          expect(name).to be_a TribeName
-          expect(name.name).to eq 'Cerapachysii'
-          expect(name.epithet).to eq 'Cerapachysii'
-        end
-      end
-    end
-
-    context 'when name is a subtribe name' do
-      context "when name ends with 'iti'" do
-        specify do
-          name = described_class['Dacetiti']
-
-          expect(name).to be_a SubtribeName
-          expect(name.name).to eq 'Dacetiti'
-          expect(name.epithet).to eq 'Dacetiti'
-        end
-      end
-    end
-
-    context 'when name is a genus name' do
-      specify do
-        name = described_class['Lasius']
-
-        expect(name).to be_a GenusName
-        expect(name.name).to eq 'Lasius'
-        expect(name.epithet).to eq 'Lasius'
-      end
-    end
-
-    context 'when name is a subgenus name' do
-      specify do
-        name = described_class['Camponotus (Forelophilus)']
-
-        expect(name).to be_a SubgenusName
-        expect(name.name).to eq 'Camponotus (Forelophilus)'
-        expect(name.epithet).to eq 'Forelophilus'
-      end
-    end
-
-    context 'when name is a species name' do
-      specify do
-        name = described_class['Lasius niger']
-
-        expect(name).to be_a SpeciesName
-        expect(name.name).to eq 'Lasius niger'
-        expect(name.epithet).to eq 'niger'
-      end
-
-      context 'when name includes subgenus' do
-        specify do
-          name = described_class['Formica (Hypochira) subspinosa']
-
-          expect(name).to be_a SpeciesName
-          expect(name.name).to eq 'Formica (Hypochira) subspinosa'
-          expect(name.epithet).to eq 'subspinosa'
-        end
-      end
-    end
-
-    context 'when name is a subspecies name' do
-      specify do
-        name = described_class['Lasius niger fusca']
-
-        expect(name).to be_a SubspeciesName
-        expect(name.name).to eq 'Lasius niger fusca'
-        expect(name.epithet).to eq 'fusca'
-      end
-
-      context 'when name contains abbreivations' do
-        specify do
-          name = described_class['Lasius niger var. fusca']
-
-          expect(name).to be_a SubspeciesName
-          expect(name.name).to eq 'Lasius niger var. fusca'
-          expect(name.epithet).to eq 'fusca'
-        end
-      end
-
-      context 'when name includes subgenus' do
-        specify do
-          name = described_class['Lasius (Forelophilus) niger fusca']
-
-          expect(name).to be_a SubspeciesName
-          expect(name.name).to eq 'Lasius (Forelophilus) niger fusca'
-          expect(name.epithet).to eq 'fusca'
-        end
-      end
-
-      context 'when name contains abbreivations and includes subgenus' do
-        specify do
-          name = described_class['Lasius (Forelophilus) niger var. fusca']
-
-          expect(name).to be_a SubspeciesName
-          expect(name.name).to eq 'Lasius (Forelophilus) niger var. fusca'
-          expect(name.epithet).to eq 'fusca'
-        end
-      end
-    end
-
-    context 'when name is an infrasubspecies name' do
-      context 'when 4 name parts' do
-        specify do
-          name = described_class['Leptothorax rottenbergi scabrosus kabyla']
-
-          expect(name).to be_a InfrasubspeciesName
-          expect(name.name).to eq 'Leptothorax rottenbergi scabrosus kabyla'
-          expect(name.epithet).to eq 'kabyla'
-        end
-      end
-
-      context 'when 5 name parts' do
-        specify do
-          name = described_class['Leptothorax (Hypochira) rottenbergi scabrosus kabyla']
-
-          expect(name).to be_a InfrasubspeciesName
-          expect(name.name).to eq 'Leptothorax (Hypochira) rottenbergi scabrosus kabyla'
-          expect(name.epithet).to eq 'kabyla'
-        end
-      end
-
-      context 'when 6 name parts' do
-        specify do
-          name = described_class['Camponotus herculeanus subsp. pennsylvanicus var. mahican']
-
-          expect(name).to be_a InfrasubspeciesName
-          expect(name.name).to eq 'Camponotus herculeanus subsp. pennsylvanicus var. mahican'
-          expect(name.epithet).to eq 'mahican'
-        end
-      end
-
-      context 'when 7 name parts' do
-        specify do
-          name = described_class['Atta (Acromyrmex) moelleri subsp. panamensis var. angustata']
-
-          expect(name).to be_a InfrasubspeciesName
-          expect(name.name).to eq 'Atta (Acromyrmex) moelleri subsp. panamensis var. angustata'
-          expect(name.epithet).to eq 'angustata'
-        end
       end
     end
 
@@ -195,7 +18,6 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a Name
           expect(name.name).to eq nil
-          expect(name.epithet).to eq nil
         end
 
         specify do
@@ -203,7 +25,6 @@ describe Names::BuildNameFromString do
 
           expect(name).to be_a Name
           expect(name.name).to eq nil
-          expect(name.epithet).to eq nil
         end
       end
 
