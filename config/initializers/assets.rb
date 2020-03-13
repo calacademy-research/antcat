@@ -48,6 +48,7 @@ Rails.application.config.assets.precompile += %w[
   foundation_and_overrides.css
   jquery_overrides.css
   test_css.css
+  vendor.css
 
   controllers/*.css
   site/*.css
