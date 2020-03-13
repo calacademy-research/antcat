@@ -23,7 +23,6 @@ describe Api::V1::ReferencesController do
         "journal_id" => reference.journal_id,
         "nesting_reference_id" => nil,
         "online_early" => false,
-        "pages_in" => nil,
         "pagination" => reference.pagination,
         "plain_text_cache" => nil,
         "public_notes" => nil,

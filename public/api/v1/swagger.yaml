@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.1.0"
+  version: "1.1.1"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -951,8 +951,6 @@ definitions:
       citation:
         type: string
       nesting_reference_id:
-        type: string
-      pages_in:
         type: string
       author_names_suffix:
         type: string
