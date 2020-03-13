@@ -2,17 +2,6 @@ Feature: Browse recent comments
   Background:
     Given I log in as a catalog editor named "Batiatus"
 
-  Scenario: No comments yet
-    When I go to the comments page
-    Then I should see "No comments."
-
-  Scenario: Browsing comments by date
-    Given Batiatus has commented "Cool" on an issue with the title "Typos"
-
-    When I go to the comments page
-    Then I should see "Batiatus commented on the issue Typos:"
-    And I should see "Cool"
-
   Scenario: Parse AntCat markdown of truncated comments
     Given there is an open issue "Test markdown" created by "Batiatus"
 

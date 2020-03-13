@@ -31,23 +31,3 @@ Feature: Converting a species to a subspecies
     And I set the new species field to "Camponotus alii"
     And I press "Convert"
     Then I should see "This name is in use by another taxon"
-
-  @javascript
-  Scenario: Converting a species to a subspecies when the species has subspecies
-    Given there is a species "Camponotus alii"
-    And there is a subspecies "Camponotus alii major" in the species "Camponotus alii"
-
-    When I go to the catalog page for "Camponotus alii"
-    And I follow "Convert to subspecies"
-    And I set the new species field to "Camponotus alii"
-    And I press "Convert"
-    Then I should see "Species with subspecies of its own cannot be converted to subspecies"
-
-  Scenario: Leaving the species blank
-    Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
-    And there is a species "Camponotus alii" in the genus "Camponotus"
-
-    When I go to the catalog page for "Camponotus dallatorei"
-    And I follow "Convert to subspecies"
-    And I press "Convert"
-    Then I should see "Please select a species"
