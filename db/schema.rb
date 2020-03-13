@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_181240) do
+ActiveRecord::Schema.define(version: 2020_03_13_183257) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
     t.integer "user_id"
-    t.string "action"
+    t.string "action", null: false
     t.text "parameters"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -68,7 +68,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_181240) do
   create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "commentable_id"
     t.string "commentable_type"
-    t.text "body"
+    t.text "body", null: false
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -100,7 +100,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_181240) do
 
   create_table "issues", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "closer_id"
-    t.integer "adder_id"
+    t.integer "adder_id", null: false
     t.string "title", null: false
     t.text "description", null: false
     t.datetime "created_at", null: false
@@ -226,7 +226,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_181240) do
     t.text "editor_notes"
     t.text "public_notes"
     t.text "taxonomic_notes"
-    t.text "title"
+    t.text "title", null: false
     t.text "citation"
     t.integer "nesting_reference_id"
     t.string "author_names_suffix"
