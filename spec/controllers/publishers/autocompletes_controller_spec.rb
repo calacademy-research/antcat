@@ -8,7 +8,7 @@ describe Publishers::AutocompletesController do
     end
 
     context 'with publishers' do
-      let!(:publisher) { create :publisher, name: 'Wiley', place_name: 'California' }
+      let!(:publisher) { create :publisher, name: 'Wiley', place: 'California' }
 
       it "returns publishers in an array" do
         get :show, params: { term: "wiley" }
