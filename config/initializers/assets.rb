@@ -19,6 +19,7 @@ Rails.application.config.assets.precompile += %w[
   application.js
   logged_in_only.js
   markdown_and_friends.js
+
   check_name_conflicts.js
   compare_revisions.js
   google_analytics.js
@@ -29,6 +30,7 @@ Rails.application.config.assets.precompile += %w[
   taxon_select.js
   taxt_editor.js
   tooltips.js
+
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js
   controllers/feedback/show.js
@@ -39,13 +41,15 @@ Rails.application.config.assets.precompile += %w[
   controllers/taxa/reorder_reference_sections.js
 ]
 
-Rails.application.config.assets.precompile += %w[foundation_and_overrides.css]
-Rails.application.config.assets.precompile += %w[font_awesome_and_custom_icons.css]
-Rails.application.config.assets.precompile += %w[dev_css.css test_css.css]
-Rails.application.config.assets.precompile += %w[jquery_overrides.css]
-Rails.application.config.assets.precompile += %w[catalog_only.css]
+Rails.application.config.assets.precompile += %w[
+  dev_css.css
+  diffy.css
+  font_awesome_and_custom_icons.css
+  foundation_and_overrides.css
+  jquery_overrides.css
+  test_css.css
 
-Rails.application.config.assets.precompile += %w[site/*.css]
-Rails.application.config.assets.precompile += %w[widgets/*.css]
-Rails.application.config.assets.precompile += %w[controllers/*.css]
-Rails.application.config.assets.precompile += %w[diffy.css]
+  controllers/*.css
+  site/*.css
+  widgets/*.css
+]
