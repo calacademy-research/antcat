@@ -72,7 +72,7 @@ describe ReferenceFormatter do
     let(:reference) do
       create :book_reference, author_names: [author_name],
         citation_year: "1874", title: '*Ants* <i>and such</i>', pagination: "22 pp.",
-        publisher: create(:publisher, name: 'Wiley', place_name: 'San Francisco')
+        publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
     end
 
     describe "#plain_text" do
@@ -85,7 +85,7 @@ describe ReferenceFormatter do
 
       context 'with unsafe tags' do
         let(:reference) do
-          publisher = create :publisher, name: '<script>xss</script>', place_name: '<script>xss</script>'
+          publisher = create :publisher, name: '<script>xss</script>', place: '<script>xss</script>'
           create :book_reference, publisher: publisher, pagination: '<script>xss</script>'
         end
 
@@ -117,7 +117,7 @@ describe ReferenceFormatter do
     let(:nestee_reference) do
       create :book_reference, author_names: [nestee_author_name],
         citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
-        publisher: create(:publisher, name: 'Wiley', place_name: 'New York')
+        publisher: create(:publisher, name: 'Wiley', place: 'New York')
     end
     let(:reference) do
       create :nested_reference, nesting_reference: nestee_reference,

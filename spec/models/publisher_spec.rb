@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Publisher do
   it { is_expected.to be_versioned }
   it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :place_name }
+  it { is_expected.to validate_presence_of :place }
 
   describe 'relations' do
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
@@ -28,7 +28,7 @@ describe Publisher do
       it "initializes a publisher" do
         publisher = described_class.find_or_initialize_from_string 'New York: Houghton Mifflin'
         expect(publisher.name).to eq 'Houghton Mifflin'
-        expect(publisher.place_name).to eq 'New York'
+        expect(publisher.place).to eq 'New York'
       end
 
       context "when name/place combination already exists" do
@@ -41,7 +41,7 @@ describe Publisher do
   end
 
   describe "#display_name" do
-    let(:publisher) { build_stubbed :publisher, name: "Wiley", place_name: 'New York' }
+    let(:publisher) { build_stubbed :publisher, name: "Wiley", place: 'New York' }
 
     specify do
       expect(publisher.display_name).to eq 'New York: Wiley'

@@ -79,7 +79,7 @@ module Exporters
         end
 
         def add_contents
-          add 'C', publisher.place_name
+          add 'C', publisher.place
           add 'I', publisher.name
           add 'P', pagination
         end

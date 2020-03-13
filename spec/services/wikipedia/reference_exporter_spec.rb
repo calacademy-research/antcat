@@ -24,7 +24,7 @@ describe Wikipedia::ReferenceExporter do
     describe "when reference is a `BookReference`" do
       let(:reference) do
         create :book_reference, author_names: [batiatus, glaber], title: "*Formica* and Apples",
-          pagination: "7-14", citation_year: "2000", publisher: create(:publisher, name: 'Wiley', place_name: 'San Francisco')
+          pagination: "7-14", citation_year: "2000", publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
       end
 
       specify do
