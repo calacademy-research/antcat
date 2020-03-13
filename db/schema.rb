@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_180253) do
+ActiveRecord::Schema.define(version: 2020_03_13_181240) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -68,13 +68,8 @@ ActiveRecord::Schema.define(version: 2020_03_13_180253) do
   create_table "comments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "commentable_id"
     t.string "commentable_type"
-    t.string "title"
     t.text "body"
-    t.string "subject"
     t.integer "user_id", null: false
-    t.integer "parent_id"
-    t.integer "lft"
-    t.integer "rgt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "edited", default: false, null: false
