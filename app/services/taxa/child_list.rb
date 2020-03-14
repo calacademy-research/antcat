@@ -1,4 +1,4 @@
-# TODO: Cleanup more. This is still the messiest code of AntCat.
+# TODO: Refactor/re-write.
 
 module Taxa
   class ChildList

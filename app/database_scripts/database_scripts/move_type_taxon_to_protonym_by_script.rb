@@ -29,7 +29,7 @@ category: Script (pending)
 tags: []
 
 description: >
-  **TODO:**
+  **Todo:**
 
 
   * Clear red "No"s in %dbscript:ProtonymsWithTaxaWithMoreThanOneTypeTaxon

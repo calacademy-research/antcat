@@ -1,4 +1,4 @@
-# TODO: Improve. This and the code in the views is really bad, but that's OK.
+# This and the code in the views is really bad, but that's OK.
 
 $ ->
   window.setupTaxtEditors()

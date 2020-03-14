@@ -1,5 +1,3 @@
-# TODO: Decide what to do with this.
-
 # rubocop:disable Metrics/BlockLength
 TableRef = Struct.new(:table, :field, :id) do
   def detax
