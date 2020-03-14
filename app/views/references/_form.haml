@@ -1,5 +1,3 @@
--# TODO: See if we can use more `f.label` instead of `label_tag`.
-
 =enable_tooltips
 
 -content_for :head do
@@ -15,22 +13,22 @@
 
   .row
     .medium-4.columns
-      =label_tag :reference_author_names_string do
+      =f.label :reference_author_names_string do
         Authors
         =db_tooltip_icon :authors, scope: :references
       =f.text_field :author_names_string
     .medium-2.columns
-      =label_tag :author_names_suffix do
+      =f.label :author_names_suffix do
         Authors suffix
         =db_tooltip_icon :author_names_suffix, scope: :references
       =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
     .medium-1.columns
-      =label_tag :reference_citation_year do
+      =f.label :reference_citation_year do
         Year
         =db_tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
     .medium-2.columns
-      =label_tag :reference_date do
+      =f.label :reference_date do
         Date
         =db_tooltip_icon "references.date", scope: :references
       =f.text_field :date
@@ -40,26 +38,26 @@
         Online early
   .row
     .medium-2.columns
-      =label_tag :reference_pagination do
+      =f.label :reference_pagination do
         Pagination
         =db_tooltip_icon "references.journal_pagination", scope: :references
         =db_tooltip_icon "references.book_pagination", scope: :references
         =db_tooltip_icon "references.nested_pagination", scope: :references
       =f.text_field :pagination
     .medium-4.columns
-      =label_tag :reference_doi do
+      =f.label :reference_doi do
         DOI
         =db_tooltip_icon "references.doi", scope: :references
       =f.text_field :doi
     .medium-2.columns.end
-      =label_tag :reference_bolton_key do
+      =f.label :reference_bolton_key do
         Bolton key
         =db_tooltip_icon "references.bolton_key", scope: :references
       =f.text_field :bolton_key
 
   .row
     .medium-12.columns
-      =label_tag :reference_title do
+      =f.label :reference_title do
         Title
         =db_tooltip_icon "references.title", scope: :references
       =f.text_area :title, rows: 1
@@ -80,13 +78,13 @@
         #tabs-article.tabs-panel{class: reference_tab_active?(reference, ArticleReference)}
           .row
             .medium-3.columns
-              =label_tag :reference_journal_name do
+              =f.label :reference_journal_name do
                 Journal
                 =db_tooltip_icon "references.journal_name", scope: :references
               =f.text_field :journal_name, value: reference.journal_name
 
             .medium-3.columns
-              =label_tag :reference_series_volume_issue do
+              =f.label :reference_series_volume_issue do
                 Series volume issue
                 =db_tooltip_icon "references.series_volume_issue", scope: :references
               =f.text_field :series_volume_issue
@@ -94,7 +92,7 @@
         #tabs-book.tabs-panel{class: reference_tab_active?(reference, BookReference)}
           .row
             .medium-3.columns
-              =label_tag :reference_publisher_string do
+              =f.label :reference_publisher_string do
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
               =f.text_field :publisher_string, value: reference.publisher_string
@@ -102,28 +100,28 @@
         #tabs-nested.tabs-panel{class: reference_tab_active?(reference, NestedReference)}
           .row
             .medium-3.columns.end
-              =label_tag :nesting_reference_id do
+              =f.label :nesting_reference_id do
                 Nesting reference ID
                 =db_tooltip_icon "nesting_reference_id", scope: :references
               =f.text_field :nesting_reference_id
 
         #tabs-unknown.tabs-panel{class: reference_tab_active?(reference, UnknownReference)}
-          =label_tag :reference_citation, 'Citation'
+          =f.label :reference_citation, 'Citation'
           =f.text_area :citation, rows: 2
 
   .row
     .medium-4.columns
-      =label_tag :reference_public_notes, 'Public notes'
+      =f.label :reference_public_notes, 'Public notes'
       =f.text_area :public_notes, rows: 2
 
     .medium-4.columns
-      =label_tag :reference_editor_notes do
+      =f.label :reference_editor_notes do
         Editor notes
         =db_tooltip_icon "EdNote", scope: :references
       =f.text_area :editor_notes, rows: 2
 
     .medium-4.columns
-      =label_tag :reference_taxonomic_notes do
+      =f.label :reference_taxonomic_notes do
         Taxonomic notes
         =db_tooltip_icon "TaxNote", scope: :references
       =f.text_area :taxonomic_notes, rows: 2
@@ -138,12 +136,12 @@
           =document_form.file_field :file
 
           =document_form.check_box :public
-          =label_tag :document_public do
+          =f.label :document_public do
             Make PDF public?
             =db_tooltip_icon "references.pdf.public", scope: :references
 
         .medium-6.columns.end
-          =label_tag :document_url do
+          =f.label :document_url do
             Source URL
             =db_tooltip_icon "references.source.url", scope: :references
           =document_form.text_field :url
