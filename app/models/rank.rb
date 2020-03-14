@@ -14,10 +14,16 @@ class Rank
     'genus'
   ]
   ITALIC_RANKS = %w[genus subgenus species subspecies infrasubspecies]
+  # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
+  SINGLE_WORD_RANKS = %w[family subfamily tribe subtribe genus]
 
   class << self
     def italic? rank
       rank.in? ITALIC_RANKS
+    end
+
+    def single_word_name? rank
+      rank.in? SINGLE_WORD_RANKS
     end
   end
 end

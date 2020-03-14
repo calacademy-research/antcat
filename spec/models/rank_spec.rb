@@ -15,4 +15,19 @@ describe Rank do
       expect(described_class.italic?('infrasubspecies')).to eq true
     end
   end
+
+  describe ".single_word_name?" do
+    specify do
+      expect(described_class.single_word_name?('family')).to eq true
+      expect(described_class.single_word_name?('subfamily')).to eq true
+      expect(described_class.single_word_name?('tribe')).to eq true
+      expect(described_class.single_word_name?('subtribe')).to eq true
+      expect(described_class.single_word_name?('genus')).to eq true
+
+      expect(described_class.single_word_name?('subgenus')).to eq false
+      expect(described_class.single_word_name?('species')).to eq false
+      expect(described_class.single_word_name?('subspecies')).to eq false
+      expect(described_class.single_word_name?('infrasubspecies')).to eq false
+    end
+  end
 end

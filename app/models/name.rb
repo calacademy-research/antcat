@@ -8,17 +8,7 @@ class Name < ApplicationRecord
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
-  # Two or more words:
-  #   `SubgenusName`
-  #   `SpeciesName`
-  #   `SubspeciesName`
-  SINGLE_WORD_NAMES = [
-    'FamilyName',
-    'SubfamilyName',
-    'TribeName',
-    'SubtribeName',
-    'GenusName'
-  ]
+  SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
 
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
@@ -63,10 +53,6 @@ class Name < ApplicationRecord
     taxa.first || protonyms.first
   end
 
-  def single_word_name?
-    type.in? SINGLE_WORD_NAMES
-  end
-
   private
 
     def italicize_if_needed string
@@ -88,7 +74,7 @@ class Name < ApplicationRecord
     end
 
     def ensure_no_spaces_in_single_word_names
-      return unless single_word_name?
+      return unless Rank.single_word_name?(rank)
       return unless name.include?(" ")
 
       errors.add :name, "of type #{type} may not contain spaces"
