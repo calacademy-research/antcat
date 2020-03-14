@@ -46,11 +46,11 @@ class InstitutionsController < ApplicationController
 
   private
 
-    def institution_params
-      params.require(:institution).permit(:abbreviation, :name)
-    end
-
     def set_institution
       @institution = Institution.find(params[:id])
+    end
+
+    def institution_params
+      params.require(:institution).permit(:abbreviation, :name)
     end
 end

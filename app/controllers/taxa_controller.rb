@@ -69,15 +69,6 @@ class TaxaController < ApplicationController
       @taxon = Taxon.find(params[:id])
     end
 
-    def add_another_species_link
-      return "" unless @taxon.is_a? Species
-
-      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
-        new_taxa_path(rank_to_create: "Species", parent_id: @taxon.genus.id)
-
-      " <strong>#{link}</strong>".html_safe
-    end
-
     def taxon_params
       params.require(:taxon).permit(
         :collective_group_name,
@@ -108,5 +99,14 @@ class TaxaController < ApplicationController
     def build_taxon_with_parent
       parent = Taxon.find(params[:parent_id])
       Taxa::BuildTaxon[params[:rank_to_create], parent]
+    end
+
+    def add_another_species_link
+      return "" unless @taxon.is_a? Species
+
+      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
+        new_taxa_path(rank_to_create: "Species", parent_id: @taxon.genus.id)
+
+      " <strong>#{link}</strong>".html_safe
     end
 end

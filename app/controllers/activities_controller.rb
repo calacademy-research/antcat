@@ -36,6 +36,10 @@ class ActivitiesController < ApplicationController
 
   private
 
+    def set_activity
+      @activity = Activity.find(params[:id])
+    end
+
     def unpaginated_activities
       @unpaginated_activities ||= begin
         activities = Activity.filter_where(hacked_filter_params)
@@ -57,10 +61,6 @@ class ActivitiesController < ApplicationController
       activity = Activity.find(params[:id])
       # `@page` is also included in the views to make the delete button return to the previous page.
       @page = activity.pagination_page(unpaginated_activities)
-    end
-
-    def set_activity
-      @activity = Activity.find(params[:id])
     end
 
     # TODO: Rename `activities.action` --> `activities.action_name`.
