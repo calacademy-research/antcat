@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_13_190403) do
+ActiveRecord::Schema.define(version: 2020_03_14_200109) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -198,6 +198,7 @@ ActiveRecord::Schema.define(version: 2020_03_13_190403) do
     t.integer "reference_id"
     t.boolean "public"
     t.index ["reference_id"], name: "documents_reference_id_idx"
+    t.index ["reference_id"], name: "index_reference_documents_on_reference_id", unique: true
   end
 
   create_table "reference_sections", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
