@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.1.1"
+  version: "1.1.2"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -10,7 +10,7 @@ info:
 
 host: antcat.org
 basePath: /v1
-schemes: [http]
+schemes: [https]
 consumes: [application/json]
 produces: [application/json]
 
