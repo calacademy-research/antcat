@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :reference, :url, :protonym_reference?
+        t.header 'Reference', 'URL', 'Protonym reference?'
         t.rows do |reference|
           [
             link_to(reference.keey, reference_path(reference)),

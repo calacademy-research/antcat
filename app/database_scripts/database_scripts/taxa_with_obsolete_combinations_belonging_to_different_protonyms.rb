@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :obsolete_combinations
+        t.header 'Taxon', 'Status', 'Obsolete combinations'
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),

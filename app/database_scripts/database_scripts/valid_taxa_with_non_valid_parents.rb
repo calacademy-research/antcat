@@ -14,7 +14,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :genus, :genus_status, :subfamily, :subfamily_status
+        t.header 'Genus', 'Genus status', 'Subfamily', 'Subfamily status'
 
         t.rows(genus_results) do |genus|
           [
@@ -26,7 +26,7 @@ module DatabaseScripts
         end
       end <<
         as_table do |t|
-          t.header :species, :species_status, :genus, :genus_status
+          t.header 'Species', 'Species status', 'Genus', 'Genus status'
 
           t.rows(species_results) do |species|
             [
@@ -38,7 +38,7 @@ module DatabaseScripts
           end
         end <<
         as_table do |t|
-          t.header :subspecies, :subspecies_status, :species, :species_status
+          t.header 'Subspecies', 'Subspecies status', 'Species', 'Species status'
 
           t.rows(subspecies_results) do |subspecies|
             [

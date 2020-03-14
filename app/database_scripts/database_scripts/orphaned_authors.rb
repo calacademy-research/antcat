@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :author, :no_of_references
+        t.header 'ID', 'Author', 'No. of references'
         t.rows do |author|
           [
             author.id,

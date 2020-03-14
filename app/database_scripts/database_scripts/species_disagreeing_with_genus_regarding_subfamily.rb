@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :species, :status, :genus, :subfamily_of_species, :subfamily_of_genus
+        t.header 'Species', 'Status', 'Genus', 'Subfamily of species', 'Subfamily of genus'
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),

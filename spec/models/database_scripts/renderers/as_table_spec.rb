@@ -15,7 +15,7 @@ describe DatabaseScripts::Renderers::AsTable do
         rendered =
           dummy.as_table do |t|
             t.caption "My favorite ants"
-            t.header :taxon, :status
+            t.header 'Taxon', 'Status'
 
             t.rows(Taxon.all) do |taxon|
               [taxon.id, taxon.status]
@@ -43,7 +43,7 @@ describe DatabaseScripts::Renderers::AsTable do
           rendered =
             dummy.as_table do |t|
               t.caption "My favorite ants"
-              t.header :taxon, :status
+              t.header 'Taxon', 'Status'
 
               t.rows(Taxon.all) do |taxon|
                 next if taxon.id == taxon_1.id

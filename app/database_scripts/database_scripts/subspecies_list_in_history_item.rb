@@ -12,9 +12,9 @@ module DatabaseScripts
       @not_convertable_count = 0
 
       table = as_table do |t| # rubocop:disable Metrics/BlockLength
-        t.header :convertable?, :id, :species, :taxon_status, :history_item, :ids_same?,
-          :additional, :all_extracted_are_subspecies?,
-          :non_valid_statuses_of_extracted, :valid_subspecies_ids, :extracted_ids
+        t.header 'Convertable?', 'ID', 'Species', 'Taxon status', 'History item', 'IDs same?',
+          'Additional', 'All extracted are subspecies?',
+          'Non-valid statuses of extracted', 'Valid subspecies IDs', 'Extracted IDs'
 
         t.rows do |history_item|
           extracted_ids = extract_taxt_ids history_item

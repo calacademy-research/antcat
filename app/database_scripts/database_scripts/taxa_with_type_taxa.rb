@@ -6,10 +6,10 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status,
-          :type_taxon, :type_taxt, :tt_status,
-          :tt_expansion, :failed_tt_expansion,
-          :type_taxon_now_if_different, :ttn_status
+        t.header 'Taxon', 'Status',
+          'Type taxon', 'type_taxt', 'TT status',
+          'TT expansion', 'Failed TT expansion',
+          'Type taxon now if different', 'TTN status'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxon_now = type_taxon.now

@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :db_script_issues?
+        t.header 'Taxon', 'Status', 'Db script issues?'
 
         t.rows do |taxon|
           [

@@ -7,8 +7,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :locality, :fossil_status,
-          :current_valid_taxon, :CVT_status, :CVT_locality, :CVT_fossil_status
+        t.header 'Taxon', 'Status', 'Locality', 'Fossil status',
+          'current_valid_taxon', 'CVT status', 'CVT locality', 'CVT fossil status'
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 

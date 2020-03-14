@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :rank, :taxon, :status, :protonym, :type_taxon, :tt_protonyms, :unique_tt_protonyms
+        t.header 'Rank', 'Taxon', 'Status', 'Protonym', 'Type taxon', 'TT protonyms', 'Unique TT protonyms'
         t.rows do |taxon|
           protonym_ids_of_siblings = Taxon.where(type_taxon_id: taxon.type_taxon_id).pluck(:protonym_id)
 

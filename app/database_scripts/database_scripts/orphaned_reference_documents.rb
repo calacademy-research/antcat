@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :document_id_, :reference_id_, :created_at, :versions, :reference_versions
+        t.header 'Document ID', 'Reference ID', 'Created at', 'Versions', 'Reference versions'
         t.rows do |reference_document|
           [
             reference_document.id,

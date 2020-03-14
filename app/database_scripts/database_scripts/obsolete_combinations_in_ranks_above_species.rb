@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :rank, :current_valid_taxon, :current_valid_taxon_status, :current_valid_taxon_rank
+        t.header 'Taxon', 'Status', 'Rank', 'current_valid_taxon', 'current_valid_taxon status', 'current_valid_taxon rank'
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
 

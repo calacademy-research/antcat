@@ -18,7 +18,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.caption "Genera without subfamily"
-        t.header :genus, :status
+        t.header 'Genus', 'Status'
 
         t.rows(genera_without_subfamily) do |taxon|
           [
@@ -29,7 +29,7 @@ module DatabaseScripts
       end <<
         as_table do |t|
           t.caption "Subgenera without subfamily"
-          t.header :species, :status, :subfamily_of_genus
+          t.header 'Species', 'Status', 'Subfamily of genus'
 
           t.rows(subgenera_without_subfamily) do |taxon|
             [
@@ -41,7 +41,7 @@ module DatabaseScripts
         end <<
         as_table do |t|
           t.caption "Species without subfamily"
-          t.header :species, :status, :genus, :subfamily_of_genus
+          t.header 'Species', 'Status', 'Genus', 'Subfamily of genus'
 
           t.rows(species_without_subfamily) do |taxon|
             [

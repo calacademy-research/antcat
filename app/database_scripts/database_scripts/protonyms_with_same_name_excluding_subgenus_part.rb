@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :authorship
+        t.header 'Protonym', 'Authorship'
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,

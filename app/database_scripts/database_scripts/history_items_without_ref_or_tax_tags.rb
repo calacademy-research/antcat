@@ -7,8 +7,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :history_item, :taxon, :status, :taxt, :quick_actions,
-          :looks_like_protonym_data?, :protonym, :protonym_synopsis
+        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick actions',
+          'Looks like protonym data?', 'Protonym', 'Protonym synopsis'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon

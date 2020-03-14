@@ -9,7 +9,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :epithets_of_taxa, :ranks_of_taxa, :statuses_of_taxa, :taxa
+        t.header 'Protonym', 'Epithets of taxa', 'Ranks of taxa', 'Statuses of taxa', 'Taxa'
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,

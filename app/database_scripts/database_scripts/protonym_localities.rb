@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :locality, :search_link
+        t.header 'Locality', 'Search link'
         t.rows do |locality|
           [
             locality,

@@ -8,7 +8,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :reference
+        t.header 'Reference'
         t.rows do |reference|
           [
             link_to(reference.keey, reference_path(reference))

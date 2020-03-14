@@ -18,7 +18,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.caption "List #1: Subspecies list in history items, but no subspecies from database (valid species with valid subspecies)"
-        t.header :genus, :status
+        t.header 'Genus', 'Status'
 
         t.rows(with_history_item_but_not_in_database) do |taxon|
           [
@@ -29,7 +29,7 @@ module DatabaseScripts
       end <<
         as_table do |t|
           t.caption "List #2: Subspecies from database (valid species with valid subspecies), but no subspecies list in history items"
-          t.header :genus, :status
+          t.header 'Genus', 'Status'
 
           t.rows(in_database_but_no_history_item) do |taxon|
             [

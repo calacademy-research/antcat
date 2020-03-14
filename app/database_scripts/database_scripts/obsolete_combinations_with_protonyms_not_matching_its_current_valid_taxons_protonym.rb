@@ -8,10 +8,10 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :rank, :status, :origin, :current_valid_taxon,
-          :current_valid_taxon_status, :taxon_epithet, :current_valid_taxon_epithet,
-          :probably_change_cvt?,
-          :probably_change_status_to_synonym?
+        t.header 'Taxon', 'Rank', 'Status', 'Origin', 'current_valid_taxon',
+          'current_valid_taxon status', 'Taxon epithet', 'current_valid_taxon epithet',
+          'Probably change CVT?',
+          'Probably change status to synonym?'
 
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon

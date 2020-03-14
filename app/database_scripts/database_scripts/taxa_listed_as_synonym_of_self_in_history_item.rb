@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :history_item, :taxon, :taxt
+        t.header 'History item', 'Taxon', 'taxt'
         t.rows do |history_item|
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),

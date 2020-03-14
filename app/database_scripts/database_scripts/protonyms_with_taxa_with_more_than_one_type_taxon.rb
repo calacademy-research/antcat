@@ -11,7 +11,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :authorship, :ranks_of_taxa, :statuses_of_taxa, :all_type_taxa_identical?, :all_type_taxt_identical?, :looks_like_a_false_positive?
+        t.header 'Protonym', 'Authorship', 'Ranks of taxa', 'Statuses of taxa',
+          'All type taxa identical?', 'All type_taxt identical?', 'Looks like a false positive?'
         t.rows do |protonym|
           type_taxts = protonym.taxa.pluck(:type_taxt)
           type_taxts_identical = type_taxts.uniq.size == 1

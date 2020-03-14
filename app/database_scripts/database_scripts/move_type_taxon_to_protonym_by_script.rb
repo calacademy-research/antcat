@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :type_taxon, :type_taxt, :protonym
+        t.header 'Taxon', 'Status', 'Type taxon', 'type_taxt', 'Protonym'
         t.rows do |taxon|
           type_taxon = taxon. type_taxon
 

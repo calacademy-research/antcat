@@ -17,7 +17,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :item_type, :item_id
+        t.header 'item_type', 'item_id'
 
         cached_results.each do |model, ids|
           t.rows(ids) do |id|

@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :protonym, :locality
+        t.header 'Taxon', 'Status', 'Protonym', 'Locality'
         t.rows do |taxon|
           protonym = taxon.protonym
 

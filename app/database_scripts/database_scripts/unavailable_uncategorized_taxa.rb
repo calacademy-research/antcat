@@ -9,10 +9,10 @@ module DatabaseScripts
     def render
       as_table do |t|
         if SHOW_WHAT_LINKS_HERE
-          t.header :taxon, :status, :current_valid_taxon, :current_valid_taxon_status,
-            :any_what_links_here_columns?, :any_what_links_here_taxts?, :any?, :what_links_here
+          t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status',
+            'Any what links here columns?', 'Any What Links here taxts?', 'Any?', 'What Links Here'
         else
-          t.header :taxon, :status, :current_valid_taxon, :current_valid_taxon_status
+          t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status'
         end
 
         t.rows do |taxon|

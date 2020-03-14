@@ -16,7 +16,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :name, :type, :parsed_as_different_type, :owner_type, :will_be_fixed_by_itself?, :unparsable?
+        t.header 'Name', 'Type', 'Parsed as different type', 'Owner type', 'Will be fixed by itself?', 'Unparsable?'
         t.rows do |(name, parsed_name)|
           owner_type = name.id.in?(name_ids_owned_by_protonyms) ? 'Protonym' : 'Taxon'
 
