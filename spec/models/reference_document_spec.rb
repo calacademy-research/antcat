@@ -3,26 +3,28 @@ require 'rails_helper'
 describe ReferenceDocument do
   it { is_expected.to be_versioned }
 
-  it "makes sure it has a protocol" do
-    stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
-    document = create :reference_document
-    document.url = 'antcat.org/1.pdf'
-    document.save!
-    expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
-    document.save!
-    expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
-  end
+  describe 'validations' do
+    it "makes sure it has a protocol" do
+      stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
+      document = create :reference_document
+      document.url = 'antcat.org/1.pdf'
+      document.save!
+      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
+      document.save!
+      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
+    end
 
-  it "validates the URL" do
-    document = described_class.new(url: ':::')
-    expect(document).not_to be_valid
-    expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
-  end
+    it "validates the URL" do
+      document = described_class.new(url: ':::')
+      expect(document).not_to be_valid
+      expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
+    end
 
-  it "accepts URLs with spaces" do
-    stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
-    document = described_class.new(url: 'http://antwiki.org/a url')
-    expect(document).to be_valid
+    it "accepts URLs with spaces" do
+      stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
+      document = described_class.new(url: 'http://antwiki.org/a url')
+      expect(document).to be_valid
+    end
   end
 
   it "creates the URL for an uploaded file so that it goes to our controller" do

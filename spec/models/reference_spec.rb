@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe Reference do
+  it { is_expected.to be_versioned }
+  it { is_expected.to delegate_method(:url).to(:document).allow_nil }
+  it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
+
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
     it { is_expected.to have_many(:citations).dependent(:restrict_with_error) }
@@ -25,10 +29,6 @@ describe Reference do
       end
     end
   end
-
-  it { is_expected.to be_versioned }
-  it { is_expected.to delegate_method(:url).to(:document).allow_nil }
-  it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
 
   describe 'callbacks' do
     describe "changing `citation_year`" do
