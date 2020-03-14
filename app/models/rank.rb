@@ -13,4 +13,11 @@ class Rank
     'tribe',
     'genus'
   ]
+  ITALIC_RANKS = %w[genus subgenus species subspecies infrasubspecies]
+
+  class << self
+    def italic? rank
+      rank.in? ITALIC_RANKS
+    end
+  end
 end

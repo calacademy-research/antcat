@@ -4,9 +4,7 @@ class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  NON_ITALIC_NAME_TYPES = %w[FamilyName SubfamilyName TribeName SubtribeName]
-  ITALIC_NAME_TYPES = %w[GenusName SubgenusName SpeciesName SubspeciesName InfrasubspeciesName]
-  NAME_TYPES = NON_ITALIC_NAME_TYPES + ITALIC_NAME_TYPES
+  GENUS_GROUP_NAMES = %w[GenusName SubgenusName]
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
@@ -53,10 +51,6 @@ class Name < ApplicationRecord
     self.class.name.gsub(/Name$/, "").underscore
   end
 
-  def italics?
-    self.class.name.in?(ITALIC_NAME_TYPES)
-  end
-
   def name_html
     italicize_if_needed name
   end
@@ -76,7 +70,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless italics?
+      return string unless Rank.italic?(rank)
       Italicize[string]
     end
 
