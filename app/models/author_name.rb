@@ -40,6 +40,6 @@ class AuthorName < ApplicationRecord
     end
 
     def name_parts
-      @name_parts ||= Parsers::AuthorParser.get_name_parts name
+      @name_parts ||= References::ExtractAuthorNameParts[name]
     end
 end

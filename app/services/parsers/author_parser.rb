@@ -14,18 +14,5 @@ module Parsers
     rescue Citrus::ParseError
       []
     end
-
-    def self.get_name_parts string
-      parts = {}
-      return parts if string.blank?
-      matches = string.match /(.*?), (.*)/
-      if matches
-        parts[:last] = matches[1]
-        parts[:first_and_initials] = matches[2]
-      else
-        parts[:last] = string
-      end
-      parts
-    end
   end
 end
