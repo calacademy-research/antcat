@@ -4,8 +4,6 @@ class Name < ApplicationRecord
   include RevisionsCanBeCompared
   include Trackable
 
-  GENUS_GROUP_NAMES = %w[GenusName SubgenusName]
-
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]

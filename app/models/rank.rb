@@ -16,6 +16,7 @@ class Rank
   ITALIC_RANKS = %w[genus subgenus species subspecies infrasubspecies]
   # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
   SINGLE_WORD_RANKS = %w[family subfamily tribe subtribe genus]
+  GENUS_GROUP_NAMES_RANKS = %w[genus subgenus]
 
   class << self
     def italic? rank
@@ -24,6 +25,11 @@ class Rank
 
     def single_word_name? rank
       rank.in? SINGLE_WORD_RANKS
+    end
+
+    # See https://en.wikipedia.org/wiki/Taxonomic_rank#Ranks_in_zoology
+    def genus_group_name? rank
+      rank.in? GENUS_GROUP_NAMES_RANKS
     end
   end
 end

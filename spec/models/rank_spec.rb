@@ -30,4 +30,20 @@ describe Rank do
       expect(described_class.single_word_name?('infrasubspecies')).to eq false
     end
   end
+
+  describe ".genus_group_name?" do
+    specify do
+      expect(described_class.genus_group_name?('family')).to eq false
+      expect(described_class.genus_group_name?('subfamily')).to eq false
+      expect(described_class.genus_group_name?('tribe')).to eq false
+      expect(described_class.genus_group_name?('subtribe')).to eq false
+
+      expect(described_class.genus_group_name?('genus')).to eq true
+      expect(described_class.genus_group_name?('subgenus')).to eq true
+
+      expect(described_class.genus_group_name?('species')).to eq false
+      expect(described_class.genus_group_name?('subspecies')).to eq false
+      expect(described_class.genus_group_name?('infrasubspecies')).to eq false
+    end
+  end
 end
