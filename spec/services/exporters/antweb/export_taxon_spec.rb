@@ -358,7 +358,7 @@ describe Exporters::Antweb::ExportTaxon do
 
               # links
               %(#{antweb_taxon_link(genus, 'AntCat')} ) +
-              %(<a class="external-link" href="http://www.antwiki.org/wiki/Atta">AntWiki</a> ) +
+              %(<a class="external-link" href="https://www.antwiki.org/wiki/Atta">AntWiki</a> ) +
               %(<a class="external-link" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
             %(</div>) +
 

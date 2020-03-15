@@ -46,7 +46,7 @@ describe TaxonDecorator do
 
       it 'builds the URL from the full name' do
         expect(decorated.link_to_antwiki).
-          to eq %(<a class="external-link" href="http://www.antwiki.org/wiki/#{taxon.name.name.tr(' ', '_')}">AntWiki</a>)
+          to eq %(<a class="external-link" href="https://www.antwiki.org/wiki/#{taxon.name.name.tr(' ', '_')}">AntWiki</a>)
       end
     end
 
@@ -55,7 +55,7 @@ describe TaxonDecorator do
 
       it 'builds the URL from the subgenus epithet' do
         expect(decorated.link_to_antwiki).
-          to eq %(<a class="external-link" href="http://www.antwiki.org/wiki/Forelophilus">AntWiki</a>)
+          to eq %(<a class="external-link" href="https://www.antwiki.org/wiki/Forelophilus">AntWiki</a>)
       end
     end
   end
@@ -126,7 +126,7 @@ describe TaxonDecorator do
     end
 
     def antweb_link_with_params params
-      %(<a class="external-link" href="http://www.antweb.org/description.do?#{params}">AntWeb</a>)
+      %(<a class="external-link" href="https://www.antweb.org/description.do?#{params}">AntWeb</a>)
     end
   end
 end
