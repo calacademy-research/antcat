@@ -1,8 +1,9 @@
 !!!
-%html{xmlns: 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', lang: 'en'}
+%html{lang: 'en'}
   %head
     %title=title_tag @title
-    %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
+    %meta{charset: "utf-8"}
+    %meta{description: "An online catalog of the ants of the world."}
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     %meta{content: "#0071f4", name: "theme-color"}
 
@@ -18,8 +19,8 @@
     =stylesheet_link_tag 'dev_css' if include_dev_css?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
-    %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}>
-    %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}>
+    %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}
+    %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}
 
     =favicon_link_tag 'favicon_96x96.png'
 
