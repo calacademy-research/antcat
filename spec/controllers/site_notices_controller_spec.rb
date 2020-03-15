@@ -5,7 +5,7 @@ describe SiteNoticesController do
 
   before do
     sign_in editor
-    request.env["HTTP_REFERER"] = "http://antcat.org"
+    request.env["HTTP_REFERER"] = "https://antcat.org"
   end
 
   describe "forbidden actions" do

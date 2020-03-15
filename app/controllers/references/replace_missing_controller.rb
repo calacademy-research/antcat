@@ -1,4 +1,4 @@
-# TODO: Remove once http://antcat.org/database_scripts/missing_references has been cleared.
+# TODO: Remove once https://antcat.org/database_scripts/missing_references has been cleared.
 
 module References
   class ReplaceMissingController < ApplicationController

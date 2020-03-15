@@ -27,6 +27,7 @@ class ReferenceDocument < ApplicationRecord
 
   # TODO: See if we need this (and a lot of other things in this class).
   # TODO: `host` is sometimes "http://antcat.org" and sometimes "http://www.antcat.org".
+  # TODO: HTTPS adds another 2 variations.
   def host= host
     return unless hosted_by_us?
     # TODO: Investigate `Rails/SkipsModelValidations`.

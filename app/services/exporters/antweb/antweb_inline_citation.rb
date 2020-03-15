@@ -26,7 +26,7 @@ module Exporters
 
         # Hardcoded, or we must set `host` + use `reference_url(reference)`.
         def reference_url
-          "http://antcat.org/references/#{reference.id}"
+          "https://antcat.org/references/#{reference.id}"
         end
 
         def plain_text

@@ -6,8 +6,9 @@ class FeedbackDecorator < Draper::Decorator
     format_unregistered_submitter
   end
 
+  # TODO: Do not hardcode antcat.org.
   def format_page
-    url = "http://antcat.org/#{feedback.page}"
+    url = "https://antcat.org/#{feedback.page}"
     helpers.content_tag :p, "Page: #{helpers.link_to(url, url)}".html_safe
   end
 
@@ -18,8 +19,9 @@ class FeedbackDecorator < Draper::Decorator
              format_unregistered_submitter
            end
 
+    # TODO: Do not hardcode antcat.org.
     page = if feedback.page
-             "http://antcat.org/#{feedback.page}"
+             "https://antcat.org/#{feedback.page}"
            else
              "(none)"
            end

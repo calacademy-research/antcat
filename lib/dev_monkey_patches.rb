@@ -13,7 +13,7 @@
 #   => 17
 #
 # `ddpg ddrg.l` = puts AntCat catalog link of random species, with name, in green!
-#   => http://antcat.org/catalog/429929?Leptothorax
+#   => https://antcat.org/catalog/429929?Leptothorax
 #
 # `ddff.children.peach` = puts each child of the first genus
 #   => Total: 31 of types Genus.

@@ -9,7 +9,7 @@ module Exporters
       end
 
       # Parses "example {tax 429361}"
-      # into   "example <a href=\"http://antcat.org.org/catalog/429361\">Melophorini</a>"
+      # into   "example <a href=\"https://antcat.org/catalog/429361\">Melophorini</a>"
       def call
         return '' if taxt.blank?
 

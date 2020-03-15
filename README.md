@@ -1,7 +1,7 @@
 # AntCat
 *California Academy of Sciences*
 
-Ant taxonomy database -- http://antcat.org/
+Ant taxonomy database -- https://antcat.org/
 
                                                       |   /
                                                        \  |

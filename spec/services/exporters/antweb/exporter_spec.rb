@@ -18,7 +18,7 @@ describe Exporters::Antweb::Exporter do
 
     it "includes 'antcat.org' in the url" do
       expect(described_class.antcat_taxon_link_with_name(taxon)).to eq <<-HTML.squish
-        <a href="http://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
+        <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
       HTML
     end
 
@@ -30,7 +30,7 @@ describe Exporters::Antweb::Exporter do
 
     specify do
       expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to eq <<-HTML.squish
-        <a href="http://www.antcat.org/catalog/#{taxon.id}">Formicidae</a> #{taxon.author_citation}
+        <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a> #{taxon.author_citation}
       HTML
     end
 
