@@ -11,7 +11,7 @@
           %span.right
             =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
         -else
-          -number_of_words = taxon.name_class.name.in?(Name::SINGLE_WORD_NAMES) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
+          -number_of_words = Rank.single_word_name?(taxon.rank) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
           =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }
           -if taxon.is_a?(Subgenus)
             %span
@@ -22,7 +22,7 @@
       %td
         #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
-    -if taxon.name.is_a? GenusGroupName
+    -if Rank.genus_group_name?(taxon.rank)
       %tr
         %td=name_form.label :gender
         %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']

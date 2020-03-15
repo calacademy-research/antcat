@@ -2,6 +2,8 @@ require 'rails_helper'
 
 describe Taxon do
   describe 'relations' do
+    subject(:taxon) { create :family }
+
     it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
     it { is_expected.to belong_to(:protonym).dependent(false) }
@@ -9,6 +11,8 @@ describe Taxon do
   end
 
   describe 'validations' do
+    subject(:taxon) { create :family }
+
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :protonym }
     it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
@@ -213,7 +217,7 @@ describe Taxon do
     let!(:taxon) { build_stubbed :subfamily }
 
     it "returns a lowercase version" do
-      expect(taxon.name.rank).to eq 'subfamily'
+      expect(taxon.rank).to eq 'subfamily'
     end
   end
 
