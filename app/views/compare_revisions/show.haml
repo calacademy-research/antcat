@@ -9,20 +9,17 @@
   =stylesheet_link_tag "diffy"
   =javascript_include_tag "compare_revisions"
 
--content_for :application do
-  .row#compare-revisions
-    .medium-3.medium-push-9.columns
-      .callout
-        =render "compare_revisions/help"
+.row#compare-revisions
+  .medium-3.medium-push-9.columns
+    .callout
+      =render "compare_revisions/help"
 
-    .medium-9.medium-pull-3.columns
-      -unless hide_formatted
-        =render "compare_revisions/formatted", comparer: comparer, most_recent: most_recent, selected: selected, diff_with: diff_with, collapse_formatted: html_split_diff.present?
+  .medium-9.medium-pull-3.columns
+    -unless hide_formatted
+      =render "compare_revisions/formatted", comparer: comparer, most_recent: most_recent, selected: selected, diff_with: diff_with, collapse_formatted: html_split_diff.present?
 
-      -if diff_with
-        =render "compare_revisions/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with, hide_formatted: hide_formatted
+    -if diff_with
+      =render "compare_revisions/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with, hide_formatted: hide_formatted
 
-    .medium-9.columns.medium-pull-3.margin-bottom.margin-top
-      =render "compare_revisions/revision_history_table", comparer: comparer, revisions: revisions, most_recent: most_recent
-
-=render template: "layouts/application"
+  .medium-9.columns.medium-pull-3.margin-bottom.margin-top
+    =render "compare_revisions/revision_history_table", comparer: comparer, revisions: revisions, most_recent: most_recent

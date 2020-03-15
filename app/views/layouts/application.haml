@@ -43,12 +43,8 @@
           .row.collapse
             =render "breadcrumbs"
             =render "flash_messages"
-
             .small-12.columns.collapse
-              -if content_for? :application
-                =yield :application
-              -else
-                =yield
+              =yield
 
         =yield :after_content
 
