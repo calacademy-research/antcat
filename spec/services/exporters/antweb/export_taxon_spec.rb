@@ -348,7 +348,7 @@ describe Exporters::Antweb::ExportTaxon do
 
               # authorship
               %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." ) +
-              %(href="http://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
+              %(href="https://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
               %(: 12) +
               %(. ) +
 
@@ -375,7 +375,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(<div>) +
                 %(<div>Title</div>) +
                 %(<div>) +
-                  %(<a title="#{ref_title_tag}" href="http://antcat.org/references/#{a_reference.id}">) +
+                  %(<a title="#{ref_title_tag}" href="https://antcat.org/references/#{a_reference.id}">) +
                     %(#{ref_author}, #{ref_year}) +
                   %(</a> ) +
                   %(<a class="external-link" href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +

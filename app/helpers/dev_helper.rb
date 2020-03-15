@@ -19,7 +19,7 @@ module DevHelper
   private
 
     def current_url_on_live_site
-      "http://antcat.org#{request.path}"
+      "https://antcat.org#{request.path}"
     end
 
     def current_url_on_localhost

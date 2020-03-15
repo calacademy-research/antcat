@@ -4,7 +4,7 @@ describe Catalog::ToggleDisplaysController do
   describe "PUT update" do
     before do
       create :family
-      request.env["HTTP_REFERER"] = "http://antcat.org"
+      request.env["HTTP_REFERER"] = "https://antcat.org"
     end
 
     context 'when `valid_only`' do

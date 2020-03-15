@@ -1,5 +1,8 @@
 module DevMonkeyPatches
   module AntCat
+    PRODUCTION_BASE_URL = "https://antcat.org/"
+    LOCALHOST_BASE_URL = "localhost:3000/"
+
     def self.patch!
       ::Taxon.include Taxon
       ::Reference.include Reference
@@ -8,8 +11,8 @@ module DevMonkeyPatches
 
     module Taxon
       def dev_dev_link localhost: false
-        host = localhost ? "localhost:3000" : "antcat.org"
-        link = "http://#{host}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
+        base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
+        link = "#{base_url}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
         def link.open
           `xdg-open "#{self}"`
         end
@@ -25,8 +28,8 @@ module DevMonkeyPatches
 
     module Reference
       def dev_dev_link localhost: false
-        host = localhost ? "localhost:3000" : "antcat.org"
-        link = "http://#{host}/references/#{id}?#{keey.tr(' ', '_')}"
+        base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
+        link = "#{base_url}/references/#{id}?#{keey.tr(' ', '_')}"
         def link.open
           `xdg-open "#{self}"`
         end
@@ -42,8 +45,8 @@ module DevMonkeyPatches
 
     module ReferenceSection
       def dev_dev_link localhost: false
-        host = localhost ? "localhost:3000" : "antcat.org"
-        link = "http://#{host}/reference_sections/#{id}/edit"
+        base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
+        link = "#{base_url}/reference_sections/#{id}/edit"
         def link.open
           `xdg-open "#{self}"`
         end

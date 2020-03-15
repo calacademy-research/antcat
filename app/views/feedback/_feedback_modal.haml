@@ -41,7 +41,7 @@
     .row
       .medium-12.columns
         .input-group
-          %span.input-group-label Page: http://www.antcat.org/
+          %span.input-group-label Page: https://www.antcat.org/
           -page_path = request.original_fullpath.gsub(/^\//, "")
           =f.text_field :page, value: page_path, placeholder: "Optional", class: "input-group-field"
 

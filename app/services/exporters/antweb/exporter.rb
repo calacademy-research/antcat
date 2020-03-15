@@ -6,7 +6,7 @@ module Exporters
       include Service
 
       def self.antcat_taxon_link taxon, label = "AntCat"
-        url = "http://www.antcat.org/catalog/#{taxon.id}"
+        url = "https://www.antcat.org/catalog/#{taxon.id}"
         %(<a href="#{url}">#{label}</a>).html_safe
       end
 
