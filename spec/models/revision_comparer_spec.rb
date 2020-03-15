@@ -35,12 +35,6 @@ describe RevisionComparer, :versioning do
       it "returns reified objects from the versions" do
         expect(comparer.diff_with.taxt).to eq "initial content"
       end
-
-      it "plays nice with #html_split_diff" do
-        diff = comparer.html_split_diff
-        expect(diff.left).to match "<strong>initial content</strong>"
-        expect(diff.right).to match "<strong>last version</strong>"
-      end
     end
 
     describe "#selected" do
@@ -48,10 +42,6 @@ describe RevisionComparer, :versioning do
 
       it "returns reified objects from the versions" do
         expect(comparer.selected.taxt).to eq "second version"
-      end
-
-      it "cannot be diffed by #html_split_diff" do
-        expect(comparer.html_split_diff).to eq nil
       end
     end
 
@@ -62,28 +52,6 @@ describe RevisionComparer, :versioning do
         expect(comparer.diff_with.taxt).to eq "initial content"
         expect(comparer.selected.taxt).to eq "second version"
         expect(comparer.most_recent.taxt).to eq "last version"
-      end
-
-      it "plays nice with #html_split_diff" do
-        diff = comparer.html_split_diff
-        expect(diff.left).to match "<strong>initial content</strong>"
-        expect(diff.right).to match "<strong>second version</strong>"
-      end
-    end
-  end
-
-  describe "#html_split_diff" do
-    context "when item has been deleted" do
-      let!(:diff_with_id) { item.tap { |item| item.update!(taxt: "second revision content") }.versions.last.id }
-
-      before { item.destroy }
-
-      it "returns a diff for side-by-side comparison" do
-        comparer = described_class.new(model, item_id, nil, diff_with_id)
-        diff = comparer.html_split_diff
-
-        expect(diff.left).to match "<strong>initial</strong> content"
-        expect(diff.right).to match "<strong>second revision</strong> content"
       end
     end
   end
