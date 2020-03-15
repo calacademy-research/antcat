@@ -8,7 +8,6 @@
 
     =csrf_meta_tag
 
-    =javascript_include_tag 'google_analytics' if Rails.env.production?
     =javascript_include_tag 'application'
     =javascript_include_tag 'logged_in_only' if current_user
 
@@ -64,3 +63,6 @@
         %footer#taxon-browser-sticky-target-js-hook=render "footer"
 
       =render "feedback/feedback_modal"
+
+      -if Rails.env.production?
+        =render "google_analytics"
