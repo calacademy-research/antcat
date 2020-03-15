@@ -4,6 +4,17 @@
 =form_tag author_merges_path do
   =hidden_field_tag :author_to_merge_id, @author_to_merge.id
   .row
+    .medium-12.columns.margin-bottom
+      %p
+        %h5 Please confirm
+        %ul
+          -[@author, @author_to_merge].each do |author|
+            -author.names.each do |author_name|
+              %li=author_name.name
+        Click this button to make the target names refer to the same author, so that searching for one of the names finds the others.
+      %p=button_tag 'Merge these authors', type: "submit", data: { confirm: 'Do you want to merge these authors?' }, class: "btn-warning"
+
+  .row
     .medium-6.columns
       %h6 Target author
       =render 'author', author: @author
@@ -11,15 +22,3 @@
     .medium-6.columns
       %h6 Author to merge into target
       =render 'author', author: @author_to_merge
-
-  .row
-    .medium-12.columns
-      %p
-        %h5 Please confirm
-        %ul
-          -[@author, @author_to_merge].each do |author|
-            -author.names.each do |author_name|
-              %li=author_name.name
-        Click this button to make the above names refer to the same author, so that searching for one of the names finds the others.
-
-      %p=button_tag 'Merge these authors', type: "submit", data: { confirm: 'Do you want to merge these authors?' }, class: "btn-warning"

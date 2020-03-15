@@ -1,9 +1,7 @@
 -author.names.each do |author_name|
   -references = author_name.references
-  %strong=author_name.name
+  %h6
+    %strong=author_name.name
   %small #{references.count} reference(s)
   -if references.present?
-    .callout.references
-      -references.each do |reference|
-        .reference
-          =link_to reference.decorate.expanded_reference, reference_path(reference)
+    =render "shared/reference_table", references: references
