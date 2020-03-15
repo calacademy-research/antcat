@@ -13,7 +13,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :author_citation, :status, :current_valid_taxon, :author_citation, :status
+        t.header 'Taxon', 'Author citation', 'Status', 'current_valid_taxon', 'Author citation', 'Status'
 
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon

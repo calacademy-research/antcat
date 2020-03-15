@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :reference, :url, :created_at, :versions
+        t.header 'Reference', 'URL', 'Created at', 'Versions'
         t.rows do |reference|
           reference_document = reference.document
 

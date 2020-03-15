@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 describe MissingReference do
-  it { is_expected.to allow_value(nil).for :year }
-  it { is_expected.to allow_values('1990', '1990b').for(:citation_year) }
-  it { is_expected.to_not allow_values('199', '1990 "1991"', '19900', '1990bb').for(:citation_year) }
+  describe 'validations' do
+    it { is_expected.to allow_value(nil).for :year }
+    it { is_expected.to allow_values('1990', '1990b').for(:citation_year) }
+    it { is_expected.to_not allow_values('199', '1990 "1991"', '19900', '1990bb').for(:citation_year) }
+  end
 
   describe "#keey" do
     let(:reference) { build_stubbed :missing_reference, citation: "citation" }

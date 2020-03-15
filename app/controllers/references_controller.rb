@@ -67,19 +67,8 @@ class ReferencesController < ApplicationController
 
   private
 
-    def reference_form
-      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?)
-    end
-
-    def set_reference_type
-      reference = @reference.becomes reference_type_from_params
-      reference.type = reference_type_from_params
-      reference
-    end
-
-    def reference_type_from_params
-      reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
-      reference_class || raise("reference type is not supported")
+    def set_reference
+      @reference = Reference.find(params[:id])
     end
 
     def reference_params
@@ -105,7 +94,18 @@ class ReferencesController < ApplicationController
       )
     end
 
-    def set_reference
-      @reference = Reference.find(params[:id])
+    def reference_form
+      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?)
+    end
+
+    def set_reference_type
+      reference = @reference.becomes reference_type_from_params
+      reference.type = reference_type_from_params
+      reference
+    end
+
+    def reference_type_from_params
+      reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
+      reference_class || raise("reference type is not supported")
     end
 end

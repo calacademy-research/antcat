@@ -11,7 +11,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :authorship, :status, :unresolved_homonym?
+        t.header 'Taxon', 'Authorship', 'Status', 'Unresolved homonym?'
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),

@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :authorship, :statuses_of_taxa, :any_unresolved_homonyms?
+        t.header 'Protonym', 'Authorship', 'Statuses of taxa', 'Any unresolved homonyms?'
         t.rows do |protonym|
           taxa_statuses = protonym.taxa.pluck(:status)
 

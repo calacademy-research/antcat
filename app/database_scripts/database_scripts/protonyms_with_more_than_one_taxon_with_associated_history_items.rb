@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :ranks_of_taxa, :taxa, :statuses_of_taxa, :looks_like_a_false_positive?
+        t.header 'Protonym', 'Ranks of taxa', 'Taxa', 'Statuses of taxa', 'Looks like a false positive?'
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,

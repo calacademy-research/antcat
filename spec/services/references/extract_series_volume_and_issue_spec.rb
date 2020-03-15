@@ -1,8 +1,6 @@
 require 'rails_helper'
 
 describe References::ExtractSeriesVolumeAndIssue do
-  let(:reference) { create :article_reference }
-
   describe "#call" do
     it "can parse out volume and issue" do
       expect(described_class["92(32)"]).to eq volume: '92', issue: '32'

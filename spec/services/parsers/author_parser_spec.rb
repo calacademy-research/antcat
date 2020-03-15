@@ -95,27 +95,4 @@ describe Parsers::AuthorParser do
       expect(described_class.parse('Espadaler & DuMerle')).to eq ['Espadaler', 'DuMerle']
     end
   end
-
-  describe ".get_name_parts" do
-    it "returns an empty hash if the string is empty" do
-      expect(described_class.get_name_parts('')).to eq({})
-      expect(described_class.get_name_parts(nil)).to eq({})
-    end
-
-    it "simply returns the name if there's only one word" do
-      expect(described_class.get_name_parts('Bolton')).to eq last: 'Bolton'
-    end
-
-    it "separates the words if there are multiple" do
-      expect(described_class.get_name_parts('Bolton, B.L.')).to eq last: 'Bolton', first_and_initials: 'B.L.'
-    end
-
-    it "uses all words if there is no comma" do
-      expect(described_class.get_name_parts('Royal Academy')).to eq last: 'Royal Academy'
-    end
-
-    it "uses all words before the comma if there are multiple" do
-      expect(described_class.get_name_parts('Baroni Urbani, C.')).to eq last: 'Baroni Urbani', first_and_initials: 'C.'
-    end
-  end
 end

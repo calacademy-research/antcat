@@ -148,7 +148,6 @@ paths:
       operationId: getAuthors
       tags:
         - authors
-
       responses:
         "200":
           description: Array of Ids of all authors and their create/update dates
@@ -248,12 +247,12 @@ paths:
       tags:
         - citations
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest citation ID to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest citation ID to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 citations at a time starting at the specified citation id. If no id is supplied, starts at zero
@@ -293,16 +292,15 @@ paths:
       tags:
         - taxon_history_items
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest taxon_history_item id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest taxon_history_item id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 taxon history items at a time starting at the specified taxon_history_item_id id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -338,16 +336,15 @@ paths:
       tags:
         - journals
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest journal id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest journal id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 journals at a time starting the specified journal id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -383,16 +380,15 @@ paths:
       tags:
         - publishers
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest publisher id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest publisher id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 publishers at a time starting the specified publisher id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -428,16 +424,15 @@ paths:
       tags:
         - references
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest reference id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest reference id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 references at a time starting the specified reference id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -473,16 +468,15 @@ paths:
       tags:
         - reference_author_names
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest reference id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest reference id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 referenceAuthorNames at a time starting the specified reference id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -518,16 +512,15 @@ paths:
       tags:
         - reference_documents
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest reference id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest reference id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 referenceDocuments at a time starting the specified reference id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -563,16 +556,15 @@ paths:
       tags:
         - reference_sections
       parameters:
-          - name: starts_at
-            in: query
-            description: Lowest reference id to be returned
-            required: false
-            type: integer
-            format: int32
+        - name: starts_at
+          in: query
+          description: Lowest reference id to be returned
+          required: false
+          type: integer
+          format: int32
       responses:
         "200":
           description: Returns 100 referenceSections at a time starting the specified reference id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -620,15 +612,15 @@ definitions:
         type: string
         description: Level of this particular taxon
         enum:
-        - family
-        - genus
-        - infrasubspecies
-        - species
-        - subfamily
-        - subgenus
-        - subspecies
-        - subtribe
-        - tribe
+          - family
+          - genus
+          - infrasubspecies
+          - species
+          - subfamily
+          - subgenus
+          - subspecies
+          - subtribe
+          - tribe
       body:
         type: object
         properties:
@@ -650,15 +642,15 @@ definitions:
             type: string
             description: State (status of this record)
             enum:
-            - valid
-            - unidentifiable
-            - excluded from Formicidae
-            - homonym
-            - unavailable
-            - synonym
-            - obsolete combination
-            - unavailable misspelling
-            - unavailable uncategorized
+              - valid
+              - unidentifiable
+              - excluded from Formicidae
+              - homonym
+              - unavailable
+              - synonym
+              - obsolete combination
+              - unavailable misspelling
+              - unavailable uncategorized
           protonym_id:
             type: integer
             description: Id of the protonym record
@@ -788,15 +780,15 @@ definitions:
         type: string
         description: Level of name
         enum:
-        - SubtribeName
-        - GenusName
-        - SpeciesName
-        - TribeName
-        - SubfamilyName
-        - SubgenusName
-        - SubspeciesName
-        - InfrasubspeciesName
-        - SubtribeName
+          - SubtribeName
+          - GenusName
+          - SpeciesName
+          - TribeName
+          - SubfamilyName
+          - SubgenusName
+          - SubspeciesName
+          - InfrasubspeciesName
+          - SubtribeName
       name:
         type: string
         description: Plain text name
@@ -807,9 +799,9 @@ definitions:
         type: string
         description: gender
         enum:
-        - masculine
-        - feninine
-        - neuter
+          - masculine
+          - feninine
+          - neuter
       nonconforming_name:
         type: boolean
         description: Names not confirming to standard naming conventions because they're archiac or erroneous.

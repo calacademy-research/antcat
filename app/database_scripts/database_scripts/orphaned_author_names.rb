@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :author
+        t.header 'ID', 'Author'
         t.rows do |author_name|
           [
             author_name.author.id,

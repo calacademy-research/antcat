@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe Subtribe do
-  it { is_expected.to validate_presence_of :subfamily }
-  it { is_expected.to validate_presence_of :tribe }
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :subfamily }
+    it { is_expected.to validate_presence_of :tribe }
+  end
 
   describe "#parent" do
     let(:subtribe) { build_stubbed :subtribe }

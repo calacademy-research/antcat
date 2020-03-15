@@ -21,7 +21,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :reference_section, :taxon, :content, :issue
+        t.header 'Reference section', 'Taxon', 'Content', 'Issue'
         t.rows do |reference_section, content, issue|
           [
             reference_section_link(reference_section.id),

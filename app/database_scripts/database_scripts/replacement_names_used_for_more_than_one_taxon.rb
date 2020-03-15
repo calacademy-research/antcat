@@ -14,7 +14,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :replaced_by, :status_of_replaced_by, :looks_like_a_false_positive?
+        t.header 'Taxon', 'Status', 'replaced_by', 'Status of replaced_by', 'Looks like a false positive?'
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),

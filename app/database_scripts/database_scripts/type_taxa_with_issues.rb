@@ -11,7 +11,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :rank, :type_taxon, :tt_rank, :tt_status, :type_taxon_now, :ttn_rank, :ttn_status, :issue, :suggested_script_action
+        t.header 'Taxon', 'Rank', 'Type taxon', 'TT rank', 'TT status', 'Type taxon now', 'TTN rank',
+          'TTN status', 'Issue', 'Suggested script action'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxon_now = type_taxon.now

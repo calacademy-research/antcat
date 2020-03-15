@@ -6,7 +6,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :any_what_links_here_columns?, :any_what_links_here_taxts?, :any?, :suggested_action, :what_links_here, :children
+        t.header 'Taxon', 'Status', 'Any what links here columns?', 'Any What Links here taxts?',
+          'Any?', 'Suggested action', 'What Links Here', 'Children'
         t.rows do |taxon|
           [
             markdown_taxon_link(taxon),

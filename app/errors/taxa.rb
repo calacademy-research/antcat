@@ -1,5 +1,4 @@
 module Taxa
-  # TODO: Decide what do do with these.
   class TaxonHasSubspecies < StandardError; end
   class TaxonHasInfrasubspecies < StandardError; end
 

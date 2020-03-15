@@ -2,18 +2,21 @@ require 'rails_helper'
 
 describe AuthorName do
   it { is_expected.to be_versioned }
-  it { is_expected.to validate_presence_of :author }
-  it { is_expected.to validate_presence_of :name }
-
-  describe "uniqueness validation" do
-    subject { create :author_name }
-
-    it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
-  end
 
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :author }
+    it { is_expected.to validate_presence_of :name }
+
+    describe "uniqueness validation" do
+      subject { create :author_name }
+
+      it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
+    end
   end
 
   describe "#last_name and #first_name_and_initials" do

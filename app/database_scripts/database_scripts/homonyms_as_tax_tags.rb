@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :history_item, :taxon, :status, :taxt
+        t.header 'History item', 'Taxon', 'Status', 'taxt'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon

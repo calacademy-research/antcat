@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :id, :reference, :what_links_here, :replace
+        t.header 'ID', 'Reference', 'What Links Here', 'Replace'
         t.rows do |reference|
           [
             link_to(reference.id, reference_path(reference)),

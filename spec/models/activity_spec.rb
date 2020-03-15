@@ -2,8 +2,11 @@ require 'rails_helper'
 
 describe Activity do
   it { is_expected.to be_versioned }
-  it { is_expected.to validate_presence_of :action }
-  it { is_expected.to validate_inclusion_of(:action).in_array Activity::ACTIONS }
+
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :action }
+    it { is_expected.to validate_inclusion_of(:action).in_array(Activity::ACTIONS) }
+  end
 
   it_behaves_like "a model that assigns `request_id` on create" do
     let(:instance) { build :activity }

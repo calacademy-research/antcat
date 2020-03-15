@@ -13,7 +13,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :protonym, :notes_taxt, :notes_type
+        t.header 'Protonym', 'notes_taxt', 'notes_type'
         t.rows do |protonym|
           notes_taxt = protonym.authorship.notes_taxt
 

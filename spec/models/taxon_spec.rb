@@ -1,10 +1,6 @@
 require 'rails_helper'
 
 describe Taxon do
-  it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :protonym }
-  it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
-
   describe 'relations' do
     it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
@@ -13,6 +9,10 @@ describe Taxon do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :protonym }
+    it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
+
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
         let(:replaced_by) { build_stubbed :family }

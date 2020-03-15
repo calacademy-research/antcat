@@ -1,10 +1,12 @@
 require 'rails_helper'
 
 describe ArticleReference do
-  it { is_expected.to validate_presence_of :year }
-  it { is_expected.to validate_presence_of :series_volume_issue }
-  it { is_expected.to validate_presence_of :journal }
-  it { is_expected.to validate_presence_of :pagination }
+  describe 'validations' do
+    it { is_expected.to validate_presence_of :year }
+    it { is_expected.to validate_presence_of :series_volume_issue }
+    it { is_expected.to validate_presence_of :journal }
+    it { is_expected.to validate_presence_of :pagination }
+  end
 
   describe "parsing fields from series_volume_issue" do
     let(:reference) { build_stubbed :article_reference }

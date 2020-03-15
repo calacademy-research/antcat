@@ -11,7 +11,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :check, :ok?
+        t.header 'Check', 'Ok?'
         t.rows do |check|
           [
             check[:title],

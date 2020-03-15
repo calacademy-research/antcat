@@ -16,7 +16,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :unique_subspecies_statuses, :incompatible_subspecies
+        t.header 'Taxon', 'Status', 'Unique subspecies statuses', 'Incompatible subspecies'
         t.rows do |taxon|
           taxa = taxon.subspecies
           incompatible_taxa = taxa.where.not(status: COMPATIBLE_STATUSES)

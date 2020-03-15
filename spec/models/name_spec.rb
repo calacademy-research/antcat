@@ -2,8 +2,6 @@ require 'rails_helper'
 
 describe Name do
   it { is_expected.to be_versioned }
-  it { is_expected.to validate_presence_of :name }
-  it { is_expected.to validate_presence_of :epithet }
 
   describe 'relations' do
     it { is_expected.to have_many(:protonyms).dependent(:restrict_with_error) }
@@ -11,6 +9,9 @@ describe Name do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_presence_of :epithet }
+
     describe '#ensure_starts_with_upper_case_letter' do
       let(:name) { build_stubbed :genus_name, name: 'lasius' }
 

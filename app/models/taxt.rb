@@ -15,7 +15,6 @@ module Taxt
     type_taxon_id
   ]
 
-  # TODO: Decide what to do with this.
   TAXTABLES = [
     [Citation,         'citations',           'notes_taxt'],
     [ReferenceSection, 'reference_sections',  'references_taxt'],

@@ -7,7 +7,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :author, :count, :author_names
+        t.header 'Author', 'Count', 'Author names'
         t.rows do |author|
           [
             link_to(author.first_author_name_name, author_path(author)),

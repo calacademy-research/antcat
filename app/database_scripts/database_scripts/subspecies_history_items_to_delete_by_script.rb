@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :history_item, :species, :rank, :status
+        t.header 'History item', 'Species', 'Rank', 'Status'
         t.rows do |history_item|
           taxon = history_item.taxon
 

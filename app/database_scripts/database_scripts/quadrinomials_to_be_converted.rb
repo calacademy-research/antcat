@@ -6,7 +6,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :target_subspecies_name_string, :convertable?, :target_subspecies, :status, :target_subspecies_validation_issues
+        t.header 'Taxon', 'Status', 'Target subspecies name string', 'Convertable?', 'Target subspecies',
+          'Status', 'Target subspecies validation issues'
 
         t.rows do |taxon|
           name_string = taxon.name_cache
@@ -49,7 +50,7 @@ description: >
   To be converted by script.
 
 
-  **TODO:**
+  **Todo:**
 
 
   * *Done* - Step 1) Convert batch 1: Quadrinomials where a `Subspecies` with the target name exists

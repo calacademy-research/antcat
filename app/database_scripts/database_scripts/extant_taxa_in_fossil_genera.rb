@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :species_or_subspecies, :status, :genus, :genus_status
+        t.header 'Species or subspecies', 'Status', 'Genus', 'Genus status'
 
         t.rows do |taxon|
           [

@@ -65,6 +65,11 @@ class FeedbackController < ApplicationController
       @feedback = Feedback.find(params[:id])
     end
 
+    def feedback_params
+      params[:feedback].delete(:work_email) # Honeypot.
+      params.require(:feedback).permit(:comment, :name, :email, :user, :page)
+    end
+
     def on_spam _options = {}
       render json: "You're not a bot are you? Feedback not sent. Email us?", status: :unprocessable_entity
     end
@@ -80,10 +85,5 @@ class FeedbackController < ApplicationController
 
     def feedback_success_callout
       render_to_string partial: "feedback_success_callout", locals: { feedback_id: @feedback.id }
-    end
-
-    def feedback_params
-      params[:feedback].delete(:work_email) # Honeypot.
-      params.require(:feedback).permit(:comment, :name, :email, :user, :page)
     end
 end

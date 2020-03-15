@@ -34,7 +34,7 @@ describe DatabaseScripts::Renderers::AsCSV do
       it 'renders the supplied `results` as CSV' do
         rendered =
           dummy.as_csv do |c|
-            c.header :taxon, :status
+            c.header 'Taxon', 'Status'
 
             c.rows(Taxon.all) do |taxon|
               [taxon.id, taxon.status]
@@ -42,7 +42,7 @@ describe DatabaseScripts::Renderers::AsCSV do
           end
 
         expect(rendered).to eq <<~CSV
-          taxon,status
+          Taxon,Status
           #{taxon.id},#{taxon.status}
         CSV
       end

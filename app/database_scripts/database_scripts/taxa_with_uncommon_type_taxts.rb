@@ -8,7 +8,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header :taxon, :status, :antwiki, :type_taxon, :tt_status, :type_taxt, :default_expansion
+        t.header 'Taxon', 'Status', 'AntWiki', 'Type taxon', 'TT status', 'type_taxt', 'Default expansion'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
           type_taxt = taxon.type_taxt

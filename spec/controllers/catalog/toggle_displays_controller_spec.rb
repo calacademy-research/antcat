@@ -8,15 +8,17 @@ describe Catalog::ToggleDisplaysController do
     end
 
     context 'when `valid_only`' do
-      before { put :update, params: { show: 'valid_only' } }
-
-      it { is_expected.to set_session[:show_invalid].to false }
+      specify do
+        expect { put :update, params: { show: 'valid_only' } }.
+          to change { session[:show_invalid] }.to(false)
+      end
     end
 
     context 'when `valid_and_invalid`' do
-      before { put :update, params: { show: 'valid_and_invalid' } }
-
-      it { is_expected.to set_session[:show_invalid].to true }
+      specify do
+        expect { put :update, params: { show: 'valid_and_invalid' } }.
+          to change { session[:show_invalid] }.to(true)
+      end
     end
   end
 end

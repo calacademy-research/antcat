@@ -29,7 +29,7 @@ $ ->
 
   referencesDataSet =
     name: 'references'
-    limit: Infinity # TODO: Bug in typeahead.js v0.11.1; limited on server-side anyway.
+    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
     displayKey: 'search_query'
     source: references.ttAdapter()
     templates:
