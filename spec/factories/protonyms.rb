@@ -12,5 +12,11 @@ FactoryBot.define do
     trait :species_group_name do
       association :name, factory: :species_name
     end
+
+    trait :with_taxts do
+      sequence(:primary_type_information_taxt) { |n| "primary_type_information_taxt #{n}" }
+      sequence(:secondary_type_information_taxt) { |n| "secondary_type_information_taxt #{n}" }
+      sequence(:type_notes_taxt) { |n| "type_notes_taxt #{n}" }
+    end
   end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
-      create :family
+      create :protonym
       get :index
     end
 
@@ -15,12 +15,29 @@ describe Api::V1::ProtonymsController do
   end
 
   describe "GET show" do
-    let!(:taxon) { create :family }
+    let!(:protonym) { create :protonym, :with_taxts, biogeographic_region: 'Nearctic', locality: "USA" }
 
-    before { get :show, params: { id: taxon.protonym_id } }
+    before { get :show, params: { id: protonym.id } }
 
-    it "fetches a protonym" do
-      expect(response.body.to_s).to include taxon.protonym.id.to_s
+    specify do
+      expect(json_response).to eq(
+        {
+          "protonym" => {
+            "id" => protonym.id,
+            "name_id" => protonym.name_id,
+            "authorship_id" => protonym.authorship.id,
+            "sic" => protonym.sic,
+            "fossil" => protonym.fossil,
+            "biogeographic_region" => 'Nearctic',
+            "locality" => 'USA',
+            "primary_type_information_taxt" => protonym.primary_type_information_taxt,
+            "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
+            "type_notes_taxt" => protonym.type_notes_taxt,
+            "created_at" => protonym.created_at.as_json,
+            "updated_at" => protonym.updated_at.as_json
+          }
+        }
+      )
     end
 
     specify { expect(response).to have_http_status :ok }
