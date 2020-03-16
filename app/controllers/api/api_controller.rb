@@ -1,12 +1,12 @@
 module Api
   class ApiController < ApplicationController
     def index klass
-      if params[:starts_at]
-        starts_at = params[:starts_at]
-        items = klass.where('id >= ?', starts_at.to_i).order('id asc').limit('100')
-      else
-        items = klass.all.order('id asc').limit('100')
-      end
+      items = if params[:starts_at]
+                klass.where('id >= ?', params[:starts_at].to_i)
+              else
+                klass.all
+              end.order(id: :asc).limit(100)
+
       render json: items, status: :ok
     end
 
