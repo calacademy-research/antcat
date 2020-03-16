@@ -15,7 +15,7 @@ describe Api::V1::ProtonymsController do
   end
 
   describe "GET show" do
-    let!(:protonym) { create :protonym, :with_taxts, biogeographic_region: 'Nearctic', locality: "USA" }
+    let!(:protonym) { create :protonym, :with_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA" }
 
     before { get :show, params: { id: protonym.id } }
 
@@ -28,7 +28,7 @@ describe Api::V1::ProtonymsController do
             "authorship_id" => protonym.authorship.id,
             "sic" => protonym.sic,
             "fossil" => protonym.fossil,
-            "biogeographic_region" => 'Nearctic',
+            "biogeographic_region" => Protonym::NEARCTIC_REGION,
             "locality" => 'USA',
             "primary_type_information_taxt" => protonym.primary_type_information_taxt,
             "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,

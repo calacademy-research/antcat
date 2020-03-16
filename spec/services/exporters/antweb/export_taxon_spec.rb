@@ -399,10 +399,10 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[19]: `bioregion`" do
-      let!(:protonym) { create :protonym, :species_group_name, biogeographic_region: 'Neotropic' }
+      let!(:protonym) { create :protonym, :species_group_name, biogeographic_region: Protonym::NEARCTIC_REGION }
       let!(:taxon) { create :species, protonym: protonym }
 
-      specify { expect(described_class[taxon][19]).to eq 'Neotropic' }
+      specify { expect(described_class[taxon][19]).to eq Protonym::NEARCTIC_REGION }
     end
 
     describe "[20]: `country`" do
