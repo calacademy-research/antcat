@@ -10,8 +10,13 @@ class RevisionPresenter
     expanded_reference_cache
   ]
 
-  def initialize comparer:
+  def initialize comparer:, hide_formatted: false
     @comparer = comparer
+    @hide_formatted = hide_formatted
+  end
+
+  def hide_formatted?
+    hide_formatted
   end
 
   def html_split_diff
@@ -27,7 +32,7 @@ class RevisionPresenter
 
     delegate :selected, :diff_with, :most_recent, to: :comparer
 
-    attr_reader :comparer
+    attr_reader :comparer, :hide_formatted
 
     def diff_format item
       json = to_json item

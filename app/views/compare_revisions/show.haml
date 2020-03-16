@@ -3,7 +3,6 @@
 -selected         = comparer.selected
 -revisions        = comparer.revisions.reverse
 -html_split_diff  = revision_presenter.html_split_diff
--hide_formatted ||= false
 
 -content_for :head do
   =stylesheet_link_tag "diffy"
@@ -15,11 +14,11 @@
       =render "compare_revisions/help"
 
   .medium-9.medium-pull-3.columns
-    -unless hide_formatted
+    -unless revision_presenter.hide_formatted?
       =render "compare_revisions/formatted", comparer: comparer, most_recent: most_recent, selected: selected, diff_with: diff_with, collapse_formatted: html_split_diff.present?, revision_presenter: revision_presenter
 
     -if diff_with
-      =render "compare_revisions/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with, hide_formatted: hide_formatted
+      =render "compare_revisions/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with, hide_formatted: revision_presenter.hide_formatted?
 
   .medium-9.columns.medium-pull-3.margin-bottom.margin-top
     =render "compare_revisions/revision_history_table", comparer: comparer, revisions: revisions, most_recent: most_recent, revision_presenter: revision_presenter
