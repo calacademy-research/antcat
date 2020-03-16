@@ -1,2 +1,2 @@
-default: --require features --format progress
+default: --require features --format progress --order random
 in_vim: --require features --format pretty --no-source

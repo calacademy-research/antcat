@@ -19,7 +19,7 @@ before_script:
 script:
   - bundle exec rubocop
   - RAILS_ENV=test bundle exec rake db:create
-  - bundle exec cucumber
+  - bundle exec cucumber --order random
   - bundle exec rspec spec --tag ~pending --order rand
 
 services:
