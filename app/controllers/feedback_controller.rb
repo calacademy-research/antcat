@@ -66,7 +66,6 @@ class FeedbackController < ApplicationController
     end
 
     def feedback_params
-      params[:feedback].delete(:work_email) # Honeypot.
       params.require(:feedback).permit(:comment, :name, :email, :user, :page)
     end
 
