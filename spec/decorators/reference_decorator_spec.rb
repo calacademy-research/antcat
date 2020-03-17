@@ -28,7 +28,7 @@ describe ReferenceDecorator do
 
     before do
       allow(reference).to receive(:downloadable?).and_return true
-      allow(reference).to receive(:url).and_return 'example.com'
+      allow(reference).to receive(:routed_url).and_return 'example.com'
     end
 
     it "creates a link" do

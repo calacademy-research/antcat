@@ -23,7 +23,7 @@ module Wikipedia
       attr_reader :reference
 
       def url
-        reference.url if reference.downloadable?
+        reference.routed_url if reference.downloadable?
       end
 
       def pages

@@ -50,7 +50,7 @@ describe CachedReferenceFormatter do
 
     describe "#expandable_reference" do
       before do
-        allow(reference).to receive(:url).and_return 'example.com'
+        allow(reference).to receive(:routed_url).and_return 'example.com'
         allow(reference).to receive(:downloadable?).and_return true
       end
 

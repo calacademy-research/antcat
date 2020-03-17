@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Reference do
   it { is_expected.to be_versioned }
-  it { is_expected.to delegate_method(:url).to(:document).allow_nil }
+  it { is_expected.to delegate_method(:routed_url).to(:document).allow_nil }
   it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
 
   describe 'relations' do

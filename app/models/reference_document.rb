@@ -38,11 +38,17 @@ class ReferenceDocument < ApplicationRecord
   end
 
   def downloadable?
+    return true if hosted_by_us?
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
   end
 
   def actual_url
     hosted_by_us? ? s3_url : url
+  end
+
+  # TODO: Rename `reference_documents.url` --> `reference_documents.external_url`.
+  def routed_url
+    hosted_by_us? ? url_via_file_file_name : url
   end
 
   private

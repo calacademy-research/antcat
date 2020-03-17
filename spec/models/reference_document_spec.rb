@@ -61,8 +61,7 @@ describe ReferenceDocument do
     end
 
     it "doesn't consider antbase PDFs downloadable by anybody" do
-      url = 'http://antbase.org/ants/publications/4495/4495.pdf'
-      document = described_class.new(url: url, file_file_name: 'bar')
+      document = described_class.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf')
       expect(document.downloadable?).to eq false
     end
   end

@@ -13,7 +13,7 @@ describe Exporters::Antweb::AntwebInlineCitation do
       pagination: '3'
   end
 
-  before { allow(reference).to receive(:url).and_return 'example.com' }
+  before { allow(reference).to receive(:routed_url).and_return 'example.com' }
 
   describe "#call" do
     context "when PDF is not available to the user" do
