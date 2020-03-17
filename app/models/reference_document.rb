@@ -23,22 +23,18 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
-  def url_via_file_file_name
-    "http://antcat.org/documents/#{id}/#{file_file_name}"
-  end
-
   def downloadable?
-    return true if hosted_by_us?
+    return true if hosted_on_s3?
     url.present? && !hosted_by_antbase? && !hosted_by_hol?
   end
 
   def actual_url
-    hosted_by_us? ? s3_url : url
+    hosted_on_s3? ? s3_url : url
   end
 
   # TODO: Rename `reference_documents.url` --> `reference_documents.external_url`.
   def routed_url
-    hosted_by_us? ? url_via_file_file_name : url
+    hosted_on_s3? ? url_via_file_file_name : url
   end
 
   private
@@ -57,6 +53,10 @@ class ReferenceDocument < ApplicationRecord
       url.present? && url =~ %r{^https?://antbase\.org}
     end
 
+    def hosted_on_s3?
+      file_file_name.present?
+    end
+
     def check_url
       return if Rails.env.development? # HACK
       return if file_file_name.present? || url.blank?
@@ -70,14 +70,14 @@ class ReferenceDocument < ApplicationRecord
       errors.add :url, 'is not in a valid format'
     end
 
-    def hosted_by_us?
-      file_file_name.present?
-    end
-
     def ensure_url_has_protocol
       return if url.blank?
       return if url.match?(%r{^https?://})
       errors.add :url, 'must start with http:// or https://'
+    end
+
+    def url_via_file_file_name
+      "http://antcat.org/documents/#{id}/#{file_file_name}"
     end
 
     def s3_url
