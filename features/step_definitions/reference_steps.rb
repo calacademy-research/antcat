@@ -24,8 +24,8 @@ end
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
     citation = hash.delete('citation') || "Psyche 1:1"
-    matches = citation.match /(\w+) (\d+):([\d\-]+)/
-    journal = create :journal, name: matches[1]
+    matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
+    journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
 
     hash.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
 

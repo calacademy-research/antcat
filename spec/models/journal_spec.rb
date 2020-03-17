@@ -5,6 +5,12 @@ describe Journal do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
+
+    describe "uniqueness validation" do
+      subject { create :journal }
+
+      it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
+    end
   end
 
   describe 'relations' do
