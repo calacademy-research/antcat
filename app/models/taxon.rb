@@ -1,5 +1,4 @@
 class Taxon < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   self.table_name = :taxa

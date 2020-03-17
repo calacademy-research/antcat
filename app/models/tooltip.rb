@@ -1,5 +1,4 @@
 class Tooltip < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   validates :scope, :text, presence: true

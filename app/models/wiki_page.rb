@@ -1,5 +1,4 @@
 class WikiPage < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   TITLE_MAX_LENGTH = 70

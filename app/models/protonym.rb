@@ -1,7 +1,6 @@
 # TODO: Add rank to make validations easier.
 
 class Protonym < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   BIOGEOGRAPHIC_REGIONS = [

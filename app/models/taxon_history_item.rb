@@ -1,6 +1,5 @@
 class TaxonHistoryItem < ApplicationRecord
   include Trackable
-  include RevisionsCanBeCompared
 
   # TODO: WIP, see https://github.com/calacademy-research/antcat/issues/779
   VIRTUAL_HISTORY_ITEM_CANDIDATES = [

@@ -1,6 +1,5 @@
 class Issue < ApplicationRecord
   include Commentable
-  include RevisionsCanBeCompared
   include Trackable
 
   TITLE_MAX_LENGTH = 100
