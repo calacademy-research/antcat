@@ -1,10 +1,15 @@
 Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
 
 module Parsers
-  class AuthorParser
-    def self.parse string
+  class ParseAuthorNames
+    include Service
+
+    def initialize string
+      @string = string&.dup
+    end
+
+    def call
       return [] if string.blank?
-      string = string.dup
 
       match = Parsers::AuthorGrammar.parse(string, consume: false)
       result = match.value
@@ -14,5 +19,9 @@ module Parsers
     rescue Citrus::ParseError
       []
     end
+
+    private
+
+      attr_reader :string
   end
 end
