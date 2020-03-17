@@ -67,8 +67,8 @@ Then("I should see a PDF link") do
 end
 
 When("I fill in {string} with a URL to a document that exists") do |field_name|
-  stub_request :any, "google.com/foo"
-  step %(I fill in "#{field_name}" with "google\.com/foo")
+  stub_request :any, "http://google.com/foo"
+  step %(I fill in "#{field_name}" with "http://google\.com/foo")
 end
 
 Given("the default reference is {string}") do |keey|

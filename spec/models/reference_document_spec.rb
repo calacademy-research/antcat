@@ -4,26 +4,21 @@ describe ReferenceDocument do
   it { is_expected.to be_versioned }
 
   describe 'validations' do
-    it "makes sure it has a protocol" do
-      stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
-      document = create :reference_document
-      document.url = 'antcat.org/1.pdf'
-      document.save!
-      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
-      document.save!
-      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
+    it "validates URLs start with a protocol" do
+      document = described_class.new(url: 'antwiki.org/url')
+      expect(document.valid?).to eq false
     end
 
     it "validates the URL" do
-      document = described_class.new(url: ':::')
-      expect(document).not_to be_valid
+      document = described_class.new(url: 'http://:::')
+      expect(document.valid?).to eq false
       expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
     end
 
     it "accepts URLs with spaces" do
-      stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
+      stub_request(:any, "http://antwiki.org/a%20url").to_return(body: "Hello World!")
       document = described_class.new(url: 'http://antwiki.org/a url')
-      expect(document).to be_valid
+      expect(document.valid?).to eq true
     end
   end
 
@@ -35,7 +30,7 @@ describe ReferenceDocument do
   end
 
   describe "#actual_url" do
-    let!(:document) { create :reference_document, url: 'localhost/document.pdf' }
+    let!(:document) { create :reference_document, url: 'http://localhost/document.pdf' }
 
     it "simply be the url, if the document's not on Amazon" do
       expect(document.reload.actual_url).to eq 'http://localhost/document.pdf'

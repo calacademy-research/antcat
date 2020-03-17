@@ -4,9 +4,7 @@
 class ReferenceDocument < ApplicationRecord
   belongs_to :reference
 
-  validate :check_url
-
-  before_validation :add_protocol_to_url
+  validate :check_url, :ensure_url_has_protocol
 
   has_attached_file :file,
     url: ':s3_domain_url',
@@ -80,9 +78,10 @@ class ReferenceDocument < ApplicationRecord
       file_file_name.present?
     end
 
-    # TODO: This does not take into account HTTPS. We can probably stop doing it.
-    def add_protocol_to_url
-      self.url = "http://" + url if url.present? && url !~ %r{^http://}
+    def ensure_url_has_protocol
+      return if url.blank?
+      return if url.match?(%r{^https?://})
+      errors.add :url, 'must start with http:// or https://'
     end
 
     def s3_url
