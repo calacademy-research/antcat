@@ -23,17 +23,17 @@ module Exporters
 
         def primary_type_information
           return unless primary_type_information_taxt
-          AddPeriodIfNecessary["Primary type information: #{detax(primary_type_information_taxt)}"]
+          "Primary type information: #{detax(primary_type_information_taxt)}"
         end
 
         def secondary_type_information
           return unless secondary_type_information_taxt
-          AddPeriodIfNecessary["Secondary type information: #{detax(secondary_type_information_taxt)}"]
+          "Secondary type information: #{detax(secondary_type_information_taxt)}"
         end
 
         def type_notes
           return unless type_notes_taxt
-          AddPeriodIfNecessary["Type notes: #{detax(type_notes_taxt)}"]
+          "Type notes: #{detax(type_notes_taxt)}"
         end
 
         def detax content

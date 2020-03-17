@@ -35,15 +35,15 @@
     -protonym = taxon.protonym
     -if protonym.primary_type_information_taxt?
       %strong Primary type information:
-      =add_period_if_necessary ::Types::FormatTypeField[protonym.primary_type_information_taxt]
+      =::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
     -if protonym.secondary_type_information_taxt?
       %strong Secondary type information:
-      =add_period_if_necessary ::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+      =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
     -if protonym.type_notes_taxt?
       %strong Type notes:
-      =add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
+      =::Types::FormatTypeField[protonym.type_notes_taxt]
 
 -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
   %ul.history.small-margin-bottom
