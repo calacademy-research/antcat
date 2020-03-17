@@ -11,11 +11,7 @@ module Parsers
     def call
       return [] if string.blank?
 
-      match = Parsers::AuthorGrammar.parse(string, consume: false)
-      result = match.value
-      string.gsub! /#{Regexp.escape match}/, ''
-
-      result[:names]
+      parsed.value[:names]
     rescue Citrus::ParseError
       []
     end
@@ -23,5 +19,9 @@ module Parsers
     private
 
       attr_reader :string
+
+      def parsed
+        Parsers::AuthorGrammar.parse(string, consume: false)
+      end
   end
 end
