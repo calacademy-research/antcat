@@ -32,7 +32,7 @@ Feature: Searching references
     And I should not see the following autocomplete suggestions:
       | Fisher's Ants |
 
-  # TODO: Skipped because flaky.
+  # TODO: Skipped because flaky. Something with select2.
   @skip @javascript @search
   Scenario: Search using autocomplete keywords
     When I fill in "reference_q" with "author:fish" within the desktop menu
