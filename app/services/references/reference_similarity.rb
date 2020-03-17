@@ -99,16 +99,16 @@ module References
       end
 
       def replace_punctuation_with_space! string
-        string.gsub! /[[:punct:]]/, ' '
+        string.gsub!(/[[:punct:]]/, ' ')
         string.squish!
       end
 
       def remove_year_in_parentheses! string
-        string.gsub! /\(\d{4}\)$/, ''
+        string.gsub!(/\(\d{4}\)$/, '')
       end
 
       def remove_no! string
-        string.gsub! /\(No. (\d+)\)$/, '(\1)'
+        string.gsub!(/\(No. (\d+)\)$/, '(\1)')
       end
 
       def normalize_title! string
@@ -118,7 +118,7 @@ module References
       end
 
       def remove_punctuation! string
-        string.gsub! /[^\w\s]/, ''
+        string.gsub!(/[^\w\s]/, '')
         string
       end
 
@@ -127,8 +127,7 @@ module References
       end
 
       def remove_parenthesized_taxon_names! string
-        match = string.match(/ \(.+?\)/)
-        return string unless match
+        return string unless (match = string.match(/ \(.+?\)/))
 
         possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
         any_taxon_names = possible_taxon_names.any? do |word|
@@ -151,7 +150,7 @@ module References
         ]
 
         roman_numerals.each do |roman, arabic|
-          string.gsub! /\b#{roman}\b/, arabic.to_s
+          string.gsub!(/\b#{roman}\b/, arabic.to_s)
         end
         string
       end

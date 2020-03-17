@@ -14,8 +14,7 @@ module References
         keywords_params = {}
 
         regexes.each do |keyword, regex|
-          match = keyword_string.match /#{keyword}: ?#{regex}/i
-          next unless match
+          next unless (match = keyword_string.match(/#{keyword}: ?#{regex}/i))
 
           # match.names contains named captured groups.
           if match.names.empty?
@@ -30,7 +29,7 @@ module References
             match.names.each { |param| keywords_params[param.to_sym] = match[param] }
           end
           # Replace matched and continue matching.
-          keyword_string.gsub! match.to_s, ""
+          keyword_string.gsub!(match.to_s, "")
         end
 
         # This is kind of a hack, but methods further down the line expect :reference_type

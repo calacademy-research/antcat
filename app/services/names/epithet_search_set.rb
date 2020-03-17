@@ -104,7 +104,7 @@ module Names
       end
 
       def replace_ending epithet, old_ending, new_ending
-        epithet.gsub /([#{CONSONANTS}])#{old_ending}$/, "\\1#{new_ending}"
+        epithet.gsub(/([#{CONSONANTS}])#{old_ending}$/, "\\1#{new_ending}")
       end
   end
 end
