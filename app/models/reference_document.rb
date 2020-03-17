@@ -23,16 +23,6 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
-  # TODO: See if we need this (and a lot of other things in this class).
-  # TODO: `host` is sometimes "http://antcat.org" and sometimes "http://www.antcat.org".
-  # TODO: HTTPS adds another 2 variations.
-  def host= host
-    return unless hosted_by_us?
-    # TODO: Investigate `Rails/SkipsModelValidations`.
-    update_attribute :url, "http://#{host}/documents/#{id}/#{file_file_name}" # rubocop:disable Rails/SkipsModelValidations
-  end
-
-  # TODO: Dynamically generate URL instead of setting host in `#host=`.
   def url_via_file_file_name
     "http://antcat.org/documents/#{id}/#{file_file_name}"
   end

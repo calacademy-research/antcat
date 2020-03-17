@@ -22,11 +22,38 @@ describe ReferenceDocument do
     end
   end
 
-  it "creates the URL for an uploaded file so that it goes to our controller" do
-    document = create :reference_document
-    document.file_file_name = '1.pdf'
-    document.host = 'antcat.org'
-    expect(document.reload.url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
+  describe "#routed_url" do
+    it "creates the URL for an uploaded file so that it goes to our controller" do
+      document = create :reference_document, file_file_name: '1.pdf'
+      expect(document.reload.routed_url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
+    end
+
+    context "when there is no file" do
+      let!(:document) { described_class.new }
+
+      specify do
+        expect(document.url).to eq nil
+        expect(document.routed_url).to eq document.url
+      end
+    end
+
+    context "when the file isn't hosted by us" do
+      let(:document) { described_class.new(url: 'foo') }
+
+      specify do
+        expect(document.url).to eq 'foo'
+        expect(document.routed_url).to eq 'foo'
+      end
+    end
+
+    context "when the file is hosted by us" do
+      let(:document) { described_class.create!(file_file_name: 'foo') }
+
+      specify do
+        expect(document.url).to eq nil
+        expect(document.routed_url).to eq "http://antcat.org/documents/#{document.id}/foo"
+      end
+    end
   end
 
   describe "#actual_url" do
@@ -63,35 +90,6 @@ describe ReferenceDocument do
     it "doesn't consider antbase PDFs downloadable by anybody" do
       document = described_class.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf')
       expect(document.downloadable?).to eq false
-    end
-  end
-
-  describe "#host=" do
-    context "when there is no file" do
-      let!(:document) { described_class.new }
-
-      it "does nothing" do
-        document.host = 'localhost'
-        expect(document.url).to eq nil
-      end
-    end
-
-    context "when the file isn't hosted by us" do
-      let(:document) { described_class.new(url: 'foo') }
-
-      it "does nothing" do
-        document.host = 'localhost'
-        expect(document.url).to eq 'foo'
-      end
-    end
-
-    context "when the file is hosted by us" do
-      let(:document) { described_class.create!(file_file_name: 'foo') }
-
-      it "inserts the host in the url" do
-        document.host = 'localhost'
-        expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
-      end
     end
   end
 end

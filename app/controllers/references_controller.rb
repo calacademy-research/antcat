@@ -95,7 +95,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_form
-      ReferenceForm.new(@reference, reference_params, request.host, ignore_duplicates: params[:ignore_duplicates].present?)
+      ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
     end
 
     def set_reference_type
