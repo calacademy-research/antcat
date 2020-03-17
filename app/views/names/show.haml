@@ -26,4 +26,11 @@
           %th Epithet
           %td=@name.epithet
 
-    %p=render NameBelongsToComponent.new(name: @name)
+    %p
+      This name belongs to the
+      %code=@name.owner.class.name
+      record
+      -if @name.owner.is_a?(Taxon)
+        =@name.owner.decorate.id_and_name_and_author_citation
+      -else
+        =@name.owner.decorate.link_to_protonym
