@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ReferenceFormatter do
+describe CachedReferenceFormatter do
   include TestLinksHelpers
 
   subject(:formatter) { described_class.new(reference) }

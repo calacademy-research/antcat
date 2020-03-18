@@ -5,7 +5,7 @@ describe References::Cache::Regenerate do
     let!(:reference) { create :article_reference, title: 'Old title' }
 
     it "regenerates caches" do
-      formatter = ReferenceFormatter.new(reference)
+      formatter = CachedReferenceFormatter.new(reference)
 
       expect(reference.plain_text_cache).to eq nil
       expect(reference.expandable_reference_cache).to eq nil
