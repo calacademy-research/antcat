@@ -150,6 +150,11 @@
       .row
         .medium-12.columns
           =succeed ":" do
+            %code reference_documents.id
+          =document_form.object.id || '(none)'
+      .row
+        .medium-12.columns
+          =succeed ":" do
             %code file_file_name
           -if document_form.object.file_file_name.present?
             =document_form.object.file_file_name
