@@ -30,7 +30,7 @@ module Exporters
         add_contents
         add 'Z', public_notes
         add 'K', taxonomic_notes
-        add 'U', url
+        add 'U', routed_url
         add '~', 'AntCat'
         string.join("\n") + "\n"
       end
@@ -40,7 +40,7 @@ module Exporters
         attr_reader :reference
         attr_accessor :string
 
-        delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, :url, to: :reference
+        delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, :routed_url, to: :reference
 
         def add tag, value
           string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?

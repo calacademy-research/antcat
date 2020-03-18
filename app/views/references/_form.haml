@@ -83,7 +83,7 @@
                 =db_tooltip_icon "references.journal_name", scope: :references
               =f.text_field :journal_name, value: reference.journal_name
 
-            .medium-3.columns
+            .medium-3.columns.end
               =f.label :reference_series_volume_issue do
                 Series volume issue
                 =db_tooltip_icon "references.series_volume_issue", scope: :references
@@ -91,7 +91,7 @@
 
         #tabs-book.tabs-panel{class: reference_tab_active?(reference, BookReference)}
           .row
-            .medium-3.columns
+            .medium-3.columns.end
               =f.label :reference_publisher_string do
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
@@ -106,8 +106,10 @@
               =f.text_field :nesting_reference_id
 
         #tabs-unknown.tabs-panel{class: reference_tab_active?(reference, UnknownReference)}
-          =f.label :reference_citation, 'Citation'
-          =f.text_area :citation, rows: 2
+          .row
+            .medium-12.columns
+              =f.label :reference_citation, 'Citation'
+              =f.text_area :citation, rows: 2
 
   .row
     .medium-4.columns
@@ -131,6 +133,21 @@
       Reference document
       =db_tooltip_icon "references.pdf.upload", scope: :references
     =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+      -if document_form.object.file_file_name.present? && document_form.object.url.present?
+        .row.margin-bottom
+          .medium-6.columns.end
+            -if document_form.object.url == document_form.object.__send__(:url_via_file_file_name)
+              .callout.success
+                %p
+                  This reference has both an uploaded PDF and an URL. The hardcoded URL is the same as
+                  the dynamically generated link, so this notice can be ignored. The plan is to
+                  blank the URL by script.
+            -else
+              .callout.alert
+                %p
+                  This reference has both an uploaded PDF and an URL. The hardcoded URL is not the same
+                  as the dynamically generated link. The URL will be ignored when displaying
+                  this reference on the site, since uploaded files have higher priority.
       .row
         .medium-3.columns
           =document_form.file_field :file
@@ -145,6 +162,19 @@
             Source URL
             =db_tooltip_icon "references.source.url", scope: :references
           =document_form.text_field :url
+      .row
+        .medium-12.columns
+          =succeed ":" do
+            %code reference_documents.id
+          =document_form.object.id || '(none)'
+      .row
+        .medium-12.columns
+          =succeed ":" do
+            %code file_file_name
+          -if document_form.object.file_file_name.present?
+            =document_form.object.file_file_name
+          -else
+            (none)
 
   .row
     .medium-3.columns

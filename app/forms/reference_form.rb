@@ -1,10 +1,9 @@
 class ReferenceForm
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
 
-  def initialize reference, params, request_host, ignore_duplicates: false
+  def initialize reference, params, ignore_duplicates: false
     @reference = reference
     @params = params
-    @request_host = request_host
     @ignore_duplicates = ignore_duplicates
   end
 
@@ -14,7 +13,7 @@ class ReferenceForm
 
   private
 
-    attr_reader :reference, :params, :request_host, :ignore_duplicates
+    attr_reader :reference, :params, :ignore_duplicates
 
     def save_reference
       Reference.transaction do
@@ -37,7 +36,6 @@ class ReferenceForm
         end
 
         reference.save!
-        set_document_host
 
         return true
       end
@@ -47,8 +45,12 @@ class ReferenceForm
 
     def clear_document_params_if_necessary
       return unless params[:document_attributes]
-      return if params[:document_attributes][:url].blank?
-      params[:document_attributes][:id] = nil
+
+      # TODO: Make sure documents have either a `file_file_name` or a `url`.
+      # We cannot conditionally clear them before fixing current `ReferenceDocument`s.
+      if params[:document_attributes][:file].present?
+        params[:document_attributes][:url] = "" # Probably nil, but most are blank string right now.
+      end
     end
 
     def parse_author_names_string
@@ -103,10 +105,5 @@ class ReferenceForm
         To save, click "Save".
       MSG
       true
-    end
-
-    def set_document_host
-      return unless reference.document
-      reference.document.host = request_host
     end
 end

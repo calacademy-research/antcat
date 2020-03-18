@@ -33,7 +33,7 @@ class ReferenceDecorator < Draper::Decorator
 
   def pdf_link
     return unless reference.downloadable?
-    helpers.pdf_link_to 'PDF', reference.url
+    helpers.pdf_link_to 'PDF', reference.routed_url
   end
 
   def format_review_state

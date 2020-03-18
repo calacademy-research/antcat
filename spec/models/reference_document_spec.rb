@@ -4,38 +4,60 @@ describe ReferenceDocument do
   it { is_expected.to be_versioned }
 
   describe 'validations' do
-    it "makes sure it has a protocol" do
-      stub_request(:any, "http://antcat.org/1.pdf").to_return body: "Hello World!"
-      document = create :reference_document
-      document.url = 'antcat.org/1.pdf'
-      document.save!
-      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
-      document.save!
-      expect(document.reload.url).to eq 'http://antcat.org/1.pdf'
+    it "validates URLs start with a protocol" do
+      document = described_class.new(url: 'antwiki.org/url')
+      expect(document.valid?).to eq false
     end
 
     it "validates the URL" do
-      document = described_class.new(url: ':::')
-      expect(document).not_to be_valid
+      document = described_class.new(url: 'http://:::')
+      expect(document.valid?).to eq false
       expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
     end
 
     it "accepts URLs with spaces" do
-      stub_request(:any, "http://antwiki.org/a%20url").to_return body: "Hello World!"
+      stub_request(:any, "http://antwiki.org/a%20url").to_return(body: "Hello World!")
       document = described_class.new(url: 'http://antwiki.org/a url')
-      expect(document).to be_valid
+      expect(document.valid?).to eq true
     end
   end
 
-  it "creates the URL for an uploaded file so that it goes to our controller" do
-    document = create :reference_document
-    document.file_file_name = '1.pdf'
-    document.host = 'antcat.org'
-    expect(document.reload.url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
+  describe "#routed_url" do
+    it "creates the URL for an uploaded file so that it goes to our controller" do
+      document = create :reference_document, file_file_name: '1.pdf'
+      expect(document.reload.routed_url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
+    end
+
+    context "when there is no file" do
+      let!(:document) { described_class.new }
+
+      specify do
+        expect(document.url).to eq nil
+        expect(document.routed_url).to eq document.url
+      end
+    end
+
+    context "when the file isn't hosted by us" do
+      let(:document) { described_class.new(url: 'foo') }
+
+      specify do
+        expect(document.url).to eq 'foo'
+        expect(document.routed_url).to eq 'foo'
+      end
+    end
+
+    context "when the file is hosted by us" do
+      let(:document) { described_class.create!(file_file_name: 'foo') }
+
+      specify do
+        expect(document.url).to eq nil
+        expect(document.routed_url).to eq "http://antcat.org/documents/#{document.id}/foo"
+      end
+    end
   end
 
   describe "#actual_url" do
-    let!(:document) { create :reference_document, url: 'localhost/document.pdf' }
+    let!(:document) { create :reference_document, url: 'http://localhost/document.pdf' }
 
     it "simply be the url, if the document's not on Amazon" do
       expect(document.reload.actual_url).to eq 'http://localhost/document.pdf'
@@ -66,38 +88,8 @@ describe ReferenceDocument do
     end
 
     it "doesn't consider antbase PDFs downloadable by anybody" do
-      url = 'http://antbase.org/ants/publications/4495/4495.pdf'
-      document = described_class.new(url: url, file_file_name: 'bar')
+      document = described_class.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf')
       expect(document.downloadable?).to eq false
-    end
-  end
-
-  describe "#host=" do
-    context "when there is no file" do
-      let!(:document) { described_class.new }
-
-      it "does nothing" do
-        document.host = 'localhost'
-        expect(document.url).to eq nil
-      end
-    end
-
-    context "when the file isn't hosted by us" do
-      let(:document) { described_class.new(url: 'foo') }
-
-      it "does nothing" do
-        document.host = 'localhost'
-        expect(document.url).to eq 'foo'
-      end
-    end
-
-    context "when the file is hosted by us" do
-      let(:document) { described_class.create!(file_file_name: 'foo') }
-
-      it "inserts the host in the url" do
-        document.host = 'localhost'
-        expect(document.url).to eq "http://localhost/documents/#{document.id}/foo"
-      end
     end
   end
 end

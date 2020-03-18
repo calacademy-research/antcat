@@ -44,7 +44,7 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   accepts_nested_attributes_for :document, reject_if: :all_blank
-  delegate :url, :downloadable?, to: :document, allow_nil: true
+  delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
     :editor_notes, :public_notes, :taxonomic_notes, :title,
