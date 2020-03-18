@@ -1,7 +1,7 @@
 # TODO: Do not cache in database.
 # TODO: Cleanup. Can wait until `MissingReference` has been removed.
 
-class ReferenceFormatter
+class CachedReferenceFormatter
   def initialize reference
     @reference = reference
   end

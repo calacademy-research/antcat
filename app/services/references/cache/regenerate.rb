@@ -29,7 +29,7 @@ module References
         end
 
         def formatter
-          @formatter ||= ReferenceFormatter.new(reference)
+          @formatter ||= CachedReferenceFormatter.new(reference)
         end
     end
   end

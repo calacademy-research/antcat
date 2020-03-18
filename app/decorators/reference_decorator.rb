@@ -52,9 +52,8 @@ class ReferenceDecorator < Draper::Decorator
 
   private
 
-    # TODO: See if what to do here. Added when extracting into `ReferenceFormatter`.
     def reference_formatter
-      @reference_formatter ||= ReferenceFormatter.new(reference)
+      @reference_formatter ||= CachedReferenceFormatter.new(reference)
     end
 
     def format_italics string
