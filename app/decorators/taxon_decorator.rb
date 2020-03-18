@@ -46,7 +46,7 @@ class TaxonDecorator < Draper::Decorator
                  else
                    taxon.name_cache.tr(" ", '_')
                  end
-    h.external_link_to 'AntWiki', "http://www.antwiki.org/wiki/#{page_title}"
+    h.external_link_to 'AntWiki', "https://www.antwiki.org/wiki/#{page_title}"
   end
 
   def link_to_hol
@@ -57,7 +57,7 @@ class TaxonDecorator < Draper::Decorator
   def link_to_antweb
     return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
 
-    url = "http://www.antweb.org/description.do?"
+    url = "https://www.antweb.org/description.do?"
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
