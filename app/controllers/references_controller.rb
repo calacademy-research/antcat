@@ -1,5 +1,5 @@
 class ReferencesController < ApplicationController
-  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, MissingReference, NestedReference, UnknownReference]
+  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference, UnknownReference]
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
