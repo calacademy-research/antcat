@@ -1,9 +1,8 @@
 require 'rails_helper'
 
 describe Api::V1::AuthorsController do
-  let!(:author) { create :author }
-
   describe "GET index" do
+    let!(:author) { create :author }
     let!(:another_author) { create :author }
 
     before { get :index }
@@ -18,10 +17,20 @@ describe Api::V1::AuthorsController do
   end
 
   describe "GET show" do
+    let!(:author) { create :author }
+
     before { get :show, params: { id: author.id } }
 
-    it "fetches an author primary key" do
-      expect(response.body.to_s).to include author.id.to_s
+    specify do
+      expect(json_response).to eq(
+        {
+          "author" => {
+            "id" => author.id,
+            "created_at" => author.created_at.as_json,
+            "updated_at" => author.updated_at.as_json
+          }
+        }
+      )
     end
 
     specify { expect(response).to have_http_status :ok }

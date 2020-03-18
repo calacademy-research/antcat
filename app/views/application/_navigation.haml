@@ -43,7 +43,6 @@
             =form_tag catalog_search_path, method: :get do
               .input-group
                 =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook'
-                =hidden_field_tag :submit_search, true
                 =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true
                 =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook" do
                   %i.inline-search-icon.fa.fa-search
@@ -75,7 +74,6 @@
           .row#search-row
             .small-9.columns
               =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", class: "typeahead-taxa-js-hook"
-              =hidden_field_tag :submit_search, true
               =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
@@ -94,3 +92,13 @@
         %li=link_to 'Sign up', new_user_registration_path
       %li
         %a{data: { open: "feedback_modal" }} Feedback or suggest an edit
+
+.left=render "tagline"
+
+-if current_user
+  .right.show-for-large
+    -if Issue.help_wanted?
+      =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, id: 'btn-lower-nav-help-wanted', class: 'btn-tiny'
+    =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav btn-tiny'
+    =link_to "Activities", activities_path, class: 'btn-lower-nav btn-tiny'
+    =link_to "Search History Items", taxon_history_items_path, class: 'btn-lower-nav btn-tiny'

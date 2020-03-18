@@ -18,7 +18,7 @@ module Authors
       attr_reader :string
 
       def parsed_author_names
-        Parsers::AuthorParser.parse(string)
+        Parsers::ParseAuthorNames[string]
       end
   end
 end

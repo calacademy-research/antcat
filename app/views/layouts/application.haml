@@ -1,14 +1,14 @@
 !!!
-%html{xmlns: 'http://www.w3.org/1999/xhtml', 'xml:lang' => 'en', lang: 'en'}
+%html{lang: 'en'}
   %head
     %title=title_tag @title
-    %meta{'http-equiv' => "content-type", content: "text/html;charset=UTF-8"}
+    %meta{charset: "utf-8"}
+    %meta{description: "An online catalog of the ants of the world."}
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     %meta{content: "#0071f4", name: "theme-color"}
 
     =csrf_meta_tag
 
-    =javascript_include_tag 'google_analytics' if Rails.env.production?
     =javascript_include_tag 'application'
     =javascript_include_tag 'logged_in_only' if current_user
 
@@ -19,8 +19,8 @@
     =stylesheet_link_tag 'dev_css' if include_dev_css?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
-    %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}>
-    %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}>
+    %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}
+    %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}
 
     =favicon_link_tag 'favicon_96x96.png'
 
@@ -39,28 +39,19 @@
           .row.collapse
             .small-12.columns
               =render "navigation"
-              .left=render "tagline"
-              -if current_user
-                .right.show-for-large
-                  -if Issue.help_wanted?
-                    =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, id: 'btn-lower-nav-help-wanted', class: 'btn-tiny'
-                  =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav btn-tiny'
-                  =link_to "Activities", activities_path, class: 'btn-lower-nav btn-tiny'
-                  =link_to "Search History Items", taxon_history_items_path, class: 'btn-lower-nav btn-tiny'
 
         %section#content
           .row.collapse
             =render "breadcrumbs"
             =render "flash_messages"
-
             .small-12.columns.collapse
-              -if content_for? :application
-                =yield :application
-              -else
-                =yield
+              =yield
 
         =yield :after_content
 
         %footer#taxon-browser-sticky-target-js-hook=render "footer"
 
       =render "feedback/feedback_modal"
+
+      -if Rails.env.production?
+        =render "google_analytics"

@@ -10,6 +10,12 @@ describe Publisher do
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :place }
+
+    describe "uniqueness validation" do
+      subject { create :publisher }
+
+      it { is_expected.to validate_uniqueness_of(:name).scoped_to(:place).ignoring_case_sensitivity }
+    end
   end
 
   describe ".find_or_initialize_from_string" do

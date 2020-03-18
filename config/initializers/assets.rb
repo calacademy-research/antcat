@@ -22,7 +22,6 @@ Rails.application.config.assets.precompile += %w[
 
   check_name_conflicts.js
   compare_revisions.js
-  google_analytics.js
   locality_autocompletion.js
   protonym_select.js
   reference_select.js

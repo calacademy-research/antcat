@@ -1,7 +1,6 @@
 # All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
 
 class Name < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).

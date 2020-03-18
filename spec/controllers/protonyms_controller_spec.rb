@@ -32,7 +32,7 @@ describe ProtonymsController do
       {
         fossil: false,
         sic: false,
-        biogeographic_region: 'Malagasy',
+        biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
@@ -91,7 +91,7 @@ describe ProtonymsController do
       {
         fossil: false,
         sic: false,
-        biogeographic_region: 'Malagasy',
+        biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",

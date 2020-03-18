@@ -11,8 +11,8 @@
 -content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
-      =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
-
+      -unless @reference.is_a?(MissingReference)
+        =link_to "Edit", edit_reference_path(@reference), class: "btn-normal"
     -if current_user
       =link_to "History", reference_history_path(@reference), class: "btn-normal"
       =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"

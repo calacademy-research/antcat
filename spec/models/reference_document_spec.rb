@@ -44,31 +44,31 @@ describe ReferenceDocument do
 
   describe "#downloadable?" do
     it "is not downloadable if there is no url" do
-      expect(described_class.new).not_to be_downloadable
+      expect(described_class.new.downloadable?).to eq false
     end
 
     it "is downloadable by anyone if we just have a URL, not a file name on S3" do
-      expect(described_class.new(url: 'foo')).to be_downloadable
+      expect(described_class.new(url: 'foo').downloadable?).to eq true
     end
 
     it "is downloadable by just anyone if we are hosting on S3" do
-      expect(described_class.new(url: 'foo', file_file_name: 'bar')).to be_downloadable
+      expect(described_class.new(url: 'foo', file_file_name: 'bar').downloadable?).to eq true
     end
 
     it "is downloadable by anyone if it's public" do
       document = described_class.new(url: 'foo', file_file_name: 'bar', public: true)
-      expect(document).to be_downloadable
+      expect(document.downloadable?).to eq true
     end
 
     it "is not downloadable if it is on http://128.146.250.117" do
       document = described_class.new(url: 'http://128.146.250.117/pdfs/4096/4096.pdf')
-      expect(document).not_to be_downloadable
+      expect(document.downloadable?).to eq false
     end
 
     it "doesn't consider antbase PDFs downloadable by anybody" do
       url = 'http://antbase.org/ants/publications/4495/4495.pdf'
       document = described_class.new(url: url, file_file_name: 'bar')
-      expect(document).not_to be_downloadable
+      expect(document.downloadable?).to eq false
     end
   end
 

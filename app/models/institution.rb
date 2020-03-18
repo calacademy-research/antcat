@@ -1,5 +1,4 @@
 class Institution < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
   NAME_MAX_LENGTH = 200

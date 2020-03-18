@@ -18,7 +18,7 @@ module References
 
       # TODO: Store normalized value in the database?
       def format_date
-        match = reference_date.match /(.*?)(\d{4,8})(.*)/
+        match = reference_date.match(/(.*?)(\d{4,8})(.*)/)
         prefix = match[1]
         digits = match[2]
         suffix = match[3]

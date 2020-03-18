@@ -1,6 +1,5 @@
 class Reference < ApplicationRecord
   include WorkflowActiverecord
-  include RevisionsCanBeCompared
   include Trackable
 
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[

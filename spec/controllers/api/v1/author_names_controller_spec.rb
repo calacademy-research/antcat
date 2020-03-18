@@ -22,8 +22,18 @@ describe Api::V1::AuthorNamesController do
 
     before { get :show, params: { id: author_name.id } }
 
-    it "fetches an author name" do
-      expect(response.body.to_s).to include "Bolton"
+    specify do
+      expect(json_response).to eq(
+        {
+          "author_name" => {
+            "id" => author_name.id,
+            "author_id" => author_name.author_id,
+            "name" => "Bolton",
+            "created_at" => author_name.created_at.as_json,
+            "updated_at" => author_name.updated_at.as_json
+          }
+        }
+      )
     end
 
     specify { expect(response).to have_http_status :ok }

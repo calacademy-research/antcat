@@ -1,12 +1,20 @@
 # TODO: Add rank to make validations easier.
 
 class Protonym < ApplicationRecord
-  include RevisionsCanBeCompared
   include Trackable
 
-  BIOGEOGRAPHIC_REGIONS = %w[
-    Nearctic Neotropic Palearctic Afrotropic Malagasy Indomalaya Australasia Oceania Antarctic
+  BIOGEOGRAPHIC_REGIONS = [
+    NEARCTIC_REGION = 'Nearctic',
+    NEOTROPIC_REGION = 'Neotropic',
+    'Palearctic',
+    'Afrotropic',
+    'Malagasy',
+    'Indomalaya',
+    'Australasia',
+    'Oceania',
+    'Antarctic'
   ]
+
   # TODO: These are currently stored in `taxa.type_taxt`; we want to move them to `protonyms` or a new model,
   # and normalize the values (see `DatabaseScripts::TaxaWithTypeTaxa`).
   COMMON_TYPE_TAXTS = [

@@ -34,13 +34,13 @@
           %td=protonym.decorate.format_locality
         %tr
           %td Primary type information
-          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.primary_type_information_taxt]
+          %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
         %tr
           %td Secondary type information
-          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+          %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
         %tr
           %td Type notes
-          %td=add_period_if_necessary ::Types::FormatTypeField[protonym.type_notes_taxt]
+          %td=::Types::FormatTypeField[protonym.type_notes_taxt]
         %tr
           %td Notes
           %td=or_dash Detax[protonym.authorship.notes_taxt]
