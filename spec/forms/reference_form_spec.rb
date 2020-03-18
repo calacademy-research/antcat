@@ -146,8 +146,9 @@ describe ReferenceForm do
       let(:params) do
         {
           author_names_string: "Batiatus, B.",
+          title: "Should be updated",
           document_attributes: {
-            url: "localhost/documents/#{reference.document.id}/123.pdf",
+            url: "http://localhost/documents/#{reference.document.id}/123.pdf",
             id: reference.document.id
           }
         }
@@ -156,11 +157,11 @@ describe ReferenceForm do
       context 'when reference has a document' do
         let!(:reference) { create :unknown_reference, :with_document }
 
-        # TODO: Do not create new a `ReferenceDocument`s.
-        xit 'does not create a new `ReferenceDocument`s' do
+        it 'does not create a new `ReferenceDocument`s' do
           expect(ReferenceDocument.count).to eq 1
           expect { described_class.new(reference, params).save }.
-            to_not change { ReferenceDocument.count }
+            to change { reference.reload.title }.to(params[:title])
+          expect(ReferenceDocument.count).to eq 1
         end
       end
     end

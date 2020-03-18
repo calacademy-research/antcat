@@ -45,8 +45,12 @@ class ReferenceForm
 
     def clear_document_params_if_necessary
       return unless params[:document_attributes]
-      return if params[:document_attributes][:url].blank?
-      params[:document_attributes][:id] = nil
+
+      # TODO: Make sure documents have either a `file_file_name` or a `url`.
+      # We cannot conditionally clear them before fixing current `ReferenceDocument`s.
+      if params[:document_attributes][:file].present?
+        params[:document_attributes][:url] = "" # Probably nil, but most are blank string right now.
+      end
     end
 
     def parse_author_names_string
