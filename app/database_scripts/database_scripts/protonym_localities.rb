@@ -19,7 +19,7 @@ module DatabaseScripts
     private
 
       def search_link locality
-        link_to 'Search', catalog_search_path(locality: locality, submit_search: 'yes'), class: 'btn-normal btn-tiny'
+        link_to 'Search', catalog_search_path(locality: locality), class: 'btn-normal btn-tiny'
       end
   end
 end

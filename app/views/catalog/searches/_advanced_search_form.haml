@@ -84,7 +84,7 @@
 
   .row
     .medium-12.columns
-      =button_tag type: 'submit', name: 'submit_search', class: 'btn-normal has-spinner' do
+      =button_tag type: 'submit', class: 'btn-normal has-spinner' do
         =spinner_icon + "Search " + search_icon
       -if taxa.present?
         &nbsp;
