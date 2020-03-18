@@ -83,7 +83,7 @@
                 =db_tooltip_icon "references.journal_name", scope: :references
               =f.text_field :journal_name, value: reference.journal_name
 
-            .medium-3.columns
+            .medium-3.columns.end
               =f.label :reference_series_volume_issue do
                 Series volume issue
                 =db_tooltip_icon "references.series_volume_issue", scope: :references
@@ -91,7 +91,7 @@
 
         #tabs-book.tabs-panel{class: reference_tab_active?(reference, BookReference)}
           .row
-            .medium-3.columns
+            .medium-3.columns.end
               =f.label :reference_publisher_string do
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
@@ -106,8 +106,10 @@
               =f.text_field :nesting_reference_id
 
         #tabs-unknown.tabs-panel{class: reference_tab_active?(reference, UnknownReference)}
-          =f.label :reference_citation, 'Citation'
-          =f.text_area :citation, rows: 2
+          .row
+            .medium-12.columns
+              =f.label :reference_citation, 'Citation'
+              =f.text_area :citation, rows: 2
 
   .row
     .medium-4.columns
