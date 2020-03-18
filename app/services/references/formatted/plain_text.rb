@@ -15,23 +15,13 @@ module References
         string << ' '
         string << sanitize(reference.citation_year) << '. '
         string << Unitalicize[reference.decorate.format_title] << ' '
-        string << AddPeriodIfNecessary[format_plain_text_citation]
+        string << AddPeriodIfNecessary[sanitize(format_citation)]
         string
       end
 
       private
 
         attr_reader :reference
-
-        def format_plain_text_citation
-          case reference
-          when ::NestedReference
-            sanitize "#{reference.pagination} #{References::Formatted::PlainText[reference.nesting_reference]}"
-          else
-            # `format_italics` + `Unitalicize` is to get rid of "*"-style italics.
-            Unitalicize[format_italics(sanitize(format_citation))]
-          end
-        end
 
         def format_citation
           case reference
@@ -40,7 +30,11 @@ module References
           when ::BookReference
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::MissingReference, ::UnknownReference
-            reference.citation
+            # `format_italics` + `Unitalicize` is to get rid of "*"-style italics.
+            # TODO: Probably ignore this edge case.
+            Unitalicize[format_italics(sanitize(reference.citation))]
+          when ::NestedReference
+            "#{reference.pagination} #{References::Formatted::PlainText[reference.nesting_reference]}"
           else
             raise
           end
