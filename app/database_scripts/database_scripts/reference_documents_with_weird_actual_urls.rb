@@ -2,7 +2,7 @@ module DatabaseScripts
   class ReferenceDocumentsWithWeirdActualUrls < DatabaseScript
     def results
       broken_ids = ReferenceDocument.where.not(file_file_name: ['', nil]).to_a.reject do |document|
-        document.url == document.__send__(:url_via_file_file_name)
+        document.url.blank? || (document.url == document.__send__(:url_via_file_file_name))
       end.map(&:id)
 
       ReferenceDocument.where(id: broken_ids)
@@ -10,11 +10,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Document ID', 'Created at', 'Kinda same?', 'Generated URL / Filename / URL'
+        t.header 'Document ID', 'Created at', 'Reference', 'Kinda same?', 'Generated URL / Filename / URL'
         t.rows do |reference_document|
           [
             reference_document.id,
             reference_document.created_at,
+            (reference_document.reference ? reference_document.reference.decorate.link_to_reference : '(none)'),
             (kinda_same?(reference_document) ? 'Yes' : 'No'),
             <<~STR
               #{link_it reference_document.__send__(:url_via_file_file_name)}<br>
