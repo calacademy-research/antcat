@@ -28,6 +28,25 @@ class RevisionPresenter
     Diffy::SplitDiff.new(left, right, format: :html)
   end
 
+  # This is for the `revisions` loop, ie `most_recent` is not handled here.
+  def revision_css revision
+    # If `revision.id` isn't opened in `selected` or `diff_with`, that means user is not comparing
+    # revisions or looking at an old revision --> do not highlight.
+    return unless comparer.revision_selected?(revision) || comparer.revision_diff_with?(revision)
+
+    # User is looking at an old revision without comparig --> highlight
+    # in red to indicate that it's an old revision.
+    return "make-red" if comparer.looking_at_a_single_old_revision?
+
+    # User is comparing --> highlight the oldest revision red
+    # and the more recent (`selected_id`) green.
+    if comparer.revision_selected? revision
+      "make-green"
+    else
+      "make-red"
+    end
+  end
+
   private
 
     delegate :selected, :diff_with, :most_recent, to: :comparer
