@@ -47,8 +47,9 @@ module AntCat
     config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
     config.autoload_paths += Dir["#{config.root}/lib/**/"]
 
-    config.action_dispatch.cookies_serializer = :hybrid
+    config.secret_key_base = Settings.rails.secret_key_base
 
+    config.action_dispatch.cookies_serializer = :hybrid
     config.assets.enabled = true
   end
 end

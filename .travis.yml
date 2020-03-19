@@ -13,7 +13,6 @@ before_install:
 
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - cp config/secrets.yml.example config/secrets.yml
   - cp config/server.yml.example config/server.yml
 
 script:
