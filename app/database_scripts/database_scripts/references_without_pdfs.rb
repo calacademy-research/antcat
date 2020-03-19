@@ -23,7 +23,7 @@ __END__
 
 title: References without PDFs
 category: PDFs
-tags: [slow-render]
+tags: [list, slow-render]
 
 description: >
   Issues: %github387, %github324, %github371
@@ -31,6 +31,7 @@ description: >
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
+  - ReferenceDocumentsWithWeirdActualUrls
   - ReferencesWithBlankPdfUrlsAndFilenames
   - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs

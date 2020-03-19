@@ -69,7 +69,7 @@ class DatabaseScript
   end
 
   def title
-    end_data_attributes.title || filename_without_extension.humanize
+    end_data_attributes.title || filename_without_extension.humanize.humanize(keep_id_suffix: false)
   end
 
   def statistics

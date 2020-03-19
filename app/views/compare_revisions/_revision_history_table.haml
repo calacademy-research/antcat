@@ -29,7 +29,7 @@
           %td=render "compare_revisions/revision_info_user", revision: most_recent
 
         -revisions.each_with_index do |revision, index|
-          %tr{class: revision_css(comparer, revision)}
+          %tr{class: revision_presenter.revision_css(revision)}
             -previous = revisions[index + 1] unless index == revisions.size - 1
             %td=link_to "cur", diff_with_id: revision.id
             %td
