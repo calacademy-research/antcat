@@ -1,0 +1,15 @@
+rails:
+  secret_key_base: 6f80bc3954d5c397cd5dedaa1aab50641ea82d95cbdf149f231efe13572abd4815a408c0f6dd6104a776871fb55109d86db08946ebcbd6416cfc859b67249ba9
+
+s3:
+  access_key_id:
+  secret_access_key:
+
+smtp_settings:
+  address:
+  port:
+  domain:
+  user_name:
+  password:
+  authentication:
+  enable_starttls_auto:

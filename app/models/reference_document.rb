@@ -11,7 +11,10 @@ class ReferenceDocument < ApplicationRecord
     path: ':id/:filename',
     bucket: 'antcat',
     storage: :s3,
-    s3_credentials: Rails.root + 'config/s3.yml',
+    s3_credentials: {
+      access_key_id: Settings.s3.access_key_id,
+      secret_access_key: Settings.s3.secret_access_key
+    },
     s3_permissions: 'authenticated-read',
     s3_region: 'us-east-1',
     s3_protocol: 'http'

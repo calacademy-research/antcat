@@ -1,0 +1,17 @@
+# Run `rake secret` to generate a secure secret key.
+
+rails:
+  secret_key_base: 1d00d25c0503979ffb0e641be5ad0a147e5204bfa8c4cc1c75b3a4bbdfb7e6b3f4c19a355435d0597f8074916f6139ff6f1aab98bb6b1f18aa4ffa6cae9b6dbc
+
+s3:
+  access_key_id:
+  secret_access_key:
+
+smtp_settings:
+  address:
+  port:
+  domain:
+  user_name:
+  password:
+  authentication:
+  enable_starttls_auto:
