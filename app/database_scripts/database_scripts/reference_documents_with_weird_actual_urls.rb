@@ -56,3 +56,12 @@ category: PDFs
 tags: [new!]
 
 description: >
+
+related_scripts:
+  - OrphanedReferenceDocuments
+  - ProtonymReferencesWithoutPdfs
+  - ReferenceDocumentsWithWeirdActualUrls
+  - ReferencesWithBlankPdfUrlsAndFilenames
+  - ReferencesWithoutPdfs
+  - ReferencesWithPdfsNotHostedByUs
+  - ReferencesWithUndownloadablePdfs
