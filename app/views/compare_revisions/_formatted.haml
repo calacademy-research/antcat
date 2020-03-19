@@ -14,7 +14,7 @@
 
   .callout{class: (comparer.looking_at_a_single_old_revision? ? "make-red" : "make-green")}
     =preserve do
-      =render_revision_with_rescue selected || most_recent
+      =revision_presenter.render_revision_with_rescue(selected || most_recent, view_context: self)
 
   -if diff_with
     %h5.margin-top
@@ -23,4 +23,4 @@
       (older)
     .callout.make-red.margin-bottom
       =preserve do
-        =render_revision_with_rescue diff_with
+        =revision_presenter.render_revision_with_rescue(diff_with, view_context: self)
