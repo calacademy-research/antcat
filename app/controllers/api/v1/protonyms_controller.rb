@@ -3,7 +3,7 @@ module Api
     class ProtonymsController < Api::ApiController
       def index
         protonyms = Protonym.all
-        render json: protonyms, status: :ok
+        render json: protonyms
       end
 
       def show

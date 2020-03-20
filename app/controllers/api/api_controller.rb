@@ -7,7 +7,7 @@ module Api
                 klass.all
               end.order(id: :asc).limit(100)
 
-      render json: items, status: :ok
+      render json: items
     end
 
     def show klass
@@ -18,7 +18,7 @@ module Api
         return
       end
 
-      render json: item, status: :ok
+      render json: item
     end
   end
 end

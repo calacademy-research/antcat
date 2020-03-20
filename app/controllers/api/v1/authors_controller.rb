@@ -3,7 +3,7 @@ module Api
     class AuthorsController < Api::ApiController
       def index
         authors = Author.all
-        render json: authors, status: :ok
+        render json: authors
       end
 
       def show

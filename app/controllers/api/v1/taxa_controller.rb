@@ -13,7 +13,7 @@ module Api
           return
         end
 
-        render json: item.to_json(methods: :author_citation), status: :ok
+        render json: item.to_json(methods: :author_citation)
       end
 
       def search
