@@ -4,22 +4,21 @@ describe Api::V1::ProtonymsController do
   describe "GET index" do
     before do
       create :protonym
-      get :index
     end
 
     it "gets all protonyms" do
+      get :index
       expect(json_response.count).to eq 1
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 
   describe "GET show" do
     let!(:protonym) { create :protonym, :with_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA" }
 
-    before { get :show, params: { id: protonym.id } }
-
     specify do
+      get :show, params: { id: protonym.id }
       expect(json_response).to eq(
         {
           "protonym" => {
@@ -40,6 +39,6 @@ describe Api::V1::ProtonymsController do
       )
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: protonym.id })).to have_http_status :ok }
   end
 end

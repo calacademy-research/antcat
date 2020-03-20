@@ -22,10 +22,7 @@ describe Api::V1::TaxaController do
       expect(json_response.count).to eq 1
     end
 
-    it 'returns HTTP 200' do
-      get :index
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 
   describe "GET show" do
@@ -38,7 +35,6 @@ describe Api::V1::TaxaController do
 
       specify do
         get :show, params: { id: taxon.id }
-
         expect(json_response).to eq(
           {
             "species" => {

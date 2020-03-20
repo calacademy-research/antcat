@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe Api::V1::ReferencesController do
+  describe "GET index" do
+    specify { expect(get(:index)).to have_http_status :ok }
+  end
+
   describe "GET show" do
     context 'when record does not exists' do
       specify { expect(get(:show, params: { id: 0 })).to have_http_status :not_found }
@@ -11,7 +15,6 @@ describe Api::V1::ReferencesController do
 
       specify do
         get :show, params: { id: reference.id }
-
         expect(json_response).to eq(
           {
             "article_reference" => {

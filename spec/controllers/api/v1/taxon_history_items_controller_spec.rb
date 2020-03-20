@@ -11,9 +11,6 @@ describe Api::V1::TaxonHistoryItemsController do
       expect(json_response.count).to eq 2
     end
 
-    it 'returns HTTP 200' do
-      get :index
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 end

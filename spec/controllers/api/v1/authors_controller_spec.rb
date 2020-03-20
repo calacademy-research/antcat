@@ -5,23 +5,22 @@ describe Api::V1::AuthorsController do
     let!(:author) { create :author }
     let!(:another_author) { create :author }
 
-    before { get :index }
-
     it "gets all author primary keys" do
+      get(:index)
+
       expect(response.body.to_s).to include author.id.to_s
       expect(response.body.to_s).to include another_author.id.to_s
       expect(json_response.count).to eq 2
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 
   describe "GET show" do
     let!(:author) { create :author }
 
-    before { get :show, params: { id: author.id } }
-
     specify do
+      get :show, params: { id: author.id }
       expect(json_response).to eq(
         {
           "author" => {
@@ -33,6 +32,6 @@ describe Api::V1::AuthorsController do
       )
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: author.id })).to have_http_status :ok }
   end
 end

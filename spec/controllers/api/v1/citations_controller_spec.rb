@@ -13,9 +13,6 @@ describe Api::V1::CitationsController do
       expect(json_response.count).to eq 1
     end
 
-    it 'returns HTTP 200' do
-      get :index
-      expect(response).to have_http_status :ok
-    end
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 end
