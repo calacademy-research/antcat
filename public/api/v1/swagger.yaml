@@ -185,7 +185,6 @@ paths:
       operationId: getAuthorNames
       tags:
         - author_names
-
       responses:
         "200":
           description: Array of all author names
@@ -256,7 +255,6 @@ paths:
       responses:
         "200":
           description: Returns 100 citations at a time starting at the specified citation id. If no id is supplied, starts at zero
-
           schema:
             type: array
             items:
@@ -830,6 +828,9 @@ definitions:
       pages:
         type: string
         description: String describing the page range; no standard format
+      forms:
+        type: string
+        description: String describing the forms; no standard format
       notes_taxt:
         type: string
         description: Long field with text and notes
@@ -896,6 +897,9 @@ definitions:
       name:
         type: string
         description: Publisher name
+      place:
+        type: string
+        description: Publisher place
       created_at:
         type: string
         format: date-time
@@ -1034,8 +1038,6 @@ definitions:
         type: string
       subtitle_taxt:
         type: string
-      public:
-        type: boolean
       created_at:
         type: string
         format: date-time
