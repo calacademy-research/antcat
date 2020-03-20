@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe Api::V1::JournalsController do
   describe "GET index" do
+    specify do
+      journal = create :journal, name: 'Zootaxa'
+      get :index
+      expect(json_response).to eq([journal.as_json])
+    end
+
     specify { expect(get(:index)).to have_http_status :ok }
   end
 

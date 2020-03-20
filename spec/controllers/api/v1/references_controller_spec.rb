@@ -2,6 +2,12 @@ require 'rails_helper'
 
 describe Api::V1::ReferencesController do
   describe "GET index" do
+    specify do
+      reference = create :article_reference
+      get :index
+      expect(json_response).to eq([reference.as_json])
+    end
+
     specify { expect(get(:index)).to have_http_status :ok }
   end
 

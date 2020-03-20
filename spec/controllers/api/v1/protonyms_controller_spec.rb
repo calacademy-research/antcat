@@ -2,13 +2,10 @@ require 'rails_helper'
 
 describe Api::V1::ProtonymsController do
   describe "GET index" do
-    before do
-      create :protonym
-    end
-
-    it "gets all protonyms" do
+    specify do
+      protonym = create :protonym
       get :index
-      expect(json_response.count).to eq 1
+      expect(json_response).to eq([protonym.as_json])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }
