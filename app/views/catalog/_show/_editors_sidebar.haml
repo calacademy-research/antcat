@@ -61,7 +61,7 @@
   -if taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning
       %h6
-        =link_to 'Issues', taxon_soft_validations_path(taxon)
+        Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
         =logged_in_only_tooltip_icon
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
