@@ -1,7 +1,13 @@
 module Exporters
   module Endnote
     class Formatter
-      def self.format references
+      include Service
+
+      def initialize references
+        @references = references
+      end
+
+      def call
         references.map do |reference|
           klass =
             case reference
@@ -14,6 +20,10 @@ module Exporters
           klass.new(reference).call
         end.select(&:present?).join("\n") + "\n"
       end
+
+      private
+
+        attr_reader :references
     end
 
     class BaseFormatter

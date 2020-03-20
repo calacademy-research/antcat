@@ -12,7 +12,7 @@ module References
           References::Search::FulltextWithExtractedKeywords[params[:reference_q], per_page: 999_999]
         end
 
-      render plain: Exporters::Endnote::Formatter.format(references)
+      render plain: Exporters::Endnote::Formatter[references]
     end
 
     def wikipedia

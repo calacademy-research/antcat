@@ -1,14 +1,15 @@
 require 'rails_helper'
 
 describe Exporters::Endnote::Formatter do
-  it "formats a book reference correctly" do
-    reference = create :book_reference,
-      author_names: [create(:author_name, name: 'Bolton, B.')],
-      title: 'Ants Are My Life',
-      citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
-      pagination: 'ix + 33pp.'
-    expect(described_class.format([reference])).to eq %(%0 Book
+  describe '#call' do
+    it "formats a book reference correctly" do
+      reference = create :book_reference,
+        author_names: [create(:author_name, name: 'Bolton, B.')],
+        title: 'Ants Are My Life',
+        citation_year: '1933',
+        publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
+        pagination: 'ix + 33pp.'
+      expect(described_class[[reference]]).to eq %(%0 Book
 %A Bolton, B.
 %D 1933
 %T Ants Are My Life
@@ -18,16 +19,16 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 )
-  end
+    end
 
-  it "formats multiple authors correctly" do
-    reference = create :book_reference,
-      author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
-      title: 'Ants Are My Life',
-      citation_year: '1933',
-      publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
-      pagination: 'ix + 33pp.'
-    expect(described_class.format([reference])).to eq %(%0 Book
+    it "formats multiple authors correctly" do
+      reference = create :book_reference,
+        author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
+        title: 'Ants Are My Life',
+        citation_year: '1933',
+        publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
+        pagination: 'ix + 33pp.'
+      expect(described_class[[reference]]).to eq %(%0 Book
 %A Bolton, B.
 %A Fisher, B.L.
 %D 1933
@@ -38,19 +39,19 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 )
-  end
+    end
 
-  it "formats a article reference correctly" do
-    reference = create :article_reference,
-      author_names: [create(:author_name, name: 'MacKay, W.')],
-      citation_year: '1941',
-      title: 'A title',
-      journal: create(:journal, name: 'Psyche'),
-      series_volume_issue: '1(2)',
-      pagination: '3-4'
-    reference.create_document url: 'http://antcat.org/article.pdf'
-    results = described_class.format [reference]
-    expect(results).to eq %{%0 Journal Article
+    it "formats a article reference correctly" do
+      reference = create :article_reference,
+        author_names: [create(:author_name, name: 'MacKay, W.')],
+        citation_year: '1941',
+        title: 'A title',
+        journal: create(:journal, name: 'Psyche'),
+        series_volume_issue: '1(2)',
+        pagination: '3-4'
+      reference.create_document url: 'http://antcat.org/article.pdf'
+      results = described_class[[reference]]
+      expect(results).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -61,17 +62,17 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 }
-  end
+    end
 
-  it "strips out the italics formatting" do
-    reference = create :article_reference,
-      author_names: [create(:author_name, name: 'MacKay, W.')],
-      citation_year: '1941',
-      title: '*A title*',
-      journal: create(:journal, name: 'Psyche'),
-      series_volume_issue: '1(2)',
-      pagination: '3-4'
-    expect(described_class.format([reference])).to eq %{%0 Journal Article
+    it "strips out the italics formatting" do
+      reference = create :article_reference,
+        author_names: [create(:author_name, name: 'MacKay, W.')],
+        citation_year: '1941',
+        title: '*A title*',
+        journal: create(:journal, name: 'Psyche'),
+        series_volume_issue: '1(2)',
+        pagination: '3-4'
+      expect(described_class[[reference]]).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -81,19 +82,19 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 }
-  end
+    end
 
-  it "exports public and taxonomic notes" do
-    reference = create :article_reference,
-      author_names: [create(:author_name, name: 'MacKay, W.')],
-      citation_year: '1941',
-      title: '*A title*',
-      journal: create(:journal, name: 'Psyche'),
-      series_volume_issue: '1(2)',
-      pagination: '3-4',
-      public_notes: 'Public notes.',
-      taxonomic_notes: 'Taxonomic notes'
-    expect(described_class.format([reference])).to eq %{%0 Journal Article
+    it "exports public and taxonomic notes" do
+      reference = create :article_reference,
+        author_names: [create(:author_name, name: 'MacKay, W.')],
+        citation_year: '1941',
+        title: '*A title*',
+        journal: create(:journal, name: 'Psyche'),
+        series_volume_issue: '1(2)',
+        pagination: '3-4',
+        public_notes: 'Public notes.',
+        taxonomic_notes: 'Taxonomic notes'
+      expect(described_class[[reference]]).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -105,19 +106,19 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 }
-  end
+    end
 
-  it "doesn't export blank public and taxonomic notes" do
-    reference = create :article_reference,
-      author_names: [create(:author_name, name: 'MacKay, W.')],
-      citation_year: '1941',
-      title: '*A title*',
-      journal: create(:journal, name: 'Psyche'),
-      series_volume_issue: '1(2)',
-      pagination: '3-4',
-      public_notes: '',
-      taxonomic_notes: ''
-    expect(described_class.format([reference])).to eq %{%0 Journal Article
+    it "doesn't export blank public and taxonomic notes" do
+      reference = create :article_reference,
+        author_names: [create(:author_name, name: 'MacKay, W.')],
+        citation_year: '1941',
+        title: '*A title*',
+        journal: create(:journal, name: 'Psyche'),
+        series_volume_issue: '1(2)',
+        pagination: '3-4',
+        public_notes: '',
+        taxonomic_notes: ''
+      expect(described_class[[reference]]).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
@@ -127,19 +128,19 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 }
-  end
+    end
 
-  it "bails on a class it doesn't know about " do
-    expect { described_class.format(['']) }.to raise_error("reference type not supported")
-  end
+    it "bails on a class it doesn't know about " do
+      expect { described_class[['']] }.to raise_error("reference type not supported")
+    end
 
-  it "formats an unknown reference correctly" do
-    reference = create :unknown_reference,
-      author_names: [create(:author_name, name: 'MacKay, W.')],
-      citation_year: '1933',
-      title: 'Another title',
-      citation: 'Dresden'
-    expect(described_class.format([reference])).to eq %(%0 Generic
+    it "formats an unknown reference correctly" do
+      reference = create :unknown_reference,
+        author_names: [create(:author_name, name: 'MacKay, W.')],
+        citation_year: '1933',
+        title: 'Another title',
+        citation: 'Dresden'
+      expect(described_class[[reference]]).to eq %(%0 Generic
 %A MacKay, W.
 %D 1933
 %T Another title
@@ -147,10 +148,11 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 )
-  end
+    end
 
-  it "doesn't output nested references" do
-    reference = create :nested_reference
-    expect(described_class.format([reference])).to eq "\n"
+    it "doesn't output nested references" do
+      reference = create :nested_reference
+      expect(described_class[[reference]]).to eq "\n"
+    end
   end
 end
