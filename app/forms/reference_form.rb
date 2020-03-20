@@ -65,6 +65,9 @@ class ReferenceForm
         raise ActiveRecord::RecordInvalid, reference
       end
 
+      # TODO: Clearing author names creates more `PaperTrail::Version` than needed, but
+      # `reference_author_names.position` was not being reset when this was removed. See specs.
+      reference.author_names.clear
       params[:author_names] = author_names
     end
 
