@@ -90,7 +90,7 @@ class ReferencesController < ApplicationController
         :series_volume_issue,
         :taxonomic_notes,
         :title,
-        document_attributes: [:id, :file, :url, :public]
+        document_attributes: [:id, :file, :url]
       )
     end
 
