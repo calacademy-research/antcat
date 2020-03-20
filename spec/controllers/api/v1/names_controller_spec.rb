@@ -2,36 +2,23 @@ require 'rails_helper'
 
 describe Api::V1::NamesController do
   describe "GET index" do
-    let!(:family_name) { create :family_name }
-    let!(:species_name) { create :species_name }
-
-    it "gets all names keys" do
+    specify do
+      name = create :family_name
       get :index
-
-      expect(response.body.to_s).to include family_name.name
-      expect(response.body.to_s).to include species_name.name
-      expect(json_response.count).to eq 2
-    end
-
-    it "gets all names keys (starts_at)" do
-      get :index, params: { starts_at: species_name.id }
-
-      expect(json_response[0]['species_name']['id']).to eq species_name.id
-      expect(json_response.count).to eq 1
+      expect(json_response).to eq([name.as_json])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }
   end
 
   describe "GET show" do
-    let!(:taxon) { create :family }
+    let!(:name) { create :family_name }
 
-    before { get :show, params: { id: taxon.name_id } }
-
-    it "fetches a name" do
-      expect(response.body.to_s).to include taxon.name.name
+    specify do
+      get :show, params: { id: name.id }
+      expect(json_response).to eq(name.as_json) # TOOD: Lazy.
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: name.id })).to have_http_status :ok }
   end
 end

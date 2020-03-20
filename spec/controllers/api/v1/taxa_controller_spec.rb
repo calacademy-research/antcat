@@ -26,57 +26,51 @@ describe Api::V1::TaxaController do
   end
 
   describe "GET show" do
-    context 'when record does not exists' do
-      specify { expect(get(:show, params: { id: 0 })).to have_http_status :not_found }
-    end
+    let!(:taxon) { create :species }
 
-    context 'when record exists' do
-      let!(:taxon) { create :species }
-
-      specify do
-        get :show, params: { id: taxon.id }
-        expect(json_response).to eq(
-          {
-            "species" => {
-              "auto_generated" => false,
-              "collective_group_name" => false,
-              "created_at" => taxon.created_at.as_json,
-              "current_valid_taxon_id" => nil,
-              "family_id" => nil,
-              "fossil" => false,
-              "genus_id" => taxon.genus_id,
-              "headline_notes_taxt" => nil,
-              "hol_id" => nil,
-              "homonym_replaced_by_id" => nil,
-              "hong" => false,
-              "ichnotaxon" => false,
-              "id" => taxon.id,
-              "incertae_sedis_in" => nil,
-              "name_cache" => taxon.name_cache,
-              "name_html_cache" => taxon.name_html_cache,
-              "name_id" => taxon.name_id,
-              "nomen_nudum" => false,
-              "origin" => nil,
-              "original_combination" => false,
-              "protonym_id" => taxon.protonym_id,
-              "species_id" => nil,
-              "status" => "valid",
-              "subfamily_id" => taxon.subfamily_id,
-              "subgenus_id" => nil,
-              "subspecies_id" => nil,
-              "tribe_id" => taxon.tribe_id,
-              "type_taxon_id" => nil,
-              "type_taxt" => nil,
-              "unresolved_homonym" => false,
-              "updated_at" => taxon.updated_at.as_json,
-              "author_citation" => taxon.author_citation
-            }
+    specify do
+      get :show, params: { id: taxon.id }
+      expect(json_response).to eq(
+        {
+          "species" => {
+            "auto_generated" => false,
+            "collective_group_name" => false,
+            "created_at" => taxon.created_at.as_json,
+            "current_valid_taxon_id" => nil,
+            "family_id" => nil,
+            "fossil" => false,
+            "genus_id" => taxon.genus_id,
+            "headline_notes_taxt" => nil,
+            "hol_id" => nil,
+            "homonym_replaced_by_id" => nil,
+            "hong" => false,
+            "ichnotaxon" => false,
+            "id" => taxon.id,
+            "incertae_sedis_in" => nil,
+            "name_cache" => taxon.name_cache,
+            "name_html_cache" => taxon.name_html_cache,
+            "name_id" => taxon.name_id,
+            "nomen_nudum" => false,
+            "origin" => nil,
+            "original_combination" => false,
+            "protonym_id" => taxon.protonym_id,
+            "species_id" => nil,
+            "status" => "valid",
+            "subfamily_id" => taxon.subfamily_id,
+            "subgenus_id" => nil,
+            "subspecies_id" => nil,
+            "tribe_id" => taxon.tribe_id,
+            "type_taxon_id" => nil,
+            "type_taxt" => nil,
+            "unresolved_homonym" => false,
+            "updated_at" => taxon.updated_at.as_json,
+            "author_citation" => taxon.author_citation
           }
-        )
-      end
-
-      specify { expect(get(:show, params: { id: taxon.id })).to have_http_status :ok }
+        }
+      )
     end
+
+    specify { expect(get(:show, params: { id: taxon.id })).to have_http_status :ok }
   end
 
   describe "GET search" do
