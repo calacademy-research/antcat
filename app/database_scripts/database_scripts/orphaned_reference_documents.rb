@@ -56,4 +56,3 @@ related_scripts:
   - ReferencesWithBlankPdfUrlsAndFilenames
   - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
-  - ReferencesWithUndownloadablePdfs
