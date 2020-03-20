@@ -2,6 +2,10 @@ require 'rails_helper'
 
 describe Api::V1::ReferencesController do
   describe "GET show" do
+    context 'when record does not exists' do
+      specify { expect(get(:show, params: { id: 0 })).to have_http_status :not_found }
+    end
+
     context 'when record exists' do
       let!(:reference) { create :article_reference }
 

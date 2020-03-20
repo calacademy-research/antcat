@@ -29,6 +29,10 @@ describe Api::V1::TaxaController do
   end
 
   describe "GET show" do
+    context 'when record does not exists' do
+      specify { expect(get(:show, params: { id: 0 })).to have_http_status :not_found }
+    end
+
     context 'when record exists' do
       let!(:taxon) { create :species }
 
