@@ -72,9 +72,9 @@ describe Api::V1::TaxaController do
     end
 
     context "when there are no search matches" do
-      it 'returns HTTP 404' do
-        get :search, params: { string: 'maxuus' }
-        expect(response).to have_http_status :not_found
+      it 'returns an empty array' do
+        get :search, params: { string: 'pizza' }
+        expect(json_response).to eq([])
       end
     end
   end

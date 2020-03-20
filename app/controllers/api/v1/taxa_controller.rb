@@ -21,11 +21,7 @@ module Api
           }
         end
 
-        if results.empty?
-          head :not_found
-        else
-          render json: results
-        end
+        render json: results
       end
     end
   end
