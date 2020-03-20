@@ -27,8 +27,7 @@ class ReferenceDocument < ApplicationRecord
   end
 
   def downloadable?
-    return true if hosted_on_s3?
-    url.present? && !hosted_by_antbase? && !hosted_by_hol?
+    hosted_on_s3? || url.present?
   end
 
   def actual_url
@@ -48,14 +47,6 @@ class ReferenceDocument < ApplicationRecord
       file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
     end
 
-    def hosted_by_hol?
-      url.present? && url =~ %r{^https?://128.146.250.117}
-    end
-
-    def hosted_by_antbase?
-      url.present? && url =~ %r{^https?://antbase\.org}
-    end
-
     def hosted_on_s3?
       file_file_name.present?
     end
@@ -66,7 +57,6 @@ class ReferenceDocument < ApplicationRecord
       # This is to avoid authentication problems when a URL to one of "our" files is copied
       # to another reference (e.g., nested).
       return if /antcat/.match?(url)
-      return if hosted_by_hol? || hosted_by_antbase?
 
       URI.parse(url.gsub(' ', '%20'))
     rescue URI::InvalidURIError

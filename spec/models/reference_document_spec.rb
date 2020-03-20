@@ -65,31 +65,22 @@ describe ReferenceDocument do
   end
 
   describe "#downloadable?" do
-    it "is not downloadable if there is no url" do
-      expect(described_class.new.downloadable?).to eq false
+    context 'when reference has no `url` or `file_file_name`' do
+      let(:reference_document) { described_class.new(url: "", file_file_name: '') }
+
+      specify { expect(reference_document.downloadable?).to eq false }
     end
 
-    it "is downloadable by anyone if we just have a URL, not a file name on S3" do
-      expect(described_class.new(url: 'foo').downloadable?).to eq true
+    context 'when reference has a `file_file_name`' do
+      let(:reference_document) { described_class.new(url: "", file_file_name: 'file.pdf') }
+
+      specify { expect(reference_document.downloadable?).to eq true }
     end
 
-    it "is downloadable by just anyone if we are hosting on S3" do
-      expect(described_class.new(url: 'foo', file_file_name: 'bar').downloadable?).to eq true
-    end
+    context 'when reference has a `url`' do
+      let(:reference_document) { described_class.new(url: "http://ancat.org/file.pdf", file_file_name: '') }
 
-    it "is downloadable by anyone if it's public" do
-      document = described_class.new(url: 'foo', file_file_name: 'bar', public: true)
-      expect(document.downloadable?).to eq true
-    end
-
-    it "is not downloadable if it is on http://128.146.250.117" do
-      document = described_class.new(url: 'http://128.146.250.117/pdfs/4096/4096.pdf')
-      expect(document.downloadable?).to eq false
-    end
-
-    it "doesn't consider antbase PDFs downloadable by anybody" do
-      document = described_class.new(url: 'http://antbase.org/ants/publications/4495/4495.pdf')
-      expect(document.downloadable?).to eq false
+      specify { expect(reference_document.downloadable?).to eq true }
     end
   end
 end
