@@ -2,8 +2,7 @@ module Api
   module V1
     class ProtonymsController < Api::ApiController
       def index
-        protonyms = Protonym.all
-        render json: protonyms
+        render json: with_limit(Protonym.all)
       end
 
       def show

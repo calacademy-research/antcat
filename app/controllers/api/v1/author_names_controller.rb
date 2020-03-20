@@ -2,8 +2,7 @@ module Api
   module V1
     class AuthorNamesController < Api::ApiController
       def index
-        authors = AuthorName.all
-        render json: authors
+        render json: with_limit(AuthorName.all)
       end
 
       def show
