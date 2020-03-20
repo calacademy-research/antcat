@@ -35,7 +35,7 @@ describe DatabaseScripts::EndDataAttributes do
     describe "#related_scripts" do
       let(:script_path) { "app/database_scripts/database_scripts/valid_subspecies_in_invalid_species.rb" }
 
-      it "fetches the related scripts and excludes itself" do
+      it "returns related scripts" do
         expect(end_data_attributes.related_scripts.size).to eq 1
         expect(end_data_attributes.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
       end

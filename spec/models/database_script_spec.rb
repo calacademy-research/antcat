@@ -54,6 +54,15 @@ describe DatabaseScript do
     end
   end
 
+  describe "#related_scripts" do
+    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+
+    it "returns related scripts excluding itself" do
+      expect(script.related_scripts.size).to eq 1
+      expect(script.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
+    end
+  end
+
   describe '#statistics' do
     let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 

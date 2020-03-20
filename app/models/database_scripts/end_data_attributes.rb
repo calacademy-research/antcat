@@ -27,7 +27,7 @@ module DatabaseScripts
     def related_scripts
       (end_data[:related_scripts] || []).map do |class_name|
         DatabaseScript.safe_new_from_filename_without_extension class_name
-      end.reject { |database_script| database_script.is_a?(self.class) }
+      end
     end
 
     private
