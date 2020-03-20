@@ -24,12 +24,13 @@ describe DatabaseScript do
 
   describe '.record_in_results?' do
     context "when taxon is in the script's results" do
-      let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera }
-      let(:extant_species) { create :species }
+      subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
+
+      let!(:extant_species) { create :species }
 
       specify do
         expect { extant_species.genus.update!(fossil: true) }.
-          to change { script.record_in_results?(extant_species) }.
+          to change { database_script.record_in_results?(extant_species) }.
           from(false).to(true)
       end
     end
@@ -44,58 +45,59 @@ describe DatabaseScript do
 
   describe "#title" do
     it "fetches the title from the END data" do
-      script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
-      expect(script.title).to eq "Fossil protonyms with non-fossil taxa"
+      database_script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
+      expect(database_script.title).to eq "Fossil protonyms with non-fossil taxa"
     end
 
     it "defaults to the humanized filename" do
-      script = DatabaseScripts::OrphanedProtonyms.new
-      expect(script.title).to eq "Orphaned protonyms"
+      database_script = DatabaseScripts::OrphanedProtonyms.new
+      expect(database_script.title).to eq "Orphaned protonyms"
     end
   end
 
   describe "#related_scripts" do
-    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+    subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     it "returns related scripts excluding itself" do
-      expect(script.related_scripts.size).to eq 1
-      expect(script.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
+      expect(database_script.related_scripts.size).to eq 1
+      expect(database_script.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
     end
   end
 
   describe '#statistics' do
-    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+    subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     context 'when script has no custom statistics' do
       it 'returns default statistics' do
-        expect(script.statistics).to eq "Results: 0"
+        expect(database_script.statistics).to eq "Results: 0"
       end
     end
 
     context 'when script has custom statistics' do
       before do
-        def script.statistics
+        def database_script.statistics
           'Custom results'
         end
       end
 
       it "returns the script's `#statistics`" do
-        expect(script.statistics).to eq 'Custom results'
+        expect(database_script.statistics).to eq 'Custom results'
       end
     end
   end
 
   describe "#to_param" do
-    let(:script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
+    subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
     it "returns the filename without extension" do
-      expect(script.to_param).to eq "extant_taxa_in_fossil_genera"
+      expect(database_script.to_param).to eq "extant_taxa_in_fossil_genera"
     end
   end
 
   describe "#cached_results" do
-    let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
+    subject(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
+    # rubocop:disable RSpec/SubjectStub
     context 'when results is present' do
       it "doesn't call `#result` more than once" do
         expect(database_script).to receive(:results).once.and_return :stubbed
@@ -122,6 +124,7 @@ describe DatabaseScript do
         database_script.__send__ :cached_results
       end
     end
+    # rubocop:enable RSpec/SubjectStub
 
     described_class.all.each do |database_script|
       it "#{database_script.filename_without_extension} calls `#results` only once" do
