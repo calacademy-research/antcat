@@ -177,25 +177,65 @@ describe ReferenceForm do
     end
 
     describe 'reference documents' do
-      let(:params) do
-        {
-          author_names_string: "Batiatus, B.",
-          title: "Should be updated",
-          document_attributes: {
-            url: "http://localhost/documents/#{reference.document.id}/123.pdf",
-            id: reference.document.id
-          }
-        }
+      context 'when creating a reference' do
+        context 'when no `file` or `url` is given' do
+          let!(:reference) { build :unknown_reference }
+          let(:params) do
+            {
+              author_names_string: "Batiatus, B.",
+              document_attributes: {
+                url: "",
+                public: '1'
+              }
+            }
+          end
+
+          it 'does not create a new `ReferenceDocument`s' do
+            expect { described_class.new(reference, params).save }.
+              to_not change { ReferenceDocument.count }.from(0)
+          end
+        end
+
+        context 'when a `file` or `url` is given' do
+          let!(:reference) { build :unknown_reference }
+          let(:params) do
+            {
+              author_names_string: "Batiatus, B.",
+              document_attributes: {
+                url: "https://example.com/file.pdf",
+                public: '1'
+              }
+            }
+          end
+
+          it 'does creates a new `ReferenceDocument`' do
+            expect { described_class.new(reference, params).save }.
+              to change { ReferenceDocument.count }.from(0).to(1)
+          end
+        end
       end
 
-      context 'when reference has a document' do
-        let!(:reference) { create :unknown_reference, :with_document }
+      context 'when updating a reference' do
+        let(:params) do
+          {
+            author_names_string: "Batiatus, B.",
+            title: "Should be updated",
+            document_attributes: {
+              url: "http://localhost/123.pdf",
+              id: reference.document.id
+            }
+          }
+        end
 
-        it 'does not create a new `ReferenceDocument`s' do
-          expect(ReferenceDocument.count).to eq 1
-          expect { described_class.new(reference, params).save }.
-            to change { reference.reload.title }.to(params[:title])
-          expect(ReferenceDocument.count).to eq 1
+        context 'when reference has a document' do
+          let!(:reference) { create :unknown_reference, :with_document }
+
+          it 'does not create a new `ReferenceDocument`s' do
+            expect(ReferenceDocument.count).to eq 1
+            expect { described_class.new(reference, params).save }.
+              to change { reference.reload.title }.to(params[:title])
+            expect(ReferenceDocument.count).to eq 1
+          end
         end
       end
     end
