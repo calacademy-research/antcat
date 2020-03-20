@@ -9,19 +9,21 @@ module Exporters
 
       def call
         references.map do |reference|
-          klass =
-            case reference
-            when ArticleReference then ArticleFormatter
-            when BookReference    then BookFormatter
-            when NestedReference  then NestedFormatter
-            when UnknownReference then UnknownFormatter
-            else raise "reference type not supported"
-            end
-          klass.new(reference).call
+          formatter_class(reference).new(reference).call
         end.select(&:present?).join("\n") + "\n"
       end
 
       private
+
+        def formatter_class reference
+          case reference
+          when ArticleReference then ArticleFormatter
+          when BookReference    then BookFormatter
+          when NestedReference  then NestedFormatter
+          when UnknownReference then UnknownFormatter
+          else raise "reference type not supported"
+          end
+        end
 
         attr_reader :references
     end
@@ -110,7 +112,7 @@ module Exporters
     end
 
     class NestedFormatter < BaseFormatter
-      # don't know how to get EndNote to handle nested references
+      # Don't know how to get EndNote to handle nested references.
       def call
         ''
       end

@@ -50,8 +50,7 @@ describe Exporters::Endnote::Formatter do
         series_volume_issue: '1(2)',
         pagination: '3-4'
       reference.create_document url: 'http://antcat.org/article.pdf'
-      results = described_class[[reference]]
-      expect(results).to eq %{%0 Journal Article
+      expect(described_class[[reference]]).to eq %{%0 Journal Article
 %A MacKay, W.
 %D 1941
 %T A title
