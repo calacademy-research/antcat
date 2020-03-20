@@ -2,7 +2,7 @@ module Api
   module V1
     class ReferenceAuthorNamesController < Api::ApiController
       def index
-        super ReferenceAuthorName
+        render json: with_limit(ReferenceAuthorName.all)
       end
 
       def show

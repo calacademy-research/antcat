@@ -4,11 +4,6 @@ module Api
       head :not_found
     end
 
-    def index klass
-      items = with_limit(klass.all)
-      render json: items
-    end
-
     def show klass
       item = klass.find(params[:id])
       render json: item

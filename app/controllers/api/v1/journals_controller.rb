@@ -2,7 +2,7 @@ module Api
   module V1
     class JournalsController < Api::ApiController
       def index
-        super Journal
+        render json: with_limit(Journal.all)
       end
 
       def show

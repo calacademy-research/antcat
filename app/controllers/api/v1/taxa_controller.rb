@@ -2,7 +2,7 @@ module Api
   module V1
     class TaxaController < Api::ApiController
       def index
-        super Taxon
+        render json: with_limit(Taxon.all)
       end
 
       def show

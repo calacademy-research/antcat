@@ -2,7 +2,7 @@ module Api
   module V1
     class PublishersController < Api::ApiController
       def index
-        super Publisher
+        render json: with_limit(Publisher.all)
       end
 
       def show

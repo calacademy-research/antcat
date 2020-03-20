@@ -2,7 +2,7 @@ module Api
   module V1
     class ReferenceSectionsController < Api::ApiController
       def index
-        super ReferenceSection
+        render json: with_limit(ReferenceSection.all)
       end
 
       def show

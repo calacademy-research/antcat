@@ -2,7 +2,7 @@ module Api
   module V1
     class NamesController < Api::ApiController
       def index
-        super Name
+        render json: with_limit(Name.all)
       end
 
       def show
