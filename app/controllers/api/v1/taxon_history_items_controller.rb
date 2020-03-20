@@ -6,7 +6,8 @@ module Api
       end
 
       def show
-        super TaxonHistoryItem
+        item = TaxonHistoryItem.find(params[:id])
+        render json: item
       end
     end
   end

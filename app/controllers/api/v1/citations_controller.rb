@@ -6,7 +6,8 @@ module Api
       end
 
       def show
-        super Citation
+        item = Citation.find(params[:id])
+        render json: item
       end
     end
   end

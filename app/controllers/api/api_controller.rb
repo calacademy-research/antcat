@@ -4,11 +4,6 @@ module Api
       head :not_found
     end
 
-    def show klass
-      item = klass.find(params[:id])
-      render json: item
-    end
-
     private
 
       def with_limit scope

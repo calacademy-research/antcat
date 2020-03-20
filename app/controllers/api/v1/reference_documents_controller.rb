@@ -6,7 +6,8 @@ module Api
       end
 
       def show
-        super ReferenceDocument
+        item = ReferenceDocument.find(params[:id])
+        render json: item
       end
     end
   end

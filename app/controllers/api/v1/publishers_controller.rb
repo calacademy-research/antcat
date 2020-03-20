@@ -6,7 +6,8 @@ module Api
       end
 
       def show
-        super Publisher
+        item = Publisher.find(params[:id])
+        render json: item
       end
     end
   end

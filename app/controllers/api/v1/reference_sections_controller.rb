@@ -6,7 +6,8 @@ module Api
       end
 
       def show
-        super ReferenceSection
+        item = ReferenceSection.find(params[:id])
+        render json: item
       end
     end
   end
