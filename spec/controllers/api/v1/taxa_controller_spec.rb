@@ -2,24 +2,10 @@ require 'rails_helper'
 
 describe Api::V1::TaxaController do
   describe "GET index" do
-    it "gets all taxa greater than a given number" do
-      create :genus
-      create :species
-      species = create :species
-
-      get :index, params: { starts_at: species.id }
-
-      expect(json_response[0]['species']['id']).to eq species.id
-      expect(json_response.count).to eq 1
-    end
-
-    it "gets all taxa" do
+    specify do
       taxon = create :family
-
       get :index
-
-      expect(response.body.to_s).to include taxon.name.name
-      expect(json_response.count).to eq 1
+      expect(json_response).to eq([taxon.as_json])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }
@@ -74,16 +60,15 @@ describe Api::V1::TaxaController do
   end
 
   describe "GET search" do
-    before { create :species, name_string: 'Atta minor maxus' }
+    let!(:taxon) { create :species, name_string: 'Atta minor maxus' }
 
-    it "searches for taxa" do
+    specify do
       get :search, params: { string: 'maxus' }
-      expect(response.body.to_s).to include "maxus"
-    end
-
-    it 'returns HTTP 200' do
-      get :search, params: { string: 'maxus' }
-      expect(response).to have_http_status :ok
+      expect(json_response).to eq(
+        [
+          { "id" => taxon.id, "name" => taxon.name_cache }
+        ]
+      )
     end
 
     context "when there are no search matches" do
