@@ -17,7 +17,7 @@
               =antcat_icon "star"
               =antcat_icon "star"
           %li=link_to 'Random ant', catalog_random_path
-          %li#feedback-footer-link{data: { open: "feedback_modal" }} Feedback
+          %li=link_to 'Feedback', new_feedback_path(page: current_page_for_feedback)
       .small-4.columns
         %ul.no-bullet{style: "margin-top: 1.3rem"}
           %li=link_to 'API', grape_swagger_rails_path

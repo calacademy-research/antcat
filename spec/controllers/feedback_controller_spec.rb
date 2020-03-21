@@ -17,13 +17,12 @@ describe FeedbackController do
 
   describe "POST create", as: :visitor do
     let(:valid_params) do
-      { feedback: { comment: "Cool site", name: "Batiatus" }, format: :json }
+      { feedback: { comment: "Cool site", name: "Batiatus" } }
     end
 
     context "when feedback is valid" do
       it "creates a feedback item" do
         expect { post :create, params: valid_params }.to change { Feedback.count }.from(0).to(1)
-        expect(response).to have_http_status :created
       end
     end
 
@@ -36,8 +35,7 @@ describe FeedbackController do
 
       it "includes a friendly error message in the response" do
         post :create, params: valid_params
-        expect(response.body).to include "has already been submitted. If it is unlikely"
-        expect(response).to have_http_status :unprocessable_entity
+        expect(assigns(:feedback).errors.full_messages.to_sentence).to include "Comment has already been submitted."
       end
     end
   end

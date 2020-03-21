@@ -1,7 +1,7 @@
 class FeedbackController < ApplicationController
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 
-  before_action :ensure_user_is_at_least_helper, except: [:create]
+  before_action :ensure_user_is_at_least_helper, except: [:new, :create]
   before_action :ensure_user_is_superadmin, only: [:destroy]
   before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
@@ -15,15 +15,20 @@ class FeedbackController < ApplicationController
     @new_comment = Comment.build_comment @feedback, current_user
   end
 
+  def new
+    @feedback = Feedback.new(page: params[:page])
+  end
+
   def create
     @feedback = Feedback.new(feedback_params)
     @feedback.ip = request.remote_ip
 
     if ip_banned? || rate_throttle?
-      render json: <<~MSG, status: :unprocessable_entity
+      @feedback.errors.add :base, <<~MSG
         You have already posted a couple of feedbacks in the last few minutes. Thanks for that!
         Please wait for a few minutes while we are trying to figure out if you are a bot...
       MSG
+      render :new
       return
     end
 
@@ -35,9 +40,11 @@ class FeedbackController < ApplicationController
 
     if @feedback.save
       @feedback.create_activity :create, current_user
-      render json: feedback_success_callout, status: :created
+      redirect_to root_path, notice: <<~MSG
+        Message sent (feedback id #{@feedback.id}). Thanks for helping us make AntCat better!
+      MSG
     else
-      render json: @feedback.errors.full_messages.to_sentence, status: :unprocessable_entity
+      render :new
     end
   end
 
@@ -70,7 +77,7 @@ class FeedbackController < ApplicationController
     end
 
     def on_spam _options = {}
-      render json: "You're not a bot are you? Feedback not sent. Email us?", status: :unprocessable_entity
+      redirect_to root_path "You're not a bot are you? Feedback not sent. Email us?"
     end
 
     def ip_banned?
@@ -80,9 +87,5 @@ class FeedbackController < ApplicationController
     def rate_throttle?
       return if current_user
       Feedback.submitted_by_ip(@feedback.ip).recent.count >= 5
-    end
-
-    def feedback_success_callout
-      render_to_string partial: "feedback_success_callout", locals: { feedback_id: @feedback.id }
     end
 end

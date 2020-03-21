@@ -158,7 +158,7 @@ Rails.application.routes.draw do
 
   resources :antweb_data, only: :index
 
-  resources :feedback, only: [:index, :show, :create, :destroy] do
+  resources :feedback, except: [:edit] do
     member do
       put :close
       put :reopen

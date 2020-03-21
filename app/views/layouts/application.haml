@@ -32,7 +32,8 @@
       "empty script tag"
 
     %body{id: current_controller_css_id(params[:controller])}
-      %button#feedback-button.hide-for-small-only{data: { open: "feedback_modal" }} Suggest edit
+      -unless params[:controller] == 'feedback'
+        %button#feedback-button.hide-for-small-only=link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback)
 
       .main-container
         %header#header
@@ -50,8 +51,6 @@
         =yield :after_content
 
         %footer#taxon-browser-sticky-target-js-hook=render "footer"
-
-      =render "feedback/feedback_modal"
 
       -if Rails.env.production?
         =render "google_analytics"
