@@ -2,28 +2,22 @@ require 'rails_helper'
 
 describe Taxa::CreateCombinationsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "GET new" do
+  describe "GET new", as: :editor do
     let(:taxon) { create :species }
-
-    before { sign_in create(:user, :editor) }
 
     specify { expect(get(:new, params: { taxa_id: taxon.id })).to render_template :new }
   end
 
-  describe "GET show" do
+  describe "GET show", as: :editor do
     let(:taxon) { create :species }
     let(:new_parent) { create :genus }
-
-    before { sign_in create(:user, :editor) }
 
     specify do
       expect(get(:show, params: { taxa_id: taxon.id, new_parent_id: new_parent.id })).to render_template :show
@@ -37,15 +31,13 @@ describe Taxa::CreateCombinationsController do
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let!(:taxon) do
       create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
     end
     let!(:new_parent) { create :genus, name_string: 'Atta' }
     let!(:target_name_string) { 'Atta mexicana' }
     let!(:valid_params) { { taxa_id: taxon.id, new_parent_id: new_parent.id, species_epithet: 'mexicana' } }
-
-    before { sign_in create(:user, :editor) }
 
     it 'calls `Operations::CreateNewCombination`' do
       expect(Operations::CreateNewCombination).to receive(:new).with(

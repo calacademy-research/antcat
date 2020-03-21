@@ -4,16 +4,18 @@ FactoryBot.define do
     sequence(:email) { |n| "user#{n}@antcat.org" }
     password { 'secret' }
 
-    trait :superadmin do
-      superadmin { true }
+    trait :user
+
+    trait :helper do
+      helper { true }
     end
 
     trait :editor do
       editor { true }
     end
 
-    trait :helper do
-      helper { true }
+    trait :superadmin do
+      superadmin { true }
     end
   end
 end

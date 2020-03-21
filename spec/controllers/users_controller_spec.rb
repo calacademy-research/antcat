@@ -2,9 +2,7 @@ require 'rails_helper'
 
 describe UsersController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
@@ -12,9 +10,7 @@ describe UsersController do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+    context "when signed in as an editor", as: :editor do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
@@ -23,13 +19,11 @@ describe UsersController do
     end
   end
 
-  describe "GET new" do
-    before { sign_in create(:user, :superadmin) }
-
+  describe "GET new", as: :superadmin do
     specify { expect(get(:new)).to render_template :new }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :superadmin do
     let!(:user_params) do
       {
         name: 'Captain Flynn',
@@ -41,8 +35,6 @@ describe UsersController do
         locked: true
       }
     end
-
-    before { sign_in create(:user, :superadmin) }
 
     it 'creates a user' do
       expect { post(:create, params: { user: user_params }) }.to change { User.count }.by(1)
@@ -57,7 +49,7 @@ describe UsersController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :superadmin do
     let!(:user) { create :user }
     let!(:user_params) do
       {
@@ -69,8 +61,6 @@ describe UsersController do
         locked: true
       }
     end
-
-    before { sign_in create(:user, :superadmin) }
 
     it 'updates the user' do
       put(:update, params: { id: user.id, user: user_params })
@@ -105,10 +95,8 @@ describe UsersController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :superadmin do
     let!(:user) { create :user }
-
-    before { sign_in create(:user, :superadmin) }
 
     it 'soft-deletes the user' do
       expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.deleted }.to(true)

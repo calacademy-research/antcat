@@ -2,24 +2,18 @@ require 'rails_helper'
 
 describe NamesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as a helper" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper", as: :helper do
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "PUT update" do
-    before { sign_in create(:user, :editor) }
-
+  describe "PUT update", as: :editor do
     context 'with valid params' do
       let!(:name) { create :subspecies_name }
       let(:params) do

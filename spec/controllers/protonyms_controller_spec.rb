@@ -10,9 +10,7 @@ describe ProtonymsController do
       specify { expect(delete(:destroy, params: { id: 1 })).to redirect_to_signin_form }
     end
 
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(post(:create, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
@@ -21,13 +19,11 @@ describe ProtonymsController do
     end
   end
 
-  describe "GET new" do
-    before { sign_in create(:user, :helper) }
-
+  describe "GET new", as: :helper do
     specify { expect(get(:new)).to render_template :new }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:protonym_params) do
       {
         fossil: false,
@@ -51,8 +47,6 @@ describe ProtonymsController do
         protonym: protonym_params
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a protonym' do
       expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
@@ -85,7 +79,7 @@ describe ProtonymsController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:protonym) { create :protonym }
     let(:protonym_params) do
       {
@@ -104,8 +98,6 @@ describe ProtonymsController do
         }
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the protonym' do
       put(:update, params: { id: protonym.id, protonym: protonym_params })
@@ -150,10 +142,8 @@ describe ProtonymsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :helper do
     let!(:protonym) { create :protonym }
-
-    before { sign_in create(:user, :helper) }
 
     it 'deletes the protonym' do
       expect { delete(:destroy, params: { id: protonym.id }) }.to change { Protonym.count }.by(-1)

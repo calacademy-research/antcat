@@ -1,12 +1,8 @@
 require 'rails_helper'
 
 describe TaxaController do
-  let(:user) { create :user, :editor }
-
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
@@ -15,11 +11,7 @@ describe TaxaController do
     end
   end
 
-  describe "POST create" do
-    before do
-      sign_in user
-    end
-
+  describe "POST create", as: :editor do
     let(:authorship_reference) { create :article_reference }
     let(:base_params) do
       HashWithIndifferentAccess.new(
@@ -185,15 +177,13 @@ describe TaxaController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :editor do
     let!(:taxon) { create :subfamily, family: create(:family) }
     let!(:taxon_params) do
       {
         status:  Status::EXCLUDED_FROM_FORMICIDAE
       }
     end
-
-    before { sign_in user }
 
     it 'updates the taxon' do
       put(:update, params: { id: taxon.id, taxon: taxon_params })
@@ -211,10 +201,8 @@ describe TaxaController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :editor do
     let!(:taxon) { create :subfamily, family: create(:family) }
-
-    before { sign_in user }
 
     it 'deletes the taxon' do
       expect { delete(:destroy, params: { id: taxon.id }) }.to change { Taxon.count }.by(-1)

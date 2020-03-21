@@ -2,21 +2,17 @@ require 'rails_helper'
 
 describe Taxa::MoveItemsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let!(:taxon) { create :family }
     let!(:taxon_history_item) { create :taxon_history_item, taxon: taxon }
     let!(:to_taxon) { create :family }
-
-    before { sign_in create(:user, :editor) }
 
     it "calls `Taxa::Operations::MoveItems`" do
       expect(Taxa::Operations::MoveItems).to receive(:new).with(to_taxon, [taxon_history_item]).and_call_original

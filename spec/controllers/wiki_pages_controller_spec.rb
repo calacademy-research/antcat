@@ -9,22 +9,18 @@ describe WikiPagesController do
       specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+    context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:wiki_page_params) do
       {
         title: 'Title',
         content: 'content'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a wiki page' do
       expect { post(:create, params: { wiki_page: wiki_page_params }) }.to change { WikiPage.count }.by(1)
@@ -46,7 +42,7 @@ describe WikiPagesController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:wiki_page) { create :wiki_page }
     let!(:wiki_page_params) do
       {
@@ -54,8 +50,6 @@ describe WikiPagesController do
         content: 'content'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the wiki page' do
       put(:update, params: { id: wiki_page.id, wiki_page: wiki_page_params })

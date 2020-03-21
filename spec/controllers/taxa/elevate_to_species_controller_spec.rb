@@ -2,17 +2,13 @@ require 'rails_helper'
 
 describe Taxa::ElevateToSpeciesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe 'POST create' do
+  describe 'POST create', as: :editor do
     let!(:subspecies) { create :subspecies }
-
-    before { sign_in create(:user, :editor) }
 
     it 'calls `Taxa::Operations::ElevateToSpecies`' do
       expect(Taxa::Operations::ElevateToSpecies).to receive(:new).with(subspecies).and_call_original

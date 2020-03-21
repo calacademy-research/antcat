@@ -12,13 +12,11 @@ describe IssuesController do
     end
   end
 
-  describe "GET new" do
-    before { sign_in create(:user, :helper) }
-
+  describe "GET new", as: :helper do
     specify { expect(get(:new)).to render_template :new }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:issue_params) do
       {
         title: 'title',
@@ -26,8 +24,6 @@ describe IssuesController do
         help_wanted: true
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates an issue' do
       expect { post(:create, params: { issue: issue_params }) }.to change { Issue.count }.by(1)
@@ -50,7 +46,7 @@ describe IssuesController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:issue) { create :issue }
     let!(:issue_params) do
       {
@@ -58,8 +54,6 @@ describe IssuesController do
         description: 'description2'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the protonym' do
       put(:update, params: { id: issue.id, issue: issue_params })

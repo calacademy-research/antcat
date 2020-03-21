@@ -9,9 +9,7 @@ describe ReferencesController do
       specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
     end
 
-    context "when signed in as a helper editor" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper editor", as: :helper do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
@@ -20,7 +18,7 @@ describe ReferencesController do
     specify { expect(get(:index)).to render_template :index }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:reference_params) do
       {
         title: 'New Ants',
@@ -43,8 +41,6 @@ describe ReferencesController do
         reference: reference_params
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a reference' do
       expect { post(:create, params: params) }.to change { Reference.count }.by(1)
@@ -79,7 +75,7 @@ describe ReferencesController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:reference) { create :article_reference }
     let!(:reference_params) do
       {
@@ -98,8 +94,6 @@ describe ReferencesController do
       }
     end
 
-    before { sign_in create(:user, :helper) }
-
     it 'updates the reference' do
       expect { put(:update, params: params) }.
         to change { reference.reload.title }.to(reference_params[:title]).
@@ -116,10 +110,8 @@ describe ReferencesController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :editor do
     let!(:reference) { create :unknown_reference }
-
-    before { sign_in create(:user, :editor) }
 
     it 'deletes the reference' do
       expect { delete(:destroy, params: { id: reference.id }) }.to change { Reference.count }.by(-1)

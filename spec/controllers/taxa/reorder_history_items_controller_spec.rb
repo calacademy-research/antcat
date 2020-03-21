@@ -2,20 +2,16 @@ require 'rails_helper'
 
 describe Taxa::ReorderHistoryItemsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let(:taxon) { create :family }
     let(:reordered_ids) { [second.id.to_s, first.id.to_s] }
     let!(:first) { taxon.history_items.create!(taxt: "A") }
     let!(:second) { taxon.history_items.create!(taxt: "B") }
-
-    before { sign_in create(:user, :editor) }
 
     it "calls `Taxa::Operations::ReorderHistoryItems`" do
       expect(Taxa::Operations::ReorderHistoryItems).to receive(:new).with(taxon, reordered_ids).and_call_original

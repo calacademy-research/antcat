@@ -1,24 +1,13 @@
 require 'rails_helper'
 
 describe SiteNoticesController do
-  let!(:editor) { create :user, :editor }
-
-  before do
-    sign_in editor
-    request.env["HTTP_REFERER"] = "https://antcat.org"
-  end
-
   describe "forbidden actions" do
     context "when not signed in" do
-      before { sign_out editor }
-
       specify { expect(post(:show, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:mark_all_as_read)).to redirect_to_signin_form }
     end
 
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create)).to have_http_status :forbidden }
@@ -26,18 +15,18 @@ describe SiteNoticesController do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+    context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
   describe "GET show" do
+    let!(:editor) { create :user, :editor }
+
     before do
+      sign_in editor
       create :site_notice
-      # Manually specify `created_at` due to how the `unread` gem works.
-      create :site_notice, created_at: 1.second.from_now
+      create :site_notice, created_at: 1.second.from_now # HACK: Set `created_at` due to how the `unread` gem works.
     end
 
     it "marks it as read" do
@@ -46,15 +35,13 @@ describe SiteNoticesController do
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let!(:site_notice_params) do
       {
         title: 'Title',
         message: 'message'
       }
     end
-
-    before { sign_in create(:user, :editor) }
 
     it 'creates a site notice' do
       expect { post(:create, params: { site_notice: site_notice_params }) }.to change { SiteNotice.count }.by(1)
@@ -75,7 +62,7 @@ describe SiteNoticesController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :editor do
     let!(:site_notice) { create :site_notice }
     let!(:site_notice_params) do
       {
@@ -83,8 +70,6 @@ describe SiteNoticesController do
         message: 'message'
       }
     end
-
-    before { sign_in create(:user, :editor) }
 
     it 'updates the site notice' do
       post(:update, params: { id: site_notice.id, site_notice: site_notice_params })
@@ -123,6 +108,10 @@ describe SiteNoticesController do
   end
 
   describe "POST #mark_all_as_read" do
+    let!(:editor) { create :user, :editor }
+
+    before { sign_in editor }
+
     after { post :mark_all_as_read }
 
     it "calls `SiteNotice#mark_as_read`" do

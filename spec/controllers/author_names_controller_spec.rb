@@ -2,9 +2,7 @@ require 'rails_helper'
 
 describe AuthorNamesController do
   describe "forbidden actions" do
-    context "when signed in as a helper" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper", as: :helper do
       specify { expect(get(:new, params: { author_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { author_id: 1 })).to have_http_status :forbidden }
@@ -13,10 +11,8 @@ describe AuthorNamesController do
     end
   end
 
-  describe 'POST create' do
+  describe 'POST create', as: :editor do
     let!(:author) { create :author }
-
-    before { sign_in create(:user, :editor) }
 
     it 'creates an activity' do
       expect do
@@ -30,10 +26,8 @@ describe AuthorNamesController do
     end
   end
 
-  describe 'PUT update' do
+  describe 'PUT update', as: :editor do
     let!(:author_name) { create :author_name }
-
-    before { sign_in create(:user, :editor) }
 
     it 'creates an activity' do
       expect do
@@ -47,12 +41,11 @@ describe AuthorNamesController do
     end
   end
 
-  describe 'DELETE destroy' do
+  describe 'DELETE destroy', as: :editor do
     let!(:author) { create :author }
     let!(:author_name) { create :author_name, author: author }
 
     before do
-      sign_in create(:user, :editor, :superadmin)
       create :author_name, author: author # Ensure author still has at least one name.
     end
 

@@ -2,24 +2,20 @@ require 'rails_helper'
 
 describe JournalsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:journal) { create :journal, name: 'Science' }
     let(:journal_params) do
       {
         name: 'New name'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the journal' do
       put(:update, params: { id: journal.id, journal: journal_params })
@@ -47,10 +43,8 @@ describe JournalsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :helper do
     let!(:journal) { create :journal }
-
-    before { sign_in create(:user, :helper) }
 
     it 'deletes the journal' do
       expect { delete(:destroy, params: { id: journal.id }) }.to change { Journal.count }.by(-1)
