@@ -59,6 +59,7 @@ class TaxonHistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
 
+  # :nocov:
   scope :vhic_unknown, -> do
     scope = self
     VIRTUAL_HISTORY_ITEM_CANDIDATES.each do |where_filter|
@@ -66,6 +67,7 @@ class TaxonHistoryItem < ApplicationRecord
     end
     scope
   end
+  # :nocov:
 
   acts_as_list scope: :taxon
   has_paper_trail

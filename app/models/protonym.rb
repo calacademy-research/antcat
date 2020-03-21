@@ -50,29 +50,38 @@ class Protonym < ApplicationRecord
 
   # TODO: This is "hmm", but I don't want to add it to `Taxon`, so it will live here for now.
   # Migrating all type data will take some time (a lot).
+  # :nocov:
   def self.common_type_taxt? type_taxt
     return true unless type_taxt
     return true if type_taxt.in?([BY_MONOTYPY, BY_ORIGINAL_DESIGNATION])
     return true if BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF.match?(type_taxt)
     false
   end
+  # :nocov:
 
   # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
+  # :nocov:
   def self.all_taxa_above_genus_and_of_unique_different_ranks? taxa
     ranks = taxa.pluck(:type)
     (ranks - Rank::TYPES_ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
   end
+  # :nocov:
 
+  # :nocov:
   def self.all_statuses_same? taxa
     taxa.pluck(:status).uniq.size == 1
   end
+  # :nocov:
 
   # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
+  # :nocov:
   def self.taxa_genus_and_subgenus_pair? taxa
     taxa.pluck(:type).sort == %w[Genus Subgenus]
   end
+  # :nocov:
 
   # TODO: This was added for a db script. Remove once cleared (or make use of it elsewhere).
+  # :nocov:
   def synopsis
     formated_locality = decorate.format_locality
 
@@ -82,6 +91,7 @@ class Protonym < ApplicationRecord
     string << biogeographic_region if biogeographic_region
     string
   end
+  # :nocov:
 
   def soft_validations
     @soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
