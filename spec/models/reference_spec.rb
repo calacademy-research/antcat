@@ -80,9 +80,9 @@ describe Reference do
     it "starts as 'none'" do
       expect(reference.none?).to eq true
 
-      expect(reference.can_start_reviewing?).to be true
-      expect(reference.can_finish_reviewing?).to be false
-      expect(reference.can_restart_reviewing?).to be false
+      expect(reference.can_start_reviewing?).to eq true
+      expect(reference.can_finish_reviewing?).to eq false
+      expect(reference.can_restart_reviewing?).to eq false
     end
 
     it "none transitions to start" do
@@ -90,9 +90,9 @@ describe Reference do
 
       expect(reference.reviewing?).to eq true
 
-      expect(reference.can_start_reviewing?).to be false
-      expect(reference.can_finish_reviewing?).to be true
-      expect(reference.can_restart_reviewing?).to be false
+      expect(reference.can_start_reviewing?).to eq false
+      expect(reference.can_finish_reviewing?).to eq true
+      expect(reference.can_restart_reviewing?).to eq false
     end
 
     it "start transitions to finish" do
@@ -102,9 +102,9 @@ describe Reference do
       expect(reference.reviewing?).to eq false
       expect(reference.reviewed?).to eq true
 
-      expect(reference.can_start_reviewing?).to be false
-      expect(reference.can_finish_reviewing?).to be false
-      expect(reference.can_restart_reviewing?).to be true
+      expect(reference.can_start_reviewing?).to eq false
+      expect(reference.can_finish_reviewing?).to eq false
+      expect(reference.can_restart_reviewing?).to eq true
     end
 
     it "reviewed can transition back to reviewing" do
@@ -114,9 +114,9 @@ describe Reference do
 
       expect(reference.reviewing?).to eq true
 
-      expect(reference.can_start_reviewing?).to be false
-      expect(reference.can_finish_reviewing?).to be true
-      expect(reference.can_restart_reviewing?).to be false
+      expect(reference.can_start_reviewing?).to eq false
+      expect(reference.can_finish_reviewing?).to eq true
+      expect(reference.can_restart_reviewing?).to eq false
     end
   end
 

@@ -28,7 +28,7 @@ describe NestedReference do
 
     it "is not be possible to delete a nestee" do
       nesting_reference = reference.reload.nesting_reference
-      expect(nesting_reference.destroy).to be false
+      expect(nesting_reference.destroy).to eq false
       expect(nesting_reference.errors[:base].first).
         to eq "Cannot delete record because dependent nestees exist"
     end
