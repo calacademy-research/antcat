@@ -1,24 +1,17 @@
 module Api
   class ApiController < ApplicationController
-    def index klass
-      items = if params[:starts_at]
-                klass.where('id >= ?', params[:starts_at].to_i)
-              else
-                klass.all
-              end.order(id: :asc).limit(100)
-
-      render json: items, status: :ok
+    rescue_from ActiveRecord::RecordNotFound do
+      head :not_found
     end
 
-    def show klass
-      begin
-        item = klass.find(params[:id])
-      rescue ActiveRecord::RecordNotFound
-        render nothing: true, status: :not_found
-        return
+    private
+
+      def with_limit scope
+        if params[:starts_at]
+          scope.where('id >= ?', params[:starts_at].to_i)
+        else
+          scope
+        end.order(id: :asc).limit(100)
       end
-
-      render json: item, status: :ok
-    end
   end
 end

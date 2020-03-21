@@ -2,12 +2,12 @@ module Api
   module V1
     class AuthorsController < Api::ApiController
       def index
-        authors = Author.all
-        render json: authors, status: :ok
+        render json: with_limit(Author.all)
       end
 
       def show
-        super Author
+        item = Author.find(params[:id])
+        render json: item
       end
     end
   end

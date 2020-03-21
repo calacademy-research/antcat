@@ -2,18 +2,12 @@ module Api
   module V1
     class TaxaController < Api::ApiController
       def index
-        super Taxon
+        render json: with_limit(Taxon.all)
       end
 
       def show
-        begin
-          item = Taxon.find(params[:id])
-        rescue ActiveRecord::RecordNotFound
-          render nothing: true, status: :not_found
-          return
-        end
-
-        render json: item.to_json(methods: :author_citation), status: :ok
+        item = Taxon.find(params[:id])
+        render json: item.to_json(methods: :author_citation)
       end
 
       def search
@@ -27,11 +21,7 @@ module Api
           }
         end
 
-        if results.empty?
-          head :not_found
-        else
-          render json: results
-        end
+        render json: results
       end
     end
   end

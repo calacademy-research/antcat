@@ -2,11 +2,12 @@ module Api
   module V1
     class CitationsController < Api::ApiController
       def index
-        super Citation
+        render json: with_limit(Citation.all)
       end
 
       def show
-        super Citation
+        item = Citation.find(params[:id])
+        render json: item
       end
     end
   end

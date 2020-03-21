@@ -2,11 +2,12 @@ module Api
   module V1
     class ReferenceSectionsController < Api::ApiController
       def index
-        super ReferenceSection
+        render json: with_limit(ReferenceSection.all)
       end
 
       def show
-        super ReferenceSection
+        item = ReferenceSection.find(params[:id])
+        render json: item
       end
     end
   end

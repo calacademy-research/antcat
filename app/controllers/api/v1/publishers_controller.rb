@@ -2,11 +2,12 @@ module Api
   module V1
     class PublishersController < Api::ApiController
       def index
-        super Publisher
+        render json: with_limit(Publisher.all)
       end
 
       def show
-        super Publisher
+        item = Publisher.find(params[:id])
+        render json: item
       end
     end
   end

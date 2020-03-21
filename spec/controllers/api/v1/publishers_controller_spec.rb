@@ -1,12 +1,21 @@
 require 'rails_helper'
 
 describe Api::V1::PublishersController do
+  describe "GET index" do
+    specify do
+      publisher = create :publisher
+      get :index
+      expect(json_response).to eq([publisher.as_json])
+    end
+
+    specify { expect(get(:index)).to have_http_status :ok }
+  end
+
   describe "GET show" do
     let!(:publisher) { create :publisher, name: 'AntPress', place: 'California' }
 
-    before { get :show, params: { id: publisher.id } }
-
     specify do
+      get :show, params: { id: publisher.id }
       expect(json_response).to eq(
         {
           "publisher" => {
@@ -20,6 +29,6 @@ describe Api::V1::PublishersController do
       )
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: publisher.id })).to have_http_status :ok }
   end
 end

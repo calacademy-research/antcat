@@ -1,12 +1,21 @@
 require 'rails_helper'
 
 describe Api::V1::JournalsController do
+  describe "GET index" do
+    specify do
+      journal = create :journal, name: 'Zootaxa'
+      get :index
+      expect(json_response).to eq([journal.as_json])
+    end
+
+    specify { expect(get(:index)).to have_http_status :ok }
+  end
+
   describe "GET show" do
     let!(:journal) { create :journal, name: 'Zootaxa' }
 
-    before { get :show, params: { id: journal.id } }
-
     specify do
+      get :show, params: { id: journal.id }
       expect(json_response).to eq(
         {
           "journal" => {
@@ -19,6 +28,6 @@ describe Api::V1::JournalsController do
       )
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: journal.id })).to have_http_status :ok }
   end
 end

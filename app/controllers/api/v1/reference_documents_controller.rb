@@ -2,11 +2,12 @@ module Api
   module V1
     class ReferenceDocumentsController < Api::ApiController
       def index
-        super ReferenceDocument
+        render json: with_limit(ReferenceDocument.all)
       end
 
       def show
-        super ReferenceDocument
+        item = ReferenceDocument.find(params[:id])
+        render json: item
       end
     end
   end

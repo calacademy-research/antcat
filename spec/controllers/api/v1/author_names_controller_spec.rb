@@ -2,27 +2,20 @@ require 'rails_helper'
 
 describe Api::V1::AuthorNamesController do
   describe "GET index" do
-    before do
-      create :author_name, name: 'Bolton'
-      create :author_name, name: 'Fisher'
+    specify do
+      author_name = create :author_name, name: 'Fisher'
       get :index
+      expect(json_response).to eq([author_name.as_json])
     end
 
-    it "gets all author names keys" do
-      expect(response.body.to_s).to include "Bolton"
-      expect(response.body.to_s).to include "Fisher"
-      expect(json_response.count).to eq 2
-    end
-
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:index)).to have_http_status :ok }
   end
 
   describe "GET show" do
     let!(:author_name) { create :author_name, name: 'Bolton' }
 
-    before { get :show, params: { id: author_name.id } }
-
     specify do
+      get :show, params: { id: author_name.id }
       expect(json_response).to eq(
         {
           "author_name" => {
@@ -36,6 +29,6 @@ describe Api::V1::AuthorNamesController do
       )
     end
 
-    specify { expect(response).to have_http_status :ok }
+    specify { expect(get(:show, params: { id: author_name.id })).to have_http_status :ok }
   end
 end
