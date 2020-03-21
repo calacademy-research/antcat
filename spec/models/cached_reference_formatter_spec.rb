@@ -6,7 +6,7 @@ describe CachedReferenceFormatter do
   let(:reference) { create :article_reference }
 
   describe "#plain_text" do
-    specify { expect(formatter.plain_text).to be_html_safe }
+    specify { expect(formatter.plain_text.html_safe?).to eq true }
 
     specify do
       expect(References::Formatted::PlainText).to receive(:new).with(reference).and_call_original
@@ -15,7 +15,7 @@ describe CachedReferenceFormatter do
   end
 
   describe "#expanded_reference" do
-    specify { expect(formatter.expanded_reference).to be_html_safe }
+    specify { expect(formatter.expanded_reference.html_safe?).to eq true }
 
     specify do
       expect(References::Formatted::Expanded).to receive(:new).with(reference).and_call_original
@@ -24,7 +24,7 @@ describe CachedReferenceFormatter do
   end
 
   describe "#expandable_reference" do
-    specify { expect(formatter.expandable_reference).to be_html_safe }
+    specify { expect(formatter.expandable_reference.html_safe?).to eq true }
 
     specify do
       expect(References::Formatted::Expandable).to receive(:new).with(reference).and_call_original

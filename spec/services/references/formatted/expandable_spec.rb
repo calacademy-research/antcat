@@ -15,6 +15,8 @@ describe References::Formatted::Expandable do
       allow(reference).to receive(:downloadable?).and_return true
     end
 
+    specify { expect(formatter.call.html_safe?).to eq true }
+
     specify do
       expect(formatter.call).to eq <<~HTML.squish
         <span data-tooltip="true" data-allow-html="true" data-tooltip-class="foundation-tooltip" tabindex="2"

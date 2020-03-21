@@ -237,7 +237,7 @@ describe Reference do
       end
 
       specify { expect(reference.keey).to eq 'Bolton <i>et al.</i>, 1970a' }
-      specify { expect(reference.keey).to be_html_safe }
+      specify { expect(reference.keey.html_safe?).to eq true }
     end
   end
 

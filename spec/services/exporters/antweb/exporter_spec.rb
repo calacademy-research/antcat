@@ -22,7 +22,7 @@ describe Exporters::Antweb::Exporter do
       HTML
     end
 
-    specify { expect(described_class.antcat_taxon_link_with_name(taxon)).to be_html_safe }
+    specify { expect(described_class.antcat_taxon_link_with_name(taxon).html_safe?).to eq true }
   end
 
   describe ".antcat_taxon_link_with_name_and_author_citation" do
@@ -34,7 +34,7 @@ describe Exporters::Antweb::Exporter do
       HTML
     end
 
-    specify { expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to be_html_safe }
+    specify { expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon).html_safe?).to eq true }
   end
 
   describe "#call" do

@@ -13,7 +13,7 @@ describe References::Formatted::Expanded do
           title: "*Atta* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish
@@ -31,7 +31,7 @@ describe References::Formatted::Expanded do
           publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish
@@ -56,7 +56,7 @@ describe References::Formatted::Expanded do
           citation_year: '1874', pagination: 'Pp. 32-45 in'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish
@@ -73,7 +73,7 @@ describe References::Formatted::Expanded do
           citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call.strip).to eq <<~HTML.squish
@@ -89,7 +89,7 @@ describe References::Formatted::Expanded do
           title: "Les fourmis de la Suisse.", citation: '*Ants* <i>and such</i>'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish

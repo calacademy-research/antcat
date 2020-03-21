@@ -11,11 +11,11 @@ describe References::Formatted::PlainText do
           title: "*Atta* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         results = formatter.call
-        expect(results).to be_html_safe
+        expect(results.html_safe?).to eq true
         expect(results).to eq "Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3."
       end
 
@@ -43,7 +43,7 @@ describe References::Formatted::PlainText do
           publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).
@@ -80,7 +80,7 @@ describe References::Formatted::PlainText do
           citation_year: '1874', pagination: 'Pp. 32-45 in'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).
@@ -110,7 +110,7 @@ describe References::Formatted::PlainText do
           citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq " 2010. Tapinoma. Atta and such."
@@ -135,7 +135,7 @@ describe References::Formatted::PlainText do
           title: "Les fourmis de la Suisse.", citation: '*Ants* <i>and such</i>'
       end
 
-      specify { expect(formatter.call).to be_html_safe }
+      specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq 'Forel, A. 1874. Les fourmis de la Suisse. Ants and such.'

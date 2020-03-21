@@ -5,7 +5,7 @@ describe Italicize do
     it "adds <i> tags" do
       results = described_class['Atta']
       expect(results).to eq '<i>Atta</i>'
-      expect(results).to be_html_safe
+      expect(results.html_safe?).to eq true
     end
   end
 end
