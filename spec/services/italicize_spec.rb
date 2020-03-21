@@ -2,10 +2,10 @@ require 'rails_helper'
 
 describe Italicize do
   describe "#call" do
+    specify { expect(described_class['Atta'].html_safe?).to eq true }
+
     it "adds <i> tags" do
-      results = described_class['Atta']
-      expect(results).to eq '<i>Atta</i>'
-      expect(results.html_safe?).to eq true
+      expect(described_class['Atta']).to eq '<i>Atta</i>'
     end
   end
 end

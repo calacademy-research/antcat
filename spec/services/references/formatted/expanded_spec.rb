@@ -44,7 +44,6 @@ describe References::Formatted::Expanded do
     context 'when reference is a `NestedReference`' do
       let(:nestee_author_name) { create :author_name, name: "Mayr, E." }
       let(:author_name) { create :author_name, name: "Forel, A." }
-
       let(:nestee_reference) do
         create :book_reference, author_names: [nestee_author_name],
           citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',

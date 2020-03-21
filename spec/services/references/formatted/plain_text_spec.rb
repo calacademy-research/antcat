@@ -14,9 +14,7 @@ describe References::Formatted::PlainText do
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
-        results = formatter.call
-        expect(results.html_safe?).to eq true
-        expect(results).to eq "Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3."
+        expect(formatter.call).to eq "Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3."
       end
 
       context 'with unsafe tags' do
@@ -46,8 +44,7 @@ describe References::Formatted::PlainText do
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
-        expect(formatter.call).
-          to eq 'Forel, A. 1874. Ants and such. San Francisco: Wiley, 22 pp.'
+        expect(formatter.call).to eq 'Forel, A. 1874. Ants and such. San Francisco: Wiley, 22 pp.'
       end
 
       context 'with unsafe tags' do
@@ -68,7 +65,6 @@ describe References::Formatted::PlainText do
     context 'when reference is a `NestedReference`' do
       let(:nestee_author_name) { create :author_name, name: "Mayr, E." }
       let(:author_name) { create :author_name, name: "Forel, A." }
-
       let(:nestee_reference) do
         create :book_reference, author_names: [nestee_author_name],
           citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
