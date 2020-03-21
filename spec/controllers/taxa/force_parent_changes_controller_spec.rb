@@ -2,28 +2,21 @@ require 'rails_helper'
 
 describe Taxa::ForceParentChangesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "GET show" do
+  describe "GET show", as: :editor do
     let(:taxon) { create :genus }
-
-    before { sign_in create(:user, :editor) }
 
     specify { expect(get(:show, params: { taxa_id: taxon.id })).to render_template :show }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let(:taxon) { create :genus }
     let(:new_parent) { create :family }
-    let(:user) { create :user, :editor }
-
-    before { sign_in user }
 
     it "calls `Taxa::Operations::ForceParentChange`" do
       expect(Taxa::Operations::ForceParentChange).

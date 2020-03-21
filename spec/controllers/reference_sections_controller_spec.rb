@@ -2,23 +2,19 @@ require 'rails_helper'
 
 describe ReferenceSectionsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as a helper editor" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper editor", as: :helper do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:taxon) { create :family }
     let!(:reference_section_params) do
       {
@@ -27,8 +23,6 @@ describe ReferenceSectionsController do
         references_taxt: 'references_taxt'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a reference section' do
       expect do
@@ -54,7 +48,7 @@ describe ReferenceSectionsController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:reference_section) { create :reference_section }
     let!(:reference_section_params) do
       {
@@ -63,8 +57,6 @@ describe ReferenceSectionsController do
         references_taxt: 'references_taxt'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the history item' do
       put(:update, params: { id: reference_section.id, reference_section: reference_section_params })
@@ -85,10 +77,8 @@ describe ReferenceSectionsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :editor do
     let!(:reference_section) { create :reference_section }
-
-    before { sign_in create(:user, :editor) }
 
     it 'deletes the reference section' do
       expect { delete(:destroy, params: { id: reference_section.id }) }.to change { ReferenceSection.count }.by(-1)

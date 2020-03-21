@@ -10,12 +10,12 @@ module Taxa
     end
 
     def call
-      if taxon.is_a?(Family)
+      if taxon.is_a?(::Family)
         child_list_fossil_pairs(taxon.subfamilies)
         child_list_fossil_pairs(taxon.genera_incertae_sedis_in, incertae_sedis_in: true)
       end
 
-      if taxon.is_a?(Subfamily)
+      if taxon.is_a?(::Subfamily)
         child_list_fossil_pairs(taxon.tribes)
 
         child_list_fossil_pairs(

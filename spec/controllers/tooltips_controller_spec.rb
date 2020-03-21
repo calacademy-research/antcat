@@ -2,9 +2,7 @@ require 'rails_helper'
 
 describe TooltipsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new)).to have_http_status :forbidden }
       specify { expect(get(:show, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
@@ -12,14 +10,12 @@ describe TooltipsController do
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+    context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:tooltip_params) do
       {
         key: 'pagination',
@@ -27,8 +23,6 @@ describe TooltipsController do
         text: 'Help text'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a tooltip' do
       expect { post(:create, params: { tooltip: tooltip_params }) }.to change { Tooltip.count }.by(1)
@@ -50,7 +44,7 @@ describe TooltipsController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:tooltip) { create :tooltip }
     let!(:tooltip_params) do
       {
@@ -59,8 +53,6 @@ describe TooltipsController do
         text: 'Help text'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the tooltip' do
       put(:update, params: { id: tooltip.id, tooltip: tooltip_params })

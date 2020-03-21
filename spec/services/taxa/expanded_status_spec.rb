@@ -4,9 +4,7 @@ describe Taxa::ExpandedStatus do
   include TestLinksHelpers
 
   describe "#call" do
-    it "is html_safe" do
-      expect(described_class[build_stubbed(:family)]).to be_html_safe
-    end
+    specify { expect(described_class[build_stubbed(:family)].html_safe?).to eq true }
 
     describe 'main status' do
       context "when taxon status is 'valid'" do

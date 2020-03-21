@@ -6,20 +6,16 @@ describe Taxa::SetSubgeneraController do
   render_views
 
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(delete(:destroy, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :editor do
     let!(:taxon) { create :species }
     let!(:subgenus) { create :subgenus, genus: taxon.genus }
-
-    before { sign_in create(:user, :editor) }
 
     it "set the subgenus of the species" do
       expect { post :create, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
@@ -38,12 +34,10 @@ describe Taxa::SetSubgeneraController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :editor do
     let!(:genus) { create :genus }
     let!(:subgenus) { create :subgenus, genus: genus }
     let!(:taxon) { create :species, genus: genus, subgenus: subgenus }
-
-    before { sign_in create(:user, :editor) }
 
     it "removes the subgenus from the species" do
       expect { delete :destroy, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.

@@ -2,31 +2,25 @@ require 'rails_helper'
 
 describe TaxonHistoryItemsController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
       specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as a helper editor" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper editor", as: :helper do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :helper do
     let!(:taxon) { create :family }
     let!(:taxon_history_item_params) do
       {
         taxt: 'content'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'creates a history item' do
       expect do
@@ -50,15 +44,13 @@ describe TaxonHistoryItemsController do
     end
   end
 
-  describe "PUT update" do
+  describe "PUT update", as: :helper do
     let!(:taxon_history_item) { create :taxon_history_item }
     let!(:taxon_history_item_params) do
       {
         taxt: 'content'
       }
     end
-
-    before { sign_in create(:user, :helper) }
 
     it 'updates the history item' do
       put(:update, params: { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params })
@@ -77,10 +69,8 @@ describe TaxonHistoryItemsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :editor do
     let!(:taxon_history_item) { create :taxon_history_item }
-
-    before { sign_in create(:user, :editor) }
 
     it 'deletes the history item' do
       expect { delete(:destroy, params: { id: taxon_history_item.id }) }.to change { TaxonHistoryItem.count }.by(-1)

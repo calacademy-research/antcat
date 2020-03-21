@@ -5,36 +5,33 @@ describe Exporters::Antweb::Exporter do
     let(:taxon) { build_stubbed :family }
 
     it "includes 'antcat.org' in the url" do
-      expect(described_class.antcat_taxon_link(taxon)).to match "antcat.org"
-    end
-
-    it "uses 'AntCat' for the label" do
-      expect(described_class.antcat_taxon_link(taxon)).to match "AntCat</a>"
+      expect(described_class.antcat_taxon_link(taxon)).
+        to eq %(<a href="https://www.antcat.org/catalog/#{taxon.id}">AntCat</a>)
     end
   end
 
   describe ".antcat_taxon_link_with_name" do
     let(:taxon) { build_stubbed :family }
 
+    specify { expect(described_class.antcat_taxon_link_with_name(taxon).html_safe?).to eq true }
+
     it "includes 'antcat.org' in the url" do
       expect(described_class.antcat_taxon_link_with_name(taxon)).to eq <<-HTML.squish
         <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
       HTML
     end
-
-    specify { expect(described_class.antcat_taxon_link_with_name(taxon)).to be_html_safe }
   end
 
   describe ".antcat_taxon_link_with_name_and_author_citation" do
     let(:taxon) { create :family }
+
+    specify { expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon).html_safe?).to eq true }
 
     specify do
       expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to eq <<-HTML.squish
         <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a> #{taxon.author_citation}
       HTML
     end
-
-    specify { expect(described_class.antcat_taxon_link_with_name_and_author_citation(taxon)).to be_html_safe }
   end
 
   describe "#call" do

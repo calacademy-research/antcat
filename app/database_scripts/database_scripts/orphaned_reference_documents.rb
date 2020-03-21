@@ -7,13 +7,13 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'Document ID', 'Reference ID', 'Created at', 'Versions', 'Reference versions'
-        t.rows do |reference_document|
+        t.rows do |document|
           [
-            reference_document.id,
-            reference_document.reference_id,
-            reference_document.created_at,
-            document_versions_link(reference_document),
-            reference_versions_link(reference_document.reference_id)
+            document.id,
+            (document.reference ? document.reference.decorate.link_to_reference : "[deleted] #{document.reference_id}"),
+            document.created_at,
+            document_versions_link(document),
+            reference_versions_link(document.reference_id)
           ]
         end
       end
@@ -21,11 +21,11 @@ module DatabaseScripts
 
     private
 
-      def document_versions_link reference_document
-        versions_count = reference_document.versions.count
+      def document_versions_link document
+        versions_count = document.versions.count
         return if versions_count.zero?
 
-        url = versions_path(item_type: 'ReferenceDocument', item_id: reference_document.id)
+        url = versions_path(item_type: 'ReferenceDocument', item_id: document.id)
         link_to "#{versions_count} version(s)", url, class: 'btn-normal btn-tiny'
       end
 

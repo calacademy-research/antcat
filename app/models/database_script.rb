@@ -24,7 +24,7 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
-  delegate :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
+  delegate :category, :tags, :issue_description, :description, to: :end_data_attributes
 
   def self.inherited subclass
     subclass.include Rails.application.routes.url_helpers
@@ -70,6 +70,10 @@ class DatabaseScript
 
   def title
     end_data_attributes.title || filename_without_extension.humanize.humanize(keep_id_suffix: false)
+  end
+
+  def related_scripts
+    end_data_attributes.related_scripts.reject { |database_script| database_script.is_a?(self.class) }
   end
 
   def statistics

@@ -31,7 +31,7 @@ describe Author do
       all_names = (target_author.names + author_to_merge.names).uniq.sort
 
       target_author.merge author_to_merge
-      expect(all_names.all? { |name| name.author == target_author }).to be true
+      expect(all_names.all? { |name| name.author == target_author }).to eq true
 
       expect(described_class.count).to eq 1
       expect(AuthorName.count).to eq 2

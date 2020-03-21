@@ -39,7 +39,7 @@ describe Markdowns::Render do
 
         it "links the reference" do
           expected = "<p>#{reference.decorate.expandable_reference}</p>\n"
-          expect(reference.decorate.expandable_reference).to_not be_blank
+          expect(reference.decorate.expandable_reference.blank?).to eq false
           expect(described_class[markdown]).to eq expected
           expect(described_class[taxt_markdown]).to eq expected
         end

@@ -14,12 +14,21 @@ RSpec.configure do |config|
   Kernel.srand config.seed
   # config.profile_examples = 10 # Uncomment to show slow specs.
 
+  config.define_derived_metadata do |metadata|
+    metadata[:aggregate_failures] = true
+  end
+
   config.before(:each, :skip_ci) do |_example|
     if ENV["TRAVIS"]
       message = "spec disabled on Travis CI"
       $stdout.puts message.red
       skip message
     end
+  end
+
+  config.before(:each, :as, type: :controller) do |example|
+    user_factory_attributes = example.metadata[:as]
+    sign_in create(:user, user_factory_attributes)
   end
 
   # Allows RSpec to persist some state between runs in order to support

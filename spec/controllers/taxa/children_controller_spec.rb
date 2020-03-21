@@ -2,15 +2,11 @@ require 'rails_helper'
 
 describe Taxa::ChildrenController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(delete(:destroy, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as a helper" do
-      before { sign_in create(:user, :helper) }
-
+    context "when signed in as a helper", as: :helper do
       specify { expect(delete(:destroy, params: { taxa_id: 1 })).to have_http_status :forbidden }
     end
   end
@@ -21,9 +17,7 @@ describe Taxa::ChildrenController do
     specify { expect(get(:show, params: { taxa_id: taxon.id })).to render_template :show }
   end
 
-  describe "DELETE destroy" do
-    before { sign_in create(:user, :editor) }
-
+  describe "DELETE destroy", as: :editor do
     describe 'successful case' do
       let!(:taxon) { create :genus }
 

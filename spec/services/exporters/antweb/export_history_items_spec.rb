@@ -24,7 +24,7 @@ describe Exporters::Antweb::ExportHistoryItems do
         expect(described_class[taxon]).to eq(header + '<div>' + item + '</div>')
       end
 
-      specify { expect(described_class[taxon]).to be_html_safe }
+      specify { expect(described_class[taxon].html_safe?).to eq true }
     end
 
     context 'when taxon has virtual history items' do
@@ -36,7 +36,7 @@ describe Exporters::Antweb::ExportHistoryItems do
         expect(described_class[taxon]).to eq(header + '<div>' + virtual_item + '</div>')
       end
 
-      specify { expect(described_class[taxon]).to be_html_safe }
+      specify { expect(described_class[taxon].html_safe?).to eq true }
 
       context 'when virtual history item should be visible to editors only' do
         before do
@@ -64,7 +64,7 @@ describe Exporters::Antweb::ExportHistoryItems do
         expect(described_class[taxon]).to eq(header + '<div>' + item + virtual_item + '</div>')
       end
 
-      specify { expect(described_class[taxon]).to be_html_safe }
+      specify { expect(described_class[taxon].html_safe?).to eq true }
     end
   end
 end

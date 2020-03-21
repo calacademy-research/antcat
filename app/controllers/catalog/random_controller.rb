@@ -6,7 +6,7 @@ module Catalog
 
     private
 
-      # TODO: Performance.
+      # PERFORMANCE: Not critical, just a reminder about `RAND()`.
       def random_taxon_id
         Taxon.order(Arel.sql('RAND()')).select(:id).first.id
       end

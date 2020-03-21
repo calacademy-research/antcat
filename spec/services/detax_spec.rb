@@ -14,6 +14,6 @@ describe Detax do
       specify { expect(described_class[nil]).to eq '' }
     end
 
-    specify { expect(described_class['string']).to be_html_safe }
+    specify { expect(described_class['string'].html_safe?).to eq true }
   end
 end

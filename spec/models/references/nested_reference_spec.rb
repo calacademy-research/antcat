@@ -10,7 +10,7 @@ describe NestedReference do
       reference = create :nested_reference
 
       reference.nesting_reference_id = reference.id
-      expect(reference).not_to be_valid
+      expect(reference.valid?).to eq false
     end
 
     it "cannot point to something that points to itself" do
@@ -19,7 +19,7 @@ describe NestedReference do
       top = create :nested_reference, nesting_reference: middle
       middle.nesting_reference = top
 
-      expect(middle).not_to be_valid
+      expect(middle.valid?).to eq false
     end
   end
 
@@ -28,7 +28,7 @@ describe NestedReference do
 
     it "is not be possible to delete a nestee" do
       nesting_reference = reference.reload.nesting_reference
-      expect(nesting_reference.destroy).to be false
+      expect(nesting_reference.destroy).to eq false
       expect(nesting_reference.errors[:base].first).
         to eq "Cannot delete record because dependent nestees exist"
     end

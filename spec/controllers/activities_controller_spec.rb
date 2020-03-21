@@ -2,15 +2,11 @@ require 'rails_helper'
 
 describe ActivitiesController do
   describe "forbidden actions" do
-    context "when signed in as a user" do
-      before { sign_in create(:user) }
-
+    context "when signed in as a user", as: :user do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
 
-    context "when signed in as an editor" do
-      before { sign_in create(:user, :editor) }
-
+    context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
   end

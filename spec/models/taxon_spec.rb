@@ -245,7 +245,7 @@ describe Taxon do
         expect(taxon.author_citation).to eq '(Bolton, 2005)'
       end
 
-      specify { expect(taxon.author_citation).to be_html_safe }
+      specify { expect(taxon.author_citation.html_safe?).to eq true }
     end
 
     context "when the name simply differs" do

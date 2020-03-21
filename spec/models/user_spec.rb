@@ -21,9 +21,9 @@ describe User do
   end
 
   describe '#unconfirmed?' do
-    specify { expect(build_stubbed(:user)).to be_unconfirmed }
-    specify { expect(build_stubbed(:user, :helper)).to_not be_unconfirmed }
-    specify { expect(build_stubbed(:user, :editor)).to_not be_unconfirmed }
+    specify { expect(build_stubbed(:user).unconfirmed?).to eq true }
+    specify { expect(build_stubbed(:user, :helper).unconfirmed?).to eq false }
+    specify { expect(build_stubbed(:user, :editor).unconfirmed?).to eq false }
   end
 
   describe '#remaining_edits_for_unconfirmed_user' do

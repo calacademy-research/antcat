@@ -8,15 +8,11 @@ describe DatabaseScriptsController do
     end
   end
 
-  describe "GET index" do
-    before { sign_in create(:user) }
-
+  describe "GET index", as: :user do
     specify { expect(get(:index)).to render_template :index }
   end
 
-  describe "GET show" do
-    before { sign_in create(:user) }
-
+  describe "GET show", as: :user do
     specify { expect(get(:show, params: { id: 'orphaned_protonyms' })).to render_template :show }
   end
 end

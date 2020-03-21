@@ -475,18 +475,19 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       context 'when taxon is a synonym' do
-        specify do
-          senior = create :genus
+        let(:senior) { create :genus }
+        let(:taxon) do
           junior = create :genus, :synonym, current_valid_taxon: senior
-          taxon = create :species, genus: junior
-
-          expect(described_class[taxon][23]).to eq senior.name_cache
+          create :species, genus: junior
         end
+
+        specify { expect(described_class[taxon][23]).to eq senior.name_cache }
       end
 
       context 'when taxon is a genus without a subfamily' do
+        let(:taxon) { create :genus, tribe: nil, subfamily: nil }
+
         it "defaults to Formicidae" do
-          taxon = create :genus, tribe: nil, subfamily: nil
           expect(described_class[taxon][23]).to eq 'Formicidae'
         end
       end

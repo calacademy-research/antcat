@@ -13,18 +13,18 @@ class CachedReferenceFormatter
     References::Cache::Set[reference, References::Formatted::PlainText[reference], :plain_text_cache]
   end
 
-  def expandable_reference
-    return References::Formatted::Expandable[reference] if ENV['NO_REF_CACHE']
-    return expandable_reference_cache.html_safe if expandable_reference_cache
-
-    References::Cache::Set[reference, References::Formatted::Expandable[reference], :expandable_reference_cache]
-  end
-
   def expanded_reference
     return References::Formatted::Expanded[reference] if ENV['NO_REF_CACHE']
     return expanded_reference_cache.html_safe if expanded_reference_cache
 
     References::Cache::Set[reference, References::Formatted::Expanded[reference], :expanded_reference_cache]
+  end
+
+  def expandable_reference
+    return References::Formatted::Expandable[reference] if ENV['NO_REF_CACHE']
+    return expandable_reference_cache.html_safe if expandable_reference_cache
+
+    References::Cache::Set[reference, References::Formatted::Expandable[reference], :expandable_reference_cache]
   end
 
   private
