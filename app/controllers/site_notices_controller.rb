@@ -3,7 +3,7 @@ class SiteNoticesController < ApplicationController
   before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]
   before_action :ensure_user_is_superadmin, only: :destroy
   before_action :set_site_notice, only: [:show, :edit, :update, :destroy]
-  before_action :mark_as_read, only: :show
+  before_action :mark_as_read, only: :show # NOTE: `before_action` to mark it as read for the current render.
 
   def index
     @site_notices = SiteNotice.order_by_date.paginate(page: params[:page], per_page: 10)
