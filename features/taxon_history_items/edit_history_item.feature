@@ -77,25 +77,6 @@ Feature: Editing a history item
     When I click on the edit taxon history item button
     Then the history item field should be "Formicidae as family"
 
-
-  # TODO: Test was modified after switching driver to apparition to avoid this:
-  # `Timed out waiting for modal dialog. Unable to find modal dialog. (Capybara::ModalNotFound)`.
-  @javascript
-  Scenario: Editing an item so it's blank
-    Given Formicidae exists with a history item "Formicidae as family"
-
-    When I go to the edit page for "Formicidae"
-    And I click on the edit taxon history item button
-    And I fill in "taxt" with "before blanking"
-    And I click on the save taxon history item button
-    Then I should see "before blanking"
-
-    When I click on the edit taxon history item button
-    And I fill in "taxt" with ""
-    And I click on the save taxon history item button
-    And I go to the catalog
-    Then I should see "before blanking"
-
   @javascript
   Scenario: Deleting a history item (with feed)
     Given there is a genus "Eciton" with a history item "Eciton history"

@@ -2,10 +2,6 @@ When("I pick {string} from the {string} taxon selector") do |name, taxon_selecto
   select2 name, from: taxon_selector_id
 end
 
-When("I set {string} to {string} [select-two]") do |id, name|
-  select2 name, from: id
-end
-
 # Name.
 When("I set the name to {string}") do |name|
   step %(I fill in "taxon_name_string" with "#{name}")
