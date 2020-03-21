@@ -12,14 +12,17 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus unless ENV['TRAVIS']
   config.use_transactional_fixtures = true
   Kernel.srand config.seed
-  config.profile_examples = 10 # Uncomment to show slow specs.
+
+  if ENV['PROFILE_EXAMPLES']
+    config.profile_examples = 10
+  end
 
   config.define_derived_metadata do |metadata|
     metadata[:aggregate_failures] = true
   end
 
-  config.before(:each, :skip_ci) do |_example|
-    if ENV["TRAVIS"]
+  if ENV["TRAVIS"]
+    config.before(:each, :skip_ci) do |_example|
       message = "spec disabled on Travis CI"
       $stdout.puts message.red
       skip message
