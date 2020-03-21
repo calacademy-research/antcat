@@ -14,6 +14,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
   # config.profile_examples = 10 # Uncomment to show slow specs.
 
+  config.define_derived_metadata do |metadata|
+    metadata[:aggregate_failures] = true
+  end
+
   config.before(:each, :skip_ci) do |_example|
     if ENV["TRAVIS"]
       message = "spec disabled on Travis CI"
