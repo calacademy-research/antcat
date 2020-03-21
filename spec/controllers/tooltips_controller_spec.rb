@@ -15,6 +15,20 @@ describe TooltipsController do
     end
   end
 
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :helper do
+    let!(:tooltip) { create :tooltip }
+
+    specify { expect(get(:show, params: { id: tooltip.id })).to render_template :show }
+  end
+
+  describe "GET new", as: :helper do
+    specify { expect(get(:new)).to render_template :new }
+  end
+
   describe "POST create", as: :helper do
     let!(:tooltip_params) do
       {
@@ -42,6 +56,12 @@ describe TooltipsController do
       expect(activity.trackable).to eq tooltip
       expect(activity.parameters).to eq(scope_and_key: "#{tooltip.scope}.#{tooltip.key}")
     end
+  end
+
+  describe "GET edit", as: :helper do
+    let!(:tooltip) { create :tooltip }
+
+    specify { expect(expect(get(:edit, params: { id: tooltip.id }))).to redirect_to tooltip_path(tooltip) }
   end
 
   describe "PUT update", as: :helper do

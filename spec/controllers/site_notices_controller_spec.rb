@@ -20,6 +20,10 @@ describe SiteNoticesController do
     end
   end
 
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
   describe "GET show", as: :current_user do
     let(:current_user) { create :user, :editor }
 
@@ -32,6 +36,10 @@ describe SiteNoticesController do
       expect { get :show, params: { id: SiteNotice.last.id } }.
         to change { SiteNotice.unread_by(current_user).count }.by(-1)
     end
+  end
+
+  describe "GET new", as: :editor do
+    specify { expect(get(:new)).to render_template :new }
   end
 
   describe "POST create", as: :editor do
@@ -59,6 +67,12 @@ describe SiteNoticesController do
       expect(activity.trackable).to eq site_notice
       expect(activity.parameters).to eq(title: site_notice.title)
     end
+  end
+
+  describe "GET edit", as: :editor do
+    let!(:site_notice) { create :site_notice }
+
+    specify { expect(get(:edit, params: { id: site_notice.id })).to render_template :edit }
   end
 
   describe "PUT update", as: :editor do

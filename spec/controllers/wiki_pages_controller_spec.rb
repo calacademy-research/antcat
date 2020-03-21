@@ -14,7 +14,21 @@ describe WikiPagesController do
     end
   end
 
-  describe "POST create", as: :helper do
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :user do
+    let!(:wiki_page) { create :wiki_page }
+
+    specify { expect(get(:show, params: { id: wiki_page.id })).to render_template :show }
+  end
+
+  describe "GET new", as: :user do
+    specify { expect(get(:new)).to render_template :new }
+  end
+
+  describe "POST create", as: :user do
     let!(:wiki_page_params) do
       {
         title: 'Title',
@@ -42,7 +56,13 @@ describe WikiPagesController do
     end
   end
 
-  describe "PUT update", as: :helper do
+  describe "GET edit", as: :user do
+    let!(:wiki_page) { create :wiki_page }
+
+    specify { expect(get(:edit, params: { id: wiki_page.id })).to render_template :edit }
+  end
+
+  describe "PUT update", as: :user do
     let!(:wiki_page) { create :wiki_page }
     let!(:wiki_page_params) do
       {
