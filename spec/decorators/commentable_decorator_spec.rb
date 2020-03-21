@@ -19,7 +19,7 @@ describe CommentableDecorator do
 
       specify do
         expect(decorated.link_existing_comments_section).
-          to eq %(<span class="antcat_icon comment"></span><a href="/issues/#{commentable.id}#comments">1 comment</a>)
+          to eq %(<i class="antcat_icon comment"></i><a href="/issues/#{commentable.id}#comments">1 comment</a>)
       end
     end
   end

@@ -210,8 +210,6 @@ GEM
     faraday (1.0.0)
       multipart-post (>= 1.2, < 3)
     ffi (1.12.2)
-    font-awesome-rails (4.7.0.5)
-      railties (>= 3.2, < 6.1)
     formatador (0.2.5)
     foundation-rails (6.3.1.0)
       railties (>= 3.1.0)
@@ -516,7 +514,6 @@ DEPENDENCIES
   draper
   ey_config
   factory_bot_rails
-  font-awesome-rails
   foundation-rails (= 6.3.1.0)
   grape-swagger-rails
   gretel

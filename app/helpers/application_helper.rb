@@ -94,6 +94,6 @@ module ApplicationHelper
   end
 
   def antcat_icon *css_classes
-    content_tag :span, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
+    content_tag :i, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 end

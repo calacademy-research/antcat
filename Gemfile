@@ -25,7 +25,6 @@ gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
-gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
 gem 'grape-swagger-rails'
 gem 'gretel'
