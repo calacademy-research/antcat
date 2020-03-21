@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 describe Protonym do
+  it { is_expected.to be_versioned }
+
   describe 'relations' do
     it { is_expected.to belong_to(:name).dependent(:destroy) }
     it { is_expected.to belong_to(:authorship).dependent(:destroy) }
@@ -8,7 +10,6 @@ describe Protonym do
   end
 
   describe 'validations' do
-    it { is_expected.to be_versioned }
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_presence_of :authorship }
 

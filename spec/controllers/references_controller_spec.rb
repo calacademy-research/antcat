@@ -18,12 +18,6 @@ describe ReferencesController do
 
   describe "GET index" do
     specify { expect(get(:index)).to render_template :index }
-
-    it "assigns @references" do
-      reference = create :article_reference
-      get :index
-      expect(assigns(:references)).to eq [reference]
-    end
   end
 
   describe "POST create" do

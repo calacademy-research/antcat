@@ -173,6 +173,7 @@ Style/CommentAnnotation:
     - TODO
     - FIXME
     - OPTIMIZE
+    - PERFORMANCE
     - HACK
     - REVIEW
     - NOTE
