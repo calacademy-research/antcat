@@ -1,7 +1,7 @@
 -@title = "Move items"
 -breadcrumb :move_items_to, @taxon, @to_taxon
 
--content_for :head do
+-content_for :javascripts do
   =javascript_include_tag "controllers/taxa/move_items/select_checkboxes"
 
 =form_tag taxa_move_items_path do

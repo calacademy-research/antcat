@@ -5,7 +5,7 @@
   -@title = "#{Unitalicize[@reference.keey.html_safe]} - What Links Here"
 -breadcrumb :reference_what_links_here, @reference
 
--content_for :head do
+-content_for :javascripts do
   =javascript_include_tag "highlight_text"
 
 =render "shared/what_links_here", table_refs: @table_refs, highlight_text: @reference.keey

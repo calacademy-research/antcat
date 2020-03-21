@@ -1,5 +1,4 @@
 // gems
-//= require jquery
 //= require rails-ujs
 //= require foundation.core
 //= require foundation.dropdown

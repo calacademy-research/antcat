@@ -1,6 +1,6 @@
 =enable_tooltips
 
--content_for :head do
+-content_for :javascripts do
   =javascript_include_tag 'controllers/references/form'
 
 -reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.display_name) : ''
