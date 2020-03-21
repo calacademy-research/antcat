@@ -78,7 +78,8 @@ describe Reference do
     let(:reference) { create :article_reference }
 
     it "starts as 'none'" do
-      expect(reference).to be_none
+      expect(reference.none?).to eq true
+
       expect(reference.can_start_reviewing?).to be true
       expect(reference.can_finish_reviewing?).to be false
       expect(reference.can_restart_reviewing?).to be false
@@ -86,7 +87,9 @@ describe Reference do
 
     it "none transitions to start" do
       reference.start_reviewing!
-      expect(reference).to be_reviewing
+
+      expect(reference.reviewing?).to eq true
+
       expect(reference.can_start_reviewing?).to be false
       expect(reference.can_finish_reviewing?).to be true
       expect(reference.can_restart_reviewing?).to be false
@@ -95,8 +98,10 @@ describe Reference do
     it "start transitions to finish" do
       reference.start_reviewing!
       reference.finish_reviewing!
-      expect(reference).not_to be_reviewing
-      expect(reference).to be_reviewed
+
+      expect(reference.reviewing?).to eq false
+      expect(reference.reviewed?).to eq true
+
       expect(reference.can_start_reviewing?).to be false
       expect(reference.can_finish_reviewing?).to be false
       expect(reference.can_restart_reviewing?).to be true
@@ -106,7 +111,9 @@ describe Reference do
       reference.start_reviewing!
       reference.finish_reviewing!
       reference.restart_reviewing!
-      expect(reference).to be_reviewing
+
+      expect(reference.reviewing?).to eq true
+
       expect(reference.can_start_reviewing?).to be false
       expect(reference.can_finish_reviewing?).to be true
       expect(reference.can_restart_reviewing?).to be false

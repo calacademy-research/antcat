@@ -60,7 +60,7 @@ describe Operations::CreateNewCombination do
         end
 
         it 'does not move any history items' do
-          expect(history_item.reload).to_not be_valid
+          expect(history_item.reload.valid?).to eq false
           expect { operation.run }.to_not change { history_item.reload.taxon }.from(current_valid_taxon)
         end
 

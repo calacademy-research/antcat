@@ -10,7 +10,7 @@ describe NestedReference do
       reference = create :nested_reference
 
       reference.nesting_reference_id = reference.id
-      expect(reference).not_to be_valid
+      expect(reference.valid?).to eq false
     end
 
     it "cannot point to something that points to itself" do
@@ -19,7 +19,7 @@ describe NestedReference do
       top = create :nested_reference, nesting_reference: middle
       middle.nesting_reference = top
 
-      expect(middle).not_to be_valid
+      expect(middle.valid?).to eq false
     end
   end
 
