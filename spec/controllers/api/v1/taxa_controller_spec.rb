@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::TaxaController do
+describe Api::V1::TaxaController, as: :visitor do
   describe "GET index" do
     specify do
       taxon = create :family

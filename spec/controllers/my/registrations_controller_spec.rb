@@ -10,7 +10,7 @@ describe My::RegistrationsController do
     request.env["devise.mapping"] = Devise.mappings[:user]
   end
 
-  describe "POST create" do
+  describe "POST create", as: :visitor do
     let!(:user_params) do
       {
         email: 'pizza@example.com',
@@ -62,8 +62,8 @@ describe My::RegistrationsController do
     end
   end
 
-  describe "PUT update" do
-    let!(:user) { create :user }
+  describe "PUT update", as: :current_user do
+    let(:current_user) { create :user }
     let!(:user_params) do
       {
         email: 'pizza2@example.com',
@@ -71,15 +71,13 @@ describe My::RegistrationsController do
       }
     end
 
-    before { sign_in user }
-
     it 'updates the user' do
-      put(:update, params: { id: user.id, user: user_params })
+      put(:update, params: { id: current_user.id, user: user_params })
 
-      user.reload
+      current_user.reload
 
-      expect(user.email).to eq user_params[:email]
-      expect(user.name).to eq user_params[:name]
+      expect(current_user.email).to eq user_params[:email]
+      expect(current_user.name).to eq user_params[:name]
     end
   end
 end

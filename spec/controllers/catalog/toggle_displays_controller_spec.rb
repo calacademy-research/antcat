@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Catalog::ToggleDisplaysController do
-  describe "PUT update" do
+  describe "PUT update", as: :visitor do
     before do
       create :family
       request.env["HTTP_REFERER"] = "https://antcat.org"

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe References::DownloadsController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     context "when reference document is downloadable" do
       let!(:reference_document) { create :reference_document, url: "http://localhost/file.pdf" }
 

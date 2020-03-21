@@ -1,11 +1,11 @@
 require 'rails_helper'
 
 describe EditorsPanels::BoltonKeysToRefTagsController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     specify { expect(get(:show)).to render_template :show }
   end
 
-  describe "POST create" do
+  describe "POST create", as: :visitor do
     let(:bolton_content) { "zootaxa" }
 
     it "calls `Markdowns::BoltonKeysToRefTags`" do

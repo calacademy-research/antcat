@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ProtonymsController do
+describe Api::V1::ProtonymsController, as: :visitor do
   describe "GET index" do
     specify do
       protonym = create :protonym

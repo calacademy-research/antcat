@@ -64,10 +64,9 @@ describe TooltipsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :editor) }
     let!(:tooltip) { create :tooltip }
-
-    before { sign_in create(:user, :superadmin, :editor) }
 
     it 'deletes the tooltip' do
       expect { delete(:destroy, params: { id: tooltip.id }) }.to change { Tooltip.count }.by(-1)

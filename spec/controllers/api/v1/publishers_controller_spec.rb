@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::PublishersController do
+describe Api::V1::PublishersController, as: :visitor do
   describe "GET index" do
     specify do
       publisher = create :publisher

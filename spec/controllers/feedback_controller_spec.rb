@@ -15,7 +15,7 @@ describe FeedbackController do
     end
   end
 
-  describe "POST create" do
+  describe "POST create", as: :visitor do
     let(:valid_params) do
       { feedback: { comment: "Cool site", name: "Batiatus" }, format: :json }
     end
@@ -42,10 +42,9 @@ describe FeedbackController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :helper) }
     let!(:feedback) { create :feedback }
-
-    before { sign_in create(:user, :superadmin, :helper) }
 
     it 'deletes the feedback' do
       expect { delete(:destroy, params: { id: feedback.id }) }.to change { Feedback.count }.by(-1)

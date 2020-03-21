@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe References::AutocompletesController do
-  describe "GET show", :search do
+  describe "GET show", :search, as: :visitor do
     context "when there are matches" do
       before do
         create :reference, author_name: 'E.O. Wilson'

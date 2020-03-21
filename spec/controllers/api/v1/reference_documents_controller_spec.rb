@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ReferenceDocumentsController do
+describe Api::V1::ReferenceDocumentsController, as: :visitor do
   describe "GET index" do
     specify do
       reference_document = create :reference_document

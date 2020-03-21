@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 describe Taxa::CreateCombinationHelpsController do
-  describe "GET new" do
+  describe "GET new", as: :visitor do
     let(:taxon) { create :species }
 
     specify { expect(get(:new, params: { taxa_id: taxon.id })).to render_template :new }
   end
 
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:taxon) { create :species }
     let(:new_parent) { create :genus }
 

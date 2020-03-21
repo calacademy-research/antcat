@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Protonyms::AutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:qq) { "lasius" }
 
     it "calls `Autocomplete::AutocompleteProtonyms`" do

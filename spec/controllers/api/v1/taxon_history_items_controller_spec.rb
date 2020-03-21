@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::TaxonHistoryItemsController do
+describe Api::V1::TaxonHistoryItemsController, as: :visitor do
   describe "GET index" do
     specify do
       taxon_history_item = create :taxon_history_item
