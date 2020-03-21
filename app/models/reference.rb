@@ -43,7 +43,7 @@ class Reference < ApplicationRecord
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
-  accepts_nested_attributes_for :document, reject_if: :all_blank
+  accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [

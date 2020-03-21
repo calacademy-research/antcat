@@ -157,12 +157,6 @@
       .row
         .medium-3.columns
           =document_form.file_field :file
-
-          =document_form.check_box :public
-          =f.label :document_public do
-            Make PDF public?
-            =db_tooltip_icon "references.pdf.public", scope: :references
-
         .medium-6.columns.end
           =f.label :document_url do
             Source URL
