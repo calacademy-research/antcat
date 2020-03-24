@@ -13,6 +13,11 @@ module Markdowns
     include ActionView::Helpers::SanitizeHelper
     include Service
 
+    USER_TAG_REGEX = /@user(\d+)/
+    GITHUB_TAG_REGEX = /%github(\d+)/
+    WIKI_TAG_REGEX = /%wiki(\d+)/
+    DB_SCRIPT_TAG_REGEX = /%dbscript:([A-Z][A-Za-z0-9_]+)/
+
     def initialize content, sanitize_content: true
       @content =  if sanitize_content
                     sanitize(content).to_str
@@ -94,7 +99,7 @@ module Markdowns
       # Matches: %github123
       # renders: a link to the GitHub issue (including non-existing and PRs).
       def parse_github_ids
-        content.gsub!(/%github(\d+)/) do
+        content.gsub!(GITHUB_TAG_REGEX) do
           # Also works for PRs because GH figures that out.
           github_issue_id = Regexp.last_match(1)
           url = "https://github.com/calacademy-research/antcat/issues/#{github_issue_id}"
@@ -105,7 +110,7 @@ module Markdowns
       # Matches: %wiki123
       # Renders: a link to the wiki page.
       def parse_wiki_pages_ids
-        content.gsub!(/%wiki(\d+)/) do
+        content.gsub!(WIKI_TAG_REGEX) do
           wiki_page_id = Regexp.last_match(1)
           begin
             wiki_page = WikiPage.find(wiki_page_id)
@@ -119,7 +124,7 @@ module Markdowns
       # Matches: %user123
       # Renders: a link to the user's user page.
       def parse_user_ids
-        content.gsub!(/@user(\d+)/) do
+        content.gsub!(USER_TAG_REGEX) do
           user_id = Regexp.last_match(1)
           user = User.find_by(id: user_id)
           if user
@@ -133,7 +138,7 @@ module Markdowns
       # Matches: %dbscript:filename_without_extension or %dbscript:FilenameWithoutExtension
       # Renders: a link to the database script.
       def parse_database_script_ids
-        content.gsub!(/%dbscript:([A-Z][A-Za-z0-9_]+)/) do
+        content.gsub!(DB_SCRIPT_TAG_REGEX) do
           filename = Regexp.last_match(1)
           database_script = DatabaseScript.safe_new_from_filename_without_extension(filename)
           formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags

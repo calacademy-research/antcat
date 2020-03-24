@@ -15,7 +15,7 @@ module Markdowns
       attr_reader :content
 
       def user_ids
-        content.scan(/@user(\d+)/).flatten.uniq
+        content.scan(Markdowns::ParseAntcatHooks::USER_TAG_REGEX).flatten.uniq
       end
   end
 end
