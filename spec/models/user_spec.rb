@@ -46,36 +46,6 @@ describe User do
     end
   end
 
-  describe "#notify_because" do
-    let(:user) { create :user }
-    let(:notifier) { create :user }
-    let(:issue) { create :issue }
-
-    context "when user and notifier are the same" do
-      it "doesn't create a notification" do
-        expect do
-          user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: issue, notifier: user
-        end.not_to change { Notification.count }
-      end
-    end
-
-    context "when user has already been notified for that attached/notifier combination" do
-      it "doesn't create a notification" do
-        user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: issue, notifier: notifier
-
-        expect do
-          user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: issue, notifier: notifier
-        end.not_to change { Notification.count }
-      end
-    end
-
-    it "*test the above shaky examples that may fail for other reasons*" do
-      expect do
-        user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: issue, notifier: notifier
-      end.to change { Notification.count }.by 1
-    end
-  end
-
   describe "#mark_unseen_notifications_as_seen" do
     let!(:user) { create :user }
 

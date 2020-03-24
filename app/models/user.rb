@@ -59,22 +59,7 @@ class User < ApplicationRecord
     SiteNotice.unread_by(self)
   end
 
-  def notify_because reason, attached:, notifier:
-    return if notifier == self
-    return if already_notified_for_attached_by_user? attached, notifier
-
-    notifications.create!(reason: reason, attached: attached, notifier: notifier)
-  end
-
   def mark_unseen_notifications_as_seen
     unseen_notifications.find_each { |notification| notification.update(seen: true) }
   end
-
-  private
-
-    # To avoid sending repeated notifications eg when a comment that
-    # already mentions a user is edited and saved again.
-    def already_notified_for_attached_by_user? attached, mentioner
-      notifications.where(notifier: mentioner, attached: attached).exists?
-    end
 end
