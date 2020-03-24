@@ -19,8 +19,4 @@ class Comment < ApplicationRecord
   def self.build_comment commentable, user, body: nil
     new(commentable: commentable, body: body, user: user)
   end
-
-  def notify_relevant_users
-    Comments::NotifyRelevantUsers[self]
-  end
 end
