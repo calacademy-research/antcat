@@ -124,6 +124,9 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
+
 ### RSpec.
 
 RSpec/EmptyExampleGroup:
