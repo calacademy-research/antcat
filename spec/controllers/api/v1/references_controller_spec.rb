@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ReferencesController do
+describe Api::V1::ReferencesController, as: :visitor do
   describe "GET index" do
     specify do
       reference = create :article_reference

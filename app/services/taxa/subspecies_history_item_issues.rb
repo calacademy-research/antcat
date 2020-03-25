@@ -1,5 +1,6 @@
 # TODO: Horrible copy-pasta from `SubspeciesListInHistoryItem`.
 
+# :nocov:
 module Taxa
   class SubspeciesHistoryItemIssues
     include Service
@@ -77,3 +78,4 @@ module Taxa
       end
   end
 end
+# :nocov:

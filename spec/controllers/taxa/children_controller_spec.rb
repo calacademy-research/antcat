@@ -11,7 +11,7 @@ describe Taxa::ChildrenController do
     end
   end
 
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:taxon) { create :family }
 
     specify { expect(get(:show, params: { taxa_id: taxon.id })).to render_template :show }

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe My::RecentlyUsedReferencesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:recently_used_references) { [] }
 
     it "calls `Autocomplete::FormatLinkableReferences`" do
@@ -31,7 +31,7 @@ describe My::RecentlyUsedReferencesController do
     end
   end
 
-  describe 'POST create' do
+  describe 'POST create', as: :visitor do
     let!(:reference) { create :article_reference }
 
     it "stores the reference in the user's session" do

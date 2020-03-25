@@ -40,11 +40,3 @@ When('I log in as a superadmin named {string}') do |name|
   user = create :user, :editor, :superadmin, name: name
   login_programmatically user
 end
-
-Then("I should see a link to the user page for {string}") do |name|
-  user = User.find_by(name: name)
-
-  within first('#content') do
-    expect(page).to have_link name, href: user_path(user)
-  end
-end

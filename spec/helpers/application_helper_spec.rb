@@ -21,8 +21,6 @@ describe ApplicationHelper do
   end
 
   describe "#antcat_icon" do
-    specify { expect(helper.antcat_icon).to eq '<span class="antcat_icon"></span>' }
-
     describe "arguments" do
       context "when a string" do
         specify { expect(icon_classes("issue")).to eq "antcat_icon issue" }

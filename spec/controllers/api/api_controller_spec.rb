@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::ApiController do
+describe Api::ApiController, as: :visitor do
   describe "limits" do
     controller do
       def index

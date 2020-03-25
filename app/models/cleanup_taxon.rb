@@ -2,6 +2,7 @@
 # No tests is a feature, not a bug, since the only reason we're OK
 # with this is because all of it will 100% be removed at some point :)
 
+# :nocov:
 class CleanupTaxon < SimpleDelegator
   DELEGATED_IN_TAXON = %i[
     now
@@ -76,3 +77,4 @@ class CleanupTaxon < SimpleDelegator
       history_items.where('taxt LIKE ?', "Combination in%")
     end
 end
+# :nocov:

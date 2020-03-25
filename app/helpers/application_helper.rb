@@ -77,6 +77,10 @@ module ApplicationHelper
     text_field_tag :edit_summary, params[:edit_summary], placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
   end
 
+  def current_page_for_feedback
+    request.original_fullpath.gsub(%r{^/}, "")
+  end
+
   def search_icon
     antcat_icon "search"
   end
@@ -90,6 +94,6 @@ module ApplicationHelper
   end
 
   def antcat_icon *css_classes
-    content_tag :span, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
+    content_tag :i, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 end

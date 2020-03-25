@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Journals::AutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:term) { "zoo" }
 
     it "calls `Autocomplete::AutocompleteJournals`" do

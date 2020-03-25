@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Catalog::SearchesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     context 'when not searching yet' do
       context 'when just visiting the page' do
         it 'renders the search form' do

@@ -1,0 +1,47 @@
+.row
+  .medium-12.columns
+    %h6
+    %p Feedback and corrections are most welcomed.
+    %p
+      Use the below form to make all editors aware of an issue. Or just
+      =mail_to 'sblum@calacademy.org', 'email us', subject: 'AntCat feedback'
+      if you prefer that.
+
+      Bugs in the code can be reported on our
+      =external_link_to "issue tracker on GitHub", "https://github.com/calacademy-research/antcat/issues"
+      (account required), but you can use this form to report bugs as well.
+
+    =form_for(feedback, url: feedback_index_path) do |f|
+      =render "shared/errors_for", resource: feedback
+
+      -if current_user
+        .row
+          .medium-4.columns
+            =label_tag :name
+            =text_field_tag :name, current_user.name, disabled: true
+          .medium-4.columns.end
+            =label_tag :email
+            =text_field_tag :email, current_user.email, disabled: true
+      -else
+        .row
+          .medium-4.columns
+            =f.label :name
+            =f.text_field :name, placeholder: "Optional"
+          .medium-4.columns.end
+            =f.label :email
+            =f.text_field :email, placeholder: "Optional"
+
+      .row
+        .medium-12.columns
+          =f.invisible_captcha :work_email
+          =f.label :comment
+          =f.text_area :comment, rows: 10, maxlength: Feedback::COMMENT_MAX_LENGTH
+      .row
+        .medium-12.columns
+          .input-group
+            %span.input-group-label Page: https://www.antcat.org/
+            =f.text_field :page, placeholder: "Optional", class: "input-group-field"
+
+      .row
+        .medium-12.columns
+          =button_tag "Send Feedback", class: "btn-saves"

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe References::SearchController do
-  describe "GET index" do
+  describe "GET index", as: :visitor do
     describe "search terms matching ids" do
       context "when reference exists" do
         let!(:reference) { create :article_reference }

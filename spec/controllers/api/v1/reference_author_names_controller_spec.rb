@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ReferenceAuthorNamesController do
+describe Api::V1::ReferenceAuthorNamesController, as: :visitor do
   describe "GET index" do
     specify do
       create :reference_author_name

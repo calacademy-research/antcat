@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe IssuesController do
   describe "forbidden actions" do
-    context "when not signed in" do
+    context "when not signed in", as: :visitor do
       specify { expect(get(:new)).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:create)).to redirect_to_signin_form }
@@ -12,11 +12,21 @@ describe IssuesController do
     end
   end
 
-  describe "GET new", as: :helper do
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :user do
+    let!(:issue) { create :issue }
+
+    specify { expect(get(:show, params: { id: issue.id })).to render_template :show }
+  end
+
+  describe "GET new", as: :user do
     specify { expect(get(:new)).to render_template :new }
   end
 
-  describe "POST create", as: :helper do
+  describe "POST create", as: :user do
     let!(:issue_params) do
       {
         title: 'title',
@@ -46,7 +56,13 @@ describe IssuesController do
     end
   end
 
-  describe "PUT update", as: :helper do
+  describe "GET edit", as: :user do
+    let!(:issue) { create :issue }
+
+    specify { expect(get(:edit, params: { id: issue.id })).to render_template :edit }
+  end
+
+  describe "PUT update", as: :user do
     let!(:issue) { create :issue }
     let!(:issue_params) do
       {

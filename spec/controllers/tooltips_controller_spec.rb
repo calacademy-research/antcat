@@ -15,6 +15,20 @@ describe TooltipsController do
     end
   end
 
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :helper do
+    let!(:tooltip) { create :tooltip }
+
+    specify { expect(get(:show, params: { id: tooltip.id })).to render_template :show }
+  end
+
+  describe "GET new", as: :helper do
+    specify { expect(get(:new)).to render_template :new }
+  end
+
   describe "POST create", as: :helper do
     let!(:tooltip_params) do
       {
@@ -44,6 +58,12 @@ describe TooltipsController do
     end
   end
 
+  describe "GET edit", as: :helper do
+    let!(:tooltip) { create :tooltip }
+
+    specify { expect(expect(get(:edit, params: { id: tooltip.id }))).to redirect_to tooltip_path(tooltip) }
+  end
+
   describe "PUT update", as: :helper do
     let!(:tooltip) { create :tooltip }
     let!(:tooltip_params) do
@@ -64,10 +84,9 @@ describe TooltipsController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :editor) }
     let!(:tooltip) { create :tooltip }
-
-    before { sign_in create(:user, :superadmin, :editor) }
 
     it 'deletes the tooltip' do
       expect { delete(:destroy, params: { id: tooltip.id }) }.to change { Tooltip.count }.by(-1)

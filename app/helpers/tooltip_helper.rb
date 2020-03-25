@@ -2,7 +2,7 @@
 
 module TooltipHelper
   def enable_tooltips
-    content_for(:head) { javascript_include_tag "tooltips" }
+    content_for(:javascripts) { javascript_include_tag "tooltips" }
   end
 
   def db_tooltip_icon key, scope:

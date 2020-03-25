@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Authors::AutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:term) { "bolton" }
 
     it "calls `Autocomplete::AutocompleteAuthorNames`" do
