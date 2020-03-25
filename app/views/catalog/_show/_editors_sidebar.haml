@@ -133,13 +133,13 @@
         The default expansion is:
         =type_taxon_expander.expansion(ignore_can_expand: true)
 
--if editors_taxon_view_object.taxa_with_same_name.present?
+-if editors_catalog_presenter.taxa_with_same_name.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background
     %h6
       Taxa with same name
       =logged_in_only_tooltip_icon
     %ul.compact-list.small-margin-bottom
-      -editors_taxon_view_object.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
+      -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
         %li
           =homonym.link_to_taxon
           =homonym.author_citation

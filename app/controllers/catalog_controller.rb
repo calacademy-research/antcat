@@ -12,14 +12,14 @@ class CatalogController < ApplicationController
   def index
     @taxon = Family.eager_load(:name, protonym: [:name, { authorship: :reference }]).first
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session, formicidae_landing_page: true)
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
+    @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)
 
     render 'show'
   end
 
   def show
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session)
-    @editors_taxon_view_object = Editors::TaxonViewObject.new(@taxon)
+    @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)
   end
 
   private

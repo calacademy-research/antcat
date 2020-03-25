@@ -8,7 +8,7 @@ class TaxaController < ApplicationController
   def new
     @taxon = build_taxon_with_parent
     @taxon.protonym.authorship.reference ||= DefaultReference.get session
-    @default_name_string = Editors::TaxonFormViewObject.new(@taxon).default_name_string
+    @default_name_string = Taxa::PrefilledTaxonFormName[@taxon]
   end
 
   def create

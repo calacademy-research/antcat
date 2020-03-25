@@ -1,10 +1,12 @@
-module Editors
-  class TaxonFormViewObject < ViewObject
+module Taxa
+  class PrefilledTaxonFormName
+    include Service
+
     def initialize taxon
       @taxon = taxon
     end
 
-    def default_name_string
+    def call
       base = case taxon
              when Subgenus, Species then taxon.genus
              when Subspecies        then taxon.species
