@@ -16,6 +16,11 @@ Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf *.gif 
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
 Rails.application.config.assets.precompile += %w[
+  jquery-ui/core.js
+  jquery-ui/widgets/autocomplete.js
+  jquery-ui/widgets/draggable.js
+  jquery-ui/widgets/sortable.js
+
   application.js
   logged_in_only.js
   markdown_and_friends.js

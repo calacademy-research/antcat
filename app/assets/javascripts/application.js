@@ -12,9 +12,6 @@
 //= require foundation.util.mediaQuery
 //= require foundation.util.triggers
 
-//= require jquery-ui/core
-//= require jquery-ui/widgets/autocomplete
-
 //= require select2
 //= require twitter/typeahead
 

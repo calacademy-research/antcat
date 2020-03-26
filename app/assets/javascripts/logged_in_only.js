@@ -1,7 +1,3 @@
-// gems
-//= require jquery-ui/widgets/draggable
-//= require jquery-ui/widgets/sortable
-
 // vendor/assets/javascripts
 //= require notify
 
