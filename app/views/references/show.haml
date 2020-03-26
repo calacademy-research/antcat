@@ -1,12 +1,9 @@
 -# TODO: Remove once we have no `MissingReference`s.
 -if @reference.is_a?(MissingReference)
-  -@title = "#{strip_tags @reference.keey.html_safe} - References"
+  -title "#{strip_tags @reference.keey.html_safe} - References"
 -else
-  -@title = "#{Unitalicize[@reference.keey.html_safe]} - References"
+  -title "#{Unitalicize[@reference.keey.html_safe]} - References"
 -breadcrumb :reference, @reference
-
--if current_user
-  =enable_tooltips
 
 -content_for :breadcrumbs_right do
   .right

@@ -12,10 +12,6 @@
 //= require foundation.util.mediaQuery
 //= require foundation.util.triggers
 
-//= require jquery-ui/core
-//= require jquery-ui/widgets/autocomplete
-//= require jquery-ui/widgets/tooltip
-
 //= require select2
 //= require twitter/typeahead
 
@@ -26,6 +22,3 @@
 //= require all_pages/jquery_plugins
 //= require all_pages/show_hide_toggler
 //= require all_pages/spinner
-
-// vendor/assets/javascripts
-//= require jquery.truncate

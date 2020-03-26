@@ -1,10 +1,9 @@
 -# Use "AntCat" for the landing page title, since it's prettier than "Formicidae".
 -unless @catalog_presenter.formicidae_landing_page?
-  -@title = "#{@taxon.name_cache}"
+  -title "#{@taxon.name_cache}"
 -breadcrumb @taxon
 
 -if current_user
-  =enable_tooltips
   -content_for :breadcrumbs_right do
     =render "catalog/_show/editor_buttons", taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 

@@ -1,7 +1,7 @@
 !!!
 %html{lang: 'en'}
   %head
-    %title=title_tag @title
+    %title=title_tag
     %meta{charset: "utf-8"}
     %meta{description: "An online catalog of the ants of the world."}
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
@@ -11,7 +11,7 @@
 
     =favicon_link_tag 'favicon_96x96.png'
 
-    =javascript_include_tag 'jquery'
+    =javascript_include_tag 'jquery3'
 
     %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}
     %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}
@@ -19,7 +19,7 @@
     =stylesheet_link_tag 'foundation_and_overrides'
     =stylesheet_link_tag 'vendor'
     =stylesheet_link_tag 'application'
-    =stylesheet_link_tag 'dev_css' if include_dev_css?
+    =stylesheet_link_tag 'dev_css' if Rails.env.development?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
     =javascript_include_tag 'application'
@@ -48,7 +48,8 @@
         %footer#taxon-browser-sticky-target-js-hook=render "footer"
 
       -if Rails.env.production?
-        =render "google_analytics"
+        =render "google_analytics", logged_in: current_user.present?.to_s
 
-      =javascript_include_tag 'logged_in_only' if current_user
+      -if current_user
+        =javascript_include_tag 'logged_in_only'
       =stylesheet_link_tag 'font_awesome_and_custom_icons'

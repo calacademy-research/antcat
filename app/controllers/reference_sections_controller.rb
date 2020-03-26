@@ -3,8 +3,6 @@ class ReferenceSectionsController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
-  before_action :set_taxon, only: [:new, :create]
-  before_action :set_reference_section, only: [:show, :edit, :update, :destroy]
 
   def index
     @reference_sections = ReferenceSection.all
@@ -14,13 +12,16 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def show
+    @reference_section = find_reference_section
   end
 
   def new
+    @taxon = find_taxon
     @reference_section = @taxon.reference_sections.new
   end
 
   def create
+    @taxon = find_taxon
     @reference_section = @taxon.reference_sections.new(reference_section_params)
 
     if @reference_section.save
@@ -32,9 +33,12 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def edit
+    @reference_section = find_reference_section
   end
 
   def update
+    @reference_section = find_reference_section
+
     updated = @reference_section.update(reference_section_params)
 
     if updated
@@ -54,27 +58,29 @@ class ReferenceSectionsController < ApplicationController
   end
 
   def destroy
-    @reference_section.destroy
-    @reference_section.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+    reference_section = find_reference_section
+
+    reference_section.destroy
+    reference_section.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     respond_to do |format|
       format.json do
         render json: { success: true }
       end
       format.html do
-        redirect_to catalog_path(@reference_section.taxon), notice: "Successfully deleted reference section."
+        redirect_to catalog_path(reference_section.taxon), notice: "Successfully deleted reference section."
       end
     end
   end
 
   private
 
-    def set_taxon
-      @taxon = Taxon.find(params[:taxa_id])
+    def find_taxon
+      Taxon.find(params[:taxa_id])
     end
 
-    def set_reference_section
-      @reference_section = ReferenceSection.find(params[:id])
+    def find_reference_section
+      ReferenceSection.find(params[:id])
     end
 
     def reference_section_params

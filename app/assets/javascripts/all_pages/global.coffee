@@ -86,22 +86,3 @@ AntCat.getInputSelection = (el, onlyStartPosition = false) ->
 
   selectedValue = el.value.slice(start, end)
   selectedValue
-
-# Toggle "show more" / "Show less".
-$ ->
-  options =
-    maxLines: 1
-    truncateString: "..."
-    showText: """<span class="btn-normal btn-tiny">Show more</span>"""
-    hideText: """<span class="btn-normal btn-tiny">Show less</span>"""
-    hideClass: "anything-except-hide" # Because `.hide` conflics with jQuery.
-
-    # HACK: To make keys inside truncated elements to work after showing/hiding.
-    animate: true
-    animateOptions:
-      complete: -> AntCat.makeReferenceKeeysExpandable $(".truncate")
-
-  $(".truncate").truncate(options)
-
-  # HACK: To make keys inside truncated elements to work on page load.
-  AntCat.makeReferenceKeeysExpandable $(".truncate")

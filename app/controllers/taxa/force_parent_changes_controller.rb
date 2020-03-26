@@ -1,14 +1,17 @@
 module Taxa
   class ForceParentChangesController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
-    before_action :set_valid_parent_ranks
-    before_action :set_new_parent, only: [:create]
 
     def show
+      @taxon = find_taxon
+      @valid_parent_ranks = valid_parent_ranks
     end
 
     def create
+      @taxon = find_taxon
+      @valid_parent_ranks = valid_parent_ranks
+      @new_parent = find_new_parent
+
       if @new_parent.blank? && !@taxon.is_a?(Genus)
         flash.now[:alert] = "A parent must be set."
         render :show
@@ -33,23 +36,22 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
-      def set_valid_parent_ranks
-        @valid_parent_ranks =
-          case @taxon
-          when ::Tribe      then [:subfamily]
-          when ::Genus      then [:family, :subfamily, :tribe]
-          when ::Subgenus   then [:genus]
-          when ::Species    then [:genus, :subgenus]
-          when ::Subspecies then [:species]
-          end
+      def valid_parent_ranks
+        case @taxon
+        when ::Tribe      then [:subfamily]
+        when ::Genus      then [:family, :subfamily, :tribe]
+        when ::Subgenus   then [:genus]
+        when ::Species    then [:genus, :subgenus]
+        when ::Subspecies then [:species]
+        end
       end
 
-      def set_new_parent
-        @new_parent = Taxon.find_by(id: params[:new_parent_id])
+      def find_new_parent
+        Taxon.find_by(id: params[:new_parent_id])
       end
 
       def update_parent_and_save

@@ -141,10 +141,9 @@ Rails.application.configure do
   # # Simulate production locally for debugging/profiling
   # #############################################################################
   #
-  #   Precompile assets: `RAILS_ENV=production rake assets:precompile`
-  #   (you may also want to `rake assets:clobber`)
-  #
-  #   Run server: `SIMULATE_PRODUCTION=y rails s -e production`
+  #   rake assets:clobber
+  #   RAILS_ENV=production rake assets:precompile
+  #   SIMULATE_PRODUCTION=y rails s -e production
   #
 
   if ENV['SIMULATE_PRODUCTION']
@@ -152,6 +151,8 @@ Rails.application.configure do
     config.public_file_server.enabled = true
     config.assets.debug = false
     config.log_level = :debug
+    config.force_ssl = false
+    config.action_mailer.perform_deliveries = false
 
     ## See log in console (or run `tail -f log/production.log`)
     ActiveRecord::Base.logger = Logger.new(STDOUT)

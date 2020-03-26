@@ -3,14 +3,16 @@
 module References
   class ReplaceMissingController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_missing_reference
-    before_action :set_target_reference, only: :create
 
     def show
+      @missing_reference = find_missing_reference
       @table_refs = @missing_reference.what_links_here.paginate(page: params[:page], per_page: 100)
     end
 
     def create
+      @missing_reference = find_missing_reference
+      @target_reference = find_target_reference
+
       unless @target_reference
         redirect_to({ action: :new }, alert: "Target must be specified.")
         return
@@ -26,12 +28,12 @@ module References
 
     private
 
-      def set_missing_reference
-        @missing_reference = Reference.find(params[:id])
+      def find_missing_reference
+        Reference.find(params[:id])
       end
 
-      def set_target_reference
-        @target_reference = Reference.find(params[:target_reference_id])
+      def find_target_reference
+        Reference.find(params[:target_reference_id])
       end
 
       def replace_missing!

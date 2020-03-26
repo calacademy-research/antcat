@@ -4,7 +4,7 @@
 
 # TODO: Migrate to support a single tag style only.
 # NOTE: The eager loading HACKs make a huge difference on slow pages such as Formicidae.
-# Total loading time decreases to 500-600 ms from 1200-1400 ms as measured by rack-mini-profiler in ndev.
+# Total loading time decreases to 500-600 ms from 1200-1400 ms as measured by rack-mini-profiler in dev.
 
 module Markdowns
   class ParseAntcatHooks
@@ -18,18 +18,22 @@ module Markdowns
     WIKI_TAG_REGEX = /%wiki(\d+)/
     DB_SCRIPT_TAG_REGEX = /%dbscript:([A-Z][A-Za-z0-9_]+)/
 
-    def initialize content, sanitize_content: true
-      @content =  if sanitize_content
-                    sanitize(content).to_str
-                  else
-                    content
-                  end
+    def initialize content, sanitize_content: true, catalog_tags_only: false
+      @content = if sanitize_content
+                   sanitize(content).to_str
+                 else
+                   content
+                 end
+      # TODO: Ugly control couple, added as a step before a proper split.
+      @catalog_tags_only = catalog_tags_only
     end
 
     def call
       parse_taxon_ids
       parse_taxon_with_author_citation_ids
       parse_reference_ids
+      return content if catalog_tags_only
+
       parse_github_ids
       parse_wiki_pages_ids
       parse_user_ids
@@ -40,7 +44,7 @@ module Markdowns
 
     private
 
-      attr_reader :content
+      attr_reader :content, :catalog_tags_only
 
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).

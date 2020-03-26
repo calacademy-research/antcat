@@ -16,6 +16,11 @@ Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf *.gif 
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
 Rails.application.config.assets.precompile += %w[
+  jquery-ui/core.js
+  jquery-ui/widgets/autocomplete.js
+  jquery-ui/widgets/draggable.js
+  jquery-ui/widgets/sortable.js
+
   application.js
   logged_in_only.js
   markdown_and_friends.js
@@ -23,14 +28,13 @@ Rails.application.config.assets.precompile += %w[
   check_name_conflicts.js
   compare_revisions.js
   highlight_text.js
-  jquery.js
+  jquery3.js
   locality_autocompletion.js
   protonym_select.js
   reference_select.js
   sortable_tables.js
   taxon_select.js
   taxt_editor.js
-  tooltips.js
 
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js

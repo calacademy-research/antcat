@@ -1,18 +1,23 @@
 module Taxa
   class MoveItemsController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
-    before_action :set_to_taxon, only: [:show, :create]
 
     def new
+      @taxon = find_taxon
     end
 
     def show
+      @taxon = find_taxon
+      @to_taxon = find_to_taxon
+
       return if @to_taxon
       redirect_to({ action: :new }, alert: "Target must be specified.")
     end
 
     def create
+      @taxon = find_taxon
+      @to_taxon = find_to_taxon
+
       if history_items.empty?
         flash.now[:alert] = "At least one item must be selected."
         render :show
@@ -31,12 +36,12 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
-      def set_to_taxon
-        @to_taxon = Taxon.find_by(id: params[:to_taxon_id])
+      def find_to_taxon
+        Taxon.find_by(id: params[:to_taxon_id])
       end
 
       def history_items

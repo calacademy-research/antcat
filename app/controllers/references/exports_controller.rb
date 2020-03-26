@@ -1,7 +1,5 @@
 module References
   class ExportsController < ApplicationController
-    before_action :set_reference, only: :wikipedia
-
     def endnote
       id = params[:id]
 
@@ -16,13 +14,14 @@ module References
     end
 
     def wikipedia
+      @reference = find_reference
       render plain: Wikipedia::ReferenceExporter[@reference]
     end
 
     private
 
-      def set_reference
-        @reference = Reference.find(params[:id])
+      def find_reference
+        Reference.find(params[:id])
       end
   end
 end

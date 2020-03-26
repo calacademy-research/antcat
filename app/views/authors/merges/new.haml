@@ -1,7 +1,8 @@
--@title = 'Merge Authors'
+-title 'Merge Authors'
 -breadcrumb :merge_authors, @author
 
 -content_for :javascripts do
+  =javascript_include_tag 'jquery-ui/widgets/autocomplete'
   =javascript_include_tag 'controllers/authors/merges'
 
 .row

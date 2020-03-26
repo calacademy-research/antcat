@@ -22,22 +22,22 @@ class ActivitiesController < ApplicationController
   ]
 
   before_action :ensure_user_is_superadmin, only: :destroy
-  before_action :set_activity, only: :destroy
 
   def index
     @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: page)
   end
 
   def destroy
-    @activity.destroy
+    activity = find_activity
+    activity.destroy
     redirect_to activities_path(page: params[:page]),
-      notice: "Activity item ##{@activity.id} was successfully deleted."
+      notice: "Activity item ##{activity.id} was successfully deleted."
   end
 
   private
 
-    def set_activity
-      @activity = Activity.find(params[:id])
+    def find_activity
+      Activity.find(params[:id])
     end
 
     def unpaginated_activities

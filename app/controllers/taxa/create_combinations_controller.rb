@@ -1,19 +1,25 @@
 module Taxa
   class CreateCombinationsController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
-    before_action :set_new_parent, only: [:show, :create]
-    before_action :set_target_name, only: [:show, :create]
 
     def new
+      @taxon = find_taxon
       @create_combination_policy = CreateCombinationPolicy.new(@taxon)
+      @target_name = find_target_name
     end
 
     def show
+      @taxon = find_taxon
+      @new_parent = find_new_parent
+      @target_name = find_target_name
+
       redirect_to({ action: :new }, alert: "Target must be specified.") unless @new_parent
     end
 
     def create
+      @taxon = find_taxon
+      @new_parent = find_new_parent
+
       operation = ::Operations::CreateNewCombination.new(
         current_valid_taxon: @taxon,
         new_genus: @new_parent,
@@ -32,12 +38,12 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
-      def set_new_parent
-        @new_parent = Taxon.find_by(id: params[:new_parent_id])
+      def find_new_parent
+        Taxon.find_by(id: params[:new_parent_id])
       end
 
       def target_name_string
@@ -45,8 +51,8 @@ module Taxa
         "#{@new_parent.name.name} #{params[:species_epithet]}"
       end
 
-      def set_target_name
-        @target_name = Names::BuildNameFromString[target_name_string]
+      def find_target_name
+        Names::BuildNameFromString[target_name_string]
       end
 
       def create_activity new_combination

@@ -2,7 +2,6 @@ class JournalsController < ApplicationController
   REFERENCE_COUNT_ORDER = "reference_count"
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
-  before_action :set_journal, only: [:show, :edit, :update, :destroy]
 
   def index
     order = params[:order] == REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
@@ -10,13 +9,17 @@ class JournalsController < ApplicationController
   end
 
   def show
+    @journal = find_journal
     @references = @journal.references.order(:year).includes(:document).paginate(page: params[:page])
   end
 
   def edit
+    @journal = find_journal
   end
 
   def update
+    @journal = find_journal
+
     if @journal.update(journal_params)
       @journal.create_activity :update, current_user
       @journal.invalidate_reference_caches!
@@ -27,18 +30,20 @@ class JournalsController < ApplicationController
   end
 
   def destroy
-    if @journal.destroy
-      @journal.create_activity :destroy, current_user
+    journal = find_journal
+
+    if journal.destroy
+      journal.create_activity :destroy, current_user
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
-      redirect_to @journal, alert: @journal.errors.full_messages.to_sentence
+      redirect_to journal, alert: journal.errors.full_messages.to_sentence
     end
   end
 
   private
 
-    def set_journal
-      @journal = Journal.find(params[:id])
+    def find_journal
+      Journal.find(params[:id])
     end
 
     def journal_params

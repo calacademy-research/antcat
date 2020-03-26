@@ -1,7 +1,8 @@
--@title = "Editing #{@taxon.name_cache}"
+-title "Editing #{@taxon.name_cache}"
 -breadcrumb :edit_taxon, @taxon
 
 -content_for :javascripts do
+  =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
   =javascript_include_tag 'controllers/taxa/reorder_history_items', 'controllers/taxa/reorder_reference_sections'
 
 =render 'form', taxon: @taxon, default_name_string: nil

@@ -1,7 +1,5 @@
--@title = "#{@protonym.name.name} - Protonyms"
+-title "#{@protonym.name.name} - Protonyms"
 -breadcrumb :protonym, @protonym
-
-=enable_tooltips
 
 -content_for :breadcrumbs_right do
   =link_to "History", protonym_history_path(@protonym), class: "btn-normal"

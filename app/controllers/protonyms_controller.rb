@@ -3,7 +3,6 @@ class ProtonymsController < ApplicationController
   ONLY_WITH_TYPE_TAXON = "only_with_type_taxon"
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
-  before_action :set_protonym, only: [:show, :edit, :update, :destroy]
 
   def index
     @protonyms = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
@@ -19,6 +18,7 @@ class ProtonymsController < ApplicationController
   end
 
   def show
+    @protonym = find_protonym
   end
 
   def new
@@ -44,9 +44,12 @@ class ProtonymsController < ApplicationController
   end
 
   def edit
+    @protonym = find_protonym
   end
 
   def update
+    @protonym = find_protonym
+
     if @protonym.update(protonym_params)
       @protonym.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
@@ -56,18 +59,20 @@ class ProtonymsController < ApplicationController
   end
 
   def destroy
-    if @protonym.destroy
-      @protonym.create_activity :destroy, current_user
+    protonym = find_protonym
+
+    if protonym.destroy
+      protonym.create_activity :destroy, current_user
       redirect_to protonyms_path, notice: "Successfully deleted protonym."
     else
-      redirect_to @protonym, alert: @protonym.errors.full_messages.to_sentence
+      redirect_to protonym, alert: protonym.errors.full_messages.to_sentence
     end
   end
 
   private
 
-    def set_protonym
-      @protonym = Protonym.find(params[:id])
+    def find_protonym
+      Protonym.find(params[:id])
     end
 
     def protonym_params

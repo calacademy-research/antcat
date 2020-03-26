@@ -6,7 +6,7 @@
       References
       .right
         -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
-        =link_to 'Add', new_taxa_reference_section_path(taxon), id: 'add-reference-section-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'button submit btn-normal btn-tiny jquery-tooltip'
+        =link_to 'Add', new_taxa_reference_section_path(taxon), id: 'add-reference-section-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'button submit btn-normal btn-tiny tooltip2'
         %a#start-reordering-reference-sections.btn-nodanger.btn-tiny.button Reorder
     .reference-sections{data: {taxon_id: taxon.id}}
       -taxon.reference_sections.each do |reference_section|

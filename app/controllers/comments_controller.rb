@@ -1,7 +1,6 @@
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index]
-  before_action :set_comment, only: [:edit, :update]
 
   def index
     @comments = if params[:user_id]
@@ -28,9 +27,12 @@ class CommentsController < ApplicationController
   end
 
   def edit
+    @comment = find_comment
   end
 
   def update
+    @comment = find_comment
+
     if @comment.update(body: comment_params[:body], edited: true)
       Comments::NotifyRelevantUsers[@comment]
       redirect_to @comment.commentable, notice: <<-MSG
@@ -43,8 +45,8 @@ class CommentsController < ApplicationController
 
   private
 
-    def set_comment
-      @comment = current_user.comments.find(params[:id])
+    def find_comment
+      current_user.comments.find(params[:id])
     end
 
     def comment_params
