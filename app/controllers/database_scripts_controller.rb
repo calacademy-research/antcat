@@ -4,7 +4,6 @@ class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
 
   before_action :authenticate_user!
-  before_action :set_database_script, only: [:show]
 
   def index
     @grouped_database_scripts = DatabaseScript.all.group_by do |script|
@@ -26,6 +25,8 @@ class DatabaseScriptsController < ApplicationController
     end
     # :nocov:
 
+    @database_script = find_database_script
+
     respond_to do |format|
       format.html do
         @rendered, @render_duration = timed_render
@@ -39,8 +40,8 @@ class DatabaseScriptsController < ApplicationController
 
   private
 
-    def set_database_script
-      @database_script = DatabaseScript.new_from_filename_without_extension params[:id]
+    def find_database_script
+      DatabaseScript.new_from_filename_without_extension params[:id]
     rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError, "Not Found"
     end

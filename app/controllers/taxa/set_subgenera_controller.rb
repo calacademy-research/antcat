@@ -1,13 +1,16 @@
 module Taxa
   class SetSubgeneraController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
-    before_action :set_subgenus, only: [:show, :create]
 
     def show
+      @taxon = find_taxon
+      @subgenus = find_subgenus
     end
 
     def create
+      @taxon = find_taxon
+      @subgenus = find_subgenus
+
       unless @subgenus
         redirect_to({ action: :show }, alert: "Subgenus must be specified.")
         return
@@ -22,6 +25,7 @@ module Taxa
     end
 
     def destroy
+      @taxon = find_taxon
       activity_parameters = { removed_subgenus_id: @taxon.subgenus.id }
 
       if @taxon.update(subgenus: nil)
@@ -34,12 +38,12 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Species.find(params[:taxa_id])
+      def find_taxon
+        Species.find(params[:taxa_id])
       end
 
-      def set_subgenus
-        @subgenus = @taxon.genus.subgenera.find_by(id: params[:subgenus_id])
+      def find_subgenus
+        @taxon.genus.subgenera.find_by(id: params[:subgenus_id])
       end
   end
 end

@@ -3,13 +3,13 @@ class ReferencesController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
-  before_action :set_reference, only: [:show, :edit, :update, :destroy]
 
   def index
     @references = Reference.no_missing.order_by_author_names_and_year.includes(:document).paginate(page: params[:page])
   end
 
   def show
+    @reference = find_reference
     @editors_reference_presenter = Editors::ReferencePresenter.new(@reference, session)
   end
 
@@ -40,9 +40,11 @@ class ReferencesController < ApplicationController
   end
 
   def edit
+    @reference = find_reference
   end
 
   def update
+    @reference = find_reference
     @reference = set_reference_type
 
     if reference_form.save
@@ -54,6 +56,8 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
+    @reference = find_reference
+
     # Grab key before reference author names are deleted.
     activity_parameters = { name: @reference.keey }
 
@@ -67,8 +71,8 @@ class ReferencesController < ApplicationController
 
   private
 
-    def set_reference
-      @reference = Reference.find(params[:id])
+    def find_reference
+      Reference.find(params[:id])
     end
 
     def reference_params

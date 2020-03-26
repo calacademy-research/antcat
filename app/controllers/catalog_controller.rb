@@ -1,6 +1,4 @@
 class CatalogController < ApplicationController
-  before_action :set_taxon, only: [:show]
-
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?
     before_action only: [:index] do
@@ -18,13 +16,8 @@ class CatalogController < ApplicationController
   end
 
   def show
+    @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session)
     @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)
   end
-
-  private
-
-    def set_taxon
-      @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
-    end
 end

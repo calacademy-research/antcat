@@ -3,7 +3,6 @@
 
 class TaxaController < ApplicationController
   before_action :ensure_user_is_editor
-  before_action :set_taxon, only: [:edit, :update, :destroy]
 
   def new
     @taxon = build_taxon_with_parent
@@ -36,9 +35,12 @@ class TaxaController < ApplicationController
   end
 
   def edit
+    @taxon = find_taxon
   end
 
   def update
+    @taxon = find_taxon
+
     if @taxon.update(taxon_params)
       @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
@@ -48,25 +50,27 @@ class TaxaController < ApplicationController
   end
 
   def destroy
-    if @taxon.what_links_here.any?
-      redirect_to taxon_what_links_here_path(@taxon), alert: <<~MSG
+    taxon = find_taxon
+
+    if taxon.what_links_here.any?
+      redirect_to taxon_what_links_here_path(taxon), alert: <<~MSG
         Other taxa refer to this taxon, so it can't be deleted.
       MSG
       return
     end
 
-    if @taxon.destroy
-      @taxon.create_activity :destroy, current_user
-      redirect_to catalog_path(@taxon.parent), notice: "Taxon was successfully deleted."
+    if taxon.destroy
+      taxon.create_activity :destroy, current_user
+      redirect_to catalog_path(taxon.parent), notice: "Taxon was successfully deleted."
     else
-      redirect_to catalog_path(@taxon.parent), alert: @taxon.errors.full_messages.to_sentence
+      redirect_to catalog_path(taxon.parent), alert: taxon.errors.full_messages.to_sentence
     end
   end
 
   private
 
-    def set_taxon
-      @taxon = Taxon.find(params[:id])
+    def find_taxon
+      Taxon.find(params[:id])
     end
 
     def taxon_params

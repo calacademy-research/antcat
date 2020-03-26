@@ -3,8 +3,6 @@ class TaxonHistoryItemsController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
-  before_action :set_taxon, only: [:new, :create]
-  before_action :set_taxon_history_item, only: [:show, :edit, :update, :destroy]
 
   def index
     @taxon_history_items = TaxonHistoryItem.joins(:taxon)
@@ -15,14 +13,17 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def show
+    @taxon_history_item = find_taxon_history_item
     @taxon = @taxon_history_item.taxon
   end
 
   def new
+    @taxon = find_taxon
     @taxon_history_item = @taxon.history_items.new
   end
 
   def create
+    @taxon = find_taxon
     @taxon_history_item = @taxon.history_items.new(taxon_history_item_params)
 
     if @taxon_history_item.save
@@ -34,10 +35,12 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def edit
+    @taxon_history_item = find_taxon_history_item
     @taxon = @taxon_history_item.taxon
   end
 
   def update
+    @taxon_history_item = find_taxon_history_item
     @taxon = @taxon_history_item.taxon
 
     updated = @taxon_history_item.update(taxon_history_item_params)
@@ -59,27 +62,28 @@ class TaxonHistoryItemsController < ApplicationController
   end
 
   def destroy
-    @taxon_history_item.destroy
-    @taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+    taxon_history_item = find_taxon_history_item
+    taxon_history_item.destroy
+    taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     respond_to do |format|
       format.json do
         render json: { success: true }
       end
       format.html do
-        redirect_to catalog_path(@taxon_history_item.taxon), notice: "Successfully deleted history item."
+        redirect_to catalog_path(taxon_history_item.taxon), notice: "Successfully deleted history item."
       end
     end
   end
 
   private
 
-    def set_taxon
-      @taxon = Taxon.find(params[:taxa_id])
+    def find_taxon
+      Taxon.find(params[:taxa_id])
     end
 
-    def set_taxon_history_item
-      @taxon_history_item = TaxonHistoryItem.find(params[:id])
+    def find_taxon_history_item
+      TaxonHistoryItem.find(params[:id])
     end
 
     def taxon_history_item_params

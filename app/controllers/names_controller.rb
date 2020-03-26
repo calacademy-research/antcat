@@ -1,14 +1,17 @@
 class NamesController < ApplicationController
   before_action :ensure_user_is_editor, except: [:show]
-  before_action :set_name, only: [:show, :edit, :update]
 
   def show
+    @name = find_name
   end
 
   def edit
+    @name = find_name
   end
 
   def update
+    @name = find_name
+
     if @name.update(name_params)
       @name.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to name_path(@name), notice: "Successfully updated name."
@@ -19,8 +22,8 @@ class NamesController < ApplicationController
 
   private
 
-    def set_name
-      @name = Name.find(params[:id])
+    def find_name
+      Name.find(params[:id])
     end
 
     def name_params

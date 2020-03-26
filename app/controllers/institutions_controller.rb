@@ -2,13 +2,13 @@ class InstitutionsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:new, :create]
   before_action :ensure_user_is_editor, only: [:edit, :update]
   before_action :ensure_user_is_superadmin, only: [:destroy]
-  before_action :set_institution, only: [:show, :edit, :update, :destroy]
 
   def index
     @institutions = Institution.order(:abbreviation)
   end
 
   def show
+    @institution = find_institution
   end
 
   def new
@@ -27,9 +27,12 @@ class InstitutionsController < ApplicationController
   end
 
   def edit
+    @institution = find_institution
   end
 
   def update
+    @institution = find_institution
+
     if @institution.update(institution_params)
       @institution.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
@@ -39,15 +42,18 @@ class InstitutionsController < ApplicationController
   end
 
   def destroy
-    @institution.destroy
-    @institution.create_activity :destroy, current_user
+    institution = find_institution
+
+    institution.destroy
+    institution.create_activity :destroy, current_user
+
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'
   end
 
   private
 
-    def set_institution
-      @institution = Institution.find(params[:id])
+    def find_institution
+      Institution.find(params[:id])
     end
 
     def institution_params

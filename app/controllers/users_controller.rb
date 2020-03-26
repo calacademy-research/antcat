@@ -1,12 +1,12 @@
 class UsersController < ApplicationController
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def index
     @users = user_scope.order_by_name
   end
 
   def show
+    @user = find_user
     @recent_user_activities = @user.activities.most_recent(5).includes(:user)
     @recent_user_comments = @user.comments.most_recent 5
   end
@@ -26,9 +26,11 @@ class UsersController < ApplicationController
   end
 
   def edit
+    @user = find_user
   end
 
   def update
+    @user = find_user
     if user_params[:password].present?
       @user.password = user_params[:password] # HACK.
     end
@@ -41,10 +43,12 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    if @user.update(deleted: true, locked: true)
-      redirect_to @user, notice: "Successfully soft-deleted and locked user."
+    user = find_user
+
+    if user.update(deleted: true, locked: true)
+      redirect_to user, notice: "Successfully soft-deleted and locked user."
     else
-      redirect_to @user, alert: 'Could not soft-delete user.'
+      redirect_to user, alert: 'Could not soft-delete user.'
     end
   end
 
@@ -58,8 +62,8 @@ class UsersController < ApplicationController
 
   private
 
-    def set_user
-      @user = user_scope.find(params[:id])
+    def find_user
+      user_scope.find(params[:id])
     end
 
     def user_params

@@ -1,13 +1,15 @@
 module Taxa
   class CreateObsoleteCombinationsController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
-    before_action :set_obsolete_genus, only: :create
 
     def show
+      @taxon = find_taxon
     end
 
     def create
+      @taxon = find_taxon
+      @obsolete_genus = find_obsolete_genus
+
       unless @obsolete_genus
         flash.now[:alert] = "Obsolete genus must be set."
         render :show
@@ -27,12 +29,12 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
-      def set_obsolete_genus
-        @obsolete_genus = Genus.find_by(id: params[:obsolete_genus_id])
+      def find_obsolete_genus
+        Genus.find_by(id: params[:obsolete_genus_id])
       end
 
       def create_obsolete_combination

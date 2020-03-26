@@ -1,13 +1,13 @@
 class TooltipsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index]
   before_action :ensure_user_is_superadmin, only: [:destroy]
-  before_action :set_tooltip, only: [:show, :edit, :update, :destroy]
 
   def index
     @grouped_tooltips = Tooltip.order(:key).group_by(&:scope)
   end
 
   def show
+    @tooltip = find_tooltip
   end
 
   def new
@@ -29,6 +29,8 @@ class TooltipsController < ApplicationController
   end
 
   def update
+    @tooltip = find_tooltip
+
     if @tooltip.update(tooltip_params)
       @tooltip.create_activity :update, current_user
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
@@ -38,15 +40,18 @@ class TooltipsController < ApplicationController
   end
 
   def destroy
-    @tooltip.destroy
-    @tooltip.create_activity :destroy, current_user
+    tooltip = find_tooltip
+
+    tooltip.destroy
+    tooltip.create_activity :destroy, current_user
+
     redirect_to tooltips_path, notice: 'Tooltip was successfully deleted.'
   end
 
   private
 
-    def set_tooltip
-      @tooltip = Tooltip.find(params[:id])
+    def find_tooltip
+      Tooltip.find(params[:id])
     end
 
     def tooltip_params

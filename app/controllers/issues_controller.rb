@@ -1,6 +1,5 @@
 class IssuesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
-  before_action :set_issue, only: [:show, :edit, :update, :reopen, :close]
 
   def index
     @issues = Issue.by_status_and_date.includes(:adder).paginate(page: params[:page])
@@ -8,6 +7,7 @@ class IssuesController < ApplicationController
   end
 
   def show
+    @issue = find_issue
     @new_comment = Comment.build_comment @issue, current_user
   end
 
@@ -29,9 +29,12 @@ class IssuesController < ApplicationController
   end
 
   def edit
+    @issue = find_issue
   end
 
   def update
+    @issue = find_issue
+
     if @issue.update(issue_params)
       @issue.create_activity :update, current_user, edit_summary: params[:edit_summary]
       Users::NotifyMentionedUsers[@issue.description, attached: @issue, notifier: current_user]
@@ -42,23 +45,27 @@ class IssuesController < ApplicationController
   end
 
   def close
-    @issue.close! current_user
-    @issue.create_activity :close_issue, current_user
+    issue = find_issue
 
-    redirect_to @issue, notice: "Successfully closed issue."
+    issue.close! current_user
+    issue.create_activity :close_issue, current_user
+
+    redirect_to issue, notice: "Successfully closed issue."
   end
 
   def reopen
-    @issue.reopen!
-    @issue.create_activity :reopen_issue, current_user
+    issue = find_issue
 
-    redirect_to @issue, notice: "Successfully re-opened issue."
+    issue.reopen!
+    issue.create_activity :reopen_issue, current_user
+
+    redirect_to issue, notice: "Successfully re-opened issue."
   end
 
   private
 
-    def set_issue
-      @issue = Issue.find(params[:id])
+    def find_issue
+      Issue.find(params[:id])
     end
 
     def issue_params

@@ -1,13 +1,15 @@
 module Taxa
   class ConvertToSubspeciesController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon, only: [:new, :create]
 
     def new
+      @taxon = find_taxon
     end
 
     # TODO: Move validations to service.
     def create
+      @taxon = find_taxon
+
       if @taxon.subspecies.present?
         @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"
         render :new
@@ -51,8 +53,8 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Species.find(params[:taxa_id])
+      def find_taxon
+        Species.find(params[:taxa_id])
       end
 
       def create_activity original_species, new_subspecies

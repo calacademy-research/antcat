@@ -1,9 +1,10 @@
 module Taxa
   class ElevateToSpeciesController < ApplicationController
     before_action :ensure_user_is_editor
-    before_action :set_taxon
 
     def create
+      @taxon = find_taxon
+
       unless @taxon.is_a? Subspecies
         redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
         return
@@ -34,8 +35,8 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
       def species_activity subspecies, new_species

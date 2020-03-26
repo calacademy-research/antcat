@@ -2,7 +2,6 @@ class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]
   before_action :ensure_user_is_superadmin, only: :destroy
-  before_action :set_site_notice, only: [:show, :edit, :update, :destroy]
   before_action :mark_as_read, only: :show # NOTE: `before_action` to mark it as read for the current render.
 
   def index
@@ -10,6 +9,7 @@ class SiteNoticesController < ApplicationController
   end
 
   def show
+    @site_notice = find_site_notice
     @new_comment = Comment.build_comment @site_notice, current_user
   end
 
@@ -31,9 +31,12 @@ class SiteNoticesController < ApplicationController
   end
 
   def edit
+    @site_notice = find_site_notice
   end
 
   def update
+    @site_notice = find_site_notice
+
     if @site_notice.update(site_notice_params)
       @site_notice.create_activity :update, current_user
       Users::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
@@ -44,8 +47,11 @@ class SiteNoticesController < ApplicationController
   end
 
   def destroy
-    @site_notice.destroy
-    @site_notice.create_activity :destroy, current_user
+    site_notice = find_site_notice
+
+    site_notice.destroy
+    site_notice.create_activity :destroy, current_user
+
     redirect_to site_notices_path, notice: "Site notice was successfully deleted."
   end
 
@@ -57,8 +63,8 @@ class SiteNoticesController < ApplicationController
 
   private
 
-    def set_site_notice
-      @site_notice = SiteNotice.find(params[:id])
+    def find_site_notice
+      SiteNotice.find(params[:id])
     end
 
     def site_notice_params
@@ -66,6 +72,6 @@ class SiteNoticesController < ApplicationController
     end
 
     def mark_as_read
-      @site_notice.mark_as_read! for: current_user
+      find_site_notice.mark_as_read! for: current_user
     end
 end

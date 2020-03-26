@@ -1,14 +1,13 @@
 module Catalog
   class WikipediaController < ApplicationController
-    before_action :set_taxon, only: :show
-
     def show
+      @taxon = find_taxon
     end
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:id])
+      def find_taxon
+        Taxon.find(params[:id])
       end
   end
 end

@@ -1,13 +1,13 @@
 class WikiPagesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
   before_action :ensure_user_is_superadmin, only: :destroy
-  before_action :set_wiki_page, only: [:show, :edit, :update, :destroy]
 
   def index
     @wiki_pages = WikiPage.order(:title).paginate(page: params[:page], per_page: 30)
   end
 
   def show
+    @wiki_page = find_wiki_page
   end
 
   def new
@@ -26,9 +26,12 @@ class WikiPagesController < ApplicationController
   end
 
   def edit
+    @wiki_page = find_wiki_page
   end
 
   def update
+    @wiki_page = find_wiki_page
+
     if @wiki_page.update(wiki_page_params)
       @wiki_page.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @wiki_page, notice: "Successfully updated wiki page."
@@ -38,15 +41,18 @@ class WikiPagesController < ApplicationController
   end
 
   def destroy
-    @wiki_page.destroy
-    @wiki_page.create_activity :destroy, current_user
+    wiki_page = find_wiki_page
+
+    wiki_page.destroy
+    wiki_page.create_activity :destroy, current_user
+
     redirect_to wiki_pages_path, notice: "Wiki page was successfully deleted."
   end
 
   private
 
-    def set_wiki_page
-      @wiki_page = WikiPage.find(params[:id])
+    def find_wiki_page
+      WikiPage.find(params[:id])
     end
 
     def wiki_page_params

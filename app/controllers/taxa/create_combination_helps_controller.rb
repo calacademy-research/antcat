@@ -1,13 +1,14 @@
 module Taxa
   class CreateCombinationHelpsController < ApplicationController
-    before_action :set_taxon
-    before_action :set_new_parent, only: :show
-
     def new
+      @taxon = find_taxon
       @target_rank = target_rank
     end
 
     def show
+      @taxon = find_taxon
+      @new_parent = find_new_parent
+
       unless @new_parent
         redirect_to({ action: :new }, alert: "Target must be specified.")
         return
@@ -18,12 +19,12 @@ module Taxa
 
     private
 
-      def set_taxon
-        @taxon = Taxon.find(params[:taxa_id])
+      def find_taxon
+        Taxon.find(params[:taxa_id])
       end
 
-      def set_new_parent
-        @new_parent = Taxon.find_by(id: params[:new_parent_id])
+      def find_new_parent
+        Taxon.find_by(id: params[:new_parent_id])
       end
 
       def possibly_existing_combinations

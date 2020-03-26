@@ -3,7 +3,6 @@ class FeedbackController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:new, :create]
   before_action :ensure_user_is_superadmin, only: [:destroy]
-  before_action :set_feedback, only: [:show, :destroy, :close, :reopen]
 
   invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
 
@@ -12,6 +11,7 @@ class FeedbackController < ApplicationController
   end
 
   def show
+    @feedback = find_feedback
     @new_comment = Comment.build_comment @feedback, current_user
   end
 
@@ -49,27 +49,36 @@ class FeedbackController < ApplicationController
   end
 
   def destroy
-    @feedback.destroy
-    @feedback.create_activity :destroy, current_user
+    feedback = find_feedback
+
+    feedback.destroy
+    feedback.create_activity :destroy, current_user
+
     redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
   end
 
   def close
-    @feedback.close!
-    @feedback.create_activity :close_feedback, current_user
-    redirect_to @feedback, notice: "Successfully closed feedback item."
+    feedback = find_feedback
+
+    feedback.close!
+    feedback.create_activity :close_feedback, current_user
+
+    redirect_to feedback, notice: "Successfully closed feedback item."
   end
 
   def reopen
-    @feedback.reopen!
-    @feedback.create_activity :reopen_feedback, current_user
-    redirect_to @feedback, notice: "Successfully re-opened feedback item."
+    feedback = find_feedback
+
+    feedback.reopen!
+    feedback.create_activity :reopen_feedback, current_user
+
+    redirect_to feedback, notice: "Successfully re-opened feedback item."
   end
 
   private
 
-    def set_feedback
-      @feedback = Feedback.find(params[:id])
+    def find_feedback
+      Feedback.find(params[:id])
     end
 
     def feedback_params
