@@ -63,15 +63,7 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = false
 
-  config.action_mailer.smtp_settings = {
-    address:              Settings.smtp_settings.address,
-    port:                 Settings.smtp_settings.port,
-    domain:               Settings.smtp_settings.domain,
-    user_name:            Settings.smtp_settings.user_name,
-    password:             Settings.smtp_settings.password,
-    authentication:       Settings.smtp_settings.authentication,
-    enable_starttls_auto: Settings.smtp_settings.enable_starttls_auto
-  }
+  config.action_mailer.smtp_settings = Settings.smtp_settings.to_h
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
