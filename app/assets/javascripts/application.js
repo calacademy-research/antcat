@@ -22,6 +22,3 @@
 //= require all_pages/jquery_plugins
 //= require all_pages/show_hide_toggler
 //= require all_pages/spinner
-
-// vendor/assets/javascripts
-//= require jquery.truncate
