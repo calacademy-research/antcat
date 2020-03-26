@@ -28,7 +28,7 @@ Rails.application.config.assets.precompile += %w[
   check_name_conflicts.js
   compare_revisions.js
   highlight_text.js
-  jquery.js
+  jquery3.js
   locality_autocompletion.js
   protonym_select.js
   reference_select.js
