@@ -19,7 +19,7 @@
     =stylesheet_link_tag 'foundation_and_overrides'
     =stylesheet_link_tag 'vendor'
     =stylesheet_link_tag 'application'
-    =stylesheet_link_tag 'dev_css' if include_dev_css?
+    =stylesheet_link_tag 'dev_css' if Rails.env.development?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
     =javascript_include_tag 'application'

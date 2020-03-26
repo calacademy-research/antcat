@@ -244,10 +244,4 @@ Rails.application.routes.draw do
     resource :recently_used_references, only: [:show, :create]
     resource :default_reference, only: :update, controller: :default_reference
   end
-
-  unless Rails.env.production?
-    namespace :widget_tests do
-      get :toggle_dev_css
-    end
-  end
 end

@@ -7,12 +7,4 @@ module DevHelper
       link_to "on localhost", "http://localhost:3000#{request.path}", class: "show-on-hover"
     end
   end
-
-  # dev-specific CSS. Disable by suffixing the url with ?no_dev_css=pizza,
-  # or toggling on/off from the Editor's Panel.
-  def include_dev_css?
-    return false unless Rails.env.development?
-    return false if params[:no_dev_css] || session[:no_dev_css]
-    true
-  end
 end

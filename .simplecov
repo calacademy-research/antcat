@@ -22,6 +22,5 @@ SimpleCov.configure do
   add_filter "/lib/progress.rb"
   add_filter "/lib/dev_monkey_patches/"
   add_filter "/app/helpers/dev_helper.rb"
-  add_filter "/app/controllers/widget_tests_controller.rb"
   add_filter "/app/controllers/antweb_data_controller.rb"
 end
