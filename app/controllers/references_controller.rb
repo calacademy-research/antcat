@@ -11,7 +11,7 @@ class ReferencesController < ApplicationController
   end
 
   def show
-    @reference = find_reference
+    @reference = Reference.eager_load(:document, :journal, :publisher, author_names: :author).find(params[:id])
     @editors_reference_presenter = Editors::ReferencePresenter.new(@reference, session)
   end
 

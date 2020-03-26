@@ -2,19 +2,20 @@
 -breadcrumb :protonyms
 
 -content_for :breadcrumbs_right do
-  =link_to "Hide/show search", "#", data: { show_hide_toggler_for: "search-form" }, class: "btn-nodanger"
-  -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
-    =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"
-  -else
-    =link_to "Order by taxon count", protonyms_path(request.params.merge(order: ProtonymsController::TAXON_COUNT_ORDER)), class: "btn-normal"
+  -if current_user
+    =link_to "Hide/show search", "#", data: { show_hide_toggler_for: "search-form" }, class: "btn-nodanger"
+    -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
+      =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"
+    -else
+      =link_to "Order by taxon count", protonyms_path(request.params.merge(order: ProtonymsController::TAXON_COUNT_ORDER)), class: "btn-normal"
 
-  -if params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
-    =link_to "Don't hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => nil)), class: "btn-normal"
-  -else params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
-    =link_to "Hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => 'yes')), class: "btn-normal"
+    -if params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
+      =link_to "Don't hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => nil)), class: "btn-normal"
+    -else params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
+      =link_to "Hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => 'yes')), class: "btn-normal"
 
-  -if user_is_editor?
-    =link_to "New", new_protonym_path, class: "btn-normal"
+    -if user_is_editor?
+      =link_to "New", new_protonym_path, class: "btn-normal"
 
 .margin-bottom{class: ('show-hide-toggable-starts-open' if params[:q].present?), data: { show_hide_toggable_id: "search-form" } }
   .row
@@ -33,7 +34,8 @@
       %th Forms
       %th Locality
       %th Notes
-      %th Taxa
+      -if current_user
+        %th Taxa
   %tbody
     -@protonyms.each do |protonym|
       %tr
@@ -46,6 +48,7 @@
         %td=or_dash protonym.authorship.forms
         %td=protonym.decorate.format_locality
         %td=or_dash Detax[protonym.authorship.notes_taxt]
-        %td=protonym.taxa_count
+        -if current_user
+          %td=protonym.taxa_count
 
 =will_paginate @protonyms

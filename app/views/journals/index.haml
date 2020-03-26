@@ -11,14 +11,16 @@
   %thead
     %tr
       %th Journal
-      %th Publications between
+      -if current_user
+        %th Publications between
       %th No. of references
   -@journals.each do |journal|
     %tr
       %td
         %em=link_to journal.name, journal
-      -# TODO: Fix N+1 query.
-      %td=or_dash journal.decorate.publications_between
+      -if current_user
+        -# TODO: Fix N+1 query.
+        %td=or_dash journal.decorate.publications_between
       %td=or_dash journal.reference_count
 
 =will_paginate @journals

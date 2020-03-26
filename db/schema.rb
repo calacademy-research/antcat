@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_14_200109) do
+ActiveRecord::Schema.define(version: 2020_03_26_135153) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2020_03_14_200109) do
     t.boolean "fossil", default: false, null: false
     t.boolean "sic", default: false, null: false
     t.string "locality"
-    t.integer "name_id"
+    t.integer "name_id", null: false
     t.text "primary_type_information_taxt"
     t.text "secondary_type_information_taxt"
     t.text "type_notes_taxt"
@@ -274,7 +274,7 @@ ActiveRecord::Schema.define(version: 2020_03_14_200109) do
     t.text "headline_notes_taxt"
     t.integer "subgenus_id"
     t.boolean "hong", default: false, null: false
-    t.integer "name_id"
+    t.integer "name_id", null: false
     t.string "name_cache"
     t.string "name_html_cache"
     t.boolean "unresolved_homonym", default: false, null: false

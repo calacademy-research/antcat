@@ -2,12 +2,14 @@
 -breadcrumb :protonym, @protonym
 
 -content_for :breadcrumbs_right do
-  =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
+  -if current_user
+    =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
-  =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
+  -if current_user
+    =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
 -if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
   -if current_user && @protonym.soft_validations.failed?
@@ -26,7 +28,8 @@
       =@protonym.decorate.format_name
       -if @protonym.sic?
         [sic]
-      .right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
+      -if current_user
+        .right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
     %table.table.unstriped
       %tbody
         %tr

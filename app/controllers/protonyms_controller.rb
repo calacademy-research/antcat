@@ -6,21 +6,28 @@ class ProtonymsController < ApplicationController
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
 
+  # TODO: Fix.
   def index
-    @protonyms = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
+    protonyms =
+      if current_user
+        scope = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
                   left_outer_joins(:taxa).group(:id).references('taxa_count').
                   preload(:name, authorship: :reference)
-    @protonyms = @protonyms.where.not(taxa: { type_taxon_id: nil }).distinct if params[ONLY_WITH_TYPE_TAXON].present?
-    @protonyms = @protonyms.joins(:name).where('names.name LIKE ?', "%#{params[:q]}%") if params[:q].present?
-    @protonyms = if params[:order] == TAXON_COUNT_ORDER
-                   @protonyms.order("taxa_count DESC")
-                 else
-                   @protonyms.order_by_name
-                 end.paginate(page: params[:page], per_page: 50)
+        scope = scope.where.not(taxa: { type_taxon_id: nil }).distinct if params[ONLY_WITH_TYPE_TAXON].present?
+        scope = scope.joins(:name).where('names.name LIKE ?', "%#{params[:q]}%") if params[:q].present?
+        if params[:order] == TAXON_COUNT_ORDER
+          scope.order("taxa_count DESC")
+        else
+          scope.order_by_name
+        end
+      else
+        Protonym.includes(:name, authorship: :reference).order_by_name
+      end
+    @protonyms = protonyms.paginate(page: params[:page], per_page: 50)
   end
 
   def show
-    @protonym = find_protonym
+    @protonym = Protonym.eager_load(:name, :authorship).find(params[:id])
   end
 
   def new

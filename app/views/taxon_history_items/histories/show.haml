@@ -1,5 +1,6 @@
 -title "History Item ##{@comparer.most_recent.id}"
 -breadcrumb :taxon_history_item_history, @comparer.most_recent
+-noindex
 
 -content_for :breadcrumbs_right do
   =activities_link_for_trackable @comparer.most_recent

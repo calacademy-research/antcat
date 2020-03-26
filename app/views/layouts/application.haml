@@ -7,6 +7,8 @@
     %meta{content: "width=device-width, initial-scale=1.0", name: "viewport"}
     %meta{content: "#0071f4", name: "theme-color"}
 
+    =yield :meta_tags
+
     =csrf_meta_tag
 
     =favicon_link_tag 'favicon_96x96.png'
