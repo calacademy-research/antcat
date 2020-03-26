@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 # TODO: Cleanup. This is more of a dumping ground than an actual decorator.
 
