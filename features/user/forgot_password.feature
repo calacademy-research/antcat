@@ -1,6 +1,3 @@
-# TODO: Fix outgoing email.
-# See https://github.com/calacademy-research/antcat/issues/175
-@skip
 Feature: Forgot password
   As a user of AntCat
   I want to be able to get onto the site even if I forget my password
