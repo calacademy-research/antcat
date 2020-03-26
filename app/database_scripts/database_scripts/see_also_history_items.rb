@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class SeeAlsoHistoryItems < DatabaseScript
     START =          ["taxt REGEXP ?", "^See also: {ref"]

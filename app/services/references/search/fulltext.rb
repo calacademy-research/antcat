@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module References
   module Search
     class Fulltext

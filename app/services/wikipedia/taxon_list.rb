@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class for generating wiki-formatted lists of tribes, genera and species.
 
 module Wikipedia

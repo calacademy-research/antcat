@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Feedback < ApplicationRecord
   include Commentable
   include Trackable

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # To save additional parameters:
 # `trackable parameters: proc { { name: name } }`
 

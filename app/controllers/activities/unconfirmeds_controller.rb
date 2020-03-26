@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Activities
   class UnconfirmedsController < ApplicationController
     def show

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :editors_panel do
   link "Editor's Panel", editors_panel_path
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Use Solr or Elasticsearch instead of this class.
 
 # Requires that the client have:

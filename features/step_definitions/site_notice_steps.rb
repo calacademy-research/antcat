@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("there is a site notice {string}") do |title|
   create :site_notice, title: title
 end

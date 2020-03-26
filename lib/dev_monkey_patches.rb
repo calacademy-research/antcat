@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Enabled in the development environment by default. Disable with `NO_DEV_MONKEY_PATCHES=1 rails c`.
 # Enable in other environments with `DEV_MONKEY_PATCHES=1 rails c`.
 #

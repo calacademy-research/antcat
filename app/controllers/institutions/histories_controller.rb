@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Institutions
   class HistoriesController < ApplicationController
     def show

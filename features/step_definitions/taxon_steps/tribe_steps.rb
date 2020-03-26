@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("there is a tribe {string}") do |name|
   create :tribe, name_string: name
 end

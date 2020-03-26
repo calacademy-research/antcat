@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SiteNoticesController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   before_action :ensure_user_is_editor, except: [:index, :show, :mark_all_as_read]

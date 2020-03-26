@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
   after_action :mark_unseen_as_seen, only: :index

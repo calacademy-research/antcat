@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Genus < GenusGroupTaxon
   belongs_to :tribe
 

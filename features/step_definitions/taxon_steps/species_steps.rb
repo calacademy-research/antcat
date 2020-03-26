@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("there is a species {string}") do |name|
   create :species, name_string: name
 end

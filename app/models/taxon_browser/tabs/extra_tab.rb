@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # `ExtraTab`s are used for things where calling `#children` would
 # not work or make sense. Everything here is a special case.
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Subspecies < SpeciesGroupTaxon
   belongs_to :species
 

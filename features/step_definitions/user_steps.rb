@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def login_programmatically user
   login_as user, scope: :user, run_callbacks: false
 end

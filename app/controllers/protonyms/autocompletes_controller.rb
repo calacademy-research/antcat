@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Protonyms
   class AutocompletesController < ApplicationController
     def show

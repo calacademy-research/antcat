@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReferencesController < ApplicationController
   SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference, UnknownReference]
 

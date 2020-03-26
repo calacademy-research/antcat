@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :users do
   link "Users", users_path
   parent :antcat

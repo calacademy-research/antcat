@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Copy-pasted into `Taxa::Operations::ReorderReferenceSections`.
 
 module Taxa

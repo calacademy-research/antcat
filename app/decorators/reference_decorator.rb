@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReferenceDecorator < Draper::Decorator
   delegate :sanitize, to: :helpers
   delegate :plain_text, :expandable_reference, :expanded_reference, to: :reference_formatter

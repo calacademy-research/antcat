@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JournalsController < ApplicationController
   REFERENCE_COUNT_ORDER = "reference_count"
 

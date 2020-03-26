@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class ValidSpeciesList < DatabaseScript
     include DatabaseScripts::Renderers::AsCSV

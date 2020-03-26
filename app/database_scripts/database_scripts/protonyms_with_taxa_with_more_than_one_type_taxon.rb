@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class ProtonymsWithTaxaWithMoreThanOneTypeTaxon < DatabaseScript
     def self.looks_like_a_false_positive? protonym

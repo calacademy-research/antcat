@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class was added as an alternative to `ExpandedStatus. The classes may or may not be merged in the future.
 #
 # Differences:

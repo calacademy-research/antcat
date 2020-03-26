@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # * `#most_recent` - The current item or a reified instance of the most
 #   recently deleted version. This is the "owner" of the URL and all revisions.
 #

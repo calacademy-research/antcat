@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # The reason for supporting both "%taxon429349" and "{tax 429349}" is because the
 # "%"-style is the original implementation, while the curly braces format is the
 # original "taxt" format as used in taxt items.

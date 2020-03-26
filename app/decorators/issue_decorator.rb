@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IssueDecorator < Draper::Decorator
   delegate :open?, :help_wanted?
 

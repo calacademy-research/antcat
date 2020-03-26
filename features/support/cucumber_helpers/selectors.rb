@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CucumberHelpers
   module Selectors
     def selector_for locator

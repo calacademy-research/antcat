@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class FossilProtonymsWithNonFossilTaxa < DatabaseScript
     def results

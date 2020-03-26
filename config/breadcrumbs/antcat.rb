@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :antcat do
   link "AntCat", root_path
 end

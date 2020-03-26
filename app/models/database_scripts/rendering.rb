@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   module Rendering
     include DatabaseScripts::Renderers::AsTable

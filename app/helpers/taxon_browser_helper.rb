@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TaxonBrowserHelper
   def taxon_browser_link taxon
     label = (taxon.fossil? ? '&dagger;'.html_safe : '') << taxon.name_epithet

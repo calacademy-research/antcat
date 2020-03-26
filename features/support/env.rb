@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # For finding slow and unused steps:
 #   cucumber -f usage
 #   cucumber -f stepdefs

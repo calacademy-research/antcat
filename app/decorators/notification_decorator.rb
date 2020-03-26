@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NotificationDecorator < Draper::Decorator
   def link_comment label
     comment = notification.attached

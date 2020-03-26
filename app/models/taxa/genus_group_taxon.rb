@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GenusGroupTaxon < Taxon
   belongs_to :subfamily
   belongs_to :tribe

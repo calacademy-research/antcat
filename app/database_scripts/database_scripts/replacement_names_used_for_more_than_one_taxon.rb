@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class ReplacementNamesUsedForMoreThanOneTaxon < DatabaseScript
     RHYTIDOPONERA_CLARKI_ID = 447315

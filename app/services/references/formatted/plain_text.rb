@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Formats the reference as plaintext (with the exception of <i> tags).
 
 module References

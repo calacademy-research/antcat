@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :authors do
   link "Authors", authors_path
   parent :references

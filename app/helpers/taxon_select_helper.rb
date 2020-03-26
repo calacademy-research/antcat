@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TaxonSelectHelper
   def taxon_select_tag taxon_attribute_name, taxon_id, rank: nil
     taxon = Taxon.find_by(id: taxon_id)

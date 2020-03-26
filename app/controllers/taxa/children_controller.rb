@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Taxa
   class ChildrenController < ApplicationController
     ALLOW_DELETE_CHILDREN_TYPES = %w[Genus Species]

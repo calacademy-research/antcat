@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityDecorator < Draper::Decorator
   # Don't show user who created other users' accounts.
   HIDE_USER_FOR_TRACKABLE_TYPES = ['User']

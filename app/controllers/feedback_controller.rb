@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FeedbackController < ApplicationController
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 

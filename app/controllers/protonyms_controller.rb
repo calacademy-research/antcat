@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProtonymsController < ApplicationController
   TAXON_COUNT_ORDER = "taxon_count"
   ONLY_WITH_TYPE_TAXON = "only_with_type_taxon"

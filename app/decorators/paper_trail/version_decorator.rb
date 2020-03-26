@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PaperTrail
   class VersionDecorator < Draper::Decorator
     delegate :item_type, :item_id

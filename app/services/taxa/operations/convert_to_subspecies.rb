@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Taxa
   module Operations
     class ConvertToSubspecies

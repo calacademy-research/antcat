@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Do not cache in database.
 # TODO: Cleanup. Can wait until `MissingReference` has been removed.
 

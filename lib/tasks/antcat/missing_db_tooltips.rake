@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :antcat do
   desc "Find db tooltips referenced in the code but are not in the database"
   task missing_db_tooltips: [:environment] do

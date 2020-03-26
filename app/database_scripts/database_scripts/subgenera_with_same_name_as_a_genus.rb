@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class SubgeneraWithSameNameAsAGenus < DatabaseScript
     def self.record_in_results? taxon

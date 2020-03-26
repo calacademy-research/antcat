@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateCombinationPolicy
   def initialize taxon
     @taxon = taxon

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Subgenus < GenusGroupTaxon
   belongs_to :genus
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 

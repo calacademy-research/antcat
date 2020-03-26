@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: These specs are overly verbose. To be tweaked after testing `Operation`s more.
 
 require 'rails_helper'

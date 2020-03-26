@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CucumberHelpers
   module Select2
     def select2 value, from:

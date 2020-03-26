@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Taxon browser.
 Then('{string} should be selected in the taxon browser') do |name|
   within '#taxon-browser-container' do

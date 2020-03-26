@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class ReferenceSectionTaxts < DatabaseScript
     def blank_references_taxt

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Formats the reference with HTML, CSS, etc.
 
 module References

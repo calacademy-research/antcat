@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :catalog do
   link "Catalog", root_path
 end

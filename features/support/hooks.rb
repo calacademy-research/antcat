@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Before { DatabaseCleaner.strategy = :transaction }
 Before "@javascript" do
   DatabaseCleaner.strategy = :deletion

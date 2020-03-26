@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DevMonkeyPatches
   module AntCat
     PRODUCTION_BASE_URL = "https://antcat.org/"

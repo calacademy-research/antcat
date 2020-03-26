@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :references do
   link "References", references_path
 end

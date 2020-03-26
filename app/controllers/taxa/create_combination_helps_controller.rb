@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Taxa
   class CreateCombinationHelpsController < ApplicationController
     def new

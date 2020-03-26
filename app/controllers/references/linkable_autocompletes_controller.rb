@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module References
   class LinkableAutocompletesController < ApplicationController
     # For at.js. Not as advanced as `References::AutocompletesController`.

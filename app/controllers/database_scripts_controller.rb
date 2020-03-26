@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Implement pagination for lists inside scripts.
 
 class DatabaseScriptsController < ApplicationController

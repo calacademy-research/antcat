@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("I have an(other) unseen notification") do
   create :notification, user: User.find_by(name: "Archibald")
 end

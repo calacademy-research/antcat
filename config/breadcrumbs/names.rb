@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :names do
   link "Names records"
   parent :catalog

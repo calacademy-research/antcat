@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :issues do
   link "Issues", issues_path
   parent :editors_panel

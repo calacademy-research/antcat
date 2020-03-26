@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Catalog
   class SearchesController < ApplicationController
     PER_PAGE_OPTIONS = [30, 100, 500, 1000]

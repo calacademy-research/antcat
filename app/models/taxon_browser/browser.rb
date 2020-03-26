@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This class is responsibe for preparing all tabs for `_taxon_browser.haml`.
 
 module TaxonBrowser

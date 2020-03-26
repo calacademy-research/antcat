@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   class ApiController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound do

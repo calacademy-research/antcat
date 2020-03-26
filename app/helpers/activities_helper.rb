@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivitiesHelper
   def taxon_link_or_deleted_string id, deleted_label = nil
     if (taxon = Taxon.find_by(id: id))

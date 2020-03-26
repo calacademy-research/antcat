@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ReferenceSelectHelper
   def reference_select_tag reference_attribute_name, reference_id
     reference = Reference.find_by(id: reference_id)

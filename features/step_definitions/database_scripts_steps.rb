@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG is true") do
   stub_const "AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG", true
 end

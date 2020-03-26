@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :site_notices do
   link "Site Notices", site_notices_path
   parent :editors_panel

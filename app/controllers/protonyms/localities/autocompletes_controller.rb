@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Protonyms
   module Localities
     class AutocompletesController < ApplicationController

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class TaxaWithSameName < DatabaseScript
     def results

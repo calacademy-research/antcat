@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Removes the top-level prefix 'pages' from the URL
 #   '/about' instead of '/pages/about'
 #   '/help/tooltips' instead of '/pages/help/tooltips', etc, etc

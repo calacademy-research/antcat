@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When("I pick {string} from the {string} taxon selector") do |name, taxon_selector_id|
   select2 name, from: taxon_selector_id
 end

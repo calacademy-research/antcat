@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NOTE: "automated edits" are currently simply activities with `automated_edits`
 # set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Horrible copy-pasta from `SubspeciesListInHistoryItem`.
 
 # :nocov:

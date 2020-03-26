@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module My
   class RegistrationsController < Devise::RegistrationsController
     before_action :check_if_too_many_registrations_today, only: :create

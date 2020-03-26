@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivitiesController < ApplicationController
   FILTER_TRACKABLE_TYPES = %w[
     Author

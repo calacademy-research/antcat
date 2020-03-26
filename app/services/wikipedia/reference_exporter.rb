@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class for exporting references to Wikipedia citation templates.
 #
 # Supported reference types:

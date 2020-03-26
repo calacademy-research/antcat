@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PluralizeWithDelimiters
   include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
   include ActionView::Helpers::TextHelper # For `#pluralize`.

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Exporters
   class TaxaAsTxt
     include Service

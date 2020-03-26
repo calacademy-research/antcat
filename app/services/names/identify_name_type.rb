@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Not handled:
 # Subtribes: -ina (genera can also end with "ina")
 # Names I don't know what they are: Formicariae,  Dorylida

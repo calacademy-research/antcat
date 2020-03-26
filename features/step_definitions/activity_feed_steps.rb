@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("there is an activity with the edit summary {string}") do |edit_summary|
   create :activity, :execute_script, edit_summary: edit_summary
 end

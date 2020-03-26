@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # For `rails generate database_script <name_of_script>`.
 
 class DatabaseScriptGenerator < Rails::Generators::NamedBase

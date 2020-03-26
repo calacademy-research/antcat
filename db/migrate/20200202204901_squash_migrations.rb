@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Last commit before squashing migrations:
 #  git checkout 6879418521608c90329ba67443c8c2651ec883df
 #  https://github.com/calacademy-research/antcat/tree/6879418521608c90329ba67443c8c2651ec883df/db/migrate

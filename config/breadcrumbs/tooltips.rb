@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :tooltips do
   link "Edit Tooltips", tooltips_path
   parent :editors_panel

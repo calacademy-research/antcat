@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :name do
     factory :family_name, class: 'FamilyName' do

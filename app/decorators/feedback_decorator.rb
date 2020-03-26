@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FeedbackDecorator < Draper::Decorator
   delegate :user, :id, :comment, :created_at, :ip
 

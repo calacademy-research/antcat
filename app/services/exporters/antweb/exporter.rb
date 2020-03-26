@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Export via `rake antweb:export`.
 
 module Exporters

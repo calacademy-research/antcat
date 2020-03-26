@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReferenceSectionsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100]
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :antweb do
   DEFAULT_EXPORT_FILENAME = 'data/output/antcat.antweb.txt'
 

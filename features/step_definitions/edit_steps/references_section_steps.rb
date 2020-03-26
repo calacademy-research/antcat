@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then("the reference section should be empty") do
   expect(page).to_not have_css '.reference-sections .reference_section'
 end
