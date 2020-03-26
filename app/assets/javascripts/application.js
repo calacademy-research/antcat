@@ -14,7 +14,6 @@
 
 //= require jquery-ui/core
 //= require jquery-ui/widgets/autocomplete
-//= require jquery-ui/widgets/tooltip
 
 //= require select2
 //= require twitter/typeahead

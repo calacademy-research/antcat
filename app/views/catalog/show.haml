@@ -4,7 +4,6 @@
 -breadcrumb @taxon
 
 -if current_user
-  =enable_tooltips
   -content_for :breadcrumbs_right do
     =render "catalog/_show/editor_buttons", taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 

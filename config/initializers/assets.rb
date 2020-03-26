@@ -30,7 +30,6 @@ Rails.application.config.assets.precompile += %w[
   sortable_tables.js
   taxon_select.js
   taxt_editor.js
-  tooltips.js
 
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js

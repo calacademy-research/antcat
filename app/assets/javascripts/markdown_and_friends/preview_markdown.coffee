@@ -105,7 +105,6 @@ class ExtrasArea
 
   constructor: (@textarea, @textareaTab, @taxtEditor) ->
     @createExtrasArea().appendTo @textareaTab
-    AntCat.renderTooltips() if AntCat.renderTooltips
     @setupDefaultReferenceButton()
     @setupInsertTaxaButtons()
     @setupRecentlyUserReferencesButton()

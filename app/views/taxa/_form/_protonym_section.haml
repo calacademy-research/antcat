@@ -4,7 +4,7 @@
     -if taxon.persisted?
       =taxon.protonym.decorate.link_to_protonym
       .right
-        =link_to 'Edit', edit_protonym_path(taxon.protonym), title: "Note: Protonyms may be shared and must be edited in a different form. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny jquery-tooltip'
+        =link_to 'Edit', edit_protonym_path(taxon.protonym), title: "Note: Protonyms may be shared and must be edited in a different form. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny tooltip2'
     -else
       Select existing or create new
 

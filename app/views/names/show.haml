@@ -1,8 +1,6 @@
 -@title = "#{@name.name} (##{@name.id}) - Name records"
 -breadcrumb :name, @name
 
-=enable_tooltips
-
 -content_for :breadcrumbs_right do
   -if user_is_editor?
     =link_to "Edit", edit_name_path(@name), class: "btn-normal"

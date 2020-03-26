@@ -5,9 +5,6 @@
   -@title = "#{Unitalicize[@reference.keey.html_safe]} - References"
 -breadcrumb :reference, @reference
 
--if current_user
-  =enable_tooltips
-
 -content_for :breadcrumbs_right do
   .right
     -if user_is_at_least_helper?
