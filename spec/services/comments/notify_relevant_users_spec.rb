@@ -15,7 +15,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        mentioned_user.notify_because Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user
+        Users::Notify[mentioned_user, Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user]
       end
 
       it "doesn't notify for this reason" do
@@ -47,7 +47,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        same_discussion_user.notify_because Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user
+        Users::Notify[same_discussion_user, Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user]
       end
 
       it "doesn't notify for this reason" do
@@ -95,6 +95,6 @@ describe Comments::NotifyRelevantUsers do
   end
 
   def make_sure_creator_of_commentable_is_already_notified commentable, comment
-    commentable.user.notify_because Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user
+    Users::Notify[commentable.user, Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user]
   end
 end

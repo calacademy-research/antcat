@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe SiteNoticesController do
   describe "forbidden actions" do
-    context "when not signed in" do
+    context "when not signed in", as: :visitor do
       specify { expect(post(:show, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:mark_all_as_read)).to redirect_to_signin_form }
     end
@@ -20,19 +20,26 @@ describe SiteNoticesController do
     end
   end
 
-  describe "GET show" do
-    let!(:editor) { create :user, :editor }
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :current_user do
+    let(:current_user) { create :user, :editor }
 
     before do
-      sign_in editor
       create :site_notice
       create :site_notice, created_at: 1.second.from_now # HACK: Set `created_at` due to how the `unread` gem works.
     end
 
     it "marks it as read" do
       expect { get :show, params: { id: SiteNotice.last.id } }.
-        to change { SiteNotice.unread_by(editor).count }.by(-1)
+        to change { SiteNotice.unread_by(current_user).count }.by(-1)
     end
+  end
+
+  describe "GET new", as: :editor do
+    specify { expect(get(:new)).to render_template :new }
   end
 
   describe "POST create", as: :editor do
@@ -62,6 +69,12 @@ describe SiteNoticesController do
     end
   end
 
+  describe "GET edit", as: :editor do
+    let!(:site_notice) { create :site_notice }
+
+    specify { expect(get(:edit, params: { id: site_notice.id })).to render_template :edit }
+  end
+
   describe "PUT update", as: :editor do
     let!(:site_notice) { create :site_notice }
     let!(:site_notice_params) do
@@ -89,10 +102,9 @@ describe SiteNoticesController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :editor) }
     let!(:site_notice) { create :site_notice }
-
-    before { sign_in create(:user, :superadmin, :editor) }
 
     it 'deletes the site notice' do
       expect { delete(:destroy, params: { id: site_notice.id }) }.to change { SiteNotice.count }.by(-1)
@@ -107,15 +119,13 @@ describe SiteNoticesController do
     end
   end
 
-  describe "POST #mark_all_as_read" do
-    let!(:editor) { create :user, :editor }
-
-    before { sign_in editor }
+  describe "POST #mark_all_as_read", as: :current_user do
+    let(:current_user) { create(:user, :editor) }
 
     after { post :mark_all_as_read }
 
     it "calls `SiteNotice#mark_as_read`" do
-      expect(SiteNotice).to receive(:mark_as_read!).with(:all, for: editor)
+      expect(SiteNotice).to receive(:mark_as_read!).with(:all, for: current_user)
     end
   end
 end

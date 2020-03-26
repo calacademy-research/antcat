@@ -14,24 +14,10 @@ When("I fill in {string} with {string} followed by the user id of {string}") do 
   step %(I fill in "#{textarea}" with "#{text}#{user.id}")
 end
 
-When('I fill in the markdown textarea with "@user" followed by the user id of {string}') do |name|
-  user = User.find_by(name: name)
-  step %(I fill in "issue_description" with "@user#{user.id}")
-end
-
-When('I fill in the markdown textarea with "@taxon" followed by Eciton\'s id') do
-  eciton = Taxon.find_by(name_cache: "Eciton")
-  step %(I fill in "issue_description" with "%taxon#{eciton.id}")
-end
-
 # HACK: Because the below selects the wrong suggestion (which is hidden).
 #   `first(".atwho-view-ul li.cur", visible: true).click`
 When("I click the suggestion containing {string}") do |text|
   find(".atwho-view-ul li", text: text).click
-end
-
-Then("the markdown textarea should contain {string}") do |text|
-  expect(markdown_textarea.value).to include text
 end
 
 Then("the markdown textarea should contain a markdown link to Archibald's user page") do

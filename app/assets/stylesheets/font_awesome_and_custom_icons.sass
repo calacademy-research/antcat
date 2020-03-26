@@ -1,121 +1,113 @@
-@import "font-awesome"
+@import "fontello"
 @import "colors"
 
 td.icon
   width: 1rem
 
-.antcat_icon
-  font-family: FontAwesome
-  text-align: center
-  display: inline-block
-
-  // Spacer.
-  @extend .fa-fw
-
 table.activities
   td.icon > .antcat_icon
     // Create/add = plus.
     &.create
-      @extend .fa-plus
+      @extend .icon-plus
       color: $color_primary
 
     // Delete = red minus.
     &.destroy
-      @extend .fa-minus
+      @extend .icon-minus
       color: $color_danger
 
     // Approving actions = green check.
     &.finish_reviewing, &.approve_all_references, &.close_feedback, &.close_issue
-      @extend .fa-check
+      @extend .icon-ok
       color: $color_primary
 
     // Mean actions = red exclamation mark.
     &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
-      @extend .fa-exclamation
+      @extend .icon-attention-alt
       color: $color_danger
 
     &.create.comment
-      @extend .fa-comment-o
+      @extend .icon-comment-empty
       font-weight: bold
 
     &.create.issue
-      @extend .fa-exclamation-circle
+      @extend .icon-attention-circled
 
   .antcat_icon
     &.automated_edit
-      @extend .fa-android
+      @extend .icon-android
       color: $color_primary
 
 table.notifications
   td.icon > .antcat_icon
     &.seen
-      @extend .fa-check
+      @extend .icon-ok
       color: $color_primary
 
 .antcat_icon
   &.star
-    @extend .fa-star
+    @extend .icon-star
     color: #fff !important
     font-size: 90%
 
   &.black-star
-    @extend .fa-star
+    @extend .icon-star
     color: #000 !important
     font-size: 90%
 
   &.refresh
-    @extend .fa-refresh
+    @extend .icon-arrows-cw
 
   &.search
-    @extend .fa-search
+    @extend .icon-search
     color: #fff !important
     font-size: 90%
 
   &.read
-    @extend .fa-check
+    @extend .icon-ok
     color: $color_primary
 
   &.check
-    @extend .fa-check
+    @extend .icon-ok
     color: $color_primary
 
   &.nope
-    @extend .fa-close
+    @extend .icon-cancel
     color: $color_danger
 
   &.superadmin
-    @extend .fa-unlock-alt
+    @extend .icon-lock-open-alt
     color: #fff
 
   &.filter
-    @extend .fa-filter
+    @extend .icon-filter
 
   &.comment
-    @extend .fa-comment-o
+    @extend .icon-comment-empty
 
   &.info-tooltip
-    @extend .fa-info-circle
+    @extend .icon-info-circled
     color: $color_primary
     cursor: help
 
   &.closed.issue, &.unread
-    @extend .fa-check
+    @extend .icon-ok
     color: darkgray
 
   &.open.issue
-    @extend .fa-exclamation-circle
+    @extend .icon-attention-circled
     color: $color_primary
 
   &.tooltip-icon
-    @extend .fa-question-circle
+    @extend .icon-help-circled
     color: $color_primary
     cursor: pointer
 
   &.logged-in-only-icon
-    @extend .fa-user-circle
+    @extend .icon-user-circle
     color: $color_primary
     cursor: help
 
   &.warning-icon
-    @extend .fa-exclamation-triangle
+    @extend .icon-attention
     color: $color_danger

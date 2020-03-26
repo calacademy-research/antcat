@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::ReferenceSectionsController do
+describe Api::V1::ReferenceSectionsController, as: :visitor do
   describe "GET index" do
     specify do
       reference_section = create :reference_section

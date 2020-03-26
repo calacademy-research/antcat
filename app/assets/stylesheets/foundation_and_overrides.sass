@@ -4,7 +4,7 @@
 
 @import settings
 @import foundation
-@import motion-ui/motion-ui
+//@import motion-ui/motion-ui
 
 +foundation-global-styles
 +foundation-grid
@@ -35,7 +35,7 @@
 //+foundation-progress-bar
 //+foundation-slider
 +foundation-sticky
-+foundation-reveal
+//+foundation-reveal
 //+foundation-switch
 +foundation-table
 +foundation-tabs
@@ -45,19 +45,8 @@
 +foundation-tooltip
 +foundation-top-bar
 
-+motion-ui-transitions
-+motion-ui-animations
-
-// Fix missing scrollbars after closing modal.
-body.is-reveal-open
-  overflow-y: auto
-
-.reveal-overlay
-  overflow-y: auto
-  background: none
-
-.reveal
-  outline: none
+//+motion-ui-transitions
+//+motion-ui-animations
 
 // Make sure dropdown buttons do not have faded Webkit backgrounds.
 .dropdown

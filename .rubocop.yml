@@ -12,6 +12,7 @@ AllCops:
     - 'tmp/**/*'
     - 'vendor/**/*'
     - 'node_modules/**/*'
+    - 'cookbooks/**/*'
 
 ### FactoryBot.
 
@@ -123,6 +124,9 @@ Rails/OutputSafety:
 Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
+
+Rails/UniqueValidationWithoutIndex:
+  Enabled: false
 
 ### RSpec.
 

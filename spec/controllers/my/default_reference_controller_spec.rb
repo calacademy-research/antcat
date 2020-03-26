@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe My::DefaultReferenceController do
-  describe "forbidden actions" do
+  describe "forbidden actions", as: :visitor do
     context "when not signed in" do
       specify { expect(put(:update, params: { id: 1 })).to redirect_to_signin_form }
     end

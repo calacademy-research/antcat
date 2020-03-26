@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe WikiPagesController do
   describe "forbidden actions" do
-    context "when not signed in" do
+    context "when not signed in", as: :visitor do
       specify { expect(get(:new)).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:create)).to redirect_to_signin_form }
@@ -14,7 +14,21 @@ describe WikiPagesController do
     end
   end
 
-  describe "POST create", as: :helper do
+  describe "GET index", as: :visitor do
+    specify { expect(get(:index)).to render_template :index }
+  end
+
+  describe "GET show", as: :user do
+    let!(:wiki_page) { create :wiki_page }
+
+    specify { expect(get(:show, params: { id: wiki_page.id })).to render_template :show }
+  end
+
+  describe "GET new", as: :user do
+    specify { expect(get(:new)).to render_template :new }
+  end
+
+  describe "POST create", as: :user do
     let!(:wiki_page_params) do
       {
         title: 'Title',
@@ -42,7 +56,13 @@ describe WikiPagesController do
     end
   end
 
-  describe "PUT update", as: :helper do
+  describe "GET edit", as: :user do
+    let!(:wiki_page) { create :wiki_page }
+
+    specify { expect(get(:edit, params: { id: wiki_page.id })).to render_template :edit }
+  end
+
+  describe "PUT update", as: :user do
     let!(:wiki_page) { create :wiki_page }
     let!(:wiki_page_params) do
       {
@@ -60,10 +80,9 @@ describe WikiPagesController do
     end
   end
 
-  describe "DELETE destroy" do
+  describe "DELETE destroy", as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :editor) }
     let!(:wiki_page) { create :wiki_page }
-
-    before { sign_in create(:user, :superadmin, :editor) }
 
     it 'deletes the wiki page' do
       expect { delete(:destroy, params: { id: wiki_page.id }) }.to change { WikiPage.count }.by(-1)

@@ -25,7 +25,6 @@ gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
-gem 'font-awesome-rails'
 gem 'foundation-rails', '6.3.1.0'
 gem 'grape-swagger-rails'
 gem 'gretel'
@@ -60,11 +59,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'pry'
-  # TODO: Using '4.0.0.beta4' to get rid of
-  #   DEPRECATION WARNING: formats is deprecated and will be removed from Rails 6.1
-  #   DEPRECATION WARNING: ActionView::Template#initialize requires a locals parameter
-  # which broke the test suite.
-  gem 'rspec-rails', '4.0.0.beta4'
+  gem 'rspec-rails'
   gem 'rubocop', '~> 0.80.1', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'

@@ -7,6 +7,11 @@ crumb :about do
   parent :antcat
 end
 
+crumb :suggest_edit do
+  link "Suggest Edit"
+  parent :antcat
+end
+
 crumb :contribute do
   link "Contribute", page_path('contribute')
   parent :antcat

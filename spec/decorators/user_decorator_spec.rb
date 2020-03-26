@@ -28,7 +28,7 @@ describe UserDecorator do
 
       specify do
         expect(user.decorate.user_badge).
-          to eq %(<span class="label rounded-badge">editor <span class="antcat_icon star"></span></span>)
+          to eq %(<span class="label rounded-badge">editor <i class="antcat_icon star"></i></span>)
       end
     end
 
@@ -37,7 +37,7 @@ describe UserDecorator do
 
       specify do
         expect(user.decorate.user_badge).
-          to eq %(<span class="white-label rounded-badge">helper <span class="antcat_icon black-star"></span></span>)
+          to eq %(<span class="white-label rounded-badge">helper <i class="antcat_icon black-star"></i></span>)
       end
     end
 

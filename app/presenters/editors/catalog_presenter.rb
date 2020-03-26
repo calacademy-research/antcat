@@ -1,5 +1,8 @@
 module Editors
-  class TaxonViewObject < ViewObject
+  class CatalogPresenter
+    include Rails.application.routes.url_helpers
+    include ActionView::Helpers
+
     def initialize taxon
       @taxon = taxon
     end

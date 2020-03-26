@@ -61,7 +61,7 @@ module Comments
       def notify user, reason
         return if user.in? do_not_notify
 
-        user.notify_because reason, attached: comment, notifier: comment.user
+        Users::Notify[user, reason, attached: comment, notifier: comment.user]
         do_not_notify << user
       end
   end

@@ -12,14 +12,17 @@ RSpec.configure do |config|
   config.filter_run_when_matching :focus unless ENV['TRAVIS']
   config.use_transactional_fixtures = true
   Kernel.srand config.seed
-  # config.profile_examples = 10 # Uncomment to show slow specs.
+
+  if ENV['PROFILE_EXAMPLES']
+    config.profile_examples = 10
+  end
 
   config.define_derived_metadata do |metadata|
     metadata[:aggregate_failures] = true
   end
 
-  config.before(:each, :skip_ci) do |_example|
-    if ENV["TRAVIS"]
+  if ENV["TRAVIS"]
+    config.before(:each, :skip_ci) do |_example|
       message = "spec disabled on Travis CI"
       $stdout.puts message.red
       skip message
@@ -27,8 +30,28 @@ RSpec.configure do |config|
   end
 
   config.before(:each, :as, type: :controller) do |example|
-    user_factory_attributes = example.metadata[:as]
-    sign_in create(:user, user_factory_attributes)
+    as = example.metadata[:as]
+
+    case as
+    when :current_user
+      sign_in current_user
+    when :visitor
+      nil # No-op.
+    when :user, :helper, :editor, :superadmin
+      sign_in create(:user, as)
+    else
+      location = example.metadata[:example_group][:location]
+      $stdout.puts "#{location} sign in `:as` meta tag not supported".red
+    end
+  end
+
+  config.before(:each, type: :controller) do |example|
+    as = example.metadata[:as]
+
+    if as.nil?
+      location = example.metadata[:example_group][:location]
+      $stdout.puts "#{location} does not specify any sign in `:as` meta tag".red
+    end
   end
 
   # Allows RSpec to persist some state between runs in order to support

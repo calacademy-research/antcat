@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::AuthorNamesController do
+describe Api::V1::AuthorNamesController, as: :visitor do
   describe "GET index" do
     specify do
       author_name = create :author_name, name: 'Fisher'

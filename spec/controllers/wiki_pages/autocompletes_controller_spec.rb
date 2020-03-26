@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe WikiPages::AutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:q) { "help" }
 
     it "calls `Autocomplete::AutocompleteWikiPages`" do

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe References::LinkableAutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let(:q) { "bolton" }
 
     it "calls `Autocomplete::AutocompleteLinkableReferences`" do

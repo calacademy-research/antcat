@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe ReferencesController do
   describe "forbidden actions" do
-    context "when not signed in" do
+    context "when not signed in", as: :visitor do
       specify { expect(get(:new)).to redirect_to_signin_form }
       specify { expect(get(:edit, params: { id: 1 })).to redirect_to_signin_form }
       specify { expect(post(:create)).to redirect_to_signin_form }
@@ -14,7 +14,7 @@ describe ReferencesController do
     end
   end
 
-  describe "GET index" do
+  describe "GET index", as: :visitor do
     specify { expect(get(:index)).to render_template :index }
   end
 

@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
 
     if @comment.save
       @comment.create_activity :create, current_user
-      @comment.notify_relevant_users
+      Comments::NotifyRelevantUsers[@comment]
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a> was successfully added.
@@ -32,7 +32,7 @@ class CommentsController < ApplicationController
 
   def update
     if @comment.update(body: comment_params[:body], edited: true)
-      @comment.notify_relevant_users
+      Comments::NotifyRelevantUsers[@comment]
       redirect_to @comment.commentable, notice: <<-MSG
         <a href="#comment-#{@comment.id}">Comment</a> was successfully updated.
       MSG

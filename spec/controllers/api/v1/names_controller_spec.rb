@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::NamesController do
+describe Api::V1::NamesController, as: :visitor do
   describe "GET index" do
     specify do
       name = create :family_name

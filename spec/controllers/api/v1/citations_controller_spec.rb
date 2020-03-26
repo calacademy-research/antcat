@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Api::V1::CitationsController do
+describe Api::V1::CitationsController, as: :visitor do
   describe "GET index" do
     specify do
       citation = create :citation

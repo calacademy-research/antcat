@@ -22,52 +22,6 @@ Feature: Markdown autocompletion
     And I click the suggestion containing "Joffre's Favorite Ants"
     Then the markdown textarea should contain a markdown link to "Joffre, 1810"
 
-  @search
-  Scenario: Recently used references (added by inserting in a markdown textarea)
-    Given RESET SESSION
-    And these references exist
-      | author | title         | citation_year |
-      | Fisher | Fisher's Ants | 2004          |
-      | Forel  | Forel's Ants  | 1910          |
-      | Bolton | Bolton's Ants | 2003          |
-
-    When I am on a page with a textarea with markdown preview and autocompletion
-    And I fill in "issue_description" with "{rfish"
-    And I click the suggestion containing "Fisher's Ants"
-    And WAIT
-
-    When I am on a page with a textarea with markdown preview and autocompletion
-    Then I should not see "Fisher's Ants"
-    And I should not see "Forel's Ants"
-    And I should not see "Bolton's Ants"
-
-    When I fill in "issue_description" with "!!"
-    Then I should see "Fisher's Ants"
-    And I should not see "Forel's Ants"
-    And I should not see "Bolton's Ants"
-
-  Scenario: Recently used references (added from reference page)
-    Given RESET SESSION
-    And these references exist
-      | author | title         | citation_year |
-      | Fisher | Fisher's Ants | 2004          |
-      | Forel  | Forel's Ants  | 1910          |
-      | Bolton | Bolton's Ants | 2003          |
-
-    When I go to the page of the reference "Bolton, 2003"
-    And I click css "a.add-to-recently-used-references-js-hook"
-    Then I should see "Added to recently used references"
-
-    When I am on a page with a textarea with markdown preview and autocompletion
-    Then I should not see "Fisher's Ants"
-    And I should not see "Forel's Ants"
-    And I should not see "Bolton's Ants"
-
-    When I fill in "issue_description" with "!!"
-    Then I should see "Bolton's Ants"
-    Then I should not see "Fisher's Ants"
-    And I should not see "Forel's Ants"
-
   Scenario: Taxa markdown autocompletion
     Given there is a genus "Eciton"
     And there is a genus "Atta"

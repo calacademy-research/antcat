@@ -1,8 +1,8 @@
 # Show slow scenarios
-# Enable like this: `cucumber SHOW_SHOW_SCENARIOS=y`
+# Enable like this: `cucumber SHOW_SLOW_SCENARIOS=y`
 #
 # Use the built-in `cucumber --format usage` for steps finding slow steps.
-if ENV["SHOW_SHOW_SCENARIOS"]
+if ENV["SHOW_SLOW_SCENARIOS"]
   scenarios = {}
 
   Around do |scenario, block|

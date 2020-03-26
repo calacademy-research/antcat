@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Catalog::FixRandomController do
+describe Catalog::FixRandomController, as: :visitor do
   describe 'DATABASE_SCRIPTS_TO_CHECK' do
     it 'only includes database scripts also in `DATABASE_SCRIPTS_TO_CHECK` (to make issues visible in catalog pages)' do
       randomizable = described_class::DATABASE_SCRIPTS_TO_CHECK

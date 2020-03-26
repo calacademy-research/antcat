@@ -49,14 +49,6 @@ Given("the following entry nests it") do |table|
   )
 end
 
-Given("a Hölldobler-Fisher reference exists with the title {string}") do |title|
-  author_names = [
-    AuthorName.find_by(name: "Hölldobler, B."),
-    AuthorName.find_by(name: "Fisher, B.")
-  ]
-  create :unknown_reference, author_names: author_names, title: title
-end
-
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by(title: title)
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")

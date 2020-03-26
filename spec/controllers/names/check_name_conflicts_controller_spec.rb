@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Names::CheckNameConflictsController do
-  describe 'GET show' do
+  describe 'GET show', as: :visitor do
     let!(:protonym) { create :protonym, name: create(:subfamily_name, name: 'Antcatinae') }
     let!(:taxon) { create :family, name_string: 'Antcatidae', protonym: protonym }
 

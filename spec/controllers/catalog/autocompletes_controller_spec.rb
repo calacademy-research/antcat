@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Catalog::AutocompletesController do
-  describe "GET show" do
+  describe "GET show", as: :visitor do
     let!(:atta) { create :genus, name_string: "Atta" }
     let!(:ratta) { create :genus, name_string: "Ratta" }
 

@@ -14,9 +14,10 @@ describe References::ReviewsController do
     end
   end
 
-  describe 'PUT approve_all' do
+  describe 'PUT approve_all', as: :current_user do
+    let(:current_user) { create(:user, :superadmin, :editor) }
+
     before do
-      sign_in create(:user, :superadmin, :editor)
       create :article_reference, review_state: 'none'
     end
 
