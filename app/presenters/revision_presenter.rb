@@ -10,9 +10,10 @@ class RevisionPresenter
     expanded_reference_cache
   ]
 
-  def initialize comparer:, hide_formatted: false
+  def initialize comparer:, hide_formatted: false, template: nil
     @comparer = comparer
     @hide_formatted = hide_formatted
+    @template = template
   end
 
   def hide_formatted?
@@ -49,7 +50,9 @@ class RevisionPresenter
 
   # Rescues anything. Rendering old revisions can raise for many reasons.
   def render_revision_with_rescue item, view_context:
-    view_context.render "compare_revision_template", item: item
+    view_context.render template, item: item
+  rescue ActionView::MissingTemplate
+    raise
   rescue StandardError => e
     "Failed to render revision. Thrown error: #{e.message}".html_safe <<
       "<br><br><pre>#{diff_format(item)}</pre>".html_safe
@@ -59,7 +62,7 @@ class RevisionPresenter
 
     delegate :selected, :diff_with, :most_recent, to: :comparer
 
-    attr_reader :comparer, :hide_formatted
+    attr_reader :comparer, :hide_formatted, :template
 
     def diff_format item
       json = to_json item
