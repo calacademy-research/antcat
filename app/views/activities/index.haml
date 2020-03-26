@@ -1,9 +1,9 @@
 -# Another hack for the title/breadcrumb.
 -if params[:id]
-  -@title = "Activity Item ##{params[:id]}"
+  -title "Activity Item ##{params[:id]}"
   -breadcrumb :activity_item, params[:id]
 -else
-  -@title = "Activity Feed"
+  -title "Activity Feed"
   -breadcrumb :activity_feed
 
 =form_tag request.path, method: :get do

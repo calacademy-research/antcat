@@ -1,6 +1,6 @@
 -# Use "AntCat" for the landing page title, since it's prettier than "Formicidae".
 -unless @catalog_presenter.formicidae_landing_page?
-  -@title = "#{@taxon.name_cache}"
+  -title "#{@taxon.name_cache}"
 -breadcrumb @taxon
 
 -if current_user
