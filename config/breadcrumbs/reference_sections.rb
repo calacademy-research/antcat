@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :reference_sections do |taxon|
   link "Reference Sections"
   parent taxon

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Publisher < ApplicationRecord
   has_many :references, dependent: :restrict_with_error
 

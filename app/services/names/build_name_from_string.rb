@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Names
   class BuildNameFromString
     include Service

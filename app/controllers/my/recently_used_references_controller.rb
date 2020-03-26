@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module My
   class RecentlyUsedReferencesController < ApplicationController
     NUMBER_OF_RECENT_REFERENCES = 15

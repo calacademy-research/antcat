@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AntcatVersionLink
   include ActionView::Helpers::UrlHelper
 

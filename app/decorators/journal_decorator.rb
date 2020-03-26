@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class JournalDecorator < Draper::Decorator
   delegate :references
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 When("I write a new comment {string}") do |body|
   first("#comment_body").set body
 end

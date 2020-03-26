@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   UnfoundDatabaseScript = Struct.new(:class_name) do
     def title

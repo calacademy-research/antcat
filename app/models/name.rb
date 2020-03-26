@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
 
 class Name < ApplicationRecord

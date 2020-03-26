@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReadEndData
   def initialize file
     @file = file

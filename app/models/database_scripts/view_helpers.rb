@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   module ViewHelpers
     def taxa_list taxa

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AddNotNulls < ActiveRecord::Migration[6.0]
   def change
     change_column_null :activities, :action, false

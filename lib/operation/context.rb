@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A `Context` is used for keeping track of multiple `Operations`s.
 
 module Operation

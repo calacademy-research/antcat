@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NestedReference < Reference
   belongs_to :nesting_reference, class_name: 'Reference'
 

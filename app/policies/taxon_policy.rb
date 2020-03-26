@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TaxonPolicy
   def initialize taxon
     @taxon = taxon

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This controller handles editing by logged in editors.
 # `CatalogController` is responsible for showing taxon pages to users.
 

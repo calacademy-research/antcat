@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TaxonForm
   def initialize taxon, taxon_params, taxon_name_string:, protonym_name_string:
     @taxon = taxon

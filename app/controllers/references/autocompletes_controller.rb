@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module References
   class AutocompletesController < ApplicationController
     def show

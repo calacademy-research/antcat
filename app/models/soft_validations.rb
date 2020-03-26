@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SoftValidations
   WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.2.seconds
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EditorsPanels
   class VersionsController < ApplicationController
     FILTER_ITEM_TYPES = %w[

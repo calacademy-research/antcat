@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Add rank to make validations easier.
 
 class Protonym < ApplicationRecord

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: DRY w.r.t `notifications_steps.rb`.
 
 def markdown_textarea

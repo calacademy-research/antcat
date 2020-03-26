@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CatalogController < ApplicationController
   # Avoid blowing up if there's no family. Useful in test and dev.
   unless Rails.env.production?

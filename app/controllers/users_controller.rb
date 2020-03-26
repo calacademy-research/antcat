@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UsersController < ApplicationController
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
 

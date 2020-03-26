@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module EditorsPanels
   class BoltonKeysToRefTagsController < ApplicationController
     def show

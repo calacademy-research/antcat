@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :wiki_pages do
   link "Wiki Pages", wiki_pages_path
   parent :editors_panel

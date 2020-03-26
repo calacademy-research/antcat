@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :journals do
   link "Journals", journals_path
   parent :references

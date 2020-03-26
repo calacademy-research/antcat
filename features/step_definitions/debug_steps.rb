@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 And("SHOT") do
   screenshot_and_save_page
 end

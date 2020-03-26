@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProtonymDecorator < Draper::Decorator
   delegate :locality, :authorship, :name, :fossil?
 

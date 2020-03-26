@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Draper
   class HelperProxy
     # Makes it possible to call eg `helpers.reference_path(reference)` in decorators.

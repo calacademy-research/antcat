@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthorsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:destroy]
 

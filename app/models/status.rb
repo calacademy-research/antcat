@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Status
   # Order matters, see `format_statistics_spec.rb`.
   STATUSES = [

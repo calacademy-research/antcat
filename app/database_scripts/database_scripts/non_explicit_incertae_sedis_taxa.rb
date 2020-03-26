@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class NonExplicitIncertaeSedisTaxa < DatabaseScript
     def genera_without_subfamily

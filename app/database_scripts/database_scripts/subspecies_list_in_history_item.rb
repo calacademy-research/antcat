@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: See copy-pasta in `SubspeciesHistoryItemIssues`.
 
 module DatabaseScripts

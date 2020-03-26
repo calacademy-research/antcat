@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Editors
   class CatalogPresenter
     include Rails.application.routes.url_helpers

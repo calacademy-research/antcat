@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Figure out what to call things. "What Links Here" vs "table ref", etc.
 # TODO: This class has a different signature than `References::WhatLinksHere`.
 

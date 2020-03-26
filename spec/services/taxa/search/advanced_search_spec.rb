@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Cleanup after extracting into service object.
 
 require 'rails_helper'

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class ValidSubspeciesInInvalidSpecies < DatabaseScript
     def results

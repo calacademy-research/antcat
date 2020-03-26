@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :edit_catalog do
   link "Edit Catalog"
 end

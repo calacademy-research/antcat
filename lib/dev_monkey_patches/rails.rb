@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DevMonkeyPatches
   module Rails
     def self.patch!

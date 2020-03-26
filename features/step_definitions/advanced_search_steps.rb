@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("there is a species described in {int}") do |year|
   reference = create :article_reference, citation_year: year
   taxon = create :species

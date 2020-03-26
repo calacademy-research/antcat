@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Refactor/re-write.
 
 module Taxa

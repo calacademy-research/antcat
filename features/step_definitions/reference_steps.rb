@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def find_reference_by_keey keey
   parts = keey.split ','
   last_name = parts[0]

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This is a dumping ground for temporary code used for cleaning up records.
 # No tests is a feature, not a bug, since the only reason we're OK
 # with this is because all of it will 100% be removed at some point :)

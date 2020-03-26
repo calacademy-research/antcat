@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :db do
   desc "Download and import latest db dump from EngineYard"
   task import_latest: [:environment]  do

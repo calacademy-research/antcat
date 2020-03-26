@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SoftValidationDecorator < Draper::Decorator
   delegate :runtime
 

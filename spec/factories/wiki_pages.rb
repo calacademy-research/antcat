@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :wiki_page do
     sequence(:title) { |n| "Help page no. #{n}" }

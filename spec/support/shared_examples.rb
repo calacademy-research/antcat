@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for "a successful save journal operation" do
   let(:records_to_update) { [] }
 

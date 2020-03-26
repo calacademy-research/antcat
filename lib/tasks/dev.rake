@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Useful if you want to experiment locally with the code after cloning the git repo.
 # If you want to develop locally with real data, please contact AntCat to request a database dump.
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class UnavailableUncategorizedTaxa < DatabaseScript
     SHOW_WHAT_LINKS_HERE = false

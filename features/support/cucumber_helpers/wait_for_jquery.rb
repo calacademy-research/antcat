@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CucumberHelpers
   module WaitForJquery
     def wait_for_jquery

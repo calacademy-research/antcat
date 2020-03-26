@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RevisionHistoryPath
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper

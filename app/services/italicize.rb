@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Italicize
   include ActionView::Helpers::TagHelper # For `#content_tag`.
   include Service

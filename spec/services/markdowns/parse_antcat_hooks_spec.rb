@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
 
 require 'rails_helper'

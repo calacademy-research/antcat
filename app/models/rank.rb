@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Improve rank vs. type.
 
 class Rank

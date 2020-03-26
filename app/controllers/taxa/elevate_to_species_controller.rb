@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Taxa
   class ElevateToSpeciesController < ApplicationController
     before_action :ensure_user_is_editor

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :taxon_history_items do |taxon|
   link "History Items"
   parent taxon

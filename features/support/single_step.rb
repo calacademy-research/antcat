@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 AfterStep '@single_step' do
   single_step
 end

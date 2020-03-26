@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CucumberHelpers
   module Paths
     def path_to page_name

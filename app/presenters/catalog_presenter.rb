@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CatalogPresenter
   def initialize taxon, params:, session:, formicidae_landing_page: false
     @taxon = taxon

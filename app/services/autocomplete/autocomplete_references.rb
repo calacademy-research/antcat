@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Autocomplete
   class AutocompleteReferences
     include Service

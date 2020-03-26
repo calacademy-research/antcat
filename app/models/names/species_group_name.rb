@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SpeciesGroupName < Name
   def genus_epithet
     name_parts[0]

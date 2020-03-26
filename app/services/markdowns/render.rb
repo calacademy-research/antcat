@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Markdowns
   class Render < Redcarpet::Render::HTML
     include ActionView::Helpers::SanitizeHelper

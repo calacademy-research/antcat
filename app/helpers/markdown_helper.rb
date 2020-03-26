@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module MarkdownHelper
   def markdown content, no_wrapping_p: false, sanitize_content: true
     return '' unless content

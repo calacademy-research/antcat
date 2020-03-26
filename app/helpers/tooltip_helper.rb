@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TooltipHelper
   def db_tooltip_icon key, scope:
     tooltip = Tooltip.find_by(key: key, scope: scope)

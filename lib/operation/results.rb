@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # `Results` belong to a single instance of an `Operation`.
 
 module Operation

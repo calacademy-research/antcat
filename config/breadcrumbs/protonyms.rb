@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :protonyms do
   link "Protonyms", protonyms_path
   parent :catalog

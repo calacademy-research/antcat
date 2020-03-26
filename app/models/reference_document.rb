@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: See https://github.com/calacademy-research/antcat/issues/878
 # TODO: Paperclip has been deprecated, see https://github.com/thoughtbot/paperclip
 

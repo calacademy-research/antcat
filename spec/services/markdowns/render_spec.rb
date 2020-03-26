@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Move most specs here to `parse_antcat_hooks_spec.rb`.
 
 require 'rails_helper'

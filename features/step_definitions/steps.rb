@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # General steps, not specific to AntCat.
 
 # Browser/navigation.

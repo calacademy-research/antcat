@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReferenceForm
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
 

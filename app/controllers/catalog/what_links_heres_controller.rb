@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Catalog
   class WhatLinksHeresController < ApplicationController
     def show

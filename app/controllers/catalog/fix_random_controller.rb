@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Catalog
   class FixRandomController < ApplicationController
     DATABASE_SCRIPTS_TO_CHECK = [

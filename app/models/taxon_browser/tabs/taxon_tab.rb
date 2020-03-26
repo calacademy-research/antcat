@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # A `TaxonTab` requires a taxon for which `#children` returns something.
 # TODO: This needs a rehaul.
 

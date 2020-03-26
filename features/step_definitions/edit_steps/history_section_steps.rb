@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then("the history should be {string}") do |content|
   element = first('.history-items').find('.taxt-presenter')
   expect(element.text).to match /#{content}/

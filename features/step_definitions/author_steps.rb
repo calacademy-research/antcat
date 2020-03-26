@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Given("an author name exists with a name of {string}") do |name|
   create :author_name, name: name
 end

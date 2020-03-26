@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 crumb :institutions do
   link "Institutions", institutions_path
   parent :editors_panel

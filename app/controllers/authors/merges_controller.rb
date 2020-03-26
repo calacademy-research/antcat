@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Authors
   class MergesController < ApplicationController
     before_action :ensure_user_is_editor

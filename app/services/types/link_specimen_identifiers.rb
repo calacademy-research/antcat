@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module Types
   class LinkSpecimenIdentifiers
     include Service

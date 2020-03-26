@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MissingReference < Reference
   validates :citation_year, format: { with: /\A\d{4}[a-z]?\z/ }
 

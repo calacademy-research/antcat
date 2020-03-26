@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module DatabaseScripts
   class GenusGenderEndings < DatabaseScript
     def formatted_statistics

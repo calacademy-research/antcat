@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Show slow scenarios
 # Enable like this: `cucumber SHOW_SLOW_SCENARIOS=y`
 #

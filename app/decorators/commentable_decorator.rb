@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentableDecorator < Draper::Decorator
   def link_existing_comments_section
     return unless commentable.comments.any?

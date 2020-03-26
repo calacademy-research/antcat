@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Operation
   class Errors
     def initialize

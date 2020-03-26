@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Class for generating Wikipedia {{AntCat}} citation templates.
 # https://en.wikipedia.org/wiki/Template:AntCat
 

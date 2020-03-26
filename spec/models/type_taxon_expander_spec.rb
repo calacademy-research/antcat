@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Super sloppy tests. Revisit after moving `type_taxon` to the `Protonym`.
 
 require 'rails_helper'

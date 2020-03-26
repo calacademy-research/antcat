@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DefaultReference
   DEFAULT_REFERENCE_SESSION_KEY = :default_reference_id
 

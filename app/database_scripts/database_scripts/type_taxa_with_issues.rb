@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # rubocop:disable Layout/LineLength
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript

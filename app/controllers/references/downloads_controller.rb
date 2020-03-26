@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module References
   class DownloadsController < ApplicationController
     def show

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RemoveUnusedColumnsFromComments < ActiveRecord::Migration[6.0]
   def change
     remove_column :comments, :title, :text

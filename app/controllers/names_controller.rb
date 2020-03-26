@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class NamesController < ApplicationController
   before_action :ensure_user_is_editor, except: [:show]
 

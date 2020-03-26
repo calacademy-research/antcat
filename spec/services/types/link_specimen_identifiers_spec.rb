@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 require 'rails_helper'
 
 describe Types::LinkSpecimenIdentifiers do

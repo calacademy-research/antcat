@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DatabaseScripts
   class SubspeciesListInHistoryItemVsSubspeciesFromDatabase < DatabaseScript
     def with_history_item_but_not_in_database

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "colorize"
 
 def running_test file, command

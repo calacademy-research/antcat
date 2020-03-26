@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Then(/^the page field within the feedback form should contain "([^"]*)"$/) do |value|
   expect(find("#feedback_page").value).to include value
 end

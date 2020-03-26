@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UserDecorator < Draper::Decorator
   delegate :name, :email, :editor?, :at_least_helper?
 

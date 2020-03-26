@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 # Accepts a string of keywords (the query) and returns a parsed hash;
 # non-matches are placed in `keywords_params[:keywords]`.
 

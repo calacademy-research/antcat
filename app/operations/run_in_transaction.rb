@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module RunInTransaction
   def execute
     ActiveRecord::Base.transaction do

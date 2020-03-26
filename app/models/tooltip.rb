@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Tooltip < ApplicationRecord
   include Trackable
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReferenceAuthorName < ApplicationRecord
   belongs_to :reference
   belongs_to :author_name

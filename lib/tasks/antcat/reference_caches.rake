@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Formatted references are cached in the database. Use this to regenerate or invalidate them.
 
 namespace :antcat do

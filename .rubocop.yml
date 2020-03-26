@@ -188,9 +188,6 @@ Style/Documentation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
-Style/FrozenStringLiteralComment:
-  Enabled: false
-
 Style/GuardClause:
   Enabled: false
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module DevHelper
   # Show link to localhost on live site and vice versa because I am lazy.
   def link_to_current_page_on_live_site_or_localhost

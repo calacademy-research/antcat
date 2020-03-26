@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Notification < ApplicationRecord
   # "mentioned_in_thing" means something other than a comment. For example
   # in the description of an issue or in the message of a site notice.

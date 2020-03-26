@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentDecorator < Draper::Decorator
   def link_comment label
     return "commented" unless comment.try :commentable

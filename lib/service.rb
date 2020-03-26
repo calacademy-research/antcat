@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # To make services callable like this:
 # `ServiceObject[params]` instead of `ServiceObject.new(params).call`.
 

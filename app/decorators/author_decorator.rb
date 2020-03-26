@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AuthorDecorator < Draper::Decorator
   delegate :references, :described_taxa
 

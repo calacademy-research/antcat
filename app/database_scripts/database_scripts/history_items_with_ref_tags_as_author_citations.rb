@@ -1,3 +1,5 @@
+# frozen_string_literal: false
+
 module DatabaseScripts
   class HistoryItemsWithRefTagsAsAuthorCitations < DatabaseScript
     def results
