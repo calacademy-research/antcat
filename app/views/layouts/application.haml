@@ -18,8 +18,6 @@
     %link{href: "https://fonts.googleapis.com/css?family=Montserrat", rel: "stylesheet"}
     %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}
 
-    =stylesheet_link_tag 'foundation_and_overrides'
-    =stylesheet_link_tag 'vendor'
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'dev_css' if Rails.env.development?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
@@ -54,4 +52,3 @@
 
       -if current_user
         =javascript_include_tag 'logged_in_only'
-      =stylesheet_link_tag 'font_awesome_and_custom_icons'
