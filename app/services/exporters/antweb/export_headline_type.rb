@@ -30,7 +30,7 @@ module Exporters
           return ''.html_safe unless type_taxon
 
           string = taxon.decorate.type_taxon_rank
-          string << Exporters::Antweb::Exporter.antcat_taxon_link_with_name(type_taxon)
+          string << AntwebFormatter.link_to_taxon(type_taxon)
 
           if type_taxt
             string << AntwebDetax[format_type_taxt]

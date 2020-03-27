@@ -37,7 +37,7 @@ module Exporters
         end
 
         def child_list_items children
-          children.map { |child| Exporters::Antweb::Exporter.antcat_taxon_link_with_name child }.join(', ').html_safe
+          children.map { |child| AntwebFormatter.link_to_taxon(child) }.join(', ').html_safe
         end
     end
   end
