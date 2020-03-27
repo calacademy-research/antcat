@@ -7,13 +7,9 @@ module Exporters
     class Exporter
       include Service
 
-      def self.antcat_taxon_link taxon, label = "AntCat"
+      def self.antcat_taxon_link_with_name taxon, label: nil
         url = "https://www.antcat.org/catalog/#{taxon.id}"
-        %(<a href="#{url}">#{label}</a>).html_safe
-      end
-
-      def self.antcat_taxon_link_with_name taxon
-        antcat_taxon_link taxon, taxon.name_with_fossil
+        %(<a href="#{url}">#{label || taxon.name_with_fossil}</a>).html_safe
       end
 
       # TODO: Improve this and related methods. Probably use `AntwebFormatter`.

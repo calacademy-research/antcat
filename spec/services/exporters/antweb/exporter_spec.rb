@@ -3,15 +3,6 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::Exporter do
-  describe ".antcat_taxon_link" do
-    let(:taxon) { build_stubbed :family }
-
-    it "includes 'antcat.org' in the url" do
-      expect(described_class.antcat_taxon_link(taxon)).
-        to eq %(<a href="https://www.antcat.org/catalog/#{taxon.id}">AntCat</a>)
-    end
-  end
-
   describe ".antcat_taxon_link_with_name" do
     let(:taxon) { build_stubbed :family }
 
@@ -21,6 +12,14 @@ describe Exporters::Antweb::Exporter do
       expect(described_class.antcat_taxon_link_with_name(taxon)).to eq <<-HTML.squish
         <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
       HTML
+    end
+
+    context 'when `label` is supplied' do
+      specify do
+        expect(described_class.antcat_taxon_link_with_name(taxon, label: 'AntCat')).to eq <<-HTML.squish
+          <a href="https://www.antcat.org/catalog/#{taxon.id}">AntCat</a>
+        HTML
+      end
     end
   end
 

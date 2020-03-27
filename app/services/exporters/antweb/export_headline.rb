@@ -49,7 +49,7 @@ module Exporters
         end
 
         def link_to_antcat
-          Exporters::Antweb::Exporter.antcat_taxon_link taxon
+          Exporters::Antweb::Exporter.antcat_taxon_link_with_name(taxon, label: 'AntCat')
         end
     end
   end
