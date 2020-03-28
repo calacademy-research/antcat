@@ -57,7 +57,7 @@
       =Detax[synonym_history_item.taxt]
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
--if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
+-if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning
       %h6

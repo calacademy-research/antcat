@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-Given("SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG is true") do
-  stub_const "AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG", true
-end
-
 Given("there is an extant species Lasius niger in an fossil genus") do
   genus = create :genus, :fossil
   create :species, name_string: "Lasius niger", genus: genus

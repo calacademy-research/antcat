@@ -1,0 +1,3 @@
+catalog:
+  # To make is easier to disable 'Fix Random!' in case of performance issues.
+  show_failed_soft_validations: true

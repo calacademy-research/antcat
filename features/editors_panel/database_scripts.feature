@@ -11,7 +11,7 @@ Feature: Database scripts
     Then I should see "Lasius niger"
 
   Scenario: Displaying database script issues in catalog pages
-    Given SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG is true
+    Given these Settings: catalog: { show_failed_soft_validations: true }
     And there is an extant species Lasius niger in an fossil genus
 
     When I go to the catalog page for "Lasius niger"

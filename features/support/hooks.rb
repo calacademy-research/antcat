@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
-Before { DatabaseCleaner.strategy = :transaction }
+After do
+  Config.reload!
+end
+
+Before do
+  DatabaseCleaner.strategy = :transaction
+end
+
 Before "@javascript" do
   DatabaseCleaner.strategy = :deletion
 end

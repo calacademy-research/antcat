@@ -11,7 +11,7 @@
   -if current_user
     =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
--if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG
+-if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
     .row.margin-bottom
       .medium-9.columns
