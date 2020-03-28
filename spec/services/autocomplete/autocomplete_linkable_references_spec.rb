@@ -19,7 +19,7 @@ describe Autocomplete::AutocompleteLinkableReferences do
     end
 
     context 'when a reference ID is given' do
-      let!(:reference) { create :unknown_reference }
+      let!(:reference) { create :any_reference }
 
       specify do
         expect(described_class[reference.id.to_s]).to eq(Autocomplete::FormatLinkableReferences[[reference]])

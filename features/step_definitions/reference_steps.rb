@@ -8,7 +8,7 @@ def find_reference_by_keey keey
 end
 
 Given("there is a reference") do
-  create :article_reference
+  create :any_reference
 end
 
 Given("there is an article reference") do
@@ -76,7 +76,7 @@ Then("nesting_reference_id should contain a valid reference id") do
 end
 
 Given("there is a reference referenced in a history item") do
-  reference = create :article_reference
+  reference = create :any_reference
   create :taxon_history_item, taxt: "{ref #{reference.id}}"
 end
 

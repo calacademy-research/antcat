@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe References::Cache::Regenerate do
   describe "#call" do
-    let!(:reference) { create :article_reference, title: 'Old title' }
+    let!(:reference) { create :any_reference, title: 'Old title' }
 
     it "regenerates caches" do
       formatter = CachedReferenceFormatter.new(reference)

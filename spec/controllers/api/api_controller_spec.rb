@@ -10,8 +10,8 @@ describe Api::ApiController, as: :visitor do
       end
     end
 
-    let!(:reference_1) { create :article_reference }
-    let!(:reference_2) { create :article_reference }
+    let!(:reference_1) { create :any_reference }
+    let!(:reference_2) { create :any_reference }
 
     context 'without `params[:starts_at]`' do
       specify do

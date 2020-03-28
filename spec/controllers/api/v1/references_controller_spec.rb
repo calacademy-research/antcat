@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::ReferencesController, as: :visitor do
   describe "GET index" do
     specify do
-      reference = create :article_reference
+      reference = create :any_reference
       get :index
       expect(json_response).to eq([reference.as_json])
     end

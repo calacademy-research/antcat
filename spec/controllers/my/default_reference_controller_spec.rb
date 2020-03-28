@@ -10,7 +10,7 @@ describe My::DefaultReferenceController do
   end
 
   describe "PUT update", as: :user do
-    let(:reference) { create :article_reference }
+    let(:reference) { create :any_reference }
 
     it "calls `DefaultReference.set`" do
       expect(DefaultReference).to receive(:set).with(session, reference).and_call_original

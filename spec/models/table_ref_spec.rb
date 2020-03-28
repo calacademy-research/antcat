@@ -71,7 +71,7 @@ describe TableRef do
 
     context "when table is `references`" do
       let(:table) { "references" }
-      let!(:object) { create :article_reference }
+      let!(:object) { create :any_reference }
 
       specify { expect(table_ref.owner).to eq object }
     end

@@ -44,7 +44,7 @@ describe Exporters::Antweb::AntwebInlineCitation do
     end
 
     describe "handling quotes in the title" do
-      let(:reference) { create :unknown_reference, title: '"Atta"' }
+      let(:reference) { create :any_reference, title: '"Atta"' }
 
       it "escapes them" do
         expect(described_class[reference]).to include " &quot;Atta&quot;"

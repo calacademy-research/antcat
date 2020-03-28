@@ -14,7 +14,7 @@ describe TaxaController do
   end
 
   describe "POST create", as: :editor do
-    let(:authorship_reference) { create :article_reference }
+    let(:authorship_reference) { create :any_reference }
     let(:base_params) do
       HashWithIndifferentAccess.new(
         status: Status::VALID,

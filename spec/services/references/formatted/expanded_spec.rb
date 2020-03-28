@@ -101,7 +101,7 @@ describe References::Formatted::Expanded do
     end
 
     context 'when reference is online early' do
-      let(:reference) { create :article_reference, online_early: true }
+      let(:reference) { create :any_reference, online_early: true }
 
       specify { expect(formatter.call).to include ' [online early]' }
     end

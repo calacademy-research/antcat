@@ -20,8 +20,8 @@ describe Reference do
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
     describe '`bolton_key` uniqueness' do
-      let!(:conflict) { create :article_reference, bolton_key: 'Batiatus 2000' }
-      let!(:duplicate) { create :article_reference }
+      let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
+      let!(:duplicate) { create :any_reference }
 
       specify do
         expect { duplicate.bolton_key = conflict.bolton_key }.
@@ -35,7 +35,7 @@ describe Reference do
   describe 'callbacks' do
     describe "changing `citation_year`" do
       context 'when `citation_year` contains a letter' do
-        let(:reference) { create :article_reference, citation_year: '1910a' }
+        let(:reference) { create :any_reference, citation_year: '1910a' }
 
         it "sets `year` to the stated year, if present" do
           expect { reference.update!(citation_year: '2010b') }.
@@ -44,7 +44,7 @@ describe Reference do
       end
 
       context 'when `citation_year` contains a bracketed year' do
-        let(:reference) { create :article_reference, citation_year: '1910a ["1958"]' }
+        let(:reference) { create :any_reference, citation_year: '1910a ["1958"]' }
 
         it "sets `year` to the stated year, if present" do
           expect { reference.update!(citation_year: '2010b ["2009"]') }.
@@ -56,9 +56,9 @@ describe Reference do
 
   describe "scopes" do
     describe ".unreviewed_references" do
-      let!(:unreviewed) { create :article_reference, review_state: "reviewing" }
+      let!(:unreviewed) { create :any_reference, review_state: "reviewing" }
 
-      before { create :article_reference, review_state: "reviewed" }
+      before { create :any_reference, review_state: "reviewed" }
 
       it "returns unreviewed references" do
         expect(described_class.unreviewed).to eq [unreviewed]
@@ -67,9 +67,9 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        one = create :article_reference, author_name: 'Fisher', citation_year: '1910b'
-        two = create :article_reference, author_name: 'Wheeler', citation_year: '1874'
-        three = create :article_reference, author_name: 'Fisher', citation_year: '1910a'
+        one = create :any_reference, author_name: 'Fisher', citation_year: '1910b'
+        two = create :any_reference, author_name: 'Wheeler', citation_year: '1874'
+        three = create :any_reference, author_name: 'Fisher', citation_year: '1910a'
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
@@ -77,7 +77,7 @@ describe Reference do
   end
 
   describe 'workflow' do
-    let(:reference) { create :article_reference }
+    let(:reference) { create :any_reference }
 
     describe 'default state' do
       it "starts as 'none'" do
@@ -218,14 +218,14 @@ describe Reference do
 
     context "when citation years with extra" do
       let(:reference) do
-        create :article_reference, author_names: [bolton], citation_year: '1970a ("1971")'
+        create :any_reference, author_names: [bolton], citation_year: '1970a ("1971")'
       end
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
     end
 
     context 'when no authors' do
-      let(:reference) { create :article_reference, citation_year: '1970a' }
+      let(:reference) { create :any_reference, citation_year: '1970a' }
 
       specify do
         expect { reference.author_names = [] }.
@@ -235,7 +235,7 @@ describe Reference do
 
     context 'when one author' do
       let(:reference) do
-        create :article_reference, author_names: [bolton], citation_year: '1970a'
+        create :any_reference, author_names: [bolton], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
@@ -243,7 +243,7 @@ describe Reference do
 
     context 'when two authors' do
       let(:reference) do
-        create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+        create :any_reference, author_names: [bolton, fisher], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton & Fisher, 1970a' }
@@ -252,7 +252,7 @@ describe Reference do
     context 'when three authors' do
       let(:ward) { create :author_name, name: 'Ward, P.S.' }
       let(:reference) do
-        create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+        create :any_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 
       specify { expect(reference.keey).to eq 'Bolton <i>et al.</i>, 1970a' }
@@ -269,7 +269,7 @@ describe Reference do
   end
 
   describe "#what_links_here" do
-    let(:reference) { build_stubbed :article_reference }
+    let(:reference) { build_stubbed :any_reference }
 
     it "calls `References::WhatLinksHere`" do
       expect(References::WhatLinksHere).to receive(:new).

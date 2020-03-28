@@ -11,6 +11,6 @@ end
 Given("there is a genus Lasius described in Systema Piezatorum") do
   genus = create :genus, name_string: 'Lasius'
 
-  reference = create :article_reference, title: 'Systema Piezatorum'
+  reference = create :any_reference, title: 'Systema Piezatorum'
   genus.protonym.authorship.update!(reference: reference)
 end

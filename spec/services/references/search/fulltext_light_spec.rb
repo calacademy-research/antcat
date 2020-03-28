@@ -19,7 +19,7 @@ describe References::Search::FulltextLight, :search do
           bolton = create :author_name, name: 'Bolton, B.'
           fisher = create :author_name, name: 'Fisher, B.'
 
-          create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+          create :any_reference, author_names: [bolton, fisher], citation_year: '1970a'
         end
 
         before { Sunspot.commit }
@@ -33,7 +33,7 @@ describe References::Search::FulltextLight, :search do
           fisher = create :author_name, name: 'Fisher, B.'
           ward = create :author_name, name: 'Ward, P.S.'
 
-          create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+          create :any_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
         end
 
         before { Sunspot.commit }

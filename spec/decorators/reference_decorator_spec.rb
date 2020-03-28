@@ -9,7 +9,7 @@ describe ReferenceDecorator do
     describe '#public_notes, #editor_notes and #taxonomic_notes' do
       context 'with unsafe tags' do
         let(:reference) do
-          create :unknown_reference, public_notes: 'note <script>xss</script>',
+          create :any_reference, public_notes: 'note <script>xss</script>',
             editor_notes: 'note <script>xss</script>', taxonomic_notes: 'note <script>xss</script>'
         end
 
@@ -41,19 +41,19 @@ describe ReferenceDecorator do
 
   describe "#format_review_state" do
     context "when `review_state` is 'reviewed'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'reviewed' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'reviewed' }
 
       specify { expect(decorated.format_review_state).to eq 'Reviewed' }
     end
 
     context "when `review_state` is 'reviewing'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'reviewing' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'reviewing' }
 
       specify { expect(decorated.format_review_state).to eq 'Being reviewed' }
     end
 
     context "when `review_state` is 'none'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'none' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'none' }
 
       specify { expect(decorated.format_review_state).to eq 'Not reviewed' }
     end
@@ -61,7 +61,7 @@ describe ReferenceDecorator do
 
   describe '#format_title' do
     context 'with unsafe tags' do
-      let(:reference) { create :article_reference, title: '<script>xss</script>' }
+      let(:reference) { create :any_reference, title: '<script>xss</script>' }
 
       it "sanitizes them" do
         results = decorated.format_title

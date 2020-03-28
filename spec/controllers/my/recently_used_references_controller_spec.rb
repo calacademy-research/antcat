@@ -20,7 +20,7 @@ describe My::RecentlyUsedReferencesController do
     end
 
     context 'when user has recently used references' do
-      let!(:reference) { create :article_reference }
+      let!(:reference) { create :any_reference }
 
       before do
         post :create, params: { id: reference.id }
@@ -34,7 +34,7 @@ describe My::RecentlyUsedReferencesController do
   end
 
   describe 'POST create', as: :visitor do
-    let!(:reference) { create :article_reference }
+    let!(:reference) { create :any_reference }
 
     it "stores the reference in the user's session" do
       expect { post :create, params: { id: reference.id } }.
@@ -43,8 +43,8 @@ describe My::RecentlyUsedReferencesController do
     end
 
     describe 'adding multiple references' do
-      let!(:second) { create :article_reference }
-      let!(:third) { create :article_reference }
+      let!(:second) { create :any_reference }
+      let!(:third) { create :any_reference }
 
       it 'returns the the most recently used references first, unique only' do
         post :create, params: { id: reference.id }

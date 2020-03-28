@@ -10,7 +10,7 @@ describe DatabaseScripts::Renderers::AsCSV do
   let(:dummy) { AsCSVDummy.new }
 
   describe "#as_csv" do
-    let!(:reference) { create :article_reference }
+    let!(:reference) { create :any_reference }
 
     context "with implicit `results`" do
       it 'renders the scripts `#results` as CSV' do

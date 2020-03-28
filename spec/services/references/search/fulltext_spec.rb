@@ -5,8 +5,8 @@ require 'rails_helper'
 describe References::Search::Fulltext, :search do
   describe "#call" do
     describe 'searching with `title`' do
-      let!(:pescatore_reference) { create :article_reference, title: 'Pizza Pescatore' }
-      let!(:capricciosa_reference) { create :article_reference, title: 'Pizza Capricciosa' }
+      let!(:pescatore_reference) { create :any_reference, title: 'Pizza Pescatore' }
+      let!(:capricciosa_reference) { create :any_reference, title: 'Pizza Capricciosa' }
 
       before do
         Sunspot.commit
@@ -20,8 +20,8 @@ describe References::Search::Fulltext, :search do
     end
 
     describe 'searching with `author`' do
-      let!(:bolton_reference) { create :article_reference, author_name: 'Bolton' }
-      let!(:fisher_reference) { create :article_reference, author_name: 'Fisher' }
+      let!(:bolton_reference) { create :any_reference, author_name: 'Bolton' }
+      let!(:fisher_reference) { create :any_reference, author_name: 'Fisher' }
 
       before do
         Sunspot.commit
@@ -35,10 +35,10 @@ describe References::Search::Fulltext, :search do
 
     describe 'searching with `start_year`, `end_year` and `year`' do
       before do
-        create :article_reference, citation_year: '1994'
-        create :article_reference, citation_year: '1995'
-        create :article_reference, citation_year: '1996a'
-        create :article_reference, citation_year: '1998'
+        create :any_reference, citation_year: '1994'
+        create :any_reference, citation_year: '1995'
+        create :any_reference, citation_year: '1996a'
+        create :any_reference, citation_year: '1998'
         Sunspot.commit
       end
 
@@ -49,10 +49,10 @@ describe References::Search::Fulltext, :search do
     end
 
     describe "year" do
-      let!(:reference) { create :article_reference, citation_year: '2004' }
+      let!(:reference) { create :any_reference, citation_year: '2004' }
 
       before do
-        create :article_reference, citation_year: '2003'
+        create :any_reference, citation_year: '2003'
         Sunspot.commit
       end
 
@@ -62,9 +62,9 @@ describe References::Search::Fulltext, :search do
     end
 
     describe 'notes' do
-      let!(:with_public_notes) { create :article_reference, public_notes: 'public' }
-      let!(:with_editor_notes) { create :article_reference, editor_notes: 'editor' }
-      let!(:with_taxonomic_notes) { create :article_reference, taxonomic_notes: 'taxonomic' }
+      let!(:with_public_notes) { create :any_reference, public_notes: 'public' }
+      let!(:with_editor_notes) { create :any_reference, editor_notes: 'editor' }
+      let!(:with_taxonomic_notes) { create :any_reference, taxonomic_notes: 'taxonomic' }
 
       before do
         Sunspot.commit
@@ -170,7 +170,7 @@ describe References::Search::Fulltext, :search do
   describe "ignored characters" do
     context "when search query contains ').'" do
       let!(:title) { 'Tetramoriini (Hymenoptera Formicidae).' }
-      let!(:reference) { create :article_reference, title: title }
+      let!(:reference) { create :any_reference, title: title }
 
       before { Sunspot.commit }
 
@@ -185,7 +185,7 @@ describe References::Search::Fulltext, :search do
         bolton = create :author_name, name: 'Bolton, B.'
         fisher = create :author_name, name: 'Fisher, B.'
 
-        create :article_reference, author_names: [bolton, fisher], citation_year: '1970a'
+        create :any_reference, author_names: [bolton, fisher], citation_year: '1970a'
       end
 
       before { Sunspot.commit }
@@ -199,7 +199,7 @@ describe References::Search::Fulltext, :search do
         fisher = create :author_name, name: 'Fisher, B.'
         ward = create :author_name, name: 'Ward, P.S.'
 
-        create :article_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
+        create :any_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 
       before { Sunspot.commit }
@@ -209,7 +209,7 @@ describe References::Search::Fulltext, :search do
 
     describe "replacing some characters to make search work" do
       let!(:title) { '*Camponotus piceus* (Leach, 1825), decouverte Viroin-Hermeton' }
-      let!(:reference) { create :article_reference, title: title }
+      let!(:reference) { create :any_reference, title: title }
 
       it "handles this reference with asterixes and a hyphen" do
         Sunspot.commit

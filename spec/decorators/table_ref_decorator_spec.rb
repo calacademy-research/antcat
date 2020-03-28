@@ -34,7 +34,7 @@ describe TableRefDecorator do
 
   context "when table is `references`" do
     let(:table) { "references" }
-    let!(:object) { create :article_reference }
+    let!(:object) { create :any_reference }
 
     specify { expect(decorated.item_link).to eq %(<a href="/references/#{id}">#{id}</a>) }
     specify { expect(decorated.owner_link).to eq object.decorate.expandable_reference }

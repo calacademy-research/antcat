@@ -51,7 +51,7 @@ FactoryBot.define do
       sequence(:pagination) { |n| "#{n} pp." }
     end
 
-    factory :unknown_reference, class: 'UnknownReference' do
+    factory :unknown_reference, class: 'UnknownReference', aliases: [:any_reference] do
       sequence(:citation) { |n| "New York #{n}" }
     end
 

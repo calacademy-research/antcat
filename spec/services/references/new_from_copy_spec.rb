@@ -18,9 +18,9 @@ describe References::NewFromCopy do
           :public_notes,
           :editor_notes,
           :taxonomic_notes
-        ].each do |attribtue|
-          expect(copy.public_send(attribtue)).to eq reference.public_send(attribtue)
-          expect(copy.public_send(attribtue)).to_not eq nil
+        ].each do |attribute|
+          expect(copy.public_send(attribute)).to eq reference.public_send(attribute)
+          expect(copy.public_send(attribute)).to_not eq nil
         end
       end
     end
@@ -82,7 +82,7 @@ describe References::NewFromCopy do
     end
 
     context "when reference has a document" do
-      let!(:reference) { create :article_reference, :with_document }
+      let!(:reference) { create :any_reference, :with_document }
 
       it 'does not copy the document' do
         copy = described_class[reference]

@@ -69,7 +69,7 @@ describe AuthorName do
 
   describe '#invalidate_reference_caches!' do
     let!(:author_name) { create :author_name, name: 'Ward' }
-    let!(:reference) { create :article_reference, author_names: [author_name] }
+    let!(:reference) { create :any_reference, author_names: [author_name] }
 
     it "refreshes `author_names_string_cache` its references" do
       expect { author_name.update!(name: 'Fisher') }.

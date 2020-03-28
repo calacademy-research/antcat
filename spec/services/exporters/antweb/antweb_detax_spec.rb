@@ -23,7 +23,7 @@ describe Exporters::Antweb::AntwebDetax do
     end
 
     describe "ref tags (references)" do
-      let!(:reference) { create :article_reference }
+      let!(:reference) { create :any_reference }
 
       specify do
         expect(described_class["{ref #{reference.id}}"]).to eq Exporters::Antweb::AntwebInlineCitation[reference]

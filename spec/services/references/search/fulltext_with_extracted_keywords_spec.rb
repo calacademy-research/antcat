@@ -13,7 +13,7 @@ describe References::Search::FulltextWithExtractedKeywords do
         let!(:bolton) { create :author_name, name: "Bolton Barry" }
 
         context 'when searching for a single author' do
-          let!(:reference) { create :book_reference, author_names: [bolton] }
+          let!(:reference) { create :any_reference, author_names: [bolton] }
 
           before do
             Sunspot.commit
@@ -26,7 +26,7 @@ describe References::Search::FulltextWithExtractedKeywords do
 
         context 'when searching for multiple authors' do
           let!(:fisher) { create :author_name, name: "Brian Fisher" }
-          let!(:reference) { create :book_reference, author_names: [bolton, fisher] }
+          let!(:reference) { create :any_reference, author_names: [bolton, fisher] }
 
           before do
             Sunspot.commit
