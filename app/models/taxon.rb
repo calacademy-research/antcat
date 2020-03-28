@@ -8,10 +8,11 @@ class Taxon < ApplicationRecord
   delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
 
   with_options class_name: 'Taxon' do
-    belongs_to :type_taxon, foreign_key: :type_taxon_id
-    belongs_to :genus
-    belongs_to :homonym_replaced_by
-    belongs_to :current_valid_taxon
+    belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
+    # TODO: `belongs_to :genus` should not be here, but at least used to be required for the advanced search.
+    belongs_to :genus, optional: true
+    belongs_to :homonym_replaced_by, optional: true
+    belongs_to :current_valid_taxon, optional: true
 
     has_many :current_valid_taxon_of, foreign_key: :current_valid_taxon_id, dependent: :restrict_with_error
     has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id

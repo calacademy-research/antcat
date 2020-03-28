@@ -14,8 +14,9 @@ class Reference < ApplicationRecord
   attr_accessor :journal_name, :publisher_string
   attr_accessor :skip_save_refresh_author_names_cache
 
-  belongs_to :journal
-  belongs_to :publisher
+  # TODO: See if we can move this to subclasses.
+  belongs_to :journal, optional: true
+  belongs_to :publisher, optional: true
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },

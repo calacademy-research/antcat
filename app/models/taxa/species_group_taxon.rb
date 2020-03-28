@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class SpeciesGroupTaxon < Taxon
-  belongs_to :subfamily
+  belongs_to :subfamily, optional: true
   belongs_to :genus
-  belongs_to :subgenus
+  belongs_to :subgenus, optional: true
 
   validates :genus, presence: true
   validate :ensure_protonym_is_a_species_group_name

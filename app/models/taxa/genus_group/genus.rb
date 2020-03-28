@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Genus < GenusGroupTaxon
-  belongs_to :tribe
+  belongs_to :tribe, optional: true
 
   # TODO: Maybe rename to `children` after investigating if we want to keep the methods
   # currently named `#children` (or rename them to `#direct_children`).
