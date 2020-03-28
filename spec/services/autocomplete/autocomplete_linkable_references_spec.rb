@@ -11,7 +11,7 @@ describe Autocomplete::AutocompleteLinkableReferences do
     end
 
     context "when there are results", :search do
-      let!(:reference) { create :any_reference, author_name: "Bolton" }
+      let!(:reference) { create :any_reference, author_string: "Bolton" }
 
       before { Sunspot.commit }
 

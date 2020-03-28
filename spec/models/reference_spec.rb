@@ -67,9 +67,9 @@ describe Reference do
 
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        one = create :any_reference, author_name: 'Fisher', citation_year: '1910b'
-        two = create :any_reference, author_name: 'Wheeler', citation_year: '1874'
-        three = create :any_reference, author_name: 'Fisher', citation_year: '1910a'
+        one = create :any_reference, author_string: 'Fisher', citation_year: '1910b'
+        two = create :any_reference, author_string: 'Wheeler', citation_year: '1874'
+        three = create :any_reference, author_string: 'Fisher', citation_year: '1910a'
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
@@ -261,7 +261,7 @@ describe Reference do
   end
 
   describe "#keey_without_letters_in_year" do
-    let(:reference) { create :any_reference, author_name: 'Bolton', citation_year: '1885g' }
+    let(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '1885g' }
 
     it "doesn't include the year ordinal" do
       expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'

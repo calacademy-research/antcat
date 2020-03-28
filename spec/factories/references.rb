@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :reference do
     transient do
-      author_name {}
+      author_string {}
     end
 
     sequence(:title) { |n| "Ants are my life#{n}" }
@@ -29,9 +29,9 @@ FactoryBot.define do
 
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
-      elsif evaluator.author_name
-        author_name = AuthorName.find_by(name: evaluator.author_name)
-        author_name ||= create :author_name, name: evaluator.author_name
+      elsif evaluator.author_string
+        author_name = AuthorName.find_by(name: evaluator.author_string)
+        author_name ||= create :author_name, name: evaluator.author_string
         reference.author_names << author_name
       else
         # See comment above.

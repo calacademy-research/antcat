@@ -239,7 +239,7 @@ describe Taxon do
   end
 
   describe "#author_citation" do
-    let!(:reference) { create :any_reference, author_name: 'Bolton', citation_year: '2005' }
+    let!(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '2005' }
 
     before do
       taxon.protonym.update!(name: protonym_name)

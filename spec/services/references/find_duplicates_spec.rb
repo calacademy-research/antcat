@@ -11,8 +11,8 @@ describe References::FindDuplicates do
   end
 
   describe "#call" do
-    let!(:match) { create :article_reference, author_name: 'Ward, P.S.' }
-    let(:target) { create :article_reference, author_name: 'Ward' }
+    let!(:match) { create :article_reference, author_string: 'Ward, P.S.' }
+    let(:target) { create :article_reference, author_string: 'Ward' }
 
     context "when an obvious mismatch" do
       it "doesn't match" do
@@ -31,8 +31,8 @@ describe References::FindDuplicates do
     end
 
     context "with an author last name with an apostrophe in it (regression)" do
-      let!(:match) { create :article_reference, author_name: "Arnol'di, G." }
-      let(:target) { create :article_reference, author_name: "Arnol'di" }
+      let!(:match) { create :article_reference, author_string: "Arnol'di, G." }
+      let(:target) { create :article_reference, author_string: "Arnol'di" }
 
       it "handles it" do
         expect(reference_similarity).to receive(:call).and_return(0.10)

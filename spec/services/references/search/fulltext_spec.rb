@@ -21,8 +21,8 @@ describe References::Search::Fulltext, :search do
       end
 
       describe 'keyword: `author`' do
-        let!(:bolton_reference) { create :any_reference, author_name: 'Bolton' }
-        let!(:fisher_reference) { create :any_reference, author_name: 'Fisher' }
+        let!(:bolton_reference) { create :any_reference, author_string: 'Bolton' }
+        let!(:fisher_reference) { create :any_reference, author_string: 'Fisher' }
 
         before do
           Sunspot.commit
@@ -112,7 +112,7 @@ describe References::Search::Fulltext, :search do
 
       describe 'author names' do
         context "when author contains German diacritics" do
-          let!(:reference) { create :any_reference, author_name: 'Hölldobler' }
+          let!(:reference) { create :any_reference, author_string: 'Hölldobler' }
 
           before { Sunspot.commit }
 
@@ -121,7 +121,7 @@ describe References::Search::Fulltext, :search do
         end
 
         context "when author contains Hungarian diacritics" do
-          let!(:reference) { create :any_reference, author_name: 'Csősz' }
+          let!(:reference) { create :any_reference, author_string: 'Csősz' }
 
           before { Sunspot.commit }
 
