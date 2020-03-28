@@ -79,46 +79,55 @@ describe Reference do
   describe 'workflow' do
     let(:reference) { create :article_reference }
 
-    it "starts as 'none'" do
-      expect(reference.none?).to eq true
+    describe 'default state' do
+      it "starts as 'none'" do
+        expect(reference.none?).to eq true
+        expect(reference.reviewing?).to eq false
+        expect(reference.reviewed?).to eq false
 
-      expect(reference.can_start_reviewing?).to eq true
-      expect(reference.can_finish_reviewing?).to eq false
-      expect(reference.can_restart_reviewing?).to eq false
+        expect(reference.can_start_reviewing?).to eq true
+        expect(reference.can_finish_reviewing?).to eq false
+        expect(reference.can_restart_reviewing?).to eq false
+      end
     end
 
-    it "none transitions to start" do
-      reference.start_reviewing!
+    describe '#start_reviewing!' do
+      it "none transitions to start" do
+        expect { reference.start_reviewing! }.to change { reference.reviewing? }.to(true)
 
-      expect(reference.reviewing?).to eq true
-
-      expect(reference.can_start_reviewing?).to eq false
-      expect(reference.can_finish_reviewing?).to eq true
-      expect(reference.can_restart_reviewing?).to eq false
+        expect(reference.can_start_reviewing?).to eq false
+        expect(reference.can_finish_reviewing?).to eq true
+        expect(reference.can_restart_reviewing?).to eq false
+      end
     end
 
-    it "start transitions to finish" do
-      reference.start_reviewing!
-      reference.finish_reviewing!
+    describe '#finish_reviewing!' do
+      before do
+        reference.start_reviewing!
+      end
 
-      expect(reference.reviewing?).to eq false
-      expect(reference.reviewed?).to eq true
+      it "start transitions to finish" do
+        expect { reference.finish_reviewing! }.to change { reference.reviewed? }.to(true)
 
-      expect(reference.can_start_reviewing?).to eq false
-      expect(reference.can_finish_reviewing?).to eq false
-      expect(reference.can_restart_reviewing?).to eq true
+        expect(reference.can_start_reviewing?).to eq false
+        expect(reference.can_finish_reviewing?).to eq false
+        expect(reference.can_restart_reviewing?).to eq true
+      end
     end
 
-    it "reviewed can transition back to reviewing" do
-      reference.start_reviewing!
-      reference.finish_reviewing!
-      reference.restart_reviewing!
+    describe '#restart_reviewing!' do
+      before do
+        reference.start_reviewing!
+        reference.finish_reviewing!
+      end
 
-      expect(reference.reviewing?).to eq true
+      it "reviewed can transition back to reviewing" do
+        expect { reference.restart_reviewing! }.to change { reference.reviewing? }.to(true)
 
-      expect(reference.can_start_reviewing?).to eq false
-      expect(reference.can_finish_reviewing?).to eq true
-      expect(reference.can_restart_reviewing?).to eq false
+        expect(reference.can_start_reviewing?).to eq false
+        expect(reference.can_finish_reviewing?).to eq true
+        expect(reference.can_restart_reviewing?).to eq false
+      end
     end
   end
 

@@ -24,6 +24,7 @@ end
 __END__
 
 category: Protonyms
+tags: [regression-test]
 
 issue_description: This protonym has more than one original combination.
 
