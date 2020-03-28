@@ -14,10 +14,6 @@ class Reference < ApplicationRecord
   attr_accessor :journal_name, :publisher_string
   attr_accessor :skip_save_refresh_author_names_cache
 
-  # TODO: See if we can move this to subclasses.
-  belongs_to :journal, optional: true
-  belongs_to :publisher, optional: true
-
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
     through: :reference_author_names,
@@ -63,8 +59,8 @@ class Reference < ApplicationRecord
     text(:author_names_string)
     text(:citation_year)
     text(:title)
-    text(:journal_name) { journal&.name }
-    text(:publisher_name) { publisher&.name }
+    text(:journal_name) { journal&.name if respond_to?(:journal) }
+    text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
     text(:year_as_string) { year&.to_s }
     text(:citation)
     text(:editor_notes)
