@@ -147,6 +147,7 @@ class Reference < ApplicationRecord
 
     # TODO: Probably just use `references.year` instead of this once `MissingReference` has been remvoed.
     def citation_year_without_extras
+      return if citation_year.blank?
       citation_year.gsub(/ .*$/, '')
     end
 
