@@ -5,7 +5,7 @@
 class ArticleReference < Reference
   belongs_to :journal
 
-  validates :year, :journal, :series_volume_issue, :pagination, presence: true
+  validates :year, :series_volume_issue, :pagination, presence: true
 
   # TODO: Not used (since at least December 2016).
   def series

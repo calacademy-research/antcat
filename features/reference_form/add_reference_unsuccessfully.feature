@@ -19,7 +19,7 @@ Feature: Add reference unsuccessfully
     When I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I press "Save"
-    Then I should see "Journal can't be blank"
+    Then I should see "Journal must exist"
     And I should see "Series volume issue can't be blank"
 
   @javascript
@@ -27,7 +27,7 @@ Feature: Add reference unsuccessfully
     When I follow "Book"
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
-    Then I should see "Publisher can't be blank"
+    Then I should see "Publisher must exist"
 
   Scenario: Leaving a required field blank should not affect other fields (article reference)
     When I fill in "reference_title" with "A reference title"
@@ -65,7 +65,7 @@ Feature: Add reference unsuccessfully
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_pagination" with "1"
     And I press "Save"
-    Then I should see "Journal can't be blank"
+    Then I should see "Journal must exist"
     And the "reference_title" field should contain "A reference title"
 
     When I follow "Article"

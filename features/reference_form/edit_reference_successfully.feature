@@ -23,7 +23,7 @@ Feature: Edit reference successfully
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I press "Save"
-    Then I should see "Journal can't be blank"
+    Then I should see "Journal must exist"
     And I should see "Series volume issue can't be blank"
 
   Scenario: Blanking required fields (book reference)
@@ -32,7 +32,7 @@ Feature: Edit reference successfully
     When I go to the edit page for the most recent reference
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
-    Then I should see "Publisher can't be blank"
+    Then I should see "Publisher must exist"
 
   @javascript
   Scenario: Change a reference's type
