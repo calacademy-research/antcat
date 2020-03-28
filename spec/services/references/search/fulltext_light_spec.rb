@@ -6,7 +6,7 @@ describe References::Search::FulltextLight, :search do
   describe "#call" do
     describe "search queries" do
       context "when search query contains hyphens" do
-        let!(:reference) { create :reference, author_name: "Casevitz-Weulersse" }
+        let!(:reference) { create :any_reference, author_name: "Casevitz-Weulersse" }
 
         before { Sunspot.commit }
 
@@ -46,8 +46,8 @@ describe References::Search::FulltextLight, :search do
       let(:service) { described_class.new("Forel 1911") }
 
       context "when references have the same year but different citation years" do
-        let!(:forel_a) { create :reference, author_name: "Forel", citation_year: "1911a" }
-        let!(:forel_b) { create :reference, author_name: "Forel", citation_year: "1911b" }
+        let!(:forel_a) { create :any_reference, author_name: "Forel", citation_year: "1911a" }
+        let!(:forel_b) { create :any_reference, author_name: "Forel", citation_year: "1911b" }
 
         it "orders by citation year" do
           Sunspot.commit
@@ -56,7 +56,7 @@ describe References::Search::FulltextLight, :search do
 
         context "when there is also a less relevant hit" do
           let!(:less_relevant) do
-            create :reference, author_name: "Other", citation_year: "1912", title: "Forel 1911 was here"
+            create :any_reference, author_name: "Other", citation_year: "1912", title: "Forel 1911 was here"
           end
 
           it "orders by citation year and places less relevant hits last" do

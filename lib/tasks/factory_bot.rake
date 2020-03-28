@@ -6,7 +6,7 @@ namespace :factory_bot do
     require 'sunspot_test'
     SunspotTest.stub
 
-    ABSTRACT_FACTORIES = [:taxon, :name]
+    ABSTRACT_FACTORIES = [:taxon, :reference, :name]
 
     if Rails.env.test?
       factories_to_lint = FactoryBot.factories.reject do |factory|

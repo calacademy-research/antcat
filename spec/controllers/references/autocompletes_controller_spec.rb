@@ -6,8 +6,8 @@ describe References::AutocompletesController do
   describe "GET show", :search, as: :visitor do
     context "when there are matches" do
       before do
-        create :reference, author_name: 'E.O. Wilson'
-        create :reference, author_name: 'Bolton'
+        create :any_reference, author_name: 'E.O. Wilson'
+        create :any_reference, author_name: 'Bolton'
         Sunspot.commit
       end
 
@@ -29,7 +29,7 @@ describe References::AutocompletesController do
     describe "author queries not wrapped in quotes" do
       context "when query contains non-English characters" do
         before do
-          create :reference, author_name: 'Bert Hölldobler'
+          create :any_reference, author_name: 'Bert Hölldobler'
           Sunspot.commit
         end
 
@@ -43,7 +43,7 @@ describe References::AutocompletesController do
 
       context "when query contains hyphens" do
         before do
-          create :reference, author_name: 'M.S. Abdul-Rassoul'
+          create :any_reference, author_name: 'M.S. Abdul-Rassoul'
           Sunspot.commit
         end
 

@@ -4,6 +4,13 @@ class Reference < ApplicationRecord
   include WorkflowActiverecord
   include Trackable
 
+  CONCRETE_SUBCLASS_NAMES = %w[
+    ArticleReference
+    BookReference
+    NestedReference
+    UnknownReference
+    MissingReference
+  ]
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
     plain_text_cache
     expandable_reference_cache
@@ -26,6 +33,7 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
+  validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
   validates :title, presence: true
   validates :author_names, presence: true, unless: -> { is_a?(MissingReference) }

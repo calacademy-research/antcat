@@ -137,18 +137,18 @@ describe Reference do
 
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = build_stubbed :reference, author_names: [fisher]
+        reference = build_stubbed :any_reference, author_names: [fisher]
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        reference = build_stubbed :reference, author_names: [fisher, ward]
+        reference = build_stubbed :any_reference, author_names: [fisher, ward]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
     end
 
     describe "updating, when things change" do
-      let(:reference) { create :reference, author_names: [fisher] }
+      let(:reference) { create :any_reference, author_names: [fisher] }
 
       context "when an author_name is added" do
         before { reference.author_names << ward }
@@ -180,7 +180,7 @@ describe Reference do
     end
 
     it "maintains the order in which they were added to the reference" do
-      reference = create :reference, author_names: [ward]
+      reference = create :any_reference, author_names: [ward]
       fisher = create :author_name, name: 'Fisher'
       wilden = create :author_name, name: 'Wilden'
       reference.author_names << wilden
@@ -261,7 +261,7 @@ describe Reference do
   end
 
   describe "#keey_without_letters_in_year" do
-    let(:reference) { create :reference, author_name: 'Bolton', citation_year: '1885g' }
+    let(:reference) { create :any_reference, author_name: 'Bolton', citation_year: '1885g' }
 
     it "doesn't include the year ordinal" do
       expect(reference.keey_without_letters_in_year).to eq 'Bolton, 1885'

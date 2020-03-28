@@ -23,7 +23,7 @@ describe Autocomplete::AutocompleteAuthorNames do
       old = create :author_name
       most_recent = create :author_name
 
-      reference = create :reference, author_names: [most_recent]
+      reference = create :any_reference, author_names: [most_recent]
       create :reference_author_name, created_at: 5.seconds.ago, author_name: recent, reference: reference
       create :reference_author_name, created_at: 10.seconds.ago, author_name: old, reference: reference
 
