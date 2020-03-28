@@ -3,7 +3,7 @@ Feature: Delete reference
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Delete a reference (with feed)
-    Given this reference exist
+    Given this reference exists
       | author | citation_year |
       | Fisher | 2004          |
 

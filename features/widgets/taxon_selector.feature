@@ -14,6 +14,8 @@ Feature: Taxon selector
     When I press "Save"
     Then I should see "Eciton" within the header
 
+  # TODO: Randomly fails without "@reset_driver". "The results could not be loaded [Capybara screenshot]".
+  @reset_driver
   Scenario: Clearing a taxon field
     When I go to the edit page for "Atta"
     And I select "homonym" from "taxon_status"

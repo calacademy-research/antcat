@@ -1,6 +1,6 @@
 Feature: Working with authors and their names
   Scenario: Seeing references by author (going to the author's page)
-    Given this reference exist
+    Given this reference exists
       | author     | title     |
       | Bolton, B. | Cool Ants |
 

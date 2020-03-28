@@ -7,6 +7,17 @@ def find_reference_by_keey keey
   Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
 end
 
+module ReferenceStepsHelpers
+  module_function
+
+  def find_or_create_author_names! hsh
+    if (author = hsh.delete 'author')
+      author_name = AuthorName.find_by(name: author) || FactoryBot.create(:author_name, name: author)
+      hsh[:author_names] = [author_name]
+    end
+  end
+end
+
 Given("there is a reference") do
   create :any_reference
 end
@@ -23,42 +34,35 @@ Given("there is an unknown reference") do
   create :unknown_reference
 end
 
-Given("this/these reference(s) exist(s)") do |table|
-  table.hashes.each do |hash|
-    if (author = hash.delete 'author')
-      author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
-      hash[:author_names] = [author_name]
-    end
-
-    create :any_reference, hash
+Given("(this reference exists)/(these references exist)") do |table|
+  table.hashes.each do |hsh|
+    ReferenceStepsHelpers.find_or_create_author_names!(hsh)
+    create :any_reference, hsh
   end
 end
 
 Given("this article reference exists") do |table|
-  data = table.hashes.first
+  hsh = table.hashes.first
 
-  citation = data.delete('citation') || "Psyche 1:1"
+  citation = hsh.delete('citation') || "Psyche 1:1"
   matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
   journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
 
-  data.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
+  hsh.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
 
-  if (author = data.delete 'author')
-    author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
-    data[:author_names] = [author_name]
-  end
+  ReferenceStepsHelpers.find_or_create_author_names!(hsh)
 
-  create :article_reference, data
+  create :article_reference, hsh
 end
 
 Given("the following entry nests it") do |table|
-  data = table.hashes.first
+  hsh = table.hashes.first
 
   NestedReference.create!(
-    title: data[:title],
-    author_names: [create(:author_name, name: data[:author])],
-    citation_year: data[:citation_year],
-    pagination: data[:pagination],
+    title: hsh[:title],
+    author_names: [create(:author_name, name: hsh[:author])],
+    citation_year: hsh[:citation_year],
+    pagination: hsh[:pagination],
     nesting_reference: Reference.last
   )
 end
