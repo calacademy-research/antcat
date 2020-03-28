@@ -14,39 +14,46 @@ describe Api::V1::ReferencesController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:reference) { create :article_reference }
+    let!(:reference) { create :article_reference, :with_notes }
 
     specify do
       get :show, params: { id: reference.id }
       expect(json_response).to eq(
         {
           "article_reference" => {
-            "author_names_string_cache" => reference.author_names_string_cache,
-            "author_names_suffix" => nil,
-            "bolton_key" => nil,
-            "citation" => nil,
+            "id" => reference.id,
+            "title" => reference.title,
+            "year" => reference.year,
             "citation_year" => reference.citation_year,
-            "created_at" => reference.created_at.as_json,
             "date" => nil,
             "doi" => nil,
-            "editor_notes" => nil,
-            "expandable_reference_cache" => nil,
-            "expanded_reference_cache" => nil,
-            "id" => reference.id,
-            "journal_id" => reference.journal_id,
-            "nesting_reference_id" => nil,
             "online_early" => false,
             "pagination" => reference.pagination,
-            "plain_text_cache" => nil,
-            "public_notes" => nil,
-            "publisher_id" => nil,
-            "reason_missing" => nil,
             "review_state" => "none",
+            "bolton_key" => nil,
+            "author_names_suffix" => nil,
+
+            # Type-specific.
+            "journal_id" => reference.journal_id,
+            "publisher_id" => nil,
             "series_volume_issue" => reference.series_volume_issue,
-            "taxonomic_notes" => nil,
-            "title" => reference.title,
-            "updated_at" => reference.updated_at.as_json,
-            "year" => reference.year
+            "nesting_reference_id" => nil,
+            "reason_missing" => nil,
+            "citation" => nil,
+
+            # Notes.
+            "public_notes" => reference.public_notes,
+            "editor_notes" => reference.editor_notes,
+            "taxonomic_notes" => reference.taxonomic_notes,
+
+            # Caches.
+            "plain_text_cache" => nil,
+            "expanded_reference_cache" => nil,
+            "expandable_reference_cache" => nil,
+            "author_names_string_cache" => reference.author_names_string_cache,
+
+            "created_at" => reference.created_at.as_json,
+            "updated_at" => reference.updated_at.as_json
           }
         }
       )

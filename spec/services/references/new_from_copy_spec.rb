@@ -5,7 +5,7 @@ require 'rails_helper'
 describe References::NewFromCopy do
   describe '#call' do
     describe 'copying common attributes' do
-      let!(:reference) { create :article_reference, public_notes: '1', editor_notes: '2', taxonomic_notes: '3' }
+      let!(:reference) { create :article_reference, :with_notes }
 
       specify do
         copy = described_class[reference]

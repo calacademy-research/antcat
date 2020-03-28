@@ -73,5 +73,11 @@ FactoryBot.define do
     trait :with_document do
       association :document, factory: :reference_document
     end
+
+    trait :with_notes do
+      sequence(:public_notes) { |n| "public_notes #{n}" }
+      sequence(:editor_notes) { |n| "editor_notes #{n}" }
+      sequence(:taxonomic_notes) { |n| "taxonomic_notes #{n}" }
+    end
   end
 end
