@@ -6,12 +6,12 @@ module Taxa
 
     def show
       @taxon = find_taxon
-      @subgenus = find_subgenus
+      @subgenus = find_subgenus @taxon
     end
 
     def create
       @taxon = find_taxon
-      @subgenus = find_subgenus
+      @subgenus = find_subgenus @taxon
 
       unless @subgenus
         redirect_to({ action: :show }, alert: "Subgenus must be specified.")
@@ -27,14 +27,14 @@ module Taxa
     end
 
     def destroy
-      @taxon = find_taxon
-      activity_parameters = { removed_subgenus_id: @taxon.subgenus.id }
+      taxon = find_taxon
+      activity_parameters = { removed_subgenus_id: taxon.subgenus.id }
 
-      if @taxon.update(subgenus: nil)
-        @taxon.create_activity :set_subgenus, current_user, parameters: activity_parameters
-        redirect_to catalog_path(@taxon), notice: "Successfully removed subgenus from species."
+      if taxon.update(subgenus: nil)
+        taxon.create_activity :set_subgenus, current_user, parameters: activity_parameters
+        redirect_to catalog_path(taxon), notice: "Successfully removed subgenus from species."
       else
-        redirect_to({ action: :show }, alert: @taxon.errors.full_messages.to_sentence)
+        redirect_to({ action: :show }, alert: taxon.errors.full_messages.to_sentence)
       end
     end
 
@@ -44,8 +44,8 @@ module Taxa
         Species.find(params[:taxa_id])
       end
 
-      def find_subgenus
-        @taxon.genus.subgenera.find_by(id: params[:subgenus_id])
+      def find_subgenus taxon
+        taxon.genus.subgenera.find_by(id: params[:subgenus_id])
       end
   end
 end

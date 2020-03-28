@@ -5,10 +5,6 @@ Feature: Merging authors
 
   Background:
     Given I log in as a catalog editor
-    And the following names exist for an author
-      | Bolton, B. |
-    And the following names exist for another author
-      | Bolton,B. |
     And these references exist
       | author     | title          |
       | Bolton, B. | Annals of Ants |

@@ -55,9 +55,9 @@ class Reference < ApplicationRecord
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
-    :editor_notes, :public_notes, :taxonomic_notes, :title,
+    :public_notes, :editor_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-     :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
+    :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
@@ -71,8 +71,8 @@ class Reference < ApplicationRecord
     text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
     text(:year_as_string) { year&.to_s }
     text(:citation)
-    text(:editor_notes)
     text(:public_notes)
+    text(:editor_notes)
     text(:taxonomic_notes)
     text(:bolton_key)
     text(:authors_for_keey) { authors_for_keey } # To find "et al".

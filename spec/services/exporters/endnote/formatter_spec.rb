@@ -109,28 +109,6 @@ describe Exporters::Endnote::Formatter do
 }
     end
 
-    it "doesn't export blank public and taxonomic notes" do
-      reference = create :article_reference,
-        author_names: [create(:author_name, name: 'MacKay, W.')],
-        citation_year: '1941',
-        title: '*A title*',
-        journal: create(:journal, name: 'Psyche'),
-        series_volume_issue: '1(2)',
-        pagination: '3-4',
-        public_notes: '',
-        taxonomic_notes: ''
-      expect(described_class[[reference]]).to eq %{%0 Journal Article
-%A MacKay, W.
-%D 1941
-%T A title
-%J Psyche
-%N 1(2)
-%P 3-4
-%~ AntCat
-
-}
-    end
-
     it "bails on a class it doesn't know about " do
       expect { described_class[['']] }.to raise_error("reference type not supported")
     end

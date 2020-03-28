@@ -12,8 +12,9 @@ module Authors
       @author = find_author
       @author_to_merge = find_author_to_merge
 
-      return if @author_to_merge
-      redirect_to({ action: :new }, alert: "Author to merge must be specified.")
+      unless @author_to_merge
+        redirect_to({ action: :new }, alert: "Author to merge must be specified.")
+      end
     end
 
     def create
