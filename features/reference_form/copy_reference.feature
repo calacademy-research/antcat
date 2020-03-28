@@ -7,7 +7,7 @@ Feature: Copy reference
   Background:
     Given I log in as a helper editor
 
-  Scenario: Copy an article reference
+  Scenario: Copy an `ArticleReference`
     Given this reference exist
       | author     | title          | citation | citation_year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          |

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe ReferenceObserver do
-  describe "nested references" do
+  describe "`NestedReference`s" do
     let(:reference) { create :any_reference }
 
     context "when a nesting_reference is changed" do

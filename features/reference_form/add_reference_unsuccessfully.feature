@@ -15,7 +15,7 @@ Feature: Add reference unsuccessfully
     And I should see "Year can't be blank"
     And I should see "Pagination can't be blank"
 
-  Scenario: Leaving required fields blank (article reference and general fields)
+  Scenario: Leaving required fields blank (`ArticleReference`)
     When I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I press "Save"
@@ -23,13 +23,13 @@ Feature: Add reference unsuccessfully
     And I should see "Series volume issue can't be blank"
 
   @javascript
-  Scenario: Leaving required fields blank (book reference)
+  Scenario: Leaving required fields blank (`BookReference`)
     When I follow "Book"
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
     Then I should see "Publisher must exist"
 
-  Scenario: Leaving a required field blank should not affect other fields (article reference)
+  Scenario: Leaving a required field blank should not affect other fields (`ArticleReference`)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with "Ant Journal"
     And I fill in "reference_pagination" with "2"
@@ -42,7 +42,7 @@ Feature: Add reference unsuccessfully
     And the "reference_pagination" field should contain "2"
 
   @javascript
-  Scenario: Leaving a required field blank should not affect other fields (book reference)
+  Scenario: Leaving a required field blank should not affect other fields (`BookReference`)
     When I follow "Book"
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_publisher_string" with "Capua: House of Batiatus"

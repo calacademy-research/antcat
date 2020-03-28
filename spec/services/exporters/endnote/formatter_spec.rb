@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Exporters::Endnote::Formatter do
   describe '#call' do
-    it "formats a book reference correctly" do
+    it "formats a `BookReference` correctly" do
       reference = create :book_reference,
         author_names: [create(:author_name, name: 'Bolton, B.')],
         title: 'Ants Are My Life',
@@ -43,7 +43,7 @@ describe Exporters::Endnote::Formatter do
 )
     end
 
-    it "formats a article reference correctly" do
+    it "formats an `ArticleReference` correctly" do
       reference = create :article_reference,
         author_names: [create(:author_name, name: 'MacKay, W.')],
         citation_year: '1941',
@@ -135,7 +135,7 @@ describe Exporters::Endnote::Formatter do
       expect { described_class[['']] }.to raise_error("reference type not supported")
     end
 
-    it "formats an unknown reference correctly" do
+    it "formats an `UnknownReference` correctly" do
       reference = create :unknown_reference,
         author_names: [create(:author_name, name: 'MacKay, W.')],
         citation_year: '1933',
@@ -151,7 +151,7 @@ describe Exporters::Endnote::Formatter do
 )
     end
 
-    it "doesn't output nested references" do
+    it "doesn't output `NestedReference`s" do
       reference = create :nested_reference
       expect(described_class[[reference]]).to eq "\n"
     end

@@ -16,7 +16,7 @@ Feature: Edit reference successfully
     And I should see "Year can't be blank"
     And I should see "Pagination can't be blank"
 
-  Scenario: Blanking required fields (article reference)
+  Scenario: Blanking required fields (`ArticleReference`)
     Given there is an article reference
 
     When I go to the edit page for the most recent reference
@@ -26,7 +26,7 @@ Feature: Edit reference successfully
     Then I should see "Journal must exist"
     And I should see "Series volume issue can't be blank"
 
-  Scenario: Blanking required fields (book reference)
+  Scenario: Blanking required fields (`BookReference`)
     Given there is a book reference
 
     When I go to the edit page for the most recent reference
@@ -47,13 +47,13 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
-  Scenario: See the correct tab initially (book reference)
+  Scenario: See the correct tab initially (`BookReference`)
     Given there is a book reference
 
     When I go to the edit page for the most recent reference
     Then the "Book" tab should be selected
 
-  Scenario: See the correct tab initially (unknown reference)
+  Scenario: See the correct tab initially (`UnknownReference`)
     Given there is an unknown reference
 
     When I go to the edit page for the most recent reference
@@ -67,7 +67,7 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see a PDF link
 
-  Scenario: Edit a nested reference
+  Scenario: Edit a `NestedReference`
     Given this reference exists
       | author     | citation   | citation_year | title |
       | Ward, P.S. | Psyche 5:3 | 2001          | Ants  |

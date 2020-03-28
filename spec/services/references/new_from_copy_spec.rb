@@ -25,7 +25,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is an article reference" do
+    context "when reference is an `ArticleReference`" do
       let!(:reference) { create :article_reference }
 
       specify do
@@ -40,7 +40,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is a book reference" do
+    context "when reference is a `BookReference`" do
       let!(:reference) { create :book_reference }
 
       specify do
@@ -53,7 +53,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is an unknown reference" do
+    context "when reference is an `UnknownReference`" do
       let!(:reference) { create :unknown_reference }
 
       specify do
@@ -66,7 +66,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is a nested reference" do
+    context "when reference is a `NestedReference`" do
       let!(:reference) { create :nested_reference }
 
       specify do

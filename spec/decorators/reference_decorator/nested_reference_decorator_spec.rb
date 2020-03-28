@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe NestedReferenceDecorator do
   describe '#pdf_link' do
-    context 'when nested reference has a document' do
+    context 'when reference has a document' do
       let(:reference_document) { build(:reference_document) }
       let(:reference) { build :nested_reference }
 
@@ -16,7 +16,7 @@ describe NestedReferenceDecorator do
       end
     end
 
-    context 'when nested reference does not have a document' do
+    context 'when reference does not have a document' do
       context 'when parent reference has a document' do
         let(:parent_reference_document) { build(:reference_document) }
         let(:parent_reference) { build :book_reference }

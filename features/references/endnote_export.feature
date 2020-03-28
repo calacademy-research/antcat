@@ -1,5 +1,5 @@
 Feature: Export references to EndNote
-  Scenario: Exporting an article reference
+  Scenario: Exporting an `ArticleReference`
     Given there is an article reference
 
     When I go to the page of the most recent reference
