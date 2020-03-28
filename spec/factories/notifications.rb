@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :notification do
     reason { Notification::MENTIONED_IN_THING }
+    user
     association :notifier, factory: :user
     association :attached, factory: :site_notice
 
