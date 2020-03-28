@@ -6,12 +6,12 @@ describe Species do
   describe 'relations' do
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:infrasubspecies).dependent(:restrict_with_error) }
-  end
 
-  describe 'validations' do
-    subject(:taxon) { create :species }
+    describe 'required `belongs_to`' do
+      subject(:taxon) { create :species }
 
-    it { is_expected.to validate_presence_of :genus }
+      it { is_expected.to belong_to(:genus).required }
+    end
   end
 
   it "can have subspecies, which are its children" do

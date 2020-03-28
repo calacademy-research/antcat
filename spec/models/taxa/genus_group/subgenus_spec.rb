@@ -5,10 +5,7 @@ require 'rails_helper'
 describe Subgenus do
   describe 'relations' do
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
-  end
-
-  describe 'validations' do
-    it { is_expected.to validate_presence_of :genus }
+    it { is_expected.to belong_to(:genus).required }
   end
 
   describe "#update_parent" do

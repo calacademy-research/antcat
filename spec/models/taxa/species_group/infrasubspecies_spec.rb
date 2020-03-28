@@ -3,12 +3,14 @@
 require 'rails_helper'
 
 describe Infrasubspecies do
-  describe 'validations' do
-    subject(:taxon) { create :infrasubspecies }
+  describe 'relations' do
+    describe 'required `belongs_to`' do
+      subject(:taxon) { create :infrasubspecies }
 
-    it { is_expected.to validate_presence_of :genus }
-    it { is_expected.to validate_presence_of :species }
-    it { is_expected.to validate_presence_of :subspecies }
+      it { is_expected.to belong_to(:genus).required }
+      it { is_expected.to belong_to(:species).required }
+      it { is_expected.to belong_to(:subspecies).required }
+    end
   end
 
   describe "#parent" do

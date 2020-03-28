@@ -55,7 +55,7 @@ class TaxonHistoryItem < ApplicationRecord
 
   belongs_to :taxon
 
-  validates :taxt, :taxon, presence: true
+  validates :taxt, presence: true
 
   before_validation :cleanup_taxts
 

@@ -5,8 +5,6 @@ class Subspecies < SpeciesGroupTaxon
 
   has_many :infrasubspecies, dependent: :restrict_with_error
 
-  validates :species, presence: true
-
   def parent
     species
   end

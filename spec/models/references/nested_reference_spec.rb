@@ -3,10 +3,13 @@
 require 'rails_helper'
 
 describe NestedReference do
+  describe 'relations' do
+    it { is_expected.to belong_to(:nesting_reference).required }
+  end
+
   describe "validations" do
     it { is_expected.to validate_presence_of :year }
     it { is_expected.to validate_presence_of :pagination }
-    it { is_expected.to validate_presence_of(:nesting_reference).with_message("does not exist") }
 
     it "cannot point to itself" do
       reference = create :nested_reference

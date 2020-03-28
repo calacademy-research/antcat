@@ -8,10 +8,10 @@ describe AuthorName do
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+    it { is_expected.to belong_to(:author).required }
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :author }
     it { is_expected.to validate_presence_of :name }
 
     describe "uniqueness validation" do

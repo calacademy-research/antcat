@@ -10,7 +10,7 @@ class Citation < ApplicationRecord
 
   has_one :protonym, foreign_key: :authorship_id, dependent: :restrict_with_error
 
-  validates :reference, :pages, presence: true
+  validates :pages, presence: true
   validate :no_missing_references
 
   before_validation :cleanup_taxts

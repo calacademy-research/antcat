@@ -10,14 +10,21 @@ describe Taxon do
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
     it { is_expected.to belong_to(:protonym).dependent(false) }
     it { is_expected.to belong_to(:name).dependent(:destroy) }
+
+    describe 'required `belongs_to`' do
+      subject(:taxon) { create :family }
+
+      it { is_expected.to belong_to(:name).required }
+      it { is_expected.to belong_to(:protonym).required }
+    end
   end
 
   describe 'validations' do
-    subject(:taxon) { create :family }
+    describe '#status' do
+      subject(:taxon) { build_stubbed :family }
 
-    it { is_expected.to validate_presence_of :name }
-    it { is_expected.to validate_presence_of :protonym }
-    it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
+      it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
+    end
 
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do

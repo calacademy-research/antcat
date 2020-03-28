@@ -27,7 +27,6 @@ module AntCat
       end
     end
 
-    # TODO: See if we can remove presence validations for required `belongs_to` in models.
     config.active_record.belongs_to_required_by_default = true
     config.action_view.form_with_generates_remote_forms = false
 

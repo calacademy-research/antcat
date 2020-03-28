@@ -7,10 +7,7 @@ describe Tribe do
     it { is_expected.to have_many(:subtribes).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:genera).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
-  end
-
-  describe 'validations' do
-    it { is_expected.to validate_presence_of :subfamily }
+    it { is_expected.to belong_to(:subfamily).required }
   end
 
   it "can have genera, which are its children" do

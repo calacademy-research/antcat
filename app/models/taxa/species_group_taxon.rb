@@ -5,7 +5,6 @@ class SpeciesGroupTaxon < Taxon
   belongs_to :genus
   belongs_to :subgenus, optional: true
 
-  validates :genus, presence: true
   validate :ensure_protonym_is_a_species_group_name
 
   def recombination?

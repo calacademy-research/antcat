@@ -8,8 +8,7 @@ class AuthorName < ApplicationRecord
   has_many :reference_author_names, dependent: :restrict_with_error
   has_many :references, through: :reference_author_names, dependent: :restrict_with_error
 
-  validates :author, :name, presence: true
-  validates :name, uniqueness: { case_sensitive: true }
+  validates :name, presence: true, uniqueness: { case_sensitive: true }
 
   before_destroy :ensure_not_authors_only_author_name
   after_update :invalidate_reference_caches!
