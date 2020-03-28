@@ -43,7 +43,6 @@ class DatabaseScriptDecorator < Draper::Decorator
       when DatabaseScript::SLOW_RENDER_TAG   then "warning-label"
       when DatabaseScript::NEW_TAG           then "label"
       when DatabaseScript::UPDATED           then "label"
-      when DatabaseScript::CSV_TAG           then "pretty-label"
       when DatabaseScript::HAS_QUICK_FIX_TAG then "green-label"
       when DatabaseScript::HIGH_PRIORITY_TAG then "high-priority-label"
       else                                        "white-label"
