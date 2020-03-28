@@ -6,14 +6,14 @@ describe ReferenceDecorator do
   subject(:decorated) { reference.decorate }
 
   describe 'notes' do
-    describe '#public_notes, #editor_notes and #taxonomic_notes' do
+    describe '#format_public_notes, #format_editor_notes and #format_taxonomic_notes' do
       context 'with unsafe tags' do
         let(:reference) do
           create :any_reference, public_notes: 'note <script>xss</script>',
             editor_notes: 'note <script>xss</script>', taxonomic_notes: 'note <script>xss</script>'
         end
 
-        %i[public_notes editor_notes taxonomic_notes].each do |method_name|
+        %i[format_public_notes format_editor_notes format_taxonomic_notes].each do |method_name|
           it "sanitizes them" do
             results = decorated.public_send method_name
             expect(results).to_not include '<script>xss</script>'
@@ -34,8 +34,7 @@ describe ReferenceDecorator do
     end
 
     it "creates a link" do
-      expect(decorated.format_document_links).
-        to eq '<a class="pdf-link" href="example.com">PDF</a>'
+      expect(decorated.format_document_links).to eq '<a class="pdf-link" href="example.com">PDF</a>'
     end
   end
 
@@ -63,7 +62,7 @@ describe ReferenceDecorator do
     context 'with unsafe tags' do
       let(:reference) { create :any_reference, title: '<script>xss</script>' }
 
-      it "sanitizes them" do
+      it "sanitizes it" do
         results = decorated.format_title
         expect(results).to_not include '<script>xss</script>'
         expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'

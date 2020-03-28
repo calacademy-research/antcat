@@ -122,26 +122,20 @@
           %th PDF link
           %td=or_dash decorated.pdf_link
 
--if decorated.any_notes?
-  .row.margin-bottom
-    .small-12.columns
-      %h5 Notes
-      %table.table.unstriped
-        %tbody
-          %tr
-            %th Public notes
-            %td=or_dash decorated.public_notes
-          -if current_user
-            %tr.logged-in-only-background
-              %th
-                Editor notes
-                =logged_in_only_tooltip_icon
-              %td=or_dash decorated.editor_notes
-            %tr.logged-in-only-background
-              %th
-                Taxonomic notes
-                =logged_in_only_tooltip_icon
-              %td=or_dash decorated.taxonomic_notes
+        %tr
+          %th Public notes
+          %td=or_dash decorated.format_public_notes
+        -if current_user
+          %tr.logged-in-only-background
+            %th
+              Editor notes
+              =logged_in_only_tooltip_icon
+            %td=or_dash decorated.format_editor_notes
+          %tr.logged-in-only-background
+            %th
+              Taxonomic notes
+              =logged_in_only_tooltip_icon
+            %td=or_dash decorated.format_taxonomic_notes
 
 -if @reference.described_taxa.exists?
   .row.margin-bottom
