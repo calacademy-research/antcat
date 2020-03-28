@@ -32,7 +32,7 @@ module Catalog
         end
 
         format.text do
-          send_data Exporters::TaxaAsTxt[@taxa], filename: download_filename, type: 'text/plain'
+          send_data Exporters::Taxa::TaxaAsTxt[@taxa], filename: download_filename, type: 'text/plain'
         end
       end
     end
