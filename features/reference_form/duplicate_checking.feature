@@ -5,7 +5,7 @@ Feature: Checking for duplicates during data entry
 
   Background:
     Given I log in as a helper editor
-    And this reference exists
+    And this article reference exists
       | author   | citation   | title | citation_year |
       | Ward, P. | Psyche 6:1 | Ants  | 2010          |
 
@@ -25,7 +25,7 @@ Feature: Checking for duplicates during data entry
     Then I should see "Reference was successfully added"
 
   Scenario: Editing a reference that makes it a duplicate
-    Given this reference exists
+    Given this article reference exists
       | author     | citation   | title            | citation_year |
       | Bolton, B. | Psyche 5:3 | Ants are my life | 2010          |
 

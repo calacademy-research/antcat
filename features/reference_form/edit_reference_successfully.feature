@@ -36,7 +36,7 @@ Feature: Edit reference successfully
 
   @javascript
   Scenario: Change a reference's type
-    Given this reference exists
+    Given this article reference exists
       | author     | title | citation   | citation_year |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010          |
 
@@ -68,7 +68,7 @@ Feature: Edit reference successfully
     Then I should see a PDF link
 
   Scenario: Edit a `NestedReference`
-    Given this reference exists
+    Given this article reference exists
       | author     | citation   | citation_year | title |
       | Ward, P.S. | Psyche 5:3 | 2001          | Ants  |
     And the following entry nests it

@@ -25,23 +25,35 @@ end
 
 Given("this/these reference(s) exist(s)") do |table|
   table.hashes.each do |hash|
-    citation = hash.delete('citation') || "Psyche 1:1"
-    matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
-    journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
-
-    hash.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
-
     if (author = hash.delete 'author')
       author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
       hash[:author_names] = [author_name]
     end
 
-    create :article_reference, hash
+    create :any_reference, hash
   end
+end
+
+Given("this article reference exists") do |table|
+  data = table.hashes.first
+
+  citation = data.delete('citation') || "Psyche 1:1"
+  matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
+  journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
+
+  data.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
+
+  if (author = data.delete 'author')
+    author_name = AuthorName.find_by(name: author) || create(:author_name, name: author)
+    data[:author_names] = [author_name]
+  end
+
+  create :article_reference, data
 end
 
 Given("the following entry nests it") do |table|
   data = table.hashes.first
+
   NestedReference.create!(
     title: data[:title],
     author_names: [create(:author_name, name: data[:author])],
@@ -52,7 +64,7 @@ Given("the following entry nests it") do |table|
 end
 
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
-  reference = Reference.find_by(title: title)
+  reference = Reference.find_by!(title: title)
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
 end
 

@@ -29,7 +29,7 @@ Feature: Add reference
 
   @javascript
   Scenario: Adding a `NestedReference`
-    Given this reference exists
+    Given this article reference exists
       | author     | title          | citation_year | citation   |
       | Ward, P.S. | Annals of Ants | 2010          | Psyche 1:1 |
 
