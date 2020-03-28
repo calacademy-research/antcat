@@ -24,10 +24,6 @@ When("I wait") do
   sleep 1
 end
 
-Given("RESET SESSION") do
-  Capybara.reset_sessions!
-end
-
 # Click/press/follow.
 When(/^I click on (.*)$/) do |location|
   css_selector = selector_for location
