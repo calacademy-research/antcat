@@ -19,6 +19,9 @@ module AntCat
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    config.load_defaults 6.0
+    config.autoloader = :classic # TODO: See if we can change this.
+
     # TODO: See if we can fine-tune this.
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
