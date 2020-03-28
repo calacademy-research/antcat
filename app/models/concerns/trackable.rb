@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
-# To save additional parameters:
-# `trackable parameters: proc { { name: name } }`
+# Usage:
+# ```
+#   # in app/models/model.rb
+#   include Trackable
+#
+#   trackable parameters: proc { { name: name } } # Capture parameters, optional.
+# ```
 
 module Trackable
   extend ActiveSupport::Concern
@@ -10,7 +15,7 @@ module Trackable
     class_attribute :activity_parameters
   end
 
-  module ClassMethods
+  class_methods do
     def trackable parameters: proc {}
       self.activity_parameters = parameters
     end
