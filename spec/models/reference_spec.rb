@@ -225,11 +225,12 @@ describe Reference do
     end
 
     context 'when no authors' do
-      let(:reference) do
-        build_stubbed :article_reference, author_names: [], citation_year: '1970a'
-      end
+      let(:reference) { create :article_reference, citation_year: '1970a' }
 
-      specify { expect(reference.keey).to eq '[no authors], 1970a' }
+      specify do
+        expect { reference.author_names = [] }.
+          to change { reference.keey }.to('[no authors], 1970a')
+      end
     end
 
     context 'when one author' do

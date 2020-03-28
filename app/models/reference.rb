@@ -12,6 +12,7 @@ class Reference < ApplicationRecord
 
   # TODO: See if we can remove this. Currently required by `ReferenceForm`.
   attr_accessor :journal_name, :publisher_string
+  attr_accessor :skip_save_refresh_author_names_cache
 
   belongs_to :journal
   belongs_to :publisher
@@ -103,6 +104,7 @@ class Reference < ApplicationRecord
   # TODO: See if we can avoid this.
   def refresh_author_names_cache *args
     assign_author_names_cache args
+    return if Rails.env.test? && skip_save_refresh_author_names_cache
     save(validate: false)
   end
 
@@ -118,6 +120,8 @@ class Reference < ApplicationRecord
   end
 
   def authors_for_keey
+    return ''.html_safe if is_a?(MissingReference)
+
     names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]' # TODO: This can still happen in the reference form.

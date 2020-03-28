@@ -70,7 +70,7 @@ describe References::Formatted::Expanded do
 
     context 'when reference is a `MissingReference`' do
       let(:reference) do
-        create :missing_reference, author_names: [], citation_year: '2010',
+        create :missing_reference, citation_year: '2010',
           citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
       end
 
