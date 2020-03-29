@@ -29,7 +29,7 @@ Feature: Working with authors and their names
     And I follow "Add alternative spelling"
     And I fill in "author_name_name" with "Fisher, B."
     And I press "Save"
-    And I wait
+    And WAIT
     And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, B.; Fisher, B."
 
@@ -53,7 +53,7 @@ Feature: Working with authors and their names
     And I follow "Edit"
     And I fill in "author_name_name" with "Bolton, Z."
     And I press "Save"
-    And I wait
+    And WAIT
     And I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, Z."
     And I should not see "Bolton, B."

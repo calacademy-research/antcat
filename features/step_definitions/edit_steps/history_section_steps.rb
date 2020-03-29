@@ -40,6 +40,6 @@ When("I update the history item to say {string}") do |content|
     And I click on the edit taxon history item button
     And I fill in "taxt" with "#{content}"
     And I click on the save taxon history item button
-    And I wait
+    And WAIT
   )
 end

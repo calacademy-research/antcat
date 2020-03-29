@@ -20,10 +20,6 @@ When("I reload the page") do
   visit current_path
 end
 
-When("I wait") do
-  sleep 1
-end
-
 # Click/press/follow.
 When(/^I click on (.*)$/) do |location|
   css_selector = selector_for location

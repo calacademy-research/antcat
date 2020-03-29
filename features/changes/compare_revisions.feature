@@ -15,7 +15,7 @@ Feature: Compare revisions
     # Added item.
     When I go to the edit page for "Atta"
     And I add a history item "initial content"
-    And I wait
+    And WAIT
     And I go to the activity feed
     And I follow the first linked history item
     And I follow "History"
