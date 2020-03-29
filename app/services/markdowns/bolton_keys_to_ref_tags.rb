@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'English'
+
 module Markdowns
   class BoltonKeysToRefTags
     include Service

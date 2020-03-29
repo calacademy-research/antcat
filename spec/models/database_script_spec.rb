@@ -97,7 +97,7 @@ describe DatabaseScript do
   end
 
   describe "#cached_results" do
-    subject(:database_script) { DatabaseScripts::DatabaseTestScript.new }
+    subject(:database_script) { DatabaseTestScript.new }
 
     # rubocop:disable RSpec/SubjectStub
     context 'when results is present' do
