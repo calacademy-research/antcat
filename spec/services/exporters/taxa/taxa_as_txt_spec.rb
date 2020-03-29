@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::TaxaAsTxt do
+describe Exporters::Taxa::TaxaAsTxt do
   describe "#call" do
     it "formats in text style, rather than HTML" do
       latreille = create :author_name, name: 'Latreille, P. A.'

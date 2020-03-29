@@ -20,8 +20,8 @@ describe SoftValidations do
     end
 
     # Sanity checks.
-    specify { expect(DatabaseScripts::ValidSpeciesList.new.issue_description).to eq nil }
-    specify { expect(DatabaseScripts::ValidSpeciesList.new.slow?).to eq true }
+    specify { expect(DatabaseScripts::TaxaWithSameName.new.issue_description).to eq nil }
+    specify { expect(DatabaseScripts::ProtonymsWithSameName.new.slow?).to eq true }
   end
 
   describe 'testing with a taxon' do

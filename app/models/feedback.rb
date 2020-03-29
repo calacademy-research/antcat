@@ -6,7 +6,7 @@ class Feedback < ApplicationRecord
 
   COMMENT_MAX_LENGTH = 10_000
 
-  belongs_to :user
+  belongs_to :user, optional: true
 
   validates :comment, presence: true, length: { maximum: COMMENT_MAX_LENGTH }
   validate :comment_has_not_previously_been_submitted, on: :create

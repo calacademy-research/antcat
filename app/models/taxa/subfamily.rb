@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Subfamily < Taxon
-  belongs_to :family
+  belongs_to :family, optional: true
 
   with_options dependent: :restrict_with_error do
     has_many :tribes

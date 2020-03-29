@@ -4,7 +4,6 @@ class NestedReference < Reference
   belongs_to :nesting_reference, class_name: 'Reference'
 
   validates :year, :pagination, presence: true
-  validates :nesting_reference, presence: { message: "does not exist" }
   validate :validate_nested_reference_doesnt_point_to_itself
 
   private

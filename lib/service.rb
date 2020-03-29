@@ -4,10 +4,12 @@
 # `ServiceObject[params]` instead of `ServiceObject.new(params).call`.
 
 module Service
-  extend ActiveSupport::Concern
+  def self.included base
+    base.extend(ClassMethods)
+  end
 
-  included do
-    def self.[] *args
+  module ClassMethods
+    def [] *args
       new(*args).call
     end
   end

@@ -43,8 +43,8 @@ class Activity < ApplicationRecord
 
   self.per_page = 30 # For `will_paginate`.
 
-  belongs_to :trackable, polymorphic: true
-  belongs_to :user
+  belongs_to :trackable, polymorphic: true, optional: true
+  belongs_to :user, optional: true # TODO: Only optional for a few actions.
 
   validates :action, presence: true, inclusion: { in: ACTIONS }
 

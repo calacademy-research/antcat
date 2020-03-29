@@ -7,8 +7,6 @@ class ReferenceSection < ApplicationRecord
 
   belongs_to :taxon
 
-  validates :taxon, presence: true
-
   before_validation :cleanup_taxts
 
   acts_as_list scope: :taxon

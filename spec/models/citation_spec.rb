@@ -7,10 +7,10 @@ describe Citation do
 
   describe 'relations' do
     it { is_expected.to have_one(:protonym).dependent(:restrict_with_error) }
+    it { is_expected.to belong_to(:reference).required }
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :reference }
     it { is_expected.to validate_presence_of :pages }
   end
 

@@ -3,15 +3,19 @@
 class Taxon < ApplicationRecord
   include Trackable
 
+  CONCRETE_SUBCLASS_NAMES = Rank::TYPES
+
   self.table_name = :taxa
 
   delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
 
   with_options class_name: 'Taxon' do
-    belongs_to :type_taxon, foreign_key: :type_taxon_id
-    belongs_to :genus
-    belongs_to :homonym_replaced_by
-    belongs_to :current_valid_taxon
+    belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
+    # TODO: `belongs_to :genus` should not be here, but at least used to be required for the advanced search.
+    # Now it's also used in the editors's sidebar (Ctrl+F "belongs_to :genus").
+    belongs_to :genus, optional: true
+    belongs_to :homonym_replaced_by, optional: true
+    belongs_to :current_valid_taxon, optional: true
 
     has_many :current_valid_taxon_of, foreign_key: :current_valid_taxon_id, dependent: :restrict_with_error
     has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id
@@ -24,7 +28,7 @@ class Taxon < ApplicationRecord
   has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
   has_many :reference_sections, -> { order(:position) }, dependent: :destroy
 
-  validates :name, :protonym, presence: true
+  validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }

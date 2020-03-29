@@ -36,7 +36,7 @@ describe Taxa::Search::AdvancedSearch do
       let!(:taxon) { create :subfamily }
 
       before do
-        reference = create :article_reference, citation_year: '1977'
+        reference = create :any_reference, citation_year: '1977'
         taxon.protonym.authorship.update!(reference: reference)
       end
 
@@ -124,7 +124,7 @@ describe Taxa::Search::AdvancedSearch do
 
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
-        reference = create :reference,
+        reference = create :any_reference,
           author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
         taxon = create :family
         taxon.protonym.authorship.update!(reference: reference)
@@ -137,10 +137,10 @@ describe Taxa::Search::AdvancedSearch do
         let!(:bolton_taxon) { create :genus }
         let!(:author) { create :author }
         let!(:bolton_reference) do
-          create :reference, author_names: [create(:author_name, name: 'Bolton', author: author)]
+          create :any_reference, author_names: [create(:author_name, name: 'Bolton', author: author)]
         end
         let!(:barry_reference) do
-          create :reference, author_names: [create(:author_name, name: 'Barry', author: author)]
+          create :any_reference, author_names: [create(:author_name, name: 'Barry', author: author)]
         end
 
         before do

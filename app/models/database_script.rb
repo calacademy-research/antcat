@@ -14,7 +14,6 @@ class DatabaseScript
     SLOW_RENDER_TAG = "slow-render",
     NEW_TAG = "new!",
     UPDATED = "updated!",
-    CSV_TAG = "csv",
     REGRESSION_TEST_TAG = "regression-test",
     LIST_TAG = "list",
     VALIDATED_TAG = "validated",

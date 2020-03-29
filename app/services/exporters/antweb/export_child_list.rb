@@ -14,7 +14,7 @@ module Exporters
       def call
         content = ''.html_safe
 
-        Taxa::ChildList[taxon].each do |child_list|
+        ::Taxa::ChildList[taxon].each do |child_list|
           content << child_list(child_list[:label], child_list[:children])
         end
 
@@ -37,7 +37,7 @@ module Exporters
         end
 
         def child_list_items children
-          children.map { |child| Exporters::Antweb::Exporter.antcat_taxon_link_with_name child }.join(', ').html_safe
+          children.map { |child| AntwebFormatter.link_to_taxon(child) }.join(', ').html_safe
         end
     end
   end

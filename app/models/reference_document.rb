@@ -4,7 +4,7 @@
 # TODO: Paperclip has been deprecated, see https://github.com/thoughtbot/paperclip
 
 class ReferenceDocument < ApplicationRecord
-  belongs_to :reference
+  belongs_to :reference, optional: true # TODO: Probably require after cleaning up records.
 
   validate :check_url, :ensure_url_has_protocol
 

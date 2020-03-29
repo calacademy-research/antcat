@@ -3,10 +3,13 @@
 require 'rails_helper'
 
 describe ArticleReference do
+  describe 'relations' do
+    it { is_expected.to belong_to(:journal).required }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of :year }
     it { is_expected.to validate_presence_of :series_volume_issue }
-    it { is_expected.to validate_presence_of :journal }
     it { is_expected.to validate_presence_of :pagination }
   end
 

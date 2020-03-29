@@ -7,9 +7,9 @@ class Issue < ApplicationRecord
   TITLE_MAX_LENGTH = 100
 
   belongs_to :adder, class_name: "User"
-  belongs_to :closer, class_name: "User"
+  belongs_to :closer, class_name: "User", optional: true
 
-  validates :adder, :description, presence: true
+  validates :description, presence: true
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }
 
   scope :open, -> { where(open: true) }

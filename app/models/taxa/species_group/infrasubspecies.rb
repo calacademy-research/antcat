@@ -4,8 +4,6 @@ class Infrasubspecies < SpeciesGroupTaxon
   belongs_to :species
   belongs_to :subspecies
 
-  validates :species, :subspecies, presence: true
-
   def parent
     subspecies
   end

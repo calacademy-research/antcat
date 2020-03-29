@@ -6,7 +6,7 @@ describe References::SearchController do
   describe "GET index", as: :visitor do
     describe "search terms matching ids" do
       context "when reference exists" do
-        let!(:reference) { create :article_reference }
+        let!(:reference) { create :any_reference }
 
         it "redirects to the reference" do
           get :index, params: { reference_q: reference.id }

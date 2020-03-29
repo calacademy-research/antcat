@@ -35,11 +35,10 @@ When("I add a history item {string}") do |content|
   step %(I press "Save")
 end
 
-When("I update the history item to say {string}") do |content|
-  steps %(
-    And I click on the edit taxon history item button
-    And I fill in "taxt" with "#{content}"
-    And I click on the save taxon history item button
-    And I wait
-  )
+When("I update the most recent history item to say {string}") do |content|
+  TaxonHistoryItem.last.update!(taxt: content)
+end
+
+When("I delete the most recent history item") do
+  TaxonHistoryItem.last.destroy
 end

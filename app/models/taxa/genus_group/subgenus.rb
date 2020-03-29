@@ -5,8 +5,6 @@ class Subgenus < GenusGroupTaxon
 
   has_many :species, dependent: :restrict_with_error
 
-  validates :genus, presence: true
-
   def parent
     genus
   end

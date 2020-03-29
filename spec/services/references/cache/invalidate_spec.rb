@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe References::Cache::Invalidate do
   describe "#call" do
-    let(:reference) { create :article_reference }
+    let(:reference) { create :any_reference }
 
     it "nilifies caches" do
       References::Cache::Regenerate[reference]

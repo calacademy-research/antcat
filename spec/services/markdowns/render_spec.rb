@@ -35,7 +35,7 @@ describe Markdowns::Render do
 
     describe "reference ids" do
       context "when reference exists" do
-        let(:reference) { create :article_reference }
+        let(:reference) { create :any_reference }
         let(:markdown) { "%reference#{reference.id}" }
         let(:taxt_markdown) { "{ref #{reference.id}}" }
 

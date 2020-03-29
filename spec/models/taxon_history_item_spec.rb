@@ -5,9 +5,12 @@ require 'rails_helper'
 describe TaxonHistoryItem do
   it { is_expected.to be_versioned }
 
+  describe 'relations' do
+    it { is_expected.to belong_to(:taxon).required }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of :taxt }
-    it { is_expected.to validate_presence_of :taxon }
   end
 
   it_behaves_like "a taxt column with cleanup", :taxt do

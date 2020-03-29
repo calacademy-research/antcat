@@ -5,13 +5,13 @@ require 'rails_helper'
 describe Taxa::CollectReferences do
   describe "#call" do
     let!(:taxon) { create :family }
-    let!(:reference_1) { create :article_reference }
-    let!(:reference_2) { create :article_reference }
-    let!(:reference_3) { create :article_reference }
-    let!(:reference_4) { create :article_reference }
-    let!(:reference_5) { create :article_reference }
-    let!(:reference_6) { create :article_reference }
-    let!(:reference_7) { create :article_reference }
+    let!(:reference_1) { create :any_reference }
+    let!(:reference_2) { create :any_reference }
+    let!(:reference_3) { create :any_reference }
+    let!(:reference_4) { create :any_reference }
+    let!(:reference_5) { create :any_reference }
+    let!(:reference_6) { create :any_reference }
+    let!(:reference_7) { create :any_reference }
 
     before do
       taxon.update!(

@@ -6,14 +6,14 @@ describe ReferenceDecorator do
   subject(:decorated) { reference.decorate }
 
   describe 'notes' do
-    describe '#public_notes, #editor_notes and #taxonomic_notes' do
+    describe '#format_public_notes, #format_editor_notes and #format_taxonomic_notes' do
       context 'with unsafe tags' do
         let(:reference) do
-          create :unknown_reference, public_notes: 'note <script>xss</script>',
+          create :any_reference, public_notes: 'note <script>xss</script>',
             editor_notes: 'note <script>xss</script>', taxonomic_notes: 'note <script>xss</script>'
         end
 
-        %i[public_notes editor_notes taxonomic_notes].each do |method_name|
+        %i[format_public_notes format_editor_notes format_taxonomic_notes].each do |method_name|
           it "sanitizes them" do
             results = decorated.public_send method_name
             expect(results).to_not include '<script>xss</script>'
@@ -34,26 +34,25 @@ describe ReferenceDecorator do
     end
 
     it "creates a link" do
-      expect(decorated.format_document_links).
-        to eq '<a class="pdf-link" href="example.com">PDF</a>'
+      expect(decorated.format_document_links).to eq '<a class="pdf-link" href="example.com">PDF</a>'
     end
   end
 
   describe "#format_review_state" do
     context "when `review_state` is 'reviewed'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'reviewed' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'reviewed' }
 
       specify { expect(decorated.format_review_state).to eq 'Reviewed' }
     end
 
     context "when `review_state` is 'reviewing'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'reviewing' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'reviewing' }
 
       specify { expect(decorated.format_review_state).to eq 'Being reviewed' }
     end
 
     context "when `review_state` is 'none'" do
-      let(:reference) { build_stubbed :article_reference, review_state: 'none' }
+      let(:reference) { build_stubbed :any_reference, review_state: 'none' }
 
       specify { expect(decorated.format_review_state).to eq 'Not reviewed' }
     end
@@ -61,9 +60,9 @@ describe ReferenceDecorator do
 
   describe '#format_title' do
     context 'with unsafe tags' do
-      let(:reference) { create :article_reference, title: '<script>xss</script>' }
+      let(:reference) { create :any_reference, title: '<script>xss</script>' }
 
-      it "sanitizes them" do
+      it "sanitizes it" do
         results = decorated.format_title
         expect(results).to_not include '<script>xss</script>'
         expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'

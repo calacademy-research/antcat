@@ -4,8 +4,6 @@ class Subtribe < Taxon
   belongs_to :subfamily
   belongs_to :tribe
 
-  validates :subfamily, :tribe, presence: true
-
   def parent
     tribe
   end

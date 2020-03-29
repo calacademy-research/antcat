@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ReferenceForm do
   describe "#save" do
     describe "updating attributes" do
-      let!(:reference) { create :unknown_reference }
+      let!(:reference) { create :any_reference }
       let(:params) do
         {
           bolton_key: "Smith, 1858b",
@@ -25,7 +25,7 @@ describe ReferenceForm do
 
     describe "updating author names" do
       let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
-      let!(:reference) { create :unknown_reference, author_names: author_names }
+      let!(:reference) { create :any_reference, author_names: author_names }
 
       context "when author names have not changed" do
         let(:params) do
@@ -103,7 +103,7 @@ describe ReferenceForm do
               create(:author_name, name: "Glaber, G.")
             ]
           end
-          let!(:reference) { create :unknown_reference, author_names: author_names }
+          let!(:reference) { create :any_reference, author_names: author_names }
           # TODO: Being extra explicit here since the class mutates the `params`.
           let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
           let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
@@ -155,7 +155,7 @@ describe ReferenceForm do
               create(:author_name, name: "Glaber, G.")
             ]
           end
-          let!(:reference) { create :unknown_reference, author_names: author_names }
+          let!(:reference) { create :any_reference, author_names: author_names }
           let(:params) do
             {
               bolton_key: "Smith, 1858b",
@@ -181,7 +181,7 @@ describe ReferenceForm do
     describe 'reference documents' do
       context 'when creating a reference' do
         context 'when no `file` or `url` is given' do
-          let!(:reference) { build :unknown_reference }
+          let!(:reference) { build :any_reference }
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
@@ -199,7 +199,7 @@ describe ReferenceForm do
         end
 
         context 'when a `file` or `url` is given' do
-          let!(:reference) { build :unknown_reference }
+          let!(:reference) { build :any_reference }
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
@@ -230,7 +230,7 @@ describe ReferenceForm do
         end
 
         context 'when reference has a document' do
-          let!(:reference) { create :unknown_reference, :with_document }
+          let!(:reference) { create :any_reference, :with_document }
 
           it 'does not create a new `ReferenceDocument`s' do
             expect(ReferenceDocument.count).to eq 1

@@ -8,7 +8,6 @@ class SiteNotice < ApplicationRecord
 
   belongs_to :user
 
-  validates :user, presence: true
   validates :message, presence: true
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }
 

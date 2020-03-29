@@ -32,7 +32,7 @@ module Exporters
             taxon = Taxon.find_by(id: Regexp.last_match(1))
 
             if taxon
-              Exporters::Antweb::Exporter.antcat_taxon_link_with_name taxon
+              AntwebFormatter.link_to_taxon(taxon)
             end
           end
         end
@@ -43,7 +43,7 @@ module Exporters
             taxon = Taxon.find_by(id: Regexp.last_match(1))
 
             if taxon
-              Exporters::Antweb::Exporter.antcat_taxon_link_with_name_and_author_citation taxon
+              AntwebFormatter.link_to_taxon_with_author_citation(taxon)
             end
           end
         end

@@ -4,6 +4,13 @@ class Reference < ApplicationRecord
   include WorkflowActiverecord
   include Trackable
 
+  CONCRETE_SUBCLASS_NAMES = %w[
+    ArticleReference
+    BookReference
+    NestedReference
+    UnknownReference
+    MissingReference
+  ]
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
     plain_text_cache
     expandable_reference_cache
@@ -12,9 +19,7 @@ class Reference < ApplicationRecord
 
   # TODO: See if we can remove this. Currently required by `ReferenceForm`.
   attr_accessor :journal_name, :publisher_string
-
-  belongs_to :journal
-  belongs_to :publisher
+  attr_accessor :skip_save_refresh_author_names_cache
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
@@ -28,6 +33,7 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
+  validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
   validates :title, presence: true
   validates :author_names, presence: true, unless: -> { is_a?(MissingReference) }
@@ -49,9 +55,9 @@ class Reference < ApplicationRecord
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
-    :editor_notes, :public_notes, :taxonomic_notes, :title,
+    :public_notes, :editor_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-     :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
+    :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
@@ -61,12 +67,12 @@ class Reference < ApplicationRecord
     text(:author_names_string)
     text(:citation_year)
     text(:title)
-    text(:journal_name) { journal&.name }
-    text(:publisher_name) { publisher&.name }
+    text(:journal_name) { journal&.name if respond_to?(:journal) }
+    text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
     text(:year_as_string) { year&.to_s }
     text(:citation)
-    text(:editor_notes)
     text(:public_notes)
+    text(:editor_notes)
     text(:taxonomic_notes)
     text(:bolton_key)
     text(:authors_for_keey) { authors_for_keey } # To find "et al".
@@ -103,6 +109,7 @@ class Reference < ApplicationRecord
   # TODO: See if we can avoid this.
   def refresh_author_names_cache *args
     assign_author_names_cache args
+    return if Rails.env.test? && skip_save_refresh_author_names_cache
     save(validate: false)
   end
 
@@ -118,6 +125,8 @@ class Reference < ApplicationRecord
   end
 
   def authors_for_keey
+    return ''.html_safe if is_a?(MissingReference)
+
     names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]' # TODO: This can still happen in the reference form.
@@ -142,6 +151,7 @@ class Reference < ApplicationRecord
 
     # TODO: Probably just use `references.year` instead of this once `MissingReference` has been remvoed.
     def citation_year_without_extras
+      return if citation_year.blank?
       citation_year.gsub(/ .*$/, '')
     end
 

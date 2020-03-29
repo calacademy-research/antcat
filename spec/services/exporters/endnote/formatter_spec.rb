@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Exporters::Endnote::Formatter do
   describe '#call' do
-    it "formats a book reference correctly" do
+    it "formats a `BookReference` correctly" do
       reference = create :book_reference,
         author_names: [create(:author_name, name: 'Bolton, B.')],
         title: 'Ants Are My Life',
@@ -43,7 +43,7 @@ describe Exporters::Endnote::Formatter do
 )
     end
 
-    it "formats a article reference correctly" do
+    it "formats an `ArticleReference` correctly" do
       reference = create :article_reference,
         author_names: [create(:author_name, name: 'MacKay, W.')],
         citation_year: '1941',
@@ -109,33 +109,11 @@ describe Exporters::Endnote::Formatter do
 }
     end
 
-    it "doesn't export blank public and taxonomic notes" do
-      reference = create :article_reference,
-        author_names: [create(:author_name, name: 'MacKay, W.')],
-        citation_year: '1941',
-        title: '*A title*',
-        journal: create(:journal, name: 'Psyche'),
-        series_volume_issue: '1(2)',
-        pagination: '3-4',
-        public_notes: '',
-        taxonomic_notes: ''
-      expect(described_class[[reference]]).to eq %{%0 Journal Article
-%A MacKay, W.
-%D 1941
-%T A title
-%J Psyche
-%N 1(2)
-%P 3-4
-%~ AntCat
-
-}
-    end
-
     it "bails on a class it doesn't know about " do
       expect { described_class[['']] }.to raise_error("reference type not supported")
     end
 
-    it "formats an unknown reference correctly" do
+    it "formats an `UnknownReference` correctly" do
       reference = create :unknown_reference,
         author_names: [create(:author_name, name: 'MacKay, W.')],
         citation_year: '1933',
@@ -151,7 +129,7 @@ describe Exporters::Endnote::Formatter do
 )
     end
 
-    it "doesn't output nested references" do
+    it "doesn't output `NestedReference`s" do
       reference = create :nested_reference
       expect(described_class[[reference]]).to eq "\n"
     end

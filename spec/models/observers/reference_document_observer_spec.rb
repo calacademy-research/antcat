@@ -6,7 +6,7 @@ describe ReferenceDocumentObserver do
   context "when a reference document is changed" do
     it "invalidates the cache for the reference that uses the reference document" do
       # Setup.
-      reference = create :article_reference
+      reference = create :any_reference
       reference_document = create :reference_document, reference: reference
       References::Cache::Regenerate[reference]
       reference.reload

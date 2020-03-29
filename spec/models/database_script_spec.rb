@@ -41,7 +41,7 @@ describe DatabaseScript do
   describe '#soft_validated?' do
     it 'returns true if the script is used for taxon soft-validations' do
       expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
-      expect(DatabaseScripts::ValidSpeciesList.new.soft_validated?).to eq false
+      expect(DatabaseScripts::ProtonymsWithSameName.new.soft_validated?).to eq false
     end
   end
 

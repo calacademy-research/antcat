@@ -5,7 +5,7 @@ require 'rails_helper'
 describe References::NewFromCopy do
   describe '#call' do
     describe 'copying common attributes' do
-      let!(:reference) { create :article_reference, public_notes: '1', editor_notes: '2', taxonomic_notes: '3' }
+      let!(:reference) { create :article_reference, :with_notes }
 
       specify do
         copy = described_class[reference]
@@ -18,14 +18,14 @@ describe References::NewFromCopy do
           :public_notes,
           :editor_notes,
           :taxonomic_notes
-        ].each do |attribtue|
-          expect(copy.public_send(attribtue)).to eq reference.public_send(attribtue)
-          expect(copy.public_send(attribtue)).to_not eq nil
+        ].each do |attribute|
+          expect(copy.public_send(attribute)).to eq reference.public_send(attribute)
+          expect(copy.public_send(attribute)).to_not eq nil
         end
       end
     end
 
-    context "when reference is an article reference" do
+    context "when reference is an `ArticleReference`" do
       let!(:reference) { create :article_reference }
 
       specify do
@@ -40,7 +40,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is a book reference" do
+    context "when reference is a `BookReference`" do
       let!(:reference) { create :book_reference }
 
       specify do
@@ -53,7 +53,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is an unknown reference" do
+    context "when reference is an `UnknownReference`" do
       let!(:reference) { create :unknown_reference }
 
       specify do
@@ -66,7 +66,7 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is a nested reference" do
+    context "when reference is a `NestedReference`" do
       let!(:reference) { create :nested_reference }
 
       specify do
@@ -82,7 +82,7 @@ describe References::NewFromCopy do
     end
 
     context "when reference has a document" do
-      let!(:reference) { create :article_reference, :with_document }
+      let!(:reference) { create :any_reference, :with_document }
 
       it 'does not copy the document' do
         copy = described_class[reference]

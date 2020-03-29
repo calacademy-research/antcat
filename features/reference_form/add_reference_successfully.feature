@@ -4,7 +4,7 @@ Feature: Add reference
     And I go to the references page
     And I follow "New"
 
-  Scenario: Adding an article
+  Scenario: Adding an `ArticleReference`
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
@@ -17,7 +17,7 @@ Feature: Add reference
     And I should see "Ward, B.L. & Bolton, B., 1981a"
 
   @javascript
-  Scenario: Adding a book
+  Scenario: Adding a `BookReference`
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"
@@ -28,8 +28,8 @@ Feature: Add reference
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. New York: Houghton Mifflin, 32 pp."
 
   @javascript
-  Scenario: Adding a nested reference
-    Given this reference exists
+  Scenario: Adding a `NestedReference`
+    Given this article reference exists
       | author     | title          | citation_year | citation   |
       | Ward, P.S. | Annals of Ants | 2010          | Psyche 1:1 |
 
@@ -43,7 +43,7 @@ Feature: Add reference
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1"
 
   @javascript
-  Scenario: Adding an 'Other' reference
+  Scenario: Adding an `Unknownference`
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_citation_year" with "1981"

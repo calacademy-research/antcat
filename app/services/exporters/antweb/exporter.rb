@@ -7,20 +7,6 @@ module Exporters
     class Exporter
       include Service
 
-      def self.antcat_taxon_link taxon, label = "AntCat"
-        url = "https://www.antcat.org/catalog/#{taxon.id}"
-        %(<a href="#{url}">#{label}</a>).html_safe
-      end
-
-      def self.antcat_taxon_link_with_name taxon
-        antcat_taxon_link taxon, taxon.name_with_fossil
-      end
-
-      # TODO: Improve this and related methods. Probably use `AntwebFormatter`.
-      def self.antcat_taxon_link_with_name_and_author_citation taxon
-        antcat_taxon_link_with_name(taxon) << ' ' << taxon.author_citation.html_safe
-      end
-
       def initialize filename
         @filename = filename
         @progress = progress_bar taxa_ids.size unless Rails.env.test?

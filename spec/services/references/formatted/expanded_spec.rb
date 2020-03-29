@@ -70,7 +70,7 @@ describe References::Formatted::Expanded do
 
     context 'when reference is a `MissingReference`' do
       let(:reference) do
-        create :missing_reference, author_names: [], citation_year: '2010',
+        create :missing_reference, citation_year: '2010',
           citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
       end
 
@@ -101,7 +101,7 @@ describe References::Formatted::Expanded do
     end
 
     context 'when reference is online early' do
-      let(:reference) { create :article_reference, online_early: true }
+      let(:reference) { create :any_reference, online_early: true }
 
       specify { expect(formatter.call).to include ' [online early]' }
     end

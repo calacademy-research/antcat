@@ -6,7 +6,7 @@ describe ReferenceAuthorName do
   it { is_expected.to be_versioned }
 
   describe '#invalidate_reference_caches!' do
-    let!(:reference) { create :article_reference }
+    let!(:reference) { create :any_reference }
     let!(:reference_author_names) { reference.reference_author_names.first }
 
     before do

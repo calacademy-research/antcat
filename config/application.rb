@@ -9,15 +9,14 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 module AntCat
-  # TODO: Very primitive feature toggling.
-  # Added to make is easier to disable 'Fix Random!' in case of performance issues.
-  SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG = true
-
   class Application < Rails::Application
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    config.load_defaults 6.0
+    config.autoloader = :classic # TODO: See if we can change this.
 
     # TODO: See if we can fine-tune this.
     config.middleware.insert_before(0, Rack::Cors) do
@@ -27,7 +26,7 @@ module AntCat
       end
     end
 
-    config.active_record.belongs_to_required_by_default = false # TODO: See if we can change this.
+    config.active_record.belongs_to_required_by_default = true
     config.action_view.form_with_generates_remote_forms = false
 
     config.action_mailer.default_url_options = { host: "antcat.org" }

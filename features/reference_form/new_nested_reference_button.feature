@@ -1,6 +1,6 @@
 Feature: Add new nested reference button
-  Scenario: Add new nested reference using the button
-    Given this reference exists
+  Scenario: Add new `NestedReference` using the button
+    Given this article reference exists
       | citation_year | citation   |
       | 2010          | Psyche 1:1 |
     And I log in as a helper editor

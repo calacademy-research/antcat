@@ -2,7 +2,6 @@ Feature: Editing references sections
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript
   Scenario: Adding a reference section (with edit summary)
     Given there is a genus "Atta"
 

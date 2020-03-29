@@ -57,7 +57,7 @@
       =Detax[synonym_history_item.taxt]
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
--if AntCat::SHOW_FAILED_SOFT_VALIDATION_IN_CATALOG && !taxon.is_a?(Family)
+-if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning
       %h6
@@ -96,6 +96,7 @@
               =dash
               this page
             -else
+              -# TODO: This depends on `belongs_to :genus` being defined in `Taxon`, which we don't want.
               -obsolete_combinations_in_genus = taxon.obsolete_combinations.where(genus: oc_per_item)
               -if obsolete_combinations_in_genus.present?
                 %ul.no-bullet

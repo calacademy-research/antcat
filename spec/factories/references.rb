@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :reference do
     transient do
-      author_name {}
+      author_string {}
     end
 
     sequence(:title) { |n| "Ants are my life#{n}" }
@@ -12,6 +12,15 @@ FactoryBot.define do
     after(:stub) do |reference, evaluator|
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
+      else
+        # To make sure we're not adding author names when explicitly passed as an empty array.
+        # It's not a super important check, and it's required since `valuator.author_names`
+        # is passed as an empty array if nothing is specified.
+        raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
+
+        reference.skip_save_refresh_author_names_cache = true
+        author_names = build_stubbed_list(:author_name, 1)
+        author_names.each { |author_name| reference.association(:author_names).add_to_target(author_name) }
       end
     end
 
@@ -20,11 +29,13 @@ FactoryBot.define do
 
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
-      elsif evaluator.author_name
-        author_name = AuthorName.find_by(name: evaluator.author_name)
-        author_name ||= create :author_name, name: evaluator.author_name
+      elsif evaluator.author_string
+        author_name = AuthorName.find_by(name: evaluator.author_string)
+        author_name ||= create :author_name, name: evaluator.author_string
         reference.author_names << author_name
       else
+        # See comment above.
+        raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
         reference.author_names = [create(:author_name)]
       end
     end
@@ -40,7 +51,7 @@ FactoryBot.define do
       sequence(:pagination) { |n| "#{n} pp." }
     end
 
-    factory :unknown_reference, class: 'UnknownReference' do
+    factory :unknown_reference, class: 'UnknownReference', aliases: [:any_reference] do
       sequence(:citation) { |n| "New York #{n}" }
     end
 
@@ -61,6 +72,12 @@ FactoryBot.define do
 
     trait :with_document do
       association :document, factory: :reference_document
+    end
+
+    trait :with_notes do
+      sequence(:public_notes) { |n| "public_notes #{n}" }
+      sequence(:editor_notes) { |n| "editor_notes #{n}" }
+      sequence(:taxonomic_notes) { |n| "taxonomic_notes #{n}" }
     end
   end
 end

@@ -8,10 +8,10 @@ describe AuthorName do
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:references).dependent(:restrict_with_error) }
+    it { is_expected.to belong_to(:author).required }
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :author }
     it { is_expected.to validate_presence_of :name }
 
     describe "uniqueness validation" do
@@ -69,7 +69,7 @@ describe AuthorName do
 
   describe '#invalidate_reference_caches!' do
     let!(:author_name) { create :author_name, name: 'Ward' }
-    let!(:reference) { create :article_reference, author_names: [author_name] }
+    let!(:reference) { create :any_reference, author_names: [author_name] }
 
     it "refreshes `author_names_string_cache` its references" do
       expect { author_name.update!(name: 'Fisher') }.

@@ -13,10 +13,6 @@
   .small-12.medium-9.columns.end
     .callout.primary
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::CSV_TAG]
-        scripts can be exported as
-        =external_link_to "Comma-Separated Values", "https://en.wikipedia.org/wiki/Comma-separated_values"
-      %p
         =DatabaseScript.decorate_class.format_tags [DatabaseScript::VALIDATED_TAG]
         means that there are validations in place to prevent the issue
       %p

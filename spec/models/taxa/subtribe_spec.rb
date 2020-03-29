@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe Subtribe do
-  describe 'validations' do
-    it { is_expected.to validate_presence_of :subfamily }
-    it { is_expected.to validate_presence_of :tribe }
+  describe 'relations' do
+    it { is_expected.to belong_to(:subfamily).required }
+    it { is_expected.to belong_to(:tribe).required }
   end
 
   describe "#parent" do

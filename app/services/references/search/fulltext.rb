@@ -10,7 +10,7 @@ module References
         keywords: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
         doi: nil, reference_type: nil, page: 1, per_page: 30
       )
-        @keywords = keywords
+        @keywords = keywords # TODO: Probably rename to `freetext` since most params are "keywords".
         # Hyphens, asterixes and colons makes Solr go bananas.
         @title = title.gsub(/-|:|\*/, ' ') if title
         @author = author.gsub(/-|:/, ' ') if author

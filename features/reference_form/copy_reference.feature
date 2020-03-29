@@ -7,8 +7,8 @@ Feature: Copy reference
   Background:
     Given I log in as a helper editor
 
-  Scenario: Copy an article reference
-    Given this reference exist
+  Scenario: Copy an `ArticleReference`
+    Given this article reference exists
       | author     | title          | citation | citation_year |
       | Ward, P.S. | Annals of Ants | Ants 1:2 | 1910          |
     And I go to the page of the most recent reference

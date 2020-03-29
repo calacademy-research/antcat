@@ -1,7 +1,7 @@
 Feature: Reference selector
   Background:
     Given I log in as a catalog editor
-    And these references exists
+    And these references exist
       | author   | citation_year |
       | Fisher   | 2004          |
       | Fisher   | 2004          |

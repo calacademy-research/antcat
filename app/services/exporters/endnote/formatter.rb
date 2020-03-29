@@ -114,7 +114,7 @@ module Exporters
     end
 
     class NestedFormatter < BaseFormatter
-      # Don't know how to get EndNote to handle nested references.
+      # Don't know how to get EndNote to handle `NestedReference`s.
       def call
         ''
       end

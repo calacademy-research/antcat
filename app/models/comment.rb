@@ -8,8 +8,7 @@ class Comment < ApplicationRecord
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
-  validates :user, :body, presence: true
-  validates :body, length: { maximum: BODY_MAX_LENGTH }
+  validates :body, presence: true, length: { maximum: BODY_MAX_LENGTH }
 
   scope :order_by_date, -> { order(created_at: :desc) }
   scope :most_recent, ->(number = 5) { order_by_date.include_associations.limit(number) }

@@ -28,16 +28,7 @@ class DatabaseScriptsController < ApplicationController
     # :nocov:
 
     @database_script = find_database_script
-
-    respond_to do |format|
-      format.html do
-        @rendered, @render_duration = timed_render
-      end
-
-      format.csv do
-        send_data @database_script.to_csv, filename: csv_filename
-      end
-    end
+    @rendered, @render_duration = timed_render
   end
 
   private
@@ -54,9 +45,5 @@ class DatabaseScriptsController < ApplicationController
       render_duration = Time.current - start
 
       [rendered, render_duration]
-    end
-
-    def csv_filename
-      "antcat_org__#{@database_script.filename_without_extension}__#{Time.zone.today}.csv"
     end
 end

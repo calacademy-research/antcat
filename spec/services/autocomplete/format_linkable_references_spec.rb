@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Autocomplete::FormatLinkableReferences do
   describe "#call" do
     describe "output format" do
-      context "when a nested reference" do
+      context "when reference is a `NestedReference`" do
         let(:reference) { create :nested_reference, bolton_key: "Smith, 1858b" }
 
         specify do

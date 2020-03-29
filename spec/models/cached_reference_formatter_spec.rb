@@ -5,7 +5,7 @@ require 'rails_helper'
 describe CachedReferenceFormatter do
   subject(:formatter) { described_class.new(reference) }
 
-  let(:reference) { create :article_reference }
+  let(:reference) { create :any_reference }
 
   describe "#plain_text" do
     specify { expect(formatter.plain_text.html_safe?).to eq true }

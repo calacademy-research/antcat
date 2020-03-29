@@ -3,9 +3,9 @@
 require 'rails_helper'
 
 describe ReferenceObserver do
-  let(:reference) { create :article_reference }
+  describe "`NestedReference`s" do
+    let(:reference) { create :any_reference }
 
-  describe "nested references" do
     context "when a nesting_reference is changed" do
       let(:nestee) { create :nested_reference, nesting_reference: reference }
 
@@ -60,6 +60,7 @@ describe ReferenceObserver do
   end
 
   context "when a reference document is changed" do
+    let(:reference) { create :any_reference }
     let(:reference_document) { create :reference_document, reference: reference }
 
     before do

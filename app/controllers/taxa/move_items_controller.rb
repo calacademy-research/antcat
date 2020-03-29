@@ -12,8 +12,9 @@ module Taxa
       @taxon = find_taxon
       @to_taxon = find_to_taxon
 
-      return if @to_taxon
-      redirect_to({ action: :new }, alert: "Target must be specified.")
+      unless @to_taxon
+        redirect_to({ action: :new }, alert: "Target must be specified.")
+      end
     end
 
     def create

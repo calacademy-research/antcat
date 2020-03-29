@@ -16,17 +16,17 @@
   -if reference.public_notes?
     %p.notes
       %span.note Notes:
-      =decorated.public_notes
+      =decorated.format_public_notes
   -if current_user
     -if reference.editor_notes?
       %p.notes.logged-in-only-background
         %span.note
           Editor notes:
           =logged_in_only_tooltip_icon
-        =decorated.editor_notes
+        =decorated.format_editor_notes
     -if reference.taxonomic_notes?
       %p.notes.logged-in-only-background
         %span.note
           Taxonomic notes:
           =logged_in_only_tooltip_icon
-        =decorated.taxonomic_notes
+        =decorated.format_taxonomic_notes

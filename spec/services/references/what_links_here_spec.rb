@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe References::WhatLinksHere do
-  let(:reference) { create :article_reference }
+  let(:reference) { create :any_reference }
 
   describe "#call" do
     context 'when there are no references' do

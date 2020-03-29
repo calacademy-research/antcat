@@ -39,7 +39,7 @@ describe ProtonymsController do
           pages: '99',
           forms: 'worker',
           notes_taxt: 'see Lasius',
-          reference_id: create(:article_reference).id
+          reference_id: create(:any_reference).id
         }
       }
     end
@@ -96,7 +96,7 @@ describe ProtonymsController do
           pages: '99',
           forms: 'worker',
           notes_taxt: 'see Lasius',
-          reference_id: create(:article_reference).id
+          reference_id: create(:any_reference).id
         }
       }
     end
