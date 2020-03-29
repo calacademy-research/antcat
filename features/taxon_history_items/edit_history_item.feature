@@ -19,7 +19,6 @@ Feature: Editing a history item
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
-  @javascript
   Scenario: Adding a history item with blank taxt
     Given there is a genus "Atta"
 
