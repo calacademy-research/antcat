@@ -16,7 +16,6 @@ module AntCat
     # the framework and any gems in your application.
 
     config.load_defaults 6.0
-    config.autoloader = :classic # TODO: See if we can change this.
 
     # TODO: See if we can fine-tune this.
     config.middleware.insert_before(0, Rack::Cors) do
@@ -37,17 +36,8 @@ module AntCat
       :reference_observer
     ]
 
-    # TODO: Models and decorators are explicitly added to the autoload and eager load
-    # paths since STI models are organized in subdirs without proper modules. This is OK
-    # for now, but we may want to revisit it once we have decreased the number of
-    # subclasses (which was the original motive for this non-Railsy structure).
-    config.eager_load_paths += Dir["#{config.root}/app/models/**/*"]
-    config.eager_load_paths += Dir["#{config.root}/app/decorators/**/"]
-    config.eager_load_paths += Dir["#{config.root}/lib/**/"]
-
-    config.autoload_paths += Dir["#{config.root}/app/models/**/*"]
-    config.autoload_paths += Dir["#{config.root}/app/decorators/**/"]
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    config.eager_load_paths += Dir["#{config.root}/lib"]
+    config.autoload_paths += Dir["#{config.root}/lib"]
 
     config.secret_key_base = Settings.rails.secret_key_base
 

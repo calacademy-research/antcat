@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe DatabaseScripts::Rendering do
-  let(:script) { DatabaseScripts::DatabaseTestScript.new }
+  let(:script) { DatabaseTestScript.new }
 
   describe "#render" do
     context "when the script has not defined `#render`" do
