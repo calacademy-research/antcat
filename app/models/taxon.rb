@@ -7,7 +7,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  delegate(*CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
+  delegate(*Taxa::CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
@@ -126,7 +126,7 @@ class Taxon < ApplicationRecord
   # data is being migrated to "virtual history items", we want to be able to "preview" items before we actually make
   # them publicly visible in the catalog.
   def all_virtual_history_items
-    @all_virtual_history_items ||= VirtualHistoryItemsForTaxon[self]
+    @all_virtual_history_items ||= Taxa::VirtualHistoryItemsForTaxon[self]
   end
 
   def policy
@@ -153,7 +153,7 @@ class Taxon < ApplicationRecord
   end
 
   def cleanup_taxon
-    @cleanup_taxon ||= CleanupTaxon.new(self)
+    @cleanup_taxon ||= Taxa::CleanupTaxon.new(self)
   end
 
   private

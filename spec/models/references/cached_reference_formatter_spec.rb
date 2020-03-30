@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CachedReferenceFormatter do
+describe References::CachedReferenceFormatter do
   subject(:formatter) { described_class.new(reference) }
 
   let(:reference) { create :any_reference }

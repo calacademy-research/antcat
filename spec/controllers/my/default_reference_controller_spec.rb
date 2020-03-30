@@ -12,8 +12,8 @@ describe My::DefaultReferenceController do
   describe "PUT update", as: :user do
     let(:reference) { create :any_reference }
 
-    it "calls `DefaultReference.set`" do
-      expect(DefaultReference).to receive(:set).with(session, reference).and_call_original
+    it "calls `References::DefaultReference.set`" do
+      expect(References::DefaultReference).to receive(:set).with(session, reference).and_call_original
       put :update, params: { id: reference.id }
     end
   end
