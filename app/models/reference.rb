@@ -19,7 +19,6 @@ class Reference < ApplicationRecord
 
   # TODO: See if we can remove this. Currently required by `ReferenceForm`.
   attr_accessor :journal_name, :publisher_string
-  attr_accessor :skip_save_refresh_author_names_cache
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
@@ -109,7 +108,6 @@ class Reference < ApplicationRecord
   # TODO: See if we can avoid this.
   def refresh_author_names_cache *args
     assign_author_names_cache args
-    return if Rails.env.test? && skip_save_refresh_author_names_cache
     save(validate: false)
   end
 
