@@ -4,11 +4,11 @@ class UserDecorator < Draper::Decorator
   delegate :name, :email, :editor?, :at_least_helper?
 
   def user_page_link
-    helpers.link_to name, user
+    h.link_to name, user
   end
 
   def ping_user_link
-    helpers.link_to "@#{name}", user, class: 'user-mention'
+    h.link_to "@#{name}", user, class: 'user-mention'
   end
 
   def angle_bracketed_email
@@ -19,11 +19,11 @@ class UserDecorator < Draper::Decorator
     return unless at_least_helper?
 
     if editor?
-      label = "editor ".html_safe << helpers.antcat_icon("star")
-      helpers.content_tag :span, label, class: "label rounded-badge"
+      label = "editor ".html_safe << h.antcat_icon("star")
+      h.content_tag :span, label, class: "label rounded-badge"
     else
-      label = "helper ".html_safe << helpers.antcat_icon("black-star")
-      helpers.content_tag :span, label, class: "white-label rounded-badge"
+      label = "helper ".html_safe << h.antcat_icon("black-star")
+      h.content_tag :span, label, class: "white-label rounded-badge"
     end
   end
 end

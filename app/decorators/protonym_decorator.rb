@@ -25,7 +25,7 @@ class ProtonymDecorator < Draper::Decorator
         locality.mb_chars.upcase
       end
 
-    helpers.add_period_if_necessary capitalized
+    h.add_period_if_necessary capitalized
   end
 
   def format_pages_and_forms

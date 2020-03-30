@@ -11,7 +11,7 @@ class FeedbackDecorator < Draper::Decorator
   # TODO: Do not hardcode antcat.org.
   def format_page
     url = "https://antcat.org/#{feedback.page}"
-    helpers.content_tag :p, "Page: #{helpers.link_to(url, url)}".html_safe
+    h.content_tag :p, "Page: #{h.link_to(url, url)}".html_safe
   end
 
   def format_feedback_for_email
@@ -41,7 +41,7 @@ class FeedbackDecorator < Draper::Decorator
 
       Page: #{page}
 
-      #{helpers.strip_tags(comment)}
+      #{h.strip_tags(comment)}
     MESSAGE
   end
 

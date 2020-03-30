@@ -20,7 +20,7 @@ class NotificationDecorator < Draper::Decorator
     def link_item_or_deleted item
       return "[deleted]" unless item
 
-      link = helpers.link_to item_link_label(item), item
+      link = h.link_to item_link_label(item), item
       "#{item_type(item)} #{link}".html_safe
     end
 

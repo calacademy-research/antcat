@@ -57,17 +57,17 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def did_something
-    helpers.render template_partial, activity: self
+    h.render template_partial, activity: self
   rescue StandardError
     "<code>error rendering Activity</code>".html_safe
   end
 
   def when
-    helpers.time_ago_in_words(activity.created_at) + ' ago'
+    h.time_ago_in_words(activity.created_at) + ' ago'
   end
 
   def anchor_path
-    helpers.activities_path id: activity.id, anchor: "activity-#{activity.id}"
+    h.activities_path id: activity.id, anchor: "activity-#{activity.id}"
   end
 
   def revision_history_link
@@ -75,7 +75,7 @@ class ActivityDecorator < Draper::Decorator
     # can still happen. `Activity.where(trackable_id: nil).where.not(trackable_type: nil).count # 5`
     return "<code>???</code>".html_safe if activity.trackable_type && activity.trackable_id.nil?
     return unless (url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id])
-    helpers.link_to "History", url, class: "btn-normal btn-tiny"
+    h.link_to "History", url, class: "btn-normal btn-tiny"
   end
 
   def icon
@@ -87,14 +87,14 @@ class ActivityDecorator < Draper::Decorator
       css_classes << activity.action if activity.action
     end
 
-    helpers.antcat_icon css_classes
+    h.antcat_icon css_classes
   end
 
   def link_trackable_if_exists label = nil, path: nil
     label ||= "##{activity.trackable_id}"
 
     if activity.trackable
-      helpers.link_to(label, (path || activity.trackable))
+      h.link_to(label, (path || activity.trackable))
     else
       action == 'destroy' ? label : (label + ' [deleted]')
     end
