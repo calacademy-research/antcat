@@ -24,6 +24,10 @@
 #
 # `ddlt.ll.open` = launch web browser (xdg-open) and open last taxon on localhost
 
+require_relative "dev_monkey_patches/ant_cat"
+require_relative "dev_monkey_patches/object"
+require_relative "dev_monkey_patches/rails"
+
 module DevMonkeyPatches
   def self.enable
     return if ENV["NO_DEV_MONKEY_PATCHES"]

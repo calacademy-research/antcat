@@ -13,6 +13,4 @@ Rails.autoloaders.each do |autoloader|
 
   autoloader.collapse("app/models/reference_sti_subclasses")
   autoloader.collapse("app/decorators/reference_decorator_subclasses")
-
-  autoloader.collapse("lib/generators")
 end

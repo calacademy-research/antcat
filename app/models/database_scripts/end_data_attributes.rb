@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require Rails.root.join('lib/read_end_data')
+
 module DatabaseScripts
   class EndDataAttributes
     def initialize script_path

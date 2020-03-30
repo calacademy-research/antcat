@@ -36,9 +36,6 @@ module AntCat
       :reference_observer
     ]
 
-    config.eager_load_paths += Dir["#{config.root}/lib"]
-    config.autoload_paths += Dir["#{config.root}/lib"]
-
     config.secret_key_base = Settings.rails.secret_key_base
 
     config.action_dispatch.cookies_serializer = :hybrid
