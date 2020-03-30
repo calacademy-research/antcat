@@ -135,10 +135,11 @@ Rails.application.configure do
   # # Simulate production locally for debugging/profiling
   # #############################################################################
   #
-  #   rake assets:clobber
   #   RAILS_ENV=production rake assets:precompile
   #   SIMULATE_PRODUCTION=y rails s -e production
+  #   tail -f log/production.log
   #
+  #   rake assets:clobber # Cleanup assets once done testing.
 
   if ENV['SIMULATE_PRODUCTION']
     config.cache_classes = false
@@ -148,7 +149,6 @@ Rails.application.configure do
     config.force_ssl = false
     config.action_mailer.perform_deliveries = false
 
-    ## See log in console (or run `tail -f log/production.log`)
     ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
 

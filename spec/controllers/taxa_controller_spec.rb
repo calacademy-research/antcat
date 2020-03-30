@@ -130,7 +130,7 @@ describe TaxaController do
             expect(authorship.notes_taxt).to eq authorship_attributes[:notes_taxt]
           end
 
-          context 'when `protonym_id` is supplied' do # rubocop:disable RSpec/NestedGroups
+          context 'when `protonym_id` is supplied' do
             let(:protonym) { create :protonym }
 
             it 'uses the ID and ignores the protonym attributes' do

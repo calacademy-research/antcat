@@ -5,9 +5,7 @@ module PaperTrail
     delegate :item_type, :item_id
 
     def revision_history_link
-      url = RevisionHistoryPath[item_type, item_id]
-      return unless url
-
+      return unless (url = RevisionHistoryPath[item_type, item_id])
       h.link_to "History", url, class: "btn-normal btn-tiny"
     end
   end
