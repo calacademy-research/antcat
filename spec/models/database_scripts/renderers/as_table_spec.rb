@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-class AsTableDummy < DatabaseTestScript
+class AsTableDummy < DatabaseScripts::DatabaseTestScript
   include DatabaseScripts::Renderers::AsTable
 end
 

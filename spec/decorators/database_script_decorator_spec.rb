@@ -18,7 +18,7 @@ describe DatabaseScriptDecorator do
   end
 
   describe "#github_url" do
-    let(:database_script) { DatabaseTestScript.new }
+    let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
     specify do
       expect(decorated.github_url).
