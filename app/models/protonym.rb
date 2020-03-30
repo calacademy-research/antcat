@@ -85,7 +85,7 @@ class Protonym < ApplicationRecord
   def synopsis
     formated_locality = decorate.format_locality
 
-    string = ''
+    string = +''
     string << "(#{authorship.forms}) " if authorship.forms
     string << formated_locality + ' ' if formated_locality
     string << biogeographic_region if biogeographic_region
