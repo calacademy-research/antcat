@@ -35,7 +35,7 @@ module Types
       end
 
       def institutions_regex
-        @institutions_regex ||= Institution.pluck(:abbreviation).join('|')
+        @_institutions_regex ||= Institution.pluck(:abbreviation).join('|')
       end
   end
 end

@@ -29,7 +29,7 @@ module DatabaseScripts
       end
 
       def dups
-        @dups ||= begin
+        @_dups ||= begin
           names_and_ids = protonyms.pluck('names.name', 'protonyms.id')
           names_only = names_and_ids.map { |(name, _id)| name }
 

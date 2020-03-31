@@ -45,11 +45,11 @@ module DatabaseScripts
     private
 
       def valid_species_with_valid_subspecies
-        @valid_species_with_valid_subspecies ||= Species.valid.joins(:subspecies).where(subspecies_taxa: { status: Status::VALID }).distinct.pluck(:id)
+        @_valid_species_with_valid_subspecies ||= Species.valid.joins(:subspecies).where(subspecies_taxa: { status: Status::VALID }).distinct.pluck(:id)
       end
 
       def species_with_subspecies_history_items
-        @species_with_subspecies_history_items ||= begin
+        @_species_with_subspecies_history_items ||= begin
           subspecies_history_items = TaxonHistoryItem.where('taxt LIKE ?', "%Current subspecies%")
           Taxon.where(id: subspecies_history_items.select(:taxon_id)).distinct.pluck(:id)
         end

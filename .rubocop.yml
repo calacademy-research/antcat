@@ -103,6 +103,9 @@ Metrics/PerceivedComplexity:
 Naming/AccessorMethodName:
   Enabled: true
 
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: required
+
 Naming/VariableNumber:
   Exclude:
     - 'spec/**/*'

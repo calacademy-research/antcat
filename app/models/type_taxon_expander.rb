@@ -18,7 +18,7 @@ class TypeTaxonExpander
 
   def reason_cannot_expand
     return if can_expand?
-    @reason_cannot_expand ||= reasons_cannot_expand
+    @_reason_cannot_expand ||= reasons_cannot_expand
   end
 
   def expansion ignore_can_expand: false
@@ -36,7 +36,7 @@ class TypeTaxonExpander
     attr_reader :taxon, :type_taxt, :type_taxon
 
     def compact_status
-      @compact_status ||= type_taxon.most_recent_before_now.compact_status
+      @_compact_status ||= type_taxon.most_recent_before_now.compact_status
     end
 
     def reasons_cannot_expand

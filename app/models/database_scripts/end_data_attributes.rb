@@ -36,7 +36,7 @@ module DatabaseScripts
 
       # The scripts' description, tags, etc, are stored in `DATA`.
       def end_data
-        @end_data ||= ReadEndData.new(script_path).call
+        @_end_data ||= ReadEndData.new(script_path).call
       end
 
       attr_reader :script_path

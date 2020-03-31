@@ -7,7 +7,7 @@ module DatabaseScripts
     end
 
     def filename_without_extension
-      @filename_without_extension ||= class_name.underscore
+      @_filename_without_extension ||= class_name.underscore
     end
 
     def tags

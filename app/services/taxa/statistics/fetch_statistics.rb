@@ -20,18 +20,18 @@ module Taxa
         attr_reader :taxon, :valid_only
 
         def ranks
-          @ranks ||= case taxon
-                     when ::Family
-                       [:subfamilies, :tribes, :genera]
-                     when ::Subfamily
-                       [:tribes, :genera, :species]
-                     when ::Tribe
-                       [:genera, :species]
-                     when ::Genus
-                       [:species, :subspecies]
-                     when ::Species
-                       [:subspecies]
-                     end
+          @_ranks ||= case taxon
+                      when ::Family
+                        [:subfamilies, :tribes, :genera]
+                      when ::Subfamily
+                        [:tribes, :genera, :species]
+                      when ::Tribe
+                        [:genera, :species]
+                      when ::Genus
+                        [:species, :subspecies]
+                      when ::Species
+                        [:subspecies]
+                      end
         end
 
         def fetch_statistics

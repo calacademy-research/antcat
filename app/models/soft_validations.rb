@@ -55,13 +55,13 @@ class SoftValidations
   end
 
   def all
-    @all ||= database_script_klasses.map do |database_script_klass|
+    @_all ||= database_script_klasses.map do |database_script_klass|
       SoftValidation.run(record, database_script_klass)
     end
   end
 
   def failed
-    @failed ||= all.select(&:failed?)
+    @_failed ||= all.select(&:failed?)
   end
 
   # TODO: Check lazily.
@@ -70,7 +70,7 @@ class SoftValidations
   end
 
   def total_runtime
-    @total_runtime ||= all.map(&:runtime).sum
+    @_total_runtime ||= all.map(&:runtime).sum
   end
 
   def warn_about_slow_runtime?

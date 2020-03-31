@@ -14,7 +14,7 @@ TableRef = Struct.new(:table, :field, :id) do
   end
 
   def owner
-    @owner ||=
+    @_owner ||=
       case table
       when "citations"           then Citation.find(id).protonym
       when "protonyms"           then Protonym.find(id)

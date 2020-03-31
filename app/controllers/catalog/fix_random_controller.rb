@@ -33,10 +33,10 @@ module Catalog
 
       # HACK: Naive but lazy (not eager) implementation.
       def taxon
-        @taxon ||= DATABASE_SCRIPTS_TO_CHECK.
-                     map(&:new).shuffle.lazy.
-                     map { |script| script.results.sample }.
-                     find { |taxon| taxon }
+        @_taxon ||= DATABASE_SCRIPTS_TO_CHECK.
+                      map(&:new).shuffle.lazy.
+                      map { |script| script.results.sample }.
+                      find { |taxon| taxon }
       end
   end
 end

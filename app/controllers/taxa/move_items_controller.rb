@@ -48,7 +48,7 @@ module Taxa
       end
 
       def history_items
-        @history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids])
+        @_history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids])
       end
   end
 end

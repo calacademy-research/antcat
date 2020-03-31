@@ -7,13 +7,13 @@ module VirtualHistoryItems
     end
 
     def relevant_for_taxon?
-      return @relevant_for_taxon if defined? @relevant_for_taxon
-      @relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_taxon? && taxon.subspecies.valid.exists?
+      return @_relevant_for_taxon if defined? @_relevant_for_taxon
+      @_relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_taxon? && taxon.subspecies.valid.exists?
     end
 
     def publicly_visible?
-      return @publicly_visible if defined? @publicly_visible
-      @publicly_visible ||= !taxon.subspecies_list_in_history_items.exists?
+      return @_publicly_visible if defined? @_publicly_visible
+      @_publicly_visible ||= !taxon.subspecies_list_in_history_items.exists?
     end
 
     def reason_hidden

@@ -23,6 +23,6 @@ class ArticleReference < Reference
   private
 
     def series_volume_and_issue_parts
-      @series_volume_and_issue_parts ||= References::ExtractSeriesVolumeAndIssue[series_volume_issue]
+      @_series_volume_and_issue_parts ||= References::ExtractSeriesVolumeAndIssue[series_volume_issue]
     end
 end
