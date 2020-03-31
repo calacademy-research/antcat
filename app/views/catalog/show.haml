@@ -20,7 +20,8 @@
       .callout
         #statistics.small-margin-bottom
           =@catalog_presenter.statistics
-          =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
+          -unless @catalog_presenter.show_full_statistics?
+            =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
 
     .callout#external-links
       =@taxon.decorate.link_to_antweb
