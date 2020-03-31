@@ -1,8 +1,6 @@
--most_recent      = comparer.most_recent
--diff_with        = comparer.diff_with
--selected         = comparer.selected
--revisions        = comparer.revisions.reverse
--html_split_diff  = revision_presenter.html_split_diff
+-most_recent = comparer.most_recent
+-diff_with   = comparer.diff_with
+-selected    = comparer.selected
 
 -content_for :javascripts do
   =stylesheet_link_tag "diffy"
@@ -15,10 +13,28 @@
 
   .medium-9.medium-pull-3.columns
     -unless revision_presenter.hide_formatted?
-      =render "shared/revision_comparer/formatted", comparer: comparer, most_recent: most_recent, selected: selected, diff_with: diff_with, collapse_formatted: html_split_diff.present?, revision_presenter: revision_presenter
+      =render "shared/revision_comparer/formatted",
+        comparer: comparer,
+        revision_presenter: revision_presenter,
+        most_recent: most_recent,
+        selected: selected,
+        diff_with: diff_with,
+        collapse_formatted: diff_with.present?
 
     -if diff_with
-      =render "shared/revision_comparer/difference_between_revisions", html_split_diff: html_split_diff, most_recent: most_recent, selected: selected, diff_with: diff_with, hide_formatted: revision_presenter.hide_formatted?
+      -unless revision_presenter.hide_formatted?
+        -content_for :breadcrumbs_right do
+          =link_to "Hide/show formatted", "#", data: { show_hide_toggler_for: "formatted" }, class: "btn-nodanger"
+
+      =render "shared/revision_comparer/difference_between_revisions",
+        left_side_revision: diff_with,
+        left_side_diff: revision_presenter.left_side_diff,
+        right_side_revision: selected || most_recent,
+        right_side_diff: revision_presenter.right_side_diff
 
   .medium-9.columns.medium-pull-3.margin-bottom.margin-top
-    =render "shared/revision_comparer/revision_history_table", comparer: comparer, revisions: revisions, most_recent: most_recent, revision_presenter: revision_presenter
+    =render "shared/revision_comparer/revision_history_table",
+      comparer: comparer,
+      revision_presenter: revision_presenter,
+      revisions: comparer.revisions.reverse,
+      most_recent: most_recent

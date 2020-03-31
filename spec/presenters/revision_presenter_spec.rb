@@ -19,9 +19,8 @@ describe RevisionPresenter do
         specify do
           expect(comparer.diff_with.taxt).to eq "initial content"
 
-          diff = presenter.html_split_diff
-          expect(diff.left).to match "<strong>initial content</strong>"
-          expect(diff.right).to match "<strong>last version</strong>"
+          expect(presenter.left_side_diff).to match "<strong>initial content</strong>"
+          expect(presenter.right_side_diff).to match "<strong>last version</strong>"
         end
       end
 
@@ -30,7 +29,10 @@ describe RevisionPresenter do
 
         specify do
           expect(comparer.selected.taxt).to eq "second version"
-          expect(presenter.html_split_diff).to eq nil
+          expect { presenter.left_side_diff }.
+            to raise_error(NoMethodError, "undefined method `left' for nil:NilClass")
+          expect { presenter.right_side_diff }.
+            to raise_error(NoMethodError, "undefined method `right' for nil:NilClass")
         end
       end
 
@@ -42,9 +44,8 @@ describe RevisionPresenter do
           expect(comparer.selected.taxt).to eq "second version"
           expect(comparer.most_recent.taxt).to eq "last version"
 
-          diff = presenter.html_split_diff
-          expect(diff.left).to match "<strong>initial content</strong>"
-          expect(diff.right).to match "<strong>second version</strong>"
+          expect(presenter.left_side_diff).to match "<strong>initial content</strong>"
+          expect(presenter.right_side_diff).to match "<strong>second version</strong>"
         end
       end
     end
@@ -58,9 +59,8 @@ describe RevisionPresenter do
       end
 
       it "returns a diff for side-by-side comparison" do
-        diff = presenter.html_split_diff
-        expect(diff.left).to match "<strong>initial</strong> content"
-        expect(diff.right).to match "<strong>second revision</strong> content"
+        expect(presenter.left_side_diff).to match "<strong>initial</strong> content"
+        expect(presenter.right_side_diff).to match "<strong>second revision</strong> content"
       end
     end
   end

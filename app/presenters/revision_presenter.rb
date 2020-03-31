@@ -22,13 +22,12 @@ class RevisionPresenter
     hide_formatted
   end
 
-  def html_split_diff
-    return unless diff_with
+  def left_side_diff
+    html_split_diff.left
+  end
 
-    left = diff_format diff_with
-    right = diff_format selected || most_recent
-
-    Diffy::SplitDiff.new(left, right, format: :html)
+  def right_side_diff
+    html_split_diff.right
   end
 
   # This is for the `revisions` loop, ie `most_recent` is not handled here.
@@ -65,6 +64,16 @@ class RevisionPresenter
     delegate :selected, :diff_with, :most_recent, to: :comparer
 
     attr_reader :comparer, :hide_formatted, :template
+
+    def html_split_diff
+      return unless diff_with
+
+      @_html_split_diff ||= begin
+        left = diff_format diff_with
+        right = diff_format selected || most_recent
+        Diffy::SplitDiff.new(left, right, format: :html)
+      end
+    end
 
     def diff_format item
       json = to_json item
