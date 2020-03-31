@@ -44,7 +44,7 @@ class TooltipsController < ApplicationController
   def destroy
     tooltip = find_tooltip
 
-    tooltip.destroy
+    tooltip.destroy!
     tooltip.create_activity :destroy, current_user
 
     redirect_to tooltips_path, notice: 'Tooltip was successfully deleted.'

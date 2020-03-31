@@ -16,7 +16,7 @@ class Author < ApplicationRecord
       author_to_merge.names.each do |name|
         name.update!(author: self)
       end
-      author_to_merge.reload.destroy # Reload first to avoid deleting transferred `AuthorName`s.
+      author_to_merge.reload.destroy! # Reload first to avoid deleting transferred `AuthorName`s.
     end
   end
 

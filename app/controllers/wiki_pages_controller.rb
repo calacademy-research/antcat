@@ -45,7 +45,7 @@ class WikiPagesController < ApplicationController
   def destroy
     wiki_page = find_wiki_page
 
-    wiki_page.destroy
+    wiki_page.destroy!
     wiki_page.create_activity :destroy, current_user
 
     redirect_to wiki_pages_path, notice: "Wiki page was successfully deleted."

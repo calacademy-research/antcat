@@ -46,7 +46,7 @@ class InstitutionsController < ApplicationController
   def destroy
     institution = find_institution
 
-    institution.destroy
+    institution.destroy!
     institution.create_activity :destroy, current_user
 
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'

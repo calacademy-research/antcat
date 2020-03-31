@@ -50,7 +50,7 @@ module References
       end
 
       def destroy_missing_reference
-        @missing_reference.destroy
+        @missing_reference.destroy!
         @missing_reference.create_activity :destroy, current_user
       end
   end

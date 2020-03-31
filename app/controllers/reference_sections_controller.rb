@@ -62,7 +62,7 @@ class ReferenceSectionsController < ApplicationController
   def destroy
     reference_section = find_reference_section
 
-    reference_section.destroy
+    reference_section.destroy!
     reference_section.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     respond_to do |format|
