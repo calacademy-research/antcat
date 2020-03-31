@@ -47,8 +47,8 @@
 
         %footer#taxon-browser-sticky-target-js-hook=render "footer"
 
-      -if Rails.env.production?
-        =render "google_analytics", logged_in: current_user.present?.to_s
+      -if Settings.google_analytics.enabled
+        =render "google_analytics", tracking_id: Settings.google_analytics.tracking_id, logged_in: current_user.present?.to_s
 
       -if current_user
         =javascript_include_tag 'logged_in_only'

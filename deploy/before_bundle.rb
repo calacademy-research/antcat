@@ -1,3 +1,5 @@
 # frozen_string_literal: true
 
-run "ln -nfs #{config.shared_path}/config/settings/production.yml #{config.release_path}/config/settings/production.yml"
+# To copy local file to production:
+# scp config/settings/production.secret.yml deploy@antcat.org:/data/antcat/shared/config/settings/production.secret.yml
+run "ln -nfs #{config.shared_path}/config/settings/production.secret.yml #{config.release_path}/config/settings/production.secret.yml"
