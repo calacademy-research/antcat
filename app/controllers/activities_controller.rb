@@ -49,19 +49,15 @@ class ActivitiesController < ApplicationController
     end
 
     def unpaginated_activities
-      @unpaginated_activities ||= begin
-        activities = Activity.filter_where(hacked_filter_params)
-        unless params[:show_automated_edits]
-          activities = activities.non_automated_edits
-        end
-        activities
-      end
+      activities = Activity.filter_where(filter_params)
+      activities = activities.non_automated_edits unless params[:show_automated_edits]
+      activities
     end
 
     # TODO: Rename `activities.action` --> `activities.action_name`.
     # HACK: Because `params[:action]` (to filter on `activitie.actions`) gets
     # overridden by Rails (controller action param).
-    def hacked_filter_params
+    def filter_params
       params.permit(:activity_action, :trackable_type, :trackable_id, :user_id).tap do |hsh|
         hsh[:action] = hsh.delete(:activity_action)
       end
