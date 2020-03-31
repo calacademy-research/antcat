@@ -26,7 +26,13 @@ class ActivitiesController < ApplicationController
   before_action :ensure_user_is_superadmin, only: :destroy
 
   def index
-    @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: page)
+    @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: params[:page])
+  end
+
+  def show
+    activity = find_activity
+    page = activity.pagination_page(unpaginated_activities)
+    redirect_to activities_path(id: activity.id, page: page, anchor: activity.decorate.css_anchor_id)
   end
 
   def destroy
@@ -50,16 +56,6 @@ class ActivitiesController < ApplicationController
         end
         activities
       end
-    end
-
-    # HACK: To make this work at the same time:
-    # * Highlight single activity item in context.
-    # * Not showing `params[:page]` in single-activity-links.
-    # * Make the delete button return to the previous page.
-    # * Make will_paginate not go bananas. <-- This what makes everything hard.
-    def page
-      return params[:page] unless params[:id]
-      find_activity.pagination_page(unpaginated_activities)
     end
 
     # TODO: Rename `activities.action` --> `activities.action_name`.

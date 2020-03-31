@@ -66,8 +66,8 @@ class ActivityDecorator < Draper::Decorator
     h.time_ago_in_words(activity.created_at) + ' ago'
   end
 
-  def anchor_path
-    h.activities_path id: activity.id, anchor: "activity-#{activity.id}"
+  def css_anchor_id
+    "activity-#{activity.id}"
   end
 
   def revision_history_link
