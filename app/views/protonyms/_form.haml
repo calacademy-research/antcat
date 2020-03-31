@@ -36,7 +36,7 @@
         %td
           -if protonym.name.persisted?
             %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
-            =protonym.decorate.format_name
+            =protonym.decorate.name_with_fossil
           -else
             =text_field_tag :protonym_name_string, protonym.name.name
             #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts

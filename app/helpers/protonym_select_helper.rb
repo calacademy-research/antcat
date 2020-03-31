@@ -6,7 +6,7 @@ module ProtonymSelectHelper
     def protonym_data_attributes protonym
       for_protonym = if protonym.persisted?
                        {
-                         name_with_fossil: protonym.decorate.format_name,
+                         name_with_fossil: protonym.decorate.name_with_fossil,
                          author_citation: protonym.authorship.reference.keey_without_letters_in_year
                        }
                      end
