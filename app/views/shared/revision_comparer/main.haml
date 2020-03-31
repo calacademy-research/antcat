@@ -12,7 +12,7 @@
       =render "shared/revision_comparer/help"
 
   .medium-9.medium-pull-3.columns
-    -unless revision_presenter.hide_formatted?
+    -if revision_presenter.show_formatted?
       =render "shared/revision_comparer/formatted",
         comparer: comparer,
         revision_presenter: revision_presenter,
@@ -22,7 +22,7 @@
         collapse_formatted: diff_with.present?
 
     -if diff_with
-      -unless revision_presenter.hide_formatted?
+      -if revision_presenter.show_formatted?
         -content_for :breadcrumbs_right do
           =link_to "Hide/show formatted", "#", data: { show_hide_toggler_for: "formatted" }, class: "btn-nodanger"
 
