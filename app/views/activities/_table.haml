@@ -1,5 +1,4 @@
 -show_delete_button ||= false
--page ||= nil
 
 -if activities.empty?
   No activities.
@@ -29,4 +28,4 @@
               =link_to 'Link', decorated.anchor_path, class: 'btn-normal btn-very-tiny'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_superadmin? && show_delete_button
-                =link_to append_superadmin_icon("Delete"), activity_path(activity, page: (params[:page] || page)), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"
+                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"

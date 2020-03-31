@@ -32,7 +32,7 @@ class ActivitiesController < ApplicationController
   def destroy
     activity = find_activity
     activity.destroy
-    redirect_to activities_path(page: params[:page]),
+    redirect_back fallback_location: root_path,
       notice: "Activity item ##{activity.id} was successfully deleted."
   end
 
@@ -59,10 +59,7 @@ class ActivitiesController < ApplicationController
     # * Make will_paginate not go bananas. <-- This what makes everything hard.
     def page
       return params[:page] unless params[:id]
-
-      activity = Activity.find(params[:id])
-      # `@page` is also included in the views to make the delete button return to the previous page.
-      @page = activity.pagination_page(unpaginated_activities)
+      find_activity.pagination_page(unpaginated_activities)
     end
 
     # TODO: Rename `activities.action` --> `activities.action_name`.
