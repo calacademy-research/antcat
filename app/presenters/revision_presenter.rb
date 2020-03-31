@@ -75,12 +75,7 @@ class RevisionPresenter
     end
 
     def diff_format item
-      json = to_json item
-      JSON.pretty_generate JSON.parse(json)
-    end
-
-    # HACK: To make the diff less cluttered.
-    def to_json item
-      item.to_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
+      as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
+      JSON.pretty_generate(as_json)
     end
 end
