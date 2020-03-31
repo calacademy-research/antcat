@@ -14,8 +14,6 @@ class ActivityDecorator < Draper::Decorator
 
   def did_something
     h.render template_partial, activity: self
-  rescue StandardError
-    "<code>error rendering Activity</code>".html_safe
   end
 
   def when
@@ -27,9 +25,6 @@ class ActivityDecorator < Draper::Decorator
   end
 
   def revision_history_link
-    # TODO: See if activities with a `trackable_type` but without a `trackable_id`
-    # can still happen. `Activity.where(trackable_id: nil).where.not(trackable_type: nil).count # 5`
-    return "<code>???</code>".html_safe if activity.trackable_type && activity.trackable_id.nil?
     return unless (url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id])
     h.link_to "History", url, class: "btn-normal btn-tiny"
   end
