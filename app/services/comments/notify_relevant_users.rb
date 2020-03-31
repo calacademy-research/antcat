@@ -6,11 +6,9 @@ module Comments
 
     def initialize comment
       @comment = comment
-      @do_not_notify = [comment.user] # Never notify thyself!
     end
 
-    # Order matters, because notified users are added to `@do_not_notify`,
-    # since we only want to send one notification to each user.
+    # Order matters, since we only want to send one notification to each user.
     # If a user was notified because they were mentioned in the comment, we're not sending
     # another three notification in case they are also the creator of the
     # commentable and active in the same discussion.
@@ -22,7 +20,7 @@ module Comments
 
     private
 
-      attr_accessor :comment, :do_not_notify
+      attr_accessor :comment
 
       delegate :commentable, :body, to: :comment
 
@@ -30,6 +28,10 @@ module Comments
         users_mentioned_in_comment.each do |mentioned_user|
           notify mentioned_user, Notification::MENTIONED_IN_COMMENT
         end
+      end
+
+      def users_mentioned_in_comment
+        Markdowns::MentionedUsers[body]
       end
 
       def notify_users_in_the_same_discussion
@@ -45,10 +47,6 @@ module Comments
         notify creator, :creator_of_commentable
       end
 
-      def users_mentioned_in_comment
-        Markdowns::MentionedUsers[body]
-      end
-
       # TODO: Improve and move somewhere.
       def notify_creator?
         # These are the only models for which we want to notify the creator about.
@@ -61,10 +59,7 @@ module Comments
       end
 
       def notify user, reason
-        return if user.in? do_not_notify
-
         Users::Notify[user, reason, attached: comment, notifier: comment.user]
-        do_not_notify << user
       end
   end
 end
