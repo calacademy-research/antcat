@@ -5,7 +5,6 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   delegate :tags, :filename_without_extension
 
-  # Decorate class because we want to be able to call this without a script.
   def self.format_tags tags
     tags.map do |tag|
       h.content_tag :span, class: tag_css_class(tag) do
