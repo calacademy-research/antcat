@@ -2,8 +2,8 @@
 
 module DevMonkeyPatches
   module AntCat
-    PRODUCTION_BASE_URL = "https://antcat.org/"
-    LOCALHOST_BASE_URL = "localhost:3000/"
+    PRODUCTION_BASE_URL = Settings.production_url
+    LOCALHOST_BASE_URL = "localhost:3000"
 
     def self.patch!
       ::Taxon.include Taxon
