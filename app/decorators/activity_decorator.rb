@@ -7,6 +7,14 @@ class ActivityDecorator < Draper::Decorator
   delegate :user, :trackable, :trackable_id, :trackable_type,
     :parameters, :action, :edit_summary, :edit_summary?
 
+  def self.link_taxon_if_exists id, deleted_label: nil
+    if (taxon = Taxon.find_by(id: id))
+      taxon.link_to_taxon
+    else
+      deleted_label || "##{id} [deleted]"
+    end
+  end
+
   def link_user
     return if trackable_type.in?(HIDE_USER_FOR_TRACKABLE_TYPES) || user.nil?
     user.decorate.user_page_link
@@ -49,6 +57,10 @@ class ActivityDecorator < Draper::Decorator
     else
       action == 'destroy' ? label : (label + ' [deleted]')
     end
+  end
+
+  def link_taxon_trackable_if_exists id = trackable_id, deleted_label: nil
+    self.class.link_taxon_if_exists(id, deleted_label: deleted_label)
   end
 
   # NOTE: Missing actions are upcased to make sure they are ugly.

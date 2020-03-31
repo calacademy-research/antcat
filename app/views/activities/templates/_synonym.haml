@@ -2,10 +2,10 @@
 =activity.action_to_verb
 the synonym relationship
 
-=taxon_link_or_deleted_string activity.parameters[:junior_synonym_id]
+=ActivityDecorator.link_taxon_if_exists activity.parameters[:junior_synonym_id]
 (junior)
 
 =dash
 
-=taxon_link_or_deleted_string activity.parameters[:senior_synonym_id]
+=ActivityDecorator.link_taxon_if_exists activity.parameters[:senior_synonym_id]
 (senior)
