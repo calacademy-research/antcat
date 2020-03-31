@@ -28,12 +28,12 @@ Rails.application.config.assets.precompile += %w[
   markdown_and_friends.js
 
   check_name_conflicts.js
-  compare_revisions.js
   highlight_text.js
   jquery3.js
   locality_autocompletion.js
   protonym_select.js
   reference_select.js
+  revision_comparer.js
   sortable_tables.js
   taxon_select.js
   taxt_editor.js

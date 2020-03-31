@@ -7,9 +7,9 @@
 
 .row.center-text
   .medium-6.columns
-    =render "compare_revisions/revision_info_date", revision: diff_with
+    =render "shared/revision_comparer/revision_info_date", revision: diff_with
   .medium-6.columns
-    =render "compare_revisions/revision_info_date", revision: (selected || most_recent)
+    =render "shared/revision_comparer/revision_info_date", revision: (selected || most_recent)
 
 .callout.margin-bottom
   .row
