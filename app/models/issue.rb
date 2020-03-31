@@ -6,7 +6,7 @@ class Issue < ApplicationRecord
 
   TITLE_MAX_LENGTH = 100
 
-  belongs_to :adder, class_name: "User"
+  belongs_to :user
   belongs_to :closer, class_name: "User", optional: true
 
   validates :description, presence: true
@@ -33,10 +33,5 @@ class Issue < ApplicationRecord
 
   def reopen!
     update!(open: true, closer: nil)
-  end
-
-  # Read-only alias for `Comment#notify_commentable_creator`.
-  def user
-    adder
   end
 end

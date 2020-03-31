@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_26_135153) do
+ActiveRecord::Schema.define(version: 2020_03_31_182025) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -100,15 +100,15 @@ ActiveRecord::Schema.define(version: 2020_03_26_135153) do
 
   create_table "issues", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "closer_id"
-    t.integer "adder_id", null: false
+    t.integer "user_id", null: false
     t.string "title", null: false
     t.text "description", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
     t.boolean "help_wanted", default: false, null: false
-    t.index ["adder_id"], name: "index_issues_on_adder_id"
     t.index ["closer_id"], name: "index_issues_on_closer_id"
+    t.index ["user_id"], name: "index_issues_on_user_id"
   end
 
   create_table "journals", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -397,8 +397,8 @@ ActiveRecord::Schema.define(version: 2020_03_26_135153) do
 
   add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"
   add_foreign_key "citations", "references", name: "fk_citations__reference_id__references__id"
-  add_foreign_key "issues", "users", column: "adder_id", name: "fk_issues__adder_id__users__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
+  add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
   add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
   add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"

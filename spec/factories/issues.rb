@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :issue do
-    association :adder, factory: :user
+    user
     open { true }
     sequence(:title) { |n| "Issue #{n}" }
     sequence(:description) { |n| "About Joffre's issue #{n}" }

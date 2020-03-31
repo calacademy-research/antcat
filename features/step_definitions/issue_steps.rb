@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Given("there is an open issue {string}") do |title|
-  create :issue, :open, title: title, adder: User.first
+  create :issue, :open, title: title, user: User.first
 end
 
 Then(/^I should see the (open|closed) issue "([^"]*)"$/) do |status, title|

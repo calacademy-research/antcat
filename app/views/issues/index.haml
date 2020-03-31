@@ -29,7 +29,7 @@
             added
             =time_ago_in_words issue.created_at
             ago by
-            =issue.adder.decorate.user_page_link
+            =issue.user.decorate.user_page_link
         %td.no-wrap=CommentableDecorator.new(issue).link_existing_comments_section
         %td.no-wrap
 

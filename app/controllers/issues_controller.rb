@@ -4,7 +4,7 @@ class IssuesController < ApplicationController
   before_action :ensure_unconfirmed_user_is_not_over_edit_limit, except: [:index, :show]
 
   def index
-    @issues = Issue.by_status_and_date.includes(:adder).paginate(page: params[:page])
+    @issues = Issue.by_status_and_date.includes(:user).paginate(page: params[:page])
     @no_open_issues = !Issue.open.exists?
   end
 
@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
 
   def create
     @issue = Issue.new(issue_params)
-    @issue.adder = current_user
+    @issue.user = current_user
 
     if @issue.save
       @issue.create_activity :create, current_user, edit_summary: params[:edit_summary]
