@@ -5,7 +5,7 @@ module Editors
     include Rails.application.routes.url_helpers
     include ActionView::Helpers
 
-    def initialize reference, session = nil
+    def initialize reference, session: nil
       @reference = reference
       @session = session
     end

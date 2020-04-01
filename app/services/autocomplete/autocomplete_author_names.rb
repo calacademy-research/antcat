@@ -4,7 +4,7 @@ module Autocomplete
   class AutocompleteAuthorNames
     include Service
 
-    def initialize search_query = ''
+    def initialize search_query
       @search_query = search_query
     end
 
