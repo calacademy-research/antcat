@@ -11,7 +11,7 @@ require 'English'
 # Total loading time decreases to 500-600 ms from 1200-1400 ms as measured by rack-mini-profiler in dev.
 
 module Markdowns
-  class ParseAntcatHooks # rubocop:disable Metrics/ClassLength
+  class ParseAntcatHooks
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include ActionView::Helpers::SanitizeHelper
@@ -23,11 +23,7 @@ module Markdowns
     DB_SCRIPT_TAG_REGEX = /%dbscript:([A-Z][A-Za-z0-9_]+)/
 
     def initialize content, sanitize_content: true, catalog_tags_only: false
-      @content = if sanitize_content
-                   sanitize(content).to_str
-                 else
-                   content
-                 end
+      @content = sanitize_content ? sanitize(content).to_str : content
       # TODO: Ugly control couple, added as a step before a proper split.
       @catalog_tags_only = catalog_tags_only
     end
@@ -60,9 +56,7 @@ module Markdowns
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
-          taxon = taxa[$LAST_MATCH_INFO[:id].to_i]
-
-          if taxon
+          if (taxon = taxa[$LAST_MATCH_INFO[:id].to_i])
             taxon.link_to_taxon
           else
             broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
@@ -74,9 +68,7 @@ module Markdowns
       # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxon_with_author_citation_ids
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
-          taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id])
-
-          if taxon
+          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
             taxon.decorate.link_to_taxon_with_author_citation
           else
             broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
@@ -134,8 +126,7 @@ module Markdowns
       def parse_user_ids
         content.gsub!(USER_TAG_REGEX) do
           user_id = Regexp.last_match(1)
-          user = User.find_by(id: user_id)
-          if user
+          if (user = User.find_by(id: user_id))
             user.decorate.ping_user_link
           else
             broken_markdown_link "user", user_id
@@ -155,11 +146,7 @@ module Markdowns
       end
 
       def broken_markdown_link type, id
-        <<-HTML.squish
-          <span class="bold-warning">
-            CANNOT FIND #{type.upcase} WITH ID #{id}
-          </span>
-        HTML
+        %(<span class="bold-warning">CANNOT FIND #{type.upcase} WITH ID #{id}</span>)
       end
   end
 end

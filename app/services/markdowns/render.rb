@@ -6,11 +6,7 @@ module Markdowns
     include Service
 
     def initialize content, sanitize_content: true
-      @content = if sanitize_content
-                   sanitize content
-                 else
-                   content
-                 end
+      @content = sanitize_content ? sanitize(content) : content
       @sanitize_content = sanitize_content
     end
 
