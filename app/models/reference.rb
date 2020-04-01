@@ -27,9 +27,7 @@ class Reference < ApplicationRecord
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
-  # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
-  validates :title, presence: true
-  validates :author_names, presence: true
+  validates :year, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
@@ -61,7 +59,7 @@ class Reference < ApplicationRecord
     text(:title)
     text(:journal_name) { journal&.name if respond_to?(:journal) }
     text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
-    text(:year_as_string) { year&.to_s }
+    text(:year_as_string) { year.to_s }
     text(:citation)
     text(:public_notes)
     text(:editor_notes)

@@ -3,5 +3,5 @@
 class BookReference < Reference
   belongs_to :publisher
 
-  validates :year, :pagination, presence: true
+  validates :pagination, presence: true
 end
