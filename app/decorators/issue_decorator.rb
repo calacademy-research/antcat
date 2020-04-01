@@ -13,6 +13,6 @@ class IssueDecorator < Draper::Decorator
 
   def help_wanted_badge
     return unless help_wanted? && open?
-    helpers.content_tag :span, "Help wanted!", class: "rounded-badge high-priority-label"
+    h.content_tag :span, "Help wanted!", class: "rounded-badge high-priority-label"
   end
 end

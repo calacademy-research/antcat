@@ -46,7 +46,7 @@ class Protonym < ApplicationRecord
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
-  trackable parameters: proc { { name: decorate.format_name } }
+  trackable parameters: proc { { name: decorate.name_with_fossil } }
 
   # TODO: This is "hmm", but I don't want to add it to `Taxon`, so it will live here for now.
   # Migrating all type data will take some time (a lot).
@@ -85,7 +85,7 @@ class Protonym < ApplicationRecord
   def synopsis
     formated_locality = decorate.format_locality
 
-    string = ''
+    string = +''
     string << "(#{authorship.forms}) " if authorship.forms
     string << formated_locality + ' ' if formated_locality
     string << biogeographic_region if biogeographic_region

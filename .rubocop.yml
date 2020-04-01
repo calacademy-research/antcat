@@ -150,7 +150,7 @@ RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/NestedGroups:
-  Max: 5
+  Max: 6
 
 RSpec/NotToNot:
   Enabled: false

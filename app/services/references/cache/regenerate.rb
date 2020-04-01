@@ -31,7 +31,7 @@ module References
         end
 
         def formatter
-          @formatter ||= CachedReferenceFormatter.new(reference)
+          @formatter ||= References::CachedReferenceFormatter.new(reference)
         end
     end
   end

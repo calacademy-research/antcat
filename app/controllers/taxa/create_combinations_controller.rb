@@ -7,7 +7,6 @@ module Taxa
     def new
       @taxon = find_taxon
       @create_combination_policy = CreateCombinationPolicy.new(@taxon)
-      @target_name = find_target_name
     end
 
     def show
@@ -21,6 +20,7 @@ module Taxa
     def create
       @taxon = find_taxon
       @new_parent = find_new_parent
+      @target_name = find_target_name
 
       operation = ::Operations::CreateNewCombination.new(
         current_valid_taxon: @taxon,

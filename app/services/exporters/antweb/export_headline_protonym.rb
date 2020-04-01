@@ -30,7 +30,7 @@ module Exporters
 
         def protonym_name
           content_tag :b do
-            protonym.decorate.format_name
+            protonym.decorate.name_with_fossil
           end
         end
 

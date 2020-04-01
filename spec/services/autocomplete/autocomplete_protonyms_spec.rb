@@ -13,7 +13,7 @@ describe Autocomplete::AutocompleteProtonyms do
           {
             author_citation: protonym.authorship.reference.keey_without_letters_in_year,
             id: protonym.id,
-            name_with_fossil: protonym.decorate.format_name
+            name_with_fossil: protonym.decorate.name_with_fossil
           }
         ]
       )
@@ -26,7 +26,7 @@ describe Autocomplete::AutocompleteProtonyms do
             {
               author_citation: other_protonym.authorship.reference.keey_without_letters_in_year,
               id: other_protonym.id,
-              name_with_fossil: other_protonym.decorate.format_name
+              name_with_fossil: other_protonym.decorate.name_with_fossil
             }
           ]
         )

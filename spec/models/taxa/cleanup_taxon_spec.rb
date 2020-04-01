@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe CleanupTaxon do
+describe Taxa::CleanupTaxon do
   describe '#combination_in_according_to_history_items' do
     let!(:obsolete_genus) { create :genus }
     let!(:taxon) { create :species }

@@ -4,7 +4,7 @@
 
 class TaxonDecorator < Draper::Decorator
   def link_to_taxon_with_label label
-    helpers.link_to label, helpers.catalog_path(taxon)
+    h.link_to label, h.catalog_path(taxon)
   end
 
   def link_to_taxon_with_author_citation

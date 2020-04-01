@@ -37,8 +37,6 @@ module DevMonkeyPatches
   def self.enable!
     DevMonkeyPatches.puts_enabled_notice
 
-    Object.include InstanceMethods
-
     DevMonkeyPatches::Object.patch!
     DevMonkeyPatches::Rails.patch!
     DevMonkeyPatches::AntCat.patch!
@@ -48,11 +46,5 @@ module DevMonkeyPatches
     $stdout.puts "Monkey patched `Object` and some Rails classes in `DevMonkeyPatches`.".yellow
     $stdout.puts "That's OK, ".green + "it's enabled in dev only by default. " +
       "See `lib/dev_monkey_patches.rb` for more info.".light_blue
-  end
-
-  module InstanceMethods
-    def dev_dev_mixed_in?
-      true
-    end
   end
 end

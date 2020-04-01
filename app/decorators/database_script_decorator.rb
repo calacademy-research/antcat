@@ -8,8 +8,8 @@ class DatabaseScriptDecorator < Draper::Decorator
   # Decorate class because we want to be able to call this without a script.
   def self.format_tags tags
     tags.map do |tag|
-      helpers.content_tag :span, class: tag_css_class(tag) do
-        helpers.raw tag.html_safe
+      h.content_tag :span, class: tag_css_class(tag) do
+        h.raw tag.html_safe
       end
     end.join(" ").html_safe
   end

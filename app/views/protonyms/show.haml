@@ -25,7 +25,7 @@
   .small-12.columns
     %h5
       Protonym:
-      =@protonym.decorate.format_name
+      =@protonym.decorate.name_with_fossil
       -if @protonym.sic?
         [sic]
       -if current_user

@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class DatabaseTestScript < DatabaseScript
-  def results
-    Reference.all
+module DatabaseScripts
+  class DatabaseTestScript < DatabaseScript
+    def results
+      Reference.all
+    end
   end
 end

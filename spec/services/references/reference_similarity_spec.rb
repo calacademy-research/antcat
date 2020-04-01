@@ -244,7 +244,6 @@ describe References::ReferenceSimilarity do
             expect(described_class[lhs, rhs]).to eq 0.90
           end
 
-          # rubocop:disable RSpec/NestedGroups
           context "when the series/volume/issue has a space after the series, but the space separates words" do
             it "doesn't match the series_volume_issue" do
               lhs.series_volume_issue = '21 4'
@@ -252,7 +251,6 @@ describe References::ReferenceSimilarity do
               expect(described_class[lhs, rhs]).to eq 0.10
             end
           end
-          # rubocop:enable RSpec/NestedGroups
 
           it "matches if the only difference is that rhs includes the year" do
             lhs.series_volume_issue = '44'
