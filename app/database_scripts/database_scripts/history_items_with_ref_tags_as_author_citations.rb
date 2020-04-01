@@ -8,17 +8,20 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Check usage'
+        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Check usage'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
+
+          usage_string, matches = check_usage taxt
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
             markdown_taxon_link(taxon),
             taxon.status,
             Detax[taxt],
-            check_usage(taxt)
+            (quick_fix_link(history_item) if matches),
+            usage_string
           ]
         end
       end
@@ -27,6 +30,8 @@ module DatabaseScripts
     private
 
       def check_usage taxt
+        matches = true
+
         ids = taxt.scan(/{tax (?<tax_id>[0-9]+}) {ref (?<ref_id>[0-9]+)}/)
 
         string = ''
@@ -37,13 +42,19 @@ module DatabaseScripts
           string << taxon.link_to_taxon
           string << ' '
           string << if taxon.authorship_reference == reference
-                      'OK'
+                      'matches'
                     else
+                      matches = false
                       bold_warning('not OK')
                     end
           string << '<br>'
         end
-        string
+        [string, matches]
+      end
+
+      def quick_fix_link history_item
+        link_to 'Convert to taxac!', convert_to_taxac_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
+          method: :post, remote: true, class: 'btn-warning btn-tiny'
       end
   end
 end
@@ -52,13 +63,25 @@ __END__
 
 title: History items with <code>ref</code> tags as author citations
 category: Taxt
-tags: []
+tags: [has-quick-fix, updated!]
 
 description: >
-  `ref` tags used to be the only means to to disambiguate homonyms in taxt items.
+  **Note that "same" in the "Check usage" column just means that the ID for `ref` tag is the same at the
+  reference ID of the taxon's protonym -- both may be incorrect.**
 
 
-  Now the `tax` tags can be expaned to `taxac` tags (tax + author citation)  include the author citation when rendered.
+  **Experimental**: Use the "Convert to taxac!" button to quickly replace all `tax` + `ref` tag combinations
+  for a history item with a `taxac` tag for the taxon. Refresh the page to get rid cleaned items. The link
+  is only visible if the tags match, but like mentioned above, they may match but both may be incorrect.
+
+
+  **Background**
+
+
+  `ref` tags used to be the only way to disambiguate homonyms in taxt items.
+
+
+  Now `tax` tags can be expaned to `taxac` tags (tax + author citation)  include the author citation when rendered.
 
 
   Taxts like:
@@ -78,7 +101,8 @@ description: >
   points may not agree (manually specified `ref` tag vs. the actual author citation).
 
 
-  Just remove the `ref` tag and change the `tax` tag to a `taxac` tag to include the author citation.
+  If the `tax` tag is correct, just remove the `ref` tag and change the `tax` tag to a `taxac` tag to include the author citation.
+  This can be done even if the `ref` tag is incorrect since `taxac` tags fetched the author citation from the `tax` tag.
 
 
   This script includes the first 150 history items where a `tax` tag is followed by a space and a `ref` tag.
