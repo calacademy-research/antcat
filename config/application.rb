@@ -40,6 +40,12 @@ module AntCat
 
     config.action_dispatch.cookies_serializer = :hybrid
     config.assets.enabled = true
+    config.after_initialize do
+      if Rails.env.development? || ENV['DEV_MONKEY_PATCHES'] # Disable with `NO_DEV_MONKEY_PATCHES=y rails c`
+        require Rails.root.join('lib/dev_monkey_patches')
+        DevMonkeyPatches.enable
+      end
+    end
   end
 end
 

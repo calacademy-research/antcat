@@ -1,9 +1,9 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 module DevMonkeyPatches
   module AntCat
     PRODUCTION_BASE_URL = Settings.production_url
-    LOCALHOST_BASE_URL = "localhost:3000"
+    LOCALHOST_BASE_URL = "http://localhost:3000"
 
     def self.patch!
       ::Taxon.include Taxon
