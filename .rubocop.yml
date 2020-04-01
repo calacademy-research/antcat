@@ -103,7 +103,7 @@ Metrics/MethodLength:
   Enabled: false
 
 Metrics/PerceivedComplexity:
-  Max: 17
+  Max: 13
 
 ### Naming.
 
