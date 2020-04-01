@@ -11,7 +11,7 @@ require 'English'
 # Total loading time decreases to 500-600 ms from 1200-1400 ms as measured by rack-mini-profiler in dev.
 
 module Markdowns
-  class ParseAntcatHooks
+  class ParseAntcatHooks # rubocop:disable Metrics/ClassLength
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include ActionView::Helpers::SanitizeHelper

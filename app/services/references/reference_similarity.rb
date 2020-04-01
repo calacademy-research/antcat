@@ -13,8 +13,13 @@
 #   :journal, :publisher
 
 module References
-  class ReferenceSimilarity
+  class ReferenceSimilarity # rubocop:disable Metrics/ClassLength
     include Service
+
+    ROMAN_NUMERALS = [
+      ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
+      ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
+    ]
 
     def initialize lhs_reference, rhs_reference
       @lhs = lhs_reference
@@ -146,12 +151,7 @@ module References
       end
 
       def replace_roman_numerals! string
-        roman_numerals = [
-          ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
-          ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
-        ]
-
-        roman_numerals.each do |roman, arabic|
+        ROMAN_NUMERALS.each do |roman, arabic|
           string.gsub!(/\b#{roman}\b/, arabic.to_s)
         end
         string

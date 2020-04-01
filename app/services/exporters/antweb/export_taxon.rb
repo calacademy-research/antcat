@@ -2,7 +2,7 @@
 
 module Exporters
   module Antweb
-    class ExportTaxon
+    class ExportTaxon # rubocop:disable Metrics/ClassLength
       include ActionView::Context # For `#content_tag`.
       include ActionView::Helpers::TagHelper # For `#content_tag`.
       include Service
