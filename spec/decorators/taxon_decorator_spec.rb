@@ -92,7 +92,7 @@ describe TaxonDecorator do
     end
 
     context 'when taxon is a subfamily' do
-      let(:taxon) { build_stubbed :subfamily }
+      let(:taxon) { create :subfamily }
 
       specify do
         expect(taxon.decorate.link_to_antweb).

@@ -6,7 +6,7 @@ class ReadEndData
   end
 
   def call
-    HashWithIndifferentAccess.new YAML.safe_load(read_end_data)
+    YAML.safe_load(read_end_data)
   end
 
   private

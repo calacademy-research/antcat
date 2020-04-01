@@ -75,6 +75,10 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+Lint/UselessAccessModifier:
+  MethodCreatingMethods:
+    - delegate
+
 # Metrics.
 
 Metrics/AbcSize:
