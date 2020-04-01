@@ -19,6 +19,7 @@ gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
 gem 'acts_as_list'
+gem 'attr_extras'
 gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paperclip/issues/2484
 gem 'colorize'
 gem 'config'
