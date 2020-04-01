@@ -3,12 +3,10 @@
 /config/puma.rb
 
 # Secrets.
-/config/secrets.yml
 /config/database.yml
-/config/s3.yml
-/config/settings/production.yml
+/config/settings/production.secret.yml
 
-# Server settings.
+# EngineYard server settings.
 /config/server.yml
 
 # Generated AntCat output.
@@ -30,7 +28,6 @@
 
 # Allow developer to keep their own versions of these.
 .rspec
-.env.development.local
 /config/settings.local.yml
 /config/settings/*.local.yml
 /config/environments/*.local.yml
