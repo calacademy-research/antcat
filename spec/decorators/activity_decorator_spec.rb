@@ -3,7 +3,29 @@
 require 'rails_helper'
 
 describe ActivityDecorator do
+  include TestLinksHelpers
+
   let(:decorated) { activity.decorate }
+
+  describe ".link_taxon_if_exists" do
+    context "when taxon exists" do
+      let(:taxon) { create :subfamily }
+
+      it "returns a link" do
+        expect(described_class.link_taxon_if_exists(taxon.id)).to eq taxon_link(taxon)
+      end
+    end
+
+    context "when taxon doesn't exist" do
+      it "returns the id and more" do
+        expect(described_class.link_taxon_if_exists(99999)).to eq "#99999 [deleted]"
+      end
+
+      it "allows custom deleted_label" do
+        expect(described_class.link_taxon_if_exists(99999, deleted_label: "deleted")).to eq "deleted"
+      end
+    end
+  end
 
   describe "#link_user" do
     context "with a valid user" do
@@ -24,8 +46,6 @@ describe ActivityDecorator do
   end
 
   describe "#did_something" do
-    include TestLinksHelpers
-
     let(:user) { build_stubbed :user }
 
     context 'when there is a trackable' do
@@ -161,31 +181,6 @@ describe ActivityDecorator do
     it "uglifies missing actions" do
       decorated = build_stubbed(:activity, action: "bake_a_cake").decorate
       expect(decorated.action_to_verb).to eq "BAKE_A_CAKE"
-    end
-  end
-
-  describe ActivityDecorator::ActivityTemplatePartial do
-    context "without a `trackable_type`" do
-      it "returns the template for the `action`" do
-        expect(described_class[action: 'elevate_subspecies_to_species', trackable_type: nil]).
-          to eq "activities/templates/actions/elevate_subspecies_to_species"
-      end
-    end
-
-    context "with a `trackable_type`" do
-      context "when there is a partial matching `trackable_type`" do
-        it "returns the template for the `trackable_type`" do
-          expect(described_class[action: nil, trackable_type: 'Journal']).
-            to eq "activities/templates/journal"
-        end
-      end
-
-      context "when there is no partial matching `trackable_type`" do
-        it "returns the default template" do
-          expect(described_class[action: nil, trackable_type: 'Pizza']).
-            to eq "activities/templates/default"
-        end
-      end
     end
   end
 end

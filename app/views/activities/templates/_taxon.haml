@@ -1,11 +1,10 @@
 =activity.action_to_verb
 the
 =activity.parameters[:rank]
-
-=activity.link_trackable_if_exists activity.parameters[:name].html_safe, path: catalog_path(activity.trackable_id)
+=activity.link_taxon_trackable_if_exists deleted_label: activity.parameters[:name].html_safe
 
 -parent = activity.parameters[:parent]
 -if activity.action == "create" && parent
   to the
   =parent[:rank]
-  =taxon_link_or_deleted_string parent[:id], parent[:name].html_safe
+  =ActivityDecorator.link_taxon_if_exists parent[:id], deleted_label: parent[:name].html_safe

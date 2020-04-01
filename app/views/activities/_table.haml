@@ -1,5 +1,4 @@
 -show_delete_button ||= false
--page ||= nil
 
 -if activities.empty?
   No activities.
@@ -8,7 +7,7 @@
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
-        %tr.highlight-activity-anchor{id: "activity-#{activity.id}"}
+        %tr.highlight-activity-anchor{id: decorated.css_anchor_id}
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?
@@ -26,7 +25,7 @@
           %td.activity-link-wrapper.no-wrap
             %span.hide-on-hover=decorated.when
             %span.show-on-hover.show-in-test-test-hook
-              =link_to 'Link', decorated.anchor_path, class: 'btn-normal btn-very-tiny'
+              =link_to 'Link', activity, class: 'btn-normal btn-very-tiny'
               =activities_link activity.trackable_type, activity.trackable_id
               -if user_is_superadmin? && show_delete_button
-                =link_to append_superadmin_icon("Delete"), activity_path(activity, page: (params[:page] || page)), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"
+                =link_to append_superadmin_icon("Delete"), activity_path(activity), method: :delete, data: { confirm: "Delete?" }, class: "btn-warning btn-very-tiny"
