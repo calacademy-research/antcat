@@ -63,17 +63,17 @@ class TaxonDecorator < Draper::Decorator
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
-                    { genus: taxon.genus.name.name.downcase, species: taxon.name.epithet.downcase }
+                    { genus: taxon.genus.name_cache, species: taxon.name.epithet }
                   when Subspecies
                     {
-                      genus: taxon.genus.name.name.downcase,
+                      genus: taxon.genus.name_cache,
                       species: taxon.species.name.epithet,
-                      subspecies: taxon.name.subspecies_epithets.downcase
+                      subspecies: taxon.name.subspecies_epithets
                     }
                   when Genus
-                    { genus: taxon.name.name.downcase }
+                    { genus: taxon.name_cache }
                   when Subfamily
-                    { subfamily: taxon.name.name.downcase }
+                    { subfamily: taxon.name_cache }
                   else
                     raise "Don't know how to link #{taxon} to AntWeb"
                   end
@@ -82,7 +82,7 @@ class TaxonDecorator < Draper::Decorator
 
     # Rails' .to_param sorts the params, this one doesn't
     url << params.map { |key, value| value.to_query(key) }.compact * '&'
-    h.external_link_to 'AntWeb', url.html_safe
+    h.external_link_to 'AntWeb', url.downcase.html_safe
   end
 
   def link_to_google_scholar

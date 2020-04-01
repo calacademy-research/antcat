@@ -2,7 +2,7 @@
 
 module Exporters
   module Antweb
-    class ExportTaxon
+    class ExportTaxon # rubocop:disable Metrics/ClassLength
       include ActionView::Context # For `#content_tag`.
       include ActionView::Helpers::TagHelper # For `#content_tag`.
       include Service
@@ -39,22 +39,26 @@ module Exporters
       end
 
       def call
-        export_taxon
+        convert_to_antweb_array attributes
       end
 
       private
 
         attr_reader :taxon
 
-        def export_taxon
-          authorship_reference = taxon.authorship_reference
-
-          attributes = {
+        def attributes
+          {
             antcat_id:                taxon.id,
+            subfamily:                nil,
+            tribe:                    nil,
+            genus:                    nil,
+            subgenus:                 nil,
+            species:                  nil,
+            subspecies:               nil,
             author_date:              taxon.author_citation,
             author_date_html:         authorship_html_string,
-            authors:                  authorship_reference.authors_for_keey,
-            year:                     authorship_reference.year,
+            authors:                  taxon.authorship_reference.authors_for_keey,
+            year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
             available:                !taxon.invalid?,
             current_valid_name:       taxon.current_valid_taxon&.name&.name,
@@ -62,24 +66,13 @@ module Exporters
             was_original_combination: original_combination&.name&.name,
             fossil:                   taxon.fossil?,
             taxonomic_history_html:   export_history,
-            reference_id:             authorship_reference.id,
+            reference_id:             taxon.authorship_reference.id,
             bioregion:                taxon.protonym.biogeographic_region,
             country:                  taxon.protonym.locality,
             current_valid_rank:       taxon.class.to_s,
             hol_id:                   taxon.hol_id,
             current_valid_parent:     current_valid_parent&.name&.name || 'Formicidae'
-          }
-
-          convert_to_antweb_array attributes.merge(Exporters::Antweb::AntwebAttributes[taxon])
-        end
-
-        def boolean_to_antweb boolean
-          case boolean
-          when true  then 'TRUE'
-          when false then 'FALSE'
-          when nil   then nil
-          else            raise
-          end
+          }.merge(Exporters::Antweb::AntwebAttributes[taxon])
         end
 
         def convert_to_antweb_array values
@@ -111,6 +104,15 @@ module Exporters
           ]
         end
 
+        def boolean_to_antweb boolean
+          case boolean
+          when true  then 'TRUE'
+          when false then 'FALSE'
+          when nil   then nil
+          else            raise
+          end
+        end
+
         def add_subfamily_to_current_valid subfamily, current_valid_name
           return unless current_valid_name
           "#{subfamily} #{current_valid_name}"
@@ -118,9 +120,7 @@ module Exporters
 
         def authorship_html_string
           reference = taxon.authorship_reference
-
-          plain_text = reference.decorate.plain_text
-          content_tag :span, reference.keey, title: plain_text
+          content_tag :span, reference.keey, title: reference.decorate.plain_text
         end
 
         def original_combination
@@ -128,15 +128,13 @@ module Exporters
         end
 
         def export_history
-          decorated = taxon.decorate
-
           content_tag :div, class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.
             content = ''.html_safe
-            content << decorated.statistics(valid_only: true)
-            content << Exporters::Antweb::ExportHeadline[taxon]
-            content << Exporters::Antweb::ExportHistoryItems[taxon]
-            content << Exporters::Antweb::ExportChildList[taxon]
-            content << Exporters::Antweb::ExportReferenceSections[taxon]
+            content << taxon.decorate.statistics(valid_only: true)
+            content << Exporters::Antweb::History::Headline[taxon]
+            content << Exporters::Antweb::History::HistoryItems[taxon]
+            content << Exporters::Antweb::History::ChildList[taxon]
+            content << Exporters::Antweb::History::ReferenceSections[taxon]
           end
         end
 

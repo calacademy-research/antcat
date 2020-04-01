@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::Antweb::ExportHistoryItems do
+describe Exporters::Antweb::History::HistoryItems do
   include TestLinksHelpers
 
   describe '#call' do

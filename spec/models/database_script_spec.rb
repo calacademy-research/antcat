@@ -99,34 +99,41 @@ describe DatabaseScript do
   describe "#cached_results" do
     subject(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 
-    # rubocop:disable RSpec/SubjectStub
     context 'when results is present' do
+      before do
+        def database_script.results
+          Taxon.count
+          'present'
+        end
+      end
+
       it "doesn't call `#result` more than once" do
-        expect(database_script).to receive(:results).once.and_return :stubbed
+        expect(Taxon).to receive(:count).once
 
         database_script.__send__ :cached_results
-        database_script.__send__ :cached_results
+        results = database_script.__send__ :cached_results
+
+        expect(results).to eq 'present'
       end
     end
 
     context 'when results is `nil`' do
+      before do
+        def database_script.results
+          Taxon.count
+          nil
+        end
+      end
+
       it "doesn't call `#result` more than once" do
-        expect(database_script).to receive(:results).once.and_return nil
+        expect(Taxon).to receive(:count).once
 
         database_script.__send__ :cached_results
-        database_script.__send__ :cached_results
+        results = database_script.__send__ :cached_results
+
+        expect(results).to eq nil
       end
     end
-
-    context 'when results is `false`' do
-      it "doesn't call `#result` more than once" do
-        expect(database_script).to receive(:results).once.and_return false
-
-        database_script.__send__ :cached_results
-        database_script.__send__ :cached_results
-      end
-    end
-    # rubocop:enable RSpec/SubjectStub
 
     described_class.all.each do |database_script|
       it "#{database_script.filename_without_extension} calls `#results` only once" do

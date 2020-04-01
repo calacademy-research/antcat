@@ -26,7 +26,7 @@ class Protonym < ApplicationRecord
     BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF_MYSQL = '^, by subsequent designation of {ref [0-9]+}: [0-9]+.$'
   ]
 
-  belongs_to :authorship, class_name: 'Citation', dependent: :destroy
+  belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy
   belongs_to :name, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error

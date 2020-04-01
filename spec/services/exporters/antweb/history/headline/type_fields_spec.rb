@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::Antweb::ExportTypeFields do
+describe Exporters::Antweb::History::Headline::TypeFields do
   include TestLinksHelpers
 
   describe "#call" do

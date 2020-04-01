@@ -6,7 +6,7 @@ describe Citation do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
-    it { is_expected.to have_one(:protonym).dependent(:restrict_with_error) }
+    it { is_expected.to have_one(:protonym).dependent(:destroy) }
     it { is_expected.to belong_to(:reference).required }
   end
 

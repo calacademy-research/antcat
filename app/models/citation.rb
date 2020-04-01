@@ -8,7 +8,7 @@
 class Citation < ApplicationRecord
   belongs_to :reference
 
-  has_one :protonym, foreign_key: :authorship_id, dependent: :restrict_with_error
+  has_one :protonym, inverse_of: :authorship, foreign_key: :authorship_id, dependent: :destroy
 
   validates :pages, presence: true
   validate :no_missing_references

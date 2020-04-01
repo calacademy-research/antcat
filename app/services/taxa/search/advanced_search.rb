@@ -16,89 +16,113 @@ module Taxa
 
       def call
         return Taxon.none if params.blank?
-        search_results
+        search_results.includes(:name, protonym: { authorship: :reference })
       end
 
       private
 
         attr_reader :params
 
-        def search_results # rubocop:disable Metrics/PerceivedComplexity
-          query = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
+        def search_results
+          relation = Taxon.joins(protonym: [{ authorship: :reference }]).order_by_name
 
           TAXA_COLUMNS.each do |column|
-            query = query.where(column => params[column]) if params[column]
+            relation = relation.where(column => params[column]) if params[column]
           end
 
-          query = query.valid if params[:valid_only]
-          query = query.distinct.joins(:history_items) if params[:must_have_history_items]
+          relation = relation.valid if params[:valid_only]
+          relation = relation.distinct.joins(:history_items) if params[:must_have_history_items]
 
-          if params[:author_name].present?
-            author_name = AuthorName.find_by!(name: params[:author_name])
-            query = query.
-              where('reference_author_names.author_name_id' => author_name.author.names).
-              joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
-              joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
+          relation.
+            yield_self(&method(:author_name_clause)).
+            yield_self(&method(:years_clause)).
+            yield_self(&method(:name_clause)).
+            yield_self(&method(:epithet_clause)).
+            yield_self(&method(:genus_clause)).
+            yield_self(&method(:protonym_clause)).
+            yield_self(&method(:type_information_clause)).
+            yield_self(&method(:locality_clause)).
+            yield_self(&method(:biogeographic_region_clause)).
+            yield_self(&method(:forms_clause))
+        end
+
+        def author_name_clause relation
+          return relation unless (author_name = params[:author_name])
+
+          author_author_names = AuthorName.find_by!(name: author_name).author.names
+          relation.
+            where('reference_author_names.author_name_id' => author_author_names).
+            joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
+            joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
+        end
+
+        def years_clause relation
+          return relation unless (year = params[:year])
+
+          if year.match?(/^\d{4,}$/)
+            relation.where('references.year = ?', year)
+          elsif (matches = year.match(/^(?<start_year>\d{4})-(?<end_year>\d{4})$/))
+            relation.where('references.year BETWEEN ? AND ?', matches[:start_year], matches[:end_year])
+          else
+            relation
           end
+        end
 
-          if params[:year]
-            year = params[:year]
+        def name_clause relation
+          return relation unless (name = params[:name]&.strip.presence)
 
-            if /^\d{4,}$/.match?(year)
-              query = query.where('references.year = ?', year)
-            else
-              matches = year.match /^(?<start_year>\d{4})-(?<end_year>\d{4})$/
-              if matches.present?
-                query = query.where('references.year BETWEEN ? AND ?', matches[:start_year], matches[:end_year])
-              end
-            end
-          end
+          case params[:name_search_type]
+          when 'matches'     then relation.where("names.name = ?", name)
+          when 'begins_with' then relation.where("names.name LIKE ?", name + '%')
+          else                    relation.where("names.name LIKE ?", '%' + name + '%')
+          end.joins(:name)
+        end
 
-          query = query.where('protonyms.locality LIKE ?', "%#{params[:locality]}%") if params[:locality]
+        def epithet_clause relation
+          return relation unless (epithet = params[:epithet]&.strip.presence)
+          relation.joins(:name).where('names.epithet = ?', epithet)
+        end
 
-          query = query.where(<<-SQL, search_term: "%#{params[:type_information]}%") if params[:type_information]
-            primary_type_information_taxt LIKE :search_term
-              OR secondary_type_information_taxt LIKE :search_term
-              OR type_notes_taxt LIKE :search_term
+        def genus_clause relation
+          return relation unless (genus = params[:genus]&.strip.presence)
+
+          relation.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
+            joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
+            where('genus_names.name LIKE ?', "%#{genus}%")
+        end
+
+        def protonym_clause relation
+          return relation unless (protonym = params[:protonym]&.strip.presence)
+
+          relation.joins('JOIN names AS protonym_names ON protonyms.name_id = protonym_names.id').
+            where('protonym_names.name LIKE ?', "%#{protonym}%")
+        end
+
+        def type_information_clause relation
+          return relation unless (type_information = params[:type_information])
+
+          relation.where(<<-SQL, search_term: "%#{type_information}%")
+            protonyms.primary_type_information_taxt LIKE :search_term
+              OR protonyms.secondary_type_information_taxt LIKE :search_term
+              OR protonyms.type_notes_taxt LIKE :search_term
           SQL
+        end
 
-          if (name_q = params[:name]&.strip.presence)
-            query = query.joins(:name)
-            query = case params[:name_search_type]
-                    when 'matches'
-                      query.where("names.name = ?", name_q)
-                    when 'begins_with'
-                      query.where("names.name LIKE ?", name_q + '%')
-                    else
-                      query.where("names.name LIKE ?", '%' + name_q + '%')
-                    end
-          end
+        def locality_clause relation
+          return relation unless (locality = params[:locality])
+          relation.where('protonyms.locality LIKE ?', "%#{locality}%")
+        end
 
-          if (epithet_q = params[:epithet]&.strip.presence)
-            query = query.joins(:name).where('names.epithet = ?', epithet_q)
-          end
+        def biogeographic_region_clause relation
+          return relation unless (biogeographic_region = params[:biogeographic_region])
 
-          if (genus_q = params[:genus]&.strip.presence)
-            query = query.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
-                      joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
-                      where('genus_names.name LIKE ?', "%#{genus_q}%")
-          end
+          value = biogeographic_region == 'None' ? nil : biogeographic_region
+          relation.where(protonyms: { biogeographic_region: value })
+        end
 
-          if (protonym_q = params[:protonym]&.strip.presence)
-            query = query.joins('JOIN names AS protonym_names ON protonyms.name_id = protonym_names.id').
-                      where('protonym_names.name LIKE ?', "%#{protonym_q}%")
-          end
-
-          search_term = params[:biogeographic_region]
-          if search_term == 'None'
-            query = query.where(protonyms: { biogeographic_region: nil })
-          elsif search_term
-            query = query.where(protonyms: { biogeographic_region: search_term })
-          end
-
-          query = query.where('forms LIKE ?', "%#{params[:forms]}%") if params[:forms]
-
-          query.includes(:name, protonym: { authorship: :reference })
+        def forms_clause relation
+          return relation unless (forms = params[:forms])
+          relation.where('citations.forms LIKE ?', "%#{forms}%")
         end
     end
   end

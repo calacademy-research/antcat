@@ -25,8 +25,10 @@ class Taxon < ApplicationRecord
   belongs_to :name, dependent: :destroy
   belongs_to :protonym
 
-  has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem', dependent: :destroy
-  has_many :reference_sections, -> { order(:position) }, dependent: :destroy
+  with_options inverse_of: :taxon, dependent: :destroy do
+    has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem'
+    has_many :reference_sections, -> { order(:position) }
+  end
 
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :status, inclusion: { in: Status::STATUSES }

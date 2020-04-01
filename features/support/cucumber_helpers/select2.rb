@@ -6,7 +6,7 @@ module CucumberHelpers
       element_id = from
 
       if value == '' # HACK: Because lazy.
-        first("##{element_id}").set ''
+        first("##{element_id}").select('(none)')
         return
       end
 
