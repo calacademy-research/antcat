@@ -4,6 +4,8 @@ module Operations
   class CreateNewCombination
     include Operation
 
+    attr_private_initialize [:current_valid_taxon, :new_genus, :target_name_string]
+
     def self.description current_valid_taxon:, new_combination_name:, new_genus:
       preview_new_taxon = PreviewString.new(new_combination_name + ' **[NEW TAXON]**')
       preview_existing_taxon = PreviewTaxon.new(current_valid_taxon)
@@ -26,12 +28,6 @@ module Operations
           new_combination: preview_new_taxon
         )
       ].join("\n")
-    end
-
-    def initialize current_valid_taxon:, new_genus:, target_name_string:
-      @current_valid_taxon = current_valid_taxon
-      @new_genus = new_genus
-      @target_name_string = target_name_string
     end
 
     def execute
@@ -74,9 +70,5 @@ module Operations
         super
       end
     end
-
-    private
-
-      attr_reader :current_valid_taxon, :new_genus, :target_name_string
   end
 end

@@ -4,12 +4,7 @@ module Users
   class Notify
     include Service
 
-    def initialize user, reason, attached:, notifier:
-      @user = user
-      @reason = reason
-      @attached = attached
-      @notifier = notifier
-    end
+    attr_private_initialize :user, :reason, [:attached, :notifier]
 
     def call
       return if notifier == user
@@ -19,8 +14,6 @@ module Users
     end
 
     private
-
-      attr_reader :user, :reason, :attached, :notifier
 
       # To avoid sending repeated notifications eg when a comment that
       # already mentions a user is edited and saved again.

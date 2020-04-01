@@ -5,10 +5,7 @@ module Editors
     include Rails.application.routes.url_helpers
     include ActionView::Helpers
 
-    def initialize reference, session: nil
-      @reference = reference
-      @session = session
-    end
+    attr_private_initialize :reference, [session: nil]
 
     def review_reference_button
       if reference.can_finish_reviewing?
@@ -35,9 +32,5 @@ module Editors
           method: :put, class: "btn-saves btn-tiny"
       end
     end
-
-    private
-
-      attr_reader :reference, :session
   end
 end

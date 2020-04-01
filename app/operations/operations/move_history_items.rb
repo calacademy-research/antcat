@@ -4,10 +4,7 @@ module Operations
   class MoveHistoryItems
     include Operation
 
-    def initialize to_taxon:, history_items:
-      @to_taxon = to_taxon
-      @history_items = history_items
-    end
+    attr_private_initialize [:to_taxon, :history_items]
 
     def self.description to_taxon:, history_items:
       history_items_description = history_items.map do |history_item|
@@ -25,9 +22,5 @@ module Operations
         fail! "Could not update history item ##{history_item.id}" unless history_item.update(taxon: to_taxon)
       end
     end
-
-    private
-
-      attr_reader :to_taxon, :history_items
   end
 end

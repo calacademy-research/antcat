@@ -3,19 +3,13 @@
 class ReferenceForm
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
 
-  def initialize reference, params, ignore_duplicates: false
-    @reference = reference
-    @params = params
-    @ignore_duplicates = ignore_duplicates
-  end
+  attr_private_initialize :reference, :params, [ignore_duplicates: false]
 
   def save
     save_reference
   end
 
   private
-
-    attr_reader :reference, :params, :ignore_duplicates
 
     def save_reference
       Reference.transaction do
