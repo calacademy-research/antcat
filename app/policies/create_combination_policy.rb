@@ -73,6 +73,6 @@ class CreateCombinationPolicy
     end
 
     def obsolete_combinations_ids
-      @obsolete_combinations_ids ||= taxon.obsolete_combinations.pluck(:id)
+      @_obsolete_combinations_ids ||= taxon.obsolete_combinations.pluck(:id)
     end
 end

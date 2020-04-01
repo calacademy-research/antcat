@@ -9,11 +9,15 @@ class CatalogPresenter
   end
 
   def taxon_browser
-    @taxon_browser ||= TaxonBrowser::Browser.new(taxon, session[:show_invalid], params[:display]&.to_sym)
+    @_taxon_browser ||= TaxonBrowser::Browser.new(taxon, session[:show_invalid], params[:display]&.to_sym)
+  end
+
+  def taxon_browser_presenter
+    @_taxon_browser_presenter ||= TaxonBrowserPresenter.new(taxon_browser)
   end
 
   def statistics
-    @statistics ||= begin
+    @_statistics ||= begin
       if show_full_statistics?
         taxon.decorate.statistics
       else

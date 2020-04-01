@@ -37,7 +37,7 @@ module DatabaseScripts
     private
 
       def name_ids_owned_by_protonyms
-        @name_ids_owned_by_protonyms ||= Name.joins(:protonyms).pluck(:id)
+        @_name_ids_owned_by_protonyms ||= Name.joins(:protonyms).pluck(:id)
       end
 
       def will_be_fixed_by_itself name, parsed_name, owner_type

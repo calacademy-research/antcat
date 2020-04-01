@@ -6,7 +6,7 @@ describe Issue do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
-    it { is_expected.to belong_to(:adder).required }
+    it { is_expected.to belong_to(:user).required }
   end
 
   describe 'validations' do

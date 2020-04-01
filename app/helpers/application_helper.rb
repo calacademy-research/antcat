@@ -41,10 +41,6 @@ module ApplicationHelper
     content_tag :span, "new!", class: "rounded-badge"
   end
 
-  def spinner_icon
-    "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
-  end
-
   def foundation_class_for flash_type
     case flash_type.to_sym
     when :notice then "primary"
@@ -81,21 +77,5 @@ module ApplicationHelper
 
   def current_page_for_feedback
     request.original_fullpath.gsub(%r{^/}, "")
-  end
-
-  def search_icon
-    antcat_icon "search"
-  end
-
-  def append_superadmin_icon label
-    label.html_safe << antcat_icon("superadmin")
-  end
-
-  def append_refresh_icon label
-    label.html_safe << antcat_icon("refresh")
-  end
-
-  def antcat_icon *css_classes
-    content_tag :i, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 end

@@ -12,23 +12,21 @@ class RevisionPresenter
     expanded_reference_cache
   ]
 
-  def initialize comparer:, hide_formatted: false, template: nil
+  def initialize comparer:, template: nil
     @comparer = comparer
-    @hide_formatted = hide_formatted
     @template = template
   end
 
-  def hide_formatted?
-    hide_formatted
+  def show_formatted?
+    @_show_formatted ||= template.present?
   end
 
-  def html_split_diff
-    return unless diff_with
+  def left_side_diff
+    html_split_diff.left
+  end
 
-    left = diff_format diff_with
-    right = diff_format selected || most_recent
-
-    Diffy::SplitDiff.new(left, right, format: :html)
+  def right_side_diff
+    html_split_diff.right
   end
 
   # This is for the `revisions` loop, ie `most_recent` is not handled here.
@@ -64,15 +62,20 @@ class RevisionPresenter
 
     delegate :selected, :diff_with, :most_recent, to: :comparer
 
-    attr_reader :comparer, :hide_formatted, :template
+    attr_reader :comparer, :template
 
-    def diff_format item
-      json = to_json item
-      JSON.pretty_generate JSON.parse(json)
+    def html_split_diff
+      return unless diff_with
+
+      @_html_split_diff ||= begin
+        left = diff_format diff_with
+        right = diff_format selected || most_recent
+        Diffy::SplitDiff.new(left, right, format: :html)
+      end
     end
 
-    # HACK: To make the diff less cluttered.
-    def to_json item
-      item.to_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
+    def diff_format item
+      as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
+      JSON.pretty_generate(as_json)
     end
 end

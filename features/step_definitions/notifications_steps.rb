@@ -13,7 +13,7 @@ Then("I should see {int} unread notification(s)") do |expected_count|
 end
 
 Given("there is an open issue {string} created by {string}") do |title, name|
-  create :issue, title: title, adder: User.find_by(name: name)
+  create :issue, title: title, user: User.find_by(name: name)
 end
 
 When(/^I write a new comment <at Batiatus's id> "([^"]*)"$/) do |content|

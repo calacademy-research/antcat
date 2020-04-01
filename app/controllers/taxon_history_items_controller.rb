@@ -65,7 +65,7 @@ class TaxonHistoryItemsController < ApplicationController
 
   def destroy
     taxon_history_item = find_taxon_history_item
-    taxon_history_item.destroy
+    taxon_history_item.destroy!
     taxon_history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
 
     respond_to do |format|

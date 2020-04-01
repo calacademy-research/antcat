@@ -53,7 +53,7 @@ class FeedbackController < ApplicationController
   def destroy
     feedback = find_feedback
 
-    feedback.destroy
+    feedback.destroy!
     feedback.create_activity :destroy, current_user
 
     redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."

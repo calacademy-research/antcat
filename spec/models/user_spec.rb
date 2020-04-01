@@ -40,11 +40,6 @@ describe User do
         expect { create :activity, user: user }.
           to change { user.remaining_edits_for_unconfirmed_user }.by(-1)
       end
-
-      it 'does not count submitted feedbacks towards the limit' do
-        expect { create :activity, user: user, trackable: create(:feedback) }.
-          to_not change { user.remaining_edits_for_unconfirmed_user }
-      end
     end
   end
 

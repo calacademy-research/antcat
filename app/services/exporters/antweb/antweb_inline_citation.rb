@@ -26,9 +26,8 @@ module Exporters
           reference.decorate.format_document_links
         end
 
-        # Hardcoded, or we must set `host` + use `reference_url(reference)`.
         def reference_url
-          "https://antcat.org/references/#{reference.id}"
+          "#{Settings.production_url}/references/#{reference.id}"
         end
 
         def plain_text

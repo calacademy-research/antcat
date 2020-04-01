@@ -55,13 +55,13 @@ module Exporters
         end
 
         def taxa_ids
-          @taxa_ids ||= Taxon.where.not(type: ['Subtribe', 'Infrasubspecies']).
-                          joins(protonym: [{ authorship: :reference }]).
-                          order(:status).pluck(:id).reverse
+          @_taxa_ids ||= Taxon.where.not(type: ['Subtribe', 'Infrasubspecies']).
+                           joins(protonym: [{ authorship: :reference }]).
+                           order(:status).pluck(:id).reverse
         end
 
         def progress_bar total
-          ProgressBar.create total: total, format: "%a %e %P% Processed: %c from %C", throttle_rate: 0.5
+          ProgressBar.create(total: total, format: "%a %e %P% Processed: %c from %C", throttle_rate: 0.5)
         end
     end
   end

@@ -4,10 +4,10 @@
   %p This item does not have any previous revisions.
   %p
     %strong Date
-    =render "compare_revisions/revision_info_date", revision: most_recent
+    =render "shared/revision_comparer/revision_info_date", revision: most_recent
   %p
     %strong User
-    =render "compare_revisions/revision_info_user", revision: most_recent
+    =render "shared/revision_comparer/revision_info_user", revision: most_recent
 -else
   =form_tag request.original_url, method: :get, enforce_utf8: false do
     %table.revisions
@@ -25,8 +25,8 @@
           %td.shrink=link_to "prev", diff_with_id: revisions.first.id
           %td.shrink
           %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?
-          %td.shrink=render "compare_revisions/revision_info_date", revision: most_recent
-          %td=render "compare_revisions/revision_info_user", revision: most_recent
+          %td.shrink=render "shared/revision_comparer/revision_info_date", revision: most_recent
+          %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
 
         -revisions.each_with_index do |revision, index|
           %tr{class: revision_presenter.revision_css(revision)}
@@ -44,7 +44,7 @@
               -# Only show the right radio option if there's a previous revision.
               -if previous
                 =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision)
-            %td=render "compare_revisions/revision_info_date", revision: revision
-            %td=render "compare_revisions/revision_info_user", revision: revision
+            %td=render "shared/revision_comparer/revision_info_date", revision: revision
+            %td=render "shared/revision_comparer/revision_info_user", revision: revision
 
     =button_tag "Compare selected revisions", name: nil, class: "btn-normal"

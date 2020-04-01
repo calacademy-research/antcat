@@ -1,0 +1,14 @@
+%h5
+  .left Difference between revisions
+  .clearfix
+
+.row.center-text
+  .medium-6.columns
+    =render "shared/revision_comparer/revision_info_date", revision: left_side_revision
+  .medium-6.columns
+    =render "shared/revision_comparer/revision_info_date", revision: right_side_revision
+
+.callout.margin-bottom
+  .row
+    .medium-6.columns=left_side_diff.html_safe
+    .medium-6.columns=right_side_diff.html_safe

@@ -8,9 +8,8 @@ class FeedbackDecorator < Draper::Decorator
     format_unregistered_submitter
   end
 
-  # TODO: Do not hardcode antcat.org.
   def format_page
-    url = "https://antcat.org/#{feedback.page}"
+    return unless (url = full_feedback_page_url)
     h.content_tag :p, "Page: #{h.link_to(url, url)}".html_safe
   end
 
@@ -19,13 +18,6 @@ class FeedbackDecorator < Draper::Decorator
              user.decorate.angle_bracketed_email
            else
              format_unregistered_submitter
-           end
-
-    # TODO: Do not hardcode antcat.org.
-    page = if feedback.page
-             "https://antcat.org/#{feedback.page}"
-           else
-             "(none)"
            end
 
     <<~MESSAGE
@@ -39,13 +31,18 @@ class FeedbackDecorator < Draper::Decorator
       To: AntCat
       Subject: AntCat Feedback (ID #{id})
 
-      Page: #{page}
+      Page: #{full_feedback_page_url || '(none)'}
 
       #{h.strip_tags(comment)}
     MESSAGE
   end
 
   private
+
+    def full_feedback_page_url
+      return if feedback.page.blank?
+      "#{Settings.production_url}/#{feedback.page}"
+    end
 
     def format_unregistered_submitter
       name = feedback.name.presence || "[no name]"

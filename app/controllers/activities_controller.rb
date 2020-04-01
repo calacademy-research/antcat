@@ -37,7 +37,7 @@ class ActivitiesController < ApplicationController
 
   def destroy
     activity = find_activity
-    activity.destroy
+    activity.destroy!
     redirect_back fallback_location: root_path,
       notice: "Activity item ##{activity.id} was successfully deleted."
   end

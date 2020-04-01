@@ -30,4 +30,4 @@
       =@taxon.decorate.link_to_google_scholar
 
 -content_for :after_content do
-  =render "taxon_browser/container", taxon: @taxon, taxon_browser: @catalog_presenter.taxon_browser
+  =render "taxon_browser/container", taxon: @taxon, taxon_browser: @catalog_presenter.taxon_browser, taxon_browser_presenter: @catalog_presenter.taxon_browser_presenter

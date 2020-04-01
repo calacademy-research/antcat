@@ -1,0 +1,40 @@
+-most_recent = comparer.most_recent
+-diff_with   = comparer.diff_with
+-selected    = comparer.selected
+
+-content_for :javascripts do
+  =stylesheet_link_tag "diffy"
+  =javascript_include_tag "revision_comparer"
+
+.row#revision-comparer
+  .medium-3.medium-push-9.columns
+    .callout
+      =render "shared/revision_comparer/help"
+
+  .medium-9.medium-pull-3.columns
+    -if revision_presenter.show_formatted?
+      =render "shared/revision_comparer/formatted",
+        comparer: comparer,
+        revision_presenter: revision_presenter,
+        most_recent: most_recent,
+        selected: selected,
+        diff_with: diff_with,
+        collapse_formatted: diff_with.present?
+
+    -if diff_with
+      -if revision_presenter.show_formatted?
+        -content_for :breadcrumbs_right do
+          =link_to "Hide/show formatted", "#", data: { show_hide_toggler_for: "formatted" }, class: "btn-nodanger"
+
+      =render "shared/revision_comparer/difference_between_revisions",
+        left_side_revision: diff_with,
+        left_side_diff: revision_presenter.left_side_diff,
+        right_side_revision: selected || most_recent,
+        right_side_diff: revision_presenter.right_side_diff
+
+  .medium-9.columns.medium-pull-3.margin-bottom.margin-top
+    =render "shared/revision_comparer/revision_history_table",
+      comparer: comparer,
+      revision_presenter: revision_presenter,
+      revisions: comparer.revisions.reverse,
+      most_recent: most_recent

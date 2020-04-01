@@ -27,7 +27,7 @@ module My
           params.delete(:current_password)
         end
 
-        resource.update(params)
+        resource.update!(params)
       end
 
       def after_sign_up_path_for _resource

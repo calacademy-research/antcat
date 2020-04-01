@@ -51,7 +51,7 @@ class SiteNoticesController < ApplicationController
   def destroy
     site_notice = find_site_notice
 
-    site_notice.destroy
+    site_notice.destroy!
     site_notice.create_activity :destroy, current_user
 
     redirect_to site_notices_path, notice: "Site notice was successfully deleted."

@@ -10,7 +10,7 @@ module Editors
     end
 
     def taxa_with_same_name
-      @taxa_with_same_name ||= Taxon.where(name_cache: taxon.name_cache).where.not(id: taxon.id)
+      @_taxa_with_same_name ||= Taxon.where(name_cache: taxon.name_cache).where.not(id: taxon.id)
     end
 
     def edit_taxon_button

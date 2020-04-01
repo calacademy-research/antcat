@@ -94,7 +94,7 @@ class Protonym < ApplicationRecord
   # :nocov:
 
   def soft_validations
-    @soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
+    @_soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   private

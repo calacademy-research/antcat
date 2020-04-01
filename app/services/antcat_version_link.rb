@@ -14,7 +14,7 @@ class AntcatVersionLink
     end
 
     def commit_hash
-      @commit_hash ||= `git rev-parse HEAD`
+      @_commit_hash ||= `git rev-parse HEAD`
     end
 
     def url

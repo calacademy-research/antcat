@@ -7,16 +7,16 @@
     %span.white-label
       =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
     %span.label.secondary
-      =toggle_invalid_or_valid_only_link taxon_browser.show_invalid?
+      =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
 .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
   -taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
       %ul.snaked.no-bullet.mr-scrollbary
         -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-          =extra_tab_link tab.tab_taxon, link[:label], link[:display], taxon_browser.display
+          %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:display]
 
-        =render "taxon_browser/tab", tab: tab
+        =render "taxon_browser/tab", tab: tab, taxon_browser_presenter: taxon_browser_presenter
 
         -# It's possible that `taxa` is empty at this point. Most likely
         -# that means there are invalid children that can be seen by toggling
@@ -24,4 +24,4 @@
         -if tab.notify_about_no_valid_taxa?
           %li No valid child taxa
           -unless taxon_browser.show_invalid? # Link unless already showing invalid.
-            %li=toggle_invalid_or_valid_only_link taxon_browser.show_invalid?
+            %li=taxon_browser_presenter.toggle_invalid_or_valid_only_link

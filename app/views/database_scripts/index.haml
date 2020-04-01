@@ -13,19 +13,19 @@
   .small-12.medium-9.columns.end
     .callout.primary
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VALIDATED_TAG]
+        =DatabaseScriptDecorator.format_tags [DatabaseScript::VALIDATED_TAG]
         means that there are validations in place to prevent the issue
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
+        =DatabaseScriptDecorator.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
         is for issues that have been mostly fixed
         =surround "(", ")" do
           =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::HIGH_PRIORITY_TAG]
+        =DatabaseScriptDecorator.format_tags [DatabaseScript::HIGH_PRIORITY_TAG]
         is for issues we want to fix as soon as possible, usually because the issue is
         preventing us from improving the code
       %p
-        =DatabaseScript.decorate_class.format_tags [DatabaseScript::VERY_SLOW_TAG]
+        =DatabaseScriptDecorator.format_tags [DatabaseScript::VERY_SLOW_TAG]
         may cause the site to become unresponsive
 
 .row

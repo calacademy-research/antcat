@@ -119,18 +119,18 @@ class Taxon < ApplicationRecord
   end
 
   def virtual_history_items
-    @virtual_history_items ||= all_virtual_history_items.select(&:publicly_visible?)
+    @_virtual_history_items ||= all_virtual_history_items.select(&:publicly_visible?)
   end
 
   # The reason we have `#virtual_history_items` and `#all_virtual_history_items` is because for as long as
   # data is being migrated to "virtual history items", we want to be able to "preview" items before we actually make
   # them publicly visible in the catalog.
   def all_virtual_history_items
-    @all_virtual_history_items ||= Taxa::VirtualHistoryItemsForTaxon[self]
+    @_all_virtual_history_items ||= Taxa::VirtualHistoryItemsForTaxon[self]
   end
 
   def policy
-    @policy ||= TaxonPolicy.new(self)
+    @_policy ||= TaxonPolicy.new(self)
   end
 
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
@@ -145,15 +145,15 @@ class Taxon < ApplicationRecord
   end
 
   def soft_validations
-    @soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
+    @_soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def what_links_here
-    @what_links_here ||= Taxa::WhatLinksHere.new(self)
+    @_what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
   def cleanup_taxon
-    @cleanup_taxon ||= Taxa::CleanupTaxon.new(self)
+    @_cleanup_taxon ||= Taxa::CleanupTaxon.new(self)
   end
 
   private

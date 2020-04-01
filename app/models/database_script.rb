@@ -46,10 +46,10 @@ class DatabaseScript
   end
 
   def self.all
-    @all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
-               basename = File.basename path, ".rb"
-               new_from_filename_without_extension basename
-             end
+    @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
+                basename = File.basename(path, ".rb")
+                new_from_filename_without_extension basename
+              end
   end
 
   # TODO: Indicate record type in scripts.
@@ -78,11 +78,11 @@ class DatabaseScript
   end
 
   def statistics
-    @statistics ||= default_statistics
+    @_statistics ||= default_statistics
   end
 
   def filename_without_extension
-    @filename_without_extension ||= self.class.name.demodulize.underscore
+    @_filename_without_extension ||= self.class.name.demodulize.underscore
   end
 
   # For `link_to "database_script", database_script_path(@database_script)`.
@@ -93,20 +93,20 @@ class DatabaseScript
   protected
 
     def cached_results
-      return @results if defined? @results
+      return @_results if defined? @_results
       if respond_to?(:results)
         start = Time.current
-        @results = results
-        @results = @results.load if @results.is_a?(ActiveRecord::Relation)
+        @_results = results
+        @_results = @_results.load if @_results.is_a?(ActiveRecord::Relation)
         self.results_runtime = Time.current - start
       end
-      @results
+      @_results
     end
 
   private
 
     def end_data_attributes
-      @end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(script_path)
+      @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(script_path)
     end
 
     def script_path

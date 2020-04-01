@@ -115,4 +115,8 @@ class ReferencesController < ApplicationController
       reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
       reference_class || raise("reference type is not supported")
     end
+
+    helper_method def tab_active? reference, reference_class
+      "is-active" if reference.is_a? reference_class
+    end
 end

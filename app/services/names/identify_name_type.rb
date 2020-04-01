@@ -52,11 +52,11 @@ module Names
       end
 
       def words
-        @words ||= name.split
+        @_words ||= name.split
       end
 
       def words_without_subgenus
-        @words_without_subgenus ||= words.reject { |word| word =~ /^\(.+?\)$/ }
+        @_words_without_subgenus ||= words.reject { |word| word =~ /^\(.+?\)$/ }
       end
 
       def countable_words
