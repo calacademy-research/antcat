@@ -49,10 +49,7 @@ class SoftValidations
   ]
   ALL_DATABASE_SCRIPTS_TO_CHECK = TAXA_DATABASE_SCRIPTS_TO_CHECK + PROTONYM_DATABASE_SCRIPTS_TO_CHECK
 
-  def initialize record, database_script_klasses
-    @record = record
-    @database_script_klasses = database_script_klasses
-  end
+  attr_private_initialize :record, :database_script_klasses
 
   def all
     @_all ||= database_script_klasses.map do |database_script_klass|
@@ -76,8 +73,4 @@ class SoftValidations
   def warn_about_slow_runtime?
     total_runtime > WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER
   end
-
-  private
-
-    attr_reader :record, :database_script_klasses
 end

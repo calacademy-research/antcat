@@ -8,9 +8,7 @@ module Exporters
         include ActionView::Helpers::TagHelper # For `#content_tag`.
         include Service
 
-        def initialize taxon
-          @taxon = taxon
-        end
+        attr_private_initialize :taxon
 
         def call
           content = ''.html_safe
@@ -23,8 +21,6 @@ module Exporters
         end
 
         private
-
-          attr_reader :taxon
 
           def child_list label, children
             return ''.html_safe if children.blank?

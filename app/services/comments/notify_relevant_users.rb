@@ -4,9 +4,7 @@ module Comments
   class NotifyRelevantUsers
     include Service
 
-    def initialize comment
-      @comment = comment
-    end
+    attr_private_initialize :comment
 
     # Order matters, since we only want to send one notification to each user.
     # If a user was notified because they were mentioned in the comment, we're not sending
@@ -19,8 +17,6 @@ module Comments
     end
 
     private
-
-      attr_accessor :comment
 
       delegate :commentable, :body, to: :comment
 

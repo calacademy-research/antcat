@@ -5,9 +5,7 @@ module Exporters
     class Formatter
       include Service
 
-      def initialize references
-        @references = references
-      end
+      attr_private_initialize :references
 
       def call
         references.map do |reference|
@@ -26,8 +24,6 @@ module Exporters
           else raise "reference type not supported"
           end
         end
-
-        attr_reader :references
     end
 
     class BaseFormatter

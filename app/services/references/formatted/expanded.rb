@@ -10,9 +10,7 @@ module References
       include ActionView::Helpers::UrlHelper
       include Service
 
-      def initialize reference
-        @reference = reference
-      end
+      attr_private_initialize :reference
 
       def call
         string = author_names_with_links
@@ -26,8 +24,6 @@ module References
       end
 
       private
-
-        attr_reader :reference
 
         def author_names_with_links
           string =  reference.author_names.map do |author_name|

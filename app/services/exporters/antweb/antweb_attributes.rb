@@ -5,9 +5,7 @@ module Exporters
     class AntwebAttributes
       include Service
 
-      def initialize taxon
-        @taxon = taxon
-      end
+      attr_private_initialize :taxon
 
       def call
         case taxon
@@ -23,8 +21,6 @@ module Exporters
       end
 
       private
-
-        attr_reader :taxon
 
         delegate :name, :subfamily, :tribe, :genus, :subgenus, :species, to: :taxon
 

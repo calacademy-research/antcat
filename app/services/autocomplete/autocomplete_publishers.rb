@@ -4,9 +4,7 @@ module Autocomplete
   class AutocompletePublishers
     include Service
 
-    def initialize search_query
-      @search_query = search_query
-    end
+    attr_private_initialize :search_query
 
     def call
       Publisher.
@@ -14,8 +12,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :search_query
 
       def search_expression
         '%' + search_query.split('').join('%') + '%'

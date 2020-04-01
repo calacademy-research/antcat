@@ -7,17 +7,13 @@ module Exporters
         class HeadlineType
           include Service
 
-          def initialize taxon
-            @taxon = taxon
-          end
+          attr_private_initialize :taxon
 
           def call
             headline_type
           end
 
           private
-
-            attr_reader :taxon
 
             delegate :type_taxt, :type_taxon, :protonym, to: :taxon
 

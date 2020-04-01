@@ -4,9 +4,7 @@ module Taxa
   class LinkEachEpithet
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     # This links the different parts of the binomial name. Only applicable to
     # species and below, since higher ranks consists of a single word.
@@ -38,8 +36,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :taxon
 
       def genus_link
         # Link name of the genus, but add dagger per taxon's fossil status.

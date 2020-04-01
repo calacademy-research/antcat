@@ -10,9 +10,7 @@ module Wikipedia
   class ReferenceExporter
     include Service
 
-    def initialize reference
-      @reference = reference
-    end
+    attr_private_initialize :reference
 
     def call
       formatter = "Wikipedia::#{reference.type}".safe_constantize
@@ -21,8 +19,6 @@ module Wikipedia
     end
 
     private
-
-      attr_reader :reference
 
       def url
         reference.routed_url if reference.downloadable?

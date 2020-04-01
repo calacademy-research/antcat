@@ -4,17 +4,13 @@ module References
   class ExtractAuthorNameParts
     include Service
 
-    def initialize string
-      @string = string
-    end
+    attr_private_initialize :string
 
     def call
       name_parts
     end
 
     private
-
-      attr_reader :string
 
       def name_parts
         parts = {}

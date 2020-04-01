@@ -4,10 +4,7 @@ module References
   class ReplaceMissing
     include Service
 
-    def initialize missing_reference, target_reference
-      @missing_reference = missing_reference
-      @target_reference = target_reference
-    end
+    attr_private_initialize :missing_reference, :target_reference
 
     def call
       # These cases should not happen, but let's raise if that happens.
@@ -19,8 +16,6 @@ module References
     end
 
     private
-
-      attr_reader :missing_reference, :target_reference
 
       def replace_all!
         Taxt::TAXTABLES.each do |(model, _table, field)|

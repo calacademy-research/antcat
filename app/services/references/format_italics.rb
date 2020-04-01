@@ -4,9 +4,7 @@ module References
   class FormatItalics
     include Service
 
-    def initialize content
-      @content = content
-    end
+    attr_private_initialize :content
 
     def call
       return unless content
@@ -14,9 +12,5 @@ module References
 
       content.gsub(/\*(.*?)\*/, '<i>\1</i>').html_safe
     end
-
-    private
-
-      attr_reader :content
   end
 end

@@ -2,9 +2,7 @@
 
 module DatabaseScripts
   class EndDataAttributes
-    def initialize script_path
-      @script_path = script_path
-    end
+    attr_private_initialize :script_path
 
     def title
       end_data[:title]&.html_safe
@@ -37,7 +35,5 @@ module DatabaseScripts
       def end_data
         @_end_data ||= ReadEndData.new(script_path).call.deep_symbolize_keys
       end
-
-      attr_reader :script_path
   end
 end

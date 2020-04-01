@@ -7,9 +7,7 @@ module Taxa
   class SubspeciesHistoryItemIssues
     include Service
 
-    def initialize history_item
-      @history_item = history_item
-    end
+    attr_private_initialize :history_item
 
     def call
       extracted_ids = extract_taxt_ids history_item
@@ -48,8 +46,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :history_item
 
       def extract_additional history_item
         cleaned = history_item.taxt

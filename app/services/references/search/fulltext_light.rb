@@ -9,17 +9,13 @@ module References
     class FulltextLight
       include Service
 
-      def initialize search_query
-        @search_query = search_query
-      end
+      attr_private_initialize :search_query
 
       def call
         fulltext_search_light
       end
 
       private
-
-        attr_reader :search_query
 
         def fulltext_search_light
           Reference.search do

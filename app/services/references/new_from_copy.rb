@@ -4,9 +4,7 @@ module References
   class NewFromCopy
     include Service
 
-    def initialize original
-      @original = original
-    end
+    attr_private_initialize :original
 
     def call
       new_reference = original.class.new
@@ -15,8 +13,6 @@ module References
     end
 
     private
-
-      attr_reader :original
 
       def to_copy
         type_specific_fields.concat basic_fields_and_notes

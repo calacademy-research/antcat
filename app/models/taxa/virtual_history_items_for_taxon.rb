@@ -10,17 +10,13 @@ module Taxa
       ]
     }
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       all_relevant
     end
 
     private
-
-      attr_reader :taxon
 
       def all_relevant
         for_rank.map { |klass| klass.new(taxon) }.select(&:relevant_for_taxon?)

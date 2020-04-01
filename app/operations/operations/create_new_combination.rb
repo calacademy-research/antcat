@@ -60,12 +60,10 @@ module Operations
     end
 
     class PreviewString
-      def initialize string
-        @string = string
-      end
+      attr_private_initialize :string
 
       def to_s
-        @string
+        string
       end
 
       def method_missing name, *_args, &_block

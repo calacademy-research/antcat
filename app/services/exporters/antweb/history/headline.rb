@@ -8,9 +8,7 @@ module Exporters
         include ActionView::Helpers::TagHelper # For `#content_tag`.
         include Service
 
-        def initialize taxon
-          @taxon = taxon
-        end
+        attr_private_initialize :taxon
 
         def call
           content_tag :div do
@@ -27,8 +25,6 @@ module Exporters
         end
 
         private
-
-          attr_reader :taxon
 
           delegate :headline_notes_taxt, to: :taxon
 

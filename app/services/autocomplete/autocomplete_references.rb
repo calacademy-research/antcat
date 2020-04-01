@@ -6,9 +6,7 @@ module Autocomplete
 
     PER_PAGE = 10
 
-    def initialize search_query
-      @search_query = search_query
-    end
+    attr_private_initialize :search_query
 
     def call
       search_results.map do |reference|
@@ -28,8 +26,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :search_query
 
       def search_results
         exact_id_match || ::References::Search::Fulltext[default_search_options.merge keyword_params]

@@ -4,9 +4,7 @@ module Authors
   class FindOrInitializeNamesFromString
     include Service
 
-    def initialize string
-      @string = string
-    end
+    attr_private_initialize :string
 
     def call
       parsed_author_names.map do |name|
@@ -16,8 +14,6 @@ module Authors
     end
 
     private
-
-      attr_reader :string
 
       def parsed_author_names
         Parsers::ParseAuthorNames[string]

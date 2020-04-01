@@ -4,9 +4,7 @@ class TableRefDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
-  def initialize table_ref
-    @table_ref = table_ref
-  end
+  attr_private_initialize :table_ref
 
   def item_link
     case table
@@ -30,8 +28,6 @@ class TableRefDecorator
   end
 
   private
-
-    attr_reader :table_ref
 
     delegate :table, :id, :owner, to: :table_ref
 end

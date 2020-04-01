@@ -21,18 +21,14 @@ module References
       ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
     ]
 
-    def initialize lhs_reference, rhs_reference
-      @lhs = lhs_reference
-      @rhs = rhs_reference
-    end
+    # Left hand reference, right hand reference.
+    attr_private_initialize :lhs, :rhs
 
     def call
       similarity
     end
 
     private
-
-      attr_reader :lhs, :rhs
 
       delegate :type, :title, :year, :pagination, :series_volume_issue, to: :lhs
 

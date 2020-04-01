@@ -9,17 +9,13 @@ module Exporters
           include ActionView::Helpers::TagHelper # For `#content_tag`.`
           include Service
 
-          def initialize protonym
-            @protonym = protonym
-          end
+          attr_private_initialize :protonym
 
           def call
             AddPeriodIfNecessary[headline_protonym]
           end
 
           private
-
-            attr_reader :protonym
 
             def headline_protonym
               [

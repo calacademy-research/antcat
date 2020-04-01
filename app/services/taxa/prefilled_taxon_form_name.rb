@@ -4,9 +4,7 @@ module Taxa
   class PrefilledTaxonFormName
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       base = case taxon
@@ -17,9 +15,5 @@ module Taxa
       return unless base
       base.name.name + ' '
     end
-
-    private
-
-      attr_reader :taxon
   end
 end

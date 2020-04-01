@@ -6,17 +6,13 @@ module Names
 
     CONSONANTS = 'bcdfghjklmnprstvxyz' # NOTE: No 'q' or 'w', but includes 'y'.
 
-    def initialize epithet
-      @epithet = epithet
-    end
+    attr_private_initialize :epithet
 
     def call
       ([epithet] + frequent_misspellings + declensions + orthographic + deemed_identical).uniq
     end
 
     private
-
-      attr_reader :epithet
 
       def frequent_misspellings
         epithets = []

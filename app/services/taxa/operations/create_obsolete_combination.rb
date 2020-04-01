@@ -5,10 +5,7 @@ module Taxa
     class CreateObsoleteCombination
       include Service
 
-      def initialize current_valid_taxon, obsolete_genus
-        @current_valid_taxon = current_valid_taxon
-        @obsolete_genus = obsolete_genus
-      end
+      attr_private_initialize :current_valid_taxon, :obsolete_genus
 
       def call
         # TODO: Raises are not tested nor handled because it should not happen but probably test anyways.
@@ -27,8 +24,6 @@ module Taxa
       end
 
       private
-
-        attr_reader :current_valid_taxon, :obsolete_genus
 
         def build_obsolete_combination
           obsolete_combination = Species.new

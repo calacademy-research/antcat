@@ -5,9 +5,7 @@ module Exporters
     class TaxaAsTxt
       include Service
 
-      def initialize taxa
-        @taxa = taxa
-      end
+      attr_private_initialize :taxa
 
       def call
         taxa.reduce('') do |content, taxon|
@@ -16,8 +14,6 @@ module Exporters
       end
 
       private
-
-        attr_reader :taxa
 
         def format_taxon taxon
           string = format_name(taxon).html_safe

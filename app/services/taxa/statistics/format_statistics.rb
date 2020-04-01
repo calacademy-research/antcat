@@ -8,12 +8,10 @@ module Taxa
       include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
       include Service
 
-      def initialize statistics
-        @statistics = statistics
-      end
+      attr_private_initialize :statistics
 
       def call
-        return  if statistics.blank?
+        return if statistics.blank?
 
         statistics.slice(:extant, :fossil).map do |extant_or_fossil, extant_or_fossil_stats|
           stats = extant_or_fossil_stats.map do |rank, rank_stats|
@@ -28,8 +26,6 @@ module Taxa
       end
 
       private
-
-        attr_reader :statistics
 
         def valid_statistics count, rank
           count ||= 0

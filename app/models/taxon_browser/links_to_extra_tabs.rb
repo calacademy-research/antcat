@@ -4,9 +4,7 @@ module TaxonBrowser
   class LinksToExtraTabs
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       links_to_extra_tabs.map do |(label, display)|
@@ -15,8 +13,6 @@ module TaxonBrowser
     end
 
     private
-
-      attr_reader :taxon
 
       def links_to_extra_tabs
         links = []
