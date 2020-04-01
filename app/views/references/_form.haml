@@ -5,12 +5,6 @@
 -reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.display_name) : ''
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 
--if reference.is_a?(MissingReference)
-  .row
-    .medium-12
-      .callout.alert.medium-6.columns
-        %p This reference is a "MissingReference". You must click on one of the type tabs (Article, Book, etc) before saving.
-
 =form_for reference.becomes(Reference) do |f|
   =hidden_field_tag :reference_type, reference.class.name
   =hidden_field_tag :ignore_duplicates, ('yes' if reference.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))

@@ -42,7 +42,7 @@ module References
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::NestedReference
             "#{reference.pagination} #{sanitize References::Formatted::Expanded[reference.nesting_reference]}"
-          when ::MissingReference, ::UnknownReference
+          when ::UnknownReference
             reference.citation
           else
             raise

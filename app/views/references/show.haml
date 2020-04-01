@@ -1,8 +1,4 @@
--# TODO: Remove once we have no `MissingReference`s.
--if @reference.is_a?(MissingReference)
-  -title "#{strip_tags @reference.keey.html_safe} - References"
--else
-  -title "#{Unitalicize[@reference.keey.html_safe]} - References"
+-title "#{Unitalicize[@reference.keey.html_safe]} - References"
 -breadcrumb :reference, @reference
 
 -content_for :breadcrumbs_right do
@@ -28,26 +24,12 @@
         %ul.no-bullet
           -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
             %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
-          -unless @reference.is_a? MissingReference
-            %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
+          %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
           =activities_link_for_trackable @reference
 
 -decorated = @reference.decorate
-
--if @reference.is_a? MissingReference
-  .row.margin-bottom
-    .small-12.columns
-      .callout.alert
-        =antcat_icon "warning-icon"
-        This reference is missing.
-
-        Reason missing:
-        =@reference.reason_missing
-
-        -if user_is_editor?
-          =link_to 'Replace', replace_missing_path(@reference), class: 'btn-normal btn-tiny'
 
 .row.margin-bottom
   .small-12.columns

@@ -4,13 +4,7 @@ class Reference < ApplicationRecord
   include WorkflowActiverecord
   include Trackable
 
-  CONCRETE_SUBCLASS_NAMES = %w[
-    ArticleReference
-    BookReference
-    NestedReference
-    UnknownReference
-    MissingReference
-  ]
+  CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference UnknownReference]
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
     plain_text_cache
     expandable_reference_cache
@@ -35,7 +29,7 @@ class Reference < ApplicationRecord
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   # TODO: Pull up `validates :year` once all `MissingReference` have been converted.
   validates :title, presence: true
-  validates :author_names, presence: true, unless: -> { is_a?(MissingReference) }
+  validates :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
@@ -46,7 +40,6 @@ class Reference < ApplicationRecord
 
   scope :latest_additions, -> { order(created_at: :desc) }
   scope :latest_changes, -> { order(updated_at: :desc) }
-  scope :no_missing, -> { where.not(type: "MissingReference") }
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
@@ -56,7 +49,7 @@ class Reference < ApplicationRecord
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title,
     :citation, :date, :citation_year, :series_volume_issue, :pagination,
-    :doi, :reason_missing, :review_state, :bolton_key, :author_names_suffix
+    :doi, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
@@ -123,8 +116,6 @@ class Reference < ApplicationRecord
   end
 
   def authors_for_keey
-    return ''.html_safe if is_a?(MissingReference)
-
     names = author_names.map(&:last_name)
     case names.size
     when 0 then '[no authors]' # TODO: This can still happen in the reference form.

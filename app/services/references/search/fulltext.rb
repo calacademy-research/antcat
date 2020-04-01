@@ -64,13 +64,6 @@ module References
             case reference_type
             when :unknown   then with    :type, 'UnknownReference'
             when :nested    then with    :type, 'NestedReference'
-            when :missing   then with    :type, 'MissingReference'
-            when :nomissing then without :type, 'MissingReference'
-            end
-
-            # TODO: Super hack that will go away with `MissingReference`s.
-            if per_page == 999_999
-              without :type, 'MissingReference'
             end
 
             paginate page: page, per_page: per_page

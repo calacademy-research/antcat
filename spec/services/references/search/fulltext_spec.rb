@@ -64,7 +64,6 @@ describe References::Search::Fulltext, :search do
 
       describe 'keyword: `reference_type`' do
         let!(:unknown) { create :unknown_reference }
-        let!(:missing) { create :missing_reference }
         let!(:article) { create :article_reference }
         let!(:nested) { create :nested_reference, nesting_reference: article }
 
@@ -73,9 +72,8 @@ describe References::Search::Fulltext, :search do
         end
 
         specify do
+          expect(described_class[]).to match_array [unknown, nested, article]
           expect(described_class[reference_type: :unknown]).to eq [unknown]
-          expect(described_class[reference_type: :nomissing]).to match_array [unknown, nested, article]
-          expect(described_class[reference_type: :missing]).to eq [missing]
           expect(described_class[reference_type: :nested]).to eq [nested]
         end
       end

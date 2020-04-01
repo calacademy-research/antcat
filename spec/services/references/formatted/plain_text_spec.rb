@@ -102,30 +102,6 @@ describe References::Formatted::PlainText do
       end
     end
 
-    context 'when reference is a `MissingReference`' do
-      let(:reference) do
-        create :missing_reference, citation_year: '2010',
-          citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
-      end
-
-      specify { expect(formatter.call.html_safe?).to eq true }
-
-      specify do
-        expect(formatter.call).to eq " 2010. Tapinoma. Atta and such."
-      end
-
-      context 'with unsafe tags' do
-        let(:reference) { create :missing_reference, citation: '<script>xss</script>' }
-
-        it "sanitizes them" do
-          results = formatter.call
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
-          expect(results).to include 'xss'
-        end
-      end
-    end
-
     context 'when reference is a `UnknownReference`' do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do

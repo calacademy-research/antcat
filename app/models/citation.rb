@@ -11,7 +11,6 @@ class Citation < ApplicationRecord
   has_one :protonym, inverse_of: :authorship, foreign_key: :authorship_id, dependent: :destroy
 
   validates :pages, presence: true
-  validate :no_missing_references
 
   before_validation :cleanup_taxts
 
@@ -22,10 +21,5 @@ class Citation < ApplicationRecord
 
     def cleanup_taxts
       self.notes_taxt = Taxt::Cleanup[notes_taxt]
-    end
-
-    def no_missing_references
-      return unless reference.is_a? MissingReference
-      errors.add :reference, "cannot be a missing reference"
     end
 end

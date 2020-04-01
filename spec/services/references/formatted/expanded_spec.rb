@@ -68,21 +68,6 @@ describe References::Formatted::Expanded do
       end
     end
 
-    context 'when reference is a `MissingReference`' do
-      let(:reference) do
-        create :missing_reference, citation_year: '2010',
-          citation: '*Atta* <i>and such</i>', title: 'Tapinoma'
-      end
-
-      specify { expect(formatter.call.html_safe?).to eq true }
-
-      specify do
-        expect(formatter.call.strip).to eq <<~HTML.squish
-          2010. <a href="/references/#{reference.id}">Tapinoma.</a> <i>Atta</i> <i>and such</i>.
-        HTML
-      end
-    end
-
     context 'when reference is a `UnknownReference`' do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do

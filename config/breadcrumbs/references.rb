@@ -28,11 +28,6 @@ crumb :reference_what_links_here do |reference|
   parent :reference, reference
 end
 
-crumb :replace_missing_reference do |reference|
-  link "Replace"
-  parent :reference, reference
-end
-
 crumb :new_reference do
   link "New"
   parent :references

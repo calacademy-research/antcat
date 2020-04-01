@@ -7,7 +7,7 @@ class ReferencesController < ApplicationController
   before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
-    @references = Reference.no_missing.order_by_author_names_and_year.includes(:document).paginate(page: params[:page])
+    @references = Reference.order_by_author_names_and_year.includes(:document).paginate(page: params[:page])
   end
 
   def show

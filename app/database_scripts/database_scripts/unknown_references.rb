@@ -30,6 +30,5 @@ description: >
   These are called "Other" in the reference form.
 
 related_scripts:
-  - MissingReferences
   - OnlineEarlyReferences
   - UnknownReferences

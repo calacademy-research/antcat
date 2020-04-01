@@ -200,8 +200,6 @@
     -taxon.decorate.collected_references.order_by_author_names_and_year.includes(:document).each do |reference|
       -decorated_reference = reference.decorate
       %li.small-text
-        -if reference.is_a?(MissingReference)
-          %span.bold-warning [missing reference]
         =decorated_reference.expanded_reference
         =decorated_reference.format_document_links
         -# NOTE: Useful for editors.

@@ -33,6 +33,5 @@ description: >
   Priority in taxonomy is based on the print version date not online early.
 
 related_scripts:
-  - MissingReferences
   - OnlineEarlyReferences
   - UnknownReferences

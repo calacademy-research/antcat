@@ -4,7 +4,7 @@ module DatabaseScripts
   class ReferencesWithoutPdfs < DatabaseScript
     def results
       Reference.left_outer_joins(:document).where(reference_documents: { id: nil }).
-        no_missing.order_by_author_names_and_year.
+        order_by_author_names_and_year.
         includes(:author_names).references(:reference_author_names)
     end
 
