@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::Antweb::ExportHeadlineType do
+describe Exporters::Antweb::History::Headline::HeadlineType do
   include TestLinksHelpers
 
   describe "#call" do
