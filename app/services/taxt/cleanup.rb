@@ -4,9 +4,7 @@ module Taxt
   class Cleanup
     include Service
 
-    def initialize taxt
-      @taxt = taxt
-    end
+    attr_private_initialize :taxt
 
     def call
       return if taxt.nil?
@@ -20,9 +18,5 @@ module Taxt
         gsub(/ +/, ' ').       # Consecutive spaces.
         strip
     end
-
-    private
-
-      attr_reader :taxt
   end
 end

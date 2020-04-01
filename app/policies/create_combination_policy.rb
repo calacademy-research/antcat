@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class CreateCombinationPolicy
-  def initialize taxon
-    @taxon = taxon
-  end
+  attr_private_initialize :taxon
 
   def errors
     lazy_errors.to_a
@@ -14,8 +12,6 @@ class CreateCombinationPolicy
   end
 
   private
-
-    attr_reader :taxon
 
     def lazy_errors # rubocop:disable Metrics/PerceivedComplexity
       Enumerator.new do |yielder|

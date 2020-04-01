@@ -6,18 +6,13 @@ module References
   class FindDuplicates
     include Service
 
-    def initialize target, min_similarity: 0.01
-      @target = target
-      @min_similarity = min_similarity
-    end
+    attr_private_initialize :target, [min_similarity: 0.01]
 
     def call
       match
     end
 
     private
-
-      attr_reader :target, :min_similarity
 
       def match
         candidates.each_with_object([]) do |candidate, matches|

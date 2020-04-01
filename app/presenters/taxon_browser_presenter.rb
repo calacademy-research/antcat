@@ -5,9 +5,7 @@ class TaxonBrowserPresenter
   include ActionView::Helpers
   include IconHelper
 
-  def initialize taxon_browser
-    @taxon_browser = taxon_browser
-  end
+  attr_private_initialize :taxon_browser
 
   def taxon_browser_taxon_link taxon
     label = (taxon.fossil? ? '&dagger;'.html_safe : +'') << taxon.name_epithet
@@ -27,8 +25,4 @@ class TaxonBrowserPresenter
     css = tab_display == taxon_browser.display ? "selected" : "smaller-white-label"
     content_tag :span, link_to(label, catalog_path(tab_taxon, display: tab_display)), class: css
   end
-
-  private
-
-    attr_reader :taxon_browser
 end

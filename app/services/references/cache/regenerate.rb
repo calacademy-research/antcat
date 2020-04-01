@@ -5,9 +5,7 @@ module References
     class Regenerate
       include Service
 
-      def initialize reference
-        @reference = reference
-      end
+      attr_private_initialize :reference
 
       def call
         invalidate
@@ -15,8 +13,6 @@ module References
       end
 
       private
-
-        attr_reader :reference
 
         def invalidate
           References::Cache::Invalidate[reference]

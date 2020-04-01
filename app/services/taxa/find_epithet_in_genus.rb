@@ -4,10 +4,7 @@ module Taxa
   class FindEpithetInGenus
     include Service
 
-    def initialize genus, target_epithet_string
-      @genus = genus
-      @target_epithet_string = target_epithet_string
-    end
+    attr_private_initialize :genus, :target_epithet_string
 
     def call
       raise unless genus.is_a?(Genus) # TODO: Sanity check, not tested.
@@ -15,8 +12,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :genus, :target_epithet_string
 
       def epithet_search_set
         Names::EpithetSearchSet[target_epithet_string]

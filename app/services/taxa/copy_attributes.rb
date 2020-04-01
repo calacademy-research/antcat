@@ -4,17 +4,13 @@ module Taxa
   class CopyAttributes
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       taxon.slice(attributes_to_copy)
     end
 
     private
-
-      attr_reader :taxon
 
       # Not copied:
       #  :name (and cached :name_cache, :name_html_cache)

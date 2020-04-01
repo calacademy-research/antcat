@@ -34,17 +34,13 @@ module Exporters
         "current valid parent"      # [23]
       ].join("\t")
 
-      def initialize taxon
-        @taxon = taxon
-      end
+      attr_private_initialize :taxon
 
       def call
         convert_to_antweb_array attributes
       end
 
       private
-
-        attr_reader :taxon
 
         def attributes
           {

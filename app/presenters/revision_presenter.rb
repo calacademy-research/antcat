@@ -12,10 +12,7 @@ class RevisionPresenter
     expanded_reference_cache
   ]
 
-  def initialize comparer:, template: nil
-    @comparer = comparer
-    @template = template
-  end
+  attr_private_initialize [:comparer, template: nil]
 
   def show_formatted?
     @_show_formatted ||= template.present?
@@ -61,8 +58,6 @@ class RevisionPresenter
   private
 
     delegate :selected, :diff_with, :most_recent, to: :comparer
-
-    attr_reader :comparer, :template
 
     def html_split_diff
       return unless diff_with

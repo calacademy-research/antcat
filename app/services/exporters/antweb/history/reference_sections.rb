@@ -8,9 +8,7 @@ module Exporters
         include ActionView::Helpers::TagHelper # For `#content_tag`.
         include Service
 
-        def initialize taxon
-          @taxon = taxon
-        end
+        attr_private_initialize :taxon
 
         def call
           return if taxon.reference_sections.blank?
@@ -23,8 +21,6 @@ module Exporters
         end
 
         private
-
-          attr_reader :taxon
 
           def reference_section section
             content_tag :div do

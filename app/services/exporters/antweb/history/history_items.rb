@@ -8,9 +8,7 @@ module Exporters
         include ActionView::Context # For `#content_tag`.
         include Service
 
-        def initialize taxon
-          @taxon = taxon
-        end
+        attr_private_initialize :taxon
 
         def call
           return if history_items.blank? && virtual_history_items.blank?
@@ -18,8 +16,6 @@ module Exporters
         end
 
         private
-
-          attr_reader :taxon
 
           delegate :history_items, :virtual_history_items, to: :taxon
 

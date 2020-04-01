@@ -4,9 +4,7 @@ module Autocomplete
   class AutocompleteWikiPages
     include Service
 
-    def initialize search_query
-      @search_query = search_query
-    end
+    attr_private_initialize :search_query
 
     def call
       search_results.map do |wiki_page|
@@ -18,8 +16,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :search_query
 
       def search_results
         exact_id_match || WikiPage.where("title LIKE ?", "%#{search_query}%")

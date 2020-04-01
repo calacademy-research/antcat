@@ -7,17 +7,13 @@ module Wikipedia
   class CiteTemplate
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       %(<ref name="AntCat">#{cite_template}</ref>)
     end
 
     private
-
-      attr_reader :taxon
 
       def cite_template
         <<-TEMPLATE.squish

@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class TaxonPolicy
-  def initialize taxon
-    @taxon = taxon
-  end
+  attr_private_initialize :taxon
 
   def show_create_combination_button?
     taxon.type.in?(%w[Species])
@@ -24,8 +22,4 @@ class TaxonPolicy
   def allow_force_change_parent?
     taxon.type.in?(%w[Genus Species Subspecies])
   end
-
-  private
-
-    attr_reader :taxon
 end

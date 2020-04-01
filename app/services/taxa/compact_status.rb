@@ -18,9 +18,7 @@ module Taxa
       Status::EXCLUDED_FROM_FORMICIDAE
     ]
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       parts = []
@@ -31,8 +29,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :taxon
 
       delegate :status, :homonym_replaced_by, :unresolved_homonym?, :current_valid_taxon, :nomen_nudum?, to: :taxon
 

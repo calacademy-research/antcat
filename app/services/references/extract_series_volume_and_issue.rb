@@ -4,17 +4,13 @@ module References
   class ExtractSeriesVolumeAndIssue
     include Service
 
-    def initialize string
-      @string = string
-    end
+    attr_private_initialize :string
 
     def call
       series_volume_and_issue_parts
     end
 
     private
-
-      attr_reader :string
 
       def series_volume_and_issue_parts
         parts = {}

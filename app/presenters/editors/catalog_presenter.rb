@@ -5,9 +5,7 @@ module Editors
     include Rails.application.routes.url_helpers
     include ActionView::Helpers
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def taxa_with_same_name
       @_taxa_with_same_name ||= Taxon.where(name_cache: taxon.name_cache).where.not(id: taxon.id)
@@ -62,9 +60,5 @@ module Editors
       link_to 'Delete', taxa_path(taxon), method: :delete, class: "btn-warning",
         data: { confirm: 'Are you sure?' }
     end
-
-    private
-
-      attr_reader :taxon
   end
 end

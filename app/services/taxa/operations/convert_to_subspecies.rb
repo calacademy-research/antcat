@@ -5,10 +5,7 @@ module Taxa
     class ConvertToSubspecies
       include Service
 
-      def initialize original_species, new_species_parent
-        @original_species = original_species
-        @new_species_parent = new_species_parent
-      end
+      attr_private_initialize :original_species, :new_species_parent
 
       def call
         # TODO: Revisit after converting broken subspecies to infrasubspecies.
@@ -32,8 +29,6 @@ module Taxa
       end
 
       private
-
-        attr_reader :original_species, :new_species_parent
 
         def build_new_subspecies
           taxon = Subspecies.new

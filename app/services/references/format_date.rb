@@ -4,9 +4,7 @@ module References
   class FormatDate
     include Service
 
-    def initialize reference_date
-      @reference_date = reference_date
-    end
+    attr_private_initialize :reference_date
 
     def call
       return unless reference_date
@@ -15,8 +13,6 @@ module References
     end
 
     private
-
-      attr_reader :reference_date
 
       # TODO: Store normalized value in the database?
       def format_date

@@ -7,18 +7,13 @@ module Taxa
     class ReorderHistoryItems
       include Service
 
-      def initialize taxon, reordered_ids
-        @taxon = taxon
-        @reordered_ids = reordered_ids
-      end
+      attr_private_initialize :taxon, :reordered_ids
 
       def call
         reorder_history_items reordered_ids
       end
 
       private
-
-        attr_reader :taxon, :reordered_ids
 
         delegate :history_items, :errors, to: :taxon
 

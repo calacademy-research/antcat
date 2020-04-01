@@ -5,18 +5,13 @@ class RevisionHistoryPath
   include ActionView::Helpers::UrlHelper
   include Service
 
-  def initialize type, id
-    @type = type
-    @id = id
-  end
+  attr_private_initialize :type, :id
 
   def call
     url
   end
 
   private
-
-    attr_reader :type, :id
 
     def url
       case type

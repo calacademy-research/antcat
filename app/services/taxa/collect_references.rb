@@ -4,17 +4,13 @@ module Taxa
   class CollectReferences
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       Reference.where(id: reference_ids)
     end
 
     private
-
-      attr_reader :taxon
 
       def reference_ids
         reference_ids_from_relations + reference_ids_from_taxts

@@ -6,9 +6,7 @@ module Wikipedia
   class TaxonList
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       case taxon
@@ -21,7 +19,7 @@ module Wikipedia
 
     private
 
-      attr_reader :taxon, :children_rank, :children
+      attr_reader :children_rank, :children
 
       def tribes
         generate :tribes

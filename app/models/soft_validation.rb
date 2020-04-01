@@ -5,15 +5,11 @@ class SoftValidation
 
   attr_reader :runtime
 
+  attr_private_initialize :record, :database_script_klass
   delegate :issue_description, to: :database_script
 
   def self.run *args
     new(*args).tap(&:run)
-  end
-
-  def initialize record, database_script_klass
-    @record = record
-    @database_script_klass = database_script_klass
   end
 
   def run
@@ -37,7 +33,6 @@ class SoftValidation
 
   private
 
-    attr_reader :record, :database_script_klass
     attr_accessor :in_results
     attr_writer :runtime
 end

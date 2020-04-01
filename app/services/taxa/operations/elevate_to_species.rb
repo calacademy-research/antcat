@@ -5,9 +5,7 @@ module Taxa
     class ElevateToSpecies
       include Service
 
-      def initialize subspecies
-        @subspecies = subspecies
-      end
+      attr_private_initialize :subspecies
 
       def call
         # TODO: Revisit after converting broken subspecies to infrasubspecies.
@@ -28,8 +26,6 @@ module Taxa
       end
 
       private
-
-        attr_reader :subspecies
 
         def build_new_species
           taxon = Species.new

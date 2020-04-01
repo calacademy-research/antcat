@@ -11,10 +11,7 @@ class ActivityTemplatePartial
 
   TEMPLATES_PATH = "activities/templates/"
 
-  def initialize action:, trackable_type:
-    @action = action
-    @trackable_type = trackable_type
-  end
+  attr_private_initialize [:action, :trackable_type]
 
   def call
     return "#{TEMPLATES_PATH}actions/#{action}" unless trackable_type
@@ -22,8 +19,6 @@ class ActivityTemplatePartial
   end
 
   private
-
-    attr_reader :action, :trackable_type
 
     def partial
       partial_for_action || partial_for_trackable_type || "default"

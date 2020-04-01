@@ -4,11 +4,7 @@ module Operations
   class CreateNewCombinationRecord
     include Operation
 
-    def initialize current_valid_taxon:, new_genus:, target_name_string:
-      @current_valid_taxon = current_valid_taxon
-      @new_genus = new_genus
-      @target_name_string = target_name_string
-    end
+    attr_private_initialize [:current_valid_taxon, :new_genus, :target_name_string]
 
     def self.description current_valid_taxon:, new_genus:, target_name_string:
       <<~TEXT
@@ -36,8 +32,6 @@ module Operations
     end
 
     private
-
-      attr_reader :current_valid_taxon, :new_genus, :target_name_string
 
       def build_new_combination
         new_combination = Species.new

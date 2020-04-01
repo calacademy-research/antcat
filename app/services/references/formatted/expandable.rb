@@ -10,9 +10,7 @@ module References
       include ActionView::Helpers::SanitizeHelper
       include Service
 
-      def initialize reference
-        @reference = reference
-      end
+      attr_private_initialize :reference
 
       def call
         # TODO: `tabindex: 2` is required or tooltips won't stay open even with `data-click-open="true"`.
@@ -22,8 +20,6 @@ module References
       end
 
       private
-
-        attr_reader :reference
 
         def inner_content
           content = []

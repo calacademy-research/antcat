@@ -5,9 +5,7 @@
 
 module Taxa
   class WhatLinksHere
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def all
       columns + taxts
@@ -35,9 +33,5 @@ module Taxa
       return @_any_taxts if defined? @_any_taxts
       @_any_taxts ||= Taxa::WhatLinksHereTaxts[taxon, predicate: true]
     end
-
-    private
-
-      attr_reader :taxon
   end
 end

@@ -7,17 +7,13 @@ module Exporters
         class TypeFields
           include Service
 
-          def initialize protonym
-            @protonym = protonym
-          end
+          attr_private_initialize :protonym
 
           def call
             formatted_type_fields.compact.join(' ').html_safe
           end
 
           private
-
-            attr_reader :protonym
 
             delegate :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt, to: :protonym
 

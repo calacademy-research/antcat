@@ -8,9 +8,7 @@ module References
       include ActionView::Helpers::SanitizeHelper
       include Service
 
-      def initialize reference
-        @reference = reference
-      end
+      attr_private_initialize :reference
 
       def call
         string = sanitize(reference.author_names_string_with_suffix)
@@ -22,8 +20,6 @@ module References
       end
 
       private
-
-        attr_reader :reference
 
         def format_citation
           case reference

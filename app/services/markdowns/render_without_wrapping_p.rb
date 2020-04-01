@@ -6,9 +6,7 @@ module Markdowns
 
     P_HTML_ELEMENT_REGEX = %r{\A<p>(.*)</p>\Z}m
 
-    def initialize content
-      @content = content
-    end
+    attr_private_initialize :content
 
     def call
       return unless content
@@ -17,8 +15,6 @@ module Markdowns
     end
 
     private
-
-      attr_reader :content
 
       def strip_wrapping_p rendered
         Regexp.new(P_HTML_ELEMENT_REGEX).match(rendered)[1]

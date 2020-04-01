@@ -7,18 +7,13 @@ module Taxa
     class ReorderReferenceSections
       include Service
 
-      def initialize taxon, reordered_ids
-        @taxon = taxon
-        @reordered_ids = reordered_ids
-      end
+      attr_private_initialize :taxon, :reordered_ids
 
       def call
         reorder_reference_sections reordered_ids
       end
 
       private
-
-        attr_reader :taxon, :reordered_ids
 
         delegate :reference_sections, :errors, to: :taxon
 

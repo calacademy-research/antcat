@@ -4,10 +4,7 @@ module Taxa
   class WhatLinksHereTaxts
     include Service
 
-    def initialize taxon, predicate: false
-      @taxon = taxon
-      @predicate = predicate
-    end
+    attr_private_initialize :taxon, [predicate: false]
 
     def call
       if predicate
@@ -18,8 +15,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :taxon, :predicate
 
       delegate :id, to: :taxon
 

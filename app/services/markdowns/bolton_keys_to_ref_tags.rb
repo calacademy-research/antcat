@@ -6,17 +6,13 @@ module Markdowns
   class BoltonKeysToRefTags
     include Service
 
-    def initialize bolton_content
-      @bolton_content = bolton_content
-    end
+    attr_private_initialize :bolton_content
 
     def call
       replace_with_ref_tags
     end
 
     private
-
-      attr_reader :bolton_content
 
       def replace_with_ref_tags
         split_by_semicolon.map do |part|

@@ -5,9 +5,7 @@ module References
     class Invalidate
       include Service
 
-      def initialize reference
-        @reference = reference
-      end
+      attr_private_initialize :reference
 
       # rubocop:disable Rails/SkipsModelValidations
       def call
@@ -23,10 +21,6 @@ module References
         end
       end
       # rubocop:enable Rails/SkipsModelValidations
-
-      private
-
-        attr_reader :reference
     end
   end
 end

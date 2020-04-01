@@ -4,9 +4,7 @@ module Autocomplete
   class FormatLinkableReferences
     include Service
 
-    def initialize references
-      @references = references
-    end
+    attr_private_initialize :references
 
     def call
       references.map do |reference|
@@ -22,8 +20,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :references
 
       def full_pagination reference
         if reference.is_a? NestedReference

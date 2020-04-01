@@ -5,9 +5,7 @@
 
 module References
   class CachedReferenceFormatter
-    def initialize reference
-      @reference = reference
-    end
+    attr_private_initialize :reference
 
     def plain_text
       return References::Formatted::PlainText[reference] if ENV['NO_REF_CACHE']
@@ -31,8 +29,6 @@ module References
     end
 
     private
-
-      attr_reader :reference
 
       delegate :plain_text_cache, :expandable_reference_cache, :expanded_reference_cache, to: :reference
   end

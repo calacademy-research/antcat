@@ -30,17 +30,13 @@ module Types
       )
     }x
 
-    def initialize content
-      @content = content
-    end
+    attr_private_initialize :content
 
     def call
       link_specimen_identifiers!
     end
 
     private
-
-      attr_reader :content
 
       def link_specimen_identifiers!
         SPECIMEN_IDENTIFIER_PREFIXES.each do |prefix|

@@ -4,10 +4,7 @@ module Taxa
   class BuildTaxon
     include Service
 
-    def initialize rank_to_create, parent
-      @rank_to_create = rank_to_create
-      @parent = parent
-    end
+    attr_private_initialize :rank_to_create, :parent
 
     def call
       taxon = build_taxon
@@ -16,8 +13,6 @@ module Taxa
     end
 
     private
-
-      attr_reader :rank_to_create, :parent
 
       def build_taxon
         taxon = taxon_class.new

@@ -4,17 +4,13 @@ module Taxa
   class TaxonAndAncestors
     include Service
 
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def call
       taxon_and_ancestors
     end
 
     private
-
-      attr_reader :taxon
 
       def taxon_and_ancestors
         taxa = []

@@ -27,7 +27,7 @@ describe Autocomplete::AutocompleteAuthorNames do
       create :reference_author_name, created_at: 5.seconds.ago, author_name: recent, reference: reference
       create :reference_author_name, created_at: 10.seconds.ago, author_name: old, reference: reference
 
-      expect(described_class[]).to eq [most_recent, recent, old]
+      expect(described_class['']).to eq [most_recent, recent, old]
     end
   end
 end

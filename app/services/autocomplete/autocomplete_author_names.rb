@@ -4,9 +4,7 @@ module Autocomplete
   class AutocompleteAuthorNames
     include Service
 
-    def initialize search_query = ''
-      @search_query = search_query
-    end
+    attr_private_initialize :search_query
 
     def call
       AuthorName.where('name LIKE ?', "%#{search_query}%").
@@ -14,9 +12,5 @@ module Autocomplete
         distinct.
         order('reference_author_names.created_at DESC', 'name')
     end
-
-    private
-
-      attr_reader :search_query
   end
 end

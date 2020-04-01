@@ -8,9 +8,7 @@ module References
     class ExtractKeywords
       include Service
 
-      def initialize keyword_string
-        @keyword_string = keyword_string
-      end
+      attr_private_initialize :keyword_string
 
       def call
         keywords_params = {}
@@ -45,8 +43,6 @@ module References
       end
 
       private
-
-        attr_reader :keyword_string
 
         # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
         #

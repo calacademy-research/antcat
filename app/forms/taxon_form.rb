@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
 class TaxonForm
-  def initialize taxon, taxon_params, taxon_name_string:, protonym_name_string:
-    @taxon = taxon
-    @params = taxon_params
-    @taxon_name_string = taxon_name_string
-    @protonym_name_string = protonym_name_string
-  end
+  attr_private_initialize :taxon, :params, [:taxon_name_string, :protonym_name_string]
 
   def save
     save_taxon
   end
 
   private
-
-    attr_reader :taxon, :params, :taxon_name_string, :protonym_name_string
 
     def save_taxon
       taxon.name = Names::BuildNameFromString[taxon_name_string]

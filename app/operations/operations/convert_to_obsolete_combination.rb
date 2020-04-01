@@ -4,10 +4,7 @@ module Operations
   class ConvertToObsoleteCombination
     include Operation
 
-    def initialize current_valid_taxon:, new_combination:
-      @current_valid_taxon = current_valid_taxon
-      @new_combination = new_combination
-    end
+    attr_private_initialize [:current_valid_taxon, :new_combination]
 
     def self.description current_valid_taxon:, new_combination:
       obsolete_combinations_description = current_valid_taxon.obsolete_combinations.map do |taxon|
@@ -28,8 +25,6 @@ module Operations
     end
 
     private
-
-      attr_reader :current_valid_taxon, :new_combination
 
       def update_status_and_current_valid_taxon
         unless current_valid_taxon.update(status: Status::OBSOLETE_COMBINATION, current_valid_taxon: new_combination)

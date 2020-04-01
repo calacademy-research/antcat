@@ -2,9 +2,7 @@
 
 module VirtualHistoryItems
   class SubspeciesList
-    def initialize taxon
-      @taxon = taxon
-    end
+    attr_private_initialize :taxon
 
     def relevant_for_taxon?
       return @_relevant_for_taxon if defined? @_relevant_for_taxon
@@ -36,7 +34,7 @@ module VirtualHistoryItems
 
     private
 
-      attr_reader :taxon, :formatter
+      attr_reader :formatter
 
       def subspecies_link subspecies, formatter
         string = formatter.link_to_taxon(subspecies).html_safe
