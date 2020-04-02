@@ -75,10 +75,6 @@ When("I uncheck {string}") do |field_name|
   uncheck field_name
 end
 
-When("I choose {string}") do |field_name|
-  choose field_name
-end
-
 # "I should see / should contain".
 Then("I should see {string}") do |content|
   expect(page).to have_content content, normalize_ws: true

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module LayoutsHelper
-  def current_controller_css_id controller_name
+  def controller_css_id controller_name
     "#{controller_name.tr('/', '_')}-controller"
   end
 

@@ -130,11 +130,14 @@ Rails/InverseOf:
 
 Rails/OutputSafety:
   Enabled: false
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
 
 Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
+# Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
 
@@ -168,7 +171,7 @@ RSpec/NotToNot:
 ### Style.
 
 Style/Alias:
-  Enabled: false
+  EnforcedStyle: prefer_alias_method
 
 Style/AsciiComments:
   Enabled: false

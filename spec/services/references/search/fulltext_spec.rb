@@ -14,8 +14,8 @@ describe References::Search::Fulltext, :search do
         end
 
         specify do
-          expect(described_class[title: 'Pescatore']).to match_array [pescatore_reference]
-          expect(described_class[title: 'Capricciosa']).to match_array [capricciosa_reference]
+          expect(described_class[title: 'Pescatore']).to eq [pescatore_reference]
+          expect(described_class[title: 'Capricciosa']).to eq [capricciosa_reference]
           expect(described_class[title: 'pizza']).to match_array [pescatore_reference, capricciosa_reference]
         end
       end
@@ -29,8 +29,8 @@ describe References::Search::Fulltext, :search do
         end
 
         specify do
-          expect(described_class[author: 'Bolton']).to match_array [bolton_reference]
-          expect(described_class[author: 'Fisher']).to match_array [fisher_reference]
+          expect(described_class[author: 'Bolton']).to eq [bolton_reference]
+          expect(described_class[author: 'Fisher']).to eq [fisher_reference]
         end
       end
 

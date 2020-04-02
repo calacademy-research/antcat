@@ -9,8 +9,11 @@ module ActivitiesHelper
     return unless trackable_type
     return if trackable_type.in? Activity::DEPRECATED_TRACKABLE_TYPES
 
-    type = trackable_type.constantize.base_class
-    url = activities_path(trackable_type: type, trackable_id: trackable_id)
-    link_to (antcat_icon("filter") + 'Activities'), url, class: "btn-normal filter-activities-link"
+    sti_aware_type = trackable_type.constantize.base_class
+    link_to(
+      (antcat_icon("filter") + 'Activities'),
+      activities_path(trackable_type: sti_aware_type, trackable_id: trackable_id),
+      class: "btn-normal filter-activities-link"
+    )
   end
 end
