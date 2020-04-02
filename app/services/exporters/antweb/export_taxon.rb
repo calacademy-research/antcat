@@ -58,7 +58,7 @@ module Exporters
             authors:                  taxon.authorship_reference.authors_for_keey,
             year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
-            available:                !taxon.invalid?,
+            available:                taxon.valid_status?,
             current_valid_name:       taxon.current_valid_taxon&.name&.name,
             original_combination:     taxon.original_combination?,
             was_original_combination: original_combination&.name&.name,

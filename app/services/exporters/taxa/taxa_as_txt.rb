@@ -42,11 +42,11 @@ module Exporters
             labels << "unresolved junior homonym"
           elsif taxon.nomen_nudum?
             labels << 'nomen nudum'
-          elsif taxon.valid_taxon?
+          elsif taxon.valid_status?
             labels << "valid"
           elsif taxon.synonym?
             labels << "synonym of #{format_name(taxon.current_valid_taxon)}"
-          elsif taxon.invalid?
+          elsif taxon.invalid_status?
             labels << taxon.status
           end
           labels << 'ichnotaxon' if taxon.ichnotaxon?

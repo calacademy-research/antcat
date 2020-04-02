@@ -175,7 +175,7 @@
       Subspecies
       =logged_in_only_tooltip_icon "This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table. See #{link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)}"
 
-    -if taxon.valid_taxon? && taxon.subspecies.valid.exists?
+    -if taxon.valid_status? && taxon.subspecies.valid.exists?
       %h6 Current subspecies (nominal plus)
       %ul.compact-list.small-margin-bottom
         -taxon.subspecies.valid.order_by_name.with_common_includes.each do |subspecies|

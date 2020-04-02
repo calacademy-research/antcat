@@ -6,7 +6,7 @@ module VirtualHistoryItems
 
     def relevant_for_taxon?
       return @_relevant_for_taxon if defined? @_relevant_for_taxon
-      @_relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_taxon? && taxon.subspecies.valid.exists?
+      @_relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_status? && taxon.subspecies.valid.exists?
     end
 
     def publicly_visible?
