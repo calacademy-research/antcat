@@ -68,7 +68,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
     # Copy-pasted from `HistoryItemsWithRefTagsAsAuthorCitations`.
     def convert_taxt_to_taxac_tags taxt
-      ids = taxt.scan(/{tax (?<tax_id>[0-9]+)} {ref (?<ref_id>[0-9]+)}/)
+      ids = taxt.scan(/{tax (?<tax_id>[0-9]+)} {ref (?<ref_id>[0-9]+)}[^:]/)
 
       string = taxt.dup
 
