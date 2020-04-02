@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DatabaseScripts
   module Rendering
@@ -49,7 +49,7 @@ module DatabaseScripts
     end
 
     def as_reference_list
-      list = ""
+      list = +""
       cached_results.each do |reference|
         list << "* #{markdown_reference_link(reference)}\n"
       end

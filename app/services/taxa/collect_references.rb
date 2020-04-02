@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module Taxa
   class CollectReferences
@@ -28,7 +28,7 @@ module Taxa
 
       # TODO: Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
       def taxt_content
-        string = ''
+        string = []
         string << taxon.history_items.pluck(:taxt).join
         string << taxon.reference_sections.pluck(:references_taxt).join
         string << (taxon.type_taxt || '')
@@ -36,7 +36,7 @@ module Taxa
         string << (taxon.protonym.primary_type_information_taxt || '')
         string << (taxon.protonym.secondary_type_information_taxt || '')
         string << (taxon.protonym.type_notes_taxt || '')
-        string
+        string.join
       end
 
       def extract_ref_tags string

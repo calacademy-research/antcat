@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DatabaseScripts
   class HistoryItemsWithRefTagsAsAuthorCitations < DatabaseScript
@@ -34,7 +34,7 @@ module DatabaseScripts
 
         ids = taxt.scan(/{tax (?<tax_id>[0-9]+}) {ref (?<ref_id>[0-9]+)}/)
 
-        string = ''
+        string = +''
         ids.each do |(tax_id, ref_id)|
           taxon = Taxon.find(tax_id)
           reference = Reference.find(ref_id)

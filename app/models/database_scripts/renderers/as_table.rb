@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DatabaseScripts
   module Renderers
@@ -15,8 +15,8 @@ module DatabaseScripts
         def initialize cached_results
           @cached_results = cached_results
           @caption_content = nil
-          @header_content = ""
-          @body_content = ""
+          @header_content = +""
+          @body_content = +""
         end
 
         def render
@@ -34,7 +34,7 @@ module DatabaseScripts
         end
 
         def header *items
-          string = "<tr>\n"
+          string = +"<tr>\n"
           items.each { |item| string << "<th>#{item}</th>\n" }
           string << "</tr>\n"
 
@@ -62,7 +62,7 @@ module DatabaseScripts
           def row _result, *fields
             return if fields.empty?
 
-            string = "<tr>"
+            string = +"<tr>"
             fields.each { |item| string << "<td>#{item}</td>" }
             body_content << string << "</tr>\n"
           end

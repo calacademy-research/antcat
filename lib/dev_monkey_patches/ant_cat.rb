@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DevMonkeyPatches
   module AntCat
@@ -14,10 +14,12 @@ module DevMonkeyPatches
     module Taxon
       def dev_dev_link localhost: false
         base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
-        link = "#{base_url}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
+        link = +"#{base_url}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
+
         def link.open
           `xdg-open "#{self}"`
         end
+
         link
       end
       alias_method :l, :dev_dev_link
@@ -31,10 +33,12 @@ module DevMonkeyPatches
     module Reference
       def dev_dev_link localhost: false
         base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
-        link = "#{base_url}/references/#{id}?#{keey.tr(' ', '_')}"
+        link = +"#{base_url}/references/#{id}?#{keey.tr(' ', '_')}"
+
         def link.open
           `xdg-open "#{self}"`
         end
+
         link
       end
       alias_method :l, :dev_dev_link
@@ -48,10 +52,12 @@ module DevMonkeyPatches
     module ReferenceSection
       def dev_dev_link localhost: false
         base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
-        link = "#{base_url}/reference_sections/#{id}/edit"
+        link = +"#{base_url}/reference_sections/#{id}/edit"
+
         def link.open
           `xdg-open "#{self}"`
         end
+
         link
       end
       alias_method :l, :dev_dev_link

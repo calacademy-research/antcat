@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # TODO: Cleanup. This is more of a dumping ground than an actual decorator.
 
@@ -34,7 +34,7 @@ class TaxonDecorator < Draper::Decorator
     type_taxt = taxon.type_taxt
     return if type_taxt.blank?
     return type_taxt if type_taxt.start_with?(",")
-    " " << type_taxt
+    " " + type_taxt
   end
 
   def statistics valid_only: false
@@ -59,7 +59,7 @@ class TaxonDecorator < Draper::Decorator
   def link_to_antweb
     return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
 
-    url = "https://www.antweb.org/description.do?"
+    base_url = "https://www.antweb.org/description.do?"
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
@@ -81,7 +81,7 @@ class TaxonDecorator < Draper::Decorator
     params[:project] = "worldants"
 
     # Rails' .to_param sorts the params, this one doesn't
-    url << params.map { |key, value| value.to_query(key) }.compact * '&'
+    url = base_url + params.map { |key, value| value.to_query(key) }.compact * '&'
     h.external_link_to 'AntWeb', url.downcase.html_safe
   end
 

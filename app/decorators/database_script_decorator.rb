@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
@@ -18,8 +18,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def github_url
-    scripts_path = DatabaseScript::SCRIPTS_DIR
-    "#{GITHUB_MASTER_URL}/#{scripts_path}/#{filename_without_extension}.rb"
+    "#{GITHUB_MASTER_URL}/#{DatabaseScript::SCRIPTS_DIR}/#{filename_without_extension}.rb"
   end
 
   def empty_status
@@ -45,7 +44,7 @@ class DatabaseScriptDecorator < Draper::Decorator
       when DatabaseScript::HAS_QUICK_FIX_TAG then "green-label"
       when DatabaseScript::HIGH_PRIORITY_TAG then "high-priority-label"
       else                                        "white-label"
-      end << " rounded-badge"
+      end + " rounded-badge"
     end
     private_class_method :tag_css_class
 end

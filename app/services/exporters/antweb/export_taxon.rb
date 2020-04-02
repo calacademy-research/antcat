@@ -1,5 +1,7 @@
 # frozen_string_literal: false
 
+# TODO: Strings are not frozen due to `col.delete!("\n")` in `Exporters::Antweb::Exporter`.
+
 module Exporters
   module Antweb
     class ExportTaxon # rubocop:disable Metrics/ClassLength

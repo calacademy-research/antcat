@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module Exporters
   module Taxa
@@ -8,7 +8,7 @@ module Exporters
       attr_private_initialize :taxa
 
       def call
-        taxa.reduce('') do |content, taxon|
+        taxa.reduce(+'') do |content, taxon|
           content << format_taxon(taxon)
         end
       end
@@ -64,7 +64,7 @@ module Exporters
         end
 
         def format_type_localities taxon
-          string = ''
+          string = ''.html_safe
           if taxon.protonym.locality
             string << AddPeriodIfNecessary[taxon.protonym.locality]
           end
