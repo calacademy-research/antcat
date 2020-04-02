@@ -31,8 +31,7 @@ class TaxonDecorator < Draper::Decorator
 
   # NOTE: We need this because `type_taxt` is stripped of leading whitespace.
   def format_type_taxt
-    type_taxt = taxon.type_taxt
-    return if type_taxt.blank?
+    return unless (type_taxt = taxon.type_taxt)
     return type_taxt if type_taxt.start_with?(",")
     " " + type_taxt
   end

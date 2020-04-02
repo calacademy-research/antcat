@@ -11,7 +11,7 @@ class TypeTaxonExpander
   end
 
   def can_expand?
-    return false if type_taxt.present? && !Protonym.common_type_taxt?(type_taxt)
+    return false if type_taxt && !Protonym.common_type_taxt?(type_taxt)
 
     true
   end
@@ -42,7 +42,7 @@ class TypeTaxonExpander
     def reasons_cannot_expand
       reasons = []
 
-      reasons << <<~HTML if type_taxt.present? && !Protonym.common_type_taxt?(type_taxt)
+      reasons << <<~HTML if type_taxt && !Protonym.common_type_taxt?(type_taxt)
         This taxon's <code>type_taxt</code> of not a "common" <code>type_taxt</code>.
         <br>
         This taxon's <code>type_taxt</code>: <code>#{taxon.type_taxt}</code>

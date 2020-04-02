@@ -25,7 +25,7 @@ module Exporters
           def reference_section section
             content_tag :div do
               [:title_taxt, :subtitle_taxt, :references_taxt].each_with_object(''.html_safe) do |field, content|
-                if section[field].present?
+                if section[field]
                   content << content_tag(:div, AntwebDetax[section[field]])
                 end
               end
