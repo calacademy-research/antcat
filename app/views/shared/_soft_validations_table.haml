@@ -17,12 +17,12 @@
           =link_to soft_validation.database_script.title, database_script_path(soft_validation.database_script), title: soft_validation.database_script.title
           -if soft_validation.failed?
             %br
-            =markdown soft_validation.issue_description, no_wrapping_p: true
+            =markdown_without_wrapping soft_validation.issue_description
           -else
             %small.show-on-hover
               %br
               Issue description:
-              %span.gray-text=markdown soft_validation.issue_description, no_wrapping_p: true
+              %span.gray-text=markdown_without_wrapping soft_validation.issue_description
         %td
           -if soft_validation.looks_like_a_false_positive?
             Yes, filtered out
