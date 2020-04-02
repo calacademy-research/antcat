@@ -6,10 +6,7 @@ module Autocomplete
   class AutocompleteTaxa
     include Service
 
-    def initialize search_query, rank: nil
-      @search_query = search_query&.strip
-      @rank = rank
-    end
+    attr_private_initialize :search_query, [rank: nil]
 
     def call
       (exact_id_match || search_results).map do |taxon|
@@ -24,8 +21,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :search_query, :rank
 
       def search_results
         taxa = Taxon.where("name_cache LIKE ? OR name_cache LIKE ?", crazy_search_query, not_as_crazy_search_query)
