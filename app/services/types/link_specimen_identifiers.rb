@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module Types
   class LinkSpecimenIdentifiers
@@ -24,13 +24,17 @@ module Types
     STOP_REGEX = /[A-Za-z0-9-]+/
     ANTWEB_SPECIMEN_BASE_URL = 'https://www.antweb.org/specimen/'
 
-    attr_private_initialize :content
+    def initialize content
+      @content = content.dup
+    end
 
     def call
       link_specimen_identifiers!
     end
 
     private
+
+      attr_reader :content
 
       def link_specimen_identifiers!
         SPECIMEN_IDENTIFIER_PREFIXES.each do |prefix|

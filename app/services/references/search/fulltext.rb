@@ -12,8 +12,8 @@ module References
       )
         @keywords = keywords # TODO: Probably rename to `freetext` since most params are "keywords".
         # Hyphens, asterixes and colons makes Solr go bananas.
-        @title = title.gsub(/-|:|\*/, ' ') if title
-        @author = author.gsub(/-|:/, ' ') if author
+        @title = title.dup.gsub(/-|:|\*/, ' ') if title
+        @author = author.dup.gsub(/-|:/, ' ') if author
         @year = year
         @start_year = start_year
         @end_year = end_year
