@@ -3,7 +3,7 @@
 # rubocop:disable Metrics/BlockLength
 TableRef = Struct.new(:table, :field, :id) do
   def detax
-    return "&ndash;".html_safe unless taxt?
+    return unless taxt?
     Detax[model.find(id).public_send(field)]
   end
 

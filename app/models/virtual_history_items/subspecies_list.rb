@@ -16,7 +16,7 @@ module VirtualHistoryItems
 
     def reason_hidden
       <<~STR.html_safe
-        hidden because this species has a subspecies list in a history item &ndash;
+        hidden because this species has a subspecies list in a history item –
         delete the plaintext history item to show this item to all visitors instead
       STR
     end

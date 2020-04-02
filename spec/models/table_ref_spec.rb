@@ -14,7 +14,7 @@ describe TableRef do
     context 'when table ref is not a taxt item' do
       let!(:table_ref) { described_class.new('taxa', :species_id, 999) }
 
-      specify { expect(table_ref.detax).to eq "&ndash;" }
+      specify { expect(table_ref.detax).to eq nil }
     end
   end
 

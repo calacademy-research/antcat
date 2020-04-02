@@ -2,12 +2,16 @@
 
 module ApplicationHelper
   def or_dash thing
-    return dash if thing.blank? || thing.try(:zero?)
+    return ndash if thing.blank? || thing.try(:zero?)
     thing
   end
 
-  def dash
-    "&ndash;".html_safe
+  def ndash
+    "–" # "&ndash;".
+  end
+
+  def mdash
+    "—" # "&mdash;".
   end
 
   def add_period_if_necessary string

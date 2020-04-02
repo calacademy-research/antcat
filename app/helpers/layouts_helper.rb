@@ -13,7 +13,10 @@ module LayoutsHelper
     title = content_for :title_tag
 
     string = ''.html_safe
-    string << "#{title} - " if title
+    if title
+      string << title
+      string << " - "
+    end
     string << "AntCat"
     string << " (#{Rails.env})" unless Rails.env.production?
     string

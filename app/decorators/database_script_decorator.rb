@@ -6,11 +6,8 @@ class DatabaseScriptDecorator < Draper::Decorator
   delegate :tags, :filename_without_extension
 
   def self.format_tags tags
-    tags.map do |tag|
-      h.content_tag :span, class: tag_css_class(tag) do
-        h.raw tag.html_safe
-      end
-    end.join(" ").html_safe
+    html_spans = tags.map { |tag| h.content_tag :span, tag, class: tag_css_class(tag) }
+    h.safe_join(html_spans, " ")
   end
 
   def format_tags

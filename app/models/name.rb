@@ -60,7 +60,7 @@ class Name < ApplicationRecord
     end
 
     def dagger_html
-      italicize_if_needed '&dagger;'.html_safe
+      italicize_if_needed '†'
     end
 
     def set_epithet
