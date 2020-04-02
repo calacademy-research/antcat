@@ -22,9 +22,8 @@ Feature: Add reference unsuccessfully
     Then I should see "Journal must exist"
     And I should see "Series volume issue can't be blank"
 
-  @javascript
   Scenario: Leaving required fields blank (`BookReference`)
-    When I follow "Book"
+    When I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
     Then I should see "Publisher must exist"
@@ -37,20 +36,19 @@ Feature: Add reference unsuccessfully
     Then I should see "Year can't be blank"
     And the "reference_title" field should contain "A reference title"
 
-    When I follow "Article"
+    When I select the reference tab "#article-tab"
     Then the "reference_journal_name" field should contain "Ant Journal"
     And the "reference_pagination" field should contain "2"
 
-  @javascript
   Scenario: Leaving a required field blank should not affect other fields (`BookReference`)
-    When I follow "Book"
+    When I select the reference tab "#book-tab"
     And I fill in "reference_title" with "A reference title"
     And I fill in "reference_publisher_string" with "Capua: House of Batiatus"
     And I fill in "reference_pagination" with "2"
     And I press "Save"
     Then the "reference_title" field should contain "A reference title"
 
-    When I follow "Book"
+    When I select the reference tab "#book-tab"
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "reference_pagination" field should contain "2"
 
@@ -68,20 +66,19 @@ Feature: Add reference unsuccessfully
     Then I should see "Journal must exist"
     And the "reference_title" field should contain "A reference title"
 
-    When I follow "Article"
+    When I select the reference tab "#article-tab"
     Then the "reference_journal_name" field should contain ""
     And the "reference_pagination" field should contain "1"
 
-  @javascript
   Scenario: Unparseable publisher string (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
-    And I follow "Book"
+    And I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And I fill in "reference_pagination" with "1"
     And I press "Save"
     Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
 
-    When I follow "Book"
+    When I select the reference tab "#book-tab"
     Then the "reference_title" field should contain "A reference title"
     And the "reference_publisher_string" field should contain "Pensoft, Sophia"
     And the "reference_pagination" field should contain "1"

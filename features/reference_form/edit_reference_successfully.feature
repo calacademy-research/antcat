@@ -34,30 +34,17 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see "Publisher must exist"
 
-  @javascript
   Scenario: Change a reference's type
     Given this article reference exists
       | author     | title | citation   | citation_year |
       | Fisher, B. | Ants  | Psyche 6:4 | 2010          |
 
     When I go to the edit page for the most recent reference
-    And I follow "Book"
+    And I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with "New York: Wiley"
     And I fill in "reference_pagination" with "22 pp."
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
-
-  Scenario: See the correct tab initially (`BookReference`)
-    Given there is a book reference
-
-    When I go to the edit page for the most recent reference
-    Then the "Book" tab should be selected
-
-  Scenario: See the correct tab initially (`UnknownReference`)
-    Given there is an unknown reference
-
-    When I go to the edit page for the most recent reference
-    Then the "Other" tab should be selected
 
   Scenario: Specifying the document URL
     Given there is a reference

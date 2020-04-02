@@ -1,18 +1,7 @@
 $ ->
-  setupReferenceTypeTabs()
-  setupAutocompletion()
-
-setupReferenceTypeTabs = ->
-  referenceType = ->
-    openTabId = $('#reference-tabs').find('.is-active a').attr('id')
-    switch openTabId
-      when 'tabs-article-label' then 'ArticleReference'
-      when 'tabs-book-label'    then 'BookReference'
-      when 'tabs-nested-label'  then 'NestedReference'
-      when 'tabs-unknown-label' then 'UnknownReference'
-
-  # Include reference type in the form before submitting.
-  $('form.edit_reference, form.new_reference').submit -> $('#reference_type').val(referenceType)
+  setupAdvancedAuthorAutocomplete()
+  setupJournalAutocompletion()
+  setupPublisherAutocompletion()
 
 setupJournalAutocompletion = ->
   $('#reference_journal_name').autocomplete
@@ -67,12 +56,4 @@ insertAuthor = (string, position, author) ->
   nextSemicolon = afterCursor.indexOf(';')
   position = nextSemicolon + position + 2
 
-  {
-    string: string
-    position: position
-  }
-
-setupAutocompletion = ->
-  setupAdvancedAuthorAutocomplete()
-  setupJournalAutocompletion()
-  setupPublisherAutocompletion()
+  { string: string, position: position }

@@ -2,3 +2,30 @@
   #export-dropdown
     ul
       margin-bottom: 0
+
+  // TODO: Use similar CSS for the taxon browser, to avoid dependency on Foundation JS.
+  .css-tabs
+    input.tab-input
+      display: none
+      & + label
+        display: inline-block
+        border: 1px solid #999
+        background: #eee
+        padding: 4px 1rem
+        border-radius: 5px 5px 0 0
+        position: relative
+        top: 1px
+      & ~ .tab
+        display: none
+        border-top: 1px solid #999
+        padding: 1rem
+      &:checked
+        & + label
+          background: #fff
+          border-bottom: 1px solid transparent
+
+  #article-tab:checked ~ .tab.article-tab-content,
+  #book-tab:checked ~ .tab.book-tab-content,
+  #nested-tab:checked ~ .tab.nested-tab-content,
+  #unknown-tab:checked ~ .tab.unknown-tab-content,
+    display: block
