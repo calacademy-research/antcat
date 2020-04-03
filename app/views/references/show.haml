@@ -128,6 +128,7 @@
         %thead
           %th Taxon
           %th Authorship
+          %th
           %th Rank
           %th Status
           %th
@@ -135,6 +136,7 @@
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.authorship_reference.decorate.expandable_reference
+            %td=taxon.protonym.authorship.pages
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize
             %td
