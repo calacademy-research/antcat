@@ -135,6 +135,6 @@
                     -if taxon.history_items.exists?
                       =antcat_icon("check")
                   %td
-                    -if taxon.valid_taxon? && Taxon.where(current_valid_taxon: taxon).exists?
+                    -if taxon.valid_status? && Taxon.where(current_valid_taxon: taxon).exists?
                       =antcat_icon 'warning-icon'
                       Yes

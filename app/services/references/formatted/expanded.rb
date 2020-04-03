@@ -30,7 +30,7 @@ module References
                       link_to(sanitize(author_name.name), author_path(author_name.author))
                     end.join('; ')
 
-          string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix.present?
+          string << sanitize(" #{reference.author_names_suffix}") if reference.author_names_suffix
           string.html_safe
         end
 

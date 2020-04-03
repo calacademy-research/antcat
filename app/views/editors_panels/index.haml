@@ -1,4 +1,4 @@
--title "Editor's Panel".html_safe
+-title "Editor's Panel"
 -breadcrumb :editors_panel_dashboard
 
 .row
@@ -6,16 +6,16 @@
     %h5 Unreviewed changes
     %ul.no-bullet
       %li
-        .label=@count[:open_issues]
+        .label=@editors_panel_presenter.open_issues_count
         =link_to "Open issues", issues_path
       %li
-        .label=@count[:unreviewed_references]
+        .label=@editors_panel_presenter.unreviewed_references_count
         =link_to "Unreviewed references", references_latest_additions_path
       %li
-        .label=@count[:pending_user_feedbacks]
+        .label=@editors_panel_presenter.pending_user_feedbacks_count
         =link_to "Pending feedbacks", feedback_index_path
       %li
-        .label=@count[:unread_site_notices]
+        .label=@editors_panel_presenter.unread_site_notices_count
         =link_to "Unread site notices", site_notices_path
       -if current_user
         %li
@@ -50,17 +50,17 @@
 .row.margin-top
   .large-12.columns
     %h5 Most recent activity (#{link_to("see more", activities_path)})
-    =render "activities/table", activities: @recent_activities
+    =render "activities/table", activities: @editors_panel_presenter.recent_activities
 
 .row.margin-top
   .large-12.columns
     %h5 Most recent comments (#{link_to("see more", comments_path)})
-    =render "comments/comments_table", comments: @recent_comments
+    =render "comments/comments_table", comments: @editors_panel_presenter.recent_comments
 
 .row.margin-top
   .large-12.columns
     %h5 Most recent unconfirmed edits (#{link_to("see more", unconfirmed_activities_path)})
-    =render "activities/table", activities: @recent_unconfirmed_activities
+    =render "activities/table", activities: @editors_panel_presenter.recent_unconfirmed_activities
 
 .row.margin-top
   .medium-12.columns

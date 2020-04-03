@@ -13,7 +13,7 @@ module Exporters
       # Parses "example {tax 429361}"
       # into   "example <a href=\"https://antcat.org/catalog/429361\">Melophorini</a>"
       def call
-        return '' if taxt.blank?
+        return unless taxt
 
         parse_taxon_ids!
         parse_taxon_with_author_citation_ids!

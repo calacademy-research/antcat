@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # rubocop:disable Layout/LineLength
 module DatabaseScripts
@@ -46,7 +46,7 @@ module DatabaseScripts
 
         unless same_ranked_ancestor
           if taxon.is_a?(Subgenus) && type_taxon_now.genus == taxon.genus && type_taxon_now.subgenus.nil?
-            suggested_script_action = "Set the subgenus of #{type_taxon.name.name_html} to #{taxon.name.name_html}"
+            suggested_script_action = +"Set the subgenus of #{type_taxon.name.name_html} to #{taxon.name.name_html}"
 
             if type_taxon != type_taxon_now && type_taxon_now.is_a?(Species)
               suggested_script_action << "; <b>and set the subgenus of #{type_taxon_now.name.name_html} to #{taxon.name.name_html}<b>"

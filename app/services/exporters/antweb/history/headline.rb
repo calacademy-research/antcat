@@ -41,7 +41,7 @@ module Exporters
           end
 
           def headline_notes
-            return if headline_notes_taxt.blank?
+            return unless headline_notes_taxt
             AntwebDetax[headline_notes_taxt]
           end
 

@@ -17,7 +17,7 @@
             -if activity.edit_summary?
               .gray-text.with-gray-links
                 Edit summary:
-                =markdown activity.edit_summary, no_wrapping_p: true
+                =markdown_without_wrapping activity.edit_summary
           %td
             =decorated.revision_history_link
             -if activity.request_uuid

@@ -14,7 +14,7 @@ describe JournalDecorator do
     context "when start and end year are not the same" do
       before { create :article_reference, citation_year: 2010, journal: journal }
 
-      specify { expect(journal.decorate.publications_between).to eq "2000&ndash;2010" }
+      specify { expect(journal.decorate.publications_between).to eq "2000–2010" }
     end
   end
 end

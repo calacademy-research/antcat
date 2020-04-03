@@ -5,19 +5,13 @@ module References
     class FulltextWithExtractedKeywords
       include Service
 
-      def initialize search_query, page: nil, per_page: nil
-        @search_query = search_query.dup
-        @page = page
-        @per_page = per_page
-      end
+      attr_private_initialize :search_query, [page: nil, per_page: nil]
 
       def call
         References::Search::Fulltext[keyword_params]
       end
 
       private
-
-        attr_reader :search_query, :page, :per_page
 
         def keyword_params
           References::Search::ExtractKeywords[search_query].merge(search_options)

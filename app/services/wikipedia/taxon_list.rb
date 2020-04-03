@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # Class for generating wiki-formatted lists of tribes, genera and species.
 
@@ -37,14 +37,15 @@ module Wikipedia
         @children_rank = rank
         @children = @taxon.public_send(@children_rank).valid.order_by_name
 
-        output = taxobox_extras
+        output = []
+        output << taxobox_extras
         output << "\n"
         output << list_header
 
         children.each { |child| output << format_child(child) }
 
         output << list_footer
-        output
+        output.join
       end
 
       def divider
@@ -53,11 +54,11 @@ module Wikipedia
 
       # For https://en.wikipedia.org/wiki/Template:Taxobox
       def taxobox_extras
-        diversity_ref = Wikipedia::CiteTemplate[taxon]
-
-        string =  "|diversity_link = ##{children_rank.to_s.capitalize}\n"
-        string << "|diversity = #{children.count} #{children_rank}\n"
-        string << "|diversity_ref = #{diversity_ref}\n"
+        string = []
+        string << "|diversity_link = ##{children_rank.to_s.capitalize}"
+        string << "|diversity = #{children.count} #{children_rank}"
+        string << "|diversity_ref = #{Wikipedia::CiteTemplate[taxon]}\n"
+        string.join("\n")
       end
 
       # "==Species== ..."
@@ -71,28 +72,25 @@ module Wikipedia
 
       # "* †''[[Atta mexicana]]'' <small>Author, 2005</small>\n"
       def format_child child
-        line = "* "
-        line << taxon_name(child)
-        line << " "
-        line << author_citation(child)
-        line << "\n"
-        line
+        string = []
+        string << "* "
+        string << taxon_name(child)
+        string << " "
+        string << author_citation(child)
+        string << "\n"
+        string.join
       end
 
       def taxon_name child
-        name = child.name_cache
+        name = child.name_cache.dup
         name = "[[#{name}]]" if wikilink_child? child
-        name = "''#{name}''" if italicize_name? child
+        name = "''#{name}''" if Rank.italic?(child.rank)
 
         "#{dagger if child.fossil}#{name}"
       end
 
       def dagger
         "†"
-      end
-
-      def italicize_name? child
-        child.class.in? [Genus, Species, Subspecies]
       end
 
       def wikilink_child? child

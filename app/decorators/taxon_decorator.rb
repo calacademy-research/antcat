@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # TODO: Cleanup. This is more of a dumping ground than an actual decorator.
 
@@ -9,6 +9,16 @@ class TaxonDecorator < Draper::Decorator
 
   def link_to_taxon_with_author_citation
     link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
+  end
+
+  def link_to_taxon_with_linked_author_citation
+    link_to_taxon_with_label(taxon.name_with_fossil) <<
+      ' ' <<
+      h.content_tag(
+        :span,
+        h.link_to(taxon.author_citation.html_safe, h.reference_path(taxon.authorship_reference)),
+        class: 'discret-author-citation'
+      )
   end
 
   def id_and_name_and_author_citation
@@ -31,10 +41,9 @@ class TaxonDecorator < Draper::Decorator
 
   # NOTE: We need this because `type_taxt` is stripped of leading whitespace.
   def format_type_taxt
-    type_taxt = taxon.type_taxt
-    return if type_taxt.blank?
+    return unless (type_taxt = taxon.type_taxt)
     return type_taxt if type_taxt.start_with?(",")
-    " " << type_taxt
+    " " + type_taxt
   end
 
   def statistics valid_only: false
@@ -59,7 +68,7 @@ class TaxonDecorator < Draper::Decorator
   def link_to_antweb
     return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
 
-    url = "https://www.antweb.org/description.do?"
+    base_url = "https://www.antweb.org/description.do?"
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
@@ -81,7 +90,7 @@ class TaxonDecorator < Draper::Decorator
     params[:project] = "worldants"
 
     # Rails' .to_param sorts the params, this one doesn't
-    url << params.map { |key, value| value.to_query(key) }.compact * '&'
+    url = base_url + params.map { |key, value| value.to_query(key) }.compact * '&'
     h.external_link_to 'AntWeb', url.downcase.html_safe
   end
 

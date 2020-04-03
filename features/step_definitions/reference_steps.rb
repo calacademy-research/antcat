@@ -67,6 +67,10 @@ Given("the following entry nests it") do |table|
   )
 end
 
+When("I select the reference tab {string}") do |tab_css_selector|
+  find(tab_css_selector, visible: false).click
+end
+
 When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |title|
   reference = Reference.find_by!(title: title)
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
@@ -94,9 +98,4 @@ end
 Given("there is a reference referenced in a history item") do
   reference = create :any_reference
   create :taxon_history_item, taxt: "{ref #{reference.id}}"
-end
-
-Then("the {string} tab should be selected") do |tab_name|
-  tab_name = 'Unknown' if tab_name == 'Other'
-  find("#tabs-#{tab_name.downcase}.is-active")
 end

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Cleanup after extracting into service object.
-
 require 'rails_helper'
 
 describe Taxa::Search::AdvancedSearch do
@@ -15,7 +13,7 @@ describe Taxa::Search::AdvancedSearch do
       let!(:synonym) { create :family, :synonym }
 
       specify do
-        expect(described_class[type: 'Family', valid_only: true]).to match_array [valid]
+        expect(described_class[type: 'Family', valid_only: true]).to eq [valid]
         expect(described_class[type: 'Family', valid_only: false]).to match_array [valid, synonym]
       end
     end
@@ -28,7 +26,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       specify do
-        expect(described_class[type: 'Family', must_have_history_items: true]).to match_array [with_history]
+        expect(described_class[type: 'Family', must_have_history_items: true]).to eq [with_history]
       end
     end
 
@@ -41,7 +39,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       specify do
-        expect(described_class[year: "1977"]).to match_array [taxon]
+        expect(described_class[year: "1977"]).to eq [taxon]
         expect(described_class[year: "1979"]).to be_empty
       end
     end
@@ -57,7 +55,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       context 'when query contains redundant spacing' do
-        specify { expect(described_class[protonym: ' Formica fusca ']).to match_array [taxon] }
+        specify { expect(described_class[protonym: ' Formica fusca ']).to eq [taxon] }
       end
     end
 
@@ -65,7 +63,7 @@ describe Taxa::Search::AdvancedSearch do
       let!(:subfamily) { create :subfamily }
 
       specify do
-        expect(described_class[type: 'Subfamily']).to match_array [subfamily]
+        expect(described_class[type: 'Subfamily']).to eq [subfamily]
       end
     end
 
@@ -81,7 +79,7 @@ describe Taxa::Search::AdvancedSearch do
 
       specify do
         expect(described_class[name: 'Formica fusca', name_search_type: 'matches']).
-          to match_array [f_fusca]
+          to eq [f_fusca]
       end
 
       specify do
@@ -90,7 +88,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       context 'when query contains redundant spacing' do
-        specify { expect(described_class[name: ' Lasius fusca ']).to match_array [l_fusca] }
+        specify { expect(described_class[name: ' Lasius fusca ']).to eq [l_fusca] }
       end
     end
 
@@ -103,7 +101,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       context 'when query contains redundant spacing' do
-        specify { expect(described_class[epithet: ' niger ']).to match_array [taxon] }
+        specify { expect(described_class[epithet: ' niger ']).to eq [taxon] }
       end
     end
 
@@ -118,7 +116,7 @@ describe Taxa::Search::AdvancedSearch do
       end
 
       context 'when query contains redundant spacing' do
-        specify { expect(described_class[genus: ' Lasius ']).to match_array [taxon] }
+        specify { expect(described_class[genus: ' Lasius ']).to eq [taxon] }
       end
     end
 
@@ -203,7 +201,7 @@ describe Taxa::Search::AdvancedSearch do
       it "returns taxa with type fields matching the query" do
         expect(described_class[type_information: 'one']).to match_array [one, two, three]
         expect(described_class[type_information: 'two']).to match_array [two, three]
-        expect(described_class[type_information: 'three']).to match_array [three]
+        expect(described_class[type_information: 'three']).to eq [three]
       end
     end
 
@@ -224,7 +222,7 @@ describe Taxa::Search::AdvancedSearch do
       let!(:synonym) { create :family, :synonym }
 
       specify do
-        expect(described_class[status: 'valid']).to match_array [valid]
+        expect(described_class[status: 'valid']).to eq [valid]
         expect(described_class[status: 'homonym']).to be_empty
 
         # The dummy is incluced or we end end up defaulting to `Taxon.none`.
@@ -238,8 +236,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:fossil) { create :family, :fossil }
 
       specify { expect(described_class[fossil: "", dummy: "x"]).to match_array [extant, fossil] }
-      specify { expect(described_class[fossil: "true"]).to match_array [fossil] }
-      specify { expect(described_class[fossil: "false"]).to match_array [extant] }
+      specify { expect(described_class[fossil: "true"]).to eq [fossil] }
+      specify { expect(described_class[fossil: "false"]).to eq [extant] }
     end
 
     describe "searching by nomen nudum" do
@@ -247,8 +245,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:yes_match) { create :family, :unavailable, nomen_nudum: true }
 
       specify { expect(described_class[nomen_nudum: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[nomen_nudum: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[nomen_nudum: "false"]).to match_array [no_match] }
+      specify { expect(described_class[nomen_nudum: "true"]).to eq [yes_match] }
+      specify { expect(described_class[nomen_nudum: "false"]).to eq [no_match] }
     end
 
     describe "searching by unresolved junior homonym" do
@@ -256,8 +254,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:yes_match) { create :family, unresolved_homonym: true }
 
       specify { expect(described_class[unresolved_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[unresolved_homonym: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[unresolved_homonym: "false"]).to match_array [no_match] }
+      specify { expect(described_class[unresolved_homonym: "true"]).to eq [yes_match] }
+      specify { expect(described_class[unresolved_homonym: "false"]).to eq [no_match] }
     end
 
     describe "searching by ichnotaxon" do
@@ -265,8 +263,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:yes_match) { create :family, :fossil, ichnotaxon: true }
 
       specify { expect(described_class[ichnotaxon: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[ichnotaxon: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[ichnotaxon: "false"]).to match_array [no_match] }
+      specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }
+      specify { expect(described_class[ichnotaxon: "false"]).to eq [no_match] }
     end
 
     describe "searching by Hong" do
@@ -274,8 +272,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:yes_match) { create :family, hong: true }
 
       specify { expect(described_class[hong: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[hong: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[hong: "false"]).to match_array [no_match] }
+      specify { expect(described_class[hong: "true"]).to eq [yes_match] }
+      specify { expect(described_class[hong: "false"]).to eq [no_match] }
     end
 
     describe "searching by collective group name" do
@@ -283,8 +281,8 @@ describe Taxa::Search::AdvancedSearch do
       let!(:yes_match) { create :family, :fossil, collective_group_name: true }
 
       specify { expect(described_class[collective_group_name: "", dummy: "x"]).to match_array [no_match, yes_match] }
-      specify { expect(described_class[collective_group_name: "true"]).to match_array [yes_match] }
-      specify { expect(described_class[collective_group_name: "false"]).to match_array [no_match] }
+      specify { expect(described_class[collective_group_name: "true"]).to eq [yes_match] }
+      specify { expect(described_class[collective_group_name: "false"]).to eq [no_match] }
     end
   end
 end

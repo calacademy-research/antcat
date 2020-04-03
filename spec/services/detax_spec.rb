@@ -20,7 +20,7 @@ describe Detax do
     end
 
     context "when input is nil" do
-      specify { expect(described_class[nil]).to eq '' }
+      specify { expect(described_class[nil]).to eq nil }
     end
   end
 end

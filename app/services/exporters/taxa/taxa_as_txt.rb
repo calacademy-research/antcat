@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module Exporters
   module Taxa
@@ -8,7 +8,7 @@ module Exporters
       attr_private_initialize :taxa
 
       def call
-        taxa.reduce('') do |content, taxon|
+        taxa.reduce(+'') do |content, taxon|
           content << format_taxon(taxon)
         end
       end
@@ -42,11 +42,11 @@ module Exporters
             labels << "unresolved junior homonym"
           elsif taxon.nomen_nudum?
             labels << 'nomen nudum'
-          elsif taxon.valid_taxon?
+          elsif taxon.valid_status?
             labels << "valid"
           elsif taxon.synonym?
             labels << "synonym of #{format_name(taxon.current_valid_taxon)}"
-          elsif taxon.invalid?
+          elsif taxon.invalid_status?
             labels << taxon.status
           end
           labels << 'ichnotaxon' if taxon.ichnotaxon?
@@ -64,7 +64,7 @@ module Exporters
         end
 
         def format_type_localities taxon
-          string = ''
+          string = ''.html_safe
           if taxon.protonym.locality
             string << AddPeriodIfNecessary[taxon.protonym.locality]
           end

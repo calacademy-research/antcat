@@ -4,9 +4,7 @@ module Autocomplete
   class AutocompleteProtonyms
     include Service
 
-    def initialize search_query
-      @search_query = search_query&.strip
-    end
+    attr_private_initialize :search_query
 
     def call
       (exact_id_match || search_results).map do |protonym|
@@ -19,8 +17,6 @@ module Autocomplete
     end
 
     private
-
-      attr_reader :search_query
 
       def search_results
         Protonym.

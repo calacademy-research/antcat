@@ -1,9 +1,9 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DatabaseScripts
   class GenusGenderEndings < DatabaseScript
     def formatted_statistics
-      output = "### Statistics\n"
+      output = +"### Statistics\n"
       output << "-ending: already gendered / matches (incorrectly gendered)\n"
       endings.each do |gender, gender_endings|
         output << "##### #{gender}\n"
@@ -38,7 +38,7 @@ module DatabaseScripts
     end
 
     def formatted_matches
-      string = "\n### Matches"
+      string = +"\n### Matches"
       matches.each do |gender, group|
         string << "\n#### #{gender.to_s.humanize}\n"
         group.each do |status, taxa|
@@ -55,7 +55,7 @@ module DatabaseScripts
     end
 
     def formatted_not_matching_any_endings
-      string = "\n### Not matching any ending\n"
+      string = +"\n### Not matching any ending\n"
       string << not_matching_any_endings.map do |taxon|
         "%taxon#{taxon.id}"
       end.join(", ")

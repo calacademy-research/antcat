@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # Accepts a string of keywords (the query) and returns a parsed hash;
 # non-matches are placed in `keywords_params[:keywords]`.
@@ -8,41 +8,49 @@ module References
     class ExtractKeywords
       include Service
 
-      attr_private_initialize :keyword_string
+      def initialize keyword_string
+        @keyword_string = keyword_string.dup
+      end
 
       def call
-        keywords_params = {}
-
-        regexes.each do |keyword, regex|
-          next unless (match = keyword_string.match(/#{keyword}: ?#{regex}/i))
-
-          # match.names contains named captured groups.
-          if match.names.empty?
-            # If there are no named captures, use the 'keyword' as key.
-            # Eg 'year:2004' --> keywords_params[:year] = '2004'
-            keywords_params[keyword.to_sym] = Regexp.last_match(1)
-          else
-            # If there are named captures, use them as keys.
-            # Eg 'year:2004-2005' -->
-            #   keywords_params[:start_year] = '2004'
-            #   keywords_params[:end_year] = '2005'
-            match.names.each { |param| keywords_params[param.to_sym] = match[param] }
-          end
-          # Replace matched and continue matching.
-          keyword_string.gsub!(match.to_s, "")
-        end
-
-        # This is kind of a hack, but methods further down the line expect :reference_type
-        # to contain a symbol (all the other matches, including 'year', are strings).
-        if keywords_params[:reference_type].present?
-          keywords_params[:reference_type] = keywords_params[:reference_type].to_sym
-        end
-        # Remove redundant spaces (artifacts from .gsub!)
-        keywords_params[:keywords] = keyword_string.squish
-        keywords_params
+        extract_keywords
       end
 
       private
+
+        attr_reader :keyword_string
+
+        def extract_keywords
+          keywords_params = {}
+
+          regexes.each do |keyword, regex|
+            next unless (match = keyword_string.match(/#{keyword}: ?#{regex}/i))
+
+            # match.names contains named captured groups.
+            if match.names.empty?
+              # If there are no named captures, use the 'keyword' as key.
+              # Eg 'year:2004' --> keywords_params[:year] = '2004'
+              keywords_params[keyword.to_sym] = Regexp.last_match(1)
+            else
+              # If there are named captures, use them as keys.
+              # Eg 'year:2004-2005' -->
+              #   keywords_params[:start_year] = '2004'
+              #   keywords_params[:end_year] = '2005'
+              match.names.each { |param| keywords_params[param.to_sym] = match[param] }
+            end
+            # Replace matched and continue matching.
+            keyword_string.gsub!(match.to_s, "")
+          end
+
+          # This is kind of a hack, but methods further down the line expect :reference_type
+          # to contain a symbol (all the other matches, including 'year', are strings).
+          if keywords_params[:reference_type].present?
+            keywords_params[:reference_type] = keywords_params[:reference_type].to_sym
+          end
+          # Remove redundant spaces (artifacts from .gsub!)
+          keywords_params[:keywords] = keyword_string.squish
+          keywords_params
+        end
 
         # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
         #

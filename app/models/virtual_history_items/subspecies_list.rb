@@ -6,7 +6,7 @@ module VirtualHistoryItems
 
     def relevant_for_taxon?
       return @_relevant_for_taxon if defined? @_relevant_for_taxon
-      @_relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_taxon? && taxon.subspecies.valid.exists?
+      @_relevant_for_taxon ||= taxon.is_a?(Species) && taxon.valid_status? && taxon.subspecies.valid.exists?
     end
 
     def publicly_visible?
@@ -16,7 +16,7 @@ module VirtualHistoryItems
 
     def reason_hidden
       <<~STR.html_safe
-        hidden because this species has a subspecies list in a history item &ndash;
+        hidden because this species has a subspecies list in a history item –
         delete the plaintext history item to show this item to all visitors instead
       STR
     end

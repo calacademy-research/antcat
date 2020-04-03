@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module LayoutsHelper
-  def current_controller_css_id controller_name
+  def controller_css_id controller_name
     "#{controller_name.tr('/', '_')}-controller"
   end
 
@@ -13,7 +13,10 @@ module LayoutsHelper
     title = content_for :title_tag
 
     string = ''.html_safe
-    string << "#{title} - " if title
+    if title
+      string << title
+      string << " - "
+    end
     string << "AntCat"
     string << " (#{Rails.env})" unless Rails.env.production?
     string

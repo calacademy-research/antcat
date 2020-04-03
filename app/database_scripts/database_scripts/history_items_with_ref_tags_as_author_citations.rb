@@ -1,14 +1,14 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 module DatabaseScripts
   class HistoryItemsWithRefTagsAsAuthorCitations < DatabaseScript
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "{tax [0-9]+} {ref [0-9]+}").includes(:taxon).limit(150)
+      TaxonHistoryItem.where("taxt REGEXP ?", "{tax [0-9]+} {ref [0-9]+}[^:]").includes(:taxon)
     end
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Check usage'
+        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', "Check usage"
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
@@ -34,7 +34,7 @@ module DatabaseScripts
 
         ids = taxt.scan(/{tax (?<tax_id>[0-9]+}) {ref (?<ref_id>[0-9]+)}/)
 
-        string = ''
+        string = +''
         ids.each do |(tax_id, ref_id)|
           taxon = Taxon.find(tax_id)
           reference = Reference.find(ref_id)
@@ -42,12 +42,12 @@ module DatabaseScripts
           string << taxon.link_to_taxon
           string << ' '
           string << if taxon.authorship_reference == reference
-                      'matches'
+                      'tax/ref matches'
                     else
                       matches = false
-                      bold_warning('not OK')
+                      bold_warning('tax/ref do not match')
                     end
-          string << '<br>'
+          string << '<br><br>'
         end
         [string, matches]
       end
@@ -66,8 +66,8 @@ category: Taxt
 tags: [has-quick-fix, updated!]
 
 description: >
-  **Note that "same" in the "Check usage" column just means that the ID for `ref` tag is the same at the
-  reference ID of the taxon's protonym -- both may be incorrect.**
+  **Note that "tax/ref matches" in the "Check usage" column just means that the ID for `ref` tag
+  is the same as the reference ID of the taxon's protonym -- both may be incorrect.**
 
 
   **Experimental**: Use the "Convert to taxac!" button to quickly replace all `tax` + `ref` tag combinations
@@ -78,10 +78,35 @@ description: >
   **Background**
 
 
-  `ref` tags used to be the only way to disambiguate homonyms in taxt items.
+  `ref` tags used to be the only way to disambiguate homonyms in taxt items, and before that
+  there was not even `ref` tags, since all content was in plaintext format.
 
 
-  Now `tax` tags can be expaned to `taxac` tags (tax + author citation)  include the author citation when rendered.
+  When the initial import from plaintext data was made many years ago, the code looked
+  for scientific names, and if we had a taxon record with the same name in the database,
+  the plaintext name was replaced with a `tax` tag. Similarily, the code looked for text that
+  looked like referece keys ("Bolton, 1995d"), and if we had such a reference in the database,
+  the plaintext reference key was replaced with a `ref` tag corresponding to that reference.
+
+
+  That worked pretty well in most cases, but for homonym cases the code would not always be able
+  to link the correct taxon record. If we only had a single taxon record with a particular that name,
+  the code assumed it had found the correct one and replaced it. I don't know if the code checked
+  if there were more than one taxon record with this exact name before replacing it, maybe it did,
+  but if we only had one such record at the time the import was made, then the code would perform the replacement.
+  If a taxon record for the homonym (junior or senior) was added to the catalog after the initial import,
+  the code did not revisit already existing history items.
+
+
+  That's the big picture, based on what I have puzzled together. If the `tax` and `ref` tags disagree,
+  I'd guess that it's more likely that the `ref` tag is correct, since identical reference keys were
+  disambiguated with letters in the Bolton files.
+
+
+  **Present day**
+
+
+  Now `tax` tags can be expaned to `taxac` tags (tax + author citation) to include the author citation when rendered.
 
 
   Taxts like:
@@ -90,7 +115,7 @@ description: >
   * [Replacement name for {tax 429029} {ref 125820}]
 
 
-  can be updated to format:
+  can be updated to this format:
 
 
   * [Replacement name for {taxac 429029}]
@@ -98,18 +123,26 @@ description: >
 
   The first example may look like an improvement since the reference is linked (I decided to no link them to make
   it easier to tell them apart from `ref` tags), but it's a misuse of `ref` tags, and it means that the data
-  points may not agree (manually specified `ref` tag vs. the actual author citation).
+  points may not agree (manually specified `ref` tag vs. the actual author citation from the taxon's protonym).
 
 
   If the `tax` tag is correct, just remove the `ref` tag and change the `tax` tag to a `taxac` tag to include the author citation.
-  This can be done even if the `ref` tag is incorrect since `taxac` tags fetched the author citation from the `tax` tag.
+  This can be done even if the `ref` tag is incorrect since `taxac` tags fetches the author citation from the `tax` tag.
 
 
-  This script includes the first 150 history items where a `tax` tag is followed by a space and a `ref` tag.
-  These can be replaced by script, but very many of them points to the wrong taxon record, which we want to fix first.
+  **Example**
 
 
-  See all [here](/taxon_history_items?utf8=%E2%9C%93&search_type=REGEXP&q=%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D).
+  * {taxac 429366} junior homonym and junior synonym of {taxac 429365}: {ref 133029}: 451.
+
+
+  Think of `taxac` tag as "disambiguation citations" used to make it clear which taxon is referred
+  to (so without backing it up with a scientific citation), and think of `ref` tags + pages,
+  as "litterature citations" (which is why we want to include the pagination).
+
+
+  In the above example, "{ref 133029}: 451" is the only litterature citation, while the `taxac`
+  tags are used for disambiguation purposes only.
 
 
 related_scripts:

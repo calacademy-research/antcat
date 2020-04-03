@@ -13,7 +13,7 @@ class ProtonymDecorator < Draper::Decorator
   end
 
   def format_locality
-    return if locality.blank?
+    return unless locality
 
     first_parenthesis = locality.index("(")
     capitalized =
@@ -30,7 +30,7 @@ class ProtonymDecorator < Draper::Decorator
 
   def format_pages_and_forms
     string = authorship.pages.to_s
-    string << " (#{authorship.forms})" if authorship.forms.present?
+    string << " (#{authorship.forms})" if authorship.forms
     string
   end
 end

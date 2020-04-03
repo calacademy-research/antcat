@@ -65,7 +65,7 @@ describe TaxonPolicy do
       %i[family subfamily tribe subtribe genus subgenus subspecies species].each do |rank|
         specify do
           taxon = build_stubbed rank
-          allow(taxon).to receive(:valid_taxon?).and_return(false)
+          allow(taxon).to receive(:valid_status?).and_return(false)
           expect(described_class.new(taxon).allow_create_obsolete_combination?).to eq false
         end
       end

@@ -21,7 +21,7 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_document_links
-    [doi_link, pdf_link].reject(&:blank?).join(' ').html_safe
+    h.safe_join [doi_link, pdf_link].reject(&:blank?), ' '
   end
 
   def doi_link

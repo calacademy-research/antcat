@@ -6,7 +6,6 @@
 -reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
 
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :reference_type, reference.class.name
   =hidden_field_tag :ignore_duplicates, ('yes' if reference.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
   =render 'shared/errors_for', resource: reference
 
@@ -63,18 +62,16 @@
 
   .row
     .medium-12.columns
-      %ul#reference-tabs.tabs{data: { tabs: true }}
-        %li.tabs-title{class: tab_active?(reference, ArticleReference)}
-          =link_to "Article", "#tabs-article"
-        %li.tabs-title{class: tab_active?(reference, BookReference)}
-          =link_to "Book", "#tabs-book"
-        %li.tabs-title{class: tab_active?(reference, NestedReference)}
-          =link_to "Nested", "#tabs-nested"
-        %li.tabs-title{class: tab_active?(reference, UnknownReference)}
-          =link_to "Other", "#tabs-unknown"
-
-      .tabs-content{data: { tabs_content: "reference-tabs" }}
-        #tabs-article.tabs-panel{class: tab_active?(reference, ArticleReference)}
+      .css-tabs
+        %input#article-tab.tab-input{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
+        %label{for: "article-tab"} Article
+        %input#book-tab.tab-input{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
+        %label{for: "book-tab"} Book
+        %input#nested-tab.tab-input{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
+        %label{for: "nested-tab"} Nested
+        %input#unknown-tab.tab-input{checked: ("checked" if reference.is_a?(UnknownReference)), name: "reference_type", type: "radio", value: 'UnknownReference'}
+        %label{for: "unknown-tab"} Unknown
+        .tab.article-tab-content
           .row
             .medium-3.columns
               =f.label :reference_journal_name do
@@ -88,7 +85,7 @@
                 =db_tooltip_icon "references.series_volume_issue", scope: :references
               =f.text_field :series_volume_issue
 
-        #tabs-book.tabs-panel{class: tab_active?(reference, BookReference)}
+        .tab.book-tab-content
           .row
             .medium-3.columns.end
               =f.label :reference_publisher_string do
@@ -96,7 +93,7 @@
                 =db_tooltip_icon "references.publisher", scope: :references
               =f.text_field :publisher_string, value: reference.publisher_string
 
-        #tabs-nested.tabs-panel{class: tab_active?(reference, NestedReference)}
+        .tab.nested-tab-content
           .row
             .medium-3.columns.end
               =f.label :nesting_reference_id do
@@ -104,7 +101,7 @@
                 =db_tooltip_icon "nesting_reference_id", scope: :references
               =f.text_field :nesting_reference_id
 
-        #tabs-unknown.tabs-panel{class: tab_active?(reference, UnknownReference)}
+        .tab.unknown-tab-content
           .row
             .medium-12.columns
               =f.label :reference_citation, 'Citation'

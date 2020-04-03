@@ -14,8 +14,7 @@ Feature: Copy reference
     And I go to the page of the most recent reference
 
     When I follow "Copy"
-    Then the "Article" tab should be selected
-    And the "reference_author_names_string" field should contain "Ward, P.S."
+    Then the "reference_author_names_string" field should contain "Ward, P.S."
     And the "reference_citation_year" field should contain "1910"
     And the "reference_pagination" field should contain "2"
     And the "reference_journal_name" field should contain "Ants"

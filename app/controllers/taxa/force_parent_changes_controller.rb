@@ -14,7 +14,7 @@ module Taxa
       @valid_parent_ranks = valid_parent_ranks
       @new_parent = find_new_parent
 
-      if @new_parent.blank? && !@taxon.is_a?(Genus)
+      if @new_parent.nil? && !@taxon.is_a?(Genus)
         flash.now[:alert] = "A parent must be set."
         render :show
         return

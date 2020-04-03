@@ -12,8 +12,8 @@ Then(/^I should be on (.+)$/) do |page_name|
   expect(current_path).to eq path_to(page_name)
 end
 
-Then("the page title should have {string} in it") do |title|
-  expect(page.title).to have_content title, normalize_ws: true
+Then("the page title be {string}") do |title|
+  expect(page.title).to eq title
 end
 
 When("I reload the page") do
@@ -73,10 +73,6 @@ end
 
 When("I uncheck {string}") do |field_name|
   uncheck field_name
-end
-
-When("I choose {string}") do |field_name|
-  choose field_name
 end
 
 # "I should see / should contain".

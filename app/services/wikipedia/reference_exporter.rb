@@ -1,4 +1,4 @@
-# frozen_string_literal: false
+# frozen_string_literal: true
 
 # Class for exporting references to Wikipedia citation templates.
 #
@@ -13,12 +13,18 @@ module Wikipedia
     attr_private_initialize :reference
 
     def call
-      formatter = "Wikipedia::#{reference.type}".safe_constantize
-      return "<<<cannot export references of type #{reference.type}>>>" unless formatter
-      formatter.new(reference).format
+      return "<<<cannot export references of type #{reference.type}>>>" unless formatter_class
+      formatter_class.new(reference).format
     end
 
     private
+
+      def formatter_class
+        @_formatter_class ||= case reference
+                              when ::ArticleReference then Wikipedia::ArticleReference
+                              when ::BookReference    then Wikipedia::BookReference
+                              end
+      end
 
       def url
         reference.routed_url if reference.downloadable?
@@ -30,13 +36,13 @@ module Wikipedia
       end
 
       def author_params
-        authors = ''
+        authors = []
         reference.author_names.each.with_index(1) do |name, index|
           authors <<
             "|first#{index}=#{name.first_name_and_initials} " \
             "|last#{index}=#{name.last_name} "
         end
-        authors
+        authors.join
       end
 
       def reference_name
@@ -48,7 +54,7 @@ module Wikipedia
           else        "#{names.first}_et_al"
           end
 
-        ref_names.tr(' ', '_') << "_#{reference.year}"
+        ref_names.tr(' ', '_') + "_#{reference.year}"
       end
   end
 

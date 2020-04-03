@@ -8,7 +8,7 @@ class TaxonBrowserPresenter
   attr_private_initialize :taxon_browser
 
   def taxon_browser_taxon_link taxon
-    label = (taxon.fossil? ? '&dagger;'.html_safe : +'') << taxon.name_epithet
+    label = (taxon.fossil? ? +'†' : +'') << taxon.name_epithet
     link_to label, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
   end
 
