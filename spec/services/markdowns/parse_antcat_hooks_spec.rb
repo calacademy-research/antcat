@@ -28,8 +28,10 @@ describe Markdowns::ParseAntcatHooks do
     describe "tax tags with author citaion (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
-        expect(described_class["{taxac #{taxon.id}}"]).
-          to eq %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a> #{taxon.author_citation})
+        expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
+          <a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>
+          <span class="discret-author-citation"><a href="/references/#{taxon.authorship_reference.id}">#{taxon.author_citation}</a></span>
+        HTML
       end
 
       context "when the taxon can't be found" do

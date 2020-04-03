@@ -11,6 +11,16 @@ class TaxonDecorator < Draper::Decorator
     link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
   end
 
+  def link_to_taxon_with_linked_author_citation
+    link_to_taxon_with_label(taxon.name_with_fossil) <<
+      ' ' <<
+      h.content_tag(
+        :span,
+        h.link_to(taxon.author_citation.html_safe, h.reference_path(taxon.authorship_reference)),
+        class: 'discret-author-citation'
+      )
+  end
+
   def id_and_name_and_author_citation
     h.content_tag :span do
       h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")

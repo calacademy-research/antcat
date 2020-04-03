@@ -69,7 +69,7 @@ module Markdowns
       def parse_taxon_with_author_citation_ids
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
-            taxon.decorate.link_to_taxon_with_author_citation
+            taxon.decorate.link_to_taxon_with_linked_author_citation
           else
             broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
           end

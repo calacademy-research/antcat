@@ -27,6 +27,7 @@ module Taxa
       end
 
       # TODO: Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
+      # TODO: Include author citations from `taxac` tags in taxt items.
       def taxt_content
         string = []
         string << taxon.history_items.pluck(:taxt).join
