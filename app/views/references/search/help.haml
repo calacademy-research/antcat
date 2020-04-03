@@ -57,14 +57,10 @@
   %tr
     %td reference type
     %td
-      =link_to "type:nomissing", references_search_index_path(reference_q: "type:nomissing")
-      ,
-      =link_to "type:missing", references_search_index_path(reference_q: "type:missing")
-      ,
       =link_to "type:nested", references_search_index_path(reference_q: "type:nested")
       ,
       =link_to "type:unknown", references_search_index_path(reference_q: "type:unknown")
-    %td Defaults to "nomissing".
+    %td
   %tr
     %td combined keywords
     %td=link_to 'author:wilson year:1970-1979', references_search_index_path(reference_q: 'author:wilson year:1970-1979')

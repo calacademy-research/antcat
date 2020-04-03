@@ -28,7 +28,7 @@ module Autocomplete
     private
 
       def search_results
-        exact_id_match || ::References::Search::Fulltext[default_search_options.merge keyword_params]
+        exact_id_match || ::References::Search::Fulltext[{ per_page: PER_PAGE }.merge keyword_params]
       end
 
       def exact_id_match
@@ -36,10 +36,6 @@ module Autocomplete
 
         match = Reference.find_by(id: search_query)
         [match] if match
-      end
-
-      def default_search_options
-        { reference_type: :nomissing, per_page: PER_PAGE }
       end
 
       def keyword_params

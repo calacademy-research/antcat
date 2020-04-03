@@ -76,11 +76,11 @@ describe References::Search::ExtractKeywords do
     end
 
     it "handles multiple keyword params" do
-      q = 'Ants Book author:"Barry Bolton" year:2003 type:missing'
+      q = 'Ants Book author:"Barry Bolton" year:2003 type:nested'
       keyword_params = described_class[q]
       expect(keyword_params[:author]).to eq "Barry Bolton"
       expect(keyword_params[:year]).to eq "2003"
-      expect(keyword_params[:reference_type]).to eq :missing
+      expect(keyword_params[:reference_type]).to eq :nested
       expect(keyword_params[:keywords]).to eq "Ants Book"
     end
 

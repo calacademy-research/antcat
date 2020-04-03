@@ -28,8 +28,6 @@ FactoryBot.define do
     end
 
     before(:create) do |reference, evaluator|
-      next if reference.is_a?(MissingReference)
-
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
       elsif evaluator.author_string
@@ -56,12 +54,6 @@ FactoryBot.define do
 
     factory :unknown_reference, class: 'UnknownReference', aliases: [:any_reference] do
       sequence(:citation) { |n| "New York #{n}" }
-    end
-
-    factory :missing_reference, class: 'MissingReference' do
-      title { '(missing)' }
-      citation_year { '2009' }
-      citation { 'Latreille, 2009' }
     end
 
     factory :nested_reference, class: 'NestedReference' do

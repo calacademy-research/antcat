@@ -1,8 +1,6 @@
 -decorated = reference.decorate
 
 .reference
-  -if reference.is_a?(MissingReference)
-    %span.bold-warning [missing reference]
   =decorated.expanded_reference
   =decorated.format_document_links
   -if current_user

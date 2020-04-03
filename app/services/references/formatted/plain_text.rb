@@ -27,7 +27,7 @@ module References
             "#{reference.journal.name} #{reference.series_volume_issue}:#{reference.pagination}"
           when ::BookReference
             "#{reference.publisher.display_name}, #{reference.pagination}"
-          when ::MissingReference, ::UnknownReference
+          when ::UnknownReference
             # `format_italics` + `Unitalicize` is to get rid of "*"-style italics.
             # TODO: Probably ignore this edge case.
             Unitalicize[format_italics(sanitize(reference.citation))]

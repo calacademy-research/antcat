@@ -38,7 +38,6 @@ describe Api::V1::ReferencesController, as: :visitor do
             "publisher_id" => nil,
             "series_volume_issue" => reference.series_volume_issue,
             "nesting_reference_id" => nil,
-            "reason_missing" => nil,
             "citation" => nil,
 
             # Notes.

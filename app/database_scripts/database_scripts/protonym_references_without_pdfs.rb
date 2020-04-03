@@ -5,7 +5,7 @@ module DatabaseScripts
     def results
       Reference.where(id: Citation.select(:reference_id)).
         left_outer_joins(:document).where(reference_documents: { id: nil }).
-        no_missing.order_by_author_names_and_year
+        order_by_author_names_and_year
     end
 
     def render

@@ -60,7 +60,7 @@ module References
           [
             ["year",   '(?<start_year>\d{4})-(?<end_year>\d{4})'],             # year:2003-2015
             ["year",   '(\d{4})'],                                             # year:2003
-            ["type",   '(?<reference_type>nested|unknown|nomissing|missing)'], # type:nested
+            ["type",   '(?<reference_type>nested|unknown)'],                   # type:nested
             ["title",  '"(.*?)"'],                                             # title:"Iceland"
             ["title",  '\'(.*?)\''],                                           # title:'Iceland'
             ["title",  '([^ ]+)'],                                             # title:Iceland
