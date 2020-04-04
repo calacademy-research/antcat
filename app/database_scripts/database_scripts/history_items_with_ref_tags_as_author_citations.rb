@@ -3,7 +3,15 @@
 module DatabaseScripts
   class HistoryItemsWithRefTagsAsAuthorCitations < DatabaseScript
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "{tax [0-9]+} {ref [0-9]+}[^:]").includes(:taxon)
+      TaxonHistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+} {ref [0-9]+}").limit(100).includes(:taxon)
+    end
+
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first 100)<br>
+        For all matches, see
+        <a href='/taxon_history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D'>this link</a>
+      STR
     end
 
     def render
@@ -71,8 +79,12 @@ description: >
 
 
   **Experimental**: Use the "Convert to taxac!" button to quickly replace all `tax` + `ref` tag combinations
-  for a history item with a `taxac` tag for the taxon. Refresh the page to get rid cleaned items. The link
-  is only visible if the tags match, but like mentioned above, they may match but both may be incorrect.
+  for a history item with a `taxac` tag for the taxon. <span class="bold-warning">
+  The quick fix button has been updated to also remove pages for the relevant `ref` tag,
+  since that's what we want to do for the current batch. Only numerical pages numbers are removed;
+  if pages contains anything else (even hyphens), the pages will still be removed, but leave unmatched relics.
+  </span> Refresh the page to get rid cleaned items.
+  The link is only visible if the tags match, but like mentioned above, they may match but both may be incorrect.
 
 
   **Background**
@@ -144,6 +156,9 @@ description: >
   In the above example, "{ref 133029}: 451" is the only litterature citation, while the `taxac`
   tags are used for disambiguation purposes only.
 
+
+  The first 100 results are included on this pagee. For all matches, see
+  [this link](/taxon_history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D)
 
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations
