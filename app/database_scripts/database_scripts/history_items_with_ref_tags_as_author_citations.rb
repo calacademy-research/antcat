@@ -163,3 +163,4 @@ description: >
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations
   - HomonymsAsTaxTags
+  - TaxacTagsWithPageNumbers
