@@ -1,0 +1,16 @@
+-title 'Unsubscribe'
+-breadcrumb :antcat
+-noindex
+
+%h5 Disable email notifications from antcat.org
+
+-if @user
+  %p
+    By unsubscribing, you will no longer receive email notifications for the email address
+    =@user.email
+  %p Email notifications can be enabled again in your account settings.
+
+=form_tag(url: unsubscribe_path) do |f|
+  =hidden_field_tag :token, params[:token]
+  =button_tag "Unsubscribe", type: :submit, class: "btn-warning"
+  =link_to 'Cancel', root_url, class: "btn-nodanger"

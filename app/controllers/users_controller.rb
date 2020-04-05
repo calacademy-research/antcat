@@ -69,7 +69,10 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:editor, :email, :helper, :hidden, :name, :locked, :password, :superadmin)
+      params.require(:user).permit(
+        :editor, :email, :enable_email_notifications,
+        :helper, :hidden, :name, :locked, :password, :superadmin
+      )
     end
 
     def user_scope

@@ -45,5 +45,13 @@ describe UserMailer do
         end
       end
     end
+
+    context 'when user has disabled email notifications' do
+      let(:user) { create :user, :disabled_email_notifications }
+
+      it 'does not send the mail' do
+        expect { mail }.to_not change { ActionMailer::Base.deliveries.count }
+      end
+    end
   end
 end

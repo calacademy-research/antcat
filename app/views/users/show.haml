@@ -12,6 +12,7 @@
 
   -if current_user == @user
     -content_for :breadcrumbs_right do
+      -# TODO: Rename to "My account" since we do more things there now.
       =link_to "Change my password/name/email", edit_user_registration_path, class: "btn-normal"
 
 -if @user.deleted?
