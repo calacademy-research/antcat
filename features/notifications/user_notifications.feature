@@ -19,7 +19,6 @@ Feature: User notifications
 
     When I go to my notifications page
     Then I should see 1 unread notification
-    And I should not see "new notification"
 
     Given I have another unseen notification
     When I reload the page
@@ -91,7 +90,7 @@ Feature: User notifications
     # Confirm that Batiatus was only mentioned once.
     When I log in as "Batiatus"
     And I go to my notifications page
-    Then I should see "Archibald mentioned you in the comment on the issue My Favorite Ants less"
+    Then I should see "Archibald mentioned you in the comment on the issue My Favorite Ants"
     And I should see 1 notification
 
   Scenario: Do not repeat notifications for any given attached/notifier combination

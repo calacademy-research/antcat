@@ -12,12 +12,13 @@
         %th When
     %tbody
       -@notifications.each do |notification|
-        %tr
+        %tr{class: ('unseen' if notification.unseen?)}
           -# There is no "unseen" icon, but it's used in tests.
           %td.icon=antcat_icon (notification.seen? ? "seen" : "unseen")
           %td.no-wrap
             =notification.notifier.decorate.user_page_link
             =render notification.reason, notification: notification
+            =new_label if notification.unseen?
           %td.no-wrap
             =time_ago_in_words notification.created_at
             ago

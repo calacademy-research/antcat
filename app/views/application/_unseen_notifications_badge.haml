@@ -1,7 +1,6 @@
 -if current_user
   -count = current_user.unseen_notifications.count
-  -# Dont' show on the notifications page, would be confusing.
-  -unless count.zero? || controller_name == "notifications"
+  -unless count.zero?
     %li.unseen-notifications
       =link_to notifications_path do
         %span.label=count
