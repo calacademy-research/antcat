@@ -2,7 +2,7 @@
 
 class NotificationsController < ApplicationController
   before_action :authenticate_user!
-  after_action :mark_unseen_as_seen, only: :index
+  after_action :mark_all_notifications_as_seen, only: :index
 
   def index
     if current_user.unseen_notifications.any?
@@ -13,7 +13,7 @@ class NotificationsController < ApplicationController
 
   private
 
-    def mark_unseen_as_seen
-      current_user.mark_unseen_notifications_as_seen
+    def mark_all_notifications_as_seen
+      current_user.mark_all_notifications_as_seen
     end
 end

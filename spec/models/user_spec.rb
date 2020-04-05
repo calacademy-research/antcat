@@ -43,7 +43,7 @@ describe User do
     end
   end
 
-  describe "#mark_unseen_notifications_as_seen" do
+  describe "#mark_all_notifications_as_seen" do
     let!(:user) { create :user }
 
     before do
@@ -51,7 +51,7 @@ describe User do
     end
 
     specify do
-      expect { user.mark_unseen_notifications_as_seen }.
+      expect { user.mark_all_notifications_as_seen }.
         to change { user.unseen_notifications.count }.from(1).to(0)
     end
   end
