@@ -12,7 +12,7 @@
 
   -if current_user == @user
     -content_for :breadcrumbs_right do
-      =link_to "Change my password/name/email", edit_user_registration_path, class: "btn-normal"
+      =link_to "My account", edit_user_registration_path, class: "btn-normal"
 
 -if @user.deleted?
   .callout.alert This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.

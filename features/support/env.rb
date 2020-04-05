@@ -22,6 +22,7 @@ require 'cucumber/formatter/progress'
 require 'cucumber/rspec/doubles' # For `stub` and `stub_const`.
 
 require 'capybara-screenshot/cucumber'
+require 'email_spec/cucumber'
 require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 

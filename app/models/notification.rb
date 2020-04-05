@@ -20,4 +20,8 @@ class Notification < ApplicationRecord
   validates :attached, presence: true, on: :create
 
   scope :unseen, -> { where(seen: false) }
+
+  def unseen?
+    !seen?
+  end
 end

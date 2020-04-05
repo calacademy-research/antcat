@@ -1,5 +1,5 @@
--title 'Edit User'
--breadcrumb :edit_my_details, resource
+-title 'My account'
+-breadcrumb :my_account, resource
 
 =form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
   =render 'shared/errors_for', resource: resource
@@ -10,6 +10,9 @@
 
       =f.label :name
       =f.text_field :name
+
+      =f.check_box :enable_email_notifications
+      =f.label :enable_email_notifications
 
     .medium-6.columns
       =f.label :password, "Password (leave blank if you don't want to change it)"

@@ -59,7 +59,7 @@ class User < ApplicationRecord
     SiteNotice.unread_by(self)
   end
 
-  def mark_unseen_notifications_as_seen
+  def mark_all_notifications_as_seen
     unseen_notifications.find_each { |notification| notification.update(seen: true) }
   end
 end

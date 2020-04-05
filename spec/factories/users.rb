@@ -19,5 +19,9 @@ FactoryBot.define do
     trait :superadmin do
       superadmin { true }
     end
+
+    trait :disabled_email_notifications do
+      enable_email_notifications { false }
+    end
   end
 end

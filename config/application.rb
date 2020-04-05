@@ -28,7 +28,6 @@ module AntCat
     config.active_record.belongs_to_required_by_default = true
     config.action_view.form_with_generates_remote_forms = false
 
-    config.action_mailer.default_url_options = { host: "antcat.org" }
     config.action_mailer.delivery_method = :sendmail
     config.action_mailer.sendmail_settings = { arguments: '-i' }
     config.active_record.observers = [

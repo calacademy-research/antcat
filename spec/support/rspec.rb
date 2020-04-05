@@ -19,6 +19,10 @@ RSpec.configure do |config|
     config.profile_examples = 10
   end
 
+  # Became an issue after adding mailer specs.
+  # See https://github.com/drapergem/draper#view-context-leakage
+  config.before { Draper::ViewContext.clear! }
+
   config.define_derived_metadata do |metadata|
     metadata[:aggregate_failures] = true
   end

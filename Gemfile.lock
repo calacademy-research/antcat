@@ -197,6 +197,10 @@ GEM
       dry-equalizer (~> 0.2)
       dry-initializer (~> 3.0)
       dry-schema (~> 1.5)
+    email_spec (2.2.0)
+      htmlentities (~> 4.3.3)
+      launchy (~> 2.1)
+      mail (~> 2.7)
     erubi (1.9.0)
     erubis (2.7.0)
     execjs (2.7.0)
@@ -254,6 +258,7 @@ GEM
       haml (>= 4.0, < 6)
       nokogiri (>= 1.6.0)
       ruby_parser (~> 3.5)
+    htmlentities (4.3.4)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
     invisible_captcha (1.0.1)
@@ -511,6 +516,7 @@ DEPENDENCIES
   devise
   diffy
   draper
+  email_spec
   ey_config
   factory_bot_rails
   foundation-rails (= 6.3.1.0)

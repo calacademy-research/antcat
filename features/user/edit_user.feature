@@ -12,7 +12,7 @@ Feature: Editing a user
   Scenario: Changing my password
     When I go to the main page
     And I follow "Batiatus" within the desktop menu
-    And I follow "Change my password/name/email"
+    And I follow "My account"
     And I fill in "user_password" with "new password"
     And I fill in "user_password_confirmation" with "new password"
     And I fill in "user_current_password" with "secret"
@@ -37,7 +37,7 @@ Feature: Editing a user
     And I should not see "Quintus, B."
 
     When I follow "Batiatus" within the desktop menu
-    And I follow "Change my password/name/email"
+    And I follow "My account"
     And I fill in "user_name" with "Quintus, B."
     And I fill in "user_current_password" with "secret"
     And I press "Save"

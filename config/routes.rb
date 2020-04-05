@@ -229,6 +229,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resource :unsubscribe, only: [:show, :create]
+
   namespace :markdown do
     post :preview, action: :preview
   end
