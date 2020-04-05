@@ -10,7 +10,8 @@ module Users
       return if notifier == user
       return if already_notified_for_attached_by_notifier?
 
-      user.notifications.create!(reason: reason, attached: attached, notifier: notifier)
+      notification = user.notifications.create!(reason: reason, attached: attached, notifier: notifier)
+      send_email_notification user, notification
     end
 
     private
@@ -19,6 +20,10 @@ module Users
       # already mentions a user is edited and saved again.
       def already_notified_for_attached_by_notifier?
         user.notifications.where(attached: attached, notifier: notifier).exists?
+      end
+
+      def send_email_notification user, notification
+        UserMailer.new_notification(user, notification).deliver_now
       end
   end
 end

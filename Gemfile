@@ -57,6 +57,7 @@ group :development do
 end
 
 group :development, :test do
+  gem 'email_spec'
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'

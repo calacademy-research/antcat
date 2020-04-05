@@ -2,11 +2,20 @@
 
 FactoryBot.define do
   factory :notification do
-    reason { Notification::MENTIONED_IN_THING }
     user
     association :notifier, factory: :user
-    association :attached, factory: :site_notice
+    mentioned_in_thing
 
     trait :unread
+
+    trait :mentioned_in_thing do
+      reason { Notification::MENTIONED_IN_THING }
+      association :attached, factory: :site_notice
+    end
+
+    trait :active_in_discussion do
+      reason { Notification::ACTIVE_IN_DISCUSSION }
+      association :attached, factory: :comment
+    end
   end
 end

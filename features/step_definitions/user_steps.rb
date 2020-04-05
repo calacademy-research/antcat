@@ -18,6 +18,11 @@ Given('I am logged in') do
   login_programmatically user
 end
 
+When('I log in as a user named {string}') do |name|
+  user = create :user, name: name
+  login_programmatically user
+end
+
 Given('I log in as a helper editor') do
   user = create :user, :helper
   login_programmatically user
