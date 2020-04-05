@@ -1,5 +1,5 @@
--title 'Edit User'
--breadcrumb :edit_my_details, resource
+-title 'My account'
+-breadcrumb :my_account, resource
 
 =form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
   =render 'shared/errors_for', resource: resource

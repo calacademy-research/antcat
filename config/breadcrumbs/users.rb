@@ -15,8 +15,8 @@ crumb :superadmin_edit_user do |user|
   parent :user, user
 end
 
-crumb :edit_my_details do |user|
-  link "Edit My Details"
+crumb :my_account do |user|
+  link "My account"
   parent :user, user
 end
 
