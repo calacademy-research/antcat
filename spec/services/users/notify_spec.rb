@@ -19,10 +19,23 @@ describe Users::Notify do
       expect(notification.notifier).to eq notifier
     end
 
-    it 'sends an email notification' do
-      expect(UserMailer).to receive(:new_notification).
-        with(user, kind_of(Notification)).and_call_original
-      described_class[user, Notification::CREATOR_OF_COMMENTABLE, attached: attached, notifier: notifier]
+    describe 'email notifications' do
+      it 'sends an email notification' do
+        expect(UserMailer).to receive(:new_notification).
+          with(user, kind_of(Notification)).and_call_original
+        described_class[user, Notification::CREATOR_OF_COMMENTABLE, attached: attached, notifier: notifier]
+      end
+
+      context 'when mailier raises errors' do
+        it 'logs the error to NewRelic without re-raising' do
+          error = StandardError.new('whoops')
+
+          expect(UserMailer).to receive(:new_notification).and_raise(error)
+          expect(NewRelic::Agent).to receive(:notice_error).with(error)
+
+          described_class[user, Notification::CREATOR_OF_COMMENTABLE, attached: attached, notifier: notifier]
+        end
+      end
     end
 
     context "when user and notifier are the same" do

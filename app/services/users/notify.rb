@@ -24,6 +24,8 @@ module Users
 
       def send_email_notification user, notification
         UserMailer.new_notification(user, notification).deliver_now
+      rescue StandardError => e
+        NewRelic::Agent.notice_error(e)
       end
   end
 end
