@@ -68,7 +68,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
     # Copy-pasted from `HistoryItemsWithRefTagsAsAuthorCitations`.
     def convert_taxt_to_taxac_tags taxt
-      ids = taxt.scan(/{tax (?<tax_id>[0-9]+)} {ref (?<ref_id>[0-9]+)}[^:]/)
+      ids = taxt.scan(/{tax (?<tax_id>[0-9]+)} {ref (?<ref_id>[0-9]+)}:( [0-9]+)?/)
 
       string = taxt.dup
 
@@ -78,7 +78,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
         if taxon.authorship_reference == reference
           string.gsub!(
-            /\{tax #{tax_id}\} \{ref #{ref_id}\}/,
+            /\{tax #{tax_id}\} \{ref #{ref_id}\}:( [0-9]+)?/,
             "{taxac #{tax_id}}"
           )
         else
