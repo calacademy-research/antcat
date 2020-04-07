@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+docker system prune -f --volumes
 git fetch origin
 git fetch --all
 git reset --hard origin/master
