@@ -5,17 +5,21 @@ module References
     class Set
       include Service
 
-      attr_private_initialize :reference, :value, :field
+      attr_private_initialize :reference, :value, :column
 
       def call
         return value unless reference.persisted?
+        return value if already_up_to_date?
 
-        # Skip if cache is already up to date.
-        return value if reference.public_send(field) == value
-
-        reference.update_column(field, value) # rubocop:disable Rails/SkipsModelValidations
+        reference.update_column(column, value) # rubocop:disable Rails/SkipsModelValidations
         value
       end
+
+      private
+
+        def already_up_to_date?
+          reference.public_send(column) == value
+        end
     end
   end
 end

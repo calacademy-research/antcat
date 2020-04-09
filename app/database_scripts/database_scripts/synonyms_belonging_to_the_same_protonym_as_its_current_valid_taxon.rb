@@ -31,7 +31,7 @@ end
 __END__
 
 category: Catalog
-tags: []
+tags: [regression-test]
 
 issue_description: This junior synonym belongs to the same protonym as its current valid taxon
 

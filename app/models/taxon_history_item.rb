@@ -80,15 +80,8 @@ class TaxonHistoryItem < ApplicationRecord
     search_type = search_type.presence || 'LIKE'
     raise unless search_type.in? ["LIKE", "REGEXP"]
 
-    q = if search_type == "LIKE"
-          "%#{search_query}%"
-        else
-          search_query
-        end
-
-    where(<<-SQL.squish, q: q)
-      taxt #{search_type} :q
-    SQL
+    q = search_type == "LIKE" ? "%#{search_query}%" : search_query
+    where("taxt #{search_type} :q", q: q)
   end
 
   def ids_from_tax_tags
