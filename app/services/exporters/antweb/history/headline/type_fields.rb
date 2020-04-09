@@ -15,7 +15,8 @@ module Exporters
 
           private
 
-            delegate :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt, to: :protonym
+            delegate :primary_type_information_taxt, :secondary_type_information_taxt,
+              :type_notes_taxt, to: :protonym, private: true
 
             def formatted_type_fields
               [primary_type_information, secondary_type_information, type_notes]

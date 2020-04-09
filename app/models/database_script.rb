@@ -27,34 +27,36 @@ class DatabaseScript
 
   delegate :category, :tags, :issue_description, :description, to: :end_data_attributes
 
-  def self.inherited subclass
-    subclass.include Rails.application.routes.url_helpers
-    subclass.include ActionView::Helpers::UrlHelper
-  end
+  class << self
+    def inherited subclass
+      subclass.include Rails.application.routes.url_helpers
+      subclass.include ActionView::Helpers::UrlHelper
+    end
 
-  def self.new_from_filename_without_extension basename
-    script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
-    raise ScriptNotFound unless script_class
+    def new_from_filename_without_extension basename
+      script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
+      raise ScriptNotFound unless script_class
 
-    script_class.new
-  end
+      script_class.new
+    end
 
-  def self.safe_new_from_filename_without_extension class_name
-    new_from_filename_without_extension class_name
-  rescue DatabaseScript::ScriptNotFound
-    DatabaseScripts::UnfoundDatabaseScript.new(class_name)
-  end
+    def safe_new_from_filename_without_extension class_name
+      new_from_filename_without_extension class_name
+    rescue DatabaseScript::ScriptNotFound
+      DatabaseScripts::UnfoundDatabaseScript.new(class_name)
+    end
 
-  def self.all
-    @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
-                basename = File.basename(path, ".rb")
-                new_from_filename_without_extension basename
-              end
-  end
+    def all
+      @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
+                  basename = File.basename(path, ".rb")
+                  new_from_filename_without_extension basename
+                end
+    end
 
-  # TODO: Indicate record type in scripts.
-  def self.record_in_results? record
-    new.results.where(id: record.id).exists?
+    # TODO: Indicate record type in scripts.
+    def record_in_results? record
+      new.results.where(id: record.id).exists?
+    end
   end
 
   def soft_validated?

@@ -9,8 +9,8 @@ class UsersController < ApplicationController
 
   def show
     @user = find_user
-    @recent_user_activities = @user.activities.most_recent(5).includes(:user)
-    @recent_user_comments = @user.comments.most_recent 5
+    @recent_user_activities = @user.activities.most_recent_first.limit(5).includes(:user)
+    @recent_user_comments = @user.comments.most_recent_first.limit(5)
   end
 
   def new

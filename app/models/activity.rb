@@ -37,9 +37,8 @@ class Activity < ApplicationRecord
     undo_change
   ]
   DEPRECATED_TRACKABLE_TYPES = %w[Change Synonym]
-  # NOTE: This list of deprecated actions is not used anywhere in the code,
-  # it's just here for keeping track of which actions we do not care that much about.
-  DEPRECATED_ACTIONS = %w[approve_all_changes approve_change replace_missing_reference undo_change]
+  # Deprecated actions (not used in the code, just for keeping track):
+  # approve_all_changes approve_change replace_missing_reference undo_change
 
   self.per_page = 30 # For `will_paginate`.
 
@@ -55,8 +54,7 @@ class Activity < ApplicationRecord
     end
     results
   end
-  scope :by_ids_desc, -> { order(id: :desc) }
-  scope :most_recent, ->(number = 5) { by_ids_desc.limit(number) }
+  scope :most_recent_first, -> { order(id: :desc) }
   scope :non_automated_edits, -> { where(automated_edit: false) }
   scope :unconfirmed, -> { joins(:user).merge(User.unconfirmed) }
 
@@ -64,28 +62,30 @@ class Activity < ApplicationRecord
   serialize :parameters, Hash
   strip_attributes only: [:edit_summary]
 
-  def self.create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}
-    create!(
-      trackable: trackable,
-      action: action,
-      user: user,
-      edit_summary: edit_summary,
-      parameters: parameters
-    )
-  end
+  class << self
+    def create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}
+      create!(
+        trackable: trackable,
+        action: action,
+        user: user,
+        edit_summary: edit_summary,
+        parameters: parameters
+      )
+    end
 
-  def self.create_without_trackable action, user, edit_summary: nil, parameters: {}
-    create_for_trackable nil, action, user: user, edit_summary: edit_summary, parameters: parameters
-  end
+    def create_without_trackable action, user, edit_summary: nil, parameters: {}
+      create_for_trackable nil, action, user: user, edit_summary: edit_summary, parameters: parameters
+    end
 
-  # :nocov:
-  # For calling from the console.
-  def self.execute_script_activity user, edit_summary
-    raise "You must assign a user." unless user
-    raise "You must include an edit summary." unless edit_summary
-    create!(trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary)
+    # :nocov:
+    # For calling from the console.
+    def execute_script_activity user, edit_summary
+      raise "You must assign a user." unless user
+      raise "You must include an edit summary." unless edit_summary
+      create!(trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary)
+    end
+    # :nocov:
   end
-  # :nocov:
 
   def pagination_page activities
     index = activities.where("id > ?", id).count

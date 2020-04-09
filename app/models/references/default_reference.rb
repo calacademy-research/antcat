@@ -4,12 +4,14 @@ module References
   class DefaultReference
     DEFAULT_REFERENCE_SESSION_KEY = :default_reference_id
 
-    def self.get session
-      Reference.find_by(id: session[DEFAULT_REFERENCE_SESSION_KEY])
-    end
+    class << self
+      def get session
+        Reference.find_by(id: session[DEFAULT_REFERENCE_SESSION_KEY])
+      end
 
-    def self.set session, reference
-      session[DEFAULT_REFERENCE_SESSION_KEY] = reference.id
+      def set session, reference
+        session[DEFAULT_REFERENCE_SESSION_KEY] = reference.id
+      end
     end
   end
 end

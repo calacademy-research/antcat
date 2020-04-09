@@ -36,7 +36,7 @@ module References
 
       attr_reader :table_refs, :reference, :predicate
 
-      delegate :nestees, :citations, :id, to: :reference
+      delegate :nestees, :citations, :id, to: :reference, private: true
 
       def table_ref table, field, id
         TableRef.new(table, field, id)

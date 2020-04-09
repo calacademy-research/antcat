@@ -57,7 +57,7 @@ class RevisionPresenter
 
   private
 
-    delegate :selected, :diff_with, :most_recent, to: :comparer
+    delegate :selected, :diff_with, :most_recent, to: :comparer, private: true
 
     def html_split_diff
       return unless diff_with

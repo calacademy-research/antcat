@@ -4,7 +4,7 @@ class AuthorsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, only: [:destroy]
 
   def index
-    @authors = Author.sorted_by_name.paginate(page: params[:page], per_page: 60).preload(:names)
+    @authors = Author.order_by_name.paginate(page: params[:page], per_page: 60).preload(:names)
   end
 
   def show

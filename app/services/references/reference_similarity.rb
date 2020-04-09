@@ -30,7 +30,7 @@ module References
 
     private
 
-      delegate :type, :title, :year, :pagination, :series_volume_issue, to: :lhs
+      delegate :type, :title, :year, :pagination, :series_volume_issue, to: :lhs, private: true
 
       def similarity
         return 0.00 unless type == rhs.type

@@ -16,7 +16,7 @@ module Taxa
 
     private
 
-      delegate :id, to: :taxon
+      delegate :id, to: :taxon, private: true
 
       def any_table_refs?
         Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|

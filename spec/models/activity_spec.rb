@@ -15,11 +15,41 @@ describe Activity do
   end
 
   describe ".create_for_trackable" do
-    let(:trackable) { nil }
+    it "creates an activity" do
+      expect do
+        described_class.create_for_trackable(nil, :execute_script, user: nil)
+      end.to change { described_class.count }.by 1
+    end
 
-    it "creates activities" do
-      expect { described_class.create_for_trackable(trackable, :execute_script, user: nil) }.
-        to change { described_class.count }.by 1
+    it "assigns attributes for the activity" do
+      trackable = create :issue
+      action = :update
+      user = create :user
+      edit_summary = 'pizza'
+      parameters = { pizza: 'Hawaii' }
+
+      activity =
+        described_class.create_for_trackable(
+          trackable,
+          action,
+          user: user,
+          edit_summary: edit_summary,
+          parameters: parameters
+        )
+
+      expect(activity.trackable).to eq trackable
+      expect(activity.action).to eq action.to_s
+      expect(activity.user).to eq user
+      expect(activity.edit_summary).to eq edit_summary
+      expect(activity.parameters).to eq parameters
+    end
+  end
+
+  describe ".create_without_trackable" do
+    it "creates an activity" do
+      expect do
+        described_class.create_without_trackable(:execute_script, nil)
+      end.to change { described_class.count }.by 1
     end
   end
 

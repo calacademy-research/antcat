@@ -18,7 +18,7 @@ module Comments
 
     private
 
-      delegate :commentable, :body, to: :comment
+      delegate :commentable, to: :comment, private: true
 
       def notify_mentioned_users
         users_mentioned_in_comment.each do |mentioned_user|
@@ -27,7 +27,7 @@ module Comments
       end
 
       def users_mentioned_in_comment
-        Markdowns::MentionedUsers[body]
+        Markdowns::MentionedUsers[comment.body]
       end
 
       def notify_users_in_the_same_discussion

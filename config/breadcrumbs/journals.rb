@@ -6,7 +6,7 @@ crumb :journals do
 end
 
 crumb :journal do |journal|
-  link Italicize[journal.name], journal_path(journal)
+  link content_tag(:i, journal.name), journal_path(journal)
   parent :journals
 end
 

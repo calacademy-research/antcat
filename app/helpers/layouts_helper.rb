@@ -18,7 +18,6 @@ module LayoutsHelper
       string << " - "
     end
     string << "AntCat"
-    string << " (#{Rails.env})" unless Rails.env.production?
     string
   end
 end

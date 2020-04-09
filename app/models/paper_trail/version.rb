@@ -20,12 +20,7 @@ module PaperTrail
       search_type = search_type.presence || 'LIKE'
       raise unless search_type.in? ["LIKE", "REGEXP"]
 
-      q = if search_type == "LIKE"
-            "%#{search_query}%"
-          else
-            search_query
-          end
-
+      q = search_type == "LIKE" ? "%#{search_query}%" : search_query
       where(<<-SQL.squish, q: q)
         object #{search_type} :q OR object_changes #{search_type} :q
       SQL

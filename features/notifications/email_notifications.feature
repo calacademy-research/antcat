@@ -27,4 +27,4 @@ Feature: Email notifications
     And I should see "email notifications for the email address batiatus@antcat.org"
 
     When I press "Unsubscribe"
-    Then I should see "You have been unsubscribed from emails notifications"
+    Then I should see "You have been unsubscribed from email notifications"

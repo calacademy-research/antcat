@@ -13,7 +13,7 @@ class UnsubscribesController < ApplicationController
     user = find_user params[:token]
 
     if user.update(enable_email_notifications: false)
-      redirect_to root_path, notice: "You have been unsubscribed from emails notifications"
+      redirect_to root_path, notice: "You have been unsubscribed from email notifications"
     else
       render :unsubscribe, alert: "Something went wrong. Please email us."
     end
