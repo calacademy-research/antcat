@@ -7,7 +7,7 @@ class SiteNoticesController < ApplicationController
   before_action :mark_as_read, only: :show # NOTE: `before_action` to mark it as read for the current render.
 
   def index
-    @site_notices = SiteNotice.order_by_date.paginate(page: params[:page], per_page: 10)
+    @site_notices = SiteNotice.most_recent_first.paginate(page: params[:page], per_page: 10)
   end
 
   def show

@@ -11,13 +11,13 @@ describe Author do
   end
 
   describe "scopes" do
-    describe ".sorted_by_name" do
+    describe ".order_by_name" do
       let!(:ward) { create :author_name, name: 'Ward' }
       let!(:bolton) { create :author_name, name: 'Bolton' }
       let!(:fisher) { create :author_name, name: 'Fisher, B. L.' }
 
       it "sorts by first author name" do
-        expect(described_class.sorted_by_name).to eq [bolton.author, fisher.author, ward.author]
+        expect(described_class.order_by_name).to eq [bolton.author, fisher.author, ward.author]
       end
     end
   end

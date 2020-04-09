@@ -10,7 +10,7 @@ class CommentsController < ApplicationController
                 else
                   Comment.all
                 end
-    @comments = @comments.order_by_date.include_associations.paginate(page: params[:page])
+    @comments = @comments.most_recent_first.include_associations.paginate(page: params[:page])
   end
 
   def create

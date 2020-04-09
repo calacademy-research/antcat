@@ -20,6 +20,7 @@ class Notification < ApplicationRecord
   validates :attached, presence: true, on: :create
 
   scope :unseen, -> { where(seen: false) }
+  scope :most_recent_first, -> { order(id: :desc) }
 
   def unseen?
     !seen?

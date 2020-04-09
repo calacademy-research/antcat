@@ -26,7 +26,7 @@ class ActivitiesController < ApplicationController
   before_action :ensure_user_is_superadmin, only: :destroy
 
   def index
-    @activities = unpaginated_activities.by_ids_desc.includes(:user).paginate(page: params[:page])
+    @activities = unpaginated_activities.most_recent_first.includes(:user).paginate(page: params[:page])
   end
 
   def show

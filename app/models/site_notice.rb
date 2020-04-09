@@ -11,7 +11,7 @@ class SiteNotice < ApplicationRecord
   validates :message, presence: true
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }
 
-  scope :order_by_date, -> { order(created_at: :desc) }
+  scope :most_recent_first, -> { order(created_at: :desc) }
 
   acts_as_readable on: :created_at
   has_paper_trail

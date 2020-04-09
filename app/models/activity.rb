@@ -55,8 +55,7 @@ class Activity < ApplicationRecord
     end
     results
   end
-  scope :by_ids_desc, -> { order(id: :desc) }
-  scope :most_recent, ->(number = 5) { by_ids_desc.limit(number) }
+  scope :most_recent_first, -> { order(id: :desc) }
   scope :non_automated_edits, -> { where(automated_edit: false) }
   scope :unconfirmed, -> { joins(:user).merge(User.unconfirmed) }
 

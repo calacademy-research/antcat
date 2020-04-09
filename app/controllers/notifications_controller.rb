@@ -8,7 +8,7 @@ class NotificationsController < ApplicationController
     if current_user.unseen_notifications.any?
       flash.now[:notice] = 'Mark new notifications as seen.'
     end
-    @notifications = current_user.notifications.order(id: :desc).includes(:notifier, :attached).paginate(page: params[:page])
+    @notifications = current_user.notifications.most_recent_first.includes(:notifier, :attached).paginate(page: params[:page])
   end
 
   private
