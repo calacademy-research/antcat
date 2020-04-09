@@ -29,7 +29,7 @@ __END__
 title: Non-valid taxa with junior synonyms
 
 category: Catalog
-tags: []
+tags: [regression-test]
 
 issue_description: This taxon is not valid, but is has junior synonyms.
 
