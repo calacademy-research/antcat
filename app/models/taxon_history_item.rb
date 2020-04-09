@@ -5,9 +5,6 @@ class TaxonHistoryItem < ApplicationRecord
 
   # TODO: WIP, see https://github.com/calacademy-research/antcat/issues/779
   VIRTUAL_HISTORY_ITEM_CANDIDATES = [
-    # Being worked on.
-    VHIC_SUBSPECIES_LIST = ['taxt LIKE ?', "%Current subspecies%"], # See https://github.com/calacademy-research/antcat/issues/780
-
     # Good next candidates to work on.
     VHIC_FORM_DESCRIPTION = ["taxt REGEXP ?", "^{ref [0-9]+}: [0-9]+ \\("], # Good candidate because it often appears first in the list, and no tax tags.
     VHIC_SEE_ALSO =         ["taxt LIKE ?", "See also: {ref %"], # Good candiate because it ususally appears last in the list, and no tax tags.

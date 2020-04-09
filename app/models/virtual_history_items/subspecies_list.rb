@@ -10,14 +10,12 @@ module VirtualHistoryItems
     end
 
     def publicly_visible?
-      return @_publicly_visible if defined? @_publicly_visible
-      @_publicly_visible ||= !taxon.subspecies_list_in_history_items.exists?
+      true
     end
 
     def reason_hidden
       <<~STR.html_safe
-        hidden because this species has a subspecies list in a history item –
-        delete the plaintext history item to show this item to all visitors instead
+        This should not happen. Does any history items of this species start with "Current subspecies:"?
       STR
     end
 

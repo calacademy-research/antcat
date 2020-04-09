@@ -29,29 +29,6 @@ describe Exporters::Antweb::History::HistoryItems do
       specify { expect(described_class[taxon].html_safe?).to eq true }
     end
 
-    context 'when taxon has virtual history items' do
-      let(:taxon) { create :species }
-      let!(:subspecies) { create :subspecies, species: taxon }
-
-      specify do
-        virtual_item = "<div>Current subspecies: nominal plus #{antweb_taxon_link(subspecies)}.</div>"
-        expect(described_class[taxon]).to eq(header + '<div>' + virtual_item + '</div>')
-      end
-
-      specify { expect(described_class[taxon].html_safe?).to eq true }
-
-      context 'when virtual history item should be visible to editors only' do
-        before do
-          taxon.history_items.create!(taxt: 'Current subspecies')
-        end
-
-        it 'does not include the item' do
-          item = "<div>Current subspecies.</div>"
-          expect(described_class[taxon]).to eq(header + '<div>' + item + '</div>')
-        end
-      end
-    end
-
     context 'when taxon has history items and virtual history items' do
       let(:taxon) { create :species }
       let!(:subspecies) { create :subspecies, species: taxon }

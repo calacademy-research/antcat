@@ -13,7 +13,6 @@ module Taxa
       obsolete_combination_that_is_shady?
       synonyms_history_items_containing_taxon
       synonyms_history_items_containing_taxons_protonyms_taxa_except_self
-      subspecies_list_in_history_items
       combination_in_according_to_history_items
     ]
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
@@ -56,12 +55,6 @@ module Taxa
         return item if item
       end
       nil
-    end
-
-    # TODO: Remove once subspecies lists have been cleaned up.
-    # See https://github.com/calacademy-research/antcat/issues/780
-    def subspecies_list_in_history_items
-      history_items.where('taxt LIKE ?', "%Current subspecies%")
     end
 
     def combination_in_according_to_history_items
