@@ -37,6 +37,11 @@
   %strong Email:
   =link_to @user.email, "mailto:#{@user.email}"
 
+-if @user.author
+  %p
+    This user has an author page on antcat.org:
+    =link_to @user.author.first_author_name_name, @user.author
+
 .row.margin-top
   .large-12.columns
     %h5

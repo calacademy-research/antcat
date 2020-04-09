@@ -9,12 +9,19 @@
   %tbody
   -@users.each do |user|
     %tr{class: ('pale-alert-background' if (user.locked? || user.deleted? || user.hidden?))}
-      %td=user.decorate.user_page_link
+      %td
+        =user.decorate.user_page_link
+        %span.show-on-hover
+          Registered
+          =user.created_at.year
       %td
         =user.decorate.user_badge
         -if user_is_editor?
           -if user.superadmin?
             %span.high-priority-label.rounded-badge superadmin
+      %td
+        -if user.author
+          =link_to 'Author page', user.author, class: 'btn-normal btn-tiny'
       -if user_is_editor?
         %td
           -if user.locked?
@@ -23,7 +30,4 @@
             %span.warning-label.rounded-badge soft-deleted
           -if user.hidden?
             %span.warning-label.rounded-badge hidden
-        %td
-          Registered
-          =user.created_at.year
         %td=user.email

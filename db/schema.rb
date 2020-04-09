@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_04_133505) do
+ActiveRecord::Schema.define(version: 2020_04_09_201201) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -363,6 +363,8 @@ ActiveRecord::Schema.define(version: 2020_04_04_133505) do
     t.boolean "deleted", default: false, null: false
     t.boolean "hidden", default: false, null: false
     t.boolean "enable_email_notifications", default: true
+    t.integer "author_id"
+    t.index ["author_id"], name: "index_users_on_author_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["invitation_token"], name: "index_users_on_invitation_token"
     t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"
@@ -419,4 +421,5 @@ ActiveRecord::Schema.define(version: 2020_04_04_133505) do
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
   add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"
+  add_foreign_key "users", "authors", name: "fk_users__author_id__authors__id"
 end
