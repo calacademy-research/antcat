@@ -2,7 +2,7 @@
 
 crumb :reference_sections do |taxon|
   link "Reference Sections"
-  parent taxon
+  parent taxon || :catalog
 end
 
 crumb :reference_section do |reference_section|
