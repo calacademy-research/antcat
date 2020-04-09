@@ -15,7 +15,7 @@ module Taxa
 
       private
 
-        delegate :history_items, :errors, to: :taxon
+        delegate :history_items, :errors, to: :taxon, private: true
 
         def reorder_history_items reordered_ids
           return false unless reordered_ids_valid? reordered_ids

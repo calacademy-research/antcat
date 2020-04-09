@@ -29,7 +29,7 @@ module Taxa
     private
 
       delegate :status, :incertae_sedis_in, :homonym_replaced_by, :unresolved_homonym?, :ichnotaxon?,
-        :current_valid_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon
+        :current_valid_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon, private: true
 
       def main_status
         case status

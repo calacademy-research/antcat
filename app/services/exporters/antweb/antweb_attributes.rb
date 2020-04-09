@@ -24,7 +24,7 @@ module Exporters
 
       private
 
-        delegate :name, :subfamily, :tribe, :genus, :subgenus, :species, to: :taxon
+        delegate :name, :subfamily, :tribe, :genus, :subgenus, :species, to: :taxon, private: true
 
         def family_attributes
           {

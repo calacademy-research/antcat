@@ -29,5 +29,5 @@ class TableRefDecorator
 
   private
 
-    delegate :table, :id, :owner, to: :table_ref
+    delegate :table, :id, :owner, to: :table_ref, private: true
 end

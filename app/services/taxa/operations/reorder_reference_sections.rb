@@ -15,7 +15,7 @@ module Taxa
 
       private
 
-        delegate :reference_sections, :errors, to: :taxon
+        delegate :reference_sections, :errors, to: :taxon, private: true
 
         def reorder_reference_sections reordered_ids
           return false unless reordered_ids_valid? reordered_ids

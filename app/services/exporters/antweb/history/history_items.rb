@@ -17,7 +17,7 @@ module Exporters
 
         private
 
-          delegate :history_items, :virtual_history_items, to: :taxon
+          delegate :history_items, :virtual_history_items, to: :taxon, private: true
 
           def history_content
             content_tag :div do

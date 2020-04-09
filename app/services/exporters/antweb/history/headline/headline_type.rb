@@ -15,7 +15,7 @@ module Exporters
 
           private
 
-            delegate :type_taxt, :type_taxon, :protonym, to: :taxon
+            delegate :type_taxt, :type_taxon, :protonym, to: :taxon, private: true
 
             def headline_type
               string = ''.html_safe

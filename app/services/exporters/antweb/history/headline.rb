@@ -26,7 +26,7 @@ module Exporters
 
         private
 
-          delegate :headline_notes_taxt, to: :taxon
+          delegate :headline_notes_taxt, to: :taxon, private: true
 
           def headline_protonym
             Exporters::Antweb::History::Headline::HeadlineProtonym[taxon.protonym]
