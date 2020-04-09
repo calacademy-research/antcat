@@ -39,12 +39,3 @@ Feature: Add reference
     And I fill in "reference_nesting_reference_id" with the ID for "Annals of Ants"
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Pp. 32-33 in: Ward, P.S. 2010. Annals of Ants. Psyche 1:1"
-
-  Scenario: Adding an `Unknownference`
-    When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."
-    And I fill in "reference_title" with "A reference title"
-    And I fill in "reference_citation_year" with "1981"
-    And I select the reference tab "#unknown-tab"
-    And I fill in "reference_citation" with "In Muller, Brown 1928. Ants. p. 23."
-    And I press "Save"
-    Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. In Muller, Brown 1928. Ants. p. 23."

@@ -53,19 +53,6 @@ describe References::NewFromCopy do
       end
     end
 
-    context "when reference is an `UnknownReference`" do
-      let!(:reference) { create :unknown_reference }
-
-      specify do
-        copy = described_class[reference]
-
-        expect(copy).to be_a UnknownReference
-
-        expect(copy.citation).to eq reference.citation
-        expect(copy.citation).to_not eq nil
-      end
-    end
-
     context "when reference is a `NestedReference`" do
       let!(:reference) { create :nested_reference }
 

@@ -138,12 +138,12 @@ describe Reference do
 
     describe "formatting" do
       it "consists of one author_name if that's all there is" do
-        reference = build_stubbed :any_reference, author_names: [fisher]
+        reference = create :any_reference, author_names: [fisher]
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
 
       it "separates multiple author_names with semicolons" do
-        reference = build_stubbed :any_reference, author_names: [fisher, ward]
+        reference = create :any_reference, author_names: [fisher, ward]
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
     end

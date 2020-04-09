@@ -63,12 +63,12 @@ describe References::Search::FulltextWithExtractedKeywords do
       end
     end
 
-    describe "filtering unknown reference types" do
-      it "returns only references of type unknown" do
+    describe "filtering nested reference types" do
+      it "returns only references of type nested" do
         expect(References::Search::Fulltext).to receive(:new).
-          with(hash_including(keywords: 'Monroe', reference_type: :unknown)).
+          with(hash_including(keywords: 'Monroe', reference_type: :nested)).
           and_call_original
-        described_class['Monroe type:unknown']
+        described_class['Monroe type:nested']
       end
     end
   end

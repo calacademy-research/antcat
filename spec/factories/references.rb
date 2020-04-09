@@ -41,7 +41,9 @@ FactoryBot.define do
       end
     end
 
-    factory :article_reference, class: 'ArticleReference' do
+    # TODO: Check if we want to re-use journals, now that this is the new `:any_reference`.
+    # TODO: Revisit non-`any_reference`s, since all reference types now require `pagination`s.
+    factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do
       journal
       sequence(:series_volume_issue) { |n| n }
       sequence(:pagination) { |n| n }
@@ -50,10 +52,6 @@ FactoryBot.define do
     factory :book_reference, class: 'BookReference' do
       publisher
       sequence(:pagination) { |n| "#{n} pp." }
-    end
-
-    factory :unknown_reference, class: 'UnknownReference', aliases: [:any_reference] do
-      sequence(:citation) { |n| "New York #{n}" }
     end
 
     factory :nested_reference, class: 'NestedReference' do

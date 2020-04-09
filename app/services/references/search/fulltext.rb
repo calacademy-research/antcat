@@ -61,9 +61,9 @@ module References
               with(:doi).equal_to doi
             end
 
+            # TODO: Probably support `:book` and `:article`.
             case reference_type
-            when :unknown   then with    :type, 'UnknownReference'
-            when :nested    then with    :type, 'NestedReference'
+            when :nested then with :type, 'NestedReference'
             end
 
             paginate page: page, per_page: per_page

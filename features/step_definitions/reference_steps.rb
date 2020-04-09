@@ -30,10 +30,6 @@ Given("there is a book reference") do
   create :book_reference
 end
 
-Given("there is an unknown reference") do
-  create :unknown_reference
-end
-
 Given("(this reference exists)/(these references exist)") do |table|
   table.hashes.each do |hsh|
     ReferenceStepsHelpers.find_or_create_author_names!(hsh)

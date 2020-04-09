@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReferencesController < ApplicationController
-  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference, UnknownReference]
+  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference]
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
@@ -83,7 +83,6 @@ class ReferencesController < ApplicationController
         :author_names_string,
         :author_names_suffix,
         :bolton_key,
-        :citation,
         :citation_year,
         :date,
         :doi,

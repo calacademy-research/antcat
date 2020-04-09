@@ -4,7 +4,7 @@ class Reference < ApplicationRecord
   include WorkflowActiverecord
   include Trackable
 
-  CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference UnknownReference]
+  CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference]
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
     plain_text_cache
     expandable_reference_cache
@@ -46,7 +46,7 @@ class Reference < ApplicationRecord
   has_paper_trail
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title,
-    :citation, :date, :citation_year, :series_volume_issue, :pagination,
+    :date, :citation_year, :series_volume_issue, :pagination,
     :doi, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
@@ -60,7 +60,6 @@ class Reference < ApplicationRecord
     text(:journal_name) { journal.name if respond_to?(:journal) }
     text(:publisher_name) { publisher.name if respond_to?(:publisher) }
     text(:year_as_string) { year.to_s }
-    text(:citation)
     text(:public_notes)
     text(:editor_notes)
     text(:taxonomic_notes)

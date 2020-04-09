@@ -68,23 +68,6 @@ describe References::Formatted::Expanded do
       end
     end
 
-    context 'when reference is a `UnknownReference`' do
-      let(:author_name) { create :author_name, name: "Forel, A." }
-      let(:reference) do
-        create :unknown_reference, author_names: [author_name], citation_year: "1874",
-          title: "Les fourmis de la Suisse.", citation: '*Ants* <i>and such</i>'
-      end
-
-      specify { expect(formatter.call.html_safe?).to eq true }
-
-      specify do
-        expect(formatter.call).to eq <<~HTML.squish
-          #{author_link(author_name)} 1874. <a href="/references/#{reference.id}">Les fourmis de la Suisse.</a>
-          <i>Ants</i> <i>and such</i>.
-        HTML
-      end
-    end
-
     context 'when reference is online early' do
       let(:reference) { create :any_reference, online_early: true }
 

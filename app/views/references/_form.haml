@@ -69,8 +69,6 @@
         %label{for: "book-tab"} Book
         %input#nested-tab.tab-input{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
         %label{for: "nested-tab"} Nested
-        %input#unknown-tab.tab-input{checked: ("checked" if reference.is_a?(UnknownReference)), name: "reference_type", type: "radio", value: 'UnknownReference'}
-        %label{for: "unknown-tab"} Unknown
         .tab.article-tab-content
           .row
             .medium-3.columns
@@ -100,12 +98,6 @@
                 Nesting reference ID
                 =db_tooltip_icon "nesting_reference_id", scope: :references
               =f.text_field :nesting_reference_id
-
-        .tab.unknown-tab-content
-          .row
-            .medium-12.columns
-              =f.label :reference_citation, 'Citation'
-              =f.text_area :citation, rows: 2
 
   .row
     .medium-4.columns
