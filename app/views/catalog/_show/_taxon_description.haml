@@ -56,20 +56,11 @@
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
-    -# TODO: This can be replaced by `taxon.all_virtual_history_items.each ...` once
-    -# `DatabaseScripts::SubspeciesListInHistoryItem` has been cleared.
     -taxon.all_virtual_history_items.each do |history_item|
-      -if history_item.publicly_visible?
-        %li{class: ('virtual-taxt-item' if current_user)}
-          =history_item.render
-          =info_tooltip_icon 'This is a virtual history item.'
-      -else
+      %li{class: ('virtual-taxt-item' if current_user)}
+        =history_item.render
         -if current_user
-          %li{class: ('virtual-taxt-item' if current_user)}
-            =history_item.render
-            =info_tooltip_icon 'This is a virtual history item.'
-            %small.bold-warning=history_item.reason_hidden
-            =logged_in_only_tooltip_icon
+          =info_tooltip_icon 'This is a virtual history item.'
 
 -if taxon.junior_synonyms.exists?
   %h6 Junior synonyms
@@ -148,32 +139,13 @@
                   =obsolete_combination.protonym.decorate.link_to_protonym
                 =logged_in_only_tooltip_icon
 
--# TODO: See https://github.com/calacademy-research/antcat/issues/780
--if current_user && taxon.is_a?(Species) && taxon.subspecies_list_in_history_items.exists?
-  -issues = Taxa::SubspeciesHistoryItemIssues[taxon.subspecies_list_in_history_items.first]
-  .callout.no-border-callout{class: issues ? 'alert' : 'logged-in-only-background' }
-    %h6
-      This species has a subspecies list in a history item
-      =logged_in_only_tooltip_icon
-    %p.small-text
-      -if issues
-        %ul.small-text
-          -issues.each do |issue|
-            %li=issue.html_safe
-      -else
-        =antcat_icon 'check'
-        The subspecies list in the history items can be dynamically generated from the database. It can be ignored.
-    %p.small-text
-      See
-      =link_to 'this database script (slow)', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)
-      for more subspecies lists in history items.
-
--# TODO: See https://github.com/calacademy-research/antcat/issues/780
+-# TODO: Figure out if/how to present subspecies, now
+-# that https://github.com/calacademy-research/antcat/issues/780 has been fixed.
 -if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
   .callout.no-border-callout.logged-in-only-background
     %h6
       Subspecies
-      =logged_in_only_tooltip_icon "This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but we need to figure out how to present them, and a lot of data in history items is not in sync with subspecies records in the taxa table. See #{link_to 'this database script (slow).', database_script_path(DatabaseScripts::SubspeciesListInHistoryItem.new)}"
+      =logged_in_only_tooltip_icon "This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but we need to figure out how to present them."
 
     -if taxon.valid_status? && taxon.subspecies.valid.exists?
       %h6 Current subspecies (nominal plus)
