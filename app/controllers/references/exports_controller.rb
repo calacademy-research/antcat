@@ -3,11 +3,9 @@
 module References
   class ExportsController < ApplicationController
     def endnote
-      id = params[:id]
-
       references =
-        if id
-          Reference.where(id: id)
+        if params[:id]
+          Reference.where(id: params[:id])
         else
           fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
           References::Search::Fulltext[**fulltext_params, per_page: 999_999]
@@ -17,8 +15,8 @@ module References
     end
 
     def wikipedia
-      @reference = find_reference
-      render plain: Wikipedia::ReferenceExporter[@reference]
+      reference = find_reference
+      render plain: Wikipedia::ReferenceExporter[reference]
     end
 
     private

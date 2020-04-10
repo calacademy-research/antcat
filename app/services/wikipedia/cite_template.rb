@@ -23,7 +23,7 @@ module Wikipedia
 
       def taxon_name
         name = taxon.name_cache
-        name = "''#{name}''" if taxon.class.in? [Genus, Species, Subspecies]
+        name = "''#{name}''" if Rank.italic?(taxon.rank)
 
         "#{dagger if taxon.fossil?}#{name}"
       end
@@ -33,11 +33,11 @@ module Wikipedia
       end
 
       def accessdate
-        Time.zone.now.strftime "%-d %B %Y"
+        Time.current.strftime("%-d %B %Y")
       end
 
       def year
-        Time.zone.now.year
+        Time.current.year
       end
   end
 end

@@ -42,8 +42,6 @@ module References
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::NestedReference
             "#{reference.pagination} #{sanitize References::Formatted::Expanded[reference.nesting_reference]}"
-          else
-            raise
           end
         end
     end
