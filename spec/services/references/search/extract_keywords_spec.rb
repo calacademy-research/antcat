@@ -4,107 +4,123 @@ require 'rails_helper'
 
 describe References::Search::ExtractKeywords do
   describe "#call" do
-    it "doesn't modify the orginal search term" do
-      q = "Bolton 2003"
-      _ = described_class[q]
-      expect(q).to eq q
+    it "doesn't extract anything if there is nothing to extact" do
+      expect(described_class["Bolton 2003"]).to eq(
+        keywords: "Bolton 2003"
+      )
     end
 
-    it "doesn't change the keywords unless keyword params are present" do
-      q = "Bolton 2003"
-      keyword_params = described_class[q]
-      expect(keyword_params[:keywords]).to eq q
-    end
-
-    it "modifies the keywords string after extraction" do
-      keyword_params = described_class["Bolton year:2003"]
-      expect(keyword_params[:keywords]).to eq "Bolton"
-    end
-
-    describe "year keywords" do
-      it "extracts the year" do
-        keyword_params = described_class["Bolton year:2003"]
-        expect(keyword_params[:year]).to eq "2003"
+    describe "keyword: `year`" do
+      it "extracts single years" do
+        expect(described_class["Bolton year:2003"]).to eq(
+          year: "2003",
+          keywords: "Bolton"
+        )
       end
 
-      it "extracts ranges of years" do
-        keyword_params = described_class["Bolton year:2003-2015"]
-        expect(keyword_params[:start_year]).to eq "2003"
-        expect(keyword_params[:end_year]).to eq "2015"
+      it "extracts year ranges" do
+        expect(described_class["Bolton year:2003-2015"]).to eq(
+          start_year: "2003",
+          end_year: "2015",
+          keywords: "Bolton"
+        )
       end
     end
 
-    it "extracts reference types" do
-      keyword_params = described_class["Bolton type:nested year:2003"]
-      expect(keyword_params[:reference_type]).to eq :nested
-    end
-
-    it "extracts authors" do
-      keyword_params = described_class["Ants Book author:Bolton"]
-      expect(keyword_params[:author]).to eq "Bolton"
-    end
-
-    describe "author queries containing spaces" do
-      it "handles double quotes" do
-        keyword_params = described_class['Ants Book author:"Barry Bolton"']
-        expect(keyword_params[:author]).to eq "Barry Bolton"
-      end
-
-      it "handles single quotes" do
-        keyword_params = described_class["Ants Book author:'Barry Bolton'"]
-        expect(keyword_params[:author]).to eq "Barry Bolton"
+    describe 'keyword: [reference] `type`' do
+      specify do
+        expect(described_class["Bolton type:nested"]).to eq(
+          reference_type: :nested,
+          keywords: "Bolton"
+        )
       end
     end
 
-    describe "author queries not wrapped in quotes" do
-      it "handles hyphens" do
-        keyword_params = described_class['author:Barry-Bolton']
-        expect(keyword_params[:author]).to eq "Barry-Bolton"
+    describe 'keyword: `author`' do
+      specify do
+        expect(described_class["Ants Book author:Bolton"]).to eq(
+          author: "Bolton",
+          keywords: "Ants Book"
+        )
       end
 
-      it "handles diacritics" do
-        keyword_params = described_class["author:Hölldobler"]
-        expect(keyword_params[:author]).to eq "Hölldobler"
+      describe "`author` keywords containing spaces" do
+        it "handles double quotes" do
+          expect(described_class['Ants Book author:"Barry Bolton"']).to eq(
+            author: "Barry Bolton",
+            keywords: "Ants Book"
+          )
+        end
+
+        it "handles single quotes" do
+          expect(described_class["Ants Book author:'Barry Bolton'"]).to eq(
+            author: "Barry Bolton",
+            keywords: "Ants Book"
+          )
+        end
       end
 
-      it "doesn't break if more search term are added after the author keyword" do
-        q = "author:Hölldobler random string"
-        keyword_params = described_class[q]
-        expect(keyword_params[:author]).to eq "Hölldobler"
-        expect(keyword_params[:keywords]).to eq "random string"
+      describe "`author` keywords not wrapped in quotes" do
+        it "handles hyphens" do
+          expect(described_class['author:Barry-Bolton']).to eq(
+            author: "Barry-Bolton",
+            keywords: ""
+          )
+        end
+
+        it "handles diacritics" do
+          expect(described_class['author:Hölldobler']).to eq(
+            author: "Hölldobler",
+            keywords: ""
+          )
+        end
+
+        it "doesn't break if more search term are added after the `author` keyword" do
+          expect(described_class["author:Hölldobler random string"]).to eq(
+            author: "Hölldobler",
+            keywords: "random string"
+          )
+        end
       end
     end
 
-    it "handles multiple keyword params" do
-      q = 'Ants Book author:"Barry Bolton" year:2003 type:nested'
-      keyword_params = described_class[q]
-      expect(keyword_params[:author]).to eq "Barry Bolton"
-      expect(keyword_params[:year]).to eq "2003"
-      expect(keyword_params[:reference_type]).to eq :nested
-      expect(keyword_params[:keywords]).to eq "Ants Book"
+    describe 'keyword: `doi`' do
+      specify do
+        expect(described_class["Ants Book doi:10.11865/zs.201806"]).to eq(
+          doi: "10.11865/zs.201806",
+          keywords: "Ants Book"
+        )
+      end
     end
 
-    it "handles keyword params without a serach term" do
-      keyword_params = described_class['year:2003']
-      expect(keyword_params[:year]).to eq "2003"
-      expect(keyword_params[:keywords]).to eq ""
+    it "handles multiple keywords" do
+      expect(described_class['Ants Book author:"Barry Bolton" year:2003 type:nested']).to eq(
+        author: "Barry Bolton",
+        year: "2003",
+        reference_type: :nested,
+        keywords: "Ants Book"
+      )
+    end
+
+    it "handles keywords without a search term" do
+      expect(described_class['year:2003']).to eq(
+        year: "2003",
+        keywords: ""
+      )
     end
 
     it "ignores a single space after the colon after a keyword" do
-      keyword_params = described_class['author: Wilson']
-      expect(keyword_params[:author]).to eq "Wilson"
-      expect(keyword_params[:keywords]).to eq ""
+      expect(described_class['author: Wilson']).to eq(
+        author: "Wilson",
+        keywords: ""
+      )
     end
 
-    it "ignores capitalization of the keyword" do
-      keyword_params = described_class['Author:Wilson']
-      expect(keyword_params[:author]).to eq "Wilson"
-      expect(keyword_params[:keywords]).to eq ""
-    end
-
-    it "extracts DOIs" do
-      keyword_params = described_class["Ants Book doi:10.11865/zs.201806"]
-      expect(keyword_params[:doi]).to eq "10.11865/zs.201806"
+    it "ignores capitalization of keywords" do
+      expect(described_class['Author:Wilson']).to eq(
+        author: "Wilson",
+        keywords: ""
+      )
     end
   end
 end
