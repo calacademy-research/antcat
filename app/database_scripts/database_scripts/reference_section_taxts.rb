@@ -56,7 +56,7 @@ module DatabaseScripts
         end <<
         as_table do |t|
           t.caption "List #4 - Non-blank title_taxt (all title_taxt)"
-          t.header 'ID', 'Taxon', 'Taxon rank', 'title_taxt'
+          t.header(*table_columns)
 
           t.rows(non_blank_title_taxt) do |reference_section|
             [

@@ -2,7 +2,7 @@
 
 crumb :taxon_history_items do |taxon|
   link "History Items"
-  parent taxon
+  parent taxon || :catalog
 end
 
 crumb :taxon_history_item do |taxon_history_item|

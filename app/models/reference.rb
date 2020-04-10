@@ -57,8 +57,9 @@ class Reference < ApplicationRecord
     text(:author_names_string)
     text(:citation_year)
     text(:title)
-    text(:journal_name) { journal.name if respond_to?(:journal) }
-    text(:publisher_name) { publisher.name if respond_to?(:publisher) }
+    # NOTE: Safe navigation for `.name` is for journals/publishers created at the same time as the reference.
+    text(:journal_name) { journal&.name if respond_to?(:journal) }
+    text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
     text(:year_as_string) { year.to_s }
     text(:citation)
     text(:public_notes)
