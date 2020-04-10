@@ -14,4 +14,5 @@ RAILS_ENV=development ./script/db_dump/import data/db_dumps/antcat.2019-11-22T10
 RAILS_ENV=development ./script/db_dump/import_latest
 RAILS_ENV=development ./script/db_dump/reset_db
 RAILS_ENV=development ./script/db_dump/import_and_export_latest_for_antweb
+RAILS_ENV=development ./script/db_dump/interactive_import # Pick file from local db_dumps subdir
 ```
