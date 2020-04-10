@@ -206,4 +206,21 @@ describe References::Search::Fulltext, :search do
       end
     end
   end
+
+  describe 'extracted keywords integration' do
+    context 'when searching for multiple authors' do
+      let!(:bolton) { create :author_name, name: "Bolton Barry" }
+      let!(:fisher) { create :author_name, name: "Brian Fisher" }
+      let!(:reference) { create :any_reference, author_names: [bolton, fisher] }
+
+      before do
+        Sunspot.commit
+      end
+
+      it "returns references by the authors" do
+        fulltext_params = References::Search::ExtractKeywords['author:"Bolton Fisher"']
+        expect(described_class[**fulltext_params]).to eq [reference]
+      end
+    end
+  end
 end

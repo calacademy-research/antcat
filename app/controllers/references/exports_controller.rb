@@ -9,7 +9,8 @@ module References
         if id
           Reference.where(id: id)
         else
-          References::Search::FulltextWithExtractedKeywords[params[:reference_q], per_page: 999_999]
+          fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
+          References::Search::Fulltext[**fulltext_params, per_page: 999_999]
         end
 
       render plain: Exporters::Endnote::Formatter[references]
