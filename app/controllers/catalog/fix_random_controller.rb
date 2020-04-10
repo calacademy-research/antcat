@@ -8,12 +8,6 @@ module Catalog
       DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
       DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
-      DatabaseScripts::SpeciesDisagreeingWithGenusRegardingSubfamily,
-      DatabaseScripts::SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
-      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingGenus,
-      DatabaseScripts::SubspeciesDisagreeingWithSpeciesRegardingSubfamily,
-      DatabaseScripts::SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet,
-      DatabaseScripts::SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet,
       DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
       DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
     ]

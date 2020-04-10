@@ -8,7 +8,7 @@ module DatabaseScripts
         all_protonyms_have_taxa_with_compatible_ranks,
         name_count_checks,
         name_caches_sync
-      ]
+      ].concat disagreeing_name_parts
     end
 
     def render
@@ -61,6 +61,44 @@ module DatabaseScripts
           title: 'All taxa.name_cache fields are in sync with its names.name fields',
           ok?: !Taxon.joins(:name).where("names.name != taxa.name_cache").exists?
         }
+      end
+
+      def disagreeing_name_parts
+        [
+          {
+            title: 'Now deleted script: SpeciesDisagreeingWithGenusRegardingSubfamily ',
+            ok?: !Species.joins(:genus).where("genera_taxa.subfamily_id != taxa.subfamily_id").exists?
+          },
+          {
+            title: 'Now deleted script: SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet ',
+            ok?: !Species.joins(:name).joins(:genus).
+                    joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
+                    where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name").exists?
+          },
+          {
+            title: 'Now deleted script: SubspeciesDisagreeingWithSpeciesRegardingGenus ',
+            ok?: !Subspecies.joins(:species).where("species_taxa.genus_id != taxa.genus_id").exists?
+          },
+          {
+            title: 'Now deleted script: SubspeciesDisagreeingWithSpeciesRegardingSubfamily ',
+            ok?: !Subspecies.joins(:species).where("species_taxa.subfamily_id != taxa.subfamily_id").exists?
+          },
+          {
+            title: 'Now deleted script: SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet ',
+            ok?: !Subspecies.joins(:name).joins(:genus).
+                    joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
+                    where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name").exists?
+          },
+          {
+            title: 'Now deleted script: SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet ',
+            ok?: !Subspecies.joins(:name).joins(:species).
+                    joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
+                    where(<<~SQL).exists?
+                      SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
+                      SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
+                    SQL
+          }
+        ]
       end
   end
 end
