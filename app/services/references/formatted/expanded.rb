@@ -17,7 +17,7 @@ module References
         string << ' '
         string << sanitize(reference.citation_year) << '. '
         string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
-        string << format_italics(AddPeriodIfNecessary[sanitize(format_citation)])
+        string << AddPeriodIfNecessary[sanitize(format_citation)]
         string << ' [online early]' if reference.online_early?
 
         string
@@ -45,10 +45,6 @@ module References
           else
             raise
           end
-        end
-
-        def format_italics string
-          References::FormatItalics[string]
         end
     end
   end
