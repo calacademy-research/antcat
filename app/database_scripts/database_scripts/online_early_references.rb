@@ -34,4 +34,3 @@ description: >
 
 related_scripts:
   - OnlineEarlyReferences
-  - UnknownReferences

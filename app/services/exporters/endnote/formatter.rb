@@ -20,7 +20,6 @@ module Exporters
           when ArticleReference then ArticleFormatter
           when BookReference    then BookFormatter
           when NestedReference  then NestedFormatter
-          when UnknownReference then UnknownFormatter
           else raise "reference type not supported"
           end
         end
@@ -92,20 +91,6 @@ module Exporters
           add 'C', publisher.place
           add 'I', publisher.name
           add 'P', pagination
-        end
-    end
-
-    class UnknownFormatter < BaseFormatter
-      private
-
-        delegate :citation, to: :reference
-
-        def kind
-          'Generic'
-        end
-
-        def add_contents
-          add '1', citation
         end
     end
 

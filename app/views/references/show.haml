@@ -51,10 +51,6 @@
         %tr
           %th Title
           %td=decorated.format_title
-        -if @reference.is_a? UnknownReference
-          %tr
-            %th Citation
-            %td=@reference.citation
         %tr
           %th Pagination
           %td=or_dash @reference.pagination

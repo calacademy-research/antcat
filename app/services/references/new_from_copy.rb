@@ -23,7 +23,6 @@ module References
         when ::ArticleReference then [:series_volume_issue, :journal_id]
         when ::BookReference    then [:publisher_id]
         when ::NestedReference  then [:nesting_reference_id]
-        when ::UnknownReference then [:citation]
         else                         []
         end
       end

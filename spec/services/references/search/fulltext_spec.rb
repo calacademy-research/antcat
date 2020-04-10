@@ -63,7 +63,6 @@ describe References::Search::Fulltext, :search do
       end
 
       describe 'keyword: `reference_type`' do
-        let!(:unknown) { create :unknown_reference }
         let!(:article) { create :article_reference }
         let!(:nested) { create :nested_reference, nesting_reference: article }
 
@@ -72,8 +71,7 @@ describe References::Search::Fulltext, :search do
         end
 
         specify do
-          expect(described_class[]).to match_array [unknown, nested, article]
-          expect(described_class[reference_type: :unknown]).to eq [unknown]
+          expect(described_class[]).to match_array [nested, article]
           expect(described_class[reference_type: :nested]).to eq [nested]
         end
       end
@@ -150,19 +148,6 @@ describe References::Search::Fulltext, :search do
         end
 
         it 'searches in `publishers.name`' do
-          expect(described_class[keywords: 'Abc']).to eq [reference]
-        end
-      end
-
-      describe 'citations (`UnknownReference`s)' do
-        let!(:reference) { create :unknown_reference, citation: 'Abc' }
-
-        before do
-          create :unknown_reference # Not matching.
-          Sunspot.commit
-        end
-
-        it 'searches in `citations`' do
           expect(described_class[keywords: 'Abc']).to eq [reference]
         end
       end

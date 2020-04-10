@@ -113,22 +113,6 @@ describe Exporters::Endnote::Formatter do
       expect { described_class[['']] }.to raise_error("reference type not supported")
     end
 
-    it "formats an `UnknownReference` correctly" do
-      reference = create :unknown_reference,
-        author_names: [create(:author_name, name: 'MacKay, W.')],
-        citation_year: '1933',
-        title: 'Another title',
-        citation: 'Dresden'
-      expect(described_class[[reference]]).to eq %(%0 Generic
-%A MacKay, W.
-%D 1933
-%T Another title
-%1 Dresden
-%~ AntCat
-
-)
-    end
-
     it "doesn't output `NestedReference`s" do
       reference = create :nested_reference
       expect(described_class[[reference]]).to eq "\n"

@@ -43,11 +43,11 @@ describe Markdowns::ParseAntcatHooks do
 
     describe "ref tags (references)" do
       context 'when reference has no expandable_reference_cache' do
-        let(:reference) { create :any_reference, citation: 'Latreille, 1809 <script>' }
+        let(:reference) { create :article_reference, title: 'Pizza' }
 
         it 'generates it' do
           expect(reference.expandable_reference_cache).to eq nil
-          expect(described_class["{ref #{reference.id}}"]).to include 'Latreille'
+          expect(described_class["{ref #{reference.id}}"]).to include 'Pizza'
         end
       end
 
