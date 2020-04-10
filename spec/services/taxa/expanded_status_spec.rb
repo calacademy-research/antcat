@@ -26,11 +26,11 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'homonym'" do
-        let!(:homonym_replaced_by) { build_stubbed :family }
-        let!(:taxon) { build_stubbed :family, :homonym, homonym_replaced_by: homonym_replaced_by }
+        let!(:taxon) { build_stubbed :family, :homonym }
 
         specify do
-          expect(described_class[taxon]).to eq "homonym replaced by #{taxon_link_with_author_citation(homonym_replaced_by)}"
+          expect(described_class[taxon]).
+            to eq "homonym replaced by #{taxon_link_with_author_citation(taxon.homonym_replaced_by)}"
         end
       end
 

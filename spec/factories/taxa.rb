@@ -87,6 +87,7 @@ FactoryBot.define do
 
     trait :homonym do
       status { Status::HOMONYM }
+      homonym_replaced_by { Family.first || FactoryBot.create(:family) }
     end
 
     trait :obsolete_combination do

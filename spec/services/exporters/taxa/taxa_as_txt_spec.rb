@@ -28,7 +28,7 @@ describe Exporters::Taxa::TaxaAsTxt do
     end
 
     context 'when taxon is a homonym' do
-      let(:taxon) { create :genus, :homonym, homonym_replaced_by: create(:genus) }
+      let(:taxon) { create :genus, :homonym }
 
       specify do
         expect(described_class[[taxon]]).
