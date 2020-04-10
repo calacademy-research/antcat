@@ -30,7 +30,7 @@ describe References::Search::ExtractKeywords do
     describe 'keyword: [reference] `type`' do
       specify do
         expect(described_class["Bolton type:nested"]).to eq(
-          reference_type: :nested,
+          reference_type: 'nested',
           freetext: "Bolton"
         )
       end
@@ -97,7 +97,7 @@ describe References::Search::ExtractKeywords do
       expect(described_class['Ants Book author:"Barry Bolton" year:2003 type:nested']).to eq(
         author: "Barry Bolton",
         year: "2003",
-        reference_type: :nested,
+        reference_type: 'nested',
         freetext: "Ants Book"
       )
     end

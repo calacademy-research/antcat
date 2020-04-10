@@ -4,13 +4,11 @@ module References
   class WhatLinksHere
     include Service
 
-    def initialize reference, predicate: false
-      @reference = reference
-      @predicate = predicate
-      @table_refs = []
-    end
+    attr_private_initialize :reference, [predicate: false]
 
     def call
+      table_refs = []
+
       Taxt::TAXTABLES.each do |(model, _table, field)|
         model.where("#{field} REGEXP ?", Taxt.ref_tag_regex(reference)).pluck(:id).each do |id|
           table_refs << table_ref(model.table_name, field.to_sym, id)
@@ -34,7 +32,7 @@ module References
 
     private
 
-      attr_reader :table_refs, :reference, :predicate
+      attr_reader :reference, :predicate
 
       delegate :nestees, :citations, :id, to: :reference, private: true
 

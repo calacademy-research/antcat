@@ -72,7 +72,7 @@ describe References::Search::Fulltext, :search do
 
         specify do
           expect(described_class[]).to match_array [nested, article]
-          expect(described_class[reference_type: :nested]).to eq [nested]
+          expect(described_class[reference_type: 'nested']).to eq [nested]
         end
       end
 

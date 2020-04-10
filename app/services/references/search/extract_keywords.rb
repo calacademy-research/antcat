@@ -41,9 +41,6 @@ module References
             search_query.gsub!(match.to_s, "") # Remove matched and continue matching.
           end
 
-          if keywords[:reference_type].present?
-            keywords[:reference_type] = keywords[:reference_type].to_sym
-          end
           keywords[:freetext] = search_query.squish # Remove redundant spaces (artifacts from `.gsub!`).
           keywords
         end

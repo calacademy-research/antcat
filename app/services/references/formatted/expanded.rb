@@ -41,7 +41,7 @@ module References
           when ::BookReference
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::NestedReference
-            "#{reference.pagination} #{sanitize References::Formatted::Expanded[reference.nesting_reference]}"
+            "#{reference.pagination} #{References::Formatted::Expanded[reference.nesting_reference]}"
           end
         end
     end
