@@ -8,7 +8,8 @@ module References
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteLinkableReferences[search_query]
+          search_results = Autocomplete::AutocompleteLinkableReferences[search_query]
+          render json: Autocomplete::FormatLinkableReferences[search_results]
         end
       end
     end

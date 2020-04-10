@@ -7,7 +7,7 @@ module Autocomplete
     attr_private_initialize :search_query
 
     def call
-      Autocomplete::FormatLinkableReferences[search_results]
+      search_results
     end
 
     private
