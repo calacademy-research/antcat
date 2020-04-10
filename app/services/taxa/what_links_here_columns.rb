@@ -16,11 +16,9 @@ module Taxa
 
     private
 
-      delegate :id, to: :taxon, private: true
-
       def any_table_refs?
         Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          return true if Taxon.where(field => id).exists?
+          return true if Taxon.where(field => taxon.id).exists?
         end
         false
       end
@@ -28,8 +26,8 @@ module Taxa
       def table_refs
         table_refs = []
         Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
-          Taxon.where(field => id).pluck(:id).each do |taxon_id|
-            table_refs << table_ref('taxa', field, taxon_id)
+          Taxon.where(field => taxon.id).pluck(:id).each do |matched_id|
+            table_refs << table_ref('taxa', field, matched_id)
           end
         end
         table_refs
