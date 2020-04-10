@@ -2,6 +2,4 @@
 
 class BookReference < Reference
   belongs_to :publisher
-
-  validates :pagination, presence: true
 end

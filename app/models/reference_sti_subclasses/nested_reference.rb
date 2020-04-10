@@ -3,7 +3,6 @@
 class NestedReference < Reference
   belongs_to :nesting_reference, class_name: 'Reference'
 
-  validates :pagination, presence: true
   validate :validate_nested_reference_doesnt_point_to_itself
 
   private

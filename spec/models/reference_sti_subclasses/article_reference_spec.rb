@@ -9,7 +9,6 @@ describe ArticleReference do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :series_volume_issue }
-    it { is_expected.to validate_presence_of :pagination }
   end
 
   describe "parsing fields from series_volume_issue" do
