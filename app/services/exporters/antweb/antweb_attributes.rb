@@ -18,7 +18,7 @@ module Exporters
         when Subgenus   then subgenus_attributes
         when Species    then species_attributes
         when Subspecies then subspecies_attributes
-        else                 {}
+        else                 raise
         end
       end
 
