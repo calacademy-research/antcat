@@ -3,6 +3,7 @@
 class Author < ApplicationRecord
   include Trackable
 
+  has_one :user, dependent: :nullify
   has_many :names, class_name: 'AuthorName', dependent: :destroy
   has_many :references, through: :names, dependent: :restrict_with_error
 

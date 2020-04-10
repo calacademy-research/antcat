@@ -7,11 +7,14 @@ class User < ApplicationRecord
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
+  belongs_to :author, optional: true
+
   has_many :activities, dependent: :restrict_with_error
   has_many :comments, dependent: :restrict_with_error
   has_many :notifications, dependent: :restrict_with_error
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
 
+  validates :author, uniqueness: true, allow_nil: true
   validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ }
 
   scope :order_by_name, -> { order(:name) }

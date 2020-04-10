@@ -70,7 +70,7 @@ class UsersController < ApplicationController
 
     def user_params
       params.require(:user).permit(
-        :editor, :email, :enable_email_notifications,
+        :editor, :email, :author_id, :enable_email_notifications,
         :helper, :hidden, :name, :locked, :password, :superadmin
       )
     end

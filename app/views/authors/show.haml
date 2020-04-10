@@ -13,6 +13,11 @@
   %h5
     References by
     =@author.first_author_name_name
+    -if @author.user
+      .right
+        %small
+          This author has an
+          =link_to 'antcat.org account', @author.user, class: 'btn-normal btn-tiny'
   -if @references.empty?
     %p Found no references by this author.
   -else
