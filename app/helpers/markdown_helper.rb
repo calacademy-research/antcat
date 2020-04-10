@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 module MarkdownHelper
-  def markdown content, sanitize_content: true
+  def markdown content
     return unless content
-    Markdowns::Render[content.dup, sanitize_content: sanitize_content]
+    Markdowns::Render[content.dup]
+  end
+
+  def markdown_without_sanitation content
+    return unless content
+    Markdowns::Render[content.dup, sanitize_content: false]
   end
 
   def markdown_without_wrapping content
