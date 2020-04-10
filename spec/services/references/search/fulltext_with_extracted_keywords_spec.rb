@@ -43,21 +43,21 @@ describe References::Search::FulltextWithExtractedKeywords do
     describe "searching for text and/or years" do
       it "extracts the starting and ending years" do
         expect(References::Search::Fulltext).to receive(:new).
-          with(hash_including(keywords: '', start_year: "1992", end_year: "1993")).
+          with(hash_including(freetext: '', start_year: "1992", end_year: "1993")).
           and_call_original
         described_class['year:1992-1993']
       end
 
       it "extracts the starting year" do
         expect(References::Search::Fulltext).to receive(:new).
-          with(hash_including(keywords: '', year: "1992")).
+          with(hash_including(freetext: '', year: "1992")).
           and_call_original
         described_class['year:1992']
       end
 
       it "can distinguish between years and citation years" do
         expect(References::Search::Fulltext).to receive(:new).
-          with(hash_including(keywords: '1970a', year: "1970")).
+          with(hash_including(freetext: '1970a', year: "1970")).
           and_call_original
         described_class['1970a year:1970']
       end
@@ -66,7 +66,7 @@ describe References::Search::FulltextWithExtractedKeywords do
     describe "filtering nested reference types" do
       it "returns only references of type nested" do
         expect(References::Search::Fulltext).to receive(:new).
-          with(hash_including(keywords: 'Monroe', reference_type: :nested)).
+          with(hash_including(freetext: 'Monroe', reference_type: :nested)).
           and_call_original
         described_class['Monroe type:nested']
       end

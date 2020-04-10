@@ -6,7 +6,7 @@ describe References::Search::ExtractKeywords do
   describe "#call" do
     it "doesn't extract anything if there is nothing to extact" do
       expect(described_class["Bolton 2003"]).to eq(
-        keywords: "Bolton 2003"
+        freetext: "Bolton 2003"
       )
     end
 
@@ -14,7 +14,7 @@ describe References::Search::ExtractKeywords do
       it "extracts single years" do
         expect(described_class["Bolton year:2003"]).to eq(
           year: "2003",
-          keywords: "Bolton"
+          freetext: "Bolton"
         )
       end
 
@@ -22,7 +22,7 @@ describe References::Search::ExtractKeywords do
         expect(described_class["Bolton year:2003-2015"]).to eq(
           start_year: "2003",
           end_year: "2015",
-          keywords: "Bolton"
+          freetext: "Bolton"
         )
       end
     end
@@ -31,7 +31,7 @@ describe References::Search::ExtractKeywords do
       specify do
         expect(described_class["Bolton type:nested"]).to eq(
           reference_type: :nested,
-          keywords: "Bolton"
+          freetext: "Bolton"
         )
       end
     end
@@ -40,7 +40,7 @@ describe References::Search::ExtractKeywords do
       specify do
         expect(described_class["Ants Book author:Bolton"]).to eq(
           author: "Bolton",
-          keywords: "Ants Book"
+          freetext: "Ants Book"
         )
       end
 
@@ -48,14 +48,14 @@ describe References::Search::ExtractKeywords do
         it "handles double quotes" do
           expect(described_class['Ants Book author:"Barry Bolton"']).to eq(
             author: "Barry Bolton",
-            keywords: "Ants Book"
+            freetext: "Ants Book"
           )
         end
 
         it "handles single quotes" do
           expect(described_class["Ants Book author:'Barry Bolton'"]).to eq(
             author: "Barry Bolton",
-            keywords: "Ants Book"
+            freetext: "Ants Book"
           )
         end
       end
@@ -64,21 +64,21 @@ describe References::Search::ExtractKeywords do
         it "handles hyphens" do
           expect(described_class['author:Barry-Bolton']).to eq(
             author: "Barry-Bolton",
-            keywords: ""
+            freetext: ""
           )
         end
 
         it "handles diacritics" do
           expect(described_class['author:Hölldobler']).to eq(
             author: "Hölldobler",
-            keywords: ""
+            freetext: ""
           )
         end
 
         it "doesn't break if more search term are added after the `author` keyword" do
           expect(described_class["author:Hölldobler random string"]).to eq(
             author: "Hölldobler",
-            keywords: "random string"
+            freetext: "random string"
           )
         end
       end
@@ -88,7 +88,7 @@ describe References::Search::ExtractKeywords do
       specify do
         expect(described_class["Ants Book doi:10.11865/zs.201806"]).to eq(
           doi: "10.11865/zs.201806",
-          keywords: "Ants Book"
+          freetext: "Ants Book"
         )
       end
     end
@@ -98,21 +98,21 @@ describe References::Search::ExtractKeywords do
         author: "Barry Bolton",
         year: "2003",
         reference_type: :nested,
-        keywords: "Ants Book"
+        freetext: "Ants Book"
       )
     end
 
     it "handles keywords without a search term" do
       expect(described_class['year:2003']).to eq(
         year: "2003",
-        keywords: ""
+        freetext: ""
       )
     end
 
     it "ignores capitalization of keywords" do
       expect(described_class['Author:Wilson']).to eq(
         author: "Wilson",
-        keywords: ""
+        freetext: ""
       )
     end
   end
