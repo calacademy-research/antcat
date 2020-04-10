@@ -109,13 +109,6 @@ describe References::Search::ExtractKeywords do
       )
     end
 
-    it "ignores a single space after the colon after a keyword" do
-      expect(described_class['author: Wilson']).to eq(
-        author: "Wilson",
-        keywords: ""
-      )
-    end
-
     it "ignores capitalization of keywords" do
       expect(described_class['Author:Wilson']).to eq(
         author: "Wilson",

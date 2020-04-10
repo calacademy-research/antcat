@@ -24,7 +24,7 @@ module References
           keywords_params = {}
 
           regexes.each do |keyword, regex|
-            next unless (match = keyword_string.match(/#{keyword}: ?#{regex}/i))
+            next unless (match = keyword_string.match(/#{keyword}:#{regex}/i))
 
             # match.names contains named captured groups.
             if match.names.empty?
