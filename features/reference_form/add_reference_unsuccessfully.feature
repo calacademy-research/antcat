@@ -26,7 +26,7 @@ Feature: Add reference unsuccessfully
     When I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
-    Then I should see "Publisher must exist"
+    Then I should see "Publisher string couldn't be parsed"
 
   Scenario: Leaving a required field blank should not affect other fields (`ArticleReference`)
     When I fill in "reference_title" with "A reference title"

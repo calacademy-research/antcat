@@ -70,7 +70,7 @@ class ReferenceForm
 
     def set_journal
       journal = Journal.find_or_initialize_by(name: params[:journal_name])
-      params[:journal] = journal
+      reference.journal = journal
 
       if journal.invalid?
         errors.add "Journal:", journal.errors.full_messages.to_sentence
@@ -78,11 +78,11 @@ class ReferenceForm
     end
 
     def set_publisher
-      publisher = Publisher.find_or_initialize_from_string(params[:publisher_string])
+      place_and_name = Publisher.place_and_name_from_string(params[:publisher_string])
+      publisher = Publisher.find_or_initialize_by(place_and_name)
+      reference.publisher = publisher
 
-      if publisher.valid?
-        params[:publisher] = publisher
-      else
+      if publisher.invalid?
         errors.add :publisher_string, "couldn't be parsed. In general, use the format 'Place: Publisher'."
       end
     end
