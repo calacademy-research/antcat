@@ -3,8 +3,8 @@
   =javascript_include_tag 'controllers/references/form'
 
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :ignore_duplicates, ('yes' if reference.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
-  =render 'shared/errors_for', resource: reference
+  =hidden_field_tag :ignore_duplicates, ('yes' if reference_form.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
+  =render 'shared/errors_for', resource: @reference_form
 
   .row
     .medium-4.columns

@@ -298,4 +298,25 @@ describe ReferenceForm do
       end
     end
   end
+
+  describe '#collect_errors!' do
+    let!(:reference) { create :article_reference }
+    let(:params) do
+      {
+        author_names_string: reference.author_names_string,
+        journal_name: '',
+        pagination: ''
+      }
+    end
+
+    it 'collects errors from the reference and itself' do
+      reference_form = described_class.new(reference, params)
+
+      reference_form.save
+      reference_form.collect_errors!
+
+      expect(reference_form.errors[:pagination]).to eq ["can't be blank"]
+      expect(reference_form.errors[:base]).to eq ["Journal: Name can't be blank"]
+    end
+  end
 end

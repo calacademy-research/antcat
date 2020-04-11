@@ -27,36 +27,36 @@ class ReferencesController < ApplicationController
                  else
                    ArticleReference.new
                  end
+    @reference_form = ReferenceForm.new(@reference, {})
   end
 
   def create
     @reference = reference_type_from_params.new
+    @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
-    if reference_form.save
+    if @reference_form.save
       @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
-      # TODO: Hack for now, to trigger validations and merge errors.
-      @reference.valid?
-      @reference.errors.merge!(reference_form.errors)
+      @reference_form.collect_errors!
       render :new
     end
   end
 
   def edit
     @reference = find_reference
+    @reference_form = ReferenceForm.new(@reference, {})
   end
 
   def update
     @reference = becomes_reference_type_from_params(find_reference)
+    @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
-    if reference_form.save
+    if @reference_form.save
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
-      # TODO: Hack for now, to trigger validations and merge errors.
-      @reference.valid?
-      @reference.errors.merge!(reference_form.errors)
+      @reference_form.collect_errors!
       render :edit
     end
   end
@@ -101,10 +101,6 @@ class ReferencesController < ApplicationController
         :title,
         document_attributes: [:id, :file, :url]
       )
-    end
-
-    def reference_form
-      @_reference_form ||= ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
     end
 
     # NOTE: This is so references can be converted between types.

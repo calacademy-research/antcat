@@ -12,6 +12,12 @@ class ReferenceForm
     save_reference
   end
 
+  # TODO: Super primitive. Invoked manually before making this class more form-object-y.
+  def collect_errors!
+    reference.valid? # Trigger errors.
+    errors.merge!(reference.errors)
+  end
+
   private
 
     def save_reference
@@ -72,7 +78,7 @@ class ReferenceForm
       reference.journal = journal
 
       if journal.invalid?
-        errors.add "Journal:", journal.errors.full_messages.to_sentence
+        errors.add :base, "Journal: #{journal.errors.full_messages.to_sentence}"
       end
     end
 
