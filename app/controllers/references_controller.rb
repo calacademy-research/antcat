@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ReferencesController < ApplicationController
-  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference]
-
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
 
@@ -29,46 +27,51 @@ class ReferencesController < ApplicationController
                  else
                    ArticleReference.new
                  end
+    @reference_form = ReferenceForm.new(@reference, {})
   end
 
   def create
     @reference = reference_type_from_params.new
+    @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
-    if reference_form.save
+    if @reference_form.save
       @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
+      @reference_form.collect_errors!
       render :new
     end
   end
 
   def edit
     @reference = find_reference
+    @reference_form = ReferenceForm.new(@reference, {})
   end
 
   def update
-    @reference = find_reference
-    @reference = set_reference_type
+    @reference = becomes_reference_type_from_params(find_reference)
+    @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
-    if reference_form.save
+    if @reference_form.save
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
+      @reference_form.collect_errors!
       render :edit
     end
   end
 
   def destroy
-    @reference = find_reference
+    reference = find_reference
 
     # Grab key before reference author names are deleted.
-    activity_parameters = { name: @reference.keey }
+    activity_parameters = { name: reference.keey }
 
-    if @reference.destroy
-      @reference.create_activity :destroy, current_user, parameters: activity_parameters
+    if reference.destroy
+      reference.create_activity :destroy, current_user, parameters: activity_parameters
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
-      redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence
+      redirect_to reference_path(reference), alert: reference.errors.full_messages.to_sentence
     end
   end
 
@@ -100,18 +103,15 @@ class ReferencesController < ApplicationController
       )
     end
 
-    def reference_form
-      ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
-    end
-
-    def set_reference_type
-      reference = @reference.becomes reference_type_from_params
-      reference.type = reference_type_from_params
-      reference
+    # NOTE: This is so references can be converted between types.
+    def becomes_reference_type_from_params reference
+      type_casted = reference.becomes(reference_type_from_params)
+      type_casted.type = reference_type_from_params
+      type_casted
     end
 
     def reference_type_from_params
-      reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
-      reference_class || raise("reference type is not supported")
+      reference_class = Reference::CONCRETE_SUBCLASS_NAMES.find { |class_name| class_name == params[:reference_type] }
+      reference_class.constantize || raise("reference type is not supported")
     end
 end

@@ -7,10 +7,26 @@ describe Authors::FindOrInitializeNamesFromString do
     describe 're-using and creating names' do
       let!(:bolton) { AuthorName.create!(name: 'Bolton, B.', author: Author.create!) }
 
-      it "finds or initializes authors with names in the string" do
+      it "finds or initializes authors with names" do
         author_names = described_class['Ward, P.S.; Bolton, B.']
+
         expect(author_names.map(&:name)).to eq ['Ward, P.S.', 'Bolton, B.']
         expect(author_names.second.author).to eq bolton.author
+        expect(author_names.second).to eq bolton
+        expect(author_names.second.persisted?).to eq true
+      end
+    end
+
+    describe 'where there exist author names with different capitalization' do
+      before do
+        AuthorName.create!(name: 'bolton, B.', author: Author.create!)
+      end
+
+      it "considers them as different" do
+        author_names = described_class['Ward, P.S.; Bolton, B.']
+
+        expect(author_names.map(&:name)).to eq ['Ward, P.S.', 'Bolton, B.']
+        expect(author_names.second.persisted?).to eq false
       end
     end
 

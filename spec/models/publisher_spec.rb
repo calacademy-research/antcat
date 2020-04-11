@@ -20,33 +20,25 @@ describe Publisher do
     end
   end
 
-  describe ".find_or_initialize_from_string" do
+  describe ".place_and_name_from_string" do
     context "when invalid" do
       context "when string is blank" do
-        specify do
-          expect(described_class.find_or_initialize_from_string('')).to eq nil
+        it "returns blanks for place and name" do
+          expect(described_class.place_and_name_from_string('')).to eq(place: nil, name: nil)
         end
       end
 
       context "when name or place is missing" do
-        specify do
-          expect(described_class.find_or_initialize_from_string('Wiley')).to eq nil
+        it "returns blanks for place and name" do
+          expect(described_class.place_and_name_from_string('Wiley')).to eq(place: nil, name: nil)
         end
       end
     end
 
     context "when valid" do
-      it "initializes a publisher" do
-        publisher = described_class.find_or_initialize_from_string 'New York: Houghton Mifflin'
-        expect(publisher.name).to eq 'Houghton Mifflin'
-        expect(publisher.place).to eq 'New York'
-      end
-
-      context "when name/place combination already exists" do
-        it "reuses existing publisher" do
-          existing_publisher = described_class.find_or_initialize_from_string("Wiley: Chicago").tap(&:save!)
-          expect(described_class.find_or_initialize_from_string("Wiley: Chicago")).to eq existing_publisher
-        end
+      it "returns the place and name" do
+        expect(described_class.place_and_name_from_string('New York: Houghton Mifflin')).
+          to eq(place: 'New York', name: 'Houghton Mifflin')
       end
     end
   end

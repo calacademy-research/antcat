@@ -10,19 +10,15 @@ describe ReferenceForm do
       let!(:reference) { create :article_reference }
       let(:params) do
         {
-          bolton_key: "Smith, 1858b",
+          author_names_string: reference.author_names_string,
           journal_name: reference.journal.name,
-          author_names_string: reference.author_names_string
+          bolton_key: "Smith, 1858b"
         }
       end
 
       specify do
-        expect(reference.bolton_key).to eq nil
-
-        described_class.new(reference, params).save
-
-        reference.reload
-        expect(reference.bolton_key).to eq params[:bolton_key]
+        expect { described_class.new(reference, params).save }.
+          to change { reference.reload.bolton_key }.to(params[:bolton_key])
       end
     end
 
@@ -34,19 +30,12 @@ describe ReferenceForm do
         let(:params) do
           {
             author_names_string: reference.author_names_string,
-            journal_name: reference.journal.name,
-            bolton_key: "Smith, 1858b"
+            journal_name: reference.journal.name
           }
         end
 
-        it 'updates the reference (test spec)' do
-          expect { described_class.new(reference, params).save }.
-            to change { reference.reload.bolton_key }
-        end
-
         it "does not create new `AuthorName`s for existing authors" do
-          expect { described_class.new(reference, params).save }.
-            to_not change { AuthorName.count }
+          expect { described_class.new(reference, params).save }.to_not change { AuthorName.count }
         end
 
         it "reuses existing `ReferenceAuthorName`s" do
@@ -57,7 +46,7 @@ describe ReferenceForm do
         it "does not create any versions for the reference" do
           with_versioning do
             expect { described_class.new(reference, params).save }.
-              to change { reference.versions.count }.by(1) # TODO: 1 version is created for the `bolton_key` change.
+              to_not change { reference.versions.count }
           end
         end
       end
@@ -66,9 +55,9 @@ describe ReferenceForm do
         context "when author names have not changed" do
           let(:params) do
             {
-              bolton_key: "Smith, 1858b",
+              author_names_string: reference.author_names_string,
               journal_name: reference.journal.name,
-              author_names_string: reference.author_names_string
+              bolton_key: "Smith, 1858b"
             }
           end
 
@@ -83,9 +72,9 @@ describe ReferenceForm do
         context "when an author name have been added" do
           let(:params) do
             {
-              bolton_key: "Smith, 1858b",
+              author_names_string: "Batiatus, B.; Glaber, G.",
               journal_name: reference.journal.name,
-              author_names_string: "Batiatus, B.; Glaber, G."
+              bolton_key: "Smith, 1858b"
             }
           end
 
@@ -108,7 +97,7 @@ describe ReferenceForm do
 
         # TODO: Spec was added after a regression was introduced.
         # See also "creates a single version for the reference".
-        describe "reversing author names" do
+        describe "reordering author names" do
           let!(:author_names) do
             [
               create(:author_name, name: "Batiatus, B."),
@@ -142,9 +131,9 @@ describe ReferenceForm do
         context "when more than one author names have been added" do
           let(:params) do
             {
-              bolton_key: "Smith, 1858b",
+              author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C.",
               journal_name: reference.journal.name,
-              author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C."
+              bolton_key: "Smith, 1858b"
             }
           end
 
@@ -173,16 +162,15 @@ describe ReferenceForm do
           let!(:reference) { create :article_reference, author_names: author_names }
           let(:params) do
             {
-              bolton_key: "Smith, 1858b",
+              author_names_string: "Batiatus, B.",
               journal_name: reference.journal.name,
-              author_names_string: "Batiatus, B."
+              bolton_key: "Smith, 1858b"
             }
           end
 
           it 'deletes orphaned `ReferenceAuthorName`s' do
-            expect(ReferenceAuthorName.count).to eq 2
             expect { described_class.new(reference, params).save }.
-              to change { ReferenceAuthorName.count }.by(-1)
+              to change { ReferenceAuthorName.count }.from(2).to(1)
           end
 
           it "updates `#author_names_string_cache`" do
@@ -285,21 +273,38 @@ describe ReferenceForm do
       let!(:duplicate) { create :article_reference, author_names: original.author_names }
 
       context 'when duplicates are ignored' do
-        it 'updates the reference (test spec)`' do
+        it "allows a duplicate record to be saved" do
           expect { described_class.new(duplicate, params, ignore_duplicates: true).save }.
             to change { duplicate.reload.title }.to(params[:title])
-        end
-
-        it "allows a duplicate record to be saved" do
-          expect { described_class.new(duplicate, params, ignore_duplicates: true).save }.not_to raise_error
         end
       end
 
       it "checks possible duplication and add to errors, if any found" do
-        expect(duplicate.errors).to be_empty
-        expect(described_class.new(duplicate, params).save).to eq nil
-        expect(duplicate.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
+        reference_form = described_class.new(duplicate, params)
+        reference_form.save
+        expect(reference_form.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
       end
+    end
+  end
+
+  describe '#collect_errors!' do
+    let!(:reference) { create :article_reference }
+    let(:params) do
+      {
+        author_names_string: reference.author_names_string,
+        journal_name: '',
+        pagination: ''
+      }
+    end
+
+    it 'collects errors from the reference and itself' do
+      reference_form = described_class.new(reference, params)
+
+      reference_form.save
+      reference_form.collect_errors!
+
+      expect(reference_form.errors[:pagination]).to eq ["can't be blank"]
+      expect(reference_form.errors[:base]).to eq ["Journal: Name can't be blank"]
     end
   end
 end

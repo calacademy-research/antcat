@@ -2,19 +2,16 @@
   =javascript_include_tag 'jquery-ui/widgets/autocomplete'
   =javascript_include_tag 'controllers/references/form'
 
--reference.publisher_string ||= reference.respond_to?(:publisher) ? (reference.publisher && reference.publisher.display_name) : ''
--reference.journal_name ||= reference.respond_to?(:journal) ? (reference.journal && reference.journal.name) : ''
-
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :ignore_duplicates, ('yes' if reference.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
-  =render 'shared/errors_for', resource: reference
+  =hidden_field_tag :ignore_duplicates, ('yes' if reference_form.ignore_duplicates?)
+  =render 'shared/errors_for', resource: @reference_form
 
   .row
     .medium-4.columns
       =f.label :reference_author_names_string do
         Authors
         =db_tooltip_icon :authors, scope: :references
-      =f.text_field :author_names_string
+      =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
     .medium-2.columns
       =f.label :author_names_suffix do
         Authors suffix
@@ -75,7 +72,7 @@
               =f.label :reference_journal_name do
                 Journal
                 =db_tooltip_icon "references.journal_name", scope: :references
-              =f.text_field :journal_name, value: reference.journal_name
+              =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
 
             .medium-3.columns.end
               =f.label :reference_series_volume_issue do
@@ -89,7 +86,7 @@
               =f.label :reference_publisher_string do
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
-              =f.text_field :publisher_string, value: reference.publisher_string
+              =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
         .tab.nested-tab-content
           .row

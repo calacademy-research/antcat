@@ -19,14 +19,14 @@ Feature: Add reference unsuccessfully
     When I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I press "Save"
-    Then I should see "Journal must exist"
+    Then I should see "Journal: Name can't be blank"
     And I should see "Series volume issue can't be blank"
 
   Scenario: Leaving required fields blank (`BookReference`)
     When I select the reference tab "#book-tab"
     And I fill in "reference_publisher_string" with ""
     And I press "Save"
-    Then I should see "Publisher must exist"
+    Then I should see "Publisher string couldn't be parsed"
 
   Scenario: Leaving a required field blank should not affect other fields (`ArticleReference`)
     When I fill in "reference_title" with "A reference title"
@@ -63,7 +63,7 @@ Feature: Add reference unsuccessfully
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_pagination" with "1"
     And I press "Save"
-    Then I should see "Journal must exist"
+    Then I should see "Journal: Name can't be blank"
     And the "reference_title" field should contain "A reference title"
 
     When I select the reference tab "#article-tab"
@@ -76,7 +76,7 @@ Feature: Add reference unsuccessfully
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And I fill in "reference_pagination" with "1"
     And I press "Save"
-    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
+    Then I should see "Publisher string couldn't be parsed. Expected format 'Place: Publisher'."
 
     When I select the reference tab "#book-tab"
     Then the "reference_title" field should contain "A reference title"
