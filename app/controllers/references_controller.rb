@@ -48,8 +48,7 @@ class ReferencesController < ApplicationController
   end
 
   def update
-    @reference = find_reference
-    @reference = set_reference_type
+    @reference = becomes_reference_type_from_params(find_reference)
 
     if reference_form.save
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
@@ -63,16 +62,16 @@ class ReferencesController < ApplicationController
   end
 
   def destroy
-    @reference = find_reference
+    reference = find_reference
 
     # Grab key before reference author names are deleted.
-    activity_parameters = { name: @reference.keey }
+    activity_parameters = { name: reference.keey }
 
-    if @reference.destroy
-      @reference.create_activity :destroy, current_user, parameters: activity_parameters
+    if reference.destroy
+      reference.create_activity :destroy, current_user, parameters: activity_parameters
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
-      redirect_to reference_path(@reference), alert: @reference.errors.full_messages.to_sentence
+      redirect_to reference_path(reference), alert: reference.errors.full_messages.to_sentence
     end
   end
 
@@ -108,10 +107,11 @@ class ReferencesController < ApplicationController
       @_reference_form ||= ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
     end
 
-    def set_reference_type
-      reference = @reference.becomes reference_type_from_params
-      reference.type = reference_type_from_params
-      reference
+    # NOTE: This is so references can be converted between types.
+    def becomes_reference_type_from_params reference
+      type_casted = reference.becomes(reference_type_from_params)
+      type_casted.type = reference_type_from_params
+      type_casted
     end
 
     def reference_type_from_params
