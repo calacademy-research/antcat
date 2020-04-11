@@ -2,6 +2,7 @@
 
 class ReferenceForm
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
+  VIRTUAL_ATTRIBUTES = [:journal_name, :publisher_string]
 
   attr_private_initialize :reference, :params, [ignore_duplicates: false]
 
@@ -18,11 +19,9 @@ class ReferenceForm
         set_journal if reference.is_a? ::ArticleReference
         set_publisher if reference.is_a? ::BookReference
 
-        # Set attributes to make sure they're persisted in the form.
-        reference.attributes = params
+        reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
 
-        # Raise if there are errors -- #save! clears the errors
-        # before validating, so we need to manually raise here.
+        # Raise if there are errors, since `#save!` clears errors before validating.
         raise ActiveRecord::Rollback if reference.errors.present?
 
         unless ignore_duplicates
@@ -68,21 +67,13 @@ class ReferenceForm
     end
 
     def set_journal
-      journal_name = params[:journal_name]
-
-      # Set journal_name for the form.
-      reference.journal_name = journal_name
-
       # Set nil or valid publisher in the params.
-      journal = Journal.find_or_initialize_by(name: journal_name)
+      journal = Journal.find_or_initialize_by(name: params[:journal_name])
       params[:journal] = journal.valid? ? journal : nil
     end
 
     def set_publisher
       publisher_string = params[:publisher_string]
-
-      # Set publisher_string for the form.
-      reference.publisher_string = publisher_string
 
       # Add error or set valid publisher in the params.
       publisher = Publisher.find_or_initialize_from_string(publisher_string)

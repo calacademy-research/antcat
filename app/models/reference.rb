@@ -11,9 +11,6 @@ class Reference < ApplicationRecord
     expanded_reference_cache
   ]
 
-  # TODO: See if we can remove this. Currently required by `ReferenceForm`.
-  attr_accessor :journal_name, :publisher_string
-
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
     through: :reference_author_names,
