@@ -38,6 +38,9 @@ class ReferencesController < ApplicationController
       @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
+      # TODO: Hack for now, to trigger validations and merge errors.
+      @reference.valid?
+      @reference.errors.merge!(reference_form.errors)
       render :new
     end
   end
@@ -54,6 +57,9 @@ class ReferencesController < ApplicationController
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
+      # TODO: Hack for now, to trigger validations and merge errors.
+      @reference.valid?
+      @reference.errors.merge!(reference_form.errors)
       render :edit
     end
   end
@@ -101,7 +107,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_form
-      ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
+      @_reference_form ||= ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
     end
 
     def set_reference_type

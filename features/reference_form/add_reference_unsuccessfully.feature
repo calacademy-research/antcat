@@ -19,7 +19,7 @@ Feature: Add reference unsuccessfully
     When I fill in "reference_journal_name" with ""
     And I fill in "reference_series_volume_issue" with ""
     And I press "Save"
-    Then I should see "Journal must exist"
+    Then I should see "Journal: Name can't be blank"
     And I should see "Series volume issue can't be blank"
 
   Scenario: Leaving required fields blank (`BookReference`)
@@ -63,7 +63,7 @@ Feature: Add reference unsuccessfully
     And I fill in "reference_journal_name" with ""
     And I fill in "reference_pagination" with "1"
     And I press "Save"
-    Then I should see "Journal must exist"
+    Then I should see "Journal: Name can't be blank"
     And the "reference_title" field should contain "A reference title"
 
     When I select the reference tab "#article-tab"

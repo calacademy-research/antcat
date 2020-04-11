@@ -24,13 +24,15 @@ describe Publisher do
     context "when invalid" do
       context "when string is blank" do
         specify do
-          expect(described_class.find_or_initialize_from_string('')).to eq nil
+          publisher = described_class.find_or_initialize_from_string('')
+          expect(publisher.valid?).to eq false
         end
       end
 
       context "when name or place is missing" do
         specify do
-          expect(described_class.find_or_initialize_from_string('Wiley')).to eq nil
+          publisher = described_class.find_or_initialize_from_string('Wiley')
+          expect(publisher.valid?).to eq false
         end
       end
     end

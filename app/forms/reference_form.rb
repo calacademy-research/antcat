@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ReferenceForm
+  include ActiveModel::Model
+
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
   VIRTUAL_ATTRIBUTES = [:journal_name, :publisher_string]
 
@@ -22,7 +24,7 @@ class ReferenceForm
         reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
 
         # Raise if there are errors, since `#save!` clears errors before validating.
-        raise ActiveRecord::Rollback if reference.errors.present?
+        raise ActiveRecord::Rollback if errors.present?
 
         unless ignore_duplicates
           if check_for_duplicates!
@@ -55,7 +57,7 @@ class ReferenceForm
       author_names = Authors::FindOrInitializeNamesFromString[string.dup]
 
       if author_names.empty? && string.present?
-        reference.errors.add :author_names_string, "couldn't be parsed."
+        errors.add :author_names_string, "couldn't be parsed."
         reference.author_names_string_cache = string
         raise ActiveRecord::RecordInvalid, reference
       end
@@ -67,21 +69,21 @@ class ReferenceForm
     end
 
     def set_journal
-      # Set nil or valid publisher in the params.
       journal = Journal.find_or_initialize_by(name: params[:journal_name])
-      params[:journal] = journal.valid? ? journal : nil
+      params[:journal] = journal
+
+      if journal.invalid?
+        errors.add "Journal:", journal.errors.full_messages.to_sentence
+      end
     end
 
     def set_publisher
-      publisher_string = params[:publisher_string]
+      publisher = Publisher.find_or_initialize_from_string(params[:publisher_string])
 
-      # Add error or set valid publisher in the params.
-      publisher = Publisher.find_or_initialize_from_string(publisher_string)
-      if publisher.nil? && publisher_string.present?
-        reference.errors.add :publisher_string,
-          "couldn't be parsed. In general, use the format 'Place: Publisher'."
-      else
+      if publisher.valid?
         params[:publisher] = publisher
+      else
+        errors.add :publisher_string, "couldn't be parsed. In general, use the format 'Place: Publisher'."
       end
     end
 
@@ -89,7 +91,7 @@ class ReferenceForm
       return if (duplicates = References::FindDuplicates[reference]).empty?
 
       duplicate = Reference.find(duplicates.first[:match].id)
-      reference.errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
+      errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.keey} (##{duplicate.id}).<br>
         To save, click "Save".
       MSG

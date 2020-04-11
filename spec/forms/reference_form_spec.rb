@@ -285,20 +285,16 @@ describe ReferenceForm do
       let!(:duplicate) { create :article_reference, author_names: original.author_names }
 
       context 'when duplicates are ignored' do
-        it 'updates the reference (test spec)`' do
+        it "allows a duplicate record to be saved" do
           expect { described_class.new(duplicate, params, ignore_duplicates: true).save }.
             to change { duplicate.reload.title }.to(params[:title])
-        end
-
-        it "allows a duplicate record to be saved" do
-          expect { described_class.new(duplicate, params, ignore_duplicates: true).save }.not_to raise_error
         end
       end
 
       it "checks possible duplication and add to errors, if any found" do
-        expect(duplicate.errors).to be_empty
-        expect(described_class.new(duplicate, params).save).to eq nil
-        expect(duplicate.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
+        reference_form = described_class.new(duplicate, params)
+        reference_form.save
+        expect(reference_form.errors[:possible_duplicate].first).to include "This may be a duplicate of Fisher"
       end
     end
   end
