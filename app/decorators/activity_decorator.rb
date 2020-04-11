@@ -72,6 +72,11 @@ class ActivityDecorator < Draper::Decorator
     }[activity.action.to_sym] || activity.action.upcase
   end
 
+  def locked_or_deleted_user_registration?
+    return false unless trackable_type == "User"
+    trackable.locked? || trackable.deleted?
+  end
+
   private
 
     def template_partial

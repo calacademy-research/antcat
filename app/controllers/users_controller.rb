@@ -4,7 +4,15 @@ class UsersController < ApplicationController
   before_action :ensure_user_is_superadmin, except: [:index, :show, :mentionables]
 
   def index
-    @users = user_scope.order_by_name
+    @active_users = User.active.non_hidden.order_by_name
+
+    if user_is_at_least_helper?
+      @hidden_users = User.hidden.order_by_name
+    end
+
+    if user_is_superadmin?
+      @deleted_or_locked_users = User.deleted_or_locked.order_by_name
+    end
   end
 
   def show

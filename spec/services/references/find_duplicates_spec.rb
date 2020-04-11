@@ -24,7 +24,7 @@ describe References::FindDuplicates do
     context "when an obvious match" do
       it "matches" do
         expect(reference_similarity).to receive(:call).and_return(0.10)
-        expect(described_class[target]).to eq [
+        expect(described_class[target, min_similarity: 0.01]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
       end
@@ -36,7 +36,7 @@ describe References::FindDuplicates do
 
       it "handles it" do
         expect(reference_similarity).to receive(:call).and_return(0.10)
-        expect(described_class[target]).to eq [
+        expect(described_class[target, min_similarity: 0.01]).to eq [
           { similarity: 0.10, target: target, match: match }
         ]
       end

@@ -72,7 +72,7 @@ describe References::Search::Fulltext, :search do
 
         specify do
           expect(described_class[]).to match_array [nested, article]
-          expect(described_class[reference_type: :nested]).to eq [nested]
+          expect(described_class[reference_type: 'nested']).to eq [nested]
         end
       end
 
@@ -89,7 +89,7 @@ describe References::Search::Fulltext, :search do
       end
     end
 
-    describe 'searching with free-form text (`keywords` param)' do
+    describe 'searching with free-form text (`freetext` param)' do
       describe 'notes' do
         let!(:with_public_notes) { create :any_reference, public_notes: 'public' }
         let!(:with_editor_notes) { create :any_reference, editor_notes: 'editor' }
@@ -100,9 +100,9 @@ describe References::Search::Fulltext, :search do
         end
 
         specify do
-          expect(described_class[keywords: 'public']).to eq [with_public_notes]
-          expect(described_class[keywords: 'editor']).to eq [with_editor_notes]
-          expect(described_class[keywords: 'taxonomic']).to eq [with_taxonomic_notes]
+          expect(described_class[freetext: 'public']).to eq [with_public_notes]
+          expect(described_class[freetext: 'editor']).to eq [with_editor_notes]
+          expect(described_class[freetext: 'taxonomic']).to eq [with_taxonomic_notes]
         end
       end
 
@@ -112,8 +112,8 @@ describe References::Search::Fulltext, :search do
 
           before { Sunspot.commit }
 
-          specify { expect(described_class[keywords: 'Hölldobler']).to eq [reference] }
-          specify { expect(described_class[keywords: 'holldobler']).to eq [reference] }
+          specify { expect(described_class[freetext: 'Hölldobler']).to eq [reference] }
+          specify { expect(described_class[freetext: 'holldobler']).to eq [reference] }
         end
 
         context "when author contains Hungarian diacritics" do
@@ -121,8 +121,8 @@ describe References::Search::Fulltext, :search do
 
           before { Sunspot.commit }
 
-          specify { expect(described_class[keywords: 'Csősz']).to eq [reference] }
-          specify { expect(described_class[keywords: 'csosz']).to eq [reference] }
+          specify { expect(described_class[freetext: 'Csősz']).to eq [reference] }
+          specify { expect(described_class[freetext: 'csosz']).to eq [reference] }
         end
       end
 
@@ -135,7 +135,7 @@ describe References::Search::Fulltext, :search do
         end
 
         it 'searches in `journals.name`' do
-          expect(described_class[keywords: 'Abc']).to eq [reference]
+          expect(described_class[freetext: 'Abc']).to eq [reference]
         end
       end
 
@@ -148,7 +148,7 @@ describe References::Search::Fulltext, :search do
         end
 
         it 'searches in `publishers.name`' do
-          expect(described_class[keywords: 'Abc']).to eq [reference]
+          expect(described_class[freetext: 'Abc']).to eq [reference]
         end
       end
     end
@@ -162,7 +162,7 @@ describe References::Search::Fulltext, :search do
       before { Sunspot.commit }
 
       specify do
-        expect(described_class[keywords: title]).to eq [reference]
+        expect(described_class[freetext: title]).to eq [reference]
         expect(described_class[title: title]).to eq [reference]
       end
     end
@@ -177,7 +177,7 @@ describe References::Search::Fulltext, :search do
 
       before { Sunspot.commit }
 
-      specify { expect(described_class[keywords: "Fisher & Bolton 1970a"]).to eq [reference] }
+      specify { expect(described_class[freetext: "Fisher & Bolton 1970a"]).to eq [reference] }
     end
 
     context "when search query contains 'et al.'" do
@@ -191,7 +191,7 @@ describe References::Search::Fulltext, :search do
 
       before { Sunspot.commit }
 
-      specify { expect(described_class[keywords: "Fisher, et al. 1970a"]).to eq [reference] }
+      specify { expect(described_class[freetext: "Fisher, et al. 1970a"]).to eq [reference] }
     end
 
     describe "replacing some characters to make search work" do
@@ -201,8 +201,25 @@ describe References::Search::Fulltext, :search do
       it "handles this reference with asterixes and a hyphen" do
         Sunspot.commit
 
-        expect(described_class[keywords: title]).to eq [reference]
+        expect(described_class[freetext: title]).to eq [reference]
         expect(described_class[title: title]).to eq [reference]
+      end
+    end
+  end
+
+  describe 'extracted keywords integration' do
+    context 'when searching for multiple authors' do
+      let!(:bolton) { create :author_name, name: "Bolton Barry" }
+      let!(:fisher) { create :author_name, name: "Brian Fisher" }
+      let!(:reference) { create :any_reference, author_names: [bolton, fisher] }
+
+      before do
+        Sunspot.commit
+      end
+
+      it "returns references by the authors" do
+        fulltext_params = References::Search::ExtractKeywords['author:"Bolton Fisher"']
+        expect(described_class[**fulltext_params]).to eq [reference]
       end
     end
   end

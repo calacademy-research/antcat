@@ -15,15 +15,13 @@ describe Autocomplete::AutocompleteLinkableReferences do
 
       before { Sunspot.commit }
 
-      specify { expect(described_class["Bolton"]).to eq Autocomplete::FormatLinkableReferences[[reference]] }
+      specify { expect(described_class["Bolton"]).to eq [reference] }
     end
 
     context 'when a reference ID is given' do
       let!(:reference) { create :any_reference }
 
-      specify do
-        expect(described_class[reference.id.to_s]).to eq(Autocomplete::FormatLinkableReferences[[reference]])
-      end
+      specify { expect(described_class[reference.id.to_s]).to eq [reference] }
     end
   end
 end

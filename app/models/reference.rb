@@ -27,7 +27,7 @@ class Reference < ApplicationRecord
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
-  validates :year, :title, :author_names, presence: true
+  validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique

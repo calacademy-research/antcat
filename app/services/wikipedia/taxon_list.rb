@@ -10,37 +10,23 @@ module Wikipedia
 
     def call
       case taxon
-      when Family, Tribe then genera
-      when Subfamily     then genera << divider << tribes
-      when Genus         then species
+      when Family, Tribe then generate(:genera)
+      when Subfamily     then generate(:genera) << divider << generate(:tribes)
+      when Genus         then generate(:species)
       else               "cannot generate children list for this taxon"
       end
     end
 
     private
 
-      attr_reader :children_rank, :children
-
-      def tribes
-        generate :tribes
-      end
-
-      def genera
-        generate :genera
-      end
-
-      def species
-        generate :species
-      end
-
       def generate rank
-        @children_rank = rank
-        @children = @taxon.public_send(@children_rank).valid.order_by_name
+        children_rank = rank
+        children = taxon.public_send(children_rank).valid.order_by_name
 
         output = []
-        output << taxobox_extras
+        output << taxobox_extras(children_rank, children)
         output << "\n"
-        output << list_header
+        output << list_header(children_rank)
 
         children.each { |child| output << format_child(child) }
 
@@ -53,7 +39,7 @@ module Wikipedia
       end
 
       # For https://en.wikipedia.org/wiki/Template:Taxobox
-      def taxobox_extras
+      def taxobox_extras children_rank, children
         string = []
         string << "|diversity_link = ##{children_rank.to_s.capitalize}"
         string << "|diversity = #{children.count} #{children_rank}"
@@ -62,7 +48,7 @@ module Wikipedia
       end
 
       # "==Species== ..."
-      def list_header
+      def list_header children_rank
         "==#{children_rank.to_s.capitalize}==\n{{div col||25em}}\n"
       end
 

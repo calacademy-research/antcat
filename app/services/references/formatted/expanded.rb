@@ -17,7 +17,7 @@ module References
         string << ' '
         string << sanitize(reference.citation_year) << '. '
         string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
-        string << format_italics(AddPeriodIfNecessary[sanitize(format_citation)])
+        string << AddPeriodIfNecessary[sanitize(format_citation)]
         string << ' [online early]' if reference.online_early?
 
         string
@@ -41,14 +41,8 @@ module References
           when ::BookReference
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::NestedReference
-            "#{reference.pagination} #{sanitize References::Formatted::Expanded[reference.nesting_reference]}"
-          else
-            raise
+            "#{reference.pagination} #{References::Formatted::Expanded[reference.nesting_reference]}"
           end
-        end
-
-        def format_italics string
-          References::FormatItalics[string]
         end
     end
   end

@@ -7,7 +7,7 @@ module WikiPages
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteWikiPages[search_query]
+          render json: Autocomplete::AutocompleteWikiPages[search_query].to_json(root: false, only: [:id, :title])
         end
       end
     end

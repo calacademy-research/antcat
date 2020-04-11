@@ -8,8 +8,6 @@ describe NestedReference do
   end
 
   describe "validations" do
-    it { is_expected.to validate_presence_of :pagination }
-
     it "cannot point to itself" do
       reference = create :nested_reference
 

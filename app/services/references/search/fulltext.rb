@@ -7,10 +7,10 @@ module References
 
       # rubocop:disable Metrics/ParameterLists
       def initialize(
-        keywords: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
+        freetext: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
         doi: nil, reference_type: nil, page: 1, per_page: 30
       )
-        @keywords = keywords # TODO: Probably rename to `freetext` since most params are "keywords".
+        @freetext = freetext
         # Hyphens, asterixes and colons makes Solr go bananas.
         @title = title.dup.gsub(/-|:|\*/, ' ') if title
         @author = author.dup.gsub(/-|:/, ' ') if author
@@ -30,12 +30,12 @@ module References
 
       private
 
-        attr_reader :keywords, :title, :author, :year, :start_year, :end_year, :doi,
+        attr_reader :freetext, :title, :author, :year, :start_year, :end_year, :doi,
           :reference_type, :page, :per_page
 
         def fulltext_search
           Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
-            keywords normalized_search_keywords
+            keywords normalized_freetext
 
             if title
               keywords title do
@@ -63,7 +63,7 @@ module References
 
             # TODO: Probably support `:book` and `:article`.
             case reference_type
-            when :nested then with :type, 'NestedReference'
+            when 'nested' then with :type, 'NestedReference'
             end
 
             paginate page: page, per_page: per_page
@@ -75,17 +75,17 @@ module References
         end
 
         # TODO: This is partially duplicated in `References::Search::FulltextLight`.
-        def normalized_search_keywords
-          keywords_dup = keywords.dup
+        def normalized_freetext
+          freetext_dup = freetext.dup
 
           # TODO: Very ugly to make some queries work. Fix in Solr.
           substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
-          substrings_to_remove.each { |substring| keywords_dup.gsub!(/#{substring}/, '') }
+          substrings_to_remove.each { |substring| freetext_dup.gsub!(/#{substring}/, '') }
 
           # Hyphens, asterixes and colons makes Solr go bananas.
-          keywords_dup.gsub!(/-|:/, ' ')
+          freetext_dup.gsub!(/-|:/, ' ')
 
-          keywords_dup
+          freetext_dup
         end
     end
   end

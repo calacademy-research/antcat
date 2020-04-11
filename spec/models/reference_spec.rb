@@ -16,6 +16,7 @@ describe Reference do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :year }
+    it { is_expected.to validate_presence_of :pagination }
     it { is_expected.to validate_presence_of :author_names }
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }

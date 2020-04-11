@@ -7,12 +7,7 @@ module Autocomplete
     attr_private_initialize :search_query
 
     def call
-      search_results.map do |wiki_page|
-        {
-          id: wiki_page.id,
-          title: wiki_page.title
-        }
-      end
+      search_results
     end
 
     private

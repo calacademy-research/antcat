@@ -11,7 +11,7 @@
 =form_tag request.path, method: :get do
   .row
     .small-6.medium-4.large-2.columns
-      =select_tag :user_id, options_for_select(User.order(:name).pluck(:name, :id), params[:user_id]), prompt: 'User'
+      =select_tag :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), prompt: 'User'
     .small-6.medium-4.large-2.columns
       =select_tag :trackable_type, options_for_select(ActivitiesController::FILTER_TRACKABLE_TYPES, params[:trackable_type]), prompt: 'Trackable type'
     .small-6.medium-4.large-2.columns

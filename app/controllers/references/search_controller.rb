@@ -7,7 +7,8 @@ module References
     def index
       return redirect_to references_path unless user_is_searching?
 
-      @references = References::Search::FulltextWithExtractedKeywords[params[:reference_q], page: params[:page]]
+      fulltext_params = References::Search::ExtractKeywords[params[:reference_q]]
+      @references = References::Search::Fulltext[**fulltext_params, page: params[:page]]
     end
 
     def help

@@ -7,8 +7,17 @@ describe MarkdownHelper do
     let(:content) { "pizza" }
 
     it "calls `Markdowns::Render`" do
-      expect(Markdowns::Render).to receive(:new).with(content, sanitize_content: true).and_call_original
+      expect(Markdowns::Render).to receive(:new).with(content).and_call_original
       helper.markdown content
+    end
+  end
+
+  describe "#markdown_without_sanitation" do
+    let(:content) { "pizza" }
+
+    it "calls `Markdowns::Render`" do
+      expect(Markdowns::Render).to receive(:new).with(content, sanitize_content: false).and_call_original
+      helper.markdown_without_sanitation content
     end
   end
 end
