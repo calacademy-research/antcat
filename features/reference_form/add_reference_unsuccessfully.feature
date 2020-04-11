@@ -76,7 +76,7 @@ Feature: Add reference unsuccessfully
     And I fill in "reference_publisher_string" with "Pensoft, Sophia"
     And I fill in "reference_pagination" with "1"
     And I press "Save"
-    Then I should see "Publisher string couldn't be parsed. In general, use the format 'Place: Publisher'."
+    Then I should see "Publisher string couldn't be parsed. Expected format 'Place: Publisher'."
 
     When I select the reference tab "#book-tab"
     Then the "reference_title" field should contain "A reference title"

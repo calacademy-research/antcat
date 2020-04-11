@@ -72,7 +72,7 @@
               =f.label :reference_journal_name do
                 Journal
                 =db_tooltip_icon "references.journal_name", scope: :references
-              =f.text_field :journal_name, value: params.dig(:reference, :journal_name).presence || (reference.journal&.name if reference.respond_to?(:journal)) || ''
+              =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
 
             .medium-3.columns.end
               =f.label :reference_series_volume_issue do
@@ -86,7 +86,7 @@
               =f.label :reference_publisher_string do
                 Publisher
                 =db_tooltip_icon "references.publisher", scope: :references
-              =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string).presence || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
+              =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
         .tab.nested-tab-content
           .row
