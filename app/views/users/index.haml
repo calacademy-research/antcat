@@ -5,24 +5,42 @@
   -content_for :breadcrumbs_right do
     =link_to append_superadmin_icon("New"), new_user_path, class: "btn-normal"
 
+-if user_is_editor?
+  %p.margin-bottom
+    Emails are only visible to logged in helpers and editors.
+    =logged_in_only_tooltip_icon
+
 %table.stack
   %tbody
-  -@users.each do |user|
-    %tr{class: ('pale-alert-background' if (user.locked? || user.deleted? || user.hidden?))}
-      %td
-        =user.decorate.user_page_link
-        %span.show-on-hover
-          Registered
-          =user.created_at.year
+  -@active_users.each do |user|
+    %tr
+      %td=user.decorate.user_page_link
       %td
         =user.decorate.user_badge
-        -if user_is_editor?
+        -if user_is_at_least_helper?
           -if user.superadmin?
             %span.high-priority-label.rounded-badge superadmin
       %td
         -if user.author
           =link_to 'Author page', user.author, class: 'btn-normal btn-tiny'
       -if user_is_editor?
+        %td
+          =user.email
+        %td
+          %span.show-on-hover
+            Registered
+            =user.created_at.year
+
+-if @hidden_users
+  %h5.huge-margin-top
+    Hidden users
+    =logged_in_only_tooltip_icon
+  %table.stack.unstriped
+    %tbody
+    -@hidden_users.each do |user|
+      %tr{class: ('pale-alert-background' if (user.locked? || user.deleted?))}
+        %td=user.decorate.user_page_link
+        %td=user.decorate.user_badge
         %td
           -if user.locked?
             %span.warning-label.rounded-badge locked
@@ -31,3 +49,28 @@
           -if user.hidden?
             %span.warning-label.rounded-badge hidden
         %td=user.email
+        %td
+          Registered
+          =user.created_at.year
+
+-if @deleted_or_locked_users
+  %h5.huge-margin-top
+    Deleted or locked users
+    %small This section is only visible to superadmins.
+  %table.stack.unstriped
+    %tbody
+    -@deleted_or_locked_users.each do |user|
+      %tr{class: ('pale-alert-background' if (user.locked? || user.deleted?))}
+        %td=user.decorate.user_page_link
+        %td=user.decorate.user_badge
+        %td
+          -if user.locked?
+            %span.warning-label.rounded-badge locked
+          -if user.deleted?
+            %span.warning-label.rounded-badge soft-deleted
+          -if user.hidden?
+            %span.warning-label.rounded-badge hidden
+        %td=user.email
+        %td
+          Registered
+          =user.created_at.year

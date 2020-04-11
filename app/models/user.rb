@@ -21,6 +21,8 @@ class User < ApplicationRecord
   scope :unconfirmed, -> { where(editor: false, helper: false) }
   scope :active, -> { where(deleted: false) }
   scope :non_hidden, -> { where(hidden: false) }
+  scope :hidden, -> { where(hidden: true) }
+  scope :deleted_or_locked, -> { where("deleted = TRUE OR locked = TRUE") }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable,
