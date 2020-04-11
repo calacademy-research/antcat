@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ReferencesController < ApplicationController
-  SUPPORTED_REFERENCE_TYPES = [ArticleReference, BookReference, NestedReference]
-
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
   before_action :ensure_user_is_editor, only: [:destroy]
 
@@ -117,7 +115,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_type_from_params
-      reference_class = SUPPORTED_REFERENCE_TYPES.find { |klass| klass.name == params[:reference_type].classify }
-      reference_class || raise("reference type is not supported")
+      reference_class = Reference::CONCRETE_SUBCLASS_NAMES.find { |class_name| class_name == params[:reference_type] }
+      reference_class.constantize || raise("reference type is not supported")
     end
 end
