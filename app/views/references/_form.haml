@@ -3,7 +3,7 @@
   =javascript_include_tag 'controllers/references/form'
 
 =form_for reference.becomes(Reference) do |f|
-  =hidden_field_tag :ignore_duplicates, ('yes' if reference_form.errors.has_key?(ReferenceForm::POSSIBLE_DUPLICATE_ERROR_KEY))
+  =hidden_field_tag :ignore_duplicates, ('yes' if reference_form.ignore_duplicates?)
   =render 'shared/errors_for', resource: @reference_form
 
   .row

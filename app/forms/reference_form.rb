@@ -18,6 +18,10 @@ class ReferenceForm
     errors.merge!(reference.errors)
   end
 
+  def ignore_duplicates?
+    errors.key?(POSSIBLE_DUPLICATE_ERROR_KEY)
+  end
+
   private
 
     def save_reference
