@@ -11,7 +11,7 @@
       =f.label :reference_author_names_string do
         Authors
         =db_tooltip_icon :authors, scope: :references
-      =f.text_field :author_names_string
+      =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
     .medium-2.columns
       =f.label :author_names_suffix do
         Authors suffix

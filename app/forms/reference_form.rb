@@ -58,7 +58,6 @@ class ReferenceForm
 
       if author_names.empty? && author_names_string.present?
         errors.add :author_names_string, "couldn't be parsed."
-        reference.author_names_string_cache = author_names_string
         raise ActiveRecord::RecordInvalid, reference
       end
 
