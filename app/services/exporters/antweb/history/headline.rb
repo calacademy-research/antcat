@@ -46,7 +46,7 @@ module Exporters
           end
 
           def link_to_antcat
-            AntwebFormatter.link_to_taxon(taxon, label: 'AntCat')
+            AntwebFormatter.link_to_taxon_with_label(taxon, 'AntCat')
           end
       end
     end
