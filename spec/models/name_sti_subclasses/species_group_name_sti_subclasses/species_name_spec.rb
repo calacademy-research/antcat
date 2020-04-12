@@ -20,11 +20,11 @@ describe SpeciesName do
   end
 
   describe "name parts" do
-    let(:species_name) { described_class.new(name: 'Atta major') }
+    let(:name) { described_class.new(name: 'Atta major') }
 
     specify do
-      expect(species_name.genus_epithet).to eq 'Atta'
-      expect(species_name.species_epithet).to eq 'major'
+      expect(name.genus_epithet).to eq 'Atta'
+      expect(name.species_epithet).to eq 'major'
     end
   end
 end

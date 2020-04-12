@@ -244,22 +244,22 @@ describe Taxon do
       taxon.protonym.authorship.update!(reference: reference)
     end
 
-    context "when a recombination in a different genus" do
+    context "when taxon is a recombination" do
       let(:taxon) { create :species, name_string: 'Atta minor' }
       let(:protonym_name) { create :species_name, name: 'Eciton minor' }
 
-      it "surrounds it in parentheses" do
+      it "surrounds the author citation in parentheses" do
         expect(taxon.author_citation).to eq '(Bolton, 2005)'
       end
 
       specify { expect(taxon.author_citation.html_safe?).to eq true }
     end
 
-    context "when the name simply differs" do
+    context "when taxon is not a recombination" do
       let(:taxon) { create :species, name_string: 'Atta minor maxus' }
       let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
-      it "doesn't surround in parentheses" do
+      it "doesn't surround the author citation in parentheses" do
         expect(taxon.author_citation).to eq 'Bolton, 2005'
       end
     end

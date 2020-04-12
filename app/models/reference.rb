@@ -17,7 +17,7 @@ class Reference < ApplicationRecord
     after_add: :refresh_author_names_cache,
     after_remove: :refresh_author_names_cache
   has_many :authors, through: :author_names
-  has_many :nestees, class_name: "Reference", foreign_key: "nesting_reference_id", dependent: :restrict_with_error
+  has_many :nestees, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
   has_many :protonyms, through: :citations
   has_many :described_taxa, through: :protonyms, source: :taxa

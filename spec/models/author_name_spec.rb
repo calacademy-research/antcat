@@ -25,7 +25,7 @@ describe AuthorName do
     context "when there's only one word" do
       let(:author_name) { described_class.new(name: 'Bolton') }
 
-      it "simply returns the name" do
+      it "returns the name as the last name" do
         expect(author_name.last_name).to eq 'Bolton'
         expect(author_name.first_name_and_initials).to eq nil
       end

@@ -16,9 +16,8 @@ describe Activity do
 
   describe ".create_for_trackable" do
     it "creates an activity" do
-      expect do
-        described_class.create_for_trackable(nil, :execute_script, user: nil)
-      end.to change { described_class.count }.by 1
+      expect { described_class.create_for_trackable(nil, :execute_script, user: nil) }.
+        to change { described_class.count }.by 1
     end
 
     it "assigns attributes for the activity" do
@@ -47,9 +46,8 @@ describe Activity do
 
   describe ".create_without_trackable" do
     it "creates an activity" do
-      expect do
-        described_class.create_without_trackable(:execute_script, nil)
-      end.to change { described_class.count }.by 1
+      expect { described_class.create_without_trackable(:execute_script, nil) }.
+        to change { described_class.count }.by 1
     end
   end
 
