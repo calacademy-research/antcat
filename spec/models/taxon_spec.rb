@@ -212,12 +212,14 @@ describe Taxon do
     end
   end
 
-  it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
-    subject { create :family }
-  end
+  describe 'callbacks' do
+    it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
+      subject { create :family }
+    end
 
-  it_behaves_like "a taxt column with cleanup", :type_taxt do
-    subject { build :family }
+    it_behaves_like "a taxt column with cleanup", :type_taxt do
+      subject { build :family }
+    end
   end
 
   describe "#rank" do

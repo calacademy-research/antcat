@@ -20,15 +20,17 @@ describe Protonym do
     end
   end
 
-  it_behaves_like "a taxt column with cleanup", :primary_type_information_taxt do
-    subject { build :protonym }
-  end
+  describe 'callbacks' do
+    it_behaves_like "a taxt column with cleanup", :primary_type_information_taxt do
+      subject { build :protonym }
+    end
 
-  it_behaves_like "a taxt column with cleanup", :secondary_type_information_taxt do
-    subject { build :protonym }
-  end
+    it_behaves_like "a taxt column with cleanup", :secondary_type_information_taxt do
+      subject { build :protonym }
+    end
 
-  it_behaves_like "a taxt column with cleanup", :type_notes_taxt do
-    subject { build :protonym }
+    it_behaves_like "a taxt column with cleanup", :type_notes_taxt do
+      subject { build :protonym }
+    end
   end
 end

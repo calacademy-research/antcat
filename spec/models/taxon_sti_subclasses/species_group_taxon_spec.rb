@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe SpeciesGroupTaxon do
   describe 'validations' do
-    describe 'protonym names' do
+    describe '#ensure_protonym_is_a_species_group_name' do
       let(:taxon) { create :species }
       let(:genus_name) { create :genus_name }
 

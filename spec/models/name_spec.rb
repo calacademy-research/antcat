@@ -24,6 +24,42 @@ describe Name do
     end
   end
 
+  describe 'callbacks' do
+    describe '#set_epithet' do
+      let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
+
+      before do
+        name.attributes = { epithet: 'pizza' }
+      end
+
+      specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
+    end
+
+    describe "#set_taxon_caches" do
+      let!(:eciton_name) { create :genus_name, name: 'Eciton' }
+
+      context 'when name is assigned to a taxon' do
+        let!(:taxon) { create :genus }
+
+        it "sets the taxons's `name_cache` and `name_html_cache`" do
+          expect { taxon.update!(name: eciton_name) }.
+            to change { taxon.reload.name_cache }.to('Eciton').
+            and change { taxon.reload.name_html_cache }.to('<i>Eciton</i>')
+        end
+      end
+
+      context 'when the contents of the name change' do
+        let!(:taxon) { create :genus, name: eciton_name }
+
+        it "changes the cache" do
+          expect { eciton_name.update!(name: 'Atta') }.
+            to change { taxon.reload.name_cache }.to('Atta').
+            and change { taxon.reload.name_html_cache }.to('<i>Atta</i>')
+        end
+      end
+    end
+  end
+
   describe "#rank" do
     let!(:name) { build_stubbed :subfamily_name }
 
@@ -32,44 +68,10 @@ describe Name do
     end
   end
 
-  describe '#set_epithet' do
-    let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
-
-    before do
-      name.attributes = { epithet: 'pizza' }
-    end
-
-    specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
-  end
-
   describe "#name_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(false)).to eq '<i>Atta major</i>'
       expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(true)).to eq '<i>†</i><i>Atta major</i>'
-    end
-  end
-
-  describe "#set_taxon_caches" do
-    let!(:eciton_name) { create :genus_name, name: 'Eciton' }
-
-    context 'when name is assigned to a taxon' do
-      let!(:taxon) { create :genus }
-
-      it "sets the taxons's `name_cache` and `name_html_cache`" do
-        expect { taxon.update!(name: eciton_name) }.
-          to change { taxon.reload.name_cache }.to('Eciton').
-          and change { taxon.reload.name_html_cache }.to('<i>Eciton</i>')
-      end
-    end
-
-    context 'when the contents of the name change' do
-      let!(:taxon) { create :genus, name: eciton_name }
-
-      it "changes the cache" do
-        expect { eciton_name.update!(name: 'Atta') }.
-          to change { taxon.reload.name_cache }.to('Atta').
-          and change { taxon.reload.name_html_cache }.to('<i>Atta</i>')
-      end
     end
   end
 end
