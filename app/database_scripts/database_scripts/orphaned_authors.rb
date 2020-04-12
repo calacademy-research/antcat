@@ -24,12 +24,13 @@ end
 
 __END__
 
+section: list
 category: References
+tags: []
 
 description: >
   Non-orphaned authors with references in this list indicates that at least one of their author names has no references.
 
-tags: [list]
 related_scripts:
   - OrphanedAuthorNames
   - OrphanedAuthors

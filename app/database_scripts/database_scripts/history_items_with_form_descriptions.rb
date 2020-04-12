@@ -27,8 +27,9 @@ end
 
 __END__
 
+section: list
 category: Taxt2
-tags: [list]
+tags: []
 
 description: >
   WIP. Issue: %github841

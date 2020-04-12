@@ -11,8 +11,10 @@ end
 __END__
 
 title: Auto-generated taxa
+
+section: list
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
 

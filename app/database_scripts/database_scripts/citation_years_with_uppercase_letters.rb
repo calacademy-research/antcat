@@ -23,8 +23,10 @@ end
 __END__
 
 title: <code>citation_year</code>s with uppercase letters
+
+section: list
 category: References
-tags: [list, new!]
+tags: [new!]
 
 description: >
   This list was added to get an overview of `citation_year`s.

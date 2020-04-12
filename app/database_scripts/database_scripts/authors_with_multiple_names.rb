@@ -24,5 +24,6 @@ end
 
 __END__
 
+section: list
 category: References
-tags: [list]
+tags: []

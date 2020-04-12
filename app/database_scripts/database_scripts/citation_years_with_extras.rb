@@ -31,8 +31,10 @@ end
 __END__
 
 title: <code>citation_year</code>s with extras
+
+section: list
 category: References
-tags: [list, slow-render, new!]
+tags: [slow-render, new!]
 
 description: >
   This list was added to get an overview of `citation_year` with "extras".

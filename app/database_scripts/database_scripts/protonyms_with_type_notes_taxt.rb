@@ -23,8 +23,10 @@ end
 __END__
 
 title: Protonyms with <code>type_notes_taxt</code>
+
+section: list
 category: Inline taxt
-tags: [list]
+tags: []
 
 description: >
   **Table/column:** `protonyms.type_notes_taxt` (called "Type notes" in the protonym form)

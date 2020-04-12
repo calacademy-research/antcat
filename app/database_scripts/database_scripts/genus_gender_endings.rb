@@ -92,5 +92,6 @@ end
 
 __END__
 
+section: list
 category: Names
-tags: [list, slow]
+tags: [slow]

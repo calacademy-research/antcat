@@ -33,8 +33,10 @@ end
 __END__
 
 title: "'See also' history items"
+
+section: list
 category: Taxt2
-tags: [list]
+tags: []
 
 description: >
   Issue: %github842

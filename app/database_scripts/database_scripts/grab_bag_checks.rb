@@ -105,8 +105,9 @@ end
 
 __END__
 
+section: list
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
   Random checks. This can be ignored.
