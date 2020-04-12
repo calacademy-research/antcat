@@ -45,6 +45,8 @@ end
 __END__
 
 title: History items without <code>ref</code> or <code>tax</code> tags
+
+section: main
 category: Taxt
 tags: [has-quick-fix]
 

@@ -39,6 +39,7 @@ end
 
 __END__
 
+section: main
 category: Catalog
 tags: []
 

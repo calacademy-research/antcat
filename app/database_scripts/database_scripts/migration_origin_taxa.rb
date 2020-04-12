@@ -31,6 +31,8 @@ end
 __END__
 
 title: Migration-origin taxa
+
+section: main
 category: Catalog
 tags: [slow-render]
 

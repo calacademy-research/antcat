@@ -45,6 +45,8 @@ end
 __END__
 
 title: Taxa with uncommon <code>type_taxt</code>s
+
+section: main
 category: Catalog
 tags: [has-quick-fix]
 

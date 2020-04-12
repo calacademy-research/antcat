@@ -29,6 +29,8 @@ end
 __END__
 
 title: Homonyms as <code>tax</code> tags
+
+section: main
 category: Taxt
 tags: [slow]
 

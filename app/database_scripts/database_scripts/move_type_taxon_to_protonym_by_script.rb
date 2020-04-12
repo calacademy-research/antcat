@@ -27,6 +27,7 @@ end
 
 __END__
 
+section: main
 category: Script (pending)
 tags: []
 

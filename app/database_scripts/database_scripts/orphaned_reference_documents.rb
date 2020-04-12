@@ -43,6 +43,7 @@ end
 
 __END__
 
+section: main
 category: PDFs
 
 description: >

@@ -43,6 +43,8 @@ end
 __END__
 
 title: References with blank PDF URLs and filenames
+
+section: main
 category: PDFs
 tags: [slow-render]
 

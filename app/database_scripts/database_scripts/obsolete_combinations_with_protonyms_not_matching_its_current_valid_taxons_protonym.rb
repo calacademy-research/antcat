@@ -40,6 +40,8 @@ end
 __END__
 
 title: Obsolete combinations with protonyms not matching its current valid taxon's protonym
+
+section: main
 category: Catalog
 tags: [slow-render]
 

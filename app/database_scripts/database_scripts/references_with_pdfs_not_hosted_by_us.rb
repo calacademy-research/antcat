@@ -28,6 +28,8 @@ end
 __END__
 
 title: References with PDFs not hosted by us
+
+section: main
 category: PDFs
 tags: [slow-render]
 

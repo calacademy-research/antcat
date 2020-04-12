@@ -70,6 +70,8 @@ end
 __END__
 
 title: History items with <code>ref</code> tags as author citations
+
+section: main
 category: Taxt
 tags: [has-quick-fix, updated!]
 
