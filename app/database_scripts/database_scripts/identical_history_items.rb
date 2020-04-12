@@ -26,8 +26,9 @@ end
 
 __END__
 
+section: regression-test
 category: Taxt
-tags: [regression-test]
+tags: []
 
 description: >
   Items belonging to species and below, and items with less than 30 characters are excluded (too many false positives).

@@ -27,8 +27,10 @@ end
 __END__
 
 title: Non-original combinations with same name as its protonym
+
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This obsolete combination has the same name as its protonym, but "Original combination" is not checked.
 

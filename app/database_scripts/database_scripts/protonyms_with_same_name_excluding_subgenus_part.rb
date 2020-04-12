@@ -46,8 +46,9 @@ end
 
 __END__
 
+section: regression-test
 category: Catalog
-tags: [regression-test, slow]
+tags: [slow]
 
 description: >
   This script checks all species and subspecies protonyms which includes a subgenus part in the name.

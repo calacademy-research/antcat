@@ -24,8 +24,10 @@ end
 __END__
 
 title: Non-fossil protonyms with fossil taxa
+
+section: regression-test
 category: Protonyms
-tags: [regression-test]
+tags: []
 
 issue_description: This protonym is not fossil, but one of its taxa is.
 

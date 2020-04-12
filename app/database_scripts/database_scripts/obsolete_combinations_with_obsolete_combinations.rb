@@ -22,8 +22,9 @@ end
 
 __END__
 
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This taxon has obsolete combinations, but it is itself an obsolete combination.
 

@@ -30,8 +30,9 @@ end
 
 __END__
 
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This junior synonym belongs to the same protonym as its current valid taxon
 
