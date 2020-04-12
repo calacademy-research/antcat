@@ -157,7 +157,7 @@ describe ActivityDecorator do
       context "when action is not 'destroy'" do
         let(:activity) { build_stubbed :activity, trackable: nil }
 
-        it "add '[deleted]' to the label" do
+        it "adds '[deleted]' to the label" do
           expect(decorated.link_trackable_if_exists("label")).to eq "label [deleted]"
         end
       end
