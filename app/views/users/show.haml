@@ -1,5 +1,7 @@
 -title @user.name
 -breadcrumb :user, @user
+-if @user.unconfirmed?
+  -noindex
 
 -content_for :breadcrumbs_right do
   -if user_is_editor?
@@ -15,32 +17,45 @@
       =link_to "My account", edit_user_registration_path, class: "btn-normal"
 
 -if @user.deleted?
-  .callout.alert This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
+  .callout.alert.small-6 This user has been soft-deleted. This page can only be seen by editors. Edit user to restore account.
 -elsif @user.locked?
-  .callout.alert This user is locked. Edit user to unlock account.
+  .callout.alert.small-6 This user is locked. Edit user to unlock account.
 -elsif @user.hidden?
-  .callout.alert This user is hidden from the users list. Edit user to show it.
+  .callout.alert.small-6 This user is hidden from the users list. Edit user to show it.
 
-%p
-  %strong Name:
-  =@user.name
-  =@user.decorate.user_badge
-  -if user_is_editor?
-    -if @user.locked?
-      %span.warning-label.rounded-badge locked
-    -if @user.deleted?
-      %span.warning-label.rounded-badge soft-deleted
-    -if @user.hidden?
-      %span.warning-label.rounded-badge hidden
+.row.margin-bottom
+  .small-6.columns
+    %p
+      %strong Name:
+      =@user.name
+      =@user.decorate.user_badge
+      -if user_is_editor?
+        -if @user.locked?
+          %span.warning-label.rounded-badge locked
+        -if @user.deleted?
+          %span.warning-label.rounded-badge soft-deleted
+        -if @user.hidden?
+          %span.warning-label.rounded-badge hidden
 
-%p
-  %strong Email:
-  =link_to @user.email, "mailto:#{@user.email}"
+    -if user_is_at_least_helper?
+      %p
+        %span.logged-in-only-background
+          %strong Email:
+          =link_to @user.email, "mailto:#{@user.email}"
+          =logged_in_only_tooltip_icon user_group: 'helpers/editors'
 
--if @user.author
-  %p
-    This user has an author page on antcat.org:
-    =link_to @user.author.first_author_name_name, @user.author
+    -if @user.author
+      %p
+        This user has an author page on antcat.org:
+        =link_to @user.author.first_author_name_name, @user.author
+
+  -if user_is_superadmin?
+    .small-4.columns
+      .callout.no-border-callout.logged-in-only-background
+        PaperTrail versions:
+        =link_to @user.created_paper_trail_versions.count, versions_path(whodunnit: @user.id)
+        =tooltip_icon "Use link in the breadcrumbs to see PaperTrail versions created by this user. The number in this infobox may be higher than the number of search results, since 'User' versions are excluded from the versions search page."
+        =logged_in_only_tooltip_icon user_group: "superadmins"
 
 .row.margin-top
   .large-12.columns
