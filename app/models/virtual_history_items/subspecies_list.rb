@@ -35,9 +35,15 @@ module VirtualHistoryItems
       attr_reader :formatter
 
       def subspecies_link subspecies, formatter
-        string = formatter.link_to_taxon(subspecies).html_safe
+        label = subspecies_link_label subspecies
+
+        string = formatter.link_to_taxon_with_label(subspecies, label).html_safe
         string << ' (unresolved junior homonym)' if subspecies.unresolved_homonym?
         string
+      end
+
+      def subspecies_link_label subspecies
+        "<i>#{'†' if subspecies.fossil?}#{subspecies.name.short_name}</i>"
       end
   end
 end
