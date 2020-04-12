@@ -1,18 +1,12 @@
 # frozen_string_literal: true
 
 class IssueDecorator < Draper::Decorator
-  delegate :open?, :help_wanted?
-
-  def format_status
-    open? ? "Open" : "Closed"
-  end
-
-  def format_status_css
-    format_status.downcase
+  def icon
+    h.antcat_icon "issue", issue.open? ? 'open' : 'closed'
   end
 
   def help_wanted_badge
-    return unless help_wanted? && open?
+    return unless issue.help_wanted? && issue.open?
     h.content_tag :span, "Help wanted!", class: "rounded-badge high-priority-label"
   end
 end

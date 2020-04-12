@@ -12,7 +12,7 @@
 
 .left.small-margin-bottom
   %h5
-    #{@issue.decorate.format_status} issue: #{@issue.title}
+    #{@issue.open? ? 'Open' : 'Closed'} issue: #{@issue.title}
     =@issue.decorate.help_wanted_badge
   %small
     Added by

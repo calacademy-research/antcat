@@ -19,8 +19,8 @@
 %table.issues.unstriped.stack
   %tbody
     -@issues.each do |issue|
-      %tr.issue{class: issue.decorate.format_status_css}
-        %td.icon.vertical-align-top=antcat_icon "issue", issue.decorate.format_status_css
+      %tr.issue{class: ('closed' if issue.closed?)}
+        %td.icon.vertical-align-top=issue.decorate.icon
         %td.grow
           =link_to issue.title, issue
           =issue.decorate.help_wanted_badge
