@@ -302,93 +302,58 @@ describe Exporters::Antweb::ExportTaxon do
     end
 
     describe "[17]: `taxonomic history html`" do
-      let!(:authorship_reference) do
-        author_name = create :author_name, name: 'Bolton, B.'
-        create :article_reference, author_names: [author_name],
-          title: 'Ants I have known',
-          citation_year: '2010a',
-          journal: create(:journal, name: 'Psyche'),
-          series_volume_issue: '1',
-          pagination: '2'
-      end
-      let!(:protonym) do
-        atta_name = create :genus_name, name: 'Atta'
-        authorship = create :citation, reference: authorship_reference, pages: '12'
-        create :protonym, name: atta_name, authorship: authorship
-      end
-      let!(:genus) { create :genus, name_string: 'Atta', protonym: protonym, hol_id: 9999 }
-      let!(:type_species) { create :species, name_string: 'Atta major', genus: genus }
-      let!(:a_reference) { create :article_reference, :with_doi }
+      let!(:taxon) { create :genus, hol_id: 9999 }
+      let!(:type_species) { create :species, genus: taxon }
+      let!(:taxt_reference) { create :article_reference }
 
       before do
-        create :species, :unavailable, genus: genus # For the statistics.
-        genus.update!(type_taxon: type_species, type_taxt: ', by monotypy')
-        genus.history_items.create!(taxt: "Taxon: {tax #{type_species.id}}")
-        genus.reference_sections.create!(title_taxt: "Title", references_taxt: "{ref #{a_reference.id}}: 766;")
+        taxon.update!(type_taxon: type_species, type_taxt: ', by monotypy')
+        taxon.history_items.create!(taxt: "Taxon: {tax #{type_species.id}}")
+        taxon.reference_sections.create!(title_taxt: "Title", references_taxt: "{ref #{taxt_reference.id}}: 766")
       end
 
       it "formats a taxon's history for AntWeb" do
-        ref_author = a_reference.authors_for_keey
-        ref_year = a_reference.citation_year
-        ref_title = a_reference.title
-        ref_journal_name = a_reference.journal.name
-        ref_pagination = a_reference.pagination
-        ref_volume = a_reference.series_volume_issue
-        ref_title_tag = "#{ref_author}, B.L. #{ref_year}. #{ref_title}. #{ref_journal_name} #{ref_volume}:#{ref_pagination}."
-        ref_doi = a_reference.doi
-
         # rubocop:disable Layout/MultilineOperationIndentation
         expected =
           %(<div class="antcat_taxon">) +
-            # statistics
+            # Statistics.
             %(<p>Extant: 1 valid species</p>) +
 
-            # headline
+            # Headline.
             %(<div>) +
-              # protonym
-              %(<b><i>Atta</i></b> ) +
+              # Protonym.
+              %(<b><i>#{taxon.protonym.name.name}</i></b> ) +
 
-              # authorship
-              %(<a title="Bolton, B. 2010a. Ants I have known. Psyche 1:2." ) +
-              %(href="https://antcat.org/references/#{authorship_reference.id}">Bolton, 2010a</a>) +
-              %(: 12) +
-              %(. ) +
+              # Authorship.
+              Exporters::Antweb::AntwebInlineCitation[taxon.authorship_reference] +
+              %(: #{taxon.protonym.authorship.pages}. ) +
 
-              # type
-              %(Type-species: #{antweb_taxon_link(type_species)}, by monotypy.) +
-              %(  ) +
+              # Type.
+              %(Type-species: #{antweb_taxon_link(type_species)}, by monotypy.  ) +
 
-              # links
-              %(#{antweb_taxon_link(genus, 'AntCat')} ) +
-              %(<a class="external-link" href="https://www.antwiki.org/wiki/Atta">AntWiki</a> ) +
-              %(<a class="external-link" href="http://hol.osu.edu/index.html?id=9999">HOL</a>) +
+              # Links.
+              %(#{antweb_taxon_link(taxon, 'AntCat')} ) +
+              %(<a class="external-link" href="https://www.antwiki.org/wiki/#{taxon.name_cache}">AntWiki</a> ) +
+              %(<a class="external-link" href="http://hol.osu.edu/index.html?id=#{taxon.hol_id}">HOL</a>) +
             %(</div>) +
 
-            # taxonomic history
+            # History items.
             %(<p><b>Taxonomic history</b></p>) +
             %(<div>) +
-              %(<div>) +
-                %(Taxon: #{antweb_taxon_link(type_species)}.) +
-              %(</div>) +
+              %(<div>Taxon: #{antweb_taxon_link(type_species)}.</div>) +
             %(</div>) +
 
-            # references
+            # Reference sections.
             %(<div>) +
               %(<div>) +
                 %(<div>Title</div>) +
-                %(<div>) +
-                  %(<a title="#{ref_title_tag}" href="https://antcat.org/references/#{a_reference.id}">) +
-                    %(#{ref_author}, #{ref_year}) +
-                  %(</a> ) +
-                  %(<a class="external-link" href="https://doi.org/#{ref_doi}">#{ref_doi}</a>) +
-                  %(: 766;) +
-                %(</div>) +
+                %(<div>#{Exporters::Antweb::AntwebInlineCitation[taxt_reference]}: 766</div>) +
               %(</div>) +
             %(</div>) +
           %(</div>)
         # rubocop:enable Layout/MultilineOperationIndentation
 
-        expect(described_class[genus][17]).to eq expected
+        expect(described_class[taxon][17]).to eq expected
       end
     end
 

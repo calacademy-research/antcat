@@ -5,17 +5,12 @@ require 'rails_helper'
 describe Exporters::Taxa::TaxaAsTxt do
   describe "#call" do
     it "formats in text style, rather than HTML" do
-      latreille = create :author_name, name: 'Latreille, P. A.'
-      science = create :journal, name: 'Science'
-      reference = create :article_reference,
-        author_names: [latreille], citation_year: '1809',
-        title: "*Atta*", journal: science,
-        series_volume_issue: '(1)', pagination: '3', doi: '123'
       taxon = create :genus, :unavailable, :incertae_sedis_in_subfamily, nomen_nudum: true
-      taxon.protonym.authorship.update!(reference: reference)
+      reference = taxon.authorship_reference
+      reference.update!(doi: '123')
 
       expect(described_class[[taxon]]).to eq "#{taxon.name_cache} incertae sedis in subfamily, nomen nudum\n" \
-        "Latreille, P. A. 1809. Atta. Science (1):3. DOI: 123   #{reference.id}\n\n"
+        "#{reference.decorate.plain_text} DOI: 123   #{reference.id}\n\n"
     end
 
     context 'when taxon is a synonym' do
@@ -33,6 +28,17 @@ describe Exporters::Taxa::TaxaAsTxt do
       specify do
         expect(described_class[[taxon]]).
           to include "#{taxon.name_cache} homonym replaced by #{taxon.homonym_replaced_by.name_cache}\n"
+      end
+    end
+
+    context "when taxon's protonym has a locality and a biogeographic region" do
+      let!(:protonym) do
+        create :protonym, :species_group_name, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA"
+      end
+      let(:taxon) { create :species, protonym: protonym }
+
+      specify do
+        expect(described_class[[taxon]]).to include "#{taxon.name_cache} valid USA. Nearctic.\n"
       end
     end
   end
