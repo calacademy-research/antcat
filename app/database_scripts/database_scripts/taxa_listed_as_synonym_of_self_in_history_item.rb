@@ -24,7 +24,7 @@ end
 __END__
 
 category: Taxt
-tags: []
+tags: [regression-test]
 
 description: >
   History items which contains `synonym of {tax <own id>}`. This list will contain false positives.
