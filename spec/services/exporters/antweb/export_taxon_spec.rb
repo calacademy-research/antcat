@@ -313,8 +313,7 @@ describe Exporters::Antweb::ExportTaxon do
       end
 
       it "formats a taxon's history for AntWeb" do
-        # rubocop:disable Layout/MultilineOperationIndentation
-        expected =
+        expect(described_class[taxon][17]).to eq(
           %(<div class="antcat_taxon">) +
             # Statistics.
             %(<p>Extant: 1 valid species</p>) +
@@ -351,9 +350,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(</div>) +
             %(</div>) +
           %(</div>)
-        # rubocop:enable Layout/MultilineOperationIndentation
-
-        expect(described_class[taxon][17]).to eq expected
+        )
       end
     end
 

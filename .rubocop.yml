@@ -39,9 +39,6 @@ Layout/DotPosition:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
-Layout/FirstHashElementIndentation:
-  Enabled: false
-
 Layout/FirstArrayElementLineBreak:
   Enabled: true
 
@@ -101,9 +98,11 @@ Metrics/CyclomaticComplexity:
 
 Metrics/MethodLength:
   Enabled: false
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
 
 Metrics/PerceivedComplexity:
-  Max: 13
+  Max: 14
 
 ### Naming.
 

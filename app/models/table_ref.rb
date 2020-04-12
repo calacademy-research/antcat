@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-# rubocop:disable Metrics/BlockLength
-TableRef = Struct.new(:table, :field, :id) do
+class TableRef
+  attr_accessor :table, :field, :id
+
+  def initialize table, field, id
+    @table = table
+    @field = field
+    @id = id
+  end
+
   def detax
     return unless taxt?
     Detax[model.find(id).public_send(field)]
@@ -26,6 +33,13 @@ TableRef = Struct.new(:table, :field, :id) do
       end
   end
 
+  def == other
+    self.class == other.class &&
+      table == other.table &&
+      field == other.field &&
+      id == other.id
+  end
+
   private
 
     def model
@@ -34,4 +48,3 @@ TableRef = Struct.new(:table, :field, :id) do
       end.first
     end
 end
-# rubocop:enable Metrics/BlockLength
