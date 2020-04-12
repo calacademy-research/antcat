@@ -31,8 +31,7 @@ describe ReferenceObserver do
       let!(:nesting_reference) { create :article_reference }
       let!(:nested_reference) { create :nested_reference, nesting_reference: nesting_reference }
       let!(:reference_author_name) do
-        create :reference_author_name, reference: nesting_reference,
-          author_name: create(:author_name)
+        create :reference_author_name, reference: nesting_reference,author_name: create(:author_name)
       end
 
       before do
@@ -56,21 +55,6 @@ describe ReferenceObserver do
         expect(nesting_reference.plain_text_cache).to eq nil
         expect(nested_reference.plain_text_cache).to eq nil
       end
-    end
-  end
-
-  context "when a reference document is changed" do
-    let(:reference) { create :any_reference }
-    let(:reference_document) { create :reference_document, reference: reference }
-
-    before do
-      reference.reload
-      References::Cache::Regenerate[reference]
-    end
-
-    it "invalidates the cache for the document's reference" do
-      expect { described_class.instance.before_update reference }.
-        to change { reference.reload.plain_text_cache.nil? }.from(false).to(true)
     end
   end
 end

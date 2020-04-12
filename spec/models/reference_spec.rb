@@ -57,16 +57,6 @@ describe Reference do
   end
 
   describe "scopes" do
-    describe ".unreviewed_references" do
-      let!(:unreviewed) { create :any_reference, review_state: "reviewing" }
-
-      before { create :any_reference, review_state: "reviewed" }
-
-      it "returns unreviewed references" do
-        expect(described_class.unreviewed).to eq [unreviewed]
-      end
-    end
-
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
         one = create :any_reference, author_string: 'Fisher', citation_year: '1910b'
