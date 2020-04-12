@@ -4,7 +4,7 @@
 
 FactoryBot.define do
   factory :reference_author_name do
-    reference factory: :article_reference
+    reference factory: :any_reference
     association :author_name
   end
 end

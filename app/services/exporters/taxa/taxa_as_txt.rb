@@ -18,11 +18,11 @@ module Exporters
         def format_taxon taxon
           string = format_name(taxon).html_safe
           string << ' '
-          string << convert_to_text(format_status(taxon).html_safe)
+          string << format_status(taxon)
           type_localities = format_type_localities(taxon)
-          string << convert_to_text(' ' + type_localities) if type_localities.present?
+          string << (' ' + type_localities) if type_localities.present?
           string << "\n"
-          string << convert_to_text(format_protonym(taxon))
+          string << format_protonym(taxon)
           string << "\n\n"
         end
 
@@ -73,10 +73,6 @@ module Exporters
             string << '.'
           end
           string
-        end
-
-        def convert_to_text string
-          Unitalicize[string.html_safe]
         end
     end
   end

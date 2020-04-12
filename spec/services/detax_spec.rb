@@ -12,10 +12,12 @@ describe Detax do
     end
 
     context 'with unsafe tags' do
-      let(:reference) { create :article_reference, title: 'Latreille, 1809 <script>xss</script>' }
+      let(:reference) { create :any_reference, title: 'pizza <script>xss</script>' }
 
       it "sanitizes them" do
-        expect(described_class["{ref #{reference.id}} <script>xss</script>"]).to_not include 'script'
+        results = described_class["{ref #{reference.id}} <script>xss</script>"]
+        expect(results).to include 'pizza xss'
+        expect(results).to_not include 'script'
       end
     end
 
