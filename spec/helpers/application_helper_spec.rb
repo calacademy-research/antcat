@@ -17,28 +17,4 @@ describe ApplicationHelper do
     specify { expect(helper.foundation_class_for("alert")).to eq "alert" }
     specify { expect(helper.foundation_class_for("error")).to eq "alert" }
   end
-
-  describe "#antcat_icon" do
-    describe "arguments" do
-      context "when a string" do
-        specify { expect(icon_classes("issue")).to eq "antcat_icon issue" }
-      end
-
-      context "when two strings" do
-        specify { expect(icon_classes("issue open")).to eq "antcat_icon issue open" }
-      end
-
-      context "when array" do
-        specify { expect(icon_classes(["issue open"])).to eq "antcat_icon issue open" }
-      end
-    end
-
-    def icon_classes *css_classes
-      extract_css_classes helper.antcat_icon(*css_classes)
-    end
-
-    def extract_css_classes string
-      string.scan(/class="(.*?)"/).first.first
-    end
-  end
 end
