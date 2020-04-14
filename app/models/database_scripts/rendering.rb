@@ -2,25 +2,15 @@
 
 module DatabaseScripts
   module Rendering
-    include DatabaseScripts::Renderers::AsTable
-
-    # Tries to be smart whenever not overridden in the scripts.
+    # Implicitly render based on result type, unless overridden in script.
     def render
-      case cached_results
-      when ActiveRecord::Relation
-        case cached_results.table.name # `#base_class` or `#klass` doesn't work for some reason.
-        when "taxa" then as_taxon_table
-        when "protonyms" then as_protonym_table
-        when "references" then as_reference_list
-        else "Error: cannot implicitly render ActiveRecord::Relation."
-        end
-      when Array
-        return as_taxon_table if cached_results.first.is_a?(Taxon)
-        return FOUND_NO_DATABASE_ISSUES if cached_results.blank?
-        "Error: cannot implicitly render results."
-      else
-        "Error: cannot implicitly render results."
-      end
+      implicit_render
+    end
+
+    def as_table
+      renderer = DatabaseScripts::Renderers::AsTable.new(cached_results)
+      yield renderer
+      renderer.render
     end
 
     def as_taxon_table
@@ -55,5 +45,25 @@ module DatabaseScripts
       end
       markdown list
     end
+
+    private
+
+      def implicit_render
+        case cached_results
+        when ActiveRecord::Relation
+          case cached_results.table.name # `#base_class` or `#klass` doesn't work for some reason.
+          when "taxa" then as_taxon_table
+          when "protonyms" then as_protonym_table
+          when "references" then as_reference_list
+          else "Error: cannot implicitly render ActiveRecord::Relation."
+          end
+        when Array
+          return as_taxon_table if cached_results.first.is_a?(Taxon)
+          return DatabaseScripts::Renderers::AsTable::FOUND_NO_DATABASE_ISSUES if cached_results.blank?
+          "Error: cannot implicitly render results."
+        else
+          "Error: cannot implicitly render results."
+        end
+      end
   end
 end
