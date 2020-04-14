@@ -76,7 +76,7 @@ class DatabaseScript
   end
 
   def title
-    end_data_attributes.title || filename_without_extension.humanize.humanize(keep_id_suffix: false)
+    end_data_attributes.title || filename_without_extension.humanize(keep_id_suffix: true)
   end
 
   def related_scripts

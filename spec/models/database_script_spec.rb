@@ -63,6 +63,20 @@ describe DatabaseScript do
       database_script = DatabaseScripts::OrphanedProtonyms.new
       expect(database_script.title).to eq "Orphaned protonyms"
     end
+
+    context "when filename ends with '_id'" do
+      subject(:database_script) { DatabaseScripts::TaxaWithSameName.new }
+
+      it "keeps the '_id' part" do
+        expect(database_script.title).to eq 'Taxa with same name'
+
+        def database_script.filename_without_extension
+          'taxa_with_same_name_id'
+        end
+
+        expect(database_script.title).to eq 'Taxa with same name id'
+      end
+    end
   end
 
   describe "#related_scripts" do
