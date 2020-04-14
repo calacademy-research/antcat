@@ -29,7 +29,7 @@ __END__
 
 section: research
 category: Catalog
-tags: []
+tags: [list]
 
 description: >
   WIP.

@@ -59,8 +59,8 @@ class DatabaseScriptDecorator < Draper::Decorator
     private_class_method :tag_css_class
 
     def list_or_slow?
-      database_script.tags.include?('list') ||
-        database_script.section == DatabaseScripts::Tagging::LIST_SECTION ||
-        database_script.slow?
+      tags.include?('list') ||
+        section == DatabaseScripts::Tagging::LIST_SECTION ||
+        slow?
     end
 end

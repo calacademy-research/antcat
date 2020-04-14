@@ -26,35 +26,44 @@
 .row
   .small-12.columns
     -@grouped_database_scripts.each do |section, database_scripts|
+      %h5.right
+        %small
+          =database_scripts.size
+          scripts in section
       -case section
-      -when DatabaseScripts::Tagging::REVERSED_SECTION
-        %h5 Reversed scripts
-        %p Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.
-      -when DatabaseScripts::Tagging::LONG_RUNNING_SECTION
-        %h5 Long-running scripts
-      -when DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
-        %h5 Regression tests
-        %p
-          For issues that have been mostly fixed, but we want to make sure do not re-appear
-          =surround "(", ")." do
-            =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
-          Only needs to be checked periodically.
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
-        %h5 Pending automation, editor action required
+        %h5.left Pending automation, editor action required
+        .clearfix
         %p
           For issues that require manual editing before they can be fixed by script.
           =link_to 'Open issues', issues_path
           or the scripts themselves may describe what needs to be done.
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
-        %h5 Pending automation, no editor action required
-        %p For issues that can be fixed by script once ageed upon, but require little to no manual editing.
+        %h5.left Pending automation, no editor action required
+        .clearfix
+        %p For issues that can be fixed by script once agreed upon, but require little to no manual editing.
+      -when DatabaseScripts::Tagging::LONG_RUNNING_SECTION
+        %h5.left Long-running scripts
+      -when DatabaseScripts::Tagging::REVERSED_SECTION
+        %h5.left Reversed scripts
+        .clearfix
+        %p Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.
+      -when DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
+        %h5.left Regression tests
+        .clearfix
+        %p
+          For issues that have been mostly fixed, but we want to make sure do not re-appear
+          =surround "(", ")." do
+            =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
+          Only needs to be checked periodically.
       -when DatabaseScripts::Tagging::RESEARCH_SECTION
-        %h5 "Research scripts"
+        %h5.left "Research scripts"
+        .clearfix
         %p Scripts that were added to get an overview of our current data.
       -when *DatabaseScripts::Tagging::SECTIONS
-        %h5="#{section.capitalize} scripts"
+        %h5.left="#{section.capitalize} scripts"
       -else
-        %h5 Unknown section. What???
+        %h5.left Unknown section. What???
 
       %table.tablesorter.huge-margin-bottom
         %thead
@@ -89,3 +98,9 @@
                   =antcat_icon("check")
               -if @check_if_empty
                 %td.shrink=decorated.empty_status
+
+.row
+  .small-12.columns
+    %small.right
+      Total number of scripts:
+      =@total_number_of_database_scripts

@@ -8,6 +8,7 @@ class DatabaseScriptsController < ApplicationController
   before_action :authenticate_user!
 
   def index
+    @total_number_of_database_scripts = DatabaseScript.all.size
     @grouped_database_scripts = DatabaseScript.all.group_by(&:section).
       sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
     @check_if_empty = params[:check_if_empty]
