@@ -16,11 +16,6 @@
         =DatabaseScriptDecorator.format_tags [DatabaseScript::VALIDATED_TAG]
         means that there are validations in place to prevent the issue
       %p
-        =DatabaseScriptDecorator.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
-        is for issues that have been mostly fixed
-        =surround "(", ")" do
-          =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
-      %p
         =DatabaseScriptDecorator.format_tags [DatabaseScript::HIGH_PRIORITY_TAG]
         is for issues we want to fix as soon as possible, usually because the issue is
         preventing us from improving the code
@@ -30,9 +25,21 @@
 
 .row
   .small-12.columns
-    -@grouped_database_scripts.each do |(_sort_order, title), database_scripts|
-      %h5=title
-      %table.tablesorter.margin-bottom
+    -@grouped_database_scripts.each do |section, database_scripts|
+      -case section
+      -when DatabaseScript::REGRESSION_TEST_SECTION
+        %h5 Regression tests
+        %p
+          For issues that have been mostly fixed, but we want to make sure do not re-appear
+          =surround "(", ")." do
+            =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
+          Only needs to be checked periodically.
+      -when *DatabaseScript::SECTIONS
+        %h5="#{section.capitalize} scripts"
+      -else
+        %h5 Unknown section. What???
+
+      %table.tablesorter.huge-margin-bottom
         %thead
           %tr
             %th.no-wrap Category

@@ -8,14 +8,18 @@ class DatabaseScript
   include DatabaseScripts::ViewHelpers
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
+  SECTIONS = [
+    UNGROUPED_SECTION = "ungrouped",
+    MAIN_SECTION = "main",
+    REGRESSION_TEST_SECTION = "regression-test",
+    LIST_SECTION = "list"
+  ]
   TAGS = [
     SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
     SLOW_RENDER_TAG = "slow-render",
     NEW_TAG = "new!",
     UPDATED = "updated!",
-    REGRESSION_TEST_TAG = "regression-test",
-    LIST_TAG = "list",
     VALIDATED_TAG = "validated",
     HAS_QUICK_FIX_TAG = "has-quick-fix",
     HIGH_PRIORITY_TAG = "high-priority"
@@ -25,7 +29,7 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
-  delegate :category, :tags, :issue_description, :description, to: :end_data_attributes
+  delegate :section, :category, :tags, :issue_description, :description, to: :end_data_attributes
 
   class << self
     def inherited subclass

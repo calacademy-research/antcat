@@ -45,6 +45,14 @@ describe DatabaseScript do
     end
   end
 
+  describe "#section" do
+    described_class.all.each do |database_script|
+      it "#{database_script.filename_without_extension} has a known section" do
+        expect(database_script.section.in?(DatabaseScript::SECTIONS)).to eq true
+      end
+    end
+  end
+
   describe "#title" do
     it "fetches the title from the END data" do
       database_script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new

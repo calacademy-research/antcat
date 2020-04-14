@@ -4,19 +4,18 @@
 
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
+  SECTIONS_SORT_ORDER = [
+    DatabaseScript::UNGROUPED_SECTION,
+    DatabaseScript::MAIN_SECTION,
+    DatabaseScript::REGRESSION_TEST_SECTION,
+    DatabaseScript::LIST_SECTION
+  ]
 
   before_action :authenticate_user!
 
   def index
-    @grouped_database_scripts = DatabaseScript.all.group_by do |script|
-      if DatabaseScript::REGRESSION_TEST_TAG.in? script.tags
-        [2, 'Regression tests, to check periodically']
-      elsif DatabaseScript::LIST_TAG.in? script.tags
-        [3, 'Lists']
-      else
-        [1, 'Main scripts']
-      end
-    end.sort_by { |(sort_order, _title), _scripts| sort_order }
+    @grouped_database_scripts = DatabaseScript.all.group_by(&:section).
+      sort_by { |section, _scripts| SECTIONS_SORT_ORDER.index(section) || 0 }
     @check_if_empty = params[:check_if_empty]
   end
 
