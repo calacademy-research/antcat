@@ -12,6 +12,7 @@ class DatabaseScript
     UNGROUPED_SECTION = "ungrouped",
     MAIN_SECTION = "main",
     REGRESSION_TEST_SECTION = "regression-test",
+    ORPHANED_RECORDS_SECTION = "orphaned-records",
     LIST_SECTION = "list"
   ]
   TAGS = [

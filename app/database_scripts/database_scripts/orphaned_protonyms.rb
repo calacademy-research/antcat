@@ -10,7 +10,7 @@ end
 
 __END__
 
-section: list
+section: orphaned-records
 category: Protonyms
 tags: []
 

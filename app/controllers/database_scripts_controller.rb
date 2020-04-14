@@ -8,6 +8,7 @@ class DatabaseScriptsController < ApplicationController
     DatabaseScript::UNGROUPED_SECTION,
     DatabaseScript::MAIN_SECTION,
     DatabaseScript::REGRESSION_TEST_SECTION,
+    DatabaseScript::ORPHANED_RECORDS_SECTION,
     DatabaseScript::LIST_SECTION
   ]
 
