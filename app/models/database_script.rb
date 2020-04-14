@@ -4,8 +4,8 @@
 
 class DatabaseScript
   include Draper::Decoratable
-  include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
+  include DatabaseScripts::ImplicitRender
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
 

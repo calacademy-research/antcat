@@ -2,6 +2,45 @@
 
 module DatabaseScripts
   module ViewHelpers
+    def as_table
+      renderer = DatabaseScripts::Renderers::AsTable.new(cached_results)
+      yield renderer
+      renderer.render
+    end
+
+    def as_taxon_table
+      as_table do |t|
+        t.header 'Taxon', 'Rank', 'Status'
+        t.rows do |taxon|
+          [
+            taxon_link(taxon),
+            taxon.rank,
+            taxon.status
+          ]
+        end
+      end
+    end
+
+    def as_protonym_table
+      as_table do |t|
+        t.header 'ID', 'Protonym'
+        t.rows do |protonym|
+          [
+            protonym.id,
+            protonym.decorate.link_to_protonym
+          ]
+        end
+      end
+    end
+
+    def as_reference_list
+      list = +""
+      cached_results.each do |reference|
+        list << "* #{reference_link(reference)}\n"
+      end
+      Markdowns::Render[list, sanitize_content: false]
+    end
+
     def taxa_list taxa
       taxa.map(&:link_to_taxon).join('<br>')
     end
