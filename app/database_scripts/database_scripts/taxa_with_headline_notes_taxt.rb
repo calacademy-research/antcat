@@ -25,9 +25,9 @@ __END__
 
 title: Taxa with <code>headline_notes_taxt</code>
 
-section: list
+section: research
 category: Inline taxt
-tags: []
+tags: [list]
 
 description: >
   **Table/column:** `taxa.headline_notes_taxt` (called "Notes" in the upper section of the taxon form)

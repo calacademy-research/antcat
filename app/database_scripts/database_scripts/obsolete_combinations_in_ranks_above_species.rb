@@ -29,7 +29,7 @@ end
 
 __END__
 
-section: list
+section: research
 category: Catalog
 tags: []
 

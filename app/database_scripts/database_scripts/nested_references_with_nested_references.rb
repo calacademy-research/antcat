@@ -37,9 +37,9 @@ end
 
 __END__
 
-section: list
+section: research
 category: References
-tags: [new!]
+tags: [list, new!]
 
 description: >
   This is not an issue. The script was added to get an overview of how many such cases we have.

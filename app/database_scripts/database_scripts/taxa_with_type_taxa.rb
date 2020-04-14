@@ -61,9 +61,9 @@ end
 
 __END__
 
-section: list
+section: research
 category: Catalog
-tags: [slow]
+tags: [list, slow]
 
 description: >
   This script was added to investigate automatic "now links" for type taxa.

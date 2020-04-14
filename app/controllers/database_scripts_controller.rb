@@ -11,7 +11,8 @@ class DatabaseScriptsController < ApplicationController
     DatabaseScript::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION,
     DatabaseScript::REGRESSION_TEST_SECTION,
     DatabaseScript::ORPHANED_RECORDS_SECTION,
-    DatabaseScript::LIST_SECTION
+    DatabaseScript::LIST_SECTION,
+    DatabaseScript::RESEARCH_SECTION
   ]
 
   before_action :authenticate_user!

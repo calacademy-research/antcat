@@ -15,7 +15,8 @@ class DatabaseScript
     PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
     REGRESSION_TEST_SECTION = "regression-test",
     ORPHANED_RECORDS_SECTION = "orphaned-records",
-    LIST_SECTION = "list"
+    LIST_SECTION = "list",
+    RESEARCH_SECTION = "research"
   ]
   TAGS = [
     SLOW_TAG = "slow",

@@ -41,9 +41,9 @@ __END__
 
 title: Taxa with <code>type_taxt</code>
 
-section: list
+section: research
 category: Inline taxt
-tags: [slow]
+tags: [list, slow]
 
 description: >
   **Table/column:** `taxa.type_taxt` (called "Notes" in the "Type" section of the taxon form)

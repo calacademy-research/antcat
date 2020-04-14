@@ -43,6 +43,9 @@
       -when DatabaseScript::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
         %h5 Pending automation, no editor action required
         %p For issues that can be fixed by script once ageed upon, but require little to no manual editing.
+      -when DatabaseScript::RESEARCH_SECTION
+        %h5 "Research scripts"
+        %p Scripts that were added to get an overview of our current data.
       -when *DatabaseScript::SECTIONS
         %h5="#{section.capitalize} scripts"
       -else

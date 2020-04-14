@@ -108,9 +108,9 @@ end
 
 __END__
 
-section: list
+section: research
 category: Taxt
-tags: []
+tags: [list]
 
 description: >
   Script added to investigate how we can improve reference sections.

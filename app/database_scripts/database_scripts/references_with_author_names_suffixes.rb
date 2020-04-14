@@ -24,9 +24,9 @@ __END__
 
 title: References with <code>author_names_suffix</code>es
 
-section: list
+section: research
 category: References
-tags: [new!]
+tags: [list, new!]
 
 description: >
   Not an issue. Script was added to get an overview of all `author_names_suffix`es.
