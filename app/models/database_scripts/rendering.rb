@@ -43,7 +43,7 @@ module DatabaseScripts
       cached_results.each do |reference|
         list << "* #{reference_link(reference)}\n"
       end
-      markdown list
+      Markdowns::Render[list, sanitize_content: false]
     end
 
     private

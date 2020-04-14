@@ -6,10 +6,6 @@ module DatabaseScripts
       taxa.map(&:link_to_taxon).join('<br>')
     end
 
-    def markdown content
-      Markdowns::Render[content, sanitize_content: false]
-    end
-
     # NOTE: The reason we're using markdown here is to take advantage of performance tweaks
     # that had already been made for rendering "taxts" in the catalog.
     def taxon_link taxon_or_id
