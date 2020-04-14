@@ -4,7 +4,7 @@ require Rails.root.join('lib/read_end_data')
 
 module DatabaseScripts
   class EndDataAttributes
-    attr_private_initialize :script_path
+    attr_private_initialize :filename_without_extension
 
     def title
       end_data[:title]&.html_safe
@@ -40,6 +40,10 @@ module DatabaseScripts
 
       def end_data
         @_end_data ||= ReadEndData.new(script_path).call.deep_symbolize_keys
+      end
+
+      def script_path
+        "#{DatabaseScript::SCRIPTS_DIR}/#{filename_without_extension}.rb"
       end
   end
 end

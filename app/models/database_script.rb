@@ -79,11 +79,7 @@ class DatabaseScript
   private
 
     def end_data_attributes
-      @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(script_path)
-    end
-
-    def script_path
-      "#{SCRIPTS_DIR}/#{filename_without_extension}.rb"
+      @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(filename_without_extension)
     end
 
     def default_statistics

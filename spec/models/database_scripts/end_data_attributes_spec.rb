@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 describe DatabaseScripts::EndDataAttributes do
-  subject(:end_data_attributes) { described_class.new(script_path) }
+  subject(:end_data_attributes) { described_class.new(filename_without_extension) }
 
   context 'with a real script' do
-    let(:script_path) { "app/database_scripts/database_scripts/extant_taxa_in_fossil_genera.rb" }
+    let(:filename_without_extension) { "extant_taxa_in_fossil_genera" }
 
     describe "#title" do
-      let(:script_path) { "app/database_scripts/database_scripts/fossil_protonyms_with_non_fossil_taxa.rb" }
+      let(:filename_without_extension) { "fossil_protonyms_with_non_fossil_taxa" }
 
       specify { expect(end_data_attributes.title).to eq "Fossil protonyms with non-fossil taxa" }
     end
@@ -39,7 +39,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "#related_scripts" do
-      let(:script_path) { "app/database_scripts/database_scripts/valid_subspecies_in_invalid_species.rb" }
+      let(:filename_without_extension) { "valid_subspecies_in_invalid_species" }
 
       it "returns related scripts" do
         expect(end_data_attributes.related_scripts.size).to eq 1
@@ -49,7 +49,7 @@ describe DatabaseScripts::EndDataAttributes do
   end
 
   context 'with canned data' do
-    let(:script_path) { '' }
+    let(:filename_without_extension) { '' }
 
     let(:end_data) do
       {
@@ -65,7 +65,7 @@ describe DatabaseScripts::EndDataAttributes do
 
     before do
       double = instance_double 'ReadEndData'
-      allow(ReadEndData).to receive(:new).with(script_path).and_return(double)
+      allow(ReadEndData).to receive(:new).with("app/database_scripts/database_scripts/.rb").and_return(double)
       allow(double).to receive(:call).and_return(end_data)
     end
 
@@ -93,12 +93,12 @@ describe DatabaseScripts::EndDataAttributes do
   end
 
   context 'with blank data' do
-    let(:script_path) { '' }
+    let(:filename_without_extension) { '' }
     let(:end_data) { {} }
 
     before do
       double = instance_double 'ReadEndData'
-      allow(ReadEndData).to receive(:new).with(script_path).and_return(double)
+      allow(ReadEndData).to receive(:new).with("app/database_scripts/database_scripts/.rb").and_return(double)
       allow(double).to receive(:call).and_return(end_data)
     end
 
