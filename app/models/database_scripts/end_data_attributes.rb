@@ -32,7 +32,7 @@ module DatabaseScripts
 
     def related_scripts
       (end_data[:related_scripts] || []).map do |class_name|
-        DatabaseScript.safe_new_from_filename_without_extension class_name
+        DatabaseScript.safe_new_from_filename(class_name)
       end
     end
 

@@ -2,7 +2,7 @@
 
 # Use `rails generate database_script <name_of_script>` to generate new scripts.
 
-class DatabaseScript # rubocop:disable Metrics/ClassLength
+class DatabaseScript
   include Draper::Decoratable
   include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
@@ -44,24 +44,19 @@ class DatabaseScript # rubocop:disable Metrics/ClassLength
       subclass.include ActionView::Helpers::UrlHelper
     end
 
-    def new_from_filename_without_extension basename
-      script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize
-      raise ScriptNotFound unless script_class
-
+    def new_from_filename basename
+      raise ScriptNotFound unless (script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize)
       script_class.new
     end
 
-    def safe_new_from_filename_without_extension class_name
-      new_from_filename_without_extension class_name
+    def safe_new_from_filename class_name
+      new_from_filename(class_name)
     rescue DatabaseScript::ScriptNotFound
       DatabaseScripts::UnfoundDatabaseScript.new(class_name)
     end
 
     def all
-      @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map do |path|
-                  basename = File.basename(path, ".rb")
-                  new_from_filename_without_extension basename
-                end
+      @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map { |path| new_from_filename(File.basename(path, ".rb")) }
     end
 
     # TODO: Indicate record type in scripts.
