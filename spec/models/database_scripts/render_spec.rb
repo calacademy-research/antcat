@@ -7,17 +7,18 @@ describe DatabaseScripts::Render do
   let(:render) { described_class.new(database_script) }
 
   describe "#call" do
-    context "when the script has not defined `#render`" do
-      it "can render an ActiveRecord::Relation" do
-        create :any_reference
-        allow(database_script).to receive(:results).and_return Reference.all
-
-        expect(render.call).to match "<ul>\n<li>"
+    context "when the script has defined `#render_as`" do
+      before do
+        def database_script.render_as
+          :as_taxon_table
+        end
       end
 
-      it "cannot render 'asdasda'" do
-        allow(database_script).to receive(:results).and_return 'asdasda'
-        expect(render.call).to match "Error: cannot implicitly render results."
+      it 'render a table for that type' do
+        taxon = create :family
+        allow(database_script).to receive(:results).and_return Taxon.all
+
+        expect(render.call).to match %(<tbody><tr><td><a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a></td><td>family</td><td>valid</td></tr>)
       end
     end
   end

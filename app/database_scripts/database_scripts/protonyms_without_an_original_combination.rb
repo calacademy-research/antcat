@@ -10,6 +10,10 @@ module DatabaseScripts
       "Results: #{protonyms.count}"
     end
 
+    def render_as
+      :as_protonym_table
+    end
+
     private
 
       def protonyms

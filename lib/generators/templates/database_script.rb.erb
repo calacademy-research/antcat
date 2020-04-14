@@ -6,7 +6,6 @@ module DatabaseScripts
       Subspecies.limit(10)
     end
 
-    # When this method isn't implemented, the code tries to render `#results` based on its class.
     def render
       as_table do |t|
         t.header 'Taxon', 'Status'

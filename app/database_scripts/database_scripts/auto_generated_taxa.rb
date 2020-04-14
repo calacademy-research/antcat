@@ -5,6 +5,10 @@ module DatabaseScripts
     def results
       Taxon.where(auto_generated: true)
     end
+
+    def render_as
+      :as_taxon_table
+    end
   end
 end
 

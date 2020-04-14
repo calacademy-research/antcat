@@ -33,7 +33,7 @@ module DatabaseScripts
       end
     end
 
-    def as_reference_list
+    def as_reference_table
       list = +""
       cached_results.each do |reference|
         list << "* #{reference_link(reference)}\n"
