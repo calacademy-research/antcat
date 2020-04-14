@@ -25,7 +25,7 @@ __END__
 
 title: References without PDFs
 
-section: list
+section: long-running
 category: PDFs
 tags: [slow-render]
 

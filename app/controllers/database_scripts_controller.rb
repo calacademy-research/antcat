@@ -7,6 +7,7 @@ class DatabaseScriptsController < ApplicationController
   SECTIONS_SORT_ORDER = [
     DatabaseScript::UNGROUPED_SECTION,
     DatabaseScript::MAIN_SECTION,
+    DatabaseScript::LONG_RUNNING_SECTION,
     DatabaseScript::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION,
     DatabaseScript::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION,
     DatabaseScript::REGRESSION_TEST_SECTION,

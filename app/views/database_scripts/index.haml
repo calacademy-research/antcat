@@ -27,6 +27,8 @@
   .small-12.columns
     -@grouped_database_scripts.each do |section, database_scripts|
       -case section
+      -when DatabaseScript::LONG_RUNNING_SECTION
+        %h5 Long-running scripts
       -when DatabaseScript::REGRESSION_TEST_SECTION
         %h5 Regression tests
         %p
