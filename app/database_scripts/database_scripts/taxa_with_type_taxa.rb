@@ -20,17 +20,17 @@ module DatabaseScripts
           type_taxon_expander = TypeTaxonExpander.new(taxon)
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
 
-            markdown_taxon_link(type_taxon),
+            taxon_link(type_taxon),
             format_type_taxt(taxon.type_taxt),
             type_taxon.status,
 
             format_type_taxon_expansion(type_taxon_expander),
             type_taxon_expander.reason_cannot_expand,
 
-            (markdown_taxon_link(type_taxon_now) unless tt_same_as_ttn),
+            (taxon_link(type_taxon_now) unless tt_same_as_ttn),
             (type_taxon_now.status unless tt_same_as_ttn)
           ]
         end

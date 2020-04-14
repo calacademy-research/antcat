@@ -12,7 +12,7 @@ module DatabaseScripts
 
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             ('Yes' if taxon.soft_validations.failed?)
           ]

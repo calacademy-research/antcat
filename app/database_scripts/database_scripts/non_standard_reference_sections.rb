@@ -27,7 +27,7 @@ module DatabaseScripts
         t.rows do |reference_section, content, issue|
           [
             reference_section_link(reference_section.id),
-            markdown_taxon_link(reference_section.taxon),
+            taxon_link(reference_section.taxon),
             content,
             issue
           ]

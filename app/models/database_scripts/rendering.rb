@@ -18,7 +18,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Rank', 'Status'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.rank,
             taxon.status
           ]
@@ -41,7 +41,7 @@ module DatabaseScripts
     def as_reference_list
       list = +""
       cached_results.each do |reference|
-        list << "* #{markdown_reference_link(reference)}\n"
+        list << "* #{reference_link(reference)}\n"
       end
       markdown list
     end

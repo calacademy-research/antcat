@@ -19,13 +19,13 @@ module DatabaseScripts
           different = cvt_of_type_taxon && type_taxon != cvt_of_type_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
 
-            markdown_taxon_link(type_taxon),
+            taxon_link(type_taxon),
             type_taxon.status,
 
-            (markdown_taxon_link(cvt_of_type_taxon) if different),
+            (taxon_link(cvt_of_type_taxon) if different),
             (cvt_of_type_taxon.status if different),
 
             Detax[type_taxt],

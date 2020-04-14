@@ -14,11 +14,11 @@ module DatabaseScripts
           current_valid_taxon = taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.decorate.link_to_antwiki,
             taxon.rank,
             taxon.status,
-            markdown_taxon_link(current_valid_taxon),
+            taxon_link(current_valid_taxon),
             taxon.current_valid_taxon&.decorate&.link_to_antwiki,
             taxon.protonym.decorate.link_to_protonym
           ]

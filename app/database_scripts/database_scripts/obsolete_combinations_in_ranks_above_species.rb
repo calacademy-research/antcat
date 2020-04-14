@@ -13,11 +13,11 @@ module DatabaseScripts
           current_valid_taxon = taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxon.type,
 
-            markdown_taxon_link(current_valid_taxon),
+            taxon_link(current_valid_taxon),
             current_valid_taxon.status,
             current_valid_taxon.type
           ]

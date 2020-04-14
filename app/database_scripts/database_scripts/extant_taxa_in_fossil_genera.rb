@@ -12,9 +12,9 @@ module DatabaseScripts
 
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(taxon.genus),
+            taxon_link(taxon.genus),
             taxon.genus.status
           ]
         end

@@ -10,12 +10,14 @@ module DatabaseScripts
       Markdowns::Render[content, sanitize_content: false]
     end
 
-    def markdown_taxon_link taxon_or_id
+    # NOTE: The reason we're using markdown here is to take advantage of performance tweaks
+    # that had already been made for rendering "taxts" in the catalog.
+    def taxon_link taxon_or_id
       return "" unless taxon_or_id
       "%taxon#{taxon_or_id.try(:id) || taxon_or_id}"
     end
 
-    def markdown_reference_link reference
+    def reference_link reference
       "%reference#{reference.id}"
     end
 

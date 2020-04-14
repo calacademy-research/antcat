@@ -11,7 +11,7 @@ module DatabaseScripts
         t.header 'Obsolete combination', 'Obsolete combinations of obsolete combination'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxa_list(taxon.obsolete_combinations)
           ]
         end

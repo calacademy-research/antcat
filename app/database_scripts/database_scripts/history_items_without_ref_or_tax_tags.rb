@@ -18,7 +18,7 @@ module DatabaseScripts
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             Detax[taxt],
             convert_bolton_link(history_item),

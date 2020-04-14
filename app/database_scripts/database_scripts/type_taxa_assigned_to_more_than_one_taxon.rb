@@ -14,10 +14,10 @@ module DatabaseScripts
 
           [
             taxon.type,
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxon.protonym.decorate.link_to_protonym,
-            markdown_taxon_link(taxon.type_taxon),
+            taxon_link(taxon.type_taxon),
             protonym_ids_of_siblings.size,
             protonym_ids_of_siblings.uniq.size
           ]

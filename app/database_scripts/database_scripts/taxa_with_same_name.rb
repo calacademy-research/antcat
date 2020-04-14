@@ -15,7 +15,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Authorship', 'Status'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.authorship_reference.keey,
             taxon.status
           ]

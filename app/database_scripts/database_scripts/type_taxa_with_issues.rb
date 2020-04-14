@@ -21,12 +21,12 @@ module DatabaseScripts
           next unless issue
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.rank,
-            markdown_taxon_link(type_taxon),
+            taxon_link(type_taxon),
             type_taxon.rank,
             type_taxon.status,
-            markdown_taxon_link(type_taxon_now),
+            taxon_link(type_taxon_now),
             type_taxon_now.rank,
             type_taxon_now.status,
             issue,

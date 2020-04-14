@@ -16,7 +16,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Authorship', 'Status', 'Unresolved homonym?'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.authorship_reference.keey,
             taxon.status,
             ('Yes' if taxon.unresolved_homonym?)

@@ -36,11 +36,11 @@ module DatabaseScripts
           taxons_cvt_is_genus_of_subgenus = (subgenus.genus == taxon.current_valid_taxon)
 
           [
-            markdown_taxon_link(subgenus),
+            taxon_link(subgenus),
             subgenus.authorship_reference.keey,
             subgenus.status,
 
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             origin_warning(taxon),
             taxon.authorship_reference.keey,
             taxon.status,

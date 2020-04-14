@@ -20,7 +20,7 @@ module DatabaseScripts
           target_subspecies = target_subspecies_candiates.first
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             target_subspecies_name_string,
             ('Yes' if convertable),

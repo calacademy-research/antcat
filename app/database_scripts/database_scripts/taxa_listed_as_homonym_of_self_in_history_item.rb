@@ -12,7 +12,7 @@ module DatabaseScripts
         t.rows do |history_item|
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
-            markdown_taxon_link(history_item.taxon),
+            taxon_link(history_item.taxon),
             Detax[history_item.taxt]
           ]
         end

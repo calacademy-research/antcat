@@ -11,7 +11,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Status', 'headline_notes_taxt'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             Detax[taxon.headline_notes_taxt]
           ]

@@ -25,7 +25,7 @@ module DatabaseScripts
           incompatible_taxa = taxa.where.not(status: COMPATIBLE_STATUSES).includes(:name)
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxa.pluck(:status).uniq.join(', '),
             incompatible_taxa.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
