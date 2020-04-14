@@ -49,6 +49,7 @@ end
 
 __END__
 
+section: main
 category: Catalog
 
 issue_description: This taxon has the status "unavailable uncategorized".
@@ -62,4 +63,3 @@ related_scripts:
   - MigrationOriginTaxa
   - UnavailableMisspellings
   - UnavailableUncategorizedTaxa
-  - UnavailableUncategorizedTaxaTouchedByEditors

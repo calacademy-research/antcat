@@ -58,8 +58,10 @@ end
 __END__
 
 title: Valid taxa with non-valid parents
+
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 description: >
 

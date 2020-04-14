@@ -34,6 +34,7 @@ end
 
 __END__
 
+section: main
 category: Protonyms
 tags: []
 
@@ -43,14 +44,12 @@ description: >
 
   * %dbscript:ProtonymsWithMoreThanOneSynonym
 
-  * %dbscript:ProtonymsWithMoreThanOneValidTaxonOrSynonym
+  * %dbscript:ProtonymsWithMoreThanOneValidTaxon
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
-  - ProtonymsWithMoreThanOneSynonym
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
-  - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon

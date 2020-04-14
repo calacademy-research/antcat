@@ -28,6 +28,8 @@ end
 __END__
 
 title: <code>taxac</code> tags with page numbers
+
+section: main
 category: Taxt
 tags: [new!]
 

@@ -45,6 +45,14 @@ describe DatabaseScript do
     end
   end
 
+  describe "#section" do
+    described_class.all.each do |database_script|
+      it "#{database_script.filename_without_extension} has a known section" do
+        expect(database_script.section.in?(DatabaseScript::SECTIONS)).to eq true
+      end
+    end
+  end
+
   describe "#title" do
     it "fetches the title from the END data" do
       database_script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
@@ -54,6 +62,20 @@ describe DatabaseScript do
     it "defaults to the humanized filename" do
       database_script = DatabaseScripts::OrphanedProtonyms.new
       expect(database_script.title).to eq "Orphaned protonyms"
+    end
+
+    context "when filename ends with '_id'" do
+      subject(:database_script) { DatabaseScripts::TaxaWithSameName.new }
+
+      it "keeps the '_id' part" do
+        expect(database_script.title).to eq 'Taxa with same name'
+
+        def database_script.filename_without_extension
+          'taxa_with_same_name_id'
+        end
+
+        expect(database_script.title).to eq 'Taxa with same name id'
+      end
     end
   end
 

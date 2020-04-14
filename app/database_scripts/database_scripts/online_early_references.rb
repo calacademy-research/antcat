@@ -23,8 +23,9 @@ end
 
 __END__
 
+section: list
 category: References
-tags: [list]
+tags: []
 
 description: >
   Pages, date, PDF may need to be updated after print publication.

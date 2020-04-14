@@ -10,6 +10,10 @@ module DatabaseScripts
       end_data[:title]&.html_safe
     end
 
+    def section
+      end_data[:section] || DatabaseScript::UNGROUPED_SECTION
+    end
+
     def category
       end_data[:category] || ""
     end

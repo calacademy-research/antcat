@@ -45,7 +45,8 @@ end
 
 __END__
 
-category: Script (pending)
+section: pa-action-required
+category: Catalog
 tags: [slow]
 
 description: >

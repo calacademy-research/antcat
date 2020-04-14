@@ -29,6 +29,8 @@ end
 __END__
 
 title: Non-valid taxa with a current valid taxon that is not valid
+
+section: main
 category: Catalog
 tags: []
 

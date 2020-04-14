@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ProtonymsNoOriginalCombination < DatabaseScript
+  class ProtonymsWithoutAnOriginalCombination < DatabaseScript
     def results
       protonyms.limit(100)
     end
@@ -23,8 +23,9 @@ end
 
 __END__
 
+section: research
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
   WIP.
@@ -38,5 +39,5 @@ description: >
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
-  - ProtonymsNoOriginalCombination
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithoutAnOriginalCombination

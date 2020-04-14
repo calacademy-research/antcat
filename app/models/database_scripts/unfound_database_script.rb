@@ -10,6 +10,9 @@ module DatabaseScripts
       @_filename_without_extension ||= class_name.underscore
     end
 
+    def section
+    end
+
     def tags
       []
     end

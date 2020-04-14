@@ -23,6 +23,8 @@ end
 __END__
 
 title: References with <code>author_names_suffix</code>es
+
+section: research
 category: References
 tags: [list, new!]
 

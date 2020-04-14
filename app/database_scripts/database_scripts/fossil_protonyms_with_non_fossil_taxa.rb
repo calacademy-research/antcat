@@ -24,6 +24,8 @@ end
 __END__
 
 title: Fossil protonyms with non-fossil taxa
+
+section: reversed
 category: Protonyms
 tags: [regression-test]
 
@@ -39,5 +41,4 @@ related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
-  - NonFossilTaxaWithFossilProtonyms
   - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

@@ -16,11 +16,6 @@
         =DatabaseScriptDecorator.format_tags [DatabaseScript::VALIDATED_TAG]
         means that there are validations in place to prevent the issue
       %p
-        =DatabaseScriptDecorator.format_tags [DatabaseScript::REGRESSION_TEST_TAG]
-        is for issues that have been mostly fixed
-        =surround "(", ")" do
-          =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
-      %p
         =DatabaseScriptDecorator.format_tags [DatabaseScript::HIGH_PRIORITY_TAG]
         is for issues we want to fix as soon as possible, usually because the issue is
         preventing us from improving the code
@@ -30,9 +25,38 @@
 
 .row
   .small-12.columns
-    -@grouped_database_scripts.each do |(_sort_order, title), database_scripts|
-      %h5=title
-      %table.tablesorter.margin-bottom
+    -@grouped_database_scripts.each do |section, database_scripts|
+      -case section
+      -when DatabaseScript::REVERSED_SECTION
+        %h5 Reversed scripts
+        %p Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.
+      -when DatabaseScript::LONG_RUNNING_SECTION
+        %h5 Long-running scripts
+      -when DatabaseScript::REGRESSION_TEST_SECTION
+        %h5 Regression tests
+        %p
+          For issues that have been mostly fixed, but we want to make sure do not re-appear
+          =surround "(", ")." do
+            =external_link_to "Regression testing", "https://en.wikipedia.org/wiki/Regression_testing"
+          Only needs to be checked periodically.
+      -when DatabaseScript::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
+        %h5 Pending automation, editor action required
+        %p
+          For issues that require manual editing before they can be fixed by script.
+          =link_to 'Open issues', issues_path
+          or the scripts themselves may describe what needs to be done.
+      -when DatabaseScript::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
+        %h5 Pending automation, no editor action required
+        %p For issues that can be fixed by script once ageed upon, but require little to no manual editing.
+      -when DatabaseScript::RESEARCH_SECTION
+        %h5 "Research scripts"
+        %p Scripts that were added to get an overview of our current data.
+      -when *DatabaseScript::SECTIONS
+        %h5="#{section.capitalize} scripts"
+      -else
+        %h5 Unknown section. What???
+
+      %table.tablesorter.huge-margin-bottom
         %thead
           %tr
             %th.no-wrap Category

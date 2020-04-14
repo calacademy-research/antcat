@@ -33,8 +33,9 @@ end
 
 __END__
 
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This obsolete combination does not have the same fossil status as its `current_valid_taxon`.
 

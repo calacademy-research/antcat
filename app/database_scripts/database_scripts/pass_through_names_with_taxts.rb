@@ -12,8 +12,10 @@ end
 __END__
 
 title: Pass-through names with taxts
+
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This taxon is a "pass-through name", but is has history items or reference sections.
 

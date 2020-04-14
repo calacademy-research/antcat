@@ -10,8 +10,9 @@ end
 
 __END__
 
+section: orphaned-records
 category: Protonyms
-tags: [list]
+tags: []
 
 issue_description: This protonym is orphaned.
 

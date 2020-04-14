@@ -27,7 +27,8 @@ end
 
 __END__
 
-category: Script (pending)
+section: pa-action-required
+category: Protonyms
 tags: []
 
 description: >

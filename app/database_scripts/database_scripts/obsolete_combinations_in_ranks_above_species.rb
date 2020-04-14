@@ -29,8 +29,9 @@ end
 
 __END__
 
+section: research
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
   This is not an issue. Script was added to investigate obsolete combinations and how to move `type_taxon` to the protonym.

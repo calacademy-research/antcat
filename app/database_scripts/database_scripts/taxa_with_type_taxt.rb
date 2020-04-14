@@ -40,6 +40,8 @@ end
 __END__
 
 title: Taxa with <code>type_taxt</code>
+
+section: research
 category: Inline taxt
 tags: [list, slow]
 

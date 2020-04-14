@@ -29,6 +29,7 @@ end
 
 __END__
 
+section: not-necessarily-incorrect
 category: Catalog
 
 description: >

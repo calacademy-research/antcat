@@ -39,6 +39,8 @@ end
 __END__
 
 title: Protonyms with <code>notes_taxt</code>
+
+section: research
 category: Inline taxt
 tags: [list]
 

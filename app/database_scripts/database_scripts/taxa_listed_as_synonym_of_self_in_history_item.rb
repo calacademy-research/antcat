@@ -23,6 +23,7 @@ end
 
 __END__
 
+section: regression-test
 category: Taxt
 tags: []
 

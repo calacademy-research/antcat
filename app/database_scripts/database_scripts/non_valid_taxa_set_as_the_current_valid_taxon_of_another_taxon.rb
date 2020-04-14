@@ -18,8 +18,10 @@ end
 __END__
 
 title: Non-valid taxa set as the current valid taxon of another taxon
+
+section: list
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
   This is not necessarily incorrect, but the name of the database column is `current_valid_taxon_id`,

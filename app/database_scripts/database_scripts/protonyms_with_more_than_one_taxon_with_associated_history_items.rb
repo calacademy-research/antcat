@@ -31,6 +31,7 @@ end
 
 __END__
 
+section: main
 category: Protonyms
 
 issue_description: More than one of this protonym's taxa have history items.

@@ -44,8 +44,9 @@ end
 
 __END__
 
+section: list
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
   This script creates a list of all taxa with history items that mention

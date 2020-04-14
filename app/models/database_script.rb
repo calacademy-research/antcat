@@ -2,20 +2,31 @@
 
 # Use `rails generate database_script <name_of_script>` to generate new scripts.
 
-class DatabaseScript
+class DatabaseScript # rubocop:disable Metrics/ClassLength
   include Draper::Decoratable
   include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
+  SECTIONS = [
+    UNGROUPED_SECTION = "ungrouped",
+    MAIN_SECTION = "main",
+    NOT_NECESSARILY_INCORRECT_SECTION = "not-necessarily-incorrect",
+    REVERSED_SECTION = "reversed",
+    LONG_RUNNING_SECTION = "long-running",
+    PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
+    PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
+    REGRESSION_TEST_SECTION = "regression-test",
+    ORPHANED_RECORDS_SECTION = "orphaned-records",
+    LIST_SECTION = "list",
+    RESEARCH_SECTION = "research"
+  ]
   TAGS = [
     SLOW_TAG = "slow",
     VERY_SLOW_TAG = "very-slow",
     SLOW_RENDER_TAG = "slow-render",
     NEW_TAG = "new!",
     UPDATED = "updated!",
-    REGRESSION_TEST_TAG = "regression-test",
-    LIST_TAG = "list",
     VALIDATED_TAG = "validated",
     HAS_QUICK_FIX_TAG = "has-quick-fix",
     HIGH_PRIORITY_TAG = "high-priority"
@@ -25,7 +36,7 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
-  delegate :category, :tags, :issue_description, :description, to: :end_data_attributes
+  delegate :section, :category, :tags, :issue_description, :description, to: :end_data_attributes
 
   class << self
     def inherited subclass
@@ -72,7 +83,7 @@ class DatabaseScript
   end
 
   def title
-    end_data_attributes.title || filename_without_extension.humanize.humanize(keep_id_suffix: false)
+    end_data_attributes.title || filename_without_extension.humanize(keep_id_suffix: true)
   end
 
   def related_scripts

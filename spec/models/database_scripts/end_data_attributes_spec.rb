@@ -14,12 +14,16 @@ describe DatabaseScripts::EndDataAttributes do
       specify { expect(end_data_attributes.title).to eq "Fossil protonyms with non-fossil taxa" }
     end
 
+    describe "#section" do
+      specify { expect(end_data_attributes.section).to eq "regression-test" }
+    end
+
     describe "#category" do
       specify { expect(end_data_attributes.category).to eq "Catalog" }
     end
 
     describe "#tags" do
-      specify { expect(end_data_attributes.tags).to eq ["regression-test"] }
+      specify { expect(end_data_attributes.tags).to eq [] }
     end
 
     describe "#issue_description" do
@@ -50,6 +54,7 @@ describe DatabaseScripts::EndDataAttributes do
     let(:end_data) do
       {
         title: "Pizza Championship",
+        section: "Quality pizzas",
         category: "Classic pizzas",
         tags: ['pescatore, funghi'],
         issue_description: "pizza was cold",
@@ -65,6 +70,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     specify { expect(end_data_attributes.title).to eq end_data[:title] }
+    specify { expect(end_data_attributes.section).to eq end_data[:section] }
     specify { expect(end_data_attributes.category).to eq end_data[:category] }
     specify { expect(end_data_attributes.tags).to eq end_data[:tags] }
     specify { expect(end_data_attributes.issue_description).to eq end_data[:issue_description] }
@@ -98,6 +104,7 @@ describe DatabaseScripts::EndDataAttributes do
 
     describe "defaults" do
       specify { expect(end_data_attributes.title).to eq nil }
+      specify { expect(end_data_attributes.section).to eq 'ungrouped' }
       specify { expect(end_data_attributes.category).to eq '' }
       specify { expect(end_data_attributes.tags).to eq [] }
       specify { expect(end_data_attributes.issue_description).to eq nil }

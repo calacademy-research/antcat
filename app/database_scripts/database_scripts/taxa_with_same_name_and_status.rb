@@ -29,8 +29,9 @@ end
 
 __END__
 
+section: list
 category: Catalog
-tags: [list]
+tags: []
 
 related_scripts:
   - SameNamedPassThroughNames

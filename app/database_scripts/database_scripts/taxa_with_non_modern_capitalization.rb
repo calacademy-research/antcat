@@ -23,8 +23,10 @@ end
 __END__
 
 title: Taxa with non-modern capitalization
+
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: The name of this taxon contains non-modern capitalization.
 

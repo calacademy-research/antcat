@@ -37,8 +37,10 @@ end
 __END__
 
 title: Same-named pass-through names
+
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 description: >
   See %github283

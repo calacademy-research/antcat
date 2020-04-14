@@ -61,6 +61,7 @@ end
 
 __END__
 
+section: research
 category: Catalog
 tags: [list, slow]
 

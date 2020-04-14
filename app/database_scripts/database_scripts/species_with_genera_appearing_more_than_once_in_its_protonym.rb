@@ -32,8 +32,9 @@ end
 
 __END__
 
+section: main
 category: Catalog
-tags: []
+tags: [has-reversed]
 
 issue_description: The genus of this species appears more than once among the protonym's taxa.
 

@@ -33,8 +33,9 @@ end
 
 __END__
 
+section: regression-test
 category: Catalog
-tags: [regression-test]
+tags: []
 
 issue_description: This taxon has a replacement name that is also the replacement name of another taxon.
 

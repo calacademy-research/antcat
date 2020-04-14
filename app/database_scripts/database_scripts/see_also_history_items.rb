@@ -33,6 +33,8 @@ end
 __END__
 
 title: "'See also' history items"
+
+section: research
 category: Taxt2
 tags: [list]
 

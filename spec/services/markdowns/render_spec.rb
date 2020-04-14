@@ -78,8 +78,8 @@ describe Markdowns::Render do
     describe 'database script links' do
       context 'when database script exists' do
         specify do
-          expect(described_class["%dbscript:OrphanedProtonyms"]).
-            to eq %(<p><a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a> <span class="white-label rounded-badge">list</span></p>\n)
+          expect(described_class["%dbscript:TaxaWithSameName"]).
+            to eq %(<p><a href="/database_scripts/taxa_with_same_name">Taxa with same name</a> <span class="white-label rounded-badge">list</span></p>\n)
         end
       end
 

@@ -76,6 +76,8 @@ end
 __END__
 
 title: Non-explicit <i>incertae sedis</i> taxa
+
+section: main
 category: Catalog
 
 description: >

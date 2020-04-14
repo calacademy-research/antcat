@@ -3,7 +3,7 @@
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
-  delegate :tags, :filename_without_extension
+  delegate :section, :tags, :filename_without_extension
 
   def self.format_tags tags
     html_spans = tags.map { |tag| h.content_tag :span, tag, class: tag_css_class(tag) }
@@ -11,7 +11,8 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def format_tags
-    self.class.format_tags tags
+    tags_and_sections = ([section] + tags).compact - [DatabaseScript::MAIN_SECTION]
+    self.class.format_tags(tags_and_sections)
   end
 
   def github_url
@@ -20,7 +21,7 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   def empty_status
     return '??' unless database_script.respond_to?(:results)
-    return 'Excluded (slow/list)' if database_script.tags.include?('list') || database_script.slow?
+    return 'Excluded (slow/list)' if list_or_slow?
 
     if database_script.results.any?
       'Not empty'
@@ -44,4 +45,10 @@ class DatabaseScriptDecorator < Draper::Decorator
       end + " rounded-badge"
     end
     private_class_method :tag_css_class
+
+    def list_or_slow?
+      database_script.tags.include?('list') ||
+        database_script.section == DatabaseScript::LIST_SECTION ||
+        database_script.slow?
+    end
 end

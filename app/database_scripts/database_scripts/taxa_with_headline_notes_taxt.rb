@@ -24,6 +24,8 @@ end
 __END__
 
 title: Taxa with <code>headline_notes_taxt</code>
+
+section: research
 category: Inline taxt
 tags: [list]
 

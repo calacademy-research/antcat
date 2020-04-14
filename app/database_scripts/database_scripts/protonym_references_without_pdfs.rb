@@ -24,6 +24,8 @@ end
 __END__
 
 title: Protonym references without PDFs
+
+section: long-running
 category: PDFs
 
 description: >

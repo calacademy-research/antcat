@@ -3,11 +3,10 @@
 module DatabaseScripts
   class <%= class_name %> < DatabaseScript
     def results
-      # Subspecies.where(species: nil)
+      Subspecies.limit(10)
     end
 
-    # When this method isn't implemented, the code tries to figure out
-    # how to render `#results` based on its class.
+    # When this method isn't implemented, the code tries to render `#results` based on its class.
     def render
       as_table do |t|
         t.header 'Taxon', 'Status'
@@ -24,7 +23,10 @@ end
 
 __END__
 
-# title: Defaults to `DatabaseScript#filename_without_extension.humanize`.
+# Optional title, defaults to `DatabaseScript#filename_without_extension.humanize`.
+# title: <%= class_name.underscore.humanize(keep_id_suffix: true) %>
+
+section: main|regression-test|list
 category: Catalog, References... see the script index page
 tags: [new!, example-tag]
 

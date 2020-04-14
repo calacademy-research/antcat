@@ -28,8 +28,9 @@ end
 
 __END__
 
+section: list
 category: Types
-tags: [list]
+tags: []
 
 description: >
   This script is just lists of all unique protonym `locality`s.
