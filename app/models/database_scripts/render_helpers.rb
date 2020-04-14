@@ -33,14 +33,6 @@ module DatabaseScripts
       end
     end
 
-    def as_reference_table
-      list = +""
-      cached_results.each do |reference|
-        list << "* #{reference_link(reference)}\n"
-      end
-      Markdowns::Render[list, sanitize_content: false]
-    end
-
     def taxa_list taxa
       taxa.map(&:link_to_taxon).join('<br>')
     end

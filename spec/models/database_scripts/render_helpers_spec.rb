@@ -20,15 +20,4 @@ describe DatabaseScripts::RenderHelpers do
       expect(database_script.as_taxon_table).to match "<i>Lasius</i>"
     end
   end
-
-  describe "#as_reference_table" do
-    let!(:reference) { create :any_reference, title: "Pizza Ants" }
-
-    it "doesn't require a description" do
-      allow(database_script).to receive(:results).and_return [reference]
-
-      expect(database_script.as_reference_table).to match "<ul>\n<li>"
-      expect(database_script.as_reference_table).to match "Pizza Ants"
-    end
-  end
 end
