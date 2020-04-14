@@ -39,11 +39,11 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "#related_scripts" do
-      let(:filename_without_extension) { "valid_subspecies_in_invalid_species" }
+      let(:filename_without_extension) { "extant_taxa_in_fossil_genera" }
 
-      it "returns related scripts" do
+      it "returns related scripts excluding itself" do
         expect(end_data_attributes.related_scripts.size).to eq 1
-        expect(end_data_attributes.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies
+        expect(end_data_attributes.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
       end
     end
   end
@@ -103,7 +103,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "defaults" do
-      specify { expect(end_data_attributes.title).to eq nil }
+      specify { expect(end_data_attributes.title).to eq "" }
       specify { expect(end_data_attributes.section).to eq 'ungrouped' }
       specify { expect(end_data_attributes.category).to eq '' }
       specify { expect(end_data_attributes.tags).to eq [] }

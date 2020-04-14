@@ -13,7 +13,7 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
-  delegate :section, :category, :tags, :issue_description, :description, to: :end_data_attributes
+  delegate :title, :section, :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
   class << self
     def inherited subclass
@@ -42,14 +42,6 @@ class DatabaseScript
     end
   end
 
-  def title
-    end_data_attributes.title || filename_without_extension.humanize(keep_id_suffix: true)
-  end
-
-  def related_scripts
-    end_data_attributes.related_scripts.reject { |database_script| database_script.is_a?(self.class) }
-  end
-
   def statistics
     @_statistics ||= default_statistics
   end
@@ -58,7 +50,6 @@ class DatabaseScript
     @_filename_without_extension ||= self.class.name.demodulize.underscore
   end
 
-  # For `link_to "database_script", database_script_path(@database_script)`.
   def to_param
     filename_without_extension
   end

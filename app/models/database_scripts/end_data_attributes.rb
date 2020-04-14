@@ -7,7 +7,7 @@ module DatabaseScripts
     attr_private_initialize :filename_without_extension
 
     def title
-      end_data[:title]&.html_safe
+      end_data[:title]&.html_safe || filename_without_extension.humanize(keep_id_suffix: true)
     end
 
     def section
@@ -31,9 +31,9 @@ module DatabaseScripts
     end
 
     def related_scripts
-      (end_data[:related_scripts] || []).map do |class_name|
-        DatabaseScript.safe_new_from_filename(class_name)
-      end
+      (end_data[:related_scripts] || []).
+        map { |class_name| DatabaseScript.safe_new_from_filename(class_name) }.
+        reject { |database_script| database_script.filename_without_extension == filename_without_extension }
     end
 
     private

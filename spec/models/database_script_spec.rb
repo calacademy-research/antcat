@@ -45,41 +45,6 @@ describe DatabaseScript do
     end
   end
 
-  describe "#title" do
-    it "fetches the title from the END data" do
-      database_script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
-      expect(database_script.title).to eq "Fossil protonyms with non-fossil taxa"
-    end
-
-    it "defaults to the humanized filename" do
-      database_script = DatabaseScripts::OrphanedProtonyms.new
-      expect(database_script.title).to eq "Orphaned protonyms"
-    end
-
-    context "when filename ends with '_id'" do
-      subject(:database_script) { DatabaseScripts::TaxaWithSameName.new }
-
-      it "keeps the '_id' part" do
-        expect(database_script.title).to eq 'Taxa with same name'
-
-        def database_script.filename_without_extension
-          'taxa_with_same_name_id'
-        end
-
-        expect(database_script.title).to eq 'Taxa with same name id'
-      end
-    end
-  end
-
-  describe "#related_scripts" do
-    subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
-
-    it "returns related scripts excluding itself" do
-      expect(database_script.related_scripts.size).to eq 1
-      expect(database_script.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
-    end
-  end
-
   describe '#statistics' do
     subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
 
