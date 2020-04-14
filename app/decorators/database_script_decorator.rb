@@ -3,7 +3,7 @@
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
 
-  delegate :section, :tags, :filename_without_extension
+  delegate :section, :tags, :basename
 
   def self.format_tags tags
     html_spans = tags.map { |tag| h.content_tag :span, tag, class: tag_css_class(tag) }
@@ -28,7 +28,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def github_url
-    "#{GITHUB_MASTER_URL}/#{DatabaseScript::SCRIPTS_DIR}/#{filename_without_extension}.rb"
+    "#{GITHUB_MASTER_URL}/#{DatabaseScript::SCRIPTS_DIR}/#{basename}.rb"
   end
 
   def empty_status

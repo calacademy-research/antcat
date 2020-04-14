@@ -3,22 +3,22 @@
 require 'rails_helper'
 
 describe DatabaseScript do
-  describe ".new_from_filename" do
+  describe ".new_from_basename" do
     it "returns a database script" do
-      expect(described_class.new_from_filename("ExtantTaxaInFossilGenera")).
+      expect(described_class.new_from_basename("ExtantTaxaInFossilGenera")).
         to be_a DatabaseScripts::ExtantTaxaInFossilGenera
     end
   end
 
-  describe ".safe_new_from_filename" do
+  describe ".safe_new_from_basename" do
     it "returns a database script" do
-      expect(described_class.safe_new_from_filename("ExtantTaxaInFossilGenera")).
+      expect(described_class.safe_new_from_basename("ExtantTaxaInFossilGenera")).
         to be_a DatabaseScripts::ExtantTaxaInFossilGenera
     end
 
     context 'when database script does not exists' do
       it 'returns an "unfound database script"' do
-        expect(described_class.safe_new_from_filename("BestPizza")).to be_a DatabaseScripts::UnfoundDatabaseScript
+        expect(described_class.safe_new_from_basename("BestPizza")).to be_a DatabaseScripts::UnfoundDatabaseScript
       end
     end
   end
@@ -39,7 +39,7 @@ describe DatabaseScript do
 
   describe "#section" do
     described_class.all.each do |database_script|
-      it "#{database_script.filename_without_extension} has a known section" do
+      it "#{database_script.basename} has a known section" do
         expect(database_script.section.in?(DatabaseScripts::Tagging::SECTIONS)).to eq true
       end
     end
@@ -115,7 +115,7 @@ describe DatabaseScript do
     end
 
     described_class.all.each do |database_script|
-      it "#{database_script.filename_without_extension} calls `#results` only once" do
+      it "#{database_script.basename} calls `#results` only once" do
         if database_script.respond_to? :results
           expect(database_script).to receive(:results).at_most(:once).and_call_original
         end

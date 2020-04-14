@@ -14,19 +14,19 @@ class DatabaseScript
   delegate :title, :section, :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
   class << self
-    def new_from_filename basename
+    def new_from_basename basename
       raise ScriptNotFound unless (script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize)
       script_class.new
     end
 
-    def safe_new_from_filename class_name
-      new_from_filename(class_name)
+    def safe_new_from_basename basename
+      new_from_basename(basename)
     rescue DatabaseScript::ScriptNotFound
-      DatabaseScripts::UnfoundDatabaseScript.new(class_name)
+      DatabaseScripts::UnfoundDatabaseScript.new(basename)
     end
 
     def all
-      @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map { |path| new_from_filename(File.basename(path, ".rb")) }
+      @_all ||= Dir.glob("#{SCRIPTS_DIR}/*").sort.map { |path| new_from_basename(File.basename(path, ".rb")) }
     end
 
     # TODO: Indicate record type in scripts.
@@ -39,12 +39,13 @@ class DatabaseScript
     @_statistics ||= default_statistics
   end
 
-  def filename_without_extension
-    @_filename_without_extension ||= self.class.name.demodulize.underscore
+  # Filename without ".rb" extension.
+  def basename
+    @_basename ||= self.class.name.demodulize.underscore
   end
 
   def to_param
-    filename_without_extension
+    basename
   end
 
   protected
@@ -63,7 +64,7 @@ class DatabaseScript
   private
 
     def end_data_attributes
-      @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(filename_without_extension)
+      @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(basename)
     end
 
     def default_statistics

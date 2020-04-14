@@ -4,10 +4,10 @@ require Rails.root.join('lib/read_end_data')
 
 module DatabaseScripts
   class EndDataAttributes
-    attr_private_initialize :filename_without_extension
+    attr_private_initialize :basename
 
     def title
-      end_data[:title]&.html_safe || filename_without_extension.humanize(keep_id_suffix: true)
+      end_data[:title]&.html_safe || basename.humanize(keep_id_suffix: true)
     end
 
     def section
@@ -32,8 +32,8 @@ module DatabaseScripts
 
     def related_scripts
       (end_data[:related_scripts] || []).
-        map { |class_name| DatabaseScript.safe_new_from_filename(class_name) }.
-        reject { |database_script| database_script.filename_without_extension == filename_without_extension }
+        map { |basename| DatabaseScript.safe_new_from_basename(basename) }.
+        reject { |database_script| database_script.basename == basename }
     end
 
     private
@@ -43,7 +43,7 @@ module DatabaseScripts
       end
 
       def script_path
-        "#{DatabaseScript::SCRIPTS_DIR}/#{filename_without_extension}.rb"
+        "#{DatabaseScript::SCRIPTS_DIR}/#{basename}.rb"
       end
   end
 end

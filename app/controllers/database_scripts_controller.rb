@@ -28,7 +28,7 @@ class DatabaseScriptsController < ApplicationController
   private
 
     def find_database_script
-      DatabaseScript.new_from_filename(params[:id])
+      DatabaseScript.new_from_basename(params[:id])
     rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError, "Not Found"
     end

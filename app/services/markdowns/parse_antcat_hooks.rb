@@ -134,12 +134,12 @@ module Markdowns
         end
       end
 
-      # Matches: %dbscript:filename_without_extension or %dbscript:FilenameWithoutExtension
+      # Matches: %dbscript:snaked_base_name or %dbscript:CamelizedBaseName
       # Renders: a link to the database script.
       def parse_database_script_ids
         content.gsub!(DB_SCRIPT_TAG_REGEX) do
-          filename = Regexp.last_match(1)
-          database_script = DatabaseScript.safe_new_from_filename(filename)
+          basename = Regexp.last_match(1)
+          database_script = DatabaseScript.safe_new_from_basename(basename)
           formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags
           link_to(database_script.title, database_script_path(database_script)) << ' ' << formatted_tags
         end

@@ -3,13 +3,13 @@
 require 'rails_helper'
 
 describe DatabaseScripts::EndDataAttributes do
-  subject(:end_data_attributes) { described_class.new(filename_without_extension) }
+  subject(:end_data_attributes) { described_class.new(basename) }
 
   context 'with a real script' do
-    let(:filename_without_extension) { "extant_taxa_in_fossil_genera" }
+    let(:basename) { "extant_taxa_in_fossil_genera" }
 
     describe "#title" do
-      let(:filename_without_extension) { "fossil_protonyms_with_non_fossil_taxa" }
+      let(:basename) { "fossil_protonyms_with_non_fossil_taxa" }
 
       specify { expect(end_data_attributes.title).to eq "Fossil protonyms with non-fossil taxa" }
     end
@@ -39,7 +39,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "#related_scripts" do
-      let(:filename_without_extension) { "extant_taxa_in_fossil_genera" }
+      let(:basename) { "extant_taxa_in_fossil_genera" }
 
       it "returns related scripts excluding itself" do
         expect(end_data_attributes.related_scripts.size).to eq 1
@@ -49,7 +49,7 @@ describe DatabaseScripts::EndDataAttributes do
   end
 
   context 'with canned data' do
-    let(:filename_without_extension) { '' }
+    let(:basename) { '' }
 
     let(:end_data) do
       {
@@ -93,7 +93,7 @@ describe DatabaseScripts::EndDataAttributes do
   end
 
   context 'with blank data' do
-    let(:filename_without_extension) { '' }
+    let(:basename) { '' }
     let(:end_data) { {} }
 
     before do
