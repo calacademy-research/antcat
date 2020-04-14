@@ -45,5 +45,5 @@ description: >
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
-  - ProtonymsNoOriginalCombination
   - ProtonymsWithMoreThanOneOriginalCombination
+  - ProtonymsWithoutAnOriginalCombination
