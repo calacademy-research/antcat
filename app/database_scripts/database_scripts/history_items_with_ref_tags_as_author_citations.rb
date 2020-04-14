@@ -73,7 +73,7 @@ title: History items with <code>ref</code> tags as author citations
 
 section: main
 category: Taxt
-tags: [has-quick-fix, updated!]
+tags: [has-quick-fix]
 
 description: >
   **Note that "tax/ref matches" in the "Check usage" column just means that the ID for `ref` tag

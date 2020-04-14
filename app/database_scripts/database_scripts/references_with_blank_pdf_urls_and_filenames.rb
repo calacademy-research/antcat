@@ -49,6 +49,7 @@ category: PDFs
 tags: [slow-render]
 
 description: >
+  Once confirmed, the plan is to delete all these blank (unused) `ReferenceDocument` records.
 
 related_scripts:
   - OrphanedReferenceDocuments

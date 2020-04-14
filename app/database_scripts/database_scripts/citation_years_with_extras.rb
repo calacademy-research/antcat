@@ -37,10 +37,8 @@ category: References
 tags: [slow-render, new!]
 
 description: >
-  This list was added to get an overview of `citation_year` with "extras".
-
-
-  Even a "No" in the "Standard format?" column does not indicate an issue.
+  Once confirmed, the plan is to move the "extras" into a new database column.
 
 related_scripts:
   - CitationYearsWithExtras
+  - CitationYearsWithUppercaseLetters

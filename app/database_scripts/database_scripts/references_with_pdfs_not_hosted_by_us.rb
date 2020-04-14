@@ -34,10 +34,12 @@ category: PDFs
 tags: [slow-render]
 
 description: >
-  There may be more references not hosted by us, but these definitely are not.
+  Once confirmed, the plan is to upload all externally hosted documents to S3, where
+  all other references are hosted  (TODO: write script).
 
 
-  These can be uploaded via script (TODO: write script).
+  This list does not take into account `ReferenceDocument`s with both a `url` and
+  a `file_file_name` (URLs are ignored for documents with both).
 
 
   Issues: %github387, %github324, %github371

@@ -60,5 +60,11 @@ description: >
 
   `SubspeciesName`s parsed as `InfrasubspeciesName`s will be fixed once we have converted all quadrinomials.
 
+
+  Other records disagree with the parsed name for various reasons, and will be fixed in batches.
+
+
+  Issue: %github837
+
 related_scripts:
   - UnparsableNames
