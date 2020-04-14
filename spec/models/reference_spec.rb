@@ -57,16 +57,6 @@ describe Reference do
   end
 
   describe "scopes" do
-    describe ".unreviewed_references" do
-      let!(:unreviewed) { create :any_reference, review_state: "reviewing" }
-
-      before { create :any_reference, review_state: "reviewed" }
-
-      it "returns unreviewed references" do
-        expect(described_class.unreviewed).to eq [unreviewed]
-      end
-    end
-
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
         one = create :any_reference, author_string: 'Fisher', citation_year: '1910b'
@@ -137,41 +127,52 @@ describe Reference do
     let(:ward) { create :author_name, name: 'Ward, P.S.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
 
-    describe "formatting" do
-      it "consists of one author_name if that's all there is" do
-        reference = create :any_reference, author_names: [fisher]
+    context "when reference has one author name" do
+      let(:reference) { create :any_reference, author_names: [fisher] }
+
+      it 'returns the author name' do
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
       end
+    end
 
-      it "separates multiple author_names with semicolons" do
-        reference = create :any_reference, author_names: [fisher, ward]
+    context "when reference has more than one author name" do
+      let(:reference) { create :any_reference, author_names: [fisher, ward] }
+
+      it "separates multiple author names with semicolons" do
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
     end
 
-    describe "updating, when things change" do
-      let(:reference) { create :any_reference, author_names: [fisher] }
-
-      context "when an author_name is added" do
-        before { reference.author_names << ward }
+    describe "updating author names" do
+      context "when an author name is added" do
+        let(:reference) { create :any_reference, author_names: [fisher] }
 
         it "updates its `author_names_string`" do
+          reference.author_names << ward
           expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
+        end
+
+        it "maintains the order in which they were added" do
+          wilden = create :author_name, name: 'Wilden'
+          reference.author_names << wilden
+          reference.author_names << ward
+
+          expect(reference.author_names_string).to eq 'Fisher, B.L.; Wilden; Ward, P.S.'
         end
       end
 
       context "when an author_name is removed" do
-        before { reference.author_names << ward }
+        let(:reference) { create :any_reference, author_names: [fisher, ward] }
 
         it "updates its `author_names_string`" do
-          expect { reference.author_names.delete ward }.
+          expect { reference.author_names.delete(ward) }.
             to change { reference.reload.author_names_string }.
             from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
         end
       end
 
-      context "when an author_name's name is changed" do
-        before { reference.author_names = [ward] }
+      context "when an author name is changed" do
+        let(:reference) { create :any_reference, author_names: [ward] }
 
         it "updates its `author_names_string`" do
           expect { ward.update!(name: 'Fisher') }.
@@ -180,35 +181,16 @@ describe Reference do
         end
       end
     end
-
-    it "maintains the order in which they were added to the reference" do
-      reference = create :any_reference, author_names: [ward]
-      fisher = create :author_name, name: 'Fisher'
-      wilden = create :author_name, name: 'Wilden'
-      reference.author_names << wilden
-      reference.author_names << fisher
-
-      expect(reference.author_names_string).to eq 'Ward, P.S.; Wilden; Fisher'
-    end
   end
 
   describe "#author_names_string_with_suffix" do
-    let(:ward) { create :author_name, name: 'Ward, P.S.' }
-    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
-
-    describe "formatting" do
-      it "consists of one author_name if that's all there is" do
-        reference = build_stubbed :reference, author_names: [fisher]
-        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.'
+    context "when reference has a `author_names_suffix`" do
+      let(:reference) do
+        fisher = create :author_name, name: 'Fisher, B.L.'
+        build_stubbed :reference, author_names: [fisher], author_names_suffix: '(ed.)'
       end
 
-      it "separates multiple author_names with semicolons" do
-        reference = build_stubbed :reference, author_names: [fisher, ward]
-        expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L.; Ward, P.S.'
-      end
-
-      it "includes the author_names' suffix" do
-        reference = build_stubbed :reference, author_names: [fisher], author_names_suffix: '(ed.)'
+      it "includes the `author_names_suffix` after the author names" do
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
       end
     end
@@ -219,9 +201,7 @@ describe Reference do
     let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
     context "when citation years with extra" do
-      let(:reference) do
-        create :any_reference, author_names: [bolton], citation_year: '1970a ("1971")'
-      end
+      let(:reference) { create :any_reference, author_names: [bolton], citation_year: '1970a ("1971")' }
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
     end
@@ -230,30 +210,25 @@ describe Reference do
       let(:reference) { create :any_reference, citation_year: '1970a' }
 
       specify do
-        expect { reference.author_names = [] }.
-          to change { reference.keey }.to('[no authors], 1970a')
+        expect { reference.author_names = [] }.to change { reference.keey }.to('[no authors], 1970a')
       end
     end
 
     context 'when one author' do
-      let(:reference) do
-        create :any_reference, author_names: [bolton], citation_year: '1970a'
-      end
+      let(:reference) { create :any_reference, author_names: [bolton], citation_year: '1970a' }
 
       specify { expect(reference.keey).to eq 'Bolton, 1970a' }
     end
 
     context 'when two authors' do
-      let(:reference) do
-        create :any_reference, author_names: [bolton, fisher], citation_year: '1970a'
-      end
+      let(:reference) { create :any_reference, author_names: [bolton, fisher], citation_year: '1970a' }
 
       specify { expect(reference.keey).to eq 'Bolton & Fisher, 1970a' }
     end
 
     context 'when three authors' do
-      let(:ward) { create :author_name, name: 'Ward, P.S.' }
       let(:reference) do
+        ward = create :author_name, name: 'Ward, P.S.'
         create :any_reference, author_names: [bolton, fisher, ward], citation_year: '1970a'
       end
 
@@ -274,8 +249,7 @@ describe Reference do
     let(:reference) { build_stubbed :any_reference }
 
     it "calls `References::WhatLinksHere`" do
-      expect(References::WhatLinksHere).to receive(:new).
-        with(reference, predicate: false).and_call_original
+      expect(References::WhatLinksHere).to receive(:new).with(reference, predicate: false).and_call_original
       reference.what_links_here
     end
   end

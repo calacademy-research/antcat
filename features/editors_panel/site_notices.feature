@@ -1,10 +1,8 @@
 Feature: Site notices
   Background:
     Given I log in as a catalog editor named "Batiatus"
-    And there is a site notice "A Site Notice" I haven't read yet
-    And I go to the users page
 
-  Scenario: Adding a site notice
+  Scenario: Adding a site notice (with feed)
     When I go to the site notices page
     And I follow "New"
     And I fill in "site_notice_title" with "New AntCat features"
@@ -14,6 +12,8 @@ Feature: Site notices
     And I should see "Added by Batiatus"
 
   Scenario: Reading a notice marks it as read
+    Given there is a site notice "A Site Notice" I haven't read yet
+
     When I go to the users page
     Then I should see an unread site notice
 
@@ -23,6 +23,8 @@ Feature: Site notices
     And I should not see any unread site notices
 
   Scenario: Mark all as read from the site notices page
+    Given there is a site notice "A Site Notice" I haven't read yet
+
     When I go to the site notices page
     Then I should see an unread site notice
 

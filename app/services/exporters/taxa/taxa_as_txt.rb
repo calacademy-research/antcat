@@ -16,13 +16,14 @@ module Exporters
       private
 
         def format_taxon taxon
+          type_localities = format_type_localities(taxon)
+
           string = format_name(taxon).html_safe
           string << ' '
-          string << convert_to_text(format_status(taxon).html_safe)
-          type_localities = format_type_localities(taxon)
-          string << convert_to_text(' ' + type_localities) if type_localities.present?
+          string << format_status(taxon)
+          string << (' ' + type_localities) if type_localities.present?
           string << "\n"
-          string << convert_to_text(format_protonym(taxon))
+          string << format_protonym(taxon)
           string << "\n\n"
         end
 
@@ -34,23 +35,27 @@ module Exporters
         def format_status taxon
           labels = []
           labels << "incertae sedis in #{taxon.incertae_sedis_in}" if taxon.incertae_sedis_in
-          if taxon.homonym? && taxon.homonym_replaced_by
-            labels << "homonym replaced by #{format_name(taxon.homonym_replaced_by)}"
-          elsif taxon.unidentifiable?
-            labels << 'unidentifiable'
-          elsif taxon.unresolved_homonym?
-            labels << "unresolved junior homonym"
-          elsif taxon.nomen_nudum?
-            labels << 'nomen nudum'
-          elsif taxon.valid_status?
-            labels << "valid"
-          elsif taxon.synonym?
-            labels << "synonym of #{format_name(taxon.current_valid_taxon)}"
-          elsif taxon.invalid_status?
-            labels << taxon.status
-          end
+          labels << main_status(taxon)
           labels << 'ichnotaxon' if taxon.ichnotaxon?
           labels.join(', ').html_safe
+        end
+
+        def main_status taxon
+          if taxon.homonym?
+            "homonym replaced by #{format_name(taxon.homonym_replaced_by)}"
+          elsif taxon.unidentifiable?
+            'unidentifiable'
+          elsif taxon.unresolved_homonym?
+            "unresolved junior homonym"
+          elsif taxon.nomen_nudum?
+            'nomen nudum'
+          elsif taxon.valid_status?
+            "valid"
+          elsif taxon.synonym?
+            "synonym of #{format_name(taxon.current_valid_taxon)}"
+          else
+            taxon.status
+          end
         end
 
         def format_protonym taxon
@@ -73,10 +78,6 @@ module Exporters
             string << '.'
           end
           string
-        end
-
-        def convert_to_text string
-          Unitalicize[string.html_safe]
         end
     end
   end

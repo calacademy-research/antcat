@@ -3,7 +3,6 @@
 FactoryBot.define do
   factory :issue do
     user
-    open { true }
     sequence(:title) { |n| "Issue #{n}" }
     sequence(:description) { |n| "About Joffre's issue #{n}" }
 

@@ -36,7 +36,7 @@ class Subspecies < SpeciesGroupTaxon
   private
 
     def change_name! new_species_name
-      name_string = [new_species_name.genus_epithet, new_species_name.species_epithet, name.subspecies_epithets].join ' '
+      name_string = [new_species_name.genus_epithet, new_species_name.species_epithet, name.subspecies_epithets].join(' ')
       ensure_name_can_be_changed! name_string
       name.name = name_string
     end

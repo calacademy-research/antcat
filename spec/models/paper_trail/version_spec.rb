@@ -3,9 +3,11 @@
 require 'rails_helper'
 
 describe PaperTrail::Version do
-  it_behaves_like "a model that assigns `request_id` on create" do
-    let!(:item) { create :user }
-    let(:instance) { build :version, item: item }
+  describe 'callbacks' do
+    it_behaves_like "a model that assigns `request_id` on create" do
+      let!(:item) { create :user }
+      let(:instance) { build :version, item: item }
+    end
   end
 
   describe "#user" do

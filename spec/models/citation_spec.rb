@@ -14,7 +14,9 @@ describe Citation do
     it { is_expected.to validate_presence_of :pages }
   end
 
-  it_behaves_like "a taxt column with cleanup", :notes_taxt do
-    subject { build :citation }
+  describe 'callbacks' do
+    it_behaves_like "a taxt column with cleanup", :notes_taxt do
+      subject { build :citation }
+    end
   end
 end

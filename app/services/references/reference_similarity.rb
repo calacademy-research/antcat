@@ -37,15 +37,12 @@ module References
         return 0.00 unless normalize_author(principal_author_last_name(lhs)) == normalize_author(principal_author_last_name(rhs))
 
         result = match_title || match_article || match_book
-        year_matches = year_matches?
-        pagination_matches = pagination_matches?
 
-        case # rubocop:disable Style/EmptyCaseCondition
-        when !result && !year_matches      then 0.00
-        when !result && year_matches       then 0.10
-        when result && !year_matches       then result - 0.50
-        when result && !pagination_matches then result - 0.01
-        else                                    result
+        if !result && !year_matches?         then 0.00
+        elsif !result && year_matches?       then 0.10
+        elsif result && !year_matches?       then result - 0.50
+        elsif result && !pagination_matches? then result - 0.01
+        else result
         end
       end
 
@@ -54,8 +51,7 @@ module References
       end
 
       def year_matches?
-        return false unless rhs.year && year
-        (rhs.year.to_i - year.to_i).abs <= 1
+        @_year_matches ||= (rhs.year.to_i - year.to_i).abs <= 1
       end
 
       def pagination_matches?
@@ -76,7 +72,6 @@ module References
         return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
       end
 
-      # NOTE: Using `#type` to make the service more general.
       def match_article
         return unless rhs.type == 'ArticleReference' && type == 'ArticleReference'
         return unless rhs.series_volume_issue.present? && series_volume_issue.present?
@@ -86,7 +81,6 @@ module References
           normalize_series_volume_issue(series_volume_issue)
       end
 
-      # NOTE: Using `#type` to make the service more general.
       def match_book
         return unless rhs.type == 'BookReference' && type == 'BookReference'
         return unless rhs.pagination.present? && pagination.present?

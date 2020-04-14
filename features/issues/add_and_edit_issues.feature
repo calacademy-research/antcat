@@ -28,7 +28,7 @@ Feature: Add and edit open issues
     Given there is an open issue "Restore deleted species"
 
     When I go to the open issues page
-    Then I should see the open issue "Restore deleted species"
+    Then I should see "Restore deleted species"
 
     When I follow "Restore deleted species"
     And I follow "Edit"
@@ -77,6 +77,7 @@ Feature: Add and edit open issues
     And I follow "Add taxa from Aldous 2007"
     And I follow "Close"
     Then I should see "Successfully closed issue"
+    And I should see "Closed issue: Add taxa from Aldous 2007"
 
     When I go to the activity feed
     Then I should see "Archibald closed the issue Add taxa from Aldous 2007" within the activity feed
@@ -87,9 +88,7 @@ Feature: Add and edit open issues
     When I follow "Add taxa from Aldous 2007"
     And I follow "Re-open"
     Then I should see "Successfully re-opened issue"
-
-    When I go to the open issues page
-    Then I should see the open issue "Add taxa from Aldous 2007"
+    And I should see "Open issue: Add taxa from Aldous 2007"
 
     When I go to the activity feed
     Then I should see "Archibald re-opened the issue Add taxa from Aldous 2007" within the activity feed

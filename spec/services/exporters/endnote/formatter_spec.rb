@@ -6,25 +6,6 @@ describe Exporters::Endnote::Formatter do
   describe '#call' do
     it "formats a `BookReference` correctly" do
       reference = create :book_reference,
-        author_names: [create(:author_name, name: 'Bolton, B.')],
-        title: 'Ants Are My Life',
-        citation_year: '1933',
-        publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
-        pagination: 'ix + 33pp.'
-      expect(described_class[[reference]]).to eq %(%0 Book
-%A Bolton, B.
-%D 1933
-%T Ants Are My Life
-%C Dresden
-%I Springer Verlag
-%P ix + 33pp.
-%~ AntCat
-
-)
-    end
-
-    it "formats multiple authors correctly" do
-      reference = create :book_reference,
         author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
         title: 'Ants Are My Life',
         citation_year: '1933',
@@ -107,10 +88,6 @@ describe Exporters::Endnote::Formatter do
 %~ AntCat
 
 }
-    end
-
-    it "bails on a class it doesn't know about " do
-      expect { described_class[['']] }.to raise_error("reference type not supported")
     end
 
     it "doesn't output `NestedReference`s" do

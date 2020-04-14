@@ -19,13 +19,38 @@ describe AuthorName do
 
       it { is_expected.to validate_uniqueness_of(:name).ignoring_case_sensitivity }
     end
+
+    describe '#ensure_not_authors_only_author_name' do
+      let!(:author_name) { create :author_name }
+
+      specify do
+        expect { author_name.destroy }.to_not change { described_class.count }
+      end
+    end
+  end
+
+  describe 'callbacks' do
+    describe '#invalidate_reference_caches!' do
+      let!(:author_name) { create :author_name, name: 'Ward' }
+      let!(:reference) { create :any_reference, author_names: [author_name] }
+
+      it "refreshes `author_names_string_cache` its references" do
+        expect { author_name.update!(name: 'Fisher') }.
+          to change { reference.reload.author_names_string }.from('Ward').to('Fisher')
+      end
+
+      it "invalidates caches for its references" do
+        References::Cache::Regenerate[reference]
+        expect { author_name.save! }.to change { reference.reload.plain_text_cache }.to(nil)
+      end
+    end
   end
 
   describe "#last_name and #first_name_and_initials" do
     context "when there's only one word" do
       let(:author_name) { described_class.new(name: 'Bolton') }
 
-      it "simply returns the name" do
+      it "returns the name as the last name" do
         expect(author_name.last_name).to eq 'Bolton'
         expect(author_name.first_name_and_initials).to eq nil
       end
@@ -56,30 +81,6 @@ describe AuthorName do
         expect(author_name.last_name).to eq 'Baroni Urbani'
         expect(author_name.first_name_and_initials).to eq 'C.'
       end
-    end
-  end
-
-  describe '#ensure_not_authors_only_author_name' do
-    let!(:author_name) { create :author_name }
-
-    specify do
-      expect { author_name.destroy }.to_not change { described_class.count }
-    end
-  end
-
-  describe '#invalidate_reference_caches!' do
-    let!(:author_name) { create :author_name, name: 'Ward' }
-    let!(:reference) { create :any_reference, author_names: [author_name] }
-
-    it "refreshes `author_names_string_cache` its references" do
-      expect { author_name.update!(name: 'Fisher') }.
-        to change { reference.reload.author_names_string }.from('Ward').to('Fisher')
-    end
-
-    it "invalidates caches for its references" do
-      References::Cache::Regenerate[reference]
-
-      expect { author_name.save! }.to change { reference.reload.plain_text_cache }.to(nil)
     end
   end
 end

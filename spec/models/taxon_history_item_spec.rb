@@ -13,8 +13,10 @@ describe TaxonHistoryItem do
     it { is_expected.to validate_presence_of :taxt }
   end
 
-  it_behaves_like "a taxt column with cleanup", :taxt do
-    subject { build :taxon_history_item }
+  describe 'callbacks' do
+    it_behaves_like "a taxt column with cleanup", :taxt do
+      subject { build :taxon_history_item }
+    end
   end
 
   describe '#ids_from_tax_tags' do

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript
     def results
@@ -62,14 +61,14 @@ module DatabaseScripts
         end
 
         unless same_ranked_ancestor == taxon
-          return ["<span style='color: purple'><b>TTN's #{taxon.rank} should be #{taxon.name.name_html} but is is #{same_ranked_ancestor.name.name_html}</b></span>"]
+          message = "<b>TTN's #{taxon.rank} should be #{taxon.name.name_html} but is is #{same_ranked_ancestor.name.name_html}</b>"
+          return ["<span style='color: purple'>#{message}</span>"]
         end
 
         false
       end
   end
 end
-# rubocop:enable Layout/LineLength
 
 __END__
 

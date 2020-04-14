@@ -29,7 +29,7 @@ describe Feedback do
     end
 
     describe "#reopen!" do
-      let(:feedback) { create :feedback, open: false }
+      let(:feedback) { create :feedback, :closed }
 
       it "reopens the feedback" do
         expect { feedback.reopen! }.to change { feedback.closed? }.to(false)
