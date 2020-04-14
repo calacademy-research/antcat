@@ -5,7 +5,7 @@
   =javascript_include_tag "sortable_tables"
 
 -content_for :breadcrumbs_right do
-  =link_to "Show source code", @database_script.decorate.github_url, class: "btn-normal"
+  =link_to "Show source code", @decorated_database_script.github_url, class: "btn-normal"
 
 .row.collapse.margin-bottom
   .medium-8.columns
@@ -14,7 +14,7 @@
         =succeed ":" do
           =@database_script.category
       =@database_script.title
-      =@database_script.decorate.format_tags
+      =@decorated_database_script.format_tags
     %p=markdown_without_sanitation @database_script.description
 
     -if @database_script.issue_description.present?
@@ -42,9 +42,9 @@
 
 %small.left
   Soft-validated
-  =antcat_icon(@database_script.soft_validated? ? "check" : "nope")
+  =antcat_icon(@decorated_database_script.soft_validated? ? "check" : "nope")
   Fix random
-  =antcat_icon(@database_script.fix_random? ? "check" : "nope")
+  =antcat_icon(@decorated_database_script.fix_random? ? "check" : "nope")
 
 %small.right
   Script runtime: #{@render_duration.round(4)} seconds

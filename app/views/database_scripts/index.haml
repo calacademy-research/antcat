@@ -68,6 +68,7 @@
               %th Empty?
         %tbody
           -database_scripts.each do |database_script|
+            -decorated = database_script.decorate
             %tr
               %td.shrink=database_script.category
               %td
@@ -77,14 +78,14 @@
                     %small.gray-text
                       Issue description:
                       =database_script.issue_description
-              %td=database_script.decorate.format_tags
+              %td=decorated.format_tags
               %td.shrink
-                -if database_script.soft_validated?
+                -if decorated.soft_validated?
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               %td.shrink
-                -if database_script.fix_random?
+                -if decorated.fix_random?
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               -if @check_if_empty
-                %td.shrink=database_script.decorate.empty_status
+                %td.shrink=decorated.empty_status

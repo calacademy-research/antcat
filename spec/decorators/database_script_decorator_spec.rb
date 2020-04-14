@@ -40,6 +40,13 @@ describe DatabaseScriptDecorator do
     end
   end
 
+  describe '#soft_validated?' do
+    it 'returns true if the script is used for taxon soft-validations' do
+      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.decorate.soft_validated?).to eq true
+      expect(DatabaseScripts::ProtonymsWithSameName.new.decorate.soft_validated?).to eq false
+    end
+  end
+
   describe "#github_url" do
     let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
 

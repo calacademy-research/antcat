@@ -15,6 +15,18 @@ class DatabaseScriptDecorator < Draper::Decorator
     self.class.format_tags(tags_and_sections)
   end
 
+  def soft_validated?
+    database_script.class.in?(SoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
+  end
+
+  def fix_random?
+    database_script.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
+  end
+
+  def slow?
+    tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
+  end
+
   def github_url
     "#{GITHUB_MASTER_URL}/#{DatabaseScript::SCRIPTS_DIR}/#{filename_without_extension}.rb"
   end

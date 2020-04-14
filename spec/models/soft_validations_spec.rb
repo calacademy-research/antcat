@@ -13,7 +13,7 @@ describe SoftValidations do
 
         it "does not include slow database scripts (since it's checked in the catalog)" do
           unless klass.methods(_including_ancestors = false).include?(:record_in_results?)
-            expect(klass.new.slow?).to eq false
+            expect(klass.new.decorate.slow?).to eq false
           end
         end
       end
@@ -21,7 +21,7 @@ describe SoftValidations do
 
     # Sanity checks.
     specify { expect(DatabaseScripts::TaxaWithSameName.new.issue_description).to eq nil }
-    specify { expect(DatabaseScripts::ProtonymsWithSameName.new.slow?).to eq true }
+    specify { expect(DatabaseScripts::ProtonymsWithSameName.new.decorate.slow?).to eq true }
   end
 
   describe 'testing with a taxon' do

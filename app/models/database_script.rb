@@ -42,18 +42,6 @@ class DatabaseScript
     end
   end
 
-  def soft_validated?
-    self.class.in?(SoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
-  end
-
-  def fix_random?
-    self.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
-  end
-
-  def slow?
-    tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
-  end
-
   def title
     end_data_attributes.title || filename_without_extension.humanize(keep_id_suffix: true)
   end

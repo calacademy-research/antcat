@@ -37,13 +37,6 @@ describe DatabaseScript do
     end
   end
 
-  describe '#soft_validated?' do
-    it 'returns true if the script is used for taxon soft-validations' do
-      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
-      expect(DatabaseScripts::ProtonymsWithSameName.new.soft_validated?).to eq false
-    end
-  end
-
   describe "#section" do
     described_class.all.each do |database_script|
       it "#{database_script.filename_without_extension} has a known section" do
