@@ -119,7 +119,7 @@ describe DatabaseScript do
         if database_script.respond_to? :results
           expect(database_script).to receive(:results).at_most(:once).and_call_original
         end
-        database_script.render
+        DatabaseScripts::Render.new(database_script).call
       end
     end
   end

@@ -35,7 +35,7 @@ class DatabaseScriptsController < ApplicationController
 
     def timed_render
       start = Time.current
-      rendered = @database_script.render
+      rendered = DatabaseScripts::Render.new(@database_script).call
       render_duration = Time.current - start
 
       [rendered, render_duration]

@@ -4,8 +4,6 @@
 
 class DatabaseScript
   include Draper::Decoratable
-  include DatabaseScripts::ViewHelpers
-  include DatabaseScripts::ImplicitRender
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
 
@@ -16,11 +14,6 @@ class DatabaseScript
   delegate :title, :section, :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
   class << self
-    def inherited subclass
-      subclass.include Rails.application.routes.url_helpers
-      subclass.include ActionView::Helpers::UrlHelper
-    end
-
     def new_from_filename basename
       raise ScriptNotFound unless (script_class = "DatabaseScripts::#{basename.camelize}".safe_constantize)
       script_class.new

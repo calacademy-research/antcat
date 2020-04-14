@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  module ViewHelpers
+  module RenderHelpers
     def as_table
       renderer = DatabaseScripts::Renderers::AsTable.new(cached_results)
       yield renderer
