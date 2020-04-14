@@ -63,4 +63,3 @@ related_scripts:
   - MigrationOriginTaxa
   - UnavailableMisspellings
   - UnavailableUncategorizedTaxa
-  - UnavailableUncategorizedTaxaTouchedByEditors
