@@ -31,7 +31,8 @@ describe Exporters::Antweb::History::HistoryItems do
 
     context 'when taxon has history items and virtual history items' do
       let(:taxon) { create :species }
-      let!(:subspecies) { create :subspecies, species: taxon }
+      let!(:subspecies) { create :subspecies, name_string: 'Lasius niger aa', species: taxon }
+      let(:subspecies_label) { '<i>L. n. aa</i>' }
 
       before do
         create :taxon_history_item, taxon: taxon, taxt: "Taxon: {tax #{taxon.id}}"
@@ -39,7 +40,8 @@ describe Exporters::Antweb::History::HistoryItems do
 
       specify do
         item = "<div>Taxon: #{antweb_taxon_link(taxon)}.</div>"
-        virtual_item = "<div>Current subspecies: nominal plus #{antweb_taxon_link(subspecies)}.</div>"
+        virtual_item = "<div>Current subspecies: nominal plus #{antweb_taxon_link(subspecies, subspecies_label)}.</div>"
+
         expect(described_class[taxon]).to eq(header + '<div>' + item + virtual_item + '</div>')
       end
 
