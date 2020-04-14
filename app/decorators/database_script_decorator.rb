@@ -11,7 +11,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def format_tags
-    tags_and_sections = ([section] + tags).compact - [DatabaseScript::MAIN_SECTION]
+    tags_and_sections = ([section] + tags).compact - [DatabaseScripts::Tagging::MAIN_SECTION]
     self.class.format_tags(tags_and_sections)
   end
 
@@ -34,21 +34,21 @@ class DatabaseScriptDecorator < Draper::Decorator
 
     def self.tag_css_class tag
       case tag
-      when DatabaseScript::SLOW_TAG          then "warning-label"
-      when DatabaseScript::VERY_SLOW_TAG     then "warning-label"
-      when DatabaseScript::SLOW_RENDER_TAG   then "warning-label"
-      when DatabaseScript::NEW_TAG           then "label"
-      when DatabaseScript::UPDATED           then "label"
-      when DatabaseScript::HAS_QUICK_FIX_TAG then "green-label"
-      when DatabaseScript::HIGH_PRIORITY_TAG then "high-priority-label"
-      else                                        "white-label"
+      when DatabaseScripts::Tagging::SLOW_TAG          then "warning-label"
+      when DatabaseScripts::Tagging::VERY_SLOW_TAG     then "warning-label"
+      when DatabaseScripts::Tagging::SLOW_RENDER_TAG   then "warning-label"
+      when DatabaseScripts::Tagging::NEW_TAG           then "label"
+      when DatabaseScripts::Tagging::UPDATED           then "label"
+      when DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG then "green-label"
+      when DatabaseScripts::Tagging::HIGH_PRIORITY_TAG then "high-priority-label"
+      else                                                  "white-label"
       end + " rounded-badge"
     end
     private_class_method :tag_css_class
 
     def list_or_slow?
       database_script.tags.include?('list') ||
-        database_script.section == DatabaseScript::LIST_SECTION ||
+        database_script.section == DatabaseScripts::Tagging::LIST_SECTION ||
         database_script.slow?
     end
 end

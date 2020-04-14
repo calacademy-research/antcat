@@ -47,7 +47,7 @@ describe DatabaseScript do
   describe "#section" do
     described_class.all.each do |database_script|
       it "#{database_script.filename_without_extension} has a known section" do
-        expect(database_script.section.in?(DatabaseScript::SECTIONS)).to eq true
+        expect(database_script.section.in?(DatabaseScripts::Tagging::SECTIONS)).to eq true
       end
     end
   end

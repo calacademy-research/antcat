@@ -23,7 +23,7 @@ describe DatabaseScriptDecorator do
 
       before do
         def database_script.section
-          DatabaseScript::MAIN_SECTION
+          DatabaseScripts::Tagging::MAIN_SECTION
         end
       end
 

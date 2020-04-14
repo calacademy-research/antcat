@@ -8,29 +8,6 @@ class DatabaseScript
   include DatabaseScripts::ViewHelpers
 
   SCRIPTS_DIR = "app/database_scripts/database_scripts"
-  SECTIONS = [
-    UNGROUPED_SECTION = "ungrouped",
-    MAIN_SECTION = "main",
-    NOT_NECESSARILY_INCORRECT_SECTION = "not-necessarily-incorrect",
-    REVERSED_SECTION = "reversed",
-    LONG_RUNNING_SECTION = "long-running",
-    PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
-    PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
-    REGRESSION_TEST_SECTION = "regression-test",
-    ORPHANED_RECORDS_SECTION = "orphaned-records",
-    LIST_SECTION = "list",
-    RESEARCH_SECTION = "research"
-  ]
-  TAGS = [
-    SLOW_TAG = "slow",
-    VERY_SLOW_TAG = "very-slow",
-    SLOW_RENDER_TAG = "slow-render",
-    NEW_TAG = "new!",
-    UPDATED = "updated!",
-    VALIDATED_TAG = "validated",
-    HAS_QUICK_FIX_TAG = "has-quick-fix",
-    HIGH_PRIORITY_TAG = "high-priority"
-  ]
 
   ScriptNotFound = Class.new StandardError
 
@@ -74,7 +51,7 @@ class DatabaseScript
   end
 
   def slow?
-    tags.include?(SLOW_TAG) || tags.include?(VERY_SLOW_TAG)
+    tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
   end
 
   def title

@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def section
-      end_data[:section] || DatabaseScript::UNGROUPED_SECTION
+      end_data[:section] || DatabaseScripts::Tagging::UNGROUPED_SECTION
     end
 
     def category
