@@ -55,7 +55,7 @@ __END__
 
 title: Reference documents with weird <code>actual_url</code>s
 
-section: main
+section: pa-no-action-required
 category: PDFs
 tags: []
 

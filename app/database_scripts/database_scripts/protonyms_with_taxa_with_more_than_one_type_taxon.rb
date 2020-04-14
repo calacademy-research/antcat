@@ -37,7 +37,7 @@ end
 
 __END__
 
-section: main
+section: pa-action-required
 category: Protonyms
 tags: []
 

@@ -29,7 +29,7 @@ __END__
 
 title: References with PDFs not hosted by us
 
-section: main
+section: pa-no-action-required
 category: PDFs
 tags: [slow-render]
 

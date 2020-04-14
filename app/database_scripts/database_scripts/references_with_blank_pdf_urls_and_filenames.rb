@@ -44,7 +44,7 @@ __END__
 
 title: References with blank PDF URLs and filenames
 
-section: main
+section: pa-no-action-required
 category: PDFs
 tags: [slow-render]
 

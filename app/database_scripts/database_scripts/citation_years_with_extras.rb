@@ -32,7 +32,7 @@ __END__
 
 title: <code>citation_year</code>s with extras
 
-section: list
+section: pa-no-action-required
 category: References
 tags: [slow-render, new!]
 

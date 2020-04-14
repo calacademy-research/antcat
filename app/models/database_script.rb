@@ -11,6 +11,8 @@ class DatabaseScript
   SECTIONS = [
     UNGROUPED_SECTION = "ungrouped",
     MAIN_SECTION = "main",
+    PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
+    PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
     REGRESSION_TEST_SECTION = "regression-test",
     ORPHANED_RECORDS_SECTION = "orphaned-records",
     LIST_SECTION = "list"

@@ -24,7 +24,7 @@ __END__
 
 title: <code>citation_year</code>s with uppercase letters
 
-section: list
+section: pa-no-action-required
 category: References
 tags: [new!]
 

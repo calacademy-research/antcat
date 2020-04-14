@@ -50,7 +50,7 @@ end
 
 __END__
 
-section: main
+section: pa-no-action-required
 category: Names
 tags: [very-slow]
 
