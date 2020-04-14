@@ -5,8 +5,8 @@ module DatabaseScripts
     class AsTable
       FOUND_NO_DATABASE_ISSUES = "Found no database issues"
 
-      def initialize cached_results
-        @cached_results = cached_results
+      def initialize results
+        @results = results
         @caption_content = nil
         @header_content = +""
         @body_content = +""
@@ -35,22 +35,22 @@ module DatabaseScripts
       end
 
       # Gets the results from `#results` unless specified.
-      def rows results = nil
-        results ||= @cached_results
+      def rows rows_results = nil
+        res = rows_results || results
 
-        if results.blank?
+        if res.blank?
           body_content << "<td>#{FOUND_NO_DATABASE_ISSUES}</td>" << "\n"
           return
         end
 
-        results.each do |object|
+        res.each do |object|
           row object, *yield(object)
         end
       end
 
       private
 
-        attr_accessor :caption_content, :header_content, :body_content
+        attr_accessor :results, :caption_content, :header_content, :body_content
 
         def row _result, *fields
           return if fields.empty?
