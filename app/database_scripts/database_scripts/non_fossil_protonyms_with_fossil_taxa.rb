@@ -25,9 +25,9 @@ __END__
 
 title: Non-fossil protonyms with fossil taxa
 
-section: regression-test
+section: reversed
 category: Protonyms
-tags: []
+tags: [regression-test]
 
 issue_description: This protonym is not fossil, but one of its taxa is.
 
@@ -39,7 +39,6 @@ description: >
 
 related_scripts:
   - FossilProtonymsWithNonFossilTaxa
-  - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms
   - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

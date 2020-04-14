@@ -30,7 +30,7 @@ title: Non-fossil taxa with fossil protonyms
 
 section: regression-test
 category: Protonyms
-tags: []
+tags: [has-reversed]
 
 issue_description: This taxon is not fossil, but its protonym is fossil.
 
@@ -44,7 +44,6 @@ description: >
   This script is the reverse of %dbscript:FossilProtonymsWithNonFossilTaxa
 
 related_scripts:
-  - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms

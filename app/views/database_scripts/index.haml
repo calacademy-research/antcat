@@ -27,6 +27,9 @@
   .small-12.columns
     -@grouped_database_scripts.each do |section, database_scripts|
       -case section
+      -when DatabaseScript::REVERSED_SECTION
+        %h5 Reversed scripts
+        %p Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.
       -when DatabaseScript::LONG_RUNNING_SECTION
         %h5 Long-running scripts
       -when DatabaseScript::REGRESSION_TEST_SECTION

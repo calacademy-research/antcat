@@ -33,7 +33,7 @@ __END__
 
 section: main
 category: Catalog
-tags: []
+tags: [has-reversed]
 
 issue_description: This taxon has an obsolete combination that belongs to a different protonym.
 
@@ -44,6 +44,5 @@ description: >
   This script is the reverse of %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
 
 related_scripts:
-  - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
   - SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon
   - TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms

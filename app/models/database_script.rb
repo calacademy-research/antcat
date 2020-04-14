@@ -2,7 +2,7 @@
 
 # Use `rails generate database_script <name_of_script>` to generate new scripts.
 
-class DatabaseScript
+class DatabaseScript # rubocop:disable Metrics/ClassLength
   include Draper::Decoratable
   include DatabaseScripts::Rendering
   include DatabaseScripts::ViewHelpers
@@ -11,6 +11,7 @@ class DatabaseScript
   SECTIONS = [
     UNGROUPED_SECTION = "ungrouped",
     MAIN_SECTION = "main",
+    REVERSED_SECTION = "reversed",
     LONG_RUNNING_SECTION = "long-running",
     PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
     PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",

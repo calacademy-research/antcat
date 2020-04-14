@@ -25,9 +25,9 @@ __END__
 
 title: Fossil protonyms with non-fossil taxa
 
-section: regression-test
+section: reversed
 category: Protonyms
-tags: []
+tags: [regression-test]
 
 issue_description: This protonym is fossil, but one of its taxa is extant.
 
@@ -41,5 +41,4 @@ related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
-  - NonFossilTaxaWithFossilProtonyms
   - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon

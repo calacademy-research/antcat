@@ -24,7 +24,7 @@ end
 
 __END__
 
-section: main
+section: reversed
 category: Catalog
 tags: []
 
@@ -52,5 +52,4 @@ related_scripts:
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
   - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
 
-  - SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym
   - TypeTaxaAssignedToMoreThanOneTaxon
