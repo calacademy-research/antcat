@@ -24,6 +24,8 @@ class User < ApplicationRecord
   scope :non_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :deleted_or_locked, -> { where("deleted = TRUE OR locked = TRUE") }
+  # TODO: This was ninja added, it should be possible to merge this into `.active`.
+  scope :non_locked, -> { where(locked: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable
