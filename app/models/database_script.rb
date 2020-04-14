@@ -11,6 +11,7 @@ class DatabaseScript # rubocop:disable Metrics/ClassLength
   SECTIONS = [
     UNGROUPED_SECTION = "ungrouped",
     MAIN_SECTION = "main",
+    NOT_NECESSARILY_INCORRECT_SECTION = "not-necessarily-incorrect",
     REVERSED_SECTION = "reversed",
     LONG_RUNNING_SECTION = "long-running",
     PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",

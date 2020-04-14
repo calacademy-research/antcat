@@ -24,7 +24,7 @@ end
 
 __END__
 
-section: main
+section: not-necessarily-incorrect
 category: Catalog
 tags: []
 
