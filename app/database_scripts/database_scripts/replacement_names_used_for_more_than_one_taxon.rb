@@ -19,9 +19,9 @@ module DatabaseScripts
         t.header 'Taxon', 'Status', 'replaced_by', 'Status of replaced_by', 'Looks like a false positive?'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(taxon.homonym_replaced_by),
+            taxon_link(taxon.homonym_replaced_by),
             taxon.homonym_replaced_by.status,
             (self.class.looks_like_a_false_positive?(taxon) ? 'Yes' : bold_warning('No'))
           ]

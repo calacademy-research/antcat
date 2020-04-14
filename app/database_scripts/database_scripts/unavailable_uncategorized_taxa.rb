@@ -21,9 +21,9 @@ module DatabaseScripts
           current_valid_taxon = taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(current_valid_taxon),
+            taxon_link(current_valid_taxon),
             current_valid_taxon.status,
 
             *what_links_here_coumns(taxon)

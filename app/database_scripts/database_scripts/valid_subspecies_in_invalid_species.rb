@@ -5,6 +5,10 @@ module DatabaseScripts
     def results
       Subspecies.valid.joins(:species).where.not(species_taxa: { status: Status::VALID })
     end
+
+    def render_as
+      :as_taxon_table
+    end
   end
 end
 

@@ -20,9 +20,9 @@ module DatabaseScripts
 
         t.rows(genus_results) do |genus|
           [
-            markdown_taxon_link(genus),
+            taxon_link(genus),
             genus.status,
-            markdown_taxon_link(genus.subfamily),
+            taxon_link(genus.subfamily),
             genus.subfamily.status
           ]
         end
@@ -32,9 +32,9 @@ module DatabaseScripts
 
           t.rows(species_results) do |species|
             [
-              markdown_taxon_link(species),
+              taxon_link(species),
               species.status,
-              markdown_taxon_link(species.genus),
+              taxon_link(species.genus),
               species.genus.status
             ]
           end
@@ -44,9 +44,9 @@ module DatabaseScripts
 
           t.rows(subspecies_results) do |subspecies|
             [
-              markdown_taxon_link(subspecies),
+              taxon_link(subspecies),
               subspecies.status,
-              markdown_taxon_link(subspecies.species),
+              taxon_link(subspecies.species),
               subspecies.species.status
             ]
           end

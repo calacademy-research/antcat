@@ -6,6 +6,10 @@ module DatabaseScripts
       taxa_set_as_current_valid_taxon.invalid
     end
 
+    def render_as
+      :as_taxon_table
+    end
+
     private
 
       def taxa_set_as_current_valid_taxon

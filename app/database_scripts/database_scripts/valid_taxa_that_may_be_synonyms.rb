@@ -26,6 +26,10 @@ module DatabaseScripts
       taxa.to_a.reject { |taxon| probably_valid? taxon.history_items }
     end
 
+    def render_as
+      :as_taxon_table
+    end
+
     private
 
       def probably_valid? history_items

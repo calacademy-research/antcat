@@ -12,7 +12,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Status', 'Obsolete combinations'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxon.obsolete_combinations.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
           ]

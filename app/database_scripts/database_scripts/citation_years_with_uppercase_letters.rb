@@ -29,10 +29,8 @@ category: References
 tags: [new!]
 
 description: >
-  This list was added to get an overview of `citation_year`s.
-
-
-  Uppercase letters can be changed by script, so we do not have to spend on time fixing them manually.
+  Uppercase letters will be changed to lowercase by script.
 
 related_scripts:
+  - CitationYearsWithExtras
   - CitationYearsWithUppercaseLetters

@@ -16,11 +16,11 @@ module DatabaseScripts
           cvt_of_current_valid_taxon = current_valid_taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon) + origin_warning(taxon),
+            taxon_link(taxon) + origin_warning(taxon),
             taxon.status,
-            markdown_taxon_link(current_valid_taxon),
+            taxon_link(current_valid_taxon),
             current_valid_taxon.status,
-            markdown_taxon_link(cvt_of_current_valid_taxon),
+            taxon_link(cvt_of_current_valid_taxon),
             cvt_of_current_valid_taxon.status
           ]
         end

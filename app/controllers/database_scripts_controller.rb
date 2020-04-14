@@ -4,25 +4,13 @@
 
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
-  SECTIONS_SORT_ORDER = [
-    DatabaseScript::UNGROUPED_SECTION,
-    DatabaseScript::MAIN_SECTION,
-    DatabaseScript::NOT_NECESSARILY_INCORRECT_SECTION,
-    DatabaseScript::REVERSED_SECTION,
-    DatabaseScript::LONG_RUNNING_SECTION,
-    DatabaseScript::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION,
-    DatabaseScript::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION,
-    DatabaseScript::REGRESSION_TEST_SECTION,
-    DatabaseScript::ORPHANED_RECORDS_SECTION,
-    DatabaseScript::LIST_SECTION,
-    DatabaseScript::RESEARCH_SECTION
-  ]
 
   before_action :authenticate_user!
 
   def index
+    @total_number_of_database_scripts = DatabaseScript.all.size
     @grouped_database_scripts = DatabaseScript.all.group_by(&:section).
-      sort_by { |section, _scripts| SECTIONS_SORT_ORDER.index(section) || 0 }
+      sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
     @check_if_empty = params[:check_if_empty]
   end
 
@@ -34,20 +22,21 @@ class DatabaseScriptsController < ApplicationController
     # :nocov:
 
     @database_script = find_database_script
+    @decorated_database_script = @database_script.decorate
     @rendered, @render_duration = timed_render
   end
 
   private
 
     def find_database_script
-      DatabaseScript.new_from_filename_without_extension params[:id]
+      DatabaseScript.new_from_basename(params[:id])
     rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError, "Not Found"
     end
 
     def timed_render
       start = Time.current
-      rendered = @database_script.render
+      rendered = DatabaseScripts::Render.new(@database_script).call
       render_duration = Time.current - start
 
       [rendered, render_duration]

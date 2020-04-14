@@ -3,23 +3,22 @@
 require 'rails_helper'
 
 describe DatabaseScript do
-  describe ".new_from_filename_without_extension" do
+  describe ".new_from_basename" do
     it "returns a database script" do
-      results = described_class.new_from_filename_without_extension "ExtantTaxaInFossilGenera"
-      expect(results).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+      expect(described_class.new_from_basename("ExtantTaxaInFossilGenera")).
+        to be_a DatabaseScripts::ExtantTaxaInFossilGenera
     end
   end
 
-  describe ".safe_new_from_filename_without_extension" do
+  describe ".safe_new_from_basename" do
     it "returns a database script" do
-      results = described_class.safe_new_from_filename_without_extension "ExtantTaxaInFossilGenera"
-      expect(results).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
+      expect(described_class.safe_new_from_basename("ExtantTaxaInFossilGenera")).
+        to be_a DatabaseScripts::ExtantTaxaInFossilGenera
     end
 
     context 'when database script does not exists' do
       it 'returns an "unfound database script"' do
-        results = described_class.safe_new_from_filename_without_extension "BestPizza"
-        expect(results).to be_a DatabaseScripts::UnfoundDatabaseScript
+        expect(described_class.safe_new_from_basename("BestPizza")).to be_a DatabaseScripts::UnfoundDatabaseScript
       end
     end
   end
@@ -38,53 +37,11 @@ describe DatabaseScript do
     end
   end
 
-  describe '#soft_validated?' do
-    it 'returns true if the script is used for taxon soft-validations' do
-      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.soft_validated?).to eq true
-      expect(DatabaseScripts::ProtonymsWithSameName.new.soft_validated?).to eq false
-    end
-  end
-
   describe "#section" do
     described_class.all.each do |database_script|
-      it "#{database_script.filename_without_extension} has a known section" do
-        expect(database_script.section.in?(DatabaseScript::SECTIONS)).to eq true
+      it "#{database_script.basename} has a known section" do
+        expect(database_script.section.in?(DatabaseScripts::Tagging::SECTIONS)).to eq true
       end
-    end
-  end
-
-  describe "#title" do
-    it "fetches the title from the END data" do
-      database_script = DatabaseScripts::FossilProtonymsWithNonFossilTaxa.new
-      expect(database_script.title).to eq "Fossil protonyms with non-fossil taxa"
-    end
-
-    it "defaults to the humanized filename" do
-      database_script = DatabaseScripts::OrphanedProtonyms.new
-      expect(database_script.title).to eq "Orphaned protonyms"
-    end
-
-    context "when filename ends with '_id'" do
-      subject(:database_script) { DatabaseScripts::TaxaWithSameName.new }
-
-      it "keeps the '_id' part" do
-        expect(database_script.title).to eq 'Taxa with same name'
-
-        def database_script.filename_without_extension
-          'taxa_with_same_name_id'
-        end
-
-        expect(database_script.title).to eq 'Taxa with same name id'
-      end
-    end
-  end
-
-  describe "#related_scripts" do
-    subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera.new }
-
-    it "returns related scripts excluding itself" do
-      expect(database_script.related_scripts.size).to eq 1
-      expect(database_script.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents
     end
   end
 
@@ -158,11 +115,11 @@ describe DatabaseScript do
     end
 
     described_class.all.each do |database_script|
-      it "#{database_script.filename_without_extension} calls `#results` only once" do
+      it "#{database_script.basename} calls `#results` only once" do
         if database_script.respond_to? :results
           expect(database_script).to receive(:results).at_most(:once).and_call_original
         end
-        database_script.render
+        DatabaseScripts::Render.new(database_script).call
       end
     end
   end

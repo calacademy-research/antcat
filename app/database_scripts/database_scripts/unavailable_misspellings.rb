@@ -12,7 +12,7 @@ module DatabaseScripts
           'Any?', 'Suggested action', 'What Links Here', 'Children'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             ('Yes' if taxon.what_links_here.any_columns?),
             ('Yes' if taxon.what_links_here.any_taxts?),

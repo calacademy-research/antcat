@@ -14,7 +14,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Status', 'Protonym'
         t.rows do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxon.protonym.decorate.link_to_protonym
           ]

@@ -6,6 +6,10 @@ module DatabaseScripts
       Taxon.pass_through_names.left_outer_joins(:history_items, :reference_sections).
         distinct.where("taxon_history_items.id IS NOT NULL OR reference_sections.id IS NOT NULL")
     end
+
+    def render_as
+      :as_taxon_table
+    end
   end
 end
 

@@ -16,10 +16,10 @@ module DatabaseScripts
           type_taxt = taxon.type_taxt
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             taxon.decorate.link_to_antwiki,
-            markdown_taxon_link(type_taxon),
+            taxon_link(type_taxon),
             type_taxon.status,
             Detax[type_taxt],
             expansion(taxon),

@@ -29,7 +29,7 @@ module DatabaseScripts
 
         t.rows(genera_without_subfamily) do |taxon|
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status
           ]
         end
@@ -40,9 +40,9 @@ module DatabaseScripts
 
           t.rows(subgenera_without_subfamily) do |taxon|
             [
-              markdown_taxon_link(taxon),
+              taxon_link(taxon),
               taxon.status,
-              markdown_taxon_link(taxon.genus.subfamily)
+              taxon_link(taxon.genus.subfamily)
             ]
           end
         end <<
@@ -52,9 +52,9 @@ module DatabaseScripts
 
           t.rows(genera_without_tribe) do |taxon|
             [
-              markdown_taxon_link(taxon),
+              taxon_link(taxon),
               taxon.status,
-              markdown_taxon_link(taxon.subfamily)
+              taxon_link(taxon.subfamily)
             ]
           end
         end <<
@@ -64,7 +64,7 @@ module DatabaseScripts
 
           t.rows(species_without_subfamily) do |taxon|
             [
-              markdown_taxon_link(taxon),
+              taxon_link(taxon),
               taxon.status
             ]
           end

@@ -23,7 +23,7 @@ describe DatabaseScriptDecorator do
 
       before do
         def database_script.section
-          DatabaseScript::MAIN_SECTION
+          DatabaseScripts::Tagging::MAIN_SECTION
         end
       end
 
@@ -37,6 +37,13 @@ describe DatabaseScriptDecorator do
       let(:decorated) { described_class.new(database_script) }
 
       specify { expect(decorated.format_tags).to eq '' }
+    end
+  end
+
+  describe '#soft_validated?' do
+    it 'returns true if the script is used for taxon soft-validations' do
+      expect(SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK.first.new.decorate.soft_validated?).to eq true
+      expect(DatabaseScripts::ProtonymsWithSameName.new.decorate.soft_validated?).to eq false
     end
   end
 

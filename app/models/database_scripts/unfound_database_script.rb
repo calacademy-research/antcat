@@ -6,8 +6,8 @@ module DatabaseScripts
       "Error: Could not find database script with class name '#{class_name}'"
     end
 
-    def filename_without_extension
-      @_filename_without_extension ||= class_name.underscore
+    def basename
+      @_basename ||= class_name.underscore
     end
 
     def section
@@ -17,6 +17,6 @@ module DatabaseScripts
       []
     end
 
-    alias_method :to_param, :filename_without_extension
+    alias_method :to_param, :basename
   end
 end

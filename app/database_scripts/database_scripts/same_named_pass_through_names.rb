@@ -21,10 +21,10 @@ module DatabaseScripts
           current_valid_taxon = taxon.current_valid_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.author_citation,
             taxon.status,
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             current_valid_taxon.author_citation,
             current_valid_taxon.status
           ]

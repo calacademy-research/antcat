@@ -60,6 +60,8 @@ category: PDFs
 tags: []
 
 description: >
+  Once confirmed, plan is to blank the `url`s, since documents with both a `url` and
+  a `file_file_name` ignore the URL and link the uploaded file.
 
 related_scripts:
   - OrphanedReferenceDocuments

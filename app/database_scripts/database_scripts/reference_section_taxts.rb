@@ -61,7 +61,7 @@ module DatabaseScripts
           t.rows(non_blank_title_taxt) do |reference_section|
             [
               link_to(reference_section.id, reference_section_path(reference_section)),
-              markdown_taxon_link(reference_section.taxon_id),
+              taxon_link(reference_section.taxon_id),
               reference_section.taxon.rank,
               (reference_section.references_taxt ? not_blank : blank_warning),
               reference_section.title_taxt || blank,
@@ -80,7 +80,7 @@ module DatabaseScripts
       def format_taxts reference_section
         [
           link_to(reference_section.id, reference_section_path(reference_section)),
-          markdown_taxon_link(reference_section.taxon_id),
+          taxon_link(reference_section.taxon_id),
           reference_section.taxon.rank,
           reference_section.references_taxt&.truncate(50, omission: '... [truncated]') || blank,
           reference_section.title_taxt || blank,

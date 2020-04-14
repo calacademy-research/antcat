@@ -25,7 +25,7 @@ module DatabaseScripts
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             Detax[taxt],
             (quick_fix_link(history_item) if matches),
@@ -73,7 +73,7 @@ title: History items with <code>ref</code> tags as author citations
 
 section: main
 category: Taxt
-tags: [has-quick-fix, updated!]
+tags: [has-quick-fix]
 
 description: >
   **Note that "tax/ref matches" in the "Check usage" column just means that the ID for `ref` tag

@@ -13,7 +13,7 @@ module DatabaseScripts
           protonym = taxon.protonym
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
             protonym.decorate.link_to_protonym,
             protonym.locality

@@ -13,9 +13,9 @@ module DatabaseScripts
           type_taxon = taxon. type_taxon
 
           [
-            markdown_taxon_link(taxon),
+            taxon_link(taxon),
             taxon.status,
-            markdown_taxon_link(type_taxon),
+            taxon_link(type_taxon),
             taxon.type_taxt,
             taxon.protonym.decorate.link_to_protonym
           ]

@@ -5,6 +5,10 @@ module DatabaseScripts
     def results
       Protonym.where.not(id: Taxon.select(:protonym_id)).includes(:name)
     end
+
+    def render_as
+      :as_protonym_table
+    end
   end
 end
 

@@ -62,9 +62,8 @@ module DatabaseScripts
     end
 
     def render
-      markdown formatted_statistics <<
-        formatted_matches <<
-        formatted_not_matching_any_endings
+      content = formatted_statistics << formatted_matches << formatted_not_matching_any_endings
+      Markdowns::Render[content, sanitize_content: false]
     end
 
     private

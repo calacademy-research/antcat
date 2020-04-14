@@ -10,6 +10,10 @@ module DatabaseScripts
       "Results: #{protonyms.count}"
     end
 
+    def render_as
+      :as_protonym_table
+    end
+
     private
 
       def protonyms
@@ -25,7 +29,7 @@ __END__
 
 section: research
 category: Catalog
-tags: []
+tags: [list]
 
 description: >
   WIP.
