@@ -18,7 +18,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Name', 'Type', 'Parsed as different type', 'Owner type', 'Will be fixed by itself?', 'Unparsable?'
+        t.header 'Name', 'Type', 'Parsed as different type', 'Owner type', 'Convert?', 'Will be fixed by itself?', 'Unparsable?'
         t.rows do |(name, parsed_name)|
           owner_type = name.id.in?(name_ids_owned_by_protonyms) ? 'Protonym' : 'Taxon'
 
@@ -27,6 +27,7 @@ module DatabaseScripts
             name.type,
             (parsed_name.type if parsed_name && parsed_name.class != name.class),
             owner_type,
+            ('Convert!' if convert_by_script?(name, parsed_name, owner_type)),
             will_be_fixed_by_itself(name, parsed_name, owner_type),
             ('Yes' unless parsed_name)
           ]
@@ -45,6 +46,13 @@ module DatabaseScripts
           owner_type == 'Taxon' ? 'Yes' : 'By script'
         end
       end
+
+      def convert_by_script? name, parsed_name, owner_type
+        return false unless owner_type == 'Protonym'
+
+        (name.type == 'SubspeciesName' && parsed_name.class.name == 'SpeciesName') ||
+          (name.type == 'SpeciesName' && parsed_name.class.name == 'SubspeciesName')
+      end
   end
 end
 
@@ -52,7 +60,7 @@ __END__
 
 section: pa-no-action-required
 category: Names
-tags: [very-slow]
+tags: [very-slow, updated!]
 
 description: >
   These records can only be fixed by script.
