@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 class ReferenceDecorator < Draper::Decorator
+  FORMATTED_REVIEW_STATES = {
+    Reference::REVIEW_STATE_NONE      => 'Not reviewed',
+    Reference::REVIEW_STATE_REVIEWED  => 'Reviewed',
+    Reference::REVIEW_STATE_REVIEWING => 'Being reviewed'
+  }
+
   delegate :sanitize, to: :helpers
   delegate :plain_text, :expandable_reference, :expanded_reference, to: :reference_formatter
 
@@ -35,11 +41,7 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_review_state
-    {
-      "none"      => 'Not reviewed',
-      "reviewed"  => 'Reviewed',
-      "reviewing" => 'Being reviewed'
-    }[reference.review_state]
+    FORMATTED_REVIEW_STATES[reference.review_state]
   end
 
   # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `Exporters::TaxaAsTxt`).

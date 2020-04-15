@@ -5,11 +5,12 @@ class Reference < ApplicationRecord
   include Trackable
 
   CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference]
-  SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
-    plain_text_cache
-    expandable_reference_cache
-    expanded_reference_cache
+  REVIEW_STATES = [
+    REVIEW_STATE_NONE = "none",
+    REVIEW_STATE_REVIEWED = "reviewed",
+    REVIEW_STATE_REVIEWING = "reviewing"
   ]
+  SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[plain_text_cache expandable_reference_cache expanded_reference_cache]
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
@@ -42,9 +43,8 @@ class Reference < ApplicationRecord
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
-    :public_notes, :editor_notes, :taxonomic_notes, :title,
-    :date, :citation_year, :series_volume_issue, :pagination,
-    :doi, :review_state, :bolton_key, :author_names_suffix
+    :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :citation_year, :series_volume_issue,
+    :pagination, :doi, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 

@@ -2,11 +2,22 @@
 
 class DatabaseScriptDecorator < Draper::Decorator
   GITHUB_MASTER_URL = "https://github.com/calacademy-research/antcat/blob/master"
+  TAG_CSS_CLASSES = {
+    DatabaseScripts::Tagging::SLOW_TAG          => "warning-label",
+    DatabaseScripts::Tagging::VERY_SLOW_TAG     => "warning-label",
+    DatabaseScripts::Tagging::SLOW_RENDER_TAG   => "warning-label",
+    DatabaseScripts::Tagging::NEW_TAG           => "label",
+    DatabaseScripts::Tagging::UPDATED           => "label",
+    DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG => "green-label",
+    DatabaseScripts::Tagging::HIGH_PRIORITY_TAG => "high-priority-label"
+  }
 
   delegate :section, :tags, :basename
 
   def self.format_tags tags
-    html_spans = tags.map { |tag| h.content_tag :span, tag, class: tag_css_class(tag) }
+    html_spans = tags.map do |tag|
+      h.content_tag :span, tag, class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
+    end
     h.safe_join(html_spans, " ")
   end
 
@@ -43,20 +54,6 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   private
-
-    def self.tag_css_class tag
-      case tag
-      when DatabaseScripts::Tagging::SLOW_TAG          then "warning-label"
-      when DatabaseScripts::Tagging::VERY_SLOW_TAG     then "warning-label"
-      when DatabaseScripts::Tagging::SLOW_RENDER_TAG   then "warning-label"
-      when DatabaseScripts::Tagging::NEW_TAG           then "label"
-      when DatabaseScripts::Tagging::UPDATED           then "label"
-      when DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG then "green-label"
-      when DatabaseScripts::Tagging::HIGH_PRIORITY_TAG then "high-priority-label"
-      else                                                  "white-label"
-      end + " rounded-badge"
-    end
-    private_class_method :tag_css_class
 
     def list_or_slow?
       tags.include?('list') ||
