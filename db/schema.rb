@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_09_201201) do
+ActiveRecord::Schema.define(version: 2020_04_15_170703) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -218,7 +218,7 @@ ActiveRecord::Schema.define(version: 2020_04_09_201201) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "citation_year"
-    t.string "type"
+    t.string "type", null: false
     t.integer "publisher_id"
     t.integer "journal_id"
     t.string "series_volume_issue"
