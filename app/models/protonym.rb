@@ -86,6 +86,7 @@ class Protonym < ApplicationRecord
     formated_locality = decorate.format_locality
 
     string = +''
+    string << "#{authorship.reference.keey}, #{authorship.pages} "
     string << "(#{authorship.forms}) " if authorship.forms
     string << formated_locality + ' ' if formated_locality
     string << biogeographic_region if biogeographic_region

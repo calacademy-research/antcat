@@ -26,7 +26,7 @@ describe ReferenceDecorator do
   end
 
   describe "#format_document_links" do
-    let(:reference) { build_stubbed :reference }
+    let(:reference) { build_stubbed :any_reference }
 
     before do
       allow(reference).to receive(:downloadable?).and_return true
