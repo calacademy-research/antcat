@@ -20,12 +20,10 @@ class User < ApplicationRecord
 
   scope :order_by_name, -> { order(:name) }
   scope :unconfirmed, -> { where(editor: false, helper: false) }
-  scope :active, -> { where(deleted: false) }
+  scope :active, -> { where(deleted: false, locked: false) }
   scope :non_hidden, -> { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :deleted_or_locked, -> { where("deleted = TRUE OR locked = TRUE") }
-  # TODO: This was ninja added, it should be possible to merge this into `.active`.
-  scope :non_locked, -> { where(locked: false) }
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable
@@ -38,7 +36,7 @@ class User < ApplicationRecord
   end
 
   def active_for_authentication?
-    super && !locked?
+    super && !locked? && !deleted
   end
 
   def unconfirmed_user_over_edit_limit?

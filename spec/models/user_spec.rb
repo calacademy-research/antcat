@@ -22,6 +22,12 @@ describe User do
     end
   end
 
+  describe "#valid_for_authentication?" do
+    specify { expect(build_stubbed(:user).active_for_authentication?).to eq true }
+    specify { expect(build_stubbed(:user, locked: true).active_for_authentication?).to eq false }
+    specify { expect(build_stubbed(:user, deleted: true).active_for_authentication?).to eq false }
+  end
+
   describe '#unconfirmed?' do
     specify { expect(build_stubbed(:user).unconfirmed?).to eq true }
     specify { expect(build_stubbed(:user, :helper).unconfirmed?).to eq false }
