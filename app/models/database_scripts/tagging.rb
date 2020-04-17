@@ -22,7 +22,6 @@ module DatabaseScripts
       SLOW_RENDER_TAG = "slow-render",
       NEW_TAG = "new!",
       UPDATED_TAG = "updated!",
-      VALIDATED_TAG = "validated",
       HAS_QUICK_FIX_TAG = "has-quick-fix",
       HIGH_PRIORITY_TAG = "high-priority",
       REGRESSION_TEST_SECTION,
