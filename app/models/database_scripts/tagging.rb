@@ -5,6 +5,7 @@ module DatabaseScripts
     SECTIONS = [
       UNGROUPED_SECTION = "ungrouped",
       MAIN_SECTION = "main",
+      CODE_CHANGES_REQUIRED_SECTION = "code-changes-required",
       PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
       PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
       LONG_RUNNING_SECTION = "long-running",
@@ -24,6 +25,7 @@ module DatabaseScripts
       UPDATED_TAG = "updated!",
       HAS_QUICK_FIX_TAG = "has-quick-fix",
       HIGH_PRIORITY_TAG = "high-priority",
+      CODE_CHANGES_REQUIRED_SECTION,
       REGRESSION_TEST_SECTION,
       LIST_SECTION,
       "has-reversed"

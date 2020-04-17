@@ -33,7 +33,7 @@ __END__
 
 section: not-necessarily-incorrect
 category: Catalog
-tags: []
+tags: [code-changes-required]
 
 issue_description: This taxon has a `current_valid_taxon` which itself has a `current_valid_taxon`.
 

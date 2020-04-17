@@ -29,7 +29,7 @@ title: <i>Nomina nuda</i> with children that are not <i>nomina nuda</i>
 
 section: regression-test
 category: Catalog
-tags: []
+tags: [code-changes-required]
 
 issue_description: This *nomen nudum* has children that are not *nomina nuda*.
 
