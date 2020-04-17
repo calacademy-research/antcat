@@ -46,6 +46,10 @@
   Fix random
   =antcat_icon(@decorated_database_script.fix_random? ? "check" : "nope")
 
+  Markdown tag:
+  %code
+    ="%dbscript:#{@database_script.class.name.demodulize}"
+
 %small.right
   Script runtime: #{@render_duration.round(4)} seconds
   -if @database_script.results_runtime

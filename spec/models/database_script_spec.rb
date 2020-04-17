@@ -38,9 +38,21 @@ describe DatabaseScript do
   end
 
   describe "#section" do
-    described_class.all.each do |database_script|
-      it "#{database_script.basename} has a known section" do
-        expect(database_script.section.in?(DatabaseScripts::Tagging::SECTIONS)).to eq true
+    describe 'section validation' do
+      described_class.all.each do |database_script|
+        it "#{database_script.basename} has a known section" do
+          expect(database_script.section.in?(DatabaseScripts::Tagging::SECTIONS)).to eq true
+        end
+      end
+    end
+  end
+
+  describe "#tags" do
+    describe 'tags validation' do
+      described_class.all.each do |database_script|
+        it "#{database_script.basename} has only known tags" do
+          expect(database_script.tags - DatabaseScripts::Tagging::TAGS).to eq []
+        end
       end
     end
   end

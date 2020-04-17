@@ -13,9 +13,6 @@
   .small-12.medium-9.columns.end
     .callout.primary
       %p
-        =DatabaseScriptDecorator.format_tags [DatabaseScripts::Tagging::VALIDATED_TAG]
-        means that there are validations in place to prevent the issue
-      %p
         =DatabaseScriptDecorator.format_tags [DatabaseScripts::Tagging::HIGH_PRIORITY_TAG]
         is for issues we want to fix as soon as possible, usually because the issue is
         preventing us from improving the code
@@ -31,6 +28,10 @@
           =database_scripts.size
           scripts in section
       -case section
+      -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
+        %h5.left Code changes required
+        .clearfix
+        %p For issues which may not be completely fixable without making changes to the code.
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_ACTION_REQUIRED_SECTION
         %h5.left Pending automation, editor action required
         .clearfix

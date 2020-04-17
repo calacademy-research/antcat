@@ -15,19 +15,25 @@ module DatabaseScripts
           taxt = history_item.taxt
           taxon = history_item.taxon
           protonym = taxon.protonym
+          looks_like_it_belongs_to_the_protonym = looks_like_it_belongs_to_the_protonym?(taxt)
+          simple_known_format = simple_known_format?(taxt)
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],
-            convert_bolton_link(history_item),
-            ('Yes' if looks_like_it_belongs_to_the_protonym?(taxt)),
+            (convert_bolton_link(history_item) unless looks_like_it_belongs_to_the_protonym || simple_known_format),
+            ('Yes' if looks_like_it_belongs_to_the_protonym),
             protonym.decorate.link_to_protonym,
             protonym.synopsis
           ]
         end
       end
+    end
+
+    def simple_known_format? taxt
+      taxt.in?(['Unavailable name', '<i>Nomen nudum</i>'])
     end
 
     def looks_like_it_belongs_to_the_protonym? taxt

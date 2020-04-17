@@ -187,7 +187,7 @@ describe Reference do
     context "when reference has a `author_names_suffix`" do
       let(:reference) do
         fisher = create :author_name, name: 'Fisher, B.L.'
-        build_stubbed :reference, author_names: [fisher], author_names_suffix: '(ed.)'
+        create :any_reference, author_names: [fisher], author_names_suffix: '(ed.)'
       end
 
       it "includes the `author_names_suffix` after the author names" do
