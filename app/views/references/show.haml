@@ -23,7 +23,7 @@
       #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
         %ul.no-bullet
           -if @reference.is_a?(ArticleReference) || @reference.is_a?(BookReference)
-            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year), class: "btn-normal"
+            %li=link_to "New Nested Reference", new_reference_path(nesting_reference_id: @reference.id, citation_year: @reference.citation_year, stated_year: @reference.stated_year), class: "btn-normal"
           %li=link_to "Copy", new_reference_path(reference_to_copy: @reference.id), class: "btn-normal"
           -if user_is_editor?
             %li=link_to "Delete", reference_path(@reference), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
@@ -54,6 +54,9 @@
         %tr
           %th Pagination
           %td=or_dash @reference.pagination
+        %tr
+          %th Year
+          %td=@reference.citation_year_and_stated_year
         %tr
           %th Date
           %td

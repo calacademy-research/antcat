@@ -31,6 +31,7 @@ module References
         [
           :author_names_string_cache,
           :citation_year,
+          :stated_year,
           :title,
           :pagination,
           :public_notes,

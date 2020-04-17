@@ -18,6 +18,7 @@ class ReferencesController < ApplicationController
     @reference = if params[:nesting_reference_id]
                    NestedReference.new(
                      citation_year: params[:citation_year],
+                     stated_year: params[:stated_year],
                      pagination: "Pp. XX-XX in:",
                      nesting_reference_id: params[:nesting_reference_id]
                    )
@@ -97,6 +98,7 @@ class ReferencesController < ApplicationController
         :public_notes,
         :publisher_string,
         :series_volume_issue,
+        :stated_year,
         :taxonomic_notes,
         :title,
         document_attributes: [:id, :file, :url]

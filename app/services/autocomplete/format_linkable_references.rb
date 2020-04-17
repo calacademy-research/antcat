@@ -11,7 +11,7 @@ module Autocomplete
         {
           id: reference.id,
           author: reference.author_names_string_with_suffix,
-          year: reference.citation_year,
+          year: reference.citation_year_and_stated_year,
           title: reference.decorate.format_title,
           full_pagination: full_pagination(reference),
           bolton_key: bolton_key(reference)

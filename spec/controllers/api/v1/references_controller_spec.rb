@@ -25,6 +25,7 @@ describe Api::V1::ReferencesController, as: :visitor do
             "title" => reference.title,
             "year" => reference.year,
             "citation_year" => reference.citation_year,
+            "stated_year" => reference.stated_year,
             "date" => nil,
             "doi" => nil,
             "online_early" => false,

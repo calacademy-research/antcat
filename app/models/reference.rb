@@ -43,8 +43,8 @@ class Reference < ApplicationRecord
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
-    :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :citation_year, :series_volume_issue,
-    :pagination, :doi, :review_state, :bolton_key, :author_names_suffix
+    :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :citation_year, :stated_year,
+    :series_volume_issue, :pagination, :doi, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 
@@ -53,6 +53,7 @@ class Reference < ApplicationRecord
     integer(:year)
     text(:author_names_string)
     text(:citation_year)
+    text(:stated_year)
     text(:title)
     # NOTE: Safe navigation for `.name` is for journals/publishers created at the same time as the reference.
     text(:journal_name) { journal&.name if respond_to?(:journal) }
@@ -64,6 +65,7 @@ class Reference < ApplicationRecord
     text(:bolton_key)
     text(:authors_for_keey) { authors_for_keey } # To find "et al".
     string(:citation_year)
+    string(:stated_year)
     string(:doi)
     string(:author_names_string)
   end
@@ -110,6 +112,13 @@ class Reference < ApplicationRecord
     authors_for_keey << ', ' << year.to_s
   end
 
+  # TODO: Replace `citation_year_without_extras` with `citation_year` once "extras" has been moved to `stated_year`.
+  # See https://github.com/calacademy-research/antcat/issues/977
+  def citation_year_and_stated_year
+    return citation_year_without_extras unless stated_year
+    %(#{citation_year_without_extras} ("#{stated_year}"))
+  end
+
   def authors_for_keey
     names = author_names.map(&:last_name)
     case names.size
@@ -133,7 +142,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
-    # TODO: Probably just use `references.year` instead of this once `MissingReference` has been remvoed.
+    # TODO: Replace with `citation_year` once "extras" has been moved to `stated_year`.
     def citation_year_without_extras
       return if citation_year.blank?
       citation_year.gsub(/ .*$/, '')
@@ -146,17 +155,9 @@ class Reference < ApplicationRecord
       throw :abort
     end
 
-    # TODO: Revisit once missing references have been cleared.
-    # `Reference.where(citation_year: nil).group(:type).count # {"MissingReference"=>88}`
-    #
-    # `citation_year` [string] looks like this: 2000b ["2001"]
-    # Which means: <published year><disambiguating letter, optional> ("<year in publication>", optional)
-    # TODO: Split into three different columns. See also https://github.com/calacademy-research/antcat/issues/511
     def set_year_from_citation_year
       self.year = if citation_year.blank?
                     nil
-                  elsif (match = citation_year.match(/\["(\d{4})"\]/))
-                    match[1]
                   else
                     citation_year.to_i
                   end
