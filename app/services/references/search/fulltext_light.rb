@@ -20,7 +20,7 @@ module References
         def fulltext_search_light
           Reference.search do
             keywords normalized_search_query do
-              fields :title, :author_names_string, :citation_year, :bolton_key, :authors_for_keey
+              fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_keey
               boost_fields author_names_string: 5.0
               boost_fields citation_year: 2.0
             end

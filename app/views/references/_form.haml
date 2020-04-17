@@ -23,11 +23,16 @@
         =db_tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
     .medium-2.columns
+      =f.label :stated_year do
+        Stated year
+        =db_tooltip_icon "references.stated_year", scope: :references
+      =f.text_field :stated_year
+    .medium-1.columns
       =f.label :reference_date do
         Date
         =db_tooltip_icon "references.date", scope: :references
       =f.text_field :date
-    .medium-3.columns.end
+    .medium-2.columns.end
       =f.label :online_early, class: 'margin-top' do
         =f.check_box :online_early
         Online early

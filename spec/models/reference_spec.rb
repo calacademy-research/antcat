@@ -35,22 +35,13 @@ describe Reference do
   end
 
   describe 'callbacks' do
-    describe "changing `citation_year`" do
+    describe "#set_year_from_citation_year" do
       context 'when `citation_year` contains a letter' do
         let(:reference) { create :any_reference, citation_year: '1910a' }
 
-        it "sets `year` to the stated year, if present" do
+        it "ignores letters when setting `year`" do
           expect { reference.update!(citation_year: '2010b') }.
             to change { reference.reload.year }.from(1910).to(2010)
-        end
-      end
-
-      context 'when `citation_year` contains a bracketed year' do
-        let(:reference) { create :any_reference, citation_year: '1910a ["1958"]' }
-
-        it "sets `year` to the stated year, if present" do
-          expect { reference.update!(citation_year: '2010b ["2009"]') }.
-            to change { reference.reload.year }.from(1958).to(2009)
         end
       end
     end
@@ -120,6 +111,20 @@ describe Reference do
         expect(reference.can_finish_reviewing?).to eq true
         expect(reference.can_restart_reviewing?).to eq false
       end
+    end
+  end
+
+  describe '#citation_year_and_stated_year' do
+    context 'when reference does not have a `stated_year`' do
+      let(:reference) { create :any_reference, citation_year: "2000a" }
+
+      specify { expect(reference.citation_year_and_stated_year).to eq '2000a' }
+    end
+
+    context 'when reference has a `stated_year`' do
+      let(:reference) { create :any_reference, citation_year: "2000a", stated_year: "2001" }
+
+      specify { expect(reference.citation_year_and_stated_year).to eq '2000a ("2001")' }
     end
   end
 

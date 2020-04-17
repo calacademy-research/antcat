@@ -3,12 +3,12 @@
 module DatabaseScripts
   class CitationYearsWithExtras < DatabaseScript
     def results
-      Reference.where("citation_year NOT REGEXP ?", "^[0-9][0-9][0-9][0-9][a-z]?$")
+      Reference.where("citation_year NOT REGEXP ? OR stated_year IS NOT NULL", "^[0-9][0-9][0-9][0-9][a-z]?$")
     end
 
     def render
       as_table do |t|
-        t.header 'Reference', 'citation_year', 'Extras', 'Diff', 'Standard format?'
+        t.header 'Reference', 'citation_year', 'stated_year', 'Extras', 'Diff', 'Standard format?'
         t.rows do |reference|
           standard_format = reference.citation_year.match?(/^\d\d\d\d[a-zA-Z]?( \("\d\d\d\d"\))$/)
           extra_year = reference.citation_year.scan(/"([^"]*)"/)&.first&.first
@@ -18,6 +18,7 @@ module DatabaseScripts
           [
             link_to(reference.keey, reference_path(reference)),
             reference.citation_year,
+            reference.stated_year,
             extra_year,
             year_diff,
             ('No' unless standard_format)
@@ -37,7 +38,10 @@ category: References
 tags: [slow-render, new!]
 
 description: >
-  Once confirmed, the plan is to move the "extras" into a new database column.
+  The plan is to move the "extras" into a new database column, `stated_year` (string).
+
+
+  Issue: %github977
 
 related_scripts:
   - CitationYearsWithExtras

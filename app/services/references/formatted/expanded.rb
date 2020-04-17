@@ -15,7 +15,7 @@ module References
       def call
         string = author_names_with_links
         string << ' '
-        string << sanitize(reference.citation_year) << '. '
+        string << sanitize(reference.citation_year_and_stated_year) << '. '
         string << link_to(reference.decorate.format_title, reference_path(reference)) << ' '
         string << AddPeriodIfNecessary[sanitize(format_citation)]
         string << ' [online early]' if reference.online_early?

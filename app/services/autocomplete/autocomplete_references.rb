@@ -20,7 +20,7 @@ module Autocomplete
           id: reference.id,
           title: reference.title,
           author: reference.author_names_string_with_suffix,
-          year: reference.citation_year
+          year: reference.citation_year_and_stated_year
         }
       end
     end
