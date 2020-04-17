@@ -21,10 +21,13 @@ module DatabaseScripts
       VERY_SLOW_TAG = "very-slow",
       SLOW_RENDER_TAG = "slow-render",
       NEW_TAG = "new!",
-      UPDATED = "updated!",
+      UPDATED_TAG = "updated!",
       VALIDATED_TAG = "validated",
       HAS_QUICK_FIX_TAG = "has-quick-fix",
-      HIGH_PRIORITY_TAG = "high-priority"
+      HIGH_PRIORITY_TAG = "high-priority",
+      REGRESSION_TEST_SECTION,
+      LIST_SECTION,
+      "has-reversed"
     ]
   end
 end

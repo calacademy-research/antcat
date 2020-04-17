@@ -7,7 +7,7 @@ class DatabaseScriptDecorator < Draper::Decorator
     DatabaseScripts::Tagging::VERY_SLOW_TAG     => "warning-label",
     DatabaseScripts::Tagging::SLOW_RENDER_TAG   => "warning-label",
     DatabaseScripts::Tagging::NEW_TAG           => "label",
-    DatabaseScripts::Tagging::UPDATED           => "label",
+    DatabaseScripts::Tagging::UPDATED_TAG       => "label",
     DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG => "green-label",
     DatabaseScripts::Tagging::HIGH_PRIORITY_TAG => "high-priority-label"
   }
