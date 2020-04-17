@@ -43,21 +43,6 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def empty_status
-    return '??' unless database_script.respond_to?(:results)
-    return 'Excluded (slow/list)' if list_or_slow?
-
-    if database_script.results.any?
-      'Not empty'
-    else
-      'Empty'
-    end
+    DatabaseScripts::EmptyStatus[database_script]
   end
-
-  private
-
-    def list_or_slow?
-      tags.include?('list') ||
-        section == DatabaseScripts::Tagging::LIST_SECTION ||
-        slow?
-    end
 end
