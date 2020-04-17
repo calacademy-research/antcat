@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ReferenceSectionTaxts < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def blank_references_taxt
       ReferenceSection.where(references_taxt: nil).includes(:taxon)
     end

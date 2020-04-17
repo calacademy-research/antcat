@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class NowDeletedScripts < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def results
       disagreeing_name_parts
     end

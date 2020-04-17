@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class GenusGenderEndings < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def formatted_statistics
       output = +"### Statistics\n"
       output << "-ending: already gendered / matches (incorrectly gendered)\n"
