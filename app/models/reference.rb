@@ -103,7 +103,7 @@ class Reference < ApplicationRecord
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
   def keey
-    authors_for_keey << ', ' << citation_year_without_extras
+    authors_for_keey << ', ' << citation_year
   end
 
   # Normal keey: "Bolton, 1885g".
@@ -112,11 +112,9 @@ class Reference < ApplicationRecord
     authors_for_keey << ', ' << year.to_s
   end
 
-  # TODO: Replace `citation_year_without_extras` with `citation_year` once "extras" has been moved to `stated_year`.
-  # See https://github.com/calacademy-research/antcat/issues/977
   def citation_year_and_stated_year
-    return citation_year_without_extras unless stated_year
-    %(#{citation_year_without_extras} ("#{stated_year}"))
+    return citation_year unless stated_year
+    %(#{citation_year} ("#{stated_year}"))
   end
 
   def authors_for_keey
@@ -140,12 +138,6 @@ class Reference < ApplicationRecord
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
 
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
-    end
-
-    # TODO: Replace with `citation_year` once "extras" has been moved to `stated_year`.
-    def citation_year_without_extras
-      return if citation_year.blank?
-      citation_year.gsub(/ .*$/, '')
     end
 
     def check_not_referenced
