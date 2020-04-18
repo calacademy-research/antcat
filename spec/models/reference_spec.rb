@@ -21,6 +21,10 @@ describe Reference do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
+    it { is_expected.to allow_value('2000').for(:citation_year) }
+    it { is_expected.to allow_value('2000a').for(:citation_year) }
+    it { is_expected.to_not allow_value('2000A').for(:citation_year) }
+
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
       let!(:duplicate) { create :any_reference }
@@ -204,12 +208,6 @@ describe Reference do
   describe "#keey" do
     let(:bolton) { create :author_name, name: 'Bolton, B.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.' }
-
-    context "when citation years with extra" do
-      let(:reference) { create :any_reference, author_names: [bolton], citation_year: '1970a ("1971")' }
-
-      specify { expect(reference.keey).to eq 'Bolton, 1970a' }
-    end
 
     context 'when no authors' do
       let(:reference) { create :any_reference, citation_year: '1970a' }

@@ -27,12 +27,13 @@ class Reference < ApplicationRecord
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
+  validates :citation_year, format: { with: /\A\d{4,}[a-z]?\z/, message: "must be a year, followed by an optional lowercase letter" }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 
   before_validation :set_year_from_citation_year
   before_save :assign_author_names_cache
-  before_destroy :check_not_referenced
+  before_destroy :ensure_not_used
 
   scope :latest_additions, -> { order(created_at: :desc) }
   scope :latest_changes, -> { order(updated_at: :desc) }
@@ -103,7 +104,7 @@ class Reference < ApplicationRecord
 
   # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
   def keey
-    authors_for_keey << ', ' << citation_year_without_extras
+    authors_for_keey << ', ' << citation_year
   end
 
   # Normal keey: "Bolton, 1885g".
@@ -112,11 +113,9 @@ class Reference < ApplicationRecord
     authors_for_keey << ', ' << year.to_s
   end
 
-  # TODO: Replace `citation_year_without_extras` with `citation_year` once "extras" has been moved to `stated_year`.
-  # See https://github.com/calacademy-research/antcat/issues/977
   def citation_year_and_stated_year
-    return citation_year_without_extras unless stated_year
-    %(#{citation_year_without_extras} ("#{stated_year}"))
+    return citation_year unless stated_year
+    %(#{citation_year} ("#{stated_year}"))
   end
 
   def authors_for_keey
@@ -142,13 +141,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
-    # TODO: Replace with `citation_year` once "extras" has been moved to `stated_year`.
-    def citation_year_without_extras
-      return if citation_year.blank?
-      citation_year.gsub(/ .*$/, '')
-    end
-
-    def check_not_referenced
+    def ensure_not_used
       return if what_links_here.empty?
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
