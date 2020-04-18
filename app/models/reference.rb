@@ -27,6 +27,7 @@ class Reference < ApplicationRecord
   validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
+  validates :citation_year, format: { with: /\A\d{4,}[a-z]?\z/, message: "must be a year, followed by an optional lowercase letter" }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 
