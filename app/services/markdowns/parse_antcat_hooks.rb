@@ -17,10 +17,10 @@ module Markdowns
     include ActionView::Helpers::SanitizeHelper
     include Service
 
-    USER_TAG_REGEX = /@user(\d+)/
-    GITHUB_TAG_REGEX = /%github(\d+)/
-    WIKI_TAG_REGEX = /%wiki(\d+)/
-    DB_SCRIPT_TAG_REGEX = /%dbscript:([A-Z][A-Za-z0-9_]+)/
+    USER_TAG_REGEX = /@user(?<id>\d+)/
+    GITHUB_TAG_REGEX = /%github(?<issue_id>\d+)/
+    WIKI_TAG_REGEX = /%wiki(?<id>\d+)/
+    DB_SCRIPT_TAG_REGEX = /%dbscript:(?<basename>[A-Z][A-Za-z0-9_]+)/
 
     def initialize content, sanitize_content: true, catalog_tags_only: false
       @content = sanitize_content ? sanitize(content).to_str : content
@@ -101,7 +101,7 @@ module Markdowns
       def parse_github_tags
         content.gsub!(GITHUB_TAG_REGEX) do
           # Also works for PRs because GH figures that out.
-          github_issue_id = Regexp.last_match(1)
+          github_issue_id = $LAST_MATCH_INFO[:issue_id]
           url = "https://github.com/calacademy-research/antcat/issues/#{github_issue_id}"
           link_to "GitHub ##{github_issue_id}", url
         end
@@ -111,7 +111,8 @@ module Markdowns
       # Renders: a link to the wiki page.
       def parse_wiki_tags
         content.gsub!(WIKI_TAG_REGEX) do
-          wiki_page_id = Regexp.last_match(1)
+          wiki_page_id = $LAST_MATCH_INFO[:id]
+
           begin
             wiki_page = WikiPage.find(wiki_page_id)
             link_to wiki_page.title, wiki_page_path(wiki_page_id)
@@ -125,7 +126,8 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_tags
         content.gsub!(USER_TAG_REGEX) do
-          user_id = Regexp.last_match(1)
+          user_id = $LAST_MATCH_INFO[:id]
+
           if (user = User.find_by(id: user_id))
             user.decorate.ping_user_link
           else
@@ -138,7 +140,8 @@ module Markdowns
       # Renders: a link to the database script.
       def parse_dbscript_tags
         content.gsub!(DB_SCRIPT_TAG_REGEX) do
-          basename = Regexp.last_match(1)
+          basename = $LAST_MATCH_INFO[:basename]
+
           database_script = DatabaseScript.safe_new_from_basename(basename)
           formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags
           link_to(database_script.title, database_script_path(database_script)) << ' ' << formatted_tags
