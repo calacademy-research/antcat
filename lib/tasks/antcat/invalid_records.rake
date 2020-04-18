@@ -3,7 +3,7 @@
 namespace :antcat do
   desc "Find all `!valid?` ActiveRecords"
   task invalid_records: [:environment] do
-    Rails.application.eager_load!
+    Zeitwerk::Loader.eager_load_all
 
     IGNORED_MODELS = [PaperTrail::Version]
     STI_SUBCLASS_MODELS = [Taxon.descendants, Reference.descendants, Name.descendants].flatten
