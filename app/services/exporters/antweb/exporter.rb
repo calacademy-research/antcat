@@ -7,6 +7,8 @@ module Exporters
     class Exporter
       include Service
 
+      EXPORTABLE_TYPES = Rank::TYPES - ['Subtribe', 'Infrasubspecies']
+
       def initialize filename
         @filename = filename
         @progress = progress_bar taxa_ids.size unless Rails.env.test?
@@ -24,12 +26,8 @@ module Exporters
           File.open(filename, 'w') do |file|
             file.puts Exporters::Antweb::ExportTaxon::HEADER
 
-            taxa_ids.each_slice(1000) do |chunk|
-              Taxon.where(id: chunk).
-                order(Arel.sql("field(taxa.id, #{chunk.join(',')})")).
-                joins(protonym: [{ authorship: :reference }]).
-                includes(protonym: [{ authorship: :reference }]).
-                each do |taxon|
+            taxon_ids.each_slice(1000) do |chunk|
+              taxon_chunk(chunk).each do |taxon|
                 progress.increment unless Rails.env.test?
 
                 begin
@@ -54,10 +52,17 @@ module Exporters
           end
         end
 
-        def taxa_ids
-          @_taxa_ids ||= Taxon.where.not(type: ['Subtribe', 'Infrasubspecies']).
-                           joins(protonym: [{ authorship: :reference }]).
-                           order(:status).pluck(:id).reverse
+        def taxon_ids
+          @_taxon_ids ||= Taxon.where(type: EXPORTABLE_TYPES).
+                            joins(protonym: [{ authorship: :reference }]).
+                            order(:status).pluck(:id).reverse
+        end
+
+        def taxon_chunk chunk
+          Taxon.where(id: chunk).
+            order(Arel.sql("field(taxa.id, #{chunk.join(',')})")).
+            joins(protonym: [{ authorship: :reference }]).
+            includes(protonym: [{ authorship: :reference }])
         end
 
         def progress_bar total

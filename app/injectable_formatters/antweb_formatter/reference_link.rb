@@ -14,7 +14,7 @@ module AntwebFormatter
     private
 
       def reference_link
-        link_to reference.keey.html_safe, reference_url, title: Unitalicize[plain_text]
+        link_to reference.keey.html_safe, reference_url, title: title
       end
 
       def document_links
@@ -25,8 +25,8 @@ module AntwebFormatter
         "#{Settings.production_url}/references/#{reference.id}"
       end
 
-      def plain_text
-        reference.decorate.plain_text
+      def title
+        Unitalicize[reference.decorate.plain_text]
       end
   end
 end
