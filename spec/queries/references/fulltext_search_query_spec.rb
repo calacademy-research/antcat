@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe References::Search::Fulltext, :search do
+describe References::FulltextSearchQuery, :search do
   describe "#call" do
     describe 'searching with keywords' do
       describe 'keyword: `title`' do

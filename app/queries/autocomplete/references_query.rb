@@ -28,7 +28,7 @@ module Autocomplete
     private
 
       def search_results
-        exact_id_match || ::References::Search::Fulltext[{ per_page: PER_PAGE }.merge keyword_params]
+        exact_id_match || ::References::FulltextSearchQuery[{ per_page: PER_PAGE }.merge keyword_params]
       end
 
       def exact_id_match

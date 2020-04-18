@@ -13,7 +13,7 @@ module Autocomplete
     private
 
       def search_results
-        exact_id_match || References::Search::FulltextLight[search_query]
+        exact_id_match || References::FulltextSearchLightQuery[search_query]
       end
 
       def exact_id_match

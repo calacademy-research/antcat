@@ -4,9 +4,9 @@ require 'rails_helper'
 
 describe Autocomplete::LinkableReferencesQuery do
   describe "#call" do
-    it 'calls `References::Search::FulltextLight`' do
+    it 'calls `References::FulltextSearchLightQuery`' do
       search_query = 'Bolton'
-      expect(References::Search::FulltextLight).to receive(:new).with(search_query).and_call_original
+      expect(References::FulltextSearchLightQuery).to receive(:new).with(search_query).and_call_original
       described_class[search_query]
     end
 

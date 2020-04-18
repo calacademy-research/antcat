@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe References::Search::FulltextLight, :search do
+describe References::FulltextSearchLightQuery, :search do
   describe "#call" do
     describe "search queries" do
       context "when search query contains hyphens" do
