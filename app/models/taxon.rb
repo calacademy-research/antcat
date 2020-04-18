@@ -30,7 +30,7 @@ class Taxon < ApplicationRecord
     has_many :reference_sections, -> { order(:position) }
   end
 
-  validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
+  validates :type, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }

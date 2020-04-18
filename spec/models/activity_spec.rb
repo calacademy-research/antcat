@@ -6,8 +6,8 @@ describe Activity do
   it { is_expected.to be_versioned }
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :action }
     it { is_expected.to validate_inclusion_of(:action).in_array(Activity::ACTIONS) }
+    it { is_expected.to_not allow_value(nil).for(:action) }
   end
 
   describe 'callbacks' do

@@ -24,7 +24,7 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
-  validates :type, presence: true, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
+  validates :type, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
@@ -156,9 +156,7 @@ class Reference < ApplicationRecord
     end
 
     def set_year_from_citation_year
-      self.year = if citation_year.blank?
-                    nil
-                  else
+      self.year = if citation_year.present?
                     citation_year.to_i
                   end
     end
