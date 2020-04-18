@@ -31,10 +31,10 @@ module Markdowns
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
-        ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
-        return if ids.blank?
+        taxa_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
+        return if taxa_ids.blank?
 
-        taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
+        taxa = Taxon.where(id: taxa_ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
           taxon_id = $LAST_MATCH_INFO[:id]
@@ -65,17 +65,17 @@ module Markdowns
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
-        refs_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
-        return if refs_ids.blank?
+        reference_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
+        return if reference_ids.blank?
 
-        refs = Reference.where(id: refs_ids).pluck(:id, :expandable_reference_cache).to_h
-        refs = {} if ENV['NO_REF_CACHE']
+        references = Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
+        references = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(Taxt::REF_TAG_REGEX) do
           reference_id = $LAST_MATCH_INFO[:id]
 
           begin
-            refs[reference_id.to_i]&.html_safe || Reference.find(reference_id).decorate.expandable_reference.html_safe
+            references[reference_id.to_i]&.html_safe || Reference.find(reference_id).decorate.expandable_reference.html_safe
           rescue ActiveRecord::RecordNotFound
             broken_markdown_link "REFERENCE", reference_id
           end
