@@ -5,11 +5,6 @@
   No notifications.
 -else
   %table.notifications
-    %thead
-      %tr
-        %th
-        %th Who/what
-        %th When
     %tbody
       -@notifications.each do |notification|
         %tr{class: ('unseen' if notification.unseen?)}
