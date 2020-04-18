@@ -30,8 +30,6 @@ module Markdowns
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
-        return if taxon_ids.blank?
-
         content.gsub!(Taxt::TAX_TAG_REGEX) do
           taxon_id = $LAST_MATCH_INFO[:id]
 
@@ -43,12 +41,9 @@ module Markdowns
         end
       end
 
-      def taxon_ids
-        @_taxon_ids ||= content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
-      end
-
       # HACK: To eager load records in a single query for performance reasons.
       def taxa_indexed_by_id
+        taxon_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
         Taxon.where(id: taxon_ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
       end
 
@@ -69,8 +64,6 @@ module Markdowns
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
-        return if reference_ids.blank?
-
         content.gsub!(Taxt::REF_TAG_REGEX) do
           reference_id = $LAST_MATCH_INFO[:id]
 
@@ -84,15 +77,12 @@ module Markdowns
         end
       end
 
-      def reference_ids
-        @_reference_ids ||= content.scan(Taxt::REF_TAG_REGEX).flatten.compact
-      end
-
       # HACK: To eager load records in a single query for performance reasons.
       def references_indexed_by_id
         return {} if ENV['NO_REF_CACHE']
 
         @_references_indexed_by_id ||= begin
+          reference_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
           Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
         end
       end
