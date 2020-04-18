@@ -71,33 +71,37 @@ class TaxonDecorator < Draper::Decorator
   def link_to_antweb
     return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
 
-    params = { rank: taxon.rank }
-    params.merge! case taxon
-                  when Species
-                    { genus: taxon.genus.name_cache, species: taxon.name.epithet }
-                  when Subspecies
-                    {
-                      genus: taxon.genus.name_cache,
-                      species: taxon.species.name.epithet,
-                      subspecies: taxon.name.subspecies_epithets
-                    }
-                  when Genus
-                    { genus: taxon.name_cache }
-                  when Subfamily
-                    { subfamily: taxon.name_cache }
-                  else
-                    raise "Don't know how to link #{taxon} to AntWeb"
-                  end
-
-    params[:project] = "worldants"
-
-    # Rails' .to_param sorts the params, this one doesn't
-    url = ANTWEB_BASE_URL + params.map { |key, value| value.to_query(key) }.compact * '&'
-    h.external_link_to 'AntWeb', url.downcase.html_safe
+    # Rails' `Hash#to_param` sorts the params, this one doesn't
+    query_string = antweb_params.map { |key, value| value.to_query(key) }.compact * '&'
+    h.external_link_to 'AntWeb', (ANTWEB_BASE_URL + query_string).downcase.html_safe
   end
 
   def link_to_google_scholar
     params = { q: "#{taxon.name_cache} #{taxon.author_citation}" }.to_query
     h.external_link_to "Google&nbsp;Scholar".html_safe, "#{GOOGLE_SCHOLAR_BASE_URL}#{params}"
   end
+
+  private
+
+    def antweb_params
+      params = { rank: taxon.rank }
+      params.merge! case taxon
+                    when Species
+                      { genus: taxon.genus.name_cache, species: taxon.name.epithet }
+                    when Subspecies
+                      {
+                        genus: taxon.genus.name_cache,
+                        species: taxon.species.name.epithet,
+                        subspecies: taxon.name.subspecies_epithets
+                      }
+                    when Genus
+                      { genus: taxon.name_cache }
+                    when Subfamily
+                      { subfamily: taxon.name_cache }
+                    else
+                      raise "Don't know how to link #{taxon} to AntWeb"
+                    end
+      params[:project] = "worldants"
+      params
+    end
 end
