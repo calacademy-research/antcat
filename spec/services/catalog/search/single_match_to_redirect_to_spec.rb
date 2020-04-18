@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Taxa::Search::SingleMatchToRedirectTo do
+describe Catalog::Search::SingleMatchToRedirectTo do
   describe "#call" do
     let!(:exact_match) { create :species, name_string: 'Lasius niger' }
 

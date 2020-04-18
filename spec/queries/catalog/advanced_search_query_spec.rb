@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Taxa::Search::AdvancedSearch do
+describe Catalog::AdvancedSearchQuery do
   describe "#call" do
     context "when no meaningful search parameters are given" do
       specify { expect(described_class[year: '']).to be_empty }

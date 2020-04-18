@@ -8,7 +8,7 @@ module Catalog
     def show
       return if not_searching_yet? || searching_for_nothing_from_header? # Just render the form.
 
-      if redirect_if_single_exact_match? && (single_match = Taxa::Search::SingleMatchToRedirectTo[params[:qq]])
+      if redirect_if_single_exact_match? && (single_match = Catalog::Search::SingleMatchToRedirectTo[params[:qq]])
         return redirect_to catalog_path(single_match, qq: params[:qq]), notice: <<~MSG
           You were redirected to an exact match. <a href='/catalog/search?qq=#{params[:qq]}'>Show more results.</a>
         MSG
@@ -24,7 +24,7 @@ module Catalog
         params[:name] = params[:qq]
       end
 
-      @taxa = Taxa::Search::AdvancedSearch[advanced_search_params]
+      @taxa = Catalog::AdvancedSearchQuery[advanced_search_params]
 
       respond_to do |format|
         format.html do

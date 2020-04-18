@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Taxa
+module Catalog
   module Search
     class SingleMatchToRedirectTo
       include Service
