@@ -14,13 +14,15 @@ describe Species do
     end
   end
 
-  it "can have subspecies, which are its children" do
-    species = create :species
-    robusta = create :subspecies, species: species
-    saltensis = create :subspecies, species: species
+  describe "#children" do
+    it "returns the subspecies" do
+      species = create :species
+      robusta = create :subspecies, species: species
+      saltensis = create :subspecies, species: species
 
-    expect(species.subspecies).to eq [robusta, saltensis]
-    expect(species.children).to eq species.subspecies
+      expect(species.subspecies).to eq [robusta, saltensis]
+      expect(species.children).to eq species.subspecies
+    end
   end
 
   describe "#update_parent" do

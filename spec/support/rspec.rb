@@ -64,10 +64,11 @@ RSpec.configure do |config|
   # the `--only-failures` and `--next-failure` CLI options.
   config.example_status_persistence_file_path = "spec/examples.txt"
 
+  config.include ActiveSupport::Testing::TimeHelpers
+  config.include FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
-  config.include FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
 end

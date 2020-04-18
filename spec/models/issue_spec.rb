@@ -17,8 +17,6 @@ describe Issue do
 
   describe "scopes" do
     describe ".by_status_and_date" do
-      include ActiveSupport::Testing::TimeHelpers
-
       let!(:expected_order) do
         fourth = travel_to(5.years.ago) { create :issue, :closed }
         second = travel_to(2.years.ago) { create :issue, :open }
@@ -51,7 +49,7 @@ describe Issue do
         specify { expect(described_class.help_wanted?).to eq true }
       end
 
-      context 'when no issue is open' do
+      context 'when no issues are open' do
         before { create :issue, :closed, :help_wanted }
 
         specify { expect(described_class.help_wanted?).to eq false }

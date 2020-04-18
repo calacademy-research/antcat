@@ -16,7 +16,7 @@ class Notification < ApplicationRecord
   belongs_to :notifier, class_name: "User"
   belongs_to :attached, polymorphic: true, optional: true # The comment, or commentable, or anything.
 
-  validates :reason, presence: true, inclusion: { in: REASONS }
+  validates :reason, inclusion: { in: REASONS }
   validates :attached, presence: true, on: :create
 
   scope :unseen, -> { where(seen: false) }

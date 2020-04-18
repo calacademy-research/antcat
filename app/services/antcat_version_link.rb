@@ -3,6 +3,8 @@
 class AntcatVersionLink
   include ActionView::Helpers::UrlHelper
 
+  GITHUB_COMMIT_BASE_URL = "https://github.com/calacademy/antcat/commit/"
+
   def call
     link_to latest_tag, url, title: commit_hash, class: 'external-link'
   end
@@ -18,6 +20,6 @@ class AntcatVersionLink
     end
 
     def url
-      "https://github.com/calacademy/antcat/commit/#{commit_hash}"
+      "#{GITHUB_COMMIT_BASE_URL}#{commit_hash}"
     end
 end

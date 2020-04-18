@@ -10,7 +10,7 @@ describe Notification do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:attached).on(:create) }
-    it { is_expected.to validate_presence_of :reason }
     it { is_expected.to validate_inclusion_of(:reason).in_array(Notification::REASONS) }
+    it { is_expected.to_not allow_value(nil).for(:reason) }
   end
 end

@@ -21,32 +21,36 @@ describe Genus do
     end
   end
 
-  it "can have species, which are its children" do
-    genus = create :genus
-    species = create :species, genus: genus
-    other_species = create :species, genus: genus
+  describe "scopes" do
+    describe ".without_subfamily" do
+      let!(:genus) { create :genus, subfamily: nil }
 
-    expect(genus.species).to eq [species, other_species]
-    expect(genus.children).to eq genus.species
-  end
+      it "returns genera with no subfamily" do
+        expect(described_class.without_subfamily.all).to eq [genus]
+      end
+    end
 
-  describe "#without_subfamily" do
-    let!(:genus) { create :genus, subfamily: nil }
+    describe ".without_tribe" do
+      let!(:genus) { create :genus, tribe: nil }
 
-    it "returns genera with no subfamily" do
-      expect(described_class.without_subfamily.all).to eq [genus]
+      before do
+        create :genus, tribe: create(:tribe)
+      end
+
+      it "returns genera with no tribe" do
+        expect(described_class.without_tribe.all).to eq [genus]
+      end
     end
   end
 
-  describe "#without_tribe" do
-    let!(:genus) { create :genus, tribe: nil }
+  describe "#children" do
+    it "returns the species" do
+      genus = create :genus
+      species = create :species, genus: genus
+      other_species = create :species, genus: genus
 
-    before do
-      create :genus, tribe: create(:tribe)
-    end
-
-    it "returns genera with no tribe" do
-      expect(described_class.without_tribe.all).to eq [genus]
+      expect(genus.species).to eq [species, other_species]
+      expect(genus.children).to eq genus.species
     end
   end
 

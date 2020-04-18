@@ -45,7 +45,7 @@ class Activity < ApplicationRecord
   belongs_to :trackable, polymorphic: true, optional: true
   belongs_to :user, optional: true # TODO: Only optional for a few actions.
 
-  validates :action, presence: true, inclusion: { in: ACTIONS }
+  validates :action, inclusion: { in: ACTIONS }
 
   scope :filter_where, ->(filter_params) do
     results = where(nil)

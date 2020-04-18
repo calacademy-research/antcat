@@ -10,15 +10,11 @@ describe SubspeciesName do
     end
   end
 
-  describe "name parts" do
+  describe "#subspecies_epithets" do
     context 'when three name parts' do
       let(:name) { described_class.new(name: 'Atta major minor') }
 
-      specify do
-        expect(name.genus_epithet).to eq 'Atta'
-        expect(name.species_epithet).to eq 'major'
-        expect(name.subspecies_epithets).to eq 'minor'
-      end
+      specify { expect(name.subspecies_epithets).to eq 'minor' }
     end
 
     context 'when four name parts' do
