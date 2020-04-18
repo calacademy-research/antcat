@@ -17,8 +17,6 @@ describe Issue do
 
   describe "scopes" do
     describe ".by_status_and_date" do
-      include ActiveSupport::Testing::TimeHelpers
-
       let!(:expected_order) do
         fourth = travel_to(5.years.ago) { create :issue, :closed }
         second = travel_to(2.years.ago) { create :issue, :open }

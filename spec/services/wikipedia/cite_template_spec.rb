@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 describe Wikipedia::CiteTemplate do
-  include ActiveSupport::Testing::TimeHelpers
-
   describe "#call" do
     let(:taxon) { create :species, name_string: "Atta texana" }
 
