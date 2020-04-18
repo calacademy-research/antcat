@@ -48,7 +48,7 @@ module Exporters
         def parse_ref_tags
           taxt.gsub!(Taxt::REF_TAG_REGEX) do
             if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
-              Exporters::Antweb::AntwebInlineCitation[reference]
+              AntwebFormatter.link_to_reference(reference)
             end
           end
         end

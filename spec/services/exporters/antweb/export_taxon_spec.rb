@@ -324,7 +324,7 @@ describe Exporters::Antweb::ExportTaxon do
               %(<b><i>#{taxon.protonym.name.name}</i></b> ) +
 
               # Authorship.
-              Exporters::Antweb::AntwebInlineCitation[taxon.authorship_reference] +
+              AntwebFormatter.link_to_reference(taxon.authorship_reference) +
               %(: #{taxon.protonym.authorship.pages}. ) +
 
               # Type.
@@ -346,7 +346,7 @@ describe Exporters::Antweb::ExportTaxon do
             %(<div>) +
               %(<div>) +
                 %(<div>Title</div>) +
-                %(<div>#{Exporters::Antweb::AntwebInlineCitation[taxt_reference]}: 766</div>) +
+                %(<div>#{AntwebFormatter.link_to_reference(taxt_reference)}: 766</div>) +
               %(</div>) +
             %(</div>) +
           %(</div>)

@@ -33,7 +33,7 @@ module Exporters
             end
 
             def authorship authorship
-              string = link_to_reference authorship.reference
+              string = AntwebFormatter.link_to_reference(authorship.reference)
               string << ": "
               string << protonym.decorate.format_pages_and_forms
 
@@ -42,10 +42,6 @@ module Exporters
               end
 
               string
-            end
-
-            def link_to_reference reference
-              Exporters::Antweb::AntwebInlineCitation[reference]
             end
         end
       end
