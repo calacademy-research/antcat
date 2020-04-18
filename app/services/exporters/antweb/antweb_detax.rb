@@ -15,9 +15,9 @@ module Exporters
       def call
         return unless taxt
 
-        parse_taxon_ids!
-        parse_taxon_with_author_citation_ids!
-        parse_reference_ids!
+        parse_tax_tags
+        parse_taxac_tags
+        parse_ref_tags
 
         sanitize taxt.html_safe
       end
@@ -27,7 +27,7 @@ module Exporters
         attr_reader :taxt
 
         # Taxa, "{tax 123}".
-        def parse_taxon_ids!
+        def parse_tax_tags
           taxt.gsub!(Taxt::TAX_TAG_REGEX) do
             if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
               AntwebFormatter.link_to_taxon(taxon)
@@ -36,7 +36,7 @@ module Exporters
         end
 
         # Taxa with author citation, "{taxac 123}".
-        def parse_taxon_with_author_citation_ids!
+        def parse_taxac_tags
           taxt.gsub!(Taxt::TAXAC_TAG_REGEX) do
             if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
               AntwebFormatter.link_to_taxon_with_author_citation(taxon)
@@ -45,7 +45,7 @@ module Exporters
         end
 
         # References, "{ref 123}".
-        def parse_reference_ids!
+        def parse_ref_tags
           taxt.gsub!(Taxt::REF_TAG_REGEX) do
             if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
               Exporters::Antweb::AntwebInlineCitation[reference]

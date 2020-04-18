@@ -29,15 +29,15 @@ module Markdowns
     end
 
     def call
-      parse_taxon_ids
-      parse_taxon_with_author_citation_ids
-      parse_reference_ids
+      parse_tax_tags
+      parse_taxac_tags
+      parse_ref_tags
       return content if catalog_tags_only
 
-      parse_github_ids
-      parse_wiki_pages_ids
-      parse_user_ids
-      parse_database_script_ids
+      parse_github_tags
+      parse_wiki_tags
+      parse_user_tags
+      parse_dbscript_tags
 
       content
     end
@@ -48,7 +48,7 @@ module Markdowns
 
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
-      def parse_taxon_ids
+      def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
         ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
         return if ids.blank?
@@ -66,7 +66,7 @@ module Markdowns
 
       # Matches: {taxac 429349}
       # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
-      def parse_taxon_with_author_citation_ids
+      def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
             taxon.decorate.link_to_taxon_with_linked_author_citation
@@ -78,7 +78,7 @@ module Markdowns
 
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
-      def parse_reference_ids
+      def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
         refs_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
         return if refs_ids.blank?
@@ -98,7 +98,7 @@ module Markdowns
 
       # Matches: %github123
       # renders: a link to the GitHub issue (including non-existing and PRs).
-      def parse_github_ids
+      def parse_github_tags
         content.gsub!(GITHUB_TAG_REGEX) do
           # Also works for PRs because GH figures that out.
           github_issue_id = Regexp.last_match(1)
@@ -109,7 +109,7 @@ module Markdowns
 
       # Matches: %wiki123
       # Renders: a link to the wiki page.
-      def parse_wiki_pages_ids
+      def parse_wiki_tags
         content.gsub!(WIKI_TAG_REGEX) do
           wiki_page_id = Regexp.last_match(1)
           begin
@@ -123,7 +123,7 @@ module Markdowns
 
       # Matches: %user123
       # Renders: a link to the user's user page.
-      def parse_user_ids
+      def parse_user_tags
         content.gsub!(USER_TAG_REGEX) do
           user_id = Regexp.last_match(1)
           if (user = User.find_by(id: user_id))
@@ -136,7 +136,7 @@ module Markdowns
 
       # Matches: %dbscript:snaked_base_name or %dbscript:CamelizedBaseName
       # Renders: a link to the database script.
-      def parse_database_script_ids
+      def parse_dbscript_tags
         content.gsub!(DB_SCRIPT_TAG_REGEX) do
           basename = Regexp.last_match(1)
           database_script = DatabaseScript.safe_new_from_basename(basename)
