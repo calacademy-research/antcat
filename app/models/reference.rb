@@ -32,7 +32,7 @@ class Reference < ApplicationRecord
 
   before_validation :set_year_from_citation_year
   before_save :assign_author_names_cache
-  before_destroy :check_not_referenced
+  before_destroy :ensure_not_used
 
   scope :latest_additions, -> { order(created_at: :desc) }
   scope :latest_changes, -> { order(updated_at: :desc) }
@@ -140,7 +140,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
-    def check_not_referenced
+    def ensure_not_used
       return if what_links_here.empty?
 
       errors.add :base, "This reference can't be deleted, as there are other references to it."
