@@ -9,6 +9,6 @@ class Detax
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def call
     return unless taxt
-    Markdowns::ParseAntcatHooks[taxt.dup, catalog_tags_only: true].html_safe
+    Markdowns::ParseCatalogTags[taxt.dup].html_safe
   end
 end

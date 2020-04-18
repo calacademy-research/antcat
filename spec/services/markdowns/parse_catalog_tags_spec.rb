@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
+# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery.
 
 require 'rails_helper'
 
-describe Markdowns::ParseAntcatHooks do
+describe Markdowns::ParseCatalogTags do
   describe "#call" do
     it "does not remove <i> tags" do
       content = "<i>italics<i><i><script>xss</script></i>"
@@ -25,7 +25,7 @@ describe Markdowns::ParseAntcatHooks do
       end
     end
 
-    describe "tax tags with author citaion (taxa)" do
+    describe "tax tags with author citation (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish

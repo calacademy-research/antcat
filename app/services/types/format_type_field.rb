@@ -15,7 +15,7 @@ module Types
       formatted = content
       formatted = Types::ExpandInstitutionAbbreviations[formatted]
       formatted = Types::LinkSpecimenIdentifiers[formatted]
-      formatted = Markdowns::ParseAntcatHooks[formatted].html_safe
+      formatted = Markdowns::ParseCatalogTags[formatted].html_safe
       formatted.html_safe
     end
 
