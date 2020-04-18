@@ -28,10 +28,8 @@ module Exporters
 
         # Taxa, "{tax 123}".
         def parse_taxon_ids!
-          taxt.gsub!(Taxt::ANTWEB_TAX_TAG_REGEX) do
-            taxon = Taxon.find_by(id: Regexp.last_match(1))
-
-            if taxon
+          taxt.gsub!(Taxt::TAX_TAG_REGEX) do
+            if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
               AntwebFormatter.link_to_taxon(taxon)
             end
           end
@@ -39,10 +37,8 @@ module Exporters
 
         # Taxa with author citation, "{taxac 123}".
         def parse_taxon_with_author_citation_ids!
-          taxt.gsub!(Taxt::ANTWEB_TAXAC_TAG_REGEX) do
-            taxon = Taxon.find_by(id: Regexp.last_match(1))
-
-            if taxon
+          taxt.gsub!(Taxt::TAXAC_TAG_REGEX) do
+            if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
               AntwebFormatter.link_to_taxon_with_author_citation(taxon)
             end
           end
@@ -50,10 +46,8 @@ module Exporters
 
         # References, "{ref 123}".
         def parse_reference_ids!
-          taxt.gsub!(Taxt::ANTWEB_REF_TAG_REGEX) do
-            reference = Reference.find_by(id: Regexp.last_match(1))
-
-            if reference
+          taxt.gsub!(Taxt::REF_TAG_REGEX) do
+            if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
               Exporters::Antweb::AntwebInlineCitation[reference]
             end
           end
