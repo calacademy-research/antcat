@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module References
+module Authors
   class ExtractAuthorNameParts
     include Service
 

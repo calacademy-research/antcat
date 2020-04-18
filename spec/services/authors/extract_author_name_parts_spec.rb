@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe References::ExtractAuthorNameParts do
+describe Authors::ExtractAuthorNameParts do
   describe "#call" do
     it "returns an empty hash if the string is empty" do
       expect(described_class['']).to eq({})
