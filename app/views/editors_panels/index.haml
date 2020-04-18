@@ -14,38 +14,40 @@
       %li
         .label=@editors_panel_presenter.pending_user_feedbacks_count
         =link_to "Pending feedbacks", feedback_index_path
-      %li
-        .label=@editors_panel_presenter.unread_site_notices_count
-        =link_to "Unread site notices", site_notices_path
-      -if current_user
-        %li
-          .label=current_user.unseen_notifications.count
-          =link_to "My notifications", notifications_path
 
-  .large-4.medium-4.columns
-    %h5 Tools and help pages
+    %h5 Tools and other pages
     %ul.no-bullet
-      %li=link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
+      %li=link_to "Protonyms", protonyms_path
       %li
         =link_to "Search history items", taxon_history_items_path
         or
         =link_to "reference sections", reference_sections_path
       %li=link_to "Edit institutions", institutions_path
-      %li=link_to "Protonyms", protonyms_path
-      %li
-        =link_to "Wiki pages", wiki_pages_path
-        (help pages)
-      %li=link_to "Markdown formatting help", page_path('markdown_formatting_help')
 
   .large-4.medium-4.columns
     %h5 AntCat administration
+    %ul.no-bullet
+      -if current_user
+        %li=link_to "My notifications", notifications_path
+      %li=link_to "Site notices", site_notices_path
+      %li=link_to 'Database scripts', database_scripts_path
+      -if user_is_editor?
+        %li=link_to "PaperTrail versions", versions_path
+      %li=link_to 'Invite people to AntCat', invite_users_path
+
+    %h5 Help pages
+    %ul.no-bullet
+      %li=link_to "Markdown formatting help", page_path('markdown_formatting_help')
+
+  .large-4.medium-4.columns
+    %h5=link_to 'Wiki pages', wiki_pages_path
     .callout.primary
       %ul.no-bullet
-        %li=link_to 'Edit tooltips', tooltips_path
-        %li=link_to "PaperTrail versions", versions_path
-        %li=link_to 'Database scripts', database_scripts_path
-        %li=link_to "List of users", users_path
-        %li=link_to 'Invite people to AntCat', invite_users_path
+        -@editors_panel_presenter.wiki_pages.each do |wiki_page|
+          %li=link_to wiki_page.title, wiki_page
+        -if @editors_panel_presenter.see_more_wiki_pages?
+          %li.small-margin-top
+            %small=link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path
 
 .row.margin-top
   .large-12.columns
@@ -64,6 +66,13 @@
 
 .row.margin-top
   .medium-12.columns
+    %h5 Misc. less frequently used pages
+    %ul
+      %li=link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
+      %li=link_to 'Edit tooltips', tooltips_path
+
+.row.margin-top
+  .medium-12.columns
     %h5 External links
     %ul
       %li
@@ -72,5 +81,4 @@
       %li
         =external_link_to 'Google Analytics', "https://analytics.google.com/analytics/web/"
         (account required)
-      %li
-        =external_link_to 'AntWeb import log', "https://www.antweb.org/query.do?name=worldantsUploads"
+      %li=external_link_to 'AntWeb import log', "https://www.antweb.org/query.do?name=worldantsUploads"

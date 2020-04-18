@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class EditorsPanelPresenter
+  MAX_WIKI_PAGES_LINKS = 5
+
   attr_private_initialize :current_user
 
   def recent_activities
@@ -27,7 +29,15 @@ class EditorsPanelPresenter
     Feedback.pending.count
   end
 
-  def unread_site_notices_count
-    current_user.unread_site_notices.count
+  def wiki_pages
+    @_wiki_pages ||= WikiPage.order(:title).select(:id, :title).limit(MAX_WIKI_PAGES_LINKS)
+  end
+
+  def total_wiki_pages_count
+    @_total_wiki_pages_count ||= WikiPage.count
+  end
+
+  def see_more_wiki_pages?
+    total_wiki_pages_count > MAX_WIKI_PAGES_LINKS
   end
 end
