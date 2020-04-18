@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Comments
-  class NotifyRelevantUsers
+module Notifications
+  class NotifyUsersForComment
     include Service
 
     attr_private_initialize :comment
@@ -42,7 +42,7 @@ module Comments
       end
 
       def notify user, reason
-        Users::Notify[user, reason, attached: comment, notifier: comment.user]
+        Notifications::NotifyUser[user, reason, attached: comment, notifier: comment.user]
       end
   end
 end

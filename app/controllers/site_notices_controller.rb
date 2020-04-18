@@ -25,7 +25,7 @@ class SiteNoticesController < ApplicationController
 
     if @site_notice.save
       @site_notice.create_activity :create, current_user
-      Users::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
+      Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully created site notice."
     else
       render :new
@@ -41,7 +41,7 @@ class SiteNoticesController < ApplicationController
 
     if @site_notice.update(site_notice_params)
       @site_notice.create_activity :update, current_user
-      Users::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
+      Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
       render :edit

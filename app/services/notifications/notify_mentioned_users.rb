@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Users
+module Notifications
   class NotifyMentionedUsers
     include Service
 
@@ -8,7 +8,7 @@ module Users
 
     def call
       Markdowns::MentionedUsers[string].each do |user|
-        Users::Notify[user, Notification::MENTIONED_IN_THING, attached: attached, notifier: notifier]
+        Notifications::NotifyUser[user, Notification::MENTIONED_IN_THING, attached: attached, notifier: notifier]
       end
     end
   end

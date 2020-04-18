@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Users::Notify do
+describe Notifications::NotifyUser do
   describe '#call' do
     let(:user) { create :user }
     let(:attached) { create :comment }

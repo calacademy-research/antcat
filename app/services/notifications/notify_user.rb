@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-module Users
-  class Notify
+module Notifications
+  class NotifyUser
     include Service
 
     attr_private_initialize :user, :reason, [:attached, :notifier]

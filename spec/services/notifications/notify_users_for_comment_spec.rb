@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Comments::NotifyRelevantUsers do
+describe Notifications::NotifyUsersForComment do
   let(:service) { described_class.new comment }
   let(:commentable) { create :issue }
   let(:notifier) { create :user }
@@ -17,7 +17,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        Users::Notify[mentioned_user, Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user]
+        Notifications::NotifyUser[mentioned_user, Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user]
       end
 
       it "doesn't notify for this reason" do
@@ -49,7 +49,7 @@ describe Comments::NotifyRelevantUsers do
 
     context "when user has already been notified" do
       before do
-        Users::Notify[same_discussion_user, Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user]
+        Notifications::NotifyUser[same_discussion_user, Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user]
       end
 
       it "doesn't notify for this reason" do
@@ -97,6 +97,6 @@ describe Comments::NotifyRelevantUsers do
   end
 
   def make_sure_creator_of_commentable_is_already_notified commentable, comment
-    Users::Notify[commentable.user, Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user]
+    Notifications::NotifyUser[commentable.user, Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user]
   end
 end
