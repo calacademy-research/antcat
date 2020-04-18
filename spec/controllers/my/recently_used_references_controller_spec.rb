@@ -6,8 +6,8 @@ describe My::RecentlyUsedReferencesController do
   describe "GET show", as: :visitor do
     let(:recently_used_references) { [] }
 
-    it "calls `Autocomplete::FormatLinkableReferences`" do
-      expect(Autocomplete::FormatLinkableReferences).
+    it "calls `Autocomplete::LinkableReferencesSerializer`" do
+      expect(Autocomplete::LinkableReferencesSerializer).
         to receive(:new).with(recently_used_references).and_call_original
       get :show
     end
@@ -28,7 +28,7 @@ describe My::RecentlyUsedReferencesController do
 
       it 'returns the references as a JSON array' do
         get :show
-        expect(json_response).to eq Autocomplete::FormatLinkableReferences[[reference]].map(&:stringify_keys)
+        expect(json_response).to eq Autocomplete::LinkableReferencesSerializer[[reference]].map(&:stringify_keys)
       end
     end
   end

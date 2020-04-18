@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::FormatLinkableReferences do
+describe Autocomplete::LinkableReferencesSerializer do
   describe "#call" do
     describe "output format" do
       context "when reference is a `NestedReference`" do

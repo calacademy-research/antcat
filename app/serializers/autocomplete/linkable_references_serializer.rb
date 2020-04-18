@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class FormatLinkableReferences
+  class LinkableReferencesSerializer
     include Service
 
     attr_private_initialize :references
