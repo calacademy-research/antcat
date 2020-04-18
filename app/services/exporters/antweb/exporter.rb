@@ -11,7 +11,7 @@ module Exporters
 
       def initialize filename
         @filename = filename
-        @progress = progress_bar taxa_ids.size unless Rails.env.test?
+        @progress = create_progress_bar(taxon_ids.size) unless Rails.env.test?
       end
 
       def call
@@ -65,7 +65,7 @@ module Exporters
             includes(protonym: [{ authorship: :reference }])
         end
 
-        def progress_bar total
+        def create_progress_bar total
           ProgressBar.create(total: total, format: "%a %e %P% Processed: %c from %C", throttle_rate: 0.5)
         end
     end

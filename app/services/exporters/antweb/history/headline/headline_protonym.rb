@@ -27,9 +27,7 @@ module Exporters
             end
 
             def protonym_name
-              content_tag :b do
-                protonym.decorate.name_with_fossil
-              end
+              content_tag :b, protonym.decorate.name_with_fossil
             end
 
             def authorship authorship

@@ -7,6 +7,9 @@ module Exporters
     class AntwebAttributes
       include Service
 
+      INCERTAE_SEDIS = 'incertae_sedis'
+      FORMICIDAE = 'Formicidae'
+
       attr_private_initialize :taxon
 
       def call
@@ -28,7 +31,7 @@ module Exporters
 
         def family_attributes
           {
-            subfamily: 'Formicidae'
+            subfamily: FORMICIDAE
           }
         end
 
@@ -47,7 +50,7 @@ module Exporters
 
         def genus_attributes
           {
-            subfamily: subfamily&.name&.name || 'incertae_sedis',
+            subfamily: subfamily&.name&.name || INCERTAE_SEDIS,
             tribe: tribe&.name&.name,
             genus: name.name
           }
@@ -55,7 +58,7 @@ module Exporters
 
         def subgenus_attributes
           {
-            subfamily: subfamily&.name&.name || 'incertae_sedis',
+            subfamily: subfamily&.name&.name || INCERTAE_SEDIS,
             genus: genus.name.name,
             subgenus: name.epithet
           }
@@ -63,7 +66,7 @@ module Exporters
 
         def species_attributes
           {
-            subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
+            subfamily: genus.subfamily&.name&.name || INCERTAE_SEDIS,
             tribe: genus.tribe&.name&.name,
             genus: genus.name.name,
             subgenus: subgenus&.name&.epithet,
@@ -73,7 +76,7 @@ module Exporters
 
         def subspecies_attributes
           {
-            subfamily: genus.subfamily&.name&.name || 'incertae_sedis',
+            subfamily: genus.subfamily&.name&.name || INCERTAE_SEDIS,
             tribe: genus.tribe&.name&.name,
             genus: genus.name.name,
             subgenus: species.subgenus&.name&.epithet,
