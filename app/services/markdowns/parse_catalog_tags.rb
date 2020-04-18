@@ -37,10 +37,12 @@ module Markdowns
         taxa = Taxon.where(id: ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
-          if (taxon = taxa[$LAST_MATCH_INFO[:id].to_i])
+          taxon_id = $LAST_MATCH_INFO[:id]
+
+          if (taxon = taxa[taxon_id.to_i])
             taxon.link_to_taxon
           else
-            broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
+            broken_markdown_link "TAXON", taxon_id
           end
         end
       end
@@ -49,10 +51,12 @@ module Markdowns
       # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
-          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
+          taxon_id = $LAST_MATCH_INFO[:id]
+
+          if (taxon = Taxon.find_by(id: taxon_id))
             taxon.decorate.link_to_taxon_with_linked_author_citation
           else
-            broken_markdown_link "taxon", $LAST_MATCH_INFO[:id]
+            broken_markdown_link "TAXON", taxon_id
           end
         end
       end
@@ -68,17 +72,18 @@ module Markdowns
         refs = {} if ENV['NO_REF_CACHE']
 
         content.gsub!(Taxt::REF_TAG_REGEX) do
-          id = $LAST_MATCH_INFO[:id]
+          reference_id = $LAST_MATCH_INFO[:id]
+
           begin
-            refs[id.to_i]&.html_safe || Reference.find(id).decorate.expandable_reference.html_safe
+            refs[reference_id.to_i]&.html_safe || Reference.find(reference_id).decorate.expandable_reference.html_safe
           rescue ActiveRecord::RecordNotFound
-            broken_markdown_link "reference", id
+            broken_markdown_link "REFERENCE", reference_id
           end
         end
       end
 
       def broken_markdown_link type, id
-        %(<span class="bold-warning">CANNOT FIND #{type.upcase} WITH ID #{id}</span>)
+        %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
       end
   end
 end

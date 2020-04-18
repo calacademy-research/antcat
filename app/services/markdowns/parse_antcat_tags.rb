@@ -12,7 +12,9 @@ module Markdowns
     USER_TAG_REGEX = /@user(?<id>\d+)/
     GITHUB_TAG_REGEX = /%github(?<issue_id>\d+)/
     WIKI_TAG_REGEX = /%wiki(?<id>\d+)/
-    DB_SCRIPT_TAG_REGEX = /%dbscript:(?<basename>[A-Z][A-Za-z0-9_]+)/
+    DBSCRIPT_TAG_REGEX = /%dbscript:(?<basename>[A-Z][A-Za-z0-9_]+)/
+
+    GITHUB_ISSUES_BASE_URL = "https://github.com/calacademy-research/antcat/issues/"
 
     def initialize content, sanitize_content: true
       @content = sanitize_content ? sanitize(content).to_str : content
@@ -35,10 +37,8 @@ module Markdowns
       # renders: a link to the GitHub issue (including non-existing and PRs).
       def parse_github_tags
         content.gsub!(GITHUB_TAG_REGEX) do
-          # Also works for PRs because GH figures that out.
           github_issue_id = $LAST_MATCH_INFO[:issue_id]
-          url = "https://github.com/calacademy-research/antcat/issues/#{github_issue_id}"
-          link_to "GitHub ##{github_issue_id}", url
+          link_to "GitHub ##{github_issue_id}", "#{GITHUB_ISSUES_BASE_URL}#{github_issue_id}"
         end
       end
 
@@ -52,12 +52,12 @@ module Markdowns
             wiki_page = WikiPage.find(wiki_page_id)
             link_to wiki_page.title, wiki_page_path(wiki_page_id)
           rescue ActiveRecord::RecordNotFound
-            broken_markdown_link "wiki_page", wiki_page_id
+            broken_markdown_link "WIKI_PAGE", wiki_page_id
           end
         end
       end
 
-      # Matches: %user123
+      # Matches: @user123
       # Renders: a link to the user's user page.
       def parse_user_tags
         content.gsub!(USER_TAG_REGEX) do
@@ -66,7 +66,7 @@ module Markdowns
           if (user = User.find_by(id: user_id))
             user.decorate.ping_user_link
           else
-            broken_markdown_link "user", user_id
+            broken_markdown_link "USER", user_id
           end
         end
       end
@@ -74,7 +74,7 @@ module Markdowns
       # Matches: %dbscript:snaked_base_name or %dbscript:CamelizedBaseName
       # Renders: a link to the database script.
       def parse_dbscript_tags
-        content.gsub!(DB_SCRIPT_TAG_REGEX) do
+        content.gsub!(DBSCRIPT_TAG_REGEX) do
           basename = $LAST_MATCH_INFO[:basename]
 
           database_script = DatabaseScript.safe_new_from_basename(basename)
@@ -84,7 +84,7 @@ module Markdowns
       end
 
       def broken_markdown_link type, id
-        %(<span class="bold-warning">CANNOT FIND #{type.upcase} WITH ID #{id}</span>)
+        %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
       end
   end
 end

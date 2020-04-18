@@ -25,7 +25,7 @@ describe Markdowns::ParseAllTags do
       end
     end
 
-    describe "tax tags with author citaion (taxa)" do
+    describe "tax tags with author citation (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
