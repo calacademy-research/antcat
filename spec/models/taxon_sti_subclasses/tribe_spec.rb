@@ -10,14 +10,16 @@ describe Tribe do
     it { is_expected.to belong_to(:subfamily).required }
   end
 
-  it "can have genera, which are its children" do
-    tribe = create :tribe
+  describe "#children" do
+    it "returns the genera" do
+      tribe = create :tribe
 
-    genus = create :genus, tribe: tribe
-    another_genus = create :genus, tribe: tribe
+      genus = create :genus, tribe: tribe
+      another_genus = create :genus, tribe: tribe
 
-    expect(tribe.genera).to eq [genus, another_genus]
-    expect(tribe.children).to eq tribe.genera
+      expect(tribe.genera).to eq [genus, another_genus]
+      expect(tribe.children).to eq tribe.genera
+    end
   end
 
   describe "#update_parent" do

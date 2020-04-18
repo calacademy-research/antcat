@@ -27,7 +27,7 @@ describe SiteNoticesController do
   end
 
   describe "GET show", as: :current_user do
-    let(:current_user) { create :user, :editor }
+    let(:current_user) { create :user }
 
     before do
       create :site_notice
@@ -122,7 +122,7 @@ describe SiteNoticesController do
   end
 
   describe "POST #mark_all_as_read", as: :current_user do
-    let(:current_user) { create(:user, :editor) }
+    let(:current_user) { create(:user) }
 
     after { post :mark_all_as_read }
 

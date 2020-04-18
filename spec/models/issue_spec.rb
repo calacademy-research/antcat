@@ -49,7 +49,7 @@ describe Issue do
         specify { expect(described_class.help_wanted?).to eq true }
       end
 
-      context 'when no issue is open' do
+      context 'when no issues are open' do
         before { create :issue, :closed, :help_wanted }
 
         specify { expect(described_class.help_wanted?).to eq false }
