@@ -18,7 +18,7 @@ module Authors
     private
 
       def parsed_author_names
-        Parsers::ParseAuthorNames[author_names_string]
+        Authors::ParseAuthorNames[author_names_string]
       end
   end
 end

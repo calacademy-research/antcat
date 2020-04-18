@@ -8,7 +8,7 @@ module Catalog
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteTaxa[search_query, rank: rank]
+          render json: Autocomplete::TaxaQuery[search_query, rank: rank]
         end
       end
     end

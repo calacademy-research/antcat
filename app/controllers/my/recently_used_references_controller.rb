@@ -5,7 +5,7 @@ module My
     NUMBER_OF_RECENT_REFERENCES = 15
 
     def show
-      render json: Autocomplete::FormatLinkableReferences[recently_used_references]
+      render json: Autocomplete::LinkableReferencesSerializer[recently_used_references]
     end
 
     def create

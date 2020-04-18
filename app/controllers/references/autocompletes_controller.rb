@@ -7,7 +7,7 @@ module References
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteReferences[search_query]
+          render json: Autocomplete::ReferencesQuery[search_query]
         end
       end
     end

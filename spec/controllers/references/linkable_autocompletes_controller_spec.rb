@@ -6,8 +6,8 @@ describe References::LinkableAutocompletesController do
   describe "GET show", as: :visitor do
     let(:q) { "bolton" }
 
-    it "calls `Autocomplete::AutocompleteLinkableReferences`" do
-      expect(Autocomplete::AutocompleteLinkableReferences).to receive(:new).with(q).and_call_original
+    it "calls `Autocomplete::LinkableReferencesQuery`" do
+      expect(Autocomplete::LinkableReferencesQuery).to receive(:new).with(q).and_call_original
       get :show, params: { q: q, format: :json }
     end
 
@@ -18,7 +18,7 @@ describe References::LinkableAutocompletesController do
 
       specify do
         get :show, params: { q: "Bolton", format: :json }
-        expect(json_response).to eq Autocomplete::FormatLinkableReferences[[reference]].map(&:stringify_keys)
+        expect(json_response).to eq Autocomplete::LinkableReferencesSerializer[[reference]].map(&:stringify_keys)
       end
     end
 
@@ -27,7 +27,7 @@ describe References::LinkableAutocompletesController do
 
       specify do
         get :show, params: { q: reference.id.to_s, format: :json }
-        expect(json_response).to eq Autocomplete::FormatLinkableReferences[[reference]].map(&:stringify_keys)
+        expect(json_response).to eq Autocomplete::LinkableReferencesSerializer[[reference]].map(&:stringify_keys)
       end
     end
   end
