@@ -5,16 +5,19 @@
   -if current_user
     =link_to "New", new_wiki_page_path, class: "btn-normal"
 
+%h5 All wiki pages
 -if @wiki_pages.empty?
   There are currently no wiki pages.
 -else
   %table.stack
-    %thead
-      %tr
-        %th Title
     %tbody
       -@wiki_pages.each do |wiki_page|
         %tr
           %td=link_to wiki_page.title, wiki_page
 
 =will_paginate @wiki_pages
+
+.row.huge-margin-top
+  .large-12.columns
+    %h5 Most recent edits (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
+    =render "activities/table", activities: @recent_activities

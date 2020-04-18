@@ -16,7 +16,7 @@ Feature: Add and edit wiki pages
     When I go to the wiki pages index
     Then I should see "Bibliography guidelines"
 
-    When I follow "Bibliography guidelines"
+    When I follow the first "Bibliography guidelines"
     Then I should see "In the title, use capitals only"
 
     When I go to the activity feed
@@ -27,7 +27,7 @@ Feature: Add and edit wiki pages
     Given there is a wiki page "Catalog guidelines"
 
     When I go to the wiki pages index
-    And I follow "Catalog guidelines"
+    And I follow the first "Catalog guidelines"
     And I follow "Edit"
     And I fill in "wiki_page_title" with "Name guidelines"
     And I fill in "wiki_page_content" with "Genus names must start with a capital letter"
@@ -38,7 +38,7 @@ Feature: Add and edit wiki pages
     When I go to the wiki pages index
     And I should see "Name guidelines"
 
-    When I follow "Name guidelines"
+    When I follow the first "Name guidelines"
     Then I should see "Genus names must start with a capital letter"
 
     When I go to the activity feed
