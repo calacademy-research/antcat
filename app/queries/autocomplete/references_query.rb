@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class AutocompleteReferences
+  class ReferencesQuery
     include Service
 
     PER_PAGE = 10

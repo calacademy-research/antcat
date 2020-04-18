@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteProtonyms do
+describe Autocomplete::ProtonymsQuery do
   describe "#call" do
     let!(:protonym) { create :protonym, name: create(:genus_name, name: 'Lasius') }
     let!(:other_protonym) { create :protonym, name: create(:genus_name, name: 'Atta') }

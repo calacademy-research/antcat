@@ -7,8 +7,8 @@ describe WikiPages::AutocompletesController do
     let!(:help_wiki_page) { create :wiki_page, title: 'Help' }
     let!(:news_wiki_page) { create :wiki_page, title: 'News' }
 
-    it "calls `Autocomplete::AutocompleteWikiPages`" do
-      expect(Autocomplete::AutocompleteWikiPages).to receive(:new).with('q').and_call_original
+    it "calls `Autocomplete::WikiPagesQuery`" do
+      expect(Autocomplete::WikiPagesQuery).to receive(:new).with('q').and_call_original
       get :show, params: { q: 'q', format: :json }
     end
 

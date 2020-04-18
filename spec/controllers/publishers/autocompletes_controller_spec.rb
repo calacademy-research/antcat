@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe Publishers::AutocompletesController do
   describe "GET show", as: :visitor do
-    it "calls `Autocomplete::AutocompletePublishers`" do
-      expect(Autocomplete::AutocompletePublishers).to receive(:new).with("wiley").and_call_original
+    it "calls `Autocomplete::PublishersQuery`" do
+      expect(Autocomplete::PublishersQuery).to receive(:new).with("wiley").and_call_original
       get :show, params: { term: "wiley" }
     end
 

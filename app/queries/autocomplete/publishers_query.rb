@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class AutocompletePublishers
+  class PublishersQuery
     include Service
 
     attr_private_initialize :search_query

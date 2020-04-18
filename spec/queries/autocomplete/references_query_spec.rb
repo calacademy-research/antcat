@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteReferences do
+describe Autocomplete::ReferencesQuery do
   describe "#format_autosuggest_keywords" do
     let(:service) { described_class.new('dummy') }
     let!(:reference) { create :any_reference, author_string: 'E.O. Wilson' }

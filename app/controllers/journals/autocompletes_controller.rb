@@ -7,7 +7,7 @@ module Journals
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteJournals[search_query].pluck(:name)
+          render json: Autocomplete::JournalsQuery[search_query].pluck(:name)
         end
       end
     end

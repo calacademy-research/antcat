@@ -3,7 +3,7 @@
 # TODO: Use Solr or ElasticSearch.
 
 module Autocomplete
-  class AutocompleteTaxa
+  class TaxaQuery
     include Service
 
     attr_private_initialize :search_query, [rank: nil]

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompletePublishers do
+describe Autocomplete::PublishersQuery do
   describe "#call" do
     let!(:publisher) { create :publisher, name: 'Wiley', place: 'Chicago' }
 

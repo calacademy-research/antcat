@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class AutocompleteProtonyms
+  class ProtonymsQuery
     include Service
 
     attr_private_initialize :search_query

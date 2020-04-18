@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteWikiPages do
+describe Autocomplete::WikiPagesQuery do
   describe "#call" do
     let!(:help_wiki_page) { create :wiki_page, title: 'Help' }
     let!(:news_wiki_page) { create :wiki_page, title: 'News' }

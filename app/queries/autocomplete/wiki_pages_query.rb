@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class AutocompleteWikiPages
+  class WikiPagesQuery
     include Service
 
     attr_private_initialize :search_query

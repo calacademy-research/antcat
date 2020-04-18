@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteJournals do
+describe Autocomplete::JournalsQuery do
   describe "#call" do
     it "fuzzy matches journal names" do
       abp = create :journal, name: 'American Bibliographic Proceedings'

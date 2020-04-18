@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteLinkableReferences do
+describe Autocomplete::LinkableReferencesQuery do
   describe "#call" do
     it 'calls `References::Search::FulltextLight`' do
       search_query = 'Bolton'

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Autocomplete::AutocompleteAuthorNames do
+describe Autocomplete::AuthorNamesQuery do
   describe "#call" do
     it "matches by prefix" do
       bolton = create :author_name, name: 'Bolton'

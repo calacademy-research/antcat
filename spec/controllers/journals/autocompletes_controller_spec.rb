@@ -6,8 +6,8 @@ describe Journals::AutocompletesController do
   describe "GET show", as: :visitor do
     let(:term) { "zoo" }
 
-    it "calls `Autocomplete::AutocompleteJournals`" do
-      expect(Autocomplete::AutocompleteJournals).to receive(:new).with(term).and_call_original
+    it "calls `Autocomplete::JournalsQuery`" do
+      expect(Autocomplete::JournalsQuery).to receive(:new).with(term).and_call_original
       get :show, params: { term: term, format: :json }
     end
 

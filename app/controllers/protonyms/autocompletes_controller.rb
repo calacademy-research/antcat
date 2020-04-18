@@ -7,7 +7,7 @@ module Protonyms
 
       respond_to do |format|
         format.json do
-          render json: Autocomplete::AutocompleteProtonyms[search_query]
+          render json: Autocomplete::ProtonymsQuery[search_query]
         end
       end
     end
