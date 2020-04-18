@@ -27,25 +27,19 @@ module Exporters
             end
 
             def protonym_name
-              content_tag :b do
-                protonym.decorate.name_with_fossil
-              end
+              content_tag :b, protonym.decorate.name_with_fossil
             end
 
             def authorship authorship
-              string = link_to_reference authorship.reference
+              string = AntwebFormatter.link_to_reference(authorship.reference)
               string << ": "
               string << protonym.decorate.format_pages_and_forms
 
               if authorship.notes_taxt
-                string << ' ' << AntwebDetax[authorship.notes_taxt]
+                string << ' ' << AntwebFormatter.detax(authorship.notes_taxt)
               end
 
               string
-            end
-
-            def link_to_reference reference
-              Exporters::Antweb::AntwebInlineCitation[reference]
             end
         end
       end

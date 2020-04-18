@@ -29,11 +29,11 @@ module Exporters
               content = ''.html_safe
               content << content_tag(:span, label, class: 'caption')
               content << ': '
-              content << child_list_items(children)
+              content << children_links(children)
             end
           end
 
-          def child_list_items children
+          def children_links children
             children.map { |child| AntwebFormatter.link_to_taxon(child) }.join(', ').html_safe
           end
       end

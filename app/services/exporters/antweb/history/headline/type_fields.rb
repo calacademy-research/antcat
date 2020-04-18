@@ -38,7 +38,7 @@ module Exporters
             end
 
             def detax content
-              AntwebDetax[content]
+              AntwebFormatter.detax(content)
             end
         end
       end
