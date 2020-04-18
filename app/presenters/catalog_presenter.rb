@@ -30,4 +30,8 @@ class CatalogPresenter
   def formicidae_landing_page?
     formicidae_landing_page
   end
+
+  def collected_references
+    Taxa::CollectReferences[taxon].order_by_author_names_and_year.includes(:document)
+  end
 end

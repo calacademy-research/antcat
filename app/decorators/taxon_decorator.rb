@@ -34,10 +34,6 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
-  def collected_references
-    Taxa::CollectReferences[taxon]
-  end
-
   def type_taxon_rank
     "Type-#{taxon.type_taxon.rank}: ".html_safe
   end
