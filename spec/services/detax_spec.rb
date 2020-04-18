@@ -8,7 +8,7 @@ describe Detax do
 
     context 'when content contains non-catalog tags' do
       specify { expect(described_class['%github1']).to eq '%github1' }
-      specify { expect(Markdowns::ParseAntcatHooks['%github1']).to include 'github.com' }
+      specify { expect(Markdowns::ParseAntcatTags['%github1']).to include 'github.com' }
     end
 
     context 'with unsafe tags' do

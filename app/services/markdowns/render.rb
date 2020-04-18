@@ -45,7 +45,7 @@ module Markdowns
 
       class AntcatMarkdown < Redcarpet::Render::HTML
         def postprocess content
-          Markdowns::ParseAntcatHooks[content, sanitize_content: false]
+          Markdowns::ParseAllTags[content, sanitize_content: false]
         end
 
         def table header, body

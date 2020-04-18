@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery. Maybe here.
+# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery.
 
 require 'rails_helper'
 
-describe Markdowns::ParseAntcatHooks do
+describe Markdowns::ParseAllTags do
   describe "#call" do
     it "does not remove <i> tags" do
       content = "<i>italics<i><i><script>xss</script></i>"
