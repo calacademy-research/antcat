@@ -48,10 +48,9 @@ module Markdowns
         content.gsub!(WIKI_TAG_REGEX) do
           wiki_page_id = $LAST_MATCH_INFO[:id]
 
-          begin
-            wiki_page = WikiPage.find(wiki_page_id)
+          if (wiki_page = WikiPage.find_by(wiki_page_id))
             link_to wiki_page.title, wiki_page_path(wiki_page_id)
-          rescue ActiveRecord::RecordNotFound
+          else
             broken_markdown_link "WIKI_PAGE", wiki_page_id
           end
         end
@@ -71,7 +70,7 @@ module Markdowns
         end
       end
 
-      # Matches: %dbscript:snaked_base_name or %dbscript:CamelizedBaseName
+      # Matches: %dbscript:CamelizedBaseName
       # Renders: a link to the database script.
       def parse_dbscript_tags
         content.gsub!(DBSCRIPT_TAG_REGEX) do
