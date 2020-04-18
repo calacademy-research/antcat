@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ReferenceDecorator < Draper::Decorator
+  DOI_BASE_URL = "https://doi.org/"
   FORMATTED_REVIEW_STATES = {
     Reference::REVIEW_STATE_NONE      => 'Not reviewed',
     Reference::REVIEW_STATE_REVIEWED  => 'Reviewed',
@@ -32,7 +33,7 @@ class ReferenceDecorator < Draper::Decorator
 
   def doi_link
     return unless reference.doi?
-    h.external_link_to reference.doi, ("https://doi.org/" + reference.doi)
+    h.external_link_to reference.doi, (DOI_BASE_URL + reference.doi)
   end
 
   def pdf_link

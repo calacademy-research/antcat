@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
-# TODO: Cleanup. This is more of a dumping ground than an actual decorator.
-
 class TaxonDecorator < Draper::Decorator
+  ANTWIKI_BASE_URL = "https://www.antwiki.org/wiki/"
+  HOL_BASE_URL = "http://hol.osu.edu/index.html?id="
+  ANTWEB_BASE_URL = "https://www.antweb.org/description.do?"
+  GOOGLE_SCHOLAR_BASE_URL = "//scholar.google.com/scholar?"
+
   def link_to_taxon_with_label label
     h.link_to label, h.catalog_path(taxon)
   end
@@ -57,18 +60,17 @@ class TaxonDecorator < Draper::Decorator
                  else
                    taxon.name_cache.tr(" ", '_')
                  end
-    h.external_link_to 'AntWiki', "https://www.antwiki.org/wiki/#{page_title}"
+    h.external_link_to 'AntWiki', "#{ANTWIKI_BASE_URL}#{page_title}"
   end
 
   def link_to_hol
     return unless taxon.hol_id
-    h.external_link_to 'HOL', "http://hol.osu.edu/index.html?id=#{taxon.hol_id}"
+    h.external_link_to 'HOL', "#{HOL_BASE_URL}#{taxon.hol_id}"
   end
 
   def link_to_antweb
     return if taxon.class.in? [Family, Tribe, Subtribe, Subgenus, Infrasubspecies]
 
-    base_url = "https://www.antweb.org/description.do?"
     params = { rank: taxon.rank }
     params.merge! case taxon
                   when Species
@@ -90,12 +92,12 @@ class TaxonDecorator < Draper::Decorator
     params[:project] = "worldants"
 
     # Rails' .to_param sorts the params, this one doesn't
-    url = base_url + params.map { |key, value| value.to_query(key) }.compact * '&'
+    url = ANTWEB_BASE_URL + params.map { |key, value| value.to_query(key) }.compact * '&'
     h.external_link_to 'AntWeb', url.downcase.html_safe
   end
 
   def link_to_google_scholar
     params = { q: "#{taxon.name_cache} #{taxon.author_citation}" }.to_query
-    h.external_link_to "Google&nbsp;Scholar".html_safe, "//scholar.google.com/scholar?#{params}"
+    h.external_link_to "Google&nbsp;Scholar".html_safe, "#{GOOGLE_SCHOLAR_BASE_URL}#{params}"
   end
 end
