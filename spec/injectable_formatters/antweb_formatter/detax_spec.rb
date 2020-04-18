@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::Antweb::AntwebDetax do
+describe AntwebFormatter::Detax do
   include TestLinksHelpers
 
   describe "#call" do

@@ -42,7 +42,7 @@ module Exporters
 
           def headline_notes
             return unless headline_notes_taxt
-            AntwebDetax[headline_notes_taxt]
+            AntwebFormatter.detax(headline_notes_taxt)
           end
 
           def link_to_antcat

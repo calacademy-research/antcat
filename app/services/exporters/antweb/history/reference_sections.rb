@@ -26,7 +26,7 @@ module Exporters
             content_tag :div do
               [:title_taxt, :subtitle_taxt, :references_taxt].each_with_object(''.html_safe) do |field, content|
                 if section[field]
-                  content << content_tag(:div, AntwebDetax[section[field]])
+                  content << content_tag(:div, AntwebFormatter.detax(section[field]))
                 end
               end
             end

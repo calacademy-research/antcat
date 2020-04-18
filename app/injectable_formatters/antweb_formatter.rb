@@ -5,6 +5,10 @@ module AntwebFormatter
 
   module_function
 
+  def detax taxt
+    AntwebFormatter::Detax[taxt]
+  end
+
   def link_to_taxon taxon
     %(<a href="#{CATALOG_URL}#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
