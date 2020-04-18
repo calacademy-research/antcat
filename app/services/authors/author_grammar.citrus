@@ -1,4 +1,4 @@
-grammar Parsers::AuthorGrammar
+grammar Authors::AuthorGrammar
   rule author_names
     (author (s author_separator s author)* suffix? s) {
       value = { names: captures[:author].map(&:to_s) }

@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Parsers::AuthorGrammar
+Citrus.load "#{__dir__}/author_grammar", force: true unless defined? Authors::AuthorGrammar
 
-module Parsers
+module Authors
   class ParseAuthorNames
     include Service
 
@@ -23,7 +23,7 @@ module Parsers
       attr_reader :string
 
       def parsed
-        Parsers::AuthorGrammar.parse(string, consume: false)
+        Authors::AuthorGrammar.parse(string, consume: false)
       end
   end
 end

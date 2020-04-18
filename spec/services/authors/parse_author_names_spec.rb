@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Parsers::ParseAuthorNames do
+describe Authors::ParseAuthorNames do
   describe "#call" do
     it "returns an empty array if the string is blank" do
       expect(described_class['']).to eq []
