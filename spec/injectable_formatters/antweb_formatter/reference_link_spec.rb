@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Exporters::Antweb::AntwebInlineCitation do
+describe AntwebFormatter::ReferenceLink do
   let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
   let!(:reference) do
     create :article_reference,

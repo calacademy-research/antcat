@@ -18,6 +18,6 @@ module AntwebFormatter
   end
 
   def link_to_reference reference
-    Exporters::Antweb::AntwebInlineCitation[reference]
+    AntwebFormatter::ReferenceLink[reference]
   end
 end

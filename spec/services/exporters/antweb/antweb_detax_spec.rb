@@ -26,7 +26,7 @@ describe Exporters::Antweb::AntwebDetax do
       let!(:reference) { create :any_reference }
 
       specify do
-        expect(described_class["{ref #{reference.id}}"]).to eq Exporters::Antweb::AntwebInlineCitation[reference]
+        expect(described_class["{ref #{reference.id}}"]).to eq AntwebFormatter::ReferenceLink[reference]
       end
     end
   end
