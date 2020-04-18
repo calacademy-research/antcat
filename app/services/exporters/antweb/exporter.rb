@@ -37,15 +37,11 @@ module Exporters
         end
 
         def taxon_ids
-          @_taxon_ids ||= Taxon.where(type: EXPORTABLE_TYPES).
-                            joins(protonym: [{ authorship: :reference }]).
-                            order(:status).pluck(:id).reverse
+          @_taxon_ids ||= Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
         end
 
         def taxon_chunk chunk
-          Taxon.where(id: chunk).
-            order(Arel.sql("field(taxa.id, #{chunk.join(',')})")).
-            joins(protonym: [{ authorship: :reference }]).
+          Taxon.where(id: chunk).order(Arel.sql("field(taxa.id, #{chunk.join(',')})")).
             includes(protonym: [{ authorship: :reference }])
         end
 
