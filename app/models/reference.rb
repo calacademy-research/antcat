@@ -12,6 +12,9 @@ class Reference < ApplicationRecord
   ]
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[plain_text_cache expandable_reference_cache expanded_reference_cache]
 
+  delegate :routed_url, :downloadable?, to: :document, allow_nil: true
+  delegate :keey, :keey_without_letters_in_year, to: :key
+
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') },
     through: :reference_author_names,
@@ -40,7 +43,6 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
-  delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   has_paper_trail
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :citation_year, :stated_year,
@@ -63,7 +65,7 @@ class Reference < ApplicationRecord
     text(:editor_notes)
     text(:taxonomic_notes)
     text(:bolton_key)
-    text(:authors_for_keey) { authors_for_keey } # To find "et al".
+    text(:authors_for_keey) { key.authors_for_keey } # To find "et al".
     string(:citation_year)
     string(:stated_year)
     string(:doi)
@@ -101,34 +103,17 @@ class Reference < ApplicationRecord
     save(validate: false)
   end
 
-  # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978".
-  def keey
-    authors_for_keey << ', ' << citation_year
-  end
-
-  # Normal keey: "Bolton, 1885g".
-  # This:        "Bolton, 1885".
-  def keey_without_letters_in_year
-    authors_for_keey << ', ' << year.to_s
-  end
-
   def citation_year_and_stated_year
     return citation_year unless stated_year
     %(#{citation_year} ("#{stated_year}"))
   end
 
-  def authors_for_keey
-    names = author_names.map(&:last_name)
-    case names.size
-    when 0 then '[no authors]' # TODO: This can still happen in the reference form.
-    when 1 then names.first.to_s
-    when 2 then "#{names.first} & #{names.second}"
-    else        "#{names.first} <i>et al.</i>"
-    end.html_safe
-  end
-
   def what_links_here predicate: false
     References::WhatLinksHere[self, predicate: predicate]
+  end
+
+  def key
+    @_key ||= References::Key.new(self)
   end
 
   private
