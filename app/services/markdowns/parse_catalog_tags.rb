@@ -30,6 +30,12 @@ module Markdowns
       # Matches: %taxon429349 and {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
+        # HACK: To eager load records in a single query for performance reasons.
+        taxon_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
+        return if taxon_ids.blank?
+
+        taxa_indexed_by_id = Taxon.where(id: taxon_ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
+
         content.gsub!(Taxt::TAX_TAG_REGEX) do
           taxon_id = $LAST_MATCH_INFO[:id]
 
@@ -39,12 +45,6 @@ module Markdowns
             broken_markdown_link "TAXON", taxon_id
           end
         end
-      end
-
-      # HACK: To eager load records in a single query for performance reasons.
-      def taxa_indexed_by_id
-        taxon_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
-        Taxon.where(id: taxon_ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
       end
 
       # Matches: {taxac 429349}
@@ -64,6 +64,17 @@ module Markdowns
       # Matches: %reference130628 and {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
+        # HACK: To eager load records in a single query for performance reasons.
+        reference_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
+        return if reference_ids.blank?
+
+        references_indexed_by_id =
+          if ENV['NO_REF_CACHE']
+            {}
+          else
+            Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
+          end
+
         content.gsub!(Taxt::REF_TAG_REGEX) do
           reference_id = $LAST_MATCH_INFO[:id]
 
@@ -74,16 +85,6 @@ module Markdowns
           else
             broken_markdown_link "REFERENCE", reference_id
           end
-        end
-      end
-
-      # HACK: To eager load records in a single query for performance reasons.
-      def references_indexed_by_id
-        return {} if ENV['NO_REF_CACHE']
-
-        @_references_indexed_by_id ||= begin
-          reference_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
-          Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
         end
       end
 
