@@ -28,7 +28,8 @@
 
     %body{id: controller_css_id(params[:controller])}
       -unless params[:controller] == 'feedback'
-        %button#feedback-button.hide-for-small-only=link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback)
+        %button#feedback-button.hide-for-small-only
+          =link_to 'Suggest edit', new_feedback_path(page: current_page_for_feedback), rel: 'nofollow'
 
       .main-container
         %header#header
