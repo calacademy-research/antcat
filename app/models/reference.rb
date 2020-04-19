@@ -24,7 +24,6 @@ class Reference < ApplicationRecord
   has_many :described_taxa, through: :protonyms, source: :taxa
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
-  validates :type, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :citation_year, format: { with: /\A\d{4,}[a-z]?\z/, message: "must be a year, followed by an optional lowercase letter" }
