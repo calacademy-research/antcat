@@ -13,7 +13,7 @@ module Taxa
 
         new_species = build_new_species
 
-        if Taxon.name_clash?(new_species.name.name)
+        if Taxa::NameClash[new_species.name.name]
           new_species.errors.add :base, "This name is in use by another taxon"
           return new_species
         end

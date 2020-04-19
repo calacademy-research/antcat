@@ -16,7 +16,7 @@ module Taxa
 
         new_subspecies = build_new_subspecies
 
-        if Taxon.name_clash?(new_subspecies.name.name)
+        if Taxa::NameClash[new_subspecies.name.name]
           new_subspecies.errors.add :base, "This name is in use by another taxon"
           return new_subspecies
         end

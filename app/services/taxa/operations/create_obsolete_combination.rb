@@ -14,7 +14,7 @@ module Taxa
 
         obsolete_combination = build_obsolete_combination
 
-        if Taxon.name_clash?(obsolete_combination.name.name)
+        if Taxa::NameClash[obsolete_combination.name.name]
           obsolete_combination.errors.add :base, "This name is in use by another taxon"
           return obsolete_combination
         end

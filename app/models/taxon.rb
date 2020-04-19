@@ -61,10 +61,6 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  def self.name_clash? name_string
-    where(name_cache: name_string).exists?
-  end
-
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
