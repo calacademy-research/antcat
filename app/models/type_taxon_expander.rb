@@ -36,7 +36,7 @@ class TypeTaxonExpander
     attr_reader :taxon, :type_taxt, :type_taxon
 
     def compact_status
-      @_compact_status ||= type_taxon.most_recent_before_now.compact_status
+      @_compact_status ||= type_taxon.most_recent_before_now.decorate.compact_status
     end
 
     def reasons_cannot_expand

@@ -110,10 +110,6 @@ class Taxon < ApplicationRecord
     Taxa::ExpandedStatus[self]
   end
 
-  def compact_status
-    Taxa::CompactStatus[self]
-  end
-
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
