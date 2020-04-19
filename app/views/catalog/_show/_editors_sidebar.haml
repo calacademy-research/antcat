@@ -84,7 +84,7 @@
       =beta_label
       =logged_in_only_tooltip_icon "This section is only shown to logged-in users. It is very beta but it has a lot of potential. The check for obsolete combinations representing the current catalog taxon is only run if the catalog taxon is a species, and if the history item says it was combined in a genus. The 'original combination event' does usually not appear in history items, so missing original combinations will usually not appear here. The 'create?' link is only visible when the system allows it."
     %ul.no-bullet.spaced-lis.small-margin-bottom
-      -taxon.combination_in_according_to_history_items.with_common_includes.each do |oc_per_item|
+      -TaxonQuery.new(taxon.combination_in_according_to_history_items).with_common_includes.each do |oc_per_item|
         %li
           =oc_per_item.link_to_taxon
           =oc_per_item.author_citation

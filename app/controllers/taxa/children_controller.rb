@@ -9,7 +9,7 @@ module Taxa
     def show
       @taxon = find_taxon
 
-      @children = @taxon.children.with_common_includes.
+      @children = TaxonQuery.new(@taxon.children).with_common_includes.
         order(status: :desc, name_cache: :asc).
         paginate(per_page: 100, page: params[:page])
       @check_what_links_heres = params[:check_what_links_heres]

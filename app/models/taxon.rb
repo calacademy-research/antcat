@@ -50,18 +50,7 @@ class Taxon < ApplicationRecord
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
-  scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
-  scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
-  scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
-  # TODO: Find a better name and place for these and figure out how to best use them.
-  scope :with_common_includes, -> do
-    includes(:name, protonym: [:name, { authorship: { reference: :author_names } }]).references(:reference_author_names)
-  end
-  scope :with_common_includes_and_current_valid_taxon_includes, -> do
-    with_common_includes.
-      includes(current_valid_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
-  end
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
