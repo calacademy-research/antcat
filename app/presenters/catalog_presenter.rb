@@ -23,7 +23,8 @@ class CatalogPresenter
   end
 
   def show_full_statistics?
-    taxon.invalid_status? || params[:include_full_statistics].present?
+    return true if params[:include_full_statistics].present?
+    !taxon.valid_status?
   end
 
   # NOTE: Special case to avoid showing ~6 A4 pages of Formicidae references and use a different title.

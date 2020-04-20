@@ -17,7 +17,7 @@ class CreateCombinationPolicy
       Enumerator.new do |yielder|
         # Common.
         yielder << 'taxon is not a species' unless taxon.is_a?(Species)
-        yielder << "taxon does not have the status 'valid'" if taxon.invalid_status?
+        yielder << "taxon does not have the status 'valid'" unless taxon.valid_status?
         yielder << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
 
         # Uncommon.

@@ -69,13 +69,8 @@ class Taxon < ApplicationRecord
     end
   end
 
-  # Because `#valid?` clashes with ActiveModel.
   def valid_status?
     status == Status::VALID
-  end
-
-  def invalid_status?
-    !valid_status?
   end
 
   def rank
