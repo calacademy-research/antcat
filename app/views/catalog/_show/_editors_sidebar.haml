@@ -24,8 +24,8 @@
       Database script:
       =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
 
--# TODO: Remove once fixed (see `Taxon#obsolete_combination_that_is_shady?`).
--if taxon.obsolete_combination_that_is_shady?
+-# TODO: Remove once fixed (see `Taxa::CleanupTaxon#obsolete_combination_that_is_shady?`).
+-if Taxa::CleanupTaxon.new(taxon).obsolete_combination_that_is_shady?
   -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxon(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
