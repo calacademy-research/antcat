@@ -37,8 +37,6 @@ class Reference < ApplicationRecord
   before_save :assign_author_names_cache
   before_destroy :ensure_not_used
 
-  scope :latest_additions, -> { order(created_at: :desc) }
-  scope :latest_changes, -> { order(updated_at: :desc) }
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: "reviewed") }
 

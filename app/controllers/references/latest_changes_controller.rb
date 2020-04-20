@@ -3,7 +3,7 @@
 module References
   class LatestChangesController < ApplicationController
     def index
-      @references = Reference.latest_changes.includes(:document).paginate(page: params[:page])
+      @references = ReferenceQuery.new.latest_changes.includes(:document).paginate(page: params[:page])
     end
   end
 end
