@@ -17,6 +17,7 @@ module DatabaseScripts
 
         t.rows do |taxon|
           current_valid_taxon = taxon.current_valid_taxon
+          cvt_cleanup_taxon = Taxa::CleanupTaxon.new(current_valid_taxon)
 
           [
             taxon_link(taxon),
@@ -28,8 +29,8 @@ module DatabaseScripts
             taxon.name.epithet,
             current_valid_taxon.name.epithet,
 
-            ('Yes' if taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon).present?),
-            ('Yes' if taxon.current_valid_taxon.synonyms_history_items_containing_taxon(taxon).present?)
+            ('Yes' if cvt_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon).present?),
+            ('Yes' if cvt_cleanup_taxon.synonyms_history_items_containing_taxon(taxon).present?)
           ]
         end
       end

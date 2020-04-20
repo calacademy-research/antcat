@@ -10,8 +10,6 @@ module Taxa
     DELEGATED_IN_TAXON = %i[
       now
       most_recent_before_now
-      synonyms_history_items_containing_taxon
-      synonyms_history_items_containing_taxons_protonyms_taxa_except_self
       combination_in_according_to_history_items
     ]
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
