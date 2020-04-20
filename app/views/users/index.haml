@@ -14,7 +14,7 @@
 -if user_is_superadmin?
   %p
     %span.margin-bottom.logged-in-only-background
-      PaperTrail version count is only visible to superadmins.
+      Activity and PaperTrail version counts are only visible to superadmins.
       =logged_in_only_tooltip_icon user_group: 'superadmins'
 
 %table.stack
@@ -27,13 +27,14 @@
         -if user.superadmin? && user_is_at_least_helper?
           %span.high-priority-label.rounded-badge superadmin
       -if user_is_superadmin?
+        %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
         %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
       %td
         -if user.author
           =link_to 'Author page', user.author, class: 'btn-normal btn-tiny'
       -if user_is_at_least_helper?
         %td=user.email
-        %td Registered #{user.created_at.year}
+        %td Reg. #{user.created_at.year}
 
 -if @hidden_users
   %h5.huge-margin-top
@@ -46,6 +47,7 @@
         %td=user.decorate.user_page_link
         %td=user.decorate.user_badge
         -if user_is_superadmin?
+          %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
           -if user.locked?
@@ -55,7 +57,7 @@
           -if user.hidden?
             %span.warning-label.rounded-badge hidden
         %td=user.email
-        %td Registered #{user.created_at.year}
+        %td Reg. #{user.created_at.year}
 
 -if @deleted_or_locked_users
   %h5.huge-margin-top
@@ -69,6 +71,7 @@
         %td=user.decorate.user_page_link
         %td=user.decorate.user_badge
         -if user_is_superadmin?
+          %td=link_to "#{user.activities.count}&nbsp;activities".html_safe, activities_path(user_id: user.id)
           %td=link_to "#{user.created_paper_trail_versions.count}&nbsp;PTVs".html_safe, versions_path(whodunnit: user.id)
         %td
           -if user.locked?
@@ -78,4 +81,4 @@
           -if user.hidden?
             %span.warning-label.rounded-badge hidden
         %td=user.email
-        %td Registered #{user.created_at.year}
+        %td Reg. #{user.created_at.year}
