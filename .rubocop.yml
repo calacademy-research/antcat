@@ -91,7 +91,6 @@ Metrics/ClassLength:
   Max: 100
   Exclude:
     - 'app/models/taxon.rb'
-    - 'app/models/reference.rb'
 
 Metrics/CyclomaticComplexity:
   Enabled: false

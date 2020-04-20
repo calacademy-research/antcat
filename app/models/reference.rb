@@ -3,6 +3,7 @@
 class Reference < ApplicationRecord
   include WorkflowActiverecord
   include Trackable
+  include References::Concerns::Searchable
 
   CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference]
   REVIEW_STATES = [
@@ -10,7 +11,6 @@ class Reference < ApplicationRecord
     REVIEW_STATE_REVIEWED = "reviewed",
     REVIEW_STATE_REVIEWING = "reviewing"
   ]
-  SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[plain_text_cache expandable_reference_cache expanded_reference_cache]
 
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   delegate :keey, :keey_without_letters_in_year, to: :key
@@ -49,28 +49,6 @@ class Reference < ApplicationRecord
     :series_volume_issue, :pagination, :doi, :review_state, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
-
-  searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
-    string(:type)
-    integer(:year)
-    text(:author_names_string)
-    text(:citation_year)
-    text(:stated_year)
-    text(:title)
-    # NOTE: Safe navigation for `.name` is for journals/publishers created at the same time as the reference.
-    text(:journal_name) { journal&.name if respond_to?(:journal) }
-    text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
-    text(:year_as_string) { year.to_s }
-    text(:public_notes)
-    text(:editor_notes)
-    text(:taxonomic_notes)
-    text(:bolton_key)
-    text(:authors_for_keey) { key.authors_for_keey } # To find "et al".
-    string(:citation_year)
-    string(:stated_year)
-    string(:doi)
-    string(:author_names_string)
-  end
 
   workflow_column :review_state
   workflow do
