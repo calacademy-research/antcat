@@ -6,6 +6,8 @@ class Taxon < ApplicationRecord
   self.table_name = :taxa
 
   delegate(*Taxa::CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
+  delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
+    to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
@@ -98,21 +100,6 @@ class Taxon < ApplicationRecord
     '('.html_safe + citation + ')'
   end
 
-  def virtual_history_items
-    @_virtual_history_items ||= all_virtual_history_items.select(&:publicly_visible?)
-  end
-
-  # The reason we have `#virtual_history_items` and `#all_virtual_history_items` is because for as long as
-  # data is being migrated to "virtual history items", we want to be able to "preview" items before we actually make
-  # them publicly visible in the catalog.
-  def all_virtual_history_items
-    @_all_virtual_history_items ||= Taxa::VirtualHistoryItemsForTaxon[self]
-  end
-
-  def policy
-    @_policy ||= TaxonPolicy.new(self)
-  end
-
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
   # and for performance reasons in the taxon browser since decorating a lot of taxa took its toll.
   # Move somewhere once we have improved `Name` and the taxon browser.
@@ -124,12 +111,8 @@ class Taxon < ApplicationRecord
     protonym.authorship.reference
   end
 
-  def soft_validations
-    @_soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
-  end
-
-  def what_links_here
-    @_what_links_here ||= Taxa::WhatLinksHere.new(self)
+  def taxon_collaborators
+    @_taxon_collaborators ||= Taxa::TaxonCollaborators.new(self)
   end
 
   def cleanup_taxon
