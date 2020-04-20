@@ -16,10 +16,8 @@ class Reference < ApplicationRecord
   delegate :keey, :keey_without_letters_in_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
-  has_many :author_names, -> { order('reference_author_names.position') },
-    through: :reference_author_names,
-    after_add: :refresh_author_names_cache,
-    after_remove: :refresh_author_names_cache
+  has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names,
+    after_add: :refresh_author_names_cache, after_remove: :refresh_author_names_cache
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
@@ -38,7 +36,7 @@ class Reference < ApplicationRecord
   before_destroy :ensure_not_used
 
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
-  scope :unreviewed, -> { where.not(review_state: "reviewed") }
+  scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
   has_paper_trail
@@ -50,15 +48,9 @@ class Reference < ApplicationRecord
 
   workflow_column :review_state
   workflow do
-    state :none do
-      event :start_reviewing, transitions_to: :reviewing
-    end
-    state :reviewing do
-      event :finish_reviewing, transitions_to: :reviewed
-    end
-    state :reviewed do
-      event :restart_reviewing, transitions_to: :reviewing
-    end
+    state(:none)      { event :start_reviewing,   transitions_to: :reviewing }
+    state(:reviewing) { event :finish_reviewing,  transitions_to: :reviewed }
+    state(:reviewed)  { event :restart_reviewing, transitions_to: :reviewing }
   end
 
   # TODO: Something. "_cache" vs not.
@@ -97,13 +89,11 @@ class Reference < ApplicationRecord
     def ensure_bolton_key_unique
       return unless bolton_key
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
-
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
     def ensure_not_used
       return if what_links_here.empty?
-
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       throw :abort
     end
