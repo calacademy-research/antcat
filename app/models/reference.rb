@@ -76,10 +76,6 @@ class Reference < ApplicationRecord
     %(#{citation_year} ("#{stated_year}"))
   end
 
-  def what_links_here predicate: false
-    References::WhatLinksHere[self, predicate: predicate]
-  end
-
   def key
     @_key ||= References::Key.new(self)
   end
@@ -93,7 +89,7 @@ class Reference < ApplicationRecord
     end
 
     def ensure_not_used
-      return if what_links_here.empty?
+      return if References::WhatLinksHere[self].empty?
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       throw :abort
     end

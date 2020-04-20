@@ -204,13 +204,4 @@ describe Reference do
       end
     end
   end
-
-  describe "#what_links_here" do
-    let(:reference) { build_stubbed :any_reference }
-
-    it "calls `References::WhatLinksHere`" do
-      expect(References::WhatLinksHere).to receive(:new).with(reference, predicate: false).and_call_original
-      reference.what_links_here
-    end
-  end
 end
