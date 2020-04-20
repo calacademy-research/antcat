@@ -30,6 +30,9 @@ class Taxon < ApplicationRecord
     has_many :reference_sections, -> { order(:position) }
   end
 
+  has_one :authorship, through: :protonym
+  has_one :authorship_reference, through: :authorship, source: :reference
+
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
@@ -94,10 +97,6 @@ class Taxon < ApplicationRecord
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`.
   def link_to_taxon
     %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
-  end
-
-  def authorship_reference
-    protonym.authorship.reference
   end
 
   def taxon_collaborators

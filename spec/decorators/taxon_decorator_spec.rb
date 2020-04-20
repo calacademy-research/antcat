@@ -17,7 +17,7 @@ describe TaxonDecorator do
   end
 
   describe "#id_and_name_and_author_citation" do
-    let(:taxon) { build_stubbed :family }
+    let(:taxon) { create :family }
 
     specify do
       expect(decorated.id_and_name_and_author_citation).to eq <<~HTML.squish

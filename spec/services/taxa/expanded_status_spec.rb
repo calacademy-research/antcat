@@ -16,7 +16,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'synonym'" do
-        let!(:senior) { build_stubbed :genus }
+        let!(:senior) { create :genus }
         let!(:taxon) { build_stubbed :genus, :synonym, current_valid_taxon: senior }
 
         specify do
@@ -53,7 +53,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'obsolete combination'" do
-        let!(:current_valid_taxon) { build_stubbed :genus }
+        let!(:current_valid_taxon) { create :genus }
         let!(:taxon) { build_stubbed :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
 
         specify do
@@ -63,7 +63,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'unavailable misspelling'" do
-        let!(:current_valid_taxon) { build_stubbed :family }
+        let!(:current_valid_taxon) { create :family }
         let!(:taxon) { build_stubbed :family, :unavailable_misspelling, current_valid_taxon: current_valid_taxon }
 
         specify do
@@ -72,7 +72,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'unavailable uncategorized'" do
-        let!(:current_valid_taxon) { build_stubbed :family }
+        let!(:current_valid_taxon) { create :family }
         let!(:taxon) { build_stubbed :family, :unavailable_uncategorized, current_valid_taxon: current_valid_taxon }
 
         specify do
@@ -102,7 +102,7 @@ describe Taxa::ExpandedStatus do
         end
 
         context "when there is a current valid taxon" do
-          let(:senior) { build_stubbed :genus }
+          let(:senior) { create :genus }
           let(:taxon) { build_stubbed :family, :synonym, unresolved_homonym: true, current_valid_taxon: senior }
 
           specify do
