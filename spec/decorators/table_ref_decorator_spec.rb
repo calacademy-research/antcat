@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe TableRefDecorator do
+  include TestLinksHelpers
+
   subject(:decorated) { described_class.new(table_ref) }
 
   let(:id) { object.id }
@@ -29,7 +31,7 @@ describe TableRefDecorator do
     let!(:object) { create :reference_section }
 
     specify { expect(decorated.item_link).to eq %(<a href="/reference_sections/#{id}">#{id}</a>) }
-    specify { expect(decorated.owner_link).to eq object.taxon.link_to_taxon }
+    specify { expect(decorated.owner_link).to eq taxon_link(object.taxon) }
   end
 
   context "when table is `references`" do
@@ -45,7 +47,7 @@ describe TableRefDecorator do
     let!(:object) { create :family }
 
     specify { expect(decorated.item_link).to eq %(<a href="/catalog/#{id}">#{id}</a>) }
-    specify { expect(decorated.owner_link).to eq object.link_to_taxon }
+    specify { expect(decorated.owner_link).to eq taxon_link(object) }
   end
 
   context "when table is `taxon_history_items`" do
@@ -53,6 +55,6 @@ describe TableRefDecorator do
     let!(:object) { create :taxon_history_item }
 
     specify { expect(decorated.item_link).to eq %(<a href="/taxon_history_items/#{id}">#{id}</a>) }
-    specify { expect(decorated.owner_link).to eq object.taxon.link_to_taxon }
+    specify { expect(decorated.owner_link).to eq taxon_link(object.taxon) }
   end
 end

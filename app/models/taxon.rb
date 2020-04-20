@@ -96,9 +96,7 @@ class Taxon < ApplicationRecord
     '('.html_safe + citation + ')'
   end
 
-  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
-  # and for performance reasons in the taxon browser since decorating a lot of taxa took its toll.
-  # Move somewhere once we have improved `Name` and the taxon browser.
+  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`.
   def link_to_taxon
     %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
   end
