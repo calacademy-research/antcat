@@ -24,15 +24,16 @@ module Catalog
         params[:name] = params[:qq]
       end
 
-      @taxa = Catalog::AdvancedSearchQuery[advanced_search_params]
+      taxa = Catalog::AdvancedSearchQuery[advanced_search_params]
 
       respond_to do |format|
         format.html do
-          @taxa = @taxa.paginate(page: params[:page], per_page: params[:per_page])
+          @taxa = TaxonQuery.new(taxa).with_common_includes_and_current_valid_taxon_includes.
+            paginate(page: params[:page], per_page: params[:per_page])
         end
 
         format.text do
-          send_data Exporters::Taxa::TaxaAsTxt[@taxa], filename: download_filename, type: 'text/plain'
+          send_data Exporters::Taxa::TaxaAsTxt[taxa], filename: download_filename, type: 'text/plain'
         end
       end
     end

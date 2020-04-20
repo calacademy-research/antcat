@@ -12,6 +12,7 @@
         %th Authorship
         %th Protonym
     -taxa.each do |taxon|
+      -decorated_protonym = taxon.protonym.decorate
       %tr
         %td
           =taxon.link_to_taxon
@@ -19,12 +20,12 @@
           .small-text=taxon.expanded_status
         %td=taxon.authorship_reference.decorate.expandable_reference
         %td
-          =taxon.protonym.decorate.link_to_protonym
+          =decorated_protonym.link_to_protonym
           .small-text
             -if taxon.protonym.authorship.forms
               =surround "(", ")" do
                 =taxon.protonym.authorship.forms
-            =taxon.protonym.decorate.format_locality
+            =decorated_protonym.format_locality
             =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   =will_paginate taxa
