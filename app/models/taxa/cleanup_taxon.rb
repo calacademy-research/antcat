@@ -7,11 +7,6 @@
 # :nocov:
 module Taxa
   class CleanupTaxon < SimpleDelegator
-    DELEGATED_IN_TAXON = %i[
-      now
-      most_recent_before_now
-      combination_in_according_to_history_items
-    ]
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
 
     # TODO: Experimental.
