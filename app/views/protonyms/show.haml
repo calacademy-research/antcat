@@ -82,7 +82,7 @@
               =taxon.status.capitalize
               -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
                 %br
-                %small=taxon.expanded_status
+                %small=taxon.decorate.expanded_status
             %td
               -if taxon.original_combination?
                 Original combination
@@ -113,7 +113,7 @@
           -@protonym.taxa_with_history_items.each do |taxon|
             %h6
               =taxon.link_to_taxon
-              %span.small-text=taxon.expanded_status
+              %span.small-text=taxon.decorate.expanded_status
 
             .left-margin
               %ul.history

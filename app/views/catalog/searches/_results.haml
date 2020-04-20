@@ -17,7 +17,7 @@
         %td
           =taxon.link_to_taxon
           %br
-          .small-text=taxon.expanded_status
+          .small-text=taxon.decorate.expanded_status
         %td=taxon.authorship_reference.decorate.expandable_reference
         %td
           =decorated_protonym.link_to_protonym

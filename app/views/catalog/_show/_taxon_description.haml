@@ -1,7 +1,7 @@
 .header
   %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
-  =taxon.expanded_status
+  =taxon.decorate.expanded_status
   =taxon.name.gender
 
 .headline
@@ -84,7 +84,7 @@
           %li
             =species.link_to_taxon
             =species.author_citation
-            %span.small-text=species.expanded_status
+            %span.small-text=species.decorate.expanded_status
             -# TODO: N+1 query.
             -if species.subspecies.present?
               %ul.compact-list
@@ -92,7 +92,7 @@
                   %li
                     =subspecies.link_to_taxon
                     =subspecies.author_citation
-                    %span.small-text=subspecies.expanded_status
+                    %span.small-text=subspecies.decorate.expanded_status
 
 -if catalog_presenter.formicidae_landing_page?
   %br
@@ -164,7 +164,7 @@
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
-            %span.small-text=subspecies.expanded_status
+            %span.small-text=subspecies.decorate.expanded_status
 
 -unless catalog_presenter.formicidae_landing_page?
   %h6.huge-margin-top Citations
