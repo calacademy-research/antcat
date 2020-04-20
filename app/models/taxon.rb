@@ -5,7 +5,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  delegate :now, :most_recent_before_now, :combination_in_according_to_history_items, to: :cleanup_taxon
+  delegate :now, :most_recent_before_now, to: :cleanup_taxon
   delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
     to: :taxon_collaborators
 

@@ -8,7 +8,7 @@ describe Taxa::CleanupTaxon do
     let!(:taxon) { create :species }
 
     context "when taxon has no 'Combination in' history item" do
-      specify { expect(taxon.combination_in_according_to_history_items).to eq [] }
+      specify { expect(described_class.new(taxon).combination_in_according_to_history_items).to eq [] }
     end
 
     context "when taxon has 'Combination in' history items" do
@@ -16,7 +16,7 @@ describe Taxa::CleanupTaxon do
         create :taxon_history_item, taxon: taxon, taxt: "Combination in {tax #{obsolete_genus.id}}"
       end
 
-      specify { expect(taxon.combination_in_according_to_history_items).to eq [obsolete_genus] }
+      specify { expect(described_class.new(taxon).combination_in_according_to_history_items).to eq [obsolete_genus] }
     end
   end
 end
