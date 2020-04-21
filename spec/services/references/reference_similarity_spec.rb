@@ -6,8 +6,8 @@ require 'rails_helper'
 describe References::ReferenceSimilarity do
   describe '#call' do
     context "when type mismatch" do
-      let(:lhs) { ArticleReference.new(title: 'Ants', year: 1975) }
-      let(:rhs) { NestedReference.new(title: 'Ants', year: 1975) }
+      let(:lhs) { ArticleReference.new }
+      let(:rhs) { NestedReference.new }
 
       it "never considers references of different types similar" do
         expect(described_class[lhs, rhs]).to eq 0.00

@@ -56,17 +56,24 @@ module References
       end
 
       def match_article
-        return unless lhs.type == 'ArticleReference' && rhs.type == 'ArticleReference'
-        return unless lhs.series_volume_issue.present? && rhs.series_volume_issue.present?
-        return unless lhs.pagination.present? && pagination_matches?
-
+        return unless comparable_as_article? && pagination_matches?
         return 0.90 if lhs.normalized_series_volume_issue == rhs.normalized_series_volume_issue
       end
 
       def match_book
-        return unless lhs.type == 'BookReference' && rhs.type == 'BookReference'
-        return unless lhs.pagination.present? && rhs.pagination.present?
+        return unless comparable_as_book?
         return 0.80 if pagination_matches?
+      end
+
+      def comparable_as_article?
+        return unless lhs.type == 'ArticleReference'
+        lhs.series_volume_issue.present? && rhs.series_volume_issue.present?
+        lhs.pagination.present? && rhs.pagination.present?
+      end
+
+      def comparable_as_book?
+        return unless lhs.type == 'BookReference'
+        lhs.pagination.present? && rhs.pagination.present?
       end
   end
 end

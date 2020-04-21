@@ -35,8 +35,8 @@ module References
     end
 
     def normalized_author
-      author_name = principal_author_last_name(reference)
-      ActiveSupport::Inflector.transliterate author_name.downcase
+      principal_author_name = reference.author_names.first&.last_name
+      ActiveSupport::Inflector.transliterate(principal_author_name.downcase)
     end
 
     def normalized_series_volume_issue
@@ -76,10 +76,6 @@ module References
 
       def remove_punctuation string
         string.gsub(/[^\w\s]/, '')
-      end
-
-      def principal_author_last_name reference
-        reference.author_names.first&.last_name
       end
 
       def replace_punctuation_with_space string
