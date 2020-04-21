@@ -31,7 +31,7 @@ module References
     end
 
     def title_with_removed_punctuation
-      remove_punctuation!(title_with_replaced_roman_numerals!.dup)
+      remove_punctuation(title_with_replaced_roman_numerals!)
     end
 
     def normalized_author
@@ -41,9 +41,9 @@ module References
 
     def normalized_series_volume_issue
       string = reference.series_volume_issue.dup
-      remove_year_in_parentheses! string
-      remove_no! string
-      replace_punctuation_with_space! string
+      string = remove_year_in_parentheses(string)
+      string = remove_no(string)
+      string = replace_punctuation_with_space(string)
       string
     end
 
@@ -75,26 +75,24 @@ module References
         string
       end
 
-      def remove_punctuation! string
-        string.gsub!(/[^\w\s]/, '')
-        string
+      def remove_punctuation string
+        string.gsub(/[^\w\s]/, '')
       end
 
       def principal_author_last_name reference
         reference.author_names.first&.last_name
       end
 
-      def replace_punctuation_with_space! string
-        string.gsub!(/[[:punct:]]/, ' ')
-        string.squish!
+      def replace_punctuation_with_space string
+        string.gsub(/[[:punct:]]/, ' ').squish
       end
 
-      def remove_year_in_parentheses! string
-        string.gsub!(/\(\d{4}\)$/, '')
+      def remove_year_in_parentheses string
+        string.gsub(/\(\d{4}\)$/, '')
       end
 
-      def remove_no! string
-        string.gsub!(/\(No. (\d+)\)$/, '(\1)')
+      def remove_no string
+        string.gsub(/\(No. (\d+)\)$/, '(\1)')
       end
   end
 end
