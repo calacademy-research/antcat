@@ -3,11 +3,7 @@
 module References
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_references
-        end
-      end
+      render json: serialized_references
     end
 
     private

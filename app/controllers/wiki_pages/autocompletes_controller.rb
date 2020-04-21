@@ -3,11 +3,7 @@
 module WikiPages
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_wiki_pages
-        end
-      end
+      render json: serialized_wiki_pages
     end
 
     private

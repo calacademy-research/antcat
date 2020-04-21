@@ -4,11 +4,7 @@ module References
   class LinkableAutocompletesController < ApplicationController
     # For at.js. Not as advanced as `References::AutocompletesController`.
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_references
-        end
-      end
+      render json: serialized_references
     end
 
     private

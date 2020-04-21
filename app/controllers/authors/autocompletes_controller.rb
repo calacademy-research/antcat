@@ -3,11 +3,7 @@
 module Authors
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_author_names
-        end
-      end
+      render json: serialized_author_names
     end
 
     private

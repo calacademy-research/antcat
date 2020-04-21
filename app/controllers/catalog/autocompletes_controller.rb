@@ -3,11 +3,7 @@
 module Catalog
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_taxa
-        end
-      end
+      render json: serialized_taxa
     end
 
     private

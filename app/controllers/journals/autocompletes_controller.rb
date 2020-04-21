@@ -3,11 +3,7 @@
 module Journals
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_journals
-        end
-      end
+      render json: serialized_journals
     end
 
     private

@@ -3,11 +3,7 @@
 module Protonyms
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          render json: serialized_protonyms
-        end
-      end
+      render json: serialized_protonyms
     end
 
     private
