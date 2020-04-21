@@ -23,11 +23,11 @@ module References
     end
 
     def title_without_bracketed_phrases!
-      @_title_without_bracketed_phrases ||= remove_bracketed_phrases!(normalized_title.dup)
+      @_title_without_bracketed_phrases ||= remove_bracketed_phrases(normalized_title)
     end
 
     def title_with_replaced_roman_numerals!
-      @_title_with_replaced_roman_numerals ||= replace_roman_numerals!(title_without_bracketed_phrases!.dup)
+      @_title_with_replaced_roman_numerals ||= replace_roman_numerals(title_without_bracketed_phrases!)
     end
 
     def title_with_removed_punctuation
@@ -62,13 +62,12 @@ module References
         string
       end
 
-      def remove_bracketed_phrases! string
-        string.gsub!(/\s?\[.*?\]\s?/, ' ')
-        string.strip!
-        string
+      def remove_bracketed_phrases string
+        string.gsub(/\s?\[.*?\]\s?/, ' ').strip
       end
 
-      def replace_roman_numerals! string
+      def replace_roman_numerals string
+        string = string.dup
         ROMAN_NUMERALS.each do |roman, arabic|
           string.gsub!(/\b#{roman}\b/, arabic.to_s)
         end
