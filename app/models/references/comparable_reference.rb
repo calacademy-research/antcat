@@ -28,6 +28,10 @@ module References
       @_title_with_replaced_roman_numerals ||= replace_roman_numerals!(title_without_bracketed_phrases!.dup)
     end
 
+    def title_with_removed_punctuation
+      remove_punctuation!(title_with_replaced_roman_numerals!.dup)
+    end
+
     def normalized_author
       author_name = principal_author_last_name(reference)
       ActiveSupport::Inflector.transliterate author_name.downcase
@@ -58,6 +62,11 @@ module References
         ROMAN_NUMERALS.each do |roman, arabic|
           string.gsub!(/\b#{roman}\b/, arabic.to_s)
         end
+        string
+      end
+
+      def remove_punctuation! string
+        string.gsub!(/[^\w\s]/, '')
         string
       end
 

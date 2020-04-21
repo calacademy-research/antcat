@@ -69,7 +69,7 @@ module References
         other_title = rhs_comparable.title_with_replaced_roman_numerals!
         return 0.94 if other_title == title
 
-        return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
+        return 1.00 if rhs_comparable.title_with_removed_punctuation == lhs_comparable.title_with_removed_punctuation
       end
 
       def match_article
@@ -106,11 +106,6 @@ module References
 
       def remove_no! string
         string.gsub!(/\(No. (\d+)\)$/, '(\1)')
-      end
-
-      def remove_punctuation! string
-        string.gsub!(/[^\w\s]/, '')
-        string
       end
   end
 end
