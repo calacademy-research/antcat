@@ -4,6 +4,7 @@ module Autocomplete
   class ProtonymsQuery
     include Service
 
+    NUM_RESULTS = 10
     PROTONYM_ID_REGEX = /^\d+ ?$/
 
     attr_private_initialize :search_query
@@ -25,7 +26,7 @@ module Autocomplete
         Protonym.
           joins(:name).
           where("names.name LIKE ? OR names.name LIKE ?", crazy_search_query, not_as_crazy_search_query).
-          take(10)
+          take(NUM_RESULTS)
       end
 
       def crazy_search_query

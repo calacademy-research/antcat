@@ -4,7 +4,7 @@ module Autocomplete
   class ReferencesQuery
     include Service
 
-    PER_PAGE = 10
+    NUM_RESULTS = 10
     REFERENCE_ID_REGEX = /^\d+ ?$/
 
     attr_private_initialize :search_query, :keyword_params
@@ -23,7 +23,7 @@ module Autocomplete
       end
 
       def search_results
-        ::References::FulltextSearchQuery[{ per_page: PER_PAGE }.merge(keyword_params)]
+        ::References::FulltextSearchQuery[{ per_page: NUM_RESULTS }.merge(keyword_params)]
       end
   end
 end
