@@ -32,37 +32,37 @@ module References
       end
 
       def year_matches?
-        @_year_matches ||= (rhs.year.to_i - lhs.year.to_i).abs <= 1
+        @_year_matches ||= (lhs.year.to_i - rhs.year.to_i).abs <= 1
       end
 
       def pagination_matches?
-        rhs.pagination == lhs.pagination
+        lhs.pagination == rhs.pagination
       end
 
       def match_title
-        return 1.00 if rhs.normalized_title == lhs.normalized_title
+        return 1.00 if lhs.normalized_title == rhs.normalized_title
 
-        title = lhs.title_without_bracketed_phrases!
-        other_title = rhs.title_without_bracketed_phrases!
-        return unless other_title.present? && title.present?
-        return 0.95 if other_title == title
+        lhs_title = lhs.title_without_bracketed_phrases!
+        rhs_title = rhs.title_without_bracketed_phrases!
+        return unless lhs_title.present? && rhs_title.present?
+        return 0.95 if lhs_title == rhs_title
 
-        return 0.94 if rhs.title_with_replaced_roman_numerals! == lhs.title_with_replaced_roman_numerals
-        return 1.00 if rhs.title_with_removed_punctuation == lhs.title_with_removed_punctuation
+        return 0.94 if lhs.title_with_replaced_roman_numerals! == rhs.title_with_replaced_roman_numerals!
+        return 1.00 if lhs.title_with_removed_punctuation == rhs.title_with_removed_punctuation
       end
 
       def match_article
-        return unless rhs.type == 'ArticleReference' && lhs.type == 'ArticleReference'
-        return unless rhs.series_volume_issue.present? && lhs.series_volume_issue.present?
-        return unless rhs.pagination.present? && lhs.pagination.present? && rhs.pagination == lhs.pagination
+        return unless lhs.type == 'ArticleReference' && rhs.type == 'ArticleReference'
+        return unless lhs.series_volume_issue.present? && rhs.series_volume_issue.present?
+        return unless lhs.pagination.present? && rhs.pagination.present? && lhs.pagination == rhs.pagination
 
-        return 0.90 if rhs.normalized_series_volume_issue == lhs.normalized_series_volume_issue
+        return 0.90 if lhs.normalized_series_volume_issue == rhs.normalized_series_volume_issue
       end
 
       def match_book
-        return unless rhs.type == 'BookReference' && lhs.type == 'BookReference'
-        return unless rhs.pagination.present? && lhs.pagination.present?
-        return 0.80 if rhs.pagination == lhs.pagination
+        return unless lhs.type == 'BookReference' && rhs.type == 'BookReference'
+        return unless lhs.pagination.present? && rhs.pagination.present?
+        return 0.80 if lhs.pagination == rhs.pagination
       end
   end
 end
