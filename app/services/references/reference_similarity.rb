@@ -23,11 +23,22 @@ module References
       def similarity
         result = match_title || match_article || match_book
 
-        if !result && !year_matches?         then 0.00
-        elsif !result && year_matches?       then 0.10
-        elsif result && !year_matches?       then result - 0.50
-        elsif result && !pagination_matches? then result - 0.01
-        else result
+        if result
+          result - result_penalty
+        elsif year_matches?
+          0.10
+        else
+          0.00
+        end
+      end
+
+      def result_penalty
+        if !year_matches?
+          0.50
+        elsif !pagination_matches?
+          0.01
+        else
+          0.0
         end
       end
 
