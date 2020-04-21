@@ -6,6 +6,8 @@ module Autocomplete
   class TaxaQuery
     include Service
 
+    TAXON_ID_REGEX = /^\d+ ?$/
+
     attr_private_initialize :search_query, [rank: nil]
 
     def call
@@ -31,7 +33,7 @@ module Autocomplete
       end
 
       def exact_id_match
-        return unless /^\d{6} ?$/.match?(search_query)
+        return unless search_query.match?(TAXON_ID_REGEX)
 
         match = Taxon.find_by(id: search_query)
         [match] if match

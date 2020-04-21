@@ -10,4 +10,10 @@ describe Autocomplete::ReferencesQuery do
 
     specify { expect(described_class["Bolt", {}]).to eq [reference] }
   end
+
+  context 'when a reference ID is given' do
+    let!(:reference) { create :any_reference }
+
+    specify { expect(described_class[reference.id.to_s, {}]).to eq [reference] }
+  end
 end

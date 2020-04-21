@@ -4,6 +4,8 @@ module Autocomplete
   class LinkableReferencesQuery
     include Service
 
+    REFERENCE_ID_REGEX = /^\d+ ?$/
+
     attr_private_initialize :search_query
 
     def call
@@ -17,7 +19,7 @@ module Autocomplete
       end
 
       def exact_id_match
-        return unless /^\d+ ?$/.match?(search_query)
+        return unless search_query.match?(REFERENCE_ID_REGEX)
 
         match = Reference.find_by(id: search_query)
         [match] if match

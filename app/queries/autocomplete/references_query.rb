@@ -5,6 +5,7 @@ module Autocomplete
     include Service
 
     PER_PAGE = 10
+    REFERENCE_ID_REGEX = /^\d+ ?$/
 
     attr_private_initialize :search_query, :keyword_params
 
@@ -19,7 +20,7 @@ module Autocomplete
       end
 
       def exact_id_match
-        return unless /^\d{6} ?$/.match?(search_query)
+        return unless search_query.match?(REFERENCE_ID_REGEX)
 
         match = Reference.find_by(id: search_query)
         [match] if match

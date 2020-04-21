@@ -4,6 +4,8 @@ module Autocomplete
   class WikiPagesQuery
     include Service
 
+    WIKI_PAGE_ID_REGEX = /^\d+ ?$/
+
     attr_private_initialize :search_query
 
     def call
@@ -17,7 +19,7 @@ module Autocomplete
       end
 
       def exact_id_match
-        return unless /^\d+ ?$/.match?(search_query)
+        return unless search_query.match?(WIKI_PAGE_ID_REGEX)
 
         match = WikiPage.find_by(id: search_query)
         [match] if match
