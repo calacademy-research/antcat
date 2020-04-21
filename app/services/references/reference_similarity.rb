@@ -13,7 +13,7 @@
 #   :journal, :publisher
 
 module References
-  class ReferenceSimilarity # rubocop:disable Metrics/ClassLength
+  class ReferenceSimilarity
     include Service
 
     ROMAN_NUMERALS = [
@@ -21,14 +21,20 @@ module References
       ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
     ]
 
-    # Left hand reference, right hand reference.
-    attr_private_initialize :lhs, :rhs
+    def initialize left_hand_side_reference, right_hand_side_reference
+      @lhs = left_hand_side_reference
+      @rhs = right_hand_side_reference
+      @lhs_comparable = References::ComparableReference.new(left_hand_side_reference)
+      @rhs_comparable = References::ComparableReference.new(right_hand_side_reference)
+    end
 
     def call
       similarity
     end
 
     private
+
+      attr_reader :lhs, :rhs, :lhs_comparable, :rhs_comparable
 
       delegate :type, :title, :year, :pagination, :series_volume_issue, to: :lhs, private: true
 
@@ -59,9 +65,9 @@ module References
       end
 
       def match_title
-        other_title = rhs.title.dup
-        title = lhs.title.dup
-        return 1.00 if normalize_title!(other_title) == normalize_title!(title)
+        title = lhs_comparable.normalized_title
+        other_title = rhs_comparable.normalized_title
+        return 1.00 if other_title == title
 
         remove_bracketed_phrases! other_title
         remove_bracketed_phrases! title
@@ -108,12 +114,6 @@ module References
         string.gsub!(/\(No. (\d+)\)$/, '(\1)')
       end
 
-      def normalize_title! string
-        remove_parenthesized_taxon_names! string
-        string.replace ActiveSupport::Inflector.transliterate string.downcase
-        string
-      end
-
       def remove_punctuation! string
         string.gsub!(/[^\w\s]/, '')
         string
@@ -121,17 +121,6 @@ module References
 
       def normalize_author string
         ActiveSupport::Inflector.transliterate string.downcase
-      end
-
-      def remove_parenthesized_taxon_names! string
-        return string unless (match = string.match(/ \(.+?\)/))
-
-        possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
-        any_taxon_names = possible_taxon_names.any? do |word|
-          ['Formicidae', 'Hymenoptera'].include? word
-        end
-        string[match.begin(0)..(match.end(0) - 1)] = '' if any_taxon_names
-        string
       end
 
       def remove_bracketed_phrases! string
