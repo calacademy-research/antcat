@@ -65,8 +65,8 @@ module References
         other_title = rhs_comparable.normalized_title
         return 1.00 if other_title == title
 
-        remove_bracketed_phrases! other_title
-        remove_bracketed_phrases! title
+        title = lhs_comparable.title_without_bracketed_phrases!
+        other_title = rhs_comparable.title_without_bracketed_phrases!
         return unless other_title.present? && title.present?
         return 0.95 if other_title == title
 
@@ -112,12 +112,6 @@ module References
 
       def remove_punctuation! string
         string.gsub!(/[^\w\s]/, '')
-        string
-      end
-
-      def remove_bracketed_phrases! string
-        string.gsub!(/\s?\[.*?\]\s?/, ' ')
-        string.strip!
         string
       end
 
