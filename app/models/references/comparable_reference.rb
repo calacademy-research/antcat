@@ -7,6 +7,8 @@ module References
       ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
     ]
 
+    delegate :type, :year, :pagination, :series_volume_issue, to: :reference
+
     def initialize reference
       @reference = reference
     end
