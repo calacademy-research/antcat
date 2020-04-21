@@ -2,6 +2,11 @@
 
 module References
   class ComparableReference
+    ROMAN_NUMERALS = [
+      ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
+      ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
+    ]
+
     def initialize reference
       @reference = reference
     end
@@ -17,6 +22,10 @@ module References
 
     def title_without_bracketed_phrases!
       @_title_without_bracketed_phrases ||= remove_bracketed_phrases!(normalized_title.dup)
+    end
+
+    def title_with_replaced_roman_numerals!
+      @_title_with_replaced_roman_numerals ||= replace_roman_numerals!(title_without_bracketed_phrases!.dup)
     end
 
     def normalized_author
@@ -42,6 +51,13 @@ module References
       def remove_bracketed_phrases! string
         string.gsub!(/\s?\[.*?\]\s?/, ' ')
         string.strip!
+        string
+      end
+
+      def replace_roman_numerals! string
+        ROMAN_NUMERALS.each do |roman, arabic|
+          string.gsub!(/\b#{roman}\b/, arabic.to_s)
+        end
         string
       end
 

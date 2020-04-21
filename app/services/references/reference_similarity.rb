@@ -16,11 +16,6 @@ module References
   class ReferenceSimilarity
     include Service
 
-    ROMAN_NUMERALS = [
-      ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
-      ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
-    ]
-
     def initialize left_hand_side_reference, right_hand_side_reference
       @lhs = left_hand_side_reference
       @rhs = right_hand_side_reference
@@ -70,7 +65,10 @@ module References
         return unless other_title.present? && title.present?
         return 0.95 if other_title == title
 
-        return 0.94 if replace_roman_numerals!(other_title) == replace_roman_numerals!(title)
+        title = lhs_comparable.title_with_replaced_roman_numerals!
+        other_title = rhs_comparable.title_with_replaced_roman_numerals!
+        return 0.94 if other_title == title
+
         return 1.00 if remove_punctuation!(other_title) == remove_punctuation!(title)
       end
 
@@ -112,13 +110,6 @@ module References
 
       def remove_punctuation! string
         string.gsub!(/[^\w\s]/, '')
-        string
-      end
-
-      def replace_roman_numerals! string
-        ROMAN_NUMERALS.each do |roman, arabic|
-          string.gsub!(/\b#{roman}\b/, arabic.to_s)
-        end
         string
       end
   end
