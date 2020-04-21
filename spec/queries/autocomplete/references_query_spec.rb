@@ -3,15 +3,11 @@
 require 'rails_helper'
 
 describe Autocomplete::ReferencesQuery do
-  describe "#format_autosuggest_keywords" do
-    let(:service) { described_class.new('dummy') }
-    let!(:reference) { create :any_reference, author_string: 'E.O. Wilson' }
+  context "when there are results", :search do
+    let!(:reference) { create :any_reference, author_string: "Bolton" }
 
-    # TODO: Refactor spec and code.
-    it "replaces the typed author with the suggested author" do
-      keyword_params = { author: "wil" }
-      search_query = service.__send__ :format_autosuggest_keywords, reference, keyword_params
-      expect(search_query).to eq "author:'E.O. Wilson'"
-    end
+    before { Sunspot.commit }
+
+    specify { expect(described_class["Bolt", {}]).to eq [reference] }
   end
 end

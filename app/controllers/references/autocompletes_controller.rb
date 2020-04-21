@@ -9,8 +9,19 @@ module References
     private
 
       def serialized_references
-        search_query = params[:reference_q] || ''
-        Autocomplete::ReferencesQuery[search_query]
+        Autocomplete::ReferencesSerializer[references, fulltext_params]
+      end
+
+      def references
+        Autocomplete::ReferencesQuery[search_query, fulltext_params]
+      end
+
+      def search_query
+        @_search_query = params[:reference_q] || ''
+      end
+
+      def fulltext_params
+        @_fulltext_params ||= ::References::Search::ExtractKeywords[search_query]
       end
   end
 end
