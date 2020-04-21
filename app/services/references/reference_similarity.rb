@@ -25,8 +25,6 @@ module References
 
         if result
           result - result_penalty
-        elsif year_matches?
-          0.10
         else
           0.001
         end
