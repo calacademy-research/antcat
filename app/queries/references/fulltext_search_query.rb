@@ -24,7 +24,7 @@ module References
     # rubocop:enable Metrics/ParameterLists
 
     def call
-      fulltext_search
+      search_results
     end
 
     private
@@ -32,7 +32,7 @@ module References
       attr_reader :freetext, :title, :author, :year, :start_year, :end_year, :doi,
         :reference_type, :page, :per_page
 
-      def fulltext_search
+      def search_results
         Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
           keywords normalized_freetext
 

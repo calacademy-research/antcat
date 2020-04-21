@@ -11,12 +11,12 @@ module References
     attr_private_initialize :search_query
 
     def call
-      fulltext_search_light
+      search_results
     end
 
     private
 
-      def fulltext_search_light
+      def search_results
         Reference.search do
           keywords normalized_search_query do
             fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_keey

@@ -14,6 +14,13 @@ module Autocomplete
 
     private
 
+      def exact_id_match
+        return unless search_query.match?(PROTONYM_ID_REGEX)
+
+        match = Protonym.find_by(id: search_query)
+        [match] if match
+      end
+
       def search_results
         Protonym.
           joins(:name).
@@ -27,13 +34,6 @@ module Autocomplete
 
       def not_as_crazy_search_query
         "%#{search_query}%"
-      end
-
-      def exact_id_match
-        return unless search_query.match?(PROTONYM_ID_REGEX)
-
-        match = Protonym.find_by(id: search_query)
-        [match] if match
       end
   end
 end
