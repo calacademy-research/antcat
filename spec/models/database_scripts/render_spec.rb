@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe DatabaseScripts::Render do
+  include TestLinksHelpers
+
   let(:database_script) { DatabaseScripts::DatabaseTestScript.new }
   let(:render) { described_class.new(database_script) }
 
@@ -17,8 +19,7 @@ describe DatabaseScripts::Render do
       it 'render a table for that type' do
         taxon = create :family
         allow(database_script).to receive(:results).and_return Taxon.all
-
-        expect(render.call).to match %(<tbody><tr><td><a href="/catalog/#{taxon.id}">#{taxon.name_cache}</a></td><td>family</td><td>valid</td></tr>)
+        expect(render.call).to match %(<tbody><tr><td>#{taxon_link(taxon)}</td><td>family</td><td>valid</td></tr>)
       end
     end
   end

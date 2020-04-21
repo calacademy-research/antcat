@@ -62,8 +62,10 @@ describe TaxonHistoryItemsController do
     end
 
     it 'creates an activity' do
-      expect { put(:update, params: { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: :update, trackable: taxon_history_item).count }.by(1)
+      expect do
+        params = { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params, edit_summary: 'Duplicate' }
+        put :update, params: params
+      end.to change { Activity.where(action: :update, trackable: taxon_history_item).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"

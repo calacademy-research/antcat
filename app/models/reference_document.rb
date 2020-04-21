@@ -44,9 +44,13 @@ class ReferenceDocument < ApplicationRecord
   private
 
     def transliterate_file_name
+      file.instance_write(:file_name, transliterated_file_name)
+    end
+
+    def transliterated_file_name
       extension = File.extname(file_file_name).gsub(/^\.+/, '')
       filename = file_file_name.gsub(/\.#{extension}$/, '')
-      file.instance_write(:file_name, "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}")
+      "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}"
     end
 
     def hosted_on_s3?

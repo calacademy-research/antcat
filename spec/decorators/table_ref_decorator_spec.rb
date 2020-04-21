@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe TableRefDecorator do
+  include TestLinksHelpers
+
   subject(:decorated) { described_class.new(table_ref) }
 
   let(:id) { object.id }
@@ -13,7 +15,7 @@ describe TableRefDecorator do
     let(:object) { create(:protonym).authorship }
 
     specify { expect(decorated.item_link).to eq id }
-    specify { expect(decorated.owner_link).to eq %(Protonym: <a href="/protonyms/#{object.protonym.id}">#{object.protonym.name.name_html}</a>) }
+    specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }
   end
 
   context "when table is `protonyms`" do
@@ -21,7 +23,7 @@ describe TableRefDecorator do
     let!(:object) { create :protonym }
 
     specify { expect(decorated.item_link).to eq %(<a href="/protonyms/#{id}">#{id}</a>) }
-    specify { expect(decorated.owner_link).to eq %(Protonym: <a href="/protonyms/#{id}">#{object.name.name_html}</a>) }
+    specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object)}) }
   end
 
   context "when table is `reference_sections`" do
