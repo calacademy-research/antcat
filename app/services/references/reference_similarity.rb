@@ -1,17 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Use Solr or Elasticsearch instead of this class.
-
-# Requires that the client have:
-#   :type, :author_names, :title
-#
-# Compares using these fields:
-#   :type, `author_names.first&.last_name`, :title, :year,
-#   :pagination, :series_volume_issue
-#
-# Ignores:
-#   :journal, :publisher
-
 module References
   class ReferenceSimilarity
     include Service
@@ -52,19 +40,14 @@ module References
       end
 
       def match_title
-        title = lhs.normalized_title
-        other_title = rhs.normalized_title
-        return 1.00 if other_title == title
+        return 1.00 if rhs.normalized_title == lhs.normalized_title
 
         title = lhs.title_without_bracketed_phrases!
         other_title = rhs.title_without_bracketed_phrases!
         return unless other_title.present? && title.present?
         return 0.95 if other_title == title
 
-        title = lhs.title_with_replaced_roman_numerals!
-        other_title = rhs.title_with_replaced_roman_numerals!
-        return 0.94 if other_title == title
-
+        return 0.94 if rhs.title_with_replaced_roman_numerals! == lhs.title_with_replaced_roman_numerals
         return 1.00 if rhs.title_with_removed_punctuation == lhs.title_with_removed_punctuation
       end
 
