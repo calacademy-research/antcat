@@ -40,7 +40,7 @@ module References
 
       def similarity
         return 0.00 unless type == rhs.type
-        return 0.00 unless normalize_author(principal_author_last_name(lhs)) == normalize_author(principal_author_last_name(rhs))
+        return 0.00 unless lhs_comparable.normalized_author == rhs_comparable.normalized_author
 
         result = match_title || match_article || match_book
 
@@ -50,10 +50,6 @@ module References
         elsif result && !pagination_matches? then result - 0.01
         else result
         end
-      end
-
-      def principal_author_last_name reference
-        reference.author_names.first&.last_name
       end
 
       def year_matches?
@@ -117,10 +113,6 @@ module References
       def remove_punctuation! string
         string.gsub!(/[^\w\s]/, '')
         string
-      end
-
-      def normalize_author string
-        ActiveSupport::Inflector.transliterate string.downcase
       end
 
       def remove_bracketed_phrases! string

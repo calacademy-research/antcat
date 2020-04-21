@@ -15,6 +15,11 @@ module References
       end
     end
 
+    def normalized_author
+      author_name = principal_author_last_name(reference)
+      ActiveSupport::Inflector.transliterate author_name.downcase
+    end
+
     private
 
       attr_reader :reference
@@ -28,6 +33,10 @@ module References
         end
         string[match.begin(0)..(match.end(0) - 1)] = '' if any_taxon_names
         string
+      end
+
+      def principal_author_last_name reference
+        reference.author_names.first&.last_name
       end
   end
 end
