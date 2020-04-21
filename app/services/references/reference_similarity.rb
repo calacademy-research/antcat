@@ -77,35 +77,13 @@ module References
         return unless rhs.series_volume_issue.present? && series_volume_issue.present?
         return unless rhs.pagination.present? && pagination.present? && rhs.pagination == pagination
 
-        return 0.90 if normalize_series_volume_issue(rhs.series_volume_issue) ==
-          normalize_series_volume_issue(series_volume_issue)
+        return 0.90 if rhs_comparable.normalized_series_volume_issue == lhs_comparable.normalized_series_volume_issue
       end
 
       def match_book
         return unless rhs.type == 'BookReference' && type == 'BookReference'
         return unless rhs.pagination.present? && pagination.present?
         return 0.80 if rhs.pagination == pagination
-      end
-
-      def normalize_series_volume_issue string
-        string = string.dup
-        remove_year_in_parentheses! string
-        remove_no! string
-        replace_punctuation_with_space! string
-        string
-      end
-
-      def replace_punctuation_with_space! string
-        string.gsub!(/[[:punct:]]/, ' ')
-        string.squish!
-      end
-
-      def remove_year_in_parentheses! string
-        string.gsub!(/\(\d{4}\)$/, '')
-      end
-
-      def remove_no! string
-        string.gsub!(/\(No. (\d+)\)$/, '(\1)')
       end
   end
 end

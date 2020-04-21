@@ -37,6 +37,14 @@ module References
       ActiveSupport::Inflector.transliterate author_name.downcase
     end
 
+    def normalized_series_volume_issue
+      string = reference.series_volume_issue.dup
+      remove_year_in_parentheses! string
+      remove_no! string
+      replace_punctuation_with_space! string
+      string
+    end
+
     private
 
       attr_reader :reference
@@ -72,6 +80,19 @@ module References
 
       def principal_author_last_name reference
         reference.author_names.first&.last_name
+      end
+
+      def replace_punctuation_with_space! string
+        string.gsub!(/[[:punct:]]/, ' ')
+        string.squish!
+      end
+
+      def remove_year_in_parentheses! string
+        string.gsub!(/\(\d{4}\)$/, '')
+      end
+
+      def remove_no! string
+        string.gsub!(/\(No. (\d+)\)$/, '(\1)')
       end
   end
 end
