@@ -28,7 +28,7 @@ module References
         elsif year_matches?
           0.10
         else
-          0.00
+          0.001
         end
       end
 

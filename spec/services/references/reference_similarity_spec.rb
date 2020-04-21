@@ -47,7 +47,7 @@ describe References::ReferenceSimilarity do
           lhs.year = 1970
           rhs.year = 1980
 
-          expect(described_class[lhs, rhs]).to eq 0.00
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
 
         it "matches better if the author name matches and the year is within 1" do
