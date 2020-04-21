@@ -78,15 +78,19 @@ describe Markdowns::Render do
     describe 'database script links' do
       context 'when database script exists' do
         specify do
-          expect(described_class["%dbscript:TaxaWithSameName"]).
-            to eq %(<p><a href="/database_scripts/taxa_with_same_name">Taxa with same name</a> <span class="white-label rounded-badge">list</span></p>\n)
+          expect(described_class["%dbscript:TaxaWithSameName"].strip).to eq <<~HTML.squish
+            <p><a href="/database_scripts/taxa_with_same_name">Taxa with same name</a>
+            <span class="white-label rounded-badge">list</span></p>
+          HTML
         end
       end
 
       context 'when database script does not exist' do
         specify do
-          expect(described_class["%dbscript:BestPizzas"]).
-            to eq %(<p><a href="/database_scripts/best_pizzas">Error: Could not find database script with class name &#39;BestPizzas&#39;</a> </p>\n)
+          expect(described_class["%dbscript:BestPizzas"].strip).to eq <<~HTML.squish
+            <p><a href="/database_scripts/best_pizzas">Error: Could not find database script
+            with class name &#39;BestPizzas&#39;</a> </p>
+          HTML
         end
       end
     end
