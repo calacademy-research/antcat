@@ -10,6 +10,9 @@ module References
     end
 
     def call
+      return 0.00 unless lhs.type == rhs.type
+      return 0.00 unless lhs.normalized_author == rhs.normalized_author
+
       similarity
     end
 
@@ -18,9 +21,6 @@ module References
       attr_reader :lhs, :rhs
 
       def similarity
-        return 0.00 unless lhs.type == rhs.type
-        return 0.00 unless lhs.normalized_author == rhs.normalized_author
-
         result = match_title || match_article || match_book
 
         if !result && !year_matches?         then 0.00
@@ -54,7 +54,7 @@ module References
       def match_article
         return unless lhs.type == 'ArticleReference' && rhs.type == 'ArticleReference'
         return unless lhs.series_volume_issue.present? && rhs.series_volume_issue.present?
-        return unless lhs.pagination.present? && rhs.pagination.present? && lhs.pagination == rhs.pagination
+        return unless lhs.pagination.present? && pagination_matches?
 
         return 0.90 if lhs.normalized_series_volume_issue == rhs.normalized_series_volume_issue
       end
@@ -62,7 +62,7 @@ module References
       def match_book
         return unless lhs.type == 'BookReference' && rhs.type == 'BookReference'
         return unless lhs.pagination.present? && rhs.pagination.present?
-        return 0.80 if lhs.pagination == rhs.pagination
+        return 0.80 if pagination_matches?
       end
   end
 end
