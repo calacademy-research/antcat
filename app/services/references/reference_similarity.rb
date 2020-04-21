@@ -10,24 +10,25 @@ module References
     end
 
     def call
-      return 0.00 unless lhs.type == rhs.type
-      return 0.00 unless lhs.normalized_author == rhs.normalized_author
+      return 0.00 unless comparable?
+      return 0.001 unless results
 
-      similarity
+      results - results_penalty
     end
 
     private
 
       attr_reader :lhs, :rhs
 
-      def similarity
-        result = match_title || match_article || match_book
-        return 0.001 unless result
-
-        result - result_penalty
+      def comparable?
+        lhs.type == rhs.type && lhs.normalized_author == rhs.normalized_author
       end
 
-      def result_penalty
+      def results
+        @_results ||= match_title || match_article || match_book
+      end
+
+      def results_penalty
         penalty = 0.0
         penalty += 0.50 unless year_matches?
         penalty += 0.01 unless pagination_matches?
@@ -35,7 +36,7 @@ module References
       end
 
       def year_matches?
-        @_year_matches ||= (lhs.year.to_i - rhs.year.to_i).abs <= 1
+        (lhs.year.to_i - rhs.year.to_i).abs <= 1
       end
 
       def pagination_matches?
