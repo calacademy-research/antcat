@@ -3,13 +3,18 @@
 module Protonyms
   class AutocompletesController < ApplicationController
     def show
-      search_query = params[:qq] || ''
-
       respond_to do |format|
         format.json do
-          render json: Autocomplete::ProtonymsQuery[search_query]
+          render json: serialized_protonyms
         end
       end
     end
+
+    private
+
+      def serialized_protonyms
+        search_query = params[:qq] || ''
+        Autocomplete::ProtonymsQuery[search_query]
+      end
   end
 end

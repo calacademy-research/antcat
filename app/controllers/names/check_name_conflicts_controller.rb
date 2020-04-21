@@ -6,26 +6,26 @@ module Names
       if params[:qq].blank?
         render json: []
       else
-        render json: json_names, root: false
+        render json: serialized_names, root: false
       end
     end
 
     private
 
-      def names
-        Names::FindConflicts[params[:qq], params[:number_of_words], params[:except_name_id]]
-      end
-
-      def json_names
-        names.map do |n|
+      def serialized_names
+        names.map do |name|
           {
-            id: n.id,
-            name: n.name,
-            name_html: n.name_html,
-            taxon_id: n[:taxon_id],
-            protonym_id: n[:protonym_id]
+            id: name.id,
+            name: name.name,
+            name_html: name.name_html,
+            taxon_id: name[:taxon_id],
+            protonym_id: name[:protonym_id]
           }
         end
+      end
+
+      def names
+        Names::FindConflicts[params[:qq], params[:number_of_words], params[:except_name_id]]
       end
   end
 end

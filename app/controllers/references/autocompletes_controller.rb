@@ -3,13 +3,18 @@
 module References
   class AutocompletesController < ApplicationController
     def show
-      search_query = params[:reference_q] || ''
-
       respond_to do |format|
         format.json do
-          render json: Autocomplete::ReferencesQuery[search_query]
+          render json: serialized_references
         end
       end
     end
+
+    private
+
+      def serialized_references
+        search_query = params[:reference_q] || ''
+        Autocomplete::ReferencesQuery[search_query]
+      end
   end
 end

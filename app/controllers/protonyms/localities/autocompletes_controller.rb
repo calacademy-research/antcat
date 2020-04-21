@@ -5,9 +5,15 @@ module Protonyms
     class AutocompletesController < ApplicationController
       def show
         respond_to do |format|
-          format.json { render json: Locality.unique_sorted }
+          format.json { render json: serialized_localities }
         end
       end
+
+      private
+
+        def serialized_localities
+          Locality.unique_sorted
+        end
     end
   end
 end
