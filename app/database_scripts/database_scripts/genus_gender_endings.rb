@@ -98,3 +98,7 @@ __END__
 section: list
 category: Names
 tags: [slow]
+
+related_scripts:
+  - GenusGenderEndings
+  - GenusGenderEndingsToUpdateByScript
