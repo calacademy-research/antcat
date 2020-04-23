@@ -45,14 +45,7 @@ module Exporters
         end
 
         def taxon_row taxon
-          row = Exporters::Antweb::ExportTaxon[taxon]
-          row.each do |col|
-            if col.is_a? String
-              col.delete!("\n")
-              col.delete!("\r")
-            end
-          end
-          row.join("\t")
+          Exporters::Antweb::ExportTaxon[taxon].join("\t")
         rescue StandardError => e
           warn "========================#{taxon.id}===================="
           warn "An error of type #{e} happened, message is #{e.message}"

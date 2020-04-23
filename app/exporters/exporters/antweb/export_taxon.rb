@@ -37,13 +37,22 @@ module Exporters
       attr_private_initialize :taxon
 
       def call
-        convert_to_antweb_array attributes
+        remove_newlines(antweb_array)
       end
 
       private
 
-        def attributes
-          Exporters::Antweb::TaxonAttributes[taxon]
+        def remove_newlines array
+          array.each do |value|
+            if value.is_a? String
+              value.delete!("\n")
+              value.delete!("\r")
+            end
+          end
+        end
+
+        def antweb_array
+          convert_to_antweb_array(Exporters::Antweb::TaxonAttributes[taxon])
         end
 
         def convert_to_antweb_array values
