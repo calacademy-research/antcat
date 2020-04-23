@@ -21,7 +21,7 @@
             =taxon.status.capitalize
             -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
               %br
-              %small=taxon.expanded_status
+              %small=taxon.decorate.expanded_status
           %td
             -if taxon.original_combination?
               Original combination

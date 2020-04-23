@@ -24,9 +24,10 @@
       Database script:
       =link_to 'Subgenera with same name as a genus', database_script_path(DatabaseScripts::SubgeneraWithSameNameAsAGenus.new)
 
--# TODO: Remove once fixed (see `Taxon#obsolete_combination_that_is_shady?`).
--if taxon.obsolete_combination_that_is_shady?
-  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxon(taxon)
+-# TODO: Remove once fixed (see `Taxa::CleanupTaxon#obsolete_combination_that_is_shady?`).
+-if Taxa::CleanupTaxon.new(taxon).obsolete_combination_that_is_shady?
+  -cvt_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_valid_taxon)
+  -synonym_history_item = cvt_cleanup_taxon.synonyms_history_items_containing_taxon(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
       %h6
@@ -40,7 +41,7 @@
       %hr
       =Detax[synonym_history_item.taxt]
 
-  -synonym_history_item = taxon.current_valid_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
+  -synonym_history_item = cvt_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
       %h6
@@ -77,14 +78,15 @@
       =render 'shared/failed_soft_validations', soft_validations: taxon.protonym.soft_validations
 
 -# TODO: *Very* beta.
--if taxon.combination_in_according_to_history_items.present?
+-cleanup_taxon = Taxa::CleanupTaxon.new(taxon)
+-if cleanup_taxon.combination_in_according_to_history_items.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
     %h6
       'Combination in' according to history items
       =beta_label
       =logged_in_only_tooltip_icon "This section is only shown to logged-in users. It is very beta but it has a lot of potential. The check for obsolete combinations representing the current catalog taxon is only run if the catalog taxon is a species, and if the history item says it was combined in a genus. The 'original combination event' does usually not appear in history items, so missing original combinations will usually not appear here. The 'create?' link is only visible when the system allows it."
     %ul.no-bullet.spaced-lis.small-margin-bottom
-      -TaxonQuery.new(taxon.combination_in_according_to_history_items).with_common_includes.each do |oc_per_item|
+      -TaxonQuery.new(cleanup_taxon.combination_in_according_to_history_items).with_common_includes.each do |oc_per_item|
         %li
           =oc_per_item.link_to_taxon
           =oc_per_item.author_citation

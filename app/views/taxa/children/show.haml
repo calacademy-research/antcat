@@ -30,7 +30,7 @@
         %tr
           %td=child.link_to_taxon
           %td=child.rank.capitalize
-          %td=child.expanded_status
+          %td=child.decorate.expanded_status
           %td.shrink
             -unless Taxon.is_a?(Infrasubspecies)
               -# TODO: N+1 query.

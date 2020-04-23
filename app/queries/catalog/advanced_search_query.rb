@@ -49,10 +49,8 @@ module Catalog
         return relation unless (author_name = params[:author_name])
 
         author_author_names = AuthorName.find_by!(name: author_name).author.names
-        relation.
-          where('reference_author_names.author_name_id' => author_author_names).
-          joins('JOIN reference_author_names ON reference_author_names.reference_id = `references`.id').
-          joins('JOIN author_names ON author_names.id = reference_author_names.author_name_id')
+        TaxonQuery.new(relation).with_common_includes.
+          where(reference_author_names: { author_name_id: author_author_names })
       end
 
       def years_clause relation

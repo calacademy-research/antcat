@@ -5,7 +5,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  delegate(*Taxa::CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
+  delegate :now, :most_recent_before_now, to: :cleanup_taxon
   delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
     to: :taxon_collaborators
 
@@ -29,6 +29,9 @@ class Taxon < ApplicationRecord
     has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem'
     has_many :reference_sections, -> { order(:position) }
   end
+
+  has_one :authorship, through: :protonym
+  has_one :authorship_reference, through: :authorship, source: :reference
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
@@ -69,13 +72,8 @@ class Taxon < ApplicationRecord
     end
   end
 
-  # Because `#valid?` clashes with ActiveModel.
   def valid_status?
     status == Status::VALID
-  end
-
-  def invalid_status?
-    !valid_status?
   end
 
   def rank
@@ -90,25 +88,15 @@ class Taxon < ApplicationRecord
     name.name_with_fossil_html fossil?
   end
 
-  def expanded_status
-    Taxa::ExpandedStatus[self]
-  end
-
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
     '('.html_safe + citation + ')'
   end
 
-  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
-  # and for performance reasons in the taxon browser since decorating a lot of taxa took its toll.
-  # Move somewhere once we have improved `Name` and the taxon browser.
+  # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`.
   def link_to_taxon
     %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
-  end
-
-  def authorship_reference
-    protonym.authorship.reference
   end
 
   def taxon_collaborators

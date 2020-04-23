@@ -11,4 +11,4 @@
         -TaxonQuery.new(taxon.children).with_common_includes.order(status: :desc, name_cache: :asc).each do |child|
           %li
             =child.link_to_taxon
-            %br=child.expanded_status
+            %br=child.decorate.expanded_status

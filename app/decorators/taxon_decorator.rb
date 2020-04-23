@@ -34,6 +34,10 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
+  def expanded_status
+    Taxa::ExpandedStatus[taxon]
+  end
+
   def compact_status
     Taxa::CompactStatus[taxon]
   end

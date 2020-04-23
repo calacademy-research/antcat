@@ -51,6 +51,10 @@ class ReferenceDecorator < Draper::Decorator
     format_italics h.add_period_if_necessary sanitize(reference.title)
   end
 
+  def described_taxa
+    Taxon.joins(protonym: { authorship: :reference }).where(references: { id: reference.id })
+  end
+
   private
 
     def reference_formatter
