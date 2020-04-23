@@ -70,7 +70,7 @@ module Exporters
             current_valid_rank:       taxon.class.to_s,
             hol_id:                   taxon.hol_id,
             current_valid_parent:     current_valid_parent&.name&.name || 'Formicidae'
-          }.merge(Exporters::Antweb::AntwebAttributes[taxon])
+          }.merge(Exporters::Antweb::TaxonomicAttributes[taxon])
         end
 
         def convert_to_antweb_array values

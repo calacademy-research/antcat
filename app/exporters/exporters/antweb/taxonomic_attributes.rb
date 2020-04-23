@@ -4,7 +4,7 @@
 
 module Exporters
   module Antweb
-    class AntwebAttributes
+    class TaxonomicAttributes
       include Service
 
       INCERTAE_SEDIS = 'incertae_sedis'
