@@ -34,7 +34,7 @@ describe ReferenceDecorator do
     end
 
     it "creates a link" do
-      expect(decorated.format_document_links).to eq '<a class="pdf-link" href="example.com">PDF</a>'
+      expect(decorated.format_document_links).to eq '<a class="pdf-link" rel="nofollow" href="example.com">PDF</a>'
     end
   end
 

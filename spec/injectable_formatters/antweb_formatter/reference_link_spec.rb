@@ -38,7 +38,7 @@ describe AntwebFormatter::ReferenceLink do
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
           %(href="https://antcat.org/references/#{reference.id}">Latreille, 1809</a>) +
           %( <a class="external-link" href="https://doi.org/#{reference.doi}">#{reference.doi}</a>) +
-          %( <a class="pdf-link" href="example.com">PDF</a>)
+          %( <a class="pdf-link" rel="nofollow" href="example.com">PDF</a>)
         )
       end
     end
