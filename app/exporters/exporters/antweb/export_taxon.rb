@@ -47,12 +47,12 @@ module Exporters
         def attributes
           {
             antcat_id:                taxon.id,
-            subfamily:                nil,
-            tribe:                    nil,
-            genus:                    nil,
-            subgenus:                 nil,
-            species:                  nil,
-            subspecies:               nil,
+            subfamily:                taxonomic_attributes[:subfamily],
+            tribe:                    taxonomic_attributes[:tribe],
+            genus:                    taxonomic_attributes[:genus],
+            subgenus:                 taxonomic_attributes[:subgenus],
+            species:                  taxonomic_attributes[:species],
+            subspecies:               taxonomic_attributes[:subspecies],
             author_date:              taxon.author_citation,
             author_date_html:         authorship_html_string,
             authors:                  taxon.authorship_reference.key.authors_for_keey,
@@ -70,7 +70,7 @@ module Exporters
             current_valid_rank:       taxon.class.to_s,
             hol_id:                   taxon.hol_id,
             current_valid_parent:     current_valid_parent&.name&.name || 'Formicidae'
-          }.merge(Exporters::Antweb::TaxonomicAttributes[taxon])
+          }
         end
 
         def convert_to_antweb_array values
@@ -109,6 +109,10 @@ module Exporters
           when nil   then nil
           else            raise
           end
+        end
+
+        def taxonomic_attributes
+          @_taxonomic_attributes = Exporters::Antweb::TaxonomicAttributes[taxon]
         end
 
         def add_subfamily_to_current_valid subfamily, current_valid_name
