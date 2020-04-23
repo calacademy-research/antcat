@@ -1,5 +1,12 @@
 User-agent: *
 Allow: /
+Disallow: /activities/
+Disallow: /documents/
+Disallow: /feedback/
+Disallow: /references/exports/
+Disallow: *.pdf
+Disallow: /*history$
+Disallow: /*exports/wikipedia$
 
 # https://ahrefs.com/robot
 User-agent: AhrefsBot
