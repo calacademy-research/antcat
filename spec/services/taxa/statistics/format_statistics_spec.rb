@@ -51,7 +51,8 @@ describe Taxa::Statistics::FormatStatistics do
           expect(described_class[extant: { species: { 'valid' => 2 } }]).to eq '<p>Extant: 2 valid species</p>'
           expect(described_class[extant: { species: { 'synonym' => 2 } }]).to eq '<p>Extant: 0 valid species (2 synonyms)</p>'
           expect(described_class[extant: { species: { 'unavailable' => 2 } }]).to eq '<p>Extant: 0 valid species (2 unavailable)</p>'
-          expect(described_class[extant: { species: { 'excluded from Formicidae' => 2 } }]).to eq '<p>Extant: 0 valid species (2 excluded from Formicidae)</p>'
+          expect(described_class[extant: { species: { 'excluded from Formicidae' => 2 } }]).
+            to eq '<p>Extant: 0 valid species (2 excluded from Formicidae)</p>'
         end
       end
     end

@@ -13,6 +13,10 @@ module TestLinksHelpers
     %(<a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a> #{taxon.author_citation})
   end
 
+  def protonym_link protonym
+    %(<a href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>)
+  end
+
   def antweb_taxon_link taxon, label = nil
     %(<a href="https://www.antcat.org/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>)
   end

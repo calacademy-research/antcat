@@ -52,7 +52,7 @@ Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
-  Max: 160
+  Max: 140
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
