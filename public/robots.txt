@@ -1,5 +1,35 @@
 User-agent: *
 Allow: /
+Disallow: /activities/
+Disallow: /documents/
+Disallow: /feedback/
+Disallow: /references/exports/
+Disallow: *.pdf
+Disallow: /*history$
+Disallow: /*exports/wikipedia$
 
+Crawl-delay: 10
+
+# https://ahrefs.com/robot
 User-agent: AhrefsBot
+Disallow: /
+
+# http://webmeup-crawler.com/
+User-agent: BLEXBot
+Disallow: /
+
+# https://moz.com/help/moz-procedures/crawlers/dotbot
+User-agent: dotbot
+Disallow: /
+
+# http://megaindex.com/crawler
+User-agent: MegaIndex.ru
+Disallow: /
+
+# https://megaindex.com/crawler
+User-agent: MJ12bot
+Disallow: /
+
+# https://www.semrush.com/bot/
+User-agent: SemrushBot
 Disallow: /

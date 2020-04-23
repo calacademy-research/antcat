@@ -18,14 +18,12 @@ module ApplicationHelper
     AddPeriodIfNecessary[string]
   end
 
-  # TODO: See if we can use CSS only instead.
   def external_link_to label, url
     link_to label, url, class: 'external-link'
   end
 
-  # TODO: See if we can use CSS only instead.
   def pdf_link_to label, url
-    link_to label, url, class: 'pdf-link'
+    link_to label, url, class: 'pdf-link', rel: 'nofollow'
   end
 
   def yes_no_options_for_select value

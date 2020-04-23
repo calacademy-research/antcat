@@ -26,7 +26,7 @@ describe References::Formatted::Expandable do
             <a href=&quot;/references/#{reference.id}&quot;><i>Atta</i> <i>and such</i>.</a>
             #{reference.journal.name} (1):3.
             <a class=&quot;external-link&quot; href=&quot;https://doi.org/#{reference.doi}&quot;>#{reference.doi}</a>
-            <a class=&quot;pdf-link&quot; href=&quot;example.com&quot;>PDF</a>">Forel, 1874</span>
+            <a class=&quot;pdf-link&quot; rel=&quot;nofollow&quot; href=&quot;example.com&quot;>PDF</a>">Forel, 1874</span>
       HTML
     end
   end
