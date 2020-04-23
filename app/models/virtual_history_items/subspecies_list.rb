@@ -22,7 +22,7 @@ module VirtualHistoryItems
     def render formatter: ::DefaultFormatter
       content = 'Current subspecies: nominal plus '.html_safe
 
-      subspecies_links = taxon.subspecies.valid.order_by_epithet.to_a.map do |subspecies|
+      subspecies_links = TaxonQuery.new(taxon.subspecies.valid).order_by_epithet.to_a.map do |subspecies|
         subspecies_link subspecies, formatter
       end
 

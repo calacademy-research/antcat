@@ -4,7 +4,7 @@ module References
   class WhatLinksHeresController < ApplicationController
     def show
       @reference = find_reference
-      @table_refs = @reference.what_links_here.paginate(page: params[:page])
+      @table_refs = References::WhatLinksHere[@reference].paginate(page: params[:page])
     end
 
     private

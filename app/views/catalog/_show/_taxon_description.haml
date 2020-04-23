@@ -65,7 +65,7 @@
 -if taxon.junior_synonyms.exists?
   %h6 Junior synonyms
   %ul.compact-list.small-margin-bottom
-    -taxon.junior_synonyms.order_by_name.with_common_includes.each do |synonym|
+    -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =synonym.link_to_taxon
         =synonym.author_citation
@@ -80,7 +80,7 @@
         Species and subspecies in subgenus
         =logged_in_only_tooltip_icon "This section is only shown to logged-in users, since very few species are assined to a subgenus, and we have to decide how to handle subgenera."
       %ul.compact-list.small-margin-bottom
-        -taxon.species.order_by_name.with_common_includes.each do |species|
+        -TaxonQuery.new(taxon.species.order_by_name).with_common_includes.each do |species|
           %li
             =species.link_to_taxon
             =species.author_citation
@@ -88,7 +88,7 @@
             -# TODO: N+1 query.
             -if species.subspecies.present?
               %ul.compact-list
-                -species.subspecies.order_by_name.with_common_includes.each do |subspecies|
+                -TaxonQuery.new(species.subspecies.order_by_name).with_common_includes.each do |subspecies|
                   %li
                     =subspecies.link_to_taxon
                     =subspecies.author_citation
@@ -124,7 +124,7 @@
       Obsolete combinations
       =logged_in_only_tooltip_icon "This is only showed to logged-in users since we don't have very complete data for obsolete combinations."
     %ul.compact-list.small-margin-botto
-      -taxon.obsolete_combinations.order_by_name.with_common_includes.each do |obsolete_combination|
+      -TaxonQuery.new(taxon.obsolete_combinations.order_by_name).with_common_includes.each do |obsolete_combination|
         %li
           =obsolete_combination.link_to_taxon
           =obsolete_combination.author_citation
@@ -150,7 +150,7 @@
     -if taxon.valid_status? && taxon.subspecies.valid.exists?
       %h6 Current subspecies (nominal plus)
       %ul.compact-list.small-margin-bottom
-        -taxon.subspecies.valid.order_by_name.with_common_includes.each do |subspecies|
+        -TaxonQuery.new(taxon.subspecies.valid.order_by_name).with_common_includes.each do |subspecies|
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation
@@ -160,7 +160,7 @@
     -if taxon.subspecies.invalid.exists?
       %h6 Invalid subspecies
       %ul.compact-list.small-margin-bottom
-        -taxon.subspecies.invalid.order_by_name.with_common_includes_and_current_valid_taxon_includes.each do |subspecies|
+        -TaxonQuery.new(taxon.subspecies.invalid.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |subspecies|
           %li
             =subspecies.link_to_taxon
             =subspecies.author_citation

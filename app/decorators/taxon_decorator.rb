@@ -34,6 +34,10 @@ class TaxonDecorator < Draper::Decorator
     end
   end
 
+  def compact_status
+    Taxa::CompactStatus[taxon]
+  end
+
   def type_taxon_rank
     "Type-#{taxon.type_taxon.rank}: ".html_safe
   end

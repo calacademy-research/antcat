@@ -20,7 +20,7 @@ module Operations
 
       new_combination = build_new_combination
 
-      if Taxon.name_clash?(new_combination.name.name)
+      if Taxa::NameClash[new_combination.name.name]
         fail! "#{new_combination.name.name} - This name is in use by another taxon"
       end
 

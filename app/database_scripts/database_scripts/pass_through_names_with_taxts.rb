@@ -3,7 +3,7 @@
 module DatabaseScripts
   class PassThroughNamesWithTaxts < DatabaseScript
     def results
-      Taxon.pass_through_names.left_outer_joins(:history_items, :reference_sections).
+      TaxonQuery.new.pass_through_names.left_outer_joins(:history_items, :reference_sections).
         distinct.where("taxon_history_items.id IS NOT NULL OR reference_sections.id IS NOT NULL")
     end
 

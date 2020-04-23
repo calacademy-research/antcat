@@ -55,7 +55,7 @@ module Exporters
             subspecies:               nil,
             author_date:              taxon.author_citation,
             author_date_html:         authorship_html_string,
-            authors:                  taxon.authorship_reference.authors_for_keey,
+            authors:                  taxon.authorship_reference.key.authors_for_keey,
             year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
             available:                taxon.valid_status?,

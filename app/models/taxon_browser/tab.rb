@@ -45,7 +45,7 @@ module TaxonBrowser
       attr_reader :taxon_browser, :taxa_in_tab
 
       def sorted_taxa
-        taxa_in_tab.order_by_epithet
+        TaxonQuery.new(taxa_in_tab).order_by_epithet
       end
   end
 end

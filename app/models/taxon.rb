@@ -3,11 +3,11 @@
 class Taxon < ApplicationRecord
   include Trackable
 
-  CONCRETE_SUBCLASS_NAMES = Rank::TYPES
-
   self.table_name = :taxa
 
   delegate(*Taxa::CleanupTaxon::DELEGATED_IN_TAXON, to: :cleanup_taxon)
+  delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
+    to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do
     belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
@@ -30,7 +30,6 @@ class Taxon < ApplicationRecord
     has_many :reference_sections, -> { order(:position) }
   end
 
-  validates :type, inclusion: { in: CONCRETE_SUBCLASS_NAMES }
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
@@ -53,18 +52,7 @@ class Taxon < ApplicationRecord
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
-  scope :pass_through_names, -> { where(status: Status::PASS_THROUGH_NAMES) }
-  scope :excluding_pass_through_names, -> { where.not(status: Status::PASS_THROUGH_NAMES) }
-  scope :order_by_epithet, -> { joins(:name).order('names.epithet') }
   scope :order_by_name, -> { order(:name_cache) }
-  # TODO: Find a better name and place for these and figure out how to best use them.
-  scope :with_common_includes, -> do
-    includes(:name, protonym: [:name, { authorship: { reference: :author_names } }]).references(:reference_author_names)
-  end
-  scope :with_common_includes_and_current_valid_taxon_includes, -> do
-    with_common_includes.
-      includes(current_valid_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
-  end
 
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
@@ -74,10 +62,6 @@ class Taxon < ApplicationRecord
     parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
-
-  def self.name_clash? name_string
-    where(name_cache: name_string).exists?
-  end
 
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
@@ -110,29 +94,10 @@ class Taxon < ApplicationRecord
     Taxa::ExpandedStatus[self]
   end
 
-  def compact_status
-    Taxa::CompactStatus[self]
-  end
-
   def author_citation
     citation = authorship_reference.keey_without_letters_in_year
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
     '('.html_safe + citation + ')'
-  end
-
-  def virtual_history_items
-    @_virtual_history_items ||= all_virtual_history_items.select(&:publicly_visible?)
-  end
-
-  # The reason we have `#virtual_history_items` and `#all_virtual_history_items` is because for as long as
-  # data is being migrated to "virtual history items", we want to be able to "preview" items before we actually make
-  # them publicly visible in the catalog.
-  def all_virtual_history_items
-    @_all_virtual_history_items ||= Taxa::VirtualHistoryItemsForTaxon[self]
-  end
-
-  def policy
-    @_policy ||= TaxonPolicy.new(self)
   end
 
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`,
@@ -146,12 +111,8 @@ class Taxon < ApplicationRecord
     protonym.authorship.reference
   end
 
-  def soft_validations
-    @_soft_validations ||= SoftValidations.new(self, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
-  end
-
-  def what_links_here
-    @_what_links_here ||= Taxa::WhatLinksHere.new(self)
+  def taxon_collaborators
+    @_taxon_collaborators ||= Taxa::TaxonCollaborators.new(self)
   end
 
   def cleanup_taxon
