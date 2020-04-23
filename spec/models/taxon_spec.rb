@@ -57,25 +57,6 @@ describe Taxon do
       end
     end
 
-    describe "#original_combination" do
-      context 'when taxon is not in `CAN_BE_A_COMBINATION_TYPES`' do
-        let(:taxon) { build_stubbed :family }
-
-        it 'cannot be an `original_combination`' do
-          expect { taxon.original_combination = true }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(original_combination: ["can not be set for taxa of this rank"])
-        end
-      end
-
-      context 'when taxon rank is in `CAN_BE_A_COMBINATION_TYPES`' do
-        let(:taxon) { build_stubbed :species }
-
-        it 'may be an `original_combination`' do
-          expect { taxon.original_combination = true }.to_not change { taxon.valid? }.from(true)
-        end
-      end
-    end
-
     describe "#nomen_nudum" do
       context 'when taxon is not unavailable' do
         let(:taxon) { build_stubbed :family }
