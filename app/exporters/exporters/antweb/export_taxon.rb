@@ -37,7 +37,7 @@ module Exporters
       attr_private_initialize :taxon
 
       def call
-        remove_newlines(antweb_array)
+        remove_newlines(antweb_array).join("\t")
       end
 
       private
