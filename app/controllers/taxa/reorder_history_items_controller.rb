@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Copy-pasted into `Taxa::ReorderReferenceSectionsController`.
+# NOTE: Copy-pasted into `Taxa::ReorderReferenceSectionsController`.
 
 module Taxa
   class ReorderHistoryItemsController < ApplicationController

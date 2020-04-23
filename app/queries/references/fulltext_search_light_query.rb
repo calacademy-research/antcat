@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 # Fulltext search, but not all fields. Used by at.js.
-# TODO: This class is building up more and more duplication w.r.t `References::FulltextSearchQuery`.
-# TODO: We may want to use the same order/boost for `References::FulltextSearchQuery`.
 
 module References
   class FulltextSearchLightQuery

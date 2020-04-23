@@ -1,4 +1,4 @@
-# TODO: Copy-pasted into `reorder_reference_sections.coffee`.
+# NOTE: Copy-pasted into `reorder_reference_sections.coffee`.
 
 # Global variables to make it easy to disable other form buttons
 # when interacting with a subform.
@@ -78,7 +78,6 @@ saveNewOrder = ->
       $(SORTABLE).sortable "refreshPositions"
       disableReordering()
     error: (error) ->
-      # TODO: Create modal for this and other errors.
       pleaseSee = "Please check the activity feed and see if there is a 'User reordered the history
         items...' and let us know via the 'Suggest edit' link or create an issue on GitHub."
 

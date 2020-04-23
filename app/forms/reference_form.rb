@@ -12,7 +12,6 @@ class ReferenceForm
     save_reference
   end
 
-  # TODO: Super primitive. Invoked manually before making this class more form-object-y.
   def collect_errors!
     reference.valid? # Trigger errors.
     errors.merge!(reference.errors)
