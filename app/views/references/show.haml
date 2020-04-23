@@ -118,7 +118,7 @@
               =logged_in_only_tooltip_icon
             %td=or_dash decorated.format_taxonomic_notes
 
--if @reference.described_taxa.exists?
+-if decorated.described_taxa.exists?
   .row.margin-bottom
     .small-12.columns
       %h5 Taxa originally described in this reference (including combinations)
@@ -131,7 +131,7 @@
           %th Rank
           %th Status
           %th
-        -TaxonQuery.new(@reference.described_taxa.order_by_name).with_common_includes.each do |taxon|
+        -TaxonQuery.new(decorated.described_taxa.order_by_name).with_common_includes.each do |taxon|
           %tr
             %td=taxon.link_to_taxon
             %td=taxon.authorship_reference.decorate.expandable_reference
