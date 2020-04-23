@@ -59,7 +59,7 @@ module Exporters
             year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
             available:                taxon.valid_status?,
-            current_valid_name:       taxon.current_valid_taxon&.name&.name,
+            current_valid_name:       current_valid_name,
             original_combination:     taxon.original_combination?,
             was_original_combination: original_combination&.name&.name,
             fossil:                   taxon.fossil?,
@@ -88,7 +88,7 @@ module Exporters
             values[:year],
             values[:status],
             boolean_to_antweb(values[:available]),
-            add_subfamily_to_current_valid(values[:subfamily], values[:current_valid_name]),
+            values[:current_valid_name],
             boolean_to_antweb(values[:original_combination]),
             values[:was_original_combination],
             boolean_to_antweb(values[:fossil]),
@@ -115,9 +115,9 @@ module Exporters
           @_taxonomic_attributes = Exporters::Antweb::TaxonomicAttributes[taxon]
         end
 
-        def add_subfamily_to_current_valid subfamily, current_valid_name
-          return unless current_valid_name
-          "#{subfamily} #{current_valid_name}"
+        def current_valid_name
+          return unless (current_valid_name = taxon.current_valid_taxon&.name&.name)
+          "#{taxonomic_attributes[:subfamily]} #{current_valid_name}"
         end
 
         def authorship_html_string
