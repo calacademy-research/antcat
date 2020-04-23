@@ -8,6 +8,8 @@ Disallow: *.pdf
 Disallow: /*history$
 Disallow: /*exports/wikipedia$
 
+Crawl-delay: 10
+
 # https://ahrefs.com/robot
 User-agent: AhrefsBot
 Disallow: /
