@@ -131,7 +131,6 @@ class Taxon < ApplicationRecord
 
     def ensure_correct_name_type
       return if name&.rank == rank
-      error_message = "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
-      errors.add :base, error_message unless errors.added? :base, error_message
+      errors.add :base, "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
     end
 end

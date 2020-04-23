@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :antcat do
-  desc "Find all `!valid?` ActiveRecords"
+  desc "Find all invalid ActiveRecords"
   task invalid_records: [:environment] do
     Zeitwerk::Loader.eager_load_all
 
