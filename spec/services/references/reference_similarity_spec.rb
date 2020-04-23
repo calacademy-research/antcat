@@ -6,8 +6,8 @@ require 'rails_helper'
 describe References::ReferenceSimilarity do
   describe '#call' do
     context "when type mismatch" do
-      let(:lhs) { ArticleReference.new(title: 'Ants', year: 1975) }
-      let(:rhs) { NestedReference.new(title: 'Ants', year: 1975) }
+      let(:lhs) { ArticleReference.new }
+      let(:rhs) { NestedReference.new }
 
       it "never considers references of different types similar" do
         expect(described_class[lhs, rhs]).to eq 0.00
@@ -47,14 +47,14 @@ describe References::ReferenceSimilarity do
           lhs.year = 1970
           rhs.year = 1980
 
-          expect(described_class[lhs, rhs]).to eq 0.00
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
 
         it "matches better if the author name matches and the year is within 1" do
           lhs.year = 1979
           rhs.year = 1980
 
-          expect(described_class[lhs, rhs]).to eq 0.10
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
       end
 
@@ -66,14 +66,14 @@ describe References::ReferenceSimilarity do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csösz')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csősz')])
 
-          expect(described_class[lhs, rhs]).to eq 0.10
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
 
         it "matches if the author names differ by case" do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'MacKay')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Mackay')])
 
-          expect(described_class[lhs, rhs]).to eq 0.10
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
       end
     end
@@ -118,7 +118,7 @@ describe References::ReferenceSimilarity do
           rhs.title = 'Symphyta and their type species'
           lhs.title = 'Symphyta (unknown) and their type species'
 
-          expect(described_class[lhs, rhs]).to eq 0.10
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
 
         it "matches when the only difference is accents" do
@@ -153,7 +153,7 @@ describe References::ReferenceSimilarity do
           rhs.title = '[Ants and pants]'
           lhs.title = '[Pants and ants]'
 
-          expect(described_class[lhs, rhs]).to eq 0.10
+          expect(described_class[lhs, rhs]).to eq 0.001
         end
 
         describe 'replacing Roman numerals with Arabic' do
@@ -161,7 +161,7 @@ describe References::ReferenceSimilarity do
             rhs.title = 'Indigenous'
             lhs.title = '1ndigenous'
 
-            expect(described_class[lhs, rhs]).to eq 0.10
+            expect(described_class[lhs, rhs]).to eq 0.001
           end
 
           it "matches with a little less confidence when Roman numerals are replaced with Arabic" do
@@ -254,7 +254,7 @@ describe References::ReferenceSimilarity do
               lhs.series_volume_issue = '21 4'
               rhs.series_volume_issue = '214'
 
-              expect(described_class[lhs, rhs]).to eq 0.10
+              expect(described_class[lhs, rhs]).to eq 0.001
             end
           end
 
