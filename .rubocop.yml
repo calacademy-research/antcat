@@ -199,6 +199,9 @@ Style/Documentation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: always_true
+
 Style/GuardClause:
   Enabled: false
 

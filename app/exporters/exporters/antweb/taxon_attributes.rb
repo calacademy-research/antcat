@@ -1,6 +1,4 @@
-# frozen_string_literal: false
-
-# TODO: Strings are not frozen due to `col.delete!("\n")` in `Exporters::Antweb::Exporter`.
+# frozen_string_literal: true
 
 module Exporters
   module Antweb

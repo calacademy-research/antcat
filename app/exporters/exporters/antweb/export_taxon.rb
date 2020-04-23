@@ -1,6 +1,4 @@
-# frozen_string_literal: false
-
-# TODO: Strings are not frozen due to `col.delete!("\n")` in `Exporters::Antweb::Exporter`.
+# frozen_string_literal: true
 
 module Exporters
   module Antweb
@@ -37,18 +35,13 @@ module Exporters
       attr_private_initialize :taxon
 
       def call
-        remove_newlines(antweb_array).join("\t")
+        remove_newlines antweb_array.join("\t")
       end
 
       private
 
-        def remove_newlines array
-          array.each do |value|
-            if value.is_a? String
-              value.delete!("\n")
-              value.delete!("\r")
-            end
-          end
+        def remove_newlines string
+          string.delete("\n").delete("\r")
         end
 
         def antweb_array
