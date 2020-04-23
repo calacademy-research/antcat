@@ -60,10 +60,11 @@
   %tr
     %td
     %td
-      =form.check_box :original_combination
-      =form.label :original_combination do
-        Original combination
-        =db_tooltip_icon "original_combination", scope: :taxa
+      -if taxon.type.in?(Rank::CAN_BE_A_COMBINATION_TYPES)
+        =form.check_box :original_combination
+        =form.label :original_combination do
+          Original combination
+          =db_tooltip_icon "original_combination", scope: :taxa
 
       =form.check_box :unresolved_homonym
       =form.label :unresolved_homonym, 'Unresolved junior homonym'
