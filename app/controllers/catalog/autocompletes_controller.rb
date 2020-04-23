@@ -3,14 +3,26 @@
 module Catalog
   class AutocompletesController < ApplicationController
     def show
-      search_query = params[:q] || params[:qq] || ''
-      rank = params[:rank]
+      render json: serialized_taxa
+    end
 
-      respond_to do |format|
-        format.json do
-          render json: Autocomplete::TaxaQuery[search_query, rank: rank]
+    private
+
+      def serialized_taxa
+        taxa.map do |taxon|
+          {
+            id: taxon.id,
+            name: taxon.name_cache,
+            name_html: taxon.name_html_cache,
+            name_with_fossil: taxon.name_with_fossil,
+            author_citation: taxon.author_citation
+          }
         end
       end
-    end
+
+      def taxa
+        search_query = params[:q] || params[:qq] || ''
+        Autocomplete::TaxaQuery[search_query, rank: params[:rank]]
+      end
   end
 end

@@ -4,23 +4,25 @@ module Autocomplete
   class WikiPagesQuery
     include Service
 
+    WIKI_PAGE_ID_REGEX = /^\d+ ?$/
+
     attr_private_initialize :search_query
 
     def call
-      search_results
+      exact_id_match || search_results
     end
 
     private
 
-      def search_results
-        exact_id_match || WikiPage.where("title LIKE ?", "%#{search_query}%")
-      end
-
       def exact_id_match
-        return unless /^\d+ ?$/.match?(search_query)
+        return unless search_query.match?(WIKI_PAGE_ID_REGEX)
 
         match = WikiPage.find_by(id: search_query)
         [match] if match
+      end
+
+      def search_results
+        WikiPage.where("title LIKE ?", "%#{search_query}%")
       end
   end
 end

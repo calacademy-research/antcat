@@ -3,13 +3,18 @@
 module WikiPages
   class AutocompletesController < ApplicationController
     def show
-      search_query = params[:q] || ''
-
-      respond_to do |format|
-        format.json do
-          render json: Autocomplete::WikiPagesQuery[search_query].to_json(root: false, only: [:id, :title])
-        end
-      end
+      render json: serialized_wiki_pages
     end
+
+    private
+
+      def serialized_wiki_pages
+        wiki_pages.to_json(root: false, only: [:id, :title])
+      end
+
+      def wiki_pages
+        search_query = params[:q] || ''
+        Autocomplete::WikiPagesQuery[search_query]
+      end
   end
 end

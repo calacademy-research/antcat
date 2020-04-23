@@ -3,7 +3,17 @@
 module Publishers
   class AutocompletesController < ApplicationController
     def show
-      render json: Autocomplete::PublishersQuery[params[:term]].map(&:display_name)
+      render json: serialized_publishers
     end
+
+    private
+
+      def serialized_publishers
+        publishers.map(&:display_name)
+      end
+
+      def publishers
+        Autocomplete::PublishersQuery[params[:term]]
+      end
   end
 end

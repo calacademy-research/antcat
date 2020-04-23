@@ -3,18 +3,21 @@
 module Authors
   class AutocompletesController < ApplicationController
     def show
-      respond_to do |format|
-        format.json do
-          results = Autocomplete::AuthorNamesQuery[params[:term]]
-          json = if params[:with_ids] # TODO: Start using this instead of just names as strings.
-                   results.map { |name| { label: name.name, author_id: name.author_id } }
-                 else
-                   results.map(&:name)
-                 end
+      render json: serialized_author_names
+    end
 
-          render json: json
+    private
+
+      def serialized_author_names
+        if params[:with_ids] # TODO: Start using this instead of just names as strings.
+          author_names.map { |name| { label: name.name, author_id: name.author_id } }
+        else
+          author_names.map(&:name)
         end
       end
-    end
+
+      def author_names
+        Autocomplete::AuthorNamesQuery[params[:term]]
+      end
   end
 end

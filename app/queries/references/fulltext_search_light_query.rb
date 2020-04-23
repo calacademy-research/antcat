@@ -8,15 +8,17 @@ module References
   class FulltextSearchLightQuery
     include Service
 
+    NUM_RESULTS = 15
+
     attr_private_initialize :search_query
 
     def call
-      fulltext_search_light
+      search_results
     end
 
     private
 
-      def fulltext_search_light
+      def search_results
         Reference.search do
           keywords normalized_search_query do
             fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_keey
@@ -27,7 +29,7 @@ module References
           order_by :score, :desc
           order_by :author_names_string, :desc
           order_by :citation_year, :asc
-          paginate page: 1, per_page: 15
+          paginate page: 1, per_page: NUM_RESULTS
         end.results
       end
 

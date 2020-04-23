@@ -55,5 +55,28 @@ describe References::AutocompletesController do
         end
       end
     end
+
+    describe "formatting autosuggest keywords" do
+      let!(:reference) { create :any_reference, author_string: 'E.O. Wilson' }
+
+      before do
+        Sunspot.commit
+      end
+
+      it 'expands partially typed keyword values' do
+        get :show, params: { reference_q: 'author:wil', format: :json }
+        expect(json_response).to eq(
+          [
+            {
+              'id' => reference.id,
+              "author" => "E.O. Wilson",
+              "search_query" => "author:'E.O. Wilson'",
+              "title" => reference.title,
+              "year" => reference.citation_year
+            }
+          ]
+        )
+      end
+    end
   end
 end

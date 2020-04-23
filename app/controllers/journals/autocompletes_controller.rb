@@ -3,13 +3,18 @@
 module Journals
   class AutocompletesController < ApplicationController
     def show
-      search_query = params[:term] || '' # TODO: Standardize all "q/qq/query/term".
-
-      respond_to do |format|
-        format.json do
-          render json: Autocomplete::JournalsQuery[search_query].pluck(:name)
-        end
-      end
+      render json: serialized_journals
     end
+
+    private
+
+      def serialized_journals
+        journals.pluck(:name)
+      end
+
+      def journals
+        search_query = params[:term] || ''
+        Autocomplete::JournalsQuery[search_query]
+      end
   end
 end

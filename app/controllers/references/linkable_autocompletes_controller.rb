@@ -4,14 +4,18 @@ module References
   class LinkableAutocompletesController < ApplicationController
     # For at.js. Not as advanced as `References::AutocompletesController`.
     def show
-      search_query = params[:q] || ''
-
-      respond_to do |format|
-        format.json do
-          search_results = Autocomplete::LinkableReferencesQuery[search_query]
-          render json: Autocomplete::LinkableReferencesSerializer[search_results]
-        end
-      end
+      render json: serialized_references
     end
+
+    private
+
+      def serialized_references
+        Autocomplete::LinkableReferencesSerializer[references]
+      end
+
+      def references
+        search_query = params[:q] || ''
+        Autocomplete::LinkableReferencesQuery[search_query]
+      end
   end
 end
