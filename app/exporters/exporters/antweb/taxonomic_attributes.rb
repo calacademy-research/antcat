@@ -1,10 +1,8 @@
-# frozen_string_literal: false
-
-# TODO: Strings are not frozen due to `col.delete!("\n")` in `Exporters::Antweb::Exporter`.
+# frozen_string_literal: true
 
 module Exporters
   module Antweb
-    class AntwebAttributes
+    class TaxonomicAttributes
       include Service
 
       INCERTAE_SEDIS = 'incertae_sedis'
