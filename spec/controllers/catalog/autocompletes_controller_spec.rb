@@ -4,8 +4,7 @@ require 'rails_helper'
 
 describe Catalog::AutocompletesController do
   describe "GET show", as: :visitor do
-    let!(:atta) { create :genus, name_string: "Atta" }
-    let!(:ratta) { create :genus, name_string: "Ratta" }
+    let!(:taxon) { create :genus, name_string: "Ratta" }
 
     before do
       create :genus, name_string: "Nylanderia"
@@ -14,8 +13,17 @@ describe Catalog::AutocompletesController do
     it "returns matches" do
       get :show, params: { q: "att", format: :json }
 
-      results = json_response.map { |taxon| taxon["id"] }
-      expect(results).to eq [atta.id, ratta.id]
+      expect(json_response).to eq(
+        [
+          {
+            "id" => taxon.id,
+            "name" => taxon.name_cache,
+            "name_html" => taxon.name_html_cache,
+            "name_with_fossil" => taxon.name_with_fossil,
+            "author_citation" => taxon.author_citation
+          }
+        ]
+      )
     end
   end
 end

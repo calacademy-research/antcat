@@ -7,7 +7,7 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
     specify do
       reference_document = create :reference_document
       get :index
-      expect(json_response).to eq([reference_document.as_json])
+      expect(json_response).to eq([reference_document.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

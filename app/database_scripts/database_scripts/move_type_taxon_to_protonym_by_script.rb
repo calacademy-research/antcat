@@ -10,7 +10,7 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Taxon', 'Status', 'Type taxon', 'type_taxt', 'Protonym'
         t.rows do |taxon|
-          type_taxon = taxon. type_taxon
+          type_taxon = taxon.type_taxon
 
           [
             taxon_link(taxon),

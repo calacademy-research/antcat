@@ -2,25 +2,38 @@
 
 module DatabaseScripts
   class GenusGenderEndingsToUpdateByScript < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def blank_to_feminine
       endings_regex = endings[:feminine].join('|')
       Genus.joins(:name).
-        where("names.gender IS NULL").where("name_cache REGEXP ?", "#{endings_regex}$").
+        where("names.gender IS NULL").where("name_cache REGEXP ?", "(#{endings_regex})$").
         order_by_name
     end
 
     def blank_to_masculine
       endings_regex = endings[:masculine].join('|')
       Genus.joins(:name).
-        where("names.gender IS NULL").where("name_cache REGEXP ?", "#{endings_regex}$").
+        where("names.gender IS NULL").where("name_cache REGEXP ?", "(#{endings_regex})$").
         order_by_name
     end
 
     def blank_to_neuter
       endings_regex = endings[:neuter].join('|')
       Genus.joins(:name).
-        where("names.gender IS NULL").where("name_cache REGEXP ?", "#{endings_regex}$").
+        where("names.gender IS NULL").where("name_cache REGEXP ?", "(#{endings_regex})$").
         order_by_name
+    end
+
+    def unaccounted_blanks
+      accounted_for_ids =
+        blank_to_feminine.pluck(:id) +
+        blank_to_masculine.pluck(:id) +
+        blank_to_neuter.pluck(:id)
+
+      Genus.joins(:name).where("names.gender IS NULL").where.not(id: accounted_for_ids)
     end
 
     def render
@@ -65,18 +78,29 @@ module DatabaseScripts
               gender
             ]
           end
+        end <<
+        as_table do |t|
+          taxa = unaccounted_blanks
+
+          t.header 'Genus', 'Current gender', 'Set to gender'
+          t.caption "Total: #{taxa.count}. Genera with blank gender, excluding records in the above tables."
+          t.rows(taxa) do |taxon|
+            [
+              taxon_link(taxon),
+              taxon.name.gender || '[blank]',
+              '[will not be changed]'
+            ]
+          end
         end
     end
 
     private
 
-      # "-lepis" was included twice, removed from the masculine list.
-      # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def endings
         {
-          feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
-          masculine: %w[myrmex oides ius],
-          neuter: %w[omma noma ium]
+          feminine: %w[a e opsis],
+          masculine: %w[er es ops os us],
+          neuter: %w[on um]
         }
       end
   end
@@ -86,12 +110,15 @@ __END__
 
 section: pa-no-action-required
 category: Catalog
-tags: [new!]
+tags: [updated!]
 
 issue_description:
 
 description: >
-  Batch 1) genera with a blank gender
+  * Done: *Batch 1) genera with a blank gender*
+
+
+  * Batch 2) more genera with blank gender
 
 related_scripts:
   - GenusGenderEndings

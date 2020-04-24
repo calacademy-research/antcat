@@ -13,7 +13,7 @@ describe References::ExtractSeriesVolumeAndIssue do
     end
 
     it "can parse out series, volume and issue" do
-      expect(described_class['(I)C(xix)']). to eq series: 'I', volume: 'C', issue: 'xix'
+      expect(described_class['(I)C(xix)']).to eq series: 'I', volume: 'C', issue: 'xix'
     end
   end
 end

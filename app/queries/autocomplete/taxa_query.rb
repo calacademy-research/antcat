@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Use Solr or ElasticSearch.
-
 module Autocomplete
   class TaxaQuery
     include Service

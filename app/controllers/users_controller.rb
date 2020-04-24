@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   def mentionables
     respond_to do |format|
       format.json do
-        render json: User.active.all.to_json(root: false, only: [:id, :email, :name])
+        render json: User.active.all.to_json(only: [:id, :email, :name])
       end
     end
   end

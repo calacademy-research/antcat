@@ -1,4 +1,4 @@
-# TODO: Copy-pasted from `reorder_history_items.coffee`.
+# NOTE: Copy-pasted from `reorder_history_items.coffee`.
 
 # Global variables to make it easy to disable other form buttons
 # when interacting with a subform.

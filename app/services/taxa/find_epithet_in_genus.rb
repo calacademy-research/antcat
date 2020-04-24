@@ -7,7 +7,7 @@ module Taxa
     attr_private_initialize :genus, :target_epithet_string
 
     def call
-      raise unless genus.is_a?(Genus) # TODO: Sanity check, not tested.
+      raise unless genus.is_a?(Genus)
       SpeciesGroupTaxon.joins(:name).where(genus: genus).where(names: { epithet: epithet_search_set })
     end
 

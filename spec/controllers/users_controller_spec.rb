@@ -108,4 +108,22 @@ describe UsersController do
       expect { delete(:destroy, params: { id: user.id }) }.to change { user.reload.locked }.to(true)
     end
   end
+
+  describe "GET mentionables", as: :visitor do
+    let!(:user) { create :user }
+
+    specify do
+      get :mentionables, params: { format: :json }
+
+      expect(json_response).to eq(
+        [
+          {
+            "id" => user.id,
+            "name" => user.name,
+            "email" => user.email
+          }
+        ]
+      )
+    end
+  end
 end

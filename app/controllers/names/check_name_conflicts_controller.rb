@@ -6,7 +6,7 @@ module Names
       if params[:qq].blank?
         render json: []
       else
-        render json: serialized_names, root: false
+        render json: serialized_names
       end
     end
 

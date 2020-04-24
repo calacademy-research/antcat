@@ -7,7 +7,7 @@ describe Api::V1::AuthorsController, as: :visitor do
     specify do
       author = create :author
       get :index
-      expect(json_response).to eq([author.as_json])
+      expect(json_response).to eq([author.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

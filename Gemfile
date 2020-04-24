@@ -63,7 +63,7 @@ group :development, :test do
   gem 'guard-rubocop'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 0.80.1', require: false
+  gem 'rubocop', '0.82', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'

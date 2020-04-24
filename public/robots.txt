@@ -23,7 +23,7 @@ User-agent: dotbot
 Disallow: /
 
 # http://megaindex.com/crawler
-User-agent: MegaIndex.ru
+User-agent: MegaIndex.ru/2.0
 Disallow: /
 
 # https://megaindex.com/crawler

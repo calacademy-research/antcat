@@ -4,12 +4,12 @@ module Api
   module V1
     class TaxaController < Api::ApiController
       def index
-        render json: with_limit(Taxon.all)
+        render json: with_limit(Taxon.all), root: true
       end
 
       def show
         item = Taxon.find(params[:id])
-        render json: item.to_json(methods: :author_citation)
+        render json: item.to_json(methods: :author_citation, root: true)
       end
 
       def search

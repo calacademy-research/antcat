@@ -7,7 +7,7 @@ describe Api::V1::ReferenceAuthorNamesController, as: :visitor do
     specify do
       create :reference_author_name
       get :index
-      expect(json_response).to eq(ReferenceAuthorName.all.as_json)
+      expect(json_response).to eq(ReferenceAuthorName.all.as_json(root: true))
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

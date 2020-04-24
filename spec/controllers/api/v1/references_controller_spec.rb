@@ -7,7 +7,7 @@ describe Api::V1::ReferencesController, as: :visitor do
     specify do
       reference = create :any_reference
       get :index
-      expect(json_response).to eq([reference.as_json])
+      expect(json_response).to eq([reference.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

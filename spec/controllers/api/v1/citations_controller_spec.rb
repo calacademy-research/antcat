@@ -7,7 +7,7 @@ describe Api::V1::CitationsController, as: :visitor do
     specify do
       citation = create :citation
       get :index
-      expect(json_response).to eq([citation.as_json])
+      expect(json_response).to eq([citation.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

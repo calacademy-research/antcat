@@ -28,13 +28,19 @@ describe ReferenceDecorator do
   describe "#format_document_links" do
     let(:reference) { build_stubbed :any_reference }
 
-    before do
-      allow(reference).to receive(:downloadable?).and_return true
-      allow(reference).to receive(:routed_url).and_return 'example.com'
+    context 'when reference does not have document' do
+      specify { expect(decorated.format_document_links).to eq nil }
     end
 
-    it "creates a link" do
-      expect(decorated.format_document_links).to eq '<a class="pdf-link" rel="nofollow" href="example.com">PDF</a>'
+    context 'when reference has a document' do
+      before do
+        allow(reference).to receive(:downloadable?).and_return true
+        allow(reference).to receive(:routed_url).and_return 'example.com'
+      end
+
+      it "creates a link" do
+        expect(decorated.format_document_links).to eq '<a class="pdf-link" rel="nofollow" href="example.com">PDF</a>'
+      end
     end
   end
 

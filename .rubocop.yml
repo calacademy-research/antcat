@@ -63,6 +63,9 @@ Layout/MultilineOperationIndentation:
 Layout/ParameterAlignment:
   Enabled: false
 
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
 ### Lint.
 
 Lint/AmbiguousBlockAssociation:
@@ -71,6 +74,12 @@ Lint/AmbiguousBlockAssociation:
 
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
+
+Lint/RaiseException:
+  Enabled: true
+
+Lint/StructNewOverride:
+  Enabled: true
 
 Lint/UselessAccessModifier:
   MethodCreatingMethods:
@@ -198,6 +207,9 @@ Style/Documentation:
 
 Style/EmptyMethod:
   EnforcedStyle: expanded
+
+Style/ExponentialNotation:
+  Enabled: true
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true

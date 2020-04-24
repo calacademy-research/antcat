@@ -10,6 +10,7 @@ module DatabaseScripts
       [
         all_subgenera_have_names_with_parentheses,
         all_protonyms_have_taxa_with_compatible_ranks,
+        original_combination_ranks,
         name_count_checks,
         name_caches_sync
       ]
@@ -64,6 +65,13 @@ module DatabaseScripts
         {
           title: 'All taxa.name_cache fields are in sync with its names.name fields',
           ok?: !Taxon.joins(:name).where("names.name != taxa.name_cache").exists?
+        }
+      end
+
+      def original_combination_ranks
+        {
+          title: "All 'taxa.original_combination' are of correct ranks",
+          ok?: !Taxon.where(original_combination: true).where.not(type: Rank::CAN_BE_A_COMBINATION_TYPES).exists?
         }
       end
   end
