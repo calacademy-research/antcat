@@ -40,7 +40,7 @@ class Reference < ApplicationRecord
   has_paper_trail
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year,
-    :series_volume_issue, :doi, :review_state, :bolton_key, :author_names_suffix
+    :series_volume_issue, :doi, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: keey } }
 

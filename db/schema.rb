@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_17_175412) do
+ActiveRecord::Schema.define(version: 2020_04_24_171115) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -231,7 +231,7 @@ ActiveRecord::Schema.define(version: 2020_04_17_175412) do
     t.text "citation"
     t.integer "nesting_reference_id"
     t.string "author_names_suffix"
-    t.string "review_state"
+    t.string "review_state", default: "none", null: false
     t.text "plain_text_cache"
     t.text "expandable_reference_cache"
     t.string "doi"
