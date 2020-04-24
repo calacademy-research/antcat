@@ -9,7 +9,7 @@ ENV NOTVISIBLE "in users profile"
 #RUN echo "export VISIBLE=now" >> /etc/profile
 ENV PATH="/code/bin:${PATH}"
 #EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
+#CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
 ADD . /code/
 WORKDIR /code
 
