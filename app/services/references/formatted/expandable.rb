@@ -25,7 +25,7 @@ module References
           content = []
           content << References::Formatted::Expanded[reference]
           content << reference.decorate.format_document_links
-          content.reject(&:blank?).join(' ')
+          content.compact.join(' ')
         end
     end
   end

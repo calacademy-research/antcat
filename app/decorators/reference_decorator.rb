@@ -28,7 +28,7 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_document_links
-    h.safe_join [doi_link, pdf_link].compact, ' '
+    h.safe_join([doi_link, pdf_link].compact, ' ').presence
   end
 
   def doi_link
