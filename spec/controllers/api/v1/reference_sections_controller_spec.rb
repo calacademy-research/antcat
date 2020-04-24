@@ -7,7 +7,7 @@ describe Api::V1::ReferenceSectionsController, as: :visitor do
     specify do
       reference_section = create :reference_section
       get :index
-      expect(json_response).to eq([reference_section.as_json])
+      expect(json_response).to eq([reference_section.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

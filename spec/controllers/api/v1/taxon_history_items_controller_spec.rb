@@ -7,7 +7,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
     specify do
       taxon_history_item = create :taxon_history_item
       get :index
-      expect(json_response).to eq([taxon_history_item.as_json])
+      expect(json_response).to eq([taxon_history_item.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

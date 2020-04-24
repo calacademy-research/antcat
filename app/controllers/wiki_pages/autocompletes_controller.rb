@@ -9,7 +9,7 @@ module WikiPages
     private
 
       def serialized_wiki_pages
-        wiki_pages.to_json(root: false, only: [:id, :title])
+        wiki_pages.to_json(only: [:id, :title])
       end
 
       def wiki_pages

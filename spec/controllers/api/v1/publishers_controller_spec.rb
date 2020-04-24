@@ -7,7 +7,7 @@ describe Api::V1::PublishersController, as: :visitor do
     specify do
       publisher = create :publisher
       get :index
-      expect(json_response).to eq([publisher.as_json])
+      expect(json_response).to eq([publisher.as_json(root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }
