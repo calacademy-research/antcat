@@ -2,7 +2,6 @@
 
 require 'rails_helper'
 
-# rubocop:disable RSpec/ExpectInHook
 describe References::ReferenceSimilarity do
   describe '#call' do
     context "when type mismatch" do
@@ -39,8 +38,8 @@ describe References::ReferenceSimilarity do
         let(:rhs) { Reference.new(title: 'B') }
 
         before do
-          expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
-          expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+          allow(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+          allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
         end
 
         it "doesn't match if the author name is the same but the year is different" do
@@ -80,8 +79,8 @@ describe References::ReferenceSimilarity do
 
     describe "title + year matching" do
       before do
-        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
-        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+        allow(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
+        allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
       end
 
       context "when title is same" do
@@ -186,8 +185,8 @@ describe References::ReferenceSimilarity do
       let(:rhs) { BookReference.new(title: 'Formica', pagination: '1-76') }
 
       before do
-        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
-        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       it 'matches with much less confidence when the year does not match' do
@@ -207,8 +206,8 @@ describe References::ReferenceSimilarity do
 
     describe 'matching series/volume/issue + pagination with different titles' do
       before do
-        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
-        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       context 'when the pagination matches' do
@@ -287,8 +286,8 @@ describe References::ReferenceSimilarity do
       let(:rhs) { ArticleReference.new(title: 'Ant', pagination: '1-7', series_volume_issue: '1', year: 2002) }
 
       before do
-        expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
-        expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
+        allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
       it "gives it a 0.99" do
@@ -297,4 +296,3 @@ describe References::ReferenceSimilarity do
     end
   end
 end
-# rubocop:enable RSpec/ExpectInHook
