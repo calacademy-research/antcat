@@ -12,8 +12,8 @@
             %small.left
               =link_to_current_page_on_live_site_or_localhost
           -if user_signed_in?
-            =render "unseen_notifications_badge"
-            =render "unread_site_notices_badge"
+            =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
+            =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
             %li=link_to "Editor's Panel", editors_panel_path, class: "top-header-link #{'very-active' if menu_active?(:editors_panel)}"
             -if Settings.catalog.show_failed_soft_validations
               %li=link_to 'Fix Random!', catalog_fix_random_path, class: "top-header-link"
@@ -29,7 +29,7 @@
 
       #desktop-lower-menu.top-bar-right
         %ul.menu
-          =render "unconfirmed_user_notice"
+          =unconfirmed_user_notice = capture { render "unconfirmed_user_notice" }
           %li=link_to 'References', references_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
           %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
           %li
@@ -55,9 +55,9 @@
           %span.float-left
             %span.menu-icon{data: { toggle: true }}
           =image_tag 'logos/antcat_white_174x37.png', data: { toggle: true }
-      =render "unseen_notifications_badge"
-      =render "unread_site_notices_badge"
-      =render "unconfirmed_user_notice"
+      =unseen_notifications_badge
+      =unread_site_notices_badge
+      =unconfirmed_user_notice
 
   #mobile-menu
     %ul.vertical.menu
