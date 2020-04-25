@@ -3,9 +3,8 @@
 module CatalogFormatter
   module_function
 
-  # TODO: Move `Taxon#link_to_taxon` here.
   def link_to_taxon taxon
-    taxon.link_to_taxon
+    %(<a class="#{disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
   def link_to_taxon_with_label taxon, label

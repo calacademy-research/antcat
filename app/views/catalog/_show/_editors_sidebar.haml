@@ -37,7 +37,7 @@
       The status of this taxon is 'original combination' but
       it appears in a
       synonyms list history item of
-      =taxon.current_valid_taxon.link_to_taxon
+      =CatalogFormatter.link_to_taxon(taxon.current_valid_taxon)
       %hr
       =Detax[synonym_history_item.taxt]
 
@@ -53,7 +53,7 @@
       The status of this taxon is 'original combination' but
       a representation of this taxon except itself (another taxon belonging to the same protonym) appears in a
       synonyms list history item of
-      =taxon.current_valid_taxon.link_to_taxon
+      =CatalogFormatter.link_to_taxon(taxon.current_valid_taxon)
       %hr
       =Detax[synonym_history_item.taxt]
 
@@ -88,7 +88,7 @@
     %ul.no-bullet.spaced-lis.small-margin-bottom
       -TaxonQuery.new(cleanup_taxon.combination_in_according_to_history_items).with_common_includes.each do |oc_per_item|
         %li
-          =oc_per_item.link_to_taxon
+          =CatalogFormatter.link_to_taxon(oc_per_item)
           =oc_per_item.author_citation
           -if oc_per_item.is_a?(Genus) && taxon.is_a?(Species)
             %br
@@ -105,7 +105,7 @@
                   -obsolete_combinations_in_genus.each do |obsolete_combination_in_genus|
                     %li
                       =antcat_icon 'check'
-                      =obsolete_combination_in_genus.link_to_taxon
+                      =CatalogFormatter.link_to_taxon(obsolete_combination_in_genus)
               -else
                 =antcat_icon 'nope'
                 No obsolete combinations.
@@ -144,7 +144,7 @@
     %ul.compact-list.small-margin-bottom
       -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
         %li
-          =homonym.link_to_taxon
+          =CatalogFormatter.link_to_taxon(homonym)
           =homonym.author_citation
           %span.small-text=homonym.decorate.compact_status
 
@@ -202,13 +202,13 @@
       %li
         Subgenus:
         -if taxon.subgenus
-          =taxon.subgenus.link_to_taxon
+          =CatalogFormatter.link_to_taxon(taxon.subgenus)
         -else
           (none)
           =link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
     -if taxon.is_a?(SpeciesGroupTaxon)
-      %li Genus: #{taxon.genus.link_to_taxon}
+      %li Genus: #{CatalogFormatter.link_to_taxon(taxon.genus)}
     -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)
-      %li Species: #{taxon.species.link_to_taxon}
+      %li Species: #{CatalogFormatter.link_to_taxon(taxon.species)}
     -if taxon.is_a?(Infrasubspecies)
-      %li Subspecies: #{taxon.subspecies.link_to_taxon}
+      %li Subspecies: #{CatalogFormatter.link_to_taxon(taxon.subspecies)}

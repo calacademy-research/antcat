@@ -133,7 +133,7 @@
           %th
         -TaxonQuery.new(decorated.described_taxa.order_by_name).with_common_includes.each do |taxon|
           %tr
-            %td=taxon.link_to_taxon
+            %td=CatalogFormatter.link_to_taxon(taxon)
             %td=taxon.authorship_reference.decorate.expandable_reference
             %td=taxon.protonym.authorship.pages
             %td=taxon.rank.capitalize

@@ -25,9 +25,9 @@
 
     =taxon.decorate.type_taxon_rank
     -if type_taxon_expander.can_expand?
-      =add_period_if_necessary(taxon.type_taxon.link_to_taxon + type_taxon_expander.expansion + Detax[taxon.decorate.format_type_taxt])
+      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + type_taxon_expander.expansion + Detax[taxon.decorate.format_type_taxt])
     -else
-      =add_period_if_necessary(taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt])
+      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.decorate.format_type_taxt])
 
   =Detax[taxon.headline_notes_taxt]
 
@@ -67,7 +67,7 @@
   %ul.compact-list.small-margin-bottom
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
-        =synonym.link_to_taxon
+        =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
 
 #child-lists.small-margin-bottom
@@ -82,7 +82,7 @@
       %ul.compact-list.small-margin-bottom
         -TaxonQuery.new(taxon.species.order_by_name).with_common_includes.each do |species|
           %li
-            =species.link_to_taxon
+            =CatalogFormatter.link_to_taxon(species)
             =species.author_citation
             %span.small-text=species.decorate.expanded_status
             -# TODO: N+1 query.
@@ -90,7 +90,7 @@
               %ul.compact-list
                 -TaxonQuery.new(species.subspecies.order_by_name).with_common_includes.each do |subspecies|
                   %li
-                    =subspecies.link_to_taxon
+                    =CatalogFormatter.link_to_taxon(subspecies)
                     =subspecies.author_citation
                     %span.small-text=subspecies.decorate.expanded_status
 
@@ -126,7 +126,7 @@
     %ul.compact-list.small-margin-botto
       -TaxonQuery.new(taxon.obsolete_combinations.order_by_name).with_common_includes.each do |obsolete_combination|
         %li
-          =obsolete_combination.link_to_taxon
+          =CatalogFormatter.link_to_taxon(obsolete_combination)
           =obsolete_combination.author_citation
           -if current_user && obsolete_combination.protonym != taxon.protonym
             %span.logged-in-only-background
@@ -152,7 +152,7 @@
       %ul.compact-list.small-margin-bottom
         -TaxonQuery.new(taxon.subspecies.valid.order_by_name).with_common_includes.each do |subspecies|
           %li
-            =subspecies.link_to_taxon
+            =CatalogFormatter.link_to_taxon(subspecies)
             =subspecies.author_citation
             -if subspecies.unresolved_homonym?
               (unresolved homonym)
@@ -162,7 +162,7 @@
       %ul.compact-list.small-margin-bottom
         -TaxonQuery.new(taxon.subspecies.invalid.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |subspecies|
           %li
-            =subspecies.link_to_taxon
+            =CatalogFormatter.link_to_taxon(subspecies)
             =subspecies.author_citation
             %span.small-text=subspecies.decorate.expanded_status
 

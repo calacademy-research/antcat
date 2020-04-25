@@ -42,7 +42,7 @@ module Markdowns
           taxon_id = $LAST_MATCH_INFO[:id]
 
           if (taxon = taxa_indexed_by_id[taxon_id.to_i])
-            taxon.link_to_taxon
+            CatalogFormatter.link_to_taxon(taxon)
           else
             broken_markdown_link "TAXON", taxon_id
           end

@@ -76,7 +76,7 @@
             %th
         -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |taxon|
           %tr
-            %td=taxon.link_to_taxon
+            %td=CatalogFormatter.link_to_taxon(taxon)
             %td=taxon.rank.capitalize
             %td
               =taxon.status.capitalize
@@ -91,7 +91,7 @@
               -if taxon.type_taxon
                 %small
                   =taxon.decorate.type_taxon_rank
-                  =taxon.type_taxon.link_to_taxon + Detax[taxon.decorate.format_type_taxt]
+                  =CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.decorate.format_type_taxt]
             %td
               -if taxon.origin
                 .bold-warning=taxon.origin
@@ -112,7 +112,7 @@
             =logged_in_only_tooltip_icon
           -@protonym.taxa_with_history_items.each do |taxon|
             %h6
-              =taxon.link_to_taxon
+              =CatalogFormatter.link_to_taxon(taxon)
               %span.small-text=taxon.decorate.expanded_status
 
             .left-margin

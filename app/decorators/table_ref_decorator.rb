@@ -20,7 +20,7 @@ class TableRefDecorator
 
   def owner_link
     case owner
-    when Taxon     then owner.link_to_taxon
+    when Taxon     then CatalogFormatter.link_to_taxon(owner)
     when Reference then owner.decorate.expandable_reference
     when Protonym  then ("Protonym: ".html_safe << owner.decorate.link_to_protonym)
     else           raise "unknown owner #{owner.class.name}"

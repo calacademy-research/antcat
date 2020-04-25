@@ -10,7 +10,7 @@ module Taxa
     # species and below, since higher ranks consists of a single word.
     # NOTE: This only works for modern names (rank abbreviations and subgenus parts are ignored).
     def call
-      return taxon.link_to_taxon unless taxon.is_a?(::SpeciesGroupTaxon)
+      return CatalogFormatter.link_to_taxon(taxon) unless taxon.is_a?(::SpeciesGroupTaxon)
 
       if taxon.is_a?(Species)
         return genus_link << header_link(taxon, taxon.name.epithet)

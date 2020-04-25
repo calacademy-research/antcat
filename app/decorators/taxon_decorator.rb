@@ -28,7 +28,7 @@ class TaxonDecorator < Draper::Decorator
     h.content_tag :span do
       h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
       h.concat " "
-      h.concat taxon.link_to_taxon
+      h.concat CatalogFormatter.link_to_taxon(taxon)
       h.concat " "
       h.concat h.content_tag(:small, taxon.author_citation, class: "gray")
     end

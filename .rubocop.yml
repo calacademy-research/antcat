@@ -98,8 +98,6 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 100
-  Exclude:
-    - 'app/models/taxon.rb'
 
 Metrics/CyclomaticComplexity:
   Enabled: false

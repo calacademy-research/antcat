@@ -9,7 +9,7 @@ class ActivityDecorator < Draper::Decorator
 
   def self.link_taxon_if_exists id, deleted_label: nil
     if (taxon = Taxon.find_by(id: id))
-      taxon.link_to_taxon
+      CatalogFormatter.link_to_taxon(taxon)
     else
       deleted_label || "##{id} [deleted]"
     end

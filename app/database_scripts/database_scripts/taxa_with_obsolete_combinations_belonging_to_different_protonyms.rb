@@ -14,7 +14,7 @@ module DatabaseScripts
           [
             taxon_link(taxon),
             taxon.status,
-            taxon.obsolete_combinations.map { |tax| tax.link_to_taxon + origin_warning(tax).html_safe }.join('<br>')
+            taxon.obsolete_combinations.map { |tax| CatalogFormatter.link_to_taxon(tax) + origin_warning(tax).html_safe }.join('<br>')
           ]
         end
       end

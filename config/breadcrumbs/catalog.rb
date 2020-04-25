@@ -5,14 +5,14 @@ crumb :catalog do
 end
 
 crumb :family do |_taxon|
-  link Family.first.link_to_taxon
+  link CatalogFormatter.link_to_taxon(Family.first)
   parent :catalog
 end
 
 [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies, :infrasubspecies].each do |rank|
   crumb rank do |taxon|
     if taxon.name
-      link taxon.link_to_taxon
+      link CatalogFormatter.link_to_taxon(taxon)
     else
       link '[deleted name]'
     end

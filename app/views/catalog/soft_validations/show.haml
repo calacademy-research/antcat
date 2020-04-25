@@ -7,7 +7,7 @@
 
 %p.margin-bottom
   =antcat_icon(@soft_validations.failed? ? "nope" : "check")
-  =@taxon.link_to_taxon
+  =CatalogFormatter.link_to_taxon(@taxon)
   -if @soft_validations.failed?
     has soft validation issues.
   -else
