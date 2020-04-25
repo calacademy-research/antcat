@@ -7,7 +7,7 @@ class JournalsController < ApplicationController
 
   def index
     order = params[:order] == REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
-    @journals = Journal.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
+    @journals = JournalQuery.new.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
   end
 
   def show
