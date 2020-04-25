@@ -12,7 +12,7 @@
 .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
   -taxon_browser.tabs.each do |tab|
     .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
-      %ul.snaked.no-bullet.mr-scrollbary
+      %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
         -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
           %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:display]
 

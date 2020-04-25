@@ -34,7 +34,9 @@ module Markdowns
         taxon_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
         return if taxon_ids.blank?
 
-        taxa_indexed_by_id = Taxon.where(id: taxon_ids).select(:id, :name_id, :fossil).includes(:name).index_by(&:id)
+        taxa_indexed_by_id = Taxon.where(id: taxon_ids).select(
+          :id, :name_id, :fossil, :status, :unresolved_homonym
+        ).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
           taxon_id = $LAST_MATCH_INFO[:id]
