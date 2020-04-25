@@ -5,6 +5,8 @@
 require 'rails_helper'
 
 describe Markdowns::ParseAllTags do
+  include TestLinksHelpers
+
   describe "#call" do
     it "does not remove <i> tags" do
       content = "<i>italics<i><i><script>xss</script></i>"
@@ -14,8 +16,7 @@ describe Markdowns::ParseAllTags do
     describe "tax tags (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
-        expect(described_class["{tax #{taxon.id}}"]).
-          to eq %(<a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>)
+        expect(described_class["{tax #{taxon.id}}"]).to eq taxon_link(taxon)
       end
 
       context "when the taxon can't be found" do
@@ -29,7 +30,7 @@ describe Markdowns::ParseAllTags do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
-          <a href="/catalog/#{taxon.id}"><i>#{taxon.name_cache}</i></a>
+          #{taxon_link(taxon)}
           <span class="discret-author-citation"><a href="/references/#{taxon.authorship_reference.id}">#{taxon.author_citation}</a></span>
         HTML
       end
