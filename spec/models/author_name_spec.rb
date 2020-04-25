@@ -30,7 +30,7 @@ describe AuthorName do
   end
 
   describe 'callbacks' do
-    describe '#invalidate_reference_caches!' do
+    describe '#invalidate_reference_caches' do
       let!(:author_name) { create :author_name, name: 'Ward' }
       let!(:reference) { create :any_reference, author_names: [author_name] }
 

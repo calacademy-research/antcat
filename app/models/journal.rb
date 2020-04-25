@@ -12,7 +12,7 @@ class Journal < ApplicationRecord
     { name: name, name_was: (name_before_last_save if saved_change_to_name?) }
   }
 
-  def invalidate_reference_caches!
+  def invalidate_reference_caches
     references.find_each do |reference|
       References::Cache::Invalidate[reference]
     end

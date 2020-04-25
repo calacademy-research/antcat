@@ -11,7 +11,7 @@ class AuthorName < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: true }
 
   before_destroy :ensure_not_authors_only_author_name
-  after_update :invalidate_reference_caches!
+  after_update :invalidate_reference_caches
 
   has_paper_trail
   trackable
@@ -33,7 +33,7 @@ class AuthorName < ApplicationRecord
       throw :abort
     end
 
-    def invalidate_reference_caches!
+    def invalidate_reference_caches
       references.reload.find_each do |reference|
         reference.refresh_author_names_cache
         References::Cache::Invalidate[reference]
