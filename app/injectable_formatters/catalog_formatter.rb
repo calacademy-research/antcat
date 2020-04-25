@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Rename to `CatalogFormatter`.
-module DefaultFormatter
+module CatalogFormatter
   module_function
 
   # TODO: Move `Taxon#link_to_taxon` here.

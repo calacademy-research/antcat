@@ -7,7 +7,7 @@ class TaxonDecorator < Draper::Decorator
   GOOGLE_SCHOLAR_BASE_URL = "//scholar.google.com/scholar?"
 
   def link_to_taxon_with_label label
-    h.link_to label, h.catalog_path(taxon), class: DefaultFormatter.disco_mode_css(taxon)
+    h.link_to label, h.catalog_path(taxon), class: CatalogFormatter.disco_mode_css(taxon)
   end
 
   def link_to_taxon_with_author_citation

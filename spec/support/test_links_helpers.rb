@@ -6,12 +6,12 @@ module TestLinksHelpers
   end
 
   def taxon_link taxon, label = nil
-    css_classes = DefaultFormatter.disco_mode_css(taxon)
+    css_classes = CatalogFormatter.disco_mode_css(taxon)
     %(<a class="#{css_classes}" href="/catalog/#{taxon.id}">#{label || taxon.name_with_fossil}</a>)
   end
 
   def taxon_link_with_author_citation taxon
-    css_classes = DefaultFormatter.disco_mode_css(taxon)
+    css_classes = CatalogFormatter.disco_mode_css(taxon)
     %(<a class="#{css_classes}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a> #{taxon.author_citation})
   end
 

@@ -94,7 +94,7 @@ class Taxon < ApplicationRecord
 
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`.
   def link_to_taxon
-    css_classes = DefaultFormatter.disco_mode_css(self)
+    css_classes = CatalogFormatter.disco_mode_css(self)
     %(<a class="#{css_classes}" href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
   end
 

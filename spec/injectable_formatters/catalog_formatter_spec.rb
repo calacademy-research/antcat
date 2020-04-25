@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe DefaultFormatter do
+describe CatalogFormatter do
   include TestLinksHelpers
 
   describe ".link_to_taxon" do
