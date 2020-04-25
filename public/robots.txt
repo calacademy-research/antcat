@@ -1,5 +1,5 @@
 User-agent: *
-Allow: /
+Crawl-delay: 10
 Disallow: /activities/
 Disallow: /documents/
 Disallow: /feedback/
@@ -7,8 +7,6 @@ Disallow: /references/exports/
 Disallow: *.pdf
 Disallow: /*history$
 Disallow: /*exports/wikipedia$
-
-Crawl-delay: 10
 
 # https://ahrefs.com/robot
 User-agent: AhrefsBot
@@ -22,6 +20,9 @@ Disallow: /
 User-agent: dotbot
 Disallow: /
 
+User-agent: DotBot/1.1
+Disallow: /
+
 # http://megaindex.com/crawler
 User-agent: MegaIndex.ru/2.0
 Disallow: /
@@ -30,6 +31,12 @@ Disallow: /
 User-agent: MJ12bot
 Disallow: /
 
+User-agent: MJ12bot/v1.4.8
+Disallow: /
+
 # https://www.semrush.com/bot/
 User-agent: SemrushBot
+Disallow: /
+
+User-agent: SemrushBot/6~bl
 Disallow: /

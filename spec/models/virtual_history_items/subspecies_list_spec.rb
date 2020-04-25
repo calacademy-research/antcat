@@ -38,7 +38,7 @@ describe VirtualHistoryItems::SubspeciesList do
     let!(:species) { create :species }
     let!(:subspecies) { create :subspecies, :fossil, name_string: 'Lasius niger aa', species: species }
     let!(:unresolved_homonym_subspecies) do
-      create :subspecies, name_string: 'Lasius niger zz', species: species, unresolved_homonym: true
+      create :subspecies, :unresolved_homonym, name_string: 'Lasius niger zz', species: species
     end
 
     let(:subspecies_label) { '<i>†L. n. aa</i>' }

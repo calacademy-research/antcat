@@ -39,14 +39,14 @@ FactoryBot.define do
       association :name, factory: :subtribe_name
       genus_group_name_protonym
       tribe
-      subfamily { |a| a.tribe.subfamily }
+      subfamily { |taxon| taxon.tribe.subfamily }
     end
 
     factory :genus, class: 'Genus' do
       association :name, factory: :genus_name
       genus_group_name_protonym
       tribe
-      subfamily { |a| a.tribe&.subfamily }
+      subfamily { |taxon| taxon.tribe&.subfamily }
     end
 
     factory :subgenus, class: 'Subgenus' do
@@ -76,6 +76,7 @@ FactoryBot.define do
       genus
     end
 
+    # Statuses.
     trait :valid do
       status { Status::VALID }
     end
@@ -115,16 +116,17 @@ FactoryBot.define do
       status { Status::UNAVAILABLE_UNCATEGORIZED }
     end
 
+    # Parallel statuses.
     trait :fossil do
       fossil { true }
     end
 
-    trait :original_combination do
-      original_combination { true }
+    trait :unresolved_homonym do
+      unresolved_homonym { true }
     end
 
-    trait :with_current_valid_taxon do
-      current_valid_taxon { Family.first || FactoryBot.create(:family) }
+    trait :original_combination do
+      original_combination { true }
     end
 
     trait :incertae_sedis_in_family do
@@ -133,6 +135,11 @@ FactoryBot.define do
 
     trait :incertae_sedis_in_subfamily do
       incertae_sedis_in { Rank::INCERTAE_SEDIS_IN_SUBFAMILY }
+    end
+
+    # Misc.
+    trait :with_current_valid_taxon do
+      current_valid_taxon { Family.first || FactoryBot.create(:family) }
     end
 
     trait :with_history_item do

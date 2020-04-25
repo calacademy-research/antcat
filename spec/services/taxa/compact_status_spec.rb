@@ -95,14 +95,14 @@ describe Taxa::CompactStatus do
 
       context "when taxon is an unresolved homonym" do
         context "when there is no current valid taxon" do
-          let(:taxon) { build_stubbed :family, unresolved_homonym: true }
+          let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
           specify { expect(described_class[taxon]).to eq "unresolved junior homonym" }
         end
 
         context "when there is a current valid taxon" do
           let(:senior) { build_stubbed :genus }
-          let(:taxon) { build_stubbed :family, :synonym, unresolved_homonym: true, current_valid_taxon: senior }
+          let(:taxon) { build_stubbed :family, :synonym, :unresolved_homonym, current_valid_taxon: senior }
 
           specify do
             expect(described_class[taxon]).

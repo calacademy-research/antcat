@@ -5,7 +5,9 @@ Feature: Taxon selector
     And there is a genus "Atta"
     And there is a genus "Eciton"
 
-  @skip_ci
+  # TODO: Randomly fails without "@reset_driver".
+  #   "Unable to find visible css ".select2-results__option" with text /Eciton/ (Capybara::ElementNotFound)".
+  @skip_ci @reset_driver
   Scenario: Using the selector to set a taxon field
     When I go to the edit page for "Atta"
     And I select "homonym" from "taxon_status"

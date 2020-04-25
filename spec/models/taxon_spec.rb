@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe Taxon do
+  include TestLinksHelpers
+
   describe 'relations' do
     subject(:taxon) { create :family }
 
@@ -48,7 +50,7 @@ describe Taxon do
 
     describe "#unresolved_homonym" do
       context 'when taxon is a homonym' do
-        let(:taxon) { build_stubbed :family, unresolved_homonym: true }
+        let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
         it 'cannot be an `unresolved_homonym`' do
           expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to false
@@ -214,9 +216,7 @@ describe Taxon do
   describe "#link_to_taxon" do
     let!(:taxon) { build_stubbed :subfamily }
 
-    specify do
-      expect(taxon.link_to_taxon).to eq %(<a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>)
-    end
+    specify { expect(taxon.link_to_taxon).to eq taxon_link(taxon) }
   end
 
   describe "#author_citation" do

@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 describe TaxonDecorator do
+  include TestLinksHelpers
+
   let(:decorated) { taxon.decorate }
 
   describe "#link_to_taxon_with_author_citation" do
@@ -10,8 +12,7 @@ describe TaxonDecorator do
 
     specify do
       expect(decorated.link_to_taxon_with_author_citation).to eq <<~HTML.squish
-        <a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>
-        #{taxon.author_citation}
+        #{taxon_link(taxon)} #{taxon.author_citation}
       HTML
     end
   end
@@ -22,7 +23,7 @@ describe TaxonDecorator do
     specify do
       expect(decorated.id_and_name_and_author_citation).to eq <<~HTML.squish
         <span><small class="gray">##{taxon.id}</small>
-        <a href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>
+        #{taxon_link(taxon)}
         <small class="gray">#{taxon.author_citation}</small></span>
       HTML
     end
