@@ -14,6 +14,7 @@ class DiscoMode
 
   COLOR_CODED_CATALOG_LINKS_CLASS = "color-coded-catalog-links"
   AFTER_LABELS_CLASS = "color-coded-catalog-links-after-labels"
+  SHOW_FIREWORKS_CLASS = "show-fireworks"
 
   constructor: ->
     if @_isEnabledInCookies()
@@ -26,6 +27,7 @@ class DiscoMode
       @_disableDiscoMode()
     else
       @_enableDiscoMode()
+      @_showFireworks()
 
   _isEnabledInState: -> $(CONTAINER).hasClass(COLOR_CODED_CATALOG_LINKS_CLASS)
   _isEnabledInCookies: -> localStorage.getItem(LOCAL_STORAGE_KEY)
@@ -41,6 +43,10 @@ class DiscoMode
     @_hideLinkColors()
     $(TOGGLE_BUTTON).text "Go to the disco!"
     @_disableInCookies()
+    @_hideFireworks()
 
   _showLinkColors: -> $(CONTAINER).addClass([COLOR_CODED_CATALOG_LINKS_CLASS, AFTER_LABELS_CLASS])
   _hideLinkColors: -> $(CONTAINER).removeClass([COLOR_CODED_CATALOG_LINKS_CLASS, AFTER_LABELS_CLASS])
+
+  _showFireworks: -> $(CONTAINER).addClass(SHOW_FIREWORKS_CLASS)
+  _hideFireworks: -> $(CONTAINER).removeClass(SHOW_FIREWORKS_CLASS)

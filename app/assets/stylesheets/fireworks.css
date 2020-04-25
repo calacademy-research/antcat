@@ -1,0 +1,91 @@
+// CSS fireworks animation, based on https://codepen.io/yshlin/pen/ylDEk
+
+$particles: 50;
+$width: 800;
+$height: 500;
+
+$box-shadow: ();
+$box-shadow2: ();
+@for $i from 0 through $particles {
+  $box-shadow: $box-shadow,
+               random($width)-$width / 2 + px
+               random($height)-$height / 1.2 + px
+               hsl(random(360), 100, 50);
+  $box-shadow2: $box-shadow2, 0 0 #fff
+}
+@mixin keyframes ($animationName) {
+  @-webkit-keyframes #{$animationName} {
+    @content;
+  }
+
+  @-moz-keyframes #{$animationName} {
+    @content;
+  }
+
+  @-o-keyframes #{$animationName} {
+    @content;
+  }
+
+  @-ms-keyframes #{$animationName} {
+    @content;
+  }
+
+  @keyframes #{$animationName} {
+    @content;
+  }
+}
+
+@mixin animation-delay ($settings) {
+   -moz-animation-delay: $settings;
+   -webkit-animation-delay: $settings;
+   -o-animation-delay: $settings;
+   -ms-animation-delay: $settings;
+   animation-delay: $settings;
+}
+
+@mixin animation-duration ($settings) {
+   -moz-animation-duration: $settings;
+   -webkit-animation-duration: $settings;
+   -o-animation-duration: $settings;
+   -ms-animation-duration: $settings;
+   animation-duration: $settings;
+}
+
+@mixin animation ($settings) {
+   -moz-animation: $settings;
+   -webkit-animation: $settings;
+   -o-animation: $settings;
+   -ms-animation: $settings;
+   animation: $settings;
+}
+
+@mixin transform ($settings) {
+   transform: $settings;
+   -moz-transform: $settings;
+   -webkit-transform: $settings;
+   -o-transform: $settings;
+   -ms-transform: $settings;
+}
+
+.show-fireworks #fireworks {
+  margin-left: 20rem;
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: $box-shadow2;
+  @include animation((0.7s bang ease-out backwards, 0.7s gravity ease-in backwards));
+}
+
+@include keyframes(bang) {
+  to {
+    box-shadow:$box-shadow;
+  }
+}
+
+@include keyframes(gravity)  {
+  to {
+    @include transform(translateY(200px));
+    opacity: 0;
+  }
+}
