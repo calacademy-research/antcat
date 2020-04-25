@@ -9,7 +9,7 @@ class TaxonBrowserPresenter
 
   def taxon_browser_taxon_link taxon
     label = (taxon.fossil? ? +'†' : +'') << taxon.name_epithet
-    link_to label, catalog_path(taxon), class: [taxon.status.downcase.tr(' ', '_'), taxon.rank]
+    link_to label, catalog_path(taxon), class: [taxon.status.tr(' ', '-'), taxon.rank]
   end
 
   def toggle_invalid_or_valid_only_link
