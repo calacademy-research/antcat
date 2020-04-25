@@ -7,7 +7,7 @@ end
 
 crumb :protonym do |protonym|
   if protonym.persisted?
-    link protonym.decorate.link_to_protonym
+    link protonym.decorate.name_with_fossil, protonym
   else
     link "##{protonym.id} [deleted]"
   end
