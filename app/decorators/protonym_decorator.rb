@@ -4,7 +4,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :authorship, :name, :fossil?
 
   def link_to_protonym
-    h.link_to name_with_fossil, h.protonym_path(protonym)
+    h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym'
   end
 
   # TODO: This does not seem to be `included` when used in `DatabaseScripts::ProtonymsWithNotesTaxt`.

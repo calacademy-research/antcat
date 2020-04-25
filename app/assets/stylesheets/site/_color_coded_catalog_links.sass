@@ -1,5 +1,21 @@
 @import "colors"
 
+@mixin after-label
+  margin-left: 0.4rem
+  // Remove inherited italics/bold.
+  font-style: normal
+  font-weight: normal
+
+@mixin scream-orange-after-label
+  @include after-label
+  background: $color_scream_orange
+  color: white
+
+@mixin scream-green-after-label
+  @include after-label
+  background: $color_scream_green
+  color: white
+
 .color-coded-catalog-links
   .valid
     color: red !important
@@ -24,3 +40,20 @@
   // TOOD: Use kebab-case.
   .obsolete_combination
     color: green !important
+
+.color-coded-catalog-links-after-labels
+  .unavailable_uncategorized::after
+    @include scream-orange-after-label
+    content: "unavailable uncategorized"
+
+  .unavailable_misspelling  ::after
+    @include scream-orange-after-label
+    content: "unavailable misspelling"
+
+  .unresolved-homonym::after
+    @include scream-orange-after-label
+    content: "unresolved homonym"
+
+  .protonym::after
+    @include scream-green-after-label
+    content: "protonym"

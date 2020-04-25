@@ -94,7 +94,8 @@ class Taxon < ApplicationRecord
 
   # TODO: This does not belong in the model. It was moved here to make it easier to refactor `Name`.
   def link_to_taxon
-    %(<a href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
+    css_classes = DefaultFormatter.disco_mode_css(self)
+    %(<a class="#{css_classes}" href="/catalog/#{id}">#{name_with_fossil}</a>).html_safe
   end
 
   def taxon_collaborators
