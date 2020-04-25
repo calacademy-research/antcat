@@ -121,6 +121,10 @@ FactoryBot.define do
       fossil { true }
     end
 
+    trait :unresolved_homonym do
+      unresolved_homonym { true }
+    end
+
     trait :original_combination do
       original_combination { true }
     end

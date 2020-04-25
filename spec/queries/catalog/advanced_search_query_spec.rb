@@ -251,7 +251,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by unresolved junior homonym" do
       let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, unresolved_homonym: true }
+      let!(:yes_match) { create :family, :unresolved_homonym }
 
       specify { expect(described_class[unresolved_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[unresolved_homonym: "true"]).to eq [yes_match] }

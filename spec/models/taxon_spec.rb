@@ -50,7 +50,7 @@ describe Taxon do
 
     describe "#unresolved_homonym" do
       context 'when taxon is a homonym' do
-        let(:taxon) { build_stubbed :family, unresolved_homonym: true }
+        let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
         it 'cannot be an `unresolved_homonym`' do
           expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to false
