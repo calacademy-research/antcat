@@ -114,20 +114,19 @@ module DatabaseScripts
 
       attr_accessor :listed_ids
 
-      # "-lepis" was included twice, removed from the masculine list.
-      # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def first_pass_endings
         {
           feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
-          masculine: %w[myrmex oides ius],
+          masculine: %w[myrmex oides lasius ius],
           neuter: %w[omma noma ium]
         }
       end
 
       # These can only be applied once the above endings have been assigned.
+      # TODO: Move non-conflicting ending to the first pass.
       def second_pass_endings
         {
-          feminine: %w[a e opsis],
+          feminine: %w[a e opsis lepis],
           masculine: %w[er es ops os us],
           neuter: %w[on um]
         }

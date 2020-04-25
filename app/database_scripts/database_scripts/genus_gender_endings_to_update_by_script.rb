@@ -98,7 +98,7 @@ module DatabaseScripts
 
       def endings
         {
-          feminine: %w[a e opsis],
+          feminine: %w[a e opsis lepis],
           masculine: %w[er es ops os us],
           neuter: %w[on um]
         }
