@@ -6,16 +6,12 @@ class TaxonDecorator < Draper::Decorator
   ANTWEB_BASE_URL = "https://www.antweb.org/description.do?"
   GOOGLE_SCHOLAR_BASE_URL = "//scholar.google.com/scholar?"
 
-  def link_to_taxon_with_label label
-    h.link_to label, h.catalog_path(taxon), class: CatalogFormatter.disco_mode_css(taxon)
-  end
-
   def link_to_taxon_with_author_citation
-    link_to_taxon_with_label(taxon.name_with_fossil) << ' ' << taxon.author_citation.html_safe
+    CatalogFormatter.link_to_taxon(taxon) << ' ' << taxon.author_citation.html_safe
   end
 
   def link_to_taxon_with_linked_author_citation
-    link_to_taxon_with_label(taxon.name_with_fossil) <<
+    CatalogFormatter.link_to_taxon(taxon) <<
       ' ' <<
       h.content_tag(
         :span,
