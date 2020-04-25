@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Consolidate AntCat markdown specs somewhere to avoid spec shotgun surgery.
-
 require 'rails_helper'
 
 describe Markdowns::ParseCatalogTags do
@@ -13,20 +11,20 @@ describe Markdowns::ParseCatalogTags do
       expect(described_class[content]).to eq "<i>italics<i><i>xss</i></i></i>"
     end
 
-    describe "tax tags (taxa)" do
+    describe "tag: `TAX_TAG_REGEX` (taxa)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{tax #{taxon.id}}"]).to eq taxon_link(taxon)
       end
 
-      context "when the taxon can't be found" do
+      context "when taxon does not exists" do
         it "adds a warning" do
           expect(described_class["{tax 999}"]).to include "CANNOT FIND TAXON WITH ID 999"
         end
       end
     end
 
-    describe "tax tags with author citation (taxa)" do
+    describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
@@ -35,14 +33,14 @@ describe Markdowns::ParseCatalogTags do
         HTML
       end
 
-      context "when the taxon can't be found" do
+      context "when taxon does not exists" do
         it "adds a warning" do
           expect(described_class["{taxac 999}"]).to include "CANNOT FIND TAXON WITH ID 999"
         end
       end
     end
 
-    describe "ref tags (references)" do
+    describe "tag: `REF_TAG_REGEX` (references)" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :any_reference, title: 'Pizza' }
 
@@ -52,7 +50,7 @@ describe Markdowns::ParseCatalogTags do
         end
       end
 
-      context "when the ref points to a reference that doesn't exist" do
+      context "when reference does not exists" do
         it "adds a warning" do
           expect(described_class["{ref 999}"]).to include "CANNOT FIND REFERENCE WITH ID 999"
         end
