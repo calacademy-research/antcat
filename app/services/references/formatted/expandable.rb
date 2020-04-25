@@ -13,10 +13,10 @@ module References
       attr_private_initialize :reference
 
       def call
-        # TODO: `tabindex: 2` is required or tooltips won't stay open even with `data-click-open="true"`.
+        # TODO: `tabindex: "0"` is required or tooltips won't stay open even with `data-click-open="true"`.
         content_tag :span, sanitize(reference.keey),
           data: { tooltip: true, allow_html: "true", tooltip_class: "foundation-tooltip" },
-          tabindex: "2", title: inner_content.html_safe
+          tabindex: "0", title: inner_content.html_safe
       end
 
       private
