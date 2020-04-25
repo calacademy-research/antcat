@@ -27,7 +27,7 @@ Feature: Institutions
     And I log in as a catalog editor named "Archibald"
 
     When I go to the institutions page
-    And I follow "California Academy of Sciences"
+    And I follow the first "California Academy of Sciences"
     And I follow "Edit"
     And I fill in "institution_abbreviation" with "SASC"
     And I fill in "institution_name" with "Sweden Academy of Sciences"
@@ -48,7 +48,7 @@ Feature: Institutions
     And I log in as a superadmin named "Archibald"
 
     When I go to the institutions page
-    And I follow "California Academy of Sciences"
+    And I follow the first "California Academy of Sciences"
     And I follow "Delete"
     Then I should be on the institutions page
     And I should see "Institution was successfully deleted"
