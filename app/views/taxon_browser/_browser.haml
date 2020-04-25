@@ -3,7 +3,7 @@
     %li.tabs-title{class: ("is-active" if tab.open?)}
       =link_to tab.title, "##{tab.id}"
 
-  %li.tab-toggler
+  %li.tab-toggler{role: 'presentation'}
     %span.white-label
       =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
     %span.label.secondary
