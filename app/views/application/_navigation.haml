@@ -9,8 +9,8 @@
         %ul.menu
           -# HACK: Because lazy.
           -if current_user&.id == 60
-            %small.left
-              =link_to_current_page_on_live_site_or_localhost
+            %li
+              %small.left=link_to_current_page_on_live_site_or_localhost
           -if user_signed_in?
             =unseen_notifications_badge = capture { render "unseen_notifications_badge" }
             =unread_site_notices_badge = capture { render "unread_site_notices_badge" }
