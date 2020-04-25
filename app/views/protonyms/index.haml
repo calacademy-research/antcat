@@ -8,12 +8,6 @@
       =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"
     -else
       =link_to "Order by taxon count", protonyms_path(request.params.merge(order: ProtonymsController::TAXON_COUNT_ORDER)), class: "btn-normal"
-
-    -if params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
-      =link_to "Don't hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => nil)), class: "btn-normal"
-    -else params[ProtonymsController::ONLY_WITH_TYPE_TAXON]
-      =link_to "Hide without type taxon", protonyms_path(request.params.merge(ProtonymsController::ONLY_WITH_TYPE_TAXON => 'yes')), class: "btn-normal"
-
     -if user_is_editor?
       =link_to "New", new_protonym_path, class: "btn-normal"
 
