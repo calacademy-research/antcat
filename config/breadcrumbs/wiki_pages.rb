@@ -7,7 +7,7 @@ end
 
 crumb :wiki_page do |wiki_page|
   if wiki_page.persisted?
-    link "##{wiki_page.id}: #{wiki_page.title}", wiki_page
+    link wiki_page.title, wiki_page
   else
     link "##{wiki_page.id} [deleted]"
   end
