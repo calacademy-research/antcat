@@ -44,5 +44,14 @@ describe Markdowns::ParseAntcatTags do
         end
       end
     end
+
+    describe 'tag: `WIKI_TAG_REGEX` (wiki pages links)' do
+      let!(:wiki_page) { create :wiki_page }
+
+      specify do
+        expect(described_class["%wiki#{wiki_page.id}"]).
+          to eq %(<a href="/wiki_pages/#{wiki_page.id}">#{wiki_page.title}</a>)
+      end
+    end
   end
 end

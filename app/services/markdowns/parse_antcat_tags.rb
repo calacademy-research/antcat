@@ -22,9 +22,9 @@ module Markdowns
 
     def call
       parse_github_tags
-      parse_wiki_tags
       parse_user_tags
       parse_dbscript_tags
+      parse_wiki_tags
 
       content
     end
@@ -39,20 +39,6 @@ module Markdowns
         content.gsub!(GITHUB_TAG_REGEX) do
           github_issue_id = $LAST_MATCH_INFO[:issue_id]
           link_to "GitHub ##{github_issue_id}", "#{GITHUB_ISSUES_BASE_URL}#{github_issue_id}"
-        end
-      end
-
-      # Matches: %wiki123
-      # Renders: a link to the wiki page.
-      def parse_wiki_tags
-        content.gsub!(WIKI_TAG_REGEX) do
-          wiki_page_id = $LAST_MATCH_INFO[:id]
-
-          if (wiki_page = WikiPage.find_by(wiki_page_id))
-            link_to wiki_page.title, wiki_page_path(wiki_page_id)
-          else
-            broken_markdown_link "WIKI_PAGE", wiki_page_id
-          end
         end
       end
 
@@ -79,6 +65,20 @@ module Markdowns
           database_script = DatabaseScript.safe_new_from_basename(basename)
           formatted_tags = DatabaseScriptDecorator.new(database_script).format_tags
           link_to(database_script.title, database_script_path(database_script)) << ' ' << formatted_tags
+        end
+      end
+
+      # Matches: %wiki123
+      # Renders: a link to the wiki page.
+      def parse_wiki_tags
+        content.gsub!(WIKI_TAG_REGEX) do
+          wiki_page_id = $LAST_MATCH_INFO[:id]
+
+          if (wiki_page = WikiPage.find_by(id: wiki_page_id))
+            link_to wiki_page.title, wiki_page_path(wiki_page_id)
+          else
+            broken_markdown_link "WIKI_PAGE", wiki_page_id
+          end
         end
       end
 

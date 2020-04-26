@@ -16,15 +16,15 @@ class ReferenceDecorator < Draper::Decorator
   end
 
   def format_public_notes
-    format_italics sanitize reference.public_notes
+    format_notes reference.public_notes
   end
 
   def format_editor_notes
-    format_italics sanitize reference.editor_notes
+    format_notes reference.editor_notes
   end
 
   def format_taxonomic_notes
-    format_italics sanitize reference.taxonomic_notes
+    format_notes reference.taxonomic_notes
   end
 
   def format_document_links
@@ -59,6 +59,10 @@ class ReferenceDecorator < Draper::Decorator
 
     def reference_formatter
       @_reference_formatter ||= References::CachedReferenceFormatter.new(reference)
+    end
+
+    def format_notes notes
+      format_italics sanitize(notes)
     end
 
     def format_italics string
