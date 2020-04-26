@@ -19,6 +19,8 @@ module AntwebFormatter
       parse_taxac_tags
       parse_ref_tags
 
+      parse_missing_or_unmissing_tax_tags
+
       sanitize content.html_safe
     end
 
@@ -50,6 +52,13 @@ module AntwebFormatter
           if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
             formatter.link_to_reference(reference)
           end
+        end
+      end
+
+      # Hardcoded names, "{missing_tax/unmissing_tax string}".
+      def parse_missing_or_unmissing_tax_tags
+        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAX_TAG) do
+          $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
   end

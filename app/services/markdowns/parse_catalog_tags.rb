@@ -20,6 +20,8 @@ module Markdowns
       parse_taxac_tags
       parse_ref_tags
 
+      parse_missing_or_unmissing_tax_tags
+
       content
     end
 
@@ -87,6 +89,14 @@ module Markdowns
           else
             broken_markdown_link "REFERENCE", reference_id
           end
+        end
+      end
+
+      # Matches: {missing_tax/unmissing_tax hardcoded name}, which may contain "<i>" tags.
+      # Renders: hardcoded name.
+      def parse_missing_or_unmissing_tax_tags
+        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAX_TAG) do
+          $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
 
