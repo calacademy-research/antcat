@@ -9,7 +9,7 @@ module My
     end
 
     def create
-      update_most_recently_used_references!
+      update_most_recently_used_references
       head :ok
     end
 
@@ -19,7 +19,7 @@ module My
         Reference.find(session[:recently_used_reference_ids] || [])
       end
 
-      def update_most_recently_used_references!
+      def update_most_recently_used_references
         reference_ids = session[:recently_used_reference_ids] || []
         reference_ids.prepend params[:id]
         session[:recently_used_reference_ids] = reference_ids.uniq[0...NUMBER_OF_RECENT_REFERENCES]

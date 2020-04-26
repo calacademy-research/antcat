@@ -47,7 +47,7 @@ module DatabaseScripts
           taxon = Taxon.find(tax_id)
           reference = Reference.find(ref_id)
 
-          string << taxon.link_to_taxon
+          string << CatalogFormatter.link_to_taxon(taxon)
           string << ' '
           string << if taxon.authorship_reference == reference
                       'tax/ref matches'

@@ -6,7 +6,7 @@ describe AntwebFormatter::Detax do
   include TestLinksHelpers
 
   describe "#call" do
-    describe "tax tags (taxa)" do
+    describe "tag: `TAX_TAG_REGEX` (taxa)" do
       let!(:taxon) { create :family }
 
       specify do
@@ -14,7 +14,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "taxac tags (taxa with author citation)" do
+    describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
       let!(:taxon) { create :family }
 
       specify do
@@ -22,7 +22,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "ref tags (references)" do
+    describe "tag: `REF_TAG_REGEX` (references)" do
       let!(:reference) { create :any_reference }
 
       specify do

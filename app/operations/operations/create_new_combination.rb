@@ -51,7 +51,7 @@ module Operations
 
     class PreviewTaxon < SimpleDelegator
       def to_s
-        __getobj__.link_to_taxon
+        CatalogFormatter.link_to_taxon(__getobj__)
       end
     end
 

@@ -13,7 +13,7 @@ module References
       def call
         string = sanitize(reference.author_names_string_with_suffix)
         string << ' '
-        string << sanitize(reference.citation_year_and_stated_year) << '. '
+        string << sanitize(reference.citation_year_with_stated_year) << '. '
         string << Unitalicize[reference.decorate.format_title] << ' '
         string << AddPeriodIfNecessary[sanitize(format_citation)]
         string

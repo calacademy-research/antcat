@@ -28,7 +28,7 @@
     -else
       -@children.each do |child|
         %tr
-          %td=child.link_to_taxon
+          %td=CatalogFormatter.link_to_taxon(child)
           %td=child.rank.capitalize
           %td=child.decorate.expanded_status
           %td.shrink

@@ -23,8 +23,7 @@
   .synonym
     color: $color_really_dark_gray_text !important
 
-  // TODO: Skip downcasing (rename to "excluded_from_Formicidae").
-  .unidentifiable, .excluded_from_formicidae
+  .unidentifiable, .excluded-from-Formicidae
     color: darkblue !important
 
   .unavailable
@@ -33,16 +32,15 @@
   .homonym, .unresolved_homonym
     color: brown !important
 
-  // TOOD: Use kebab-case.
-  .obsolete_combination
+  .obsolete-combination
     color: green !important
 
 .color-coded-catalog-links-after-labels
-  .unavailable_uncategorized::after
+  .unavailable-uncategorized::after
     @include scream-orange-after-label
     content: "unavailable uncategorized"
 
-  .unavailable_misspelling  ::after
+  .unavailable-misspelling::after
     @include scream-orange-after-label
     content: "unavailable misspelling"
 

@@ -5,14 +5,15 @@ crumb :catalog do
 end
 
 crumb :family do |_taxon|
-  link Family.first.link_to_taxon
+  taxon = Family.first
+  link taxon.name_with_fossil, catalog_path(taxon), class: CatalogFormatter.disco_mode_css(taxon)
   parent :catalog
 end
 
 [:subfamily, :tribe, :subtribe, :genus, :subgenus, :species, :subspecies, :infrasubspecies].each do |rank|
   crumb rank do |taxon|
     if taxon.name
-      link taxon.link_to_taxon
+      link taxon.name_with_fossil, catalog_path(taxon), class: CatalogFormatter.disco_mode_css(taxon)
     else
       link '[deleted name]'
     end

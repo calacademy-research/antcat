@@ -213,12 +213,6 @@ describe Taxon do
     end
   end
 
-  describe "#link_to_taxon" do
-    let!(:taxon) { build_stubbed :subfamily }
-
-    specify { expect(taxon.link_to_taxon).to eq taxon_link(taxon) }
-  end
-
   describe "#author_citation" do
     let!(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '2005' }
 

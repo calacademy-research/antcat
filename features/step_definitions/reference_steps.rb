@@ -10,7 +10,7 @@ end
 module ReferenceStepsHelpers
   module_function
 
-  def find_or_create_author_names! hsh
+  def find_or_create_author_names hsh
     if (author = hsh.delete 'author')
       author_name = AuthorName.find_by(name: author) || FactoryBot.create(:author_name, name: author)
       hsh[:author_names] = [author_name]
@@ -32,7 +32,7 @@ end
 
 Given("(this reference exists)/(these references exist)") do |table|
   table.hashes.each do |hsh|
-    ReferenceStepsHelpers.find_or_create_author_names!(hsh)
+    ReferenceStepsHelpers.find_or_create_author_names(hsh)
     create :any_reference, hsh
   end
 end
@@ -46,7 +46,7 @@ Given("this article reference exists") do |table|
 
   hsh.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
 
-  ReferenceStepsHelpers.find_or_create_author_names!(hsh)
+  ReferenceStepsHelpers.find_or_create_author_names(hsh)
 
   create :article_reference, hsh
 end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe DefaultFormatter do
+describe CatalogFormatter do
   include TestLinksHelpers
 
   describe ".link_to_taxon" do
@@ -23,9 +23,9 @@ describe DefaultFormatter do
   end
 
   describe ".disco_mode_css" do
-    it 'replaces spaces in statuses with underscores' do
+    it 'replaces spaces in statuses with dashes' do
       taxon = build_stubbed :family, :obsolete_combination
-      expect(described_class.disco_mode_css(taxon)).to eq "obsolete_combination"
+      expect(described_class.disco_mode_css(taxon)).to eq "obsolete-combination"
     end
 
     context 'when taxon is an `unresolved_homonym`' do

@@ -5,49 +5,50 @@ module AntwebFormatter
     include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize taxt
-      @taxt = taxt.try :dup
+    def initialize content
+      @content = content.try(:dup)
+      @formatter = AntwebFormatter
     end
 
     # Parses "example {tax 429361}"
     # into   "example <a href=\"https://antcat.org/catalog/429361\">Melophorini</a>"
     def call
-      return unless taxt
+      return unless content
 
       parse_tax_tags
       parse_taxac_tags
       parse_ref_tags
 
-      sanitize taxt.html_safe
+      sanitize content.html_safe
     end
 
     private
 
-      attr_reader :taxt
+      attr_reader :content, :formatter
 
       # Taxa, "{tax 123}".
       def parse_tax_tags
-        taxt.gsub!(Taxt::TAX_TAG_REGEX) do
+        content.gsub!(Taxt::TAX_TAG_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
-            AntwebFormatter.link_to_taxon(taxon)
+            formatter.link_to_taxon(taxon)
           end
         end
       end
 
       # Taxa with author citation, "{taxac 123}".
       def parse_taxac_tags
-        taxt.gsub!(Taxt::TAXAC_TAG_REGEX) do
+        content.gsub!(Taxt::TAXAC_TAG_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
-            AntwebFormatter.link_to_taxon_with_author_citation(taxon)
+            formatter.link_to_taxon_with_author_citation(taxon)
           end
         end
       end
 
       # References, "{ref 123}".
       def parse_ref_tags
-        taxt.gsub!(Taxt::REF_TAG_REGEX) do
+        content.gsub!(Taxt::REF_TAG_REGEX) do
           if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
-            AntwebFormatter.link_to_reference(reference)
+            formatter.link_to_reference(reference)
           end
         end
       end

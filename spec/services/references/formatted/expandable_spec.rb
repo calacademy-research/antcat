@@ -21,7 +21,7 @@ describe References::Formatted::Expandable do
 
     specify do
       expect(formatter.call).to eq <<~HTML.squish
-        <span data-tooltip="true" data-allow-html="true" data-tooltip-class="foundation-tooltip" tabindex="2"
+        <span data-tooltip="true" data-allow-html="true" data-tooltip-class="foundation-tooltip" tabindex="0"
           title="<a href=&quot;/authors/#{author_name.author.id}&quot;>#{author_name.name}</a> 1874.
             <a href=&quot;/references/#{reference.id}&quot;><i>Atta</i> <i>and such</i>.</a>
             #{reference.journal.name} (1):3.

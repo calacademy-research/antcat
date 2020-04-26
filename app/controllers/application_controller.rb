@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
-  before_action :store_location_for_devise!, if: :storable_location?
+  before_action :store_location_for_devise, if: :storable_location?
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
@@ -47,7 +47,7 @@ class ApplicationController < ActionController::Base
     end
 
     # See https://github.com/heartcombo/devise/wiki/How-To:-Redirect-back-to-current-page-after-sign-in,-sign-out,-sign-up,-update
-    def store_location_for_devise!
+    def store_location_for_devise
       store_location_for(:user, request.fullpath)
     end
 

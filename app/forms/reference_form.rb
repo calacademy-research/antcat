@@ -12,7 +12,7 @@ class ReferenceForm
     save_reference
   end
 
-  def collect_errors!
+  def collect_errors
     reference.valid? # Trigger errors.
     errors.merge!(reference.errors)
   end

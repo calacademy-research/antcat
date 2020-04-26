@@ -69,7 +69,7 @@ class Reference < ApplicationRecord
     save(validate: false)
   end
 
-  def citation_year_and_stated_year
+  def citation_year_with_stated_year
     return citation_year unless stated_year
     %(#{citation_year} ("#{stated_year}"))
   end

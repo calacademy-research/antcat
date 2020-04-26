@@ -15,7 +15,7 @@
       -decorated_protonym = taxon.protonym.decorate
       %tr
         %td
-          =taxon.link_to_taxon
+          =CatalogFormatter.link_to_taxon(taxon)
           %br
           .small-text=taxon.decorate.expanded_status
         %td=taxon.authorship_reference.decorate.expandable_reference

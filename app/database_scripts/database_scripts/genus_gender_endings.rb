@@ -88,7 +88,8 @@ module DatabaseScripts
     end
 
     def render
-      section_table(first_pass_feminine, :feminine, first_pass_endings[:feminine], "Feminine endings (first pass)") <<
+      all_endings_as_plaintext <<
+        section_table(first_pass_feminine, :feminine, first_pass_endings[:feminine], "Feminine endings (first pass)") <<
         section_table(first_pass_masculine, :masculine, first_pass_endings[:masculine], "Masculine endings (first pass)") <<
         section_table(first_pass_neuter, :neuter, second_pass_endings[:neuter], "Neuter endings (first pass)") <<
         section_table(second_pass_feminine, :feminine, second_pass_endings[:feminine], "Feminine endings (second pass)") <<
@@ -114,23 +115,37 @@ module DatabaseScripts
 
       attr_accessor :listed_ids
 
-      # "-lepis" was included twice, removed from the masculine list.
-      # Removed overlapping endings: "-lasius" (masculine), "-um" (neuter).
       def first_pass_endings
         {
           feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
-          masculine: %w[myrmex oides ius],
+          masculine: %w[myrmex oides lasius ius],
           neuter: %w[omma noma ium]
         }
       end
 
       # These can only be applied once the above endings have been assigned.
+      # TODO: Move non-conflicting ending to the first pass.
       def second_pass_endings
         {
-          feminine: %w[a e opsis],
+          feminine: %w[a e opsis lepis],
           masculine: %w[er es ops os us],
           neuter: %w[on um]
         }
+      end
+
+      def all_endings_as_plaintext
+        Markdowns::Render[+<<~MARKDOWN]
+          **First-pass endings**<br> #{format_endings(first_pass_endings)}
+
+          **Second-pass endings**<br> #{format_endings(second_pass_endings)}
+        MARKDOWN
+      end
+
+      def format_endings endings
+        endings.map do |gender, suffixes|
+          joined_suffixes = suffixes.map { |suffix| "-#{suffix}" }.join(', ')
+          "**#{gender.capitalize}**: #{joined_suffixes}"
+        end.join('<br>')
       end
 
       def section_table taxa, section_gender, endings, caption

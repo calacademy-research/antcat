@@ -4,5 +4,5 @@
     %ul.compact-list
       -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
         %li
-          =synonym.link_to_taxon
+          =CatalogFormatter.link_to_taxon(synonym)
           =synonym.author_citation

@@ -1,13 +1,11 @@
 # frozen_string_literal: true
 
 class JournalsController < ApplicationController
-  REFERENCE_COUNT_ORDER = "reference_count"
-
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
 
   def index
-    order = params[:order] == REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
-    @journals = Journal.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
+    order = params[:order] == JournalQuery::REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
+    @journals = JournalQuery.new.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
   end
 
   def show
@@ -24,7 +22,7 @@ class JournalsController < ApplicationController
 
     if @journal.update(journal_params)
       @journal.create_activity :update, current_user
-      @journal.invalidate_reference_caches!
+      @journal.invalidate_reference_caches
       redirect_to @journal, notice: "Successfully updated journal."
     else
       render :edit

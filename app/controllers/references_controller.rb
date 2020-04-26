@@ -39,7 +39,7 @@ class ReferencesController < ApplicationController
       @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
-      @reference_form.collect_errors!
+      @reference_form.collect_errors
       render :new
     end
   end
@@ -57,7 +57,7 @@ class ReferencesController < ApplicationController
       @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
-      @reference_form.collect_errors!
+      @reference_form.collect_errors
       render :edit
     end
   end

@@ -47,11 +47,11 @@ module Taxa
       end
 
       def link_homonym_replaced_by
-        homonym_replaced_by.link_to_taxon
+        CatalogFormatter.link_to_taxon(homonym_replaced_by)
       end
 
       def link_current_valid_taxon
-        current_valid_taxon.link_to_taxon
+        CatalogFormatter.link_to_taxon(current_valid_taxon)
       end
   end
 end

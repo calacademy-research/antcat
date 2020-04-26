@@ -35,14 +35,14 @@
           %li
             =form_tag references_search_index_path, method: :get, class: "reference-search-form" do
               .input-group
-                =text_field_tag "reference_q", params[:reference_q], placeholder: "Search References", class: "typeahead-references-js input-group-field expandable-reference-search"
+                =text_field_tag "reference_q", params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js input-group-field expandable-reference-search"
                 =button_tag type: 'submit', name: nil, id: "header-reference-search-button-test-hook", "aria-label" => 'Search References' do
                   %i.inline-search-icon.icon-search
 
           %li
             =form_tag catalog_search_path, method: :get do
               .input-group
-                =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook'
+                =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: 'input-group-field expandable-catalog-search typeahead-taxa-js-hook'
                 =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
                 =button_tag type: 'submit', name: nil, id: "header-catalog-search-button-test-hook", "aria-label" => 'Search Catalog' do
                   %i.inline-search-icon.icon-search
@@ -65,7 +65,7 @@
         =form_tag references_search_index_path, method: :get do
           .row.search-row
             .small-9.columns
-              =text_field_tag 'reference_q', params[:reference_q], placeholder: "Search References", class: "typeahead-references-js"
+              =text_field_tag 'reference_q', params[:reference_q], placeholder: "Search References", "aria-label" => "Search References",  id: nil, class: "typeahead-references-js"
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 
@@ -73,7 +73,7 @@
         =form_tag catalog_search_path, method: :get do
           .row.search-row
             .small-9.columns
-              =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", class: "typeahead-taxa-js-hook"
+              =text_field_tag 'qq', params[:qq], placeholder: "Search Catalog", "aria-label" => "Search Catalog", id: nil, class: "typeahead-taxa-js-hook"
               =hidden_field_tag Catalog::SearchesController::SEARCHING_FROM_HEADER, true, id: nil
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"

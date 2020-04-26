@@ -24,7 +24,7 @@ module DatabaseScripts
             taxon.status,
             target_subspecies_name_string,
             ('Yes' if convertable),
-            (target_subspecies.link_to_taxon if convertable),
+            (CatalogFormatter.link_to_taxon(target_subspecies) if convertable),
             (target_subspecies.status if convertable),
             (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?)
           ]
