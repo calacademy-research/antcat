@@ -7,7 +7,7 @@ describe ReferenceAuthorName do
 
   describe 'callbacks' do
     describe '#invalidate_reference_caches' do
-      let!(:reference) { create :any_reference }
+      let!(:reference) { create :any_reference, :with_author_name }
       let!(:reference_author_names) { reference.reference_author_names.first }
 
       before do

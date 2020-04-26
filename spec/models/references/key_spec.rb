@@ -10,7 +10,7 @@ describe References::Key do
     let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
     context 'when no authors' do
-      let(:reference) { create :any_reference, citation_year: '1970a' }
+      let(:reference) { create :any_reference, :with_author_name, citation_year: '1970a' }
 
       specify do
         expect { reference.author_names = [] }.to change { key.keey }.to('[no authors], 1970a')

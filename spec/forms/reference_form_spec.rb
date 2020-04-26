@@ -259,7 +259,7 @@ describe ReferenceForm do
     end
 
     describe "duplicate checking" do
-      let!(:original) { create :article_reference }
+      let!(:original) { create :article_reference, :with_author_name }
       let(:params) do
         {
           author_names_string: original.author_names_string,

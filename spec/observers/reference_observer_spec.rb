@@ -27,7 +27,7 @@ describe ReferenceObserver do
     end
 
     describe "Handling a network" do
-      let!(:nesting_reference) { create :article_reference }
+      let!(:nesting_reference) { create :article_reference, :with_author_name }
       let!(:nested_reference) { create :nested_reference, nesting_reference: nesting_reference }
 
       before do
