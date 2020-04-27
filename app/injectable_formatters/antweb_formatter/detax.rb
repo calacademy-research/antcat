@@ -19,7 +19,7 @@ module AntwebFormatter
       parse_taxac_tags
       parse_ref_tags
 
-      parse_missing_or_unmissing_tax_tags
+      parse_missing_or_unmissing_tags
 
       sanitize content.html_safe
     end
@@ -55,9 +55,9 @@ module AntwebFormatter
         end
       end
 
-      # Hardcoded names, "{missing_tax/unmissing_tax string}".
-      def parse_missing_or_unmissing_tax_tags
-        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAX_TAG) do
+      # Hardcoded names, "{missing/unmissing string}".
+      def parse_missing_or_unmissing_tags
+        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG) do
           $LAST_MATCH_INFO[:hardcoded_name]
         end
       end

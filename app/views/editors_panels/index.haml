@@ -27,10 +27,10 @@
   .large-4.medium-4.columns
     %h5 AntCat administration
     %ul.no-bullet
+      %li=link_to 'Database scripts', database_scripts_path
       -if current_user
         %li=link_to "My notifications", notifications_path
       %li=link_to "Site notices", site_notices_path
-      %li=link_to 'Database scripts', database_scripts_path
       -if user_is_editor?
         %li=link_to "PaperTrail versions", versions_path
       %li=link_to 'Invite people to AntCat', invite_users_path

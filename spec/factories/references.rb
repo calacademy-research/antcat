@@ -34,7 +34,7 @@ FactoryBot.define do
         author_name = AuthorName.find_by(name: evaluator.author_string)
         author_name ||= create :author_name, name: evaluator.author_string
         reference.author_names << author_name
-      else
+      elsif reference.author_names.blank?
         # See comment above.
         raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
         reference.author_names = [create(:author_name)]
@@ -61,6 +61,12 @@ FactoryBot.define do
 
     trait :with_doi do
       sequence(:doi) { |n| "10.10.1038/nphys117#{n}" }
+    end
+
+    trait :with_author_name do
+      after(:create) do |reference, _evaluator|
+        reference.author_names << create(:author_name)
+      end
     end
 
     trait :with_document do

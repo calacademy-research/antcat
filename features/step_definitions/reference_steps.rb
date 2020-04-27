@@ -19,15 +19,15 @@ module ReferenceStepsHelpers
 end
 
 Given("there is a reference") do
-  create :any_reference
+  create :any_reference, :with_author_name
 end
 
 Given("there is an article reference") do
-  create :article_reference
+  create :article_reference, :with_author_name
 end
 
 Given("there is a book reference") do
-  create :book_reference
+  create :book_reference, :with_author_name
 end
 
 Given("(this reference exists)/(these references exist)") do |table|

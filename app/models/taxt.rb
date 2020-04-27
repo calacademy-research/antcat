@@ -35,9 +35,9 @@ module Taxt
   TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
   REF_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
-  MISSING_OR_UNMISSING_TAX_TAG = /\{(missing|unmissing)_tax (?<hardcoded_name>.*?)\}/
-  MISSING_TAX_TAG_REGEX = /\{missing_tax (?<hardcoded_name>.*?)\}/
-  UNMISSING_TAX_TAG_REGEX = /\{unmissing_tax (?<hardcoded_name>.*?)\}/
+  MISSING_OR_UNMISSING_TAG = /\{(missing|unmissing) (?<hardcoded_name>.*?)\}/
+  MISSING_TAG_REGEX = /\{missing (?<hardcoded_name>.*?)\}/
+  UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
 
   module_function
 

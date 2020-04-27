@@ -34,7 +34,7 @@ module DatabaseScripts
     end
 
     def taxa_list taxa
-      taxa.map(&:link_to_taxon).join('<br>')
+      taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) }.join('<br>')
     end
 
     # NOTE: The reason we're using markdown here is to take advantage of performance tweaks

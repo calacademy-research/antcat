@@ -80,7 +80,7 @@ describe ReferencesController do
   end
 
   describe "PUT update", as: :helper do
-    let!(:reference) { create :article_reference }
+    let!(:reference) { create :article_reference, :with_author_name }
     let!(:reference_params) do
       {
         title: 'Newer Ants',
@@ -115,7 +115,7 @@ describe ReferencesController do
   end
 
   describe "DELETE destroy", as: :editor do
-    let!(:reference) { create :any_reference }
+    let!(:reference) { create :any_reference, :with_author_name }
 
     it 'deletes the reference' do
       expect { delete(:destroy, params: { id: reference.id }) }.to change { Reference.count }.by(-1)

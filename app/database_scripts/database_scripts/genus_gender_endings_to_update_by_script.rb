@@ -115,10 +115,10 @@ tags: [updated!]
 issue_description:
 
 description: >
-  * Done: *Batch 1) genera with a blank gender*
+  * Done: *Batch 1) genera with a blank gender* - %github997
 
 
-  * Batch 2) more genera with blank gender
+  * Done: *Batch 2) more genera with blank gender* - %github997
 
 related_scripts:
   - GenusGenderEndings
