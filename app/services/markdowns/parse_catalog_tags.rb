@@ -20,7 +20,7 @@ module Markdowns
       parse_taxac_tags
       parse_ref_tags
 
-      parse_missing_or_unmissing_tax_tags
+      parse_missing_or_unmissing_tags
 
       content
     end
@@ -92,10 +92,10 @@ module Markdowns
         end
       end
 
-      # Matches: {missing_tax/unmissing_tax hardcoded name}, which may contain "<i>" tags.
+      # Matches: {missing/unmissing hardcoded name}, which may contain "<i>" tags.
       # Renders: hardcoded name.
-      def parse_missing_or_unmissing_tax_tags
-        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAX_TAG) do
+      def parse_missing_or_unmissing_tags
+        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG) do
           $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
