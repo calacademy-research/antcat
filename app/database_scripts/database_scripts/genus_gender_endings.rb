@@ -118,7 +118,7 @@ module DatabaseScripts
       def first_pass_endings
         {
           feminine: %w[idris myrma ponera pone formica myrmica gaster ella ia ula],
-          masculine: %w[myrmex oides lasius ius],
+          masculine: %w[hymen myrmex oides lasius ius],
           neuter: %w[omma noma ium]
         }
       end
