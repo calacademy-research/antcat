@@ -31,7 +31,7 @@ title: <code>taxac</code> tags with page numbers
 
 section: main
 category: Taxt
-tags: [new!]
+tags: []
 
 description: >
   `taxac` tags should be used for disambiguation purposes only, so no pages should appear after the tag.
