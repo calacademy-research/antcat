@@ -18,22 +18,25 @@
 
 .color-coded-catalog-links
   .valid
-    color: red !important
+    color: $color_catalog_valid !important
 
   .synonym
-    color: $color_really_dark_gray_text !important
+    color: $color_catalog_synonym !important
 
-  .unidentifiable, .excluded-from-Formicidae
-    color: darkblue !important
+  .unidentifiable
+    color: $color_catalog_unidentifiable !important
+
+  .excluded-from-Formicidae
+    color: $color_catalog_excluded_from_formicidae !important
 
   .unavailable
-    color: purple !important
+    color: $color_catalog_unavailable !important
 
-  .homonym, .unresolved_homonym
-    color: brown !important
+  .homonym
+    color: $color_catalog_homonym !important
 
   .obsolete-combination
-    color: green !important
+    color: $color_catalog_obsolete_combination !important
 
 .color-coded-catalog-links-after-labels
   .unavailable-uncategorized::after
