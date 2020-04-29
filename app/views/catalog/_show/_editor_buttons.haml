@@ -1,6 +1,8 @@
 .right
   -if user_is_editor?
     =editors_catalog_presenter.edit_taxon_button
+  -if taxon.rank.in?(Catalog::BoltonController::SUPPORTED_RANKS)
+    =link_to "Bolton view (beta)", bolton_catalog_view_path(taxon), class: "btn-normal"
   =link_to "History", taxon_history_path(taxon), class: "btn-normal"
   =link_to "What Links Here", taxon_what_links_here_path(taxon), class: "btn-normal"
 

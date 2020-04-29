@@ -1,0 +1,26 @@
+-title "#{@taxon.name_cache} - Bolton view"
+-breadcrumb :bolton_view, @taxon
+
+.callout.medium-9.no-border-callout.logged-in-only-background.huge-margin-bottom
+  %h6
+    Catalog "Bolton views"
+    =logged_in_only_tooltip_icon 'This page can only be accessed by logged-in users.'
+  %p
+    This page contains content from AntCat, displayed in the format-ish used by Bolton. It is largely experimental. Only species-group names are supported; views for genera are lists of species-group names (excluding the Citations section).
+  %p Citations sections contain references not shown on this page, since the list is generated from catalog pages.
+
+.bolton-view
+  -@taxa.each do |taxon|
+    =render 'taxon', taxon: taxon
+
+-if @collected_references
+  %h5.huge-margin-top Citations
+  %ul.compact-list
+    -@collected_references.each do |reference|
+      -decorated_reference = reference.decorate
+      %li
+        =decorated_reference.expanded_reference
+        =decorated_reference.format_document_links
+
+.huge-margin-top
+  =will_paginate @taxa

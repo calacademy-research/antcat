@@ -15,7 +15,6 @@ Rails.application.routes.draw do
     resources :author_names, except: [:index, :show], shallow: true
   end
 
-  # TODO: Use `resources` et al.
   namespace :catalog do
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
@@ -24,6 +23,7 @@ Rails.application.routes.draw do
     resource :autocomplete, only: :show
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog
+  get 'catalog/:id/bolton' => 'catalog/bolton#show', as: :bolton_catalog_view
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
   get 'catalog/:id/history' => 'catalog/histories#show', as: :taxon_history
   get 'catalog/:id/what_links_here' => 'catalog/what_links_heres#show', as: :taxon_what_links_here
