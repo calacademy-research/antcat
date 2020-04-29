@@ -1,6 +1,6 @@
 -title "Institution #{@comparer.most_recent.abbreviation}: #{@comparer.most_recent.name}"
 -breadcrumb :institution_history, @comparer.most_recent
--noindex
+-noindex_meta_tag
 
 -content_for :breadcrumbs_right do
   =activities_link_for_trackable @comparer.most_recent
