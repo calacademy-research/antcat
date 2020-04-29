@@ -45,6 +45,11 @@ crumb :taxon_soft_validations do |taxon|
   parent taxon
 end
 
+crumb :bolton_view do |taxon|
+  link "Bolton view ".html_safe + beta_label
+  parent taxon
+end
+
 crumb :wikipedia_tools do |taxon|
   link "Wikipedia tools"
   parent taxon

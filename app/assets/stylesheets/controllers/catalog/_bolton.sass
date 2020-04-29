@@ -1,0 +1,52 @@
+@import "colors"
+
+#catalog_bolton-controller
+  .bolton-view
+    font-family: "Times New Roman", Georgia
+    font-size: 18px
+
+    .header
+      .name
+        &.valid
+          font-weight: bold
+
+    .indented
+      margin-left: 3rem
+
+    .small-text
+      font-size: 85%
+
+    span.has-tip
+      font-weight: normal !important
+
+    ul
+      li:hover
+        background-color: $color_light_gray
+
+    .genus, .subgenus, .species, .subspecies, .infrasubspecies
+      font-style: italic
+
+    &:not(.color-coded-catalog-links)
+      .valid
+        color: $color_bolton_valid !important
+
+      .synonym
+        color: $color_bolton_synonym !important
+
+      .unidentifiable
+        color: $color_catalog_unidentifiable !important
+
+      .excluded-from-Formicidae
+        color: $color_bolton_excluded_from_formicidae !important
+
+      .unavailable
+        color: $color_bolton_unavailable !important
+
+      .homonym
+        color: $color_bolton_homonym !important
+
+      .obsolete-combination
+        color: $color_bolton_obsolete_combination !important
+
+      .valid.subspecies
+        color: $color_bolton_valid_subspecies !important
