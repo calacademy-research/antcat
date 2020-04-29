@@ -7,18 +7,6 @@
 -content_for :breadcrumbs_right do
   -unless @check_if_empty
     =link_to "Show empty/not (beta)", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
-  =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
-
-.row.margin-bottom{data: { show_hide_toggable_id: "help" }}
-  .small-12.medium-9.columns.end
-    .callout.primary
-      %p
-        =DatabaseScriptDecorator.format_tags [DatabaseScripts::Tagging::HIGH_PRIORITY_TAG]
-        is for issues we want to fix as soon as possible, usually because the issue is
-        preventing us from improving the code
-      %p
-        =DatabaseScriptDecorator.format_tags [DatabaseScripts::Tagging::VERY_SLOW_TAG]
-        may cause the site to become unresponsive
 
 .row
   .small-12.columns

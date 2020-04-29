@@ -2,10 +2,6 @@
 
 require 'English'
 
-# The reason for supporting both "%taxon429349" and "{tax 429349}" is because the
-# "%"-style is the original implementation, while the curly braces format is the
-# original "taxt" format as used in taxt items.
-
 module Markdowns
   class ParseCatalogTags
     include ActionView::Helpers::SanitizeHelper
@@ -46,7 +42,7 @@ module Markdowns
           if (taxon = taxa_indexed_by_id[taxon_id.to_i])
             CatalogFormatter.link_to_taxon(taxon)
           else
-            broken_markdown_link "TAXON", taxon_id
+            broken_taxt_tag "TAXON", taxon_id
           end
         end
       end
@@ -60,7 +56,7 @@ module Markdowns
           if (taxon = Taxon.find_by(id: taxon_id))
             taxon.decorate.link_to_taxon_with_linked_author_citation
           else
-            broken_markdown_link "TAXON", taxon_id
+            broken_taxt_tag "TAXON", taxon_id
           end
         end
       end
@@ -87,7 +83,7 @@ module Markdowns
           elsif (reference = Reference.find_by(id: reference_id))
             reference.decorate.expandable_reference.html_safe
           else
-            broken_markdown_link "REFERENCE", reference_id
+            broken_taxt_tag "REFERENCE", reference_id
           end
         end
       end
@@ -100,7 +96,7 @@ module Markdowns
         end
       end
 
-      def broken_markdown_link type, id
+      def broken_taxt_tag type, id
         %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
       end
   end

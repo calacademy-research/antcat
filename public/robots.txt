@@ -23,6 +23,10 @@ Disallow: /
 User-agent: DotBot/1.1
 Disallow: /
 
+# http://www.linguee.com/bot
+User-agent: Linguee
+Disallow: /
+
 # http://megaindex.com/crawler
 User-agent: MegaIndex.ru/2.0
 Disallow: /

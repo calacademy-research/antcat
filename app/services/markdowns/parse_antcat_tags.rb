@@ -51,7 +51,7 @@ module Markdowns
           if (user = User.find_by(id: user_id))
             user.decorate.ping_user_link
           else
-            broken_markdown_link "USER", user_id
+            broken_taxt_tag "USER", user_id
           end
         end
       end
@@ -77,12 +77,12 @@ module Markdowns
           if (wiki_page = WikiPage.find_by(id: wiki_page_id))
             link_to wiki_page.title, wiki_page_path(wiki_page_id)
           else
-            broken_markdown_link "WIKI_PAGE", wiki_page_id
+            broken_taxt_tag "WIKI_PAGE", wiki_page_id
           end
         end
       end
 
-      def broken_markdown_link type, id
+      def broken_taxt_tag type, id
         %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
       end
   end

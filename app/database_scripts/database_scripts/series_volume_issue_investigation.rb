@@ -33,7 +33,7 @@ title: <code>series_volume_issue</code> investigation
 
 section: research
 category: References
-tags: [new!]
+tags: []
 
 issue_description:
 
