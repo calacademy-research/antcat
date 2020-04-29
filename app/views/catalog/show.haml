@@ -1,6 +1,7 @@
 -# Use "AntCat" for the landing page title, since it's prettier than "Formicidae".
 -unless @catalog_presenter.formicidae_landing_page?
   -title "#{@taxon.name_cache}"
+  -content_for(:description_meta_tag) { MetaTags::TaxonMetaTagContent[@taxon] }
 -breadcrumb @taxon
 
 -if current_user

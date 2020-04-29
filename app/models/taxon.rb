@@ -64,7 +64,7 @@ class Taxon < ApplicationRecord
     { rank: rank, name: name_html_cache, parent: parent_params }
   }
 
-  [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE].each do |status|
+  [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end
