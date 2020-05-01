@@ -17,7 +17,7 @@ module References
       end
 
       def search_query
-        @_search_query = params[:reference_q] || ''
+        params[:reference_q]
       end
 
       def fulltext_params

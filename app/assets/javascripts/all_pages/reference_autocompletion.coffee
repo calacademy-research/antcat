@@ -3,22 +3,19 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/authors/autocomplete?term=%QUERY'
+      url: '/authors/autocomplete?with_ids=y&term=%QUERY'
       wildcard: '%QUERY'
 
   authorsDataSet =
     name: 'authors'
     limit: 5 # NOTE: Limited on client-side to not interfer with other author autocompletions and because lazy.
-    display: (authorName) -> "author:'#{authorName}'"
+    display: (authorName) -> "author:'#{authorName.label}'"
     source: authors.ttAdapter()
     templates:
-      header: '<h5 class="autocompletion-header">Author results <small>(top 5)</small></h5>'
-      empty:
-        '<div class="empty-message">' +
-        'Unable to find any authors that match the current query. ' +
-        '</div>'
+      header: '<h5 class="autocompletion-header">Author results <small>(first 5)</small></h5>'
+      empty: '<div class="empty-message">Unable to find any authors that match the current query.</div>'
       suggestion: (authorName) ->
-        "<p>#{authorName}</p>"
+        "<p>#{authorName.label}</p>"
 
   references = new Bloodhound
     datumTokenizer: Bloodhound.tokenizers.whitespace
@@ -33,7 +30,7 @@ $ ->
     displayKey: 'search_query'
     source: references.ttAdapter()
     templates:
-      header: '<h5 class="autocompletion-header">Reference results <small>(top 10)</small></h5>'
+      header: '<h5 class="autocompletion-header">Reference results <small>(first 10)</small></h5>'
       empty:
         '<div class="empty-message">' +
         'Unable to find any references that match the current query.<br>' +
@@ -47,6 +44,5 @@ $ ->
     minLength: 1
 
    $('input.typeahead-references-js').typeahead(options, authorsDataSet, referencesDataSet)
-    .on 'typeahead:selected', (e) ->
-      # To make clicking on a suggestion or pressing Enter submit the form.
-      e.target.form.submit()
+    .on 'typeahead:selected', (_event, suggestion) ->
+      window.location.href = suggestion.url

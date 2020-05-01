@@ -2,6 +2,8 @@
 
 module Protonyms
   class AutocompletesController < ApplicationController
+    NUM_RESULTS = 10
+
     def show
       render json: serialized_protonyms
     end
@@ -13,14 +15,16 @@ module Protonyms
           {
             id: protonym.id,
             name_with_fossil: protonym.decorate.name_with_fossil,
-            author_citation: protonym.authorship.reference.keey_without_letters_in_year
+            author_citation: protonym.authorship.reference.keey_without_letters_in_year,
+            url: "/protonyms/#{protonym.id}"
           }
         end
       end
 
       def protonyms
-        search_query = params[:qq] || ''
-        Autocomplete::ProtonymsQuery[search_query]
+        Autocomplete::ProtonymsQuery[params[:qq]].
+          includes(:name, { authorship: { reference: :author_names } }).
+          limit(NUM_RESULTS)
       end
   end
 end
