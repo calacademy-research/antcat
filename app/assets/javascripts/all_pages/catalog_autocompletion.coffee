@@ -14,7 +14,7 @@ $ ->
     templates:
       empty: '<div class="empty-message">No results</div>'
       suggestion: (taxon) ->
-        "<p>#{taxon.name_with_fossil}<br><small>#{taxon.author_citation}</small></p>"
+        "<p><span class='#{taxon.css_classes}'>#{taxon.name_with_fossil}</span> <small>#{taxon.author_citation}</small></p>"
 
   options =
     hint: true
