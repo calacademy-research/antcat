@@ -86,7 +86,11 @@
         =f.label :locality do
           Locality
           =db_tooltip_icon "locality", scope: :taxa
-      %td=f.text_field :locality, class: 'locality-autocomplete-js-hook'
+      %td
+        =f.text_field :locality, class: 'locality-autocomplete-js-hook'
+
+        =f.check_box :uncertain_locality
+        =f.label :uncertain_locality
 
     %tr
       %td=f.label :primary_type_information

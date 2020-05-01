@@ -95,7 +95,7 @@ class TaxaController < ApplicationController
         :unresolved_homonym,
         name_attributes: [:gender],
         protonym_attributes: [
-          :id, :biogeographic_region, :fossil, :locality, :primary_type_information_taxt,
+          :id, :biogeographic_region, :fossil, :locality, :uncertain_locality, :primary_type_information_taxt,
           :secondary_type_information_taxt, :sic, :type_notes_taxt,
           { authorship_attributes: [:id, :forms, :notes_taxt, :pages, :reference_id] }
         ]
