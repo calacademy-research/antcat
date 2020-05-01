@@ -13,8 +13,7 @@ module Journals
       end
 
       def journals
-        search_query = params[:term] || ''
-        Autocomplete::JournalsQuery[search_query]
+        Autocomplete::JournalsQuery[params[:term]]
       end
   end
 end

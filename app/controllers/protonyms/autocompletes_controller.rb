@@ -22,8 +22,7 @@ module Protonyms
       end
 
       def protonyms
-        search_query = params[:qq] || ''
-        Autocomplete::ProtonymsQuery[search_query].limit(NUM_RESULTS)
+        Autocomplete::ProtonymsQuery[params[:qq]].limit(NUM_RESULTS)
       end
   end
 end
