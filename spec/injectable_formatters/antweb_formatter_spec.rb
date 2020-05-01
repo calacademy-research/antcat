@@ -3,6 +3,16 @@
 require 'rails_helper'
 
 describe AntwebFormatter do
+  include TestLinksHelpers
+
+  describe 'test support code in `TestLinksHelpers`' do
+    let(:taxon) { build_stubbed :genus, :fossil }
+
+    it 'returns the same as this code' do
+      expect(described_class.link_to_taxon(taxon)).to eq antweb_taxon_link(taxon)
+    end
+  end
+
   describe ".link_to_taxon" do
     let(:taxon) { build_stubbed :family }
 
