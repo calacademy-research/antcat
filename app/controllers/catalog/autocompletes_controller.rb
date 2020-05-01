@@ -26,7 +26,7 @@ module Catalog
 
       def taxa
         Autocomplete::TaxaQuery[search_query, rank: params[:rank]].
-          includes(:name, protonym: { authorship: { reference: :author_names } }).
+          includes(:name, authorship_reference: :author_names).
           references(:reference_author_names).
           limit(NUM_RESULTS)
       end

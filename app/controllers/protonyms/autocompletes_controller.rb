@@ -22,7 +22,9 @@ module Protonyms
       end
 
       def protonyms
-        Autocomplete::ProtonymsQuery[params[:qq]].limit(NUM_RESULTS)
+        Autocomplete::ProtonymsQuery[params[:qq]].
+          includes(:name, { authorship: { reference: :author_names } }).
+          limit(NUM_RESULTS)
       end
   end
 end
