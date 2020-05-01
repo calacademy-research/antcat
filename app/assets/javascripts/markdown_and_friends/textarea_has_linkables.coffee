@@ -50,6 +50,15 @@ setupLinkables = =>
       callbacks: reuseCallbacks "/references/linkable_autocomplete.json"
 
     .atwho
+      at: '{p'
+      limit: 15
+      delay: 300
+      maxLen: 50
+      insertTpl: '{pro ${id}}:'
+      displayTpl: '<li><small>#${id}</small> ${name_with_fossil} <small>${author_citation}</small></li>'
+      callbacks: reuseCallbacks "/protonyms/autocomplete.json"
+
+    .atwho
       at: '%w'
       limit: 10
       delay: 300
