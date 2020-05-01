@@ -36,6 +36,9 @@ module Taxt
   TAX_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
   TAXAC_TAG_REGEX = /\{taxac (?<id>\d+)\}/
   TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
+
+  PRO_TAG_REGEX = /\{pro (?<id>\d+)\}/
+
   REF_TAG_REGEX = /(%reference(?<id>\d+))|(\{ref (?<id>\d+)\})/
 
   MISSING_OR_UNMISSING_TAG = /\{(missing|unmissing) (?<hardcoded_name>.*?)\}/

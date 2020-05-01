@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 module AntwebFormatter
-  CATALOG_BASE_URL = "https://www.antcat.org/catalog/"
+  ANTCAT_BASE_URL = "https://www.antcat.org/"
+  CATALOG_BASE_URL = "#{ANTCAT_BASE_URL}catalog/"
+  PROTONYMS_BASE_URL = "#{ANTCAT_BASE_URL}protonyms/"
 
   module_function
 
@@ -19,6 +21,10 @@ module AntwebFormatter
 
   def link_to_taxon_with_author_citation taxon
     link_to_taxon(taxon) << ' ' << taxon.author_citation.html_safe
+  end
+
+  def link_to_protonym protonym
+    %(<a href="#{PROTONYMS_BASE_URL}#{protonym.id}">#{protonym.decorate.name_with_fossil}</a>)
   end
 
   def link_to_reference reference

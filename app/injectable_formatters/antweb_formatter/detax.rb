@@ -17,6 +17,9 @@ module AntwebFormatter
 
       parse_tax_tags
       parse_taxac_tags
+
+      parse_pro_tags
+
       parse_ref_tags
 
       parse_missing_or_unmissing_tags
@@ -51,6 +54,15 @@ module AntwebFormatter
         content.gsub!(Taxt::REF_TAG_REGEX) do
           if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
             formatter.link_to_reference(reference)
+          end
+        end
+      end
+
+      # Protonyms, "{pro 123}".
+      def parse_pro_tags
+        content.gsub!(Taxt::PRO_TAG_REGEX) do
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:id]))
+            formatter.link_to_protonym(protonym)
           end
         end
       end
