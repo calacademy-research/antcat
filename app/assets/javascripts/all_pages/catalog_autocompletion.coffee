@@ -22,5 +22,5 @@ $ ->
     minLength: 1
 
   $('input.typeahead-taxa-js-hook').typeahead(options, taxaDataSet)
-    .on 'typeahead:selected', (event, suggestion) ->
-      event.target.form.submit()
+    .on 'typeahead:selected', (_event, suggestion) ->
+      window.location.href = suggestion.url
