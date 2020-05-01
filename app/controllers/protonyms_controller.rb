@@ -87,6 +87,7 @@ class ProtonymsController < ApplicationController
         :biogeographic_region,
         :fossil,
         :locality,
+        :uncertain_locality,
         :primary_type_information_taxt,
         :secondary_type_information_taxt,
         :sic,

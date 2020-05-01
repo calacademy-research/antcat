@@ -28,6 +28,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
             "fossil" => protonym.fossil,
             "biogeographic_region" => Protonym::NEARCTIC_REGION,
             "locality" => 'USA',
+            "uncertain_locality" => protonym.uncertain_locality,
             "primary_type_information_taxt" => protonym.primary_type_information_taxt,
             "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
             "type_notes_taxt" => protonym.type_notes_taxt,

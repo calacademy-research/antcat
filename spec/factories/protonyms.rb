@@ -11,6 +11,10 @@ FactoryBot.define do
       fossil { true }
     end
 
+    trait :uncertain_locality do
+      uncertain_locality { true }
+    end
+
     trait :genus_group_name do
       association :name, factory: :genus_name
     end

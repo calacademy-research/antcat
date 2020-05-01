@@ -114,7 +114,11 @@
                 =protonym_form.label :locality do
                   Locality
                   =db_tooltip_icon "locality", scope: :taxa
-              %td=protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+              %td
+                =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+
+                =protonym_form.check_box :uncertain_locality
+                =protonym_form.label :uncertain_locality
 
           %tr
             %td=form.label :primary_type_information
