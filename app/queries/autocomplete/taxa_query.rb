@@ -4,7 +4,6 @@ module Autocomplete
   class TaxaQuery
     include Service
 
-    NUM_RESULTS = 10
     TAXON_ID_REGEX = /^\d+ ?$/
 
     attr_private_initialize :search_query, [rank: nil]
@@ -25,8 +24,7 @@ module Autocomplete
       def search_results
         taxa = Taxon.where("name_cache LIKE ? OR name_cache LIKE ?", crazy_search_query, not_as_crazy_search_query)
         taxa = taxa.where(type: rank) if rank.present?
-        taxa.includes(:name, protonym: { authorship: { reference: :author_names } }).
-          references(:reference_author_names).limit(NUM_RESULTS)
+        taxa
       end
 
       def crazy_search_query

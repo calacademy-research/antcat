@@ -2,6 +2,8 @@
 
 module Catalog
   class AutocompletesController < ApplicationController
+    NUM_RESULTS = 10
+
     def show
       render json: serialized_taxa
     end
@@ -21,8 +23,14 @@ module Catalog
       end
 
       def taxa
-        search_query = params[:q] || params[:qq] || ''
-        Autocomplete::TaxaQuery[search_query, rank: params[:rank]]
+        Autocomplete::TaxaQuery[search_query, rank: params[:rank]].
+          includes(:name, protonym: { authorship: { reference: :author_names } }).
+          references(:reference_author_names).
+          limit(NUM_RESULTS)
+      end
+
+      def search_query
+        params[:q] || params[:qq] || ''
       end
   end
 end

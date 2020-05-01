@@ -2,6 +2,8 @@
 
 module Protonyms
   class AutocompletesController < ApplicationController
+    NUM_RESULTS = 10
+
     def show
       render json: serialized_protonyms
     end
@@ -20,7 +22,7 @@ module Protonyms
 
       def protonyms
         search_query = params[:qq] || ''
-        Autocomplete::ProtonymsQuery[search_query]
+        Autocomplete::ProtonymsQuery[search_query].limit(NUM_RESULTS)
       end
   end
 end
