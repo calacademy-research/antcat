@@ -16,6 +16,8 @@ module Markdowns
       parse_taxac_tags
       parse_ref_tags
 
+      parse_pro_tags
+
       parse_missing_or_unmissing_tags
 
       content
@@ -84,6 +86,20 @@ module Markdowns
             reference.decorate.expandable_reference.html_safe
           else
             broken_taxt_tag "REFERENCE", reference_id
+          end
+        end
+      end
+
+      # Matches: {pro 154742}
+      # Renders: link to the protonym
+      def parse_pro_tags
+        content.gsub!(Taxt::PRO_TAG_REGEX) do
+          protonym_id = $LAST_MATCH_INFO[:id]
+
+          if (protonym = Protonym.find_by(id: protonym_id))
+            protonym.decorate.link_to_protonym
+          else
+            broken_taxt_tag "PROTONYM", protonym_id
           end
         end
       end

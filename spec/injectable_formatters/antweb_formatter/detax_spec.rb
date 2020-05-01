@@ -22,6 +22,14 @@ describe AntwebFormatter::Detax do
       end
     end
 
+    describe "tag: `PRO_TAG_REGEX` (protonyms)" do
+      let!(:protonym) { create :protonym }
+
+      specify do
+        expect(described_class["{pro #{protonym.id}}"]).to eq antweb_protonym_link(protonym)
+      end
+    end
+
     describe "tag: `REF_TAG_REGEX` (references)" do
       let!(:reference) { create :any_reference }
 

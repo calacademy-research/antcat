@@ -40,6 +40,19 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
+    describe "tag: `PRO_TAG_REGEX` (protonyms)" do
+      it "uses the HTML version of the protonyms's name" do
+        protonym = create :protonym
+        expect(described_class["{pro #{protonym.id}}"]).to eq protonym_link(protonym)
+      end
+
+      context "when protonym does not exists" do
+        it "adds a warning" do
+          expect(described_class["{pro 999}"]).to include "CANNOT FIND PROTONYM WITH ID 999"
+        end
+      end
+    end
+
     describe "tag: `REF_TAG_REGEX` (references)" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :any_reference, title: 'Pizza' }

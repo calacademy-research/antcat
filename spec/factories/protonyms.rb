@@ -7,6 +7,10 @@ FactoryBot.define do
     authorship factory: :citation
     genus_group_name
 
+    trait :fossil do
+      fossil { true }
+    end
+
     trait :genus_group_name do
       association :name, factory: :genus_name
     end

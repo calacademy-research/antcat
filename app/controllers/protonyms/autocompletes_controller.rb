@@ -22,9 +22,13 @@ module Protonyms
       end
 
       def protonyms
-        Autocomplete::ProtonymsQuery[params[:qq]].
+        Autocomplete::ProtonymsQuery[search_query].
           includes(:name, { authorship: { reference: :author_names } }).
           limit(NUM_RESULTS)
+      end
+
+      def search_query
+        params[:q] || params[:qq]
       end
   end
 end
