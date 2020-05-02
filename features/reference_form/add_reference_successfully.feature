@@ -14,7 +14,7 @@ Feature: Add reference
     And I fill in "reference_pagination" with "2"
     And I press "Save"
     Then I should see "Ward, B.L.; Bolton, B. 1981. A reference title. Ant Journal 1:2"
-    And I should see "Ward, B.L. & Bolton, B., 1981a"
+    And I should see "Ward B.L. Bolton B. 1981a"
 
   Scenario: Adding a `BookReference`
     When I fill in "reference_author_names_string" with "Ward, B.L.;Bolton, B."

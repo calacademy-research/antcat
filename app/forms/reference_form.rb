@@ -3,6 +3,7 @@
 class ReferenceForm
   include ActiveModel::Model
 
+  STRIP_CHARACTERS_FROM_BOLTON_KEY_REGEX = /,|&|:/
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
   VIRTUAL_ATTRIBUTES = [:author_names_string, :journal_name, :publisher_string]
 
@@ -31,6 +32,7 @@ class ReferenceForm
         set_publisher if reference.is_a? ::BookReference
 
         reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
+        cleanup_bolton_key
 
         # Raise if there are errors, since `#save!` clears errors before validating.
         raise ActiveRecord::Rollback if errors.present?
@@ -93,6 +95,11 @@ class ReferenceForm
       if publisher.invalid?
         errors.add :publisher_string, "couldn't be parsed. Expected format 'Place: Publisher'."
       end
+    end
+
+    def cleanup_bolton_key
+      return unless reference.bolton_key
+      reference.bolton_key = reference.bolton_key.gsub(STRIP_CHARACTERS_FROM_BOLTON_KEY_REGEX, '').squish
     end
 
     def check_for_duplicates!

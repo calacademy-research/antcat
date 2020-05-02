@@ -32,7 +32,7 @@ describe ReferencesController do
         series_volume_issue: '6',
         date: "19991220",
         doi: "10.10.1038/nphys117",
-        bolton_key: "Smith, 1858b",
+        bolton_key: "Smith 1858b",
         public_notes: "Public notes",
         editor_notes: "Editor notes",
         taxonomic_notes: "Taxonomic notes"
