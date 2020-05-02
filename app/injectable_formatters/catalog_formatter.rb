@@ -12,7 +12,7 @@ module CatalogFormatter
   end
 
   def disco_mode_css taxon
-    css_classes = [taxon.status.tr(' ', '-')]
+    css_classes = ['taxon-hover-preview-link', taxon.status.tr(' ', '-')]
     css_classes << ['unresolved-homonym'] if taxon.unresolved_homonym?
     css_classes.join(' ')
   end

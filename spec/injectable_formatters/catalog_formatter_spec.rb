@@ -33,13 +33,13 @@ describe CatalogFormatter do
   describe ".disco_mode_css" do
     it 'replaces spaces in statuses with dashes' do
       taxon = build_stubbed :family, :obsolete_combination
-      expect(described_class.disco_mode_css(taxon)).to eq "obsolete-combination"
+      expect(described_class.disco_mode_css(taxon)).to eq "taxon-hover-preview-link obsolete-combination"
     end
 
     context 'when taxon is an `unresolved_homonym`' do
       let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
-      specify { expect(described_class.disco_mode_css(taxon)).to eq "valid unresolved-homonym" }
+      specify { expect(described_class.disco_mode_css(taxon)).to eq "taxon-hover-preview-link valid unresolved-homonym" }
     end
   end
 end
