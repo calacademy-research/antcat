@@ -15,8 +15,8 @@ Feature: Editing a taxon
     Then I should see "Formica"
 
     When I press "Save"
-    Then I should see "Formica" within the headline
-    And I should see "page 9 (dealate queen)" within the headline
+    Then I should see "Formica" within "#protonym-synopsis"
+    And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
   @javascript
   Scenario: Changing the type name

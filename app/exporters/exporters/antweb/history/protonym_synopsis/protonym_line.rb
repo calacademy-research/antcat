@@ -3,8 +3,8 @@
 module Exporters
   module Antweb
     module History
-      class Headline
-        class HeadlineProtonym
+      class ProtonymSynopsis
+        class ProtonymLine
           include ActionView::Context # For `#content_tag`.`
           include ActionView::Helpers::TagHelper # For `#content_tag`.`
           include Service
@@ -12,12 +12,12 @@ module Exporters
           attr_private_initialize :protonym
 
           def call
-            AddPeriodIfNecessary[headline_protonym]
+            AddPeriodIfNecessary[protonym_line]
           end
 
           private
 
-            def headline_protonym
+            def protonym_line
               [
                 protonym_name,
                 authorship(protonym.authorship),

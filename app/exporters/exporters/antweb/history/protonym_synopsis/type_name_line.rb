@@ -3,21 +3,21 @@
 module Exporters
   module Antweb
     module History
-      class Headline
-        class HeadlineType
+      class ProtonymSynopsis
+        class TypeNameLine
           include Service
 
           attr_private_initialize :taxon
 
           def call
-            headline_type
+            type_name_line
           end
 
           private
 
             delegate :type_taxt, :type_taxon, :protonym, to: :taxon, private: true
 
-            def headline_type
+            def type_name_line
               string = ''.html_safe
               string << type_name_and_taxt
               string << AddPeriodIfNecessary[protonym.biogeographic_region]

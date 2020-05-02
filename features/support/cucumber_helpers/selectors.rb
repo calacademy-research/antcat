@@ -19,12 +19,10 @@ module CucumberHelpers
       when /^the (\w*) taxon browser tab$/
         find(:link, Regexp.last_match(1))[:href]
       when 'the protonym'
-        "#taxon_description .headline > span.name"
+        "#taxon_description #protonym-synopsis > span.name"
       when 'the header'
-        # TODO: Find a better name than ".header". Probably also a new name for ".headline".
+        # TODO: Find a better name than ".header".
         "div.header"
-      when 'the headline'
-        '.headline'
       when 'the citations section'
         '#citations'
 
