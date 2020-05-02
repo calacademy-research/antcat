@@ -8,56 +8,33 @@ module References
       [Reference, :nesting_reference_id]
     ]
 
-    def initialize reference
-      @reference = reference
-      @taxt_tag = Taxt.public_send(TAXT_TAG_METHOD, reference)
-    end
+    attr_private_initialize :reference
 
     def all
-      what_links_here_items
+      columns + taxts
     end
 
     def any?
       return @_any if defined? @_any
-      @_any ||= any_what_links_here_items?
+      @_any ||= any_columns? || any_taxts?
     end
 
-    private
+    def columns
+      @_columns ||= WhatLinksHereColumns.new(reference, COLUMNS_REFERENCING_REFERENCES).all
+    end
 
-      attr_reader :reference, :taxt_tag
+    def any_columns?
+      return @_any_columns if defined? @_any_columns
+      @_any_columns ||= WhatLinksHereColumns.new(reference, COLUMNS_REFERENCING_REFERENCES).any?
+    end
 
-      def any_what_links_here_items?
-        Taxt::TAXTABLES.each do |(model, _table, field)|
-          return true if model.where("#{field} REGEXP ?", taxt_tag).exists?
-        end
+    def taxts
+      @_taxts ||= WhatLinksHereTaxts.new(reference, TAXT_TAG_METHOD).all
+    end
 
-        COLUMNS_REFERENCING_REFERENCES.each do |(model, column)|
-          return true if model.where(column => reference.id).exists?
-        end
-
-        false
-      end
-
-      def what_links_here_items
-        wlh_items = []
-
-        Taxt::TAXTABLES.each do |(model, _table, field)|
-          model.where("#{field} REGEXP ?", taxt_tag).pluck(:id).each do |matched_id|
-            wlh_items << wlh_item(model.table_name, field.to_sym, matched_id)
-          end
-        end
-
-        COLUMNS_REFERENCING_REFERENCES.each do |(model, column)|
-          model.where(column => reference.id).pluck(:id).each do |matched_id|
-            wlh_items << wlh_item(model.table_name, column, matched_id)
-          end
-        end
-
-        wlh_items
-      end
-
-      def wlh_item table, field, id
-        WhatLinksHereItem.new(table, field, id)
-      end
+    def any_taxts?
+      return @_any_taxts if defined? @_any_taxts
+      @_any_taxts ||= WhatLinksHereTaxts.new(reference, TAXT_TAG_METHOD).any?
+    end
   end
 end

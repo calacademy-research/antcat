@@ -2,6 +2,7 @@
 
 module Taxa
   class WhatLinksHere
+    TAXT_TAG_METHOD = :tax_or_taxac_tag_regex
     COLUMNS_REFERENCING_TAXA = [
       [Taxon, :subfamily_id],
       [Taxon, :tribe_id],
@@ -26,21 +27,21 @@ module Taxa
     end
 
     def columns
-      @_columns ||= Taxa::WhatLinksHere::Columns.new(taxon).all
+      @_columns ||= WhatLinksHereColumns.new(taxon, COLUMNS_REFERENCING_TAXA).all
     end
 
     def any_columns?
       return @_any_columns if defined? @_any_columns
-      @_any_columns ||= Taxa::WhatLinksHere::Columns.new(taxon).any?
+      @_any_columns ||= WhatLinksHereColumns.new(taxon, COLUMNS_REFERENCING_TAXA).any?
     end
 
     def taxts
-      @_taxts ||= Taxa::WhatLinksHere::Taxts.new(taxon).all
+      @_taxts ||= WhatLinksHereTaxts.new(taxon, TAXT_TAG_METHOD).all
     end
 
     def any_taxts?
       return @_any_taxts if defined? @_any_taxts
-      @_any_taxts ||= Taxa::WhatLinksHere::Taxts.new(taxon).any?
+      @_any_taxts ||= WhatLinksHereTaxts.new(taxon, TAXT_TAG_METHOD).any?
     end
   end
 end
