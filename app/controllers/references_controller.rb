@@ -88,26 +88,7 @@ class ReferencesController < ApplicationController
     end
 
     def reference_params
-      params.require(:reference).permit(
-        :author_names_string,
-        :author_names_suffix,
-        :bolton_key,
-        :citation_year,
-        :date,
-        :doi,
-        :editor_notes,
-        :journal_name,
-        :nesting_reference_id,
-        :online_early,
-        :pagination,
-        :public_notes,
-        :publisher_string,
-        :series_volume_issue,
-        :stated_year,
-        :taxonomic_notes,
-        :title,
-        document_attributes: [:id, :file, :url]
-      )
+      params.require(:reference).permit(ReferenceForm::PERMITTED_PARAMS)
     end
 
     # NOTE: This is so references can be converted between types.
