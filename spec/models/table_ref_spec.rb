@@ -36,7 +36,7 @@ describe TableRef do
 
     context 'when table ref is not a taxt item' do
       specify do
-        Taxt::TAXA_FIELDS_REFERENCING_TAXA.each do |field|
+        Taxa::WhatLinksHere::TAXA_COLUMNS_REFERENCING_TAXA.each do |field|
           expect(described_class.new('taxa', field, 999).taxt?).to eq false
         end
       end

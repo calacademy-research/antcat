@@ -4,6 +4,19 @@
 
 module Taxa
   class WhatLinksHere
+    TAXA_COLUMNS_REFERENCING_TAXA = %i[
+      subfamily_id
+      tribe_id
+      genus_id
+      subgenus_id
+      species_id
+      subspecies_id
+
+      current_valid_taxon_id
+      homonym_replaced_by_id
+      type_taxon_id
+    ]
+
     attr_private_initialize :taxon
 
     def all

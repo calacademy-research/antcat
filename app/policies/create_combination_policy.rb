@@ -54,7 +54,7 @@ class CreateCombinationPolicy
       Taxon.where(homonym_replaced_by: taxon).any?
     end
 
-    # TODO: Probably split WLHs into `TAXA_FIELDS_REFERENCING_TAXA` / "taxt references".
+    # TODO: Probably split WLHs into `TAXA_COLUMNS_REFERENCING_TAXA` / "taxt references".
     def what_links_heres_ok?
       what_links_here_except_obsolete_combinations.empty?
     end
