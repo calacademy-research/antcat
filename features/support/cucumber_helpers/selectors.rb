@@ -20,9 +20,8 @@ module CucumberHelpers
         find(:link, Regexp.last_match(1))[:href]
       when 'the protonym'
         "#taxon_description #protonym-synopsis > span.name"
-      when 'the header'
-        # TODO: Find a better name than ".header".
-        "div.header"
+      when 'the nomen synopsis'
+        "div#nomen-synopsis"
       when 'the citations section'
         '#citations'
 

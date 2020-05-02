@@ -23,4 +23,4 @@ Feature: Reference selector
 
     When I press "Save"
     Then I should be on the catalog page for "Atta"
-    And I should see "Batiatus, 2004" within the header
+    And I should see "Batiatus, 2004" within the nomen synopsis

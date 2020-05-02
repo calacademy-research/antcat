@@ -15,7 +15,7 @@ Feature: Taxon selector
     Then I should see "Eciton"
 
     When I press "Save"
-    Then I should see "Eciton" within the header
+    Then I should see "Eciton" within the nomen synopsis
 
   # TODO: Randomly fails without "@reset_driver". "The results could not be loaded [Capybara screenshot]".
   @reset_driver

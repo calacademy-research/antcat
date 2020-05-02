@@ -47,7 +47,7 @@ Feature: Add and edit open issues
     Then I should see "Archibald edited the issue Restore deleted genera" within the activity feed
     And I should see "added info"
 
-  Scenario: Flagging an issue with "Help wanted" and show notice in the header
+  Scenario: Flagging an issue with "Help wanted" and show notice in the nomen synopsis
     Given there is an open issue "Important fix"
 
     When I go to the catalog
