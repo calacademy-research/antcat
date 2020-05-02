@@ -23,7 +23,7 @@ module Protonyms
 
       def protonyms
         Autocomplete::ProtonymsQuery[search_query].
-          includes(:name, { authorship: { reference: :author_names } }).
+          joins(:name).includes(:name, { authorship: { reference: :author_names } }).
           limit(NUM_RESULTS)
       end
 

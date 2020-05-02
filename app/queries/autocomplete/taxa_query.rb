@@ -16,9 +16,7 @@ module Autocomplete
 
       def exact_id_match
         return unless search_query.match?(TAXON_ID_REGEX)
-
-        match = Taxon.find_by(id: search_query)
-        [match] if match
+        Taxon.where(id: search_query).presence
       end
 
       def search_results
