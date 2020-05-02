@@ -65,8 +65,13 @@ class ReferencesController < ApplicationController
   def destroy
     reference = find_reference
 
-    # Grab key before reference author names are deleted.
-    activity_parameters = { name: reference.keey }
+    if References::WhatLinksHere.new(reference).any?
+      redirect_to reference_what_links_here_path(reference),
+        alert: "Other records refer to this reference, so it can't be deleted."
+      return
+    end
+
+    activity_parameters = { name: reference.keey } # Grab key before reference author names are deleted.
 
     if reference.destroy
       reference.create_activity :destroy, current_user, parameters: activity_parameters
