@@ -22,14 +22,14 @@ describe References::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
-          TableRef.new('taxa',                :type_taxt,           taxon.id),
-          TableRef.new('taxa',                :headline_notes_taxt, taxon.id),
-          TableRef.new('citations',           :notes_taxt,          citation.id),
-          TableRef.new('citations',           :reference_id,        citation.id),
-          TableRef.new('reference_sections',  :title_taxt,          reference_section.id),
-          TableRef.new('reference_sections',  :subtitle_taxt,       reference_section.id),
-          TableRef.new('reference_sections',  :references_taxt,     reference_section.id),
-          TableRef.new('taxon_history_items', :taxt,                history_item.id)
+          WhatLinksHereItem.new('taxa',                :type_taxt,           taxon.id),
+          WhatLinksHereItem.new('taxa',                :headline_notes_taxt, taxon.id),
+          WhatLinksHereItem.new('citations',           :notes_taxt,          citation.id),
+          WhatLinksHereItem.new('citations',           :reference_id,        citation.id),
+          WhatLinksHereItem.new('reference_sections',  :title_taxt,          reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,       reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :references_taxt,     reference_section.id),
+          WhatLinksHereItem.new('taxon_history_items', :taxt,                history_item.id)
         ]
       end
     end
@@ -44,8 +44,8 @@ describe References::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
-          TableRef.new('citations',  :reference_id,         taxon.protonym.authorship.id),
-          TableRef.new('references', :nesting_reference_id, nested_reference.id)
+          WhatLinksHereItem.new('citations',  :reference_id,         taxon.protonym.authorship.id),
+          WhatLinksHereItem.new('references', :nesting_reference_id, nested_reference.id)
         ]
       end
     end

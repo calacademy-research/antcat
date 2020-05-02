@@ -5,6 +5,6 @@
 -content_for :javascripts do
   =javascript_include_tag "highlight_text"
 
-=render "shared/what_links_here", table_refs: @table_refs, highlight_text: @taxon.name_cache
+=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_text: @taxon.name_cache
 
-=will_paginate @table_refs
+=will_paginate @what_links_here_items

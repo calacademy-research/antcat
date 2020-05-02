@@ -4,7 +4,7 @@ module Catalog
   class WhatLinksHeresController < ApplicationController
     def show
       @taxon = find_taxon
-      @table_refs = @taxon.what_links_here.all.paginate(page: params[:page])
+      @what_links_here_items = @taxon.what_links_here.all.paginate(page: params[:page])
     end
 
     private

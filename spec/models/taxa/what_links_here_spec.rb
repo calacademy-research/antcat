@@ -21,8 +21,8 @@ describe Taxa::WhatLinksHere do
 
     specify do
       expect(what_links_here.all).to match_array [
-        TableRef.new('taxa', :subfamily_id, taxon.id),
-        TableRef.new('taxa', :subfamily_id, taxon.tribe.id)
+        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.id),
+        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.tribe.id)
       ]
       expect(what_links_here.all).to match_array what_links_here.columns
     end
@@ -38,7 +38,7 @@ describe Taxa::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
-          TableRef.new('taxa', :type_taxt, other_taxon.id)
+          WhatLinksHereItem.new('taxa', :type_taxt, other_taxon.id)
         ]
         expect(what_links_here.all).to match_array what_links_here.taxts
       end
@@ -61,7 +61,7 @@ describe Taxa::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
-          TableRef.new('taxa', :type_taxt, other_taxon.id)
+          WhatLinksHereItem.new('taxa', :type_taxt, other_taxon.id)
         ]
         expect(what_links_here.taxts).to match_array what_links_here.taxts
       end
@@ -77,7 +77,7 @@ describe Taxa::WhatLinksHere do
 
     specify do
       expect(what_links_here.all).to match_array [
-        TableRef.new('citations', :notes_taxt, taxon.protonym.authorship_id)
+        WhatLinksHereItem.new('citations', :notes_taxt, taxon.protonym.authorship_id)
       ]
     end
 

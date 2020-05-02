@@ -9,15 +9,15 @@ module Taxa
 
       def call
         if predicate
-          any_table_refs?
+          any_what_links_here_items?
         else
-          table_refs
+          what_links_here_items
         end
       end
 
       private
 
-        def any_table_refs?
+        def any_what_links_here_items?
           Taxt::TAXTABLES.each do |(model, _table, field)|
             model.where("#{field} REGEXP ?", Taxt.tax_or_taxac_tag_regex(taxon)).pluck(:id).each do |matched_id|
               next if exclude_taxt_match? model, matched_id
@@ -28,15 +28,15 @@ module Taxa
           false
         end
 
-        def table_refs
-          table_refs = []
+        def what_links_here_items
+          wlh_items = []
           Taxt::TAXTABLES.each do |(model, _table, field)|
             model.where("#{field} REGEXP ?", Taxt.tax_or_taxac_tag_regex(taxon)).pluck(:id).each do |matched_id|
               next if exclude_taxt_match? model, matched_id
-              table_refs << table_ref(model.table_name, field.to_sym, matched_id)
+              wlh_items << wlh_item(model.table_name, field.to_sym, matched_id)
             end
           end
-          table_refs
+          wlh_items
         end
 
         def exclude_taxt_match? model, matched_id
@@ -44,8 +44,8 @@ module Taxa
           false
         end
 
-        def table_ref table, field, id
-          TableRef.new(table, field, id)
+        def wlh_item table, field, id
+          WhatLinksHereItem.new(table, field, id)
         end
     end
   end

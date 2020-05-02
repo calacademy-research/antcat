@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class TableRefDecorator
+class WhatLinksHereItemDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
-  attr_private_initialize :table_ref
+  attr_private_initialize :what_links_here_items
 
   def item_link
     case table
@@ -29,5 +29,5 @@ class TableRefDecorator
 
   private
 
-    delegate :table, :id, :owner, to: :table_ref, private: true
+    delegate :table, :id, :owner, to: :what_links_here_items, private: true
 end

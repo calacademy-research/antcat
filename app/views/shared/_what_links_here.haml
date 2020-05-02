@@ -12,18 +12,18 @@
       %th.no-wrap Owner
       %th.no-wrap Taxt
   %tbody
-    -if table_refs.empty?
+    -if what_links_here_items.empty?
       %tr
         %td{colspan: 5} Found no associated items.
     -else
-      -table_refs.each do |table_ref|
-        -decorated = TableRefDecorator.new(table_ref)
+      -what_links_here_items.each do |item|
+        -decorated = WhatLinksHereItemDecorator.new(item)
         %tr
           %td=decorated.item_link
           %td
-            %code=table_ref.table
+            %code=item.table
           %td
-            %code=table_ref.field
+            %code=item.field
           %td=decorated.owner_link
           %td.grow.small-text{data: { highlight_text: highlight_text }}
-            =table_ref.detax || ndash
+            =item.detax || ndash
