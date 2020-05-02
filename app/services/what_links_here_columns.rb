@@ -26,14 +26,10 @@ class WhatLinksHereColumns
     end
 
     def columns
-      wlh_items = []
-
-      columns_referencing_record.each do |(model, column)|
+      columns_referencing_record.each_with_object([]) do |(model, column), wlh_items|
         model.where(column => record.id).pluck(:id).each do |matched_id|
           wlh_items << WhatLinksHereItem.new(model.table_name, column, matched_id)
         end
       end
-
-      wlh_items
     end
 end

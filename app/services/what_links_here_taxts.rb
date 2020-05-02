@@ -26,14 +26,10 @@ class WhatLinksHereTaxts
     end
 
     def taxts
-      wlh_items = []
-
-      Taxt::TAXTABLES.each do |(model, _table, column)|
+      Taxt::TAXTABLES.each_with_object([]) do |(model, _table, column), wlh_items|
         model.where("#{column} REGEXP ?", taxt_tag).pluck(:id).each do |matched_id|
           wlh_items << WhatLinksHereItem.new(model.table_name, column.to_sym, matched_id)
         end
       end
-
-      wlh_items
     end
 end
