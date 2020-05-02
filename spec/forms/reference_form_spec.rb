@@ -12,7 +12,7 @@ describe ReferenceForm do
         {
           author_names_string: reference.author_names_string,
           journal_name: reference.journal.name,
-          bolton_key: "Smith, 1858b"
+          bolton_key: "Smith 1858b"
         }
       end
 
@@ -57,7 +57,7 @@ describe ReferenceForm do
             {
               author_names_string: reference.author_names_string,
               journal_name: reference.journal.name,
-              bolton_key: "Smith, 1858b"
+              bolton_key: "Smith 1858b"
             }
           end
 
@@ -74,7 +74,7 @@ describe ReferenceForm do
             {
               author_names_string: "Batiatus, B.; Glaber, G.",
               journal_name: reference.journal.name,
-              bolton_key: "Smith, 1858b"
+              bolton_key: "Smith 1858b"
             }
           end
 
@@ -133,7 +133,7 @@ describe ReferenceForm do
             {
               author_names_string: "Batiatus, B.; Glaber, G.; Borgia, C.",
               journal_name: reference.journal.name,
-              bolton_key: "Smith, 1858b"
+              bolton_key: "Smith 1858b"
             }
           end
 
@@ -164,7 +164,7 @@ describe ReferenceForm do
             {
               author_names_string: "Batiatus, B.",
               journal_name: reference.journal.name,
-              bolton_key: "Smith, 1858b"
+              bolton_key: "Smith 1858b"
             }
           end
 
@@ -255,6 +255,22 @@ describe ReferenceForm do
             expect(ReferenceDocument.count).to eq 1
           end
         end
+      end
+    end
+
+    describe "#cleanup_bolton_key" do
+      let!(:reference) { create :article_reference }
+      let(:params) do
+        {
+          author_names_string: reference.author_names_string,
+          journal_name: reference.journal.name,
+          bolton_key: "Smith & Wesson ,  1858:b"
+        }
+      end
+
+      it 'removes unwanted characters' do
+        expect { described_class.new(reference, params).save }.
+          to change { reference.reload.bolton_key }.to("Smith Wesson 1858b")
       end
     end
 
