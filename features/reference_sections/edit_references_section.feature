@@ -28,7 +28,7 @@ Feature: Editing references sections
 
     When I click on the edit reference section button
     And I fill in "references_taxt" with "(none)"
-    And I fill in "edit_summary" with "fix typo" within ".references-section"
+    And I fill in "edit_summary" with "fix typo" within "#references-section"
     When I click on the save reference section button
     Then I should not see "Original reference"
     And the reference section should be "(none)"

@@ -139,7 +139,7 @@ describe Exporters::Antweb::TaxonAttributes do
             # Statistics.
             %(<p>Extant: 1 valid species</p>) +
 
-            # Headline.
+            # Protonym synopsis.
             %(<div>) +
               # Protonym.
               %(<b><i>#{taxon.protonym.name.name}</i></b> ) +

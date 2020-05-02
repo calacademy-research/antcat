@@ -16,9 +16,7 @@ module Autocomplete
 
       def exact_id_match
         return unless search_query.match?(REFERENCE_ID_REGEX)
-
-        match = Reference.find_by(id: search_query)
-        [match] if match
+        Reference.where(id: search_query).presence
       end
 
       def search_results

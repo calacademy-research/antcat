@@ -1,10 +1,10 @@
-.header
+#nomen-synopsis
   %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
   =taxon.decorate.expanded_status
   =taxon.name.gender
 
-.headline
+#protonym-synopsis
   %span.name
     =taxon.protonym.decorate.link_to_protonym
   -if user_is_at_least_helper?
@@ -31,22 +31,22 @@
 
   =Detax[taxon.headline_notes_taxt]
 
-  #type-fields
-    -protonym = taxon.protonym
-    -if protonym.primary_type_information_taxt?
-      %strong Primary type information:
-      =::Types::FormatTypeField[protonym.primary_type_information_taxt]
+#type-fields
+  -protonym = taxon.protonym
+  -if protonym.primary_type_information_taxt?
+    %strong Primary type information:
+    =::Types::FormatTypeField[protonym.primary_type_information_taxt]
 
-    -if protonym.secondary_type_information_taxt?
-      %strong Secondary type information:
-      =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+  -if protonym.secondary_type_information_taxt?
+    %strong Secondary type information:
+    =::Types::FormatTypeField[protonym.secondary_type_information_taxt]
 
-    -if protonym.type_notes_taxt?
-      %strong Type notes:
-      =::Types::FormatTypeField[protonym.type_notes_taxt]
+  -if protonym.type_notes_taxt?
+    %strong Type notes:
+    =::Types::FormatTypeField[protonym.type_notes_taxt]
 
 -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
-  %ul.history.small-margin-bottom
+  %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
         =add_period_if_necessary Detax[history_item.taxt]
@@ -99,7 +99,7 @@
   =link_to "Formicidae family references", catalog_path(taxon)
 -else
   -if taxon.reference_sections.present?
-    .reference-sections
+    #reference-sections
       -taxon.reference_sections.each do |reference_section|
         .section.small-margin-bottom
           -if reference_section.title_taxt?

@@ -13,7 +13,7 @@ $ ->
   setupReorderButton()
 
 # These elements are from the view.
-SORTABLE =      ".history-items"
+SORTABLE =      "#history-items"
 SORTABLE_ITEM = ".history-item"
 
 # Random class to check if the element already is sortable, because jQuery cannot reliably do it.

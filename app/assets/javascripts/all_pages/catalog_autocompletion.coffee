@@ -9,7 +9,7 @@ $ ->
   taxaDataSet =
     name: 'taxa'
     limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
-    displayKey: 'name'
+    displayKey: 'name_with_fossil'
     source: taxa.ttAdapter()
     templates:
       header: '<h5 class="autocompletion-header">Taxon results <small>(first 10)</small></h5>'
@@ -27,7 +27,7 @@ $ ->
   protonymsDataSet =
     name: 'protonyms'
     limit: Infinity # NOTE: Bug in typeahead.js v0.11.1; limited on server-side anyway.
-    displayKey: 'name'
+    displayKey: 'name_with_fossil'
     source: protonyms.ttAdapter()
     templates:
       header: '<h5 class="autocompletion-header">Protonym results <small>(first 10)</small></h5>'

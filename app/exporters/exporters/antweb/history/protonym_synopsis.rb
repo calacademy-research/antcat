@@ -3,7 +3,7 @@
 module Exporters
   module Antweb
     module History
-      class Headline
+      class ProtonymSynopsis
         include ActionView::Context # For `#content_tag`.
         include ActionView::Helpers::TagHelper # For `#content_tag`.
         include Service
@@ -13,8 +13,8 @@ module Exporters
         def call
           content_tag :div do
             [
-              HeadlineProtonym[taxon.protonym],
-              HeadlineType[taxon],
+              ProtonymLine[taxon.protonym],
+              TypeNameLine[taxon],
               TypeFields[taxon.protonym],
               headline_notes,
               link_to_antcat,

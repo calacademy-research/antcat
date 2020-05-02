@@ -16,9 +16,7 @@ module Autocomplete
 
       def exact_id_match
         return unless search_query.match?(PROTONYM_ID_REGEX)
-
-        match = Protonym.find_by(id: search_query)
-        [match] if match
+        Protonym.where(id: search_query).presence
       end
 
       def search_results

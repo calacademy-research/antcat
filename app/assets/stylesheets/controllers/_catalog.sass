@@ -1,14 +1,11 @@
 @import "colors"
 
 #catalog-controller
-  #external-links
-    font-size: 85%
-
   #taxon_description
     h6
       font-weight: bold
 
-    .header
+    #nomen-synopsis
       font-size: 15px
       .name
         font-family: Montserrat, Roboto, "Helvetica Neue", Arial, sans-serif
@@ -16,18 +13,19 @@
         font-weight: bold
         margin-right: 0.2rem
 
-    .headline
+    #protonym-synopsis
       margin-bottom: 4px
       .name
         font-weight: bold
         margin-right: 0.2rem
-      #type-fields
-        font-size: 14px
-        margin-bottom: 1em
       &:hover .show-on-hover
         display: inline
 
-    .history
+    #type-fields
+      font-size: 14px
+      margin-bottom: 1em
+
+    #history
       font-size: 15px
       line-height: 1.2
       li:hover .show-on-hover
@@ -38,7 +36,7 @@
       .caption
         font-weight: bold
 
-    .reference-sections
+    #reference-sections
       font-size: 15px
       line-height: 1.2
       .section:hover .show-on-hover
@@ -56,3 +54,6 @@
   #citations
     li:hover .show-on-hover
       display: inline
+
+  #external-links
+    font-size: 85%

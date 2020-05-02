@@ -3,7 +3,7 @@
 module Exporters
   module Antweb
     module History
-      class Headline
+      class ProtonymSynopsis
         class TypeFields
           include Service
 
