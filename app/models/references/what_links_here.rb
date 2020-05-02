@@ -1,18 +1,11 @@
 # frozen_string_literal: true
 
-module Taxa
+module References
   class WhatLinksHere
-    TAXT_TAG_METHOD = :tax_or_taxac_tag_regex
+    TAXT_TAG_METHOD = :ref_tag_regex
     REFERENCING_COLUMNS = [
-      [Taxon, :subfamily_id],
-      [Taxon, :tribe_id],
-      [Taxon, :genus_id],
-      [Taxon, :subgenus_id],
-      [Taxon, :species_id],
-      [Taxon, :subspecies_id],
-      [Taxon, :current_valid_taxon_id],
-      [Taxon, :homonym_replaced_by_id],
-      [Taxon, :type_taxon_id]
+      [Citation,  :reference_id],
+      [Reference, :nesting_reference_id]
     ]
 
     attr_private_initialize :record

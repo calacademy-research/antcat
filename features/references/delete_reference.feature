@@ -20,4 +20,4 @@ Feature: Delete reference
     When I go to the page of the oldest reference
     And I will confirm on the next step
     And I follow "Delete"
-    Then I should see "This reference can't be deleted, as there are other references to it."
+    Then I should see "Other records refer to this reference, so it can't be deleted."

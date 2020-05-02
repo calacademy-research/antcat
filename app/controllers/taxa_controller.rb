@@ -55,9 +55,7 @@ class TaxaController < ApplicationController
     taxon = find_taxon
 
     if taxon.what_links_here.any?
-      redirect_to taxon_what_links_here_path(taxon), alert: <<~MSG
-        Other taxa refer to this taxon, so it can't be deleted.
-      MSG
+      redirect_to taxon_what_links_here_path(taxon), alert: "Other records refer to this taxon, so it can't be deleted."
       return
     end
 

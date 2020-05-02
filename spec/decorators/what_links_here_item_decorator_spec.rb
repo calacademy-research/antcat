@@ -2,13 +2,13 @@
 
 require 'rails_helper'
 
-describe TableRefDecorator do
+describe WhatLinksHereItemDecorator do
   include TestLinksHelpers
 
-  subject(:decorated) { described_class.new(table_ref) }
+  subject(:decorated) { described_class.new(what_links_here_item) }
 
   let(:id) { object.id }
-  let(:table_ref) { TableRef.new(table, "_field", id) }
+  let(:what_links_here_item) { WhatLinksHereItem.new(table, "_field", id) }
 
   context "when table is `citations`" do
     let(:table) { "citations" }

@@ -5,6 +5,26 @@ class ReferenceForm
 
   POSSIBLE_DUPLICATE_ERROR_KEY = :possible_duplicate # HACK: To get rid of other hack.
   VIRTUAL_ATTRIBUTES = [:author_names_string, :journal_name, :publisher_string]
+  PERMITTED_PARAMS = [
+    :author_names_string,
+    :author_names_suffix,
+    :bolton_key,
+    :citation_year,
+    :date,
+    :doi,
+    :editor_notes,
+    :journal_name,
+    :nesting_reference_id,
+    :online_early,
+    :pagination,
+    :public_notes,
+    :publisher_string,
+    :series_volume_issue,
+    :stated_year,
+    :taxonomic_notes,
+    :title,
+    document_attributes: [:id, :file, :url]
+  ]
 
   attr_private_initialize :reference, :params, [ignore_duplicates: false]
 

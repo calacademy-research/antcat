@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TableRef
+class WhatLinksHereItem
   attr_accessor :table, :field, :id
 
   def initialize table, field, id

@@ -31,7 +31,6 @@ class Reference < ApplicationRecord
 
   before_validation :set_year_from_citation_year
   before_save :assign_author_names_cache
-  before_destroy :ensure_not_used
 
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
@@ -84,12 +83,6 @@ class Reference < ApplicationRecord
       return unless bolton_key
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
-    end
-
-    def ensure_not_used
-      return if References::WhatLinksHere[self].empty?
-      errors.add :base, "This reference can't be deleted, as there are other references to it."
-      throw :abort
     end
 
     def set_year_from_citation_year
