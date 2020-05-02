@@ -1,0 +1,20 @@
+@import "colors"
+
+.taxon-hover-preview-content
+  display: none
+  width: 400px
+  color: #000
+  padding: 0.5rem
+  border-radius: 0.5rem
+  position: absolute
+  z-index: 40
+
+  background-color: $color_pale !important
+
+.taxon-hover-preview-link
+  display: inline
+  position: relative
+
+  &:hover
+    .taxon-hover-preview-content
+      display: inline

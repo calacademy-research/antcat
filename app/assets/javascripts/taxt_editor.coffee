@@ -66,6 +66,7 @@ setupOkButtons = ->
       success: (html) ->
         taxtEditor.find(TAXT_EDITOR_CONTENT).html html
         AntCat.makeReferenceKeeysExpandable taxtEditor
+        AntCat.enableTaxonLinksHoverPreview taxtEditor
         taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
         taxtEditor.find(TAXT_PRESENTER).show()
       error: -> alert 'error :('
@@ -92,6 +93,7 @@ setupSaveHistoryItemButtons = ->
         else
           taxtEditor.html response.content
           AntCat.makeReferenceKeeysExpandable taxtEditor
+          AntCat.enableTaxonLinksHoverPreview taxtEditor
           AntCat.makeAllPreviewable()
           window.setupTaxtEditors()
       error: ->
@@ -121,6 +123,7 @@ setupSaveReferenceSectionButtons = ->
         else
           taxtEditor.html response.content
           AntCat.makeReferenceKeeysExpandable taxtEditor
+          AntCat.enableTaxonLinksHoverPreview taxtEditor
           AntCat.makeAllPreviewable()
           window.setupTaxtEditors()
       error: ->

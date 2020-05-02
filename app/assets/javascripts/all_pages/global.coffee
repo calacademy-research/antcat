@@ -4,6 +4,7 @@ $ ->
   $(document).foundation()
 
   enableInlineExpansions()
+  AntCat.enableTaxonLinksHoverPreview(document)
 
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
@@ -33,6 +34,26 @@ AntCat.makeReferenceKeeysExpandable = (element) -> $(element).foundation()
 enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
+
+AntCat.taxonHoverPreviewContent = (preview) ->
+  "<span class='color-coded-catalog-links taxon-hover-preview-content'>#{preview}</span>"
+
+AntCat.enableTaxonLinksHoverPreview = (element) ->
+  AntCat.taxonLinksHoverPreviewCached ||= {}
+
+  $(element).find(".taxon-hover-preview-link").on "mouseenter", (event) ->
+    href = $(this).attr("href") # "/catalog/1234".
+    cachedPreview = AntCat.taxonLinksHoverPreviewCached[href]
+
+    if cachedPreview
+      alreadyAppendedToThisElement = $(this).find('.taxon-hover-preview-content').length
+      return if alreadyAppendedToThisElement
+      $(this).append AntCat.taxonHoverPreviewContent(cachedPreview)
+    else
+      $.getJSON "#{href}/hover_preview.json", (data) =>
+        preview = data.preview
+        $(this).append AntCat.taxonHoverPreviewContent(preview)
+        AntCat.taxonLinksHoverPreviewCached[href] = preview
 
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->

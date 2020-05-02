@@ -26,6 +26,7 @@ Rails.application.routes.draw do
   get 'catalog/:id/bolton' => 'catalog/bolton#show', as: :bolton_catalog_view
   get 'catalog/:id/wikipedia' => 'catalog/wikipedia#show'
   get 'catalog/:id/history' => 'catalog/histories#show', as: :taxon_history
+  get 'catalog/:id/hover_preview' => 'catalog/hover_preview#show'
   get 'catalog/:id/what_links_here' => 'catalog/what_links_heres#show', as: :taxon_what_links_here
   get 'catalog/:id/soft_validations' => 'catalog/soft_validations#show', as: :taxon_soft_validations
 
