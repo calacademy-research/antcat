@@ -2,9 +2,16 @@
 
 module References
   class WhatLinksHere
-    include Service
+    TAXT_TAG_METHOD = :ref_tag_regex
+    COLUMNS_REFERENCING_REFERENCES = [
+      [Citation,  :reference_id],
+      [Reference, :nesting_reference_id]
+    ]
 
-    attr_private_initialize :reference
+    def initialize reference
+      @reference = reference
+      @taxt_tag = Taxt.public_send(TAXT_TAG_METHOD, reference)
+    end
 
     def all
       what_links_here_items
@@ -17,31 +24,33 @@ module References
 
     private
 
-      delegate :nestees, :citations, to: :reference, private: true
+      attr_reader :reference, :taxt_tag
 
       def any_what_links_here_items?
         Taxt::TAXTABLES.each do |(model, _table, field)|
-          return true if model.where("#{field} REGEXP ?", Taxt.ref_tag_regex(reference)).exists?
+          return true if model.where("#{field} REGEXP ?", taxt_tag).exists?
         end
 
-        citations.exists? || nestees.exists?
+        COLUMNS_REFERENCING_REFERENCES.each do |(model, column)|
+          return true if model.where(column => reference.id).exists?
+        end
+
+        false
       end
 
       def what_links_here_items
         wlh_items = []
 
         Taxt::TAXTABLES.each do |(model, _table, field)|
-          model.where("#{field} REGEXP ?", Taxt.ref_tag_regex(reference)).pluck(:id).each do |matched_id|
+          model.where("#{field} REGEXP ?", taxt_tag).pluck(:id).each do |matched_id|
             wlh_items << wlh_item(model.table_name, field.to_sym, matched_id)
           end
         end
 
-        citations.pluck(:id).each do |citation_id|
-          wlh_items << wlh_item(Citation.table_name, :reference_id, citation_id)
-        end
-
-        nestees.pluck(:id).each do |reference_id|
-          wlh_items << wlh_item('references', :nesting_reference_id, reference_id)
+        COLUMNS_REFERENCING_REFERENCES.each do |(model, column)|
+          model.where(column => reference.id).pluck(:id).each do |matched_id|
+            wlh_items << wlh_item(model.table_name, column, matched_id)
+          end
         end
 
         wlh_items

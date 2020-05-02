@@ -10,6 +10,7 @@ describe References::WhatLinksHere do
 
     context 'when there are no references' do
       specify { expect(what_links_here.all).to eq [] }
+      specify { expect(what_links_here.any?).to eq false }
     end
 
     context 'when there are taxt references' do
@@ -32,6 +33,8 @@ describe References::WhatLinksHere do
           WhatLinksHereItem.new('taxon_history_items', :taxt,                history_item.id)
         ]
       end
+
+      specify { expect(what_links_here.any?).to eq true }
     end
 
     context 'when there are references in relations' do
@@ -48,6 +51,8 @@ describe References::WhatLinksHere do
           WhatLinksHereItem.new('references', :nesting_reference_id, nested_reference.id)
         ]
       end
+
+      specify { expect(what_links_here.any?).to eq true }
     end
   end
 end
