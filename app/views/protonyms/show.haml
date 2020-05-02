@@ -4,6 +4,7 @@
 -content_for :breadcrumbs_right do
   -if current_user
     =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
+    =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-normal"
   -if user_is_at_least_helper?
     =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?

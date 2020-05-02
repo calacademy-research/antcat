@@ -1,0 +1,7 @@
+-title "#{@protonym.name.name} - What Links Here"
+-breadcrumb :protonym_what_links_here, @protonym
+-noindex_meta_tag
+
+=render "shared/what_links_here", what_links_here_items: @what_links_here_items
+
+=will_paginate @what_links_here_items

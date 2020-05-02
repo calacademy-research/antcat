@@ -160,13 +160,25 @@ describe ProtonymsController do
       expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
     end
 
-    context 'when protonym has a taxon' do
-      before do
-        create :family, protonym: protonym
+    context 'when protonym has references to it' do
+      context 'when protonym has a taxon' do
+        before do
+          create :family, protonym: protonym
+        end
+
+        specify do
+          expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
+        end
       end
 
-      specify do
-        expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
+      context 'when protonym has taxt references' do
+        before do
+          create :taxon_history_item, taxt: "{pro #{protonym.id}} in Lasius"
+        end
+
+        specify do
+          expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
+        end
       end
     end
   end
