@@ -3,23 +3,28 @@
 module Taxa
   class WhatLinksHere
     class Columns
-      include Service
+      COLUMNS_REFERENCING_TAXA = Taxa::WhatLinksHere::COLUMNS_REFERENCING_TAXA
 
-      attr_private_initialize :taxon, [predicate: false]
+      def initialize taxon
+        @taxon = taxon
+      end
 
-      def call
-        if predicate
-          any_what_links_here_items?
-        else
-          what_links_here_items
-        end
+      def all
+        what_links_here_items
+      end
+
+      def any?
+        return @_any if defined? @_any
+        @_any ||= any_what_links_here_items?
       end
 
       private
 
+        attr_reader :taxon
+
         def any_what_links_here_items?
-          Taxa::WhatLinksHere::TAXA_COLUMNS_REFERENCING_TAXA.each do |field|
-            return true if Taxon.where(field => taxon.id).exists?
+          COLUMNS_REFERENCING_TAXA.each do |(model, column)|
+            return true if model.where(column => taxon.id).exists?
           end
           false
         end
@@ -27,9 +32,9 @@ module Taxa
         def what_links_here_items
           wlh_items = []
 
-          Taxa::WhatLinksHere::TAXA_COLUMNS_REFERENCING_TAXA.each do |field|
-            Taxon.where(field => taxon.id).pluck(:id).each do |matched_id|
-              wlh_items << wlh_item('taxa', field, matched_id)
+          COLUMNS_REFERENCING_TAXA.each do |(model, column)|
+            model.where(column => taxon.id).pluck(:id).each do |matched_id|
+              wlh_items << wlh_item(model.table_name, column, matched_id)
             end
           end
 

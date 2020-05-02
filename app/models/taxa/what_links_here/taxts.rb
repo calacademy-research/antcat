@@ -3,34 +3,42 @@
 module Taxa
   class WhatLinksHere
     class Taxts
-      include Service
+      TAXT_TAG_METHOD = :tax_or_taxac_tag_regex
 
-      attr_private_initialize :taxon, [predicate: false]
+      def initialize taxon
+        @taxon = taxon
+        @taxt_tag = Taxt.public_send(TAXT_TAG_METHOD, taxon)
+      end
 
-      def call
-        if predicate
-          any_what_links_here_items?
-        else
-          what_links_here_items
-        end
+      def all
+        what_links_here_items
+      end
+
+      def any?
+        return @_any if defined? @_any
+        @_any ||= any_what_links_here_items?
       end
 
       private
 
+        attr_reader :taxon, :taxt_tag
+
         def any_what_links_here_items?
           Taxt::TAXTABLES.each do |(model, _table, field)|
-            return true if model.where("#{field} REGEXP ?", Taxt.tax_or_taxac_tag_regex(taxon)).exists?
+            return true if model.where("#{field} REGEXP ?", taxt_tag).exists?
           end
           false
         end
 
         def what_links_here_items
           wlh_items = []
+
           Taxt::TAXTABLES.each do |(model, _table, field)|
-            model.where("#{field} REGEXP ?", Taxt.tax_or_taxac_tag_regex(taxon)).pluck(:id).each do |matched_id|
+            model.where("#{field} REGEXP ?", taxt_tag).pluck(:id).each do |matched_id|
               wlh_items << wlh_item(model.table_name, field.to_sym, matched_id)
             end
           end
+
           wlh_items
         end
 

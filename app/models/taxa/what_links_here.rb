@@ -2,17 +2,16 @@
 
 module Taxa
   class WhatLinksHere
-    TAXA_COLUMNS_REFERENCING_TAXA = %i[
-      subfamily_id
-      tribe_id
-      genus_id
-      subgenus_id
-      species_id
-      subspecies_id
-
-      current_valid_taxon_id
-      homonym_replaced_by_id
-      type_taxon_id
+    COLUMNS_REFERENCING_TAXA = [
+      [Taxon, :subfamily_id],
+      [Taxon, :tribe_id],
+      [Taxon, :genus_id],
+      [Taxon, :subgenus_id],
+      [Taxon, :species_id],
+      [Taxon, :subspecies_id],
+      [Taxon, :current_valid_taxon_id],
+      [Taxon, :homonym_replaced_by_id],
+      [Taxon, :type_taxon_id]
     ]
 
     attr_private_initialize :taxon
@@ -27,21 +26,21 @@ module Taxa
     end
 
     def columns
-      @_columns ||= Taxa::WhatLinksHere::Columns[taxon]
+      @_columns ||= Taxa::WhatLinksHere::Columns.new(taxon).all
     end
 
     def any_columns?
       return @_any_columns if defined? @_any_columns
-      @_any_columns ||= Taxa::WhatLinksHere::Columns[taxon, predicate: true]
+      @_any_columns ||= Taxa::WhatLinksHere::Columns.new(taxon).any?
     end
 
     def taxts
-      @_taxts ||= Taxa::WhatLinksHere::Taxts[taxon]
+      @_taxts ||= Taxa::WhatLinksHere::Taxts.new(taxon).all
     end
 
     def any_taxts?
       return @_any_taxts if defined? @_any_taxts
-      @_any_taxts ||= Taxa::WhatLinksHere::Taxts[taxon, predicate: true]
+      @_any_taxts ||= Taxa::WhatLinksHere::Taxts.new(taxon).any?
     end
   end
 end

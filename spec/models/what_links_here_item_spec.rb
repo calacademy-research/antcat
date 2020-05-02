@@ -36,7 +36,7 @@ describe WhatLinksHereItem do
 
     context 'when `what_links_here_item` is not a taxt item' do
       specify do
-        Taxa::WhatLinksHere::TAXA_COLUMNS_REFERENCING_TAXA.each do |field|
+        Taxa::WhatLinksHere::COLUMNS_REFERENCING_TAXA.each do |(_model, field)|
           expect(described_class.new('taxa', field, 999).taxt?).to eq false
         end
       end
