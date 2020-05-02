@@ -37,6 +37,10 @@ module Taxt
     "{(tax|taxac) #{taxon.id}}"
   end
 
+  def pro_tag_regex protonym
+    "{pro #{protonym.id}}"
+  end
+
   def ref_tag_regex reference
     "{ref #{reference.id}}"
   end

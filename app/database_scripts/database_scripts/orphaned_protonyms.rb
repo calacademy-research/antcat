@@ -6,8 +6,17 @@ module DatabaseScripts
       Protonym.where.not(id: Taxon.select(:protonym_id)).includes(:name)
     end
 
-    def render_as
-      :as_protonym_table
+    def render
+      as_table do |t|
+        t.header 'ID', 'Protonym', 'Any WLHs?'
+        t.rows do |protonym|
+          [
+            protonym.id,
+            protonym.decorate.link_to_protonym,
+            Protonyms::WhatLinksHere.new(protonym).any?
+          ]
+        end
+      end
     end
   end
 end
@@ -16,7 +25,7 @@ __END__
 
 section: orphaned-records
 category: Protonyms
-tags: []
+tags: [slow-render]
 
 issue_description: This protonym is orphaned.
 

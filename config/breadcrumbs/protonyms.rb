@@ -24,6 +24,11 @@ crumb :protonym_history do |protonym|
   parent :protonym, protonym
 end
 
+crumb :protonym_what_links_here do |protonym|
+  link "What Links Here"
+  parent :protonym, protonym
+end
+
 crumb :new_protonym do
   link "New"
   parent :protonyms

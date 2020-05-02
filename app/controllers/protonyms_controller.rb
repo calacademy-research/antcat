@@ -68,6 +68,12 @@ class ProtonymsController < ApplicationController
   def destroy
     protonym = find_protonym
 
+    if Protonyms::WhatLinksHere.new(protonym).any?
+      redirect_to protonym_what_links_here_path(protonym),
+        alert: "Other records refer to this protonym, so it can't be deleted."
+      return
+    end
+
     if protonym.destroy
       protonym.create_activity :destroy, current_user
       redirect_to protonyms_path, notice: "Successfully deleted protonym."
