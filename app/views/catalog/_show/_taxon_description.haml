@@ -46,7 +46,7 @@
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
 -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
-  %ul.history.small-margin-bottom
+  %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
         =add_period_if_necessary Detax[history_item.taxt]
@@ -99,7 +99,7 @@
   =link_to "Formicidae family references", catalog_path(taxon)
 -else
   -if taxon.reference_sections.present?
-    .reference-sections
+    #reference-sections
       -taxon.reference_sections.each do |reference_section|
         .section.small-margin-bottom
           -if reference_section.title_taxt?

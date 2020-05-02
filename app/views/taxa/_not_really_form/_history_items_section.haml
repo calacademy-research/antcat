@@ -1,13 +1,13 @@
 -# TODO: Some copy-paste into `_reference_sections.haml`.
 
-.history-items-section.callout
+#history-items-section.callout
   %h5.callout-header
     History
     .right
       -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
       =link_to 'Add', new_taxa_taxon_history_item_path(taxon), id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'button submit btn-normal btn-tiny tooltip2'
       %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
-  .history-items{data: {taxon_id: taxon.id}}
+  #history-items{data: {taxon_id: taxon.id}}
     -taxon.history_items.each do |history_item|
       -# `#taxon_history_item_123` is used for reordering items.
       .history-item{id: "taxon_history_item_#{history_item.id}"}

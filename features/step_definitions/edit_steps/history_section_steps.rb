@@ -1,25 +1,25 @@
 # frozen_string_literal: true
 
 Then("the history should be {string}") do |content|
-  element = first('.history-items').find('.taxt-presenter')
+  element = first('#history-items').find('.taxt-presenter')
   expect(element.text).to match /#{content}/
 end
 
 Then("the history item field should be {string}") do |content|
-  element = first('.history-items').find('textarea')
+  element = first('#history-items').find('textarea')
   expect(element.text).to match /#{content}/
 end
 
 Then("the history item field should not be visible") do
-  expect(page).to_not have_css '.history-items textarea'
+  expect(page).to_not have_css '#history-items textarea'
 end
 
 Then("the history item field should be visible") do
-  expect(page).to have_css '.history-items textarea'
+  expect(page).to have_css '#history-items textarea'
 end
 
 Then("the history should be empty") do
-  expect(page).to_not have_css '.history-items .history-item'
+  expect(page).to_not have_css '#history-items .history-item'
 end
 
 When("I add a history item to {string} that includes a tag for {string}") do |name, tagged_name|
