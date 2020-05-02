@@ -27,21 +27,21 @@ module Taxa
     end
 
     def columns
-      @_columns ||= Taxa::WhatLinksHereColumns[taxon]
+      @_columns ||= Taxa::WhatLinksHere::Columns[taxon]
     end
 
     def any_columns?
       return @_any_columns if defined? @_any_columns
-      @_any_columns ||= Taxa::WhatLinksHereColumns[taxon, predicate: true]
+      @_any_columns ||= Taxa::WhatLinksHere::Columns[taxon, predicate: true]
     end
 
     def taxts
-      @_taxts ||= Taxa::WhatLinksHereTaxts[taxon]
+      @_taxts ||= Taxa::WhatLinksHere::Taxts[taxon]
     end
 
     def any_taxts?
       return @_any_taxts if defined? @_any_taxts
-      @_any_taxts ||= Taxa::WhatLinksHereTaxts[taxon, predicate: true]
+      @_any_taxts ||= Taxa::WhatLinksHere::Taxts[taxon, predicate: true]
     end
   end
 end

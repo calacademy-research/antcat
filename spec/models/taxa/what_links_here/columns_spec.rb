@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Taxa::WhatLinksHereColumns do
+describe Taxa::WhatLinksHere::Columns do
   describe "#call" do
     let!(:taxon) { create :family }
 
