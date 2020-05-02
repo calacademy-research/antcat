@@ -25,11 +25,13 @@ module Taxa
 
       def table_refs
         table_refs = []
+
         Taxa::WhatLinksHere::TAXA_COLUMNS_REFERENCING_TAXA.each do |field|
           Taxon.where(field => taxon.id).pluck(:id).each do |matched_id|
             table_refs << table_ref('taxa', field, matched_id)
           end
         end
+
         table_refs
       end
 

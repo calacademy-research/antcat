@@ -16,8 +16,6 @@ module Taxa
 
     private
 
-      delegate :id, to: :taxon, private: true
-
       def any_table_refs?
         Taxt::TAXTABLES.each do |(model, _table, field)|
           model.where("#{field} REGEXP ?", Taxt.tax_or_taxac_tag_regex(taxon)).pluck(:id).each do |matched_id|
@@ -41,7 +39,7 @@ module Taxa
       end
 
       def exclude_taxt_match? model, matched_id
-        return true if model == Taxon && matched_id == id
+        return true if model == Taxon && matched_id == taxon.id
         false
       end
 

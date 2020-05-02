@@ -23,5 +23,5 @@ Feature: Deleting a taxon
     When I go to the catalog page for "Atta"
     And I will confirm on the next step
     And I follow "Delete"
-    Then I should see "Other taxa refer to this taxon, so it can't be deleted. "
+    Then I should see "Other records refer to this taxon, so it can't be deleted. "
     And I should not see "Taxon was successfully deleted"
