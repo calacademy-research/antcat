@@ -4,10 +4,12 @@ require 'rails_helper'
 
 describe References::WhatLinksHere do
   describe "#call" do
+    subject(:what_links_here) { described_class.new(reference.reload) }
+
     let(:reference) { create :any_reference }
 
     context 'when there are no references' do
-      specify { expect(described_class[reference]).to eq [] }
+      specify { expect(what_links_here.all).to eq [] }
     end
 
     context 'when there are taxt references' do
@@ -19,7 +21,7 @@ describe References::WhatLinksHere do
       let!(:reference_section) { create :reference_section, title_taxt: ref_tag, subtitle_taxt: ref_tag, references_taxt: ref_tag }
 
       specify do
-        expect(described_class[reference.reload]).to match_array [
+        expect(what_links_here.all).to match_array [
           TableRef.new('taxa',                :type_taxt,           taxon.id),
           TableRef.new('taxa',                :headline_notes_taxt, taxon.id),
           TableRef.new('citations',           :notes_taxt,          citation.id),
@@ -41,7 +43,7 @@ describe References::WhatLinksHere do
       end
 
       specify do
-        expect(described_class[reference.reload]).to match_array [
+        expect(what_links_here.all).to match_array [
           TableRef.new('citations',  :reference_id,         taxon.protonym.authorship.id),
           TableRef.new('references', :nesting_reference_id, nested_reference.id)
         ]

@@ -4,19 +4,18 @@ module References
   class WhatLinksHere
     include Service
 
-    attr_private_initialize :reference, [predicate: false]
+    attr_private_initialize :reference
 
-    def call
-      if predicate
-        any_table_refs?
-      else
-        table_refs
-      end
+    def all
+      table_refs
+    end
+
+    def any?
+      return @_any if defined? @_any
+      @_any ||= any_table_refs?
     end
 
     private
-
-      attr_reader :reference, :predicate
 
       delegate :nestees, :citations, to: :reference, private: true
 

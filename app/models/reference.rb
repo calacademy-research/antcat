@@ -87,7 +87,7 @@ class Reference < ApplicationRecord
     end
 
     def ensure_not_used
-      return if References::WhatLinksHere[self].empty?
+      return unless References::WhatLinksHere.new(self).any?
       errors.add :base, "This reference can't be deleted, as there are other references to it."
       throw :abort
     end

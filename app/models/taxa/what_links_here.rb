@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# NOTE: This class has a different signature than `References::WhatLinksHere`.
-
 module Taxa
   class WhatLinksHere
     TAXA_COLUMNS_REFERENCING_TAXA = %i[
