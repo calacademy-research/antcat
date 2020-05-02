@@ -13,9 +13,10 @@ module DevMonkeyPatches
     end
 
     module Taxon
-      def dev_dev_link localhost: false
+      def dev_dev_link localhost: false, include_name: true
         base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
-        link = +"#{base_url}/catalog/#{id}?#{name_cache.tr(' ', '_')}"
+        link = +"#{base_url}/catalog/#{id}"
+        link += "?#{name_cache.tr(' ', '_')}" if include_name
 
         def link.open
           `xdg-open "#{self}"`
