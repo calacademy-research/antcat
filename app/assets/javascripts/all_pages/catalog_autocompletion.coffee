@@ -1,4 +1,6 @@
 $ ->
+  ADVANCED_SEARCH_FORM_LINK = '<a id="advanced-search-form-link" href="/catalog/search">Show advanced search form...</a>'
+
   taxa = new Bloodhound
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
@@ -12,8 +14,16 @@ $ ->
     displayKey: 'name_with_fossil'
     source: taxa.ttAdapter()
     templates:
-      header: '<h5 class="autocompletion-header">Taxon results <small>(first 10)</small></h5>'
-      empty: '<div class="empty-message">Unable to find any taxa that match the current query.</div>'
+      header: """
+        <h5 class="autocompletion-header">
+          Taxon results <small>(first 10)</small> #{ADVANCED_SEARCH_FORM_LINK}
+        </h5>
+        """
+      empty: """
+        <div class="empty-message">
+          Unable to find any taxa that match the current query.<br>#{ADVANCED_SEARCH_FORM_LINK}
+        </div>
+        """
       suggestion: (taxon) ->
         "<p><span class='#{taxon.css_classes}'>#{taxon.name_with_fossil}</span> <small>#{taxon.author_citation}</small></p>"
 
