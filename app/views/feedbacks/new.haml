@@ -1,6 +1,8 @@
 -title "Suggest Edit"
 -breadcrumb :suggest_edit
 
+=include_recaptcha_v3_js
+
 .row
   .medium-12.columns
     %h6
@@ -47,4 +49,5 @@
 
       .row
         .medium-12.columns
+          =recaptcha_v3_execute FeedbacksController::RECAPTCHA_V3_ACTION
           =button_tag "Send Feedback", class: "btn-saves"

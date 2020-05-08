@@ -2,6 +2,7 @@
 
 class FeedbacksController < ApplicationController
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
+  RECAPTCHA_V3_ACTION = 'feedback'
 
   before_action :ensure_user_is_at_least_helper, except: [:new, :create]
   before_action :ensure_user_is_superadmin, only: [:destroy]
@@ -23,6 +24,12 @@ class FeedbacksController < ApplicationController
 
   def create
     @feedback = Feedback.new(feedback_params)
+
+    unless recaptcha_v3_valid?(params[:recaptcha_token], RECAPTCHA_V3_ACTION)
+      flash.now[:error] = "reCAPTCHA verification failed. Please try again."
+      return render :new
+    end
+
     @feedback.ip = request.remote_ip
 
     if ip_banned? || rate_throttle?
