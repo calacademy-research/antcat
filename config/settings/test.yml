@@ -5,6 +5,13 @@ s3:
   access_key_id:
   secret_access_key:
 
+recaptcha:
+  enabled: false
+  v3:
+    minimum_score: 0.5
+    site_key:
+    secret_key:
+
 smtp_settings:
   address:
   port:
