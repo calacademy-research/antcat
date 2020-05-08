@@ -55,8 +55,13 @@ crumb :user_feedback do
 end
 
 crumb :user_feedback_details do |feedback|
-  link "Feedback ##{feedback.id}"
+  link "Feedback ##{feedback.id}", feedback
   parent :user_feedback
+end
+
+crumb :edit_user_feedback do |feedback|
+  link "Edit"
+  parent :user_feedback_details, feedback
 end
 
 crumb :database_scripts do

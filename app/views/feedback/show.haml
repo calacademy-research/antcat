@@ -12,6 +12,8 @@
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-warning")
   -else
     =link_to("Close", close_feedback_path(@feedback), method: :put, class: "btn-saves")
+  -if user_is_at_least_helper?
+    =link_to("Edit", edit_feedback_path(@feedback), class: "btn-warning")
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Delete"), @feedback, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
 

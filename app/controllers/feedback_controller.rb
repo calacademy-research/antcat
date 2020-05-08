@@ -50,6 +50,21 @@ class FeedbackController < ApplicationController
     end
   end
 
+  def edit
+    @feedback = find_feedback
+  end
+
+  def update
+    @feedback = find_feedback
+
+    if @feedback.update(feedback_params)
+      @feedback.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      redirect_to @feedback, notice: "Successfully updated feedback."
+    else
+      render :edit
+    end
+  end
+
   def destroy
     feedback = find_feedback
 
