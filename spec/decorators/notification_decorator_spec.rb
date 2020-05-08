@@ -22,7 +22,7 @@ describe NotificationDecorator do
     context "when `attached` is a `Feedback`" do
       let(:attached) { build_stubbed :feedback }
 
-      specify { expect(decorated.link_attached).to eq %(feedback <a href="/feedback/#{attached.id}">##{attached.id}</a>) }
+      specify { expect(decorated.link_attached).to eq %(feedback <a href="/feedbacks/#{attached.id}">##{attached.id}</a>) }
     end
   end
 end

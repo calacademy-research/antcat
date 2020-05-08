@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FeedbackController < ApplicationController
+class FeedbacksController < ApplicationController
   BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
 
   before_action :ensure_user_is_at_least_helper, except: [:new, :create]
@@ -71,7 +71,7 @@ class FeedbackController < ApplicationController
     feedback.destroy!
     feedback.create_activity :destroy, current_user
 
-    redirect_to feedback_index_path, notice: "Feedback item was successfully deleted."
+    redirect_to feedbacks_path, notice: "Feedback item was successfully deleted."
   end
 
   def close

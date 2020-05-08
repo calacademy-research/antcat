@@ -85,9 +85,9 @@ module CucumberHelpers
         "/issues/new"
 
       when 'the feedback page'
-        "/feedback"
+        "/feedbacks"
       when 'the most recent feedback item'
-        "/feedback/#{Feedback.last.id}"
+        "/feedbacks/#{Feedback.last.id}"
 
       when 'the wiki pages index'
         "/wiki_pages"

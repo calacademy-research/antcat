@@ -1,8 +1,8 @@
 -title "Feedback ##{@feedback.id}"
--breadcrumb :user_feedback_details, @feedback
+-breadcrumb :feedback, @feedback
 
 -content_for :javascripts do
-  =javascript_include_tag "controllers/feedback/show"
+  =javascript_include_tag "controllers/feedbacks/show"
 
 -content_for :breadcrumbs_right do
   -if @feedback.open?

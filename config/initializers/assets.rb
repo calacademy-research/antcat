@@ -40,7 +40,7 @@ Rails.application.config.assets.precompile += %w[
 
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js
-  controllers/feedback/show.js
+  controllers/feedbacks/show.js
   controllers/references/form.js
   controllers/taxa/form/locality_autocompletion.js
   controllers/taxa/move_items/select_checkboxes.js
