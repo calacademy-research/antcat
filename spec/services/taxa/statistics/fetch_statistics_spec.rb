@@ -36,8 +36,9 @@ describe Taxa::Statistics::FetchStatistics do
       before do
         subfamily = create :subfamily
         tribe = create :tribe, subfamily: subfamily
-        create :genus, :homonym, subfamily: subfamily, tribe: tribe
+        genus = create :genus, :homonym, subfamily: subfamily, tribe: tribe
         2.times { create :subfamily, :fossil }
+        create :species, genus: genus
       end
 
       specify do
@@ -45,7 +46,8 @@ describe Taxa::Statistics::FetchStatistics do
           extant: {
             subfamilies: { 'valid' => 1 },
             tribes: { 'valid' => 1 },
-            genera: { 'homonym' => 1 }
+            genera: { 'homonym' => 1 },
+            species: { 'valid' => 1 }
           },
           fossil: {
             subfamilies: { 'valid' => 2 }

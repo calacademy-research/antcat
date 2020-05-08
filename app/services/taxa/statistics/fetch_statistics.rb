@@ -17,7 +17,7 @@ module Taxa
         def ranks
           @_ranks ||= case taxon
                       when ::Family
-                        [:subfamilies, :tribes, :genera]
+                        [:subfamilies, :tribes, :genera, :species]
                       when ::Subfamily
                         [:tribes, :genera, :species]
                       when ::Tribe
