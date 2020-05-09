@@ -2,6 +2,9 @@
 
 module My
   class RegistrationsController < Devise::RegistrationsController
+    RECAPTCHA_V3_ACTION = 'registration'
+
+    prepend_before_action :check_recaptcha, only: [:create]
     before_action :check_if_too_many_registrations_today, only: :create
 
     invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
@@ -39,6 +42,16 @@ module My
       end
 
     private
+
+      # Via https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise
+      def check_recaptcha
+        unless recaptcha_v3_valid?(params[:recaptcha_token], My::RegistrationsController::RECAPTCHA_V3_ACTION)
+          self.resource = resource_class.new(sign_up_params)
+          resource.validate # Look for any other validation errors besides reCAPTCHA.
+          set_minimum_password_length
+          respond_with_navigational(resource) { render :new }
+        end
+      end
 
       def check_if_too_many_registrations_today
         return unless User.too_many_registrations_today?

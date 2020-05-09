@@ -1,6 +1,8 @@
 -title "Sign Up"
 -breadcrumb :sign_up
 
+=include_recaptcha_v3_js
+
 =form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
   =render 'shared/errors_for', resource: resource
   .row
@@ -26,4 +28,5 @@
 
   .row
     .medium-6.columns
+      =recaptcha_v3_execute My::RegistrationsController::RECAPTCHA_V3_ACTION
       =button_tag "Sign Up", class: "btn-saves"
