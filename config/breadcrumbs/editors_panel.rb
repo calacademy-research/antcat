@@ -49,16 +49,6 @@ crumb :invite_users do
   parent :editors_panel
 end
 
-crumb :user_feedback do
-  link "User Feedback", feedback_index_path
-  parent :editors_panel
-end
-
-crumb :user_feedback_details do |feedback|
-  link "Feedback ##{feedback.id}"
-  parent :user_feedback
-end
-
 crumb :database_scripts do
   link "Database Scripts", database_scripts_path
   parent :editors_panel

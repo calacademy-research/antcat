@@ -82,8 +82,8 @@ describe IssuesController do
     end
 
     it 'creates an activity' do
-      expect { post(:create, params: { issue: issue_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+      expect { put(:update, params: { id: issue.id, issue: issue_params, edit_summary: 'summary' }) }.
+        to change { Activity.where(action: :update).count }.by(1)
 
       activity = Activity.last
       issue = Issue.last

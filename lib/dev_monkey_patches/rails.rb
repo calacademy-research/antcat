@@ -8,16 +8,21 @@ module DevMonkeyPatches
 
     module ActiveRecord
       module Relation
+        # Example with block:
+        #   tt = Species.limit(3)
+        #   tt.peach do |tb| tb.add_column("Type name of") { |tx| Taxon.find_by(type_taxon: tx).l } end
         def dev_dev_puts_each
-          $stdout.puts "Total: #{count} of types: #{distinct.pluck(:type).join(', ')}.".yellow
-          each do |taxon|
-            $stdout.print "#{taxon.id.to_s.bold} "
-            $stdout.print "(#{taxon.status[0..4]}) "
-            $stdout.print "#{taxon.rank[0..10]} ".ljust(11).blue
-            $stdout.print "#{taxon.name_cache.bold}\t\t".green
-            yield taxon if block_given?
-            $stdout.puts
+          $stdout.puts "Total: #{count} of types: #{distinct.pluck(:type).join(', ')}.\n".yellow
+
+          table = Tabulo::Table.new(to_a, border: :markdown) do |tb|
+            tb.add_column("ID", &:id)
+            tb.add_column("Rank", &:type)
+            tb.add_column("Status", &:status)
+            tb.add_column("Name", &:name_cache)
+            tb.add_column("Link") { |tx| tx.l(include_name: false) }
+            yield tb if block_given?
           end
+          $stdout.puts table.pack
           nil # Suppress echo in console.
         end
         alias_method :peach, :dev_dev_puts_each

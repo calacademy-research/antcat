@@ -2,7 +2,7 @@ User-agent: *
 Crawl-delay: 10
 Disallow: /activities/
 Disallow: /documents/
-Disallow: /feedback/
+Disallow: /feedbacks/
 Disallow: /references/exports/
 Disallow: *.pdf
 Disallow: /*history$

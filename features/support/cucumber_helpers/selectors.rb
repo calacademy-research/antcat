@@ -19,7 +19,7 @@ module CucumberHelpers
       when /^the (\w*) taxon browser tab$/
         find(:link, Regexp.last_match(1))[:href]
       when 'the protonym'
-        "#taxon_description #protonym-synopsis > span.name"
+        "#taxon-description #protonym-synopsis > span.name"
       when 'the nomen synopsis'
         "div#nomen-synopsis"
       when 'the citations section'
