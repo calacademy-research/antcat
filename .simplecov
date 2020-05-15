@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 SimpleCov.configure do
   load_profile "test_frameworks"
 
   add_group "API", "app/controllers/api"
-  add_group "Controllers", /app\/controllers\/(?!api)/
+  add_group "Controllers", %r{app/controllers/(?!api)}
   add_group "Decorators", "app/decorators"
   add_group "Helpers", "app/helpers"
   add_group "Lib", "lib/"
