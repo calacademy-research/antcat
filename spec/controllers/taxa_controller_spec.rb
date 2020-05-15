@@ -62,7 +62,7 @@ describe TaxaController do
               ichnotaxon: true,
               hong: true,
               headline_notes_taxt: "headline notes taxt",
-              type_taxt: "type taxt",
+              type_taxt: Protonym::BY_MONOTYPY,
               type_taxon_id: type_taxon.id
             )
           end

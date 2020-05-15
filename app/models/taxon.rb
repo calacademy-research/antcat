@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Taxon < ApplicationRecord
+class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Trackable
 
   self.table_name = :taxa
@@ -41,8 +41,7 @@ class Taxon < ApplicationRecord
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
-  validates :type_taxt, absence: { message: "(type notes) can't be set unless taxon has a type name" }, unless: -> { type_taxon }
-  validate :current_valid_taxon_validation, :ensure_correct_name_type
+  validate :current_valid_taxon_validation, :ensure_correct_name_type, :type_taxt_validation
 
   before_validation :cleanup_taxts
   before_save :set_name_caches
@@ -107,11 +106,9 @@ class Taxon < ApplicationRecord
       self.name_html_cache = name.name_html
     end
 
-    # TODO: Remove. `taxa.type_taxt` should be moved and normalized; `taxa.headline_notes_taxt` can
-    # be distributed into other taxts.
+    # TODO: Remove `taxa.headline_notes_taxt` or convert to history items.
     def cleanup_taxts
       self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
-      self.type_taxt = Taxt::Cleanup[type_taxt]
     end
 
     def current_valid_taxon_validation
@@ -125,5 +122,22 @@ class Taxon < ApplicationRecord
     def ensure_correct_name_type
       return if name&.rank == rank
       errors.add :base, "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
+    end
+
+    # TODO: Temporary code before normalizing and moving to `protonyms`.
+    def type_taxt_validation
+      if type_taxt.present? && !type_taxon
+        errors.add :type_taxt, "(type notes) can't be set unless taxon has a type name"
+      end
+
+      unless Protonym.common_type_taxt?(type_taxt)
+        errors.add :type_taxt, <<~STR
+          (type notes) must be one of either:<br>
+            &lt;blank&gt;<br>
+            , by monotypy.<br>
+            , by original designation.<br>
+            , by subsequent designation of {ref &lt;ID&gt;}: &lt;page number&gt;.
+        STR
+      end
     end
 end
