@@ -112,24 +112,6 @@
                 -if taxon.policy.allow_create_obsolete_combination?
                   =link_to "Create?", taxa_create_obsolete_combination_path(taxon, obsolete_genus_id: oc_per_item)
 
--# TODO: Remove after `MoveTypeTaxonToProtonymByScript`.
--if !taxon.is_a?(Family) && taxon.type_taxon
-  -type_taxon_expander = TypeTaxonExpander.new(taxon)
-  -unless type_taxon_expander.can_expand?
-    .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-      %h6
-        =antcat_icon 'nope'
-        Type taxon expansion
-        =logged_in_only_tooltip_icon
-      %p
-        This taxon has a type taxon
-        but it could not be expanded because:
-        %br
-        =type_taxon_expander.reason_cannot_expand
-        %br
-        The default expansion is:
-        =type_taxon_expander.expansion(ignore_can_expand: true)
-
 -if editors_catalog_presenter.taxa_with_same_name.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background
     %h6
