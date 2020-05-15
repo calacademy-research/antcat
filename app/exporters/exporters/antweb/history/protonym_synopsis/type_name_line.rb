@@ -31,14 +31,10 @@ module Exporters
               string << AntwebFormatter.link_to_taxon(type_taxon)
 
               if type_taxt
-                string << AntwebFormatter.detax(format_type_taxt)
+                string << AntwebFormatter.detax(type_taxt)
               end
 
               AddPeriodIfNecessary[string]
-            end
-
-            def format_type_taxt
-              taxon.decorate.format_type_taxt
             end
         end
       end

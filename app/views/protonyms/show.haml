@@ -92,7 +92,7 @@
               -if taxon.type_taxon
                 %small
                   =taxon.decorate.type_taxon_rank
-                  =CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.decorate.format_type_taxt]
+                  =CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.type_taxt]
             %td
               -if taxon.origin
                 .bold-warning=taxon.origin
