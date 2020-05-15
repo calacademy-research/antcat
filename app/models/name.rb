@@ -14,7 +14,8 @@ class Name < ApplicationRecord
 
   validates :name, :epithet, presence: true
   validates :name, :epithet,
-    format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" }
+    format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" },
+    unless: -> { name.blank? }
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_starts_with_upper_case_letter
 

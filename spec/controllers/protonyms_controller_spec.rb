@@ -130,17 +130,17 @@ describe ProtonymsController do
     end
 
     it 'updates the authorship in place without creating a new record' do
-      new_pages = '99'
       protonym_params = {
         authorship_attributes: {
-          pages: new_pages
+          id: protonym.authorship.id,
+          pages: '99'
         }
       }
 
-      expect(protonym.authorship.pages).to_not eq new_pages
+      expect(protonym.authorship.pages).to_not eq '99'
       expect { put(:update, params: { id: protonym.id, protonym: protonym_params }) }.
         to_not change { protonym.reload.authorship.id }
-      expect(protonym.authorship.pages).to_not eq new_pages
+      expect(protonym.authorship.pages).to eq '99'
     end
   end
 

@@ -14,7 +14,7 @@ module DatabaseScripts
           'Type taxon now if different', 'TTN status'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
-          type_taxon_now = type_taxon.now
+          type_taxon_now = type_taxon.now.__getobj__ # TODO: Due to `CleanupTaxon < SimpleDelegator`.
           tt_same_as_ttn = type_taxon == type_taxon_now
 
           type_taxon_expander = TypeTaxonExpander.new(taxon)

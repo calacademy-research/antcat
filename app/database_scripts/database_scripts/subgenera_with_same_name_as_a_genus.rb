@@ -32,7 +32,7 @@ module DatabaseScripts
           subgenus = Subgenus.find_by("name_cache LIKE ?", "%(#{taxon.name_cache})%")
 
           same_protonym = taxon.protonym == subgenus.protonym
-          same_now_taxon = taxon.now == subgenus.now
+          same_now_taxon = taxon.now.__getobj__ == subgenus.now.__getobj__ # TODO: Due to `CleanupTaxon < SimpleDelegator`.
           taxons_cvt_is_genus_of_subgenus = (subgenus.genus == taxon.current_valid_taxon)
 
           [
@@ -60,7 +60,7 @@ __END__
 
 section: main
 category: Catalog
-tags: [slow]
+tags: [updated!, slow]
 
 issue_description: This genus or subgenus has the same name as another taxon (comparing genus name vs. subgenus part of name).
 
