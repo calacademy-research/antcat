@@ -54,7 +54,7 @@ class MakePreviewable
         <div class="medium-6 columns">
           Preview
           <button class="btn-nodanger btn-tiny preview-link">Rerender preview</button>
-          <a><span class="shared-spinner"><i class="fa fa-refresh fa-spin"></i></span></a>
+          <a><span class="shared-spinner"><i class="antcat_icon refresh fa-spin"></i></span></a>
         </div>
       </div>
       <div class="row">

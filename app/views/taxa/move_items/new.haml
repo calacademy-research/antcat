@@ -16,8 +16,8 @@
         %legend to
         =taxon_select_tag :to_taxon_id, params[:to_taxon_id] || @taxon.current_valid_taxon&.id
         %br
-        =button_tag type: "submit", class: "btn-normal has-spinner" do
-          =spinner_icon + "Select..."
+        =button_tag "Select...", type: "submit", class: "btn-normal"
+
 .row
   .medium-6.columns
     -if @taxon.history_items.empty?

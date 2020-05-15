@@ -19,8 +19,7 @@
     .small-6.medium-4.large-2.columns
       =per_page_select ReferenceSectionsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-4.large-2.columns.end
-      =button_tag type: "submit", name: nil, class: "btn-normal has-spinner" do
-        =spinner_icon + "Search " + search_icon
+      =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-normal"
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 

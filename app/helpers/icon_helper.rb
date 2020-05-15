@@ -16,8 +16,4 @@ module IconHelper
   def append_refresh_icon label
     label.html_safe << antcat_icon("refresh")
   end
-
-  def spinner_icon
-    "<span class='spinner'><i class='fa fa-refresh fa-spin'></i></span>".html_safe
-  end
 end
