@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Remove this and related code once `TaxaWithUncommonTypeTaxts` and `TaxaWithTypeTaxa` as been cleared.
 # TODO: Add support for this in the AntWeb export, also once the scripts has been cleared.
 
 class TypeTaxonExpander

@@ -89,7 +89,6 @@ description: >
   This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
 
 related_scripts:
-  - TaxaWithTypeTaxa
   - TaxaWithTypeTaxt
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues

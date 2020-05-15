@@ -18,12 +18,11 @@ class Protonym < ApplicationRecord
   ]
 
   # TODO: These are currently stored in `taxa.type_taxt`; we want to move them to `protonyms` or a new model,
-  # and normalize the values (see `DatabaseScripts::TaxaWithTypeTaxa`).
+  # and normalize the values (see `DatabaseScripts::MoveTypeTaxonToProtonymByScript`).
   COMMON_TYPE_TAXTS = [
     BY_MONOTYPY = ", by monotypy.",
     BY_ORIGINAL_DESIGNATION = ", by original designation.",
-    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/,
-    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF_MYSQL = '^, by subsequent designation of {ref [0-9]+}: [0-9]+.$'
+    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/
   ]
 
   belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy

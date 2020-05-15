@@ -37,4 +37,4 @@ description: >
 
   * Clear red "No"s in %dbscript:ProtonymsWithTaxaWithMoreThanOneTypeTaxon
 
-  * Clear %dbscript:TaxaWithUncommonTypeTaxts
+  * Done: Clear %dbscript:TaxaWithUncommonTypeTaxts -

@@ -11,7 +11,7 @@ module DatabaseScripts
         t.header 'Taxon', 'Status',
           'Type taxon', 'Type taxon status',
           'CVT of type taxon if different', 'Status of CVT of type taxon',
-          'type_taxt', 'Common taxt?'
+          'type_taxt'
         t.rows do |taxon|
           type_taxt = taxon.type_taxt
           type_taxon = taxon.type_taxon
@@ -28,8 +28,7 @@ module DatabaseScripts
             (taxon_link(cvt_of_type_taxon) if different),
             (cvt_of_type_taxon.status if different),
 
-            Detax[type_taxt],
-            ('Yes' if Protonym.common_type_taxt?(type_taxt))
+            Detax[type_taxt]
           ]
         end
       end
@@ -60,7 +59,5 @@ related_scripts:
   - TaxaWithHeadlineNotesTaxt
   - TaxaWithTypeTaxt
 
-  - TaxaWithTypeTaxa
-  - TaxaWithUncommonTypeTaxts
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues
