@@ -9,7 +9,7 @@ Feature: Editing a user
       | quintus@antcat.org | Batiatus | secret   |
     Given I log in as "Batiatus"
 
-  Scenario: Changing my password
+  Scenario: Changing password
     When I go to the main page
     And I follow "Batiatus" within the desktop menu
     And I follow "My account"
@@ -31,7 +31,7 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Batiatus"
 
-  Scenario: Changing my name
+  Scenario: Updating user details
     When I go to the main page
     Then I should see "Batiatus"
     And I should not see "Quintus, B."

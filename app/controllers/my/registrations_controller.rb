@@ -25,9 +25,7 @@ module My
 
         # Allows user to update registration information without password.
         if params[:password].blank?
-          params.delete(:password)
-          params.delete(:password_confirmation)
-          params.delete(:current_password)
+          params.except!(:password, :password_confirmation, :current_password)
         end
 
         resource.update(params)
