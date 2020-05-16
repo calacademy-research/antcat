@@ -28,6 +28,9 @@ class User < ApplicationRecord
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable
   has_paper_trail ignore: [:encrypted_password, :password_salt, :reset_password_token, :remember_token]
+  has_settings do |s|
+    s.key :editing_helpers, defaults: { create_combination: false }
+  end
   trackable parameters: proc { { user_id: id } }
 
   # NOTE: Super primitive way of preventing mass registrations.

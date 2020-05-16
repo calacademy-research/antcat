@@ -103,6 +103,8 @@ module CucumberHelpers
         taxon_history_item_path(TaxonHistoryItem.last)
 
       # Users.
+      when 'My account'
+        edit_user_registration_path
       when /^the user page for "([^"]*)"$/
         user = User.find_by(name: Regexp.last_match(1))
         "/users/#{user.id}"

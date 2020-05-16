@@ -9,7 +9,7 @@ Feature: Editing a user
       | quintus@antcat.org | Batiatus | secret   |
     Given I log in as "Batiatus"
 
-  Scenario: Changing my password
+  Scenario: Changing password
     When I go to the main page
     And I follow "Batiatus" within the desktop menu
     And I follow "My account"
@@ -31,7 +31,7 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Batiatus"
 
-  Scenario: Changing my name
+  Scenario: Updating user details
     When I go to the main page
     Then I should see "Batiatus"
     And I should not see "Quintus, B."
@@ -44,3 +44,25 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Quintus, B."
     And I should not see "Batiatus"
+
+  Scenario: Updating user preferences
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
+
+    # Enable setting.
+    When I check "user_settings_editing_helpers_create_combination"
+    And I press "Save"
+    Then I should see "Your account has been updated"
+
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" checked
+    And Batiatus' editing_helpers settings for create_combination should be "true" [Boolean]
+
+    # Disable setting.
+    When I uncheck "user_settings_editing_helpers_create_combination"
+    And I press "Save"
+    Then I should see "Your account has been updated"
+
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
+    And Batiatus' editing_helpers settings for create_combination should be "false" [Boolean]

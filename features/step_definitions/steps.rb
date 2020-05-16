@@ -75,6 +75,14 @@ When("I uncheck {string}") do |field_name|
   uncheck field_name
 end
 
+Then("I should see {string} checked") do |field_name|
+  expect(page.find(field_name).checked?).to eq true
+end
+
+Then("I should see {string} unchecked") do |field_name|
+  expect(page.find(field_name).checked?).to eq false
+end
+
 # "I should see / should contain".
 Then("I should see {string}") do |content|
   expect(page).to have_content content, normalize_ws: true

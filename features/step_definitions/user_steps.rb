@@ -47,3 +47,9 @@ When('I log in as a superadmin named {string}') do |name|
   user = create :user, :editor, :superadmin, name: name
   login_programmatically user
 end
+
+Then("Batiatus' editing_helpers settings for create_combination should be {string} [Boolean]") do |value|
+  user = User.find_by!(name: 'Batiatus')
+  boolean_value = { 'true' => true, 'false' => false }.fetch(value)
+  expect(user.settings(:editing_helpers).create_combination).to eq boolean_value
+end

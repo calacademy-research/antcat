@@ -2,7 +2,7 @@
 
 shared_examples_for "a taxt column with cleanup" do |column|
   it 'strips double spaces and colons' do
-    subject.public_send "#{column}=".to_sym, 'Pi   zz : : a'
+    subject.public_send "#{column}=", 'Pi   zz : : a'
     expect { subject.valid? }.to change { subject.public_send(column) }.from('Pi   zz : : a').to('Pi zz: a')
   end
 end

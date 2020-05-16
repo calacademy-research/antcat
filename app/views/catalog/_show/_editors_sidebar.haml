@@ -125,23 +125,27 @@
           %span.small-text=homonym.decorate.compact_status
 
 -if taxon.policy.show_create_combination_button?
-  .additional-editor-data.callout.no-border-callout.logged-in-only-background
+  #can-be-combined-editing-helper.additional-editor-data.callout.no-border-callout.logged-in-only-background
     %h6
       Can be combined?
       =logged_in_only_tooltip_icon
 
-    -policy = CreateCombinationPolicy.new(taxon)
-    -if policy.allowed?
-      %p
-        Probably!
-        =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+    -if current_user.settings(:editing_helpers).create_combination
+      -policy = CreateCombinationPolicy.new(taxon)
+      -if policy.allowed?
+        %p
+          Probably!
+          =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+      -else
+        No, because:
+        %ul
+          -policy.errors.each do |error|
+            %li=error
+        See also this issue on GitHub
+        =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+      =hide_editing_helper_link
     -else
-      No, because:
-      %ul
-        -policy.errors.each do |error|
-          %li=error
-      See also this issue on GitHub
-      =link_to '#808.', 'https://github.com/calacademy-research/antcat/issues/808'
+      =enable_editing_helper_link
 
 .additional-editor-data.callout.no-border-callout.logged-in-only-background
   %h6

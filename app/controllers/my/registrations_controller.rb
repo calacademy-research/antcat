@@ -25,9 +25,13 @@ module My
 
         # Allows user to update registration information without password.
         if params[:password].blank?
-          params.delete(:password)
-          params.delete(:password_confirmation)
-          params.delete(:current_password)
+          params.except!(:password, :password_confirmation, :current_password)
+        end
+
+        if settings_params
+          settings_params[:editing_helpers]&.each do |key, value|
+            resource.settings(:editing_helpers).public_send("#{key}=", ActiveModel::Type::Boolean.new.cast(value))
+          end
         end
 
         resource.update(params)
@@ -42,6 +46,10 @@ module My
       end
 
     private
+
+      def settings_params
+        params.dig(:user, :settings)
+      end
 
       # Via https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise
       def check_recaptcha

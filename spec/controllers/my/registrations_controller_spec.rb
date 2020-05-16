@@ -66,20 +66,41 @@ describe My::RegistrationsController do
 
   describe "PUT update", as: :current_user do
     let(:current_user) { create :user }
-    let!(:user_params) do
-      {
-        email: 'pizza2@example.com',
-        name: 'Quintus Batiatus II'
-      }
+
+    describe 'updating user details' do
+      let!(:user_params) do
+        {
+          email: 'pizza2@example.com',
+          name: 'Quintus Batiatus II'
+        }
+      end
+
+      it 'updates the user' do
+        put(:update, params: { id: current_user.id, user: user_params })
+
+        current_user.reload
+
+        expect(current_user.email).to eq user_params[:email]
+        expect(current_user.name).to eq user_params[:name]
+      end
     end
 
-    it 'updates the user' do
-      put(:update, params: { id: current_user.id, user: user_params })
+    describe 'updating user settings for editing_helpers' do
+      let!(:user_params) do
+        {
+          settings: {
+            editing_helpers: {
+              create_combination: "1"
+            }
+          }
+        }
+      end
 
-      current_user.reload
-
-      expect(current_user.email).to eq user_params[:email]
-      expect(current_user.name).to eq user_params[:name]
+      it 'updates the settings with type-casted values' do
+        expect { put(:update, params: { id: current_user.id, user: user_params }) }.
+          to change { current_user.reload.settings(:editing_helpers).create_combination }.
+          from(false).to(true)
+      end
     end
   end
 end

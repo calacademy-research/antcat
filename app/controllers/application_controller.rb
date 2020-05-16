@@ -30,6 +30,7 @@ class ApplicationController < ActionController::Base
 
   protected
 
+    # TODO: See if we can move these.
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
       devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :password, :remember_me])
