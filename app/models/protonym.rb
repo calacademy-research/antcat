@@ -31,6 +31,7 @@ class Protonym < ApplicationRecord
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
   # TODO: See https://github.com/calacademy-research/antcat/issues/702
   has_many :taxa_with_history_items, -> { distinct.joins(:history_items) }, class_name: 'Taxon'
+  has_many :history_items, through: :taxa, class_name: 'TaxonHistoryItem'
 
   # TODO: See if wa want to validate this w.r.t. rank of name and fossil status.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }

@@ -42,6 +42,64 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
+-if current_user && current_user.settings(:editing_helpers).history_items_via_protonym
+  #history-items-via-protonym-editing-helper.additional-editor-data.callout.no-border-callout.logged-in-only-background
+    %h6
+      History items via protonym
+      =logged_in_only_tooltip_icon
+
+    -presenter = ProtonymHistoryPresenter.new(taxon)
+    -if presenter.any_unreachable_self_owned_items?
+      .small-margin-bottom
+        %p
+          %span.bold-warning This taxon has unreachable history items.
+        %p History items shown in the usual place outside of this box are considered to be "unreachable".
+
+    -if presenter.protonym_item_belonging_to_multiple_taxa?
+      .small-margin-bottom
+        %span.bold-warning This taxon has protonym items that belong to more than a single taxon
+
+    -if presenter.any_taxon_or_protonym_items?
+      -if presenter.only_items_self_owned_by_taxon?
+        %p
+          This taxon
+          %strong only has self-owned items
+          (that is exactly the same items as its protonym, thus not shown in this blue box).
+      -elsif presenter.only_protonym_items?
+        %p
+          This taxon has
+          %strong no history items of its own
+          (that is, only items via the protonym).
+      -else
+        %p
+          This taxon has
+          %strong both self-owned items and items via the protonym.
+
+      -if presenter.show_protonym_items?
+        %h6 Protonym items to be shown (self-owned items will also be shown, but they are not repeated here)
+      -else
+        %h6 These items will NOT be shown on this page
+
+      -if presenter.items_excluding_self_owned.exists?
+        %ul#history.small-margin-bottom
+          -presenter.items_excluding_self_owned.each do |history_item|
+            %li
+              Item owned by
+              %strong=history_item.taxon.rank.upcase
+              -if presenter.rank_field_required?(taxon, history_item.taxon)
+                %span.bold-warning requires rank field
+              =CatalogFormatter.link_to_taxon(history_item.taxon)
+              .tiny-margin-top.small-margin-bottom
+                =add_period_if_necessary Detax[history_item.taxt]
+      -else
+        %p Same items as in the usual history items section outside of this blue box (since this taxon only has self-owned history items).
+    -else
+      %p
+        Neither this taxon nor its protonym have any history items.
+        =antcat_icon 'check'
+
+    =hide_editing_helper_link
+
 -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
   %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|

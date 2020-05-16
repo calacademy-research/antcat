@@ -39,6 +39,11 @@
           =f.check_box :create_combination
           =f.label :create_combination, "Show 'Can be combined?' blue box on species pages"
 
+          %br
+
+          =f.check_box :history_items_via_protonym
+          =f.label :history_items_via_protonym, "Show 'History items via protonym' blue box"
+
   .row.margin-top
     .medium-6.columns
       =button_tag 'Save', class: "btn-saves"
