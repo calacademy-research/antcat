@@ -121,7 +121,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family }
 
         it 'cannot have a `type_taxt`' do
-          expect { taxon.type_taxt = 'by monotypy' }.to change { taxon.valid? }.to(false)
+          expect { taxon.type_taxt = Protonym::BY_MONOTYPY }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(type_taxt: ["(type notes) can't be set unless taxon has a type name"])
         end
       end
@@ -130,7 +130,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family, type_taxon: create(:family) }
 
         it 'may have a `type_taxt`' do
-          expect { taxon.type_taxt = 'by monotypy' }.to_not change { taxon.valid? }.from(true)
+          expect { taxon.type_taxt = Protonym::BY_MONOTYPY }.to_not change { taxon.valid? }.from(true)
         end
       end
     end
@@ -198,10 +198,6 @@ describe Taxon do
   describe 'callbacks' do
     it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
       subject { create :family }
-    end
-
-    it_behaves_like "a taxt column with cleanup", :type_taxt do
-      subject { build :family }
     end
   end
 

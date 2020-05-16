@@ -34,7 +34,7 @@ describe Taxa::WhatLinksHere do
 
   context "when there are taxt references" do
     describe "tag: `tax`" do
-      let!(:other_taxon) { create :family, type_taxt: "{tax #{taxon.id}}", type_taxon: create(:family) }
+      let!(:other_taxon) { create :family }
 
       before do
         other_taxon.protonym.authorship.update!(notes_taxt: "{tax #{taxon.id}}")
@@ -42,8 +42,7 @@ describe Taxa::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('taxa',      :type_taxt,  other_taxon.id),
-          WhatLinksHereItem.new('citations', :notes_taxt, other_taxon.protonym.authorship_id)
+          WhatLinksHereItem.new('citations', :notes_taxt, other_taxon.protonym.authorship.id)
         ]
         expect(what_links_here.all).to match_array what_links_here.taxts
       end
@@ -54,11 +53,15 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "tag: `taxac`" do
-      let!(:other_taxon) { create :family, type_taxt: "{taxac #{taxon.id}}", type_taxon: create(:family) }
+      let!(:other_taxon) { create :family }
+
+      before do
+        other_taxon.protonym.authorship.update!(notes_taxt: "{tax #{taxon.id}}")
+      end
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('taxa', :type_taxt, other_taxon.id)
+          WhatLinksHereItem.new('citations', :notes_taxt, other_taxon.protonym.authorship.id)
         ]
         expect(what_links_here.taxts).to match_array what_links_here.taxts
       end

@@ -15,7 +15,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::TypeNameLine do
       end
 
       context "when taxon has type taxt" do
-        let(:taxon) { create :genus, type_taxon: type_species, type_taxt: ', by monotypy' }
+        let(:taxon) { create :genus, type_taxon: type_species, type_taxt: Protonym::BY_MONOTYPY }
 
         it "includes the type taxt" do
           expect(described_class[taxon]).

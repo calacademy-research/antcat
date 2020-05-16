@@ -7,21 +7,6 @@
 class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
-  def clear_type_taxt
-    taxon = Taxon.find(params[:taxon_id])
-
-    old_type_taxt = taxon.type_taxt
-    new_type_taxt = clean_type_taxt old_type_taxt
-
-    if taxon.update(type_taxt: new_type_taxt)
-      taxon.create_activity :update, current_user,
-        edit_summary: "[automatic] Set type_taxt to <br>'#{new_type_taxt}' <br>was: <br>'#{old_type_taxt}'"
-      render js: %(AntCat.notifySuccess("Changed to: '#{new_type_taxt || '<blank>'}'"))
-    else
-      render js: %(AntCat.notifyError("Could not clear type_taxt"))
-    end
-  end
-
   def convert_bolton_tags
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
 
@@ -55,16 +40,6 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   private
-
-    def clean_type_taxt type_taxt
-      if type_taxt.include?(Protonym::BY_MONOTYPY)
-        Protonym::BY_MONOTYPY
-      elsif type_taxt.include?(Protonym::BY_ORIGINAL_DESIGNATION)
-        Protonym::BY_ORIGINAL_DESIGNATION
-      elsif /, by subsequent designation of {ref \d+}: \d+.?/.match?(type_taxt)
-        type_taxt[/, by subsequent designation of {ref \d+}: \d+.?/]
-      end
-    end
 
     # Copy-pasted from `HistoryItemsWithRefTagsAsAuthorCitations`.
     def convert_taxt_to_taxac_tags taxt

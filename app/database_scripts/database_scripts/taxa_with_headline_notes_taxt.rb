@@ -48,4 +48,3 @@ related_scripts:
   - ProtonymsWithNotesTaxt
   - ProtonymsWithTypeNotesTaxt
   - TaxaWithHeadlineNotesTaxt
-  - TaxaWithTypeTaxt

@@ -20,14 +20,11 @@
   =add_period_if_necessary(taxon.protonym.biogeographic_region)
 
   -if taxon.type_taxon
-    -# TODO: Add this to the AntWeb export as well once the data is in a better form.
-    -type_taxon_expander = TypeTaxonExpander.new(taxon)
-
     =taxon.decorate.type_taxon_rank
-    -if type_taxon_expander.can_expand?
-      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + type_taxon_expander.expansion + Detax[taxon.decorate.format_type_taxt])
+    -if (type_taxon_expansion = TypeTaxonExpander.new(taxon).expansion)
+      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + type_taxon_expansion + Detax[taxon.type_taxt])
     -else
-      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.decorate.format_type_taxt])
+      =add_period_if_necessary(CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.type_taxt])
 
   =Detax[taxon.headline_notes_taxt]
 

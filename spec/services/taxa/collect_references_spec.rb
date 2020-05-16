@@ -16,7 +16,7 @@ describe Taxa::CollectReferences do
     before do
       taxon.update!(
         type_taxon: create(:family),
-        type_taxt: "see {ref #{reference_4.id}}",
+        type_taxt: ", by subsequent designation of {ref #{reference_4.id}}: 1.",
         headline_notes_taxt: "see {ref #{reference_3.id}}"
       )
       taxon.protonym.update!(

@@ -8,7 +8,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'Type taxon', 'type_taxt', 'Protonym'
+        t.header 'Taxon', 'Status', 'Type taxon', 'TT status', 'type_taxt', 'Protonym'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
 
@@ -16,6 +16,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.status,
             taxon_link(type_taxon),
+            type_taxon.status,
             taxon.type_taxt,
             taxon.protonym.decorate.link_to_protonym
           ]
@@ -37,4 +38,4 @@ description: >
 
   * Clear red "No"s in %dbscript:ProtonymsWithTaxaWithMoreThanOneTypeTaxon
 
-  * Clear %dbscript:TaxaWithUncommonTypeTaxts
+  * Done: Clear %dbscript:TaxaWithUncommonTypeTaxts -

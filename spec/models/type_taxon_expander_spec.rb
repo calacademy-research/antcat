@@ -16,14 +16,14 @@ describe TypeTaxonExpander do
       context 'when type taxon is valid' do
         let(:type_taxon) { create :family }
 
-        specify { expect(expander.expansion(ignore_can_expand: false)).to eq '' }
+        specify { expect(expander.expansion).to eq '' }
       end
 
       context 'when type taxon not is valid' do
         let(:type_taxon) { create :family, :unavailable }
 
         specify do
-          expect(expander.expansion(ignore_can_expand: false)).to eq " (unavailable)"
+          expect(expander.expansion).to eq " (unavailable)"
         end
       end
     end
@@ -33,7 +33,7 @@ describe TypeTaxonExpander do
       let(:type_taxon) { create :family, :synonym, current_valid_taxon: current_valid_taxon_of_type_taxon }
 
       it "uses the status of the type taxon and links it's fully resolved current valid taxon" do
-        expect(expander.expansion(ignore_can_expand: false)).
+        expect(expander.expansion).
           to eq " (junior synonym of #{taxon_link(current_valid_taxon_of_type_taxon)})"
       end
     end
@@ -46,7 +46,7 @@ describe TypeTaxonExpander do
       let(:type_taxon) { create :family, :synonym, current_valid_taxon: current_valid_taxon_of_type_taxon }
 
       it "uses the status of taxon before the fully resolved current valid taxon and links the fully resolved" do
-        expect(expander.expansion(ignore_can_expand: false)).
+        expect(expander.expansion).
           to eq " (obsolete combination of #{taxon_link(second_current_valid_taxon_of_type_taxon)})"
       end
     end
