@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 module Catalog
-  class AdvancedSearchQuery
+  class AdvancedSearchQuery # rubocop:disable Metrics/ClassLength
     include Service
 
     TAXA_COLUMNS = %i[
       fossil nomen_nudum unresolved_homonym ichnotaxon hong status type collective_group_name
       incertae_sedis_in
     ]
+    MUST_HAVE_HISTORY_ITEMS = 'must_have'
+    CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
 
     def initialize params
       @params = params.delete_if { |_key, value| value.blank? }
@@ -30,9 +32,9 @@ module Catalog
         end
 
         relation = relation.valid if params[:valid_only]
-        relation = relation.distinct.joins(:history_items) if params[:must_have_history_items]
 
         relation.
+          yield_self(&method(:history_items_clause)).
           yield_self(&method(:author_name_clause)).
           yield_self(&method(:years_clause)).
           yield_self(&method(:name_clause)).
@@ -43,6 +45,17 @@ module Catalog
           yield_self(&method(:locality_clause)).
           yield_self(&method(:biogeographic_region_clause)).
           yield_self(&method(:forms_clause))
+      end
+
+      def history_items_clause relation
+        return relation unless (history_items = params[:history_items])
+
+        case history_items
+        when MUST_HAVE_HISTORY_ITEMS
+          relation.distinct.joins(:history_items)
+        when CANNOT_HAVE_HISTORY_ITEMS
+          relation.left_outer_joins(:history_items).where(taxon_history_items: { taxon_id: nil })
+        end
       end
 
       def author_name_clause relation

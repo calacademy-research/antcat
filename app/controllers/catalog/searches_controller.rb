@@ -49,6 +49,7 @@ module Catalog
           :forms,
           :fossil,
           :genus,
+          :history_items,
           :hong,
           :ichnotaxon,
           :incertae_sedis_in,
