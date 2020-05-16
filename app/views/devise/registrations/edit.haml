@@ -33,4 +33,12 @@
 
   .row.margin-top
     .medium-6.columns
+      %h6 Enabled editing helpers
+      =f.fields_for :settings do |settings_fields|
+        =settings_fields.fields_for :editing_helpers, current_user.settings(:editing_helpers) do |f|
+          =f.check_box :create_combination
+          =f.label :create_combination, "Show 'Can be combined?' blue box on species pages"
+
+  .row.margin-top
+    .medium-6.columns
       =button_tag 'Save', class: "btn-saves"

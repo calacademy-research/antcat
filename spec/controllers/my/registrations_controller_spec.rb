@@ -84,5 +84,23 @@ describe My::RegistrationsController do
         expect(current_user.name).to eq user_params[:name]
       end
     end
+
+    describe 'updating user settings for editing_helpers' do
+      let!(:user_params) do
+        {
+          settings: {
+            editing_helpers: {
+              create_combination: "1"
+            }
+          }
+        }
+      end
+
+      it 'updates the settings with type-casted values' do
+        expect { put(:update, params: { id: current_user.id, user: user_params }) }.
+          to change { current_user.reload.settings(:editing_helpers).create_combination }.
+          from(false).to(true)
+      end
+    end
   end
 end

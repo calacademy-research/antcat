@@ -44,3 +44,25 @@ Feature: Editing a user
     Then I should be on the main page
     And I should see "Quintus, B."
     And I should not see "Batiatus"
+
+  Scenario: Updating user preferences
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
+
+    # Enable setting.
+    When I check "user_settings_editing_helpers_create_combination"
+    And I press "Save"
+    Then I should see "Your account has been updated"
+
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" checked
+    And Batiatus' editing_helpers settings for create_combination should be "true" [Boolean]
+
+    # Disable setting.
+    When I uncheck "user_settings_editing_helpers_create_combination"
+    And I press "Save"
+    Then I should see "Your account has been updated"
+
+    When I go to My account
+    Then I should see "#user_settings_editing_helpers_create_combination" unchecked
+    And Batiatus' editing_helpers settings for create_combination should be "false" [Boolean]
