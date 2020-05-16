@@ -20,13 +20,21 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching for taxa with history items" do
       let!(:with_history) { create :family, :with_history_item }
+      let!(:without_history) { create :family }
 
-      before do
-        create :family # Without history.
+      specify do
+        expect(described_class[type: 'Family', history_items: nil]).
+          to match_array [with_history, without_history]
       end
 
       specify do
-        expect(described_class[type: 'Family', must_have_history_items: true]).to eq [with_history]
+        expect(described_class[type: 'Family', history_items: described_class::MUST_HAVE_HISTORY_ITEMS]).
+          to eq [with_history]
+      end
+
+      specify do
+        expect(described_class[type: 'Family', history_items: described_class::CANNOT_HAVE_HISTORY_ITEMS]).
+          to eq [without_history]
       end
     end
 

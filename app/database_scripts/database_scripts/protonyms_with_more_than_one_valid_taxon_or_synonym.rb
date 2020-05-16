@@ -2,6 +2,11 @@
 
 module DatabaseScripts
   class ProtonymsWithMoreThanOneValidTaxonOrSynonym < DatabaseScript
+    def self.looks_like_a_false_positive? protonym
+      Protonym.all_taxa_above_genus_and_of_unique_different_ranks?(protonym.taxa) ||
+        Protonym.taxa_genus_and_subgenus_pair?(protonym.taxa)
+    end
+
     def results
       Protonym.joins(:taxa).
         where(taxa: { status: [Status::VALID, Status::SYNONYM] }).
@@ -17,7 +22,8 @@ module DatabaseScripts
             protonym.decorate.link_to_protonym,
             protonym.authorship.reference.keey,
             protonym.taxa.pluck(:type).join(', '),
-            protonym.taxa.pluck(:status).join(', ')
+            protonym.taxa.pluck(:status).join(', '),
+            (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]
         end
       end

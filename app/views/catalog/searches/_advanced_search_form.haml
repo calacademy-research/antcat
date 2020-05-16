@@ -77,13 +77,10 @@
       =check_box_tag :valid_only, true, !!params[:valid_only]
       =label_tag 'Valid only?'
   .row
-    .medium-3.columns.end
-      =check_box_tag :must_have_history_items, true, !!params[:must_have_history_items]
-      =label_tag 'Must have history items?'
-
-  .row
-    .medium-3.columns.end
+    .medium-3.columns
       =per_page_select Catalog::SearchesController::PER_PAGE_OPTIONS, params[:per_page]
+    .medium-3.columns.end
+      =select_tag :history_items, options_for_select([['With or without history items', ''], ['Must have history items', Catalog::AdvancedSearchQuery::MUST_HAVE_HISTORY_ITEMS], ['Cannot have history items', Catalog::AdvancedSearchQuery::CANNOT_HAVE_HISTORY_ITEMS]], params[:history_items])
 
   .row
     .medium-12.columns
