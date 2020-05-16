@@ -39,6 +39,9 @@ Layout/DotPosition:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 Layout/FirstArrayElementLineBreak:
   Enabled: true
 
@@ -246,6 +249,9 @@ Style/OptionHash:
   Enabled: true
 
 Style/Send:
+  Enabled: true
+
+Style/SlicingWithRange:
   Enabled: true
 
 Style/StringLiterals:

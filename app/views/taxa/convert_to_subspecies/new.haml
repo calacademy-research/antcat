@@ -16,5 +16,4 @@
       =taxon_select_tag :new_species_id, params[:new_species_id], rank: 'Species'
 
     .medium-12.columns
-      =button_tag type: "submit", class: "btn-saves has-spinner" do
-        =spinner_icon + "Convert"
+      =button_tag "Convert", type: "submit", class: "btn-saves"

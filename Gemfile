@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '6.0.2.2'
+gem 'rails', '6.0.3'
 
 gem 'citrus'
 gem 'coffee-rails'
@@ -64,7 +64,7 @@ group :development, :test do
   gem 'guard-rubocop'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '0.82', require: false
+  gem 'rubocop', '0.83', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'

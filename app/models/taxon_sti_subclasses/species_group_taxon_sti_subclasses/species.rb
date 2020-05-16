@@ -55,5 +55,6 @@ class Species < SpeciesGroupTaxon
       name_string = [new_parent_name.genus_epithet, name.species_epithet].join(' ')
       ensure_name_can_be_changed! name_string
       name.name = name_string
+      name.save!
     end
 end

@@ -21,4 +21,3 @@
 //= require all_pages/global
 //= require all_pages/jquery_plugins
 //= require all_pages/show_hide_toggler
-//= require all_pages/spinner

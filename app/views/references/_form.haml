@@ -165,8 +165,6 @@
       =edit_summary_text_field_tag
 
     .medium-3.columns.end
-      %button.submit.btn-saves.has-spinner
-        =spinner_icon + 'Save'
-
+      %button.submit.btn-saves Save
       -cancel_link = reference.new_record? ? references_path : reference_path(reference)
       =link_to "Cancel", cancel_link, class: "button btn-nodanger"
