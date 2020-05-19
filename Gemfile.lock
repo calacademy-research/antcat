@@ -261,8 +261,6 @@ GEM
     htmlentities (4.3.4)
     i18n (1.8.2)
       concurrent-ruby (~> 1.0)
-    invisible_captcha (1.0.1)
-      rails (>= 4.2)
     jmespath (1.4.0)
     jquery-atwho-rails (1.5.4)
     jquery-rails (4.4.0)
@@ -530,7 +528,6 @@ DEPENDENCIES
   guard-rubocop
   haml-rails
   high_voltage
-  invisible_captcha
   jquery-atwho-rails
   jquery-rails
   jquery-ui-rails

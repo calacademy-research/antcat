@@ -7,8 +7,6 @@ class FeedbacksController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:new, :create]
   before_action :ensure_user_is_superadmin, only: [:destroy]
 
-  invisible_captcha only: [:create], honeypot: :work_email, on_spam: :on_spam
-
   def index
     @feedbacks = Feedback.by_status_and_date.includes(:user).paginate(page: params[:page], per_page: 10)
   end
@@ -107,10 +105,6 @@ class FeedbacksController < ApplicationController
 
     def feedback_params
       params.require(:feedback).permit(:comment, :name, :email, :user, :page)
-    end
-
-    def on_spam _options = {}
-      redirect_to root_path "You're not a bot are you? Feedback not sent. Email us?"
     end
 
     def ip_banned?

@@ -41,7 +41,6 @@ Capybara::Screenshot.prune_strategy = :keep_last_run
 
 ActionController::Base.allow_rescue = false
 DatabaseCleaner.strategy = :transaction
-InvisibleCaptcha.timestamp_enabled = false
 PaperTrail.enabled = false
 WebMock.disable_net_connect!(allow_localhost: true)
 
