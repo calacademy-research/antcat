@@ -27,7 +27,6 @@ class CreateCombinationPolicy
         yielder << "taxon has 'unavailable misspelling's" if any_unavailable_misspellings?
         yielder << "taxon has 'unavailable uncategorized's" if any_unavailable_uncategorizeds?
         yielder << 'taxon is an unresolved homonym' if taxon.unresolved_homonym?
-        yielder << 'taxon has a type taxon' if taxon.type_taxon
         yielder << 'taxon is a replacement for a homonym' if any_homonym_replaced_bys?
         yielder << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
         yielder << 'taxon has soft validation issues' if taxon.soft_validations.failed?
