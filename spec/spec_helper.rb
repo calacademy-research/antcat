@@ -4,5 +4,7 @@ if ENV["COVERAGE"]
   require 'simplecov'
 
   SimpleCov.command_name "rspec"
-  SimpleCov.start
+  SimpleCov.start do
+    enable_coverage :branch
+  end
 end

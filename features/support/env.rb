@@ -8,7 +8,9 @@ if ENV["COVERAGE"]
   require 'simplecov'
 
   SimpleCov.command_name "cucumber"
-  SimpleCov.start
+  SimpleCov.start do
+    enable_coverage :branch
+  end
 end
 
 ENV["RAILS_ENV"] ||= "test"
