@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class FeedbacksController < ApplicationController
-  BANNED_IPS = ["46.161.9.20", "46.161.9.51", "46.161.9.22"]
   RECAPTCHA_V3_ACTION = 'feedback'
 
   before_action :ensure_user_is_at_least_helper, except: [:new, :create]
@@ -30,7 +29,7 @@ class FeedbacksController < ApplicationController
 
     @feedback.ip = request.remote_ip
 
-    if ip_banned? || rate_throttle?
+    if rate_throttle?
       @feedback.errors.add :base, <<~MSG
         You have already posted a couple of feedbacks in the last few minutes. Thanks for that!
         Please wait for a few minutes while we are trying to figure out if you are a bot...
@@ -105,10 +104,6 @@ class FeedbacksController < ApplicationController
 
     def feedback_params
       params.require(:feedback).permit(:comment, :name, :email, :user, :page)
-    end
-
-    def ip_banned?
-      request.remote_ip.in? BANNED_IPS
     end
 
     def rate_throttle?
