@@ -57,7 +57,6 @@ class Taxon < ApplicationRecord
   scope :order_by_name, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, update_only: true
-  accepts_nested_attributes_for :protonym
   has_paper_trail
   strip_attributes only: [:incertae_sedis_in, :origin, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {

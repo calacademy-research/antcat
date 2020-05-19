@@ -35,7 +35,6 @@ class Protonym < ApplicationRecord
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
 
-  accepts_nested_attributes_for :name, :authorship
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
