@@ -43,5 +43,4 @@ description: >
 related_scripts:
   - HolOriginTaxa
   - MigrationOriginTaxa
-  - UnavailableMisspellings
   - UnavailableUncategorizedTaxa
