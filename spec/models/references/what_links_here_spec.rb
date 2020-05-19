@@ -15,6 +15,7 @@ describe References::WhatLinksHere do
   context 'when there are column references' do
     let!(:taxon) { create :family }
     let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
+    let!(:type_name) { create :type_name, :by_subsequent_designation_of, reference: reference }
 
     before do
       taxon.protonym.authorship.update!(reference: reference)
@@ -23,7 +24,8 @@ describe References::WhatLinksHere do
     specify do
       expect(what_links_here.all).to match_array [
         WhatLinksHereItem.new('citations',  :reference_id,         taxon.protonym.authorship.id),
-        WhatLinksHereItem.new('references', :nesting_reference_id, nested_reference.id)
+        WhatLinksHereItem.new('references', :nesting_reference_id, nested_reference.id),
+        WhatLinksHereItem.new('type_names', :reference_id,         type_name.id)
       ]
     end
 
@@ -35,6 +37,7 @@ describe References::WhatLinksHere do
       let(:ref_tag) { "{ref #{reference.id}}" }
 
       let!(:citation) { create :citation, reference: reference, notes_taxt: ref_tag }
+      # TODO: Remove - keyword:type_taxt.
       let!(:taxon) do
         create :genus, type_taxon: create(:family), headline_notes_taxt: ref_tag,
           type_taxt: ", by subsequent designation of {ref #{reference.id}}: 1."

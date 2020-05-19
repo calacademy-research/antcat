@@ -5,7 +5,8 @@ module References
     TAXT_TAG_METHOD = :ref_tag_regex
     REFERENCING_COLUMNS = [
       [Citation,  :reference_id],
-      [Reference, :nesting_reference_id]
+      [Reference, :nesting_reference_id],
+      [TypeName,  :reference_id]
     ]
 
     attr_private_initialize :record
