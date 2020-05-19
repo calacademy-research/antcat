@@ -30,15 +30,16 @@ class ProtonymsController < ApplicationController
 
   def new
     @protonym = Protonym.new
-    @protonym.build_name
     @protonym.build_authorship
+    @protonym_form = ProtonymForm.new(@protonym)
   end
 
   def create
-    @protonym = Protonym.new(protonym_params)
-    @protonym.name = Names::BuildNameFromString[params[:protonym_name_string]]
+    @protonym = Protonym.new
+    @protonym.build_authorship
+    @protonym_form = ProtonymForm.new(@protonym, protonym_params, protonym_form_params)
 
-    if @protonym.save
+    if @protonym_form.save
       @protonym.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'
     else
@@ -52,12 +53,14 @@ class ProtonymsController < ApplicationController
 
   def edit
     @protonym = find_protonym
+    @protonym_form = ProtonymForm.new(@protonym)
   end
 
   def update
     @protonym = find_protonym
+    @protonym_form = ProtonymForm.new(@protonym, protonym_params, protonym_form_params)
 
-    if @protonym.update(protonym_params)
+    if @protonym_form.save
       @protonym.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
     else
@@ -98,13 +101,12 @@ class ProtonymsController < ApplicationController
         :secondary_type_information_taxt,
         :sic,
         :type_notes_taxt,
-        authorship_attributes: [
-          :id,
-          :forms,
-          :notes_taxt,
-          :pages,
-          :reference_id
-        ]
+        authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id],
+        type_name_attributes: [:taxon_id, :fixation_method, :pages, :reference_id]
       )
+    end
+
+    def protonym_form_params
+      params.permit(:protonym_name_string, :destroy_type_name)
     end
 end

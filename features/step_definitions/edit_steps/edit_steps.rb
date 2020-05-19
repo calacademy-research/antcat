@@ -9,6 +9,10 @@ When("I set the name to {string}") do |name|
   step %(I fill in "taxon_name_string" with "#{name}")
 end
 
+When("I set the protonym name string to {string}") do |name|
+  step %(I fill in "protonym_name_string" with "#{name}")
+end
+
 # Current valid taxon.
 When("I set the current valid taxon name to {string}") do |name|
   select2 name, from: 'taxon_current_valid_taxon_id'
@@ -33,6 +37,10 @@ When(/^I set the authorship to the first search results of "([^"]*)"$/) do |name
   select2 name, from: 'taxon_protonym_attributes_authorship_attributes_reference_id'
 end
 
+When(/^I set the protonym authorship to the first search results of "([^"]*)"$/) do |name|
+  select2 name, from: 'protonym_authorship_attributes_reference_id'
+end
+
 Then(/^the authorship should contain the reference "([^"]*)"$/) do |keey|
   reference_id = find_reference_by_keey(keey).id
   selector = '#taxon_protonym_attributes_authorship_attributes_reference_id'
@@ -45,8 +53,13 @@ When("I set the protonym name to {string}") do |name|
 end
 
 # Type taxon.
+# TODO: Remove - keyword:type_taxt.
 When("I set the type name to {string}") do |name|
   select2 name, from: 'taxon_type_taxon_id'
+end
+
+When("I set the type name taxon to {string}") do |name|
+  select2 name, from: 'protonym_type_name_attributes_taxon_id'
 end
 
 # Convert species to subspecies.
