@@ -85,11 +85,6 @@ description: >
   "Taxon is not an ancestor of TTN" does not work with homonyms, so please ignore them.
 
 
-  "Taxon is not an ancestor of TTN (but it's genus matches taxon's genus)" can be fixed by script.
-
-
-  This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
-
 related_scripts:
   - TypeTaxaAssignedToMoreThanOneTaxon
   - TypeTaxaWithIssues
