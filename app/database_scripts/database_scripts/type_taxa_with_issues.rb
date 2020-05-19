@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Remove - keyword:type_taxt.
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript
     def results

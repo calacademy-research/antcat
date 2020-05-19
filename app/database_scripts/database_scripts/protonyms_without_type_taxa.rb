@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Migrate - keyword:type_taxt.
 module DatabaseScripts
   class ProtonymsWithoutTypeTaxa < DatabaseScript
     def results
@@ -33,6 +34,9 @@ tags: []
 issue_description:
 
 description: >
+  **NOTE:** Based on the old type name columns.
+
+
   Only ranks above species are included.
 
 

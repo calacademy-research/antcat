@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Migrate? - keyword:type_taxt.
 module DatabaseScripts
   class TypeTaxaAssignedToMoreThanOneTaxon < DatabaseScript
     def results
@@ -33,6 +34,9 @@ section: not-necessarily-incorrect
 category: Catalog
 
 description: >
+  **NOTE:** Based on the old type name columns.
+
+
   Some of these are OK, maybe all, I'm not sure about the rules.
 
 related_scripts:

@@ -38,6 +38,7 @@ class TaxonDecorator < Draper::Decorator
     Taxa::CompactStatus[taxon]
   end
 
+  # TODO: Remove - keyword:type_taxt.
   def type_taxon_rank
     "Type-#{taxon.type_taxon.rank}: ".html_safe
   end

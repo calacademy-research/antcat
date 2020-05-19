@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Remove - keyword:type_taxt.
 module DatabaseScripts
   class ProtonymsWithTaxaWithMoreThanOneTypeTaxon < DatabaseScript
     def self.looks_like_a_false_positive? protonym
@@ -44,6 +45,9 @@ tags: []
 issue_description: This protonym has taxa with more than one type taxon.
 
 description: >
+  **NOTE:** Based on the old type name columns.
+
+
   For "No" in the "All type taxts idential?" column, see the protonym page.
 
 related_scripts:
