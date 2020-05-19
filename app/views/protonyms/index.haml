@@ -8,7 +8,7 @@
       =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"
     -else
       =link_to "Order by taxon count", protonyms_path(request.params.merge(order: ProtonymsController::TAXON_COUNT_ORDER)), class: "btn-normal"
-    -if user_is_editor?
+    -if user_is_at_least_helper?
       =link_to "New", new_protonym_path, class: "btn-normal"
 
 .margin-bottom{class: ('show-hide-toggable-starts-open' if params[:q].present?), data: { show_hide_toggable_id: "search-form" } }

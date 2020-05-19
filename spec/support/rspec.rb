@@ -71,4 +71,5 @@ RSpec.configure do |config|
   config.include Devise::Test::IntegrationHelpers, type: :request
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
+  RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 9999
 end

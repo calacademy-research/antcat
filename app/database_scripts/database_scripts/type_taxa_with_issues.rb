@@ -16,7 +16,7 @@ module DatabaseScripts
           'TTN status', 'Issue', 'Suggested script action'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
-          type_taxon_now = type_taxon.now
+          type_taxon_now = type_taxon.now.__getobj__
           issue, suggested_script_action = check_issue(taxon, type_taxon, type_taxon_now)
           next unless issue
 
@@ -82,11 +82,8 @@ description: >
 
   See "Issue" column for what's wrong.
 
+  "Taxon is not an ancestor of TTN" does not work with homonyms, so please ignore them.
 
-  "Taxon is not an ancestor of TTN (but it's genus matches taxon's genus)" can be fixed by script.
-
-
-  This script has some overlaps with %dbscript:SubgeneraWithSameNameAsAGenus
 
 related_scripts:
   - TypeTaxaAssignedToMoreThanOneTaxon
