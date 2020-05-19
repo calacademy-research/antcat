@@ -23,6 +23,10 @@ FactoryBot.define do
       association :name, factory: :species_name
     end
 
+    trait :with_type_name do
+      type_name
+    end
+
     trait :with_taxts do
       sequence(:primary_type_information_taxt) { |n| "primary_type_information_taxt #{n}" }
       sequence(:secondary_type_information_taxt) { |n| "secondary_type_information_taxt #{n}" }

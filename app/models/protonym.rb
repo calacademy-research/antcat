@@ -27,6 +27,7 @@ class Protonym < ApplicationRecord
 
   belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy
   belongs_to :name, dependent: :destroy
+  belongs_to :type_name, optional: true, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
   # TODO: See https://github.com/calacademy-research/antcat/issues/702

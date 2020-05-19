@@ -32,6 +32,7 @@ class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   has_one :authorship, through: :protonym
   has_one :authorship_reference, through: :authorship, source: :reference
+  has_many :type_names, dependent: :restrict_with_error
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_RANKS, allow_nil: true }
