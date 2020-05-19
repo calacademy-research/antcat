@@ -174,4 +174,3 @@ tags: [updated!, slow]
 
 related_scripts:
   - GenusGenderEndings
-  - GenusGenderEndingsToUpdateByScript
