@@ -14,5 +14,3 @@ abort "The Rails environment is running in production mode!" if Rails.env.produc
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
 
 ActiveRecord::Migration.maintain_test_schema!
-
-InvisibleCaptcha.timestamp_enabled = false
