@@ -10,7 +10,10 @@
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
 
-  =render 'shared/errors_for', resource: taxon
+  -if taxon_form
+    =render 'shared/errors_for', resource: taxon_form
+  -else
+    =render 'shared/errors_for', resource: taxon
 
   -if taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning.small-12.medium-6
@@ -21,7 +24,6 @@
   .callout
     =render 'taxa/_form/main_form',        taxon: taxon, form: form, default_name_string: default_name_string
     =render 'taxa/_form/protonym_section', taxon: taxon, form: form
-    =render 'taxa/_form/type_section',     taxon: taxon, form: form
 
     .row
       .medium-3.columns

@@ -5,7 +5,7 @@
   =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
   =javascript_include_tag 'controllers/taxa/reorder_history_items', 'controllers/taxa/reorder_reference_sections'
 
-=render 'form', taxon: @taxon, default_name_string: nil
+=render 'form', taxon: @taxon, default_name_string: nil, taxon_form: @taxon_form
 
 #not-really-taxon-form
   =render 'taxa/_not_really_form/history_items_section', taxon: @taxon

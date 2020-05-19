@@ -52,12 +52,7 @@ When("I set the protonym name to {string}") do |name|
   step %(I fill in "protonym_name_string" with "#{name}")
 end
 
-# Type taxon.
-# TODO: Remove - keyword:type_taxt.
-When("I set the type name to {string}") do |name|
-  select2 name, from: 'taxon_type_taxon_id'
-end
-
+# Type name.
 When("I set the type name taxon to {string}") do |name|
   select2 name, from: 'protonym_type_name_attributes_taxon_id'
 end

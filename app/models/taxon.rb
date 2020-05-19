@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Taxon < ApplicationRecord
   include Trackable
 
   self.table_name = :taxa
@@ -10,6 +10,7 @@ class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
     to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do
+    # TODO: Remove - keyword:type_taxt.
     belongs_to :type_taxon, foreign_key: :type_taxon_id, optional: true
     # TODO: `belongs_to :genus` should not be here, but at least used to be required for the advanced search.
     # Now it's also used in the editors's sidebar (Ctrl+F "belongs_to :genus").
@@ -42,7 +43,7 @@ class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
-  validate :current_valid_taxon_validation, :ensure_correct_name_type, :type_taxt_validation
+  validate :current_valid_taxon_validation, :ensure_correct_name_type
 
   before_validation :cleanup_taxts
   before_save :set_name_caches
@@ -58,7 +59,7 @@ class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
   accepts_nested_attributes_for :name, update_only: true
   accepts_nested_attributes_for :protonym
   has_paper_trail
-  strip_attributes only: [:incertae_sedis_in, :origin, :type_taxt, :headline_notes_taxt], replace_newlines: true
+  strip_attributes only: [:incertae_sedis_in, :origin, :headline_notes_taxt], replace_newlines: true
   trackable parameters: proc {
     parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
@@ -123,22 +124,5 @@ class Taxon < ApplicationRecord # rubocop:disable Metrics/ClassLength
     def ensure_correct_name_type
       return if name&.rank == rank
       errors.add :base, "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
-    end
-
-    # TODO: Temporary code before normalizing and moving to `protonyms`.
-    def type_taxt_validation
-      if type_taxt.present? && !type_taxon
-        errors.add :type_taxt, "(type notes) can't be set unless taxon has a type name"
-      end
-
-      unless Protonym.common_type_taxt?(type_taxt)
-        errors.add :type_taxt, <<~STR
-          (type notes) must be one of either:<br>
-            &lt;blank&gt;<br>
-            , by monotypy.<br>
-            , by original designation.<br>
-            , by subsequent designation of {ref &lt;ID&gt;}: &lt;page number&gt;.
-        STR
-      end
     end
 end

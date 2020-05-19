@@ -51,7 +51,6 @@ describe TaxaController do
         end
 
         describe "basic taxon attributes" do
-          let(:type_taxon) { create :species }
           let(:taxon_params) do
             base_params.deep_merge(
               incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY,
@@ -61,9 +60,7 @@ describe TaxaController do
               unresolved_homonym: true,
               ichnotaxon: true,
               hong: true,
-              headline_notes_taxt: "headline notes taxt",
-              type_taxt: Protonym::BY_MONOTYPY,
-              type_taxon_id: type_taxon.id
+              headline_notes_taxt: "headline notes taxt"
             )
           end
 
@@ -81,8 +78,6 @@ describe TaxaController do
             expect(taxon.ichnotaxon).to eq taxon_params[:ichnotaxon]
             expect(taxon.hong).to eq taxon_params[:hong]
             expect(taxon.headline_notes_taxt).to eq taxon_params[:headline_notes_taxt]
-            expect(taxon.type_taxt).to eq taxon_params[:type_taxt]
-            expect(taxon.type_taxon_id).to eq taxon_params[:type_taxon_id]
           end
         end
 

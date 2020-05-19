@@ -19,21 +19,6 @@ Feature: Editing a taxon
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
   @javascript
-  Scenario: Changing the type name
-    Given there is a genus "Atta"
-    And there is a species "Eciton minor"
-
-    When I go to the catalog page for "Atta"
-    Then I should not see "Type-species"
-
-    When I follow "Edit"
-    And I set the type name to "Eciton minor"
-    Then I should see "Eciton minor"
-
-    When I press "Save"
-    Then I should see "Type-species: Eciton minor"
-
-  @javascript
   Scenario: Changing current valid name
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"
