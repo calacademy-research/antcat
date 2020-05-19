@@ -15,7 +15,7 @@ module Taxa
       current_valid_taxon.now
     end
 
-    # TODO: Experimental. Used for expanding type taxa (see `TypeTaxonExpander`).
+    # TODO: Experimental. Used for expanding type taxa (see `TypeNameDecorator`).
     def most_recent_before_now
       taxa = []
       current_taxon = current_valid_taxon
