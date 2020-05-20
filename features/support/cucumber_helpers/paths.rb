@@ -14,15 +14,14 @@ module CucumberHelpers
 
       when /^the catalog page for "([^"]*)"$/
         taxon = Taxon.find_by(name_cache: Regexp.last_match(1))
-        "/catalog/#{taxon.id}"
+        catalog_path(taxon)
       when 'the catalog'
         root_path
 
       # Editing (catalog).
       when /^the edit page for "(.*)"$/
-        "/taxa/#{Taxon.find_by(name_cache: Regexp.last_match(1)).id}/edit"
-      when 'the new taxon page'
-        "/taxa/new"
+        taxon = Taxon.find_by(name_cache: Regexp.last_match(1))
+        edit_taxa_path(taxon)
 
       when 'the protonyms page'
         protonyms_path
@@ -49,59 +48,56 @@ module CucumberHelpers
         authors_path
       when /^the author page for "(.*)"$/
         author = AuthorName.find_by(name: Regexp.last_match(1)).author
-        "/authors/#{author.id}"
+        author_path(author)
 
       # Editor's Panel.
       when "the Editor's Panel"
-        "/panel"
+        editors_panel_path
 
       when 'the comments page'
-        "/comments"
+        comments_path
 
       when 'the institutions page'
-        "/institutions"
+        institutions_path
 
       when 'my notifications page'
-        "/notifications"
+        notifications_path
 
       when 'the database scripts page'
-        "/database_scripts"
+        database_scripts_path
 
       when 'the site notices page'
-        "/site_notices"
-
-      when 'the tooltips page'
-        "/tooltips"
+        site_notices_path
 
       when 'the activity feed'
-        "/activities"
+        activities_path
 
       when 'the versions page'
-        "/panel/versions"
+        versions_path
 
       when 'the open issues page'
-        "/issues"
+        issues_path
       when /^the issue page for "([^"]*)"$/
         issue = Issue.find_by(title: Regexp.last_match(1))
-        "/issues/#{issue.id}"
+        issue_path(issue)
       when 'the new issue page'
-        "/issues/new"
+        new_issue_path
 
       when 'the feedback page'
-        "/feedbacks"
+        feedbacks_path
       when 'the most recent feedback item'
-        "/feedbacks/#{Feedback.last.id}"
+        feedback_path(Feedback.last)
 
       when 'the wiki pages index'
-        "/wiki_pages"
+        wiki_pages_path
 
       # Reference sections and taxon history items.
       when 'the reference sections page'
-        "/reference_sections"
+        reference_sections_path
       when 'the page of the most recent reference section'
         reference_section_path(ReferenceSection.last)
       when 'the taxon history items page'
-        "/taxon_history_items"
+        taxon_history_items_path
       when 'the page of the most recent history item'
         taxon_history_item_path(TaxonHistoryItem.last)
 
@@ -110,11 +106,11 @@ module CucumberHelpers
         edit_user_registration_path
       when /^the user page for "([^"]*)"$/
         user = User.find_by(name: Regexp.last_match(1))
-        "/users/#{user.id}"
+        user_path(user)
       when 'the login page'
-        '/my/users/sign_in'
+        new_user_session_path
       when 'the users page'
-        '/users'
+        users_path
 
       else
         raise "#{page_name} not found"
