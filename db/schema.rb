@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_16_095016) do
+ActiveRecord::Schema.define(version: 2020_05_20_200148) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -159,8 +159,10 @@ ActiveRecord::Schema.define(version: 2020_05_16_095016) do
     t.text "type_notes_taxt"
     t.string "biogeographic_region"
     t.boolean "uncertain_locality", default: false, null: false
+    t.integer "type_name_id"
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
     t.index ["name_id"], name: "protonyms_name_id_idx"
+    t.index ["type_name_id"], name: "index_protonyms_on_type_name_id", unique: true
   end
 
   create_table "publishers", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -346,6 +348,17 @@ ActiveRecord::Schema.define(version: 2020_05_16_095016) do
     t.string "scope", null: false
   end
 
+  create_table "type_names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.integer "taxon_id", null: false
+    t.integer "reference_id"
+    t.string "pages"
+    t.string "fixation_method"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["reference_id"], name: "index_type_names_on_reference_id"
+    t.index ["taxon_id"], name: "index_type_names_on_taxon_id"
+  end
+
   create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: ""
@@ -415,6 +428,7 @@ ActiveRecord::Schema.define(version: 2020_05_16_095016) do
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
+  add_foreign_key "protonyms", "type_names", name: "fk_protonyms__type_name_id__type_names__id"
   add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
   add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
@@ -434,5 +448,7 @@ ActiveRecord::Schema.define(version: 2020_05_16_095016) do
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
   add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"
+  add_foreign_key "type_names", "references", name: "fk_type_names__reference_id__references__id"
+  add_foreign_key "type_names", "taxa", column: "taxon_id", name: "fk_type_names__taxon_id__taxa__id"
   add_foreign_key "users", "authors", name: "fk_users__author_id__authors__id"
 end

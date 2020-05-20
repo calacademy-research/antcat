@@ -17,16 +17,9 @@ class Protonym < ApplicationRecord
     'Antarctic'
   ]
 
-  # TODO: These are currently stored in `taxa.type_taxt`; we want to move them to `protonyms` or a new model,
-  # and normalize the values (see `DatabaseScripts::MoveTypeTaxonToProtonymByScript`).
-  COMMON_TYPE_TAXTS = [
-    BY_MONOTYPY = ", by monotypy.",
-    BY_ORIGINAL_DESIGNATION = ", by original designation.",
-    BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF = /^, by subsequent designation of {ref \d+}: \d+.$/
-  ]
-
   belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy
   belongs_to :name, dependent: :destroy
+  belongs_to :type_name, optional: true, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
   # TODO: See https://github.com/calacademy-research/antcat/issues/702
@@ -42,22 +35,10 @@ class Protonym < ApplicationRecord
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
 
-  accepts_nested_attributes_for :name, :authorship
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
-
-  # TODO: This is "hmm", but I don't want to add it to `Taxon`, so it will live here for now.
-  # Migrating all type data will take some time (a lot).
-  # :nocov:
-  def self.common_type_taxt? type_taxt
-    return true unless type_taxt
-    return true if type_taxt.in?([BY_MONOTYPY, BY_ORIGINAL_DESIGNATION])
-    return true if BY_ORIGINAL_SUBSEQUENT_DESIGNATION_OF.match?(type_taxt)
-    false
-  end
-  # :nocov:
 
   # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
   # :nocov:

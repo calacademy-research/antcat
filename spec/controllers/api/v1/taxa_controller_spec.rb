@@ -48,7 +48,9 @@ describe Api::V1::TaxaController, as: :visitor do
             "subgenus_id" => nil,
             "subspecies_id" => nil,
             "tribe_id" => taxon.tribe_id,
+            # TODO: Remove - keyword:type_taxt.
             "type_taxon_id" => nil,
+            # TODO: Remove - keyword:type_taxt.
             "type_taxt" => nil,
             "unresolved_homonym" => false,
             "updated_at" => taxon.updated_at.as_json,

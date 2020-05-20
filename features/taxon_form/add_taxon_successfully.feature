@@ -7,21 +7,17 @@ Feature: Adding a taxon successfully
     And the default reference is "Fisher, 2004"
 
   @javascript
-  Scenario: Adding a genus (with type name)
+  Scenario: Adding a genus
     Given there is a subfamily "Formicinae"
-    And there is a species "Lasius niger"
 
     When I go to the catalog page for "Formicinae"
     And I follow "Add genus"
     And I set the name to "Atta"
     And I set the protonym name to "Eciton"
     And I fill in "taxon_protonym_attributes_authorship_attributes_pages" with "page 35"
-
-    When I set the type name to "Lasius niger"
     And I press "Save"
     Then I should be on the catalog page for "Atta"
     And I should see "Eciton" within the protonym
-    And I should see "Type-species: Lasius niger"
 
     When I go to the catalog page for "Formicinae"
     Then I should see "Atta" within the taxon browser

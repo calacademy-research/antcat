@@ -14,6 +14,7 @@ describe Taxa::CollectReferences do
     let!(:reference_7) { create :any_reference }
 
     before do
+      # TODO: Remove - keyword:type_taxt.
       taxon.update!(
         type_taxon: create(:family),
         type_taxt: ", by subsequent designation of {ref #{reference_4.id}}: 1.",

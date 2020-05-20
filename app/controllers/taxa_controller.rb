@@ -15,14 +15,14 @@ class TaxaController < ApplicationController
   def create
     @taxon = build_taxon_with_parent
 
-    taxon_form = TaxonForm.new(
+    @taxon_form = TaxonForm.new(
       @taxon,
       taxon_params,
       taxon_name_string: params[:taxon_name_string],
       protonym_name_string: params[:protonym_name_string].presence
     )
 
-    if taxon_form.save
+    if @taxon_form.save
       @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
     else
@@ -88,14 +88,12 @@ class TaxaController < ApplicationController
         :original_combination,
         :protonym_id,
         :status,
-        :type_taxon_id,
-        :type_taxt,
         :unresolved_homonym,
         name_attributes: [:gender],
         protonym_attributes: [
-          :id, :biogeographic_region, :fossil, :locality, :uncertain_locality, :primary_type_information_taxt,
+          :biogeographic_region, :fossil, :locality, :uncertain_locality, :primary_type_information_taxt,
           :secondary_type_information_taxt, :sic, :type_notes_taxt,
-          { authorship_attributes: [:id, :forms, :notes_taxt, :pages, :reference_id] }
+          { authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id] }
         ]
       )
     end

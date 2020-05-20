@@ -26,6 +26,13 @@
         %tr
           %td Forms
           %td=or_dash protonym.authorship.forms
+        -if (type_name = protonym.type_name)
+          %tr
+            %td Type name
+            %td
+              -type_name_decorated = type_name.decorate
+              =type_name_decorated.format_rank
+              =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
         %tr
           %td Biogeographic region
           %td=protonym.biogeographic_region
@@ -52,7 +59,7 @@
         %td=form.protonym_select :protonym
 
     %h5.callout-header New protonym (this will be ignored if an existing protonym is set)
-    =form.fields_for :protonym do |protonym_form|
+    =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
       %table.unstriped
         %tr
           =protonym_form.fields_for :name do |name_form|
@@ -79,7 +86,7 @@
               Sic
               =db_tooltip_icon "sic", scope: :taxa
 
-        =protonym_form.fields_for :authorship do |authorship_form|
+        =protonym_form.fields_for :authorship_attributes, (protonym_form.object.authorship || Citation.new) do |authorship_form|
           %tr
             %td
               =authorship_form.label :reference do
@@ -94,10 +101,15 @@
                 =db_tooltip_icon "pages", scope: :taxa
             %td=authorship_form.text_field :pages
 
-          -unless taxon.is_a? Tribe
+          -unless taxon.is_a? SpeciesGroupTaxon
+            %tr
+              %td=authorship_form.label :type_name
+              %td.small-text Can be set after creating the the new protonym
+
+          -if taxon.is_a? SpeciesGroupTaxon
             %tr
               %td
-                =authorship_form.label :forms do
+                =label_tag :forms do
                   Forms
                   =db_tooltip_icon "forms", scope: :taxa
               %td=authorship_form.text_field :forms

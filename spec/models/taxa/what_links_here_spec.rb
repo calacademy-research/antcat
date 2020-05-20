@@ -19,10 +19,13 @@ describe Taxa::WhatLinksHere do
   context 'when there are column references' do
     subject(:what_links_here) { described_class.new(taxon.subfamily) }
 
+    let!(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: taxon.subfamily }
+
     specify do
       expect(what_links_here.all).to match_array [
         WhatLinksHereItem.new('taxa', :subfamily_id, taxon.id),
-        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.tribe.id)
+        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.tribe.id),
+        WhatLinksHereItem.new('type_names', :taxon_id, type_name.id)
       ]
       expect(what_links_here.all).to match_array what_links_here.columns
     end

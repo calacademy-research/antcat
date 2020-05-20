@@ -1,4 +1,5 @@
 -content_for :javascripts do
+  =javascript_include_tag 'taxon_select'
   =javascript_include_tag 'reference_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
 
@@ -27,87 +28,151 @@
               Original combination
               =antcat_icon 'check'
 
-=form_for protonym do |f|
-  =render 'shared/errors_for', resource: protonym
-  %table.unstriped
-    =f.fields_for :name do |name_fields|
-      %tr
-        %td Name
-        %td
-          -if protonym.name.persisted?
-            %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
-            =protonym.decorate.name_with_fossil
-          -else
-            =text_field_tag :protonym_name_string, protonym.name.name
-            #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
+  %hr.margin-bottom
 
-    %tr
-      %td
-      %td
-        =f.check_box :fossil
-        =f.label :fossil
+=form_for protonym_form do |f|
+  =render 'shared/errors_for', resource: protonym_form
 
-        =f.check_box :sic
-        =f.label :sic do
-          Sic
-          =db_tooltip_icon "sic", scope: :taxa
+  .row
+    .large-6.columns
+      %table.unstriped
+        =f.fields_for :name do |name_fields|
+          %tr
+            %td=label_tag :name
+            %td
+              -if protonym.name&.persisted?
+                %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
+                =protonym.decorate.name_with_fossil
+              -else
+                =text_field_tag :protonym_name_string, protonym&.name&.name
+                #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
-    =f.fields_for :authorship do |authorship_fields|
-      %tr
-        %td
-          =authorship_fields.label :reference do
-            Authorship
-            =db_tooltip_icon "authorship", scope: :taxa
-        %td=authorship_fields.reference_select :reference
+        %tr
+          %td
+          %td
+            =f.check_box :fossil
+            =f.label :fossil
 
-      %tr
-        %td
-          =authorship_fields.label :pages do
-            Pages
-            =db_tooltip_icon "pages", scope: :taxa
-        %td=authorship_fields.text_field :pages
+            =f.check_box :sic
+            =f.label :sic do
+              Sic
+              =db_tooltip_icon "sic", scope: :taxa
 
-      %tr
-        %td
-          =authorship_fields.label :forms do
-            Forms
-            =db_tooltip_icon "forms", scope: :taxa
-        %td=authorship_fields.text_field :forms
+        =f.fields_for :authorship do |authorship_fields|
+          %tr
+            %td
+              =authorship_fields.label :reference do
+                Authorship
+                =db_tooltip_icon "authorship", scope: :taxa
+            %td=authorship_fields.reference_select :reference
 
-    %tr
-      %td
-        =f.label :biogeographic_region do
-          Biogeographic region
-          =db_tooltip_icon "type.biogeographic_region", scope: :taxa
-      %td=f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, protonym.biogeographic_region), include_blank: true
+          %tr
+            %td
+              =authorship_fields.label :pages do
+                Pages
+                =db_tooltip_icon "pages", scope: :taxa
+            %td=authorship_fields.text_field :pages
 
-    %tr
-      %td
-        =f.label :locality do
-          Locality
-          =db_tooltip_icon "locality", scope: :taxa
-      %td
-        =f.text_field :locality, class: 'locality-autocomplete-js-hook'
+          %tr
+            %td
+              =authorship_fields.label :forms do
+                Forms
+                =db_tooltip_icon "forms", scope: :taxa
+            %td=authorship_fields.text_field :forms
 
-        =f.check_box :uncertain_locality
-        =f.label :uncertain_locality
+        %tr
+          %td
+            =f.label :biogeographic_region do
+              Biogeographic region
+              =db_tooltip_icon "type.biogeographic_region", scope: :taxa
+          %td=f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, protonym.biogeographic_region), include_blank: true
 
-    %tr
-      %td=f.label :primary_type_information
-      %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, id: :protonym_primary_type_information_taxt
-    %tr
-      %td.shrink=f.label :secondary_type_information
-      %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, id: :protonym_secondary_type_information_taxt
-    %tr
-      %td=f.label :type_notes
-      %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, id: :protonym_type_notes_taxt
+        %tr
+          %td
+            =f.label :locality do
+              Locality
+              =db_tooltip_icon "locality", scope: :taxa
+          %td
+            =f.text_field :locality, class: 'locality-autocomplete-js-hook'
 
-    %tr
-      %td=f.label :notes
-      %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[authorship_attributes][notes_taxt]', content: protonym.authorship.notes_taxt, id: :protonym_authorship_notes_taxt
+            =f.check_box :uncertain_locality
+            =f.label :uncertain_locality
 
-    %tr
-      %td
-      %td
-        =edit_summary_text_field_tag
-        =f.button "Save", type: :submit, class: "btn-saves"
+    .large-6.columns
+      .callout
+        %table.unstriped
+          %tr
+            %td
+              %h6
+                Type name
+                =db_tooltip_icon :type_name_reference, scope: :protonyms
+            %td
+              =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
+                %tr
+                  %td=type_name_fields.label :taxon
+                  %td=type_name_fields.taxon_select :taxon
+
+                %tr
+                  %td
+                    =type_name_fields.label :fixation_method do
+                      Fixation method
+                  %td=type_name_fields.select :fixation_method, TypeName::FIXATION_METHODS, include_blank: true
+
+                %tr
+                  %td{colspan: 2}
+                    %br
+                    %br
+                    =label_tag :subsequent_designation_reference do
+                      Subsequent designation reference
+                      =db_tooltip_icon :type_name_reference, scope: :protonyms
+
+                %tr
+                  %td
+                    =type_name_fields.label :reference do
+                      Reference
+                  %td=type_name_fields.reference_select :reference
+
+                %tr
+                  %td
+                    =type_name_fields.label :pages do
+                      Pages
+                  %td=type_name_fields.text_field :pages
+
+                -if type_name_fields.object.persisted?
+                  %tr
+                    %td
+                      %br
+                      =label_tag 'Clear type name?'
+                    %td
+                      %br
+                      =check_box_tag :destroy_type_name
+                      -# TODO: Improve "(don't blank taxon)".
+                      =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
+
+    .large-12.columns.margin-bottom
+      %hr
+        %table.unstriped
+        %tr
+          %td
+            %h6 Taxt fields
+        %tr
+          %td=f.label :primary_type_information
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, id: :protonym_primary_type_information_taxt
+        %tr
+          %td.shrink=f.label :secondary_type_information
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, id: :protonym_secondary_type_information_taxt
+        %tr
+          %td=f.label :type_notes
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, id: :protonym_type_notes_taxt
+
+        %tr
+          %td=f.label :notes
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[authorship_attributes][notes_taxt]', content: protonym.authorship.notes_taxt, id: :protonym_authorship_notes_taxt
+
+  .row
+    .large-6.columns
+      %table.unstriped
+        %tr
+          %td
+            =edit_summary_text_field_tag
+            =f.button "Save", type: :submit, class: "btn-saves"

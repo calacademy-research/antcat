@@ -63,14 +63,12 @@ describe Taxa::Operations::ConvertToSubspecies do
             :homonym_replaced_by_id,
             :incertae_sedis_in,
             :protonym,
-            :type_taxt,
             :headline_notes_taxt,
             :hong,
             :unresolved_homonym,
             :current_valid_taxon,
             :ichnotaxon,
-            :nomen_nudum,
-            :type_taxon
+            :nomen_nudum
           ].each do |attribute|
             expect(new_subspecies.public_send(attribute)).to eq species.public_send(attribute)
           end

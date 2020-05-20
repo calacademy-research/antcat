@@ -7,6 +7,7 @@ module Exporters
         class TypeNameLine
           include Service
 
+          # TODO: Pass in the protonym instead.
           attr_private_initialize :taxon
 
           def call
@@ -15,7 +16,7 @@ module Exporters
 
           private
 
-            delegate :type_taxt, :type_taxon, :protonym, to: :taxon, private: true
+            delegate :protonym, to: :taxon, private: true
 
             def type_name_line
               string = ''.html_safe
@@ -25,13 +26,14 @@ module Exporters
             end
 
             def type_name_and_taxt
-              return ''.html_safe unless type_taxon
+              return ''.html_safe unless (type_name = protonym.type_name)
+              type_name_decorated = type_name.decorate
 
-              string = taxon.decorate.type_taxon_rank
-              string << AntwebFormatter.link_to_taxon(type_taxon)
+              string = type_name_decorated.format_rank
+              string << AntwebFormatter.link_to_taxon(type_name.taxon)
 
-              if type_taxt
-                string << AntwebFormatter.detax(type_taxt)
+              if (formatted_fixation_method = type_name_decorated.format_fixation_method)
+                string << AntwebFormatter.detax(formatted_fixation_method)
               end
 
               AddPeriodIfNecessary[string]

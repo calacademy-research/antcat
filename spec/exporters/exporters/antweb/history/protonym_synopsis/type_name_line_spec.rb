@@ -8,19 +8,18 @@ describe Exporters::Antweb::History::ProtonymSynopsis::TypeNameLine do
   describe "#call" do
     context "when taxon has a type name" do
       let(:type_species) { create :species, name_string: 'Atta major' }
-      let(:taxon) { create :genus, type_taxon: type_species }
+      let(:taxon) { create :genus }
+      let(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: type_species, pages: '1' }
 
-      it "links the type name" do
-        expect(described_class[taxon]).to eq %(Type-species: #{antweb_taxon_link(type_species)}.)
+      before do
+        taxon.protonym.update!(type_name: type_name)
       end
 
-      context "when taxon has type taxt" do
-        let(:taxon) { create :genus, type_taxon: type_species, type_taxt: Protonym::BY_MONOTYPY }
+      it "links the type name" do
+        reference_link = antweb_reference_link(type_name.reference)
 
-        it "includes the type taxt" do
-          expect(described_class[taxon]).
-            to eq %(Type-species: #{antweb_taxon_link(type_species)}, by monotypy.)
-        end
+        expect(described_class[taxon]).
+          to eq %(Type-species: #{antweb_taxon_link(type_species)}, by subsequent designation of #{reference_link}: 1.)
       end
     end
 

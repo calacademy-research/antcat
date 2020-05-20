@@ -128,7 +128,7 @@ describe Exporters::Antweb::TaxonAttributes do
       let(:taxt_reference) { create :article_reference }
 
       before do
-        taxon.update!(type_taxon: type_species, type_taxt: Protonym::BY_MONOTYPY)
+        taxon.protonym.type_name = create :type_name, :by_monotypy, taxon: type_species
         taxon.history_items.create!(taxt: "Taxon: {tax #{type_species.id}}")
         taxon.reference_sections.create!(title_taxt: "Title", references_taxt: "{ref #{taxt_reference.id}}: 766")
       end

@@ -29,6 +29,7 @@ describe WhatLinksHereItem do
         expect(described_class.new('protonyms', :primary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :secondary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :type_notes_taxt, 999).taxt?).to eq true
+        # TODO: Remove - keyword:type_taxt.
         expect(described_class.new('taxa', :type_taxt, 999).taxt?).to eq true
         expect(described_class.new('taxon_history_items', :taxt, 999).taxt?).to eq true
       end

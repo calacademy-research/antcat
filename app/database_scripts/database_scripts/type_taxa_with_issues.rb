@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Remove - keyword:type_taxt.
 module DatabaseScripts
   class TypeTaxaWithIssues < DatabaseScript
     def results
@@ -77,7 +78,8 @@ category: Catalog
 tags: [slow]
 
 description: >
-  This script checks all valid taxa that have a type taxon.
+  **NOTE:** Fixing items here will not remove them from this script, since it's using the old database columns.
+  This script will be removed shortly.
 
 
   See "Issue" column for what's wrong.

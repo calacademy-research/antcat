@@ -14,6 +14,7 @@ class WhatLinksHereItemDecorator
     when "references"          then link_to(id, reference_path(id))
     when "taxa"                then link_to(id, catalog_path(id))
     when "taxon_history_items" then link_to(id, taxon_history_item_path(id))
+    when "type_names"          then id
     else                       raise "unknown table #{table}"
     end
   end
