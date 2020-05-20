@@ -1,7 +1,6 @@
 -content_for :javascripts do
   =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
 
-=render 'shared/taxt_editor/taxon_and_ancestors', taxon: taxon_history_item.taxon
 =render "shared/default_reference"
 
 =form_for taxon_history_item, url: url do |f|
