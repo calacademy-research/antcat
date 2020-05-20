@@ -19,3 +19,7 @@ test: &TEST
 production:
   <<: *common
   database: antcat
+
+staging:
+  <<: *common
+  database: antcat_staging
