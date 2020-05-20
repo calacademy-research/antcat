@@ -34,7 +34,6 @@ module Taxa
           :homonym_replaced_by_id,
           :incertae_sedis_in,
           :protonym_id,
-          :headline_notes_taxt,
           :hong,
           :unresolved_homonym,
           :current_valid_taxon_id,

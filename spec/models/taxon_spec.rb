@@ -176,12 +176,6 @@ describe Taxon do
     end
   end
 
-  describe 'callbacks' do
-    it_behaves_like "a taxt column with cleanup", :headline_notes_taxt do
-      subject { create :family }
-    end
-  end
-
   describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 

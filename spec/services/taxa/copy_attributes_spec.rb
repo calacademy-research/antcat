@@ -13,7 +13,6 @@ describe Taxa::CopyAttributes do
         "homonym_replaced_by_id" => taxon.homonym_replaced_by_id,
         "incertae_sedis_in" => taxon.incertae_sedis_in,
         "protonym_id" => taxon.protonym_id,
-        "headline_notes_taxt" => taxon.headline_notes_taxt,
         "hong" => taxon.hong,
         "unresolved_homonym" => taxon.unresolved_homonym,
         "current_valid_taxon_id" => taxon.current_valid_taxon_id,

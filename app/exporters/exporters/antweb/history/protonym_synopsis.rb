@@ -16,7 +16,6 @@ module Exporters
               ProtonymLine[taxon.protonym],
               TypeNameLine[taxon],
               TypeFields[taxon.protonym],
-              headline_notes,
               link_to_antcat,
               taxon.decorate.link_to_antwiki,
               taxon.decorate.link_to_hol
@@ -25,11 +24,6 @@ module Exporters
         end
 
         private
-
-          def headline_notes
-            return unless taxon.headline_notes_taxt
-            AntwebFormatter.detax(taxon.headline_notes_taxt)
-          end
 
           def link_to_antcat
             AntwebFormatter.link_to_taxon_with_label(taxon, 'AntCat')

@@ -59,8 +59,7 @@ describe TaxaController do
               collective_group_name: true,
               unresolved_homonym: true,
               ichnotaxon: true,
-              hong: true,
-              headline_notes_taxt: "headline notes taxt"
+              hong: true
             )
           end
 
@@ -77,7 +76,6 @@ describe TaxaController do
             expect(taxon.unresolved_homonym).to eq taxon_params[:unresolved_homonym]
             expect(taxon.ichnotaxon).to eq taxon_params[:ichnotaxon]
             expect(taxon.hong).to eq taxon_params[:hong]
-            expect(taxon.headline_notes_taxt).to eq taxon_params[:headline_notes_taxt]
           end
         end
 

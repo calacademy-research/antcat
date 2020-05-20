@@ -45,7 +45,6 @@ class Taxon < ApplicationRecord
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validate :current_valid_taxon_validation, :ensure_correct_name_type
 
-  before_validation :cleanup_taxts
   before_save :set_name_caches
 
   scope :valid, -> { where(status: Status::VALID) }
@@ -58,7 +57,7 @@ class Taxon < ApplicationRecord
 
   accepts_nested_attributes_for :name, update_only: true
   has_paper_trail
-  strip_attributes only: [:incertae_sedis_in, :origin, :headline_notes_taxt], replace_newlines: true
+  strip_attributes only: [:incertae_sedis_in, :origin], replace_newlines: true
   trackable parameters: proc {
     parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }
@@ -105,11 +104,6 @@ class Taxon < ApplicationRecord
     def set_name_caches
       self.name_cache = name.name
       self.name_html_cache = name.name_html
-    end
-
-    # TODO: Remove `taxa.headline_notes_taxt` or convert to history items.
-    def cleanup_taxts
-      self.headline_notes_taxt = Taxt::Cleanup[headline_notes_taxt]
     end
 
     def current_valid_taxon_validation

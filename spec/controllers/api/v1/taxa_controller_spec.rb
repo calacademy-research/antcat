@@ -28,6 +28,7 @@ describe Api::V1::TaxaController, as: :visitor do
             "family_id" => nil,
             "fossil" => false,
             "genus_id" => taxon.genus_id,
+            # TODO: Remove column.
             "headline_notes_taxt" => nil,
             "hol_id" => nil,
             "homonym_replaced_by_id" => nil,
