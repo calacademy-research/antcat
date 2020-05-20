@@ -11,7 +11,7 @@ Feature: Manage protonyms
 
     When I go to the protonyms page
     And I follow "New"
-    And I set the protonym name string to "Dotta"
+    And I set the protonym name to "Dotta"
     And I set the type name taxon to "Atta"
     And I set the protonym authorship to the first search results of "Batiatus (2004)"
     And I fill in "protonym_authorship_attributes_pages" with "page 35"

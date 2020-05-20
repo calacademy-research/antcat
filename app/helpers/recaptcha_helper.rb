@@ -18,17 +18,15 @@ module RecaptchaHelper
 
     id = "recaptcha_token_#{SecureRandom.hex(10)}"
 
-    raw %(
+    raw <<~HTML
       <input name="recaptcha_token" type="hidden" id="#{id}"/>
       <script>
         grecaptcha.ready(function() {
           grecaptcha.execute('#{RECAPTCHA_V3_SITE_KEY}', { action: '#{action}' }).then(function(token) {
             document.getElementById("#{id}").value = token;
-          console.log(token);
-          console.log('aaaaaaa');
           });
         });
       </script>
-    )
+    HTML
   end
 end

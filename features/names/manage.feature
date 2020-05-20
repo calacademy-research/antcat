@@ -5,8 +5,7 @@ Feature: Manage names
   Scenario: Editing a name (with edit summary)
     Given there is a genus protonym "Formica"
 
-    When I go to the protonyms page
-    And I follow "Formica"
+    When I go to the edit page for the protonym "Formica"
     And I follow "Name record"
     Then I should see "Name record: Formica"
 
