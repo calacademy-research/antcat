@@ -10,13 +10,13 @@ module Taxa
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
 
     # TODO: Experimental.
-    def now
+    def now_taxon
       return self unless current_valid_taxon
-      current_valid_taxon.now
+      current_valid_taxon.now_taxon
     end
 
     # TODO: Experimental. Used for expanding type taxa (see `TypeNameDecorator`).
-    def most_recent_before_now
+    def most_recent_before_now_taxon
       taxa = []
       current_taxon = current_valid_taxon
 
@@ -59,7 +59,6 @@ module Taxa
     private
 
       # "Combination in {tax 123}".
-      # TODO: Standardize and move these "xzy_in_history_items" now that we have a bunch of them.
       # NOTE: Can be removed once we have normalized all 'combination in's.
       def combination_in_history_items
         history_items.where('taxt LIKE ?', "Combination in%")
