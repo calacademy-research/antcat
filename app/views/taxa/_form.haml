@@ -2,7 +2,6 @@
   =javascript_include_tag 'taxon_select', 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'protonym_select'
 
-=render 'shared/taxt_editor/taxon_and_ancestors', taxon: taxon
 =render "shared/default_reference"
 
 -url = taxon.new_record? ?  '/taxa': "/taxa/#{taxon.id}"

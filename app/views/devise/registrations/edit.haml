@@ -16,7 +16,7 @@
 
     .medium-6.columns
       =f.label :password, "Password (leave blank if you don't want to change it)"
-      =f.password_field :password
+      =f.password_field :password, autocomplete: 'new-password'
 
       =f.label :password_confirmation
       =f.password_field :password_confirmation

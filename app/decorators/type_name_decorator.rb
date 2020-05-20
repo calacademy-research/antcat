@@ -8,7 +8,7 @@ class TypeNameDecorator < Draper::Decorator
   end
 
   def compact_taxon_status
-    return '' if (compact_status = taxon.most_recent_before_now.decorate.compact_status).blank?
+    return '' if (compact_status = taxon.most_recent_before_now_taxon.decorate.compact_status).blank?
     ' ('.html_safe + compact_status + ')'.html_safe
   end
 

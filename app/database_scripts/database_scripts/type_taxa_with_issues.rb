@@ -17,7 +17,7 @@ module DatabaseScripts
           'TTN status', 'Issue', 'Suggested script action'
         t.rows do |taxon|
           type_taxon = taxon.type_taxon
-          type_taxon_now = type_taxon.now.__getobj__
+          type_taxon_now = type_taxon.now_taxon.__getobj__
           issue, suggested_script_action = check_issue(taxon, type_taxon, type_taxon_now)
           next unless issue
 

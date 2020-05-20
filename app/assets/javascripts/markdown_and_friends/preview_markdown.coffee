@@ -107,7 +107,6 @@ class ExtrasArea
   constructor: (@textarea, @textareaTab, @taxtEditor) ->
     @createExtrasArea().appendTo @textareaTab
     @setupDefaultReferenceButton()
-    @setupInsertTaxaButtons()
     @setupRecentlyUserReferencesButton()
     @setupInsertReferenceButton()
     @setupInsertTaxonButton()
@@ -122,7 +121,6 @@ class ExtrasArea
         <a id="#{RECENTLY_USED_REFERENCES_BUTTON_ID}" class="btn-normal btn-tiny">Recently used references</a>
         <a id="#{INSERT_REFERENCE_BUTTON_ID}" class="btn-normal btn-tiny">+Reference</a>
         <a id="#{INSERT_TAXON_BUTTON_ID}" class="btn-normal btn-tiny">+Taxon</a>
-        <span id="extras-area"></span>
         <a id="#{CONVERT_BOLTON_KEYS_BUTTON_ID}" class="btn-warning btn-tiny">Convert Bolton keys</a>
       </div>
     </div>
@@ -190,21 +188,6 @@ class ExtrasArea
     button.click =>
       event.preventDefault()
       @textarea.insertAtCaret "{ref #{reference.id}}: "
-
-  setupInsertTaxaButtons: ->
-    insertTaxonButton = (id, name) ->
-      """<a class="insert-taxon btn-normal btn-tiny" data-id="#{id}">#{name}</a> """
-
-    taxa = $('#taxon-and-ancestors').data('taxa')
-    return unless taxa
-
-    taxa.forEach (taxon) =>
-      @textareaTab.find('#extras-area').prepend insertTaxonButton(taxon.id, taxon.name)
-
-    @textareaTab.find('.insert-taxon').click (event) =>
-      event.preventDefault()
-      id = $(event.target).data('id')
-      @textarea.insertAtCaret "{tax #{id}} "
 
   setupConvertBoltonKeysButton: ->
     button = @textareaTab.find("##{CONVERT_BOLTON_KEYS_BUTTON_ID}")

@@ -4,14 +4,7 @@
 #   cucumber -f usage
 #   cucumber -f stepdefs
 
-if ENV["COVERAGE"]
-  require 'simplecov'
-
-  SimpleCov.command_name "cucumber"
-  SimpleCov.start do
-    enable_coverage :branch
-  end
-end
+require_relative './../coverage_cucumber'
 
 ENV["RAILS_ENV"] ||= "test"
 require_relative '../../config/environment'
