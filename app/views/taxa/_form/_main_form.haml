@@ -90,7 +90,3 @@
       =form.label :hong do
         Hong
         =db_tooltip_icon "hong", scope: :taxa
-
-  %tr
-    %td=form.label :headline_notes_taxt, 'Notes'
-    %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[headline_notes_taxt]', content: taxon.headline_notes_taxt, id: :taxon_headline_notes_taxt

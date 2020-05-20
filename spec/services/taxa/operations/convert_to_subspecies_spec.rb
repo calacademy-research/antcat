@@ -63,7 +63,6 @@ describe Taxa::Operations::ConvertToSubspecies do
             :homonym_replaced_by_id,
             :incertae_sedis_in,
             :protonym,
-            :headline_notes_taxt,
             :hong,
             :unresolved_homonym,
             :current_valid_taxon,

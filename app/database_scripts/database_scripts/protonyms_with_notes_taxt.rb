@@ -59,4 +59,3 @@ description: >
 related_scripts:
   - ProtonymsWithNotesTaxt
   - ProtonymsWithTypeNotesTaxt
-  - TaxaWithHeadlineNotesTaxt

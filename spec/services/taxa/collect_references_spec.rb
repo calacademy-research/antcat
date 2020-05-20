@@ -7,7 +7,6 @@ describe Taxa::CollectReferences do
     let!(:taxon) { create :family }
     let!(:reference_1) { create :any_reference }
     let!(:reference_2) { create :any_reference }
-    let!(:reference_3) { create :any_reference }
     let!(:reference_4) { create :any_reference }
     let!(:reference_5) { create :any_reference }
     let!(:reference_6) { create :any_reference }
@@ -17,8 +16,7 @@ describe Taxa::CollectReferences do
       # TODO: Remove - keyword:type_taxt.
       taxon.update!(
         type_taxon: create(:family),
-        type_taxt: ", by subsequent designation of {ref #{reference_4.id}}: 1.",
-        headline_notes_taxt: "see {ref #{reference_3.id}}"
+        type_taxt: ", by subsequent designation of {ref #{reference_4.id}}: 1."
       )
       taxon.protonym.update!(
         primary_type_information_taxt: "see {ref #{reference_5.id}}",
@@ -35,7 +33,6 @@ describe Taxa::CollectReferences do
         taxon.authorship_reference,
         reference_1,
         reference_2,
-        reference_3,
         reference_4,
         reference_5,
         reference_6,

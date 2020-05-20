@@ -25,7 +25,6 @@ describe WhatLinksHereItem do
         expect(described_class.new('reference_sections', :references_taxt, 999).taxt?).to eq true
         expect(described_class.new('reference_sections', :subtitle_taxt, 999).taxt?).to eq true
         expect(described_class.new('reference_sections', :title_taxt, 999).taxt?).to eq true
-        expect(described_class.new('taxa', :headline_notes_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :primary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :secondary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :type_notes_taxt, 999).taxt?).to eq true

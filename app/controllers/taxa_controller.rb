@@ -78,7 +78,6 @@ class TaxaController < ApplicationController
         :collective_group_name,
         :current_valid_taxon_id,
         :fossil,
-        :headline_notes_taxt,
         :homonym_replaced_by_id,
         :hong,
         :ichnotaxon,
