@@ -12,7 +12,6 @@ class ProtonymsController < ApplicationController
         scope = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
                   left_outer_joins(:taxa).group(:id).references('taxa_count').
                   preload(:name, authorship: :reference)
-        scope = scope.joins(:name).where('names.name LIKE ?', "%#{params[:q]}%") if params[:q].present?
         if params[:order] == TAXON_COUNT_ORDER
           scope.order("taxa_count DESC")
         else
