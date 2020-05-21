@@ -50,6 +50,3 @@ related_scripts:
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
-  - ProtonymsWithTaxaWithMoreThanOneTypeTaxon
-
-  - TypeTaxaAssignedToMoreThanOneTaxon
