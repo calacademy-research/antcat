@@ -36,6 +36,14 @@ Feature: Manage protonyms
     And I should see "Authorship: Pages can't be blank"
     And I should see "Type name: Taxon must exist"
 
+  Scenario: Adding a protonym with unparsable name, and maintain entered fields
+    When I go to the protonyms page
+    And I follow "New"
+    And I set the protonym name to "Invalid a b c d e f protonym name"
+    And I press "Save"
+    Then I should see "Protonym name: Could not parse name Invalid a b c d e f protonym name"
+    And the "protonym_name_string" field should contain "Invalid a b c d e f protonym name"
+
   Scenario: Editing a protonym
     Given there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
 

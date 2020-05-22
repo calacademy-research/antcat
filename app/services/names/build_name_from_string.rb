@@ -22,7 +22,7 @@ module Names
       attr_reader :name
 
       def name_class
-        @_name_class ||= IdentifyNameType[name]
+        @_name_class ||= Names::IdentifyNameType[name]
       end
   end
 end

@@ -44,10 +44,6 @@ class ProtonymsController < ApplicationController
     else
       render :new
     end
-  rescue Names::BuildNameFromString::UnparsableName => e
-    @protonym.errors.add :base, "Could not parse name #{e.message}"
-    @protonym.build_name(name: params[:protonym_name_string]) # Maintain entered name.
-    render :new
   end
 
   def edit
