@@ -8,29 +8,31 @@ class TaxonForm
   validate :validate_children
 
   def save
-    save_taxon
+    protonym_attributes = params.delete(:protonym_attributes)
+
+    if taxon.new_record?
+      taxon.name = build_name taxon_name_string
+
+      if params[:protonym_id].blank?
+        self.protonym_form = ProtonymForm.new(taxon.protonym, protonym_attributes, protonym_name_string: protonym_name_string)
+      end
+    end
+
+    taxon.attributes = params
+
+    return false if invalid?
+    persist!
   end
 
   private
 
     attr_accessor :protonym_form
 
-    def save_taxon
-      protonym_attributes = params.delete(:protonym_attributes)
-
-      if taxon.new_record?
-        taxon.name = build_name taxon_name_string
-
-        if params[:protonym_id].blank?
-          self.protonym_form = ProtonymForm.new(taxon.protonym, protonym_attributes, protonym_name_string: protonym_name_string)
-        end
+    def persist!
+      ActiveRecord::Base.transaction do
+        protonym_form&.save!
+        taxon.save!
       end
-
-      taxon.attributes = params
-
-      return false if invalid?
-      protonym_form&.save
-      taxon.save
     end
 
     def promote_errors child_errors, error_prefix = ''

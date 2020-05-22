@@ -50,11 +50,15 @@ class ProtonymForm
 
   def save
     if valid?
-      persist!
+      save!
       true
     else
       false
     end
+  end
+
+  def save!
+    persist!
   end
 
   private
