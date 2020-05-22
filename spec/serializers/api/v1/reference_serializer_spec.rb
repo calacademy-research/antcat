@@ -28,8 +28,6 @@ describe Api::V1::ReferenceSerializer do
             "publisher_id" => nil,
             "series_volume_issue" => reference.series_volume_issue,
             "nesting_reference_id" => nil,
-            # TODO: Remove `citation` from here and from database.
-            "citation" => nil,
 
             # Notes.
             "public_notes" => reference.public_notes,

@@ -22,7 +22,6 @@ module Api
         :publisher_id,
         :series_volume_issue,
         :nesting_reference_id,
-        :citation,
 
         # Notes.
         :public_notes,
