@@ -62,10 +62,19 @@ describe Exporters::Antweb::TaxonomicAttributes do
       end
 
       context 'when taxon is a subgenus' do
-        let(:taxon) { create :subgenus, name_string: 'Atta (Boyo)' }
+        let(:taxon) { create :subgenus, name_string: 'Atta (Boyo)', subfamily: subfamily }
 
         it 'exports the subgenus as the subgenus part of the name' do
+          expect(old_style_array(taxon)[0]).to eq subfamily.name_cache
           expect(old_style_array(taxon)[3]).to eq 'Boyo'
+        end
+
+        context 'when subgenus has no subfamily' do
+          let(:taxon) { create :subgenus, subfamily: nil }
+
+          it "exports the subfamily as 'incertae_sedis'" do
+            expect(old_style_array(taxon)[0]).to eq 'incertae_sedis'
+          end
         end
       end
 
@@ -172,6 +181,20 @@ describe Exporters::Antweb::TaxonomicAttributes do
             ]
           end
         end
+      end
+    end
+
+    context "when taxon's rank is not exportable" do
+      context 'when taxon is a subtribe' do
+        let(:taxon) { create :subtribe }
+
+        specify { expect { described_class[taxon].call }.to raise_error("rank 'Subtribe' not supported") }
+      end
+
+      context 'when taxon is a infrasubspecies' do
+        let(:taxon) { create :infrasubspecies }
+
+        specify { expect { described_class[taxon].call }.to raise_error("rank 'Infrasubspecies' not supported") }
       end
     end
   end

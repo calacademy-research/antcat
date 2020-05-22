@@ -19,7 +19,7 @@ module Exporters
         when Subgenus   then subgenus_attributes
         when Species    then species_attributes
         when Subspecies then subspecies_attributes
-        else                 raise
+        else                 raise "rank '#{taxon.type}' not supported"
         end
       end
 

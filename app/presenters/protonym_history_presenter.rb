@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# TODO: Temporary(tm) code for migrating history items to protonyms.
+
+# :nocov:
 class ProtonymHistoryPresenter
   def initialize taxon
     @taxon = taxon
@@ -51,3 +54,4 @@ class ProtonymHistoryPresenter
 
     attr_reader :taxon, :protonym
 end
+# :nocov:
