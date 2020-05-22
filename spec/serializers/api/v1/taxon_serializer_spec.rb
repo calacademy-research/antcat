@@ -10,9 +10,9 @@ describe Api::V1::TaxonSerializer do
       expect(described_class.new(taxon).as_json).to eq(
         {
           "species" => {
+            "id" => taxon.id,
             "auto_generated" => false,
             "collective_group_name" => false,
-            "created_at" => taxon.created_at.as_json,
             "current_valid_taxon_id" => nil,
             "family_id" => nil,
             "fossil" => false,
@@ -23,7 +23,6 @@ describe Api::V1::TaxonSerializer do
             "homonym_replaced_by_id" => nil,
             "hong" => false,
             "ichnotaxon" => false,
-            "id" => taxon.id,
             "incertae_sedis_in" => nil,
             "name_cache" => taxon.name_cache,
             "name_html_cache" => taxon.name_html_cache,
@@ -43,7 +42,10 @@ describe Api::V1::TaxonSerializer do
             # TODO: Remove - keyword:type_taxt.
             "type_taxt" => nil,
             "unresolved_homonym" => false,
+
+            "created_at" => taxon.created_at.as_json,
             "updated_at" => taxon.updated_at.as_json,
+
             "author_citation" => taxon.author_citation
           }
         }
