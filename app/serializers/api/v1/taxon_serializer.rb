@@ -11,7 +11,6 @@ module Api
         :family_id,
         :fossil,
         :genus_id,
-        :headline_notes_taxt,
         :hol_id,
         :homonym_replaced_by_id,
         :hong,
@@ -30,8 +29,6 @@ module Api
         :subgenus_id,
         :subspecies_id,
         :tribe_id,
-        :type_taxon_id,
-        :type_taxt,
         :unresolved_homonym,
 
         :created_at,

@@ -17,8 +17,6 @@ describe Api::V1::TaxonSerializer do
             "family_id" => nil,
             "fossil" => false,
             "genus_id" => taxon.genus_id,
-            # TODO: Remove column.
-            "headline_notes_taxt" => nil,
             "hol_id" => nil,
             "homonym_replaced_by_id" => nil,
             "hong" => false,
@@ -37,10 +35,6 @@ describe Api::V1::TaxonSerializer do
             "subgenus_id" => nil,
             "subspecies_id" => nil,
             "tribe_id" => taxon.tribe_id,
-            # TODO: Remove - keyword:type_taxt.
-            "type_taxon_id" => nil,
-            # TODO: Remove - keyword:type_taxt.
-            "type_taxt" => nil,
             "unresolved_homonym" => false,
 
             "created_at" => taxon.created_at.as_json,
