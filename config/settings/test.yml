@@ -9,8 +9,8 @@ recaptcha:
   enabled: false
   v3:
     minimum_score: 0.5
-    site_key:
-    secret_key:
+    site_key: test_site_key
+    secret_key: test_secret_key
 
 smtp_settings:
   address:
