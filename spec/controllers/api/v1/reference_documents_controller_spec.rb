@@ -14,7 +14,7 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:reference_document) { create :reference_document }
+    let!(:reference_document) { create :reference_document, :with_reference }
 
     specify do
       get :show, params: { id: reference_document.id }
@@ -22,10 +22,11 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
         {
           "reference_document" => {
             "id" => reference_document.id,
-            "reference_id" => reference_document.reference_id,
+            "reference_id" => reference_document.reference.id,
             "file_file_name" => reference_document.file_file_name,
             "url" => reference_document.url,
             "public" => reference_document.public,
+
             "created_at" => reference_document.created_at.as_json,
             "updated_at" => reference_document.updated_at.as_json
           }

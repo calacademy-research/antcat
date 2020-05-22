@@ -14,7 +14,9 @@ describe Api::V1::ProtonymsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:protonym) { create :protonym, :with_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA" }
+    let!(:protonym) do
+      create :protonym, :with_type_name, :with_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA"
+    end
 
     specify do
       get :show, params: { id: protonym.id }
@@ -22,9 +24,9 @@ describe Api::V1::ProtonymsController, as: :visitor do
         {
           "protonym" => {
             "id" => protonym.id,
-            "name_id" => protonym.name_id,
+            "name_id" => protonym.name.id,
             "authorship_id" => protonym.authorship.id,
-            "type_name_id" => protonym.type_name_id, # TODO.
+            "type_name_id" => protonym.type_name.id, # TODO.
             "sic" => protonym.sic,
             "fossil" => protonym.fossil,
             "biogeographic_region" => Protonym::NEARCTIC_REGION,
@@ -33,6 +35,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
             "primary_type_information_taxt" => protonym.primary_type_information_taxt,
             "secondary_type_information_taxt" => protonym.secondary_type_information_taxt,
             "type_notes_taxt" => protonym.type_notes_taxt,
+
             "created_at" => protonym.created_at.as_json,
             "updated_at" => protonym.updated_at.as_json
           }

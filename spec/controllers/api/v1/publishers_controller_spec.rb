@@ -24,6 +24,7 @@ describe Api::V1::PublishersController, as: :visitor do
             "id" => publisher.id,
             "name" => "AntPress",
             "place" => "California",
+
             "created_at" => publisher.created_at.as_json,
             "updated_at" => publisher.updated_at.as_json
           }

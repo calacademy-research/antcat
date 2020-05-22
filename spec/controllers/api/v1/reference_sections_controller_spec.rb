@@ -22,11 +22,12 @@ describe Api::V1::ReferenceSectionsController, as: :visitor do
         {
           "reference_section" => {
             "id" => reference_section.id,
-            "taxon_id" => reference_section.taxon_id,
+            "taxon_id" => reference_section.taxon.id,
             "position" => reference_section.position,
             "title_taxt" => reference_section.title_taxt,
             "references_taxt" => reference_section.references_taxt,
             "subtitle_taxt" => reference_section.subtitle_taxt,
+
             "created_at" => reference_section.created_at.as_json,
             "updated_at" => reference_section.updated_at.as_json
           }

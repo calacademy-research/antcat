@@ -19,12 +19,12 @@ describe Api::V1::ReferenceSerializer do
             "doi" => nil,
             "online_early" => false,
             "pagination" => reference.pagination,
-            "review_state" => "none",
+            "review_state" => Reference::REVIEW_STATE_NONE,
             "bolton_key" => nil,
             "author_names_suffix" => nil,
 
             # Type-specific.
-            "journal_id" => reference.journal_id,
+            "journal_id" => reference.journal.id,
             "publisher_id" => nil,
             "series_volume_issue" => reference.series_volume_issue,
             "nesting_reference_id" => nil,

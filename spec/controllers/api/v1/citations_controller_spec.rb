@@ -25,7 +25,8 @@ describe Api::V1::CitationsController, as: :visitor do
             "forms" => 'w.',
             "notes_taxt" => 'notes_taxt',
             "pages" => "42",
-            "reference_id" => citation.reference_id,
+            "reference_id" => citation.reference.id,
+
             "created_at" => citation.created_at.as_json,
             "updated_at" => citation.updated_at.as_json
           }

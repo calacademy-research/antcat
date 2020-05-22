@@ -22,6 +22,7 @@ describe Api::V1::AuthorsController, as: :visitor do
         {
           "author" => {
             "id" => author.id,
+
             "created_at" => author.created_at.as_json,
             "updated_at" => author.updated_at.as_json
           }

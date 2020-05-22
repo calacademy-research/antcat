@@ -22,8 +22,9 @@ describe Api::V1::AuthorNamesController, as: :visitor do
         {
           "author_name" => {
             "id" => author_name.id,
-            "author_id" => author_name.author_id,
+            "author_id" => author_name.author.id,
             "name" => "Bolton",
+
             "created_at" => author_name.created_at.as_json,
             "updated_at" => author_name.updated_at.as_json
           }

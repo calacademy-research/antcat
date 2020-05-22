@@ -23,6 +23,7 @@ describe Api::V1::JournalsController, as: :visitor do
           "journal" => {
             "id" => journal.id,
             "name" => "Zootaxa",
+
             "created_at" => journal.created_at.as_json,
             "updated_at" => journal.updated_at.as_json
           }

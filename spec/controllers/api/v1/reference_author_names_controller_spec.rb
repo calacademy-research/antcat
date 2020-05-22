@@ -22,9 +22,10 @@ describe Api::V1::ReferenceAuthorNamesController, as: :visitor do
         {
           "reference_author_name" => {
             "id" => reference_author_name.id,
-            "author_name_id" => reference_author_name.author_name_id,
-            "reference_id" => reference_author_name.reference_id,
+            "author_name_id" => reference_author_name.author_name.id,
+            "reference_id" => reference_author_name.reference.id,
             "position" => reference_author_name.position,
+
             "created_at" => reference_author_name.created_at.as_json,
             "updated_at" => reference_author_name.updated_at.as_json
           }
