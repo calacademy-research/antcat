@@ -73,6 +73,11 @@
 
       -if presenter.show_protonym_items?
         %h6 Protonym items to be shown (self-owned items will also be shown, but they are not repeated here)
+        -if presenter.any_rank_specific_items_excluding_self_owned?
+          %p
+            %span.bold-notice Note:
+            This protonym has rank-specific history items, which means that "Protonym items to be shown" is not necessarily 100% true.
+            Please see the text in red and blue.
       -else
         %h6 These items will NOT be shown on this page
 
@@ -82,9 +87,24 @@
             %li
               Item owned by
               %strong=history_item.taxon.rank.upcase
-              -if presenter.rank_field_required?(taxon, history_item.taxon)
-                %span.bold-warning requires rank field
               =CatalogFormatter.link_to_taxon(history_item.taxon)
+
+              -if history_item.rank?
+                %br
+                This history item
+                %span.bold-notice has rank #{history_item.rank}, nice!
+                it will
+                %span.bold-notice
+                  -if presenter.show_rank_specific_item?(history_item, taxon)
+                    be shown!
+                  -else
+                    NOT be shown!
+              -elsif presenter.rank_field_required?(taxon, history_item.taxon)
+                %br
+                This history item
+                %span.bold-warning requires rank field
+
+              =link_to "Edit ##{history_item.id}", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
               .tiny-margin-top.small-margin-bottom
                 =add_period_if_necessary Detax[history_item.taxt]
       -else
