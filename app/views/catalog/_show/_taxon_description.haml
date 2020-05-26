@@ -100,6 +100,12 @@
   %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
+        -if current_user && history_item.rank?
+          %span.logged-in-only-background
+            %small.bold-notice
+              #{history_item.rank}-only item
+            =logged_in_only_tooltip_icon
+
         =add_period_if_necessary Detax[history_item.taxt]
         -if current_user
           %span.show-on-hover
