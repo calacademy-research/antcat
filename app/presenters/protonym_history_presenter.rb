@@ -47,6 +47,11 @@ class ProtonymHistoryPresenter
     taxon.status.in?(Status::DISPLAY_HISTORY_ITEMS_VIA_PROTONYM_STATUSES)
   end
 
+  def proposed_history_items
+    return TaxonHistoryItem.none unless show_protonym_items?
+    protonym.history_items.where(rank: [taxon.type, nil])
+  end
+
   # TODO: This is for a future column for family/subfamily/tribe trios.
   # rubocop:disable Style/MultipleComparison
   def rank_field_required? catalog_taxon, history_item_owner_taxon
