@@ -35,8 +35,21 @@ class ProtonymHistoryPresenter
     protonym.history_items.where.not(taxon: taxon)
   end
 
+  def any_rank_specific_items_excluding_self_owned?
+    items_excluding_self_owned.where.not(rank: nil).exists?
+  end
+
+  def show_rank_specific_item? history_item, catalog_taxon
+    history_item.rank == catalog_taxon.type
+  end
+
   def show_protonym_items?
     taxon.status.in?(Status::DISPLAY_HISTORY_ITEMS_VIA_PROTONYM_STATUSES)
+  end
+
+  def proposed_history_items
+    return TaxonHistoryItem.none unless show_protonym_items?
+    protonym.history_items.where(rank: [taxon.type, nil])
   end
 
   # TODO: This is for a future column for family/subfamily/tribe trios.

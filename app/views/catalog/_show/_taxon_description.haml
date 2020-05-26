@@ -1,3 +1,5 @@
+-# TODO: Organize temporary code better, since we usually have some of it.
+
 #nomen-synopsis
   %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
@@ -73,6 +75,11 @@
 
       -if presenter.show_protonym_items?
         %h6 Protonym items to be shown (self-owned items will also be shown, but they are not repeated here)
+        -if presenter.any_rank_specific_items_excluding_self_owned?
+          %p
+            %span.bold-notice Note:
+            This protonym has rank-specific history items, which means that "Protonym items to be shown" is not necessarily 100% true.
+            Please see the text in red and blue.
       -else
         %h6 These items will NOT be shown on this page
 
@@ -82,9 +89,24 @@
             %li
               Item owned by
               %strong=history_item.taxon.rank.upcase
-              -if presenter.rank_field_required?(taxon, history_item.taxon)
-                %span.bold-warning requires rank field
               =CatalogFormatter.link_to_taxon(history_item.taxon)
+
+              -if history_item.rank?
+                %br
+                This history item
+                %span.bold-notice has rank #{history_item.rank}, nice!
+                it will
+                %span.bold-notice
+                  -if presenter.show_rank_specific_item?(history_item, taxon)
+                    be shown!
+                  -else
+                    NOT be shown!
+              -elsif presenter.rank_field_required?(taxon, history_item.taxon)
+                %br
+                This history item
+                %span.bold-warning requires rank field
+
+              =link_to "Edit ##{history_item.id}", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
               .tiny-margin-top.small-margin-bottom
                 =add_period_if_necessary Detax[history_item.taxt]
       -else
@@ -96,10 +118,51 @@
 
     =hide_editing_helper_link
 
+-if current_user && current_user.settings(:editing_helpers).history_items_via_protonym
+  #history-items-via-protonym-editing-helper.additional-editor-data.callout.no-border-callout.logged-in-only-background
+    %h6
+      History items via protonym (alternative view, "proposed items")
+      =logged_in_only_tooltip_icon
+
+    %p
+      This section renders history items via the protonym as they would be shown if we moved history items to the protonym right now.
+      The above blue box contains additional information and context, while the history items below this box are the items we currently show.
+
+    -presenter = ProtonymHistoryPresenter.new(taxon)
+    -proposed_history_items = presenter.proposed_history_items
+    -if proposed_history_items.present?
+      %ul#history.small-margin-bottom
+        -proposed_history_items.each do |history_item|
+          %li
+            -if history_item.rank?
+              %span.logged-in-only-background
+                %small.bold-notice
+                  #{history_item.rank}-only item
+
+            =add_period_if_necessary Detax[history_item.taxt]
+            -if current_user
+              %span.show-on-hover
+                =link_to "Show", history_item, class: "btn-normal btn-very-tiny"
+                -if user_is_at_least_helper?
+                  =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+                =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+    -else
+      %p
+        No history items
+        =antcat_icon 'check'
+
+    =hide_editing_helper_link
+
 -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
   %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
+        -if current_user && history_item.rank?
+          %span.logged-in-only-background
+            %small.bold-notice
+              #{history_item.rank}-only item
+            =logged_in_only_tooltip_icon
+
         =add_period_if_necessary Detax[history_item.taxt]
         -if current_user
           %span.show-on-hover

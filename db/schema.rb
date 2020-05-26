@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_20_200148) do
+ActiveRecord::Schema.define(version: 2020_05_26_160135) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -328,6 +328,7 @@ ActiveRecord::Schema.define(version: 2020_05_20_200148) do
     t.datetime "updated_at", null: false
     t.integer "taxon_id", null: false
     t.integer "position", null: false
+    t.string "rank"
     t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
   end
 

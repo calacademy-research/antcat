@@ -2,7 +2,7 @@
 
 module EditorHelper
   def hide_editing_helper_link
-    content_tag :div, class: 'small-text right show-on-hover' do
+    content_tag :div, class: 'show-editing-helper small-text right show-on-hover' do
       link_to "Hide editing helper", edit_user_registration_path
     end
   end

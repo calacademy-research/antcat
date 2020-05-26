@@ -89,7 +89,7 @@ class TaxonHistoryItemsController < ApplicationController
     end
 
     def taxon_history_item_params
-      params.require(:taxon_history_item).permit(:taxt)
+      params.require(:taxon_history_item).permit(:taxt, :rank)
     end
 
     def per_page

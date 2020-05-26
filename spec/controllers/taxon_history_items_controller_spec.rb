@@ -50,15 +50,20 @@ describe TaxonHistoryItemsController do
     let!(:taxon_history_item) { create :taxon_history_item }
     let!(:taxon_history_item_params) do
       {
-        taxt: 'content'
+        taxt: 'content',
+        rank: 'Subfamily'
       }
     end
 
     it 'updates the history item' do
+      expect(taxon_history_item.taxt).to_not eq taxon_history_item_params[:taxt]
+      expect(taxon_history_item.rank).to_not eq taxon_history_item_params[:rank]
+
       put(:update, params: { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params })
 
       taxon_history_item.reload
       expect(taxon_history_item.taxt).to eq taxon_history_item_params[:taxt]
+      expect(taxon_history_item.rank).to eq taxon_history_item_params[:rank]
     end
 
     it 'creates an activity' do

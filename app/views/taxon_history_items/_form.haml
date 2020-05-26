@@ -5,10 +5,18 @@
 
 =form_for taxon_history_item, url: url do |f|
   =render "shared/errors_for", resource: taxon_history_item
+
   .row
     .medium-12.columns
       =text_area_tag :taxt, taxon_history_item.taxt, rows: 5, name: 'taxon_history_item[taxt]',
         data: { has_linkables: true, previewable: true, previewable_title: "History item", use_extras: true }
+
+  .row
+    .medium-3.columns.end
+      Show only for rank:
+      =beta_label
+      =f.select :rank, Rank::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS, include_blank: 'All ranks (default)'
+
   .row
     .medium-3.columns.end
       =edit_summary_text_field_tag
