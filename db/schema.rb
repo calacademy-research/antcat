@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_160135) do
+ActiveRecord::Schema.define(version: 2020_05_26_215213) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -284,7 +284,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_160135) do
     t.string "incertae_sedis_in"
     t.integer "species_id"
     t.integer "protonym_id", null: false
-    t.text "type_taxt"
     t.text "headline_notes_taxt"
     t.integer "subgenus_id"
     t.boolean "hong", default: false, null: false
@@ -299,7 +298,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_160135) do
     t.boolean "auto_generated", default: false, null: false
     t.string "origin"
     t.integer "hol_id"
-    t.integer "type_taxon_id"
     t.boolean "collective_group_name", default: false, null: false
     t.boolean "original_combination", default: false, null: false
     t.integer "subspecies_id"
@@ -319,7 +317,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_160135) do
     t.index ["subspecies_id"], name: "fk_taxa__subspecies_id__taxa__id"
     t.index ["tribe_id"], name: "taxa_tribe_id_idx"
     t.index ["type"], name: "taxa_type_idx"
-    t.index ["type_taxon_id"], name: "fk_taxa__type_taxon_id__taxa__id"
   end
 
   create_table "taxon_history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -447,7 +444,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_160135) do
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subspecies_id", name: "fk_taxa__subspecies_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
-  add_foreign_key "taxa", "taxa", column: "type_taxon_id", name: "fk_taxa__type_taxon_id__taxa__id"
   add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"
   add_foreign_key "type_names", "references", name: "fk_type_names__reference_id__references__id"
   add_foreign_key "type_names", "taxa", column: "taxon_id", name: "fk_type_names__taxon_id__taxa__id"
