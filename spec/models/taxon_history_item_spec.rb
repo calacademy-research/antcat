@@ -11,6 +11,7 @@ describe TaxonHistoryItem do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :taxt }
+    it { is_expected.to validate_inclusion_of(:rank).in_array(Rank::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS) }
   end
 
   describe 'callbacks' do

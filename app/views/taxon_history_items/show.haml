@@ -13,6 +13,11 @@
   This history item belongs to
   =@taxon.decorate.link_to_taxon_with_author_citation
 
+-if @taxon_history_item.rank?
+  %p
+    Show only for rank: #{@taxon_history_item.rank}
+    =beta_label
+
 .callout
   %p
     =Detax[@taxon_history_item.taxt]

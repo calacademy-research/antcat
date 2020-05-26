@@ -60,8 +60,11 @@ class TaxonHistoryItem < ApplicationRecord
   belongs_to :taxon
 
   validates :taxt, presence: true
+  validates :rank, inclusion: { in: Rank::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS, allow_nil: true }
 
   before_validation :cleanup_taxts
+
+  strip_attributes only: [:rank], replace_newlines: true
 
   scope :persisted, -> { where.not(id: nil) }
 
