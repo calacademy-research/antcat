@@ -8,12 +8,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Statuses of taxa'
+        t.header 'Protonym', 'Authorship', 'Taxa', 'Statuses of taxa'
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
             protonym.authorship.reference.keey,
-            protonym.taxa.pluck(:name_cache).join('<br>')
+            protonym.taxa.pluck(:name_cache).join('<br>'),
+            protonym.taxa.pluck(:status).join('<br>')
           ]
         end
       end
