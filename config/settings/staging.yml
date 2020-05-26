@@ -1,0 +1,12 @@
+google_analytics:
+  enabled: false
+  tracking_id:
+
+recaptcha:
+  enabled: false
+  v3:
+    minimum_score: 0.5
+    site_key:
+    secret_key:
+
+<%= IO.read(Rails.root.join('config/settings/staging.secret.yml')) %>

@@ -5,6 +5,7 @@
 # Secrets.
 /config/database.yml
 /config/settings/production.secret.yml
+/config/settings/staging.secret.yml
 
 # EngineYard server settings.
 /config/server.yml
