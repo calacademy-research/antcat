@@ -28,12 +28,6 @@ class TaxaController < ApplicationController
     else
       render :new
     end
-  rescue Names::BuildNameFromString::UnparsableName => e # TODO: Get rid of this rescue.
-    @taxon.errors.add :base, "Could not parse name #{e.message}"
-    # Maintain entered names.
-    @taxon.build_name(name: params[:taxon_name_string]) unless @taxon.name.name
-    @taxon.protonym.build_name(name: params[:protonym_name_string]) unless @taxon.protonym.name.name
-    render :new
   end
 
   def edit

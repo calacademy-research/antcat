@@ -10,14 +10,15 @@ describe Protonyms::AutocompletesController do
     end
 
     specify do
-      protonym = create :protonym, name: create(:genus_name, name: 'Lasius')
+      protonym = create :protonym, :fossil, name: create(:genus_name, name: 'Lasius')
 
       get :show, params: { qq: 'las', format: :json }
       expect(json_response).to eq(
         [
           {
             'id' => protonym.id,
-            'name_with_fossil' => protonym.decorate.protonym.decorate.name_with_fossil,
+            'plaintext_name' => 'Lasius',
+            'name_with_fossil' => "<i>†</i><i>Lasius</i>",
             'author_citation' => protonym.authorship.reference.keey_without_letters_in_year,
             'url' => "/protonyms/#{protonym.id}"
           }

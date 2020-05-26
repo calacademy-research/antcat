@@ -57,4 +57,30 @@ describe WhatLinksHereItemDecorator do
     specify { expect(decorated.item_link).to eq %(<a href="/taxon_history_items/#{id}">#{id}</a>) }
     specify { expect(decorated.owner_link).to eq taxon_link(object.taxon) }
   end
+
+  context "when table is `type_names`" do
+    let(:table) { "type_names" }
+    let(:object) { create(:protonym, :with_type_name).type_name }
+
+    specify { expect(decorated.item_link).to eq id }
+    specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }
+  end
+
+  context "when table is unknown" do
+    let(:table) { "pizzas" }
+    let(:object) { create :activity }
+
+    specify { expect { decorated.item_link }.to raise_error('unknown table pizzas') }
+  end
+
+  context "when owner is unknown" do
+    let(:table) { "taxa" }
+    let(:object) { create :activity }
+
+    before do
+      allow(what_links_here_item).to receive(:owner).and_return(object)
+    end
+
+    specify { expect { decorated.owner_link }.to raise_error('unknown owner Activity') }
+  end
 end

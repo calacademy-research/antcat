@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.1.5"
+  version: "1.2.0"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -672,14 +672,8 @@ definitions:
             description: Populated only if this is a homonym that has been superseded by another taxa.
           incertae_sedis_in:
             type: string
-          type_taxt:
-            type: string
-          headline_notes_taxt:
-            type: string
           hong:
             type: boolean
-          type_taxon_id:
-            type: integer
           name_cache:
             type: string
             description: de-normalized cache of the name object
@@ -945,8 +939,6 @@ definitions:
       taxonomic_notes:
         type: string
       title:
-        type: string
-      citation:
         type: string
       nesting_reference_id:
         type: string

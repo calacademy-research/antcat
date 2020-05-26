@@ -44,6 +44,7 @@ module Exporters
             includes(protonym: [{ authorship: :reference }])
         end
 
+        # :nocov:
         def taxon_row taxon
           Exporters::Antweb::ExportTaxon[taxon]
         rescue StandardError => e
@@ -52,6 +53,7 @@ module Exporters
           warn e.backtrace
           warn "======================================================="
         end
+        # :nocov:
 
         def create_progress_bar total
           ProgressBar.create(total: total, format: "%a %e %P% Processed: %c from %C", throttle_rate: 0.5)

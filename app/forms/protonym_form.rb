@@ -31,7 +31,7 @@ class ProtonymForm
     @form_params = form_params
 
     if (protonym_name_string = form_params[:protonym_name_string])
-      @protonym.name = Names::BuildNameFromString[protonym_name_string]
+      @protonym.name = build_name protonym_name_string
     end
 
     super params
@@ -50,11 +50,15 @@ class ProtonymForm
 
   def save
     if valid?
-      persist!
+      save!
       true
     else
       false
     end
+  end
+
+  def save!
+    persist!
   end
 
   private
@@ -82,6 +86,12 @@ class ProtonymForm
     end
 
     def validate_children
+      # TODO: Fix.
+      # HACK: Promote before getting cleared in `#invalid?`.
+      if protonym.name.errors.present?
+        promote_errors(protonym.name.errors, "Protonym name: ")
+      end
+
       if protonym.name.invalid?
         promote_errors(protonym.name.errors)
       end
@@ -95,6 +105,14 @@ class ProtonymForm
           promote_errors(protonym.type_name.errors, "Type name: ")
         end
       end
+    end
+
+    def build_name name_string
+      Names::BuildNameFromString[name_string]
+    rescue Names::BuildNameFromString::UnparsableName => e
+      name = Name.new(name: name_string)
+      name.errors.add :base, "Could not parse name #{e.message}"
+      name
     end
 
     def destroy_type_name?

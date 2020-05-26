@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Catalog::AutocompletesController do
   describe "GET show", as: :visitor do
-    let!(:taxon) { create :genus, name_string: "Ratta" }
+    let!(:taxon) { create :genus, :fossil, name_string: "Ratta" }
 
     before do
       create :genus, name_string: "Nylanderia"
@@ -17,7 +17,8 @@ describe Catalog::AutocompletesController do
         [
           {
             "id" => taxon.id,
-            "name_with_fossil" => taxon.name_with_fossil,
+            "plaintext_name" => "Ratta",
+            "name_with_fossil" => "<i>†</i><i>Ratta</i>",
             "author_citation" => taxon.author_citation,
             "css_classes" => CatalogFormatter.disco_mode_css(taxon),
             "url" => "/catalog/#{taxon.id}"

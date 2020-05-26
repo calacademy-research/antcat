@@ -176,6 +176,20 @@ RSpec/NestedGroups:
 RSpec/NotToNot:
   Enabled: false
 
+### Performance.
+
+# TODO: Investigate cop.
+Performance/DeletePrefix:
+  Enabled: false
+
+# TODO: Investigate cop.
+Performance/DeleteSuffix:
+  Enabled: false
+
+# TODO: Investigate cop.
+Performance/StartWith:
+  Enabled: false
+
 ### Style.
 
 Style/Alias:

@@ -28,6 +28,7 @@ describe Api::V1::NamesController, as: :visitor do
             "name" => 'Formicidae',
             "nonconforming_name" => name.nonconforming_name,
             "origin" => name.origin,
+
             "created_at" => name.created_at.as_json,
             "updated_at" => name.updated_at.as_json
           }
