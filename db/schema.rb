@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_215649) do
+ActiveRecord::Schema.define(version: 2020_05_26_221743) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -41,18 +41,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_215649) do
   create_table "authors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "changes", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "approver_id"
-    t.datetime "approved_at"
-    t.string "change_type"
-    t.integer "taxon_id"
-    t.integer "user_id"
-    t.index ["approver_id"], name: "index_changes_on_approver_id"
-    t.index ["taxon_id"], name: "index_changes_on_taxon_id"
   end
 
   create_table "citations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -325,15 +313,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_215649) do
     t.integer "position", null: false
     t.string "rank"
     t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
-  end
-
-  create_table "taxon_states", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
-    t.integer "taxon_id"
-    t.string "review_state"
-    t.boolean "deleted", default: false, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.index ["taxon_id"], name: "taxon_states_taxon_id_idx"
   end
 
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
