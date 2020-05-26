@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_215213) do
+ActiveRecord::Schema.define(version: 2020_05_26_215518) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -284,7 +284,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_215213) do
     t.string "incertae_sedis_in"
     t.integer "species_id"
     t.integer "protonym_id", null: false
-    t.text "headline_notes_taxt"
     t.integer "subgenus_id"
     t.boolean "hong", default: false, null: false
     t.integer "name_id", null: false
