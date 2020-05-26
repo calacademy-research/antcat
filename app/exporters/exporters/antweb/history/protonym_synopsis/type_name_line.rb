@@ -7,16 +7,13 @@ module Exporters
         class TypeNameLine
           include Service
 
-          # TODO: Pass in the protonym instead.
-          attr_private_initialize :taxon
+          attr_private_initialize :protonym
 
           def call
             type_name_line
           end
 
           private
-
-            delegate :protonym, to: :taxon, private: true
 
             def type_name_line
               string = ''.html_safe

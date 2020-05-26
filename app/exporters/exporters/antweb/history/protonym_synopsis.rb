@@ -14,7 +14,7 @@ module Exporters
           content_tag :div do
             [
               ProtonymLine[taxon.protonym],
-              TypeNameLine[taxon],
+              TypeNameLine[taxon.protonym],
               TypeFields[taxon.protonym],
               link_to_antcat,
               taxon.decorate.link_to_antwiki,

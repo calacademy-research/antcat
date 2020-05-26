@@ -12,8 +12,6 @@ module Taxa
       [Taxon, :subspecies_id],
       [Taxon, :current_valid_taxon_id],
       [Taxon, :homonym_replaced_by_id],
-      # TODO: Remove - keyword:type_taxt.
-      [Taxon, :type_taxon_id],
       [TypeName, :taxon_id]
     ]
 

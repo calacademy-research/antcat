@@ -37,17 +37,11 @@ describe References::WhatLinksHere do
       let(:ref_tag) { "{ref #{reference.id}}" }
 
       let!(:citation) { create :citation, reference: reference, notes_taxt: ref_tag }
-      # TODO: Remove - keyword:type_taxt.
-      let!(:taxon) do
-        create :genus, type_taxon: create(:family),
-          type_taxt: ", by subsequent designation of {ref #{reference.id}}: 1."
-      end
-      let!(:history_item) { taxon.history_items.create!(taxt: ref_tag) }
+      let!(:history_item) { create :taxon_history_item, taxt: ref_tag }
       let!(:reference_section) { create :reference_section, title_taxt: ref_tag, subtitle_taxt: ref_tag, references_taxt: ref_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('taxa',                :type_taxt,           taxon.id),
           WhatLinksHereItem.new('citations',           :notes_taxt,          citation.id),
           WhatLinksHereItem.new('citations',           :reference_id,        citation.id),
           WhatLinksHereItem.new('reference_sections',  :title_taxt,          reference_section.id),

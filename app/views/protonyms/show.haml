@@ -79,7 +79,6 @@
           %th Status
           %th
           %th
-          %th
           -if current_user
             %th
         -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |taxon|
@@ -95,12 +94,6 @@
               -if taxon.original_combination?
                 Original combination
                 =antcat_icon 'check'
-            %td
-              -# TODO: Remove - keyword:type_taxt.
-              -if taxon.type_taxon
-                %small
-                  =taxon.decorate.type_taxon_rank
-                  =CatalogFormatter.link_to_taxon(taxon.type_taxon) + Detax[taxon.type_taxt]
             %td
               -if taxon.origin
                 .bold-warning=taxon.origin

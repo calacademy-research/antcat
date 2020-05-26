@@ -31,8 +31,6 @@ module Taxa
         string = []
         string << taxon.history_items.pluck(:taxt).join
         string << taxon.reference_sections.pluck(:references_taxt).join
-        # TODO: Remove - keyword:type_taxt.
-        string << (taxon.type_taxt || '')
         string << (taxon.protonym.primary_type_information_taxt || '')
         string << (taxon.protonym.secondary_type_information_taxt || '')
         string << (taxon.protonym.type_notes_taxt || '')
