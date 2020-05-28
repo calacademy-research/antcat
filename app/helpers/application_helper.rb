@@ -77,6 +77,6 @@ module ApplicationHelper
   end
 
   def current_page_for_feedback
-    request.original_fullpath.gsub(%r{^/}, "")
+    request.original_fullpath.delete_prefix('/')
   end
 end

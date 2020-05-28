@@ -17,7 +17,7 @@ module Names
       def frequent_misspellings
         epithets = []
         epithets << 'alfari' if epithet == 'alfaroi'
-        epithets << epithet.gsub(/^columbic/, 'colombic') if /^columbic/.match?(epithet)
+        epithets << epithet.gsub(/^columbic/, 'colombic') if epithet.start_with?('columbic')
         epithets
       end
 
