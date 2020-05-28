@@ -18,13 +18,12 @@
       =render 'catalog/_show/editors_sidebar', taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 
     -if @catalog_presenter.statistics
-      .callout
-        #statistics.small-margin-bottom
-          =@catalog_presenter.statistics
-          -unless @catalog_presenter.show_full_statistics?
-            =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
+      #statistics.callout.small-margin-bottom
+        =@catalog_presenter.statistics
+        -unless @catalog_presenter.show_full_statistics?
+          =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
 
-    .callout#external-links
+    #external-links.callout
       =@taxon.decorate.link_to_antweb
       =@taxon.decorate.link_to_antwiki
       =@taxon.decorate.link_to_hol

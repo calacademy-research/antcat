@@ -4,14 +4,15 @@ class ProtonymForm
   include ActiveModel::Model
 
   ATTRIBUTES = %w[
+    biogeographic_region
     fossil
-    sic
     locality
+    sic
+    uncertain_locality
+
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt
-    biogeographic_region
-    uncertain_locality
   ]
 
   attr_accessor(*ATTRIBUTES)

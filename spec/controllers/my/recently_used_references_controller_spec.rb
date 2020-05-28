@@ -46,7 +46,7 @@ describe My::RecentlyUsedReferencesController do
       let!(:second) { create :any_reference }
       let!(:third) { create :any_reference }
 
-      it 'returns the the most recently used references first, unique only' do
+      it 'returns the most recently used references first, unique only' do
         post :create, params: { id: reference.id }
         post :create, params: { id: second.id }
         post :create, params: { id: third.id }

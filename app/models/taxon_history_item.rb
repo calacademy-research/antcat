@@ -12,8 +12,6 @@ class TaxonHistoryItem < ApplicationRecord
     VHIC_SEE_ALSO =         ["taxt LIKE ?", "See also: {ref %"],
 
     #### Synonym of.
-    # TODO: These should probably be "Junior synonym of ...".
-    VHIC_SYNONYM_OF =                    ["taxt LIKE ?", "Synonym of%"],
     VHIC_SENIOR_SYNONYM_OF =             ["taxt LIKE ?", "Senior synonym of%"],
     VHIC_JUNIOR_SYNONYM_OF =             ["taxt LIKE ?", "Junior synonym of%"],
     VHIC_PROVISIONAL_JUNIOR_SYNONYM_OF = ["taxt LIKE ?", "Provisional junior synonym o%"],

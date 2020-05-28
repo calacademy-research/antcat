@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Collapse subdirs of STI classes because placed in subdirs for
+# Collapse subdirs of STI classes because they placed in subdirs for
 # organizational purposes only, without using proper namespaces.
 Rails.autoloaders.each do |autoloader|
   autoloader.collapse("app/models/taxon_sti_subclasses")
