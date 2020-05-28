@@ -84,8 +84,7 @@ class TaxaController < ApplicationController
         :unresolved_homonym,
         name_attributes: [:gender],
         protonym_attributes: [
-          :biogeographic_region, :fossil, :locality, :uncertain_locality, :primary_type_information_taxt,
-          :secondary_type_information_taxt, :sic, :type_notes_taxt,
+          *ProtonymForm::ATTRIBUTES.map(&:to_sym),
           { authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id] }
         ]
       )

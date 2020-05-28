@@ -88,14 +88,7 @@ class ProtonymsController < ApplicationController
 
     def protonym_params
       params.require(:protonym).permit(
-        :biogeographic_region,
-        :fossil,
-        :locality,
-        :uncertain_locality,
-        :primary_type_information_taxt,
-        :secondary_type_information_taxt,
-        :sic,
-        :type_notes_taxt,
+        *ProtonymForm::ATTRIBUTES.map(&:to_sym),
         authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id],
         type_name_attributes: [:taxon_id, :fixation_method, :pages, :reference_id]
       )
