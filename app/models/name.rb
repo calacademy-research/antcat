@@ -38,7 +38,7 @@ class Name < ApplicationRecord
   end
 
   def rank
-    self.class.name.gsub(/Name$/, "").underscore
+    self.class.name.delete_suffix('Name').underscore
   end
 
   def name_html

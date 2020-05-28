@@ -181,17 +181,14 @@ RSpec/NotToNot:
 
 ### Performance.
 
-# TODO: Investigate cop.
 Performance/DeletePrefix:
-  Enabled: false
+  Enabled: true
 
-# TODO: Investigate cop.
 Performance/DeleteSuffix:
-  Enabled: false
+  Enabled: true
 
-# TODO: Investigate cop.
 Performance/StartWith:
-  Enabled: false
+  Enabled: true
 
 ### Style.
 
