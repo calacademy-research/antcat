@@ -78,6 +78,9 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
 Lint/RaiseException:
   Enabled: true
 
