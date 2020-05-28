@@ -111,7 +111,7 @@ Rails.application.routes.draw do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
-      resource :children, only: [:show, :destroy]
+      resource :children, only: [:show]
       resource :create_combination, only: [:new, :show, :create]
       resource :create_combination_help, only: [:new, :show]
       resource :convert_to_subspecies, only: [:new, :create]
@@ -241,6 +241,7 @@ Rails.application.routes.draw do
 
   scope :quick_and_dirty_fixes do
     post 'convert_bolton_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_bolton_tags'
+    post 'remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#remove_pages_from_taxac_tags'
     post 'convert_to_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_to_taxac_tags'
   end
 

@@ -6,9 +6,6 @@
     -content_for :breadcrumbs_right do
       =link_to "Check 'What Links Here's (slow)", taxa_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
 
--# TODO: Delete this Temporary Code(tm) to cleanup records, or make it presentable.
--children_has_what_links_heres = false
-
 %table
   %caption
     Immediate children of
@@ -39,9 +36,7 @@
           %td.shrink
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
             -if @check_what_links_heres
-              -if child.what_links_here.any?
-                -children_has_what_links_heres = true
-              -else
+              -unless child.what_links_here.any?
                 %span.rounded-badge.white-label no WLHs
               -if child.what_links_here.any_columns?
                 %span.rounded-badge.pretty-label columns
@@ -50,13 +45,5 @@
           %td
             -if child.origin
               .bold-warning=child.origin
-
--# TODO: Hmm.
--if user_is_editor?
-  -allow_delete_children = @check_what_links_heres && @taxon.type.in?(Taxa::ChildrenController::ALLOW_DELETE_CHILDREN_TYPES) && @taxon.children.present? && !children_has_what_links_heres
-  -if allow_delete_children
-    -content_for :breadcrumbs_right do
-      %small Children has no WLHs
-      =link_to "Delete all", taxa_children_path(@taxon), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-normal btn-warning"
 
 =will_paginate @children

@@ -16,19 +16,25 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', "Check usage"
+        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Converted to taxac', "Check usage"
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
 
           usage_string, matches = check_usage taxt
 
+          converted_to_taxac = QuickAndDirtyFixes::ConvertTaxToTaxacTags[taxt]
+          show_quick_fix_link = (converted_to_taxac != taxt) && matches
+
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],
-            (quick_fix_link(history_item) if matches),
+
+            (quick_fix_link(history_item) if show_quick_fix_link),
+            (show_quick_fix_link ? Detax[converted_to_taxac] : bold_warning('no changes and/or mismatch - must be updated manually')),
+
             usage_string
           ]
         end
@@ -81,12 +87,10 @@ description: >
 
 
   **Experimental**: Use the "Convert to taxac!" button to quickly replace all `tax` + `ref` tag combinations
-  for a history item with a `taxac` tag for the taxon. <span class="bold-warning">
-  The quick fix button has been updated to also remove pages for the relevant `ref` tag,
-  since that's what we want to do for the current batch. Only numerical pages numbers are removed;
-  if pages contains anything else (even hyphens), the pages will still be removed, but leave unmatched relics.
-  </span> Refresh the page to get rid cleaned items.
+  for a history item with a `taxac` tag for the taxon. Refresh the page to get rid cleaned items.
   The link is only visible if the tags match, but like mentioned above, they may match but both may be incorrect.
+  **Update:** Page numbers are not removed when using the quick-fix button,
+  they can be removed with the quick-fix button in %dbscript:TaxacTagsWithPageNumbers
 
 
   **Background**
