@@ -49,3 +49,6 @@ related_scripts:
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+
+  - ProtonymsWithoutATerminalTaxon
+  - ProtonymsWithMoreThanOneTerminalTaxon
