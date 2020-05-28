@@ -111,7 +111,7 @@ Rails.application.routes.draw do
     resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
-      resource :children, only: [:show, :destroy]
+      resource :children, only: [:show]
       resource :create_combination, only: [:new, :show, :create]
       resource :create_combination_help, only: [:new, :show]
       resource :convert_to_subspecies, only: [:new, :create]
