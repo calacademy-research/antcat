@@ -43,7 +43,7 @@ class QuickAndDirtyFixesController < ApplicationController
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
 
     old_taxt = taxon_history_item.taxt
-    new_taxt = convert_taxt_to_taxac_tags(old_taxt)
+    new_taxt = QuickAndDirtyFixes::ConvertTaxToTaxacTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Converted to taxac tags, but nothing was changed"))
@@ -54,30 +54,5 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Could convert to taxac tags"))
     end
   end
-
-  private
-
-    # Copy-pasted from `HistoryItemsWithRefTagsAsAuthorCitations`.
-    def convert_taxt_to_taxac_tags taxt
-      ids = taxt.scan(/{tax (?<tax_id>[0-9]+)} {ref (?<ref_id>[0-9]+)}:( [0-9]+)?/)
-
-      string = taxt.dup
-
-      ids.each do |(tax_id, ref_id)|
-        taxon = Taxon.find(tax_id)
-        reference = Reference.find(ref_id)
-
-        if taxon.authorship_reference == reference
-          string.gsub!(
-            /\{tax #{tax_id}\} \{ref #{ref_id}\}:( [0-9]+)?/,
-            "{taxac #{tax_id}}"
-          )
-        else
-          raise 'not OK'
-        end
-      end
-
-      string
-    end
 end
 # :nocov:
