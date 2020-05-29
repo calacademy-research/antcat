@@ -5,6 +5,8 @@ module PaperTrail
     include PaperTrail::VersionConcern
     include SetRequestUuid
 
+    belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
+
     scope :filter_where, ->(filter_params) do
       results = where(nil)
       filter_params.each do |key, value|

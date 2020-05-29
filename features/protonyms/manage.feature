@@ -64,6 +64,11 @@ Feature: Manage protonyms
     And I should see "LUND"
     And I should see "Malagasy"
 
+    When I follow "Edit"
+    Then I fill in "protonym_authorship_attributes_pages" with "page 35"
+    And I fill in "protonym_authorship_attributes_forms" with "male"
+    And the "protonym_locality" field should contain "Lund"
+
   Scenario: Editing type fields
     Given there is a genus protonym "Formica"
 
