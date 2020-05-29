@@ -14,9 +14,23 @@ describe Protonym do
   end
 
   describe 'validations' do
-    it do
-      expect(build_stubbed(:protonym)).to validate_inclusion_of(:biogeographic_region).
-        in_array(described_class::BIOGEOGRAPHIC_REGIONS).allow_nil
+    describe "#biogeographic_region" do
+      it do
+        expect(build_stubbed(:protonym)).to validate_inclusion_of(:biogeographic_region).
+          in_array(described_class::BIOGEOGRAPHIC_REGIONS).allow_nil
+      end
+
+      context 'when protonym is fossil' do
+        let(:protonym) { build_stubbed :protonym, :fossil }
+
+        # TODO: See code.
+        xit 'cannot have a `biogeographic_region`' do
+          expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
+            to change { protonym.valid? }.to(false)
+
+          expect(protonym.errors.messages).to include(biogeographic_region: ["cannot be set for fossil protonyms"])
+        end
+      end
     end
   end
 
