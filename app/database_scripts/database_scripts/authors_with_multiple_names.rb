@@ -27,3 +27,7 @@ __END__
 section: list
 category: References
 tags: []
+
+related_scripts:
+  - AuthorsWithMultipleNames
+  - IdenticalAuthorNames
