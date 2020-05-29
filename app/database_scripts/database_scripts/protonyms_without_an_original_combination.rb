@@ -10,8 +10,15 @@ module DatabaseScripts
       "Results: #{protonyms.count}"
     end
 
-    def render_as
-      :as_protonym_table
+    def render
+      as_table do |t|
+        t.header 'Protonym'
+        t.rows do |protonym|
+          [
+            protonym.decorate.link_to_protonym
+          ]
+        end
+      end
     end
 
     private

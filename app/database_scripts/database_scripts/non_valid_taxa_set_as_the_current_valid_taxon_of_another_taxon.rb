@@ -6,8 +6,17 @@ module DatabaseScripts
       taxa_set_as_current_valid_taxon.invalid
     end
 
-    def render_as
-      :as_taxon_table
+    def render
+      as_table do |t|
+        t.header 'Taxon', 'Rank', 'Status'
+        t.rows do |taxon|
+          [
+            taxon_link(taxon),
+            taxon.rank,
+            taxon.status
+          ]
+        end
+      end
     end
 
     private
