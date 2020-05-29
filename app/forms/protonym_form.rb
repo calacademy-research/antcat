@@ -15,10 +15,13 @@ class ProtonymForm
     type_notes_taxt
   ]
 
-  attr_accessor(*ATTRIBUTES)
   attr_reader :protonym
 
   delegate :id, :persisted?, :authorship, :type_name, to: :protonym
+
+  ATTRIBUTES.each do |attribute|
+    delegate attribute, "#{attribute}=", to: :protonym
+  end
 
   validate :validate_children
 
