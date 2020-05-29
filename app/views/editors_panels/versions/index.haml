@@ -51,7 +51,10 @@
           %td=version.item_type
           %td=version.item_id
           %td.no-wrap=version.created_at
-          %td=version.decorate.revision_history_link
+          %td
+            -version_decorated = version.decorate
+            =version_decorated.revision_history_link
+            =version_decorated.activity_link
           %td
             =inline_expandable version.inspect do
               %pre=version.to_yaml

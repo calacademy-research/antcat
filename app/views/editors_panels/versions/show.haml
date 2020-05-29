@@ -1,8 +1,11 @@
 -title "PaperTrail Version ##{@version.id}"
 -breadcrumb :version, @version
 
+-version_decorated = @version.decorate
+
 -content_for :breadcrumbs_right do
-  =@version.decorate.revision_history_link
+  =version_decorated.revision_history_link
+  =version_decorated.activity_link
 
 %pre.wrapped=@version.inspect
 %hr
