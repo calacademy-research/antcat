@@ -33,7 +33,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family, :homonym }
 
         it 'must have a `homonym_replaced_by`' do
-          expect { taxon.homonym_replaced_by = nil }.to change { taxon.valid? }.to false
+          expect { taxon.homonym_replaced_by = nil }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(homonym_replaced_by: ["must be set for homonyms"])
         end
       end
@@ -42,7 +42,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family }
 
         it 'cannot have a `homonym_replaced_by`' do
-          expect { taxon.homonym_replaced_by = build_stubbed(:family) }.to change { taxon.valid? }.to false
+          expect { taxon.homonym_replaced_by = build_stubbed(:family) }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
         end
       end
@@ -53,7 +53,7 @@ describe Taxon do
         let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
         it 'cannot be an `unresolved_homonym`' do
-          expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to false
+          expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(unresolved_homonym: ["can't be set for homonyms"])
         end
       end

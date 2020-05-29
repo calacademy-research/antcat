@@ -13,6 +13,28 @@ describe TaxaController do
     end
   end
 
+  describe "GET new", as: :editor do
+    context "when rank is species" do
+      let(:parent) { create :genus }
+      let(:params) do
+        {
+          parent_id: parent.id,
+          rank_to_create: "Species"
+        }
+      end
+
+      specify { expect(get(:new, params: params)).to render_template 'new' }
+
+      specify do
+        get :new, params: params
+
+        taxon = assigns(:taxon)
+        expect(taxon).to be_a Species
+        expect(taxon.genus).to eq parent
+      end
+    end
+  end
+
   describe "POST create", as: :editor do
     let(:authorship_reference) { create :any_reference }
     let(:base_params) do
