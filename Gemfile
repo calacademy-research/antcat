@@ -54,6 +54,7 @@ group :development do
   gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
+  gem 'rubycritic', require: false
   gem 'tabulo'
 end
 

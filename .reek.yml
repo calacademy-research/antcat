@@ -1,0 +1,14 @@
+detectors:
+  IrresponsibleModule:
+    enabled: false
+
+  MissingSafeMethod:
+    enabled: false
+
+  UncommunicativeModuleName:
+    enabled: false
+
+directories:
+  "app/controllers":
+    InstanceVariableAssumption:
+      enabled: false
