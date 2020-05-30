@@ -47,7 +47,7 @@ __END__
 
 section: pa-action-required
 category: Catalog
-tags: [slow]
+tags: [slow, high-priority]
 
 description: >
   To be converted by script.

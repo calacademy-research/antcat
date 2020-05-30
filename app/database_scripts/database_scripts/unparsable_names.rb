@@ -60,7 +60,7 @@ __END__
 
 section: pa-no-action-required
 category: Names
-tags: [very-slow, updated!]
+tags: [very-slow, high-priority]
 
 description: >
   These records can only be fixed by script.

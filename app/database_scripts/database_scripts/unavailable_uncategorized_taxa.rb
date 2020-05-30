@@ -51,6 +51,7 @@ __END__
 
 section: main
 category: Catalog
+tags: [high-priority]
 
 issue_description: This taxon has the status "unavailable uncategorized".
 
