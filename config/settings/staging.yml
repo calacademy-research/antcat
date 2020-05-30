@@ -1,3 +1,8 @@
+http_basic_auth:
+  enabled: true
+  name:
+  password:
+
 google_analytics:
   enabled: false
   tracking_id:
