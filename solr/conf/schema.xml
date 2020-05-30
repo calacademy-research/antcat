@@ -63,7 +63,7 @@
       <analyzer type="index">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" preserveOriginal="1" />
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0" />
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>
@@ -72,7 +72,7 @@
       <analyzer type="query">
         <charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
         <tokenizer class="solr.StandardTokenizerFactory"/>
-        <filter class="solr.WordDelimiterFilterFactory" preserveOriginal="1" />
+        <filter class="solr.WordDelimiterFilterFactory" catenateWords="1" catenateNumbers="1" preserveOriginal="1" splitOnCaseChange="0" generateWordParts="0" />
         <filter class="solr.StandardFilterFactory"/>
         <filter class="solr.LowerCaseFilterFactory"/>
         <filter class="solr.PorterStemFilterFactory"/>

@@ -50,7 +50,8 @@ describe References::FulltextSearchQuery, :search do
       end
 
       describe "keyword: `year`" do
-        let!(:reference) { create :any_reference, citation_year: '2004' }
+        let!(:reference_2004) { create :any_reference, citation_year: '2004' }
+        let!(:reference_2005b) { create :any_reference, citation_year: '2005b' }
 
         before do
           create :any_reference, citation_year: '2003'
@@ -58,7 +59,12 @@ describe References::FulltextSearchQuery, :search do
         end
 
         specify do
-          expect(described_class[year: 2004]).to eq [reference]
+          expect(described_class[year: 2004]).to eq [reference_2004]
+          expect(described_class[freetext: '2004']).to eq [reference_2004]
+
+          expect(described_class[year: 2005]).to eq [reference_2005b]
+          expect(described_class[freetext: '2005']).to eq [reference_2005b]
+          expect(described_class[freetext: '2005b']).to eq [reference_2005b]
         end
       end
 
@@ -107,7 +113,29 @@ describe References::FulltextSearchQuery, :search do
       end
 
       describe 'author names' do
-        context "when author contains German diacritics" do
+        context "when author name contains hyphens" do
+          let!(:reference) { create :any_reference, author_string: 'Abdul-Rassoul, M. S,' }
+
+          before { Sunspot.commit }
+
+          specify do
+            expect(described_class[freetext: 'Abdul-Rassoul']).to eq [reference]
+            expect(described_class[freetext: 'Abdul Rassoul']).to eq [reference]
+          end
+        end
+
+        context "when author name contains Spanish diacritics" do
+          let!(:reference) { create :any_reference, author_string: 'Acosta Salmerón, F. J.' }
+
+          before { Sunspot.commit }
+
+          specify do
+            expect(described_class[freetext: 'Salmerón']).to eq [reference]
+            expect(described_class[freetext: 'Salmeron']).to eq [reference]
+          end
+        end
+
+        context "when author name contains German diacritics" do
           let!(:reference) { create :any_reference, author_string: 'Hölldobler' }
 
           before { Sunspot.commit }
@@ -116,13 +144,54 @@ describe References::FulltextSearchQuery, :search do
           specify { expect(described_class[freetext: 'holldobler']).to eq [reference] }
         end
 
-        context "when author contains Hungarian diacritics" do
+        context "when author name contains Hungarian diacritics" do
           let!(:reference) { create :any_reference, author_string: 'Csősz' }
 
           before { Sunspot.commit }
 
           specify { expect(described_class[freetext: 'Csősz']).to eq [reference] }
           specify { expect(described_class[freetext: 'csosz']).to eq [reference] }
+        end
+
+        # TODO: Investigate if we can use `ApostropheFilterFactory` (Solr 4.8) instead of `generateWordParts="0"`.
+        context "when author name contains apostrophes" do
+          let!(:reference_1) { create :article_reference, author_string: "Arnol'di, K. V." }
+          let!(:reference_2) { create :article_reference, author_string: "Guerau d'Arellano Tur, C." }
+
+          before { Sunspot.commit }
+
+          specify do
+            expect(described_class[freetext: "Arnol'di"]).to eq [reference_1]
+            expect(described_class[freetext: 'Arnoldi']).to eq [reference_1]
+
+            expect(described_class[freetext: "d'Arellano"]).to eq [reference_2]
+            expect(described_class[freetext: "darellano"]).to eq [reference_2]
+          end
+        end
+
+        context "when common English word contains apostrophes" do
+          let!(:reference) { create :article_reference, title: "it's pizza time" }
+
+          before { Sunspot.commit }
+
+          specify do
+            expect(described_class[freetext: "it"]).to eq [reference]
+            expect(described_class[freetext: "its"]).to eq [reference]
+            expect(described_class[freetext: "it's"]).to eq [reference]
+          end
+        end
+
+        context "when author name contains mixed-case words" do
+          let!(:reference) { create :article_reference, author_string: "McArthur" }
+
+          before { Sunspot.commit }
+
+          specify do
+            expect(described_class[freetext: "McArthur"]).to eq [reference]
+            expect(described_class[freetext: "Mcarthur"]).to eq [reference]
+            expect(described_class[freetext: "mcarthur"]).to eq [reference]
+            expect(described_class[freetext: "mcArthur"]).to eq [reference]
+          end
         end
       end
 
