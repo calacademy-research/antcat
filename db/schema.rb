@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_26_221743) do
+ActiveRecord::Schema.define(version: 2020_05_30_081757) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -348,16 +348,9 @@ ActiveRecord::Schema.define(version: 2020_05_26_221743) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "invitation_token"
-    t.datetime "invitation_sent_at"
     t.datetime "reset_password_sent_at"
     t.boolean "editor", default: false, null: false
-    t.datetime "invitation_accepted_at"
-    t.integer "invitation_limit"
-    t.integer "invited_by_id"
-    t.string "invited_by_type"
     t.string "name", null: false
-    t.datetime "invitation_created_at"
     t.boolean "superadmin", default: false, null: false
     t.boolean "helper", default: false, null: false
     t.boolean "locked", default: false, null: false
@@ -367,8 +360,6 @@ ActiveRecord::Schema.define(version: 2020_05_26_221743) do
     t.integer "author_id"
     t.index ["author_id"], name: "index_users_on_author_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["invitation_token"], name: "index_users_on_invitation_token"
-    t.index ["invited_by_id", "invited_by_type"], name: "index_users_on_invited_by_id_and_invited_by_type"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
