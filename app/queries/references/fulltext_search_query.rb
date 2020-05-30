@@ -4,15 +4,18 @@ module References
   class FulltextSearchQuery
     include Service
 
+    # Hyphens and colons makes Solr go bananas.
+    UNFRIENDLY_SOLR_CHARACTERS_REGEX = /-|:/
+    FREETEXT_SUBSTRINGS_TO_REMOVE = ['<i>', '</i>', '\*'] # Titles may contain these.
+
     # rubocop:disable Metrics/ParameterLists
     def initialize(
       freetext: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
       doi: nil, reference_type: nil, page: 1, per_page: 30
     )
       @freetext = freetext
-      # Hyphens, asterixes and colons makes Solr go bananas.
-      @title = title.dup.gsub(/-|:|\*/, ' ') if title
-      @author = author.dup.gsub(/-|:/, ' ') if author
+      @title = title.dup.gsub(UNFRIENDLY_SOLR_CHARACTERS_REGEX, ' ').tr('*', ' ') if title # Asterixes too.
+      @author = author.dup.gsub(UNFRIENDLY_SOLR_CHARACTERS_REGEX, ' ') if author
       @year = year
       @start_year = start_year
       @end_year = end_year
@@ -73,17 +76,12 @@ module References
         end.results
       end
 
-      # TODO: This is partially duplicated in `References::FulltextSearchLightQuery`.
       def normalized_freetext
         freetext_dup = freetext.dup
 
         # TODO: Very ugly to make some queries work. Fix in Solr.
-        substrings_to_remove = ['<i>', '</i>', '\*'] # Titles may contain these.
-        substrings_to_remove.each { |substring| freetext_dup.gsub!(/#{substring}/, '') }
-
-        # Hyphens, asterixes and colons makes Solr go bananas.
-        freetext_dup.gsub!(/-|:/, ' ')
-
+        FREETEXT_SUBSTRINGS_TO_REMOVE.each { |substring| freetext_dup.gsub!(/#{substring}/, '') }
+        freetext_dup.gsub!(UNFRIENDLY_SOLR_CHARACTERS_REGEX, ' ')
         freetext_dup
       end
   end
