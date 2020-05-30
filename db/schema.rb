@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_083150) do
+ActiveRecord::Schema.define(version: 2020_05_30_083655) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_083150) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "place", null: false
+    t.index ["name", "place"], name: "ux_publishers__name__place", unique: true
     t.index ["name"], name: "publishers_name_idx"
   end
 
