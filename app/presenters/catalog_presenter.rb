@@ -11,17 +11,8 @@ class CatalogPresenter
     @_taxon_browser_presenter ||= TaxonBrowserPresenter.new(taxon_browser)
   end
 
-  def statistics
-    @_statistics ||= begin
-      decorated_taxon = taxon.decorate
-
-      if show_full_statistics?
-        decorated_taxon.full_statistics
-      else
-        # If there's no valid-only stats, try including invalid too before giving up.
-        decorated_taxon.valid_only_statistics || decorated_taxon.full_statistics
-      end
-    end
+  def formatted_statistics
+    @_formatted_statistics ||= Taxa::Statistics::FormatStatistics[fetch_statistics]
   end
 
   def show_full_statistics?
@@ -37,4 +28,17 @@ class CatalogPresenter
   def collected_references
     Taxa::CollectReferences[taxon].order_by_author_names_and_year.includes(:document)
   end
+
+  private
+
+    def fetch_statistics
+      decorated_taxon = taxon.decorate
+
+      if show_full_statistics?
+        decorated_taxon.full_statistics
+      else
+        # If there's no valid-only stats, try including invalid too before giving up.
+        decorated_taxon.valid_only_statistics || decorated_taxon.full_statistics
+      end
+    end
 end

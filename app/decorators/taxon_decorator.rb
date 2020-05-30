@@ -38,15 +38,12 @@ class TaxonDecorator < Draper::Decorator
     Taxa::CompactStatus[taxon]
   end
 
-  # TODO: Move `FormatStatistics` here and below.
   def full_statistics
-    stats = Taxa::Statistics::FetchStatistics[taxon]
-    Taxa::Statistics::FormatStatistics[stats]
+    Taxa::Statistics::FetchStatistics[taxon]
   end
 
   def valid_only_statistics
-    stats = Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
-    Taxa::Statistics::FormatStatistics[stats]
+    Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
   end
 
   def link_to_antwiki

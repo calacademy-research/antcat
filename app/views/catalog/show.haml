@@ -17,9 +17,9 @@
     -if current_user
       =render 'catalog/_show/editors_sidebar', taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 
-    -if @catalog_presenter.statistics
+    -if @catalog_presenter.formatted_statistics
       #statistics.callout.small-margin-bottom
-        =@catalog_presenter.statistics
+        =@catalog_presenter.formatted_statistics
         -unless @catalog_presenter.show_full_statistics?
           =link_to "More statistics", catalog_path(@taxon, include_full_statistics: "true"), class: "btn-normal btn-tiny"
 
