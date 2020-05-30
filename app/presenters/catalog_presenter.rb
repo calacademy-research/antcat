@@ -13,11 +13,13 @@ class CatalogPresenter
 
   def statistics
     @_statistics ||= begin
+      decorated_taxon = taxon.decorate
+
       if show_full_statistics?
-        taxon.decorate.statistics
+        decorated_taxon.full_statistics
       else
         # If there's no valid-only stats, try including invalid too before giving up.
-        taxon.decorate.statistics(valid_only: true) || taxon.decorate.statistics
+        decorated_taxon.valid_only_statistics || decorated_taxon.full_statistics
       end
     end
   end
