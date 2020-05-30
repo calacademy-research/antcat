@@ -53,8 +53,8 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def link_to_hol
-    return unless taxon.hol_id
-    h.external_link_to 'HOL', "#{HOL_BASE_URL}#{taxon.hol_id}"
+    return unless (hol_id = taxon.hol_id)
+    h.external_link_to 'HOL', "#{HOL_BASE_URL}#{hol_id}"
   end
 
   def link_to_antweb

@@ -8,7 +8,9 @@ if Rails.env.development?
 
     excluded_files = [
       'app/database_scripts/**/*',
-      'lib/dev_monkey_patches/**/*'
+      'lib/dev_monkey_patches/**/*',
+      'app/controllers/quick_and_dirty_fixes_controller.rb',
+      '**/quick_and_dirty_fixes/*'
     ]
 
     task.paths = FileList['app/**/*.rb', 'lib/**/*.rb'].exclude(*excluded_files)
