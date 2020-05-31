@@ -7,8 +7,17 @@ module DatabaseScripts
         distinct.where("taxon_history_items.id IS NOT NULL OR reference_sections.id IS NOT NULL")
     end
 
-    def render_as
-      :as_taxon_table
+    def render
+      as_table do |t|
+        t.header 'Taxon', 'Rank', 'Status'
+        t.rows do |taxon|
+          [
+            taxon_link(taxon),
+            taxon.rank,
+            taxon.status
+          ]
+        end
+      end
     end
   end
 end

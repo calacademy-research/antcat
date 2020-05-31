@@ -4,8 +4,7 @@ class JournalsController < ApplicationController
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
 
   def index
-    order = params[:order] == JournalQuery::REFERENCE_COUNT_ORDER ? "reference_count DESC" : :name
-    @journals = JournalQuery.new.includes_reference_count.order(order).paginate(page: params[:page], per_page: 100)
+    @journals = JournalQuery.new.includes_reference_count.with_order(params[:order]).paginate(page: params[:page], per_page: 100)
   end
 
   def show

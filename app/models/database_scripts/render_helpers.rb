@@ -8,31 +8,6 @@ module DatabaseScripts
       renderer.render
     end
 
-    def as_taxon_table
-      as_table do |t|
-        t.header 'Taxon', 'Rank', 'Status'
-        t.rows do |taxon|
-          [
-            taxon_link(taxon),
-            taxon.rank,
-            taxon.status
-          ]
-        end
-      end
-    end
-
-    def as_protonym_table
-      as_table do |t|
-        t.header 'ID', 'Protonym'
-        t.rows do |protonym|
-          [
-            protonym.id,
-            protonym.decorate.link_to_protonym
-          ]
-        end
-      end
-    end
-
     def taxa_list taxa
       taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) }.join('<br>')
     end

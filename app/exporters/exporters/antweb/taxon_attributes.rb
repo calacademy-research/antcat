@@ -65,7 +65,7 @@ module Exporters
         def export_history
           content_tag :div, class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.
             content = ''.html_safe
-            content << taxon.decorate.statistics(valid_only: true)
+            content << ::Taxa::Statistics::FormatStatistics[taxon.decorate.valid_only_statistics]
             content << Exporters::Antweb::History::ProtonymSynopsis[taxon]
             content << Exporters::Antweb::History::HistoryItems[taxon]
             content << Exporters::Antweb::History::ChildList[taxon]

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include HttpBasicAuth
+
   NotAuthorized = Class.new(StandardError)
 
   protect_from_forgery with: :exception

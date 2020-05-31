@@ -14,7 +14,7 @@
   -else
     =render 'shared/errors_for', resource: taxon
 
-  -if taxon.soft_validations.failed?
+  -if taxon.persisted? && taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning.small-12.medium-6
       %h6 Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
       %p These issues will not prevent you from saving the form. Just so you know :)

@@ -29,7 +29,6 @@ class TaxonHistoryItem < ApplicationRecord
     VHIC_RAISED_TO_SPECIES =         ["taxt LIKE ?", "Raised to species%"],
     VHIC_REVIVED_STATUS_AS_SPECIES = ["taxt LIKE ?", "Revived status as species%"],
     VHIC_REVIVED_FROM_SYNONYMY =     ["taxt LIKE ?", "Revived from synonymy%"],
-    VHIC_CURRENTLY_SUBSPECIES_OF =   ["taxt LIKE ?", "Currently subspecies of%"],
     VHIC_STATUS_AS_SPECIES =         ["taxt LIKE ?", "Status as species%"],
 
     # Status-ish.

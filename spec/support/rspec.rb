@@ -60,6 +60,10 @@ RSpec.configure do |config|
     end
   end
 
+  config.after do
+    Config.reload!
+  end
+
   # Allows RSpec to persist some state between runs in order to support
   # the `--only-failures` and `--next-failure` CLI options.
   config.example_status_persistence_file_path = "spec/examples.txt"

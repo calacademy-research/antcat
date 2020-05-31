@@ -13,15 +13,7 @@ module DatabaseScripts
 
         extend DatabaseScripts::RenderHelpers
 
-        if respond_to?(:render)
-          render
-        else
-          case render_as
-          when :as_taxon_table    then as_taxon_table
-          when :as_protonym_table then as_protonym_table
-          else raise 'could not render'
-          end
-        end
+        render
       end
     end
 

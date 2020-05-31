@@ -26,8 +26,11 @@ class Protonym < ApplicationRecord
   has_many :taxa_with_history_items, -> { distinct.joins(:history_items) }, class_name: 'Taxon'
   has_many :history_items, through: :taxa, class_name: 'TaxonHistoryItem'
 
-  # TODO: See if wa want to validate this w.r.t. rank of name and fossil status.
+  # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
+  # TODO: Remove `on: :create` after clearing `FossilProtonymsWithBiogeographicRegions`.
+  validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? },
+    on: :create
 
   before_validation :cleanup_taxts
 
