@@ -31,10 +31,8 @@ module References
         end.results
       end
 
-      # Hyphens, asterixes and colons makes Solr go bananas.
-      # TODO: This is partially duplicated in `References::FulltextSearchQuery`.
       def normalized_search_query
-        search_query.gsub(/-|:/, ' ')
+        search_query.gsub(References::FulltextSearchQuery::UNFRIENDLY_SOLR_CHARACTERS_REGEX, ' ')
       end
   end
 end
