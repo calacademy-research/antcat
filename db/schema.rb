@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_30_081757) do
+ActiveRecord::Schema.define(version: 2020_05_30_083655) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -103,7 +103,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_081757) do
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "journals_name_idx"
+    t.index ["name"], name: "ux_journals__name", unique: true
   end
 
   create_table "names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_081757) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "place", null: false
+    t.index ["name", "place"], name: "ux_publishers__name__place", unique: true
     t.index ["name"], name: "publishers_name_idx"
   end
 
@@ -360,6 +361,7 @@ ActiveRecord::Schema.define(version: 2020_05_30_081757) do
     t.integer "author_id"
     t.index ["author_id"], name: "index_users_on_author_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["name"], name: "ux_users__name", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
