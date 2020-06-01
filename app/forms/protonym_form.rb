@@ -100,6 +100,10 @@ class ProtonymForm
         promote_errors(protonym.name.errors)
       end
 
+      if protonym.invalid?
+        promote_errors(protonym.errors)
+      end
+
       if protonym.authorship.invalid?
         promote_errors(protonym.authorship.errors, "Authorship: ")
       end
