@@ -68,14 +68,6 @@ describe Taxon do
           expect(taxon.errors.messages).to include(nomen_nudum: ["can only be set for unavailable taxa"])
         end
       end
-
-      context 'when taxon is unavailable' do
-        let(:taxon) { build_stubbed :family, :unavailable }
-
-        it 'may be a `nomen_nudum`' do
-          expect { taxon.nomen_nudum = true }.to_not change { taxon.valid? }.from(true)
-        end
-      end
     end
 
     describe "#ichnotaxon" do
@@ -87,14 +79,6 @@ describe Taxon do
           expect(taxon.errors.messages).to include(ichnotaxon: ["can only be set for fossil taxa"])
         end
       end
-
-      context 'when taxon is fossil' do
-        let(:taxon) { build_stubbed :family, :fossil }
-
-        it 'may be a `ichnotaxon`' do
-          expect { taxon.ichnotaxon = true }.to_not change { taxon.valid? }.from(true)
-        end
-      end
     end
 
     describe "#collective_group_name" do
@@ -104,14 +88,6 @@ describe Taxon do
         it 'cannot be a `collective_group_name`' do
           expect { taxon.collective_group_name = true }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(collective_group_name: ["can only be set for fossil taxa"])
-        end
-      end
-
-      context 'when taxon is fossil' do
-        let(:taxon) { build_stubbed :family, :fossil }
-
-        it 'may be a `collective_group_name`' do
-          expect { taxon.collective_group_name = true }.to_not change { taxon.valid? }.from(true)
         end
       end
     end

@@ -23,8 +23,7 @@ describe Protonym do
       context 'when protonym is fossil' do
         let(:protonym) { build_stubbed :protonym, :fossil }
 
-        # TODO: See code.
-        xit 'cannot have a `biogeographic_region`' do
+        it 'cannot have a `biogeographic_region`' do
           expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
             to change { protonym.valid? }.to(false)
 

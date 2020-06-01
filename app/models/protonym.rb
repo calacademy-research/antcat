@@ -28,9 +28,7 @@ class Protonym < ApplicationRecord
 
   # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
-  # TODO: Remove `on: :create` after clearing `FossilProtonymsWithBiogeographicRegions`.
-  validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? },
-    on: :create
+  validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
 
   before_validation :cleanup_taxts
 
