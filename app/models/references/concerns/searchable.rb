@@ -16,6 +16,7 @@ module References
           string(:type)
           integer(:year)
           text(:author_names_string)
+          text(:author_names_string, as: :author_names_string_antcat_text)
           text(:citation_year)
           text(:stated_year)
           text(:title)

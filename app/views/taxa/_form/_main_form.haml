@@ -1,92 +1,108 @@
-%table.unstriped
-  =form.fields_for :name do |name_form|
-    %tr
-      %td
-        =name_form.label :name do
-          Name
-          =db_tooltip_icon "name", scope: :taxa
-      %td
-        -if taxon.name.persisted?
-          =taxon.name.name_html
-          %span.right
-            =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
-        -else
-          -number_of_words = Rank.single_word_name?(taxon.rank) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
-          =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }
-          -if taxon.is_a?(Subgenus)
-            %span
-              Subgenus name format:
-              %i Genus (Subgenus)
-    %tr
-      %td
-      %td
-        #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
+=form.fields_for :name do |name_form|
+  .row
+    .large-8.columns
+      %table.unstriped
+        %tr
+          %td
+            =name_form.label :name do
+              Name
+              =db_tooltip_icon "name", scope: :taxa
+          %td
+            -if taxon.name.persisted?
+              =taxon.name.name_html
+              =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
+            -else
+              -number_of_words = Rank.single_word_name?(taxon.rank) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
+              =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }
+              -if taxon.is_a?(Subgenus)
+                %span
+                  Subgenus name format:
+                  %i Genus (Subgenus)
+        %tr
+          %td
+          %td
+            #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
-    -if Rank.genus_group_name?(taxon.rank)
-      %tr
-        %td=name_form.label :gender
-        %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
+        -if Rank.genus_group_name?(taxon.rank)
+          %tr
+            %td=name_form.label :gender
+            %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
 
-  %tr
-    %td=form.label :status
-    %td=form.select :status, Status::STATUSES
+        %tr
+          %td=form.label :status
+          %td=form.select :status, Status::STATUSES
 
-  %tr
-    %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
-    %td=form.taxon_select :homonym_replaced_by
+        %tr
+          %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+          %td=form.taxon_select :homonym_replaced_by
 
-  %tr
-    %td=form.label :parent, 'Parent'
-    %td
-      -if taxon.parent
-        =taxon.parent.decorate.id_and_name_and_author_citation
-      -else
-        (none)
+        %tr
+          %td=form.label :parent, 'Parent'
+          %td
+            -if taxon.parent
+              =taxon.parent.decorate.id_and_name_and_author_citation
+            -else
+              (none)
 
-  %tr
-    %td=form.label :current_valid_taxon, 'Current valid name'
-    %td=form.taxon_select :current_valid_taxon
+        %tr
+          %td
+            =form.label :current_valid_taxon do
+              Current taxon
+              =db_tooltip_icon "current_taxon", scope: :taxa
+          %td=form.taxon_select :current_valid_taxon
 
-  %tr
-    %td.no-wrap
-      =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
-    %td
-      =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_RANKS]
+        %tr
+          %td.no-wrap
+            =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
+          %td
+            =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_RANKS]
 
-  %tr
-    %td=form.label :origin
-    %td=form.select :origin, [['(none)', nil], *Taxa::CleanupTaxon::ORIGINS]
+        %tr
+          %td=form.label :origin
+          %td=form.select :origin, [['(none)', nil], *Taxa::CleanupTaxon::ORIGINS]
 
-  %tr
-    %td
-    %td
-      -if taxon.type.in?(Rank::CAN_BE_A_COMBINATION_TYPES)
-        =form.check_box :original_combination
-        =form.label :original_combination do
-          Original combination
-          =db_tooltip_icon "original_combination", scope: :taxa
+        %tr
+          %td
+          %td
+            -if taxon.type.in?(Rank::CAN_BE_A_COMBINATION_TYPES)
+              =form.check_box :original_combination
+              =form.label :original_combination do
+                Original combination
+                =db_tooltip_icon "original_combination", scope: :taxa
 
-      =form.check_box :unresolved_homonym
-      =form.label :unresolved_homonym, 'Unresolved junior homonym'
+            =form.check_box :unresolved_homonym
+            =form.label :unresolved_homonym, 'Unresolved junior homonym'
 
-      =form.check_box :nomen_nudum
-      =form.label :nomen_nudum, "<i>Nomen nudum</i>".html_safe
+            =form.check_box :nomen_nudum
+            =form.label :nomen_nudum, "<i>Nomen nudum</i>".html_safe
 
-  %tr
-    %td
-    %td
-      =form.check_box :fossil
-      =form.label :fossil do
-        Fossil
-        =db_tooltip_icon "fossil", scope: :taxa
+    .large-4.columns
+      .callout
+        %table.unstriped
+          %tr
+            %td
+              %h6 Fossil-only fields
 
-      =form.check_box :ichnotaxon
-      =form.label :ichnotaxon
+          %tr
+            %td
+              =form.check_box :fossil
+              =form.label :fossil do
+                Fossil
+                =db_tooltip_icon "fossil", scope: :taxa
 
-      =form.check_box :collective_group_name
-      =form.label :collective_group_name
+          %tr
+            %td
+              =form.check_box :ichnotaxon
+              =form.label :ichnotaxon
 
-      =form.check_box :hong
-      =form.label :hong do
-        Hong
-        =db_tooltip_icon "hong", scope: :taxa
+          %tr
+            %td
+              =form.check_box :collective_group_name
+              =form.label :collective_group_name
+
+          %tr
+            %td
+              =form.check_box :hong
+              =form.label :hong do
+                Hong
+                =db_tooltip_icon "hong", scope: :taxa
