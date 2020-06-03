@@ -153,19 +153,43 @@ describe References::FulltextSearchQuery, :search do
           specify { expect(described_class[freetext: 'csosz']).to eq [reference] }
         end
 
-        # TODO: Investigate if we can use `ApostropheFilterFactory` (Solr 4.8) instead of `generateWordParts="0"`.
-        context "when author name contains apostrophes" do
-          let!(:reference_1) { create :article_reference, author_string: "Arnol'di, K. V." }
-          let!(:reference_2) { create :article_reference, author_string: "Guerau d'Arellano Tur, C." }
+        context "when author name contains initials" do
+          let!(:reference_1) { create :article_reference, author_string: "Wheeler, W.M." }
+          let!(:reference_2) { create :article_reference, author_string: "Wheeler, W. M." }
+          let!(:reference_3) { create :article_reference, author_string: "Wheeler" }
 
           before { Sunspot.commit }
 
-          specify do
-            expect(described_class[freetext: "Arnol'di"]).to eq [reference_1]
-            expect(described_class[freetext: 'Arnoldi']).to eq [reference_1]
+          it 'returns results with or without the same spacing between initials' do
+            expect(described_class[freetext: "Wheeler, W. M."]).to match_array [reference_1, reference_2, reference_3]
+            expect(described_class[freetext: "wheeler, w. m."]).to match_array [reference_1, reference_2, reference_3]
 
-            expect(described_class[freetext: "d'Arellano"]).to eq [reference_2]
-            expect(described_class[freetext: "darellano"]).to eq [reference_2]
+            expect(described_class[freetext: "Wheeler, W.M."]).to match_array [reference_1, reference_2]
+            expect(described_class[freetext: "wheeler, w.m."]).to match_array [reference_1, reference_2]
+
+            expect(described_class[freetext: "wheeler"]).to match_array [reference_1, reference_2, reference_3]
+          end
+
+          # TODO: We want this.
+          xit 'returns results with or without periods and spacing' do
+            expect(described_class[freetext: "wheeler wm"]).to match_array [reference_1, reference_2]
+          end
+        end
+
+        # TODO: Investigate if we can use `ApostropheFilterFactory` (Solr 4.8) instead of `generateWordParts="0"`.
+        context "when author name contains apostrophes" do
+          let!(:reference_1) { create :article_reference, author_string: "Arnol'di, K. V." }
+          let!(:reference_2) { create :article_reference, author_string: "Arnoldi, K. V." }
+          let!(:reference_3) { create :article_reference, author_string: "Guerau d'Arellano Tur, C." }
+
+          before { Sunspot.commit }
+
+          it 'returns results with or without apostrophes' do
+            expect(described_class[freetext: "Arnol'di"]).to match_array [reference_1, reference_2]
+            expect(described_class[freetext: 'Arnoldi']).to match_array [reference_1, reference_2]
+
+            expect(described_class[freetext: "d'Arellano"]).to eq [reference_3]
+            expect(described_class[freetext: "darellano"]).to eq [reference_3]
           end
         end
 
