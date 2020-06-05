@@ -125,7 +125,7 @@ describe Exporters::Antweb::TaxonAttributes do
     describe "[17]: `taxonomic history html`" do
       let(:taxon) { create :genus, hol_id: 9999 }
       let!(:type_species) { create :species, genus: taxon }
-      let(:taxt_reference) { create :article_reference }
+      let(:taxt_reference) { create :any_reference }
 
       before do
         taxon.protonym.type_name = create :type_name, :by_monotypy, taxon: type_species

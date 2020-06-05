@@ -69,25 +69,25 @@ describe References::FulltextSearchQuery, :search do
       end
 
       describe 'keyword: `reference_type`' do
-        let!(:article) { create :article_reference }
-        let!(:nested) { create :nested_reference, nesting_reference: article }
+        let!(:article_reference) { create :article_reference }
+        let!(:nested_reference) { create :nested_reference, nesting_reference: article_reference }
 
         before do
           Sunspot.commit
         end
 
         specify do
-          expect(described_class[]).to match_array [nested, article]
-          expect(described_class[reference_type: 'nested']).to eq [nested]
+          expect(described_class[]).to match_array [nested_reference, article_reference]
+          expect(described_class[reference_type: 'nested']).to eq [nested_reference]
         end
       end
 
       describe 'keyword: `doi`' do
         let!(:doi) { "10.11865/zs.201806" }
-        let!(:reference) { create :article_reference, doi: doi }
+        let!(:reference) { create :any_reference, doi: doi }
 
         before do
-          create :article_reference # Not matching.
+          create :any_reference # Not matching.
           Sunspot.commit
         end
 
@@ -154,9 +154,9 @@ describe References::FulltextSearchQuery, :search do
         end
 
         context "when author name contains initials" do
-          let!(:reference_1) { create :article_reference, author_string: "Wheeler, W.M." }
-          let!(:reference_2) { create :article_reference, author_string: "Wheeler, W. M." }
-          let!(:reference_3) { create :article_reference, author_string: "Wheeler" }
+          let!(:reference_1) { create :any_reference, author_string: "Wheeler, W.M." }
+          let!(:reference_2) { create :any_reference, author_string: "Wheeler, W. M." }
+          let!(:reference_3) { create :any_reference, author_string: "Wheeler" }
 
           before { Sunspot.commit }
 
@@ -178,9 +178,9 @@ describe References::FulltextSearchQuery, :search do
 
         # TODO: Investigate if we can use `ApostropheFilterFactory` (Solr 4.8) instead of `generateWordParts="0"`.
         context "when author name contains apostrophes" do
-          let!(:reference_1) { create :article_reference, author_string: "Arnol'di, K. V." }
-          let!(:reference_2) { create :article_reference, author_string: "Arnoldi, K. V." }
-          let!(:reference_3) { create :article_reference, author_string: "Guerau d'Arellano Tur, C." }
+          let!(:reference_1) { create :any_reference, author_string: "Arnol'di, K. V." }
+          let!(:reference_2) { create :any_reference, author_string: "Arnoldi, K. V." }
+          let!(:reference_3) { create :any_reference, author_string: "Guerau d'Arellano Tur, C." }
 
           before { Sunspot.commit }
 
@@ -194,7 +194,7 @@ describe References::FulltextSearchQuery, :search do
         end
 
         context "when common English word contains apostrophes" do
-          let!(:reference) { create :article_reference, title: "it's pizza time" }
+          let!(:reference) { create :any_reference, title: "it's pizza time" }
 
           before { Sunspot.commit }
 
@@ -206,7 +206,7 @@ describe References::FulltextSearchQuery, :search do
         end
 
         context "when author name contains mixed-case words" do
-          let!(:reference) { create :article_reference, author_string: "McArthur" }
+          let!(:reference) { create :any_reference, author_string: "McArthur" }
 
           before { Sunspot.commit }
 
