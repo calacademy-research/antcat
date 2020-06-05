@@ -44,7 +44,7 @@ __END__
 
 section: research
 category: Taxt
-tags: [new!, slow-render]
+tags: [slow-render]
 
 issue_description:
 

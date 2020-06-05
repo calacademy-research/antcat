@@ -29,7 +29,7 @@ title: Protonyms with rank-specific history items
 
 section: research
 category: Protonyms
-tags: [new!, slow]
+tags: [slow]
 
 issue_description:
 

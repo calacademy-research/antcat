@@ -30,7 +30,7 @@ __END__
 
 section: main
 category: References
-tags: [new!]
+tags: []
 
 issue_description:
 

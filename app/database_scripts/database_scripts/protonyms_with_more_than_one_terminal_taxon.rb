@@ -37,7 +37,7 @@ __END__
 
 section: main
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 

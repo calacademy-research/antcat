@@ -37,7 +37,7 @@ title: References without <code>bolton_key</code>s
 
 section: list
 category: References
-tags: [slow-render, new!]
+tags: [slow-render]
 
 issue_description:
 
