@@ -1,6 +1,21 @@
 -content_for :javascripts do
   =javascript_include_tag 'check_name_conflicts'
 
+
+.callout.alert.medium-9.margin-bottom
+  %h6
+    =antcat_icon 'warning-icon'
+    %strong Consider this an advanced feature
+
+  %p
+    Names of
+    %code Taxon
+    children are not updated.
+  %p
+    This form allows saving duplicates and homonyms.
+  %p
+    Saving this form will update the name in place.
+
 .row
   .medium-8.columns
     =form_for name, url: name_path(name), as: :name do |f|
@@ -20,17 +35,4 @@
           %tr
             %th{colspan: 2}
               =edit_summary_text_field_tag
-              =f.button "Save", type: :submit, class: "btn-saves"
-
-  .medium-4.columns
-    .callout
-      %h6 Help
-      %p
-        =antcat_icon 'warning-icon'
-        %strong Consider this an advanced feature.
-      %p
-        =antcat_icon 'warning-icon'
-        This form allows saving of duplicates and homonyms.
-      %p
-        =antcat_icon 'warning-icon'
-        Saving this form will update the name in place.
+              =f.button "Save", type: :submit, class: "btn-warning"
