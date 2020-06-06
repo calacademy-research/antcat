@@ -7,38 +7,42 @@ class Activity < ApplicationRecord
   include SetRequestUuid
 
   EDIT_SUMMARY_MAX_LENGTH = 255
-  ACTIONS = %w[
-    create
-    update
-    destroy
-
-    approve_all_changes
-    approve_all_references
-    approve_change
-    set_subgenus
-    close_feedback
-    close_issue
-    convert_species_to_subspecies
-    create_new_combination
-    create_obsolete_combination
-    elevate_subspecies_to_species
-    execute_script
-    finish_reviewing
-    force_parent_change
-    merge_authors
-    move_items
-    reopen_feedback
-    reopen_issue
-    reorder_taxon_history_items
-    reorder_reference_sections
-    replace_missing_reference
-    restart_reviewing
-    start_reviewing
-    undo_change
-  ]
+  ACTIONS_BY_GROUP = {
+    default: %w[
+      create
+      update
+      destroy
+    ],
+    custom: %w[
+      approve_all_references
+      close_feedback
+      close_issue
+      convert_species_to_subspecies
+      create_new_combination
+      create_obsolete_combination
+      elevate_subspecies_to_species
+      execute_script
+      finish_reviewing
+      force_parent_change
+      merge_authors
+      move_items
+      reopen_feedback
+      reopen_issue
+      reorder_reference_sections
+      reorder_taxon_history_items
+      restart_reviewing
+      set_subgenus
+      start_reviewing
+    ],
+    deprecated: %w[
+      approve_all_changes
+      approve_change
+      replace_missing_reference
+      undo_change
+    ]
+  }
+  ACTIONS = ACTIONS_BY_GROUP.values.flatten
   DEPRECATED_TRACKABLE_TYPES = %w[Change Synonym]
-  # Deprecated actions (not used in the code, just for keeping track):
-  # approve_all_changes approve_change replace_missing_reference undo_change
 
   self.per_page = 30 # For `will_paginate`.
 
