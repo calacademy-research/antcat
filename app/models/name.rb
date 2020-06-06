@@ -6,7 +6,7 @@ class Name < ApplicationRecord
   include Trackable
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
-  VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. \(\)]+\z/
+  VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
 
   has_many :protonyms, dependent: :restrict_with_error

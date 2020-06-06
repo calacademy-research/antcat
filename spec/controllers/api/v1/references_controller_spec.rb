@@ -14,7 +14,7 @@ describe Api::V1::ReferencesController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:reference) { create :article_reference, :with_notes }
+    let!(:reference) { create :any_reference, :with_notes }
 
     specify do
       get :show, params: { id: reference.id }

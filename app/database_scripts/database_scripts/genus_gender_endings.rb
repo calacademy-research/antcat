@@ -170,7 +170,7 @@ __END__
 
 section: list
 category: Names
-tags: [updated!, slow]
+tags: [slow]
 
 related_scripts:
   - GenusGenderEndings

@@ -53,7 +53,7 @@ module ApplicationHelper
   end
 
   def menu_active? menu
-    last_breadcrumb = breadcrumbs.last&.key # TODO: Special case.
+    last_breadcrumb = breadcrumbs.last&.key # HACK: Special case.
     return menu == :activity_feed if last_breadcrumb == :activity_feed
 
     first_breadcrumb = breadcrumbs.first&.key

@@ -78,6 +78,9 @@ Lint/AmbiguousBlockAssociation:
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
+Lint/MixedRegexpCaptureTypes:
+  Enabled: false
+
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
@@ -261,6 +264,12 @@ Style/NumericLiterals:
 
 Style/OptionHash:
   Enabled: true
+
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+
+Style/RedundantRegexpEscape:
+  Enabled: false
 
 Style/Send:
   Enabled: true

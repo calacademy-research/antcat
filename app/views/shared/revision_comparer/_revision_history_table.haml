@@ -16,6 +16,7 @@
           %th.center-text{colspan: 4} Compare with...
           %th Date
           %th User
+          %th
       %tbody
         -# The `most_recent` revision is special, as it's not in `revisions`.
         -# It will be either the current object, or a reified instance of
@@ -27,6 +28,7 @@
           %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?
           %td.shrink=render "shared/revision_comparer/revision_info_date", revision: most_recent
           %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
+          %td
 
         -revisions.each_with_index do |revision, index|
           %tr{class: revision_presenter.revision_css(revision)}
@@ -46,5 +48,9 @@
                 =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision)
             %td=render "shared/revision_comparer/revision_info_date", revision: revision
             %td=render "shared/revision_comparer/revision_info_user", revision: revision
+            %td
+              -# TODO: Link activity like in `PaperTrail::VersionDecorator#activity_link`.
+              -if revision.request_uuid
+                =link_to 'uuid', versions_path(request_uuid: revision.request_uuid), class: "btn-normal btn-tiny"
 
     =button_tag "Compare selected revisions", name: nil, class: "btn-normal"

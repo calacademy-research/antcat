@@ -19,7 +19,7 @@ module Taxt
   # original "taxt" format as used in taxt items.
   TAX_TAG_REGEX = /(%taxon(?<id>\d+))|(\{tax (?<id>\d+)\})/
   TAXAC_TAG_REGEX = /\{taxac (?<id>\d+)\}/
-  TAX_OR_TAXAC_TAG_REGEX = /{(tax|taxac) (?<tax_id>[0-9]+})/
+  TAX_OR_TAXAC_TAG_REGEX = /\{(tax|taxac) (?<tax_id>[0-9]+\})/
 
   PRO_TAG_REGEX = /\{pro (?<id>\d+)\}/
 

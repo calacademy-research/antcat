@@ -54,7 +54,7 @@ module References
       def remove_parenthesized_taxon_names! string
         return string unless (match = string.match(/ \(.+?\)/))
 
-        possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(/[ ]/)
+        possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(' ')
         any_taxon_names = possible_taxon_names.any? do |word|
           ['Formicidae', 'Hymenoptera'].include? word
         end

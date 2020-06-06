@@ -22,7 +22,7 @@ module DatabaseScripts
         t.rows do |history_item|
           taxon = history_item.taxon
 
-          first_tax = history_item.taxt[/{tax \d+}/][/\d+/].to_i
+          first_tax = history_item.taxt[/\{tax \d+\}/][/\d+/].to_i
           first_taxon = Taxon.find_by(id: first_tax)
           replace_with_pro_tag = first_taxon.name_cache == taxon.protonym.name.name
 
@@ -44,7 +44,7 @@ __END__
 
 section: research
 category: Taxt
-tags: [new!, slow-render]
+tags: [slow-render]
 
 issue_description:
 
