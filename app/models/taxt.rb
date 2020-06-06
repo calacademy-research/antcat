@@ -27,6 +27,7 @@ module Taxt
 
   MISSING_OR_UNMISSING_TAG = /\{(missing|unmissing) (?<hardcoded_name>.*?)\}/
   MISSING_TAG_REGEX = /\{missing (?<hardcoded_name>.*?)\}/
+  MISSING_TAG_START = "{missing "
   UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
 
   module_function

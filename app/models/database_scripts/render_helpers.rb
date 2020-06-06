@@ -23,6 +23,10 @@ module DatabaseScripts
       %(<span class="bold-warning">#{string}</span>)
     end
 
+    def bold_notice string
+      %(<span class="bold-notice">#{string}</span>)
+    end
+
     # :nocov:
     def origin_warning taxon
       return '' unless taxon.origin
