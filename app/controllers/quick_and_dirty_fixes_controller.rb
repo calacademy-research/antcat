@@ -54,5 +54,21 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags"))
     end
   end
+
+  def replace_missing_tags
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = QuickAndDirtyFixes::ReplaceMissingTags[old_taxt]
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Replaced missing tags, but nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags"
+      render js: %(AntCat.notifySuccess("Replaced missing tags: '#{new_taxt}'", false))
+    else
+      render js: %(AntCat.notifyError("Could not replace missing tags"))
+    end
+  end
 end
 # :nocov:
