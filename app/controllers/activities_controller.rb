@@ -1,27 +1,32 @@
 # frozen_string_literal: true
 
 class ActivitiesController < ApplicationController
-  FILTER_TRACKABLE_TYPES = %w[
-    Author
-    AuthorName
-    Change
-    Comment
-    Feedback
-    Institution
-    Issue
-    Journal
-    Name
-    Protonym
-    Reference
-    ReferenceSection
-    SiteNotice
-    Synonym
-    Taxon
-    TaxonHistoryItem
-    Tooltip
-    User
-    WikiPage
-  ]
+  FILTER_TRACKABLE_TYPES_BY_GROUP = {
+    'Catalog (common)' => %w[
+      Protonym
+      Reference
+      Taxon
+      TaxonHistoryItem
+    ],
+    'Catalog (other)' => %w[
+      Author
+      AuthorName
+      Institution
+      Journal
+      Name
+      ReferenceSection
+    ],
+    'Non-catalog' => %w[
+      Comment
+      Feedback
+      Issue
+      SiteNotice
+      Tooltip
+      User
+      WikiPage
+    ],
+    'Deprecated' => Activity::DEPRECATED_TRACKABLE_TYPES
+  }
 
   before_action :ensure_user_is_superadmin, only: :destroy
 
