@@ -17,7 +17,7 @@ guard :rspec, cmd: "bundle exec rspec" do
     file.tap { running_test file, :rspec }
   end
 
-  watch(%r{^spec/(.+\_spec.rb)$}) do |m|
+  watch(%r{^spec/(.+_spec.rb)$}) do |m|
     file = m[0]
     file.tap { running_test file, :rspec }
   end

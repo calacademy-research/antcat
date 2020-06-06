@@ -3,10 +3,10 @@
 module DatabaseScripts
   class ProtonymsWithNotesTaxt < DatabaseScript
     PARSABLE_VARIATIONS = [
-      /^ ?\[as subgenus of {tax \d+}\]$/,
-      /^ ?\[as "section" of {tax \d+}\]$/,
-      /^ ?\[as "group" of {tax \d+}\]$/,
-      /^ ?\[as "branch" of {tax \d+}\]$/
+      /^ ?\[as subgenus of \{tax \d+\}\]$/,
+      /^ ?\[as "section" of \{tax \d+\}\]$/,
+      /^ ?\[as "group" of \{tax \d+\}\]$/,
+      /^ ?\[as "branch" of \{tax \d+\}\]$/
     ]
 
     def results
