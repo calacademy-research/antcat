@@ -139,6 +139,9 @@ Rails:
 Rails/BulkChangeTable:
   Enabled: false
 
+Rails/ContentTag:
+  Enabled: false
+
 Rails/InverseOf:
   Enabled: false
 
