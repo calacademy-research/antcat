@@ -5,8 +5,8 @@
 module References
   module Formatted
     class Expandable
-      include ActionView::Context # For `#content_tag`.
-      include ActionView::Helpers::TagHelper # For `#content_tag`.
+      include ActionView::Context # For `#tag`.
+      include ActionView::Helpers::TagHelper # For `#tag`.
       include ActionView::Helpers::SanitizeHelper
       include Service
 
@@ -14,7 +14,7 @@ module References
 
       def call
         # TODO: `tabindex: "0"` is required or tooltips won't stay open even with `data-click-open="true"`.
-        content_tag :span, sanitize(reference.keey),
+        tag.span sanitize(reference.keey),
           data: { tooltip: true, allow_html: "true", tooltip_class: "foundation-tooltip" },
           tabindex: "0", title: inner_content.html_safe
       end

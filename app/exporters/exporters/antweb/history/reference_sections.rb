@@ -4,8 +4,8 @@ module Exporters
   module Antweb
     module History
       class ReferenceSections
-        include ActionView::Context # For `#content_tag`.
-        include ActionView::Helpers::TagHelper # For `#content_tag`.
+        include ActionView::Context # For `#tag`.
+        include ActionView::Helpers::TagHelper # For `#tag`.
         include Service
 
         attr_private_initialize :taxon
@@ -13,7 +13,7 @@ module Exporters
         def call
           return if taxon.reference_sections.blank?
 
-          content_tag :div do
+          tag.div do
             taxon.reference_sections.reduce(''.html_safe) do |content, section|
               content << reference_section(section)
             end
@@ -23,10 +23,10 @@ module Exporters
         private
 
           def reference_section section
-            content_tag :div do
+            tag.div do
               [:title_taxt, :subtitle_taxt, :references_taxt].each_with_object(''.html_safe) do |field, content|
                 if section[field]
-                  content << content_tag(:div, AntwebFormatter.detax(section[field]))
+                  content << tag.div(AntwebFormatter.detax(section[field]))
                 end
               end
             end

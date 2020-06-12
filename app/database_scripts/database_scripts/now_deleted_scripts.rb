@@ -58,6 +58,10 @@ module DatabaseScripts
                       SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
                       SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
                     SQL
+          },
+          {
+            title: 'Now deleted script: TaxaWithNonModernCapitalization',
+            ok?: !Taxon.joins(:name).where("name NOT LIKE '%(%' AND BINARY SUBSTRING(name, 2) != LOWER(SUBSTRING(name, 2))").exists?
           }
         ]
       end

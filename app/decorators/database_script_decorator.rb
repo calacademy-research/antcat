@@ -16,7 +16,7 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   def self.format_tags tags
     html_spans = tags.map do |tag|
-      h.content_tag :span, tag, class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
+      h.tag.span tag, class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
     end
     h.safe_join(html_spans, " ")
   end

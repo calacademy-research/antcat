@@ -53,6 +53,7 @@ Rails.application.config.assets.precompile += %w[
   diffy.css
   font_awesome_and_custom_icons.css
   foundation_and_overrides.css
+  logged_in_only.css
   test_css.css
   vendor.css
 

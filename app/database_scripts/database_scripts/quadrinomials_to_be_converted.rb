@@ -70,5 +70,4 @@ description: >
   Issues: %github714, %github819
 
 related_scripts:
-  - Quadrinomials
   - QuadrinomialsToBeConverted

@@ -10,7 +10,7 @@ class FeedbackDecorator < Draper::Decorator
 
   def format_page
     return unless (url = full_feedback_page_url)
-    h.content_tag :p, "Page: #{h.link_to(url, url)}".html_safe
+    h.tag.p "Page: #{h.link_to(url, url)}".html_safe
   end
 
   def format_feedback_for_email

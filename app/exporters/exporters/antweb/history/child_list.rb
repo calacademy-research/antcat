@@ -4,8 +4,8 @@ module Exporters
   module Antweb
     module History
       class ChildList
-        include ActionView::Context # For `#content_tag`.
-        include ActionView::Helpers::TagHelper # For `#content_tag`.
+        include ActionView::Context # For `#tag`.
+        include ActionView::Helpers::TagHelper # For `#tag`.
         include Service
 
         attr_private_initialize :taxon
@@ -25,9 +25,9 @@ module Exporters
           def child_list label, children
             return ''.html_safe if children.blank?
 
-            content_tag :div do
+            tag.div do
               content = ''.html_safe
-              content << content_tag(:span, label, class: 'caption')
+              content << tag.span(label, class: 'caption')
               content << ': '
               content << children_links(children)
             end

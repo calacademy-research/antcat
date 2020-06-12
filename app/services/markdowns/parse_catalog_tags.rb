@@ -108,7 +108,7 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_missing_or_unmissing_tags
         content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG) do
-          $LAST_MATCH_INFO[:hardcoded_name]
+          %(<span class="logged-in-only-bold-warning">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end
 

@@ -23,6 +23,6 @@ class TaxonBrowserPresenter
 
   def extra_tab_link tab_taxon, label, tab_display
     css = tab_display == taxon_browser.display ? "selected" : "smaller-white-label"
-    content_tag :span, link_to(label, catalog_path(tab_taxon, display: tab_display)), class: css
+    tag.span link_to(label, catalog_path(tab_taxon, display: tab_display)), class: css
   end
 end

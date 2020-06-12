@@ -4,8 +4,8 @@ module Exporters
   module Antweb
     module History
       class HistoryItems
-        include ActionView::Helpers::TagHelper # For `#content_tag`.
-        include ActionView::Context # For `#content_tag`.
+        include ActionView::Helpers::TagHelper # For `#tag`.
+        include ActionView::Context # For `#tag`.
         include Service
 
         attr_private_initialize :taxon
@@ -20,15 +20,15 @@ module Exporters
           delegate :history_items, :virtual_history_items, to: :taxon, private: true
 
           def history_content
-            content_tag :div do
+            tag.div  do
               string = ''.html_safe
 
               history_items.each do |history_item|
-                string << content_tag(:div, AddPeriodIfNecessary[AntwebFormatter.detax(history_item.taxt)])
+                string << tag.div(AddPeriodIfNecessary[AntwebFormatter.detax(history_item.taxt)])
               end
 
               virtual_history_items.each do |history_item|
-                string << content_tag(:div, history_item.render(formatter: AntwebFormatter))
+                string << tag.div(history_item.render(formatter: AntwebFormatter))
               end
 
               string
