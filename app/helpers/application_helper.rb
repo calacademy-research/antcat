@@ -36,11 +36,11 @@ module ApplicationHelper
   end
 
   def beta_label
-    content_tag :span, "beta", class: "rounded-badge"
+    tag.span "beta", class: "rounded-badge"
   end
 
   def new_label
-    content_tag :span, "new!", class: "rounded-badge"
+    tag.span "new!", class: "rounded-badge"
   end
 
   def foundation_class_for flash_type
@@ -61,12 +61,12 @@ module ApplicationHelper
   end
 
   def inline_expandable label = "Show more"
-    show_more = content_tag :a, content_tag(:small, label), class: "hide-when-expanded gray"
-    hidden = content_tag :span, class: "show-when-expanded" do
+    show_more = tag.a tag.small(label), class: "hide-when-expanded gray"
+    hidden = tag.span class: "show-when-expanded" do
                yield
              end
 
-    content_tag :span, class: "expandable" do
+    tag.span class: "expandable" do
       show_more + hidden
     end
   end

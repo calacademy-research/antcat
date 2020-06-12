@@ -3,8 +3,8 @@
 module Exporters
   module Antweb
     class TaxonAttributes
-      include ActionView::Context # For `#content_tag`.
-      include ActionView::Helpers::TagHelper # For `#content_tag`.
+      include ActionView::Context # For `#tag`.
+      include ActionView::Helpers::TagHelper # For `#tag`.
       include Service
 
       attr_private_initialize :taxon
@@ -50,7 +50,7 @@ module Exporters
 
         def authorship_html_string
           reference = taxon.authorship_reference
-          content_tag :span, reference.keey, title: reference.decorate.plain_text
+          tag.span reference.keey, title: reference.decorate.plain_text
         end
 
         def current_valid_name
@@ -63,7 +63,7 @@ module Exporters
         end
 
         def export_history
-          content_tag :div, class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.
+          tag.div class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.
             content = ''.html_safe
             content << ::Taxa::Statistics::FormatStatistics[taxon.decorate.valid_only_statistics]
             content << Exporters::Antweb::History::ProtonymSynopsis[taxon]

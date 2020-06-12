@@ -13,20 +13,19 @@ class TaxonDecorator < Draper::Decorator
   def link_to_taxon_with_linked_author_citation
     CatalogFormatter.link_to_taxon(taxon) <<
       ' ' <<
-      h.content_tag(
-        :span,
+      h.tag.span(
         h.link_to(taxon.author_citation.html_safe, h.reference_path(taxon.authorship_reference)),
         class: 'discret-author-citation'
       )
   end
 
   def id_and_name_and_author_citation
-    h.content_tag :span do
-      h.concat h.content_tag(:small, "##{taxon.id}", class: "gray")
+    h.tag.span do
+      h.concat h.tag.small("##{taxon.id}", class: "gray")
       h.concat " "
       h.concat CatalogFormatter.link_to_taxon(taxon)
       h.concat " "
-      h.concat h.content_tag(:small, taxon.author_citation, class: "gray")
+      h.concat h.tag.small(taxon.author_citation, class: "gray")
     end
   end
 

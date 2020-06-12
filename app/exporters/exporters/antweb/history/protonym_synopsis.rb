@@ -4,14 +4,14 @@ module Exporters
   module Antweb
     module History
       class ProtonymSynopsis
-        include ActionView::Context # For `#content_tag`.
-        include ActionView::Helpers::TagHelper # For `#content_tag`.
+        include ActionView::Context # For `#tag`.
+        include ActionView::Helpers::TagHelper # For `#tag`.
         include Service
 
         attr_private_initialize :taxon
 
         def call
-          content_tag :div do
+          tag.div do
             [
               ProtonymLine[taxon.protonym],
               TypeNameLine[taxon.protonym],

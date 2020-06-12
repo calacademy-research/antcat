@@ -8,17 +8,17 @@ module TooltipHelper
   end
 
   def tooltip_icon text
-    content_tag :span, antcat_icon("tooltip-icon"), title: brs_to_new_lines(text), class: "tooltip2"
+    tag.span antcat_icon("tooltip-icon"), title: brs_to_new_lines(text), class: "tooltip2"
   end
 
   def info_tooltip_icon text
-    content_tag :span, antcat_icon("info-tooltip"), title: brs_to_new_lines(text), class: "tooltip2"
+    tag.span antcat_icon("info-tooltip"), title: brs_to_new_lines(text), class: "tooltip2"
   end
 
   # For content that which it is not obvious it is hidden to logged-out visitors.
   def logged_in_only_tooltip_icon text = nil, user_group: 'logged-in users'
     title = brs_to_new_lines(text || "This section is only visible to #{user_group}")
-    content_tag :span, antcat_icon("info-tooltip"), title: title, class: "tooltip2"
+    tag.span antcat_icon("info-tooltip"), title: title, class: "tooltip2"
   end
 
   private

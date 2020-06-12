@@ -20,10 +20,10 @@ class UserDecorator < Draper::Decorator
 
     if editor?
       label = "editor ".html_safe << h.antcat_icon("star")
-      h.content_tag :span, label, class: "label rounded-badge"
+      h.tag.span label, class: "label rounded-badge"
     else
       label = "helper ".html_safe << h.antcat_icon("black-star")
-      h.content_tag :span, label, class: "white-label rounded-badge"
+      h.tag.span label, class: "white-label rounded-badge"
     end
   end
 end

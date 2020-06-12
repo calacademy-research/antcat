@@ -2,7 +2,7 @@
 
 module IconHelper
   def antcat_icon *css_classes
-    content_tag :i, nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
+    tag.i nil, class: ["antcat_icon"].concat(Array.wrap(css_classes))
   end
 
   def search_icon

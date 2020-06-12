@@ -5,8 +5,8 @@ module Exporters
     module History
       class ProtonymSynopsis
         class ProtonymLine
-          include ActionView::Context # For `#content_tag`.`
-          include ActionView::Helpers::TagHelper # For `#content_tag`.`
+          include ActionView::Context # For `#tag`.`
+          include ActionView::Helpers::TagHelper # For `#tag`.`
           include Service
 
           attr_private_initialize :protonym
@@ -27,7 +27,7 @@ module Exporters
             end
 
             def protonym_name
-              content_tag :b, protonym.decorate.name_with_fossil
+              tag.b protonym.decorate.name_with_fossil
             end
 
             def authorship authorship

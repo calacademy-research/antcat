@@ -140,7 +140,7 @@ Rails/BulkChangeTable:
   Enabled: false
 
 Rails/ContentTag:
-  Enabled: false
+  Enabled: true
 
 Rails/InverseOf:
   Enabled: false

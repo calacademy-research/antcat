@@ -3,8 +3,8 @@
 module Taxa
   module Statistics
     class FormatStatistics
-      include ActionView::Context # For `#content_tag`.
-      include ActionView::Helpers::TagHelper # For `#content_tag`.
+      include ActionView::Context # For `#tag`.
+      include ActionView::Helpers::TagHelper # For `#tag`.
       include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
       include Service
 
@@ -21,7 +21,7 @@ module Taxa
             ].compact.join(' ')
           end
 
-          content_tag :p, "#{extant_or_fossil.capitalize}: " + stats.join(', ')
+          tag.p "#{extant_or_fossil.capitalize}: " + stats.join(', ')
         end.join.html_safe
       end
 
