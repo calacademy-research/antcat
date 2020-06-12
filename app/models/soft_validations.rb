@@ -21,7 +21,6 @@ class SoftValidations
     DatabaseScripts::SynonymGeneraWithSpeciesWithIncompatibleStauses,
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
     DatabaseScripts::SynonymSpeciesWithSubspeciesWithIncompatibleStauses,
-    DatabaseScripts::TaxaWithNonModernCapitalization,
     DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
     DatabaseScripts::UnavailableUncategorizedTaxa,
     DatabaseScripts::ValidSubspeciesInInvalidSpecies

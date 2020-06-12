@@ -63,8 +63,7 @@ describe SoftValidations do
         context 'when taxon is an extant species in a fossil genus' do
           let(:scripts_to_check) do
             [
-              DatabaseScripts::ExtantTaxaInFossilGenera,
-              DatabaseScripts::TaxaWithNonModernCapitalization
+              DatabaseScripts::ExtantTaxaInFossilGenera
             ]
           end
 
