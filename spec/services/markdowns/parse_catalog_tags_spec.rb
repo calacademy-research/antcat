@@ -72,8 +72,11 @@ describe Markdowns::ParseCatalogTags do
 
     describe "tag: `MISSING_OR_UNMISSING_TAG` (missing and unmissing hardcoded taxon names)" do
       it 'renders the hardcoded name' do
-        expect(described_class["Synonym of {missing <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
-        expect(described_class["in family {unmissing Pices}"]).to eq "in family Pices"
+        expect(described_class["Synonym of {missing <i>Atta</i>}"]).
+          to eq 'Synonym of <span class="logged-in-only-bold-warning"><i>Atta</i></span>'
+
+        expect(described_class["in family {unmissing Pices}"]).
+          to eq 'in family <span class="logged-in-only-bold-warning">Pices</span>'
       end
     end
   end

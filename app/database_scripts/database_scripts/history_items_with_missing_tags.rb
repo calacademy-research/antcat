@@ -81,7 +81,7 @@ module DatabaseScripts
 
       def highlight_taxt taxt
         taxt.gsub!(Taxt::MISSING_TAG_REGEX) do
-          bold_warning $LAST_MATCH_INFO[:hardcoded_name]
+          bold_notice $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
   end

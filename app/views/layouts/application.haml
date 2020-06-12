@@ -19,6 +19,7 @@
     %link{href: "https://fonts.googleapis.com/css?family=Raleway", rel: "stylesheet"}
 
     =stylesheet_link_tag 'application'
+    =stylesheet_link_tag 'logged_in_only' if current_user
     =stylesheet_link_tag 'dev_css' if Rails.env.development?
     =stylesheet_link_tag 'test_css' if Rails.env.test?
 
