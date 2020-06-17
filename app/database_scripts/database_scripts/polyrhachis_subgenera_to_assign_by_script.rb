@@ -813,7 +813,7 @@ title: <i>Polyrhachis</i> subgenera to assign by script
 
 section: pa-no-action-required
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 

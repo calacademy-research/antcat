@@ -39,7 +39,7 @@ end
 
 __END__
 
-section: main
+section: regression-test
 category: Catalog
 tags: []
 
