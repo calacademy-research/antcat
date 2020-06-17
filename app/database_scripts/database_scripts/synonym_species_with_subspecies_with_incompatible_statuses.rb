@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class SynonymSpeciesWithSubspeciesWithIncompatibleStauses < DatabaseScript
+  class SynonymSpeciesWithSubspeciesWithIncompatibleStatuses < DatabaseScript
     COMPATIBLE_STATUSES = [
       Status::SYNONYM,
       Status::HOMONYM,
@@ -62,5 +62,5 @@ description: >
   * unavailable uncategorized
 
 related_scripts:
-  - SynonymGeneraWithSpeciesWithIncompatibleStauses
-  - SynonymSpeciesWithSubspeciesWithIncompatibleStauses
+  - SynonymGeneraWithSpeciesWithIncompatibleStatuses
+  - SynonymSpeciesWithSubspeciesWithIncompatibleStatuses
