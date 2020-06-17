@@ -5,6 +5,7 @@ module DatabaseScripts
     COMPATIBLE_STATUSES = [
       Status::SYNONYM,
       Status::HOMONYM,
+      Status::OBSOLETE_COMBINATION,
       Status::UNIDENTIFIABLE,
       Status::UNAVAILABLE,
       Status::EXCLUDED_FROM_FORMICIDAE,
@@ -51,6 +52,8 @@ description: >
   * synonym
 
   * homonym
+
+  * obsolete combination
 
   * unidentifiable
 
