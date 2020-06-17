@@ -93,7 +93,7 @@ title: History items with <code>missing</code> tags
 
 section: main
 category: Taxt
-tags: [has-quick-fix, new!]
+tags: [has-quick-fix]
 
 issue_description:
 

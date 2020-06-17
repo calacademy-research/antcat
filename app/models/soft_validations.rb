@@ -18,9 +18,9 @@ class SoftValidations
     DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym,
-    DatabaseScripts::SynonymGeneraWithSpeciesWithIncompatibleStauses,
+    DatabaseScripts::SynonymGeneraWithSpeciesWithIncompatibleStatuses,
     DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
-    DatabaseScripts::SynonymSpeciesWithSubspeciesWithIncompatibleStauses,
+    DatabaseScripts::SynonymSpeciesWithSubspeciesWithIncompatibleStatuses,
     DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms,
     DatabaseScripts::UnavailableUncategorizedTaxa,
     DatabaseScripts::ValidSubspeciesInInvalidSpecies
