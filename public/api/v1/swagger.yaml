@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.2.0"
+  version: "1.3.0"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -682,7 +682,7 @@ definitions:
             description: de-normalized cache of the name object in html format
           unresolved_homonym:
             type: boolean
-          current_valid_taxon_id:
+          current_taxon_id:
             type: integer
           ichnotaxon:
             type: boolean

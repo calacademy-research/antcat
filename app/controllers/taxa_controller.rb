@@ -70,7 +70,7 @@ class TaxaController < ApplicationController
     def taxon_params
       params.require(:taxon).permit(
         :collective_group_name,
-        :current_valid_taxon_id,
+        :current_taxon_id,
         :fossil,
         :homonym_replaced_by_id,
         :hong,

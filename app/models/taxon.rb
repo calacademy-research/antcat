@@ -14,11 +14,11 @@ class Taxon < ApplicationRecord
     # Now it's also used in the editors's sidebar (Ctrl+F "belongs_to :genus").
     belongs_to :genus, optional: true
     belongs_to :homonym_replaced_by, optional: true
-    belongs_to :current_valid_taxon, optional: true
+    belongs_to :current_taxon, optional: true
 
-    has_many :current_valid_taxon_of, foreign_key: :current_valid_taxon_id, dependent: :restrict_with_error
-    has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_valid_taxon_id
-    has_many :obsolete_combinations, -> { obsolete_combinations }, foreign_key: :current_valid_taxon_id
+    has_many :current_taxon_of, foreign_key: :current_taxon_id, dependent: :restrict_with_error
+    has_many :junior_synonyms, -> { synonyms }, foreign_key: :current_taxon_id
+    has_many :obsolete_combinations, -> { obsolete_combinations }, foreign_key: :current_taxon_id
   end
 
   belongs_to :name, dependent: :destroy
@@ -41,7 +41,7 @@ class Taxon < ApplicationRecord
   validates :nomen_nudum, absence: { message: "can only be set for unavailable taxa" }, unless: -> { unavailable? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
-  validate :current_valid_taxon_validation, :ensure_correct_name_type
+  validate :current_taxon_validation, :ensure_correct_name_type
 
   before_save :set_name_caches
 
@@ -104,11 +104,11 @@ class Taxon < ApplicationRecord
       self.name_html_cache = name.name_html
     end
 
-    def current_valid_taxon_validation
-      if Status.cannot_have_current_valid_taxon?(status) && current_valid_taxon
-        errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
-      elsif Status.requires_current_valid_taxon?(status) && !current_valid_taxon
-        errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
+    def current_taxon_validation
+      if Status.cannot_have_current_taxon?(status) && current_taxon
+        errors.add :current_taxon, "can't be set for #{Status.plural(status)} taxa"
+      elsif Status.requires_current_taxon?(status) && !current_taxon
+        errors.add :current_taxon, "must be set for #{Status.plural(status)}"
       end
     end
 

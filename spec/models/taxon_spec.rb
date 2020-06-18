@@ -92,7 +92,7 @@ describe Taxon do
       end
     end
 
-    describe "#current_valid_taxon_validation" do
+    describe "#current_taxon_validation" do
       [
         Status::VALID,
         Status::UNIDENTIFIABLE,
@@ -101,11 +101,11 @@ describe Taxon do
         Status::HOMONYM
       ].each do |status|
         context "when status is #{status}" do
-          let(:taxon) { build :family, status: status, current_valid_taxon: create(:family) }
+          let(:taxon) { build :family, status: status, current_taxon: create(:family) }
 
-          it 'cannot have a `current_valid_taxon`' do
+          it 'cannot have a `current_taxon`' do
             taxon.valid?
-            expect(taxon.errors.messages).to include(current_valid_name: ["can't be set for #{Status.plural(status)} taxa"])
+            expect(taxon.errors.messages).to include(current_taxon: ["can't be set for #{Status.plural(status)} taxa"])
           end
         end
       end
@@ -119,9 +119,9 @@ describe Taxon do
         context "when status is #{status}" do
           let(:taxon) { build :family, status: status }
 
-          it 'must have a `current_valid_taxon`' do
+          it 'must have a `current_taxon`' do
             taxon.valid?
-            expect(taxon.errors.messages).to include(current_valid_name: ["must be set for #{Status.plural(status)}"])
+            expect(taxon.errors.messages).to include(current_taxon: ["must be set for #{Status.plural(status)}"])
           end
         end
       end

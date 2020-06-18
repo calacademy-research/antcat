@@ -7,8 +7,8 @@ module Catalog
       DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
       DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
       DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
-      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym,
-      DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon,
+      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym,
+      DatabaseScripts::SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon,
       DatabaseScripts::TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
     ]
 

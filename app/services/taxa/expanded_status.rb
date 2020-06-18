@@ -29,15 +29,15 @@ module Taxa
     private
 
       delegate :status, :incertae_sedis_in, :homonym_replaced_by, :unresolved_homonym?, :ichnotaxon?,
-        :current_valid_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon, private: true
+        :current_taxon, :nomen_nudum?, :collective_group_name?, to: :taxon, private: true
 
       def main_status
         case status
-        when Status::SYNONYM                   then "junior synonym of current valid taxon #{link_current_valid_taxon}"
+        when Status::SYNONYM                   then "junior synonym of current valid taxon #{link_current_taxon}"
         when Status::HOMONYM                   then "homonym replaced by #{link_homonym_replaced_by}"
-        when Status::OBSOLETE_COMBINATION      then "an obsolete combination of #{link_current_valid_taxon}"
-        when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_valid_taxon}"
-        when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
+        when Status::OBSOLETE_COMBINATION      then "an obsolete combination of #{link_current_taxon}"
+        when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_taxon}"
+        when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_taxon}"
         when *SELF_STATUSES                    then status
         else                                   raise "unknown status: #{status}"
         end
@@ -47,8 +47,8 @@ module Taxa
         homonym_replaced_by.decorate.link_to_taxon_with_author_citation
       end
 
-      def link_current_valid_taxon
-        current_valid_taxon.decorate.link_to_taxon_with_author_citation
+      def link_current_taxon
+        current_taxon.decorate.link_to_taxon_with_author_citation
       end
   end
 end

@@ -25,7 +25,7 @@ class Status
   PASS_THROUGH_NAMES = [OBSOLETE_COMBINATION, UNAVAILABLE_MISSPELLING]
   DISPLAY_HISTORY_ITEMS_VIA_PROTONYM_STATUSES = STATUSES - PASS_THROUGH_NAMES
 
-  CURRENT_VALID_TAXON_VALIDATION = {
+  CURRENT_TAXON_VALIDATION = {
     presence: [
       SYNONYM,
       OBSOLETE_COMBINATION,
@@ -46,12 +46,12 @@ class Status
       PLURALS[status] || status
     end
 
-    def cannot_have_current_valid_taxon? status
-      status.in? CURRENT_VALID_TAXON_VALIDATION[:absence]
+    def cannot_have_current_taxon? status
+      status.in? CURRENT_TAXON_VALIDATION[:absence]
     end
 
-    def requires_current_valid_taxon? status
-      status.in? CURRENT_VALID_TAXON_VALIDATION[:presence]
+    def requires_current_taxon? status
+      status.in? CURRENT_TAXON_VALIDATION[:presence]
     end
   end
 end

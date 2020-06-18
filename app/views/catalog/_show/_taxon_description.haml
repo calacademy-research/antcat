@@ -274,7 +274,7 @@
     -if taxon.subspecies.invalid.exists?
       %h6 Invalid subspecies
       %ul.compact-list.small-margin-bottom
-        -TaxonQuery.new(taxon.subspecies.invalid.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |subspecies|
+        -TaxonQuery.new(taxon.subspecies.invalid.order_by_name).with_common_includes_and_current_taxon_includes.each do |subspecies|
           %li
             =CatalogFormatter.link_to_taxon(subspecies)
             =subspecies.author_citation

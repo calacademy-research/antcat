@@ -5,26 +5,26 @@ module DatabaseScripts
     SHOW_WHAT_LINKS_HERE = false
 
     def results
-      Taxon.where(status: Status::UNAVAILABLE_UNCATEGORIZED).includes(:current_valid_taxon)
+      Taxon.where(status: Status::UNAVAILABLE_UNCATEGORIZED).includes(:current_taxon)
     end
 
     def render
       as_table do |t|
         if SHOW_WHAT_LINKS_HERE
-          t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status',
+          t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status',
             'Any what links here columns?', 'Any What Links here taxts?', 'Any?', 'What Links Here'
         else
-          t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status'
+          t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status'
         end
 
         t.rows do |taxon|
-          current_valid_taxon = taxon.current_valid_taxon
+          current_taxon = taxon.current_taxon
 
           [
             taxon_link(taxon),
             taxon.status,
-            taxon_link(current_valid_taxon),
-            current_valid_taxon.status,
+            taxon_link(current_taxon),
+            current_taxon.status,
 
             *what_links_here_coumns(taxon)
           ]

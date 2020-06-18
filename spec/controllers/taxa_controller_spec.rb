@@ -155,18 +155,18 @@ describe TaxaController do
           end
         end
 
-        describe "setting `current_valid_taxon`" do
-          let(:current_valid_taxon) { create :genus }
+        describe "setting `current_taxon`" do
+          let(:current_taxon) { create :genus }
           let(:taxon_params) do
             base_params.deep_merge(
               status: Status::SYNONYM,
-              current_valid_taxon_id: current_valid_taxon.id
+              current_taxon_id: current_taxon.id
             )
           end
 
           specify do
             post :create, params: genus_params.merge(taxon: taxon_params)
-            expect(Taxon.last.current_valid_taxon).to eq current_valid_taxon
+            expect(Taxon.last.current_taxon).to eq current_taxon
           end
         end
       end

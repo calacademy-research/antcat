@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ObsoleteCombinationsWithVeryDifferentEpithets < DatabaseScript
+  class ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym < DatabaseScript
     def results
-      Species.obsolete_combinations.joins(:name, current_taxon: :name).
-        where(current_taxons_taxa: { type: 'Species' }).
-        where("SUBSTR(names_taxa.epithet, 1, 3) != SUBSTR(names.epithet, 1, 3)").
-        includes(:name, current_taxon: :name)
+      Taxon.obsolete_combinations.joins(:current_taxon).
+        where("taxa.protonym_id <> current_taxons_taxa.protonym_id").
+        includes(protonym: [:name], current_taxon: { protonym: [:name] })
     end
 
     def render
@@ -41,11 +40,13 @@ end
 
 __END__
 
-section: main
+title: Obsolete combinations with protonyms not matching its current taxon's protonym
+
+section: reversed
 category: Catalog
 tags: [slow-render]
 
-issue_description: This obsolete combination has a very different epithet compared to its `current_taxon`.
+issue_description: This obsolete combination and its `current_taxon` do not share the same protonym.
 
 description: >
   "Yes" in the "Taxon or protonym taxon in synonyms list?" means that the status should probably be changed to 'synonym'.
@@ -54,17 +55,11 @@ description: >
   see the history item. If this is the case, then these could be fixed by script.
 
 
-  "Very different" means that the first three letters in the epithet are not the same.
+  Records in this script also often appears in %dbscript:ObsoleteCombinationsWithVeryDifferentEpithets
 
 
-  Only species with a `current_taxon` that is also a species are checked.
-
-
-  These obsolete combinations should probably have the status 'synonym'.
-
-
-  Records in this script also often appears in %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
+  This script is the reverse of %dbscript:TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms
 
 related_scripts:
-  - ProtonymsWithTaxaWithVeryDifferentEpithets
-  - ObsoleteCombinationsWithVeryDifferentEpithets
+  - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
+  - SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon

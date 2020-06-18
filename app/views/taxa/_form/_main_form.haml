@@ -46,10 +46,10 @@
 
         %tr
           %td
-            =form.label :current_valid_taxon do
+            =form.label :current_taxon do
               Current taxon
               =db_tooltip_icon "current_taxon", scope: :taxa
-          %td=form.taxon_select :current_valid_taxon
+          %td=form.taxon_select :current_taxon
 
         %tr
           %td.no-wrap

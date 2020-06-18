@@ -19,7 +19,7 @@ Feature: Editing a taxon
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
   @javascript
-  Scenario: Changing current valid name
+  Scenario: Changing current taxon
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"
 
@@ -27,7 +27,7 @@ Feature: Editing a taxon
     Then I should see "synonym of current valid taxon Lasius niger"
 
     When I follow "Edit"
-    And I set the current valid taxon name to "Eciton minor"
+    And I set the current taxon name to "Eciton minor"
     Then I should see "Eciton minor"
 
     When I press "Save"

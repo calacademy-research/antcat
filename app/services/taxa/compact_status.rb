@@ -30,17 +30,17 @@ module Taxa
 
     private
 
-      delegate :status, :homonym_replaced_by, :unresolved_homonym?, :current_valid_taxon,
+      delegate :status, :homonym_replaced_by, :unresolved_homonym?, :current_taxon,
         :nomen_nudum?, to: :taxon, private: true
 
       def main_status
         case status
         when Status::VALID                     then nil
-        when Status::SYNONYM                   then "junior synonym of #{link_current_valid_taxon}"
+        when Status::SYNONYM                   then "junior synonym of #{link_current_taxon}"
         when Status::HOMONYM                   then "homonym replaced by #{link_homonym_replaced_by}"
-        when Status::OBSOLETE_COMBINATION      then "obsolete combination of #{link_current_valid_taxon}"
-        when Status::UNAVAILABLE_MISSPELLING   then "misspelling of #{link_current_valid_taxon}"
-        when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_valid_taxon}"
+        when Status::OBSOLETE_COMBINATION      then "obsolete combination of #{link_current_taxon}"
+        when Status::UNAVAILABLE_MISSPELLING   then "misspelling of #{link_current_taxon}"
+        when Status::UNAVAILABLE_UNCATEGORIZED then "see #{link_current_taxon}"
         when *SELF_STATUSES                    then status
         else                                   raise "unknown status: #{status}"
         end
@@ -50,8 +50,8 @@ module Taxa
         CatalogFormatter.link_to_taxon(homonym_replaced_by)
       end
 
-      def link_current_valid_taxon
-        CatalogFormatter.link_to_taxon(current_valid_taxon)
+      def link_current_taxon
+        CatalogFormatter.link_to_taxon(current_taxon)
       end
   end
 end

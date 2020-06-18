@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Operations::CreateNewCombinationRecord do
   subject(:operation) do
     described_class.new(
-      current_valid_taxon: current_valid_taxon,
+      current_taxon: current_taxon,
       new_genus: new_genus,
       target_name_string: target_name_string
     )
@@ -14,7 +14,7 @@ describe Operations::CreateNewCombinationRecord do
   describe "#run" do
     describe "unsuccessful case" do
       context "when a species with this name already exists" do
-        let!(:current_valid_taxon) do
+        let!(:current_taxon) do
           create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
         end
         let!(:new_genus) { create :genus, name_string: 'Atta' }
@@ -38,7 +38,7 @@ describe Operations::CreateNewCombinationRecord do
 
     describe "successful case" do
       context "when there is no name collision" do
-        let!(:current_valid_taxon) do
+        let!(:current_taxon) do
           create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
         end
         let!(:new_genus) { create :genus, name_string: 'Atta' }
@@ -64,8 +64,8 @@ describe Operations::CreateNewCombinationRecord do
           expect(operation.run.results.new_combination.status).to eq Status::VALID
         end
 
-        it "sets the protonym to the current valid taxon's protonym" do
-          expect(operation.run.results.new_combination.protonym).to eq current_valid_taxon.protonym
+        it "sets the protonym to the current taxon's protonym" do
+          expect(operation.run.results.new_combination.protonym).to eq current_taxon.protonym
         end
 
         it "sets the parent genus to the new genus" do

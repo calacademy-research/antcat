@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon < DatabaseScript
+  class ProtonymsWithTaxaWithMoreThanOneCurrentTaxon < DatabaseScript
     def results
       Protonym.joins(:taxa).
         where.not(taxa: { status: [Status::OBSOLETE_COMBINATION, Status::UNAVAILABLE_MISSPELLING] }).
-        group('protonyms.id').having("COUNT(DISTINCT taxa.current_valid_taxon_id) > 1")
+        group('protonyms.id').having("COUNT(DISTINCT taxa.current_taxon_id) > 1")
     end
 
     def render
@@ -30,7 +30,7 @@ section: regression-test
 category: Catalog
 tags: []
 
-issue_description: This protonym has taxa with different `current_valid_taxon`s (obsolete combinations excluded).
+issue_description: This protonym has taxa with different `current_taxon`s (obsolete combinations excluded).
 
 description: >
   Obsolete combinations and unavailable misspellings are excluded.
@@ -43,4 +43,4 @@ related_scripts:
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
-  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneCurrentTaxon

@@ -43,7 +43,7 @@ describe Taxa::CreateCombinationsController do
 
     it 'calls `Operations::CreateNewCombination`' do
       expect(Operations::CreateNewCombination).to receive(:new).with(
-        current_valid_taxon: taxon,
+        current_taxon: taxon,
         new_genus: new_parent,
         target_name_string: target_name_string
       ).and_call_original
@@ -60,7 +60,7 @@ describe Taxa::CreateCombinationsController do
           to change { Activity.where(action: :create_new_combination).count }.by(1)
 
         activity = Activity.last
-        new_combination = taxon.reload.current_valid_taxon
+        new_combination = taxon.reload.current_taxon
         expect(activity.trackable).to eq new_combination
         expect(activity.parameters).to eq(previous_combination_id: taxon.id)
       end

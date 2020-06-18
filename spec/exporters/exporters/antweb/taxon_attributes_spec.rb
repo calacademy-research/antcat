@@ -43,18 +43,18 @@ describe Exporters::Antweb::TaxonAttributes do
     end
 
     describe "[13]: `current valid name`" do
-      context "when taxon dhas no `current_valid_taxon`" do
+      context "when taxon dhas no `current_taxon`" do
         let(:taxon) { create :genus }
 
         specify { expect(described_class[taxon][:current_valid_name]).to eq nil }
       end
 
-      context "when taxon has a `current_valid_taxon`" do
-        let(:current_valid_taxon) { create :genus }
-        let(:taxon) { create :genus, :synonym, current_valid_taxon: current_valid_taxon }
+      context "when taxon has a `current_taxon`" do
+        let(:current_taxon) { create :genus }
+        let(:taxon) { create :genus, :synonym, current_taxon: current_taxon }
 
         it "exports the current valid name of the taxon" do
-          expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{current_valid_taxon.name.name}"
+          expect(described_class[taxon][:current_valid_name]).to eq "#{taxon.subfamily.name.name} #{current_taxon.name.name}"
         end
       end
     end
@@ -84,7 +84,7 @@ describe Exporters::Antweb::TaxonAttributes do
       context "when there has been some recombining" do
         let(:recombination) { create :species }
         let(:original_combination) do
-          create :species, :obsolete_combination, :original_combination, current_valid_taxon: recombination
+          create :species, :obsolete_combination, :original_combination, current_taxon: recombination
         end
 
         before do
@@ -262,7 +262,7 @@ describe Exporters::Antweb::TaxonAttributes do
       context 'when taxon is a synonym' do
         let(:senior) { create :genus }
         let(:taxon) do
-          junior = create :genus, :synonym, current_valid_taxon: senior
+          junior = create :genus, :synonym, current_taxon: senior
           create :species, genus: junior
         end
 

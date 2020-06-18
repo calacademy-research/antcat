@@ -14,11 +14,11 @@ describe Exporters::Taxa::TaxaAsTxt do
     end
 
     context 'when taxon is a synonym' do
-      let(:taxon) { create :genus, :synonym, current_valid_taxon: create(:genus) }
+      let(:taxon) { create :genus, :synonym, current_taxon: create(:genus) }
 
       specify do
         expect(described_class[[taxon]]).
-          to include "#{taxon.name_cache} synonym of #{taxon.current_valid_taxon.name_cache}\n"
+          to include "#{taxon.name_cache} synonym of #{taxon.current_taxon.name_cache}\n"
       end
     end
 

@@ -58,4 +58,4 @@ related_scripts:
   - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
-  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneCurrentTaxon

@@ -10,7 +10,7 @@ module Taxa
       [Taxon, :subgenus_id],
       [Taxon, :species_id],
       [Taxon, :subspecies_id],
-      [Taxon, :current_valid_taxon_id],
+      [Taxon, :current_taxon_id],
       [Taxon, :homonym_replaced_by_id],
       [TypeName, :taxon_id]
     ]

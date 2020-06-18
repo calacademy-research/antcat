@@ -17,7 +17,7 @@ describe Taxa::ExpandedStatus do
 
       context "when taxon status is 'synonym'" do
         let!(:senior) { create :genus }
-        let!(:taxon) { build_stubbed :genus, :synonym, current_valid_taxon: senior }
+        let!(:taxon) { build_stubbed :genus, :synonym, current_taxon: senior }
 
         specify do
           expect(described_class[taxon]).
@@ -53,30 +53,30 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'obsolete combination'" do
-        let!(:current_valid_taxon) { create :genus }
-        let!(:taxon) { build_stubbed :species, :obsolete_combination, current_valid_taxon: current_valid_taxon }
+        let!(:current_taxon) { create :genus }
+        let!(:taxon) { build_stubbed :species, :obsolete_combination, current_taxon: current_taxon }
 
         specify do
           expect(described_class[taxon]).
-            to eq "an obsolete combination of #{taxon_link_with_author_citation(current_valid_taxon)}"
+            to eq "an obsolete combination of #{taxon_link_with_author_citation(current_taxon)}"
         end
       end
 
       context "when taxon status is 'unavailable misspelling'" do
-        let!(:current_valid_taxon) { create :family }
-        let!(:taxon) { build_stubbed :family, :unavailable_misspelling, current_valid_taxon: current_valid_taxon }
+        let!(:current_taxon) { create :family }
+        let!(:taxon) { build_stubbed :family, :unavailable_misspelling, current_taxon: current_taxon }
 
         specify do
-          expect(described_class[taxon]).to eq "a misspelling of #{taxon_link_with_author_citation(current_valid_taxon)}"
+          expect(described_class[taxon]).to eq "a misspelling of #{taxon_link_with_author_citation(current_taxon)}"
         end
       end
 
       context "when taxon status is 'unavailable uncategorized'" do
-        let!(:current_valid_taxon) { create :family }
-        let!(:taxon) { build_stubbed :family, :unavailable_uncategorized, current_valid_taxon: current_valid_taxon }
+        let!(:current_taxon) { create :family }
+        let!(:taxon) { build_stubbed :family, :unavailable_uncategorized, current_taxon: current_taxon }
 
         specify do
-          expect(described_class[taxon]).to eq "see #{taxon_link_with_author_citation(current_valid_taxon)}"
+          expect(described_class[taxon]).to eq "see #{taxon_link_with_author_citation(current_taxon)}"
         end
       end
     end
@@ -95,15 +95,15 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon is an unresolved homonym" do
-        context "when there is no current valid taxon" do
+        context "when there is no current taxon" do
           let(:taxon) { build_stubbed :family, :unresolved_homonym }
 
           specify { expect(described_class[taxon]).to eq "unresolved junior homonym, #{taxon.status}" }
         end
 
-        context "when there is a current valid taxon" do
+        context "when there is a current taxon" do
           let(:senior) { create :genus }
-          let(:taxon) { build_stubbed :family, :synonym, :unresolved_homonym, current_valid_taxon: senior }
+          let(:taxon) { build_stubbed :family, :synonym, :unresolved_homonym, current_taxon: senior }
 
           specify do
             expect(described_class[taxon]).

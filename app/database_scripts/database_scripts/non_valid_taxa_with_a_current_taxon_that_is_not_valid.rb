@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class NonValidTaxaWithJuniorSynonyms < DatabaseScript
+  class NonValidTaxaWithACurrentTaxonThatIsNotValid < DatabaseScript
     def results
-      Taxon.where.not(status: Status::VALID).joins(:junior_synonyms).distinct
+      TaxonQuery.new.excluding_pass_through_names.joins(:current_taxon).
+        where.not(current_taxons_taxa: { status: Status::VALID }).
+        includes(:current_taxon)
     end
 
     def render
@@ -26,15 +28,16 @@ end
 
 __END__
 
-title: Non-valid taxa with junior synonyms
+title: Non-valid taxa with a current taxon that is not valid
 
-section: regression-test
+section: main
 category: Catalog
 tags: []
 
-issue_description: This taxon is not valid, but is has junior synonyms.
+issue_description: This [non-pass-through] taxon has a `current_taxon` that is not valid.
 
 description: >
+  Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).
 
 related_scripts:
   - CurrentTaxonChains
