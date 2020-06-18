@@ -93,7 +93,7 @@ title: History items with <code>missing</code> tags
 
 section: main
 category: Taxt
-tags: [has-quick-fix]
+tags: [has-quick-fix, slow-render]
 
 issue_description:
 
@@ -107,3 +107,4 @@ description: >
 
 related_scripts:
   - HistoryItemsWithMissingTags
+  - MissingTaxaToBeCreated
