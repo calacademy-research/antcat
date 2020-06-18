@@ -97,6 +97,7 @@
 -if current_user
   .right.show-for-large
     =link_to "[disco button]", "#", id: 'toggle-disco-mode-js-hook', class: 'btn-lower-nav btn-lower-nav-no-danger btn-tiny'
+    =link_to "Issues (#{Issue.open.count})", issues_path, class: 'btn-lower-nav btn-tiny'
     -if Issue.any_help_wanted_open?
       =link_to "Help Wanted (#{Issue.open_help_wanted.count})", issues_path, id: 'btn-lower-nav-help-wanted', class: 'btn-tiny'
     =link_to 'Database Scripts', database_scripts_path, class: 'btn-lower-nav btn-tiny'
