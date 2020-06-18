@@ -16,14 +16,23 @@ class ReferenceSection < ApplicationRecord
 
   def self.search search_query, search_type
     search_type = search_type.presence || 'LIKE'
-    raise unless search_type.in? ["LIKE", "REGEXP"]
 
-    q = search_type == "LIKE" ? "%#{search_query}%" : search_query
-    where(<<-SQL.squish, q: q)
-      title_taxt #{search_type} :q
-        OR references_taxt #{search_type} :q
-        OR subtitle_taxt #{search_type} :q
-    SQL
+    case search_type
+    when 'LIKE'
+      where(<<-SQL.squish, q: "%#{search_query}%")
+        title_taxt LIKE :q
+          OR references_taxt LIKE :q
+          OR subtitle_taxt LIKE :q
+      SQL
+    when 'REGEXP'
+      where(<<-SQL.squish, q: "%#{search_query}%")
+        title_taxt REGEXP :q
+          OR references_taxt REGEXP :q
+          OR subtitle_taxt REGEXP :q
+      SQL
+    else
+      raise "unknown search_type #{search_type}"
+    end
   end
 
   private

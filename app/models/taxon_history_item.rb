@@ -82,10 +82,15 @@ class TaxonHistoryItem < ApplicationRecord
 
   def self.search search_query, search_type
     search_type = search_type.presence || 'LIKE'
-    raise unless search_type.in? ["LIKE", "REGEXP"]
 
-    q = search_type == "LIKE" ? "%#{search_query}%" : search_query
-    where("taxt #{search_type} :q", q: q)
+    case search_type
+    when 'LIKE'
+      where("taxt LIKE :q", q: "%#{search_query}%")
+    when 'REGEXP'
+      where("taxt REGEXP :q", q: search_query)
+    else
+      raise "unknown search_type #{search_type}"
+    end
   end
 
   def ids_from_tax_tags

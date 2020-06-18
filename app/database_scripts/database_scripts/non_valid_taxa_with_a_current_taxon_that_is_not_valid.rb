@@ -30,7 +30,7 @@ __END__
 
 title: Non-valid taxa with a current taxon that is not valid
 
-section: main
+section: regression-test
 category: Catalog
 tags: []
 

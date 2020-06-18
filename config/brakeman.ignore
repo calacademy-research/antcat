@@ -1,0 +1,86 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "0ae1118819ff8ab6f5493ca83760a0d69a93094ea97bf0cebde4e086ade94f27",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/ant_cat.rb",
+      "line": 41,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::Protonym",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": "Dev-only monkey patch"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "229829e99b3f809125308005002e78510b7f7c666d7c00d8a141a2da44da7d2d",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/ant_cat.rb",
+      "line": 79,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::ReferenceSection",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": "Dev-only monkey patch"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "773628aa027a4539914c179260903a1ff1d0e1dd998cd3463d8823ce363d9fc8",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/ant_cat.rb",
+      "line": 60,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::Reference",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": "Dev-only monkey match"
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "ad6e8c6237d2fe512730fe131c909cbe5256a6fdce4ad44c66b2a59928677b60",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/ant_cat.rb",
+      "line": 22,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::Taxon",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": "Dev-only monkey path"
+    }
+  ],
+  "updated": "2020-06-19 00:02:52 +0200",
+  "brakeman_version": "4.8.2"
+}

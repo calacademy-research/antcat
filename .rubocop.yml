@@ -1,18 +1,18 @@
 require:
   - rubocop-performance
-  - rubocop-rspec
   - rubocop-rails
+  - rubocop-rspec
 
 AllCops:
   Exclude:
     - 'bin/**/*'
+    - 'cookbooks/**/*'
     - 'data/**/*'
     - 'db/schema.rb'
+    - 'node_modules/**/*'
     - 'solr/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - 'node_modules/**/*'
-    - 'cookbooks/**/*'
 
 ### FactoryBot.
 
@@ -25,7 +25,7 @@ Layout/ArgumentAlignment:
   Enabled: false
 
 Layout/ArrayAlignment:
-  Enabled: false
+  Enabled: true
 
 Layout/BlockAlignment:
   Enabled: false
@@ -48,14 +48,26 @@ Layout/FirstArrayElementLineBreak:
 Layout/FirstHashElementLineBreak:
   Enabled: true
 
+Layout/FirstMethodArgumentLineBreak:
+  Enabled: true
+
+Layout/FirstMethodParameterLineBreak:
+  Enabled: true
+
 Layout/HashAlignment:
   Enabled: false
+
+Layout/HeredocArgumentClosingParenthesis:
+  Enabled: true
 
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
   Max: 140
+
+Layout/MultilineHashKeyLineBreaks:
+  Enabled: true
 
 Layout/MultilineMethodCallIndentation:
   Enabled: false
@@ -64,7 +76,7 @@ Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
 Layout/ParameterAlignment:
-  Enabled: false
+  Enabled: true
 
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
@@ -76,12 +88,18 @@ Lint/AmbiguousBlockAssociation:
     - 'spec/**/*'
 
 Lint/AmbiguousRegexpLiteral:
-  Enabled: false
+  Enabled: true
+  Exclude:
+    - 'features/step_definitions/**/*'
+    - 'spec/**/*'
 
 Lint/MixedRegexpCaptureTypes:
-  Enabled: false
+  Enabled: true
 
 Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/HeredocMethodCallPosition:
   Enabled: true
 
 Lint/RaiseException:
@@ -204,6 +222,9 @@ Style/Alias:
 Style/AsciiComments:
   Enabled: false
 
+Style/AutoResourceCleanup:
+  Enabled: true
+
 Style/ClassAndModuleChildren:
   Enabled: true
 
@@ -272,7 +293,10 @@ Style/RedundantRegexpCharacterClass:
   Enabled: true
 
 Style/RedundantRegexpEscape:
-  Enabled: false
+  Enabled: true
+
+Style/ReturnNil:
+  Enabled: true
 
 Style/Send:
   Enabled: true
