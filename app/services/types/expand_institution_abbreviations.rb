@@ -5,9 +5,9 @@ module Types
     include Service
 
     STOP_REGEX = %r{
-      (?!                # Negative look-ahead.
-        (?:              # Non-capturing.
-          [^$\]\), .;:/] # Only match abbreviations followed by any of these characters.
+      (?!               # Negative look-ahead.
+        (?:             # Non-capturing.
+          [^$\]), .;:/] # Only match abbreviations followed by any of these characters.
         )
       )
     }x
