@@ -106,9 +106,9 @@ class Taxon < ApplicationRecord
 
     def current_taxon_validation
       if Status.cannot_have_current_taxon?(status) && current_taxon
-        errors.add :current_valid_name, "can't be set for #{Status.plural(status)} taxa"
+        errors.add :current_taxon, "can't be set for #{Status.plural(status)} taxa"
       elsif Status.requires_current_taxon?(status) && !current_taxon
-        errors.add :current_valid_name, "must be set for #{Status.plural(status)}"
+        errors.add :current_taxon, "must be set for #{Status.plural(status)}"
       end
     end
 

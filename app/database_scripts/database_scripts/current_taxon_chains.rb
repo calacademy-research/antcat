@@ -10,18 +10,18 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status', 'CVT of CVT', 'CVT of CVT status'
+        t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status', 'CT of CT', 'CT of CT status'
         t.rows do |taxon|
           current_taxon = taxon.current_taxon
-          cvt_of_current_taxon = current_taxon.current_taxon
+          ct_of_current_taxon = current_taxon.current_taxon
 
           [
             taxon_link(taxon) + origin_warning(taxon),
             taxon.status,
             taxon_link(current_taxon),
             current_taxon.status,
-            taxon_link(cvt_of_current_taxon),
-            cvt_of_current_taxon.status
+            taxon_link(ct_of_current_taxon),
+            ct_of_current_taxon.status
           ]
         end
       end

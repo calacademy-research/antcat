@@ -21,7 +21,7 @@ describe Operations::ConvertToObsoleteCombination do
         specify { expect(operation.run).to be_a_failure }
 
         it "returns errors" do
-          expect(operation.run.context.errors).to eq ["Current valid name must be set for obsolete combinations"]
+          expect(operation.run.context.errors).to eq ["Current taxon must be set for obsolete combinations"]
         end
 
         it "does not modify the original species record" do

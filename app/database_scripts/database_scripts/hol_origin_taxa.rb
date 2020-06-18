@@ -9,7 +9,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'Taxon', 'AntWiki', 'Rank', 'Status',
-          'current_taxon', 'CVT AntWiki', 'Protonym'
+          'current_taxon', 'CT AntWiki', 'Protonym'
         t.rows do |taxon|
           current_taxon = taxon.current_taxon
 

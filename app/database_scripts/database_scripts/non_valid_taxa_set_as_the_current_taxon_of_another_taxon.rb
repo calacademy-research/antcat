@@ -22,8 +22,8 @@ module DatabaseScripts
     private
 
       def taxa_set_as_current_taxon
-        taxa_with_a_current_valid = Taxon.where.not(current_taxon_id: nil).select(:current_taxon_id)
-        Taxon.where(id: taxa_with_a_current_valid)
+        taxa_with_a_current_taxon = Taxon.where.not(current_taxon_id: nil).select(:current_taxon_id)
+        Taxon.where(id: taxa_with_a_current_taxon)
       end
   end
 end

@@ -3,7 +3,7 @@
 module DatabaseScripts
   class TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms < DatabaseScript
     def results
-      current_valid_taxa_of_obsolete_combinations.joins(:obsolete_combinations).
+      current_taxa_of_obsolete_combinations.joins(:obsolete_combinations).
         where("taxa.protonym_id <> obsolete_combinations_taxa.protonym_id").distinct
     end
 
@@ -22,7 +22,7 @@ module DatabaseScripts
 
     private
 
-      def current_valid_taxa_of_obsolete_combinations
+      def current_taxa_of_obsolete_combinations
         current_taxon_ids = Taxon.obsolete_combinations.select(:current_taxon_id)
         Taxon.where(id: current_taxon_ids)
       end

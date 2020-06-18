@@ -12,12 +12,12 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Taxon', 'Rank', 'Status', 'Origin', 'current_taxon',
           'current_taxon status', 'Taxon epithet', 'current_taxon epithet',
-          'Probably change CVT?',
+          'Probably change CT?',
           'Probably change status to synonym?'
 
         t.rows do |taxon|
           current_taxon = taxon.current_taxon
-          cvt_cleanup_taxon = Taxa::CleanupTaxon.new(current_taxon)
+          ct_cleanup_taxon = Taxa::CleanupTaxon.new(current_taxon)
 
           [
             taxon_link(taxon),
@@ -29,8 +29,8 @@ module DatabaseScripts
             taxon.name.epithet,
             current_taxon.name.epithet,
 
-            ('Yes' if cvt_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon).present?),
-            ('Yes' if cvt_cleanup_taxon.synonyms_history_items_containing_taxon(taxon).present?)
+            ('Yes' if ct_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon).present?),
+            ('Yes' if ct_cleanup_taxon.synonyms_history_items_containing_taxon(taxon).present?)
           ]
         end
       end

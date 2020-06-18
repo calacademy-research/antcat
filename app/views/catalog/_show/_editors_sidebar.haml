@@ -1,7 +1,7 @@
 -# TODO: Remove once fixed (see `Taxa::CleanupTaxon#obsolete_combination_that_is_shady?`).
 -if Taxa::CleanupTaxon.new(taxon).obsolete_combination_that_is_shady?
-  -cvt_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_taxon)
-  -synonym_history_item = cvt_cleanup_taxon.synonyms_history_items_containing_taxon(taxon)
+  -ct_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_taxon)
+  -synonym_history_item = ct_cleanup_taxon.synonyms_history_items_containing_taxon(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
       %h6
@@ -15,7 +15,7 @@
       %hr
       =Detax[synonym_history_item.taxt]
 
-  -synonym_history_item = cvt_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
+  -synonym_history_item = ct_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
       %h6

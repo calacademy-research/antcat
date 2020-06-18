@@ -19,7 +19,7 @@ Feature: Editing a taxon
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
   @javascript
-  Scenario: Changing current valid name
+  Scenario: Changing current taxon
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"
 
