@@ -18,12 +18,15 @@ module PaperTrail
 
     def self.search search_query, search_type
       search_type = search_type.presence || 'LIKE'
-      raise unless search_type.in? ["LIKE", "REGEXP"]
 
-      q = search_type == "LIKE" ? "%#{search_query}%" : search_query
-      where(<<-SQL.squish, q: q)
-        object #{search_type} :q OR object_changes #{search_type} :q
-      SQL
+      case search_type
+      when 'LIKE'
+        where('object LIKE :q OR object_changes LIKE :q', q: "%#{search_query}%")
+      when 'REGEXP'
+        where('object REGEXP :q OR object_changes REGEXP :q', q: search_query)
+      else
+        raise "unknown search_type #{search_type}"
+      end
     end
 
     def user
