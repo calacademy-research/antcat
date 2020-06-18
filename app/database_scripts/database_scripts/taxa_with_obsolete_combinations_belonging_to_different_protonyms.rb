@@ -41,8 +41,8 @@ description: >
   Click on a taxon to see the obsolete combinations in the catalog.
 
 
-  This script is the reverse of %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
+  This script is the reverse of %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
 
 related_scripts:
-  - SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon
+  - SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon
   - TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms

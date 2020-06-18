@@ -41,4 +41,4 @@ related_scripts:
   - FossilProtonymsWithNonFossilTaxa
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
-  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon
+  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon

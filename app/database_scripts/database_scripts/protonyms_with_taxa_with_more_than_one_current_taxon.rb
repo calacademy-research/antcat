@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon < DatabaseScript
+  class ProtonymsWithTaxaWithMoreThanOneCurrentTaxon < DatabaseScript
     def results
       Protonym.joins(:taxa).
         where.not(taxa: { status: [Status::OBSOLETE_COMBINATION, Status::UNAVAILABLE_MISSPELLING] }).
@@ -43,4 +43,4 @@ related_scripts:
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
-  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneCurrentTaxon

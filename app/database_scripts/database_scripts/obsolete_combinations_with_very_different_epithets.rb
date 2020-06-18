@@ -63,7 +63,7 @@ description: >
   These obsolete combinations should probably have the status 'synonym'.
 
 
-  Records in this script also often appears in %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
+  Records in this script also often appears in %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
 
 related_scripts:
   - ProtonymsWithTaxaWithVeryDifferentEpithets

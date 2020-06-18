@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class NonValidTaxaWithACurrentValidTaxonThatIsNotValid < DatabaseScript
+  class NonValidTaxaWithACurrentTaxonThatIsNotValid < DatabaseScript
     def results
       TaxonQuery.new.excluding_pass_through_names.joins(:current_taxon).
         where.not(current_taxons_taxa: { status: Status::VALID }).
@@ -40,7 +40,7 @@ description: >
   Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).
 
 related_scripts:
-  - CurrentValidTaxonChains
-  - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
-  - NonValidTaxaWithACurrentValidTaxonThatIsNotValid
+  - CurrentTaxonChains
+  - NonValidTaxaSetAsTheCurrentTaxonOfAnotherTaxon
+  - NonValidTaxaWithACurrentTaxonThatIsNotValid
   - NonValidTaxaWithJuniorSynonyms

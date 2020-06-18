@@ -31,7 +31,7 @@ module Taxa
     # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
     # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
     def obsolete_combination_that_is_shady?
-      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym.record_in_results?(self) ||
+      DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym.record_in_results?(self) ||
         DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets.record_in_results?(self)
     end
 

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon < DatabaseScript
+  class SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon < DatabaseScript
     def results
       Taxon.synonyms.joins(:current_taxon).where("taxa.protonym_id = current_taxons_taxa.protonym_id").
         includes(protonym: [:name], current_taxon: { protonym: [:name] })
@@ -39,6 +39,6 @@ issue_description: This junior synonym belongs to the same protonym as its curre
 description: >
 
 related_scripts:
-  - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentValidTaxonsProtonym
-  - SynonymsBelongingToTheSameProtonymAsItsCurrentValidTaxon
+  - ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
+  - SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon
   - TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms

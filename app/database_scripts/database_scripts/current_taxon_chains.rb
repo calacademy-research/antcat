@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class CurrentValidTaxonChains < DatabaseScript
+  class CurrentTaxonChains < DatabaseScript
     def results
       Taxon.where.not(current_taxon_id: nil).
         joins(:current_taxon).
@@ -44,7 +44,7 @@ description: >
   This is not necessarily incorrect.
 
 related_scripts:
-  - CurrentValidTaxonChains
-  - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
-  - NonValidTaxaWithACurrentValidTaxonThatIsNotValid
+  - CurrentTaxonChains
+  - NonValidTaxaSetAsTheCurrentTaxonOfAnotherTaxon
+  - NonValidTaxaWithACurrentTaxonThatIsNotValid
   - NonValidTaxaWithJuniorSynonyms

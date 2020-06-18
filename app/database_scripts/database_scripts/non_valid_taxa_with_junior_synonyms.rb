@@ -37,7 +37,7 @@ issue_description: This taxon is not valid, but is has junior synonyms.
 description: >
 
 related_scripts:
-  - CurrentValidTaxonChains
-  - NonValidTaxaSetAsTheCurrentValidTaxonOfAnotherTaxon
-  - NonValidTaxaWithACurrentValidTaxonThatIsNotValid
+  - CurrentTaxonChains
+  - NonValidTaxaSetAsTheCurrentTaxonOfAnotherTaxon
+  - NonValidTaxaWithACurrentTaxonThatIsNotValid
   - NonValidTaxaWithJuniorSynonyms

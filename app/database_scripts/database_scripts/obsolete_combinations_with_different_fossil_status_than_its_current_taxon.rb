@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon < DatabaseScript
+  class ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon < DatabaseScript
     def results
       Taxon.obsolete_combinations.joins(:current_taxon).where("current_taxons_taxa.fossil <> taxa.fossil").
         includes(:current_taxon)
@@ -46,4 +46,4 @@ related_scripts:
   - FossilTaxaWithNonFossilProtonyms
   - NonFossilProtonymsWithFossilTaxa
   - NonFossilTaxaWithFossilProtonyms
-  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon
+  - ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon

@@ -85,4 +85,4 @@ related_scripts:
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
-  - ProtonymsWithTaxaWithMoreThanOneCurrentValidTaxon
+  - ProtonymsWithTaxaWithMoreThanOneCurrentTaxon
