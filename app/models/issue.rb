@@ -19,7 +19,7 @@ class Issue < ApplicationRecord
   has_paper_trail
   trackable parameters: proc { { title: title } }
 
-  def self.help_wanted?
+  def self.any_help_wanted_open?
     open_help_wanted.any?
   end
 
