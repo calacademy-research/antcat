@@ -79,7 +79,7 @@ Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
 Lint/MixedRegexpCaptureTypes:
-  Enabled: false
+  Enabled: true
 
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
