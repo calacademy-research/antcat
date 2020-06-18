@@ -1,18 +1,18 @@
 require:
   - rubocop-performance
-  - rubocop-rspec
   - rubocop-rails
+  - rubocop-rspec
 
 AllCops:
   Exclude:
     - 'bin/**/*'
+    - 'cookbooks/**/*'
     - 'data/**/*'
     - 'db/schema.rb'
+    - 'node_modules/**/*'
     - 'solr/**/*'
     - 'tmp/**/*'
     - 'vendor/**/*'
-    - 'node_modules/**/*'
-    - 'cookbooks/**/*'
 
 ### FactoryBot.
 
@@ -76,7 +76,10 @@ Lint/AmbiguousBlockAssociation:
     - 'spec/**/*'
 
 Lint/AmbiguousRegexpLiteral:
-  Enabled: false
+  Enabled: true
+  Exclude:
+    - 'features/step_definitions/**/*'
+    - 'spec/**/*'
 
 Lint/MixedRegexpCaptureTypes:
   Enabled: true

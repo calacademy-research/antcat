@@ -16,7 +16,7 @@ module Authors
         parts = {}
         return parts if string.blank?
 
-        matches = string.match /(.*?), (.*)/
+        matches = string.match(/(.*?), (.*)/)
         if matches
           parts[:last] = matches[1]
           parts[:first_and_initials] = matches[2]
