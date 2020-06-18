@@ -39,6 +39,22 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
+  def force_remove_pages_from_taxac_tags
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = QuickAndDirtyFixes::ForceRemovePagesFromTaxacTags[old_taxt]
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags, nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
+      render js: %(AntCat.notifySuccess("Force-removed pages from taxac tags: '#{new_taxt}'", false))
+    else
+      render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags"))
+    end
+  end
+
   def remove_pages_from_taxac_tags
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
 

@@ -18,7 +18,8 @@ module Markdowns
 
       parse_pro_tags
 
-      parse_missing_or_unmissing_tags
+      parse_missing_tags
+      parse_unmissing_tags
 
       content
     end
@@ -104,11 +105,19 @@ module Markdowns
         end
       end
 
-      # Matches: {missing/unmissing hardcoded name}, which may contain "<i>" tags.
+      # Matches: {missing hardcoded name}, which may contain "<i>" tags.
       # Renders: hardcoded name.
-      def parse_missing_or_unmissing_tags
-        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG) do
+      def parse_missing_tags
+        content.gsub!(Taxt::MISSING_TAG_REGEX) do
           %(<span class="logged-in-only-bold-warning">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+        end
+      end
+
+      # Matches: {unmissing hardcoded name}, which may contain "<i>" tags.
+      # Renders: hardcoded name.
+      def parse_unmissing_tags
+        content.gsub!(Taxt::UNMISSING_TAG_REGEX) do
+          %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end
 

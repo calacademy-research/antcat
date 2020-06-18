@@ -5,6 +5,7 @@ module DatabaseScripts
     COMPATIBLE_STATUSES = [
       Status::SYNONYM,
       Status::HOMONYM,
+      Status::OBSOLETE_COMBINATION,
       Status::UNIDENTIFIABLE,
       Status::UNAVAILABLE,
       Status::EXCLUDED_FROM_FORMICIDAE,
@@ -37,7 +38,7 @@ end
 
 __END__
 
-section: main
+section: regression-test
 category: Catalog
 tags: []
 
@@ -50,6 +51,8 @@ description: >
   * synonym
 
   * homonym
+
+  * obsolete combination
 
   * unidentifiable
 
