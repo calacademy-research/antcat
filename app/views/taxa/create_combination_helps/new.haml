@@ -44,9 +44,9 @@
 
   .row.margin-bottom
     .medium-12.columns
-      %h5 Taxa where this taxon is set as the current valid taxon
+      %h5 Taxa where this taxon is set as the current taxon
       .callout
-        -if @taxon.current_valid_taxon_of.empty?
+        -if @taxon.current_taxon_of.empty?
           None
           =antcat_icon("check")
         -else
@@ -59,7 +59,7 @@
                 %th Same protonym?
                 %th Has history items?
 
-            -@taxon.current_valid_taxon_of.each do |taxon|
+            -@taxon.current_taxon_of.each do |taxon|
               %tr
                 %td.no-wrap
                   =CatalogFormatter.link_to_taxon(taxon)
@@ -122,7 +122,7 @@
                   %th Taxon
                   %th What Links Here
                   %th Has history items?
-                  %th Is set as the current valid taxon of other taxa?
+                  %th Is set as the current taxon of other taxa?
 
               -valid_subspecies.each do |taxon|
                 %tr
@@ -134,6 +134,6 @@
                     -if taxon.history_items.exists?
                       =antcat_icon("check")
                   %td
-                    -if taxon.valid_status? && Taxon.where(current_valid_taxon: taxon).exists?
+                    -if taxon.valid_status? && Taxon.where(current_taxon: taxon).exists?
                       =antcat_icon 'warning-icon'
                       Yes

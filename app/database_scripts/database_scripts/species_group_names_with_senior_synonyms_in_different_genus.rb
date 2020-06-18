@@ -5,20 +5,20 @@ module DatabaseScripts
     def results
       Taxon.where(type: ['Species', 'Subspecies', 'Infrasubspecies']).
         where(status: Status::SYNONYM).
-        joins(:current_valid_taxon).where("current_valid_taxons_taxa.genus_id != taxa.genus_id")
+        joins(:current_taxon).where("current_taxons_taxa.genus_id != taxa.genus_id")
     end
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'current_valid_taxon', 'CVT status'
+        t.header 'Taxon', 'Status', 'current_taxon', 'CVT status'
         t.rows do |taxon|
-          current_valid_taxon = taxon.current_valid_taxon
+          current_taxon = taxon.current_taxon
 
           [
             taxon_link(taxon),
             taxon.status,
-            taxon_link(current_valid_taxon),
-            current_valid_taxon.status
+            taxon_link(current_taxon),
+            current_taxon.status
           ]
         end
       end

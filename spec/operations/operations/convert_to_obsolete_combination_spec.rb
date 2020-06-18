@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Operations::ConvertToObsoleteCombination do
   subject(:operation) do
     described_class.new(
-      current_valid_taxon: current_valid_taxon,
+      current_taxon: current_taxon,
       new_combination: new_combination
     )
   end
@@ -13,7 +13,7 @@ describe Operations::ConvertToObsoleteCombination do
   describe "#run" do
     describe "unsuccessful case" do
       context "when a species with this name already exists" do
-        let!(:current_valid_taxon) do
+        let!(:current_taxon) do
           create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
         end
         let!(:new_combination) { nil }
@@ -25,7 +25,7 @@ describe Operations::ConvertToObsoleteCombination do
         end
 
         it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_valid_taxon.reload.attributes }
+          expect { operation.run }.to_not change { current_taxon.reload.attributes }
         end
       end
 
@@ -35,15 +35,15 @@ describe Operations::ConvertToObsoleteCombination do
         end
 
         context 'when taxon has obsolete combinations which cannot be updated' do
-          let!(:current_valid_taxon) do
+          let!(:current_taxon) do
             create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
           end
           let!(:new_combination) { create :species, name_string: 'Atta mexicana' }
           let!(:obsolete_combination_1) do
-            create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+            create :species, status: Status::OBSOLETE_COMBINATION, current_taxon: current_taxon
           end
           let!(:obsolete_combination_2) do
-            create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+            create :species, status: Status::OBSOLETE_COMBINATION, current_taxon: current_taxon
           end
 
           before do
@@ -51,18 +51,18 @@ describe Operations::ConvertToObsoleteCombination do
           end
 
           it "does not modify the original species record" do
-            expect { operation.run }.to_not change { current_valid_taxon.reload.attributes }
+            expect { operation.run }.to_not change { current_taxon.reload.attributes }
           end
 
-          it 'does not update the `current_valid_taxon` of the obsolete combinations' do
-            expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
+          it 'does not update the `current_taxon` of the obsolete combinations' do
+            expect(current_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
             expect(new_combination.obsolete_combinations).to eq []
 
             expect { operation.run }.
-              to_not change { obsolete_combination_1.reload.current_valid_taxon }.
-              from(current_valid_taxon)
+              to_not change { obsolete_combination_1.reload.current_taxon }.
+              from(current_taxon)
 
-            expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
+            expect(current_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
             expect(new_combination.obsolete_combinations).to eq []
           end
         end
@@ -71,7 +71,7 @@ describe Operations::ConvertToObsoleteCombination do
 
     describe "successful case" do
       context "when there is no name collision" do
-        let!(:current_valid_taxon) do
+        let!(:current_taxon) do
           create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
         end
         let!(:new_combination) { create :species, name_string: 'Atta mexicana' }
@@ -80,35 +80,35 @@ describe Operations::ConvertToObsoleteCombination do
 
         it "sets the status to obsolete combination" do
           expect { operation.run }.
-            to change { current_valid_taxon.reload.status }.
+            to change { current_taxon.reload.status }.
             from(Status::VALID).to(Status::OBSOLETE_COMBINATION)
         end
 
-        it "sets the current_valid_taxon" do
+        it "sets the current_taxon" do
           expect { operation.run }.
-            to change { current_valid_taxon.reload.current_valid_taxon }.
+            to change { current_taxon.reload.current_taxon }.
             from(nil).to(new_combination)
         end
       end
 
       context 'when taxon has obsolete combinations' do
-        let!(:current_valid_taxon) do
+        let!(:current_taxon) do
           create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma')
         end
         let!(:new_combination) { create :species, name_string: 'Atta mexicana' }
         let!(:obsolete_combination) do
-          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: current_valid_taxon
+          create :species, status: Status::OBSOLETE_COMBINATION, current_taxon: current_taxon
         end
 
-        it 'updates the `current_valid_taxon` of the obsolete combinations' do
-          expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination]
+        it 'updates the `current_taxon` of the obsolete combinations' do
+          expect(current_taxon.obsolete_combinations).to eq [obsolete_combination]
           expect(new_combination.obsolete_combinations).to eq []
 
           expect { operation.run }.
-            to change { obsolete_combination.reload.current_valid_taxon }.
-            from(current_valid_taxon).to(new_combination)
+            to change { obsolete_combination.reload.current_taxon }.
+            from(current_taxon).to(new_combination)
 
-          expect(current_valid_taxon.obsolete_combinations).to eq [obsolete_combination]
+          expect(current_taxon.obsolete_combinations).to eq [obsolete_combination]
           expect(new_combination.obsolete_combinations).to eq []
         end
       end

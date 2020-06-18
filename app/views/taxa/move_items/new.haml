@@ -14,7 +14,7 @@
     .medium-6.columns
       %fieldset.fieldset
         %legend to
-        =taxon_select_tag :to_taxon_id, params[:to_taxon_id] || @taxon.current_valid_taxon&.id
+        =taxon_select_tag :to_taxon_id, params[:to_taxon_id] || @taxon.current_taxon&.id
         %br
         =button_tag "Select...", type: "submit", class: "btn-normal"
 

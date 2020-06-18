@@ -65,7 +65,7 @@ describe Taxa::Operations::ConvertToSubspecies do
             :protonym,
             :hong,
             :unresolved_homonym,
-            :current_valid_taxon,
+            :current_taxon,
             :ichnotaxon,
             :nomen_nudum
           ].each do |attribute|

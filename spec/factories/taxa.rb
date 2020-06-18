@@ -83,7 +83,7 @@ FactoryBot.define do
 
     trait :synonym do
       status { Status::SYNONYM }
-      with_current_valid_taxon
+      with_current_taxon
     end
 
     trait :homonym do
@@ -93,7 +93,7 @@ FactoryBot.define do
 
     trait :obsolete_combination do
       status { Status::OBSOLETE_COMBINATION }
-      with_current_valid_taxon
+      with_current_taxon
     end
 
     trait :unidentifiable do
@@ -138,8 +138,8 @@ FactoryBot.define do
     end
 
     # Misc.
-    trait :with_current_valid_taxon do
-      current_valid_taxon { Family.first || FactoryBot.create(:family) }
+    trait :with_current_taxon do
+      current_taxon { Family.first || FactoryBot.create(:family) }
     end
 
     trait :with_history_item do

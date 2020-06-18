@@ -23,7 +23,7 @@ module Taxa
       @target_name = find_target_name
 
       operation = ::Operations::CreateNewCombination.new(
-        current_valid_taxon: @taxon,
+        current_taxon: @taxon,
         new_genus: @new_parent,
         target_name_string: target_name_string
       ).tap { |object| object.extend RunInTransaction }.run

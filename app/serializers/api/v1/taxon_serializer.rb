@@ -7,7 +7,7 @@ module Api
         :id,
         :auto_generated,
         :collective_group_name,
-        :current_valid_taxon_id,
+        :current_taxon_id,
         :family_id,
         :fossil,
         :genus_id,

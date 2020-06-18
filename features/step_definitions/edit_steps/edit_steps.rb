@@ -9,9 +9,9 @@ When("I set the name to {string}") do |name|
   step %(I fill in "taxon_name_string" with "#{name}")
 end
 
-# Current valid taxon.
-When("I set the current valid taxon name to {string}") do |name|
-  select2 name, from: 'taxon_current_valid_taxon_id'
+# Current taxon.
+When("I set the current taxon name to {string}") do |name|
+  select2 name, from: 'taxon_current_taxon_id'
 end
 
 # Homonym replaced by.

@@ -52,7 +52,7 @@ module Exporters
           elsif taxon.valid_status?
             "valid"
           elsif taxon.synonym?
-            "synonym of #{format_name(taxon.current_valid_taxon)}"
+            "synonym of #{format_name(taxon.current_taxon)}"
           else
             taxon.status
           end

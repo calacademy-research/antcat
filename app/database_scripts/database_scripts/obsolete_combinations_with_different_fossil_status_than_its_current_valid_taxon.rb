@@ -3,16 +3,16 @@
 module DatabaseScripts
   class ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentValidTaxon < DatabaseScript
     def results
-      Taxon.obsolete_combinations.joins(:current_valid_taxon).where("current_valid_taxons_taxa.fossil <> taxa.fossil").
-        includes(:current_valid_taxon)
+      Taxon.obsolete_combinations.joins(:current_taxon).where("current_taxons_taxa.fossil <> taxa.fossil").
+        includes(:current_taxon)
     end
 
     def render
       as_table do |t|
         t.header 'Taxon', 'Status', 'Locality', 'Fossil status',
-          'current_valid_taxon', 'CVT status', 'CVT locality', 'CVT fossil status'
+          'current_taxon', 'CVT status', 'CVT locality', 'CVT fossil status'
         t.rows do |taxon|
-          current_valid_taxon = taxon.current_valid_taxon
+          current_taxon = taxon.current_taxon
 
           [
             taxon_link(taxon),
@@ -20,10 +20,10 @@ module DatabaseScripts
             taxon.protonym.locality,
             (taxon.fossil? ? 'fossil' : 'extant'),
 
-            taxon_link(current_valid_taxon),
-            current_valid_taxon.status,
-            current_valid_taxon.protonym.locality,
-            (current_valid_taxon.fossil? ? 'fossil' : 'extant')
+            taxon_link(current_taxon),
+            current_taxon.status,
+            current_taxon.protonym.locality,
+            (current_taxon.fossil? ? 'fossil' : 'extant')
           ]
         end
       end
@@ -37,7 +37,7 @@ section: regression-test
 category: Catalog
 tags: []
 
-issue_description: This obsolete combination does not have the same fossil status as its `current_valid_taxon`.
+issue_description: This obsolete combination does not have the same fossil status as its `current_taxon`.
 
 description: >
 

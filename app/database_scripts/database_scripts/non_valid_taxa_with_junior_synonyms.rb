@@ -8,15 +8,15 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status'
+        t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status'
         t.rows do |taxon|
-          current_valid_taxon = taxon.current_valid_taxon
+          current_taxon = taxon.current_taxon
 
           [
             taxon_link(taxon),
             taxon.status,
-            taxon_link(current_valid_taxon),
-            current_valid_taxon.status
+            taxon_link(current_taxon),
+            current_taxon.status
           ]
         end
       end

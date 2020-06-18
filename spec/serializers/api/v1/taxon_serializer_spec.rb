@@ -13,7 +13,7 @@ describe Api::V1::TaxonSerializer do
             "id" => taxon.id,
             "auto_generated" => false,
             "collective_group_name" => false,
-            "current_valid_taxon_id" => nil,
+            "current_taxon_id" => nil,
             "family_id" => nil,
             "fossil" => false,
             "genus_id" => taxon.genus.id,

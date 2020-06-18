@@ -28,7 +28,7 @@ module Catalog
 
       respond_to do |format|
         format.html do
-          @taxa = TaxonQuery.new(taxa).with_common_includes_and_current_valid_taxon_includes.
+          @taxa = TaxonQuery.new(taxa).with_common_includes_and_current_taxon_includes.
             paginate(page: params[:page], per_page: params[:per_page])
         end
 

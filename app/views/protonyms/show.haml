@@ -81,7 +81,7 @@
           %th
           -if current_user
             %th
-        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_valid_taxon_includes.each do |taxon|
+        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
             %td=taxon.rank.capitalize

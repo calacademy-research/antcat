@@ -54,12 +54,12 @@ module Exporters
         end
 
         def current_valid_name
-          return unless (current_valid_name = taxon.current_valid_taxon&.name&.name)
+          return unless (current_valid_name = taxon.current_taxon&.name&.name)
           "#{taxonomic_attributes[:subfamily]} #{current_valid_name}"
         end
 
         def original_combination
-          taxon.class.where(original_combination: true, current_valid_taxon: taxon).first
+          taxon.class.where(original_combination: true, current_taxon: taxon).first
         end
 
         def export_history
@@ -76,7 +76,7 @@ module Exporters
         def current_valid_parent
           return unless taxon.parent
           parent = taxon.parent.is_a?(Subgenus) ? taxon.parent.parent : taxon.parent
-          parent.current_valid_taxon || parent
+          parent.current_taxon || parent
         end
     end
   end

@@ -53,7 +53,7 @@ describe CreateCombinationPolicy do
         let(:taxon) { create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma') }
 
         before do
-          create :species, status: Status::OBSOLETE_COMBINATION, current_valid_taxon: taxon, protonym: taxon.protonym
+          create :species, status: Status::OBSOLETE_COMBINATION, current_taxon: taxon, protonym: taxon.protonym
         end
 
         specify { expect(policy.allowed?).to eq true }
@@ -63,7 +63,7 @@ describe CreateCombinationPolicy do
         let(:taxon) { create :species, name_string: 'Oecodoma mexicana', genus: create(:genus, name_string: 'Oecodoma') }
 
         before do
-          create :species, status: Status::SYNONYM, current_valid_taxon: taxon
+          create :species, status: Status::SYNONYM, current_taxon: taxon
         end
 
         specify do

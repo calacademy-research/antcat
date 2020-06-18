@@ -40,12 +40,12 @@ class CreateCombinationPolicy
 
     # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_misspellings?
-      taxon.current_valid_taxon_of.where(status: Status::UNAVAILABLE_MISSPELLING).any?
+      taxon.current_taxon_of.where(status: Status::UNAVAILABLE_MISSPELLING).any?
     end
 
     # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_uncategorizeds?
-      taxon.current_valid_taxon_of.where(status: Status::UNAVAILABLE_UNCATEGORIZED).any?
+      taxon.current_taxon_of.where(status: Status::UNAVAILABLE_UNCATEGORIZED).any?
     end
 
     # TODO: Model knowledge, but we don't want it there (we don't know what we want).
@@ -62,7 +62,7 @@ class CreateCombinationPolicy
     def what_links_here_except_obsolete_combinations
       taxon.what_links_here.all.reject do |item|
         item.table == 'taxa' &&
-          item.field == :current_valid_taxon_id &&
+          item.field == :current_taxon_id &&
           item.id.in?(obsolete_combinations_ids)
       end
     end

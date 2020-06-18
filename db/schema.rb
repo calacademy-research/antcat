@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_12_200629) do
+ActiveRecord::Schema.define(version: 2020_06_17_215601) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -278,7 +278,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_200629) do
     t.string "name_cache"
     t.string "name_html_cache"
     t.boolean "unresolved_homonym", default: false, null: false
-    t.integer "current_valid_taxon_id"
+    t.integer "current_taxon_id"
     t.boolean "ichnotaxon", default: false, null: false
     t.boolean "nomen_nudum", default: false, null: false
     t.integer "family_id"
@@ -288,7 +288,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_200629) do
     t.boolean "collective_group_name", default: false, null: false
     t.boolean "original_combination", default: false, null: false
     t.integer "subspecies_id"
-    t.index ["current_valid_taxon_id"], name: "index_taxa_on_current_valid_taxon_id"
+    t.index ["current_taxon_id"], name: "index_taxa_on_current_taxon_id"
     t.index ["family_id"], name: "index_taxa_on_family_id"
     t.index ["genus_id"], name: "taxa_genus_id_idx"
     t.index ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id"
@@ -405,7 +405,7 @@ ActiveRecord::Schema.define(version: 2020_06_12_200629) do
   add_foreign_key "site_notices", "users"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
-  add_foreign_key "taxa", "taxa", column: "current_valid_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "current_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "family_id", name: "fk_taxa__family_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "genus_id", name: "fk_taxa__genus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "homonym_replaced_by_id", name: "fk_taxa__homonym_replaced_by_id__taxa__id"

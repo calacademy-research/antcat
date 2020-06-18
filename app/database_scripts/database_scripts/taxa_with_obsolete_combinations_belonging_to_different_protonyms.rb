@@ -23,8 +23,8 @@ module DatabaseScripts
     private
 
       def current_valid_taxa_of_obsolete_combinations
-        current_valid_taxon_ids = Taxon.obsolete_combinations.select(:current_valid_taxon_id)
-        Taxon.where(id: current_valid_taxon_ids)
+        current_taxon_ids = Taxon.obsolete_combinations.select(:current_taxon_id)
+        Taxon.where(id: current_taxon_ids)
       end
   end
 end

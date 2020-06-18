@@ -3,22 +3,22 @@
 module DatabaseScripts
   class NonValidTaxaWithACurrentValidTaxonThatIsNotValid < DatabaseScript
     def results
-      TaxonQuery.new.excluding_pass_through_names.joins(:current_valid_taxon).
-        where.not(current_valid_taxons_taxa: { status: Status::VALID }).
-        includes(:current_valid_taxon)
+      TaxonQuery.new.excluding_pass_through_names.joins(:current_taxon).
+        where.not(current_taxons_taxa: { status: Status::VALID }).
+        includes(:current_taxon)
     end
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'current_valid_taxon', 'current_valid_taxon status'
+        t.header 'Taxon', 'Status', 'current_taxon', 'current_taxon status'
         t.rows do |taxon|
-          current_valid_taxon = taxon.current_valid_taxon
+          current_taxon = taxon.current_taxon
 
           [
             taxon_link(taxon),
             taxon.status,
-            taxon_link(current_valid_taxon),
-            current_valid_taxon.status
+            taxon_link(current_taxon),
+            current_taxon.status
           ]
         end
       end
@@ -28,13 +28,13 @@ end
 
 __END__
 
-title: Non-valid taxa with a current valid taxon that is not valid
+title: Non-valid taxa with a current taxon that is not valid
 
 section: main
 category: Catalog
 tags: []
 
-issue_description: This [non-pass-through] taxon has a `current_valid_taxon` that is not valid.
+issue_description: This [non-pass-through] taxon has a `current_taxon` that is not valid.
 
 description: >
   Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).

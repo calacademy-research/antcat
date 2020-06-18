@@ -27,7 +27,7 @@ Feature: Editing a taxon
     Then I should see "synonym of current valid taxon Lasius niger"
 
     When I follow "Edit"
-    And I set the current valid taxon name to "Eciton minor"
+    And I set the current taxon name to "Eciton minor"
     Then I should see "Eciton minor"
 
     When I press "Save"

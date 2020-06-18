@@ -1,6 +1,6 @@
 -# TODO: Remove once fixed (see `Taxa::CleanupTaxon#obsolete_combination_that_is_shady?`).
 -if Taxa::CleanupTaxon.new(taxon).obsolete_combination_that_is_shady?
-  -cvt_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_valid_taxon)
+  -cvt_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_taxon)
   -synonym_history_item = cvt_cleanup_taxon.synonyms_history_items_containing_taxon(taxon)
   -if synonym_history_item.present?
     .soft-validations-callout.callout.alert.margin-bottom
@@ -11,7 +11,7 @@
       The status of this taxon is 'original combination' but
       it appears in a
       synonyms list history item of
-      =CatalogFormatter.link_to_taxon(taxon.current_valid_taxon)
+      =CatalogFormatter.link_to_taxon(taxon.current_taxon)
       %hr
       =Detax[synonym_history_item.taxt]
 
@@ -20,14 +20,14 @@
     .soft-validations-callout.callout.alert.margin-bottom
       %h6
         The
-        %code current_valid_taxon
+        %code current_taxon
         of this taxon should probably be changed
         =logged_in_only_tooltip_icon
       %small.bold-warning [this record is shady, but it can be ignored for now while we're figuring out the correct data model]
       The status of this taxon is 'original combination' but
       a representation of this taxon except itself (another taxon belonging to the same protonym) appears in a
       synonyms list history item of
-      =CatalogFormatter.link_to_taxon(taxon.current_valid_taxon)
+      =CatalogFormatter.link_to_taxon(taxon.current_taxon)
       %hr
       =Detax[synonym_history_item.taxt]
 
