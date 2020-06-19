@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Taxa::Operations::ReorderReferenceSections do
   describe "#call" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
     let(:original_order) { item_ids taxon }
     let!(:first) { taxon.reference_sections.create! }
     let!(:second) { taxon.reference_sections.create! }

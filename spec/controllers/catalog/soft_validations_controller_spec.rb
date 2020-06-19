@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Catalog::SoftValidationsController do
   describe "GET show", as: :visitor do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
 
     specify { expect(get(:show, params: { id: taxon.id })).to render_template :show }
   end

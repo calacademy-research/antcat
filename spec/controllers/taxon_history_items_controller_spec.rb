@@ -17,7 +17,7 @@ describe TaxonHistoryItemsController do
   end
 
   describe "POST create", as: :helper do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
     let!(:taxon_history_item_params) do
       {
         taxt: 'content'

@@ -47,10 +47,10 @@ describe AuthorDecorator do
       context "when start and end year are not the same" do
         before do
           second_reference = create :any_reference, author_names: [author_name], citation_year: 1990
-          create(:family).protonym.authorship.update!(reference: second_reference)
+          create(:any_taxon).protonym.authorship.update!(reference: second_reference)
 
           old_reference = create :any_reference, author_names: [author_name], citation_year: 1980
-          create(:family).protonym.authorship.update!(reference: old_reference)
+          create(:any_taxon).protonym.authorship.update!(reference: old_reference)
         end
 
         specify { expect(author.decorate.taxon_descriptions_between).to eq "1980–2000" }

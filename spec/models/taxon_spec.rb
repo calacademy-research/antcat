@@ -8,7 +8,7 @@ describe Taxon do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
-    subject(:taxon) { create :family }
+    subject(:taxon) { create :any_taxon }
 
     it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
@@ -16,7 +16,7 @@ describe Taxon do
     it { is_expected.to belong_to(:name).required.dependent(:destroy) }
 
     describe 'required `belongs_to`' do
-      subject(:taxon) { create :family }
+      subject(:taxon) { create :any_taxon }
 
       it { is_expected.to belong_to(:name).required }
       it { is_expected.to belong_to(:protonym).required }
@@ -25,14 +25,14 @@ describe Taxon do
 
   describe 'validations' do
     describe '#status' do
-      subject(:taxon) { build_stubbed :family }
+      subject(:taxon) { build_stubbed :any_taxon }
 
       it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
     end
 
     describe "#homonym_replaced_by" do
       context 'when taxon is a homonym' do
-        let(:taxon) { build_stubbed :family, :homonym }
+        let(:taxon) { build_stubbed :any_taxon, :homonym }
 
         it 'must have a `homonym_replaced_by`' do
           expect { taxon.homonym_replaced_by = nil }.to change { taxon.valid? }.to(false)
@@ -41,10 +41,10 @@ describe Taxon do
       end
 
       context 'when taxon is not a homonym' do
-        let(:taxon) { build_stubbed :family }
+        let(:taxon) { build_stubbed :any_taxon }
 
         it 'cannot have a `homonym_replaced_by`' do
-          expect { taxon.homonym_replaced_by = build_stubbed(:family) }.to change { taxon.valid? }.to(false)
+          expect { taxon.homonym_replaced_by = build_stubbed(:any_taxon) }.to change { taxon.valid? }.to(false)
           expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
         end
       end
@@ -52,7 +52,7 @@ describe Taxon do
 
     describe "#unresolved_homonym" do
       context 'when taxon is a homonym' do
-        let(:taxon) { build_stubbed :family, :unresolved_homonym }
+        let(:taxon) { build_stubbed :any_taxon, :unresolved_homonym }
 
         it 'cannot be an `unresolved_homonym`' do
           expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to(false)
@@ -63,7 +63,7 @@ describe Taxon do
 
     describe "#nomen_nudum" do
       context 'when taxon is not unavailable' do
-        let(:taxon) { build_stubbed :family }
+        let(:taxon) { build_stubbed :any_taxon }
 
         it 'cannot be a `nomen_nudum`' do
           expect { taxon.nomen_nudum = true }.to change { taxon.valid? }.to(false)
@@ -74,7 +74,7 @@ describe Taxon do
 
     describe "#ichnotaxon" do
       context 'when taxon is not fossil' do
-        let(:taxon) { build_stubbed :family }
+        let(:taxon) { build_stubbed :any_taxon }
 
         it 'cannot be a `ichnotaxon`' do
           expect { taxon.ichnotaxon = true }.to change { taxon.valid? }.to(false)
@@ -85,7 +85,7 @@ describe Taxon do
 
     describe "#collective_group_name" do
       context 'when taxon is not fossil' do
-        let(:taxon) { build_stubbed :family }
+        let(:taxon) { build_stubbed :any_taxon }
 
         it 'cannot be a `collective_group_name`' do
           expect { taxon.collective_group_name = true }.to change { taxon.valid? }.to(false)
@@ -103,7 +103,7 @@ describe Taxon do
         Status::HOMONYM
       ].each do |status|
         context "when status is #{status}" do
-          let(:taxon) { build :family, status: status, current_taxon: create(:family) }
+          let(:taxon) { build :any_taxon, status: status, current_taxon: create(:any_taxon) }
 
           it 'cannot have a `current_taxon`' do
             taxon.valid?
@@ -119,7 +119,7 @@ describe Taxon do
         Status::UNAVAILABLE_UNCATEGORIZED
       ].each do |status|
         context "when status is #{status}" do
-          let(:taxon) { build :family, status: status }
+          let(:taxon) { build :any_taxon, status: status }
 
           it 'must have a `current_taxon`' do
             taxon.valid?
@@ -155,7 +155,7 @@ describe Taxon do
   end
 
   describe 'callbacks' do
-    subject(:taxon) { build_stubbed :family }
+    subject(:taxon) { build_stubbed :any_taxon }
 
     it { is_expected.to strip_attributes(:incertae_sedis_in, :origin) }
   end

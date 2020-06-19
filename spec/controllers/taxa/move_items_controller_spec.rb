@@ -12,9 +12,9 @@ describe Taxa::MoveItemsController do
   end
 
   describe "POST create", as: :editor do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
     let!(:taxon_history_item) { create :taxon_history_item, taxon: taxon }
-    let!(:to_taxon) { create :family }
+    let!(:to_taxon) { create :any_taxon }
 
     it "calls `Taxa::Operations::MoveItems`" do
       expect(Taxa::Operations::MoveItems).to receive(:new).with(to_taxon, [taxon_history_item]).and_call_original

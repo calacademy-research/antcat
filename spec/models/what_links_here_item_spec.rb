@@ -76,7 +76,7 @@ describe WhatLinksHereItem do
 
     context "when table is `taxa`" do
       let(:table) { "taxa" }
-      let!(:object) { create :family }
+      let!(:object) { create :any_taxon }
 
       specify { expect(what_links_here_item.owner).to eq object }
     end

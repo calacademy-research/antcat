@@ -12,13 +12,13 @@ describe TypeNameDecorator do
 
     context 'when type taxon does not have a current taxon' do
       context 'when type taxon is valid' do
-        let(:type_taxon) { create :family }
+        let(:type_taxon) { create :any_taxon }
 
         specify { expect(decorated.compact_taxon_status).to eq '' }
       end
 
       context 'when type taxon not is valid' do
-        let(:type_taxon) { create :family, :unavailable }
+        let(:type_taxon) { create :any_taxon, :unavailable }
 
         specify do
           expect(decorated.compact_taxon_status).to eq " (unavailable)"

@@ -30,8 +30,8 @@ describe TaxonHistoryItem do
     end
 
     context 'when taxt contains tax or taxac tags' do
-      let(:taxon_1) { create :family }
-      let(:taxon_2) { create :family }
+      let(:taxon_1) { create :any_taxon }
+      let(:taxon_2) { create :any_taxon }
       let!(:history_item) { create :taxon_history_item, taxt: "{tax #{taxon_1.id}}, {taxac #{taxon_2.id}}" }
 
       it 'returns IDs of taxa referenced in tax and taxac tags' do

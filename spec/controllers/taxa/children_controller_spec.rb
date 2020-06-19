@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Taxa::ChildrenController do
   describe "GET show", as: :visitor do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify { expect(get(:show, params: { taxa_id: taxon.id })).to render_template :show }
   end

@@ -10,7 +10,7 @@ describe Autocomplete::TaxaQuery do
   end
 
   context 'when a taxon ID is given' do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
 
     specify { expect(described_class[taxon.id.to_s]).to eq [taxon] }
   end

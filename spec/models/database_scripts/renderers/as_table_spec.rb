@@ -14,7 +14,7 @@ describe DatabaseScripts::Renderers::AsTable do
   let(:dummy) { AsTableDummy.new }
 
   describe "#render" do
-    let!(:taxon_1) { create :family }
+    let!(:taxon_1) { create :any_taxon }
 
     it 'renders the supplied `results` as an HTML table' do
       rendered =
@@ -42,7 +42,7 @@ describe DatabaseScripts::Renderers::AsTable do
     end
 
     context 'when the block yields a falsey value' do
-      let!(:taxon_2) { create :family }
+      let!(:taxon_2) { create :any_taxon }
 
       it 'skips that row' do
         rendered =

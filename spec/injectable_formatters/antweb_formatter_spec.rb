@@ -16,19 +16,19 @@ describe AntwebFormatter do
   end
 
   describe ".link_to_taxon" do
-    let(:taxon) { build_stubbed :family }
+    let(:taxon) { build_stubbed :any_taxon }
 
     specify { expect(described_class.link_to_taxon(taxon).html_safe?).to eq true }
 
     it "includes 'antcat.org' in the url" do
       expect(described_class.link_to_taxon(taxon)).to eq <<-HTML.squish
-        <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a>
+        <a href="https://www.antcat.org/catalog/#{taxon.id}">#{taxon.name.name}</a>
       HTML
     end
   end
 
   describe ".link_to_taxon_with_label" do
-    let(:taxon) { build_stubbed :family }
+    let(:taxon) { build_stubbed :any_taxon }
 
     specify { expect(described_class.link_to_taxon_with_label(taxon, 'AntCat').html_safe?).to eq true }
 
@@ -40,13 +40,13 @@ describe AntwebFormatter do
   end
 
   describe ".link_to_taxon_with_author_citation" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify { expect(described_class.link_to_taxon_with_author_citation(taxon).html_safe?).to eq true }
 
     specify do
       expect(described_class.link_to_taxon_with_author_citation(taxon)).to eq <<-HTML.squish
-        <a href="https://www.antcat.org/catalog/#{taxon.id}">Formicidae</a> #{taxon.author_citation}
+        <a href="https://www.antcat.org/catalog/#{taxon.id}">#{taxon.name.name}</a> #{taxon.author_citation}
       HTML
     end
   end

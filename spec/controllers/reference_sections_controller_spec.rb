@@ -17,7 +17,7 @@ describe ReferenceSectionsController do
   end
 
   describe "POST create", as: :helper do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
     let!(:reference_section_params) do
       {
         title_taxt: 'title_taxt',

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::TaxaController, as: :visitor do
   describe "GET index" do
     specify do
-      taxon = create :family
+      taxon = create :any_taxon
       get :index
       expect(json_response).to eq([Api::V1::TaxonSerializer.new(taxon).as_json])
     end

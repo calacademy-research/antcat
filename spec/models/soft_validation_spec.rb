@@ -8,19 +8,19 @@ describe SoftValidation do
   let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
 
   describe '#issue_description' do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify { expect(soft_validation.issue_description).to eq database_script.new.issue_description }
   end
 
   describe '#database_script' do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify { expect(soft_validation.database_script).to be_a database_script }
   end
 
   describe '#runtime' do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify { expect(soft_validation.runtime).to be_a Float }
   end
