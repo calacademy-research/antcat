@@ -5,6 +5,8 @@ require 'rails_helper'
 describe Taxon do
   include TestLinksHelpers
 
+  it { is_expected.to be_versioned }
+
   describe 'relations' do
     subject(:taxon) { create :family }
 

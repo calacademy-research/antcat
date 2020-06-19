@@ -16,7 +16,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Ranks of taxa', 'Statuses of taxa'
+        t.header 'Protonym', 'Authorship', 'Ranks of taxa', 'Statuses of taxa', 'Looks like a false positive?'
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
