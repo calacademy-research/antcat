@@ -160,6 +160,9 @@ Rails/BulkChangeTable:
 Rails/ContentTag:
   Enabled: true
 
+Rails/Delegate:
+  Enabled: false
+
 Rails/InverseOf:
   Enabled: false
 

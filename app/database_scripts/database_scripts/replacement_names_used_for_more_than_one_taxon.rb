@@ -8,10 +8,12 @@ module DatabaseScripts
       taxon.homonym_replaced_by_id == RHYTIDOPONERA_CLARKI_ID
     end
 
+    def empty?
+      results_without_false_positives.empty?
+    end
+
     def results
-      Taxon.where(
-        homonym_replaced_by_id: Taxon.group(:homonym_replaced_by_id).having('COUNT(id) > 1').select(:homonym_replaced_by_id)
-      )
+      results_including_false_positives
     end
 
     def render
@@ -28,6 +30,18 @@ module DatabaseScripts
         end
       end
     end
+
+    private
+
+      def results_without_false_positives
+        results_including_false_positives.where.not(homonym_replaced_by_id: RHYTIDOPONERA_CLARKI_ID)
+      end
+
+      def results_including_false_positives
+        Taxon.where(
+          homonym_replaced_by_id: Taxon.group(:homonym_replaced_by_id).having('COUNT(id) > 1').select(:homonym_replaced_by_id)
+        )
+      end
   end
 end
 
