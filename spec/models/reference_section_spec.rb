@@ -10,6 +10,8 @@ describe ReferenceSection do
   end
 
   describe 'callbacks' do
+    it { is_expected.to strip_attributes(:title_taxt, :subtitle_taxt, :references_taxt) }
+
     it_behaves_like "a taxt column with cleanup", :references_taxt do
       subject { build :reference_section }
     end

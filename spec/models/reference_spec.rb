@@ -39,6 +39,9 @@ describe Reference do
   end
 
   describe 'callbacks' do
+    it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
+    it { is_expected.to strip_attributes(:title, :date, :stated_year, :series_volume_issue, :doi, :bolton_key, :author_names_suffix) }
+
     describe "#set_year_from_citation_year" do
       context 'when `citation_year` contains a letter' do
         let(:reference) { create :any_reference, citation_year: '1910a' }

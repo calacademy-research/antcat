@@ -154,6 +154,12 @@ describe Taxon do
     end
   end
 
+  describe 'callbacks' do
+    subject(:taxon) { build_stubbed :family }
+
+    it { is_expected.to strip_attributes(:incertae_sedis_in, :origin) }
+  end
+
   describe "#rank" do
     let!(:taxon) { build_stubbed :subfamily }
 

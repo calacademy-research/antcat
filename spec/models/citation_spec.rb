@@ -15,6 +15,8 @@ describe Citation do
   end
 
   describe 'callbacks' do
+    it { is_expected.to strip_attributes(:notes_taxt, :pages, :forms) }
+
     it_behaves_like "a taxt column with cleanup", :notes_taxt do
       subject { build :citation }
     end
