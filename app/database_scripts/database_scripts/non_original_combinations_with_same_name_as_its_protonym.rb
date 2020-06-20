@@ -35,13 +35,12 @@ tags: []
 issue_description: This obsolete combination has the same name as its protonym, but "Original combination" is not checked.
 
 description: >
-  Taxa where `original_combination` is checked are not included. Check it in the taxon form to clear a taxon from this script
+  **This script can be ignored**, since we do not rely on this data point at the moment, and the flag can be updated by script.
+  It may become more relevant in the future.
 
 
-  Only taxa with the status "original combination" are included here.
-
-
-  Can be fixed by script if all taxa should be changed to have the `original_combination` flag.
+  "Non-original combinations" as is not having the `taxa.original_combination` flag.
+  Only taxa with the status `obsolete combination` are included here.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym

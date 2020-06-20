@@ -29,3 +29,6 @@ category: Protonyms
 tags: []
 
 issue_description: This protonym has duplicated taxa.
+
+description: >
+  Duplicated as in having the same name.

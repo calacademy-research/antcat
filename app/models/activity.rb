@@ -61,7 +61,7 @@ class Activity < ApplicationRecord
   scope :most_recent_first, -> { order(id: :desc) }
   scope :non_automated_edits, -> { where(automated_edit: false) }
   scope :unconfirmed, -> { joins(:user).merge(User.unconfirmed) }
-  scope :wiki_pages, -> { where(trackable_type: 'WikiPage') }
+  scope :wiki_page_activities, -> { where(trackable_type: 'WikiPage') }
 
   has_paper_trail
   serialize :parameters, Hash

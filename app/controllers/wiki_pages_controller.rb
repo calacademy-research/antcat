@@ -6,7 +6,7 @@ class WikiPagesController < ApplicationController
 
   def index
     @wiki_pages = WikiPage.order(:title).paginate(page: params[:page], per_page: 30)
-    @recent_activities = Activity.wiki_pages.most_recent_first.limit(5).includes(:user)
+    @recent_activities = Activity.wiki_page_activities.most_recent_first.limit(5).includes(:user)
   end
 
   def show
