@@ -4,8 +4,8 @@ require 'rails_helper'
 
 describe Taxa::Operations::MoveItems do
   describe "#call" do
-    let!(:from_taxon) { create :family }
-    let!(:to_taxon) { create :family }
+    let!(:from_taxon) { create :any_taxon }
+    let!(:to_taxon) { create :any_taxon }
     let!(:history_item) { create :taxon_history_item, taxon: from_taxon }
 
     it 'moves history items from a taxon to another' do

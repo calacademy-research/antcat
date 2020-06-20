@@ -10,7 +10,7 @@ describe Taxa::ReorderReferenceSectionsController do
   end
 
   describe "POST create", as: :editor do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
     let(:reordered_ids) { [second.id.to_s, first.id.to_s] }
     let!(:first) { taxon.reference_sections.create! }
     let!(:second) { taxon.reference_sections.create! }

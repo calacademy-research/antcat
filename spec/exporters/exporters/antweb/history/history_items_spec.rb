@@ -9,13 +9,13 @@ describe Exporters::Antweb::History::HistoryItems do
     let(:header) { "<p><b>Taxonomic history</b></p>" }
 
     context 'when taxon has no history items' do
-      let(:taxon) { build_stubbed :family }
+      let(:taxon) { build_stubbed :any_taxon }
 
       specify { expect(described_class[taxon]).to eq nil }
     end
 
     context 'when taxon has history items' do
-      let(:taxon) { create :family }
+      let(:taxon) { create :any_taxon }
 
       before do
         create :taxon_history_item, taxon: taxon, taxt: "Taxon: {tax #{taxon.id}}"

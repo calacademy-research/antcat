@@ -132,7 +132,7 @@ describe Catalog::AdvancedSearchQuery do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = create :any_reference,
           author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
-        taxon = create :family
+        taxon = create :any_taxon
         taxon.protonym.authorship.update!(reference: reference)
 
         expect(described_class[author_name: 'Fisher']).to eq [taxon]
@@ -226,8 +226,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by status" do
-      let!(:valid) { create :family, :valid }
-      let!(:synonym) { create :family, :synonym }
+      let!(:valid) { create :any_taxon, :valid }
+      let!(:synonym) { create :any_taxon, :synonym }
 
       specify do
         expect(described_class[status: 'valid']).to eq [valid]
@@ -240,8 +240,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by fossil" do
-      let!(:extant) { create :family }
-      let!(:fossil) { create :family, :fossil }
+      let!(:extant) { create :any_taxon }
+      let!(:fossil) { create :any_taxon, :fossil }
 
       specify { expect(described_class[fossil: "", dummy: "x"]).to match_array [extant, fossil] }
       specify { expect(described_class[fossil: "true"]).to eq [fossil] }
@@ -249,8 +249,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by nomen nudum" do
-      let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, :unavailable, nomen_nudum: true }
+      let!(:no_match) { create :any_taxon }
+      let!(:yes_match) { create :any_taxon, :unavailable, nomen_nudum: true }
 
       specify { expect(described_class[nomen_nudum: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[nomen_nudum: "true"]).to eq [yes_match] }
@@ -258,8 +258,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by unresolved junior homonym" do
-      let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, :unresolved_homonym }
+      let!(:no_match) { create :any_taxon }
+      let!(:yes_match) { create :any_taxon, :unresolved_homonym }
 
       specify { expect(described_class[unresolved_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[unresolved_homonym: "true"]).to eq [yes_match] }
@@ -267,8 +267,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by ichnotaxon" do
-      let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, :fossil, ichnotaxon: true }
+      let!(:no_match) { create :any_taxon }
+      let!(:yes_match) { create :any_taxon, :fossil, ichnotaxon: true }
 
       specify { expect(described_class[ichnotaxon: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }
@@ -276,8 +276,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by Hong" do
-      let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, hong: true }
+      let!(:no_match) { create :any_taxon }
+      let!(:yes_match) { create :any_taxon, hong: true }
 
       specify { expect(described_class[hong: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[hong: "true"]).to eq [yes_match] }
@@ -285,8 +285,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by collective group name" do
-      let!(:no_match) { create :family }
-      let!(:yes_match) { create :family, :fossil, collective_group_name: true }
+      let!(:no_match) { create :any_taxon }
+      let!(:yes_match) { create :any_taxon, :fossil, collective_group_name: true }
 
       specify { expect(described_class[collective_group_name: "", dummy: "x"]).to match_array [no_match, yes_match] }
       specify { expect(described_class[collective_group_name: "true"]).to eq [yes_match] }

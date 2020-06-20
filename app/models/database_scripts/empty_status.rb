@@ -9,20 +9,21 @@ module DatabaseScripts
     attr_private_initialize :database_script
 
     def call
-      empty_status
+      return database_script.empty_status if database_script.respond_to?(:empty_status)
+      return empty_status_string(database_script.empty?) if database_script.respond_to?(:empty?)
+      return '??' unless database_script.respond_to?(:results)
+      return 'Excluded (slow/list)' if list? || slow?
+
+      empty_status_string database_script.results.any?
     end
 
     private
 
-      def empty_status
-        return database_script.empty_status if database_script.respond_to?(:empty_status)
-        return '??' unless database_script.respond_to?(:results)
-        return 'Excluded (slow/list)' if list? || slow?
-
-        if database_script.results.any?
-          'Not empty'
-        else
+      def empty_status_string is_empty
+        if is_empty
           'Empty'
+        else
+          'Not empty'
         end
       end
 

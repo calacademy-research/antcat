@@ -6,6 +6,7 @@ class Rank
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
   TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
+  SPECIES_GROUP_NAME_TYPES = %w[Species Subspecies Infrasubspecies]
   CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
   CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
   INCERTAE_SEDIS_IN_RANKS = [

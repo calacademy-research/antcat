@@ -6,7 +6,7 @@ describe SoftValidationDecorator do
   let(:decorated) { soft_validation.decorate }
 
   describe "#format_runtime" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
     let(:soft_validation) { SoftValidation.run(taxon, database_script) }
     let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
 
@@ -14,7 +14,7 @@ describe SoftValidationDecorator do
   end
 
   describe "#format_runtime_percent" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
     let(:soft_validation) { SoftValidation.run(taxon, database_script) }
     let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
 

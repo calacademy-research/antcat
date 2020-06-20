@@ -39,4 +39,8 @@ describe TypeName do
       end
     end
   end
+
+  describe 'callbacks' do
+    it { is_expected.to strip_attributes(:fixation_method, :pages) }
+  end
 end

@@ -163,7 +163,7 @@ describe ProtonymsController do
     context 'when protonym has references to it' do
       context 'when protonym has a taxon' do
         before do
-          create :family, protonym: protonym
+          create :any_taxon, protonym: protonym
         end
 
         specify do

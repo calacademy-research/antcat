@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "strip_attributes/matchers"
+
 RSpec::Expectations.configuration.warn_about_potential_false_positives = false
 
 RSpec.configure do |config|
@@ -73,6 +75,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include JsonResponseHelper, type: :controller
   config.include Devise::Test::IntegrationHelpers, type: :request
+  config.include StripAttributes::Matchers, type: :model
 
   RSpec::Matchers.define_negated_matcher :not_change, :change
   RSpec::Support::ObjectFormatter.default_instance.max_formatted_output_length = 9999

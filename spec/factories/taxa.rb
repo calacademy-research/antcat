@@ -4,7 +4,7 @@
 # TODO: Assign fossil status of `Taxon` associations per the initial factory.
 
 FactoryBot.define do
-  factory :base_taxon do
+  factory :base_taxon, class: 'Taxon' do
     transient do
       name_string {}
     end
@@ -19,7 +19,7 @@ FactoryBot.define do
 
     valid
 
-    factory :family, class: 'Family' do
+    factory :family, class: 'Family', aliases: [:any_taxon] do
       association :name, factory: :family_name
       genus_group_name_protonym
     end

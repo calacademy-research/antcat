@@ -8,7 +8,7 @@ describe TaxonDecorator do
   let(:decorated) { taxon.decorate }
 
   describe "#link_to_taxon_with_author_citation" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify do
       expect(decorated.link_to_taxon_with_author_citation).to eq <<~HTML.squish
@@ -18,7 +18,7 @@ describe TaxonDecorator do
   end
 
   describe "#id_and_name_and_author_citation" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
 
     specify do
       expect(decorated.id_and_name_and_author_citation).to eq <<~HTML.squish

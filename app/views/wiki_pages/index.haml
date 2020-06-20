@@ -19,5 +19,5 @@
 
 .row.huge-margin-top
   .large-12.columns
-    %h5 Most recent edits (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
+    %h5 Most recent activity (#{link_to "see more", activities_path(trackable_type: 'WikiPage')})
     =render "activities/table", activities: @recent_activities

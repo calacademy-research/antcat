@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe Rank do
+  describe 'constants' do
+    it "convers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
+      expect(described_class::TYPES_ABOVE_SPECIES + described_class::SPECIES_GROUP_NAME_TYPES).to eq described_class::TYPES
+    end
+  end
+
   describe ".italic?" do
     specify do
       expect(described_class.italic?('family')).to eq false

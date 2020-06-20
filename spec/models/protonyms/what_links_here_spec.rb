@@ -14,7 +14,7 @@ describe Protonyms::WhatLinksHere do
 
   context 'when there are column references' do
     let!(:protonym) { create :protonym }
-    let!(:taxon) { create :family, protonym: protonym }
+    let!(:taxon) { create :any_taxon, protonym: protonym }
 
     specify do
       expect(what_links_here.all).to match_array [

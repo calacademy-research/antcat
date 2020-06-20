@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Taxa::Operations::ReorderHistoryItems do
   describe "#call" do
-    let(:taxon) { create :family }
+    let(:taxon) { create :any_taxon }
     let(:original_order) { item_ids taxon }
     let!(:first) { taxon.history_items.create!(taxt: "A") }
     let!(:second) { taxon.history_items.create!(taxt: "B") }

@@ -6,11 +6,11 @@ describe Taxa::ExpandedStatus do
   include TestLinksHelpers
 
   describe "#call" do
-    specify { expect(described_class[build_stubbed(:family)].html_safe?).to eq true }
+    specify { expect(described_class[build_stubbed(:any_taxon)].html_safe?).to eq true }
 
     describe 'main status' do
       context "when taxon status is 'valid'" do
-        let(:taxon) { build_stubbed :family }
+        let(:taxon) { build_stubbed :any_taxon }
 
         specify { expect(described_class[taxon]).to eq 'valid' }
       end
@@ -26,7 +26,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'homonym'" do
-        let!(:taxon) { build_stubbed :family, :homonym }
+        let!(:taxon) { build_stubbed :any_taxon, :homonym }
 
         specify do
           expect(described_class[taxon]).
@@ -35,19 +35,19 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'unidentifiable'" do
-        let!(:taxon) { build_stubbed :family, :unidentifiable }
+        let!(:taxon) { build_stubbed :any_taxon, :unidentifiable }
 
         specify { expect(described_class[taxon]).to eq "unidentifiable" }
       end
 
       context "when taxon status is 'unavailable'" do
-        let!(:taxon) { build_stubbed :family, :unavailable }
+        let!(:taxon) { build_stubbed :any_taxon, :unavailable }
 
         specify { expect(described_class[taxon]).to eq "unavailable" }
       end
 
       context "when taxon status is 'excluded from Formicidae'" do
-        let!(:taxon) { build_stubbed :family, :excluded_from_formicidae }
+        let!(:taxon) { build_stubbed :any_taxon, :excluded_from_formicidae }
 
         specify { expect(described_class[taxon]).to eq "excluded from Formicidae" }
       end
@@ -63,8 +63,8 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'unavailable misspelling'" do
-        let!(:current_taxon) { create :family }
-        let!(:taxon) { build_stubbed :family, :unavailable_misspelling, current_taxon: current_taxon }
+        let!(:current_taxon) { create :any_taxon }
+        let!(:taxon) { build_stubbed :any_taxon, :unavailable_misspelling, current_taxon: current_taxon }
 
         specify do
           expect(described_class[taxon]).to eq "a misspelling of #{taxon_link_with_author_citation(current_taxon)}"
@@ -72,8 +72,8 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'unavailable uncategorized'" do
-        let!(:current_taxon) { create :family }
-        let!(:taxon) { build_stubbed :family, :unavailable_uncategorized, current_taxon: current_taxon }
+        let!(:current_taxon) { create :any_taxon }
+        let!(:taxon) { build_stubbed :any_taxon, :unavailable_uncategorized, current_taxon: current_taxon }
 
         specify do
           expect(described_class[taxon]).to eq "see #{taxon_link_with_author_citation(current_taxon)}"
@@ -89,21 +89,21 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon is a nomen nudum" do
-        let!(:taxon) { build_stubbed :family, :unavailable, nomen_nudum: true }
+        let!(:taxon) { build_stubbed :any_taxon, :unavailable, nomen_nudum: true }
 
         specify { expect(described_class[taxon]).to eq "<i>nomen nudum</i>, #{taxon.status}" }
       end
 
       context "when taxon is an unresolved homonym" do
         context "when there is no current taxon" do
-          let(:taxon) { build_stubbed :family, :unresolved_homonym }
+          let(:taxon) { build_stubbed :any_taxon, :unresolved_homonym }
 
           specify { expect(described_class[taxon]).to eq "unresolved junior homonym, #{taxon.status}" }
         end
 
         context "when there is a current taxon" do
-          let(:senior) { create :genus }
-          let(:taxon) { build_stubbed :family, :synonym, :unresolved_homonym, current_taxon: senior }
+          let(:senior) { create :any_taxon }
+          let(:taxon) { build_stubbed :any_taxon, :synonym, :unresolved_homonym, current_taxon: senior }
 
           specify do
             expect(described_class[taxon]).
@@ -113,13 +113,13 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon is a collective group name" do
-        let(:taxon) { build_stubbed :family, collective_group_name: true }
+        let(:taxon) { build_stubbed :any_taxon, collective_group_name: true }
 
         specify { expect(described_class[taxon]).to eq "collective group name, #{taxon.status}" }
       end
 
       context "when taxon is an ichnotaxon" do
-        let(:taxon) { build_stubbed :family, ichnotaxon: true }
+        let(:taxon) { build_stubbed :any_taxon, ichnotaxon: true }
 
         specify { expect(described_class[taxon]).to eq "#{taxon.status}, ichnotaxon" }
       end

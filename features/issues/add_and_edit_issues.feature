@@ -85,7 +85,7 @@ Feature: Add and edit open issues
     When I go to the open issues page
     Then I should see "There are currently no open issues."
 
-    When I follow "Add taxa from Aldous 2007"
+    When I follow the first "Add taxa from Aldous 2007"
     And I follow "Re-open"
     Then I should see "Successfully re-opened issue"
     And I should see "Open issue: Add taxa from Aldous 2007"

@@ -12,8 +12,8 @@ class Name < ApplicationRecord
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
 
-  validates :name, :epithet, presence: true
-  validates :name, :epithet,
+  validates :name, presence: true
+  validates :name,
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" },
     unless: -> { name.blank? }
   validate :ensure_no_spaces_in_single_word_names
@@ -27,7 +27,7 @@ class Name < ApplicationRecord
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
 
   has_paper_trail
-  strip_attributes replace_newlines: true
+  strip_attributes only: [:name, :epithet, :gender, :origin], replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 
   # NOTE: This may make code harder to debug, but we don't want to have to manually specify epithets,

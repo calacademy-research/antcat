@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Catalog::RandomController do
   describe 'GET show', as: :visitor do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
 
     it "redirects to a random catalog page" do
       get :show

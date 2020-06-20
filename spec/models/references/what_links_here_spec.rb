@@ -13,7 +13,7 @@ describe References::WhatLinksHere do
   end
 
   context 'when there are column references' do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
     let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
     let!(:type_name) { create :type_name, :by_subsequent_designation_of, reference: reference }
 

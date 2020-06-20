@@ -146,7 +146,7 @@ describe ActivityDecorator do
       end
 
       it "allows custom paths" do
-        activity = build_stubbed :activity, trackable: build_stubbed(:family)
+        activity = build_stubbed :activity, trackable: build_stubbed(:any_taxon)
 
         results = decorated.link_trackable_if_exists "label", path: "/catalog/#{activity.trackable_id}"
         expect(results).to eq %(<a href="/catalog/#{activity.trackable_id}">label</a>)

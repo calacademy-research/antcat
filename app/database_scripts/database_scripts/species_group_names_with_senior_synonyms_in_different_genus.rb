@@ -30,7 +30,7 @@ __END__
 
 title: Species-group names with senior synonyms in different genus
 
-section: main
+section: research
 category: Catalog
 tags: [new!]
 

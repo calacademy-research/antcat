@@ -44,7 +44,7 @@ describe WhatLinksHereItemDecorator do
 
   context "when table is `taxa`" do
     let(:table) { "taxa" }
-    let!(:object) { create :family }
+    let!(:object) { create :any_taxon }
 
     specify { expect(decorated.item_link).to eq %(<a href="/catalog/#{id}">#{id}</a>) }
     specify { expect(decorated.owner_link).to eq taxon_link(object) }

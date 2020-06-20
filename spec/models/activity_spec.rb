@@ -11,6 +11,8 @@ describe Activity do
   end
 
   describe 'callbacks' do
+    it { is_expected.to strip_attributes(:edit_summary) }
+
     it_behaves_like "a model that assigns `request_id` on create" do
       let(:instance) { build :activity }
     end

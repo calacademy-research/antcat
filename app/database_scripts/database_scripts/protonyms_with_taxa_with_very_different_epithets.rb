@@ -19,7 +19,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Epithets of taxa', 'Ranks of taxa', 'Statuses of taxa', 'Taxa'
+        t.header 'Protonym', 'Epithets of taxa', 'Ranks of taxa', 'Statuses of taxa', 'Taxa', 'Looks like a false positive?'
         t.rows do |protonym|
           # To generate false positives list:
           # puts '"' + protonym.taxa.joins(:name).distinct.pluck(:epithet).sort.join(' ') + '",'

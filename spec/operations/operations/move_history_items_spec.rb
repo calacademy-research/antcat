@@ -10,8 +10,8 @@ describe Operations::MoveHistoryItems do
     )
   end
 
-  let!(:from_taxon) { create :family }
-  let!(:to_taxon) { create :family }
+  let!(:from_taxon) { create :any_taxon }
+  let!(:to_taxon) { create :any_taxon }
   let!(:history_item) { create :taxon_history_item, taxon: from_taxon }
   let!(:history_items) { from_taxon.history_items }
 

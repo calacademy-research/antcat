@@ -7,7 +7,7 @@ describe AntwebFormatter::Detax do
 
   describe "#call" do
     describe "tag: `TAX_TAG_REGEX` (taxa)" do
-      let!(:taxon) { create :family }
+      let!(:taxon) { create :any_taxon }
 
       specify do
         expect(described_class["{tax #{taxon.id}}"]).to eq antweb_taxon_link(taxon)
@@ -15,7 +15,7 @@ describe AntwebFormatter::Detax do
     end
 
     describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
-      let!(:taxon) { create :family }
+      let!(:taxon) { create :any_taxon }
 
       specify do
         expect(described_class["{taxac #{taxon.id}}"]).to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"

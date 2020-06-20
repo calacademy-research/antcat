@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Taxa::CollectReferences do
   describe "#call" do
-    let!(:taxon) { create :family }
+    let!(:taxon) { create :any_taxon }
     let!(:reference_1) { create :any_reference }
     let!(:reference_2) { create :any_reference }
     let!(:reference_5) { create :any_reference }
