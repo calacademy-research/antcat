@@ -37,7 +37,7 @@ class Protonym < ApplicationRecord
   scope :order_by_name, -> { joins(:name).order('names.name') }
 
   has_paper_trail
-  strip_attributes only: [:locality, :biogeographic_region], replace_newlines: true
+  strip_attributes only: [:locality, :biogeographic_region, :forms, :notes_taxt], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
@@ -69,7 +69,7 @@ class Protonym < ApplicationRecord
 
     string = +''
     string << "#{authorship.reference.keey}, #{authorship.pages} "
-    string << "(#{authorship.forms}) " if authorship.forms
+    string << "(#{forms}) " if forms
     string << formated_locality + ' ' if formated_locality
     string << biogeographic_region if biogeographic_region
     string
@@ -86,5 +86,6 @@ class Protonym < ApplicationRecord
       self.primary_type_information_taxt = Taxt::Cleanup[primary_type_information_taxt]
       self.secondary_type_information_taxt = Taxt::Cleanup[secondary_type_information_taxt]
       self.type_notes_taxt = Taxt::Cleanup[type_notes_taxt]
+      self.notes_taxt = Taxt::Cleanup[notes_taxt]
     end
 end

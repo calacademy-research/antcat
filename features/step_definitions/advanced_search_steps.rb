@@ -27,8 +27,7 @@ Given("there is a species with biogeographic region {string}") do |biogeographic
 end
 
 Given("there is a species with forms {string}") do |forms|
-  citation = create :citation, forms: forms
-  protonym = create :protonym, :species_group_name, authorship: citation
+  protonym = create :protonym, :species_group_name, forms: forms
   create :species, protonym: protonym
 end
 

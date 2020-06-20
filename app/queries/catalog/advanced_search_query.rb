@@ -132,7 +132,7 @@ module Catalog
 
       def forms_clause relation
         return relation unless (forms = params[:forms])
-        relation.where('citations.forms LIKE ?', "%#{forms}%")
+        relation.where('protonyms.forms LIKE ?', "%#{forms}%")
       end
   end
 end

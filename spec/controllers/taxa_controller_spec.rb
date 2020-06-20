@@ -108,13 +108,13 @@ describe TaxaController do
                 fossil: true,
                 sic: true,
                 locality: "San Francisco",
+                forms: "w.",
                 primary_type_information_taxt: "primary type information",
                 secondary_type_information_taxt: "secondary type information",
                 type_notes_taxt: "type notes",
+                notes_taxt: "notes taxt",
                 authorship_attributes: {
-                  pages: "21 pp.",
-                  forms: "w.",
-                  notes_taxt: "notes taxt"
+                  pages: "21 pp."
                 }
               }
             )
@@ -129,9 +129,11 @@ describe TaxaController do
             expect(protonym.fossil).to eq protonym_attributes[:fossil]
             expect(protonym.sic).to eq protonym_attributes[:sic]
             expect(protonym.locality).to eq protonym_attributes[:locality]
+            expect(protonym.forms).to eq protonym_attributes[:forms]
             expect(protonym.primary_type_information_taxt).to eq protonym_attributes[:primary_type_information_taxt]
             expect(protonym.secondary_type_information_taxt).to eq protonym_attributes[:secondary_type_information_taxt]
             expect(protonym.type_notes_taxt).to eq protonym_attributes[:type_notes_taxt]
+            expect(protonym.notes_taxt).to eq protonym_attributes[:notes_taxt]
           end
 
           it 'sets authorship_attributes' do
@@ -141,8 +143,6 @@ describe TaxaController do
             authorship_attributes = taxon_params[:protonym_attributes][:authorship_attributes]
 
             expect(authorship.pages).to eq authorship_attributes[:pages]
-            expect(authorship.forms).to eq authorship_attributes[:forms]
-            expect(authorship.notes_taxt).to eq authorship_attributes[:notes_taxt]
           end
 
           context 'when `protonym_id` is supplied' do

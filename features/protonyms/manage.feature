@@ -54,7 +54,7 @@ Feature: Manage protonyms
 
     When I follow "Edit"
     And I fill in "protonym_authorship_attributes_pages" with "page 35"
-    And I fill in "protonym_authorship_attributes_forms" with "male"
+    And I fill in "protonym_forms" with "male"
     And I fill in "protonym_locality" with "Lund"
     And I select "Malagasy" from "protonym_biogeographic_region"
     And I press "Save"
@@ -66,7 +66,7 @@ Feature: Manage protonyms
 
     When I follow "Edit"
     Then I fill in "protonym_authorship_attributes_pages" with "page 35"
-    And I fill in "protonym_authorship_attributes_forms" with "male"
+    And I fill in "protonym_forms" with "male"
     And the "protonym_locality" field should contain "Lund"
 
   Scenario: Editing type fields

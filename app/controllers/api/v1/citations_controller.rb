@@ -3,7 +3,7 @@
 module Api
   module V1
     class CitationsController < Api::ApiController
-      ATTRIBUTES = [:id, :reference_id, :pages, :forms, :notes_taxt, :created_at, :updated_at]
+      ATTRIBUTES = [:id, :reference_id, :pages, :created_at, :updated_at]
 
       def index
         render json: with_limit(Citation.all).as_json(only: ATTRIBUTES, root: true)

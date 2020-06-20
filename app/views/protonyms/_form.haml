@@ -75,10 +75,10 @@
 
           %tr
             %td
-              =authorship_fields.label :forms do
+              =f.label :forms do
                 Forms
                 =db_tooltip_icon "forms", scope: :taxa
-            %td=authorship_fields.text_field :forms
+            %td=f.text_field :forms
 
         %tr
           %td
@@ -167,7 +167,7 @@
 
         %tr
           %td=f.label :notes
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[authorship_attributes][notes_taxt]', content: protonym.authorship.notes_taxt, id: :protonym_authorship_notes_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[notes_taxt]', content: protonym.notes_taxt, id: :protonym_notes_taxt
 
   .row
     .large-6.columns

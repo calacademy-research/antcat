@@ -26,7 +26,7 @@ module Taxa
         extract_ref_tags(taxt_content)
       end
 
-      # TODO: Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
+      # TODO: [grep:notes_taxt] Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
       def taxt_content
         string = []
         string << taxon.history_items.pluck(:taxt).join

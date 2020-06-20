@@ -21,6 +21,7 @@ module Exporters
               [
                 protonym_name,
                 authorship(protonym.authorship),
+                (AntwebFormatter.detax(protonym.notes_taxt) if protonym.notes_taxt),
                 ('[sic]' if protonym.sic?),
                 protonym.decorate.format_locality
               ].compact.join(" ").html_safe
@@ -34,11 +35,6 @@ module Exporters
               string = AntwebFormatter.link_to_reference(authorship.reference)
               string << ": "
               string << protonym.decorate.format_pages_and_forms
-
-              if authorship.notes_taxt
-                string << ' ' << AntwebFormatter.detax(authorship.notes_taxt)
-              end
-
               string
             end
         end

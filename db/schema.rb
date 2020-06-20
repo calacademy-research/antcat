@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_17_215601) do
+ActiveRecord::Schema.define(version: 2020_06_17_215602) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(version: 2020_06_17_215601) do
     t.string "biogeographic_region"
     t.boolean "uncertain_locality", default: false, null: false
     t.integer "type_name_id"
+    t.string "forms"
+    t.text "notes_taxt"
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
     t.index ["name_id"], name: "protonyms_name_id_idx"
     t.index ["type_name_id"], name: "index_protonyms_on_type_name_id", unique: true

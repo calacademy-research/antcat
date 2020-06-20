@@ -34,7 +34,7 @@ describe Protonym do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:locality, :biogeographic_region) }
+    it { is_expected.to strip_attributes(:locality, :biogeographic_region, :forms, :notes_taxt) }
     it { is_expected.to strip_attributes(:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
 
     it_behaves_like "a taxt column with cleanup", :primary_type_information_taxt do
@@ -46,6 +46,10 @@ describe Protonym do
     end
 
     it_behaves_like "a taxt column with cleanup", :type_notes_taxt do
+      subject { build :protonym }
+    end
+
+    it_behaves_like "a taxt column with cleanup", :notes_taxt do
       subject { build :protonym }
     end
   end

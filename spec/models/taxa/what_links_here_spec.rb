@@ -40,12 +40,12 @@ describe Taxa::WhatLinksHere do
       let!(:other_taxon) { create :any_taxon }
 
       before do
-        other_taxon.protonym.authorship.update!(notes_taxt: "{tax #{taxon.id}}")
+        other_taxon.protonym.update!(notes_taxt: "{tax #{taxon.id}}")
       end
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('citations', :notes_taxt, other_taxon.protonym.authorship.id)
+          WhatLinksHereItem.new('protonyms', :notes_taxt, other_taxon.protonym.id)
         ]
         expect(what_links_here.all).to match_array what_links_here.taxts
       end
@@ -59,12 +59,12 @@ describe Taxa::WhatLinksHere do
       let!(:other_taxon) { create :any_taxon }
 
       before do
-        other_taxon.protonym.authorship.update!(notes_taxt: "{tax #{taxon.id}}")
+        other_taxon.protonym.update!(notes_taxt: "{tax #{taxon.id}}")
       end
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('citations', :notes_taxt, other_taxon.protonym.authorship.id)
+          WhatLinksHereItem.new('protonyms', :notes_taxt, other_taxon.protonym.id)
         ]
         expect(what_links_here.taxts).to match_array what_links_here.taxts
       end

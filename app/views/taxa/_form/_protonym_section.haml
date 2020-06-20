@@ -25,7 +25,7 @@
           %td=protonym.authorship.pages
         %tr
           %td Forms
-          %td=or_dash protonym.authorship.forms
+          %td=or_dash protonym.forms
         -if (type_name = protonym.type_name)
           %tr
             %td Type name
@@ -50,7 +50,7 @@
           %td=::Types::FormatTypeField[protonym.type_notes_taxt]
         %tr
           %td Notes
-          %td=or_dash Detax[protonym.authorship.notes_taxt]
+          %td=or_dash Detax[protonym.notes_taxt]
   -else
     %h5.callout-header Existing protonym (leave blank if you are creating a new protonym)
     %table.unstriped
@@ -109,10 +109,10 @@
           -if taxon.is_a? SpeciesGroupTaxon
             %tr
               %td
-                =label_tag :forms do
+                =protonym_form.label :forms do
                   Forms
                   =db_tooltip_icon "forms", scope: :taxa
-              %td=authorship_form.text_field :forms
+              %td=protonym_form.text_field :forms
 
           %tr
             %td
@@ -144,4 +144,4 @@
 
           %tr
             %td=form.label :notes_taxt, 'Notes'
-            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][authorship_attributes][notes_taxt]', content: taxon.protonym.authorship.notes_taxt, id: :taxon_protonym_attributes_authorship_attributes_notes_taxt
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt, id: :taxon_protonym_attributes_notes_taxt

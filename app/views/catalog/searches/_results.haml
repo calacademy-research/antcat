@@ -22,9 +22,9 @@
         %td
           =decorated_protonym.link_to_protonym
           .small-text
-            -if taxon.protonym.authorship.forms
+            -if taxon.protonym.forms
               =surround "(", ")" do
-                =taxon.protonym.authorship.forms
+                =taxon.protonym.forms
             =decorated_protonym.format_locality
             =add_period_if_necessary(taxon.protonym.biogeographic_region)
 

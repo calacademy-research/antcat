@@ -10,14 +10,14 @@ module DatabaseScripts
     ]
 
     def results
-      Protonym.joins(:authorship).where.not(citations: { notes_taxt: nil }).includes(:name, :authorship)
+      Protonym.where.not(notes_taxt: nil).includes(:name, :authorship)
     end
 
     def render
       as_table do |t|
         t.header 'Protonym', 'notes_taxt', 'notes_type'
         t.rows do |protonym|
-          notes_taxt = protonym.authorship.notes_taxt
+          notes_taxt = protonym.notes_taxt
 
           [
             protonym.decorate.link_to_protonym,
@@ -45,7 +45,7 @@ category: Inline taxt
 tags: [list]
 
 description: >
-  **Table/column:** `citations.notes_taxt` (called "Notes" in the protonym form)
+  **Table/column:** `protonyms.notes_taxt` called "Notes" in the protonym form)
 
 
   This script was mainly added to investigate how we use the different "inline taxt columns".
