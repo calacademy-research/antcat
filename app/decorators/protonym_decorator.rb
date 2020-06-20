@@ -30,7 +30,7 @@ class ProtonymDecorator < Draper::Decorator
   end
 
   def format_pages_and_forms
-    string = authorship.pages.to_s
+    string = authorship.pages.dup
     string << " (#{authorship.forms})" if authorship.forms
     string
   end
