@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :base_reference do
+  factory :base_reference, class: 'Taxon' do
     transient do
       author_string {}
     end

@@ -4,7 +4,7 @@
 # TODO: Assign fossil status of `Taxon` associations per the initial factory.
 
 FactoryBot.define do
-  factory :base_taxon do
+  factory :base_taxon, class: 'Taxon' do
     transient do
       name_string {}
     end
