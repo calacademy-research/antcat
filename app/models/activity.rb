@@ -62,6 +62,7 @@ class Activity < ApplicationRecord
   scope :non_automated_edits, -> { where(automated_edit: false) }
   scope :unconfirmed, -> { joins(:user).merge(User.unconfirmed) }
   scope :wiki_page_activities, -> { where(trackable_type: 'WikiPage') }
+  scope :issue_activities, -> { where(trackable_type: 'Issue') }
 
   has_paper_trail
   serialize :parameters, Hash

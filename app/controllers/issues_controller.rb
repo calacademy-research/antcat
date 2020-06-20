@@ -6,6 +6,7 @@ class IssuesController < ApplicationController
   def index
     @issues = Issue.by_status_and_date.includes(:user).paginate(page: params[:page])
     @no_open_issues = !Issue.open.exists?
+    @recent_activities = Activity.issue_activities.most_recent_first.limit(5).includes(:user)
   end
 
   def show
