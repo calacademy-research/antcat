@@ -12,10 +12,12 @@ module Api
         :fossil,
         :biogeographic_region,
         :locality,
+        :forms,
         :uncertain_locality,
         :primary_type_information_taxt,
         :secondary_type_information_taxt,
         :type_notes_taxt,
+        :notes_taxt,
         :created_at,
         :updated_at
       ]

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: [grep:notes_taxt].
 # This class is currently only used in `Protonym`, where the association
 # is called `authorship`. I believe the plan was to use this in more places,
 # say in taxt items, but that never happened. We may want to rename
@@ -12,14 +13,6 @@ class Citation < ApplicationRecord
 
   validates :pages, presence: true
 
-  before_validation :cleanup_taxts
-
-  strip_attributes only: [:notes_taxt, :pages, :forms], replace_newlines: true
+  strip_attributes only: [:pages], replace_newlines: true
   has_paper_trail
-
-  private
-
-    def cleanup_taxts
-      self.notes_taxt = Taxt::Cleanup[notes_taxt]
-    end
 end

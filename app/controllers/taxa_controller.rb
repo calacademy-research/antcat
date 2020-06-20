@@ -85,7 +85,7 @@ class TaxaController < ApplicationController
         name_attributes: [:gender],
         protonym_attributes: [
           *ProtonymForm::ATTRIBUTES.map(&:to_sym),
-          { authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id] }
+          { authorship_attributes: [:pages, :reference_id] }
         ]
       )
     end

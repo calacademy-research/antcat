@@ -41,7 +41,7 @@
           %td=@protonym.authorship.pages
         %tr
           %th Forms
-          %td=or_dash @protonym.authorship.forms
+          %td=or_dash @protonym.forms
         -if (type_name = @protonym.type_name)
           %tr
             %th Type name
@@ -66,7 +66,7 @@
           %td=::Types::FormatTypeField[@protonym.type_notes_taxt]
         %tr
           %th Notes
-          %td=or_dash Detax[@protonym.authorship.notes_taxt]
+          %td=or_dash Detax[@protonym.notes_taxt]
 
 -if @protonym.taxa.present?
   .row.margin-bottom

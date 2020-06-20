@@ -215,10 +215,10 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching for forms" do
       it "only returns taxa with those forms" do
-        protonym = create :protonym, :species_group_name, authorship: create(:citation, forms: 'w.q.')
+        protonym = create :protonym, :species_group_name, forms: 'w.q.'
         atta = create :species, protonym: protonym
 
-        protonym = create :protonym, :species_group_name, authorship: create(:citation, forms: 'q.')
+        protonym = create :protonym, :species_group_name, forms: 'q.'
         create :species, protonym: protonym
 
         expect(described_class[forms: 'w.']).to eq [atta]

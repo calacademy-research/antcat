@@ -17,7 +17,7 @@
   =succeed ':' do
     =taxon.authorship_reference.decorate.expandable_reference
   =taxon.protonym.decorate.format_pages_and_forms
-  =Detax[taxon.protonym.authorship.notes_taxt]
+  =Detax[taxon.protonym.notes_taxt]
   =taxon.protonym.decorate.format_locality
   =add_period_if_necessary(taxon.protonym.biogeographic_region)
 

@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.3.0"
+  version: "1.4.0"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -752,6 +752,12 @@ definitions:
         type: string
       locality:
         type: string
+      forms:
+        type: string
+        description: String describing the forms; no standard format
+      notes_taxt:
+        type: string
+        description: Long field with text and notes
       created_at:
         type: string
         format: date-time
@@ -822,12 +828,6 @@ definitions:
       pages:
         type: string
         description: String describing the page range; no standard format
-      forms:
-        type: string
-        description: String describing the forms; no standard format
-      notes_taxt:
-        type: string
-        description: Long field with text and notes
       created_at:
         type: string
         format: date-time

@@ -89,7 +89,7 @@ class ProtonymsController < ApplicationController
     def protonym_params
       params.require(:protonym).permit(
         *ProtonymForm::ATTRIBUTES.map(&:to_sym),
-        authorship_attributes: [:forms, :notes_taxt, :pages, :reference_id],
+        authorship_attributes: [:pages, :reference_id],
         type_name_attributes: [:taxon_id, :fixation_method, :pages, :reference_id]
       )
     end

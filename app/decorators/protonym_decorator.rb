@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProtonymDecorator < Draper::Decorator
-  delegate :locality, :uncertain_locality?, :authorship, :name, :fossil?
+  delegate :locality, :uncertain_locality?, :forms, :authorship, :name, :fossil?
 
   def link_to_protonym
     h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym'
@@ -31,7 +31,7 @@ class ProtonymDecorator < Draper::Decorator
 
   def format_pages_and_forms
     string = authorship.pages.dup
-    string << " (#{authorship.forms})" if authorship.forms
+    string << " (#{forms})" if forms
     string
   end
 end

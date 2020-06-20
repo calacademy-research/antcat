@@ -32,13 +32,13 @@ describe ProtonymsController do
         sic: false,
         biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
+        forms: 'worker',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
         type_notes_taxt: "type notes",
+        notes_taxt: 'see Lasius',
         authorship_attributes: {
           pages: '99',
-          forms: 'worker',
-          notes_taxt: 'see Lasius',
           reference_id: create(:any_reference).id
         }
       }
@@ -58,14 +58,14 @@ describe ProtonymsController do
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.locality).to eq protonym_params[:locality]
       expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
+      expect(protonym.forms).to eq protonym_params[:forms]
       expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
       expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
       expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
+      expect(protonym.notes_taxt).to eq protonym_params[:notes_taxt]
 
       authorship = protonym.authorship
       expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
-      expect(authorship.forms).to eq protonym_params[:authorship_attributes][:forms]
-      expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
 
@@ -89,13 +89,13 @@ describe ProtonymsController do
         sic: false,
         biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
+        forms: 'worker',
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
         type_notes_taxt: "type notes",
+        notes_taxt: 'see Lasius',
         authorship_attributes: {
           pages: '99',
-          forms: 'worker',
-          notes_taxt: 'see Lasius',
           reference_id: create(:any_reference).id
         }
       }
@@ -109,14 +109,14 @@ describe ProtonymsController do
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
       expect(protonym.locality).to eq protonym_params[:locality]
+      expect(protonym.forms).to eq protonym_params[:forms]
       expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
       expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
       expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
+      expect(protonym.notes_taxt).to eq protonym_params[:notes_taxt]
 
       authorship = protonym.authorship
       expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
-      expect(authorship.forms).to eq protonym_params[:authorship_attributes][:forms]
-      expect(authorship.notes_taxt).to eq protonym_params[:authorship_attributes][:notes_taxt]
       expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
     end
 

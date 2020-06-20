@@ -21,13 +21,13 @@ describe WhatLinksHereItem do
   describe '#taxt?' do
     context 'when `what_links_here_item` is a taxt item' do
       specify do
-        expect(described_class.new('citations', :notes_taxt, 999).taxt?).to eq true
         expect(described_class.new('reference_sections', :references_taxt, 999).taxt?).to eq true
         expect(described_class.new('reference_sections', :subtitle_taxt, 999).taxt?).to eq true
         expect(described_class.new('reference_sections', :title_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :primary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :secondary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :type_notes_taxt, 999).taxt?).to eq true
+        expect(described_class.new('protonyms', :notes_taxt, 999).taxt?).to eq true
         expect(described_class.new('taxon_history_items', :taxt, 999).taxt?).to eq true
       end
     end

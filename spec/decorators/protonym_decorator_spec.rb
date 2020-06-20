@@ -33,11 +33,10 @@ describe ProtonymDecorator do
 
   describe "#format_pages_and_forms" do
     context 'when protonym has `forms`' do
-      let(:citation) { build_stubbed :citation, forms: 'w.' }
-      let(:protonym) { build_stubbed :protonym, authorship: citation }
+      let(:protonym) { build_stubbed :protonym, forms: 'w.' }
 
       specify do
-        expect(protonym.decorate.format_pages_and_forms).to eq "#{protonym.authorship.pages} (#{citation.forms})"
+        expect(protonym.decorate.format_pages_and_forms).to eq "#{protonym.authorship.pages} (#{protonym.forms})"
       end
     end
   end

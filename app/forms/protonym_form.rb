@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-class ProtonymForm
+class ProtonymForm # rubocop:disable Metrics/ClassLength
   include ActiveModel::Model
 
   ATTRIBUTES = %w[
     biogeographic_region
+    forms
     fossil
     locality
     sic
@@ -13,6 +14,7 @@ class ProtonymForm
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt
+    notes_taxt
   ]
 
   attr_reader :protonym

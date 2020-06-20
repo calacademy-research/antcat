@@ -36,14 +36,13 @@ describe References::WhatLinksHere do
     describe "tag: `ref`" do
       let(:ref_tag) { "{ref #{reference.id}}" }
 
-      let!(:citation) { create :citation, reference: reference, notes_taxt: ref_tag }
+      let!(:protonym) { create :protonym, notes_taxt: ref_tag }
       let!(:history_item) { create :taxon_history_item, taxt: ref_tag }
       let!(:reference_section) { create :reference_section, title_taxt: ref_tag, subtitle_taxt: ref_tag, references_taxt: ref_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('citations',           :notes_taxt,          citation.id),
-          WhatLinksHereItem.new('citations',           :reference_id,        citation.id),
+          WhatLinksHereItem.new('protonyms',           :notes_taxt,          protonym.id),
           WhatLinksHereItem.new('reference_sections',  :title_taxt,          reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,       reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :references_taxt,     reference_section.id),
