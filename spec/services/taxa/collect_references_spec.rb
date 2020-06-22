@@ -10,12 +10,14 @@ describe Taxa::CollectReferences do
     let!(:reference_5) { create :any_reference }
     let!(:reference_6) { create :any_reference }
     let!(:reference_7) { create :any_reference }
+    let!(:reference_8) { create :any_reference }
 
     before do
       taxon.protonym.update!(
         primary_type_information_taxt: "see {ref #{reference_5.id}}",
         secondary_type_information_taxt: "see {ref #{reference_6.id}}",
-        type_notes_taxt: "see {ref #{reference_7.id}}"
+        type_notes_taxt: "see {ref #{reference_7.id}}",
+        notes_taxt: "see {ref #{reference_8.id}}"
       )
 
       create :taxon_history_item, taxon: taxon, taxt: "see {ref #{reference_1.id}}"
@@ -29,7 +31,8 @@ describe Taxa::CollectReferences do
         reference_2,
         reference_5,
         reference_6,
-        reference_7
+        reference_7,
+        reference_8
       ]
     end
   end

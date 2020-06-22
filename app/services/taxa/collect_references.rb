@@ -26,7 +26,6 @@ module Taxa
         extract_ref_tags(taxt_content)
       end
 
-      # TODO: [grep:notes_taxt] Include `taxa.protonym.notes_taxt` once it has been moved from the `citations` table.
       def taxt_content
         string = []
         string << taxon.history_items.pluck(:taxt).join
@@ -34,6 +33,7 @@ module Taxa
         string << (taxon.protonym.primary_type_information_taxt || '')
         string << (taxon.protonym.secondary_type_information_taxt || '')
         string << (taxon.protonym.type_notes_taxt || '')
+        string << (taxon.protonym.notes_taxt || '')
         string.join
       end
 
