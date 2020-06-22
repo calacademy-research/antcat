@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Rank do
   describe 'constants' do
-    it "convers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
+    it "covers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
       expect(described_class::TYPES_ABOVE_SPECIES + described_class::SPECIES_GROUP_NAME_TYPES).to eq described_class::TYPES
     end
   end
@@ -41,17 +41,17 @@ describe Rank do
 
   describe ".genus_group_name?" do
     specify do
-      expect(described_class.genus_group_name?('family')).to eq false
-      expect(described_class.genus_group_name?('subfamily')).to eq false
-      expect(described_class.genus_group_name?('tribe')).to eq false
-      expect(described_class.genus_group_name?('subtribe')).to eq false
+      expect(described_class.genus_group_name?('Family')).to eq false
+      expect(described_class.genus_group_name?('Subfamily')).to eq false
+      expect(described_class.genus_group_name?('Tribe')).to eq false
+      expect(described_class.genus_group_name?('Subtribe')).to eq false
 
-      expect(described_class.genus_group_name?('genus')).to eq true
-      expect(described_class.genus_group_name?('subgenus')).to eq true
+      expect(described_class.genus_group_name?('Genus')).to eq true
+      expect(described_class.genus_group_name?('Subgenus')).to eq true
 
-      expect(described_class.genus_group_name?('species')).to eq false
-      expect(described_class.genus_group_name?('subspecies')).to eq false
-      expect(described_class.genus_group_name?('infrasubspecies')).to eq false
+      expect(described_class.genus_group_name?('Species')).to eq false
+      expect(described_class.genus_group_name?('Subspecies')).to eq false
+      expect(described_class.genus_group_name?('Infrasubspecies')).to eq false
     end
   end
 end
