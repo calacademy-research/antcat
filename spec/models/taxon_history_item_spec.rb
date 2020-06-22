@@ -15,7 +15,7 @@ describe TaxonHistoryItem do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:rank) }
+    it { is_expected.to strip_attributes(:taxt, :rank) }
 
     it_behaves_like "a taxt column with cleanup", :taxt do
       subject { build :taxon_history_item }

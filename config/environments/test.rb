@@ -38,8 +38,13 @@ Rails.application.configure do
   config.action_mailer.default_url_options = { host: "antcat.local" }
   config.action_mailer.perform_caching = false
 
-  config.logger = Logger.new(nil)
-  config.log_level = :fatal
+  if ENV['DLL']
+    config.logger = Logger.new(STDOUT)
+    config.log_level = :debug
+  else
+    config.logger = Logger.new(nil)
+    config.log_level = :fatal
+  end
 
   # Tell Action Mailer not to deliver emails to the real world.
   # The :test delivery method accumulates sent emails in the

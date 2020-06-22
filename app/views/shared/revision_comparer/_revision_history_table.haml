@@ -51,6 +51,7 @@
             %td
               -# TODO: Link activity like in `PaperTrail::VersionDecorator#activity_link`.
               -if revision.request_uuid
+                -# TODO: Move link one row up, as the `uuid` shows where a record stopped looking a certain way.
                 =link_to 'uuid', versions_path(request_uuid: revision.request_uuid), class: "btn-normal btn-tiny"
 
     =button_tag "Compare selected revisions", name: nil, class: "btn-normal"

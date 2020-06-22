@@ -61,8 +61,6 @@ class TaxonHistoryItem < ApplicationRecord
 
   before_validation :cleanup_taxts
 
-  strip_attributes only: [:rank], replace_newlines: true
-
   scope :persisted, -> { where.not(id: nil) }
 
   # :nocov:
@@ -77,7 +75,7 @@ class TaxonHistoryItem < ApplicationRecord
 
   acts_as_list scope: :taxon
   has_paper_trail
-  strip_attributes only: [:taxt], replace_newlines: true
+  strip_attributes only: [:taxt, :rank], replace_newlines: true
   trackable parameters: proc { { taxon_id: taxon_id } }
 
   def self.search search_query, search_type

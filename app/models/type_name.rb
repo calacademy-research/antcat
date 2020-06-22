@@ -19,7 +19,7 @@ class TypeName < ApplicationRecord
     unless: :by_subsequent_designation_of_fixation_method?
 
   has_paper_trail
-  strip_attributes only: [:fixation_method, :pages]
+  strip_attributes only: [:fixation_method, :pages], replace_newlines: true
 
   private
 
