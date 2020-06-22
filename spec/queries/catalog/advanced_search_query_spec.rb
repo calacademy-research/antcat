@@ -82,17 +82,17 @@ describe Catalog::AdvancedSearchQuery do
       let!(:l_fusca) { create :species, name_string: 'Lasius fusca' }
 
       specify do
-        expect(described_class[name: 'fusca', name_search_type: 'contains']).
+        expect(described_class[name: 'fusca', name_search_type: described_class::NAME_CONTAINS]).
           to match_array [f_fusca, f_fusca_rufa, l_fusca]
       end
 
       specify do
-        expect(described_class[name: 'Formica fusca', name_search_type: 'matches']).
+        expect(described_class[name: 'Formica fusca', name_search_type: described_class::NAME_MATCHES]).
           to eq [f_fusca]
       end
 
       specify do
-        expect(described_class[name: 'Formica fusca', name_search_type: 'begins_with']).
+        expect(described_class[name: 'Formica fusca', name_search_type: described_class::NAME_BEGINS_WITH]).
           to match_array [f_fusca, f_fusca_rufa]
       end
 
