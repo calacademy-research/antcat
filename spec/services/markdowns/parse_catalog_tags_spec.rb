@@ -89,5 +89,15 @@ describe Markdowns::ParseCatalogTags do
           to eq 'in family <span class="logged-in-only-gray-bold-notice">Pices</span>'
       end
     end
+
+    describe "tag: `MISSPELLING_TAG_REGEX` (misspelled hardcoded taxon names)" do
+      it 'renders the hardcoded name' do
+        expect(described_class["Homonym of {misspelling <i>Decamera</i>}"]).
+          to eq 'Homonym of <span class="logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
+
+        expect(described_class["in family {misspelling Pices}"]).
+          to eq 'in family <span class="logged-in-only-gray-bold-notice">Pices</span>'
+      end
+    end
   end
 end

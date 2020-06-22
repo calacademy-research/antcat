@@ -20,6 +20,7 @@ module Markdowns
 
       parse_missing_tags
       parse_unmissing_tags
+      parse_misspelling_tags
 
       content
     end
@@ -117,6 +118,14 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_unmissing_tags
         content.gsub!(Taxt::UNMISSING_TAG_REGEX) do
+          %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+        end
+      end
+
+      # Matches: {misspelling hardcoded name}, which may contain "<i>" tags.
+      # Renders: hardcoded name.
+      def parse_misspelling_tags
+        content.gsub!(Taxt::MISSPELLING_TAG_REGEX) do
           %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end

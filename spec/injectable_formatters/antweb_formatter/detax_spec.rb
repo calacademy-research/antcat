@@ -44,5 +44,12 @@ describe AntwebFormatter::Detax do
         expect(described_class["in family {unmissing Pices}"]).to eq "in family Pices"
       end
     end
+
+    describe "tag: `MISSPELLING_TAG_REGEX` (misspelled hardcoded taxon names)" do
+      it 'renders the hardcoded name' do
+        expect(described_class["Synonym of {misspelling <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
+        expect(described_class["in family {misspelling Pices}"]).to eq "in family Pices"
+      end
+    end
   end
 end
