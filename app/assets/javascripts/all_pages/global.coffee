@@ -55,11 +55,15 @@ AntCat.enableTaxonLinksHoverPreview = (element) ->
         $(this).append AntCat.taxonHoverPreviewContent(preview)
         AntCat.taxonLinksHoverPreviewCached[href] = preview
 
+AntCat.escapeRegExp = (string) ->
+  string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
 # For at.js. Super comlicated way of saying "allow spaces and some other characters".
+# Based on https://github.com/ichord/At.js/blob/a627b5fcac22c35d52b7fb6d8a93181d2546f3c0/src/default.coffee#L46-L58
 AntCat.allowSpacesWhileAutocompleting = (flag, subtext) ->
   # "c0-1ff" contains the range of weird diacrited letters starting at "À" and ending at "ǿ".
   # See http://qaz.wtf/u/show.cgi?show=c0-1ff&type=hex and https://unicode-table.com/en/#basic-latin
-  regexp = new RegExp(flag + '([A-Za-z0-9&_.,:\\u00c0-\\u01ff \+\-\]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
+  regexp = new RegExp(flag + '([A-Za-z0-9()&_.,:\\u00c0-\\u01ff \+\-]*)$|' + flag + '([^\\x00-\\xff]*)$', 'gi')
 
   match = regexp.exec(subtext)
   if match
