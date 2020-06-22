@@ -15,7 +15,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
 
   describe "GET show" do
     let!(:protonym) do
-      create :protonym, :with_type_name, :with_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA"
+      create :protonym, :with_type_name, :with_all_taxts, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA"
     end
 
     specify do

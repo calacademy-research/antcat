@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Taxa::WhatLinksHere do
   subject(:what_links_here) { described_class.new(taxon) }
 
-  let!(:taxon) { create :genus }
-
   context "when there are no references" do
+    let(:taxon) { create :any_taxon }
+
     specify { expect(what_links_here.all).to be_empty }
     specify { expect(what_links_here.any?).to eq false }
     specify { expect(what_links_here.columns).to be_empty }
@@ -17,17 +17,15 @@ describe Taxa::WhatLinksHere do
   end
 
   context 'when there are column references' do
-    subject(:what_links_here) { described_class.new(taxon.subfamily) }
-
-    let!(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: taxon.subfamily }
+    let(:taxon) { create :genus }
+    let!(:species) { create :species, genus: taxon }
+    let!(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: taxon }
 
     specify do
       expect(what_links_here.all).to match_array [
-        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.id),
-        WhatLinksHereItem.new('taxa', :subfamily_id, taxon.tribe.id),
-        WhatLinksHereItem.new('type_names', :taxon_id, type_name.id)
+        WhatLinksHereItem.new('taxa',       :genus_id,       species.id),
+        WhatLinksHereItem.new('type_names', :taxon_id,       type_name.id)
       ]
-      expect(what_links_here.all).to match_array what_links_here.columns
     end
 
     specify { expect(what_links_here.any?).to eq true }
@@ -36,18 +34,26 @@ describe Taxa::WhatLinksHere do
   end
 
   context "when there are taxt references" do
-    describe "tag: `tax`" do
-      let!(:other_taxon) { create :any_taxon }
+    let(:taxon) { create :any_taxon }
 
-      before do
-        other_taxon.protonym.update!(notes_taxt: "{tax #{taxon.id}}")
-      end
+    describe "tag: `tax`" do
+      let(:taxt_tag) { "{tax #{taxon.id}}" }
+
+      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :taxon_history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('protonyms', :notes_taxt, other_taxon.protonym.id)
+          WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
+          WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
+          WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),
+          WhatLinksHereItem.new('protonyms',           :notes_taxt,                      protonym.id),
+          WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
+          WhatLinksHereItem.new('taxon_history_items', :taxt,                            history_item.id)
         ]
-        expect(what_links_here.all).to match_array what_links_here.taxts
       end
 
       specify { expect(what_links_here.any?).to eq true }
@@ -56,17 +62,23 @@ describe Taxa::WhatLinksHere do
     end
 
     describe "tag: `taxac`" do
-      let!(:other_taxon) { create :any_taxon }
+      let(:taxt_tag) { "{taxac #{taxon.id}}" }
 
-      before do
-        other_taxon.protonym.update!(notes_taxt: "{tax #{taxon.id}}")
-      end
+      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :taxon_history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('protonyms', :notes_taxt, other_taxon.protonym.id)
+          WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
+          WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
+          WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),
+          WhatLinksHereItem.new('protonyms',           :notes_taxt,                      protonym.id),
+          WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
+          WhatLinksHereItem.new('taxon_history_items', :taxt,                            history_item.id)
         ]
-        expect(what_links_here.taxts).to match_array what_links_here.taxts
       end
 
       specify { expect(what_links_here.any?).to eq true }
