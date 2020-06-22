@@ -10,6 +10,7 @@ module Catalog
     ]
     MUST_HAVE_HISTORY_ITEMS = 'must_have'
     CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
+    BIOGEOGRAPHIC_REGION_NONE = 'None'
 
     def initialize params
       @params = params.delete_if { |_key, value| value.blank? }
@@ -126,7 +127,7 @@ module Catalog
       def biogeographic_region_clause relation
         return relation unless (biogeographic_region = params[:biogeographic_region])
 
-        value = biogeographic_region == 'None' ? nil : biogeographic_region
+        value = biogeographic_region == BIOGEOGRAPHIC_REGION_NONE ? nil : biogeographic_region
         relation.where(protonyms: { biogeographic_region: value })
       end
 

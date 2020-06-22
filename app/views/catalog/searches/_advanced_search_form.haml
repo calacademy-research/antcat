@@ -39,7 +39,7 @@
   .row
     .medium-2.columns
       Biogeographic region
-      =select_tag :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + ['None'], params[:biogeographic_region]), include_blank: "Any"
+      =select_tag :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + [Catalog::AdvancedSearchQuery::BIOGEOGRAPHIC_REGION_NONE], params[:biogeographic_region]), include_blank: "Any"
     .medium-2.columns
       Locality contains
       =text_field_tag :locality, params[:locality]
