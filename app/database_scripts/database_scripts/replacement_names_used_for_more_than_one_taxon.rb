@@ -54,4 +54,4 @@ tags: []
 issue_description: This taxon has a replacement name that is also the replacement name of another taxon.
 
 description: >
-  %taxon447315 can be ignored. It is a very case where a replacement name was applied twice.
+  {tax 447315} can be ignored. It is a rare case where a replacement name was applied twice.

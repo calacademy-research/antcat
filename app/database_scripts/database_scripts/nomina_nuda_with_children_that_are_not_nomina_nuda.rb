@@ -34,4 +34,4 @@ tags: [code-changes-required]
 issue_description: This *nomen nudum* has children that are not *nomina nuda*.
 
 description: >
-  I'm not quite sure how to handle children that are obsolete combinations, such as is the case with %taxon445101.
+  I'm not quite sure how to handle children that are obsolete combinations, such as is the case with {tax 445101}.

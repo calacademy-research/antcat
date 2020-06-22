@@ -28,7 +28,7 @@ module Markdowns
 
       attr_reader :content
 
-      # Matches: %taxon429349 and {tax 429349}
+      # Matches: {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
@@ -64,7 +64,7 @@ module Markdowns
         end
       end
 
-      # Matches: %reference130628 and {ref 130628}
+      # Matches: {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
