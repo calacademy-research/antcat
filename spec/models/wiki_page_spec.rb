@@ -14,6 +14,7 @@ describe WikiPage do
       subject { create :wiki_page }
 
       it { is_expected.to validate_uniqueness_of(:title).ignoring_case_sensitivity }
+      it { is_expected.to validate_uniqueness_of(:permanent_identifier).ignoring_case_sensitivity }
     end
   end
 end

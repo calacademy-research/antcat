@@ -9,7 +9,7 @@ class TaxaController < ApplicationController
   def new
     @taxon = build_taxon(params[:rank_to_create], params[:parent_id])
     @taxon.protonym.authorship.reference ||= References::DefaultReference.get(session)
-    @default_name_string = Taxa::PrefilledTaxonFormName[@taxon]
+    @default_name_string = params[:taxon_name_string] || Taxa::PrefilledTaxonFormName[@taxon]
   end
 
   def create
@@ -90,9 +90,13 @@ class TaxaController < ApplicationController
       )
     end
 
+    def prefilled_taxon_params
+      params.permit(:current_taxon_id, :protonym_id, :status)
+    end
+
     def build_taxon rank_to_create, parent_id
       parent = Taxon.find(parent_id)
-      Taxa::BuildTaxon[rank_to_create, parent]
+      Taxa::BuildTaxon[rank_to_create, parent, params: prefilled_taxon_params]
     end
 
     def add_another_species_link

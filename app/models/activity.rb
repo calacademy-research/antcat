@@ -66,7 +66,7 @@ class Activity < ApplicationRecord
 
   has_paper_trail
   serialize :parameters, Hash
-  strip_attributes only: [:edit_summary]
+  strip_attributes only: [:edit_summary], replace_newlines: true
 
   class << self
     def create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}

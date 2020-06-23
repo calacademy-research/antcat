@@ -15,11 +15,15 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Name', 'Count'
+        t.header 'Name', 'Count', 'Quick-add button', 'Quick-add attributes'
         t.rows(missing_names_to_be_created_by_count) do |(normalized_name, count)|
+          prefill_taxon_form = QuickAndDirtyFixes::PrefillTaxonForm.new(normalized_name)
+
           [
             normalized_name,
-            count
+            count,
+            (new_taxon_link(prefill_taxon_form) if prefill_taxon_form.fillable?),
+            (prefill_taxon_form.synopsis if prefill_taxon_form.fillable?)
           ]
         end
       end
@@ -50,6 +54,11 @@ module DatabaseScripts
       def all_hardcoded_taxts
         TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}%").pluck(:taxt).join
       end
+
+      def new_taxon_link prefill_taxon_form
+        label = "Add #{prefill_taxon_form.taxon_class.name}"
+        link_to label, new_taxa_path(prefill_taxon_form.taxon_form_params), class: "btn-tiny btn-normal"
+      end
   end
 end
 
@@ -57,12 +66,15 @@ __END__
 
 section: main
 category: Taxt
-tags: [new!]
+tags: [has-quick-fix, new!, slow]
 
 issue_description:
 
 description: >
   Hardcoded names from `missing` tags in history items, for which there exist no `Taxon` record.
+
+
+  The "quick-add" button opens the taxon form with prefilled values, which can be adjusted before saving.
 
 
   See related script below for individual history items.

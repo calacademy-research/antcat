@@ -12,11 +12,11 @@ module DatabaseScripts
       taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) }.join('<br>')
     end
 
-    # NOTE: The reason we're using markdown here is to take advantage of performance tweaks
-    # that had already been made for rendering "taxts" in the catalog.
+    # NOTE: The reason we're using markdown here is to take advantage of performance optimizations
+    # that have been made for rendering "taxts" in the catalog.
     def taxon_link taxon_or_id
       return "" unless taxon_or_id
-      "%taxon#{taxon_or_id.try(:id) || taxon_or_id}"
+      "{tax #{taxon_or_id.try(:id) || taxon_or_id}}"
     end
 
     def bold_warning string

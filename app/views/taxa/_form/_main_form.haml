@@ -23,7 +23,7 @@
           %td
             #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
 
-        -if Rank.genus_group_name?(taxon.rank)
+        -if Rank.genus_group_name?(taxon.type)
           %tr
             %td=name_form.label :gender
             %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']

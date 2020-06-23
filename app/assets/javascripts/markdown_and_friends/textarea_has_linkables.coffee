@@ -5,6 +5,14 @@ $ ->
 
 reuseCallbacks = (url) ->
   matcher: AntCat.allowSpacesWhileAutocompleting
+  # Added to make queries with parentheses work (subgenus names).
+  # Based on https://github.com/ichord/At.js/blob/a627b5fcac22c35d52b7fb6d8a93181d2546f3c0/src/default.coffee#L125-L128
+  highlighter: (li, query) ->
+    return li if not query
+
+    escapedQuery = AntCat.escapeRegExp query
+    regexp = new RegExp(">\\s*([^\<]*?)(" + escapedQuery.replace("+","\\+") + ")([^\<]*)\\s*<", 'ig')
+    li.replace regexp, (str, $1, $2, $3) -> '> ' + $1 + '<strong>' + $2 + '</strong>' + $3 + ' <'
 
   # Update recently used references if a reference is picked.
   beforeInsert: (value, _li) ->

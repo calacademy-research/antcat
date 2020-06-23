@@ -11,6 +11,7 @@ class WikiPage < ApplicationRecord
 
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: { case_sensitive: true }
   validates :content, presence: true
+  validates :permanent_identifier, uniqueness: { case_sensitive: true, allow_nil: true }
 
   has_paper_trail
   trackable parameters: proc { { title: title } }

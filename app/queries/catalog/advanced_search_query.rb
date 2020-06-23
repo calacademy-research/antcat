@@ -10,6 +10,10 @@ module Catalog
     ]
     MUST_HAVE_HISTORY_ITEMS = 'must_have'
     CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
+    NAME_CONTAINS = 'contains'
+    NAME_MATCHES = 'matches'
+    NAME_BEGINS_WITH = 'begins_with'
+    BIOGEOGRAPHIC_REGION_NONE = 'None'
 
     def initialize params
       @params = params.delete_if { |_key, value| value.blank? }
@@ -82,9 +86,9 @@ module Catalog
         return relation unless (name = params[:name]&.strip.presence)
 
         case params[:name_search_type]
-        when 'matches'     then relation.where("names.name = ?", name)
-        when 'begins_with' then relation.where("names.name LIKE ?", name + '%')
-        else                    relation.where("names.name LIKE ?", '%' + name + '%')
+        when NAME_MATCHES     then relation.where("names.name = ?", name)
+        when NAME_BEGINS_WITH then relation.where("names.name LIKE ?", name + '%')
+        else                       relation.where("names.name LIKE ?", '%' + name + '%')
         end.joins(:name)
       end
 
@@ -126,7 +130,7 @@ module Catalog
       def biogeographic_region_clause relation
         return relation unless (biogeographic_region = params[:biogeographic_region])
 
-        value = biogeographic_region == 'None' ? nil : biogeographic_region
+        value = biogeographic_region == BIOGEOGRAPHIC_REGION_NONE ? nil : biogeographic_region
         relation.where(protonyms: { biogeographic_region: value })
       end
 

@@ -20,6 +20,7 @@ module Markdowns
 
       parse_missing_tags
       parse_unmissing_tags
+      parse_misspelling_tags
 
       content
     end
@@ -28,7 +29,7 @@ module Markdowns
 
       attr_reader :content
 
-      # Matches: %taxon429349 and {tax 429349}
+      # Matches: {tax 429349}
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
@@ -64,7 +65,7 @@ module Markdowns
         end
       end
 
-      # Matches: %reference130628 and {ref 130628}
+      # Matches: {ref 130628}
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
@@ -117,6 +118,14 @@ module Markdowns
       # Renders: hardcoded name.
       def parse_unmissing_tags
         content.gsub!(Taxt::UNMISSING_TAG_REGEX) do
+          %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
+        end
+      end
+
+      # Matches: {misspelling hardcoded name}, which may contain "<i>" tags.
+      # Renders: hardcoded name.
+      def parse_misspelling_tags
+        content.gsub!(Taxt::MISSPELLING_TAG_REGEX) do
           %(<span class="logged-in-only-gray-bold-notice">#{$LAST_MATCH_INFO[:hardcoded_name]}</span>)
         end
       end

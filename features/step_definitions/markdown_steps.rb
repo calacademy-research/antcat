@@ -34,7 +34,7 @@ end
 
 When("I fill in {string} with {string} and a markdown link to {string}") do |field_name, value, keey|
   reference = find_reference_by_keey keey
-  step %(I fill in "#{field_name}" with "#{value} %reference#{reference.id}}")
+  step %(I fill in "#{field_name}" with "#{value} {ref #{reference.id}}")
 end
 
 Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, content, keey|

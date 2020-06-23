@@ -23,7 +23,6 @@ class WhatLinksHereItem
   def owner
     @_owner ||=
       case table
-      # TODO: [grep:notes_taxt] See if we want to remove "citations".
       when "citations"           then Citation.find(id).protonym
       when "protonyms"           then Protonym.find(id)
       when "reference_sections"  then ReferenceSection.find(id).taxon

@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# NOTE: `dummy` is used to avoid defaulting to `Taxon.none`.
 describe Catalog::AdvancedSearchQuery do
   describe "#call" do
     context "when no meaningful search parameters are given" do
@@ -13,8 +14,8 @@ describe Catalog::AdvancedSearchQuery do
       let!(:synonym) { create :family, :synonym }
 
       specify do
-        expect(described_class[type: 'Family', valid_only: true]).to eq [valid]
-        expect(described_class[type: 'Family', valid_only: false]).to match_array [valid, synonym]
+        expect(described_class[valid_only: true, dummy: 'see NOTE']).to eq [valid]
+        expect(described_class[valid_only: false, dummy: 'see NOTE']).to match_array [valid, synonym]
       end
     end
 
@@ -23,17 +24,17 @@ describe Catalog::AdvancedSearchQuery do
       let!(:without_history) { create :family }
 
       specify do
-        expect(described_class[type: 'Family', history_items: nil]).
+        expect(described_class[history_items: nil, dummy: 'see NOTE']).
           to match_array [with_history, without_history]
       end
 
       specify do
-        expect(described_class[type: 'Family', history_items: described_class::MUST_HAVE_HISTORY_ITEMS]).
+        expect(described_class[history_items: described_class::MUST_HAVE_HISTORY_ITEMS, dummy: 'see NOTE']).
           to eq [with_history]
       end
 
       specify do
-        expect(described_class[type: 'Family', history_items: described_class::CANNOT_HAVE_HISTORY_ITEMS]).
+        expect(described_class[history_items: described_class::CANNOT_HAVE_HISTORY_ITEMS, dummy: 'see NOTE']).
           to eq [without_history]
       end
     end
@@ -81,17 +82,17 @@ describe Catalog::AdvancedSearchQuery do
       let!(:l_fusca) { create :species, name_string: 'Lasius fusca' }
 
       specify do
-        expect(described_class[name: 'fusca', name_search_type: 'contains']).
+        expect(described_class[name: 'fusca', name_search_type: described_class::NAME_CONTAINS]).
           to match_array [f_fusca, f_fusca_rufa, l_fusca]
       end
 
       specify do
-        expect(described_class[name: 'Formica fusca', name_search_type: 'matches']).
+        expect(described_class[name: 'Formica fusca', name_search_type: described_class::NAME_MATCHES]).
           to eq [f_fusca]
       end
 
       specify do
-        expect(described_class[name: 'Formica fusca', name_search_type: 'begins_with']).
+        expect(described_class[name: 'Formica fusca', name_search_type: described_class::NAME_BEGINS_WITH]).
           to match_array [f_fusca, f_fusca_rufa]
       end
 
@@ -195,7 +196,9 @@ describe Catalog::AdvancedSearchQuery do
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: Protonym::NEARCTIC_REGION]).to eq [indomanayan_species]
-        expect(described_class[type: 'Species', biogeographic_region: 'None']).to eq [no_region_species]
+        # NOTE: `type: 'Species'` is to filter out unrelated taxa created in factories.
+        expect(described_class[type: 'Species', biogeographic_region: described_class::BIOGEOGRAPHIC_REGION_NONE]).
+          to eq [no_region_species]
       end
     end
 
@@ -233,8 +236,7 @@ describe Catalog::AdvancedSearchQuery do
         expect(described_class[status: 'valid']).to eq [valid]
         expect(described_class[status: 'homonym']).to be_empty
 
-        # The dummy is incluced or we end end up defaulting to `Taxon.none`.
-        expect(described_class[status: "", dummy: "x"]).to match_array [valid, synonym]
+        expect(described_class[status: "", dummy: 'see NOTE']).to match_array [valid, synonym]
         expect(described_class[status: ""]).to be_empty
       end
     end
@@ -243,7 +245,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:extant) { create :any_taxon }
       let!(:fossil) { create :any_taxon, :fossil }
 
-      specify { expect(described_class[fossil: "", dummy: "x"]).to match_array [extant, fossil] }
+      specify { expect(described_class[fossil: "", dummy: 'see NOTE']).to match_array [extant, fossil] }
       specify { expect(described_class[fossil: "true"]).to eq [fossil] }
       specify { expect(described_class[fossil: "false"]).to eq [extant] }
     end
@@ -252,7 +254,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, :unavailable, nomen_nudum: true }
 
-      specify { expect(described_class[nomen_nudum: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[nomen_nudum: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[nomen_nudum: "true"]).to eq [yes_match] }
       specify { expect(described_class[nomen_nudum: "false"]).to eq [no_match] }
     end
@@ -261,7 +263,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, :unresolved_homonym }
 
-      specify { expect(described_class[unresolved_homonym: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[unresolved_homonym: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[unresolved_homonym: "true"]).to eq [yes_match] }
       specify { expect(described_class[unresolved_homonym: "false"]).to eq [no_match] }
     end
@@ -270,7 +272,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, :fossil, ichnotaxon: true }
 
-      specify { expect(described_class[ichnotaxon: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[ichnotaxon: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }
       specify { expect(described_class[ichnotaxon: "false"]).to eq [no_match] }
     end
@@ -279,7 +281,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, hong: true }
 
-      specify { expect(described_class[hong: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[hong: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[hong: "true"]).to eq [yes_match] }
       specify { expect(described_class[hong: "false"]).to eq [no_match] }
     end
@@ -288,7 +290,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, :fossil, collective_group_name: true }
 
-      specify { expect(described_class[collective_group_name: "", dummy: "x"]).to match_array [no_match, yes_match] }
+      specify { expect(described_class[collective_group_name: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[collective_group_name: "true"]).to eq [yes_match] }
       specify { expect(described_class[collective_group_name: "false"]).to eq [no_match] }
     end

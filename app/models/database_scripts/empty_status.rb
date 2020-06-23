@@ -14,7 +14,7 @@ module DatabaseScripts
       return '??' unless database_script.respond_to?(:results)
       return 'Excluded (slow/list)' if list? || slow?
 
-      empty_status_string database_script.results.any?
+      empty_status_string database_script.results.empty?
     end
 
     private
