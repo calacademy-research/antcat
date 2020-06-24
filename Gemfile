@@ -65,7 +65,7 @@ group :development, :test do
   gem 'guard-rubocop'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '0.85.1', require: false
+  gem 'rubocop', '0.86', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
@@ -76,7 +76,7 @@ group :test do
   gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber-rails', require: false
+  gem 'cucumber-rails', '< 2.1.0', require: false # TODO: Locked due to Cucumber 4.
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
