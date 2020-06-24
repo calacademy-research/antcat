@@ -292,6 +292,9 @@ Style/NumericLiterals:
 Style/OptionHash:
   Enabled: true
 
+Style/RedundantFetchBlock:
+  Enabled: true
+
 Style/RedundantRegexpCharacterClass:
   Enabled: true
 
