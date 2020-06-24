@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_22_202555) do
+ActiveRecord::Schema.define(version: 2020_06_24_165712) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -48,8 +48,6 @@ ActiveRecord::Schema.define(version: 2020_06_22_202555) do
     t.string "pages", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "notes_taxt"
-    t.string "forms"
     t.index ["reference_id"], name: "index_authorships_on_reference_id"
   end
 
