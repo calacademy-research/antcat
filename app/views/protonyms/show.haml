@@ -125,7 +125,7 @@
                       %small.bold-notice
                         #{history_item.rank}-only item
 
-                    =add_period_if_necessary Detax[history_item.taxt]
+                    =add_period_if_necessary Detax[history_item.to_taxt]
                     -if current_user
                       %span.show-on-hover
                         -if user_is_at_least_helper?

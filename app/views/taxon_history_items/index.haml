@@ -53,6 +53,6 @@
       %td=CatalogFormatter.link_to_taxon(history_item.taxon)
       %td=history_item.taxon.rank
       %td=history_item.taxon.status
-      %td=Detax[history_item.taxt]
+      %td=Detax[history_item.to_taxt]
 
 =will_paginate @taxon_history_items

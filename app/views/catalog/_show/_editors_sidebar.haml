@@ -13,7 +13,7 @@
       synonyms list history item of
       =CatalogFormatter.link_to_taxon(taxon.current_taxon)
       %hr
-      =Detax[synonym_history_item.taxt]
+      =Detax[synonym_history_item.to_taxt]
 
   -synonym_history_item = ct_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
   -if synonym_history_item.present?
@@ -29,7 +29,7 @@
       synonyms list history item of
       =CatalogFormatter.link_to_taxon(taxon.current_taxon)
       %hr
-      =Detax[synonym_history_item.taxt]
+      =Detax[synonym_history_item.to_taxt]
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)

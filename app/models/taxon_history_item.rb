@@ -40,6 +40,11 @@ class TaxonHistoryItem < ApplicationRecord
     end
   end
 
+  # Facade for future "hybrid history items".
+  def to_taxt
+    taxt
+  end
+
   def ids_from_tax_tags
     taxt.scan(Taxt::TAX_OR_TAXAC_TAG_REGEX).flatten.map(&:to_i)
   end

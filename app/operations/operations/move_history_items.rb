@@ -8,7 +8,7 @@ module Operations
 
     def self.description to_taxon:, history_items:
       history_items_description = history_items.map do |history_item|
-        "  * From #{CatalogFormatter.link_to_taxon(history_item.taxon)}: #{Detax[history_item.taxt]}"
+        "  * From #{CatalogFormatter.link_to_taxon(history_item.taxon)}: #{Detax[history_item.to_taxt]}"
       end.join("\n").presence || "  * No history items"
 
       <<~TEXT
