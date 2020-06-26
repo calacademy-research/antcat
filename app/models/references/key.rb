@@ -15,10 +15,9 @@ module References
 
     # Normal keey: "Bolton, 1885g".
     # This:        "Bolton, 1885".
-    def undisambiguated_key
+    def key_with_year
       authors_for_keey << ', ' << year.to_s
     end
-    alias_method :keey_without_letters_in_year, :undisambiguated_key
 
     def authors_for_keey
       names = author_names.map(&:last_name)

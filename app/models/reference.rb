@@ -13,7 +13,7 @@ class Reference < ApplicationRecord
   ]
 
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
-  delegate :keey, :keey_without_letters_in_year, to: :key
+  delegate :keey, :key_with_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names,

@@ -40,11 +40,11 @@ describe References::Key do
     end
   end
 
-  describe "#keey_without_letters_in_year" do
+  describe "#key_with_year" do
     let(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '1885g' }
 
     it "doesn't include the year ordinal" do
-      expect(key.keey_without_letters_in_year).to eq 'Bolton, 1885'
+      expect(key.key_with_year).to eq 'Bolton, 1885'
     end
   end
 end
