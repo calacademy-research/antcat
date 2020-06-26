@@ -3,7 +3,7 @@
 module DatabaseScripts
   class HistoryItemsWithFormDescriptions < DatabaseScript
     def results
-      TaxonHistoryItem.where(TaxonHistoryItem::VHIC_FORM_DESCRIPTION).includes(:taxon).limit(200)
+      TaxonHistoryItem.where(Taxt::HistoryItemCleanup::VHIC_FORM_DESCRIPTION).includes(:taxon).limit(200)
     end
 
     def render
