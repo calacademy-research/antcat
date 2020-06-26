@@ -28,7 +28,7 @@ module References
           text(:editor_notes)
           text(:taxonomic_notes)
           text(:bolton_key)
-          text(:authors_for_keey) { key.authors_for_keey } # To find "et al".
+          text(:authors_for_key) { key.authors_for_key } # To find "et al".
           string(:citation_year)
           string(:stated_year)
           string(:doi)
