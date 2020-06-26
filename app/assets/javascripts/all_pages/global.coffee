@@ -28,7 +28,7 @@ AntCat.notifyError = (content, autoHide = true) -> $.notify content, autoHide: a
 # same elements more than once, they alternate between working and not.
 # Reference keys already in the DOM should not be touched after making
 # references in the markdown preview expandable.
-AntCat.makeReferenceKeeysExpandable = (element) -> $(element).foundation()
+AntCat.makeReferenceKeysExpandable = (element) -> $(element).foundation()
 
 # Used by `ApplicationHelper#inline_expandable`.
 enableInlineExpansions = ->
