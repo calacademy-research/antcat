@@ -4,7 +4,7 @@ if Rails.env.development?
   require "rubycritic/rake_task"
 
   RubyCritic::RakeTask.new do |task|
-    task.name = 'rubycritic'
+    task.name = 'antcat:rubycritic'
 
     excluded_files = [
       'app/database_scripts/**/*',
