@@ -31,3 +31,5 @@ Kill the server with web_server_daemon_stop.sh. Web servers must be run from thi
 
 If you'd like the web server interactively (temporariliy, so ^c kills it naturally) 
 run web_server_interactive.sh
+
+url is http://<servername>:9090/antcat.antweb.txt
