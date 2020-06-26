@@ -39,7 +39,7 @@ module CucumberHelpers
       when 'the page of the oldest reference'
         reference_path(Reference.first)
       when /^the page of the reference "([^"]*)"$/
-        reference = find_reference_by_keey Regexp.last_match(1)
+        reference = find_reference_by_key Regexp.last_match(1)
         reference_path(reference)
       when 'the edit page for the most recent reference'
         edit_reference_path(Reference.last)
