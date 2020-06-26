@@ -12,7 +12,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.keey,
+            protonym.authorship.reference.key_with_citation_year,
             protonym.taxa.pluck(:name_cache).join('<br>'),
             protonym.taxa.pluck(:status).join('<br>')
           ]

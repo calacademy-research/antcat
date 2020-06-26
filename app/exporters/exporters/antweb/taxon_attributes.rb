@@ -50,7 +50,7 @@ module Exporters
 
         def authorship_html_string
           reference = taxon.authorship_reference
-          tag.span reference.keey, title: reference.decorate.plain_text
+          tag.span reference.key_with_citation_year, title: reference.decorate.plain_text
         end
 
         def current_valid_name

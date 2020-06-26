@@ -1,20 +1,16 @@
 # frozen_string_literal: true
 
-# TODO: Rename currently aliased methods.
-
 module References
   class Key
     attr_private_initialize :reference
 
     # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978b".
-    # TODO: Or `#qualified_key`?
-    def disambiguated_key
+    def key_with_citation_year
       authors_for_key << ', ' << citation_year
     end
-    alias_method :keey, :disambiguated_key
 
-    # Normal keey: "Bolton, 1885g".
-    # This:        "Bolton, 1885".
+    # Normal key: "Bolton, 1885g".
+    # This:       "Bolton, 1885".
     def key_with_year
       authors_for_key << ', ' << year.to_s
     end

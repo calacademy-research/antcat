@@ -54,7 +54,7 @@ module DevMonkeyPatches
     module Reference
       def dev_dev_link localhost: false
         base_url = localhost ? LOCALHOST_BASE_URL : PRODUCTION_BASE_URL
-        link = +"#{base_url}/references/#{id}?#{keey.tr(' ', '_')}"
+        link = +"#{base_url}/references/#{id}?#{key_with_citation_year.tr(' ', '_')}"
 
         def link.open
           `xdg-open "#{self}"`

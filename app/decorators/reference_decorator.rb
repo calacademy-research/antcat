@@ -12,7 +12,7 @@ class ReferenceDecorator < Draper::Decorator
   delegate :plain_text, :expandable_reference, :expanded_reference, to: :reference_formatter
 
   def link_to_reference
-    h.link_to reference.keey, h.reference_path(reference)
+    h.link_to reference.key_with_citation_year, h.reference_path(reference)
   end
 
   def format_public_notes

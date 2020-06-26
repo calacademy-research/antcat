@@ -16,7 +16,7 @@ module DatabaseScripts
         t.rows do |reference|
           [
             reference.id,
-            link_to(reference.keey, reference_path(reference)),
+            link_to(reference.key_with_citation_year, reference_path(reference)),
             reference.type
           ]
         end
