@@ -23,7 +23,7 @@ module Wikipedia
 
       def taxon_name
         name = taxon.name_cache
-        name = "''#{name}''" if Rank.italic?(taxon.rank)
+        name = "''#{name}''" if Rank.italic?(taxon.type)
 
         "#{dagger if taxon.fossil?}#{name}"
       end

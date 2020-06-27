@@ -60,7 +60,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless Rank.italic?(rank)
+      return string unless Rank.italic?(taxon_type)
       Italicize[string]
     end
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Improve rank vs. type.
-
 class Rank
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
   TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
@@ -18,15 +16,15 @@ class Rank
     'tribe',
     'genus'
   ]
-  ITALIC_RANKS = %w[genus subgenus species subspecies infrasubspecies]
+  ITALIC_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
   # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
   SINGLE_WORD_TYPES = %w[Family Subfamily Tribe Subtribe Genus]
   # Allow any type while figuring this out. Required for showing-ish what we have now: `%w[Family Subfamily Tribe]`.
   TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS = TYPES
 
   class << self
-    def italic? rank
-      rank.in? ITALIC_RANKS
+    def italic? type
+      type.in? ITALIC_TYPES
     end
 
     def single_word_name? type

@@ -11,16 +11,16 @@ describe Rank do
 
   describe ".italic?" do
     specify do
-      expect(described_class.italic?('family')).to eq false
-      expect(described_class.italic?('subfamily')).to eq false
-      expect(described_class.italic?('tribe')).to eq false
-      expect(described_class.italic?('subtribe')).to eq false
+      expect(described_class.italic?('Family')).to eq false
+      expect(described_class.italic?('Subfamily')).to eq false
+      expect(described_class.italic?('Tribe')).to eq false
+      expect(described_class.italic?('Subtribe')).to eq false
 
-      expect(described_class.italic?('genus')).to eq true
-      expect(described_class.italic?('subgenus')).to eq true
-      expect(described_class.italic?('species')).to eq true
-      expect(described_class.italic?('subspecies')).to eq true
-      expect(described_class.italic?('infrasubspecies')).to eq true
+      expect(described_class.italic?('Genus')).to eq true
+      expect(described_class.italic?('Subgenus')).to eq true
+      expect(described_class.italic?('Species')).to eq true
+      expect(described_class.italic?('Subspecies')).to eq true
+      expect(described_class.italic?('Infrasubspecies')).to eq true
     end
   end
 
