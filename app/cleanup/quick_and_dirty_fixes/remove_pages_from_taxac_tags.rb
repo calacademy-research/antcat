@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `QuickAndDirtyFixesController#remove_pages_from_taxac_tags`.
-# :nocov:
 module QuickAndDirtyFixes
   class RemovePagesFromTaxacTags
     include Service
@@ -37,4 +36,3 @@ module QuickAndDirtyFixes
       end
   end
 end
-# :nocov:

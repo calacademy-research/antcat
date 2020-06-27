@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# :nocov:
 module Protonyms
   SEMI_NORMALIZED_NOTES_TAXTS = [
     /^ ?\[as subgenus of \{tax|taxac \d+\}\]$/,
@@ -30,4 +29,3 @@ module Protonyms
     SEMI_NORMALIZED_NOTES_TAXTS.any? { |re| re =~ notes_taxt }
   end
 end
-# :nocov:

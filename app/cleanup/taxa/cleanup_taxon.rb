@@ -4,7 +4,6 @@
 # No tests is a feature, not a bug, since the only reason we're OK
 # with this is because all of it will 100% be removed at some point :)
 
-# :nocov:
 module Taxa
   class CleanupTaxon < SimpleDelegator
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
@@ -46,4 +45,3 @@ module Taxa
       end
   end
 end
-# :nocov:

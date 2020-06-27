@@ -8,6 +8,7 @@ if Rails.env.development?
 
     excluded_files = [
       'app/database_scripts/**/*',
+      'app/cleanup/**/*',
       'lib/dev_monkey_patches/**/*',
       'app/controllers/quick_and_dirty_fixes_controller.rb',
       '**/quick_and_dirty_fixes/*'
