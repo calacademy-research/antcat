@@ -1,0 +1,18 @@
+.callout.no-border-callout.logged-in-only-background
+  %h6
+    Species and subspecies in subgenus
+    =logged_in_only_tooltip_icon "This section is only shown to logged-in users, since very few species are assined to a subgenus, and we have to decide how to handle subgenera."
+  %ul.compact-list.small-margin-bottom
+    -TaxonQuery.new(taxon.species.order_by_name).with_common_includes.each do |species|
+      %li
+        =CatalogFormatter.link_to_taxon(species)
+        =species.author_citation
+        %span.small-text=species.decorate.expanded_status
+        -# TODO: N+1 query.
+        -if species.subspecies.present?
+          %ul.compact-list
+            -TaxonQuery.new(species.subspecies.order_by_name).with_common_includes.each do |subspecies|
+              %li
+                =CatalogFormatter.link_to_taxon(subspecies)
+                =subspecies.author_citation
+                %span.small-text=subspecies.decorate.expanded_status
