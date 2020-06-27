@@ -7,6 +7,15 @@ describe Rank do
     it "covers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
       expect(described_class::TYPES_ABOVE_SPECIES + described_class::SPECIES_GROUP_NAME_TYPES).to eq described_class::TYPES
     end
+
+    described_class.constants.select { |const_sym| const_sym.to_s['TYPE'] }.each do |const_sym|
+      it "keeps types in `#{const_sym}` sorted with higher ranks first`" do
+        types = described_class.const_get(const_sym)
+        sorted_types = types.sort_by { |type| described_class::TYPES.index(type) }
+
+        expect(types).to eq sorted_types
+      end
+    end
   end
 
   describe ".italic?" do

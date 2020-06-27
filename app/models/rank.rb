@@ -4,7 +4,7 @@ class Rank
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
 
   ### Ranks in taxonomy, generally true.
-  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
+  TYPES_ABOVE_GENUS = %w[Family Subfamily Tribe Subtribe]
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
 
   GENUS_GROUP_NAME_TYPES = %w[Genus Subgenus]
