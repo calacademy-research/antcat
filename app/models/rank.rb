@@ -2,6 +2,8 @@
 
 class Rank
   TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+
+  ### Ranks in taxonomy, generally true.
   TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
   TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
 
@@ -17,10 +19,16 @@ class Rank
     'genus'
   ]
   ITALIC_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
-  # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
-  SINGLE_WORD_TYPES = %w[Family Subfamily Tribe Subtribe Genus]
+  SINGLE_WORD_TYPES = %w[Family Subfamily Tribe Subtribe Genus] # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
+
+  ### AntCat-specific config.
   # Allow any type while figuring this out. Required for showing-ish what we have now: `%w[Family Subfamily Tribe]`.
   TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS = TYPES
+
+  SHOW_CREATE_COMBINATION_BUTTON_TYPES = %w[Species]
+  SHOW_CREATE_COMBINATION_HELP_BUTTON_TYPES = %w[Species Subspecies]
+  ALLOW_CREATE_OBSOLETE_COMBINATION_TYPES = %w[Species]
+  ALLOW_FORCE_CHANGE_PARENT_TYPES = %w[Genus Species Subspecies]
 
   class << self
     def italic? type
