@@ -15,7 +15,7 @@
 
   .medium-3.columns
     -if current_user
-      =render 'catalog/_show/editors_sidebar', taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
+      =render 'catalog/_show/logged_in_only/editors_sidebar', taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
 
     -if @catalog_presenter.formatted_statistics
       #statistics.callout.small-margin-bottom
