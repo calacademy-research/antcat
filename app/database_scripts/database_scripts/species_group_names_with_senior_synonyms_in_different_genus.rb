@@ -3,7 +3,7 @@
 module DatabaseScripts
   class SpeciesGroupNamesWithSeniorSynonymsInDifferentGenus < DatabaseScript
     def results
-      Taxon.where(type: ['Species', 'Subspecies', 'Infrasubspecies']).
+      Taxon.where(type: Rank::SPECIES_GROUP_NAME_TYPES).
         where(status: Status::SYNONYM).
         joins(:current_taxon).where("current_taxons_taxa.genus_id != taxa.genus_id")
     end

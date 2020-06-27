@@ -103,7 +103,7 @@ class TaxaController < ApplicationController
       return "" unless @taxon.is_a? Species
 
       link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
-        new_taxa_path(rank_to_create: "Species", parent_id: @taxon.genus.id)
+        new_taxa_path(rank_to_create: Rank::SPECIES, parent_id: @taxon.genus.id)
 
       " <strong>#{link}</strong>".html_safe
     end

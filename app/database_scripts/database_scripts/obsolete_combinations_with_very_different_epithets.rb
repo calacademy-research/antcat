@@ -4,7 +4,7 @@ module DatabaseScripts
   class ObsoleteCombinationsWithVeryDifferentEpithets < DatabaseScript
     def results
       Species.obsolete_combinations.joins(:name, current_taxon: :name).
-        where(current_taxons_taxa: { type: 'Species' }).
+        where(current_taxons_taxa: { type: Rank::SPECIES }).
         where("SUBSTR(names_taxa.epithet, 1, 3) != SUBSTR(names.epithet, 1, 3)").
         includes(:name, current_taxon: :name)
     end

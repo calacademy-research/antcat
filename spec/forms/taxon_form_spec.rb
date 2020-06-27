@@ -6,7 +6,7 @@ describe TaxonForm do
   describe "#save" do
     describe "creating a new `Protonym`" do
       context 'with passing validations' do
-        let(:taxon) { Taxa::BuildTaxon['Subfamily', create(:family)] }
+        let(:taxon) { Taxa::BuildTaxon[Rank::SUBFAMILY, create(:family)] }
         let(:params) do
           HashWithIndifferentAccess.new(
             status: Status::VALID,
@@ -32,7 +32,7 @@ describe TaxonForm do
       end
 
       context 'with failing validations' do
-        let(:taxon) { Taxa::BuildTaxon['Subfamily', create(:family)] }
+        let(:taxon) { Taxa::BuildTaxon[Rank::SUBFAMILY, create(:family)] }
         let(:params) do
           HashWithIndifferentAccess.new(
             status: Status::VALID,

@@ -5,7 +5,7 @@ module Taxa
     include Service
 
     FOR_RANK = {
-      'Species' => [
+      Rank::SPECIES => [
         VirtualHistoryItems::SubspeciesList
       ]
     }

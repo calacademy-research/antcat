@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       Protonym.joins(taxa: :name).
-        where(taxa: { type: 'Species' }).
+        where(taxa: { type: Rank::SPECIES }).
         group('protonyms.id').having("COUNT(DISTINCT SUBSTR(names.epithet, 1, 3)) > 1").distinct.
         includes(:name)
     end

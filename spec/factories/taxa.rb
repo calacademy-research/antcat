@@ -19,56 +19,56 @@ FactoryBot.define do
 
     valid
 
-    factory :family, class: 'Family', aliases: [:any_taxon] do
+    factory :family, class: Rank::FAMILY.to_s, aliases: [:any_taxon] do
       association :name, factory: :family_name
       genus_group_name_protonym
     end
 
-    factory :subfamily, class: 'Subfamily' do
+    factory :subfamily, class: Rank::SUBFAMILY.to_s do
       association :name, factory: :subfamily_name
       genus_group_name_protonym
     end
 
-    factory :tribe, class: 'Tribe' do
+    factory :tribe, class: Rank::TRIBE.to_s do
       association :name, factory: :tribe_name
       genus_group_name_protonym
       subfamily
     end
 
-    factory :subtribe, class: 'Subtribe' do
+    factory :subtribe, class: Rank::SUBTRIBE.to_s do
       association :name, factory: :subtribe_name
       genus_group_name_protonym
       tribe
       subfamily { |taxon| taxon.tribe.subfamily }
     end
 
-    factory :genus, class: 'Genus' do
+    factory :genus, class: Rank::GENUS.to_s do
       association :name, factory: :genus_name
       genus_group_name_protonym
       tribe
       subfamily { |taxon| taxon.tribe&.subfamily }
     end
 
-    factory :subgenus, class: 'Subgenus' do
+    factory :subgenus, class: Rank::SUBGENUS.to_s do
       association :name, factory: :subgenus_name
       genus_group_name_protonym
       genus
     end
 
-    factory :species, class: 'Species' do
+    factory :species, class: Rank::SPECIES.to_s do
       association :name, factory: :species_name
       species_group_name_protonym
       genus
     end
 
-    factory :subspecies, class: 'Subspecies' do
+    factory :subspecies, class: Rank::SUBSPECIES.to_s do
       association :name, factory: :subspecies_name
       species_group_name_protonym
       species
       genus
     end
 
-    factory :infrasubspecies, class: 'Infrasubspecies' do
+    factory :infrasubspecies, class: Rank::INFRASUBSPECIES.to_s do
       association :name, factory: :infrasubspecies_name
       species_group_name_protonym
       subspecies

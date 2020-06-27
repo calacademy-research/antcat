@@ -17,13 +17,13 @@ module Editors
 
     def add_child_button
       rank_to_create = case taxon
-                       when Family     then "Subfamily"
-                       when Subfamily  then "Genus"
-                       when Tribe      then "Genus"
-                       when Genus      then "Species"
-                       when Subgenus   then "Species"
-                       when Species    then "Subspecies"
-                       when Subspecies then "Infrasubspecies"
+                       when Family     then Rank::SUBFAMILY
+                       when Subfamily  then Rank::GENUS
+                       when Tribe      then Rank::GENUS
+                       when Genus      then Rank::SPECIES
+                       when Subgenus   then Rank::SPECIES
+                       when Species    then Rank::SUBSPECIES
+                       when Subspecies then Rank::INFRASUBSPECIES
                        end
       return unless rank_to_create
 
@@ -33,12 +33,12 @@ module Editors
 
     def add_tribe_button
       return unless taxon.is_a?(Subfamily)
-      link_to "Add tribe", new_taxa_path(rank_to_create: 'Tribe', parent_id: taxon.id), class: "btn-normal"
+      link_to "Add tribe", new_taxa_path(rank_to_create: Rank::TRIBE, parent_id: taxon.id), class: "btn-normal"
     end
 
     def add_subgenus_button
       return unless taxon.is_a?(Genus)
-      link_to "Add subgenus", new_taxa_path(rank_to_create: 'Subgenus', parent_id: taxon.id), class: "btn-normal"
+      link_to "Add subgenus", new_taxa_path(rank_to_create: Rank::SUBGENUS, parent_id: taxon.id), class: "btn-normal"
     end
 
     def convert_to_subspecies_button

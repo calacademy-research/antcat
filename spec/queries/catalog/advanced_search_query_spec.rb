@@ -72,7 +72,7 @@ describe Catalog::AdvancedSearchQuery do
       let!(:subfamily) { create :subfamily }
 
       specify do
-        expect(described_class[type: 'Subfamily']).to eq [subfamily]
+        expect(described_class[type: Rank::SUBFAMILY]).to eq [subfamily]
       end
     end
 
@@ -196,8 +196,8 @@ describe Catalog::AdvancedSearchQuery do
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: Protonym::NEARCTIC_REGION]).to eq [indomanayan_species]
-        # NOTE: `type: 'Species'` is to filter out unrelated taxa created in factories.
-        expect(described_class[type: 'Species', biogeographic_region: described_class::BIOGEOGRAPHIC_REGION_NONE]).
+        # NOTE: `type: Rank::SPECIES` is to filter out unrelated taxa created in factories.
+        expect(described_class[type: Rank::SPECIES, biogeographic_region: described_class::BIOGEOGRAPHIC_REGION_NONE]).
           to eq [no_region_species]
       end
     end
