@@ -42,27 +42,6 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
-  # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
-  # :nocov:
-  def self.all_taxa_above_genus_and_of_unique_different_ranks? taxa
-    ranks = taxa.pluck(:type)
-    (ranks - Rank::TYPES_ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
-  end
-  # :nocov:
-
-  # :nocov:
-  def self.all_statuses_same? taxa
-    taxa.pluck(:status).uniq.size == 1
-  end
-  # :nocov:
-
-  # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
-  # :nocov:
-  def self.taxa_genus_and_subgenus_pair? taxa
-    taxa.pluck(:type).sort == %w[Genus Subgenus]
-  end
-  # :nocov:
-
   def author_citation
     authorship_reference.key_with_year
   end
