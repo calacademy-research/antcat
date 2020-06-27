@@ -11,7 +11,9 @@ describe Name do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :name }
+    describe '#name' do
+      it { is_expected.to validate_presence_of :name }
+    end
 
     describe '#ensure_starts_with_upper_case_letter' do
       let(:name) { build_stubbed :genus_name, name: 'lasius' }

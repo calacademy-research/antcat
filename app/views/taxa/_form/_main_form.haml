@@ -12,7 +12,7 @@
               =taxon.name.name_html
               =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
             -else
-              -number_of_words = Rank.single_word_name?(taxon.rank) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
+              -number_of_words = Rank.single_word_name?(taxon.type) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
               =text_field_tag :taxon_name_string, (taxon.name.name || default_name_string), data: { number_of_words: number_of_words }
               -if taxon.is_a?(Subgenus)
                 %span
