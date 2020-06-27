@@ -5,7 +5,6 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  delegate :now_taxon, :most_recent_before_now_taxon, to: :cleanup_taxon
   delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
     to: :taxon_collaborators
 
@@ -89,12 +88,27 @@ class Taxon < ApplicationRecord
     '('.html_safe + citation + ')'
   end
 
-  def taxon_collaborators
-    @_taxon_collaborators ||= Taxa::TaxonCollaborators.new(self)
+  # TODO: Experimental.
+  def now_taxon
+    return self unless current_taxon
+    current_taxon.now_taxon
   end
 
-  def cleanup_taxon
-    @_cleanup_taxon ||= Taxa::CleanupTaxon.new(self)
+  # TODO: Experimental. We may want to stop doing this. Used for expanding type taxa (see `TypeNameDecorator`).
+  def most_recent_before_now_taxon
+    taxa = []
+    iteratred_current_taxon = current_taxon
+
+    while iteratred_current_taxon
+      taxa << iteratred_current_taxon
+      iteratred_current_taxon = iteratred_current_taxon.current_taxon
+    end
+
+    taxa.second_to_last || self
+  end
+
+  def taxon_collaborators
+    @_taxon_collaborators ||= Taxa::TaxonCollaborators.new(self)
   end
 
   private
