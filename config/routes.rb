@@ -245,6 +245,7 @@ Rails.application.routes.draw do
     post 'force_remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#force_remove_pages_from_taxac_tags'
     post 'remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#remove_pages_from_taxac_tags'
     post 'replace_missing_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tags'
+    post 'replace_with_pro_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_with_pro_tags'
   end
 
   namespace :my do
