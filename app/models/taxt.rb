@@ -42,6 +42,10 @@ module Taxt
     "{ref #{reference.id}}"
   end
 
+  def extract_ids_from_tax_tags taxt
+    taxt.scan(TAX_TAG_REGEX).flatten.compact.map(&:to_i)
+  end
+
   def extract_ids_from_tax_or_taxac_tags taxt
     taxt.scan(TAX_OR_TAXAC_TAG_REGEX).flatten.map(&:to_i)
   end
