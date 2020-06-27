@@ -7,7 +7,7 @@ module ProtonymSelectHelper
       for_protonym = if protonym.persisted?
                        {
                          name_with_fossil: protonym.decorate.name_with_fossil,
-                         author_citation: protonym.authorship.reference.key_with_year
+                         author_citation: protonym.author_citation
                        }
                      end
 

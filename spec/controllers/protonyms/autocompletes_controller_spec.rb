@@ -19,7 +19,7 @@ describe Protonyms::AutocompletesController do
             'id' => protonym.id,
             'plaintext_name' => 'Lasius',
             'name_with_fossil' => "<i>†</i><i>Lasius</i>",
-            'author_citation' => protonym.authorship.reference.key_with_year,
+            'author_citation' => protonym.author_citation,
             'url' => "/protonyms/#{protonym.id}"
           }
         ]

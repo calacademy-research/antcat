@@ -53,4 +53,13 @@ describe Protonym do
       subject { build :protonym }
     end
   end
+
+  describe "#author_citation" do
+    let!(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '2005b' }
+    let!(:protonym) { create :protonym, authorship: create(:citation, reference: reference) }
+
+    it 'does not include letters from the `citation_year`' do
+      expect(protonym.author_citation).to eq 'Bolton, 2005'
+    end
+  end
 end

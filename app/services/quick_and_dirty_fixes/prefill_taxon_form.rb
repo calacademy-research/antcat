@@ -50,7 +50,7 @@ module QuickAndDirtyFixes
     def synopsis
       protonym_line =
         if protonym
-          protonym.decorate.link_to_protonym + ' ' + protonym.authorship.reference.key_with_citation_year
+          protonym.decorate.link_to_protonym + ' ' + protonym.author_citation
         else
           '???'
         end

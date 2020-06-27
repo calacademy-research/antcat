@@ -17,7 +17,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.key_with_citation_year,
+            protonym.author_citation,
             protonym.taxa.pluck(:type).join(', '),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]

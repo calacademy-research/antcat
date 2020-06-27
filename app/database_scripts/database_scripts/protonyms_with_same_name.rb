@@ -18,7 +18,7 @@ module DatabaseScripts
 
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.key_with_citation_year,
+            protonym.author_citation,
             taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : bold_warning('Orphaned protonym'),
             protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
           ]

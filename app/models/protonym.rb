@@ -25,6 +25,7 @@ class Protonym < ApplicationRecord
   # TODO: See https://github.com/calacademy-research/antcat/issues/702
   has_many :taxa_with_history_items, -> { distinct.joins(:history_items) }, class_name: 'Taxon'
   has_many :history_items, through: :taxa, class_name: 'TaxonHistoryItem'
+  has_one :authorship_reference, through: :authorship, source: :reference
 
   # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
@@ -62,13 +63,17 @@ class Protonym < ApplicationRecord
   end
   # :nocov:
 
+  def author_citation
+    authorship_reference.key_with_year
+  end
+
   # TODO: This was added for a db script. Remove once cleared (or make use of it elsewhere).
   # :nocov:
   def synopsis
     formated_locality = decorate.format_locality
 
     string = +''
-    string << "#{authorship.reference.key_with_citation_year}, #{authorship.pages} "
+    string << "#{author_citation}, #{authorship.pages} "
     string << "(#{forms}) " if forms
     string << formated_locality + ' ' if formated_locality
     string << biogeographic_region if biogeographic_region
