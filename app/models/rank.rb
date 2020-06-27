@@ -23,7 +23,7 @@ class Rank
 
   ### AntCat-specific config.
   # Allow any type while figuring this out. Required for showing-ish what we have now: `%w[Family Subfamily Tribe]`.
-  TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS = TYPES
+  TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES = TYPES
 
   SHOW_CREATE_COMBINATION_BUTTON_TYPES = %w[Species]
   SHOW_CREATE_COMBINATION_HELP_BUTTON_TYPES = %w[Species Subspecies]
