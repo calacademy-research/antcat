@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 class Rank
-  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+  SORTED_TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
+  TYPES = SORTED_TYPES
 
   ### Ranks in taxonomy, generally true.
-  TYPES_ABOVE_GENUS = %w[Family Subfamily Tribe Subtribe]
-  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
-
+  FAMILY_GROUP_NAME_TYPES = %w[Family Subfamily Tribe Subtribe]
   GENUS_GROUP_NAME_TYPES = %w[Genus Subgenus]
   SPECIES_GROUP_NAME_TYPES = %w[Species Subspecies Infrasubspecies]
+
+  TYPES_ABOVE_GENUS = FAMILY_GROUP_NAME_TYPES
+  TYPES_ABOVE_SPECIES = FAMILY_GROUP_NAME_TYPES + GENUS_GROUP_NAME_TYPES
 
   CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
   CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
