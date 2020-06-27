@@ -63,14 +63,6 @@ describe Name do
     end
   end
 
-  describe "#rank" do
-    let!(:name) { build_stubbed :subfamily_name }
-
-    it "returns a lowercase version'" do
-      expect(name.rank).to eq 'subfamily'
-    end
-  end
-
   describe "#name_with_fossil_html" do
     it "formats the fossil symbol" do
       expect(SpeciesName.new(name: 'Atta major').name_with_fossil_html(false)).to eq '<i>Atta major</i>'

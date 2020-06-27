@@ -37,10 +37,6 @@ class Name < ApplicationRecord
     set_epithet
   end
 
-  def rank
-    self.class.name.delete_suffix('Name').underscore
-  end
-
   def taxon_type
     @_taxon_type ||= self.class.name.delete_suffix('Name')
   end
