@@ -66,7 +66,7 @@ __END__
 
 section: main
 category: Taxt
-tags: [has-quick-fix, new!, slow]
+tags: [has-quick-fix, slow]
 
 issue_description:
 

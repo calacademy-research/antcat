@@ -36,7 +36,7 @@ title: Synonyms at different ranks (except species and below)
 
 section: research
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 
