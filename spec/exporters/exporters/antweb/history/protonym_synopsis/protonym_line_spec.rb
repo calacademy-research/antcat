@@ -15,7 +15,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
     specify do
       expect(described_class[protonym]).to eq(
         "<b><i>#{protonym.name.name}</i></b> " \
-        "#{antweb_reference_link(protonym.authorship.reference)}: " \
+        "#{antweb_reference_link(protonym.authorship_reference)}: " \
         "#{protonym.decorate.format_pages_and_forms} " \
         "see #{antweb_taxon_link(taxt_taxon)} " \
         "#{protonym.decorate.format_locality}"
