@@ -15,4 +15,8 @@ class Subtribe < Taxon
   def update_parent _new_parent
     raise "cannot update parent of subtribes"
   end
+
+  def children
+    Taxon.none
+  end
 end
