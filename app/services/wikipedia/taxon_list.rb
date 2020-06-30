@@ -70,7 +70,7 @@ module Wikipedia
       def taxon_name child
         name = child.name_cache.dup
         name = "[[#{name}]]" if wikilink_child? child
-        name = "''#{name}''" if Rank.italic?(child.rank)
+        name = "''#{name}''" if Rank.italic?(child.type)
 
         "#{dagger if child.fossil}#{name}"
       end

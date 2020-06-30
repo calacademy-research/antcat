@@ -4,38 +4,52 @@ require 'rails_helper'
 
 describe Rank do
   describe 'constants' do
+    it "covers all types in '*_GROUP_TYPES'" do
+      types = described_class::FAMILY_GROUP_NAME_TYPES + described_class::GENUS_GROUP_NAME_TYPES + described_class::SPECIES_GROUP_NAME_TYPES
+      expect(types).to eq described_class::SORTED_TYPES
+    end
+
     it "covers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
       expect(described_class::TYPES_ABOVE_SPECIES + described_class::SPECIES_GROUP_NAME_TYPES).to eq described_class::TYPES
+    end
+
+    described_class.constants.select { |const_sym| const_sym.to_s['TYPE'] }.each do |const_sym|
+      it "keeps types in `#{const_sym}` sorted with higher ranks first`" do
+        types = described_class.const_get(const_sym)
+        sorted_types = types.sort_by { |type| described_class::TYPES.index(type) }
+
+        expect(types).to eq sorted_types
+      end
     end
   end
 
   describe ".italic?" do
     specify do
-      expect(described_class.italic?('family')).to eq false
-      expect(described_class.italic?('subfamily')).to eq false
-      expect(described_class.italic?('tribe')).to eq false
-      expect(described_class.italic?('subtribe')).to eq false
+      expect(described_class.italic?('Family')).to eq false
+      expect(described_class.italic?('Subfamily')).to eq false
+      expect(described_class.italic?('Tribe')).to eq false
+      expect(described_class.italic?('Subtribe')).to eq false
 
-      expect(described_class.italic?('genus')).to eq true
-      expect(described_class.italic?('subgenus')).to eq true
-      expect(described_class.italic?('species')).to eq true
-      expect(described_class.italic?('subspecies')).to eq true
-      expect(described_class.italic?('infrasubspecies')).to eq true
+      expect(described_class.italic?('Genus')).to eq true
+      expect(described_class.italic?('Subgenus')).to eq true
+      expect(described_class.italic?('Species')).to eq true
+      expect(described_class.italic?('Subspecies')).to eq true
+      expect(described_class.italic?('Infrasubspecies')).to eq true
     end
   end
 
   describe ".single_word_name?" do
     specify do
-      expect(described_class.single_word_name?('family')).to eq true
-      expect(described_class.single_word_name?('subfamily')).to eq true
-      expect(described_class.single_word_name?('tribe')).to eq true
-      expect(described_class.single_word_name?('subtribe')).to eq true
-      expect(described_class.single_word_name?('genus')).to eq true
+      expect(described_class.single_word_name?('Family')).to eq true
+      expect(described_class.single_word_name?('Subfamily')).to eq true
+      expect(described_class.single_word_name?('Tribe')).to eq true
+      expect(described_class.single_word_name?('Subtribe')).to eq true
+      expect(described_class.single_word_name?('Genus')).to eq true
 
-      expect(described_class.single_word_name?('subgenus')).to eq false
-      expect(described_class.single_word_name?('species')).to eq false
-      expect(described_class.single_word_name?('subspecies')).to eq false
-      expect(described_class.single_word_name?('infrasubspecies')).to eq false
+      expect(described_class.single_word_name?('Subgenus')).to eq false
+      expect(described_class.single_word_name?('Species')).to eq false
+      expect(described_class.single_word_name?('Subspecies')).to eq false
+      expect(described_class.single_word_name?('Infrasubspecies')).to eq false
     end
   end
 

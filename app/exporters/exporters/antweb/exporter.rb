@@ -7,7 +7,7 @@ module Exporters
     class Exporter
       include Service
 
-      EXPORTABLE_TYPES = Rank::TYPES - ['Subtribe', 'Infrasubspecies']
+      EXPORTABLE_TYPES = Rank::TYPES - [Rank::SUBTRIBE, Rank::INFRASUBSPECIES]
 
       def initialize filename
         @filename = filename

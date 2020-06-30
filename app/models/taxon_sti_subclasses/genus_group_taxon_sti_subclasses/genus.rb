@@ -6,7 +6,7 @@ class Genus < GenusGroupTaxon
   # TODO: Maybe rename to `children` after investigating if we want to keep the methods
   # currently named `#children` (or rename them to `#direct_children`).
   has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
-  has_many :species_without_subgenus, -> { without_subgenus }, class_name: 'Species'
+  has_many :species_without_subgenus, -> { without_subgenus }, class_name: Rank::SPECIES
 
   with_options dependent: :restrict_with_error do
     has_many :species

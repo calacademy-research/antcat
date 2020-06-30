@@ -13,7 +13,7 @@
 
     .medium-12.columns.margin-bottom
       %h6 to be a subspecies of
-      =taxon_select_tag :new_species_id, params[:new_species_id], rank: 'Species'
+      =taxon_select_tag :new_species_id, params[:new_species_id], rank: Rank::SPECIES
 
     .medium-12.columns
       =button_tag "Convert", type: "submit", class: "btn-saves"

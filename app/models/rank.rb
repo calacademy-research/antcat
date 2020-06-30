@@ -1,36 +1,56 @@
 # frozen_string_literal: true
 
-# TODO: Improve rank vs. type.
-
 class Rank
-  TYPES = %w[Family Subfamily Tribe Subtribe Genus Subgenus Species Subspecies Infrasubspecies]
-  TYPES_ABOVE_GENUS = %w[Family Subfamily Subtribe Tribe]
-  TYPES_ABOVE_SPECIES = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
+  SORTED_TYPES = [
+    FAMILY          = 'Family',
+    SUBFAMILY       = 'Subfamily',
+    TRIBE           = 'Tribe',
+    SUBTRIBE        = 'Subtribe',
+    GENUS           = 'Genus',
+    SUBGENUS        = 'Subgenus',
+    SPECIES         = 'Species',
+    SUBSPECIES      = 'Subspecies',
+    INFRASUBSPECIES = 'Infrasubspecies'
+  ]
+  TYPES = SORTED_TYPES
 
-  GENUS_GROUP_NAME_TYPES = %w[Genus Subgenus]
-  SPECIES_GROUP_NAME_TYPES = %w[Species Subspecies Infrasubspecies]
+  ### Ranks in taxonomy, generally true.
+  FAMILY_GROUP_NAME_TYPES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE]
+  GENUS_GROUP_NAME_TYPES = [GENUS, SUBGENUS]
+  SPECIES_GROUP_NAME_TYPES = [SPECIES, SUBSPECIES, INFRASUBSPECIES]
+
+  TYPES_ABOVE_GENUS = FAMILY_GROUP_NAME_TYPES
+  TYPES_ABOVE_SPECIES = FAMILY_GROUP_NAME_TYPES + GENUS_GROUP_NAME_TYPES
 
   CAN_HAVE_TYPE_TAXON_TYPES = TYPES_ABOVE_SPECIES
-  CAN_BE_A_COMBINATION_TYPES = %w[Genus Subgenus Species Subspecies Infrasubspecies]
+  CAN_BE_A_COMBINATION_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  ITALIC_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  SINGLE_WORD_TYPES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE, GENUS] # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
+
+  ### AntCat-specific config.
+  # Allow any type while figuring this out. Required for showing-ish what we have now: `[FAMILY, SUBFAMILY, TRIBE,]`.
+  TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES = TYPES
+
+  SHOW_CREATE_COMBINATION_BUTTON_TYPES = [SPECIES]
+  SHOW_CREATE_COMBINATION_HELP_BUTTON_TYPES = [SPECIES, SUBSPECIES]
+  ALLOW_CREATE_OBSOLETE_COMBINATION_TYPES = [SPECIES]
+  ALLOW_FORCE_CHANGE_PARENT_TYPES = [GENUS, SPECIES, SUBSPECIES]
+
+  ### For `taxa.incertae_sedis_in`.
   INCERTAE_SEDIS_IN_RANKS = [
     INCERTAE_SEDIS_IN_FAMILY = 'family',
     INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
     'tribe',
     'genus'
   ]
-  ITALIC_RANKS = %w[genus subgenus species subspecies infrasubspecies]
-  # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
-  SINGLE_WORD_RANKS = %w[family subfamily tribe subtribe genus]
-  # Allow any type while figuring this out. Required for showing-ish what we have now: `%w[Family Subfamily Tribe]`.
-  TYPE_SPECIFIC_TAXON_HISTORY_ITEM_RANKS = TYPES
 
   class << self
-    def italic? rank
-      rank.in? ITALIC_RANKS
+    def italic? type
+      type.in? ITALIC_TYPES
     end
 
-    def single_word_name? rank
-      rank.in? SINGLE_WORD_RANKS
+    def single_word_name? type
+      type.in? SINGLE_WORD_TYPES
     end
 
     # See https://en.wikipedia.org/wiki/Taxonomic_rank#Ranks_in_zoology

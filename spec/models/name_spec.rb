@@ -11,7 +11,9 @@ describe Name do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :name }
+    describe '#name' do
+      it { is_expected.to validate_presence_of :name }
+    end
 
     describe '#ensure_starts_with_upper_case_letter' do
       let(:name) { build_stubbed :genus_name, name: 'lasius' }
@@ -58,14 +60,6 @@ describe Name do
             and change { taxon.reload.name_html_cache }.to('<i>Atta</i>')
         end
       end
-    end
-  end
-
-  describe "#rank" do
-    let!(:name) { build_stubbed :subfamily_name }
-
-    it "returns a lowercase version'" do
-      expect(name.rank).to eq 'subfamily'
     end
   end
 

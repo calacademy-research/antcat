@@ -51,7 +51,7 @@ describe TaxonHistoryItemsController do
     let!(:taxon_history_item_params) do
       {
         taxt: 'content',
-        rank: 'Subfamily'
+        rank: Rank::SUBFAMILY
       }
     end
 

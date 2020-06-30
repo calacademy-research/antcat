@@ -199,7 +199,7 @@ describe Exporters::Antweb::TaxonAttributes do
     describe "[21]: `current valid rank`" do
       let(:taxon) { create :subfamily }
 
-      specify { expect(described_class[taxon][:current_valid_rank]).to eq 'Subfamily' }
+      specify { expect(described_class[taxon][:current_valid_rank]).to eq Rank::SUBFAMILY }
     end
 
     describe "[23]: `current valid parent`" do

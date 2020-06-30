@@ -9,10 +9,10 @@ class Subfamily < Taxon
     has_many :species
     has_many :subspecies
   end
-  has_many :collective_group_names, -> { where(collective_group_name: true) }, class_name: 'Genus'
-  has_many :genera_without_tribe, -> { without_tribe }, class_name: 'Genus'
+  has_many :collective_group_names, -> { where(collective_group_name: true) }, class_name: Rank::GENUS
+  has_many :genera_without_tribe, -> { without_tribe }, class_name: Rank::GENUS
   # TODO: See note in `Family` regarding incertae sedis.
-  has_many :genera_incertae_sedis_in, -> { incertae_sedis_in_subfamily }, class_name: 'Genus'
+  has_many :genera_incertae_sedis_in, -> { incertae_sedis_in_subfamily }, class_name: Rank::GENUS
 
   def parent
     Family.first

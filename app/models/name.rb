@@ -37,8 +37,8 @@ class Name < ApplicationRecord
     set_epithet
   end
 
-  def rank
-    self.class.name.delete_suffix('Name').underscore
+  def taxon_type
+    @_taxon_type ||= self.class.name.delete_suffix('Name')
   end
 
   def name_html
@@ -56,7 +56,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless Rank.italic?(rank)
+      return string unless Rank.italic?(taxon_type)
       Italicize[string]
     end
 
@@ -74,7 +74,7 @@ class Name < ApplicationRecord
     end
 
     def ensure_no_spaces_in_single_word_names
-      return unless Rank.single_word_name?(rank)
+      return unless Rank.single_word_name?(taxon_type)
       return unless name.include?(" ")
 
       errors.add :name, "of type #{type} may not contain spaces"

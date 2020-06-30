@@ -113,7 +113,7 @@ class Taxon < ApplicationRecord
     end
 
     def ensure_correct_name_type
-      return if name&.rank == rank
+      return if name&.taxon_type == type
       errors.add :base, "Rank (`#{self.class}`) and name type (`#{name.class}`) must match."
     end
 end
