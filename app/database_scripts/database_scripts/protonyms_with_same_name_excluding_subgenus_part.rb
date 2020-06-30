@@ -16,7 +16,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.keey
+            protonym.author_citation
           ]
         end
       end

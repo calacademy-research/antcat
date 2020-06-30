@@ -88,7 +88,7 @@ class MakePreviewable
       success: (html) =>
         tab.html html
         # Re-trigger to make references expandable.
-        AntCat.makeReferenceKeeysExpandable tab
+        AntCat.makeReferenceKeysExpandable tab
         AntCat.enableTaxonLinksHoverPreview tab
         @hideSpinner() # Only hide on success.
       error: -> tab.text "Error rendering preview"
@@ -184,7 +184,7 @@ class ExtrasArea
       button.addClass('ui-state-disabled')
       return
 
-    button.html reference.keey
+    button.html reference.referenceKey
     button.click =>
       event.preventDefault()
       @textarea.insertAtCaret "{ref #{reference.id}}: "
@@ -209,9 +209,9 @@ class ExtrasArea
 defaultReference = ->
   reference = $('#default-reference')
   id = reference.data('id')
-  keey = reference.data('keey')
+  referenceKey = reference.data('reference-key')
 
-  { id: id, keey: keey }
+  { id: id, referenceKey: referenceKey }
 
 # Global to make it callable by at.js.
 # This may be very *not* performant...

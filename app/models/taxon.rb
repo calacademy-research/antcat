@@ -84,7 +84,7 @@ class Taxon < ApplicationRecord
   end
 
   def author_citation
-    citation = authorship_reference.keey_without_letters_in_year
+    citation = authorship_reference.key_with_year
     return citation unless is_a?(SpeciesGroupTaxon) && recombination?
     '('.html_safe + citation + ')'
   end

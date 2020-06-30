@@ -1,10 +1,10 @@
--title "#{Unitalicize[@reference.keey]} - What Links Here"
+-title "#{Unitalicize[@reference.key_with_citation_year]} - What Links Here"
 -breadcrumb :reference_what_links_here, @reference
 -noindex_meta_tag
 
 -content_for :javascripts do
   =javascript_include_tag "highlight_text"
 
-=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_text: @reference.keey
+=render "shared/what_links_here", what_links_here_items: @what_links_here_items, highlight_text: @reference.key_with_citation_year
 
 =will_paginate @what_links_here_items

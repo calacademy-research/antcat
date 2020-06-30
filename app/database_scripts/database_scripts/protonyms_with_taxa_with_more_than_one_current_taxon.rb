@@ -14,7 +14,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.keey,
+            protonym.author_citation,
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', ')
           ]

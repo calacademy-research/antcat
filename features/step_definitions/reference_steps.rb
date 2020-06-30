@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-def find_reference_by_keey keey
-  parts = keey.split ','
+def find_reference_by_key key_with_year
+  parts = key_with_year.split ','
   last_name = parts[0]
   year = parts[1]
   Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
@@ -81,8 +81,8 @@ When("I fill in {string} with a URL to a document that exists") do |field_name|
   step %(I fill in "#{field_name}" with "http://google\.com/foo")
 end
 
-Given("the default reference is {string}") do |keey|
-  reference = find_reference_by_keey keey
+Given("the default reference is {string}") do |key_with_year|
+  reference = find_reference_by_key(key_with_year)
   References::DefaultReference.stub(:get).and_return(reference)
 end
 

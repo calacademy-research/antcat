@@ -9,7 +9,7 @@ module My
       References::DefaultReference.set(session, reference)
 
       redirect_back fallback_location: references_path,
-        notice: "#{reference.keey} was successfully set as the default reference."
+        notice: "#{reference.key_with_citation_year} was successfully set as the default reference."
     end
 
     private

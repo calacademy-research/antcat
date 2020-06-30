@@ -18,7 +18,7 @@ describe Exporters::Antweb::TaxonAttributes do
       specify do
         reference = taxon.authorship_reference
         expect(described_class[taxon][:author_date_html]).
-          to eq %(<span title="#{reference.decorate.plain_text}">#{reference.keey}</span>)
+          to eq %(<span title="#{reference.decorate.plain_text}">#{reference.key_with_citation_year}</span>)
       end
     end
 

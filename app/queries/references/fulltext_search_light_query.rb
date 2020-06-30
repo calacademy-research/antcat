@@ -19,7 +19,7 @@ module References
       def search_results
         Reference.search do
           keywords normalized_search_query do
-            fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_keey
+            fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_key
             boost_fields author_names_string: 5.0
             boost_fields citation_year: 2.0
           end

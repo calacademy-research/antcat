@@ -26,7 +26,7 @@ module Exporters
             subspecies:               taxonomic_attributes[:subspecies],
             author_date:              taxon.author_citation,
             author_date_html:         authorship_html_string,
-            authors:                  taxon.authorship_reference.key.authors_for_keey,
+            authors:                  taxon.authorship_reference.key.authors_for_key,
             year:                     taxon.authorship_reference.year,
             status:                   taxon.status,
             available:                taxon.valid_status?,
@@ -50,7 +50,7 @@ module Exporters
 
         def authorship_html_string
           reference = taxon.authorship_reference
-          tag.span reference.keey, title: reference.decorate.plain_text
+          tag.span reference.key_with_citation_year, title: reference.decorate.plain_text
         end
 
         def current_valid_name

@@ -17,7 +17,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             taxon_link(taxon),
-            taxon.authorship_reference.keey,
+            taxon.authorship_reference.key_with_citation_year,
             taxon.status,
             ('Yes' if taxon.unresolved_homonym?)
           ]

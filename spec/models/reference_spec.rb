@@ -33,7 +33,7 @@ describe Reference do
         expect { duplicate.bolton_key = conflict.bolton_key }.
           to change { duplicate.valid? }.from(true).to(false)
         expect(duplicate.errors[:bolton_key].first).to include "Bolton key has already been taken by"
-        expect(duplicate.errors[:bolton_key].first).to include conflict.keey
+        expect(duplicate.errors[:bolton_key].first).to include conflict.key_with_citation_year
       end
     end
   end

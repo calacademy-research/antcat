@@ -6,7 +6,7 @@ end
 
 crumb :reference do |reference|
   if reference.persisted?
-    link sanitize(reference.keey), reference_path(reference)
+    link sanitize(reference.key_with_citation_year), reference_path(reference)
   else
     link "##{reference.id} [deleted]"
   end

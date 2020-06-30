@@ -28,7 +28,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            protonym.authorship.reference.keey,
+            protonym.author_citation,
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
