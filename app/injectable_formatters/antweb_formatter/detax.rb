@@ -70,7 +70,7 @@ module AntwebFormatter
 
       # Hardcoded names, "{missing/unmissing string}".
       def parse_missing_or_unmissing_tags
-        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG) do
+        content.gsub!(Taxt::MISSING_OR_UNMISSING_TAG_REGEX) do
           $LAST_MATCH_INFO[:hardcoded_name]
         end
       end

@@ -24,7 +24,7 @@ module Exporters
               string = ''.html_safe
 
               history_items.each do |history_item|
-                string << tag.div(AddPeriodIfNecessary[AntwebFormatter.detax(history_item.taxt)])
+                string << tag.div(AddPeriodIfNecessary[AntwebFormatter.detax(history_item.to_taxt)])
               end
 
               virtual_history_items.each do |history_item|

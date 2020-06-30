@@ -3,7 +3,7 @@
 module DatabaseScripts
   class HistoryItemsWithoutRefOrTaxTags < DatabaseScript
     def results
-      TaxonHistoryItem.where(TaxonHistoryItem::NO_REF_OR_TAX_TAG).
+      TaxonHistoryItem.where(Taxt::HistoryItemCleanup::NO_REF_OR_TAX_TAG).
         includes(taxon: { protonym: :name })
     end
 

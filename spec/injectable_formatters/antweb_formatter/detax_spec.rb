@@ -38,7 +38,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `MISSING_OR_UNMISSING_TAG` (missing and unmissing hardcoded taxon names)" do
+    describe "tag: `MISSING_OR_UNMISSING_TAG_REGEX` (missing and unmissing hardcoded taxon names)" do
       it 'renders the hardcoded name' do
         expect(described_class["Synonym of {missing <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
         expect(described_class["in family {unmissing Pices}"]).to eq "in family Pices"
