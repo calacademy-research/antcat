@@ -46,7 +46,7 @@
         -presenter.items_excluding_self_owned.each do |history_item|
           %li
             Item owned by
-            %strong=history_item.taxon.rank.upcase
+            %strong=history_item.taxon.type.upcase
             =CatalogFormatter.link_to_taxon(history_item.taxon)
 
             -if history_item.rank?
