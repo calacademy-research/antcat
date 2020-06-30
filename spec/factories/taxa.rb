@@ -112,10 +112,6 @@ FactoryBot.define do
       status { Status::UNAVAILABLE_MISSPELLING }
     end
 
-    trait :unavailable_uncategorized do
-      status { Status::UNAVAILABLE_UNCATEGORIZED }
-    end
-
     # Parallel statuses.
     trait :fossil do
       fossil { true }

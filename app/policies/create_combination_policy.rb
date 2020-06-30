@@ -25,7 +25,6 @@ class CreateCombinationPolicy
         yielder << 'taxon has infrasubspecices' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?
         yielder << 'taxon has junior synonyms' if taxon.junior_synonyms.any?
         yielder << "taxon has 'unavailable misspelling's" if any_unavailable_misspellings?
-        yielder << "taxon has 'unavailable uncategorized's" if any_unavailable_uncategorizeds?
         yielder << 'taxon is an unresolved homonym' if taxon.unresolved_homonym?
         yielder << 'taxon is a replacement for a homonym' if any_homonym_replaced_bys?
         yielder << "taxon has unsupported 'What Links Here's" unless what_links_heres_ok?
@@ -41,11 +40,6 @@ class CreateCombinationPolicy
     # TODO: Model knowledge, but we don't want it there (we want to remove it).
     def any_unavailable_misspellings?
       taxon.current_taxon_of.where(status: Status::UNAVAILABLE_MISSPELLING).any?
-    end
-
-    # TODO: Model knowledge, but we don't want it there (we want to remove it).
-    def any_unavailable_uncategorizeds?
-      taxon.current_taxon_of.where(status: Status::UNAVAILABLE_UNCATEGORIZED).any?
     end
 
     # TODO: Model knowledge, but we don't want it there (we don't know what we want).

@@ -75,8 +75,6 @@ description: >
 
   * Unavailable
 
-  * Unavailable uncategorized
-
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSpeciesInTheSameGenus

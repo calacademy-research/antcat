@@ -69,15 +69,6 @@ describe Taxa::CompactStatus do
           expect(described_class[taxon]).to eq "misspelling of #{taxon_link(current_taxon)}"
         end
       end
-
-      context "when taxon status is 'unavailable uncategorized'" do
-        let!(:current_taxon) { build_stubbed :any_taxon }
-        let!(:taxon) { build_stubbed :any_taxon, :unavailable_uncategorized, current_taxon: current_taxon }
-
-        specify do
-          expect(described_class[taxon]).to eq "see #{taxon_link(current_taxon)}"
-        end
-      end
     end
 
     describe 'prefixes and suffixes' do
