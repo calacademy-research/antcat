@@ -16,8 +16,13 @@ describe MarkdownHelper do
     let(:content) { "pizza" }
 
     it "calls `Markdowns::Render`" do
-      expect(Markdowns::Render).to receive(:new).with(content, sanitize_content: false).and_call_original
+      double = instance_double 'Markdowns::Render'
+      allow(Markdowns::Render).to receive(:new).with(content, sanitize_content: false).and_return(double)
+      allow(double).to receive(:call)
+
       helper.markdown_without_sanitation content
+
+      expect(double).to have_received(:call)
     end
   end
 end
