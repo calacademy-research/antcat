@@ -32,7 +32,7 @@ title: Species-group names with senior synonyms in different genus
 
 section: research
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 

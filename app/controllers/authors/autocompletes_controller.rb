@@ -9,16 +9,12 @@ module Authors
     private
 
       def serialized_author_names
-        if params[:with_ids] # TODO: Start using this instead of just names as strings.
-          author_names.map do |author_name|
-            {
-              label: author_name.name,
-              author_id: author_name.author_id,
-              url: "/authors/#{author_name.author_id}"
-            }
-          end
-        else
-          author_names.map(&:name)
+        author_names.map do |author_name|
+          {
+            label: author_name.name,
+            author_id: author_name.author_id,
+            url: "/authors/#{author_name.author_id}"
+          }
         end
       end
 

@@ -45,8 +45,8 @@ class TaxonHistoryItem < ApplicationRecord
     taxt
   end
 
-  def ids_from_tax_tags
-    taxt.scan(Taxt::TAX_OR_TAXAC_TAG_REGEX).flatten.map(&:to_i)
+  def ids_from_tax_or_taxac_tags
+    Taxt.extract_ids_from_tax_or_taxac_tags taxt
   end
 
   private

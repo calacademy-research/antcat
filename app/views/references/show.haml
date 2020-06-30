@@ -118,6 +118,27 @@
               =logged_in_only_tooltip_icon
             %td=or_dash decorated.format_taxonomic_notes
 
+-if current_user
+  -if @reference.citations.exists?
+    .row.margin-bottom
+      .small-12.columns
+        .callout.no-border-callout.logged-in-only-background
+          %h5
+            Citations
+            =logged_in_only_tooltip_icon
+            %small Note: nestees of this reference are not included here.
+
+          %table
+            %thead
+              %th Citation object
+              %th Pages
+            -@reference.citations.order(:pages).each do |citation|
+              %tr
+                %td
+                  Protonym:
+                  =citation.protonym.decorate.link_to_protonym
+                %td=citation.pages
+
 -if decorated.described_taxa.exists?
   .row.margin-bottom
     .small-12.columns

@@ -33,7 +33,7 @@ module Markdowns
       # Renders: link to the taxon (Formica).
       def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
-        taxon_ids = content.scan(Taxt::TAX_TAG_REGEX).flatten.compact
+        taxon_ids = Taxt.extract_ids_from_tax_tags(content)
         return if taxon_ids.blank?
 
         taxa_indexed_by_id = Taxon.where(id: taxon_ids).select(
@@ -69,7 +69,7 @@ module Markdowns
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
-        reference_ids = content.scan(Taxt::REF_TAG_REGEX).flatten.compact
+        reference_ids = Taxt.extract_ids_from_ref_tags(content)
         return if reference_ids.blank?
 
         references_indexed_by_id =

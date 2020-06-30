@@ -103,7 +103,7 @@ description: >
   then the button cannot be used for <span class="bold-notice">convertable</span> tags until the first tag has been fixed.
 
 
-  More information here: %wiki6
+  More information here: %wiki6 and %github1052
 
 related_scripts:
   - HistoryItemsWithMissingTags

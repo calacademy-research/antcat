@@ -51,7 +51,7 @@ module Taxa
 
     def combination_in_according_to_history_items
       @_combination_in_according_to_history_items ||= begin
-        ids = combination_in_history_items.map(&:ids_from_tax_tags).flatten
+        ids = combination_in_history_items.map(&:ids_from_tax_or_taxac_tags).flatten
         Taxon.where(id: ids)
       end
     end

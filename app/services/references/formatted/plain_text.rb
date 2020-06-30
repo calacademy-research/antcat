@@ -29,6 +29,8 @@ module References
             "#{reference.publisher.display_name}, #{reference.pagination}"
           when ::NestedReference
             "#{reference.pagination} #{References::Formatted::PlainText[reference.nesting_reference]}"
+          else
+            raise 'unknown type'
           end
         end
     end

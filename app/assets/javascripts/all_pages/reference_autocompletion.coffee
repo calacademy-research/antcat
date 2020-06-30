@@ -3,7 +3,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/authors/autocomplete?with_ids=y&term=%QUERY'
+      url: '/authors/autocomplete?term=%QUERY'
       wildcard: '%QUERY'
 
   authorsDataSet =

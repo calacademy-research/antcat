@@ -23,7 +23,7 @@ module Taxa
       end
 
       def reference_ids_from_taxts
-        extract_ref_tags(taxt_content)
+        Taxt.extract_ids_from_ref_tags(taxt_content).sort
       end
 
       def taxt_content
@@ -35,10 +35,6 @@ module Taxa
         string << (taxon.protonym.type_notes_taxt || '')
         string << (taxon.protonym.notes_taxt || '')
         string.join
-      end
-
-      def extract_ref_tags string
-        string.scan(Taxt::REF_TAG_REGEX).flatten.compact.map(&:to_i).sort
       end
   end
 end

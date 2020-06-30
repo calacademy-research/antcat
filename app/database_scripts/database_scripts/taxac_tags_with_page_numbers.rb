@@ -74,7 +74,7 @@ title: <code>taxac</code> tags with page numbers
 
 section: main
 category: Taxt
-tags: [has-quick-fix, updated!]
+tags: [has-quick-fix]
 
 description: >
   `taxac` tags should be used for disambiguation purposes only, so no pages should appear after the tag.
