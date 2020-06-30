@@ -30,7 +30,7 @@ describe Api::V1::TaxonSerializer do
             "original_combination" => false,
             "protonym_id" => taxon.protonym.id,
             "species_id" => nil,
-            "status" => "valid",
+            "status" => Status::VALID,
             "subfamily_id" => nil,
             "subgenus_id" => nil,
             "subspecies_id" => nil,

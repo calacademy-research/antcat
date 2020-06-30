@@ -54,11 +54,11 @@ class ProtonymHistoryPresenter
   # TODO: This is for a future column for family/subfamily/tribe trios.
   # rubocop:disable Style/MultipleComparison
   def rank_field_required? catalog_taxon, history_item_owner_taxon
-    ranks = [catalog_taxon.rank, history_item_owner_taxon.rank].sort
+    ranks = [catalog_taxon.type, history_item_owner_taxon.type].sort
 
-    ranks == %w[family subfamily] ||
-      ranks == %w[family tribe] ||
-      ranks == %w[subfamily tribe]
+    ranks == [Rank::FAMILY, Rank::SUBFAMILY] ||
+      ranks == [Rank::FAMILY, Rank::TRIBE] ||
+      ranks == [Rank::SUBFAMILY, Rank::TRIBE]
   end
   # rubocop:enable Style/MultipleComparison
 

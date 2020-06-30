@@ -16,7 +16,7 @@ module Taxa
         statistics.slice(:extant, :fossil).map do |extant_or_fossil, extant_or_fossil_stats|
           stats = extant_or_fossil_stats.map do |rank, rank_stats|
             [
-              valid_statistics(rank_stats.delete('valid'), rank),
+              valid_statistics(rank_stats.delete(Status::VALID), rank),
               invalid_statistics(rank_stats)
             ].compact.join(' ')
           end
