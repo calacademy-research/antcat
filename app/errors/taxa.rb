@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# :nocov:
 module Taxa
   class TaxonHasSubspecies < StandardError; end
   class TaxonHasInfrasubspecies < StandardError; end
@@ -26,3 +27,4 @@ module Taxa
     end
   end
 end
+# :nocov:

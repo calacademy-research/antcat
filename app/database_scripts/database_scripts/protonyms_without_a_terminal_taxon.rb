@@ -3,10 +3,10 @@
 module DatabaseScripts
   class ProtonymsWithoutATerminalTaxon < DatabaseScript
     def self.looks_like_a_false_positive? protonym
-      Protonym.all_statuses_same?(protonym.taxa) &&
+      Protonyms.all_statuses_same?(protonym.taxa) &&
         (
-          Protonym.all_taxa_above_genus_and_of_unique_different_ranks?(protonym.taxa) ||
-          Protonym.taxa_genus_and_subgenus_pair?(protonym.taxa)
+          Protonyms.all_taxa_above_genus_and_of_unique_different_ranks?(protonym.taxa) ||
+          Protonyms.taxa_genus_and_subgenus_pair?(protonym.taxa)
         )
     end
 

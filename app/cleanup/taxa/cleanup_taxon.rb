@@ -4,29 +4,9 @@
 # No tests is a feature, not a bug, since the only reason we're OK
 # with this is because all of it will 100% be removed at some point :)
 
-# :nocov:
 module Taxa
   class CleanupTaxon < SimpleDelegator
     ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
-
-    # TODO: Experimental.
-    def now_taxon
-      return self unless current_taxon
-      current_taxon.now_taxon
-    end
-
-    # TODO: Experimental. Used for expanding type taxa (see `TypeNameDecorator`).
-    def most_recent_before_now_taxon
-      taxa = []
-      iteratred_current_taxon = current_taxon
-
-      while iteratred_current_taxon
-        taxa << iteratred_current_taxon
-        iteratred_current_taxon = iteratred_current_taxon.current_taxon
-      end
-
-      taxa.second_to_last || self
-    end
 
     # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
     # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
@@ -65,4 +45,3 @@ module Taxa
       end
   end
 end
-# :nocov:

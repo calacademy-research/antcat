@@ -2,13 +2,6 @@
 
 module DatabaseScripts
   class ProtonymsWithNotesTaxt < DatabaseScript
-    PARSABLE_VARIATIONS = [
-      /^ ?\[as subgenus of \{tax \d+\}\]$/,
-      /^ ?\[as "section" of \{tax \d+\}\]$/,
-      /^ ?\[as "group" of \{tax \d+\}\]$/,
-      /^ ?\[as "branch" of \{tax \d+\}\]$/
-    ]
-
     def results
       Protonym.where.not(notes_taxt: nil).includes(:name, :authorship)
     end
@@ -31,7 +24,7 @@ module DatabaseScripts
     private
 
       def notes_type notes_taxt
-        return 'as_x_of_tax_id' if PARSABLE_VARIATIONS.any? { |re| re =~ notes_taxt }
+        return 'as_x_of_tax_id' if Protonyms.semi_normalized_notes_taxt?(notes_taxt)
       end
   end
 end

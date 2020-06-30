@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `DatabaseScripts::MissingTaxaToBeCreated`.
-# :nocov:
 module QuickAndDirtyFixes
   class PrefillTaxonForm
     include Service
@@ -127,4 +126,3 @@ module QuickAndDirtyFixes
       end
   end
 end
-# :nocov:

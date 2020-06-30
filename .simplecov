@@ -21,6 +21,7 @@ SimpleCov.configure do
   add_filter %r{^/config/}
   add_filter %r{^/db/}
 
+  add_filter "/app/cleanup/"
   add_filter "/app/database_scripts/database_scripts/"
 
   # Dev code.

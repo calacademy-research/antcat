@@ -1,0 +1,19 @@
+.callout.no-border-callout.logged-in-only-background
+  %h6
+    Obsolete combinations
+    =logged_in_only_tooltip_icon "This is only showed to logged-in users since we don't have very complete data for obsolete combinations."
+  %ul.compact-list.small-margin-botto
+    -TaxonQuery.new(taxon.obsolete_combinations.order_by_name).with_common_includes.each do |obsolete_combination|
+      %li
+        =CatalogFormatter.link_to_taxon(obsolete_combination)
+        =obsolete_combination.author_citation
+        -if current_user && obsolete_combination.protonym != taxon.protonym
+          %span.logged-in-only-background
+            %small
+              %span.bold-warning
+                this obsolete combination does not have the same protonym as the current taxon
+              =surround "(", ")" do
+                =taxon.protonym.decorate.link_to_protonym
+                vs.
+                =obsolete_combination.protonym.decorate.link_to_protonym
+              =logged_in_only_tooltip_icon

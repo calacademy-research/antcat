@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `QuickAndDirtyFixesController#convert_to_taxac_tags`.
-# :nocov:
 module QuickAndDirtyFixes
   class ConvertTaxToTaxacTags
     include Service
@@ -39,4 +38,3 @@ module QuickAndDirtyFixes
       end
   end
 end
-# :nocov:

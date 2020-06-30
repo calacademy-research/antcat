@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `QuickAndDirtyFixesController#replace_missing_tags`.
-# :nocov:
 module QuickAndDirtyFixes
   class ReplaceMissingTags
     include Service
@@ -57,4 +56,3 @@ module QuickAndDirtyFixes
       end
   end
 end
-# :nocov:
