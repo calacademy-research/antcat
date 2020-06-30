@@ -9,8 +9,7 @@ module DatabaseScripts
       Status::UNIDENTIFIABLE,
       Status::UNAVAILABLE,
       Status::EXCLUDED_FROM_FORMICIDAE,
-      Status::UNAVAILABLE_MISSPELLING,
-      Status::UNAVAILABLE_UNCATEGORIZED
+      Status::UNAVAILABLE_MISSPELLING
     ]
 
     def results
@@ -61,8 +60,6 @@ description: >
   * excluded from Formicidae
 
   * unavailable misspelling
-
-  * unavailable uncategorized
 
 related_scripts:
   - SynonymGeneraWithSpeciesWithIncompatibleStatuses

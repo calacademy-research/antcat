@@ -10,16 +10,14 @@ class Status
     UNAVAILABLE               = "unavailable",
     EXCLUDED_FROM_FORMICIDAE  = "excluded from Formicidae",
     OBSOLETE_COMBINATION      = "obsolete combination",
-    UNAVAILABLE_MISSPELLING   = "unavailable misspelling",
-    UNAVAILABLE_UNCATEGORIZED = "unavailable uncategorized"
+    UNAVAILABLE_MISSPELLING   = "unavailable misspelling"
   ]
 
   PLURALS = {
     SYNONYM                   => 'synonyms',
     HOMONYM                   => 'homonyms',
     OBSOLETE_COMBINATION      => 'obsolete combinations',
-    UNAVAILABLE_MISSPELLING   => 'unavailable misspellings',
-    UNAVAILABLE_UNCATEGORIZED => 'unavailable uncategorized'
+    UNAVAILABLE_MISSPELLING   => 'unavailable misspellings'
   }
 
   PASS_THROUGH_NAMES = [OBSOLETE_COMBINATION, UNAVAILABLE_MISSPELLING]
@@ -29,8 +27,7 @@ class Status
     presence: [
       SYNONYM,
       OBSOLETE_COMBINATION,
-      UNAVAILABLE_MISSPELLING,
-      UNAVAILABLE_UNCATEGORIZED
+      UNAVAILABLE_MISSPELLING
     ],
     absence: [
       VALID,

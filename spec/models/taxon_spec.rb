@@ -115,8 +115,7 @@ describe Taxon do
       [
         Status::SYNONYM,
         Status::OBSOLETE_COMBINATION,
-        Status::UNAVAILABLE_MISSPELLING,
-        Status::UNAVAILABLE_UNCATEGORIZED
+        Status::UNAVAILABLE_MISSPELLING
       ].each do |status|
         context "when status is #{status}" do
           let(:taxon) { build :any_taxon, status: status }

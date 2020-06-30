@@ -648,7 +648,6 @@ definitions:
               - synonym
               - obsolete combination
               - unavailable misspelling
-              - unavailable uncategorized
           protonym_id:
             type: integer
             description: Id of the protonym record
