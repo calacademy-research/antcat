@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.4.0"
+  version: "1.4.1"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -610,15 +610,15 @@ definitions:
         type: string
         description: Level of this particular taxon
         enum:
-          - family
-          - genus
-          - infrasubspecies
-          - species
-          - subfamily
-          - subgenus
-          - subspecies
-          - subtribe
-          - tribe
+          - Family
+          - Subfamily
+          - Tribe
+          - Subtribe
+          - Genus
+          - Subgenus
+          - Species
+          - Subspecies
+          - Infrasubspecies
       body:
         type: object
         properties:
