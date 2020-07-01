@@ -8,8 +8,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'Target subspecies name string', 'Convertable?', 'Target subspecies',
-          'Status', 'Target subspecies validation issues'
+        t.header 'Taxon', 'Status', 'Convertable?', 'Target subspecies',
+          'Status', 'Target subspecies validation issues', 'Quick-add button', 'Quick-add attributes'
 
         t.rows do |taxon|
           name_string = taxon.name_cache
@@ -19,14 +19,17 @@ module DatabaseScripts
           convertable = target_subspecies_candiates.count == 1
           target_subspecies = target_subspecies_candiates.first
 
+          prefill_taxon_form = QuickAndDirtyFixes::PrefillTaxonFormForQuadrinomial.new(taxon)
+
           [
             taxon_link(taxon),
             taxon.status,
-            target_subspecies_name_string,
             ('Yes' if convertable),
             (CatalogFormatter.link_to_taxon(target_subspecies) if convertable),
             (target_subspecies.status if convertable),
-            (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?)
+            (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?),
+            (new_taxon_link(prefill_taxon_form) unless convertable),
+            (prefill_taxon_form.synopsis unless convertable)
           ]
         end
       end
@@ -39,6 +42,11 @@ module DatabaseScripts
           validation.database_script.is_a?(DatabaseScripts::NonValidTaxaWithACurrentTaxonThatIsNotValid)
         end.map(&:issue_description).join('<br><br>')
       end
+
+      def new_taxon_link prefill_taxon_form
+        label = "Add #{prefill_taxon_form.rank}"
+        link_to label, new_taxa_path(prefill_taxon_form.taxon_form_params), class: "btn-tiny btn-normal"
+      end
   end
 end
 
@@ -46,27 +54,28 @@ __END__
 
 section: pa-action-required
 category: Catalog
-tags: [slow, high-priority]
+tags: [slow, has-quick-fix, high-priority]
 
 description: >
-  To be converted by script.
+  Records with a "Yes" in the "Convertable?" column can be converted by script. It's not possible to manually fix them.
 
 
   **Todo:**
 
 
-  * *Done* - Step 1) Convert batch 1: Quadrinomials where a `Subspecies` with the target name exists
-
-  * *Done* - Step 2) Recreate missing subspecies by script
-
-  * *Done* - Step 3) Cleanup recreated subspecies (see "Target subspecies soft validation issues")
-
-  * *Done* - Step 4) Convert batch 2: Quadrinomials where a `Subspecies` with the target name exists after missing subspecies were recreated
-
-  * Step 5) ???
+  * Create missing subspecies - the "quick-add" button opens the taxon form with prefilled values, which can be adjusted before saving.
 
 
-  Issues: %github714, %github819
+  Some of species may be missing due to them being misspelled, or just not
+  found in case the quadronomial is misspelled.
+
+
+  <span class='bold-notice'>[similar to subspecies epithet]</span> and
+  <span class='bold-warning'>[similar to infrasubspecies epithet]</span> are used to highlight epithets of existing subspecies
+  starting with the same first three letters.
+
+
+  Issues: %github714, %github819, [AC #41](/issues/41)
 
 related_scripts:
   - QuadrinomialsToBeConverted
