@@ -66,7 +66,7 @@ module DatabaseScripts
             [
               link_to(reference_section.id, reference_section_path(reference_section)),
               taxon_link(reference_section.taxon_id),
-              reference_section.taxon.rank,
+              reference_section.taxon.type,
               (reference_section.references_taxt ? not_blank : blank_warning),
               reference_section.title_taxt || blank,
               (reference_section.subtitle_taxt ? not_blank_warning : blank)
@@ -85,7 +85,7 @@ module DatabaseScripts
         [
           link_to(reference_section.id, reference_section_path(reference_section)),
           taxon_link(reference_section.taxon_id),
-          reference_section.taxon.rank,
+          reference_section.taxon.type,
           reference_section.references_taxt&.truncate(50, omission: '... [truncated]') || blank,
           reference_section.title_taxt || blank,
           reference_section.subtitle_taxt || blank

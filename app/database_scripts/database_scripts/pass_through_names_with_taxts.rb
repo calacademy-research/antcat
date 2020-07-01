@@ -13,7 +13,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             taxon_link(taxon),
-            taxon.rank,
+            taxon.type,
             taxon.status
           ]
         end

@@ -56,7 +56,7 @@ module QuickAndDirtyFixes
 
       current_taxon_line =
         if current_taxon
-          "[#{current_taxon.rank}] #{CatalogFormatter.link_to_taxon(current_taxon)} #{current_taxon.author_citation}"
+          "[#{current_taxon.type}] #{CatalogFormatter.link_to_taxon(current_taxon)} #{current_taxon.author_citation}"
         else
           '???'
         end
@@ -64,7 +64,7 @@ module QuickAndDirtyFixes
       <<~SYNOPSIS
         <b>Name</b>: #{name_class.new(name: name_string).name_html}<br>
         <b>Rank</b>: #{taxon_class}<br>
-        <b>Parent</b>: [#{parent.rank}] #{CatalogFormatter.link_to_taxon(parent)}<br>
+        <b>Parent</b>: [#{parent.type}] #{CatalogFormatter.link_to_taxon(parent)}<br>
         <b>Status</b>: #{status}<br>
         <b>Current taxon</b>: #{current_taxon_line}<br>
         <b>Protonym</b>: #{protonym_line}<br>

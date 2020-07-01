@@ -169,8 +169,8 @@ describe Catalog::AdvancedSearchQuery do
       end
 
       specify do
-        expect(described_class[incertae_sedis_in: 'family']).to eq [taxon]
-        expect(described_class[incertae_sedis_in: 'subfamily']).to eq []
+        expect(described_class[incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY]).to eq [taxon]
+        expect(described_class[incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY]).to eq []
       end
     end
 
@@ -233,8 +233,8 @@ describe Catalog::AdvancedSearchQuery do
       let!(:synonym) { create :any_taxon, :synonym }
 
       specify do
-        expect(described_class[status: 'valid']).to eq [valid]
-        expect(described_class[status: 'homonym']).to be_empty
+        expect(described_class[status: Status::VALID]).to eq [valid]
+        expect(described_class[status: Status::HOMONYM]).to be_empty
 
         expect(described_class[status: "", dummy: 'see NOTE']).to match_array [valid, synonym]
         expect(described_class[status: ""]).to be_empty

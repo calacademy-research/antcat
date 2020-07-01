@@ -23,7 +23,7 @@ module Taxa
     end
 
     def message
-      "Invalid parent: ##{new_parent&.id} (#{new_parent&.rank}) for ##{taxon.id} (#{taxon.rank})"
+      "Invalid parent: ##{new_parent&.id} (#{new_parent&.type}) for ##{taxon.id} (#{taxon.type})"
     end
   end
 end

@@ -37,6 +37,7 @@ class Rank
   ALLOW_FORCE_CHANGE_PARENT_TYPES = [GENUS, SPECIES, SUBSPECIES]
 
   ### For `taxa.incertae_sedis_in`.
+  # TODO: Probably upcase to match `taxa.type`.
   INCERTAE_SEDIS_IN_RANKS = [
     INCERTAE_SEDIS_IN_FAMILY = 'family',
     INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',

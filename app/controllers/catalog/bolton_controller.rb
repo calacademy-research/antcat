@@ -2,7 +2,7 @@
 
 module Catalog
   class BoltonController < ApplicationController
-    SUPPORTED_RANKS = %w[genus species subspecies infrasubspecies]
+    SUPPORTED_TYPES = [Rank::GENUS, Rank::SPECIES, Rank::SUBSPECIES, Rank::INFRASUBSPECIES]
 
     before_action :authenticate_user!
 

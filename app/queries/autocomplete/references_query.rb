@@ -21,7 +21,7 @@ module Autocomplete
       end
 
       def search_results
-        ::References::FulltextSearchQuery[{ per_page: NUM_RESULTS }.merge(keyword_params)]
+        ::References::FulltextSearchQuery[**{ per_page: NUM_RESULTS }.merge(keyword_params)]
       end
   end
 end

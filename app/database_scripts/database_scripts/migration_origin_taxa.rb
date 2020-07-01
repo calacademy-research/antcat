@@ -16,7 +16,7 @@ module DatabaseScripts
           [
             taxon_link(taxon),
             taxon.decorate.link_to_antwiki,
-            taxon.rank,
+            taxon.type,
             taxon.status,
             taxon_link(current_taxon),
             taxon.current_taxon&.decorate&.link_to_antwiki,

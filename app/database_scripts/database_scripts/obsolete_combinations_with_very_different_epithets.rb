@@ -22,7 +22,7 @@ module DatabaseScripts
 
           [
             taxon_link(taxon),
-            taxon.rank,
+            taxon.type,
             taxon.status,
             origin_warning(taxon),
             taxon_link(current_taxon),
