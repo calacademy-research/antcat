@@ -86,5 +86,21 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Could not replace missing tags"))
     end
   end
+
+  def replace_with_pro_tags
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = QuickAndDirtyFixes::HardcodedNameToProTag[taxon_history_item]
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Replaced with pro tags, but nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced hardcoed name with `pro` tag(s)"
+      render js: %(AntCat.notifySuccess("Replaced with pro tags: '#{new_taxt}'", false))
+    else
+      render js: %(AntCat.notifyError("Could not replace with pro tags"))
+    end
+  end
 end
 # :nocov:
