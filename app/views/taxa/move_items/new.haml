@@ -30,3 +30,16 @@
             %tr
               %td
                 %small=Detax[history_item.to_taxt]
+
+.row
+  .medium-6.columns
+    -if @taxon.reference_sections.empty?
+      No reference sections.
+    -else
+      %table
+        %caption Reference sections
+        %tbody
+          -@taxon.reference_sections.each do |reference_section|
+            %tr
+              %td
+                =render 'reference_section', reference_section: reference_section

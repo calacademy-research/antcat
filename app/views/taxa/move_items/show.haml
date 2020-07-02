@@ -18,6 +18,7 @@
         =@to_taxon.decorate.id_and_name_and_author_citation
 
   .row
+    -# Move from.
     .medium-6.columns
       -if @taxon.history_items.empty?
         No history items.
@@ -35,6 +36,23 @@
                 %td
                   %small=Detax[history_item.to_taxt]
 
+      -if @taxon.reference_sections.empty?
+        No reference sections.
+      -else
+        %table.reference-sections
+          %caption
+            Reference sections
+            .right
+              =link_to "Select all", "#", id: "select-all-reference-sections", class: "btn-normal btn-tiny"
+              =link_to "Unselect all", "#", id: "unselect-all-reference-sections", class: "btn-normal btn-tiny"
+          %tbody
+            -@taxon.reference_sections.each do |reference_section|
+              %tr
+                %td=check_box_tag "reference_section_ids[]", reference_section.id
+                %td
+                  =render 'reference_section', reference_section: reference_section
+
+    -# Move to.
     .medium-6.columns
       -if @to_taxon.history_items.empty?
         No history items.
@@ -46,6 +64,17 @@
               %tr
                 %td
                   %small=Detax[history_item.to_taxt]
+
+      -if @to_taxon.reference_sections.empty?
+        No reference sections.
+      -else
+        %table
+          %caption Reference sections
+          %tbody
+            -@to_taxon.reference_sections.each do |reference_section|
+              %tr
+                %td
+                  =render 'reference_section', reference_section: reference_section
 
   .row.margin-bottom
     .medium-12.columns

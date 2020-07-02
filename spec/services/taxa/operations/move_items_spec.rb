@@ -25,5 +25,28 @@ describe Taxa::Operations::MoveItems do
         end
       end
     end
+
+    describe 'moving reference sections' do
+      let!(:from_taxon) { create :family }
+      let!(:reference_section) { create :reference_section, taxon: from_taxon }
+
+      context 'when `to_taxon` can have reference sections' do
+        let!(:to_taxon) { create :family }
+
+        it 'moves reference sections from a taxon to another' do
+          expect { described_class[to_taxon, reference_sections: [reference_section]] }.
+            to change { reference_section.reload.taxon }.from(from_taxon).to(to_taxon)
+        end
+      end
+
+      context 'when `to_taxon` cannot have reference sections' do
+        let!(:to_taxon) { create :species }
+
+        it 'moves reference sections from a taxon to another' do
+          expect { described_class[to_taxon, reference_sections: [reference_section]] }.
+            to raise_error(described_class::ReferenceSectionsNotSupportedForRank)
+        end
+      end
+    end
   end
 end
