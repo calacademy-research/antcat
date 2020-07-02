@@ -1,0 +1,5 @@
+-[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+  -if reference_section[field].present?
+    %strong=field.to_s
+    %p
+      =Detax[reference_section[field]]

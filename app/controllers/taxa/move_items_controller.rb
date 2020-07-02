@@ -21,13 +21,13 @@ module Taxa
       @taxon = find_taxon
       @to_taxon = find_to_taxon
 
-      if history_items.empty?
+      if history_items.empty? && reference_sections.empty?
         flash.now[:alert] = "At least one item must be selected."
         render :show
         return
       end
 
-      if Taxa::Operations::MoveItems[@to_taxon, history_items]
+      if Taxa::Operations::MoveItems[@to_taxon, history_items: history_items, reference_sections: reference_sections]
         @taxon.create_activity :move_items, current_user, parameters: { to_taxon_id: @to_taxon.id }
         redirect_to taxa_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
           notice: "Successfully moved history items. Items can be re-ordered at the taxon's edit page."
@@ -35,6 +35,9 @@ module Taxa
         flash.now[:alert] = "Something went wrong... ?"
         render :show
       end
+    rescue Taxa::Operations::MoveItems::ReferenceSectionsNotSupportedForRank
+      flash.now[:alert] = "Rank of target does not support reference sections."
+      render :show
     end
 
     private
@@ -48,7 +51,11 @@ module Taxa
       end
 
       def history_items
-        @_history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids])
+        @_history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids]).order(:position)
+      end
+
+      def reference_sections
+        @_reference_sections ||= ReferenceSection.where(id: params[:reference_section_ids]).order(:position)
       end
   end
 end
