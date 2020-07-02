@@ -1,6 +1,6 @@
 -# TODO: Some copy-paste from `_history_items_section.haml`.
 
--unless taxon.is_a? SpeciesGroupTaxon
+-if taxon.type.in?(Rank::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
   #references-section.callout
     %h5.callout-header
       References
