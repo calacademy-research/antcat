@@ -17,7 +17,7 @@ describe Taxa::MoveItemsController do
     let!(:to_taxon) { create :any_taxon }
 
     it "calls `Taxa::Operations::MoveItems`" do
-      expect(Taxa::Operations::MoveItems).to receive(:new).with(to_taxon, [taxon_history_item]).and_call_original
+      expect(Taxa::Operations::MoveItems).to receive(:new).with(to_taxon, history_items: [taxon_history_item]).and_call_original
       post :create, params: { taxa_id: taxon.id, to_taxon_id: to_taxon.id, history_item_ids: [taxon_history_item.id] }
     end
 

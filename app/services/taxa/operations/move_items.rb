@@ -5,7 +5,7 @@ module Taxa
     class MoveItems
       include Service
 
-      attr_private_initialize :to_taxon, :history_items
+      attr_private_initialize :to_taxon, [history_items: []]
 
       def call
         move_history_items!

@@ -9,7 +9,7 @@ describe Taxa::Operations::MoveItems do
     let!(:history_item) { create :taxon_history_item, taxon: from_taxon }
 
     it 'moves history items from a taxon to another' do
-      expect { described_class[to_taxon, [history_item]] }.
+      expect { described_class[to_taxon, history_items: [history_item]] }.
         to change { history_item.reload.taxon }.from(from_taxon).to(to_taxon)
     end
 
@@ -19,7 +19,7 @@ describe Taxa::Operations::MoveItems do
       end
 
       it 'places moved history items last' do
-        expect { described_class[to_taxon, [history_item]] }.
+        expect { described_class[to_taxon, history_items: [history_item]] }.
           to change { history_item.reload.position }.from(1).to(2)
       end
     end

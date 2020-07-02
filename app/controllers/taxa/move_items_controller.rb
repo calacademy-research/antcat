@@ -27,7 +27,7 @@ module Taxa
         return
       end
 
-      if Taxa::Operations::MoveItems[@to_taxon, history_items]
+      if Taxa::Operations::MoveItems[@to_taxon, history_items: history_items]
         @taxon.create_activity :move_items, current_user, parameters: { to_taxon_id: @to_taxon.id }
         redirect_to taxa_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
           notice: "Successfully moved history items. Items can be re-ordered at the taxon's edit page."

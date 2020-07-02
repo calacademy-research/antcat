@@ -46,7 +46,7 @@ module Taxa
         end
 
         def move_history_items! new_species
-          Taxa::Operations::MoveItems[new_species, subspecies.history_items]
+          Taxa::Operations::MoveItems[new_species, history_items: subspecies.history_items]
         end
     end
   end
