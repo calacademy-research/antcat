@@ -26,8 +26,8 @@
           %caption
             History items
             .right
-              =link_to "Select all", "#", id: "select-all", class: "btn-normal btn-tiny"
-              =link_to "Unselect all", "#", id: "unselect-all", class: "btn-normal btn-tiny"
+              =link_to "Select all", "#", id: "select-all-history-items", class: "btn-normal btn-tiny"
+              =link_to "Unselect all", "#", id: "unselect-all-history-items", class: "btn-normal btn-tiny"
           %tbody
             -@taxon.history_items.each do |history_item|
               %tr
