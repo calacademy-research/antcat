@@ -22,8 +22,8 @@ module DatabaseScripts
           [
             normalized_name,
             count,
-            (new_taxon_link(quick_adder) if quick_adder.fillable?),
-            (quick_adder.synopsis if quick_adder.fillable?)
+            (new_taxon_link(quick_adder) if quick_adder.can_add?),
+            (quick_adder.synopsis if quick_adder.can_add?)
           ]
         end
       end

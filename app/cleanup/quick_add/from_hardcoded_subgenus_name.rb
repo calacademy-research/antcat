@@ -7,10 +7,10 @@ module QuickAdd
       @name_string = name_string
     end
 
-    def fillable?
-      return @_fillable if defined?(@_fillable)
+    def can_add?
+      return @_can_add if defined?(@_can_add)
 
-      @_fillable ||= begin
+      @_can_add ||= begin
         name_class == SubgenusName &&
           parent_name_string &&
           possible_parents.count == 1
