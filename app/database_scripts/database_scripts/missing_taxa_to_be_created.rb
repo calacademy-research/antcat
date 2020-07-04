@@ -17,7 +17,7 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Name', 'Count', 'Quick-add button', 'Quick-add attributes'
         t.rows(missing_names_to_be_created_by_count) do |(normalized_name, count)|
-          prefill_taxon_form = QuickAndDirtyFixes::PrefillTaxonForm.new(normalized_name)
+          prefill_taxon_form = QuickAdd::FromHardcodedSubgenusName.new(normalized_name)
 
           [
             normalized_name,

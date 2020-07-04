@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `DatabaseScripts::QuadrinomialsToBeConverted`.
-module QuickAndDirtyFixes
-  class PrefillTaxonFormForQuadrinomial
+module QuickAdd
+  class FromExistingQuadrinomial
     include Service
 
     def initialize quadrinomial

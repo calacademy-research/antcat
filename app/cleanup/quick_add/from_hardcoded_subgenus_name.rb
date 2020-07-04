@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # TODO: Temporary code for `DatabaseScripts::MissingTaxaToBeCreated`.
-module QuickAndDirtyFixes
-  class PrefillTaxonForm
+module QuickAdd
+  class FromHardcodedSubgenusName
     include Service
 
     attr_reader :name_string

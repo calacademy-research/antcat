@@ -19,7 +19,7 @@ module DatabaseScripts
           convertable = target_subspecies_candiates.count == 1
           target_subspecies = target_subspecies_candiates.first
 
-          prefill_taxon_form = QuickAndDirtyFixes::PrefillTaxonFormForQuadrinomial.new(taxon)
+          prefill_taxon_form = QuickAdd::FromExistingQuadrinomial.new(taxon)
 
           [
             taxon_link(taxon),
