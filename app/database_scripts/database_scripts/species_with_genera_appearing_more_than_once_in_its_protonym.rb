@@ -15,14 +15,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'Origin', 'Protonym', 'Protonym taxa'
+        t.header 'Taxon', 'Status', 'Protonym', 'Protonym taxa'
         t.rows do |taxon|
           [
             taxon_link(taxon),
             taxon.status,
-            origin_warning(taxon),
             taxon.protonym.decorate.link_to_protonym,
-            taxon.protonym.taxa.map { |tax| CatalogFormatter.link_to_taxon(tax) + origin_warning(tax).html_safe }.join('<br>')
+            taxa_list(taxon.protonym.taxa)
           ]
         end
       end

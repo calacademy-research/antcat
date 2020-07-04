@@ -14,7 +14,7 @@ module DatabaseScripts
           current_taxon = taxon.current_taxon
 
           [
-            taxon_link(taxon) + origin_warning(taxon),
+            taxon_link(taxon),
             taxon.status,
 
             taxon_link(current_taxon),

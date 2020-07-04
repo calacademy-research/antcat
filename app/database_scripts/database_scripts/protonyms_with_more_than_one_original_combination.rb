@@ -13,7 +13,7 @@ module DatabaseScripts
           [
             protonym.decorate.link_to_protonym,
             protonym.author_citation,
-            protonym.taxa.map { |tax| CatalogFormatter.link_to_taxon(tax) + origin_warning(tax).html_safe }.join('<br>')
+            taxa_list(protonym.taxa)
           ]
         end
       end

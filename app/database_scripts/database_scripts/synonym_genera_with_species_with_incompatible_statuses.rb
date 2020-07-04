@@ -28,7 +28,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.status,
             taxa.pluck(:status).uniq.join(', '),
-            incompatible_taxa.map { |tax| CatalogFormatter.link_to_taxon(tax) + origin_warning(tax).html_safe }.join('<br>')
+            taxa_list(incompatible_taxa)
           ]
         end
       end
