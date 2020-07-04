@@ -13,7 +13,7 @@ module QuickAdd
       @_can_add ||= begin
         name_class == SubgenusName &&
           parent_name_string &&
-          possible_parents.count == 1
+          possible_parents_count == 1
       end
     end
 
@@ -88,7 +88,11 @@ module QuickAdd
       end
 
       def possible_parents
-        Taxon.where(name_cache: parent_name_string)
+        Genus.where(name_cache: parent_name_string)
+      end
+
+      def possible_parents_count
+        @_possible_parents_count ||= possible_parents.count
       end
 
       def protonym

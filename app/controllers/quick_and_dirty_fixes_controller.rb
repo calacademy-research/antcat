@@ -96,7 +96,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Replaced with pro tags, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced hardcoed name with `pro` tag(s)"
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced hardcoded name with `pro` tag(s)"
       render js: %(AntCat.notifySuccess("Replaced with pro tags: '#{new_taxt}'", false))
     else
       render js: %(AntCat.notifyError("Could not replace with pro tags"))
