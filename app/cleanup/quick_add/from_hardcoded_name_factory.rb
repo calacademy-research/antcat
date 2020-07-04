@@ -9,14 +9,21 @@ module QuickAdd
       when 'SubgenusName'
         QuickAdd::FromHardcodedSubgenusName.new(name_string)
       else
-        QuickAddRankNotSupported.new(name_string, identified_name_class)
+        if epithet? name_string
+          QuickAddRankNotSupported.new("Identified as 'epithet' (not supported)")
+        else
+          QuickAddRankNotSupported.new("Identified as #{identified_name_class.name} (not supported)")
+        end
       end
     end
 
+    def self.epithet? name_string
+      name_string.split.size == 1 && name_string.downcase == name_string
+    end
+
     class QuickAddRankNotSupported
-      def initialize name_string, name_class
-        @name_string = name_string
-        @name_class = name_class
+      def initialize error_message
+        @error_message = error_message
       end
 
       def can_add?
@@ -29,11 +36,7 @@ module QuickAdd
 
       private
 
-        attr_reader :name_string, :name_class
-
-        def error_message
-          "Identified as #{name_class.name} (not supported)"
-        end
+        attr_reader :error_message
     end
   end
 end
