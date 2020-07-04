@@ -19,7 +19,7 @@ module DatabaseScripts
           convertable = target_subspecies_candiates.count == 1
           target_subspecies = target_subspecies_candiates.first
 
-          prefill_taxon_form = QuickAdd::FromExistingQuadrinomial.new(taxon)
+          quick_adder = QuickAdd::FromExistingQuadrinomial.new(taxon)
 
           [
             taxon_link(taxon),
@@ -28,8 +28,8 @@ module DatabaseScripts
             (CatalogFormatter.link_to_taxon(target_subspecies) if convertable),
             (target_subspecies.status if convertable),
             (format_failed_soft_validations(target_subspecies) if convertable && target_subspecies.soft_validations.failed?),
-            (new_taxon_link(prefill_taxon_form) unless convertable),
-            (prefill_taxon_form.synopsis unless convertable)
+            (new_taxon_link(quick_adder) unless convertable),
+            (quick_adder.synopsis unless convertable)
           ]
         end
       end
@@ -43,9 +43,9 @@ module DatabaseScripts
         end.map(&:issue_description).join('<br><br>')
       end
 
-      def new_taxon_link prefill_taxon_form
-        label = "Add #{prefill_taxon_form.rank}"
-        link_to label, new_taxa_path(prefill_taxon_form.taxon_form_params), class: "btn-tiny btn-normal"
+      def new_taxon_link quick_adder
+        label = "Add #{quick_adder.rank}"
+        link_to label, new_taxa_path(quick_adder.taxon_form_params), class: "btn-tiny btn-normal"
       end
   end
 end

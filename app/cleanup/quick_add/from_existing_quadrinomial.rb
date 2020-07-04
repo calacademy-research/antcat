@@ -3,8 +3,6 @@
 # TODO: Temporary code for `DatabaseScripts::QuadrinomialsToBeConverted`.
 module QuickAdd
   class FromExistingQuadrinomial
-    include Service
-
     def initialize quadrinomial
       @quadrinomial = quadrinomial
     end

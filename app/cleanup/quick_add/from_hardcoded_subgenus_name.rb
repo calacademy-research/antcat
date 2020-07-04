@@ -3,10 +3,6 @@
 # TODO: Temporary code for `DatabaseScripts::MissingTaxaToBeCreated`.
 module QuickAdd
   class FromHardcodedSubgenusName
-    include Service
-
-    attr_reader :name_string
-
     def initialize name_string
       @name_string = name_string
     end
@@ -72,6 +68,8 @@ module QuickAdd
     end
 
     private
+
+      attr_reader :name_string
 
       def status
         Status::OBSOLETE_COMBINATION
