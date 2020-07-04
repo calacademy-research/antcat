@@ -17,13 +17,13 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Name', 'Count', 'Quick-add button', 'Quick-add attributes'
         t.rows(missing_names_to_be_created_by_count) do |(normalized_name, count)|
-          quick_adder = QuickAdd::FromHardcodedSubgenusName.new(normalized_name)
+          quick_adder = QuickAdd::FromHardcodedNameFactory.create_quick_adder(normalized_name)
 
           [
             normalized_name,
             count,
             (new_taxon_link(quick_adder) if quick_adder.can_add?),
-            (quick_adder.synopsis if quick_adder.can_add?)
+            quick_adder&.synopsis
           ]
         end
       end
