@@ -17,7 +17,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Converted Bolton tags, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted Bolton tags"
-      render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert Bolton tags"))
     end
@@ -33,7 +33,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Converted to taxac tags, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted to taxac tags"
-      render js: %(AntCat.notifySuccess("Converted to taxac tags: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Converted to taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert to taxac tags"))
     end
@@ -49,7 +49,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags, nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
-      render js: %(AntCat.notifySuccess("Force-removed pages from taxac tags: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Force-removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags"))
     end
@@ -65,7 +65,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags, nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Remove page numbers from taxac tags"
-      render js: %(AntCat.notifySuccess("Removed pages from taxac tags: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags"))
     end
@@ -81,7 +81,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Replaced missing tags, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags"
-      render js: %(AntCat.notifySuccess("Replaced missing tags: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Replaced missing tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags"))
     end
@@ -97,7 +97,7 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifyError("Replaced with pro tags, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced hardcoded name with `pro` tag(s)"
-      render js: %(AntCat.notifySuccess("Replaced with pro tags: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Replaced with pro tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace with pro tags"))
     end
