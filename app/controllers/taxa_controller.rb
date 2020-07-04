@@ -77,7 +77,6 @@ class TaxaController < ApplicationController
         :ichnotaxon,
         :incertae_sedis_in,
         :nomen_nudum,
-        :origin,
         :original_combination,
         :protonym_id,
         :status,

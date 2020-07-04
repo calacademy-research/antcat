@@ -78,7 +78,6 @@
           %th Rank
           %th Status
           %th
-          %th
           -if current_user
             %th
         -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
@@ -94,9 +93,6 @@
               -if taxon.original_combination?
                 Original combination
                 =antcat_icon 'check'
-            %td
-              -if taxon.origin
-                .bold-warning=taxon.origin
             -if current_user
               %td
                 =taxon.decorate.link_to_antwiki

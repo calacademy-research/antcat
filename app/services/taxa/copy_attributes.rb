@@ -15,7 +15,6 @@ module Taxa
       # Not copied:
       #  :name (and cached :name_cache, :name_html_cache)
       #  :hol_id
-      #  :origin
       #
       #  Taxonomic relationships:
       #    :subfamily,

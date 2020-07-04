@@ -156,7 +156,7 @@ describe Taxon do
   describe 'callbacks' do
     subject(:taxon) { build_stubbed :any_taxon }
 
-    it { is_expected.to strip_attributes(:incertae_sedis_in, :origin) }
+    it { is_expected.to strip_attributes(:incertae_sedis_in) }
   end
 
   describe "#rank" do

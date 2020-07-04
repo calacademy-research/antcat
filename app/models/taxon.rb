@@ -54,7 +54,7 @@ class Taxon < ApplicationRecord
 
   accepts_nested_attributes_for :name, update_only: true
   has_paper_trail
-  strip_attributes only: [:incertae_sedis_in, :origin], replace_newlines: true
+  strip_attributes only: [:incertae_sedis_in], replace_newlines: true
   trackable parameters: proc {
     parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
     { rank: rank, name: name_html_cache, parent: parent_params }

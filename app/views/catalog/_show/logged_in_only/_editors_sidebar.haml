@@ -136,8 +136,6 @@
       %li
         Auto-generated
         =antcat_icon 'check'
-    -if taxon.origin
-      %li.bold-warning Origin: #{taxon.origin}
     %li Created at: #{l taxon.created_at, format: :ymd}
     %li Updated at: #{l taxon.updated_at, format: :ymd}
 

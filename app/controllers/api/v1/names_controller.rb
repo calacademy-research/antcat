@@ -3,7 +3,7 @@
 module Api
   module V1
     class NamesController < Api::ApiController
-      ATTRIBUTES = [:id, :auto_generated, :epithet, :gender, :name, :nonconforming_name, :origin, :created_at, :updated_at]
+      ATTRIBUTES = [:id, :auto_generated, :epithet, :gender, :name, :nonconforming_name, :created_at, :updated_at]
 
       def index
         render json: with_limit(Name.all).as_json(only: ATTRIBUTES, root: true)

@@ -26,7 +26,6 @@ describe Api::V1::TaxonSerializer do
             "name_html_cache" => taxon.name_html_cache,
             "name_id" => taxon.name.id,
             "nomen_nudum" => false,
-            "origin" => nil,
             "original_combination" => false,
             "protonym_id" => taxon.protonym.id,
             "species_id" => nil,

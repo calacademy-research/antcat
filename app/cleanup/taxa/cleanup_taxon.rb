@@ -6,8 +6,6 @@
 
 module Taxa
   class CleanupTaxon < SimpleDelegator
-    ORIGINS = ['hol', 'checked hol', 'migration', 'checked migration']
-
     # TODO: Remove ASAP. Also `#synonyms_history_items_containing_taxon`
     # and `#synonyms_history_items_containing_taxons_protonyms_taxa_except_self`.
     def obsolete_combination_that_is_shady?
