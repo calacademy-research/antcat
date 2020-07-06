@@ -30,5 +30,9 @@ module DatabaseScripts
     def gray_notice string
       %(<span class="gray-notice">#{string}</span>)
     end
+
+    def purple_notice string
+      %(<span class="purple-notice">#{string}</span>)
+    end
   end
 end
