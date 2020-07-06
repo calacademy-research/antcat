@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Rank', 'Status', 'Origin', 'current_taxon',
+        t.header 'Taxon', 'Rank', 'Status', 'current_taxon',
           'current_taxon status', 'Taxon epithet', 'current_taxon epithet',
           'Probably change CT?',
           'Probably change status to synonym?'
@@ -23,7 +23,6 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.type,
             taxon.status,
-            origin_warning(taxon),
             taxon_link(current_taxon),
             current_taxon.status,
             taxon.name.epithet,

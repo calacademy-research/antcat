@@ -17,13 +17,13 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Name', 'Count', 'Quick-add button', 'Quick-add attributes'
         t.rows(missing_names_to_be_created_by_count) do |(normalized_name, count)|
-          prefill_taxon_form = QuickAndDirtyFixes::PrefillTaxonForm.new(normalized_name)
+          quick_adder = QuickAdd::FromHardcodedNameFactory.create_quick_adder(normalized_name)
 
           [
             normalized_name,
             count,
-            (new_taxon_link(prefill_taxon_form) if prefill_taxon_form.fillable?),
-            (prefill_taxon_form.synopsis if prefill_taxon_form.fillable?)
+            (new_taxon_link(quick_adder) if quick_adder.can_add?),
+            quick_adder&.synopsis
           ]
         end
       end
@@ -55,9 +55,9 @@ module DatabaseScripts
         TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}%").pluck(:taxt).join
       end
 
-      def new_taxon_link prefill_taxon_form
-        label = "Add #{prefill_taxon_form.taxon_class.name}"
-        link_to label, new_taxa_path(prefill_taxon_form.taxon_form_params), class: "btn-tiny btn-normal"
+      def new_taxon_link quick_adder
+        label = "Add #{quick_adder.taxon_class.name}"
+        link_to label, new_taxa_path(quick_adder.taxon_form_params), class: "btn-tiny btn-normal"
       end
   end
 end

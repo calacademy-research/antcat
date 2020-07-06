@@ -58,10 +58,6 @@
             =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_RANKS]
 
         %tr
-          %td=form.label :origin
-          %td=form.select :origin, [['(none)', nil], *Taxa::CleanupTaxon::ORIGINS]
-
-        %tr
           %td
           %td
             -if taxon.type.in?(Rank::CAN_BE_A_COMBINATION_TYPES)

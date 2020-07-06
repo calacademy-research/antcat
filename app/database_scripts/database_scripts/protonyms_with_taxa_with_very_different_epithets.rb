@@ -32,7 +32,7 @@ module DatabaseScripts
             epithets.join(', '),
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
-            protonym.taxa.map { |tax| CatalogFormatter.link_to_taxon(tax) + origin_warning(tax).html_safe }.join('<br>'),
+            taxa_list(protonym.taxa),
             (false_positive ? 'Yes' : bold_warning('No'))
           ]
         end

@@ -169,4 +169,6 @@ description: >
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations
   - HomonymsAsTaxTags
+  - PointsToReplacedNameAndUsesRefTagAsAuthorCitation
+  - PointsToReplacementNameAndUsesRefTagAsAuthorCitation
   - TaxacTagsWithPageNumbers

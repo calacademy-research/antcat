@@ -53,9 +53,9 @@ __END__
 
 title: History items with hardcoded names to replace with <code>pro</code> tags
 
-section: main
+section: regression-test
 category: Taxt
-tags: [has-quick-fix, new!]
+tags: [has-quick-fix]
 
 issue_description:
 
