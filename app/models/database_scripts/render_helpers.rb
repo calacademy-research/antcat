@@ -26,5 +26,9 @@ module DatabaseScripts
     def bold_notice string
       %(<span class="bold-notice">#{string}</span>)
     end
+
+    def gray_notice string
+      %(<span class="gray-notice">#{string}</span>)
+    end
   end
 end
