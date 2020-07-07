@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class GenusGenderEndings < DatabaseScript # rubocop:disable Metrics/ClassLength
+  class GenusGenderEndings < DatabaseScript
     def empty_status
       DatabaseScripts::EmptyStatus::NOT_APPLICABLE
     end

@@ -125,6 +125,9 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 100
+  Exclude:
+    - 'app/cleanup/**/*'
+    - 'app/database_scripts/**/*'
 
 Metrics/CyclomaticComplexity:
   Enabled: false
