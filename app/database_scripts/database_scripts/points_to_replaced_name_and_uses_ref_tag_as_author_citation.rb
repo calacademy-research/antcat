@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def statistics
       <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first 100)<br>
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
     end
 
