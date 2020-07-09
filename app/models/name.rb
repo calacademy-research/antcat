@@ -36,9 +36,9 @@ class Name < ApplicationRecord
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_starts_with_upper_case_letter
 
-  after_save :set_taxon_caches
   # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
-  before_validation :set_epithet
+  before_validation :set_epithet, :set_cleaned_name
+  after_save :set_taxon_caches
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -107,6 +107,10 @@ class Name < ApplicationRecord
 
     def name_parts
       name.split
+    end
+
+    def set_cleaned_name
+      self.cleaned_name = Names::CleanName[name]
     end
 
     def set_taxon_caches
