@@ -5,6 +5,23 @@
 class Name < ApplicationRecord
   include Trackable
 
+  RANK_ABBREVIATIONS = [
+    'ab.',
+    'f.',        # forma, form.
+    'f.interm.', # forma?
+    'm.',
+    'morph.',    # morpha.
+    'n.',        # natio.
+    'nat.',      # natio.
+    'r.',
+    'ssp.',      # subspecies.
+    'st.',
+    'subp.',     # subspecies.
+    'subsp.',    # subspecies.
+    'v.',        # varietas, variety.
+    'var.'       # varietas, variety.
+  ]
+
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]

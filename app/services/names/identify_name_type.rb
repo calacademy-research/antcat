@@ -5,23 +5,6 @@
 # Names I don't know what they are: Formicariae,  Dorylida
 
 module Names
-  RANK_ABBREVIATIONS = [
-    'var.',
-    'r.',
-    'n.',
-    'st.',
-    'subsp.',
-    'subp.',
-    'ssp.',
-    'f.',
-    'm.',
-    'morph.',
-    'ab.',
-    'nat.',
-    'f.interm.',
-    'v.'
-  ]
-
   class IdentifyNameType
     include Service
 
@@ -60,7 +43,7 @@ module Names
       end
 
       def countable_words
-        words_without_subgenus.reject { |word| word.in?(RANK_ABBREVIATIONS) }
+        words_without_subgenus.reject { |word| word.in?(Name::RANK_ABBREVIATIONS) }
       end
 
       def subgenus_name?
