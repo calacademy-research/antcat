@@ -125,6 +125,9 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 100
+  Exclude:
+    - 'app/cleanup/**/*'
+    - 'app/database_scripts/**/*'
 
 Metrics/CyclomaticComplexity:
   Enabled: false
@@ -222,11 +225,17 @@ Performance/StartWith:
 Style/Alias:
   EnforcedStyle: prefer_alias_method
 
+Style/AccessorGrouping:
+  Enabled: false
+
 Style/AsciiComments:
   Enabled: false
 
 Style/AutoResourceCleanup:
   Enabled: true
+
+Style/BisectedAttrAccessor:
+  Enabled: false
 
 Style/ClassAndModuleChildren:
   Enabled: true
@@ -291,6 +300,9 @@ Style/NumericLiterals:
 
 Style/OptionHash:
   Enabled: true
+
+Style/RedundantAssignment:
+  Enabled: false
 
 Style/RedundantFetchBlock:
   Enabled: true

@@ -2,13 +2,15 @@
 
 module DatabaseScripts
   class HistoryItemsWithRefTagsAsAuthorCitations < DatabaseScript
+    LIMIT = 100
+
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+} {ref [0-9]+}").limit(100).includes(:taxon)
+      TaxonHistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT).includes(:taxon)
     end
 
     def statistics
       <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first 100)<br>
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
         For all matches, see
         <a href='/taxon_history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D'>this link</a>
       STR

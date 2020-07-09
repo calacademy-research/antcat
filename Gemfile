@@ -36,8 +36,8 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
-gem 'paper_trail', '~> 10.3'
 gem 'paperclip', '5.3.0'
+gem 'paper_trail', '~> 10.3'
 gem 'rails-observers'
 gem 'redcarpet'
 gem 'ruby-progressbar'
@@ -65,7 +65,7 @@ group :development, :test do
   gem 'guard-rubocop'
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '0.86', require: false
+  gem 'rubocop', '0.87', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'

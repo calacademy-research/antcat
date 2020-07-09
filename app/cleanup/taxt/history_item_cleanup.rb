@@ -51,6 +51,7 @@ module Taxt
       VHIC_COMBINATION_IN =               ["taxt LIKE ?", "Combination in%"]
     ]
 
-    NO_REF_OR_TAX_TAG = "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %'"
+    NO_REF_OR_TAX_OR_PRO_TAG =
+      "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %' AND taxt NOT LIKE '%{pro %'"
   end
 end

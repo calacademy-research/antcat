@@ -32,7 +32,7 @@ end
 
 __END__
 
-section: main
+section: regression-test
 category: Protonyms
 
 issue_description: More than one of this protonym's taxa have history items.
