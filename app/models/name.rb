@@ -5,6 +5,23 @@
 class Name < ApplicationRecord
   include Trackable
 
+  RANK_ABBREVIATIONS = [
+    'ab.',
+    'f.',        # forma, form.
+    'f.interm.', # forma?
+    'm.',
+    'morph.',    # morpha.
+    'n.',        # natio.
+    'nat.',      # natio.
+    'r.',
+    'ssp.',      # subspecies.
+    'st.',
+    'subp.',     # subspecies.
+    'subsp.',    # subspecies.
+    'v.',        # varietas, variety.
+    'var.'       # varietas, variety.
+  ]
+
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
@@ -19,9 +36,9 @@ class Name < ApplicationRecord
   validate :ensure_no_spaces_in_single_word_names
   validate :ensure_starts_with_upper_case_letter
 
-  after_save :set_taxon_caches
   # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
-  before_validation :set_epithet
+  before_validation :set_epithet, :set_cleaned_name
+  after_save :set_taxon_caches
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -90,6 +107,10 @@ class Name < ApplicationRecord
 
     def name_parts
       name.split
+    end
+
+    def set_cleaned_name
+      self.cleaned_name = Names::CleanName[name]
     end
 
     def set_taxon_caches

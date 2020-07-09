@@ -38,6 +38,12 @@ describe Name do
       specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
     end
 
+    describe '#set_cleaned_name' do
+      let!(:name) { SubspeciesName.new(name: 'Lasius (Forelophilus) niger var. fusca') }
+
+      specify { expect { name.save }.to change { name.cleaned_name }.to('Lasius niger fusca') }
+    end
+
     describe "#set_taxon_caches" do
       let!(:eciton_name) { create :genus_name, name: 'Eciton' }
 
