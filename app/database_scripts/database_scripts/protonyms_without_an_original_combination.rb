@@ -2,12 +2,16 @@
 
 module DatabaseScripts
   class ProtonymsWithoutAnOriginalCombination < DatabaseScript
+    LIMIT = 500
+
     def results
-      protonyms.limit(100)
+      protonyms.limit(LIMIT)
     end
 
     def statistics
-      "Results: #{protonyms.count}"
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
     end
 
     def render
@@ -36,17 +40,10 @@ __END__
 
 section: research
 category: Catalog
-tags: [list]
+tags: []
 
 description: >
-  WIP.
-
-
-  This script can be ignored since flagging taxa as `original_combination` is not very important to us right now.
-
-
-  Limited to the first 200.
-
+  "Original combination" as in a `Taxon` flagged as `original_combination`.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
