@@ -52,7 +52,7 @@ __END__
 
 title: History items without <code>ref</code> or <code>tax</code> tags
 
-section: main
+section: research
 category: Taxt
 tags: [has-quick-fix]
 
