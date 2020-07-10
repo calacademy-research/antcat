@@ -24,7 +24,7 @@ module QuickAdd
       <<~SYNOPSIS
         <b>Name</b>: #{subspecies_name_object.name_html}<br>
         <b>Rank</b>: #{rank}<br>
-        <b>Parent</b>: [#{parent.type}] #{CatalogFormatter.link_to_taxon(parent)}<br>
+        <b>Parent</b>: #{CatalogFormatter.link_to_taxon(parent)}<br>
         <br>
 
         <b>Quadrinomial epithet</b>: #{quadrinomial_epithet}<br>
