@@ -8,7 +8,7 @@ module Taxa
       attr_private_initialize :subspecies
 
       def call
-        # TODO: Revisit after converting broken subspecies to infrasubspecies.
+        # TODO: Revisit after converting broken subspecies to infrasubspecies. [grep:quadrinomials].
         raise Taxa::TaxonHasInfrasubspecies, 'Subspecies has infrasubspecies' if subspecies.infrasubspecies.any?
 
         new_species = build_new_species

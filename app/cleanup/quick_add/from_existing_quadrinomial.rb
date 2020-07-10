@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `DatabaseScripts::QuadrinomialsToBeConverted`.
+# TODO: Temporary code for `DatabaseScripts::QuadrinomialsToBeConverted`. [grep:quadrinomials].
 module QuickAdd
   class FromExistingQuadrinomial
     def initialize quadrinomial

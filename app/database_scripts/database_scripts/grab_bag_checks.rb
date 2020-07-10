@@ -12,6 +12,7 @@ module DatabaseScripts
         all_protonyms_have_taxa_with_compatible_ranks,
         original_combination_ranks,
         genus_protonym_names,
+        taxa_cleaned_name_check,
         name_count_checks,
         name_caches_sync
       ]
@@ -47,6 +48,27 @@ module DatabaseScripts
         }
       end
 
+      def original_combination_ranks
+        {
+          title: "All 'taxa.original_combination' are of correct ranks",
+          ok?: !Taxon.where(original_combination: true).where.not(type: Rank::CAN_BE_A_COMBINATION_TYPES).exists?
+        }
+      end
+
+      def genus_protonym_names
+        {
+          title: "All genus names are the same as their protonym's names",
+          ok?: !Genus.joins(:name, protonym: :name).where('names.name != names_protonyms.name').exists?
+        }
+      end
+
+      def taxa_cleaned_name_check
+        {
+          title: "All 'names.cleaned_name' of non-subgenus taxa match its 'names.name'",
+          ok?: !Taxon.where.not(type: Rank::SUBGENUS).joins(:name).where("names.cleaned_name != names.name").exists?
+        }
+      end
+
       def name_count_checks
         orphaned_names = Name.left_outer_joins(:taxa, :protonyms).where("protonyms.id IS NULL AND taxa.id IS NULL")
 
@@ -64,22 +86,8 @@ module DatabaseScripts
 
       def name_caches_sync
         {
-          title: 'All taxa.name_cache fields are in sync with its names.name fields',
+          title: "All 'taxa.name_cache' fields are in sync with its 'names.name' fields",
           ok?: !Taxon.joins(:name).where("names.name != taxa.name_cache").exists?
-        }
-      end
-
-      def original_combination_ranks
-        {
-          title: "All 'taxa.original_combination' are of correct ranks",
-          ok?: !Taxon.where(original_combination: true).where.not(type: Rank::CAN_BE_A_COMBINATION_TYPES).exists?
-        }
-      end
-
-      def genus_protonym_names
-        {
-          title: "All genus names are the same as their protonym's names",
-          ok?: !Genus.joins(:name, protonym: :name).where('names.name != names_protonyms.name').exists?
         }
       end
   end

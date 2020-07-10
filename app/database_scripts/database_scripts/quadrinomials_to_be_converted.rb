@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: [grep:quadrinomials].
 module DatabaseScripts
   class QuadrinomialsToBeConverted < DatabaseScript
     def results

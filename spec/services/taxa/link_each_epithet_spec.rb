@@ -38,7 +38,7 @@ describe Taxa::LinkEachEpithet do
         end
       end
 
-      # TODO: Revisit once `DatabaseScripts::QuadrinomialsToBeConverted` has been cleared.
+      # TODO: Revisit once `DatabaseScripts::QuadrinomialsToBeConverted` has been cleared. [grep:quadrinomials].
       context "when taxon has more than 3 epithets" do
         let!(:genus) { create :genus, name_string: 'Formica' }
         let!(:species) { create :species, name_string: 'NOTUSED rufa', genus: genus }
