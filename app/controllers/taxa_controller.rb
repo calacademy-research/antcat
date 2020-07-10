@@ -90,7 +90,7 @@ class TaxaController < ApplicationController
     end
 
     def prefilled_taxon_params
-      params.permit(:current_taxon_id, :protonym_id, :status)
+      params.permit(:current_taxon_id, :protonym_id, :status, :fossil, :original_combination)
     end
 
     def build_taxon rank_to_create, parent_id
