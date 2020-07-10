@@ -3,7 +3,29 @@
 require 'rails_helper'
 
 describe ProtonymDecorator do
+  include TestLinksHelpers
+
   subject(:decorated) { protonym.decorate }
+
+  describe "#link_to_protonym" do
+    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+
+    specify do
+      expect(decorated.link_to_protonym).to eq <<~HTML.squish
+        <a class="protonym" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
+      HTML
+    end
+  end
+
+  describe "#link_to_protonym_with_author_citation" do
+    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+
+    specify do
+      expect(decorated.link_to_protonym_with_author_citation).to eq <<~HTML.squish
+        #{protonym_link(protonym)} #{protonym.author_citation}
+      HTML
+    end
+  end
 
   describe "#format_locality" do
     context 'when `locality` contains parentheses' do

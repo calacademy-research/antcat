@@ -7,6 +7,10 @@ class ProtonymDecorator < Draper::Decorator
     h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym'
   end
 
+  def link_to_protonym_with_author_citation
+    link_to_protonym << ' ' << protonym.author_citation.html_safe
+  end
+
   # TODO: This does not seem to be `included` when used in `DatabaseScripts::ProtonymsWithNotesTaxt`.
   def name_with_fossil
     name.name_with_fossil_html fossil?
