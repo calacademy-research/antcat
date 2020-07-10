@@ -211,13 +211,37 @@ RSpec/NotToNot:
 
 ### Performance.
 
+Performance/AncestorsInclude:
+  Enabled: true
+
+Performance/BigDecimalWithNumericArgument:
+  Enabled: true
+
 Performance/DeletePrefix:
   Enabled: true
 
 Performance/DeleteSuffix:
   Enabled: true
 
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantStringChars:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
 Performance/StartWith:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
   Enabled: true
 
 ### Style.
