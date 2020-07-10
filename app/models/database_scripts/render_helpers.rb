@@ -8,8 +8,7 @@ module DatabaseScripts
       renderer.render
     end
 
-    # TODO: Rename to `#taxon_links`.
-    def taxa_list taxa
+    def taxon_links taxa
       taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) }.join('<br>')
     end
 

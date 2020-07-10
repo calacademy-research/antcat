@@ -12,7 +12,7 @@ module DatabaseScripts
         t.rows do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            taxa_list(protonym.taxa),
+            taxon_links(protonym.taxa),
             protonym.locality
           ]
         end

@@ -20,7 +20,7 @@ module DatabaseScripts
           [
             protonym.decorate.link_to_protonym,
             protonym.taxa.distinct.pluck(:type).join(', '),
-            taxa_list(protonym.taxa),
+            taxon_links(protonym.taxa),
             protonym.taxa.map(&:status).join('<br>'),
             (self.class.looks_like_a_false_positive?(protonym) ? 'Yes' : bold_warning('No'))
           ]
