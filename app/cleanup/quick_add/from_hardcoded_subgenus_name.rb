@@ -50,7 +50,7 @@ module QuickAdd
 
       def parent
         return @_parent if defined?(@_parent)
-        @_parent ||= possible_parents.first if possible_parents.count == 1
+        @_parent ||= possible_parents.first if possible_parents_count == 1
       end
 
       def parent_name_string
@@ -103,7 +103,7 @@ module QuickAdd
 
         current_taxon_line =
           if current_taxon
-            "[#{current_taxon.type}] #{CatalogFormatter.link_to_taxon(current_taxon)} #{current_taxon.author_citation}"
+            "#{CatalogFormatter.link_to_taxon(current_taxon)} #{current_taxon.author_citation}"
           else
             '???'
           end
@@ -111,7 +111,7 @@ module QuickAdd
         <<~SYNOPSIS
           <b>Name</b>: #{name_class.new(name: name_string).name_html}<br>
           <b>Rank</b>: #{taxon_class} <small>(via <code>#{self.class.name.demodulize}</code>)</small><br>
-          <b>Parent</b>: [#{parent.type}] #{CatalogFormatter.link_to_taxon(parent)}<br>
+          <b>Parent</b>: #{CatalogFormatter.link_to_taxon(parent)}<br>
           <b>Status</b>: #{status}<br>
           <b>Current taxon</b>: #{current_taxon_line}<br>
           <b>Protonym</b>: #{protonym_line}<br>

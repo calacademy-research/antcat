@@ -5,7 +5,7 @@ module DatabaseScripts
     LIMIT = 100
 
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "replacement name: {tax [0-9]+} {ref [0-9]+}").limit(LIMIT).includes(:taxon)
+      TaxonHistoryItem.where("taxt REGEXP ?", "replacement name: {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT).includes(:taxon)
     end
 
     def statistics

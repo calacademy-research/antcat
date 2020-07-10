@@ -25,6 +25,8 @@ class Name < ApplicationRecord
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
+  FAMILY_AND_GENUS_GROUP_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName SubgenusName]
+  SPECIES_GROUP_NAMES = %w[SpeciesName SubspeciesName InfrasubspeciesName]
 
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
