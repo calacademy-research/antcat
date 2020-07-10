@@ -7,7 +7,7 @@ module DatabaseScripts
     def results
       TaxonHistoryItem.
         joins(taxon: [protonym: :name]).
-        where(taxa: { type: Rank::GENUS_GROUP_NAME_TYPES }).
+        where(taxa: { type: Rank::GENUS_GROUP_NAMES }).
         where("taxt REGEXP CONCAT('^', names.name, ' (as subgenus of |as genus:|in |as junior synonym of )')").
         limit(LIMIT)
     end

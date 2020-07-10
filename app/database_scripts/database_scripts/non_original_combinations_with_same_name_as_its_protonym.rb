@@ -5,7 +5,7 @@ module DatabaseScripts
     LIMIT = 500
 
     def results
-      Taxon.where(type: Rank::SPECIES_GROUP_NAME_TYPES).joins(:name, protonym: :name).
+      Taxon.where(type: Rank::SPECIES_GROUP_NAMES).joins(:name, protonym: :name).
         where.not(original_combination: true).
         where("names.cleaned_name = names_protonyms.cleaned_name").
         limit(LIMIT)
