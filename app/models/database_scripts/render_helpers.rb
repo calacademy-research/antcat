@@ -8,8 +8,13 @@ module DatabaseScripts
       renderer.render
     end
 
+    # TODO: Rename to `#taxon_links`.
     def taxa_list taxa
       taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) }.join('<br>')
+    end
+
+    def taxon_links_with_author_citations taxa
+      taxa.map { |taxon| CatalogFormatter.link_to_taxon(taxon) + " #{taxon.author_citation}" }.join('<br>')
     end
 
     # NOTE: The reason we're using markdown here is to take advantage of performance optimizations
