@@ -18,11 +18,11 @@ class CreateCombinationPolicy
         # Common.
         yielder << 'taxon is not a species' unless taxon.is_a?(Species)
         yielder << "taxon does not have the status 'valid'" unless taxon.valid_status?
-        yielder << 'taxon has subspecices' if taxon.is_a?(Species) && taxon.subspecies.exists?
+        yielder << 'taxon has subspecies' if taxon.is_a?(Species) && taxon.subspecies.exists?
 
         # Uncommon.
-        yielder << 'taxon has infrasubspecices' if taxon.is_a?(Species) && taxon.infrasubspecies.exists?
-        yielder << 'taxon has infrasubspecices' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?
+        yielder << 'taxon has infrasubspecies' if taxon.is_a?(Species) && taxon.infrasubspecies.exists?
+        yielder << 'taxon has infrasubspecies' if taxon.is_a?(Subspecies) && taxon.infrasubspecies.exists?
         yielder << 'taxon has junior synonyms' if taxon.junior_synonyms.any?
         yielder << "taxon has 'unavailable misspelling's" if any_unavailable_misspellings?
         yielder << 'taxon is an unresolved homonym' if taxon.unresolved_homonym?
