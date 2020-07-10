@@ -16,7 +16,7 @@ module Operations
     end
 
     def execute
-      raise unless current_taxon.policy.allow_create_combination?
+      raise unless policy.allowed?
 
       new_combination = build_new_combination
 
@@ -32,6 +32,10 @@ module Operations
     end
 
     private
+
+      def policy
+        CreateCombinationPolicy.new(current_taxon)
+      end
 
       def build_new_combination
         new_combination = Species.new
