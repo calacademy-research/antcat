@@ -1,0 +1,8 @@
+.callout.alert.medium-8
+  %p
+    =antcat_icon "warning-icon"
+    =callout_title
+  %p Operation is not supported because:
+  %ul
+    -errors.each do |error|
+      %li=error
