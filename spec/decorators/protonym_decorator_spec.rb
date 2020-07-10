@@ -3,13 +3,15 @@
 require 'rails_helper'
 
 describe ProtonymDecorator do
+  subject(:decorated) { protonym.decorate }
+
   describe "#format_locality" do
     context 'when `locality` contains parentheses' do
       context 'when locality contains words in parentheses' do
         let(:protonym) { build_stubbed :protonym, locality: 'Indonesia (Timor)' }
 
         it 'does not capitalize words wrapped in parentheses' do
-          expect(protonym.decorate.format_locality).to eq "INDONESIA (Timor)."
+          expect(decorated.format_locality).to eq "INDONESIA (Timor)."
         end
       end
 
@@ -17,7 +19,7 @@ describe ProtonymDecorator do
         let(:protonym) { build_stubbed :protonym, locality: 'São Tomé & Príncipe (São Tomé I.)' }
 
         it 'capitalizes properly' do
-          expect(protonym.decorate.format_locality).to eq "SÃO TOMÉ & PRÍNCIPE (São Tomé I.)."
+          expect(decorated.format_locality).to eq "SÃO TOMÉ & PRÍNCIPE (São Tomé I.)."
         end
       end
 
@@ -25,7 +27,7 @@ describe ProtonymDecorator do
         let(:protonym) { build_stubbed :protonym, :uncertain_locality, locality: 'Indonesia (Timor)' }
 
         it 'includes it in brackets' do
-          expect(protonym.decorate.format_locality).to eq "INDONESIA (Timor) [uncertain]."
+          expect(decorated.format_locality).to eq "INDONESIA (Timor) [uncertain]."
         end
       end
     end
@@ -36,7 +38,7 @@ describe ProtonymDecorator do
       let(:protonym) { build_stubbed :protonym, forms: 'w.' }
 
       specify do
-        expect(protonym.decorate.format_pages_and_forms).to eq "#{protonym.authorship.pages} (#{protonym.forms})"
+        expect(decorated.format_pages_and_forms).to eq "#{protonym.authorship.pages} (#{protonym.forms})"
       end
     end
   end

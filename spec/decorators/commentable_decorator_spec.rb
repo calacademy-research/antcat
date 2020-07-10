@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe CommentableDecorator do
-  let(:decorated) { described_class.new(commentable) }
+  subject(:decorated) { described_class.new(commentable) }
 
   describe "#link_existing_comments_section" do
     context 'when commentable has no comments' do

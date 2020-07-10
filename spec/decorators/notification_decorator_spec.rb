@@ -3,9 +3,10 @@
 require 'rails_helper'
 
 describe NotificationDecorator do
+  subject(:decorated) { notification.decorate }
+
   describe "#link_attached" do
     let(:notification) { build_stubbed :notification, attached: attached }
-    let(:decorated) { notification.decorate }
 
     context "when `attached` is an `Issue`" do
       let(:attached) { build_stubbed :issue }

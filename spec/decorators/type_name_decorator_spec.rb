@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TypeNameDecorator do
   include TestLinksHelpers
 
-  let(:decorated) { type_name.decorate }
+  subject(:decorated) { type_name.decorate }
 
   describe '#compact_taxon_status' do
     let(:type_name) { create :type_name, taxon: type_taxon }
