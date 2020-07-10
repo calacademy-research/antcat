@@ -280,6 +280,9 @@ Style/CommentAnnotation:
     - REVIEW
     - NOTE
 
+Style/DateTime:
+  Enabled: true
+
 Style/Documentation:
   Enabled: false
 
