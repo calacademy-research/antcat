@@ -28,7 +28,7 @@ module DatabaseScripts
     private
 
       def protonyms
-        records = Protonym.
+        records = Protonym.joins(:name).where(names: { type: Name::SPECIES_GROUP_NAMES }).
           joins("LEFT OUTER JOIN taxa ON protonyms.id = taxa.protonym_id AND taxa.original_combination = True").
           where("taxa.id IS NULL").group(:protonym_id).distinct
         Protonym.where(id: records.select(:id))
@@ -49,3 +49,5 @@ related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithoutAnOriginalCombination
+  - ProtonymsWithoutATaxonWithSameCleanedNameOnlySpecies
+  - ProtonymsWithoutATaxonWithSameCleanedNameOnlySubspecies

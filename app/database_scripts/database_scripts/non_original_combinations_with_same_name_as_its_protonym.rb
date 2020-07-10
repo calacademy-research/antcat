@@ -2,11 +2,19 @@
 
 module DatabaseScripts
   class NonOriginalCombinationsWithSameNameAsItsProtonym < DatabaseScript
+    LIMIT = 500
+
     def results
-      Taxon.joins(:name, protonym: :name).
-        obsolete_combinations.
+      Taxon.where(type: Rank::SPECIES_GROUP_NAME_TYPES).joins(:name, protonym: :name).
         where.not(original_combination: true).
-        where("names.name = names_protonyms.name")
+        where("names.cleaned_name = names_protonyms.cleaned_name").
+        limit(LIMIT)
+    end
+
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
     end
 
     def render
@@ -32,7 +40,7 @@ section: regression-test
 category: Catalog
 tags: []
 
-issue_description: This obsolete combination has the same name as its protonym, but "Original combination" is not checked.
+issue_description: This species-group taxon has the same name as its protonym, but "Original combination" is not checked.
 
 description: >
   **This script can be ignored**, since we do not rely on this data point at the moment, and the flag can be updated by script.
@@ -40,7 +48,6 @@ description: >
 
 
   "Non-original combinations" as is not having the `taxa.original_combination` flag.
-  Only taxa with the status `obsolete combination` are included here.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym

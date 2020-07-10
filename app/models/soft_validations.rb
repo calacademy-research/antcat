@@ -8,7 +8,7 @@ class SoftValidations
     DatabaseScripts::ExtantTaxaInFossilGenera,
     DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
     DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
-    DatabaseScripts::NonOriginalCombinationsWithSameNameAsItsProtonym,
+    # TODO: Update by script and add back: DatabaseScripts::NonOriginalCombinationsWithSameNameAsItsProtonym,
     DatabaseScripts::NonValidTaxaWithACurrentTaxonThatIsNotValid,
     DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
     DatabaseScripts::ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon,
