@@ -22,12 +22,18 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym (and cleaned name)', 'Protonym taxa', 'Quick-add button', 'Quick-add attributes'
+        t.header 'Protonym (and cleaned name)', 'Author',
+          'Taxa with same name', 'Protonym taxa',
+          'Quick-add button', 'Quick-add attributes'
         t.rows do |protonym|
           quick_adder = QuickAdd::FromExistingProtonymFactory.create_quick_adder(protonym)
+          cleaned_name = protonym.name.cleaned_name
 
           [
-            protonym.decorate.link_to_protonym + "<br>#{protonym.name.cleaned_name}".html_safe,
+            protonym.decorate.link_to_protonym + "<br>#{cleaned_name}".html_safe,
+            protonym.author_citation,
+
+            taxa_list(Taxon.where(name_cache: cleaned_name)),
             taxa_list(protonym.taxa),
 
             (new_taxon_link(quick_adder) if quick_adder.can_add?),
@@ -63,8 +69,19 @@ description: >
   Species only in this batch, and only less advanced cases.
 
 
-  "without a taxon with same cleaned name" kind of means "without and original combination",
+  "Without a taxon with same cleaned name" kind of means "without and original combination",
   but there is already a similar script for that.
+
+
+  Script column | Description
+
+  --- | ---
+
+  **Taxa with same name** | Contains all taxon records with the same cleaned name. It may be the missing combination unless
+  at least one taxon in this column or in the **Protonym taxa** column are homonyms (purple color with Disco Mode).
+
+  **Protonym taxa** | Lists all taxon records currently belonging to the protonym.
+  The suggested `current_taxon` from **Quick-add attributes** will be one of these (or blank/???).
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
