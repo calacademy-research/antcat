@@ -6,6 +6,7 @@ module Taxa
 
     def new
       @taxon = find_taxon
+      @convert_to_subspecies_policy = ConvertToSubspeciesPolicy.new(@taxon)
     end
 
     # TODO: Move validations to service.
