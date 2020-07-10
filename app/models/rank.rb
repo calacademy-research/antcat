@@ -25,7 +25,13 @@ class Rank
   CAN_HAVE_TYPE_TAXON_TYPES = ABOVE_SPECIES
   CAN_BE_A_COMBINATION_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
   ITALIC_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
+
+  # NOTE: Subgenera are uninomial, but not a "single word name" on AntCat.
   SINGLE_WORD_TYPES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE, GENUS] # TODO: Duplicated in `Name::SINGLE_WORD_NAMES`.
+  UNINOMIAL = ABOVE_SPECIES
+  BINOMIAL = [SPECIES]
+  TRINOMIAL = [SUBSPECIES]
+  QUADRINOMIAL = [INFRASUBSPECIES]
 
   ### AntCat-specific config.
   # Allow any type while figuring this out. Required for showing-ish what we have now: `[FAMILY, SUBFAMILY, TRIBE,]`.

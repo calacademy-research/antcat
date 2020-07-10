@@ -13,6 +13,15 @@ describe Rank do
       expect(described_class::ABOVE_SPECIES + described_class::SPECIES_GROUP_NAMES).to eq described_class::TYPES
     end
 
+    it "covers all types in 'UNI-BI-TRI-QUADRI-NOMIAL'" do
+      expect(
+        described_class::UNINOMIAL +
+        described_class::BINOMIAL +
+        described_class::TRINOMIAL +
+        described_class::QUADRINOMIAL
+      ).to eq described_class::TYPES
+    end
+
     described_class.constants.select { |const_sym| const_sym.to_s['TYPE'] }.each do |const_sym|
       it "keeps types in `#{const_sym}` sorted with higher ranks first`" do
         types = described_class.const_get(const_sym)
