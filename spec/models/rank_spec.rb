@@ -5,12 +5,12 @@ require 'rails_helper'
 describe Rank do
   describe 'constants' do
     it "covers all types in '*_GROUP_TYPES'" do
-      types = described_class::FAMILY_GROUP_NAME_TYPES + described_class::GENUS_GROUP_NAME_TYPES + described_class::SPECIES_GROUP_NAME_TYPES
+      types = described_class::FAMILY_GROUP_NAMES + described_class::GENUS_GROUP_NAMES + described_class::SPECIES_GROUP_NAMES
       expect(types).to eq described_class::SORTED_TYPES
     end
 
-    it "covers all types in 'TYPES_ABOVE_SPECIES' and 'SPECIES_GROUP_NAME_TYPES'" do
-      expect(described_class::TYPES_ABOVE_SPECIES + described_class::SPECIES_GROUP_NAME_TYPES).to eq described_class::TYPES
+    it "covers all types in 'ABOVE_SPECIES' and 'SPECIES_GROUP_NAMES'" do
+      expect(described_class::ABOVE_SPECIES + described_class::SPECIES_GROUP_NAMES).to eq described_class::TYPES
     end
 
     described_class.constants.select { |const_sym| const_sym.to_s['TYPE'] }.each do |const_sym|

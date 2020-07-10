@@ -13,7 +13,7 @@ module Protonyms
   # TODO: This does not belong anywhere, but it's a step towards moving data to the protonym.
   def all_taxa_above_genus_and_of_unique_different_ranks? taxa
     ranks = taxa.pluck(:type)
-    (ranks - Rank::TYPES_ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
+    (ranks - Rank::ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
   end
 
   def all_statuses_same? taxa
