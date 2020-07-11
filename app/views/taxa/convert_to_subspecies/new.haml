@@ -4,16 +4,21 @@
 -content_for :javascripts do
   =javascript_include_tag "taxon_select"
 
-=form_tag "/taxa/#{@taxon.id}/convert_to_subspecies" do
-  =render 'shared/errors_for', resource: @taxon
-  .row
-    .medium-12.columns.margin-bottom
-      %h6 Convert species
-      %p=@taxon.decorate.id_and_name_and_author_citation
+.row
+  .small-12.columns
+    -unless @convert_to_subspecies_policy.allowed?
+      =render 'shared/operation_not_supported', callout_title: 'Cannot convert to subspecies', errors: @convert_to_subspecies_policy.errors
+    -else
+      =form_tag "/taxa/#{@taxon.id}/convert_to_subspecies" do
+        =render 'shared/errors_for', resource: @taxon
+        .row
+          .medium-12.columns.margin-bottom
+            %h6 Convert species
+            %p=@taxon.decorate.id_and_name_and_author_citation
 
-    .medium-12.columns.margin-bottom
-      %h6 to be a subspecies of
-      =taxon_select_tag :new_species_id, params[:new_species_id], rank: Rank::SPECIES
+          .medium-12.columns.margin-bottom
+            %h6 to be a subspecies of
+            =taxon_select_tag :new_species_id, params[:new_species_id], rank: Rank::SPECIES
 
-    .medium-12.columns
-      =button_tag "Convert", type: "submit", class: "btn-saves"
+          .medium-12.columns
+            =button_tag "Convert", type: "submit", class: "btn-saves"

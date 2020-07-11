@@ -13,7 +13,7 @@ module DatabaseScripts
           [
             protonym.decorate.link_to_protonym,
             protonym.author_citation,
-            taxa_list(protonym.taxa)
+            taxon_links(protonym.taxa)
           ]
         end
       end

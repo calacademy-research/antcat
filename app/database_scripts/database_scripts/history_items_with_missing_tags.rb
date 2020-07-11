@@ -57,7 +57,7 @@ module DatabaseScripts
                     else bold_warning('multiple matches')
                     end
 
-          "#{item[:normalized_name]}<br>#{message}<br> #{taxa_list(taxa)}<br><br>"
+          "#{item[:normalized_name]}<br>#{message}<br> #{taxon_links(taxa)}<br><br>"
         end
       end
 

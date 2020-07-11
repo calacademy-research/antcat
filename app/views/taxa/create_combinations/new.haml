@@ -18,14 +18,7 @@
 .row
   .small-12.columns
     -unless @create_combination_policy.allowed?
-      .callout.alert
-        %p
-          =antcat_icon "warning-icon"
-          Cannot create combination
-        %p Creating combinations for this taxon is not supported because:
-        %ul
-          -@create_combination_policy.errors.each do |error|
-            %li=error
+      =render 'shared/operation_not_supported', callout_title: 'Cannot create combination', errors: @create_combination_policy.errors
     -else
       =form_tag taxa_create_combination_path, method: :get do
         %table.unstriped

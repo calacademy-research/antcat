@@ -5,7 +5,7 @@ require 'rails_helper'
 describe TaxonDecorator do
   include TestLinksHelpers
 
-  let(:decorated) { taxon.decorate }
+  subject(:decorated) { taxon.decorate }
 
   describe "#link_to_taxon_with_author_citation" do
     let(:taxon) { create :any_taxon }

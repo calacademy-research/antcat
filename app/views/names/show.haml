@@ -35,4 +35,4 @@
       -if @name.owner.is_a?(Taxon)
         =@name.owner.decorate.id_and_name_and_author_citation
       -else
-        =@name.owner.decorate.link_to_protonym
+        =@name.owner.decorate.link_to_protonym_with_author_citation

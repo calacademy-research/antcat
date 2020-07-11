@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe DatabaseScriptDecorator do
-  let(:decorated) { database_script.decorate }
+  subject(:decorated) { database_script.decorate }
 
   describe '.format_tags' do
     specify do

@@ -32,7 +32,7 @@ module DatabaseScripts
             epithets.join(', '),
             protonym.taxa.pluck(:type).join(', '),
             protonym.taxa.pluck(:status).join(', '),
-            taxa_list(protonym.taxa),
+            taxon_links(protonym.taxa),
             (false_positive ? 'Yes' : bold_warning('No'))
           ]
         end

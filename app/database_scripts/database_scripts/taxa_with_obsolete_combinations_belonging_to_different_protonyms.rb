@@ -14,7 +14,7 @@ module DatabaseScripts
           [
             taxon_link(taxon),
             taxon.status,
-            taxa_list(taxon.obsolete_combinations)
+            taxon_links(taxon.obsolete_combinations)
           ]
         end
       end

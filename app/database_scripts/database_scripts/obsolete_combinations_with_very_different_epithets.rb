@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# TODO: Update "Only species with a `current_taxon` that is also a species are checked.".
 module DatabaseScripts
   class ObsoleteCombinationsWithVeryDifferentEpithets < DatabaseScript
     def results
@@ -40,7 +41,7 @@ end
 
 __END__
 
-section: main
+section: regression-test
 category: Catalog
 tags: [slow-render]
 

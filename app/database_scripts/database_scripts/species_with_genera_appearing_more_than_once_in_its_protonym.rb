@@ -21,7 +21,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.status,
             taxon.protonym.decorate.link_to_protonym,
-            taxa_list(taxon.protonym.taxa)
+            taxon_links(taxon.protonym.taxa)
           ]
         end
       end

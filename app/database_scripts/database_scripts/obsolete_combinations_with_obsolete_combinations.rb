@@ -12,7 +12,7 @@ module DatabaseScripts
         t.rows do |taxon|
           [
             taxon_link(taxon),
-            taxa_list(taxon.obsolete_combinations)
+            taxon_links(taxon.obsolete_combinations)
           ]
         end
       end

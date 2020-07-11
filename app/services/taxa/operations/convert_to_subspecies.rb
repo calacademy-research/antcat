@@ -8,9 +8,7 @@ module Taxa
       attr_private_initialize :original_species, :new_species_parent
 
       def call
-        # TODO: Revisit after converting broken subspecies to infrasubspecies. [grep:quadrinomials].
-        raise Taxa::TaxonHasInfrasubspecies, 'Species has infrasubspecies' if original_species.infrasubspecies.any?
-
+        return false unless policy.allowed?
         return false if original_species.subspecies.exists?
         raise unless original_species.is_a?(Species) && new_species_parent.is_a?(Species)
 
@@ -29,6 +27,10 @@ module Taxa
       end
 
       private
+
+        def policy
+          ConvertToSubspeciesPolicy.new(original_species)
+        end
 
         def build_new_subspecies
           taxon = Subspecies.new

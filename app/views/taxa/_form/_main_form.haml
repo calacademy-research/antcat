@@ -3,6 +3,14 @@
     .large-8.columns
       %table.unstriped
         %tr
+          %td=form.label :parent, 'Parent'
+          %td
+            -if taxon.parent
+              =taxon.parent.decorate.id_and_name_and_author_citation
+            -else
+              (none)
+
+        %tr
           %td
             =name_form.label :name do
               Name
@@ -35,14 +43,6 @@
         %tr
           %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
           %td=form.taxon_select :homonym_replaced_by
-
-        %tr
-          %td=form.label :parent, 'Parent'
-          %td
-            -if taxon.parent
-              =taxon.parent.decorate.id_and_name_and_author_citation
-            -else
-              (none)
 
         %tr
           %td

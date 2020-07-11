@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe SoftValidationDecorator do
-  let(:decorated) { soft_validation.decorate }
+  subject(:decorated) { soft_validation.decorate }
 
   describe "#format_runtime" do
     let(:taxon) { create :any_taxon }

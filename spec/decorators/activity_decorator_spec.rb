@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ActivityDecorator do
   include TestLinksHelpers
 
-  let(:decorated) { activity.decorate }
+  subject(:decorated) { activity.decorate }
 
   describe ".link_taxon_if_exists" do
     context "when taxon exists" do

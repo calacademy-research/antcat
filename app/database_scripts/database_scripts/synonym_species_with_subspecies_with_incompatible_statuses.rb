@@ -27,7 +27,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.status,
             taxa.pluck(:status).uniq.join(', '),
-            taxa_list(incompatible_taxa)
+            taxon_links(incompatible_taxa)
           ]
         end
       end

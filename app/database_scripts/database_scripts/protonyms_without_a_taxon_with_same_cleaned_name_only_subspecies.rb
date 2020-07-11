@@ -2,7 +2,7 @@
 
 module DatabaseScripts
   class ProtonymsWithoutATaxonWithSameCleanedNameOnlySubspecies < DatabaseScript
-    LIMIT = 100
+    LIMIT = 75
 
     def results
       Protonym.
@@ -23,18 +23,18 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'Protonym (and cleaned name)', 'Author',
-          'Taxa with same name', 'Protonym taxa',
+          'Protonym taxa', 'Taxa with same name',
           'Quick-add button', 'Quick-add attributes'
         t.rows do |protonym|
           quick_adder = QuickAdd::FromExistingProtonymFactory.create_quick_adder(protonym)
           cleaned_name = protonym.name.cleaned_name
 
           [
-            protonym.decorate.link_to_protonym + "<br>#{protonym.name.cleaned_name}".html_safe,
+            protonym.decorate.link_to_protonym + "<br>#{cleaned_name}".html_safe,
             protonym.author_citation,
 
-            taxa_list(Taxon.where(name_cache: cleaned_name)),
-            taxa_list(protonym.taxa),
+            taxon_links_with_author_citations(protonym.taxa),
+            taxon_links_with_author_citations(Taxon.where(name_cache: cleaned_name)),
 
             (new_taxon_link(quick_adder) if quick_adder.can_add?),
             quick_adder.synopsis
