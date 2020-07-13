@@ -247,6 +247,7 @@ Rails.application.routes.draw do
     post 'replace_missing_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tags'
     post 'replace_with_pro_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_with_pro_tags'
     post 'replace_missing_tag_with_tax_tag_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tag_with_tax_tag'
+    post 'update_current_taxon_id_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#update_current_taxon_id'
   end
 
   namespace :my do

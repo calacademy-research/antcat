@@ -6,7 +6,7 @@ class Name < ApplicationRecord
   include Trackable
 
   RANK_ABBREVIATIONS = [
-    'ab.',
+    'ab.',       # abberratio.
     'f.',        # forma, form.
     'f.interm.', # forma?
     'm.',

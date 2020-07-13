@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym < DatabaseScript
     def results
-      Taxon.obsolete_combinations.joins(:current_taxon).
+      Taxon.where(type: Rank::SPECIES_GROUP_NAMES).obsolete_combinations.joins(:current_taxon).
         where("taxa.protonym_id <> current_taxons_taxa.protonym_id").
         includes(protonym: [:name], current_taxon: { protonym: [:name] })
     end

@@ -6,7 +6,7 @@ class TaxonHistoryItem < ApplicationRecord
   belongs_to :taxon
 
   validates :taxt, presence: true
-  validates :rank, inclusion: { in: Rank::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, allow_nil: true }
+  validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, allow_nil: true }
 
   before_validation :cleanup_taxts
 
