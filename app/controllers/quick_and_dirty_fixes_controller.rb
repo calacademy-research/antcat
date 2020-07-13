@@ -4,7 +4,7 @@
 # Any action here is supposed to be temporary. There are no other rules. Consider it the Wild West.
 
 # :nocov:
-class QuickAndDirtyFixesController < ApplicationController
+class QuickAndDirtyFixesController < ApplicationController # rubocop:disable Metrics/ClassLength
   before_action :ensure_user_is_at_least_helper
 
   def convert_bolton_tags
@@ -121,6 +121,20 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'", false))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
+    end
+  end
+
+  def update_current_taxon_id
+    taxon = Taxon.find(params[:taxon_id])
+    new_current_taxon = Taxon.find(params[:new_current_taxon_id])
+
+    if taxon.current_taxon == new_current_taxon
+      render js: %(AntCat.notifyError("Updated current_taxon_id, but nothing was changed"))
+    elsif taxon.update(current_taxon_id: new_current_taxon.id)
+      taxon.create_activity :update, current_user, edit_summary: "[automatic] Update `current_taxon_id`"
+      render js: %(AntCat.notifySuccess("Updated current_taxon_id", false))
+    else
+      render js: %(AntCat.notifyError("Could not update current_taxon_id"))
     end
   end
 end
