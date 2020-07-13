@@ -20,7 +20,7 @@ module Taxa
 
         def cannot_move_reference_sections?
           return if reference_sections.blank?
-          !to_taxon.type.in?(Rank::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
+          !to_taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
         end
 
         def move_history_items!
