@@ -11,8 +11,6 @@ module DatabaseScripts
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-        For all matches, see
-        <a href='/taxon_history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D'>this link</a>
       STR
     end
 

@@ -7,6 +7,7 @@ class SpeciesGroupTaxon < Taxon
 
   validate :ensure_protonym_is_a_species_group_name
 
+  # TODO: Do not calculate by string comparison.
   def recombination?
     return false unless protonym.name.is_a?(SpeciesGroupName)
     name.genus_epithet != protonym.name.genus_epithet

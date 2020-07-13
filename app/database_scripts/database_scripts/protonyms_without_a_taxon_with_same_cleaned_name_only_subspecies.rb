@@ -77,11 +77,10 @@ description: >
 
   --- | ---
 
-  **Taxa with same name** | Contains all taxon records with the same cleaned name. It may be the missing combination unless
-  at least one taxon in this column or in the **Protonym taxa** column are homonyms (purple color with Disco Mode).
-
   **Protonym taxa** | Lists all taxon records currently belonging to the protonym.
   The suggested `current_taxon` from **Quick-add attributes** will be one of these (or blank/???).
+
+  **Taxa with same name** | Contains all taxon records with the same cleaned name.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
