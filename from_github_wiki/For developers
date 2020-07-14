@@ -1,0 +1,104 @@
+https://github.com/calacademy-research/antcat/wiki/For-developers
+
+## Database
+
+### Reference models
+Name | Description
+--- | ---
+`ArticleReference` | A journal article reference.
+`BookReference` | A book reference.
+`NestedReference` | A reference that is part of a larger work (nested in it), such as a book or article. All nested references have a `nesting_reference_id`, that points to the parent (the larger work). The other side of the association is called `nestees`.
+`UnknownReference` | Called "Other" in the reference form. This type covers for example online-early articles. References of this type should be migrated by editors to one of the other reference types once possible
+`MissingReference` | Special case. It's not possible to create new missing references via the GUI. These are incomplete references, which were created during the initial import of the Bolton files when the reference could not be parsed.
+
+### `Taxon` models
+#### Hierarchy<sup>1</sup>
+* Taxon<sup>2</sup>
+  * Family
+  * Subfamily
+  * Tribe
+  * Subtribe<sup>3</sup>
+  * GenusGroupTaxon<sup>2</sup>
+    * Genus
+    * Subgenus<sup>3</sup>
+  * SpeciesGroupTaxon<sup>2</sup>
+    * Species
+    * Subspecies
+
+<sub><sup>1</sup> indentation indicates subclassing</sub>
+
+<sub><sup>2</sup> abstract class (or rather "abstract-ish", since it's not enforced by the code)</sub>
+
+<sub><sup>3</sup> outside of the "main progression"</sub>
+
+#### Notes on some special cases
+Class | Description
+--- | ---
+`Taxon` | The main class. All taxa at all different levels are saved in the `taxa` table, using Single Table Inheritance (STI).
+`Family` | There's only a single family (Formicidae) in AntCat / ant taxonomy; parts of the code relies on hardcoded values to make this class work. 99% of all taxa in AntCat belong to this family, exceptions include for example *[Syntaphus](http://antcat.org/catalog/429022)* (family Braconidae), which is stored in the database with the `status` "excluded from Formicidae". (TODO explain `family_id: nil` / `incertae_sedis_in`)
+`Subtribe` | This subclass is currently not used; it is only implemented to accompany `SubtribeName`, of which there are a handful references to in taxt items.
+`GenusGroupTaxon` | Superclass of `Genus` and `Subgenus`, not to be confused with "species group" as used in taxonomy.
+`SpeciesGroupTaxon` | Superclass of `Species` and `Subspecies`, not to be confused with "species group" as used in taxonomy.
+
+#### Main progression / parent taxon
+The "main progression", from the lowest rank and up: `Subspecies` -> `Species` -> `Genus` -> `Tribe` -> `Subfamily` -> `Family`. So, a subspecies has a parent, which is a species, which has a parent... etc.
+
+However, this leaves `Subtribe` and `Subgenus` outside of this "main progression". Subtribes are not used, thus not important, but there are a bunch of subgenera in the database. Subgenera are responsible for keeping track of which genus they belong to, but it stops there; see for example *[Lasius (Acanthomyops)](http://antcat.org/catalog/429164)* – you can see that it's a subgenus of *Lasius*, but not which genera are included in it. Note that there is a `subgenus_id` field in the `taxa` table, but it's not used (see `Taxon.where.not(subgenus_id: nil).count # => 0`).
+
+Ranks that are not used in AntCat: species group, genus group, species complex, and order.
+
+## Language
+### Uncountable/irregular nouns
+
+
+| Singular   | Plural     |
+| ---------- | ---------- |
+| taxon      | taxa       |  
+| genus      | genera     |
+| subgenus   | subgenera  |
+| species    | species    |
+| subspecies | subspecies |
+
+### Glossary
+
+
+| Word | Explanation | Wikipedia |
+| ---- | ----------- | --------- |
+| *nomen nudum*    | [Latin for "naked name"; plural *nomina nuda*], type of invalid name | [*Nomen nudum*](https://en.wikipedia.org/wiki/Nomen_nudum) |
+| *incertae sedis* | [Latin for "of uncertain placement"], denotes taxa whose relationship with others is unknown or undecided | [*Incertae sedis*](https://en.wikipedia.org/wiki/Incertae_sedis) |
+| homonym          | A name for a taxon that is identical in spelling to another name | [Homonym (biology)](https://en.wikipedia.org/wiki/Homonym_(biology)) |
+| synonym          | | [Synonym (taxonomy)#Zoology](https://en.wikipedia.org/wiki/Synonym_(taxonomy)#Zoology) |
+| type locality    | The geographical location where a type specimen was originally found | [Type (biology)#type locality](https://en.wikipedia.org/wiki/Type_(biology)#type_locality) |
+| valid name       | | [Valid name (zoology)](https://en.wikipedia.org/wiki/Valid_name_(zoology)) |
+| ICZN             | International Code of Zoological Nomenclature | [International Code of Zoological Nomenclature](https://en.wikipedia.org/wiki/International_Code_of_Zoological_Nomenclature) |
+
+
+TODO: junior synonym, senior synonym, collective group name, obsolete combination, original combination, type name, type specimen, biogeographic region, locality, protonym, authorship.
+
+
+### Italics
+Higher ranks (family, subfamily, tribe, subtribe) are not italicized, but ranks at genus-level and below should be italicized (genus, subgenus, species, subspecies).
+
+There are few "descriptive rank abbreviations" (I don't know the word for this) like "subsp.", "var." and "sect."  – meaning "subspecies", "variety" and "section" – that are found in older names. These are not written in italics. They are however not used in modern ant taxonomy except when referring to the old name, and all such names have been automatically migrated to new names without the abbreviations (at least I think this is the case). Examples:
+
+- *Acantholepis capensis* var. *canescens*
+- *Acromyrmex balzani* subsp. *myersi*
+
+### Forms
+
+* [alate](https://en.wikipedia.org/wiki/Alate) = winged
+* dealate = without wings
+* [ergatoid](https://en.wikipedia.org/wiki/Ergatoid) = wingless reproductive adult ant, anatomically intermediate in form between workers and winged queens or males
+
+Abreviations | Meaning
+--- | ---
+w. | worker
+q. | queen
+dq. | dealate queen
+aq. | alate queen
+eq.. | ergatoid queen
+m. | male
+l. | larvae
+k. | ??? (maybe karyotype)
+s. | soldier
+q.m. | queen, male

@@ -1,0 +1,30 @@
+https://github.com/calacademy-research/antcat/wiki/Adding-a-taxonomic-history-entry
+
+**TODO: Old page, see what we want to do here**
+
+Presume you have a new paper or found an old paper and want to upload it to AntCat and add "new" nomenclatural changes to AntCat (i.e. new synonymies, new combinations, new homonymies, and so on). You will have to add those changes to the taxonomic history of a name. To do this, do the following:
+
+1. Find out if the reference you will use is already in AntCat (search for that under references).If it is already in AntCat. Go to step 2. If it is not in AntCat, insert it (see Bibliography editing guidelines), and go to step 3.
+
+2. Here, you have two options: 
+(1) You can make default a reference: go to latest additions (upper left corner of the References section); find your reference; click on "Start reviewing"; and click on "Make default". *For now, we don't have a way to search for a reference within latest additions, and I hope it is coming soon; so, be patient; or,
+(2) You can search for and add the reference you want along the way (see below)
+Now, please, proceed to step 3.
+
+3. Now find the name in which you want to insert a new taxonomic history entry. On its webpage, click on the "Edit" button; scroll down the page until you find a beige section called History.
+There you have 2 options: add a new history entry (click on the "Add" button – right upper corner of the section), or update an existing one (click on a specific history entry. It will open the editing mode of that entry; add a semi-colon to the end of that entry, followed by a space; and add what you want). 
+Note: you will notice that the taxonomic history of a given taxon is organized by types of "events" (e.g. new combinations; new synonymies; new caste description; new classification). Please, let that guide your choice between adding a new entry and updating an existing one.
+
+  Things you should know before adding what you want:
+Every reference cited in any taxonomic history on AntCat should be linked to a bibliographical reference. Thus, instead of writing Latreille 1798 (let's suppose), you will add its AntCat link. 
+If you already made "Latreille 1798" a default reference, a green button containing it should appear below the history box you are seeing; click on that button, and its reference code will appear in the box ({Latreille, 1798 vQtf}).
+
+  If you didn't make "Latreille 1798" a default reference, click on the "Insert Reference" green button; and then, search for it (suggestion: use "search for" instead of "search for author", for it gives you the option of searching for authors plus year — click on the "search for author" button, and you will be able to choose "search for" instead): write Latreille 1798 in the search box, and click on "Go", and you will see the reference of "Essai sur l'histoire des fourmis de la France"; click on it, and click on the OK button: {Latreille, 1798 vQtf} will appear in the history box you are editing.
+
+  Every taxon name in any taxonomy history should be linked to its AntCat webpage. Thus, instead of writing Aenictus, you will add its AntCat code: click on the "Insert Name" green button, type Aenictus, and click on OK; {Aenictus 6qbs} will appear in the history box you are editing.
+  
+  Please refer to and follow existing entries as guides for your entry format. Suppose you would like to add a description of a new caste for a given taxon name. If you look at other taxon names' taxonomic histories on AntCat, you will notice that your entry should be something like:
+
+  {reference code of the paper you are using}: page (caste followed by a period, and within parenthesis) [e.g., {Latreille, 1798 vQtf}: 50 (m.)]
+
+4. Click on the "Save" button available at the history field you are creating/editing, and if you are done, click on the final "Save" to implement the changes you made. Thanks a lot!
