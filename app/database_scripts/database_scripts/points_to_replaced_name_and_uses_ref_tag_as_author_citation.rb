@@ -16,7 +16,8 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Converted to taxac', "Check usage", "Check replaced-by usage"
+        t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Converted to taxac',
+          "Check usage", "Check replaced-by usage", 'Switch tax quick-fix'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
@@ -37,7 +38,8 @@ module DatabaseScripts
             (show_quick_fix_link ? Detax[converted_to_taxac] : bold_warning('no changes and/or mismatch - must be updated manually')),
 
             usage_string,
-            replaced_by_usage_string
+            replaced_by_usage_string,
+            (check_switch_tax_quick_fix_link(history_item) unless matches)
           ]
         end
       end
@@ -87,6 +89,44 @@ module DatabaseScripts
         link_to 'Convert to taxac!', convert_to_taxac_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
           method: :post, remote: true, class: 'btn-warning btn-tiny'
       end
+
+      def check_switch_tax_quick_fix_link history_item
+        taxt = history_item.taxt
+        ids = taxt.scan(/\{tax (?<tax_id>[0-9]+)\} \{ref (?<ref_id>[0-9]+)\}/)
+
+        if ids.size != 1
+          bold_warning("contains more than one tax tag, must be fixed manually")
+        else
+          extracted_tax_id = ids.first.first
+          extracted_ref_id = ids.first.last
+
+          mentioned_taxon = Taxon.find(extracted_tax_id)
+          same_named_taxa = Taxon.where(name_cache: mentioned_taxon.name_cache).where.not(id: mentioned_taxon.id)
+          case same_named_taxa.size
+          when 0
+            bold_notice "found no other taxa with the same name (#{mentioned_taxon.name_cache})"
+          when 1
+            new_taxon = same_named_taxa.first
+            switch_tax_quick_fix_link history_item, new_taxon, mentioned_taxon, extracted_ref_id
+          else
+            bold_warning "found more than one taxon with the same name (#{mentioned_taxon.name_cache})"
+          end
+        end
+      end
+
+      def switch_tax_quick_fix_link history_item, new_taxon, mentioned_taxon, extracted_ref_id
+        url = switch_tax_tag_quick_and_dirty_fix_path(
+          taxon_history_item_id: history_item.id,
+          replace_tax_id: mentioned_taxon.id,
+          new_tax_id: new_taxon.id
+        )
+        link = link_to "Switch to this tax tag!", url, method: :post, remote: true, class: 'btn-warning btn-tiny'
+
+        ref_tag_matches = new_taxon.authorship_reference.id == extracted_ref_id.to_i
+        ref_tag_notice = ref_tag_matches ? bold_notice('ref tag matches!') : bold_warning('ref does NOT match!')
+
+        CatalogFormatter.link_to_taxon(new_taxon) + " #{new_taxon.author_citation} #{ref_tag_notice}".html_safe + link
+      end
   end
 end
 
@@ -113,6 +153,17 @@ description: >
 
   * Warnings in this columns do not block the quick-button (since it would block fixes for incorrect/unnecessary replacements).
 
+
+  **Switch tax quick-fix:**
+
+  Quick-fix link for switching to the suggested `tax` ID for items that cannot be fixed with the normal button.
+  Use this button if the `ref` tag is correct, but the `tax` tag links an incorrect taxon (most probably, either the `tax` tag, or the replacment,
+  is a homonym). The same item will appear in this script again after reloading the page,
+  and hopefylly it can be converted to a `taxac` tag this time.
+
+
+  For cases like "found more than one taxon with the same name (Pachycondyla striata)": To see which, find the taxon link
+  ("Pachycondyla striata") in the same row, open the catalog page, and there will be a blue box for "Taxa with same name".
 
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations

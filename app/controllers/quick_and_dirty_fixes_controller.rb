@@ -118,9 +118,30 @@ class QuickAndDirtyFixesController < ApplicationController # rubocop:disable Met
       render js: %(AntCat.notifyError("Replaced missing tags with selected tax, but nothing was changed"))
     elsif taxon_history_item.update(taxt: new_taxt)
       taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
-      render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'", false))
+      render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
+    end
+  end
+
+  def switch_tax_tag
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    replace_taxon = Taxon.find(params[:replace_tax_id])
+    new_taxon = Taxon.find(params[:new_tax_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = old_taxt.dup.sub(
+      "{tax #{replace_taxon.id}}",
+      "{tax #{new_taxon.id}}"
+    )
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Switched tax tags, but nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Switch `tax` tags"
+      render js: %(AntCat.notifySuccess("Switched tax tags: '#{new_taxt}'"))
+    else
+      render js: %(AntCat.notifyError("Could not switch tax tags"))
     end
   end
 
@@ -132,7 +153,7 @@ class QuickAndDirtyFixesController < ApplicationController # rubocop:disable Met
       render js: %(AntCat.notifyError("Updated current_taxon_id, but nothing was changed"))
     elsif taxon.update(current_taxon_id: new_current_taxon.id)
       taxon.create_activity :update, current_user, edit_summary: "[automatic] Update `current_taxon_id`"
-      render js: %(AntCat.notifySuccess("Updated current_taxon_id", false))
+      render js: %(AntCat.notifySuccess("Updated current_taxon_id"))
     else
       render js: %(AntCat.notifyError("Could not update current_taxon_id"))
     end
