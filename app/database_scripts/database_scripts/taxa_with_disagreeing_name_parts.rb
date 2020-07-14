@@ -49,9 +49,9 @@ end
 
 __END__
 
-section: main
+section: regression-test
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 
