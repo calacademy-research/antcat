@@ -124,6 +124,27 @@ class QuickAndDirtyFixesController < ApplicationController # rubocop:disable Met
     end
   end
 
+  def switch_tax_tag
+    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    replace_taxon = Taxon.find(params[:replace_tax_id])
+    new_taxon = Taxon.find(params[:new_tax_id])
+
+    old_taxt = taxon_history_item.taxt
+    new_taxt = old_taxt.dup.sub(
+      "{tax #{replace_taxon.id}}",
+      "{tax #{new_taxon.id}}"
+    )
+
+    if old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Switched tax tags, but nothing was changed"))
+    elsif taxon_history_item.update(taxt: new_taxt)
+      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Switch `tax` tags"
+      render js: %(AntCat.notifySuccess("Switched tax tags: '#{new_taxt}'", false))
+    else
+      render js: %(AntCat.notifyError("Could not switch tax tags"))
+    end
+  end
+
   def update_current_taxon_id
     taxon = Taxon.find(params[:taxon_id])
     new_current_taxon = Taxon.find(params[:new_current_taxon_id])
