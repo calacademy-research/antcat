@@ -94,7 +94,7 @@ title: Points to replacement name and uses <code>ref</code> tag as author citati
 
 section: main
 category: Taxt
-tags: [has-quick-fix, new!]
+tags: [has-quick-fix]
 
 issue_description:
 

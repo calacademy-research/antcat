@@ -43,7 +43,7 @@ module DatabaseScripts
                         else
                           bold_warning("NOT same rank!")
                         end
-          "#{CatalogFormatter.link_to_taxon(other_taxon)} #{other_taxon.status} #{quick_fix_link(taxon, other_taxon)} #{rank_notice}<br><br>".html_safe
+          "#{bold_warning('See notice in description')} #{CatalogFormatter.link_to_taxon(other_taxon)} #{other_taxon.status} #{quick_fix_link(taxon, other_taxon)} #{rank_notice}<br><br>".html_safe
         end.join
       end
 
@@ -77,6 +77,10 @@ description: >
 
 
   Red button means that it's not.
+
+
+  Regarding <span class="bold-warning">See notice in description</span>: the quick-fix button is not very relevant for remaining cases,
+  but I left it in place anyways because the help text is still useful.
 
 
   Records in this script also often appears in %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
