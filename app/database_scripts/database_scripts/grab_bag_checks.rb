@@ -8,6 +8,7 @@ module DatabaseScripts
 
     def results
       [
+        all_infrasubspecies_are_invalid,
         all_subgenera_have_names_with_parentheses,
         all_protonyms_have_taxa_with_compatible_ranks,
         original_combination_ranks,
@@ -31,6 +32,13 @@ module DatabaseScripts
     end
 
     private
+
+      def all_infrasubspecies_are_invalid
+        {
+          title: 'All infrasubspecies are invalid',
+          ok?: !Infrasubspecies.where(status: Status::VALID).exists?
+        }
+      end
 
       def all_subgenera_have_names_with_parentheses
         {
