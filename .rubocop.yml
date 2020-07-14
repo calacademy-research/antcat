@@ -93,6 +93,9 @@ Lint/AmbiguousRegexpLiteral:
     - 'features/step_definitions/**/*'
     - 'spec/**/*'
 
+Lint/DuplicateElsifCondition:
+  Enabled: true
+
 Lint/MixedRegexpCaptureTypes:
   Enabled: true
 
@@ -252,6 +255,9 @@ Style/Alias:
 Style/AccessorGrouping:
   Enabled: false
 
+Style/ArrayCoercion:
+  Enabled: true
+
 Style/AsciiComments:
   Enabled: false
 
@@ -259,6 +265,9 @@ Style/AutoResourceCleanup:
   Enabled: true
 
 Style/BisectedAttrAccessor:
+  Enabled: false
+
+Style/CaseLikeIf:
   Enabled: false
 
 Style/ClassAndModuleChildren:
@@ -298,7 +307,14 @@ Style/FrozenStringLiteralComment:
 Style/GuardClause:
   Enabled: false
 
+# TODO: Investigate.
+Style/HashAsLastArrayItem:
+  Enabled: false
+
 Style/HashEachMethods:
+  Enabled: true
+
+Style/HashLikeCase:
   Enabled: true
 
 Style/HashTransformKeys:
@@ -332,6 +348,9 @@ Style/RedundantAssignment:
   Enabled: false
 
 Style/RedundantFetchBlock:
+  Enabled: true
+
+Style/RedundantFileExtensionInRequire:
   Enabled: true
 
 Style/RedundantRegexpCharacterClass:
