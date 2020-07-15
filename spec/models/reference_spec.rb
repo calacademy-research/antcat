@@ -64,6 +64,48 @@ describe Reference do
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
     end
+
+    describe '.order_by_pagination' do
+      context 'with most `ArticleReference` pagination formats' do
+        it 'sorts in natural order' do
+          create :any_reference, pagination: '101'
+          create :any_reference, pagination: '11'
+
+          expect(described_class.order_by_pagination.pluck(:pagination)).to eq ['11', '101']
+        end
+      end
+
+      context 'with (most) `BookReference` pagination formats' do
+        it 'sorts in natural order' do
+          create :any_reference, pagination: 'P. 32'
+          create :any_reference, pagination: 'Pp. 301-302'
+          create :any_reference, pagination: 'P. 31'
+
+          expect(described_class.order_by_pagination.pluck(:pagination)).to eq ['P. 31', 'P. 32', 'Pp. 301-302']
+        end
+      end
+
+      context 'with most `NestedReference` pagination formats' do
+        it 'sorts in natural order' do
+          create :any_reference, pagination: 'Pp. 301-302 in:'
+          create :any_reference, pagination: 'P. 31 in:'
+
+          expect(described_class.order_by_pagination.pluck(:pagination)).to eq ['P. 31 in:', 'Pp. 301-302 in:']
+        end
+      end
+
+      context 'with mixed pagination formats' do
+        it 'sorts in natural order' do
+          create :any_reference, pagination: 'Pp. 301-302'
+          create :any_reference, pagination: '11'
+          create :any_reference, pagination: '101'
+          create :any_reference, pagination: 'P. 31'
+          create :any_reference, pagination: 'P. 31 in:'
+
+          expect(described_class.order_by_pagination.pluck(:pagination)).to eq ['P. 31', 'P. 31 in:', 'Pp. 301-302', '11', '101']
+        end
+      end
+    end
   end
 
   describe 'workflow' do

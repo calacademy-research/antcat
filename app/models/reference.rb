@@ -34,6 +34,15 @@ class Reference < ApplicationRecord
 
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
+  # TODO: Remove or use. This was written for sorting citations before I remembered that `citations.pages` do not
+  # contains "Pp." etc., but I committed it anyways since it has potential for https://github.com/calacademy-research/antcat/issues/511
+  scope :order_by_pagination, -> do
+    order(Arel.sql(<<~SQL))
+      CAST(pagination AS UNSIGNED),
+      CAST(REPLACE(REPLACE(pagination, 'Pp. ', ''), 'P. ', '') AS UNSIGNED),
+      pagination
+    SQL
+  end
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
   has_paper_trail

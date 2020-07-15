@@ -132,7 +132,7 @@
             %thead
               %th Citation object
               %th Pages
-            -@reference.citations.order(:pages).each do |citation|
+            -@reference.citations.order_by_pages.each do |citation|
               %tr
                 %td
                   Protonym:

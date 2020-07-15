@@ -17,4 +17,21 @@ describe Citation do
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:pages) }
   end
+
+  describe 'scopes' do
+    describe '.order_by_pages' do
+      let(:reference) { create :any_reference }
+
+      before do
+        create :citation, reference: reference, pages: '101'
+        create :citation, reference: reference, pages: '11'
+        create :citation, reference: reference, pages: '301-302'
+        create :citation, reference: reference, pages: '301'
+      end
+
+      it 'sorts in natural order' do
+        expect(described_class.order_by_pages.pluck(:pages)).to eq ['11', '101', '301', '301-302']
+      end
+    end
+  end
 end
