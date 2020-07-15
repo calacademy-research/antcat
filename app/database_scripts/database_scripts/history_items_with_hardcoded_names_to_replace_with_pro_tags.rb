@@ -7,8 +7,7 @@ module DatabaseScripts
     def results
       TaxonHistoryItem.
         joins(taxon: [protonym: :name]).
-        where(taxa: { type: Rank::GENUS_GROUP_NAMES }).
-        where("taxt REGEXP CONCAT('^', names.name, ' (as subgenus of |as genus:|in |as junior synonym of )')").
+        where("taxt REGEXP CONCAT('^', names.name, ' ')").
         limit(LIMIT)
     end
 
@@ -60,9 +59,6 @@ tags: [has-quick-fix]
 issue_description:
 
 description: >
-  Genus/subgenus batch. See script's source for search query.
-
-
   Use the quick-button to replace the hardcoded name (it's the first thing in the content) with a `pro` tag, where the
   ID will be that of the taxon's protonym.
 
