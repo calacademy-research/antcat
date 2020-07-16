@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProtonymDecorator < Draper::Decorator
-  delegate :locality, :uncertain_locality?, :forms, :authorship, :name, :fossil?
+  delegate :locality, :uncertain_locality?, :forms, :authorship
 
   def link_to_protonym
     h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym'
@@ -11,9 +11,8 @@ class ProtonymDecorator < Draper::Decorator
     link_to_protonym << ' ' << protonym.author_citation.html_safe
   end
 
-  # TODO: This does not seem to be `included` when used in `DatabaseScripts::ProtonymsWithNotesTaxt`.
   def name_with_fossil
-    name.name_with_fossil_html fossil?
+    protonym.name.name_with_fossil_html protonym.fossil?
   end
 
   def format_locality
