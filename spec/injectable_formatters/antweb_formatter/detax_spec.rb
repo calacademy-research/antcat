@@ -51,5 +51,12 @@ describe AntwebFormatter::Detax do
         expect(described_class["in family {misspelling Pices}"]).to eq "in family Pices"
       end
     end
+
+    describe "tag: `HIDDENNOTE_TAG_REGEX` (hidden editor notes)" do
+      it 'removes the note tag and its content' do
+        expect(described_class["Synonym of Lasius{hiddennote check reference} and Formica"]).
+          to eq "Synonym of Lasius and Formica"
+      end
+    end
   end
 end

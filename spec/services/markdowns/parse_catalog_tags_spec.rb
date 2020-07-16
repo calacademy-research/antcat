@@ -99,5 +99,12 @@ describe Markdowns::ParseCatalogTags do
           to eq 'in family <span class="logged-in-only-gray-bold-notice">Pices</span>'
       end
     end
+
+    describe "tag: `HIDDENNOTE_TAG_REGEX` (hidden editor notes)" do
+      it 'wraps the note content in a span only visible to logged-in users' do
+        expect(described_class["Synonym of Lasius{hiddennote check reference} and Formica"]).
+          to eq 'Synonym of Lasius<span class="taxt-hidden-note"><b>Hidden editor note:</b> check reference</span> and Formica'
+      end
+    end
   end
 end

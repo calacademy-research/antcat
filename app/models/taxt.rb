@@ -28,6 +28,8 @@ module Taxt
   UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
   MISSPELLING_TAG_REGEX = /\{misspelling (?<hardcoded_name>.*?)\}/
 
+  HIDDENNOTE_TAG_REGEX = /\{hiddennote (?<note_content>.*?)\}/
+
   module_function
 
   def tax_or_taxac_tag_regex taxon
