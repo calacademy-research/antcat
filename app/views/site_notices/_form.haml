@@ -24,4 +24,8 @@
           =f.text_area :message, rows: 10,
             data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Message" }
 
+      .row
+        .medium-12.columns
+          =edit_summary_text_field_tag
+
       =button_tag "Publish", class: "btn-saves"

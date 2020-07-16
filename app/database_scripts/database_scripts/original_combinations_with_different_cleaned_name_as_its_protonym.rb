@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class NonOriginalCombinationsWithSameNameAsItsProtonym < DatabaseScript
+  class OriginalCombinationsWithDifferentCleanedNameAsItsProtonym < DatabaseScript
     LIMIT = 500
 
     def results
       Taxon.where(type: Rank::SPECIES_GROUP_NAMES).joins(:name, protonym: :name).
-        where.not(original_combination: true).
-        where("names.cleaned_name = names_protonyms.cleaned_name").
+        where(original_combination: true).
+        where.not("names.cleaned_name = names_protonyms.cleaned_name").
         limit(LIMIT)
     end
 
@@ -34,20 +34,17 @@ end
 
 __END__
 
-title: Non-original combinations with same name as its protonym
-
-section: regression-test
+section: main
 category: Catalog
-tags: []
+tags: [new!]
 
-issue_description: This species-group taxon has the same cleaned name as its protonym, but "Original combination" is not checked.
+issue_description: This species-group taxon has "Original combination" checked, but it does not have the same cleaned name as its protonym.
 
 description: >
-  **This script can be ignored**, since we do not rely on this data point at the moment, and the flag can be updated by script.
-  It may become more relevant in the future.
+  We may have to store original spellings of protonym names to effectively filter out false positives.
 
 
-  "Non-original combinations" as is not having the `taxa.original_combination` flag.
+  "Original combinations" as is not having the `taxa.original_combination` flag.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym

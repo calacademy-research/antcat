@@ -61,12 +61,13 @@ describe SiteNoticesController do
     end
 
     it 'creates an activity' do
-      expect { post(:create, params: { site_notice: site_notice_params }) }.
+      expect { post(:create, params: { site_notice: site_notice_params, edit_summary: 'summary' }) }.
         to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
       site_notice = SiteNotice.last
       expect(activity.trackable).to eq site_notice
+      expect(activity.edit_summary).to eq "summary"
       expect(activity.parameters).to eq(title: site_notice.title)
     end
   end
@@ -95,11 +96,12 @@ describe SiteNoticesController do
     end
 
     it 'creates an activity' do
-      expect { post(:update, params: { id: site_notice.id, site_notice: site_notice_params }) }.
+      expect { post(:update, params: { id: site_notice.id, site_notice: site_notice_params, edit_summary: 'summary' }) }.
         to change { Activity.where(action: :update, trackable: site_notice).count }.by(1)
 
       activity = Activity.last
       site_notice.reload
+      expect(activity.edit_summary).to eq "summary"
       expect(activity.parameters).to eq(title: site_notice.title)
     end
   end
