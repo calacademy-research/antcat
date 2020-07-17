@@ -1,5 +1,8 @@
 window.AntCat = {}
 
+TAXON_HOVER_PREVIEW_LINK_CSS_CLASS = 'taxon-hover-preview-link'
+TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS = 'taxon-hover-preview-content'
+
 $ ->
   $(document).foundation()
 
@@ -35,25 +38,25 @@ enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
-AntCat.taxonHoverPreviewContent = (preview) ->
-  "<span class='color-coded-catalog-links taxon-hover-preview-content'>#{preview}</span>"
+AntCat.hoverPreviewContent = (preview, previewCssClass) ->
+  "<span class='color-coded-catalog-links #{previewCssClass}'>#{preview}</span>"
 
 AntCat.enableCatalogLinkHoverPreview = (element) ->
-  AntCat.taxonLinksHoverPreviewCached ||= {}
+  AntCat.hoverPreviewCache ||= {}
 
-  $(element).find(".taxon-hover-preview-link").on "mouseenter", (event) ->
+  $(element).find(".#{TAXON_HOVER_PREVIEW_LINK_CSS_CLASS}").on "mouseenter", (event) ->
     href = $(this).attr("href") # "/catalog/1234".
-    cachedPreview = AntCat.taxonLinksHoverPreviewCached[href]
+    cachedPreview = AntCat.hoverPreviewCache[href]
 
     if cachedPreview
-      alreadyAppendedToThisElement = $(this).find('.taxon-hover-preview-content').length
+      alreadyAppendedToThisElement = $(this).find(".#{TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS}").length
       return if alreadyAppendedToThisElement
-      $(this).append AntCat.taxonHoverPreviewContent(cachedPreview)
+      $(this).append AntCat.hoverPreviewContent(cachedPreview, TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS)
     else
       $.getJSON "#{href}/hover_preview.json", (data) =>
         preview = data.preview
-        $(this).append AntCat.taxonHoverPreviewContent(preview)
-        AntCat.taxonLinksHoverPreviewCached[href] = preview
+        $(this).append AntCat.hoverPreviewContent(preview, TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS)
+        AntCat.hoverPreviewCache[href] = preview
 
 AntCat.escapeRegExp = (string) ->
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
