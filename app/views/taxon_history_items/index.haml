@@ -29,6 +29,15 @@
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 
+-if current_user && @taxon_history_items.present?
+  .callout.no-border-callout.logged-in-only-background.small-text
+    .right=logged_in_only_tooltip_icon
+    .row
+      .medium-6.columns
+        %pre=JSON.pretty_generate(@taxon_history_items.joins(:taxon).group(:type).count)
+      .medium-6.columns
+        %pre=JSON.pretty_generate(@taxon_history_items.joins(:taxon).group(:status).count)
+
 %table.tablesorter
   %caption
     =number_with_delimiter @taxon_history_items.count
