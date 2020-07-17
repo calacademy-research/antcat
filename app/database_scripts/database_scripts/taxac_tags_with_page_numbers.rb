@@ -72,7 +72,7 @@ __END__
 
 title: <code>taxac</code> tags with page numbers
 
-section: main
+section: regression-test
 category: Taxt
 tags: [has-quick-fix]
 
