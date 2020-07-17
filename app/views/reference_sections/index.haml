@@ -11,7 +11,7 @@
 =form_tag request.path, method: :get do
   .row
     .small-6.medium-4.large-2.columns
-      =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP (slow)", "REGEXP"]], params[:search_type]), prompt: "Search type"
+      =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
     .small-6.medium-4.large-2.columns
       =text_field_tag :q, params[:q], placeholder: "Search query"
     .small-6.medium-4.large-2.columns
@@ -22,9 +22,6 @@
       =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-normal"
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
-
-.callout
-  =render "shared/note_on_taxt_references"
 
 %table
   %caption
@@ -51,3 +48,6 @@
       %td=Detax[reference_section.references_taxt]
 
 =will_paginate @reference_sections
+
+.callout.margin-top
+  =render "shared/note_on_taxt_references"

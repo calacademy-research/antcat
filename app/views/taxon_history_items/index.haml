@@ -14,9 +14,10 @@
 =form_tag request.path, method: :get do
   .row
     .small-6.medium-4.large-2.columns
-      =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP (slow)", "REGEXP"]], params[:search_type]), prompt: "Search type"
-    .small-6.medium-4.large-2.columns
+      =select_tag :search_type, options_for_select([["LIKE (default)", "LIKE"], ["REGEXP", "REGEXP"]], params[:search_type]), prompt: "Search type"
+    .small-6.medium-8.large-10.columns.end
       =text_field_tag :q, params[:q], placeholder: "Search query"
+  .row
     .small-6.medium-4.large-2.columns
       =select_tag :taxon_type, options_for_select(Rank::TYPES, params[:taxon_type]), include_blank: "Taxon rank"
     .small-6.medium-4.large-2.columns
@@ -28,8 +29,14 @@
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 
-.callout
-  =render "shared/note_on_taxt_references"
+-if current_user && @taxon_history_items.present?
+  .callout.no-border-callout.logged-in-only-background.small-text
+    .right=logged_in_only_tooltip_icon
+    .row
+      .medium-6.columns
+        %pre=JSON.pretty_generate(@taxon_history_items.joins(:taxon).group(:type).count)
+      .medium-6.columns
+        %pre=JSON.pretty_generate(@taxon_history_items.joins(:taxon).group(:status).count)
 
 %table.tablesorter
   %caption
@@ -56,3 +63,6 @@
       %td=Detax[history_item.to_taxt]
 
 =will_paginate @taxon_history_items
+
+.callout.margin-top
+  =render "shared/note_on_taxt_references"
