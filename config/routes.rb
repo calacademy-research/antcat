@@ -99,6 +99,7 @@ Rails.application.routes.draw do
       resource :history, only: :show
       resource :what_links_here, only: :show
       resource :soft_validations, only: :show
+      resource :hover_preview, only: :show
     end
   end
   namespace :protonyms do

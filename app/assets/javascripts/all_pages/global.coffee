@@ -3,6 +3,9 @@ window.AntCat = {}
 TAXON_HOVER_PREVIEW_LINK_CSS_CLASS = 'taxon-hover-preview-link'
 TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS = 'taxon-hover-preview-content'
 
+PROTONYM_HOVER_PREVIEW_LINK_CSS_CLASS = 'protonym-hover-preview-link'
+PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS = 'protonym-hover-preview-content'
+
 $ ->
   $(document).foundation()
 
@@ -56,6 +59,21 @@ AntCat.enableCatalogLinkHoverPreview = (element) ->
       $.getJSON "#{href}/hover_preview.json", (data) =>
         preview = data.preview
         $(this).append AntCat.hoverPreviewContent(preview, TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS)
+        AntCat.hoverPreviewCache[href] = preview
+
+  # TODO: Refactor copy-pasta.
+  $(element).find(".#{PROTONYM_HOVER_PREVIEW_LINK_CSS_CLASS}").on "mouseenter", (event) ->
+    href = $(this).attr("href") # "/protonyms/1234".
+    cachedPreview = AntCat.hoverPreviewCache[href]
+
+    if cachedPreview
+      alreadyAppendedToThisElement = $(this).find(".#{PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS}").length
+      return if alreadyAppendedToThisElement
+      $(this).append AntCat.hoverPreviewContent(cachedPreview, PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS)
+    else
+       $.getJSON "#{href}/hover_preview.json", (data) =>
+        preview = data.preview
+        $(this).append AntCat.hoverPreviewContent(preview, PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS)
         AntCat.hoverPreviewCache[href] = preview
 
 AntCat.escapeRegExp = (string) ->

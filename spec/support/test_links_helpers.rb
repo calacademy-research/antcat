@@ -16,7 +16,7 @@ module TestLinksHelpers
   end
 
   def protonym_link protonym
-    %(<a class="protonym" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>)
+    %(<a class="protonym protonym-hover-preview-link" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>)
   end
 
   def antweb_taxon_link taxon, label = nil
