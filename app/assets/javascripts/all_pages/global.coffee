@@ -4,7 +4,7 @@ $ ->
   $(document).foundation()
 
   enableInlineExpansions()
-  AntCat.enableTaxonLinksHoverPreview(document)
+  AntCat.enableCatalogLinkHoverPreview(document)
 
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
@@ -38,7 +38,7 @@ enableInlineExpansions = ->
 AntCat.taxonHoverPreviewContent = (preview) ->
   "<span class='color-coded-catalog-links taxon-hover-preview-content'>#{preview}</span>"
 
-AntCat.enableTaxonLinksHoverPreview = (element) ->
+AntCat.enableCatalogLinkHoverPreview = (element) ->
   AntCat.taxonLinksHoverPreviewCached ||= {}
 
   $(element).find(".taxon-hover-preview-link").on "mouseenter", (event) ->

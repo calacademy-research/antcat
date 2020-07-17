@@ -89,7 +89,7 @@ class MakePreviewable
         tab.html html
         # Re-trigger to make references expandable.
         AntCat.makeReferenceKeysExpandable tab
-        AntCat.enableTaxonLinksHoverPreview tab
+        AntCat.enableCatalogLinkHoverPreview tab
         @hideSpinner() # Only hide on success.
       error: -> tab.text "Error rendering preview"
 
