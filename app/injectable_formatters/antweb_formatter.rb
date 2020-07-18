@@ -27,6 +27,10 @@ module AntwebFormatter
     %(<a href="#{PROTONYMS_BASE_URL}#{protonym.id}">#{protonym.decorate.name_with_fossil}</a>)
   end
 
+  def link_to_protonym_with_author_citation protonym
+    link_to_protonym(protonym).html_safe << ' ' << protonym.author_citation.html_safe
+  end
+
   def link_to_reference reference
     AntwebFormatter::ReferenceLink[reference]
   end

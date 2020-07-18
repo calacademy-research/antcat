@@ -63,4 +63,16 @@ describe AntwebFormatter do
       HTML
     end
   end
+
+  describe ".link_to_protonym_with_author_citation" do
+    let(:protonym) { create :protonym, :fossil, name: create(:genus_name, name: 'Atta') }
+
+    specify { expect(described_class.link_to_protonym_with_author_citation(protonym).html_safe?).to eq true }
+
+    specify do
+      expect(described_class.link_to_protonym_with_author_citation(protonym)).to eq <<-HTML.squish
+        <a href="https://www.antcat.org/protonyms/#{protonym.id}"><i>†</i><i>#{protonym.name.name}</i></a> #{protonym.author_citation}
+      HTML
+    end
+  end
 end
