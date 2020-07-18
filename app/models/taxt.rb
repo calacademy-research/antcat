@@ -19,6 +19,7 @@ module Taxt
   TAX_OR_TAXAC_TAG_REGEX = /\{(?:tax|taxac) (?<tax_id>[0-9]+\})/
 
   PRO_TAG_REGEX = /\{pro (?<id>\d+)\}/
+  PROAC_TAG_REGEX = /\{proac (?<id>\d+)\}/
 
   REF_TAG_REGEX = /\{ref (?<id>\d+)\}/
 
@@ -38,7 +39,7 @@ module Taxt
     end
 
     def protonym protonym
-      "{pro #{protonym.id}}"
+      "{(pro|proac) #{protonym.id}}"
     end
 
     def reference reference
