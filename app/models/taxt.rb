@@ -46,11 +46,15 @@ module Taxt
     end
   end
 
-  module_function
+  module RecordToTag
+    module_function
 
-  def ref_tag_regex reference
-    "{ref #{reference.id}}"
+    def reference_to_ref_tag reference
+      "{ref #{reference.id}}"
+    end
   end
+
+  module_function
 
   def extract_ids_from_tax_tags taxt
     taxt.scan(TAX_TAG_REGEX).flatten.compact.map(&:to_i)
