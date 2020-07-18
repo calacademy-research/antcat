@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::History::HistoryItems do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe '#call' do
     let(:header) { "<p><b>Taxonomic history</b></p>" }

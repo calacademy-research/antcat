@@ -30,6 +30,6 @@ class TypeNameDecorator < Draper::Decorator
 
     # TODO: Cheating a lot to quickly make it work on the site and in the AntWeb export at the same time.
     def citation_for_by_subsequent_designation_of
-      "#{Taxt.ref_tag_regex(reference)}: #{pages}"
+      "#{Taxt::RecordToTag.reference_to_ref_tag(reference)}: #{pages}"
     end
 end

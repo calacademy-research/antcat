@@ -1,4 +1,5 @@
 @import "colors"
+@import "colors/catalog"
 
 @mixin after-label
   margin-left: 0.4rem
@@ -17,24 +18,19 @@
   color: white
 
 .color-coded-catalog-links
+  // Taxon statuses.
   .valid
     color: $color_catalog_valid !important
-
   .synonym
     color: $color_catalog_synonym !important
-
   .unidentifiable
     color: $color_catalog_unidentifiable !important
-
   .excluded-from-Formicidae
     color: $color_catalog_excluded_from_formicidae !important
-
   .unavailable
     color: $color_catalog_unavailable !important
-
   .homonym
     color: $color_catalog_homonym !important
-
   .obsolete-combination
     color: $color_catalog_obsolete_combination !important
 

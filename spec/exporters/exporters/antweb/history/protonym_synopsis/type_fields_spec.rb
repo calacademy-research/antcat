@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::History::ProtonymSynopsis::TypeFields do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe "#call" do
     context "when protonym has type information" do

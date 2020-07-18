@@ -33,6 +33,7 @@ describe VirtualHistoryItems::SubspeciesList do
   end
 
   describe '#render' do
+    include AntwebTestLinksHelpers
     include TestLinksHelpers
 
     let!(:species) { create :species }

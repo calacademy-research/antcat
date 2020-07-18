@@ -139,8 +139,7 @@ description: >
   * [Replacement name for {taxac 429029}]
 
 
-  The first example may look like an improvement since the reference is linked (I decided to no link them to make
-  it easier to tell them apart from `ref` tags), but it's a misuse of `ref` tags, and it means that the data
+  Both looks similar, but the first variant is a misuse of `ref` tags, and it means that the data
   points may not agree (manually specified `ref` tag vs. the actual author citation from the taxon's protonym).
 
 

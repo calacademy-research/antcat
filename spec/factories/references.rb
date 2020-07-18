@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :base_reference, class: 'Taxon' do
+  factory :base_reference, class: 'Reference' do
     transient do
       author_string {}
     end
@@ -45,7 +45,7 @@ FactoryBot.define do
     factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do
       journal
       sequence(:series_volume_issue) { |n| n }
-      sequence(:pagination) { |n| n }
+      sequence(:pagination) { |n| "#{n}-#{n + 1}" }
     end
 
     factory :book_reference, class: 'BookReference' do
@@ -54,7 +54,7 @@ FactoryBot.define do
     end
 
     factory :nested_reference, class: 'NestedReference' do
-      sequence(:pagination) { |n| "pp. #{n} in: " }
+      sequence(:pagination) { |n| "Pp. #{n} in:" }
       nesting_reference { create :book_reference }
     end
 

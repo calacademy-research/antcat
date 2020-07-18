@@ -12,14 +12,14 @@ describe References::Formatted::Expanded do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do
         create :article_reference, :with_doi, author_names: [author_name], citation_year: '1874',
-          title: "*Atta* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
+          title: "*Italics* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
       end
 
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish
-          #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Atta</i>
+          #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Italics</i>
           <i>and such</i>.</a> #{reference.journal.name} (1):3.
         HTML
       end
@@ -53,16 +53,16 @@ describe References::Formatted::Expanded do
       end
       let(:reference) do
         create :nested_reference, nesting_reference: nestee_reference,
-          author_names: [author_name], title: '*Atta* <i>and such</i>',
-          citation_year: '1874', pagination: 'Pp. 32-45 in'
+          author_names: [author_name], title: '*Italics* <i>and such</i>',
+          citation_year: '1874', pagination: 'Pp. 32-45 in:'
       end
 
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).to eq <<~HTML.squish
-          #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Atta</i> <i>and such</i>.</a>
-          Pp. 32-45 in #{author_link(nestee_author_name)} 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
+          #{author_link(author_name)} 1874. <a href="/references/#{reference.id}"><i>Italics</i> <i>and such</i>.</a>
+          Pp. 32-45 in: #{author_link(nestee_author_name)} 2010. <a href="/references/#{nestee_reference.id}"><i>Lasius</i>
           <i>and such</i>.</a> New York: Wiley, 32 pp.
         HTML
       end

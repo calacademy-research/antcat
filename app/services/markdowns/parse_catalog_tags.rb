@@ -32,7 +32,7 @@ module Markdowns
       attr_reader :content
 
       # Matches: {tax 429349}
-      # Renders: link to the taxon (Formica).
+      # Renders: link to taxon (Formica).
       def parse_tax_tags
         # HACK: To eager load records in a single query for performance reasons.
         taxon_ids = Taxt.extract_ids_from_tax_tags(content)
@@ -54,7 +54,7 @@ module Markdowns
       end
 
       # Matches: {taxac 429349}
-      # Renders: link to the taxon and show non-linked author citation (Formica Linnaeus, 1758).
+      # Renders: link to taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
           taxon_id = $LAST_MATCH_INFO[:id]
@@ -95,7 +95,7 @@ module Markdowns
       end
 
       # Matches: {pro 154742}
-      # Renders: link to the protonym
+      # Renders: link to protonym.
       def parse_pro_tags
         content.gsub!(Taxt::PRO_TAG_REGEX) do
           protonym_id = $LAST_MATCH_INFO[:id]

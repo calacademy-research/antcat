@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WhatLinksHereTaxts
-  def initialize record, taxt_tag_method
+  def initialize record, record_to_tag_regex_taxt_method
     @record = record
-    @taxt_tag = Taxt.public_send(taxt_tag_method, record)
+    @taxt_tag = Taxt::RecordToTagRegex.public_send(record_to_tag_regex_taxt_method, record)
   end
 
   def all

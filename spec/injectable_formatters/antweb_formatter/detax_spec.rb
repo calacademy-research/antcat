@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AntwebFormatter::Detax do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe "#call" do
     describe "tag: `TAX_TAG_REGEX` (taxa)" do

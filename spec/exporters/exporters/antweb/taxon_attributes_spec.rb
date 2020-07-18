@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::TaxonAttributes do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe "#call" do
     describe "[0]: `antcat_id`" do
