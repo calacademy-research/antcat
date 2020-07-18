@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe "#call" do
     let(:taxt_taxon) { create :any_taxon }

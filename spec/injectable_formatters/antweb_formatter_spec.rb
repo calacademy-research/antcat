@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe AntwebFormatter do
-  include TestLinksHelpers
+  include AntwebTestLinksHelpers
 
   describe 'test support code in `TestLinksHelpers`' do
     let(:taxon) { build_stubbed :genus, :fossil }
