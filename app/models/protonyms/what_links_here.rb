@@ -2,7 +2,7 @@
 
 module Protonyms
   class WhatLinksHere
-    TAXT_TAG_METHOD = :pro_tag_regex
+    RECORD_TO_TAG_REGEX_TAXT_METHOD = :protonym
     REFERENCING_COLUMNS = [
       [Taxon, :protonym_id]
     ]
@@ -43,7 +43,7 @@ module Protonyms
       end
 
       def what_links_here_taxts
-        WhatLinksHereTaxts.new(record, TAXT_TAG_METHOD)
+        WhatLinksHereTaxts.new(record, RECORD_TO_TAG_REGEX_TAXT_METHOD)
       end
   end
 end

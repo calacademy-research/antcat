@@ -2,7 +2,7 @@
 
 module Taxa
   class WhatLinksHere
-    TAXT_TAG_METHOD = :tax_or_taxac_tag_regex
+    RECORD_TO_TAG_REGEX_TAXT_METHOD = :taxon
     REFERENCING_COLUMNS = [
       [Taxon, :subfamily_id],
       [Taxon, :tribe_id],
@@ -51,7 +51,7 @@ module Taxa
       end
 
       def what_links_here_taxts
-        WhatLinksHereTaxts.new(record, TAXT_TAG_METHOD)
+        WhatLinksHereTaxts.new(record, RECORD_TO_TAG_REGEX_TAXT_METHOD)
       end
   end
 end

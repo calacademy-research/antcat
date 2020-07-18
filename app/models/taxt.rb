@@ -30,15 +30,23 @@ module Taxt
 
   HIDDENNOTE_TAG_REGEX = /\{hiddennote (?<note_content>.*?)\}/
 
+  module RecordToTagRegex
+    module_function
+
+    def taxon taxon
+      "{(tax|taxac) #{taxon.id}}"
+    end
+
+    def protonym protonym
+      "{pro #{protonym.id}}"
+    end
+
+    def reference reference
+      "{ref #{reference.id}}"
+    end
+  end
+
   module_function
-
-  def tax_or_taxac_tag_regex taxon
-    "{(tax|taxac) #{taxon.id}}"
-  end
-
-  def pro_tag_regex protonym
-    "{pro #{protonym.id}}"
-  end
 
   def ref_tag_regex reference
     "{ref #{reference.id}}"
