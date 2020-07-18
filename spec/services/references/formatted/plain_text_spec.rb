@@ -10,13 +10,13 @@ describe References::Formatted::PlainText do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do
         create :article_reference, :with_doi, author_names: [author_name], citation_year: '1874',
-          title: "*Atta* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
+          title: "*Italics* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
       end
 
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
-        expect(formatter.call).to eq "Forel, A. 1874. Atta and such. #{reference.journal.name} (1):3."
+        expect(formatter.call).to eq "Forel, A. 1874. Italics and such. #{reference.journal.name} (1):3."
       end
 
       context 'with unsafe tags' do
@@ -72,15 +72,15 @@ describe References::Formatted::PlainText do
       end
       let(:reference) do
         create :nested_reference, nesting_reference: nestee_reference,
-          author_names: [create(:author_name, name: "Forel, A.")], title: '*Atta* <i>and such</i>',
-          citation_year: '1874', pagination: 'Pp. 32-45 in'
+          author_names: [create(:author_name, name: "Forel, A.")], title: '*Italics* <i>and such</i>',
+          citation_year: '1874', pagination: 'Pp. 32-45 in:'
       end
 
       specify { expect(formatter.call.html_safe?).to eq true }
 
       specify do
         expect(formatter.call).
-          to eq 'Forel, A. 1874. Atta and such. Pp. 32-45 in Mayr, E. 2010. Lasius and such. New York: Wiley, 32 pp.'
+          to eq 'Forel, A. 1874. Italics and such. Pp. 32-45 in: Mayr, E. 2010. Lasius and such. New York: Wiley, 32 pp.'
       end
 
       context 'with unsafe tags' do
