@@ -3,7 +3,9 @@
 module DevHelper
   # Show link to localhost on live site and vice versa because I am lazy.
   def link_to_current_page_on_live_site_or_localhost
-    query_params = "?#{request.query_parameters.to_param}" if request.query_parameters.present?
+    non_blank_query_params = request.query_parameters.dup.delete_if { |_key, value| value.blank? } # To make URLs prettier.
+    query_params = "?#{non_blank_query_params.to_param}" if non_blank_query_params.present?
+
     path = "#{request.path}#{query_params}"
 
     if Rails.env.development?
