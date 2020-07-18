@@ -27,6 +27,17 @@ describe ProtonymDecorator do
     end
   end
 
+  describe "#link_to_protonym_with_linked_author_citation" do
+    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+
+    specify do
+      expect(decorated.link_to_protonym_with_linked_author_citation).to eq <<~HTML.squish
+        #{protonym_link(protonym)}
+        <span class="discret-author-citation"><a href="/references/#{protonym.authorship_reference.id}">#{protonym.author_citation}</a></span>
+      HTML
+    end
+  end
+
   describe "#format_locality" do
     context 'when `locality` contains parentheses' do
       context 'when locality contains words in parentheses' do

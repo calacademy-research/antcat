@@ -3,7 +3,7 @@
 require 'English'
 
 module Markdowns
-  class ParseCatalogTags
+  class ParseCatalogTags # rubocop:disable Metrics/ClassLength
     include ActionView::Helpers::SanitizeHelper
     include Service
 
@@ -17,6 +17,7 @@ module Markdowns
       parse_ref_tags
 
       parse_pro_tags
+      parse_proac_tags
 
       parse_missing_tags
       parse_unmissing_tags
@@ -102,6 +103,20 @@ module Markdowns
 
           if (protonym = Protonym.find_by(id: protonym_id))
             protonym.decorate.link_to_protonym
+          else
+            broken_taxt_tag "PROTONYM", protonym_id
+          end
+        end
+      end
+
+      # Matches: {proac 154742}
+      # Renders: link to protonym and link to author citation.
+      def parse_proac_tags
+        content.gsub!(Taxt::PROAC_TAG_REGEX) do
+          protonym_id = $LAST_MATCH_INFO[:id]
+
+          if (protonym = Protonym.find_by(id: protonym_id))
+            protonym.decorate.link_to_protonym_with_linked_author_citation
           else
             broken_taxt_tag "PROTONYM", protonym_id
           end

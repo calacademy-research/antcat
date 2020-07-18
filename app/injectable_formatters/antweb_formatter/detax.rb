@@ -19,6 +19,7 @@ module AntwebFormatter
       parse_taxac_tags
 
       parse_pro_tags
+      parse_proac_tags
 
       parse_ref_tags
 
@@ -66,6 +67,15 @@ module AntwebFormatter
         content.gsub!(Taxt::PRO_TAG_REGEX) do
           if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:id]))
             formatter.link_to_protonym(protonym)
+          end
+        end
+      end
+
+      # Protonyms with author citation, "{proac 123}".
+      def parse_proac_tags
+        content.gsub!(Taxt::PROAC_TAG_REGEX) do
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:id]))
+            formatter.link_to_protonym_with_author_citation(protonym)
           end
         end
       end

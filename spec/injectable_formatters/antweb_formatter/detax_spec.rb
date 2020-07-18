@@ -30,6 +30,14 @@ describe AntwebFormatter::Detax do
       end
     end
 
+    describe "tag: `PROAC_TAG_REGEX` (protonyms with author citation)" do
+      let!(:protonym) { create :protonym }
+
+      specify do
+        expect(described_class["{proac #{protonym.id}}"]).to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
+      end
+    end
+
     describe "tag: `REF_TAG_REGEX` (references)" do
       let!(:reference) { create :any_reference }
 
