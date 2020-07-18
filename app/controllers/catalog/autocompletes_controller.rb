@@ -17,7 +17,7 @@ module Catalog
             plaintext_name: taxon.name_cache,
             name_with_fossil: taxon.name_with_fossil,
             author_citation: taxon.author_citation,
-            css_classes: CatalogFormatter.disco_mode_css(taxon),
+            css_classes: CatalogFormatter.taxon_disco_mode_css(taxon),
             url: "/catalog/#{taxon.id}"
           }
         end

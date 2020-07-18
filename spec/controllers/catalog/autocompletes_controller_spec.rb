@@ -20,7 +20,7 @@ describe Catalog::AutocompletesController do
             "plaintext_name" => "Ratta",
             "name_with_fossil" => "<i>†</i><i>Ratta</i>",
             "author_citation" => taxon.author_citation,
-            "css_classes" => CatalogFormatter.disco_mode_css(taxon),
+            "css_classes" => CatalogFormatter.taxon_disco_mode_css(taxon),
             "url" => "/catalog/#{taxon.id}"
           }
         ]

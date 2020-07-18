@@ -4,7 +4,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :uncertain_locality?, :forms, :authorship
 
   def link_to_protonym
-    h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym'
+    h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
   end
 
   def link_to_protonym_with_author_citation
@@ -32,6 +32,7 @@ class ProtonymDecorator < Draper::Decorator
     h.add_period_if_necessary capitalized
   end
 
+  # TODO: Split. We do not always care that much about forms.
   def format_pages_and_forms
     string = authorship.pages.dup
     string << " (#{forms})" if forms

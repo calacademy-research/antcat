@@ -1,0 +1,16 @@
+-decorated_protonym = protonym.decorate
+
+.div
+  %strong Protonym:
+  =decorated_protonym.link_to_protonym
+
+.margin-bottom
+  %strong Authorship:
+  =protonym.authorship_reference.decorate.link_to_reference + ': ' + decorated_protonym.format_pages_and_forms
+
+-if protonym.taxa.exists?
+  %ul.no-bullet
+    -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+      %li
+        =CatalogFormatter.link_to_taxon(taxon)
+        %small=taxon.decorate.expanded_status

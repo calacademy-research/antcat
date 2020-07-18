@@ -12,7 +12,7 @@ describe ProtonymDecorator do
 
     specify do
       expect(decorated.link_to_protonym).to eq <<~HTML.squish
-        <a class="protonym" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
+        <a class="protonym protonym-hover-preview-link" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
       HTML
     end
   end
