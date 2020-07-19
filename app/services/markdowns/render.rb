@@ -5,9 +5,8 @@ module Markdowns
     include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize content, sanitize_content: true
-      @content = sanitize_content ? sanitize(content) : content
-      @sanitize_content = sanitize_content
+    def initialize content
+      @content = sanitize(content)
     end
 
     def call
@@ -16,7 +15,7 @@ module Markdowns
 
     private
 
-      attr_reader :content, :sanitize_content
+      attr_reader :content
 
       def markdowner
         extensions = {
@@ -45,7 +44,7 @@ module Markdowns
 
       class AntcatMarkdown < Redcarpet::Render::HTML
         def postprocess content
-          Markdowns::ParseAllTags[content, sanitize_content: false]
+          Markdowns::ParseAllTags[content]
         end
 
         def table header, body

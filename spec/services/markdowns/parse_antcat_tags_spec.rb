@@ -4,9 +4,11 @@ require 'rails_helper'
 
 describe Markdowns::ParseAntcatTags do
   describe "#call" do
-    it "does not remove <i> tags" do
-      expect(described_class["<i>italics<i><i><script>xss</script></i>"]).
-        to eq "<i>italics<i><i>xss</i></i></i>"
+    context 'with unsafe tags' do
+      it "does not sanitize them" do
+        content = "<i>italics<i><i><script>xss</script></i>"
+        expect(described_class[content.dup]).to eq content
+      end
     end
 
     describe 'tag: `GITHUB_TAG_REGEX` (GitHub issue links)' do

@@ -6,7 +6,6 @@ module Markdowns
   class ParseAntcatTags
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
-    include ActionView::Helpers::SanitizeHelper
     include Service
 
     USER_TAG_REGEX = /@user(?<id>\d+)/
@@ -16,8 +15,8 @@ module Markdowns
 
     GITHUB_ISSUES_BASE_URL = "https://github.com/calacademy-research/antcat/issues/"
 
-    def initialize content, sanitize_content: true
-      @content = sanitize_content ? sanitize(content).to_str : content
+    def initialize content
+      @content = content.dup
     end
 
     def call

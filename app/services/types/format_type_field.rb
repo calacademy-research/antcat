@@ -2,8 +2,8 @@
 
 module Types
   class FormatTypeField
-    include Service
     include ActionView::Helpers::SanitizeHelper
+    include Service
 
     def initialize content
       @content = content.try(:dup)
@@ -12,7 +12,7 @@ module Types
     def call
       return if content.blank?
 
-      formatted = content
+      formatted = sanitize(content).to_str
       formatted = Types::ExpandInstitutionAbbreviations[formatted]
       formatted = Types::LinkSpecimenIdentifiers[formatted]
       formatted = Markdowns::ParseCatalogTags[formatted].html_safe

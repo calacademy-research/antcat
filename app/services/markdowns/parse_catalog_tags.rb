@@ -4,11 +4,10 @@ require 'English'
 
 module Markdowns
   class ParseCatalogTags # rubocop:disable Metrics/ClassLength
-    include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize content, sanitize_content: true
-      @content = sanitize_content ? sanitize(content).to_str : content
+    def initialize content
+      @content = content.dup
       @formatter = CatalogFormatter
     end
 

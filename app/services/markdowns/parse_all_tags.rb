@@ -2,16 +2,15 @@
 
 module Markdowns
   class ParseAllTags
-    include ActionView::Helpers::SanitizeHelper
     include Service
 
-    def initialize content, sanitize_content: true
-      @content = sanitize_content ? sanitize(content).to_str : content
+    def initialize content
+      @content = content
     end
 
     def call
-      parsed = Markdowns::ParseAntcatTags[content, sanitize_content: false]
-      parsed = Markdowns::ParseCatalogTags[parsed, sanitize_content: false]
+      parsed = Markdowns::ParseAntcatTags[content]
+      parsed = Markdowns::ParseCatalogTags[parsed]
 
       parsed
     end

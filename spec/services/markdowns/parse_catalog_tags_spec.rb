@@ -6,9 +6,11 @@ describe Markdowns::ParseCatalogTags do
   include TestLinksHelpers
 
   describe "#call" do
-    it "does not remove <i> tags" do
-      content = "<i>italics<i><i><script>xss</script></i>"
-      expect(described_class[content]).to eq "<i>italics<i><i>xss</i></i></i>"
+    context 'with unsafe tags' do
+      it "does not remove them" do
+        content = "<i>italics<i><i><script>xss</script></i>"
+        expect(described_class[content]).to eq content
+      end
     end
 
     describe "tag: `TAX_TAG_REGEX` (taxa)" do
