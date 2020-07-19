@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength
 module DatabaseScripts
   class ObsoleteCombinationsWithVeryDifferentEpithets < DatabaseScript
     def results
@@ -55,7 +54,6 @@ module DatabaseScripts
       end
   end
 end
-# rubocop:enable Layout/LineLength
 
 __END__
 
