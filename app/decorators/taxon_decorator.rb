@@ -45,6 +45,10 @@ class TaxonDecorator < Draper::Decorator
     Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
   end
 
+  def name_of_obsoletes
+    taxon.is_a?(SpeciesGroupTaxon) ? 'combination' : 'classification'
+  end
+
   def link_to_antwiki
     page_title = if taxon.is_a? Subgenus
                    taxon.name.epithet

@@ -73,8 +73,8 @@
         =synonym.author_citation
 
 -if taxon.obsolete_combinations.exists?
-  %h6.margin-top="Obsolete #{taxon.is_a?(SpeciesGroupTaxon) ? 'combinations' : 'classification'}"
-  %ul.compact-list.margin-bottom
+  %h6.margin-top="Obsolete #{taxon.decorate.name_of_obsoletes}s"
+  %ul.compact-list.no-bullet.margin-bottom
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li
         =CatalogFormatter.link_to_taxon(obsolete_combination)
