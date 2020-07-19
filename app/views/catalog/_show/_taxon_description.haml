@@ -65,12 +65,17 @@
           =info_tooltip_icon 'This is a virtual history item.'
 
 -if taxon.junior_synonyms.exists?
+  -name_of_obsoletes = taxon.decorate.name_of_obsoletes
   %h6.margin-top Junior synonyms
-  %ul.compact-list.margin-bottom
+  %ul.compact-list.no-bullet.margin-bottom
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
+        -if synonym.obsolete_combinations.present?
+          .padding-left-2rem
+            And its obsolete #{name_of_obsoletes}s:
+            =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 -if taxon.obsolete_combinations.exists?
   %h6.margin-top="Obsolete #{taxon.decorate.name_of_obsoletes}s"
