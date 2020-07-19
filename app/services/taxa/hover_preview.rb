@@ -35,7 +35,7 @@ module Taxa
       end
 
       def authorship
-        authorship_reference.decorate.link_to_reference + ': ' + decorated_protonym.format_pages_and_forms
+        authorship_reference.decorate.link_to_reference + ': ' + protonym.authorship_pages
       end
 
       def decorated_protonym

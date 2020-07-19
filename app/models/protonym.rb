@@ -17,6 +17,8 @@ class Protonym < ApplicationRecord
     'Antarctic'
   ]
 
+  delegate :pages, to: :authorship, prefix: true
+
   belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy
   belongs_to :name, dependent: :destroy
   belongs_to :type_name, optional: true, dependent: :destroy
