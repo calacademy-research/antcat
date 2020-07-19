@@ -17,7 +17,7 @@ module Taxa
 
     def call
       parts = []
-      parts << "<i>incertae sedis</i> in #{incertae_sedis_in}" if incertae_sedis_in
+      parts << "<i>incertae sedis</i> in #{incertae_sedis_in.downcase}" if incertae_sedis_in
       parts << "<i>nomen nudum</i>" if nomen_nudum?
       parts << "unresolved junior homonym" if unresolved_homonym?
       parts << "collective group name" if collective_group_name?

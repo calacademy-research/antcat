@@ -33,13 +33,7 @@ class Rank
   QUADRINOMIAL = [INFRASUBSPECIES]
 
   ### For `taxa.incertae_sedis_in`.
-  # TODO: Probably upcase to match `taxa.type`.
-  INCERTAE_SEDIS_IN_RANKS = [
-    INCERTAE_SEDIS_IN_FAMILY = 'family',
-    INCERTAE_SEDIS_IN_SUBFAMILY = 'subfamily',
-    'tribe',
-    'genus'
-  ]
+  INCERTAE_SEDIS_IN_TYPES = [FAMILY, SUBFAMILY, TRIBE, GENUS]
 
   module AntCatSpecific
     # NOTE: Subgenera are uninomial, but not a "single word name" on AntCat.

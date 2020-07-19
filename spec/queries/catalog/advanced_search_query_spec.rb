@@ -169,8 +169,8 @@ describe Catalog::AdvancedSearchQuery do
       end
 
       specify do
-        expect(described_class[incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY]).to eq [taxon]
-        expect(described_class[incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_SUBFAMILY]).to eq []
+        expect(described_class[incertae_sedis_in: Rank::FAMILY]).to eq [taxon]
+        expect(described_class[incertae_sedis_in: Rank::SUBFAMILY]).to eq []
       end
     end
 
