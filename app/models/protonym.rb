@@ -48,20 +48,6 @@ class Protonym < ApplicationRecord
     authorship_reference.key_with_year
   end
 
-  # TODO: This was added for a db script. Remove once cleared (or make use of it elsewhere).
-  # :nocov:
-  def synopsis
-    formated_locality = decorate.format_locality
-
-    string = +''
-    string << "#{author_citation}, #{authorship.pages} "
-    string << "(#{forms}) " if forms
-    string << formated_locality + ' ' if formated_locality
-    string << biogeographic_region if biogeographic_region
-    string
-  end
-  # :nocov:
-
   def soft_validations
     @_soft_validations ||= SoftValidations.new(self, SoftValidations::PROTONYM_DATABASE_SCRIPTS_TO_CHECK)
   end
