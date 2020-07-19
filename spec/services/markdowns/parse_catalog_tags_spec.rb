@@ -21,7 +21,7 @@ describe Markdowns::ParseCatalogTags do
 
       context "when taxon does not exists" do
         it "adds a warning" do
-          expect(described_class["{tax 999}"]).to include "CANNOT FIND TAXON WITH ID 999"
+          expect(described_class["{tax 999}"]).to include "CANNOT FIND TAXON FOR TAG {tax 999}"
         end
       end
     end
@@ -37,7 +37,7 @@ describe Markdowns::ParseCatalogTags do
 
       context "when taxon does not exists" do
         it "adds a warning" do
-          expect(described_class["{taxac 999}"]).to include "CANNOT FIND TAXON WITH ID 999"
+          expect(described_class["{taxac 999}"]).to include "CANNOT FIND TAXON FOR TAG {taxac 999}"
         end
       end
     end
@@ -50,7 +50,23 @@ describe Markdowns::ParseCatalogTags do
 
       context "when protonym does not exists" do
         it "adds a warning" do
-          expect(described_class["{pro 999}"]).to include "CANNOT FIND PROTONYM WITH ID 999"
+          expect(described_class["{pro 999}"]).to include "CANNOT FIND PROTONYM FOR TAG {pro 999}"
+        end
+      end
+    end
+
+    describe "tag: `PROAC_TAG_REGEX` (protonyms with author citation)" do
+      it "uses the HTML version of the protonyms's name" do
+        protonym = create :protonym
+        expect(described_class["{proac #{protonym.id}}"]).to eq <<~HTML.squish
+          #{protonym_link(protonym)}
+          <span class="discret-author-citation"><a href="/references/#{protonym.authorship_reference.id}">#{protonym.author_citation}</a></span>
+        HTML
+      end
+
+      context "when protonym does not exists" do
+        it "adds a warning" do
+          expect(described_class["{proac 999}"]).to include "CANNOT FIND PROTONYM FOR TAG {proac 999}"
         end
       end
     end
@@ -67,7 +83,7 @@ describe Markdowns::ParseCatalogTags do
 
       context "when reference does not exists" do
         it "adds a warning" do
-          expect(described_class["{ref 999}"]).to include "CANNOT FIND REFERENCE WITH ID 999"
+          expect(described_class["{ref 999}"]).to include "CANNOT FIND REFERENCE FOR TAG {ref 999}"
         end
       end
     end

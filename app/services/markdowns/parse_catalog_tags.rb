@@ -44,12 +44,10 @@ module Markdowns
         ).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
-          taxon_id = $LAST_MATCH_INFO[:taxon_id]
-
-          if (taxon = taxa_indexed_by_id[taxon_id.to_i])
+          if (taxon = taxa_indexed_by_id[$LAST_MATCH_INFO[:taxon_id].to_i])
             formatter.link_to_taxon(taxon)
           else
-            broken_taxt_tag "TAXON", taxon_id
+            broken_taxt_tag "TAXON", $LAST_MATCH_INFO
           end
         end
       end
@@ -58,12 +56,10 @@ module Markdowns
       # Renders: link to taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
-          taxon_id = $LAST_MATCH_INFO[:taxon_id]
-
-          if (taxon = Taxon.find_by(id: taxon_id))
+          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:taxon_id]))
             formatter.link_to_taxon_with_linked_author_citation(taxon)
           else
-            broken_taxt_tag "TAXON", taxon_id
+            broken_taxt_tag "TAXON", $LAST_MATCH_INFO
           end
         end
       end
@@ -90,7 +86,7 @@ module Markdowns
           elsif (reference = Reference.find_by(id: reference_id))
             formatter.expandable_reference(reference)
           else
-            broken_taxt_tag "REFERENCE", reference_id
+            broken_taxt_tag "REFERENCE", $LAST_MATCH_INFO
           end
         end
       end
@@ -99,12 +95,10 @@ module Markdowns
       # Renders: link to protonym.
       def parse_pro_tags
         content.gsub!(Taxt::PRO_TAG_REGEX) do
-          protonym_id = $LAST_MATCH_INFO[:protonym_id]
-
-          if (protonym = Protonym.find_by(id: protonym_id))
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:protonym_id]))
             formatter.link_to_protonym(protonym)
           else
-            broken_taxt_tag "PROTONYM", protonym_id
+            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end
@@ -113,12 +107,10 @@ module Markdowns
       # Renders: link to protonym and link to author citation.
       def parse_proac_tags
         content.gsub!(Taxt::PROAC_TAG_REGEX) do
-          protonym_id = $LAST_MATCH_INFO[:protonym_id]
-
-          if (protonym = Protonym.find_by(id: protonym_id))
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:protonym_id]))
             formatter.link_to_protonym_with_linked_author_citation(protonym)
           else
-            broken_taxt_tag "PROTONYM", protonym_id
+            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end
@@ -154,8 +146,8 @@ module Markdowns
         end
       end
 
-      def broken_taxt_tag type, id
-        %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
+      def broken_taxt_tag type, tag
+        %(<span class="bold-warning">CANNOT FIND #{type} FOR TAG #{tag}</span>)
       end
   end
 end

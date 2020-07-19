@@ -45,12 +45,10 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_tags
         content.gsub!(USER_TAG_REGEX) do
-          user_id = $LAST_MATCH_INFO[:user_id]
-
-          if (user = User.find_by(id: user_id))
+          if (user = User.find_by(id: $LAST_MATCH_INFO[:user_id]))
             user.decorate.ping_user_link
           else
-            broken_taxt_tag "USER", user_id
+            broken_taxt_tag "USER", $LAST_MATCH_INFO
           end
         end
       end
@@ -71,18 +69,16 @@ module Markdowns
       # Renders: a link to the wiki page.
       def parse_wiki_tags
         content.gsub!(WIKI_TAG_REGEX) do
-          wiki_page_id = $LAST_MATCH_INFO[:wiki_page_id]
-
-          if (wiki_page = WikiPage.find_by(id: wiki_page_id))
-            link_to wiki_page.title, wiki_page_path(wiki_page_id)
+          if (wiki_page = WikiPage.find_by(id: $LAST_MATCH_INFO[:wiki_page_id]))
+            link_to wiki_page.title, wiki_page_path(wiki_page.id)
           else
-            broken_taxt_tag "WIKI_PAGE", wiki_page_id
+            broken_taxt_tag "WIKI_PAGE", $LAST_MATCH_INFO
           end
         end
       end
 
-      def broken_taxt_tag type, id
-        %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
+      def broken_taxt_tag type, tag
+        %(<span class="bold-warning">CANNOT FIND #{type} FOR TAG #{tag}</span>)
       end
   end
 end
