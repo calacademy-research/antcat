@@ -44,7 +44,7 @@ module Markdowns
         ).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do
-          taxon_id = $LAST_MATCH_INFO[:id]
+          taxon_id = $LAST_MATCH_INFO[:taxon_id]
 
           if (taxon = taxa_indexed_by_id[taxon_id.to_i])
             formatter.link_to_taxon(taxon)
@@ -58,7 +58,7 @@ module Markdowns
       # Renders: link to taxon and show non-linked author citation (Formica Linnaeus, 1758).
       def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
-          taxon_id = $LAST_MATCH_INFO[:id]
+          taxon_id = $LAST_MATCH_INFO[:taxon_id]
 
           if (taxon = Taxon.find_by(id: taxon_id))
             formatter.link_to_taxon_with_linked_author_citation(taxon)
@@ -83,7 +83,7 @@ module Markdowns
           end
 
         content.gsub!(Taxt::REF_TAG_REGEX) do
-          reference_id = $LAST_MATCH_INFO[:id]
+          reference_id = $LAST_MATCH_INFO[:reference_id]
 
           if (expandable_reference_cache = references_indexed_by_id[reference_id.to_i])
             expandable_reference_cache.html_safe
@@ -99,7 +99,7 @@ module Markdowns
       # Renders: link to protonym.
       def parse_pro_tags
         content.gsub!(Taxt::PRO_TAG_REGEX) do
-          protonym_id = $LAST_MATCH_INFO[:id]
+          protonym_id = $LAST_MATCH_INFO[:protonym_id]
 
           if (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym)
@@ -113,7 +113,7 @@ module Markdowns
       # Renders: link to protonym and link to author citation.
       def parse_proac_tags
         content.gsub!(Taxt::PROAC_TAG_REGEX) do
-          protonym_id = $LAST_MATCH_INFO[:id]
+          protonym_id = $LAST_MATCH_INFO[:protonym_id]
 
           if (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym_with_linked_author_citation(protonym)

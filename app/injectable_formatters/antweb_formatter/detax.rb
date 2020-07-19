@@ -38,7 +38,7 @@ module AntwebFormatter
       # Taxa, "{tax 123}".
       def parse_tax_tags
         content.gsub!(Taxt::TAX_TAG_REGEX) do
-          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
+          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:taxon_id]))
             formatter.link_to_taxon(taxon)
           end
         end
@@ -47,7 +47,7 @@ module AntwebFormatter
       # Taxa with author citation, "{taxac 123}".
       def parse_taxac_tags
         content.gsub!(Taxt::TAXAC_TAG_REGEX) do
-          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:id]))
+          if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:taxon_id]))
             formatter.link_to_taxon_with_author_citation(taxon)
           end
         end
@@ -56,7 +56,7 @@ module AntwebFormatter
       # References, "{ref 123}".
       def parse_ref_tags
         content.gsub!(Taxt::REF_TAG_REGEX) do
-          if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:id]))
+          if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:reference_id]))
             formatter.link_to_reference(reference)
           end
         end
@@ -65,7 +65,7 @@ module AntwebFormatter
       # Protonyms, "{pro 123}".
       def parse_pro_tags
         content.gsub!(Taxt::PRO_TAG_REGEX) do
-          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:id]))
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:protonym_id]))
             formatter.link_to_protonym(protonym)
           end
         end
@@ -74,7 +74,7 @@ module AntwebFormatter
       # Protonyms with author citation, "{proac 123}".
       def parse_proac_tags
         content.gsub!(Taxt::PROAC_TAG_REGEX) do
-          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:id]))
+          if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:protonym_id]))
             formatter.link_to_protonym_with_author_citation(protonym)
           end
         end
