@@ -65,12 +65,30 @@
           =info_tooltip_icon 'This is a virtual history item.'
 
 -if taxon.junior_synonyms.exists?
-  %h6 Junior synonyms
-  %ul.compact-list.small-margin-bottom
+  %h6.margin-top Junior synonyms
+  %ul.compact-list.margin-bottom
     -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
       %li
         =CatalogFormatter.link_to_taxon(synonym)
         =synonym.author_citation
+
+-if taxon.obsolete_combinations.exists?
+  %h6.margin-top="Obsolete #{taxon.is_a?(SpeciesGroupTaxon) ? 'combinations' : 'classification'}"
+  %ul.compact-list.margin-bottom
+    -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
+      %li
+        =CatalogFormatter.link_to_taxon(obsolete_combination)
+        -# TODO: Remove after clearing `TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms`.
+        -if current_user && obsolete_combination.protonym != taxon.protonym
+          %span.logged-in-only-background
+            %small
+              %span.bold-warning
+                this obsolete combination does not have the same protonym as the current taxon
+              =surround "(", ")" do
+                =taxon.protonym.decorate.link_to_protonym
+                vs.
+                =obsolete_combination.protonym.decorate.link_to_protonym
+              =logged_in_only_tooltip_icon
 
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon
@@ -101,9 +119,6 @@
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
-
--if current_user && taxon.obsolete_combinations.exists?
-  =render 'catalog/_show/logged_in_only/obsolete_combinations', taxon: taxon
 
 -# TODO: Figure out if/how to present subspecies, now
 -# that https://github.com/calacademy-research/antcat/issues/780 has been fixed.
