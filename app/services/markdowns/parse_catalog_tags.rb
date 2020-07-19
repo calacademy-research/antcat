@@ -9,6 +9,7 @@ module Markdowns
 
     def initialize content, sanitize_content: true
       @content = sanitize_content ? sanitize(content).to_str : content
+      @formatter = CatalogFormatter
     end
 
     def call
@@ -30,7 +31,7 @@ module Markdowns
 
     private
 
-      attr_reader :content
+      attr_reader :content, :formatter
 
       # Matches: {tax 429349}
       # Renders: link to taxon (Formica).
@@ -47,7 +48,7 @@ module Markdowns
           taxon_id = $LAST_MATCH_INFO[:id]
 
           if (taxon = taxa_indexed_by_id[taxon_id.to_i])
-            CatalogFormatter.link_to_taxon(taxon)
+            formatter.link_to_taxon(taxon)
           else
             broken_taxt_tag "TAXON", taxon_id
           end
@@ -61,7 +62,7 @@ module Markdowns
           taxon_id = $LAST_MATCH_INFO[:id]
 
           if (taxon = Taxon.find_by(id: taxon_id))
-            taxon.decorate.link_to_taxon_with_linked_author_citation
+            formatter.link_to_taxon_with_linked_author_citation(taxon)
           else
             broken_taxt_tag "TAXON", taxon_id
           end
@@ -88,7 +89,7 @@ module Markdowns
           if (expandable_reference_cache = references_indexed_by_id[reference_id.to_i])
             expandable_reference_cache.html_safe
           elsif (reference = Reference.find_by(id: reference_id))
-            reference.decorate.expandable_reference.html_safe
+            formatter.expandable_reference(reference)
           else
             broken_taxt_tag "REFERENCE", reference_id
           end
@@ -102,7 +103,7 @@ module Markdowns
           protonym_id = $LAST_MATCH_INFO[:id]
 
           if (protonym = Protonym.find_by(id: protonym_id))
-            protonym.decorate.link_to_protonym
+            formatter.link_to_protonym(protonym)
           else
             broken_taxt_tag "PROTONYM", protonym_id
           end
@@ -116,7 +117,7 @@ module Markdowns
           protonym_id = $LAST_MATCH_INFO[:id]
 
           if (protonym = Protonym.find_by(id: protonym_id))
-            protonym.decorate.link_to_protonym_with_linked_author_citation
+            formatter.link_to_protonym_with_linked_author_citation(protonym)
           else
             broken_taxt_tag "PROTONYM", protonym_id
           end
