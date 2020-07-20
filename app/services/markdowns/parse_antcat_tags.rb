@@ -6,18 +6,17 @@ module Markdowns
   class ParseAntcatTags
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
-    include ActionView::Helpers::SanitizeHelper
     include Service
 
-    USER_TAG_REGEX = /@user(?<id>\d+)/
+    USER_TAG_REGEX = /@user(?<user_id>\d+)/
     GITHUB_TAG_REGEX = /%github(?<issue_id>\d+)/
-    WIKI_TAG_REGEX = /%wiki(?<id>\d+)/
+    WIKI_TAG_REGEX = /%wiki(?<wiki_page_id>\d+)/
     DBSCRIPT_TAG_REGEX = /%dbscript:(?<basename>[A-Z][A-Za-z0-9_]+)/
 
     GITHUB_ISSUES_BASE_URL = "https://github.com/calacademy-research/antcat/issues/"
 
-    def initialize content, sanitize_content: true
-      @content = sanitize_content ? sanitize(content).to_str : content
+    def initialize content
+      @content = content.dup
     end
 
     def call
@@ -46,12 +45,10 @@ module Markdowns
       # Renders: a link to the user's user page.
       def parse_user_tags
         content.gsub!(USER_TAG_REGEX) do
-          user_id = $LAST_MATCH_INFO[:id]
-
-          if (user = User.find_by(id: user_id))
+          if (user = User.find_by(id: $LAST_MATCH_INFO[:user_id]))
             user.decorate.ping_user_link
           else
-            broken_taxt_tag "USER", user_id
+            broken_taxt_tag "USER", $LAST_MATCH_INFO
           end
         end
       end
@@ -72,18 +69,16 @@ module Markdowns
       # Renders: a link to the wiki page.
       def parse_wiki_tags
         content.gsub!(WIKI_TAG_REGEX) do
-          wiki_page_id = $LAST_MATCH_INFO[:id]
-
-          if (wiki_page = WikiPage.find_by(id: wiki_page_id))
-            link_to wiki_page.title, wiki_page_path(wiki_page_id)
+          if (wiki_page = WikiPage.find_by(id: $LAST_MATCH_INFO[:wiki_page_id]))
+            link_to wiki_page.title, wiki_page_path(wiki_page.id)
           else
-            broken_taxt_tag "WIKI_PAGE", wiki_page_id
+            broken_taxt_tag "WIKI_PAGE", $LAST_MATCH_INFO
           end
         end
       end
 
-      def broken_taxt_tag type, id
-        %(<span class="bold-warning">CANNOT FIND #{type} WITH ID #{id}</span>)
+      def broken_taxt_tag type, tag
+        %(<span class="bold-warning">CANNOT FIND #{type} FOR TAG #{tag}</span>)
       end
   end
 end

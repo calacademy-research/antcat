@@ -15,7 +15,7 @@
           =@database_script.category
       =@database_script.title
       =@decorated_database_script.format_tags
-    %p=markdown_without_sanitation @database_script.description
+    %p=markdown @database_script.description
 
     -if @database_script.issue_description.present?
       %h6

@@ -3,10 +3,20 @@
 require 'rails_helper'
 
 describe Markdowns::Render do
-  include TestLinksHelpers
-
   describe "#call" do
-    it "formats some basic markdown" do
+    context 'with unsafe tags' do
+      it "sanitizes them" do
+        content = '<script>xss</script>'
+        expect(described_class[content]).to eq "<p>xss</p>\n"
+      end
+
+      it "does not remove <i> tags" do
+        content = "<i>italics<i><i><script>xss</script></i>"
+        expect(described_class[content]).to eq "<p><i>italics<i><i>xss</i></i></i></p>\n"
+      end
+    end
+
+    it "formats basic markdown" do
       markdown = <<~MARKDOWN
         ###Header
         * A list item

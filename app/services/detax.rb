@@ -2,6 +2,7 @@
 
 class Detax
   include Service
+  include ActionView::Helpers::SanitizeHelper
 
   attr_private_initialize :taxt
 
@@ -9,6 +10,6 @@ class Detax
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def call
     return unless taxt
-    Markdowns::ParseCatalogTags[taxt.dup].html_safe
+    Markdowns::ParseCatalogTags[sanitize(taxt.dup).to_str].html_safe
   end
 end

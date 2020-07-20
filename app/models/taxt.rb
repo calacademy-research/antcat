@@ -14,14 +14,14 @@ module Taxt
     [TaxonHistoryItem, 'taxon_history_items', 'taxt']
   ]
 
-  TAX_TAG_REGEX = /\{tax (?<id>\d+)\}/
-  TAXAC_TAG_REGEX = /\{taxac (?<id>\d+)\}/
-  TAX_OR_TAXAC_TAG_REGEX = /\{(?:tax|taxac) (?<tax_id>[0-9]+\})/
+  TAX_TAG_REGEX = /\{tax (?<taxon_id>\d+)\}/
+  TAXAC_TAG_REGEX = /\{taxac (?<taxon_id>\d+)\}/
+  TAX_OR_TAXAC_TAG_REGEX = /\{(?:tax|taxac) (?<taxon_id>[0-9]+\})/
 
-  PRO_TAG_REGEX = /\{pro (?<id>\d+)\}/
-  PROAC_TAG_REGEX = /\{proac (?<id>\d+)\}/
+  PRO_TAG_REGEX = /\{pro (?<protonym_id>\d+)\}/
+  PROAC_TAG_REGEX = /\{proac (?<protonym_id>\d+)\}/
 
-  REF_TAG_REGEX = /\{ref (?<id>\d+)\}/
+  REF_TAG_REGEX = /\{ref (?<reference_id>\d+)\}/
 
   MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:missing|unmissing) (?<hardcoded_name>.*?)\}/
   MISSING_TAG_REGEX = /\{missing (?<hardcoded_name>.*?)\}/
