@@ -3,7 +3,7 @@ Feature: Markdown autocompletion
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @search
+  @skip_ci @search
   Scenario: References markdown autocompletion
     Given these references exist
       | author       | title                    | citation_year |

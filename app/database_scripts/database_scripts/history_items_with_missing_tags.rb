@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Layout/LineLength
 module DatabaseScripts
   class HistoryItemsWithMissingTags < DatabaseScript
     LIMIT = 250
@@ -117,7 +116,6 @@ module DatabaseScripts
       end
   end
 end
-# rubocop:enable Layout/LineLength
 
 __END__
 

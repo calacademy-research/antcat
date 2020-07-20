@@ -4,7 +4,7 @@
 # Any action here is supposed to be temporary. There are no other rules. Consider it the Wild West.
 
 # :nocov:
-class QuickAndDirtyFixesController < ApplicationController # rubocop:disable Metrics/ClassLength
+class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
   def convert_bolton_tags

@@ -6,7 +6,7 @@
 
 .margin-bottom
   %strong Authorship:
-  =protonym.authorship_reference.decorate.link_to_reference + ': ' + decorated_protonym.format_pages_and_forms
+  =protonym.authorship_reference.decorate.link_to_reference + ': ' + protonym.authorship_pages
 
 -if protonym.taxa.exists?
   %ul.no-bullet

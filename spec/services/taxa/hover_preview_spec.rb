@@ -17,7 +17,7 @@ describe Taxa::HoverPreview do
 
       authorship =
         taxon.authorship_reference.decorate.link_to_reference + ': ' +
-        taxon.protonym.decorate.format_pages_and_forms
+        taxon.protonym.authorship_pages
 
       protonym_synopsis =
         %(<b>Protonym:</b> #{taxon.protonym.decorate.link_to_protonym}<br>) +

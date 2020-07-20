@@ -65,6 +65,8 @@ Layout/IndentationConsistency:
 
 Layout/LineLength:
   Max: 140
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
 
 Layout/MultilineHashKeyLineBreaks:
   Enabled: true
@@ -130,6 +132,7 @@ Metrics/ClassLength:
   Max: 100
   Exclude:
     - 'app/cleanup/**/*'
+    - 'app/controllers/quick_and_dirty_fixes_controller.rb'
     - 'app/database_scripts/**/*'
 
 Metrics/CyclomaticComplexity:

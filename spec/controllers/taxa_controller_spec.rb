@@ -75,7 +75,7 @@ describe TaxaController do
         describe "basic taxon attributes" do
           let(:taxon_params) do
             base_params.deep_merge(
-              incertae_sedis_in: Rank::INCERTAE_SEDIS_IN_FAMILY,
+              incertae_sedis_in: Rank::FAMILY,
               fossil: true,
               original_combination: true,
               collective_group_name: true,

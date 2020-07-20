@@ -10,7 +10,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick actions',
-          'Looks like protonym data?', 'Protonym', 'Protonym synopsis'
+          'Looks like protonym data?', 'Protonym'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
@@ -25,8 +25,7 @@ module DatabaseScripts
             Detax[taxt],
             (convert_bolton_link(history_item) unless looks_like_it_belongs_to_the_protonym || simple_known_format),
             ('Yes' if looks_like_it_belongs_to_the_protonym),
-            protonym.decorate.link_to_protonym,
-            protonym.synopsis
+            protonym.decorate.link_to_protonym
           ]
         end
       end
