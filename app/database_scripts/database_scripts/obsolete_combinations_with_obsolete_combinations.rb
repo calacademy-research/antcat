@@ -24,10 +24,19 @@ __END__
 
 section: regression-test
 category: Catalog
-tags: []
+tags: [has-reversed]
 
 issue_description: This taxon has obsolete combinations, but it is itself an obsolete combination.
 
 description: >
   The right column lists taxa with the status `obsolete combination` where the `current_taxon`
   is set to another obsolete combination (left column).
+
+
+  To **Quick-fix**, see the reversed script.
+
+
+  This script is the reverse of %dbscript:ObsoleteCombinationsWithCurrentTaxonsThatAreAlsoObsoleteCombinations
+
+related_scripts:
+  - ObsoleteCombinationsWithObsoleteCombinations
