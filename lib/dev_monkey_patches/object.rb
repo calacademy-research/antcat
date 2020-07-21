@@ -6,6 +6,17 @@ module DevMonkeyPatches
       ::Object.include self
     end
 
+    STATUSES = [
+      VA =  Status::VALID,
+      SY =  Status::SYNONYM,
+      HO =  Status::HOMONYM,
+      UNI = Status::UNIDENTIFIABLE,
+      UNA = Status::UNAVAILABLE,
+      EFF = Status::EXCLUDED_FROM_FORMICIDAE,
+      OC =  Status::OBSOLETE_COMBINATION,
+      UM =  Status::UNAVAILABLE_MISSPELLING
+    ]
+
     # Find taxon by name or id.
     def dev_dev_taxon name_or_id
       return Taxon.find(name_or_id) if name_or_id.is_a? Numeric
