@@ -77,7 +77,7 @@ __END__
 
 title: History items with <code>ref</code> tags as author citations
 
-section: main
+section: regression-test
 category: Taxt
 tags: [has-quick-fix]
 

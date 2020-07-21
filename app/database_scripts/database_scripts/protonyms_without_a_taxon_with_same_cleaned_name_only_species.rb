@@ -63,7 +63,7 @@ title: Protonyms without a taxon with same cleaned name (only species)
 
 section: main
 category: Catalog
-tags: [slow, new!, has-quick-fix]
+tags: [slow, has-quick-fix]
 
 description: >
   Species only in this batch, and only less advanced cases.
