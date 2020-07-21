@@ -163,6 +163,9 @@ Naming/VariableNumber:
 Rails:
   Enabled: true
 
+Rails/ActiveRecordCallbacksOrder:
+  Enabled: true
+
 Rails/BulkChangeTable:
   Enabled: false
 
@@ -172,17 +175,55 @@ Rails/ContentTag:
 Rails/Delegate:
   Enabled: false
 
+Rails/FindById:
+  Enabled: true
+
+Rails/Inquiry:
+  Enabled: true
+
 Rails/InverseOf:
   Enabled: false
+
+Rails/MailerName:
+  Enabled: true
+
+Rails/MatchRoute:
+  Enabled: true
+
+Rails/NegateInclude:
+  Enabled: true
+
+Rails/Pluck:
+  Enabled: true
+
+# TODO: Investigate.
+Rails/PluckId:
+  Enabled: false
+
+Rails/PluckInWhere:
+  Enabled: true
 
 Rails/OutputSafety:
   Enabled: false
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Rails/RenderInline:
+  Enabled: true
+
+Rails/RenderPlainText:
+  Enabled: true
+
 Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
+
+Rails/ShortI18n:
+  Enabled: true
+
+# TODO: Investigate.
+Rails/WhereExists:
+  Enabled: false
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:

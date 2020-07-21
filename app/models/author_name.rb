@@ -10,8 +10,8 @@ class AuthorName < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: true }
 
-  before_destroy :ensure_not_authors_only_author_name
   after_update :invalidate_reference_caches
+  before_destroy :ensure_not_authors_only_author_name
 
   has_paper_trail
   trackable
