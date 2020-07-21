@@ -8,6 +8,17 @@ module Taxa
       include ActionView::Helpers::NumberHelper # For `#number_with_delimiter`.
       include Service
 
+      SORTED_STATUSES = [
+        Status::VALID,
+        Status::SYNONYM,
+        Status::HOMONYM,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE,
+        Status::OBSOLETE_COMBINATION,
+        Status::UNAVAILABLE_MISSPELLING
+      ]
+
       attr_private_initialize :statistics
 
       def call
@@ -36,7 +47,7 @@ module Taxa
           return if rank_stats.blank?
 
           sorted_keys = rank_stats.keys.sort_by do |key|
-            Status::STATUSES.index key
+            SORTED_STATUSES.index(key)
           end
 
           status_strings = sorted_keys.map do |status|
