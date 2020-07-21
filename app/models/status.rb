@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Status
-  # Order matters, see `format_statistics_spec.rb`.
   STATUSES = [
     VALID                     = "valid",
     SYNONYM                   = "synonym",
@@ -39,6 +38,18 @@ class Status
     ]
   }
 
+  ALLOWED_STATUSES_OF_CURRENT_TAXON = {
+    OBSOLETE_COMBINATION => [
+      VALID,
+      SYNONYM,
+      HOMONYM,
+      UNIDENTIFIABLE,
+      UNAVAILABLE,
+      EXCLUDED_FROM_FORMICIDAE,
+      UNAVAILABLE_MISSPELLING
+    ]
+  }
+
   class << self
     def plural status
       PLURALS[status] || status
@@ -50,6 +61,10 @@ class Status
 
     def requires_current_taxon? status
       status.in? CURRENT_TAXON_VALIDATION[:presence]
+    end
+
+    def status_of_current_taxon_allowed? taxon_status, status_of_current_taxon
+      status_of_current_taxon.in? ALLOWED_STATUSES_OF_CURRENT_TAXON.fetch(taxon_status)
     end
   end
 end

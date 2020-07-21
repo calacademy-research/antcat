@@ -5,7 +5,12 @@ module DatabaseScripts
     def results
       Taxon.where.not(current_taxon_id: nil).
         joins(:current_taxon).
-        where.not(current_taxons_taxa: { current_taxon_id: nil })
+        where.not(current_taxons_taxa: { current_taxon_id: nil }).
+        where(
+          'NOT (taxa.status = :obsolete_combination AND current_taxons_taxa.status = :synonym)',
+          obsolete_combination: Status::OBSOLETE_COMBINATION,
+          synonym: Status::SYNONYM
+        ).where.not(status: Status::UNAVAILABLE_MISSPELLING)
     end
 
     def render
@@ -41,7 +46,13 @@ description: >
   Taxa with a `current_taxon` that has a `current_taxon`.
 
 
-  This is not necessarily incorrect.
+  Status 'unavailable misspelling' is excluded from **Taxon** (but not **current_taxon**).
+
+
+  **Taxon** status 'obsolete combination' + **current_taxon** status 'synonym' are also excluded.
+
+
+  We may want to allow current taxon chains for genus-group names and above (TBD).
 
 related_scripts:
   - CurrentTaxonChains

@@ -92,7 +92,7 @@ __END__
 
 title: Points to replacement name and uses <code>ref</code> tag as author citation
 
-section: main
+section: regression-test
 category: Taxt
 tags: [has-quick-fix]
 

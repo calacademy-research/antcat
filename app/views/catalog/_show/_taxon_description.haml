@@ -74,7 +74,7 @@
         =synonym.author_citation
         -if synonym.obsolete_combinations.present?
           .padding-left-2rem
-            And its obsolete #{name_of_obsoletes}s:
+            Obsolete #{name_of_obsoletes}(s):
             =safe_join synonym.obsolete_combinations.map { |obsolete| CatalogFormatter.link_to_taxon(obsolete) }, ', '
 
 -if taxon.obsolete_combinations.exists?
