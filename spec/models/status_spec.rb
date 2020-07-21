@@ -26,4 +26,30 @@ describe Status do
       end
     end
   end
+
+  describe '.status_of_current_taxon_allowed?' do
+    specify do
+      [
+        Status::VALID,
+        Status::SYNONYM,
+        Status::HOMONYM,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE,
+        Status::UNAVAILABLE_MISSPELLING
+      ].each do |status_of_current_taxon|
+        expect(
+          described_class.status_of_current_taxon_allowed?(Status::OBSOLETE_COMBINATION, status_of_current_taxon)
+        ).to eq true
+      end
+
+      [
+        Status::OBSOLETE_COMBINATION
+      ].each do |status_of_current_taxon|
+        expect(
+          described_class.status_of_current_taxon_allowed?(Status::OBSOLETE_COMBINATION, status_of_current_taxon)
+        ).to eq false
+      end
+    end
+  end
 end
