@@ -20,6 +20,12 @@
 
       .row
         .medium-12.columns
+          =f.check_box :featured
+          =f.label :featured do
+            Featured (show in Editor's Panel)
+
+      .row
+        .medium-12.columns
           =f.text_area :content, rows: 20, data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Content" }
 
       .row
