@@ -43,8 +43,12 @@
     %h5=link_to 'Wiki pages', wiki_pages_path
     .callout.primary
       %ul.no-bullet
-        -@editors_panel_presenter.wiki_pages.each do |wiki_page|
-          %li=link_to wiki_page.title, wiki_page
+        -featured_wiki_pages = @editors_panel_presenter.featured_wiki_pages
+        -if featured_wiki_pages.present?
+          -featured_wiki_pages.each do |wiki_page|
+            %li=link_to wiki_page.title, wiki_page
+        -else
+          %li There are no featured wiki pages
         -if @editors_panel_presenter.see_more_wiki_pages?
           %li.small-margin-top
             %small=link_to "See all #{@editors_panel_presenter.total_wiki_pages_count} wiki pages...", wiki_pages_path

@@ -15,4 +15,6 @@ class WikiPage < ApplicationRecord
 
   has_paper_trail
   trackable parameters: proc { { title: title } }
+
+  scope :featured, -> { where(featured: true) }
 end
