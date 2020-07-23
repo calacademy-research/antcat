@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class HistoryItemsWithMissingTags < DatabaseScript
+  class HistoryItemsWithMissingTagsQueue1 < DatabaseScript
     LIMIT = 250
 
     def results
@@ -114,7 +114,7 @@ end
 
 __END__
 
-title: History items with <code>missing</code> tags
+title: History items with <code>missing</code> tags (queue 1)
 
 section: main
 category: Taxt
@@ -151,5 +151,5 @@ description: >
   More information here: %wiki6 and %github1052
 
 related_scripts:
-  - HistoryItemsWithMissingTags
+  - HistoryItemsWithMissingTagsQueue1
   - MissingTaxaToBeCreated
