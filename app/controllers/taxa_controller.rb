@@ -93,9 +93,19 @@ class TaxaController < ApplicationController
       params.permit(:current_taxon_id, :protonym_id, :status, :fossil, :original_combination)
     end
 
+    def prefilled_authorship_params
+      params.permit(authorship_attributes: [:pages, :reference_id]).fetch(:authorship_attributes, {})
+    end
+
     def build_taxon rank_to_create, parent_id
       parent = Taxon.find(parent_id)
-      Taxa::BuildTaxon[rank_to_create, parent, params: prefilled_taxon_params]
+
+      Taxa::BuildTaxon[
+        rank_to_create,
+        parent,
+        taxon_params: prefilled_taxon_params,
+        authorship_params: prefilled_authorship_params
+      ]
     end
 
     def add_another_species_link

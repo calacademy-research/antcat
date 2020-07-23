@@ -83,5 +83,6 @@ description: >
   Once `Taxon` records have been created, `missing` tags can be replaced using the quick-button in the linked script.
 
 related_scripts:
-  - HistoryItemsWithMissingTags
+  - HistoryItemsWithMissingTagsQueue1
+  - HistoryItemsWithMissingTagsQueue2
   - MissingTaxaToBeCreated

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class HistoryItemsWithMissingTags < DatabaseScript
+  class HistoryItemsWithMissingTagsQueue1 < DatabaseScript
     LIMIT = 250
 
     def results
@@ -33,7 +33,7 @@ module DatabaseScripts
 
             Detax[highlight_taxt(taxt.dup)],
             Detax[helper.call],
-            (quick_fix_link(history_item, helper.target_for_replacement[:normalized_name]) if helper.can_be_quick_fixed?)
+            (replace_missing_tags_link(history_item, helper.target_for_replacement[:normalized_name]) if helper.can_be_quick_fixed?)
           ]
         end
       end
@@ -41,7 +41,7 @@ module DatabaseScripts
 
     private
 
-      def quick_fix_link history_item, normalized_name
+      def replace_missing_tags_link history_item, normalized_name
         link_to "Replace #{normalized_name}!", replace_missing_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
           method: :post, remote: true, class: 'btn-warning btn-tiny'
       end
@@ -64,11 +64,6 @@ module DatabaseScripts
         taxt.gsub!(Taxt::MISSING_TAG_REGEX) do
           bold_notice $LAST_MATCH_INFO[:hardcoded_name]
         end
-      end
-
-      def new_taxon_link quick_adder
-        label = "Add #{quick_adder.taxon_class.name}"
-        link_to label, new_taxa_path(quick_adder.taxon_form_params), class: "btn-tiny btn-normal"
       end
 
       # TODO: Get rid of all of this ASAP.
@@ -119,7 +114,7 @@ end
 
 __END__
 
-title: History items with <code>missing</code> tags
+title: History items with <code>missing</code> tags (queue 1)
 
 section: main
 category: Taxt
@@ -156,5 +151,7 @@ description: >
   More information here: %wiki6 and %github1052
 
 related_scripts:
-  - HistoryItemsWithMissingTags
+  - HistoryItemsWithMissingTagsQueue1
+  - HistoryItemsWithMissingTagsQueue2
+  - HistoryItemsWithMissingTagsFirstAvailableUseOf
   - MissingTaxaToBeCreated
