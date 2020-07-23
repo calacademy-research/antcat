@@ -95,6 +95,9 @@ describe Markdowns::ParseCatalogTags do
 
         expect(described_class["in family {missing Ecitoninae}"]).
           to eq 'in family <span class="logged-in-only-bold-warning">Ecitoninae</span>'
+
+        expect(described_class["in family {missing2 Ecitoninae}"]).
+          to eq 'in family <span class="logged-in-only-bold-warning">Ecitoninae</span>'
       end
     end
 

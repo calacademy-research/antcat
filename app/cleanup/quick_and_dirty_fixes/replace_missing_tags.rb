@@ -50,7 +50,7 @@ module QuickAndDirtyFixes
         taxon = target_for_replacement[:taxa].first
 
         new_taxt = taxt.dup
-        new_taxt.gsub!("{missing #{hardcoded_name}}", "{tax #{taxon.id}}")
+        new_taxt.gsub!(/\{missing[0-9]? #{hardcoded_name}\}/, "{tax #{taxon.id}}")
 
         new_taxt
       end
