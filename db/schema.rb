@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_212345) do
+ActiveRecord::Schema.define(version: 2020_07_22_181904) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -390,6 +390,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_212345) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "permanent_identifier"
+    t.boolean "featured", default: false, null: false
     t.index ["permanent_identifier"], name: "ux_wiki_pages__permanent_identifier", unique: true
   end
 

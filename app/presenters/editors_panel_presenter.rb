@@ -29,8 +29,8 @@ class EditorsPanelPresenter
     Feedback.pending.count
   end
 
-  def wiki_pages
-    @_wiki_pages ||= WikiPage.order(:title).select(:id, :title).limit(MAX_WIKI_PAGES_LINKS)
+  def featured_wiki_pages
+    @_featured_wiki_pages ||= WikiPage.featured.order(:title).select(:id, :title).limit(MAX_WIKI_PAGES_LINKS)
   end
 
   def total_wiki_pages_count
@@ -38,6 +38,6 @@ class EditorsPanelPresenter
   end
 
   def see_more_wiki_pages?
-    total_wiki_pages_count > MAX_WIKI_PAGES_LINKS
+    total_wiki_pages_count > featured_wiki_pages.count
   end
 end

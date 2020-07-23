@@ -14,6 +14,10 @@
       -@wiki_pages.each do |wiki_page|
         %tr
           %td=link_to wiki_page.title, wiki_page
+          %td
+            -if wiki_page.featured?
+              Featured
+              =antcat_icon("check")
 
 =will_paginate @wiki_pages
 
