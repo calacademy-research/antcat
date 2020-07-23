@@ -12,6 +12,7 @@ class ReferencesController < ApplicationController
     # TODO: `journal` and `publisher` are not eager loaded (STI `belongs_to`s).
     @reference = Reference.eager_load(:document, author_names: :author).find(params[:id])
     @editors_reference_presenter = Editors::ReferencePresenter.new(@reference, session: session)
+    @citations_presenter = References::CitationsPresenter.new(@reference)
   end
 
   def new

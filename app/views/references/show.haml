@@ -119,7 +119,7 @@
             %td=or_dash decorated.format_taxonomic_notes
 
 -if current_user
-  -if @reference.citations.exists?
+  -if @citations_presenter.any_citations?
     .row.margin-bottom
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
@@ -131,12 +131,12 @@
           %table
             %thead
               %th Citation object
+              %th Citation for
               %th Pages
-            -@reference.citations.order_by_pages.each do |citation|
+            -@citations_presenter.each_citation.each do |citation|
               %tr
-                %td
-                  Protonym:
-                  =citation.protonym.decorate.link_to_protonym
+                %td=CitationableDecorator.new(citation.citationable).link_to_citationable
+                %td=citation.citation_synopsis
                 %td=citation.pages
 
 -if decorated.described_taxa.exists?

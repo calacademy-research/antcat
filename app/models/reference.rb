@@ -21,6 +21,7 @@ class Reference < ApplicationRecord
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
+  has_many :citations_from_type_names, class_name: 'TypeName', dependent: :restrict_with_error # [grep:unify_citations].
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
   validates :year, :pagination, :title, :author_names, presence: true

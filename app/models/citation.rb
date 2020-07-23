@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Citation < ApplicationRecord
+  include OrderByPages
+
   belongs_to :reference
 
   # TODO: [grep:notes_taxt].
@@ -8,9 +10,16 @@ class Citation < ApplicationRecord
 
   validates :pages, presence: true
 
-  # NOTE: Good enough for now (MySQL 5). It does not handle Roman numerals or other complicated formats.
-  scope :order_by_pages, -> { order(Arel.sql("CAST(pages AS UNSIGNED), pages")) }
-
   strip_attributes only: [:pages], replace_newlines: true
   has_paper_trail
+
+  # [grep:unify_citations].
+  def citationable
+    protonym
+  end
+
+  # [grep:unify_citations].
+  def citation_synopsis
+    "Taxon description"
+  end
 end
