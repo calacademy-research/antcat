@@ -43,7 +43,7 @@ title: Obsolete combinations with protonyms not matching its current taxon's pro
 
 section: reversed
 category: Catalog
-tags: [slow-render]
+tags: [slow-render, regression-test]
 
 issue_description: This obsolete combination and its `current_taxon` do not share the same protonym.
 
