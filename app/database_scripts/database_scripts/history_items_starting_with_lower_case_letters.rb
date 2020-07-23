@@ -37,7 +37,7 @@ __END__
 
 section: regression-test
 category: Taxt
-tags: [new!]
+tags: []
 
 issue_description:
 
