@@ -51,7 +51,8 @@ module QuickAdd
         status: status,
         protonym_id: protonym&.id,
         current_taxon_id: current_taxon&.id,
-        edit_summary: "[semi-automatic] Quick-add missing name"
+        edit_summary: "[semi-automatic] Quick-add missing name",
+        authorship_attributes: authorship_attributes
       }
     end
 
@@ -60,6 +61,11 @@ module QuickAdd
         status: Status::UNAVAILABLE,
         current_taxon_id: nil
       )
+    end
+
+    def authorship_attributes
+      return @_authorship_attributes if defined?(@_authorship_attributes)
+      @_authorship_attributes ||= extract_authorship_attributes
     end
 
     def synopsis
@@ -120,6 +126,22 @@ module QuickAdd
 
       # ---
 
+      def extract_authorship_attributes
+        return unless (taxt = history_item&.taxt)
+
+        matches = taxt.scan(
+          /First available use of {missing2 [A-Z][a-z]+ [a-z]+ [a-z]+ [a-z]+} {ref (?<reference_id>[0-9]+)}: (?<pages>[0-9]+)/
+        ).flatten
+        return unless matches.size == 2
+
+        {
+          reference_id: matches.first,
+          pages: matches.last
+        }
+      end
+
+      # ---
+
       def success_message
         protonym_line =
           if protonym
@@ -142,6 +164,8 @@ module QuickAdd
           <b>Status</b>: #{status}<br>
           <b>Current taxon</b>: #{current_taxon_line}<br>
           <b>Protonym</b>: #{protonym_line}<br>
+          <br>
+          <b>authorship_attributes</b>: #{authorship_attributes || 'count not extract authorship_attributes'}
         SYNOPSIS
       end
 
