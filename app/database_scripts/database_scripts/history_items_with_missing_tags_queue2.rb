@@ -85,4 +85,5 @@ description: >
 related_scripts:
   - HistoryItemsWithMissingTagsQueue1
   - HistoryItemsWithMissingTagsQueue2
+  - HistoryItemsWithMissingTagsFirstAvailableUseOf
   - MissingTaxaToBeCreated
