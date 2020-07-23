@@ -95,7 +95,12 @@ class TaxaController < ApplicationController
 
     def build_taxon rank_to_create, parent_id
       parent = Taxon.find(parent_id)
-      Taxa::BuildTaxon[rank_to_create, parent, params: prefilled_taxon_params]
+
+      Taxa::BuildTaxon[
+        rank_to_create,
+        parent,
+        taxon_params: prefilled_taxon_params
+      ]
     end
 
     def add_another_species_link

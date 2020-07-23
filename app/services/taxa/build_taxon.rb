@@ -4,10 +4,10 @@ module Taxa
   class BuildTaxon
     include Service
 
-    def initialize rank_to_create, parent, params: {}
+    def initialize rank_to_create, parent, taxon_params: {}
       @rank_to_create = rank_to_create
       @parent = parent
-      @params = params
+      @taxon_params = taxon_params
     end
 
     def call
@@ -18,7 +18,7 @@ module Taxa
 
     private
 
-      attr_reader :rank_to_create, :parent, :params
+      attr_reader :rank_to_create, :parent, :taxon_params
 
       def build_taxon
         taxon = taxon_class.new
@@ -26,7 +26,7 @@ module Taxa
         taxon.build_protonym
         taxon.protonym.build_name
         taxon.protonym.build_authorship
-        taxon.attributes = params if params.present?
+        taxon.attributes = taxon_params if taxon_params.present?
         taxon
       end
 
