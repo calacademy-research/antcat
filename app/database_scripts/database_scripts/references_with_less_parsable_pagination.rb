@@ -62,7 +62,7 @@ __END__
 
 section: research
 category: References
-tags: [new!]
+tags: []
 
 issue_description:
 
