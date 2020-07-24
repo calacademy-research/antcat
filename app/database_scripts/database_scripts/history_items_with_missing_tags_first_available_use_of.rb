@@ -8,7 +8,7 @@ module DatabaseScripts
     AS_UNAVAILABLE = QuickAdd::FromHardcodedInfrasubspeciesName::AS_UNAVAILABLE
 
     def results
-      TaxonHistoryItem.where('taxt LIKE ?', "%first available use of #{Taxt::MISSING_TAG_START}2%").limit(LIMIT)
+      TaxonHistoryItem.where('taxt REGEXP ?', "^\\[First available use of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
     end
 
     def statistics
@@ -115,7 +115,4 @@ description: >
   in case there are no matches for the `missing` name.
 
 related_scripts:
-  - HistoryItemsWithMissingTagsQueue1
-  - HistoryItemsWithMissingTagsQueue2
   - HistoryItemsWithMissingTagsFirstAvailableUseOf
-  - MissingTaxaToBeCreated
