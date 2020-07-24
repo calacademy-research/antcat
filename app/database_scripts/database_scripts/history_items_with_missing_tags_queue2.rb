@@ -70,7 +70,7 @@ __END__
 
 title: History items with <code>missing</code> tags (queue 2)
 
-section: main
+section: missing-tags
 category: Taxt
 tags: [has-quick-fix, slow-render]
 

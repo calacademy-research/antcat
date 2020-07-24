@@ -104,7 +104,7 @@ __END__
 
 title: History items with <code>missing</code> tags (first available use of)
 
-section: main
+section: missing-tags
 category: Taxt
 tags: [has-quick-fix, slow-render]
 
