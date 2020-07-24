@@ -30,7 +30,7 @@ __END__
 
 title: Homonyms as <code>tax</code> tags
 
-section: main
+section: research
 category: Taxt
 tags: [slow]
 

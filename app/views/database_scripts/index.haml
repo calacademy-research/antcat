@@ -16,6 +16,8 @@
           =database_scripts.size
           scripts in section
       -case section
+      -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
+        %h5.left History items with <code>missing</code> tags
       -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
         %h5.left Code changes required
         .clearfix

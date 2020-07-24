@@ -5,7 +5,7 @@ module DatabaseScripts
     LIMIT = 250
 
     def results
-      TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}%").limit(LIMIT)
+      TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START} %").limit(LIMIT)
     end
 
     def statistics
@@ -116,7 +116,7 @@ __END__
 
 title: History items with <code>missing</code> tags (queue 1)
 
-section: main
+section: missing-tags
 category: Taxt
 tags: [has-quick-fix, slow-render]
 
@@ -153,5 +153,4 @@ description: >
 related_scripts:
   - HistoryItemsWithMissingTagsQueue1
   - HistoryItemsWithMissingTagsQueue2
-  - HistoryItemsWithMissingTagsFirstAvailableUseOf
   - MissingTaxaToBeCreated

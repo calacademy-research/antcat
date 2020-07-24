@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class HistoryItemsWithMissingTagsQueue2 < DatabaseScript
+  class HistoryItemsWithMissingTagsSeniorSynonymOf < DatabaseScript
     LIMIT = 250
 
     def results
-      TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}2%").limit(LIMIT)
+      TaxonHistoryItem.where('taxt REGEXP ?', "^Senior synonym of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
     end
 
     def statistics
@@ -68,7 +68,7 @@ end
 
 __END__
 
-title: History items with <code>missing</code> tags (queue 2)
+title: History items with <code>missing</code> tags (senior synonym of)
 
 section: missing-tags
 category: Taxt
@@ -77,12 +77,7 @@ tags: [has-quick-fix, slow-render]
 issue_description:
 
 description: >
-  Copy of the original script, but for `missing2` tags.
-
-
-  It was added to make it easier to run more batches at the same time.
 
 related_scripts:
-  - HistoryItemsWithMissingTagsQueue1
-  - HistoryItemsWithMissingTagsQueue2
-  - MissingTaxaToBeCreated
+  - HistoryItemsWithMissingTagsJuniorSynonymOf
+  - HistoryItemsWithMissingTagsSeniorSynonymOf

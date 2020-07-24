@@ -61,7 +61,7 @@ title: Obsolete combinations with <code>current_taxon</code>s that are also obso
 
 section: regression-test
 category: Catalog
-tags: [new!, has-quick-fix]
+tags: [has-quick-fix]
 
 issue_description: This taxon has an obsolete combinations as its `current_taxon`, but it is itself an obsolete combination.
 

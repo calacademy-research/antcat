@@ -43,7 +43,7 @@ __END__
 
 section: main
 category: References
-tags: [new!, slow-render]
+tags: [slow-render]
 
 description: >
   First batch of citations with mismatching pages.

@@ -5,6 +5,7 @@ module DatabaseScripts
     SECTIONS = [
       UNGROUPED_SECTION = "ungrouped",
       MAIN_SECTION = "main",
+      MISSING_TAGS_SECTION = "missing-tags",
       CODE_CHANGES_REQUIRED_SECTION = "code-changes-required",
       PENDING_AUTOMATION_ACTION_REQUIRED_SECTION = "pa-action-required",
       PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION = "pa-no-action-required",
