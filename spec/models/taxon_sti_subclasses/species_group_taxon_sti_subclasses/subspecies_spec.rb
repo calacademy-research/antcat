@@ -29,14 +29,14 @@ describe Subspecies do
     end
 
     describe "updating the name" do
-      let(:subspecies) { create :subspecies, name_string: 'Atta major medius minor' }
+      let(:subspecies) { create :subspecies, name_string: 'Atta major minor' }
       let(:new_parent) { create :species, name_string: 'Eciton nigrus' }
 
       specify do
         subspecies.update_parent new_parent
 
         subspecies_name = subspecies.name
-        expect(subspecies_name.name).to eq 'Eciton nigrus medius minor'
+        expect(subspecies_name.name).to eq 'Eciton nigrus minor'
         expect(subspecies_name.epithet).to eq 'minor'
       end
     end

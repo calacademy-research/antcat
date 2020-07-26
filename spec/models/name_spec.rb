@@ -15,6 +15,15 @@ describe Name do
       it { is_expected.to validate_presence_of :name }
     end
 
+    describe '#validate_number_of_name_parts' do
+      let(:name) { build_stubbed :genus_name, name: 'Lasius niger' }
+
+      specify do
+        expect(name.valid?).to eq false
+        expect(name.errors[:name]).to eq ["of type GenusName must contains 1 word parts (excluding subgenus part)"]
+      end
+    end
+
     describe '#ensure_starts_with_upper_case_letter' do
       let(:name) { build_stubbed :genus_name, name: 'lasius' }
 
@@ -26,7 +35,11 @@ describe Name do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:name, :epithet, :gender) }
+    describe '#strip_attributes' do
+      subject(:name) { SubspeciesName.new }
+
+      it { is_expected.to strip_attributes(:name, :epithet, :gender) }
+    end
 
     describe '#set_epithet' do
       let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }

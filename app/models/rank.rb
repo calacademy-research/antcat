@@ -62,5 +62,15 @@ class Rank
     def genus_group_name? type
       type.in? GENUS_GROUP_NAMES
     end
+
+    def number_of_name_parts type
+      case type
+      when *UNINOMIAL    then 1
+      when *BINOMIAL     then 2
+      when *TRINOMIAL    then 3
+      when *QUADRINOMIAL then 4
+      else 0
+      end
+    end
   end
 end

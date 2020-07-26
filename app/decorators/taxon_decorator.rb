@@ -87,7 +87,7 @@ class TaxonDecorator < Draper::Decorator
                       {
                         genus: taxon.genus.name_cache,
                         species: taxon.species.name.epithet,
-                        subspecies: taxon.name.subspecies_epithets
+                        subspecies: taxon.name.subspecies_epithet
                       }
                     when Genus
                       { genus: taxon.name_cache }

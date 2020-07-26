@@ -86,4 +86,20 @@ describe Rank do
       expect(described_class.genus_group_name?('Infrasubspecies')).to eq false
     end
   end
+
+  describe ".number_of_name_parts" do
+    specify do
+      expect(described_class.number_of_name_parts('Family')).to eq 1
+      expect(described_class.number_of_name_parts('Subfamily')).to eq 1
+      expect(described_class.number_of_name_parts('Tribe')).to eq 1
+      expect(described_class.number_of_name_parts('Subtribe')).to eq 1
+
+      expect(described_class.number_of_name_parts('Genus')).to eq 1
+      expect(described_class.number_of_name_parts('Subgenus')).to eq 1
+
+      expect(described_class.number_of_name_parts('Species')).to eq 2
+      expect(described_class.number_of_name_parts('Subspecies')).to eq 3
+      expect(described_class.number_of_name_parts('Infrasubspecies')).to eq 4
+    end
+  end
 end

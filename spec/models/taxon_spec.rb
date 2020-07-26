@@ -187,7 +187,7 @@ describe Taxon do
     end
 
     context "when taxon is not a recombination" do
-      let(:taxon) { create :species, name_string: 'Atta minor maxus' }
+      let(:taxon) { create :subspecies, name_string: 'Atta minor maxus' }
       let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
 
       it "doesn't surround the author citation in parentheses" do

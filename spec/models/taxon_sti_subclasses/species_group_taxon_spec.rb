@@ -21,7 +21,7 @@ describe SpeciesGroupTaxon do
       let(:taxon) { create :species, name_string: 'Atta minor' }
 
       before do
-        protonym_name = create :subspecies_name, name: 'Eciton minor'
+        protonym_name = create :species_name, name: 'Eciton minor'
         taxon.protonym.update!(name: protonym_name)
       end
 
@@ -29,10 +29,10 @@ describe SpeciesGroupTaxon do
     end
 
     context "when genus part of name is same as genus part of protonym" do
-      let(:taxon) { create :species, name_string: 'Atta minor maxus' }
+      let(:taxon) { create :species, name_string: 'Atta maxus' }
 
       before do
-        protonym_name = create :subspecies_name, name: 'Atta minor minus'
+        protonym_name = create :species_name, name: 'Atta maxus'
         taxon.protonym.update!(name: protonym_name)
       end
 

@@ -35,8 +35,7 @@ class Name < ApplicationRecord
   validates :name,
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" },
     unless: -> { name.blank? }
-  validate :ensure_no_spaces_in_single_word_names
-  validate :ensure_starts_with_upper_case_letter
+  validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter
 
   # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
   before_validation :set_epithet, :set_cleaned_name
@@ -92,12 +91,13 @@ class Name < ApplicationRecord
                      end
     end
 
-    def ensure_no_spaces_in_single_word_names
-      return unless Rank.single_word_name?(taxon_type)
-      return unless name.include?(" ")
+    def validate_number_of_name_parts
+      return if name.blank?
 
-      errors.add :name, "of type #{type} may not contain spaces"
-      throw :abort
+      expected = Rank.number_of_name_parts(taxon_type)
+      return if cleaned_name_parts.size == expected
+
+      errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part)"
     end
 
     def ensure_starts_with_upper_case_letter
@@ -109,6 +109,10 @@ class Name < ApplicationRecord
 
     def name_parts
       name.split
+    end
+
+    def cleaned_name_parts
+      cleaned_name.split
     end
 
     def set_cleaned_name
