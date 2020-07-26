@@ -98,6 +98,31 @@
             =f.check_box :uncertain_locality
             =f.label :uncertain_locality
 
+    .large-4.columns
+      .callouts
+        %h6 Nomen attributes (beta)
+        %ul.no-bullet
+          %li
+            =f.check_box :nomen_novum
+            =f.label :nomen_novum do
+              %i Nomen novum
+          %li
+            =f.check_box :nomen_oblitum
+            =f.label :nomen_oblitum do
+              %i Nomen oblitum
+          %li
+            =f.check_box :nomen_dubium
+            =f.label :nomen_dubium do
+              %i Nomen dubium
+          %li
+            =f.check_box :nomen_conservandum
+            =f.label :nomen_conservandum do
+              %i Nomen conservandum
+          %li
+            =f.check_box :nomen_protectum
+            =f.label :nomen_protectum do
+              %i Nomen protectum
+
     .large-6.columns
       .callout
         %table.unstriped

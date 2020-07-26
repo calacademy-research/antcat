@@ -7,7 +7,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
     specify do
       protonym = create :protonym
       get :index
-      expect(json_response).to eq([protonym.as_json(root: true)])
+      expect(json_response).to eq([protonym.as_json(only: described_class::ATTRIBUTES, root: true)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }

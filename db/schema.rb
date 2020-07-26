@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_22_181904) do
+ActiveRecord::Schema.define(version: 2020_07_25_140205) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -149,6 +149,11 @@ ActiveRecord::Schema.define(version: 2020_07_22_181904) do
     t.integer "type_name_id"
     t.string "forms"
     t.text "notes_taxt"
+    t.boolean "nomen_novum", default: false, null: false
+    t.boolean "nomen_oblitum", default: false, null: false
+    t.boolean "nomen_dubium", default: false, null: false
+    t.boolean "nomen_conservandum", default: false, null: false
+    t.boolean "nomen_protectum", default: false, null: false
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
     t.index ["name_id"], name: "protonyms_name_id_idx"
     t.index ["type_name_id"], name: "index_protonyms_on_type_name_id", unique: true

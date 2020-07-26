@@ -28,6 +28,21 @@ class ProtonymDecorator < Draper::Decorator
     protonym.name.name_with_fossil_html protonym.fossil?
   end
 
+  def format_nomen_attributes
+    return h.ndash if nomen_attributes.blank?
+    nomen_attributes.join.html_safe
+  end
+
+  def nomen_attributes
+    @_nomen_attributes ||= [
+      ('<i>Nomen novum</i>' if protonym.nomen_novum?),
+      ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
+      ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
+      ('<i>Nomen conservandum</i>' if protonym.nomen_conservandum?),
+      ('<i>Nomen protectum</i>' if protonym.nomen_protectum?)
+    ].compact
+  end
+
   def format_locality
     return unless locality
 
