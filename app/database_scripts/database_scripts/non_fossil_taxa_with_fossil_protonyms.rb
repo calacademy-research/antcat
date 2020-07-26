@@ -38,9 +38,6 @@ description: >
   This is not necessarily incorrect.
 
 
-  Can be fixed by script if all taxa/protonyms should be changed in the same way.
-
-
   This script is the reverse of %dbscript:FossilProtonymsWithNonFossilTaxa
 
 related_scripts:
