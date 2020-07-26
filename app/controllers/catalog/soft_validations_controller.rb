@@ -5,7 +5,8 @@ module Catalog
     def show
       @taxon = find_taxon
       @soft_validations = @taxon.soft_validations
-      @protonym_soft_validations = @taxon.protonym.soft_validations
+      @protonym = @taxon.protonym
+      @protonym_soft_validations = @protonym.soft_validations
     end
 
     private

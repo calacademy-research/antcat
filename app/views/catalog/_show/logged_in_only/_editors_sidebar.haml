@@ -1,36 +1,3 @@
--# TODO: Remove once fixed (see `Taxa::CleanupTaxon#obsolete_combination_that_is_shady?`).
--if Taxa::CleanupTaxon.new(taxon).obsolete_combination_that_is_shady?
-  -ct_cleanup_taxon = Taxa::CleanupTaxon.new(taxon.current_taxon)
-  -synonym_history_item = ct_cleanup_taxon.synonyms_history_items_containing_taxon(taxon)
-  -if synonym_history_item.present?
-    .soft-validations-callout.callout.alert.margin-bottom
-      %h6
-        This taxon should probably have the status 'synonym'
-        =logged_in_only_tooltip_icon
-      %small.bold-warning [this record is shady, but it can be ignored for now while we're figuring out the correct data model]
-      The status of this taxon is 'original combination' but
-      it appears in a
-      synonyms list history item of
-      =CatalogFormatter.link_to_taxon(taxon.current_taxon)
-      %hr
-      =Detax[synonym_history_item.to_taxt]
-
-  -synonym_history_item = ct_cleanup_taxon.synonyms_history_items_containing_taxons_protonyms_taxa_except_self(taxon)
-  -if synonym_history_item.present?
-    .soft-validations-callout.callout.alert.margin-bottom
-      %h6
-        The
-        %code current_taxon
-        of this taxon should probably be changed
-        =logged_in_only_tooltip_icon
-      %small.bold-warning [this record is shady, but it can be ignored for now while we're figuring out the correct data model]
-      The status of this taxon is 'original combination' but
-      a representation of this taxon except itself (another taxon belonging to the same protonym) appears in a
-      synonyms list history item of
-      =CatalogFormatter.link_to_taxon(taxon.current_taxon)
-      %hr
-      =Detax[synonym_history_item.to_taxt]
-
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
@@ -40,16 +7,16 @@
         =logged_in_only_tooltip_icon
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
-  -if taxon.protonym.soft_validations.failed?
+  -if protonym.soft_validations.failed?
     .soft-validations-callout.callout.warning
       %h6
-        =link_to 'Protonym issues', protonym_soft_validations_path(taxon.protonym)
+        =link_to 'Protonym issues', protonym_soft_validations_path(protonym)
         =logged_in_only_tooltip_icon
       %p
         These issues listed here are for the protonym of this taxon,
         =succeed '.' do
-          =taxon.protonym.decorate.link_to_protonym
-      =render 'shared/failed_soft_validations', soft_validations: taxon.protonym.soft_validations
+          =protonym.decorate.link_to_protonym
+      =render 'shared/failed_soft_validations', soft_validations: protonym.soft_validations
 
 -# TODO: *Very* beta.
 -cleanup_taxon = Taxa::CleanupTaxon.new(taxon)

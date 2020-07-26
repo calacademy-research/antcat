@@ -32,9 +32,6 @@ tags: [regression-test]
 issue_description: This protonym is fossil, but one of its taxa is extant.
 
 description: >
-  Can be fixed by script if all taxa/protonyms should be changed in the same way.
-
-
   This script is the reverse of %dbscript:NonFossilTaxaWithFossilProtonyms
 
 related_scripts:

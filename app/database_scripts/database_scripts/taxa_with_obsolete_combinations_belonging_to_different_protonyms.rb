@@ -38,9 +38,6 @@ tags: [has-reversed]
 issue_description: This taxon has an obsolete combination that belongs to a different protonym.
 
 description: >
-  Click on a taxon to see the obsolete combinations in the catalog.
-
-
   This script is the reverse of %dbscript:ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym
 
 related_scripts:

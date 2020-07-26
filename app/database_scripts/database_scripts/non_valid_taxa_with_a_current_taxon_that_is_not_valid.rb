@@ -41,6 +41,5 @@ description: >
 
 related_scripts:
   - CurrentTaxonChains
-  - NonValidTaxaSetAsTheCurrentTaxonOfAnotherTaxon
   - NonValidTaxaWithACurrentTaxonThatIsNotValid
   - NonValidTaxaWithJuniorSynonyms

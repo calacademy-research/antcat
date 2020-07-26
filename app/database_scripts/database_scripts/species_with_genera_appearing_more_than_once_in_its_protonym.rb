@@ -9,7 +9,9 @@ module DatabaseScripts
     end
 
     def results
-      dups = Species.joins(:name).group("protonym_id, SUBSTRING_INDEX(names.name, ' ', 1)").having("COUNT(taxa.id) > 1")
+      dups = Species.joins(:name).
+        where.not(status: Status::UNAVAILABLE_MISSPELLING).
+        group("protonym_id, SUBSTRING_INDEX(names.name, ' ', 1)").having("COUNT(taxa.id) > 1")
       Species.where(protonym_id: dups.select(:protonym_id)).distinct
     end
 

@@ -35,9 +35,6 @@ tags: [has-reversed]
 issue_description: This taxon is fossil, but its protonym is not.
 
 description: >
-  Can be fixed by script if all taxa/protonyms should be changed in the same way.
-
-
   This script is the reverse of %dbscript:NonFossilProtonymsWithFossilTaxa
 
 related_scripts:

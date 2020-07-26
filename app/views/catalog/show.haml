@@ -11,11 +11,11 @@
 .row
   .medium-9.columns
     #taxon-description
-      =render "catalog/_show/taxon_description", taxon: @taxon, catalog_presenter: @catalog_presenter
+      =render "catalog/_show/taxon_description", taxon: @taxon, protonym: @protonym, catalog_presenter: @catalog_presenter
 
   .medium-3.columns
     -if current_user
-      =render 'catalog/_show/logged_in_only/editors_sidebar', taxon: @taxon, editors_catalog_presenter: @editors_catalog_presenter
+      =render 'catalog/_show/logged_in_only/editors_sidebar', taxon: @taxon, protonym: @protonym, editors_catalog_presenter: @editors_catalog_presenter
 
     -if @catalog_presenter.formatted_statistics
       #statistics.callout.small-margin-bottom

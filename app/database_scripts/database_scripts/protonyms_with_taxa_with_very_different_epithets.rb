@@ -12,20 +12,20 @@ module DatabaseScripts
 
     def results
       Protonym.joins(taxa: :name).
-        where(taxa: { type: Rank::SPECIES }).
+        where(taxa: { type: Rank::SPECIES_GROUP_NAMES }).
+        where.not(taxa: { status: Status::UNAVAILABLE_MISSPELLING }).
         group('protonyms.id').having("COUNT(DISTINCT SUBSTR(names.epithet, 1, 3)) > 1").distinct.
         includes(:name)
     end
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Epithets of taxa', 'Ranks of taxa', 'Statuses of taxa', 'Taxa', 'Looks like a false positive?'
-        t.rows do |protonym|
-          # To generate false positives list:
-          # puts '"' + protonym.taxa.joins(:name).distinct.pluck(:epithet).sort.join(' ') + '",'
+        t.header 'Protonym', 'Epithets of taxa', 'Ranks of taxa', 'Statuses of taxa', 'Taxa',
+          'Looks like a false positive?'
 
-          epithets = protonym.taxa.joins(:name).distinct.pluck(:epithet).sort
-          false_positive = epithets.join(' ').in?(FALSE_POSITIVES)
+        t.rows do |protonym|
+          epithets = protonym.taxa.joins(:name).distinct.pluck(:epithet)
+          false_positive = epithets.sort.join(' ').in?(FALSE_POSITIVES)
 
           [
             protonym.decorate.link_to_protonym,

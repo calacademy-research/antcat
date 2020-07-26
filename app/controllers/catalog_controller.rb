@@ -11,6 +11,7 @@ class CatalogController < ApplicationController
 
   def index
     @taxon = Family.eager_load(:name, protonym: [:name, { authorship: :reference }]).first
+    @protonym = @taxon.protonym
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session, formicidae_landing_page: true)
     @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)
 
@@ -19,6 +20,7 @@ class CatalogController < ApplicationController
 
   def show
     @taxon = Taxon.eager_load(:name, protonym: [:name, { authorship: :reference }]).find(params[:id])
+    @protonym = @taxon.protonym
     @catalog_presenter = CatalogPresenter.new(@taxon, params: params, session: session)
     @editors_catalog_presenter = Editors::CatalogPresenter.new(@taxon)
   end

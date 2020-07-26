@@ -36,9 +36,9 @@ end
 
 __END__
 
-section: not-necessarily-incorrect
+section: regression-test
 category: Catalog
-tags: [code-changes-required]
+tags: []
 
 issue_description: This taxon has a `current_taxon` which itself has a `current_taxon`.
 
@@ -51,11 +51,7 @@ description: >
 
   **Taxon** status 'obsolete combination' + **current_taxon** status 'synonym' are also excluded.
 
-
-  We may want to allow current taxon chains for genus-group names and above (TBD).
-
 related_scripts:
   - CurrentTaxonChains
-  - NonValidTaxaSetAsTheCurrentTaxonOfAnotherTaxon
   - NonValidTaxaWithACurrentTaxonThatIsNotValid
   - NonValidTaxaWithJuniorSynonyms
