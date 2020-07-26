@@ -26,7 +26,11 @@ describe Name do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:name, :epithet, :gender) }
+    describe '#strip_attributes' do
+      subject(:name) { SubspeciesName.new }
+
+      it { is_expected.to strip_attributes(:name, :epithet, :gender) }
+    end
 
     describe '#set_epithet' do
       let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }

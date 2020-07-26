@@ -25,10 +25,10 @@ describe Api::V1::TaxaController, as: :visitor do
   end
 
   describe "GET search" do
-    let!(:taxon) { create :species, name_string: 'Atta minor maxus' }
+    let!(:taxon) { create :species, name_string: 'Atta minor' }
 
     specify do
-      get :search, params: { string: 'maxus' }
+      get :search, params: { string: 'minor' }
       expect(json_response).to eq(
         [
           { "id" => taxon.id, "name" => taxon.name_cache }

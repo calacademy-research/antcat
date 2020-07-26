@@ -9,12 +9,12 @@ describe Taxa::LinkEachEpithet do
     context 'when taxon is above species-rank' do
       let(:taxon) { create :subfamily }
 
-      it 'just links the genus' do
+      it 'links the uninomial name' do
         expect(described_class[taxon]).to eq taxon_link(taxon)
       end
     end
 
-    context 'when taxon is a species`' do
+    context 'when taxon is a species' do
       let(:taxon) { create :species }
 
       it 'links the genus and species' do
@@ -25,7 +25,7 @@ describe Taxa::LinkEachEpithet do
       end
     end
 
-    context 'when taxon is a subspecies`' do
+    context 'when taxon is a subspecies' do
       let(:taxon) { create :subspecies }
 
       context "when taxon has 2 epithets (standard modern subspecies name)" do
@@ -56,7 +56,7 @@ describe Taxa::LinkEachEpithet do
       end
     end
 
-    context 'when taxon is an infrasubspecies`' do
+    context 'when taxon is an infrasubspecies' do
       let!(:genus) { create :genus, name_string: 'Formica' }
       let!(:species) { create :species, name_string: 'NOTUSED rufa', genus: genus }
       let!(:subspecies) do
