@@ -82,17 +82,6 @@
     -taxon.obsolete_combinations.order_by_name.includes(:name).each do |obsolete_combination|
       %li
         =CatalogFormatter.link_to_taxon(obsolete_combination)
-        -# TODO: Remove after clearing `TaxaWithObsoleteCombinationsBelongingToDifferentProtonyms`.
-        -if current_user && obsolete_combination.protonym != protonym
-          %span.logged-in-only-background
-            %small
-              %span.bold-warning
-                this obsolete combination does not have the same protonym as the current taxon
-              =surround "(", ")" do
-                =protonym.decorate.link_to_protonym
-                vs.
-                =obsolete_combination.protonym.decorate.link_to_protonym
-              =logged_in_only_tooltip_icon
 
 #child-lists.small-margin-bottom
   =render 'catalog/_show/child_lists', taxon: taxon
