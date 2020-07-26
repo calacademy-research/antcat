@@ -64,6 +64,10 @@ class Name < ApplicationRecord
     italicize_if_needed name
   end
 
+  def epithet_html
+    italicize_if_needed epithet
+  end
+
   def name_with_fossil_html fossil
     "#{dagger_html if fossil}#{name_html}".html_safe
   end

@@ -11,6 +11,10 @@ class ProtonymDecorator < Draper::Decorator
     link_to_protonym << ' ' << protonym.author_citation.html_safe
   end
 
+  def link_to_protonym_epithet
+    link_to_protonym_with_label(protonym.name.epithet_html)
+  end
+
   def link_to_protonym_with_linked_author_citation
     link_to_protonym <<
       ' ' <<
