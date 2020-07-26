@@ -40,6 +40,20 @@ class TaxonHistoryItem < ApplicationRecord
     end
   end
 
+  # TODO: Copy-pasta quick fix.
+  def self.exclude_search search_query, search_type
+    search_type = search_type.presence || 'LIKE'
+
+    case search_type
+    when 'LIKE'
+      where.not("taxt LIKE :q", q: "%#{search_query}%")
+    when 'REGEXP'
+      where.not("taxt REGEXP :q", q: search_query)
+    else
+      raise "unknown search_type #{search_type}"
+    end
+  end
+
   # Facade for future "hybrid history items".
   def to_taxt
     taxt
