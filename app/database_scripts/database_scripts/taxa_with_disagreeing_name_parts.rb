@@ -17,9 +17,39 @@ module DatabaseScripts
         SQL
     end
 
+    def infrasubspecies_genus_vs_species_genus
+      Infrasubspecies.joins(:name).joins(:species).
+        joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
+        where(<<~SQL)
+          SUBSTRING_INDEX(names.name, ' ', 1) !=
+          SUBSTRING_INDEX(species_names.name, ' ', 1)
+        SQL
+    end
+
+    def infrasubspecies_species_vs_species_species
+      Infrasubspecies.joins(:name).joins(:species).
+        joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
+        where(<<~SQL)
+          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
+          SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
+        SQL
+    end
+
+    def infrasubspecies_subspecies_vs_subspecies_subspecies
+      Infrasubspecies.joins(:name).joins(:subspecies).
+        joins("JOIN names subspecies_names ON subspecies_names.id = subspecies_taxa.name_id").
+        where(<<~SQL)
+          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
+          SUBSTRING_INDEX(SUBSTRING_INDEX(subspecies_names.name, ' ', 2), ' ', -1)
+        SQL
+    end
+
     def render
       render_table(species_genus_vs_genus_genus, "species", :genus_epithet, :genus) +
-        render_table(subspecies_species_vs_species_species, "subspecies", :species_epithet, :species)
+        render_table(subspecies_species_vs_species_species, "subspecies", :species_epithet, :species) +
+        render_table(infrasubspecies_genus_vs_species_genus, "infrasubspecies", :genus_epithet, :species) +
+        render_table(infrasubspecies_species_vs_species_species, "infrasubspecies", :species_epithet, :species) +
+        render_table(infrasubspecies_subspecies_vs_subspecies_subspecies, "infrasubspecies", :subspecies_epithet, :subspecies)
     end
 
     def render_table table_results, disagreeing_rank, epithet_method, of_its_rank
