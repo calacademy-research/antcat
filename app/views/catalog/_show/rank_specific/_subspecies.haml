@@ -1,0 +1,7 @@
+-if taxon.infrasubspecies.exists?
+  %h6.margin-top Infrasubspecies
+  %ul.compact-list.no-bullet.margin-bottom
+    -TaxonQuery.new(taxon.infrasubspecies.order_by_name).with_common_includes.each do |infrasubspecies|
+      %li
+        %i=CatalogFormatter.link_to_taxon_with_label(infrasubspecies, infrasubspecies.name.short_name)
+        =infrasubspecies.author_citation
