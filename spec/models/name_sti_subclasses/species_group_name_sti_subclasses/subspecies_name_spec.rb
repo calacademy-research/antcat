@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe SubspeciesName do
+  describe "#subspecies_epithet" do
+    let(:name) { described_class.new(name: 'Atta baba capa') }
+
+    specify { expect(name.subspecies_epithet).to eq 'capa' }
+  end
+
   describe "#subspecies_epithets" do
     context 'when three name parts' do
       let(:name) { described_class.new(name: 'Atta baba capa') }
