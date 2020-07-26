@@ -33,6 +33,11 @@
               -type_name_decorated = type_name.decorate
               =type_name_decorated.format_rank
               =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
+        %tr.logged-in-only-background
+          %td
+            Nomen attributes (beta)
+            =logged_in_only_tooltip_icon
+          %td=protonym.decorate.format_nomen_attributes
         %tr
           %td Biogeographic region
           %td=protonym.biogeographic_region
@@ -105,6 +110,13 @@
             %tr
               %td=authorship_form.label :type_name
               %td.small-text Can be set after creating the new protonym
+
+          %tr.logged-in-only-background
+            %td
+              =protonym_form.label :nomen_attributes do
+                Nomen attributes (beta)
+                =logged_in_only_tooltip_icon
+            %td.small-text Can be set after creating the new protonym
 
           -if taxon.is_a? SpeciesGroupTaxon
             %tr

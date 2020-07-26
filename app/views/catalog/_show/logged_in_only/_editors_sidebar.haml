@@ -1,3 +1,10 @@
+.additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
+  %h6
+    Protonym:
+    =protonym.decorate.link_to_protonym_epithet
+    =logged_in_only_tooltip_icon
+  =render 'protonyms/shared/additional_data_for_editors', protonym: protonym
+
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?

@@ -63,8 +63,16 @@ class Name < ApplicationRecord
     italicize_if_needed name
   end
 
+  def epithet_html
+    italicize_if_needed epithet
+  end
+
   def name_with_fossil_html fossil
     "#{dagger_html if fossil}#{name_html}".html_safe
+  end
+
+  def italic?
+    Rank.italic?(taxon_type)
   end
 
   def owner
@@ -74,7 +82,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless Rank.italic?(taxon_type)
+      return string unless italic?
       Italicize[string]
     end
 

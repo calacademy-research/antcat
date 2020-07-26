@@ -4,11 +4,15 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :uncertain_locality?, :forms, :authorship
 
   def link_to_protonym
-    h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+    link_to_protonym_with_label name_with_fossil
   end
 
   def link_to_protonym_with_author_citation
     link_to_protonym << ' ' << protonym.author_citation.html_safe
+  end
+
+  def link_to_protonym_epithet
+    link_to_protonym_with_label(protonym.name.epithet_html)
   end
 
   def link_to_protonym_with_linked_author_citation
@@ -22,6 +26,21 @@ class ProtonymDecorator < Draper::Decorator
 
   def name_with_fossil
     protonym.name.name_with_fossil_html protonym.fossil?
+  end
+
+  def format_nomen_attributes
+    return h.ndash if nomen_attributes.blank?
+    nomen_attributes.join.html_safe
+  end
+
+  def nomen_attributes
+    @_nomen_attributes ||= [
+      ('<i>Nomen novum</i>' if protonym.nomen_novum?),
+      ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
+      ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
+      ('<i>Nomen conservandum</i>' if protonym.nomen_conservandum?),
+      ('<i>Nomen protectum</i>' if protonym.nomen_protectum?)
+    ].compact
   end
 
   def format_locality
@@ -46,4 +65,10 @@ class ProtonymDecorator < Draper::Decorator
     string << " (#{forms})" if forms
     string
   end
+
+  private
+
+    def link_to_protonym_with_label label
+      h.link_to label, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+    end
 end

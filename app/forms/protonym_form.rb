@@ -11,6 +11,12 @@ class ProtonymForm # rubocop:disable Metrics/ClassLength
     sic
     uncertain_locality
 
+    nomen_novum
+    nomen_oblitum
+    nomen_dubium
+    nomen_conservandum
+    nomen_protectum
+
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt
