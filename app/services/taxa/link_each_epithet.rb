@@ -21,7 +21,8 @@ module Taxa
       string << ' '.html_safe
 
       if taxon.is_a?(Subspecies)
-        string << header_link(taxon, taxon.name.subspecies_epithets)
+        # TODO: Probably change to `#epithet`.
+        string << header_link(taxon, taxon.name.subspecies_epithet)
         string
       elsif taxon.is_a?(Infrasubspecies)
         string << header_link(taxon.subspecies, taxon.subspecies.name.epithet)

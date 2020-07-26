@@ -6,11 +6,7 @@ class SubspeciesName < SpeciesGroupName
     name_parts[2]
   end
 
-  def subspecies_epithets
-    name_parts[2..].join(' ')
-  end
-
   def short_name
-    [genus_epithet[0] + '.', species_epithet[0] + '.', subspecies_epithets].join(' ')
+    [genus_epithet[0] + '.', species_epithet[0] + '.', subspecies_epithet].join(' ')
   end
 end
