@@ -40,16 +40,16 @@
         =logged_in_only_tooltip_icon
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
-  -if taxon.protonym.soft_validations.failed?
+  -if protonym.soft_validations.failed?
     .soft-validations-callout.callout.warning
       %h6
-        =link_to 'Protonym issues', protonym_soft_validations_path(taxon.protonym)
+        =link_to 'Protonym issues', protonym_soft_validations_path(protonym)
         =logged_in_only_tooltip_icon
       %p
         These issues listed here are for the protonym of this taxon,
         =succeed '.' do
-          =taxon.protonym.decorate.link_to_protonym
-      =render 'shared/failed_soft_validations', soft_validations: taxon.protonym.soft_validations
+          =protonym.decorate.link_to_protonym
+      =render 'shared/failed_soft_validations', soft_validations: protonym.soft_validations
 
 -# TODO: *Very* beta.
 -cleanup_taxon = Taxa::CleanupTaxon.new(taxon)
