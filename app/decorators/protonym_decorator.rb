@@ -4,7 +4,7 @@ class ProtonymDecorator < Draper::Decorator
   delegate :locality, :uncertain_locality?, :forms, :authorship
 
   def link_to_protonym
-    h.link_to name_with_fossil, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+    link_to_protonym_with_label name_with_fossil
   end
 
   def link_to_protonym_with_author_citation
@@ -46,4 +46,10 @@ class ProtonymDecorator < Draper::Decorator
     string << " (#{forms})" if forms
     string
   end
+
+  private
+
+    def link_to_protonym_with_label label
+      h.link_to label, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+    end
 end
