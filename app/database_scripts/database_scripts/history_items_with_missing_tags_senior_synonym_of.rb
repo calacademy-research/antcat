@@ -2,7 +2,7 @@
 
 module DatabaseScripts
   class HistoryItemsWithMissingTagsSeniorSynonymOf < DatabaseScript
-    LIMIT = 250
+    LIMIT = 200
 
     def results
       TaxonHistoryItem.where('taxt REGEXP ?', "^Senior synonym of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
@@ -16,7 +16,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Hardcoded names', 'Highlighted taxt', 'Preview quick-fix', 'Quick-fix button'
+        t.header 'Alt. replacement', 'History item', 'Taxon', 'Hardcoded names', 'Highlighted taxt', 'Preview quick-fix', 'Quick-fix button'
         t.rows do |history_item|
           taxt = history_item.taxt
           taxon = history_item.taxon
@@ -24,6 +24,8 @@ module DatabaseScripts
           helper = QuickAndDirtyFixes::ReplaceMissingTags.new(taxt)
 
           [
+            replace_with_alt_tax_links(history_item, helper).presence || "-",
+
             link_to(history_item.id, taxon_history_item_path(history_item)),
             taxon_link(taxon),
 
@@ -63,6 +65,41 @@ module DatabaseScripts
           bold_notice $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
+
+      # TODO: Get rid of all of this ASAP.
+      def replace_with_alt_tax_links history_item, helper
+        normalized_name = helper.target_for_replacement[:normalized_name]
+        replace_with_possible_subspecies_instead_of_species_links history_item, normalized_name
+      end
+
+      def replace_with_possible_subspecies_instead_of_species_links history_item, normalized_name
+        possible_subspecies_instead_of_species(normalized_name, history_item).map do |taxon|
+          replace_with_alt_tax_link(history_item, normalized_name, taxon)
+        end.join("<br><br>")
+      end
+
+      def possible_subspecies_instead_of_species normalized_name, history_item
+        name_parts = normalized_name.split
+        return [] unless name_parts.size == 2
+
+        genus_name, epithet = name_parts
+        Subspecies.joins(:name).
+          where(current_taxon: history_item.taxon).
+          where("names.name LIKE ?", "#{genus_name} %").
+          where("names.epithet = ?", epithet)
+      end
+
+      def replace_with_alt_tax_link history_item, normalized_name, replace_with_taxon
+        label = "Replace with <i>#{replace_with_taxon.name.short_name}</i>".html_safe
+        url = replace_missing_tag_with_tax_tag_quick_and_dirty_fix_path(
+          taxon_history_item_id: history_item.id,
+          hardcoded_missing_name: normalized_name,
+          replace_with_taxon_id: replace_with_taxon.id
+        )
+        link = link_to label, url, method: :post, remote: true, class: 'btn-warning btn-tiny'
+
+        replace_with_taxon.decorate.link_to_taxon_with_author_citation + "<br>".html_safe + link
+      end
   end
 end
 
@@ -77,6 +114,19 @@ tags: [has-quick-fix, slow-render]
 issue_description:
 
 description: >
+  **Alt. replacement** offers an alternative `tax` ID to be used for the replacement when there is
+  no `Taxon` record with exactly the same name as what's in the `missing` tag.
+
+
+  For the current batch, it will always be a subspecies with the same genus and epithet, like this:
+
+
+
+  * `{missing Acanthostichus obscuridens}` --> `Acanthostichus ANYTHING obscuridens` --> {tax 430258}
+
+
+  And the `current_taxon` of the alt. replacement will always be the same as the owner of the
+  history item (**Taxon** column).
 
 related_scripts:
   - HistoryItemsWithMissingTagsJuniorSynonymOf

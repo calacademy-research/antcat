@@ -110,7 +110,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
     old_taxt = taxon_history_item.taxt
     new_taxt = old_taxt.dup.sub(
-      "{missing #{hardcoded_missing_name}}",
+      /\{missing[0-9]? #{hardcoded_missing_name}\}/,
       "{tax #{replace_with_taxon_id}}"
     )
 
