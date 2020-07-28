@@ -6,3 +6,6 @@
     .right=yield :breadcrumbs_right
 
   .clearfix
+
+  -if content_for? :breadcrumbs_left
+    .left=yield :breadcrumbs_left

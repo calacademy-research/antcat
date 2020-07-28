@@ -1,6 +1,9 @@
 -title 'Authors'
 -breadcrumb :authors
 
+-content_for :breadcrumbs_left do
+  =render 'shared/references/subnavigation'
+
 %table
   %thead
     %th Author (and author names)
