@@ -30,7 +30,7 @@
       #desktop-lower-menu.top-bar-right
         %ul.menu
           =unconfirmed_user_notice = capture { render "unconfirmed_user_notice" }
-          %li=link_to 'References', references_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
+          %li=link_to 'References', references_latest_additions_path, class: "big-screaming-orange-button #{'very-active' if menu_active?(:references)}"
           %li=link_to 'Catalog', root_path, class: "big-screaming-green-button #{'very-active' if menu_active?(:catalog)}"
           %li
             =form_tag references_search_index_path, method: :get, class: "reference-search-form" do
@@ -78,7 +78,7 @@
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 
-      %li=link_to 'References', references_path
+      %li=link_to 'References', references_latest_additions_path
       %li=link_to "Catalog", root_path
       -if user_signed_in?
         %li=link_to "Editor's Panel", editors_panel_path

@@ -1,6 +1,9 @@
 -title 'Journals'
 -breadcrumb :journals
 
+-content_for :breadcrumbs_left do
+  =render 'shared/references/subnavigation'
+
 -content_for :breadcrumbs_right do
   -if params[:order] == JournalQuery::REFERENCE_COUNT_ORDER
     =link_to "Order by name", journals_path, class: "btn-normal"

@@ -60,6 +60,19 @@ module ApplicationHelper
     menu == first_breadcrumb
   end
 
+  def submenu_css submenu
+    if submenu_active? submenu
+      'btn-nodanger'
+    else
+      'btn-normal'
+    end
+  end
+
+  def submenu_active? submenu
+    second_breadcrumb = breadcrumbs.second&.key
+    submenu == second_breadcrumb
+  end
+
   def inline_expandable label = "Show more"
     show_more = tag.a tag.small(label), class: "hide-when-expanded gray"
     hidden = tag.span class: "show-when-expanded" do

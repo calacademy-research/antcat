@@ -1,8 +1,12 @@
 -title 'Latest Changes'
 -breadcrumb :references_latest_changes
 
+-content_for :breadcrumbs_left do
+  =render 'shared/references/subnavigation'
+
 -content_for :breadcrumbs_right do
-  =link_to 'Latest Additions', references_latest_additions_path, class: "btn-normal"
+  -if user_is_at_least_helper?
+    =link_to "New", new_reference_path, class: "btn-normal"
   -if user_is_superadmin?
     =link_to append_superadmin_icon("Approve all"), approve_all_reviewing_references_path, method: :put, data: { confirm: "Mark all citations as reviewed? This operation cannot be undone!" }, class: "btn-warning"
 
@@ -13,6 +17,6 @@
       %td=render 'references/reference', reference: reference
       %td.no-wrap
         changed
-        =time_tag reference.created_at.to_date
+        =time_tag reference.updated_at.to_date
 
 =will_paginate @references
