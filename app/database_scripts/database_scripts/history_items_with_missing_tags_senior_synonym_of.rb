@@ -90,15 +90,27 @@ module DatabaseScripts
       end
 
       def replace_with_alt_tax_link history_item, normalized_name, replace_with_taxon
+        has_relevant_history_item = has_junior_synonym_of_tax_item?(replace_with_taxon, history_item)
+        help_text = if has_relevant_history_item
+                      bold_notice("[has relevant history item]")
+                    else
+                      bold_warning("[does not have relevant history item]")
+                    end
+
+        button_css = has_relevant_history_item ? "btn-normal" : "btn-warning"
         label = "Replace with <i>#{replace_with_taxon.name.short_name}</i>".html_safe
         url = replace_missing_tag_with_tax_tag_quick_and_dirty_fix_path(
           taxon_history_item_id: history_item.id,
           hardcoded_missing_name: normalized_name,
           replace_with_taxon_id: replace_with_taxon.id
         )
-        link = link_to label, url, method: :post, remote: true, class: 'btn-warning btn-tiny'
+        link = link_to label, url, method: :post, remote: true, class: "#{button_css} btn-tiny"
 
-        replace_with_taxon.decorate.link_to_taxon_with_author_citation + "<br>".html_safe + link
+        replace_with_taxon.decorate.link_to_taxon_with_author_citation + " #{help_text}<br>".html_safe + link
+      end
+
+      def has_junior_synonym_of_tax_item? replace_with_taxon, history_item
+        replace_with_taxon.history_items.where("taxt LIKE ?", "Junior synonym of {tax #{history_item.taxon.id}}%").exists?
       end
   end
 end
@@ -127,6 +139,10 @@ description: >
 
   And the `current_taxon` of the alt. replacement will always be the same as the owner of the
   history item (**Taxon** column).
+
+
+  <span class="bold-notice">[has relevant history item]</span> means that the alt. replacement has a history item starting with:
+  "Junior synonym of {tax ID of **Taxon**}".
 
 related_scripts:
   - HistoryItemsWithMissingTagsJuniorSynonymOf
