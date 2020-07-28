@@ -13,6 +13,6 @@
       %td=render 'references/reference', reference: reference
       %td.no-wrap
         changed
-        =time_tag reference.created_at.to_date
+        =time_tag reference.updated_at.to_date
 
 =will_paginate @references
