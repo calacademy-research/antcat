@@ -60,9 +60,9 @@ __END__
 
 title: History items with unbalanced parentheses, braces or brackets
 
-section: main
+section: regression-test
 category: Taxt
-tags: [new!]
+tags: []
 
 issue_description:
 
