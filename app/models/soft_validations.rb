@@ -34,7 +34,8 @@ class SoftValidations
     DatabaseScripts::ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems,
     DatabaseScripts::ProtonymsWithMoreThanOneValidTaxon,
     DatabaseScripts::ProtonymsWithTaxaWithMoreThanOneCurrentTaxon,
-    DatabaseScripts::ProtonymsWithTaxaWithVeryDifferentEpithets
+    DatabaseScripts::ProtonymsWithTaxaWithVeryDifferentEpithets,
+    DatabaseScripts::SpeciesGroupProtonymsWithoutBiogeographicRegions
   ]
   ALL_DATABASE_SCRIPTS_TO_CHECK = TAXA_DATABASE_SCRIPTS_TO_CHECK + PROTONYM_DATABASE_SCRIPTS_TO_CHECK
 
