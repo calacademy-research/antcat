@@ -16,20 +16,20 @@ module DatabaseScripts
         where(names: { type: Name::SPECIES_GROUP_NAMES }).
         where(biogeographic_region: nil).
         where(fossil: false).
-        limit(LIMIT)
+        limit(LIMIT).includes(:terminal_taxon)
     end
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Locality', 'Suggested bio region'
+        t.header 'Protonym', 'Locality', 'Suggested bio region', 'Terminal taxon'
         t.rows do |protonym|
           locality = protonym.locality
 
           [
             protonym.decorate.link_to_protonym,
-            protonym.author_citation,
             locality,
-            (country_mappings[locality] if locality)
+            (country_mappings[locality] if locality),
+            taxon_link(protonym.terminal_taxon)
           ]
         end
       end
