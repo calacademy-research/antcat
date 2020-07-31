@@ -2,15 +2,14 @@
 
 module DatabaseScripts
   class MissingTaxaToBeCreated < DatabaseScript
-    # For `EmptyStatus`.
-    def results
-      missing_names_to_be_created_by_count
-    end
-
     def statistics
       <<~RESULTS.html_safe
         Results: #{missing_names_to_be_created_by_count.size}
       RESULTS
+    end
+
+    def results
+      missing_names_to_be_created_by_count
     end
 
     def render

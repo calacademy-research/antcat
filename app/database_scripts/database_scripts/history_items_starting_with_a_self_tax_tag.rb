@@ -4,16 +4,16 @@ module DatabaseScripts
   class HistoryItemsStartingWithASelfTaxTag < DatabaseScript
     LIMIT = 200
 
-    def results
-      TaxonHistoryItem.
-        where("taxt LIKE CONCAT('{tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci").
-        limit(LIMIT)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.
+        where("taxt LIKE CONCAT('{tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci").
+        limit(LIMIT)
     end
 
     def render

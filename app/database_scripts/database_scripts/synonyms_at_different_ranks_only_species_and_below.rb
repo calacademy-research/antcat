@@ -4,18 +4,18 @@ module DatabaseScripts
   class SynonymsAtDifferentRanksOnlySpeciesAndBelow < DatabaseScript
     LIMIT = 500
 
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})
+      STR
+    end
+
     def results
       Taxon.synonyms.
         where(type: Rank::SPECIES_GROUP_NAMES).
         joins(:current_taxon).where("current_taxons_taxa.type <> taxa.type").
         includes(:current_taxon).
         limit(LIMIT)
-    end
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})
-      STR
     end
 
     def render

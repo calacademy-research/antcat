@@ -4,6 +4,12 @@ module DatabaseScripts
   class ProtonymsWithoutATaxonWithSameCleanedNameOnlySpecies < DatabaseScript
     LIMIT = 75
 
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
+    end
+
     def results
       Protonym.
         joins(:name).where("(LENGTH(names.cleaned_name) - LENGTH(REPLACE(names.cleaned_name, ' ', '')) = 1)").
@@ -12,12 +18,6 @@ module DatabaseScripts
         where(taxa: { type: Rank::SPECIES }).
         where('names_taxa.epithet = names.epithet').
         distinct.limit(LIMIT)
-    end
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
     end
 
     def render

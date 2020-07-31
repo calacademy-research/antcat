@@ -4,17 +4,17 @@ module DatabaseScripts
   class HistoryItemsWithHardcodedNamesToReplaceWithProTags < DatabaseScript
     LIMIT = 75
 
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
+    end
+
     def results
       TaxonHistoryItem.
         joins(taxon: [protonym: :name]).
         where("taxt REGEXP CONCAT('^', names.name, ' ')").
         limit(LIMIT)
-    end
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
     end
 
     def render

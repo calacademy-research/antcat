@@ -9,6 +9,14 @@ module DatabaseScripts
       DatabaseScripts::EmptyStatus::FALSE_POSITIVES
     end
 
+    def statistics
+      <<~STR.html_safe
+        Article results: #{article_results.limit(nil).count}<br><br>
+        Book results: #{book_results.limit(nil).count}<br><br>
+        Nested results: #{nested_results.limit(nil).count}<br><br>
+      STR
+    end
+
     def article_results
       ArticleReference.
         where.not('pagination REGEXP ?', "^[0-9]+(-[0-9]+)?$").
@@ -31,14 +39,6 @@ module DatabaseScripts
         where.not('pagination REGEXP ?', "^Pp?\. [0-9]+(-[0-9]+)?, [0-9]+(-[0-9]+)? in:$").
         where.not('pagination REGEXP ?', "^Pp?\. [#{ROMAN_NUMERALS}]+(-[#{ROMAN_NUMERALS}]+)? in:$").
         limit(LIMIT)
-    end
-
-    def statistics
-      <<~STR.html_safe
-        Article results: #{article_results.limit(nil).count}<br><br>
-        Book results: #{book_results.limit(nil).count}<br><br>
-        Nested results: #{nested_results.limit(nil).count}<br><br>
-      STR
     end
 
     def render
