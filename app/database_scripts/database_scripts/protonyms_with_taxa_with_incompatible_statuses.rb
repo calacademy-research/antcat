@@ -16,6 +16,10 @@ module DatabaseScripts
       )
     end
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def results
       Protonym.joins(:taxa).group(:protonym_id).having(<<~SQL, TYPES)
         COUNT(CASE WHEN status IN (?) THEN status ELSE NULL END) > 1

@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ProtonymsWithNotesTaxt < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def results
       Protonym.where.not(notes_taxt: nil).includes(:name, :authorship)
     end

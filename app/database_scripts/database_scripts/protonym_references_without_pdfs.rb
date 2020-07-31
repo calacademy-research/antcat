@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ProtonymReferencesWithoutPdfs < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED
+    end
+
     def results
       Reference.where(id: Citation.select(:reference_id)).
         left_outer_joins(:document).where(reference_documents: { id: nil }).

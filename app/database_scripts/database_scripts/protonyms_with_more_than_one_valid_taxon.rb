@@ -7,6 +7,10 @@ module DatabaseScripts
         Protonyms.taxa_genus_and_subgenus_pair?(protonym.taxa)
     end
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def results
       Protonym.joins(:taxa).where(taxa: { status: Status::VALID }).group(:protonym_id).having('COUNT(protonym_id) > 1')
     end

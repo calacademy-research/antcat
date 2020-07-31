@@ -7,6 +7,10 @@ module DatabaseScripts
         Protonyms.taxa_genus_and_subgenus_pair?(protonym.taxa)
     end
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def results
       Protonym.distinct.joins(:taxa).
         where(taxa: { id: Taxon.joins(:history_items).select(:id) }).

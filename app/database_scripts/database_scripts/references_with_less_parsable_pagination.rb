@@ -5,6 +5,10 @@ module DatabaseScripts
     LIMIT = 150
     ROMAN_NUMERALS = 'ivxlcdm'
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def article_results
       ArticleReference.
         where.not('pagination REGEXP ?', "^[0-9]+(-[0-9]+)?$").
