@@ -1,5 +1,22 @@
 %ul.no-bullet
   %li
+    Terminal taxon:
+    -if protonym.terminal_taxon
+      =CatalogFormatter.link_to_taxon(protonym.terminal_taxon)
+    -else
+      -if protonym.taxa.empty?
+        This protonym has no terminal taxon (since it is orphaned).
+      -else
+        %span.bold-warning This protonym has no terminal taxon.
+
+    -if DatabaseScripts::ProtonymsWithMoreThanOneTerminalTaxon.record_in_results?(protonym)
+      %br
+      %small
+        Note that this does currently not work for
+        =link_to 'protonyms with more than one terminal taxon.', database_script_path('protonyms_with_more_than_one_terminal_taxon')
+
+%ul.no-bullet
+  %li
     Nomen attributes:
     =protonym.decorate.format_nomen_attributes
 
