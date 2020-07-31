@@ -2,6 +2,14 @@
 
 module DatabaseScripts
   class ValidTaxaWithNonValidParents < DatabaseScript
+    def empty?
+      !(
+        genus_results.exists? ||
+        species_results.exists? ||
+        subspecies_results.exists?
+      )
+    end
+
     def genus_results
       Genus.valid.joins(:subfamily).where.not(subfamilies_taxa: { status: Status::VALID })
     end

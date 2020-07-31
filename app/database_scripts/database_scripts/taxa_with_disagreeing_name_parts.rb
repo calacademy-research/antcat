@@ -2,6 +2,16 @@
 
 module DatabaseScripts
   class TaxaWithDisagreeingNameParts < DatabaseScript
+    def empty?
+      !(
+        species_genus_vs_genus_genus.exists? ||
+        subspecies_species_vs_species_species.exists? ||
+        infrasubspecies_genus_vs_species_genus.exists? ||
+        infrasubspecies_species_vs_species_species.exists? ||
+        infrasubspecies_subspecies_vs_subspecies_subspecies.exists?
+      )
+    end
+
     def species_genus_vs_genus_genus
       Species.joins(:name).joins(:genus).
         joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").

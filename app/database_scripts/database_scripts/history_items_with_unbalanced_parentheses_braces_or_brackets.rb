@@ -2,6 +2,15 @@
 
 module DatabaseScripts
   class HistoryItemsWithUnbalancedParenthesesBracesOrBrackets < DatabaseScript
+    def empty?
+      !(
+        unbalanced_parentheses.exists? ||
+        unbalanced_curly_braces.exists? ||
+        unbalanced_square_brackets.exists? ||
+        unbalanced_angle_brackets.exists?
+      )
+    end
+
     def unbalanced_parentheses
       TaxonHistoryItem.where(<<~SQL)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '(', '') ) !=
