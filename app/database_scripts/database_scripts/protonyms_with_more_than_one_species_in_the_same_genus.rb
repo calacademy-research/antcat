@@ -8,6 +8,10 @@ module DatabaseScripts
         having("COUNT(taxa.id) > 1").exists?
     end
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_REVERSED
+    end
+
     def results
       dups = Species.joins(:name).
         where.not(status: Status::UNAVAILABLE_MISSPELLING).

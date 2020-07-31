@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class FossilProtonymsWithNonFossilTaxa < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_REVERSED
+    end
+
     def results
       Protonym.fossil.joins(:taxa).where(taxa: { fossil: false }).includes(:taxa)
     end
