@@ -3,7 +3,7 @@
 # TODO: Add validations once script has been cleared.
 module DatabaseScripts
   class SpeciesGroupProtonymsWithoutBiogeographicRegions < DatabaseScript
-    LIMIT = 5000
+    LIMIT = 1000
 
     def statistics
       <<~STR.html_safe
@@ -23,11 +23,13 @@ module DatabaseScripts
       as_table do |t|
         t.header 'Protonym', 'Authorship', 'Locality', 'Suggested bio region'
         t.rows do |protonym|
+          locality = protonym.locality
+
           [
             protonym.decorate.link_to_protonym,
             protonym.author_citation,
-            protonym.locality,
-            country_mappings[protonym.locality]
+            locality,
+            (country_mappings[locality] if locality)
           ]
         end
       end
