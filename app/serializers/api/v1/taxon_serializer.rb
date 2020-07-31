@@ -19,7 +19,6 @@ module Api
         :name_cache,
         :name_html_cache,
         :name_id,
-        :nomen_nudum,
         :original_combination,
         :protonym_id,
         :species_id,

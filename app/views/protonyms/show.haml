@@ -29,6 +29,10 @@
       =@protonym.decorate.name_with_fossil
       -if @protonym.sic?
         [sic]
+      -if @protonym.nomen_nudum?
+        %i
+          =ndash
+          nomen nudum
       -if current_user
         .right=link_to "Name record ##{@protonym.name.id}", name_path(@protonym.name), class: 'btn-normal btn-tiny'
     %table.table.unstriped

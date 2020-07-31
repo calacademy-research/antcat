@@ -5,7 +5,8 @@ require 'rails_helper'
 describe Exporters::Taxa::TaxaAsTxt do
   describe "#call" do
     it "formats in text style, rather than HTML" do
-      taxon = create :genus, :unavailable, :incertae_sedis_in_subfamily, nomen_nudum: true
+      protonym = create :protonym, :nomen_nudum
+      taxon = create :genus, :unavailable, :incertae_sedis_in_subfamily, protonym: protonym
       reference = taxon.authorship_reference
       reference.update!(doi: '123')
 

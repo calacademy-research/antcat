@@ -66,8 +66,7 @@ describe Taxa::Operations::ConvertToSubspecies do
             :hong,
             :unresolved_homonym,
             :current_taxon,
-            :ichnotaxon,
-            :nomen_nudum
+            :ichnotaxon
           ].each do |attribute|
             expect(new_subspecies.public_send(attribute)).to eq species.public_send(attribute)
           end

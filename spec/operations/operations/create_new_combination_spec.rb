@@ -107,13 +107,13 @@ describe Operations::CreateNewCombination do
         end
 
         before do
-          obsolete_combination_2.update_columns(nomen_nudum: true) # Invalid state to prevent saving.
+          obsolete_combination_2.update_columns(ichnotaxon: true) # Invalid state to prevent saving.
         end
 
         specify { expect(operation.run).to be_a_failure }
 
         it "returns errors" do
-          expect(operation.run.context.errors).to eq ["Nomen nudum can only be set for unavailable taxa"]
+          expect(operation.run.context.errors).to eq ["Ichnotaxon can only be set for fossil taxa"]
         end
 
         it "does not create a new taxon" do

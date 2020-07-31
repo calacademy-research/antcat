@@ -15,6 +15,10 @@ FactoryBot.define do
       fossil { true }
     end
 
+    trait :nomen_nudum do
+      nomen_nudum { true }
+    end
+
     trait :uncertain_locality do
       uncertain_locality { true }
     end

@@ -5,9 +5,10 @@ module Catalog
     include Service
 
     TAXA_COLUMNS = %i[
-      fossil nomen_nudum unresolved_homonym ichnotaxon hong status type collective_group_name
+      fossil unresolved_homonym ichnotaxon hong status type collective_group_name
       incertae_sedis_in
     ]
+    PROTONYM_COLUMNS = %i[nomen_nudum]
     MUST_HAVE_HISTORY_ITEMS = 'must_have'
     CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
     NAME_CONTAINS = 'contains'
@@ -33,6 +34,9 @@ module Catalog
 
         TAXA_COLUMNS.each do |column|
           relation = relation.where(column => params[column]) if params[column]
+        end
+        PROTONYM_COLUMNS.each do |column|
+          relation = relation.where(protonyms: { column => params[column] }) if params[column]
         end
 
         relation = relation.valid if params[:valid_only]

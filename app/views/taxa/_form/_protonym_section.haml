@@ -111,6 +111,13 @@
               %td=authorship_form.label :type_name
               %td.small-text Can be set after creating the new protonym
 
+          %tr
+            %td
+              =protonym_form.label :nomen_nudum do
+                %i Nomen nudum
+            %td
+              =protonym_form.check_box :nomen_nudum
+
           %tr.logged-in-only-background
             %td
               =protonym_form.label :nomen_attributes do

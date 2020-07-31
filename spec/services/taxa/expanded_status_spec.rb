@@ -80,7 +80,8 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon is a nomen nudum" do
-        let!(:taxon) { build_stubbed :any_taxon, :unavailable, nomen_nudum: true }
+        let(:protonym) { build_stubbed :protonym, :nomen_nudum }
+        let!(:taxon) { build_stubbed :any_taxon, :unavailable, protonym: protonym }
 
         specify { expect(described_class[taxon]).to eq "<i>nomen nudum</i>, #{taxon.status}" }
       end

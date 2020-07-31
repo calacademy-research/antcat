@@ -35,6 +35,7 @@ class ProtonymDecorator < Draper::Decorator
 
   def nomen_attributes
     @_nomen_attributes ||= [
+      ('<i>Nomen nudum</i>' if protonym.nomen_nudum?),
       ('<i>Nomen novum</i>' if protonym.nomen_novum?),
       ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
       ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
