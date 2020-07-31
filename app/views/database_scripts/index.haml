@@ -6,7 +6,7 @@
 
 -content_for :breadcrumbs_right do
   -unless @check_if_empty
-    =link_to "Show empty/not", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
+    =link_to "Show empty", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
 
 .row
   .small-12.columns
@@ -88,7 +88,7 @@
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               -if @check_if_empty
-                %td.shrink=decorated.empty_status
+                %td.shrink{class: decorated.empty_status_css}=decorated.empty_status
 
 .row
   .small-12.columns
