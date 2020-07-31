@@ -5,10 +5,11 @@ class SoftValidations
 
   # These scripts do not 100% belong here since scripts are injected to avoid coupling.
   TAXA_DATABASE_SCRIPTS_TO_CHECK = [
+    DatabaseScripts::CurrentTaxonChains,
     DatabaseScripts::ExtantTaxaInFossilGenera,
     DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
     DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
-    # TODO: Update by script and add back: DatabaseScripts::NonOriginalCombinationsWithSameNameAsItsProtonym,
+    DatabaseScripts::NonOriginalCombinationsWithSameNameAsItsProtonym,
     DatabaseScripts::NonValidTaxaWithACurrentTaxonThatIsNotValid,
     DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
     DatabaseScripts::ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon,
@@ -30,6 +31,7 @@ class SoftValidations
     DatabaseScripts::OrphanedProtonyms,
     DatabaseScripts::ProtonymsWithDuplicatedTaxa,
     DatabaseScripts::ProtonymsWithMoreThanOneOriginalCombination,
+    DatabaseScripts::ProtonymsWithMoreThanOneSpeciesInTheSameGenus,
     DatabaseScripts::ProtonymsWithMoreThanOneSynonym,
     DatabaseScripts::ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems,
     DatabaseScripts::ProtonymsWithMoreThanOneValidTaxon,

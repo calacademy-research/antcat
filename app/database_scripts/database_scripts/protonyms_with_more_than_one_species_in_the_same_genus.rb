@@ -2,6 +2,12 @@
 
 module DatabaseScripts
   class ProtonymsWithMoreThanOneSpeciesInTheSameGenus < DatabaseScript
+    def self.record_in_results? protonynm
+      protonynm.taxa.where(type: Rank::SPECIES).joins(:name).
+        group("SUBSTRING_INDEX(names.name, ' ', 1)").
+        having("COUNT(taxa.id) > 1").exists?
+    end
+
     def results
       dups = Species.joins(:name).
         where.not(status: Status::UNAVAILABLE_MISSPELLING).
@@ -32,6 +38,8 @@ tags: []
 
 description: >
   This script is the reverse of %dbscript:SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym
+
+issue_description: This protonym has more than one species in the same genus.
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
