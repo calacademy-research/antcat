@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ReferencesWithAuthorNamesSuffixes < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def results
       Reference.order_by_author_names_and_year.where.not(author_names_suffix: [nil, ''])
     end

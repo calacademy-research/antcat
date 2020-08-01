@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ReferencesWithBlankPdfUrlsAndFilenames < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED
+    end
+
     def results
       Reference.joins(:document).where(
         reference_documents: {

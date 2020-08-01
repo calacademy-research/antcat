@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ReferenceDocumentsWithWeirdActualUrls < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED
+    end
+
     def results
       broken_ids = ReferenceDocument.where.not(file_file_name: ['', nil]).to_a.reject do |document|
         document.url.blank? || (document.url == document.__send__(:url_via_file_file_name))

@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_REVERSED
+    end
+
     def results
       Taxon.where(type: Rank::SPECIES_GROUP_NAMES).obsolete_combinations.joins(:current_taxon).
         where("taxa.protonym_id <> current_taxons_taxa.protonym_id").

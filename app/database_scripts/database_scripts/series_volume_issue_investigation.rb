@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class SeriesVolumeIssueInvestigation < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
     def results
       ArticleReference.
         limit(10000).

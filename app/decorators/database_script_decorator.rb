@@ -43,6 +43,14 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def empty_status
-    DatabaseScripts::EmptyStatus[database_script]
+    @_empty_status ||= DatabaseScripts::EmptyStatus[database_script]
+  end
+
+  def empty_status_css
+    return unless section == DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
+
+    if empty_status == DatabaseScripts::EmptyStatus::NOT_EMPTY
+      'bold-warning'
+    end
   end
 end

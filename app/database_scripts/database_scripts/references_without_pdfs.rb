@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class ReferencesWithoutPdfs < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED
+    end
+
     def results
       Reference.left_outer_joins(:document).where(reference_documents: { id: nil }).
         order_by_author_names_and_year.
