@@ -252,7 +252,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by nomen nudum" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :any_taxon, :unavailable, nomen_nudum: true }
+      let!(:yes_match) { create :any_taxon, :unavailable, protonym: create(:protonym, :nomen_nudum) }
 
       specify { expect(described_class[nomen_nudum: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[nomen_nudum: "true"]).to eq [yes_match] }

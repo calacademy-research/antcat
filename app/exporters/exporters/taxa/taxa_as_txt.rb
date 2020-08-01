@@ -47,7 +47,7 @@ module Exporters
             'unidentifiable'
           elsif taxon.unresolved_homonym?
             "unresolved junior homonym"
-          elsif taxon.nomen_nudum?
+          elsif taxon.protonym.nomen_nudum?
             'nomen nudum'
           elsif taxon.valid_status?
             "valid"

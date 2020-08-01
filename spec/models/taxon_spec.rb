@@ -61,17 +61,6 @@ describe Taxon do
       end
     end
 
-    describe "#nomen_nudum" do
-      context 'when taxon is not unavailable' do
-        let(:taxon) { build_stubbed :any_taxon }
-
-        it 'cannot be a `nomen_nudum`' do
-          expect { taxon.nomen_nudum = true }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(nomen_nudum: ["can only be set for unavailable taxa"])
-        end
-      end
-    end
-
     describe "#ichnotaxon" do
       context 'when taxon is not fossil' do
         let(:taxon) { build_stubbed :any_taxon }

@@ -47,7 +47,7 @@ describe Operations::ConvertToObsoleteCombination do
           end
 
           before do
-            obsolete_combination_2.update_columns(nomen_nudum: true) # Invalid state to prevent saving.
+            obsolete_combination_2.update_columns(ichnotaxon: true) # Invalid state to prevent saving.
           end
 
           it "does not modify the original species record" do

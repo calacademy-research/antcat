@@ -11,6 +11,7 @@ class ProtonymForm # rubocop:disable Metrics/ClassLength
     sic
     uncertain_locality
 
+    nomen_nudum
     nomen_novum
     nomen_oblitum
     nomen_dubium

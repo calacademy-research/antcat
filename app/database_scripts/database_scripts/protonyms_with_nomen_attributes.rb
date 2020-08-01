@@ -44,6 +44,7 @@ tags: [new!]
 issue_description:
 
 description: >
+  *Nomina nuda* are not included (use the search form).
 
 related_scripts:
   - ProtonymsWithNomenAttributes

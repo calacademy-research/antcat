@@ -30,8 +30,9 @@ module Taxa
 
     private
 
-      delegate :status, :homonym_replaced_by, :unresolved_homonym?, :current_taxon,
-        :nomen_nudum?, to: :taxon, private: true
+      delegate :status, :protonym, :homonym_replaced_by, :unresolved_homonym?, :current_taxon,
+        to: :taxon, private: true
+      delegate :nomen_nudum?, to: :protonym, private: true
 
       def main_status
         case status

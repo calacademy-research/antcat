@@ -16,8 +16,7 @@ describe Taxa::CopyAttributes do
         "hong" => taxon.hong,
         "unresolved_homonym" => taxon.unresolved_homonym,
         "current_taxon_id" => taxon.current_taxon_id,
-        "ichnotaxon" => taxon.ichnotaxon,
-        "nomen_nudum" => taxon.nomen_nudum
+        "ichnotaxon" => taxon.ichnotaxon
       )
     end
   end

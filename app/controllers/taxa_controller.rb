@@ -76,7 +76,6 @@ class TaxaController < ApplicationController
         :hong,
         :ichnotaxon,
         :incertae_sedis_in,
-        :nomen_nudum,
         :original_combination,
         :protonym_id,
         :status,
