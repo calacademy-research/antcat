@@ -7,14 +7,14 @@ module DatabaseScripts
     AS_OBSOLETE_COMBINATION = QuickAdd::FromHardcodedInfrasubspeciesName::AS_OBSOLETE_COMBINATION
     AS_UNAVAILABLE = QuickAdd::FromHardcodedInfrasubspeciesName::AS_UNAVAILABLE
 
-    def results
-      TaxonHistoryItem.where('taxt REGEXP ?', "^\\[First available use of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.where('taxt REGEXP ?', "^\\[First available use of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
     end
 
     def render

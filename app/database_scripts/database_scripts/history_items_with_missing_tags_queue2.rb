@@ -4,14 +4,14 @@ module DatabaseScripts
   class HistoryItemsWithMissingTagsQueue2 < DatabaseScript
     LIMIT = 250
 
-    def results
-      TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}2%").limit(LIMIT)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}2%").limit(LIMIT)
     end
 
     def render

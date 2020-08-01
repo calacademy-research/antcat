@@ -4,14 +4,14 @@ module DatabaseScripts
   class PointsToReplacedNameAndUsesRefTagAsAuthorCitation < DatabaseScript
     LIMIT = 100
 
-    def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "replacement name for {tax [0-9]+} {ref [0-9]+}").limit(LIMIT).includes(:taxon)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.where("taxt REGEXP ?", "replacement name for {tax [0-9]+} {ref [0-9]+}").limit(LIMIT).includes(:taxon)
     end
 
     def render

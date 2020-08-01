@@ -4,14 +4,14 @@ module DatabaseScripts
   class HistoryItemsWithMissingTagsSeniorSynonymOf < DatabaseScript
     LIMIT = 200
 
-    def results
-      TaxonHistoryItem.where('taxt REGEXP ?', "^Senior synonym of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.where('taxt REGEXP ?', "^Senior synonym of #{Taxt::MISSING_TAG_START}2").limit(LIMIT)
     end
 
     def render

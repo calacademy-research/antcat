@@ -4,17 +4,17 @@ module DatabaseScripts
   class NonOriginalCombinationsWithSameNameAsItsProtonym < DatabaseScript
     LIMIT = 500
 
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
+    end
+
     def results
       Taxon.where(type: Rank::SPECIES_GROUP_NAMES).joins(:name, protonym: :name).
         where.not(original_combination: true).
         where("names.cleaned_name = names_protonyms.cleaned_name").
         limit(LIMIT)
-    end
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
     end
 
     def render

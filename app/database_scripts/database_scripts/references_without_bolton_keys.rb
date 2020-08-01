@@ -4,12 +4,12 @@ module DatabaseScripts
   class ReferencesWithoutBoltonKeys < DatabaseScript
     LIMIT = 500
 
-    def results
-      references_without_bolton_keys.order_by_author_names_and_year.limit(LIMIT)
-    end
-
     def statistics
       "Results: #{references_without_bolton_keys.count} (showing first #{LIMIT})"
+    end
+
+    def results
+      references_without_bolton_keys.order_by_author_names_and_year.limit(LIMIT)
     end
 
     def render

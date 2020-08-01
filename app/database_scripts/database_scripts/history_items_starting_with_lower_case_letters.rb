@@ -4,14 +4,14 @@ module DatabaseScripts
   class HistoryItemsStartingWithLowerCaseLetters < DatabaseScript
     LIMIT = 100
 
-    def results
-      TaxonHistoryItem.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").includes(:taxon).limit(LIMIT)
-    end
-
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
       STR
+    end
+
+    def results
+      TaxonHistoryItem.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").includes(:taxon).limit(LIMIT)
     end
 
     def render

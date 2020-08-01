@@ -6,6 +6,17 @@ module DatabaseScripts
       DatabaseScripts::EmptyStatus::NOT_APPLICABLE
     end
 
+    def statistics
+      <<~HTML.html_safe
+        Reference sections in database: #{ReferenceSection.count}<br>
+        <br>
+        List #1 - Blank references_taxt results: #{blank_references_taxt.count}<br>
+        List #2 - Blank title_taxt results: #{blank_title_taxt.count}<br>
+        List #3 - Non-blank subtitle_taxt results: #{non_blank_subtitle_taxt.count}<br>
+        List #4 - Non-blank title_taxt results: #{non_blank_title_taxt.count}<br>
+      HTML
+    end
+
     def blank_references_taxt
       ReferenceSection.where(references_taxt: nil).includes(:taxon)
     end
@@ -20,17 +31,6 @@ module DatabaseScripts
 
     def non_blank_title_taxt
       ReferenceSection.where.not(title_taxt: nil).includes(:taxon)
-    end
-
-    def statistics
-      <<~HTML.html_safe
-        Reference sections in database: #{ReferenceSection.count}<br>
-        <br>
-        List #1 - Blank references_taxt results: #{blank_references_taxt.count}<br>
-        List #2 - Blank title_taxt results: #{blank_title_taxt.count}<br>
-        List #3 - Non-blank subtitle_taxt results: #{non_blank_subtitle_taxt.count}<br>
-        List #4 - Non-blank title_taxt results: #{non_blank_title_taxt.count}<br>
-      HTML
     end
 
     def render
