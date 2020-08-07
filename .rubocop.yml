@@ -95,7 +95,19 @@ Lint/AmbiguousRegexpLiteral:
     - 'features/step_definitions/**/*'
     - 'spec/**/*'
 
+Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
 Lint/DuplicateElsifCondition:
+  Enabled: true
+
+Lint/DuplicateRescueException:
+  Enabled: true
+
+Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/FloatComparison:
   Enabled: true
 
 Lint/MixedRegexpCaptureTypes:
@@ -107,10 +119,27 @@ Lint/DeprecatedOpenSSLConstant:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
+# TODO: Investigate.
+Lint/MissingSuper:
+  Enabled: false
+
+Lint/OutOfRangeRegexpRef:
+  Enabled: true
+
 Lint/RaiseException:
   Enabled: true
 
+Lint/SelfAssignment:
+  Enabled: true
+
 Lint/StructNewOverride:
+  Enabled: true
+
+
+Lint/TopLevelReturnWithArgument:
+  Enabled: true
+
+Lint/UnreachableLoop:
   Enabled: true
 
 Lint/UselessAccessModifier:
@@ -348,8 +377,15 @@ Style/EmptyMethod:
 Style/ExponentialNotation:
   Enabled: true
 
+# TODO: Investigate.
+Style/ExplicitBlockArgument:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
+
+Style/GlobalStdStream:
+  Enabled: false
 
 Style/GuardClause:
   Enabled: false
@@ -388,6 +424,9 @@ Style/MutableConstant:
 Style/NumericLiterals:
   Enabled: false
 
+Style/OptionalBooleanParameter:
+  Enabled: true
+
 Style/OptionHash:
   Enabled: true
 
@@ -412,8 +451,14 @@ Style/ReturnNil:
 Style/Send:
   Enabled: true
 
+Style/SingleArgumentDig:
+  Enabled: false
+
 Style/SlicingWithRange:
   Enabled: true
+
+Style/StringConcatenation:
+  Enabled: false
 
 Style/StringLiterals:
   Enabled: false
