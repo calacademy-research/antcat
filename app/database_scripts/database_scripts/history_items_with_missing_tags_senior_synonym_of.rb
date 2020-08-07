@@ -145,5 +145,4 @@ description: >
   "Junior synonym of {tax ID of **Taxon**}".
 
 related_scripts:
-  - HistoryItemsWithMissingTagsJuniorSynonymOf
   - HistoryItemsWithMissingTagsSeniorSynonymOf
