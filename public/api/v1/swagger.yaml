@@ -939,8 +939,6 @@ definitions:
         type: string
       plain_text_cache:
         type: string
-      expandable_reference_cache:
-        type: string
       doi:
         type: string
         description: DOI citation reference

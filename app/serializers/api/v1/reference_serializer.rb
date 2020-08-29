@@ -30,8 +30,6 @@ module Api
 
         # Caches.
         :plain_text_cache,
-        :expanded_reference_cache,
-        :expandable_reference_cache,
         :author_names_string_cache,
 
         :created_at,

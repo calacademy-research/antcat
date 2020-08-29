@@ -36,8 +36,6 @@ describe Api::V1::ReferenceSerializer do
 
             # Caches.
             "plain_text_cache" => nil,
-            "expanded_reference_cache" => nil,
-            "expandable_reference_cache" => nil,
             "author_names_string_cache" => reference.author_names_string_cache,
 
             "created_at" => reference.created_at.as_json,
