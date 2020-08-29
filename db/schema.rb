@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_29_094702) do
+ActiveRecord::Schema.define(version: 2020_08_29_095214) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -111,9 +111,6 @@ ActiveRecord::Schema.define(version: 2020_08_29_094702) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "gender"
-    t.boolean "auto_generated", default: false
-    t.string "origin"
-    t.boolean "nonconforming_name"
     t.string "cleaned_name", null: false
     t.index ["id", "type"], name: "index_names_on_id_and_type"
     t.index ["name"], name: "name_name_index"
@@ -287,8 +284,6 @@ ActiveRecord::Schema.define(version: 2020_08_29_094702) do
     t.integer "current_taxon_id"
     t.boolean "ichnotaxon", default: false, null: false
     t.integer "family_id"
-    t.boolean "auto_generated", default: false, null: false
-    t.string "origin"
     t.integer "hol_id"
     t.boolean "collective_group_name", default: false, null: false
     t.boolean "original_combination", default: false, null: false
