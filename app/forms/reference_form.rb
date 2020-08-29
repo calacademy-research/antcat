@@ -52,6 +52,7 @@ class ReferenceForm
         set_publisher if reference.is_a? ::BookReference
 
         reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
+        reference.refresh_author_names_cache
         cleanup_bolton_key
 
         # Raise if there are errors, since `#save!` clears errors before validating.

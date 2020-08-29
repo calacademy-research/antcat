@@ -13,14 +13,8 @@ FactoryBot.define do
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
       else
-        # To make sure we're not adding author names when explicitly passed as an empty array.
-        # It's not a super important check, and it's required since `valuator.author_names`
-        # is passed as an empty array if nothing is specified.
+        # Raise to make sure we're not adding author names by mistake in case an empty array is explicitly passes.
         raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
-
-        def reference.refresh_author_names_cache *args
-          # No-op.
-        end
 
         author_names = build_stubbed_list(:author_name, 1)
         author_names.each { |author_name| reference.association(:author_names).add_to_target(author_name) }

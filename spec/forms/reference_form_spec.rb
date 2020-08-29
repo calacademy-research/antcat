@@ -78,10 +78,7 @@ describe ReferenceForm do
             }
           end
 
-          # TODO: Code was changed to make the spec pass, but that introduced a regression where
-          # the `reference_author_names.position` was not reset (which `reference.author_names.clear` did).
-          # See also "reversing author names".
-          xit "creates a single version for the reference" do
+          it "creates a single version for the reference" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
                 to change { reference.versions.count }.by(1)
@@ -95,9 +92,7 @@ describe ReferenceForm do
           end
         end
 
-        # TODO: Spec was added after a regression was introduced.
-        # See also "creates a single version for the reference".
-        describe "reordering author names" do
+        describe "reordering author names (regression test)" do
           let!(:author_names) do
             [
               create(:author_name, name: "Batiatus, B."),
@@ -105,7 +100,7 @@ describe ReferenceForm do
             ]
           end
           let!(:reference) { create :article_reference, author_names: author_names }
-          # TODO: Being extra explicit here since the class mutates the `params`.
+          # TODO: Being extra explicit here since the class mutates `params`.
           let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
           let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
           let(:reverse_authors_params) do
@@ -137,8 +132,7 @@ describe ReferenceForm do
             }
           end
 
-          # TODO: We may want this. See `after_add: :refresh_author_names_caches`.
-          xit "creates a single version for the reference" do
+          it "creates a single version for the reference" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
                 to change { reference.versions.count }.by(1)

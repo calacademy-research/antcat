@@ -16,8 +16,7 @@ class Reference < ApplicationRecord
   delegate :key_with_citation_year, :key_with_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
-  has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names,
-    after_add: :refresh_author_names_cache!, after_remove: :refresh_author_names_cache!
+  has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names
   has_many :authors, through: :author_names
   has_many :nestees, class_name: "Reference", foreign_key: :nesting_reference_id, dependent: :restrict_with_error
   has_many :citations, dependent: :restrict_with_error
@@ -64,11 +63,11 @@ class Reference < ApplicationRecord
   end
 
   # TODO: Probably get rid of this and `#refresh_author_names_cache!`.
-  def refresh_author_names_cache *_args
+  def refresh_author_names_cache
     self.author_names_string_cache = author_names.map(&:name).join('; ').strip
   end
 
-  def refresh_author_names_cache! *_args
+  def refresh_author_names_cache!
     refresh_author_names_cache
     save!(validate: false)
   end
