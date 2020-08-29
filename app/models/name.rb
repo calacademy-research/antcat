@@ -39,7 +39,7 @@ class Name < ApplicationRecord
 
   # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
   before_validation :set_epithet, :set_cleaned_name
-  after_save :set_taxon_caches
+  after_save :set_taxon_name_cache
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
   scope :no_single_word_names, -> { where.not(type: SINGLE_WORD_NAMES) }
@@ -127,10 +127,9 @@ class Name < ApplicationRecord
       self.cleaned_name = Names::CleanName[name]
     end
 
-    def set_taxon_caches
+    def set_taxon_name_cache
       taxa.reload.each do |taxon|
         taxon.name_cache = name
-        taxon.name_html_cache = name_html
         taxon.save(validate: false)
       end
     end

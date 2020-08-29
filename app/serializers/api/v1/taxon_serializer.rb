@@ -17,7 +17,6 @@ module Api
         :ichnotaxon,
         :incertae_sedis_in,
         :name_cache,
-        :name_html_cache,
         :name_id,
         :original_combination,
         :protonym_id,
@@ -36,8 +35,16 @@ module Api
       attr_private_initialize :taxon
 
       def as_json _options = {}
-        taxon.as_json(only: ATTRIBUTES, methods: :author_citation, root: true)
+        {
+          taxon.model_name.element => taxon_attributes.merge(name_html_cache: taxon.name.name_html).as_json
+        }
       end
+
+      private
+
+        def taxon_attributes
+          taxon.serializable_hash(only: ATTRIBUTES, methods: :author_citation)
+        end
     end
   end
 end
