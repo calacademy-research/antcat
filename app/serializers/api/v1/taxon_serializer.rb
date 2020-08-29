@@ -5,7 +5,6 @@ module Api
     class TaxonSerializer
       ATTRIBUTES = [
         :id,
-        :auto_generated,
         :collective_group_name,
         :current_taxon_id,
         :family_id,
