@@ -119,9 +119,8 @@ Lint/DeprecatedOpenSSLConstant:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
-# TODO: Investigate.
 Lint/MissingSuper:
-  Enabled: false
+  Enabled: true
 
 Lint/OutOfRangeRegexpRef:
   Enabled: true

@@ -10,6 +10,7 @@ module Taxa
 
     def initialize names
       @names = names
+      super()
     end
   end
 
@@ -20,6 +21,7 @@ module Taxa
     def initialize taxon, new_parent = nil
       @taxon = taxon
       @new_parent = new_parent
+      super()
     end
 
     def message
