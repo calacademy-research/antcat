@@ -379,9 +379,8 @@ Style/EmptyMethod:
 Style/ExponentialNotation:
   Enabled: true
 
-# TODO: Investigate.
 Style/ExplicitBlockArgument:
-  Enabled: false
+  Enabled: true
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
