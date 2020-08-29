@@ -119,9 +119,8 @@ Lint/DeprecatedOpenSSLConstant:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
-# TODO: Investigate.
 Lint/MissingSuper:
-  Enabled: false
+  Enabled: true
 
 Lint/OutOfRangeRegexpRef:
   Enabled: true
@@ -134,7 +133,6 @@ Lint/SelfAssignment:
 
 Lint/StructNewOverride:
   Enabled: true
-
 
 Lint/TopLevelReturnWithArgument:
   Enabled: true
@@ -204,6 +202,9 @@ Rails/BulkChangeTable:
 Rails/ContentTag:
   Enabled: true
 
+Rails/DefaultScope:
+  Enabled: true
+
 Rails/Delegate:
   Enabled: false
 
@@ -228,10 +229,6 @@ Rails/NegateInclude:
 Rails/Pluck:
   Enabled: true
 
-# TODO: Investigate.
-Rails/PluckId:
-  Enabled: false
-
 Rails/PluckInWhere:
   Enabled: true
 
@@ -253,7 +250,6 @@ Rails/SkipsModelValidations:
 Rails/ShortI18n:
   Enabled: true
 
-# TODO: Investigate.
 Rails/WhereExists:
   Enabled: false
 
@@ -380,9 +376,8 @@ Style/EmptyMethod:
 Style/ExponentialNotation:
   Enabled: true
 
-# TODO: Investigate.
 Style/ExplicitBlockArgument:
-  Enabled: false
+  Enabled: true
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
@@ -393,7 +388,6 @@ Style/GlobalStdStream:
 Style/GuardClause:
   Enabled: false
 
-# TODO: Investigate.
 Style/HashAsLastArrayItem:
   Enabled: false
 
@@ -460,14 +454,23 @@ Style/SingleArgumentDig:
 Style/SlicingWithRange:
   Enabled: true
 
+Style/StderrPuts:
+  Enabled: true
+
 Style/StringConcatenation:
   Enabled: false
 
 Style/StringLiterals:
   Enabled: false
 
+Style/StringMethods:
+  Enabled: true
+
 Style/SymbolArray:
   Enabled: false
+
+Style/TrailingCommaInBlockArgs:
+  Enabled: true
 
 Style/WordArray:
   Enabled: false

@@ -73,11 +73,9 @@ module ApplicationHelper
     submenu == second_breadcrumb
   end
 
-  def inline_expandable label = "Show more"
+  def inline_expandable label = "Show more", &block
     show_more = tag.a tag.small(label), class: "hide-when-expanded gray"
-    hidden = tag.span class: "show-when-expanded" do
-               yield
-             end
+    hidden = tag.span(class: "show-when-expanded", &block)
 
     tag.span class: "expandable" do
       show_more + hidden
