@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class ReferenceAuthorName < ApplicationRecord
-  belongs_to :reference
-  belongs_to :author_name
+  belongs_to :reference, inverse_of: :reference_author_names
+  belongs_to :author_name, inverse_of: :reference_author_names
 
   before_save :invalidate_reference_caches
   before_destroy :invalidate_reference_caches

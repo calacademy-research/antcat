@@ -15,7 +15,7 @@ class Reference < ApplicationRecord
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   delegate :key_with_citation_year, :key_with_year, to: :key
 
-  has_many :reference_author_names, -> { order(:position) }, dependent: :destroy
+  has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names,
     after_add: :refresh_author_names_cache, after_remove: :refresh_author_names_cache
   has_many :authors, through: :author_names
