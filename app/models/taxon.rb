@@ -38,7 +38,7 @@ class Taxon < ApplicationRecord
   validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
   validate :current_taxon_validation, :ensure_correct_name_type
 
-  before_save :set_name_caches
+  before_save :set_name_cache
 
   scope :valid, -> { where(status: Status::VALID) }
   scope :invalid, -> { where.not(status: Status::VALID) }
@@ -52,8 +52,8 @@ class Taxon < ApplicationRecord
   has_paper_trail
   strip_attributes only: [:incertae_sedis_in], replace_newlines: true
   trackable parameters: proc {
-    parent_params = { rank: parent.rank, name: parent.name_html_cache, id: parent.id } if parent
-    { rank: rank, name: name_html_cache, parent: parent_params }
+    parent_params = { rank: parent.rank, name: parent.name.name_html, id: parent.id } if parent
+    { rank: rank, name: name.name_html, parent: parent_params }
   }
 
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|
@@ -109,9 +109,8 @@ class Taxon < ApplicationRecord
 
   private
 
-    def set_name_caches
+    def set_name_cache
       self.name_cache = name.name
-      self.name_html_cache = name.name_html
     end
 
     def current_taxon_validation

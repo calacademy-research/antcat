@@ -13,7 +13,8 @@ module Taxa
     private
 
       # Not copied:
-      #  :name (and cached :name_cache, :name_html_cache)
+      #  :name
+      #  :name_cache
       #  :hol_id
       #
       #  Taxonomic relationships:

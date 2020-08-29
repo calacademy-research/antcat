@@ -45,7 +45,7 @@ module Taxa
         new_species.create_activity :elevate_subspecies_to_species, current_user,
           parameters: {
             original_subspecies_id: subspecies.id,
-            name_was: subspecies.name_html_cache,
+            name_was: subspecies.name.name_html,
             name: new_species.name.name_html
           }
       end

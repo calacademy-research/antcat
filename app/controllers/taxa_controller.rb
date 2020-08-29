@@ -110,7 +110,7 @@ class TaxaController < ApplicationController
     def add_another_species_link
       return "" unless @taxon.is_a? Species
 
-      link = view_context.link_to "Add another #{@taxon.genus.name_html_cache} species?".html_safe,
+      link = view_context.link_to "Add another #{@taxon.genus.name.name_html} species?".html_safe,
         new_taxa_path(rank_to_create: Rank::SPECIES, parent_id: @taxon.genus.id)
 
       " <strong>#{link}</strong>".html_safe
