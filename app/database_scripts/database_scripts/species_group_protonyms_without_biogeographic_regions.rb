@@ -50,7 +50,7 @@ title: Species-group protonyms without biogeographic regions
 
 section: main
 category: Protonyms
-tags: [new!, slow-render]
+tags: [slow-render]
 
 issue_description: This [non-fossil] species-group name protonym has no biogeographic region.
 
