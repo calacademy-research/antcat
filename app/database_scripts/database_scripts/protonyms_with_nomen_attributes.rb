@@ -39,7 +39,7 @@ __END__
 
 section: research
 category: Protonyms
-tags: [new!]
+tags: []
 
 issue_description:
 
