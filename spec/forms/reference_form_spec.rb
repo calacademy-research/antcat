@@ -208,7 +208,16 @@ describe ReferenceForm do
         end
 
         context 'when a `file` or `url` is given' do
-          let!(:reference) { build :article_reference }
+          let!(:journal) { create :journal }
+          let!(:reference) do
+            ArticleReference.new(
+              pagination: '12',
+              title: 'Ants',
+              citation_year: '2000',
+              series_volume_issue: '123',
+              journal: journal
+            )
+          end
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
@@ -219,6 +228,10 @@ describe ReferenceForm do
                 public: '1'
               }
             }
+          end
+
+          specify do
+            expect(described_class.new(reference, params).save).to eq true
           end
 
           it 'creates a reference (test spec)`' do
@@ -246,12 +259,16 @@ describe ReferenceForm do
         end
 
         context 'when reference has a document' do
-          let!(:reference) { create :article_reference, :with_document }
+          let!(:reference) { create :article_reference }
+          let!(:reference_document) { create :reference_document, reference: reference }
 
           it 'does not create a new `ReferenceDocument`s' do
             expect(ReferenceDocument.count).to eq 1
+            expect(reference.document).to eq reference_document
+
             expect { described_class.new(reference, params).save }.
               to change { reference.reload.title }.to(params[:title])
+
             expect(ReferenceDocument.count).to eq 1
           end
         end
@@ -275,7 +292,7 @@ describe ReferenceForm do
     end
 
     describe "duplicate checking" do
-      let!(:original) { create :article_reference, :with_author_name }
+      let!(:original) { create :article_reference, author_string: 'Fisher' }
       let(:params) do
         {
           author_names_string: original.author_names_string,
@@ -286,7 +303,7 @@ describe ReferenceForm do
           pagination: original.pagination
         }
       end
-      let!(:duplicate) { create :article_reference, author_names: original.author_names }
+      let!(:duplicate) { create :article_reference, author_string: 'Fisher' }
 
       context 'when duplicates are ignored' do
         it "allows a duplicate record to be saved" do

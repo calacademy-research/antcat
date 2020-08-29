@@ -41,7 +41,7 @@ describe ReferenceObserver do
         expect(nesting_reference.plain_text_cache).not_to eq nil
         expect(nested_reference.plain_text_cache).not_to eq nil
 
-        nesting_reference.reference_author_names.first.update!(position: 4)
+        nesting_reference.update!(title: "New Title")
 
         expect(nesting_reference.reload.plain_text_cache).to eq nil
         expect(nested_reference.reload.plain_text_cache).to eq nil

@@ -129,6 +129,5 @@ class ReferenceForm
       errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.key_with_citation_year} (##{duplicate.id}).<br> To save, click "Save".
       MSG
-      true
     end
 end
