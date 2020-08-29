@@ -25,7 +25,7 @@
           =protonym.decorate.link_to_protonym
       =render 'shared/failed_soft_validations', soft_validations: protonym.soft_validations
 
--# TODO: *Very* beta.
+-# TODO: Replace with hybrid history items.
 -cleanup_taxon = Taxa::CleanupTaxon.new(taxon)
 -if cleanup_taxon.combination_in_according_to_history_items.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
@@ -46,8 +46,8 @@
               =ndash
               this page
             -else
-              -# TODO: This depends on `belongs_to :genus` being defined in `Taxon`, which we don't want.
-              -obsolete_combinations_in_genus = taxon.obsolete_combinations.where(genus: oc_per_item)
+              -# NOTE: `genus_id` is used instead of `genus` because `obsolete_combinations` are `Taxon` instances.
+              -obsolete_combinations_in_genus = taxon.obsolete_combinations.where(genus_id: oc_per_item.id)
               -if obsolete_combinations_in_genus.present?
                 %ul.no-bullet
                   -obsolete_combinations_in_genus.each do |obsolete_combination_in_genus|

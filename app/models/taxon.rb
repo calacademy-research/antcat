@@ -9,9 +9,6 @@ class Taxon < ApplicationRecord
     to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do
-    # TODO: `belongs_to :genus` should not be here, but at least used to be required for the advanced search.
-    # Now it's also used in the editors's sidebar (Ctrl+F "belongs_to :genus").
-    belongs_to :genus, optional: true
     belongs_to :homonym_replaced_by, optional: true
     belongs_to :current_taxon, optional: true
 
