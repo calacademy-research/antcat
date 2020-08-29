@@ -12,11 +12,9 @@ describe Api::V1::NamesController, as: :visitor do
           {
             "family_name" => {
               "id" => name.id,
-              "auto_generated" => name.auto_generated,
               "epithet" => name.epithet,
               "gender" => name.gender,
               "name" => 'Formicidae',
-              "nonconforming_name" => name.nonconforming_name,
 
               "created_at" => name.created_at.as_json,
               "updated_at" => name.updated_at.as_json
@@ -38,11 +36,9 @@ describe Api::V1::NamesController, as: :visitor do
         {
           "family_name" => {
             "id" => name.id,
-            "auto_generated" => name.auto_generated,
             "epithet" => name.epithet,
             "gender" => name.gender,
             "name" => 'Formicidae',
-            "nonconforming_name" => name.nonconforming_name,
 
             "created_at" => name.created_at.as_json,
             "updated_at" => name.updated_at.as_json

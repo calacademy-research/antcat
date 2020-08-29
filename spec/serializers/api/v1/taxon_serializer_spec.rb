@@ -11,7 +11,6 @@ describe Api::V1::TaxonSerializer do
         {
           "species" => {
             "id" => taxon.id,
-            "auto_generated" => false,
             "collective_group_name" => false,
             "current_taxon_id" => nil,
             "family_id" => nil,

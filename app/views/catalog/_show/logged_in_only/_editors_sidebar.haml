@@ -106,10 +106,6 @@
       %li
         Original combination
         =antcat_icon 'check'
-    -if taxon.auto_generated?
-      %li
-        Auto-generated
-        =antcat_icon 'check'
     %li Created at: #{l taxon.created_at, format: :ymd}
     %li Updated at: #{l taxon.updated_at, format: :ymd}
 
