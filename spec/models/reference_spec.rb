@@ -155,45 +155,6 @@ describe Reference do
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
       end
     end
-
-    describe "updating author names" do
-      context "when an author name is added" do
-        let(:reference) { create :any_reference, author_names: [fisher] }
-
-        it "updates its `author_names_string`" do
-          reference.author_names << ward
-          expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
-        end
-
-        it "maintains the order in which they were added" do
-          wilden = create :author_name, name: 'Wilden'
-          reference.author_names << wilden
-          reference.author_names << ward
-
-          expect(reference.author_names_string).to eq 'Fisher, B.L.; Wilden; Ward, P.S.'
-        end
-      end
-
-      context "when an author_name is removed" do
-        let(:reference) { create :any_reference, author_names: [fisher, ward] }
-
-        it "updates its `author_names_string`" do
-          expect { reference.author_names.delete(ward) }.
-            to change { reference.reload.author_names_string }.
-            from('Fisher, B.L.; Ward, P.S.').to('Fisher, B.L.')
-        end
-      end
-
-      context "when an author name is changed" do
-        let(:reference) { create :any_reference, author_names: [ward] }
-
-        it "updates its `author_names_string`" do
-          expect { ward.update!(name: 'Fisher') }.
-            to change { reference.reload.author_names_string }.
-            from('Ward, P.S.').to('Fisher')
-        end
-      end
-    end
   end
 
   describe "#author_names_string_with_suffix" do
@@ -205,6 +166,22 @@ describe Reference do
 
       it "includes the `author_names_suffix` after the author names" do
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
+      end
+    end
+  end
+
+  describe "#refresh_author_names_cache!" do
+    context "when an author name is added" do
+      let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
+      let(:ward) { create :author_name, name: 'Ward, P.S.' }
+      let(:reference) { create :any_reference, author_names: [fisher] }
+
+      it "updates its `author_names_string`" do
+        reference.author_names << ward
+
+        expect { reference.refresh_author_names_cache! }.
+          to change { reference.reload.author_names_string }.
+          from('Fisher, B.L.').to('Fisher, B.L.; Ward, P.S.')
       end
     end
   end

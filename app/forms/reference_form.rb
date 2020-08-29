@@ -52,6 +52,7 @@ class ReferenceForm
         set_publisher if reference.is_a? ::BookReference
 
         reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
+        reference.refresh_author_names_cache
         cleanup_bolton_key
 
         # Raise if there are errors, since `#save!` clears errors before validating.
@@ -94,7 +95,7 @@ class ReferenceForm
 
       # TODO: Clearing author names creates more `PaperTrail::Version` than needed, but
       # `reference_author_names.position` was not being reset when this was removed. See specs.
-      reference.author_names.clear
+      reference.author_names.destroy_all
       params[:author_names] = author_names
     end
 
@@ -129,6 +130,5 @@ class ReferenceForm
       errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
         This may be a duplicate of #{duplicate.key_with_citation_year} (##{duplicate.id}).<br> To save, click "Save".
       MSG
-      true
     end
 end

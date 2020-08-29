@@ -78,10 +78,7 @@ describe ReferenceForm do
             }
           end
 
-          # TODO: Code was changed to make the spec pass, but that introduced a regression where
-          # the `reference_author_names.position` was not reset (which `reference.author_names.clear` did).
-          # See also "reversing author names".
-          xit "creates a single version for the reference" do
+          it "creates a single version for the reference" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
                 to change { reference.versions.count }.by(1)
@@ -95,9 +92,7 @@ describe ReferenceForm do
           end
         end
 
-        # TODO: Spec was added after a regression was introduced.
-        # See also "creates a single version for the reference".
-        describe "reordering author names" do
+        describe "reordering author names (regression test)" do
           let!(:author_names) do
             [
               create(:author_name, name: "Batiatus, B."),
@@ -105,7 +100,7 @@ describe ReferenceForm do
             ]
           end
           let!(:reference) { create :article_reference, author_names: author_names }
-          # TODO: Being extra explicit here since the class mutates the `params`.
+          # TODO: Being extra explicit here since the class mutates `params`.
           let(:original_author_names_string) { 'Batiatus, B.; Glaber, G.' }
           let(:reversed_author_names_string) { 'Glaber, G.; Batiatus, B.' }
           let(:reverse_authors_params) do
@@ -137,11 +132,24 @@ describe ReferenceForm do
             }
           end
 
-          # TODO: We may want this. See `after_add: :refresh_author_names_caches`.
-          xit "creates a single version for the reference" do
+          it "creates a single version for the reference" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
                 to change { reference.versions.count }.by(1)
+            end
+          end
+
+          it "creates 'create' versions for the added `ReferenceAuthorName`s" do
+            with_versioning do
+              expect { described_class.new(reference, params).save }.
+                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: "create").count }.by(3)
+            end
+          end
+
+          it "creates 'destroy' versions for the removed `ReferenceAuthorName`s" do
+            with_versioning do
+              expect { described_class.new(reference, params).save }.
+                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: "destroy").count }.by(1)
             end
           end
 
@@ -208,7 +216,16 @@ describe ReferenceForm do
         end
 
         context 'when a `file` or `url` is given' do
-          let!(:reference) { build :article_reference }
+          let!(:journal) { create :journal }
+          let!(:reference) do
+            ArticleReference.new(
+              pagination: '12',
+              title: 'Ants',
+              citation_year: '2000',
+              series_volume_issue: '123',
+              journal: journal
+            )
+          end
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
@@ -219,6 +236,10 @@ describe ReferenceForm do
                 public: '1'
               }
             }
+          end
+
+          specify do
+            expect(described_class.new(reference, params).save).to eq true
           end
 
           it 'creates a reference (test spec)`' do
@@ -246,12 +267,16 @@ describe ReferenceForm do
         end
 
         context 'when reference has a document' do
-          let!(:reference) { create :article_reference, :with_document }
+          let!(:reference) { create :article_reference }
+          let!(:reference_document) { create :reference_document, reference: reference }
 
           it 'does not create a new `ReferenceDocument`s' do
             expect(ReferenceDocument.count).to eq 1
+            expect(reference.document).to eq reference_document
+
             expect { described_class.new(reference, params).save }.
               to change { reference.reload.title }.to(params[:title])
+
             expect(ReferenceDocument.count).to eq 1
           end
         end
@@ -275,7 +300,7 @@ describe ReferenceForm do
     end
 
     describe "duplicate checking" do
-      let!(:original) { create :article_reference, :with_author_name }
+      let!(:original) { create :article_reference, author_string: 'Fisher' }
       let(:params) do
         {
           author_names_string: original.author_names_string,
@@ -286,7 +311,7 @@ describe ReferenceForm do
           pagination: original.pagination
         }
       end
-      let!(:duplicate) { create :article_reference, author_names: original.author_names }
+      let!(:duplicate) { create :article_reference, author_string: 'Fisher' }
 
       context 'when duplicates are ignored' do
         it "allows a duplicate record to be saved" do
