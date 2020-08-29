@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Remove old column.
-#   rails g migration RemoveNomenNudumFromTaxa
-#   remove_column :taxa, :nomen_nudum, :boolean, default: nil, null: false
-
 class AddNomenNudumToProtonyms < ActiveRecord::Migration[6.0]
   def change
     add_column :protonyms, :nomen_nudum, :boolean, default: false, null: false
