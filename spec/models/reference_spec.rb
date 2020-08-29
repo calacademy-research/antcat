@@ -208,4 +208,20 @@ describe Reference do
       end
     end
   end
+
+  describe "#refresh_author_names_cache!" do
+    context "when an author name is added" do
+      let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
+      let(:ward) { create :author_name, name: 'Ward, P.S.' }
+      let(:reference) { create :any_reference, author_names: [fisher] }
+
+      it "updates its `author_names_string`" do
+        reference.author_names << ward
+
+        expect { reference.refresh_author_names_cache! }.
+          to change { reference.reload.author_names_string }.
+          from('Fisher, B.L.').to('Fisher, B.L.; Ward, P.S.')
+      end
+    end
+  end
 end

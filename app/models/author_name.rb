@@ -35,7 +35,7 @@ class AuthorName < ApplicationRecord
 
     def invalidate_reference_caches
       references.reload.find_each do |reference|
-        reference.refresh_author_names_cache
+        reference.refresh_author_names_cache!
         References::Cache::Invalidate[reference]
       end
     end
