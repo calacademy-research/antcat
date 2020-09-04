@@ -208,6 +208,9 @@ Rails:
 Rails/ActiveRecordCallbacksOrder:
   Enabled: true
 
+Rails/AfterCommitOverride:
+  Enabled: true
+
 Rails/BulkChangeTable:
   Enabled: false
 
@@ -249,6 +252,9 @@ Rails/OutputSafety:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Rails/ReflectionClassName:
+  Enabled: false
+
 Rails/RenderInline:
   Enabled: true
 
@@ -262,8 +268,15 @@ Rails/SkipsModelValidations:
 Rails/ShortI18n:
   Enabled: true
 
+# TODO: Enable.
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+
 Rails/WhereExists:
   Enabled: false
+
+Rails/WhereNot:
+  Enabled: true
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:
@@ -307,6 +320,9 @@ Performance/AncestorsInclude:
 Performance/BigDecimalWithNumericArgument:
   Enabled: true
 
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+
 Performance/DeletePrefix:
   Enabled: true
 
@@ -332,6 +348,9 @@ Performance/Squeeze:
   Enabled: true
 
 Performance/StringInclude:
+  Enabled: true
+
+Performance/Sum:
   Enabled: true
 
 ### Style.
