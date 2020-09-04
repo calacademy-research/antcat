@@ -9,6 +9,7 @@ class Name < ApplicationRecord
     'ab.',       # abberratio.
     'f.',        # forma, form.
     'f.interm.', # forma?
+    'form.',     # forma.
     'm.',
     'morph.',    # morpha.
     'n.',        # natio.

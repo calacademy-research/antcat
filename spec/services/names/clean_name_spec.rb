@@ -18,12 +18,38 @@ describe Names::CleanName do
       it 'removes words in parentheses' do
         expect(described_class['Formica (Hypochira) subspinosa']).to eq 'Formica subspinosa'
       end
-    end
 
-    it 'removes known ranks abbreviations (full words, case insensitive)' do
-      expect(described_class['Formica fusca var. flavus']).to eq 'Formica fusca flavus'
-      expect(described_class['Formica fusca Var. flavus']).to eq 'Formica fusca flavus'
-      expect(described_class['Formica fusca avar. flavus']).to eq 'Formica fusca avar. flavus'
+      describe 'rank abbreviations' do
+        it 'removes known rank abbreviations (full words, case insensitive)' do
+          expect(described_class['Formica fusca var. flavus']).to eq 'Formica fusca flavus'
+          expect(described_class['Formica fusca Var. flavus']).to eq 'Formica fusca flavus'
+          expect(described_class['Formica fusca avar. flavus']).to eq 'Formica fusca avar. flavus'
+        end
+
+        describe 'known rank abbreviations' do
+          %w[
+            ab.
+            f.
+            f.interm.
+            form.
+            m.
+            morph.
+            n.
+            nat.
+            r.
+            ssp.
+            st.
+            subp.
+            subsp.
+            v.
+            var.
+          ].each do |rank_abbreviation|
+            it "considers '#{rank_abbreviation}' a known rank abbreviation" do
+              expect(described_class["Formica fusca #{rank_abbreviation} flavus"]).to eq 'Formica fusca flavus'
+            end
+          end
+        end
+      end
     end
 
     it 'handles all of the above at the same time!' do
