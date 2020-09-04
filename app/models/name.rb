@@ -106,7 +106,7 @@ class Name < ApplicationRecord
       expected = Rank.number_of_name_parts(taxon_type)
       return if cleaned_name_parts.size == expected
 
-      errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part)"
+      errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part and rank abbreviations)"
     end
 
     def ensure_starts_with_upper_case_letter
