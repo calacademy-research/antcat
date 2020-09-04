@@ -25,7 +25,10 @@
       %table.unstriped
         %tbody
           %tr
-            %th=f.label :name
+            %th.no-wrap
+              =f.label :name do
+                Name
+                =db_tooltip_icon "rank_abbreviations", scope: :protonyms
             %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: name.id }
           %tr
             %td
