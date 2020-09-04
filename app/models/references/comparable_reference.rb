@@ -6,6 +6,7 @@ module References
       ['i',  1], ['ii',  2], ['iii',  3], ['iv', 4], ['v', 5],
       ['vi', 6], ['vii', 7], ['viii', 8], ['ix', 9], ['x', 10]
     ]
+    PARENTHESIZED_TAXON_NAMES_TO_REMOVE = ['Formicidae', 'Hymenoptera']
 
     delegate :type, :year, :pagination, :series_volume_issue, to: :reference
 
@@ -56,7 +57,7 @@ module References
 
         possible_taxon_names = match.to_s.strip.gsub(/[(),:]/, '').split(' ')
         any_taxon_names = possible_taxon_names.any? do |word|
-          ['Formicidae', 'Hymenoptera'].include? word
+          PARENTHESIZED_TAXON_NAMES_TO_REMOVE.include?(word)
         end
         string[match.begin(0)..(match.end(0) - 1)] = '' if any_taxon_names
         string

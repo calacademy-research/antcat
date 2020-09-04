@@ -101,10 +101,16 @@ Lint/BinaryOperatorWithIdenticalOperands:
 Lint/DuplicateElsifCondition:
   Enabled: true
 
+Lint/DuplicateRequire:
+  Enabled: true
+
 Lint/DuplicateRescueException:
   Enabled: true
 
 Lint/EmptyConditionalBody:
+  Enabled: true
+
+Lint/EmptyFile:
   Enabled: true
 
 Lint/FloatComparison:
@@ -137,12 +143,18 @@ Lint/StructNewOverride:
 Lint/TopLevelReturnWithArgument:
   Enabled: true
 
+Lint/TrailingCommaInAttributeDeclaration:
+  Enabled: true
+
 Lint/UnreachableLoop:
   Enabled: true
 
 Lint/UselessAccessModifier:
   MethodCreatingMethods:
     - delegate
+
+Lint/UselessMethodDefinition:
+  Enabled: false
 
 # Metrics.
 
@@ -196,6 +208,9 @@ Rails:
 Rails/ActiveRecordCallbacksOrder:
   Enabled: true
 
+Rails/AfterCommitOverride:
+  Enabled: true
+
 Rails/BulkChangeTable:
   Enabled: false
 
@@ -237,6 +252,9 @@ Rails/OutputSafety:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Rails/ReflectionClassName:
+  Enabled: false
+
 Rails/RenderInline:
   Enabled: true
 
@@ -250,8 +268,15 @@ Rails/SkipsModelValidations:
 Rails/ShortI18n:
   Enabled: true
 
+# TODO: Enable.
+Rails/SquishedSQLHeredocs:
+  Enabled: false
+
 Rails/WhereExists:
   Enabled: false
+
+Rails/WhereNot:
+  Enabled: true
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:
@@ -295,6 +320,9 @@ Performance/AncestorsInclude:
 Performance/BigDecimalWithNumericArgument:
   Enabled: true
 
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+
 Performance/DeletePrefix:
   Enabled: true
 
@@ -320,6 +348,9 @@ Performance/Squeeze:
   Enabled: true
 
 Performance/StringInclude:
+  Enabled: true
+
+Performance/Sum:
   Enabled: true
 
 ### Style.
@@ -352,6 +383,9 @@ Style/ClassCheck:
   EnforcedStyle: is_a?
 
 Style/CollectionMethods:
+  Enabled: true
+
+Style/CombinableLoops:
   Enabled: true
 
 Style/CommentAnnotation:
@@ -406,6 +440,9 @@ Style/HashTransformValues:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/KeywordParametersOrder:
+  Enabled: true
+
 Style/Lambda:
   Enabled: false
 
@@ -442,6 +479,9 @@ Style/RedundantRegexpCharacterClass:
 Style/RedundantRegexpEscape:
   Enabled: true
 
+Style/RedundantSelfAssignment:
+  Enabled: true
+
 Style/ReturnNil:
   Enabled: true
 
@@ -453,6 +493,9 @@ Style/SingleArgumentDig:
 
 Style/SlicingWithRange:
   Enabled: true
+
+Style/SoleNestedConditional:
+  Enabled: false
 
 Style/StderrPuts:
   Enabled: true
