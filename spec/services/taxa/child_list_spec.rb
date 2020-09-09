@@ -13,8 +13,8 @@ describe Taxa::ChildList do
         specify do
           expect(described_class[family]).to eq(
             [
-              { label: "Subfamilies of Formicidae", children: [Subfamily.first] },
-              { label: "Genera <i>incertae sedis</i> in Formicidae", children: [taxon] }
+              { label: "Subfamilies of #{family.name_cache}", children: [Subfamily.first] },
+              { label: "Genera <i>incertae sedis</i> in #{family.name_cache}", children: [taxon] }
             ]
           )
         end
