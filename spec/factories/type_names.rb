@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :type_name do
     association :taxon, factory: :family
+
     by_monotypy
   end
 

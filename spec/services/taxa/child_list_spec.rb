@@ -8,13 +8,13 @@ describe Taxa::ChildList do
       let!(:family) { create :family }
 
       context "when children are genera incertae sedis in Formicidae" do
-        let!(:taxon) { create :genus, :incertae_sedis_in_family, subfamily: nil }
+        let!(:taxon) { create :genus, :incertae_sedis_in_family }
 
         specify do
           expect(described_class[family]).to eq(
             [
-              { label: "Subfamilies of Formicidae", children: [Subfamily.first] },
-              { label: "Genera <i>incertae sedis</i> in Formicidae", children: [taxon] }
+              { label: "Subfamilies of #{family.name_cache}", children: [Subfamily.first] },
+              { label: "Genera <i>incertae sedis</i> in #{family.name_cache}", children: [taxon] }
             ]
           )
         end

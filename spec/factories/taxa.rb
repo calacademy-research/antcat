@@ -21,59 +21,91 @@ FactoryBot.define do
 
     factory :family, class: Rank::FAMILY.to_s, aliases: [:any_taxon] do
       association :name, factory: :family_name
+
       genus_group_name_protonym
     end
 
     factory :subfamily, class: Rank::SUBFAMILY.to_s do
       association :name, factory: :subfamily_name
+
       genus_group_name_protonym
+      without_family
+
+      trait :with_family do
+        family
+      end
+
+      trait :without_family do
+        family { nil }
+      end
     end
 
     factory :tribe, class: Rank::TRIBE.to_s do
       association :name, factory: :tribe_name
-      genus_group_name_protonym
       subfamily
+
+      genus_group_name_protonym
     end
 
     factory :subtribe, class: Rank::SUBTRIBE.to_s do
       association :name, factory: :subtribe_name
-      genus_group_name_protonym
       tribe
       subfamily { |taxon| taxon.tribe.subfamily }
+
+      genus_group_name_protonym
     end
 
     factory :genus, class: Rank::GENUS.to_s do
       association :name, factory: :genus_name
-      genus_group_name_protonym
       tribe
       subfamily { |taxon| taxon.tribe&.subfamily }
+
+      genus_group_name_protonym
+
+      trait :incertae_sedis_in_family do
+        incertae_sedis_in { Rank::FAMILY }
+        subfamily { nil }
+      end
+
+      trait :incertae_sedis_in_subfamily do
+        incertae_sedis_in { Rank::SUBFAMILY }
+      end
     end
 
     factory :subgenus, class: Rank::SUBGENUS.to_s do
       association :name, factory: :subgenus_name
-      genus_group_name_protonym
       genus
+
+      genus_group_name_protonym
     end
 
     factory :species, class: Rank::SPECIES.to_s do
       association :name, factory: :species_name
-      species_group_name_protonym
       genus
+
+      species_group_name_protonym
+
+      trait :incertae_sedis_in_family do
+        incertae_sedis_in { Rank::FAMILY }
+        subfamily { nil }
+      end
     end
 
     factory :subspecies, class: Rank::SUBSPECIES.to_s do
       association :name, factory: :subspecies_name
-      species_group_name_protonym
       species
       genus
+
+      species_group_name_protonym
     end
 
     factory :infrasubspecies, class: Rank::INFRASUBSPECIES.to_s do
       association :name, factory: :infrasubspecies_name
-      species_group_name_protonym
       subspecies
       species
       genus
+
+      species_group_name_protonym
     end
 
     # Statuses.
@@ -83,6 +115,7 @@ FactoryBot.define do
 
     trait :synonym do
       status { Status::SYNONYM }
+
       with_current_taxon
     end
 
@@ -93,6 +126,7 @@ FactoryBot.define do
 
     trait :obsolete_combination do
       status { Status::OBSOLETE_COMBINATION }
+
       with_current_taxon
     end
 
@@ -123,14 +157,6 @@ FactoryBot.define do
 
     trait :original_combination do
       original_combination { true }
-    end
-
-    trait :incertae_sedis_in_family do
-      incertae_sedis_in { Rank::FAMILY }
-    end
-
-    trait :incertae_sedis_in_subfamily do
-      incertae_sedis_in { Rank::SUBFAMILY }
     end
 
     # Misc.

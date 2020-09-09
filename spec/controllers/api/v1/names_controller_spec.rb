@@ -14,7 +14,7 @@ describe Api::V1::NamesController, as: :visitor do
               "id" => name.id,
               "epithet" => name.epithet,
               "gender" => name.gender,
-              "name" => 'Formicidae',
+              "name" => name.name,
 
               "created_at" => name.created_at.as_json,
               "updated_at" => name.updated_at.as_json
@@ -28,7 +28,7 @@ describe Api::V1::NamesController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:name) { create :family_name, name: 'Formicidae' }
+    let!(:name) { create :family_name }
 
     specify do
       get :show, params: { id: name.id }
@@ -38,7 +38,7 @@ describe Api::V1::NamesController, as: :visitor do
             "id" => name.id,
             "epithet" => name.epithet,
             "gender" => name.gender,
-            "name" => 'Formicidae',
+            "name" => name.name,
 
             "created_at" => name.created_at.as_json,
             "updated_at" => name.updated_at.as_json

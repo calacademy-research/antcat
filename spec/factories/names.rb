@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :name do
     factory :family_name, class: 'FamilyName' do
-      name { 'Formicidae' }
+      sequence(:name, 'a') { |n| "Family#{n}" }
     end
 
     factory :subfamily_name, class: 'SubfamilyName' do

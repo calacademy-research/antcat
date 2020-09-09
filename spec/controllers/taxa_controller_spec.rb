@@ -195,7 +195,7 @@ describe TaxaController do
   end
 
   describe "PUT update", as: :editor do
-    let!(:taxon) { create :subfamily, family: create(:family) }
+    let!(:taxon) { create :subfamily }
     let!(:taxon_params) do
       {
         status:  Status::EXCLUDED_FROM_FORMICIDAE
@@ -219,7 +219,7 @@ describe TaxaController do
   end
 
   describe "DELETE destroy", as: :editor do
-    let!(:taxon) { create :subfamily, family: create(:family) }
+    let!(:taxon) { create :subfamily, :with_family }
 
     it 'deletes the taxon' do
       expect { delete(:destroy, params: { id: taxon.id }) }.to change { Taxon.count }.by(-1)

@@ -43,7 +43,7 @@ describe Exporters::Antweb::TaxonAttributes do
     end
 
     describe "[13]: `current valid name`" do
-      context "when taxon dhas no `current_taxon`" do
+      context "when taxon has no `current_taxon`" do
         let(:taxon) { create :genus }
 
         specify { expect(described_class[taxon][:current_valid_name]).to eq nil }
@@ -92,7 +92,7 @@ describe Exporters::Antweb::TaxonAttributes do
           recombination.save!
         end
 
-        it "is the protonym" do
+        it "returns the protonym" do
           expect(described_class[recombination][:was_original_combination]).to eq original_combination.name.name
         end
       end
@@ -178,7 +178,7 @@ describe Exporters::Antweb::TaxonAttributes do
     describe "[18]: `reference id`" do
       let(:taxon) { create :family }
 
-      it "sends the protonym's reference ID" do
+      it "returns the ID of the protonym's authorship reference" do
         expect(described_class[taxon][:reference_id]).to eq taxon.authorship_reference.id
       end
     end
@@ -208,8 +208,20 @@ describe Exporters::Antweb::TaxonAttributes do
       let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
 
       context 'when taxon is a subfamily' do
-        it "doesn't punt on a subfamily's family" do
-          expect(described_class[subfamily][:current_valid_parent]).to eq 'Formicidae'
+        context 'when subfamily has no family' do
+          let(:subfamily) { create :subfamily, :without_family }
+
+          it "defaults to Formicidae" do
+            expect(described_class[subfamily][:current_valid_parent]).to eq 'Formicidae'
+          end
+        end
+
+        context 'when subfamily has a family' do
+          let(:subfamily) { create :subfamily, :with_family }
+
+          it "returns the family" do
+            expect(described_class[subfamily][:current_valid_parent]).to eq subfamily.family.name_cache
+          end
         end
       end
 
@@ -222,6 +234,14 @@ describe Exporters::Antweb::TaxonAttributes do
       end
 
       context 'when taxon is a genus' do
+        context 'when genus has no subfamily' do
+          let(:taxon) { create :genus, tribe: nil, subfamily: nil }
+
+          it "defaults to Formicidae" do
+            expect(described_class[taxon][:current_valid_parent]).to eq 'Formicidae'
+          end
+        end
+
         context 'when genus has a tribe' do
           let(:taxon) { create :genus, tribe: tribe }
 
@@ -267,14 +287,6 @@ describe Exporters::Antweb::TaxonAttributes do
         end
 
         specify { expect(described_class[taxon][:current_valid_parent]).to eq senior.name_cache }
-      end
-
-      context 'when taxon is a genus without a subfamily' do
-        let(:taxon) { create :genus, tribe: nil, subfamily: nil }
-
-        it "defaults to Formicidae" do
-          expect(described_class[taxon][:current_valid_parent]).to eq 'Formicidae'
-        end
       end
     end
   end
