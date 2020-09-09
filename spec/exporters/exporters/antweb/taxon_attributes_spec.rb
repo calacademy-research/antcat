@@ -5,6 +5,12 @@ require 'rails_helper'
 describe Exporters::Antweb::TaxonAttributes do
   include AntwebTestLinksHelpers
 
+  describe 'constants' do
+    specify do
+      expect(described_class::FORMICIDAE).to eq 'Formicidae'
+    end
+  end
+
   describe "#call" do
     describe "[0]: `antcat_id`" do
       let(:taxon) { create :family }
@@ -212,7 +218,7 @@ describe Exporters::Antweb::TaxonAttributes do
           let(:subfamily) { create :subfamily, :without_family }
 
           it "defaults to Formicidae" do
-            expect(described_class[subfamily][:current_valid_parent]).to eq 'Formicidae'
+            expect(described_class[subfamily][:current_valid_parent]).to eq described_class::FORMICIDAE
           end
         end
 
@@ -238,7 +244,7 @@ describe Exporters::Antweb::TaxonAttributes do
           let(:taxon) { create :genus, tribe: nil, subfamily: nil }
 
           it "defaults to Formicidae" do
-            expect(described_class[taxon][:current_valid_parent]).to eq 'Formicidae'
+            expect(described_class[taxon][:current_valid_parent]).to eq described_class::FORMICIDAE
           end
         end
 
