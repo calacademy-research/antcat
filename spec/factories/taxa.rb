@@ -52,6 +52,15 @@ FactoryBot.define do
       subfamily { |taxon| taxon.tribe&.subfamily }
 
       genus_group_name_protonym
+
+      trait :incertae_sedis_in_family do
+        incertae_sedis_in { Rank::FAMILY }
+        subfamily { nil }
+      end
+
+      trait :incertae_sedis_in_subfamily do
+        incertae_sedis_in { Rank::SUBFAMILY }
+      end
     end
 
     factory :subgenus, class: Rank::SUBGENUS.to_s do
@@ -66,6 +75,11 @@ FactoryBot.define do
       genus
 
       species_group_name_protonym
+
+      trait :incertae_sedis_in_family do
+        incertae_sedis_in { Rank::FAMILY }
+        subfamily { nil }
+      end
     end
 
     factory :subspecies, class: Rank::SUBSPECIES.to_s do
@@ -134,14 +148,6 @@ FactoryBot.define do
 
     trait :original_combination do
       original_combination { true }
-    end
-
-    trait :incertae_sedis_in_family do
-      incertae_sedis_in { Rank::FAMILY }
-    end
-
-    trait :incertae_sedis_in_subfamily do
-      incertae_sedis_in { Rank::SUBFAMILY }
     end
 
     # Misc.
