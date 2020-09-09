@@ -54,8 +54,8 @@ module Exporters
         end
 
         def current_valid_name
-          return unless (current_valid_name = taxon.current_taxon&.name&.name)
-          "#{taxonomic_attributes[:subfamily]} #{current_valid_name}"
+          return unless (current_valid_name_name = taxon.current_taxon&.name&.name)
+          "#{taxonomic_attributes[:subfamily]} #{current_valid_name_name}"
         end
 
         def original_combination

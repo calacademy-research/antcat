@@ -3,15 +3,15 @@
 require 'rails_helper'
 
 describe Exporters::Antweb::TaxonomicAttributes do
-  describe "#call" do
-    describe 'constants' do
-      specify do
-        expect(described_class::INCERTAE_SEDIS).to eq 'incertae_sedis'
-        expect(described_class::FORMICIDAE).to eq 'Formicidae'
-      end
+  describe 'constants' do
+    specify do
+      expect(described_class::INCERTAE_SEDIS).to eq 'incertae_sedis'
+      expect(described_class::FORMICIDAE).to eq 'Formicidae'
     end
+  end
 
-    describe "[1-6]: `subfamily`, ``tribe, `genus`, `subgenus`, `species` and `subspecies`" do
+  describe "#call" do
+    describe "[1-6]: `subfamily`, `tribe, `genus`, `subgenus`, `species` and `subspecies`" do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
 
