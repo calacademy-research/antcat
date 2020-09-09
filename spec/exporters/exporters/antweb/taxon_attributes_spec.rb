@@ -208,8 +208,20 @@ describe Exporters::Antweb::TaxonAttributes do
       let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
 
       context 'when taxon is a subfamily' do
-        it "doesn't punt on a subfamily's family" do
-          expect(described_class[subfamily][:current_valid_parent]).to eq 'Formicidae'
+        context 'when subfamily has no family' do
+          let(:subfamily) { create :subfamily, :without_family }
+
+          it "defaults to Formicidae" do
+            expect(described_class[subfamily][:current_valid_parent]).to eq 'Formicidae'
+          end
+        end
+
+        context 'when subfamily has a family' do
+          let(:subfamily) { create :subfamily, :with_family }
+
+          it "returns the family" do
+            expect(described_class[subfamily][:current_valid_parent]).to eq subfamily.family.name_cache
+          end
         end
       end
 

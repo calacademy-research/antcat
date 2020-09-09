@@ -29,6 +29,15 @@ FactoryBot.define do
       association :name, factory: :subfamily_name
 
       genus_group_name_protonym
+      without_family
+
+      trait :with_family do
+        family
+      end
+
+      trait :without_family do
+        family { nil }
+      end
     end
 
     factory :tribe, class: Rank::TRIBE.to_s do
