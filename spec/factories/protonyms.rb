@@ -9,6 +9,7 @@ FactoryBot.define do
     end
 
     authorship factory: :citation
+
     genus_group_name
 
     trait :fossil do

@@ -6,8 +6,7 @@ FactoryBot.define do
     sequence(:title) { |n| "Issue #{n}" }
     sequence(:description) { |n| "About Joffre's issue #{n}" }
 
-    trait :open do
-    end
+    trait :open
 
     trait :closed do
       open { false }

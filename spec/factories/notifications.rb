@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :notification do
     user
     association :notifier, factory: :user
+
     mentioned_in_thing
 
     trait :unread
