@@ -1,0 +1,45 @@
+linters:
+  AltText:
+    enabled: true
+
+  # TODO: Probably enable.
+  ClassesBeforeIds:
+    enabled: false
+
+  ConsecutiveComments:
+    enabled: false
+
+  ConsecutiveSilentScripts:
+    enabled: false
+
+  IdNames:
+    enabled: false
+
+  # TODO: Probably enable.
+  InlineStyles:
+    enabled: false
+
+  LineLength:
+    enabled: false
+
+  # TODO: Maybe enable.
+  RepeatedId:
+    enabled: false
+
+  # TODO: Investigate.
+  RuboCop:
+    enabled: false
+
+  SpaceBeforeScript:
+    enabled: false
+
+  SpaceInsideHashAttributes:
+    enabled: false
+
+  # TODO: Investigate.
+  UnnecessaryStringOutput:
+    enabled: false
+
+  # TODO: Maybe enable.
+  ViewLength:
+    enabled: false

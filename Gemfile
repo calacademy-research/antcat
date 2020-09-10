@@ -63,6 +63,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
   gem 'rubocop', '0.90', require: false
