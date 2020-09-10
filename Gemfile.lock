@@ -269,6 +269,11 @@ GEM
       haml (>= 4.0.6, < 6.0)
       html2haml (>= 1.0.1)
       railties (>= 5.1)
+    haml_lint (0.35.0)
+      haml (>= 4.0, < 5.2)
+      rainbow
+      rubocop (>= 0.50.0)
+      sysexits (~> 1.1)
     hashdiff (1.0.1)
     high_voltage (3.1.2)
     html2haml (2.2.0)
@@ -498,6 +503,7 @@ GEM
     sunspot_test (0.4.1)
       sunspot_rails (>= 2.1.1)
       sunspot_solr
+    sysexits (1.2.0)
     tabulo (2.6.1)
       tty-screen (= 0.8.1)
       unicode-display_width (= 1.7.0)
@@ -574,6 +580,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   haml-rails
+  haml_lint
   high_voltage
   jquery-atwho-rails
   jquery-rails
