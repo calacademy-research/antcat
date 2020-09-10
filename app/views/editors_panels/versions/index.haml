@@ -20,7 +20,7 @@
     .small-6.medium-4.large-2.columns
       =f.text_field :q, value: params[:q], placeholder: "Search query"
     .small-6.medium-4.large-2.columns.end
-      =button_tag "Filter", type: "submit", name: nil, class: "btn-normal"
+      =f.submit "Filter", name: nil, class: "btn-normal"
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 

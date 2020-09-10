@@ -7,7 +7,7 @@
     %h5 Content from Bolton
     =form_with url: bolton_keys_to_ref_tags_path do
       =f.text_area :bolton_content, value: params[:bolton_content]
-      =button_tag "Convert", class: "btn-normal"
+      =f.submit "Convert", class: "btn-normal"
 
   .medium-4.columns
     %h5 With AntCat ref tags
