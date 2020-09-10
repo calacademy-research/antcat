@@ -177,6 +177,7 @@ Rails.application.routes.draw do
     scope module: :editors_panels do
       resources :versions, only: [:index, :show]
       resource :bolton_keys_to_ref_tags, only: [:show, :create]
+      resource :restart_and_reindex_solrs, only: [:create]
     end
   end
 
