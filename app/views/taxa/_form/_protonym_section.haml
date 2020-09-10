@@ -139,7 +139,7 @@
               =protonym_form.label :biogeographic_region do
                 Biogeographic region
                 =db_tooltip_icon "type.biogeographic_region", scope: :taxa
-            %td=protonym_form.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, taxon.protonym.biogeographic_region), include_blank: true
+            %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
             %tr
               %td
