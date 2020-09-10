@@ -1,76 +1,76 @@
 -content_for :javascripts do
   =javascript_include_tag 'jquery-ui/widgets/autocomplete'
 
-=form_tag catalog_search_path, method: :get do
+=form_with url: catalog_search_path, method: :get do |f|
   .row
     .medium-2.columns
       Rank
-      =select_tag :type, options_for_select(Rank::TYPES, params[:type]), include_blank: "Any"
+      =f.select :type, options_for_select(Rank::TYPES, params[:type]), include_blank: "Any"
     .medium-2.columns
       Status
-      =select_tag :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
+      =f.select :status, options_for_select(Status::STATUSES, params[:status]), include_blank: "Any"
     .medium-2.columns
       Name...
-      =text_field_tag :name, params[:name]
+      =f.text_field :name, value: params[:name]
     .medium-2.columns
       %br
-      =select_tag :name_search_type, options_for_select([['...contains', Catalog::AdvancedSearchQuery::NAME_CONTAINS], ['...matches', Catalog::AdvancedSearchQuery::NAME_MATCHES], ['...begins with', Catalog::AdvancedSearchQuery::NAME_BEGINS_WITH]], params[:name_search_type] || Catalog::AdvancedSearchQuery::NAME_CONTAINS)
+      =f.select :name_search_type, options_for_select([['...contains', Catalog::AdvancedSearchQuery::NAME_CONTAINS], ['...matches', Catalog::AdvancedSearchQuery::NAME_MATCHES], ['...begins with', Catalog::AdvancedSearchQuery::NAME_BEGINS_WITH]], params[:name_search_type] || Catalog::AdvancedSearchQuery::NAME_CONTAINS)
     .medium-2.columns
       Genus contains
-      =text_field_tag :genus, params[:genus]
+      =f.text_field :genus, value: params[:genus]
     .medium-2.columns.end
       Epithet
-      =text_field_tag :epithet, params[:epithet]
+      =f.text_field :epithet, value: params[:epithet]
 
   .row
     .medium-2.columns
       Fossil
-      =select_tag :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
+      =f.select :fossil, yes_no_options_for_select(params[:fossil]), include_blank: "Either"
     .medium-2.columns
       Described by
-      =text_field_tag :author_name, params[:author_name], id: "author_name-js-hook"
+      =f.text_field :author_name, value: params[:author_name], id: "author_name-js-hook"
     .medium-2.columns
       Described year
-      =text_field_tag :year, params[:year], placeholder: "eg 1990, or 2000-2005"
+      =f.text_field :year, value: params[:year], placeholder: "eg 1990, or 2000-2005"
     .medium-2.columns.end
       Protonym contains
-      =text_field_tag :protonym, params[:protonym]
+      =f.text_field :protonym, value: params[:protonym]
 
   .row
     .medium-2.columns
       Biogeographic region
-      =select_tag :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + [Catalog::AdvancedSearchQuery::BIOGEOGRAPHIC_REGION_NONE], params[:biogeographic_region]), include_blank: "Any"
+      =f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + [Catalog::AdvancedSearchQuery::BIOGEOGRAPHIC_REGION_NONE], params[:biogeographic_region]), include_blank: "Any"
     .medium-2.columns
       Locality contains
-      =text_field_tag :locality, params[:locality]
+      =f.text_field :locality, value: params[:locality]
     .medium-3.columns
       Type information contains
-      =text_field_tag :type_information, params[:type_information]
+      =f.text_field :type_information, value: params[:type_information]
     .medium-2.columns
       Forms contains
-      =text_field_tag :forms, params[:forms]
+      =f.text_field :forms, value: params[:forms]
     .medium-2.columns.end
       %i Incertae sedis
       in
-      =select_tag :incertae_sedis_in, options_for_select(Rank::INCERTAE_SEDIS_IN_TYPES, params[:incertae_sedis_in]), include_blank: true
+      =f.select :incertae_sedis_in, options_for_select(Rank::INCERTAE_SEDIS_IN_TYPES, params[:incertae_sedis_in]), include_blank: true
 
   .row
     .medium-3.columns
       Unresolved junior homonym
-      =select_tag :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
+      =f.select :unresolved_homonym, yes_no_options_for_select(params[:unresolved_homonym]), include_blank: "Either"
 
     .medium-2.columns
       Collective group name
-      =select_tag :collective_group_name, yes_no_options_for_select(params[:collective_group_name]), include_blank: "Either"
+      =f.select :collective_group_name, yes_no_options_for_select(params[:collective_group_name]), include_blank: "Either"
     .medium-2.columns
       Ichnotaxon
-      =select_tag :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
+      =f.select :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
     .medium-2.columns
       %i Nomen nudum
-      =select_tag :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
+      =f.select :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
     .medium-2.columns.end
       Hong
-      =select_tag :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
+      =f.select :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
 
   .row
     .medium-2.columns.end
@@ -80,7 +80,7 @@
     .medium-3.columns
       =per_page_select Catalog::SearchesController::PER_PAGE_OPTIONS, params[:per_page]
     .medium-3.columns.end
-      =select_tag :history_items, options_for_select([['With or without history items', ''], ['Must have history items', Catalog::AdvancedSearchQuery::MUST_HAVE_HISTORY_ITEMS], ['Cannot have history items', Catalog::AdvancedSearchQuery::CANNOT_HAVE_HISTORY_ITEMS]], params[:history_items])
+      =f.select :history_items, options_for_select([['With or without history items', ''], ['Must have history items', Catalog::AdvancedSearchQuery::MUST_HAVE_HISTORY_ITEMS], ['Cannot have history items', Catalog::AdvancedSearchQuery::CANNOT_HAVE_HISTORY_ITEMS]], params[:history_items])
 
   .row
     .medium-12.columns

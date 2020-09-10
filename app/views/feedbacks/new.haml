@@ -16,17 +16,17 @@
       =external_link_to "issue tracker on GitHub", "https://github.com/calacademy-research/antcat/issues"
       (account required), but you can use this form to report bugs as well.
 
-    =form_for(@feedback, url: feedbacks_path) do |f|
+    =form_with(model: @feedback, url: feedbacks_path) do |f|
       =render "shared/errors_for", resource: @feedback
 
       -if current_user
         .row
           .medium-4.columns
-            =label_tag :name
-            =text_field_tag :name, current_user.name, disabled: true
+            =f.label :name
+            =f.text_field :name, value: current_user.name, disabled: true
           .medium-4.columns.end
-            =label_tag :email
-            =text_field_tag :email, current_user.email, disabled: true
+            =f.label :email
+            =f.text_field :email, value: current_user.email, disabled: true
       -else
         .row
           .medium-4.columns
@@ -49,4 +49,4 @@
       .row
         .medium-12.columns
           =recaptcha_v3_execute FeedbacksController::RECAPTCHA_V3_ACTION
-          =button_tag "Send Feedback", class: "btn-saves"
+          =f.submit "Send Feedback", class: "btn-saves"

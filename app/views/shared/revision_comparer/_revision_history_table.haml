@@ -9,7 +9,7 @@
     %strong User
     =render "shared/revision_comparer/revision_info_user", revision: most_recent
 -else
-  =form_tag request.original_url, method: :get, enforce_utf8: false do
+  =form_with url: request.original_url, method: :get, enforce_utf8: false do |f|
     %table.revisions
       %thead
         %tr
@@ -54,4 +54,4 @@
                 -# TODO: Move link one row up, as the `uuid` shows where a record stopped looking a certain way.
                 =link_to 'uuid', versions_path(request_uuid: revision.request_uuid), class: "btn-normal btn-tiny"
 
-    =button_tag "Compare selected revisions", name: nil, class: "btn-normal"
+    =f.submit "Compare selected revisions", name: nil, class: "btn-normal"

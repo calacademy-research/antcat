@@ -1,4 +1,4 @@
-=form_for author_name, url: url do |f|
+=form_with model: author_name, url: url do |f|
   =render "shared/errors_for", resource: author_name
   .row
     .medium-6.columns.end
@@ -11,4 +11,4 @@
 
   .row
     .medium-3.columns.end
-      =f.button 'Save', type: :submit, class: "btn-saves"
+      =f.submit 'Save', class: "btn-saves"

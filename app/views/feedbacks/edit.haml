@@ -3,7 +3,7 @@
 
 .row
   .medium-12.columns
-    =form_for(@feedback) do |f|
+    =form_with(model: @feedback) do |f|
       =render "shared/errors_for", resource: @feedback
 
       .row
@@ -20,4 +20,4 @@
       .row
         .medium-12.columns
           =edit_summary_text_field_tag
-          =button_tag "Save", class: "btn-saves"
+          =f.submit "Save", class: "btn-saves"

@@ -8,22 +8,22 @@
   -title "Activity Feed"
   -breadcrumb :activity_feed
 
-=form_tag request.path, method: :get do
+=form_with url: request.path, method: :get do |f|
   .row
     .small-6.medium-4.large-2.columns
-      =select_tag :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), prompt: 'User'
+      =f.select :user_id, options_for_select(User.active.non_hidden.order_by_name.pluck(:name, :id), params[:user_id]), prompt: 'User'
     .small-6.medium-4.large-2.columns
-      =select_tag :trackable_type, grouped_options_for_select(ActivitiesController::FILTER_TRACKABLE_TYPES_BY_GROUP.map { |group, trackable_types| [group, trackable_types] }, params[:trackable_type]), prompt: 'Trackable type'
+      =f.select :trackable_type, grouped_options_for_select(ActivitiesController::FILTER_TRACKABLE_TYPES_BY_GROUP.map { |group, trackable_types| [group, trackable_types] }, params[:trackable_type]), prompt: 'Trackable type'
     .small-6.medium-4.large-2.columns
-      =number_field_tag :trackable_id, params[:trackable_id], placeholder: 'Trackable ID'
+      =f.number_field :trackable_id, value: params[:trackable_id], placeholder: 'Trackable ID'
     .small-6.medium-4.large-2.columns
-      =select_tag :activity_action, grouped_options_for_select(Activity::ACTIONS_BY_GROUP.map { |group, actions| [group.to_s.humanize, actions.map(&:humanize).zip(actions)]}, params[:activity_action]), prompt: 'Action'
+      =f.select :activity_action, grouped_options_for_select(Activity::ACTIONS_BY_GROUP.map { |group, actions| [group.to_s.humanize, actions.map(&:humanize).zip(actions)]}, params[:activity_action]), prompt: 'Action'
     .small-6.medium-4.large-2.columns
       =check_box_tag :show_automated_edits, false, !!params[:show_automated_edits]
       Show automated?
 
     .small-6.medium-4.large-2.columns.end
-      =button_tag 'Filter', type: "submit", name: nil, class: "btn-normal"
+      =f.submit 'Filter', name: nil, class: "btn-normal"
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 

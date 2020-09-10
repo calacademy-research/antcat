@@ -12,8 +12,8 @@
 
 .row
   .small-12.columns
-    =form_tag(taxa_create_combination_path, method: :post) do
+    =form_with(url: taxa_create_combination_path, method: :post) do |f|
       =hidden_field_tag :new_parent_id, @new_parent.id
       =hidden_field_tag :target_name_string, @target_name_string
       =hidden_field_tag :species_epithet, params[:species_epithet]
-      =button_tag "Create combination", type: "submit", class: "btn-warning"
+      =f.submit "Create combination", class: "btn-warning"

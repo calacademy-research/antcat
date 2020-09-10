@@ -4,7 +4,7 @@
 -content_for :javascripts do
   =javascript_include_tag "taxon_select"
 
-=form_tag taxa_move_items_path, method: :get do
+=form_with url: taxa_move_items_path, method: :get do |f|
   .row
     .medium-6.columns
       %fieldset.fieldset
@@ -16,7 +16,7 @@
         %legend to
         =taxon_select_tag :to_taxon_id, params[:to_taxon_id] || @taxon.current_taxon&.id
         %br
-        =button_tag "Select...", type: "submit", class: "btn-normal"
+        =f.submit "Select...", class: "btn-normal"
 
 .row
   .medium-6.columns

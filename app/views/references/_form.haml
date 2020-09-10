@@ -2,7 +2,7 @@
   =javascript_include_tag 'jquery-ui/widgets/autocomplete'
   =javascript_include_tag 'controllers/references/form'
 
-=form_for reference.becomes(Reference) do |f|
+=form_with model: reference.becomes(Reference) do |f|
   =hidden_field_tag :ignore_duplicates, ('yes' if reference_form.ignore_duplicates?)
   =render 'shared/errors_for', resource: reference_form
 

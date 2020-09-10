@@ -1,7 +1,7 @@
 -title 'My account'
 -breadcrumb :my_account, resource
 
-=form_for resource, as: resource_name, url: registration_path(resource_name), html: { method: :put } do |f|
+=form_with model: resource, url: registration_path(resource_name), method: :put do |f|
   =render 'shared/errors_for', resource: resource
   .row
     .medium-6.columns
@@ -46,4 +46,4 @@
 
   .row.margin-top
     .medium-6.columns
-      =button_tag 'Save', class: "btn-saves"
+      =f.submit 'Save', class: "btn-saves"

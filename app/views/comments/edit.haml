@@ -7,14 +7,14 @@
 .row
   .medium-8.columns
     -# See also form in `comments/_form.haml`.
-    =form_for @comment do |f|
+    =form_with model: @comment do |f|
       .row
         .small-12.columns.end
           =f.text_area :body, rows: 4, placeholder: "Add comment here", data: { has_mentionables: true, has_linkables: true, previewable: true, previewable_title: "Write" }, maxlength: Comment::BODY_MAX_LENGTH
 
       .row
         .small-12.columns.end
-          =button_tag "Save edited comment", class: "btn-saves"
+          =f.submit "Save edited comment", class: "btn-saves"
 
   .medium-4.columns
     .callout

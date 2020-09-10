@@ -1,8 +1,8 @@
 .row
   .medium-6.columns
-    =form_for journal do |f|
+    =form_with model: journal do |f|
       =render 'shared/errors_for', resource: journal
       %p
         =f.label :name, 'Journal name'
         =f.text_field :name
-        =button_tag 'Save', class: "btn-saves"
+        =f.submit 'Save', class: "btn-saves"

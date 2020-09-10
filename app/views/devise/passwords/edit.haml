@@ -1,7 +1,7 @@
 -title 'Change Password'
 -breadcrumb :change_password
 
-=form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :put } do |f|
+=form_with model: resource, url: password_path(resource_name), method: :put do |f|
   =render 'shared/errors_for', resource: resource
 
   =f.hidden_field :reset_password_token
@@ -14,5 +14,5 @@
       =f.password_field :password_confirmation
   .row
     .medium-6.columns
-      =button_tag "Change my password", class: "btn-saves"
+      =f.submit "Change my password", class: "btn-saves"
 

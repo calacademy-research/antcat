@@ -4,7 +4,7 @@
 -content_for :javascripts do
   =javascript_include_tag "taxon_select"
 
-=form_tag taxa_create_obsolete_combination_path do
+=form_with url: taxa_create_obsolete_combination_path do |f|
   .row
     .medium-8.columns
       .row
@@ -25,7 +25,7 @@
       .row
         .medium-12.columns
           .center-text
-            =button_tag "Create!", type: "submit", class: "btn-saves"
+            =f.submit "Create!", class: "btn-saves"
 
     .medium-4.columns
       .callout

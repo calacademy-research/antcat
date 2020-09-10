@@ -1,7 +1,7 @@
 -content_for :javascripts do
   =javascript_include_tag "markdown_and_friends"
 
-=form_for issue do |f|
+=form_with model: issue do |f|
   =render "shared/errors_for", resource: issue
   .row
     .medium-6.columns.end
@@ -23,4 +23,4 @@
     .medium-12.columns
       =edit_summary_text_field_tag
 
-  =button_tag "Save", class: "btn-saves"
+  =f.submit "Save", class: "btn-saves"

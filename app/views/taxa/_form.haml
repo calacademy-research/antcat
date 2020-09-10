@@ -5,7 +5,7 @@
 =render "shared/default_reference"
 
 -url = taxon.new_record? ?  '/taxa': "/taxa/#{taxon.id}"
-=form_for taxon, as: :taxon, url: url do |form|
+=form_with model: taxon, scope: :taxon, url: url do |form|
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
 
@@ -29,7 +29,7 @@
         =edit_summary_text_field_tag
 
       .medium-3.columns.end
-        =button_tag 'Save', type: 'submit', id: "save-taxon-form", class: 'btn-saves button'
+        =form.submit 'Save', id: "save-taxon-form", class: 'btn-saves button'
         &nbsp;
         -cancel_link = taxon.new_record? ? catalog_path(params[:parent_id]) : catalog_path(taxon)
         =link_to 'Cancel', cancel_link, class: 'button btn-nodanger'
