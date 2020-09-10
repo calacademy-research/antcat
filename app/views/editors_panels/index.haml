@@ -74,6 +74,8 @@
     %ul
       %li=link_to "Bolton keys to ref tags", bolton_keys_to_ref_tags_path
       %li=link_to 'Edit tooltips', tooltips_path
+      -if user_is_superadmin?
+        %li=link_to append_superadmin_icon('Restart and reindex Solr'), restart_and_reindex_solrs_path, method: :post, data: { confirm: "Are you sure?" }, class: 'btn-warning btn-tiny'
 
 .row.margin-top
   .medium-12.columns
