@@ -18,7 +18,13 @@ echo 'SET GLOBAL show_compatibility_56 = ON;' | RAILS_ENV=development bundle exe
 set -e
 
 # Import.
-zcat "$db_dump_path" | RAILS_ENV=development bundle exec rails db -p
+if ! command -v pv &> /dev/null
+then
+  echo "pv could not be found - install for an optional progress bar"
+  zcat "$db_dump_path" | RAILS_ENV=development bundle exec rails db -p
+else
+  zcat "$db_dump_path" | pv -cN zcat | RAILS_ENV=development bundle exec rails db -p
+fi
 
 # Set environment because `SELECT * FROM ar_internal_metadata;` is set to "production" in exported db dumps.
 RAILS_ENV=development bundle exec rake db:environment:set
