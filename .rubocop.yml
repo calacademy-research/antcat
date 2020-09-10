@@ -359,7 +359,7 @@ Style/Alias:
   EnforcedStyle: prefer_alias_method
 
 Style/AccessorGrouping:
-  Enabled: false
+  Enabled: true
 
 Style/ArrayCoercion:
   Enabled: true

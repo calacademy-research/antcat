@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe References::Cache::Regenerate do
   describe "#call" do
-    let!(:reference) { create :any_reference, title: 'Old title' }
+    let!(:reference) { create :any_reference }
 
     it "regenerates caches" do
       formatter = References::CachedReferenceFormatter.new(reference)
@@ -25,20 +25,16 @@ describe References::Cache::Regenerate do
     end
 
     context 'when reference has caches' do
+      let(:new_title) { 'New title' }
+
       it 'invalidates them before regenerating' do
-        expect(reference.plain_text_cache).to eq nil
+        described_class[reference]
+
+        reference.update_columns(title: new_title)
+        expect(reference.reload.plain_text_cache).to_not include new_title
 
         described_class[reference]
-        expect(reference.plain_text_cache).to include 'Old title'
-        expect(reference.plain_text_cache).to_not include 'New title'
-
-        reference.update_columns(title: 'New title')
-        expect(reference.plain_text_cache).to include 'Old title'
-        expect(reference.plain_text_cache).to_not include 'New title'
-
-        described_class[reference]
-        expect(reference.plain_text_cache).to_not include 'Old title'
-        expect(reference.plain_text_cache).to include 'New title'
+        expect(reference.plain_text_cache).to include new_title
       end
     end
   end
