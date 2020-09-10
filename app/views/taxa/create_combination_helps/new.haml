@@ -7,7 +7,7 @@
 -content_for :breadcrumbs_right do
   =link_to "Hide/show help", "#", data: { show_hide_toggler_for: "help" }, class: "btn-nodanger"
 
-=form_tag taxa_create_combination_help_path, method: :get do
+=form_with url: taxa_create_combination_help_path, method: :get do |f|
   .row{data: { show_hide_toggable_id: "help" }}
     .medium-12.columns
       .callout

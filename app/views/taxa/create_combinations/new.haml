@@ -20,7 +20,7 @@
     -unless @create_combination_policy.allowed?
       =render 'shared/operation_not_supported', callout_title: 'Cannot create combination', errors: @create_combination_policy.errors
     -else
-      =form_tag taxa_create_combination_path, method: :get do
+      =form_with url: taxa_create_combination_path, method: :get do |f|
         %table.unstriped
           %tr
             %td Create new combination for
@@ -36,7 +36,7 @@
 
           %tr
             %td Species epithet
-            %td=text_field_tag :species_epithet, params[:species_epithet] || @taxon.name.species_epithet
+            %td=f.text_field :species_epithet, value: params[:species_epithet] || @taxon.name.species_epithet
             %td May require spelling changes to agree with new genus.
 
           %tr

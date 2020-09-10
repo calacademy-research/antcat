@@ -18,7 +18,7 @@
       This additional check was added since subspecies names are not updated, which can lead to names not agreeing with each other.
       Parent changes that does not change any species epithets should be OK.
 
-=form_tag taxa_force_parent_change_path do
+=form_with url: taxa_force_parent_change_path do |f|
   .row
     .medium-4.columns
       %fieldset.fieldset

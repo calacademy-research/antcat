@@ -22,11 +22,11 @@
       -if current_user
         .row
           .medium-4.columns
-            =label_tag :name
-            =text_field_tag :name, current_user.name, disabled: true
+            =f.label :name
+            =f.text_field :name, value: current_user.name, disabled: true
           .medium-4.columns.end
-            =label_tag :email
-            =text_field_tag :email, current_user.email, disabled: true
+            =f.label :email
+            =f.text_field :email, value: current_user.email, disabled: true
       -else
         .row
           .medium-4.columns

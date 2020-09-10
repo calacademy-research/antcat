@@ -1,7 +1,7 @@
 -title 'Merge Authors'
 -breadcrumb :merge_authors, @author
 
-=form_tag author_merges_path do
+=form_with url: author_merges_path do |f|
   =hidden_field_tag :author_to_merge_id, @author_to_merge.id
   .row
     .medium-12.columns.margin-bottom

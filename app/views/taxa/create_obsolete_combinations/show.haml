@@ -4,7 +4,7 @@
 -content_for :javascripts do
   =javascript_include_tag "taxon_select"
 
-=form_tag taxa_create_obsolete_combination_path do
+=form_with url: taxa_create_obsolete_combination_path do |f|
   .row
     .medium-8.columns
       .row
