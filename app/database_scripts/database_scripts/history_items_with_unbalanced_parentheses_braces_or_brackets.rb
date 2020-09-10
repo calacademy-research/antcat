@@ -12,28 +12,28 @@ module DatabaseScripts
     end
 
     def unbalanced_parentheses
-      TaxonHistoryItem.where(<<~SQL)
+      TaxonHistoryItem.where(<<~SQL.squish)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '(', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ')', '') )
       SQL
     end
 
     def unbalanced_curly_braces
-      TaxonHistoryItem.where(<<~SQL)
+      TaxonHistoryItem.where(<<~SQL.squish)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '{', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '}', '') )
       SQL
     end
 
     def unbalanced_square_brackets
-      TaxonHistoryItem.where(<<~SQL)
+      TaxonHistoryItem.where(<<~SQL.squish)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ']', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '[', '') )
       SQL
     end
 
     def unbalanced_angle_brackets
-      TaxonHistoryItem.where(<<~SQL)
+      TaxonHistoryItem.where(<<~SQL.squish)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '>', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '<', '') )
       SQL

@@ -6,7 +6,7 @@ class AddNomenNudumToProtonyms < ActiveRecord::Migration[6.0]
 
     reversible do |dir|
       dir.up do
-        execute <<~SQL
+        execute <<~SQL.squish
           UPDATE protonyms
             INNER JOIN taxa ON taxa.protonym_id = protonyms.id
             AND taxa.nomen_nudum = TRUE

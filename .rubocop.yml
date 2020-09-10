@@ -268,9 +268,8 @@ Rails/SkipsModelValidations:
 Rails/ShortI18n:
   Enabled: true
 
-# TODO: Enable.
 Rails/SquishedSQLHeredocs:
-  Enabled: false
+  Enabled: true
 
 Rails/WhereExists:
   Enabled: false

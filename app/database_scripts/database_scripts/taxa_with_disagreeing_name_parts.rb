@@ -21,7 +21,7 @@ module DatabaseScripts
     def subspecies_species_vs_species_species
       Subspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
-        where(<<~SQL)
+        where(<<~SQL.squish)
           SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
           SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
         SQL
@@ -30,7 +30,7 @@ module DatabaseScripts
     def infrasubspecies_genus_vs_species_genus
       Infrasubspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
-        where(<<~SQL)
+        where(<<~SQL.squish)
           SUBSTRING_INDEX(names.name, ' ', 1) !=
           SUBSTRING_INDEX(species_names.name, ' ', 1)
         SQL
@@ -39,7 +39,7 @@ module DatabaseScripts
     def infrasubspecies_species_vs_species_species
       Infrasubspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
-        where(<<~SQL)
+        where(<<~SQL.squish)
           SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
           SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
         SQL
@@ -48,7 +48,7 @@ module DatabaseScripts
     def infrasubspecies_subspecies_vs_subspecies_subspecies
       Infrasubspecies.joins(:name).joins(:subspecies).
         joins("JOIN names subspecies_names ON subspecies_names.id = subspecies_taxa.name_id").
-        where(<<~SQL)
+        where(<<~SQL.squish)
           SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
           SUBSTRING_INDEX(SUBSTRING_INDEX(subspecies_names.name, ' ', 2), ' ', -1)
         SQL

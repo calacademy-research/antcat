@@ -119,7 +119,7 @@ module Catalog
       def type_information_clause relation
         return relation unless (type_information = params[:type_information])
 
-        relation.where(<<-SQL, search_term: "%#{type_information}%")
+        relation.where(<<~SQL.squish, search_term: "%#{type_information}%")
           protonyms.primary_type_information_taxt LIKE :search_term
             OR protonyms.secondary_type_information_taxt LIKE :search_term
             OR protonyms.type_notes_taxt LIKE :search_term

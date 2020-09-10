@@ -10,7 +10,7 @@ class RemoveFormsAndNotesTaxtFromCitations < ActiveRecord::Migration[6.0]
     add_column :citations, :notes_taxt, :text
     add_column :citations, :forms, :string
 
-    execute <<~SQL
+    execute <<~SQL.squish
       UPDATE citations
         INNER JOIN protonyms ON citations.id = protonyms.authorship_id
         SET

@@ -54,7 +54,7 @@ module DatabaseScripts
             title: 'Now deleted script: SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet ',
             ok?: !Subspecies.joins(:name).joins(:species).
                     joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
-                    where(<<~SQL).exists?
+                    where(<<~SQL.squish).exists?
                       SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
                       SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
                     SQL

@@ -7,7 +7,7 @@ class MoveFormsAndNotesTaxtToProtonyms < ActiveRecord::Migration[6.0]
 
     reversible do |dir|
       dir.up do
-        execute <<~SQL
+        execute <<~SQL.squish
           UPDATE protonyms
             INNER JOIN citations ON protonyms.authorship_id = citations.id
             SET
