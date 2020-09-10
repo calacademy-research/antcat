@@ -3,7 +3,7 @@
 
 =render "shared/default_reference"
 
-=form_for taxon_history_item, url: url do |f|
+=form_with model: taxon_history_item, url: url do |f|
   =render "shared/errors_for", resource: taxon_history_item
 
   .row

@@ -12,7 +12,7 @@
 
 .row
   .medium-12.columns
-    =form_for site_notice do |f|
+    =form_with model: site_notice do |f|
       =render "shared/errors_for", resource: site_notice
       .row
         .medium-8.columns.end

@@ -3,7 +3,7 @@
 
 =include_recaptcha_v3_js
 
-=form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
+=form_with model: resource, url: registration_path(resource_name) do |f|
   =render 'shared/errors_for', resource: resource
   .row
     .medium-6.columns

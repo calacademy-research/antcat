@@ -3,7 +3,7 @@
 
 =render "shared/default_reference"
 
-=form_for reference_section, url: url do |f|
+=form_with model: reference_section, url: url do |f|
   =render "shared/errors_for", resource: reference_section
   .row
     .medium-12.columns

@@ -1,6 +1,6 @@
 .row
   .medium-8.columns
-    =form_for institution do |f|
+    =form_with model: institution do |f|
       =render "shared/errors_for", resource: institution
 
       .row

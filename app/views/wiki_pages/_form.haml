@@ -11,7 +11,7 @@
 
 .row
   .medium-12.columns
-    =form_for wiki_page do |f|
+    =form_with model: wiki_page do |f|
       =render "shared/errors_for", resource: wiki_page
       .row
         .medium-8.columns.end

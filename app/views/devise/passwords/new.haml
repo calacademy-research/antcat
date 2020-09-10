@@ -1,7 +1,7 @@
 -title 'Forgot Password'
 -breadcrumb :forgot_password
 
-=form_for resource, as: resource_name, url: password_path(resource_name) do |f|
+=form_with model: resource, url: password_path(resource_name) do |f|
   =render 'shared/errors_for', resource: resource
   .row
     .medium-6.columns

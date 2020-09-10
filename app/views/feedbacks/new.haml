@@ -16,7 +16,7 @@
       =external_link_to "issue tracker on GitHub", "https://github.com/calacademy-research/antcat/issues"
       (account required), but you can use this form to report bugs as well.
 
-    =form_for(@feedback, url: feedbacks_path) do |f|
+    =form_with(model: @feedback, url: feedbacks_path) do |f|
       =render "shared/errors_for", resource: @feedback
 
       -if current_user

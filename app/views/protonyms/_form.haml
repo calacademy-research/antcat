@@ -30,7 +30,7 @@
 
   %hr.margin-bottom
 
-=form_for protonym_form do |f|
+=form_with model: protonym_form do |f|
   =render 'shared/errors_for', resource: protonym_form
 
   .row
