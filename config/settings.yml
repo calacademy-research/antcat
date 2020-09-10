@@ -8,3 +8,6 @@ http_basic_auth:
 catalog:
   # To make is easier to disable 'Fix Random!' in case of performance issues.
   show_failed_soft_validations: true
+
+new_relic:
+  apm_url: "https://example.com"

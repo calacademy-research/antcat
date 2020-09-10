@@ -268,9 +268,8 @@ Rails/SkipsModelValidations:
 Rails/ShortI18n:
   Enabled: true
 
-# TODO: Enable.
 Rails/SquishedSQLHeredocs:
-  Enabled: false
+  Enabled: true
 
 Rails/WhereExists:
   Enabled: false
@@ -359,7 +358,7 @@ Style/Alias:
   EnforcedStyle: prefer_alias_method
 
 Style/AccessorGrouping:
-  Enabled: false
+  Enabled: true
 
 Style/ArrayCoercion:
   Enabled: true

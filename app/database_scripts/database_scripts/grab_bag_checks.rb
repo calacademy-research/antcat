@@ -50,7 +50,7 @@ module DatabaseScripts
       def all_protonyms_have_taxa_with_compatible_ranks
         {
           title: 'All protonyms have taxa with compatible ranks',
-          ok?: !Taxon.group(:protonym_id).having(<<~SQL, Rank::ABOVE_SPECIES).exists?
+          ok?: !Taxon.group(:protonym_id).having(<<~SQL.squish, Rank::ABOVE_SPECIES).exists?
             COUNT(DISTINCT CASE WHEN type IN (?) THEN 'higher' ELSE 'lower' END) > 1
           SQL
         }

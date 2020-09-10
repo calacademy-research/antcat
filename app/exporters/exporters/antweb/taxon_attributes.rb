@@ -7,6 +7,8 @@ module Exporters
       include ActionView::Helpers::TagHelper # For `#tag`.
       include Service
 
+      FORMICIDAE = 'Formicidae'
+
       attr_private_initialize :taxon
 
       def call
@@ -40,7 +42,7 @@ module Exporters
             country:                  taxon.protonym.locality,
             current_valid_rank:       taxon.class.to_s,
             hol_id:                   taxon.hol_id,
-            current_valid_parent:     current_valid_parent&.name&.name || 'Formicidae'
+            current_valid_parent:     current_valid_parent&.name&.name || FORMICIDAE
           }
         end
 

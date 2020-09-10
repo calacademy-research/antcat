@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.where(<<~SQL).limit(LIMIT)
+      Protonym.where(<<~SQL.squish).limit(LIMIT)
         nomen_novum = TRUE OR
           nomen_oblitum = TRUE OR
           nomen_dubium = TRUE OR

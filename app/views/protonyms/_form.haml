@@ -88,7 +88,7 @@
             =f.label :biogeographic_region do
               Biogeographic region
               =db_tooltip_icon "type.biogeographic_region", scope: :taxa
-          %td=f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS, protonym.biogeographic_region), include_blank: true
+          %td=f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
         %tr
           %td

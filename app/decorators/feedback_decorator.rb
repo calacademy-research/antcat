@@ -40,8 +40,8 @@ class FeedbackDecorator < Draper::Decorator
   private
 
     def full_feedback_page_url
-      return if feedback.page.blank?
-      "#{Settings.production_url}/#{feedback.page}"
+      return unless (page = feedback.page)
+      "#{Settings.production_url}/#{page}"
     end
 
     def format_unregistered_submitter
