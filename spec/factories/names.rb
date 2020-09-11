@@ -3,23 +3,23 @@
 FactoryBot.define do
   factory :name do
     factory :family_name, class: 'FamilyName' do
-      sequence(:name, 'a') { |n| "Family#{n}" }
+      sequence(:name, 'a') { |n| "Family#{n}idae" }
     end
 
     factory :subfamily_name, class: 'SubfamilyName' do
-      sequence(:name, 'a') { |n| "Subfamily#{n}" }
+      sequence(:name, 'a') { |n| "Subfamily#{n}inae" }
     end
 
     factory :tribe_name, class: 'TribeName' do
-      sequence(:name, 'a') { |n| "Tribe#{n}" }
+      sequence(:name, 'a') { |n| "Tribe#{n}ii" }
     end
 
     factory :subtribe_name, class: 'SubtribeName' do
-      sequence(:name, 'a') { |n| "Subtribe#{n}" }
+      sequence(:name, 'a') { |n| "Subtribe#{n}ina" }
     end
 
     factory :genus_name, class: 'GenusName' do
-      sequence(:name, 'a') { |n| "Genus#{n}" }
+      sequence(:name, 'a') { |n| "Genus#{n}ia" }
     end
 
     factory :subgenus_name, class: 'SubgenusName' do
