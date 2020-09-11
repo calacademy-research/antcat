@@ -4,7 +4,7 @@ class EditorsPanelsController < ApplicationController
   before_action :authenticate_user!
   skip_before_action :authenticate_user!, only: :invite_users
 
-  def index
+  def show
     @editors_panel_presenter = EditorsPanelPresenter.new(current_user)
   end
 
