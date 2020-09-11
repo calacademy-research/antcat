@@ -12,11 +12,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Authorship', 'Status'
+        t.header 'Taxon', 'Authorship', 'Rank', 'Status'
         t.rows do |taxon|
           [
             taxon_link(taxon),
             taxon.authorship_reference.key_with_citation_year,
+            taxon.type,
             taxon.status
           ]
         end

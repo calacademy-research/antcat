@@ -7,7 +7,7 @@ describe Catalog::SearchesController do
     context 'when not searching yet' do
       context 'when just visiting the page' do
         it 'renders the search form' do
-          get :show, params: { searching_from_header: 'y', qq: '' }
+          get :show
           expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq nil
         end
@@ -15,7 +15,7 @@ describe Catalog::SearchesController do
 
       context 'when searching for nothing from the header' do
         it 'renders the search form' do
-          get :show
+          get :show, params: { searching_from_header: 'y', qq: '' }
           expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq nil
         end

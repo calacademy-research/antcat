@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe References::SearchController do
   describe "GET index", as: :visitor do
-    describe "search terms matching ids" do
+    describe "search queries matching reference ids" do
       context "when reference exists" do
         let!(:reference) { create :any_reference }
 

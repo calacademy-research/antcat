@@ -2,7 +2,7 @@
 
 module References
   class SearchController < ApplicationController
-    before_action :redirect_if_search_matches_id, only: :index
+    before_action :redirect_if_search_query_matches_reference_id, only: :index
 
     def index
       return redirect_to references_path unless user_is_searching?
@@ -20,7 +20,7 @@ module References
         params[:reference_q].present?
       end
 
-      def redirect_if_search_matches_id
+      def redirect_if_search_query_matches_reference_id
         return if params[:reference_q].blank?
 
         id = params[:reference_q].strip
