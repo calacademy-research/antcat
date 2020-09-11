@@ -2,7 +2,6 @@ linters:
   AltText:
     enabled: true
 
-  # TODO: Probably enable.
   ClassesBeforeIds:
     enabled: false
 
@@ -15,20 +14,39 @@ linters:
   IdNames:
     enabled: false
 
-  # TODO: Probably enable.
   InlineStyles:
     enabled: false
 
   LineLength:
     enabled: false
 
-  # TODO: Maybe enable.
   RepeatedId:
     enabled: false
 
-  # TODO: Investigate.
   RuboCop:
-    enabled: false
+    enabled: true
+    ignored_cops:
+      - Layout/ElseAlignment
+      - Layout/EndAlignment
+      - Layout/IndentationWidth
+      - Layout/LineLength
+      - Layout/SpaceInsideHashLiteralBraces
+      - Layout/TrailingEmptyLines
+      - Lint/Void
+      - Metrics/BlockLength
+      - Metrics/BlockNesting
+      - Rails/Presence
+      - Style/ConditionalAssignment
+      - Style/DoubleNegation
+      - Style/FrozenStringLiteralComment
+      - Style/IfInsideElse
+      - Style/NegatedIf
+      - Style/Next
+      - Style/ParenthesesAroundCondition
+      - Style/RedundantInterpolation
+      - Style/SafeNavigation
+      - Style/StringLiteralsInInterpolation
+      - Style/UnlessElse
 
   SpaceBeforeScript:
     enabled: false
@@ -36,10 +54,8 @@ linters:
   SpaceInsideHashAttributes:
     enabled: false
 
-  # TODO: Investigate.
   UnnecessaryStringOutput:
     enabled: false
 
-  # TODO: Maybe enable.
   ViewLength:
     enabled: false
