@@ -5,6 +5,8 @@
 class Name < ApplicationRecord
   include Trackable
 
+  # TODO: Rename to `CONNECTING_TERMS` (and Ctrl+F /rank.abbreviation/i).
+  # See https://antcat.org/wiki_pages/12
   RANK_ABBREVIATIONS = [
     'ab.',       # abberratio.
     'f.',        # forma, form.

@@ -7,7 +7,8 @@ class SpeciesGroupTaxon < Taxon
 
   validate :ensure_protonym_is_a_species_group_name
 
-  # TODO: Do not calculate by string comparison.
+  # TODO: Do not calculate by string comparison because it does not handle homonyms,
+  # or incorrect spellings (which should not have parentheses per ICZN 51.3.1).
   def recombination?
     return false unless protonym.name.is_a?(SpeciesGroupName)
     name.genus_epithet != protonym.name.genus_epithet

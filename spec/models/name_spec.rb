@@ -21,7 +21,7 @@ describe Name do
       specify do
         expect(name.valid?).to eq false
         expect(name.errors[:name]).
-          to eq ["of type GenusName must contains 1 word parts (excluding subgenus part and rank abbreviations)"]
+          to include "of type GenusName must contains 1 word parts (excluding subgenus part and rank abbreviations)"
       end
     end
 
@@ -43,13 +43,21 @@ describe Name do
     end
 
     describe '#set_epithet' do
-      let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
+      describe 'when name is not a `SubgenusName`' do
+        let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca', epithet: 'pizza') }
 
-      before do
-        name.attributes = { epithet: 'pizza' }
+        it 'sets the epithet the last part of the name' do
+          expect { name.valid? }.to change { name.epithet }.from('pizza').to('fusca')
+        end
       end
 
-      specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
+      describe 'when name is a `SubgenusName`' do
+        let!(:name) { SubgenusName.new(name: 'Lasius (Austrolasius)', epithet: 'pizza') }
+
+        it 'sets the epithet the subgenus part of the name without parentheses' do
+          expect { name.valid? }.to change { name.epithet }.from('pizza').to('Austrolasius')
+        end
+      end
     end
 
     describe '#set_cleaned_name' do
