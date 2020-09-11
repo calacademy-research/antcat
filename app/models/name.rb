@@ -2,7 +2,7 @@
 
 # All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
 
-class Name < ApplicationRecord
+class Name < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Trackable
 
   # TODO: Rename to `CONNECTING_TERMS` (and Ctrl+F /rank.abbreviation/i).
@@ -38,7 +38,7 @@ class Name < ApplicationRecord
   validates :name,
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" },
     unless: -> { name.blank? }
-  validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter
+  validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter, :ensure_identified_name_type_matches
 
   # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
   before_validation :set_epithet, :set_cleaned_name
@@ -116,6 +116,21 @@ class Name < ApplicationRecord
       return if name[0] == name[0].upcase
 
       errors.add :name, "must start with a capital letter"
+    end
+
+    # TODO: Uuhhh. See what to do here. There should not be any taxa with names that
+    # are `names.non_conforming` once the data has been cleaned up.
+    def ensure_identified_name_type_matches
+      return if name.blank? || non_conforming?
+      return unless (identified_name_type = Names::IdentifyNameType[name])
+
+      return if is_a?(identified_name_type)
+      return if is_a?(SubtribeName) && Subtribe.valid_subtribe_name?(name)
+
+      errors.add :name, <<~STR.squish
+        type (`#{self.class.name}`) and identified name type (`#{identified_name_type.name}`) must match.
+        Flag name as 'Non-conforming' to bypass this validation.
+      STR
     end
 
     def name_parts
