@@ -13,7 +13,7 @@ class CreateCombinationPolicy
 
   private
 
-    def lazy_errors # rubocop:disable Metrics/PerceivedComplexity
+    def lazy_errors
       Enumerator.new do |yielder|
         # Common.
         yielder << 'taxon is not a species' unless taxon.is_a?(Species)

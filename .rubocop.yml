@@ -188,6 +188,7 @@ Metrics/MethodLength:
 
 Metrics/PerceivedComplexity:
   Max: 14
+  Enabled: false
 
 ### Naming.
 
@@ -260,7 +261,7 @@ Rails/ReflectionClassName:
   Enabled: false
 
 Rails/RenderInline:
-  Enabled: true
+  Enabled: false
 
 Rails/RenderPlainText:
   Enabled: true
