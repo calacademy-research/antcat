@@ -37,5 +37,9 @@ FactoryBot.define do
     factory :infrasubspecies_name, class: 'InfrasubspeciesName' do
       sequence(:name, 'a') { |n| "Atta species subspecies#{n} infrasubspecies" }
     end
+
+    trait :non_conforming do
+      non_conforming { true }
+    end
   end
 end

@@ -23,7 +23,8 @@ describe NamesController do
           id: name.id,
           type: 'SubspeciesName',
           name: {
-            name: 'Brandus noviusia  nameus'
+            name: 'Brandus noviusia  nameus',
+            non_conforming: 'true'
           }
         }
       end
@@ -34,6 +35,7 @@ describe NamesController do
         name.reload
         expect(name.name).to eq 'Brandus noviusia nameus'
         expect(name.epithet).to eq 'nameus'
+        expect(name.non_conforming).to eq true
       end
 
       it 'creates an activity' do

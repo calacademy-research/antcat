@@ -29,6 +29,6 @@ class NamesController < ApplicationController
     end
 
     def name_params
-      params.require(:name).permit(:name)
+      params.require(:name).permit(:name, :non_conforming)
     end
 end
