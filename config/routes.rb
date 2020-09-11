@@ -133,7 +133,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, path_prefix: 'my', controllers: { registrations: "my/registrations" }
+  devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users do
     collection do
       get :mentionables
