@@ -3,8 +3,8 @@
 #
 # The left side of the split diff should always show the older
 # revision; this is what makes some options "unavailable" this context.
-# Go to https://en.wikipedia.org/w/index.php?title=Example&action=history
-# to see how it is supposed to work and why it's useful.
+# See https://en.wikipedia.org/w/index.php?title=Example&action=history
+# for how it is supposed to work.
 
 $ ->
   setInitialState()

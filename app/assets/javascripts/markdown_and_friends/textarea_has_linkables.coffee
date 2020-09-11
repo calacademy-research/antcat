@@ -25,9 +25,9 @@ reuseCallbacks = (url) ->
     value
 
   remoteFilter: (query, callback) ->
-    MDPreview.showSpinner this
+    MarkdownPreview.showSpinner this.$inputor
     $.getJSON url, q: query, (data) =>
-      MDPreview.hideSpinner this
+      MarkdownPreview.hideSpinner this.$inputor
       callback data
 
   # Disable `sorter`. The default implementation removes good matches if the search

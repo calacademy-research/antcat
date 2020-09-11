@@ -5,9 +5,6 @@
 #
 # On the element that should work as a toggler:
 #   Set `data-show-hide-toggler-for="example"`
-#
-# This is more revealing of intent than selecting on the elements'
-# classes/ids, and we also avoid many of the headaches related to that.
 
 $ ->
   hideToggleables()
