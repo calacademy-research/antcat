@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'English'
-
 module Markdowns
   class ParseCatalogTags # rubocop:disable Metrics/ClassLength
     include Service

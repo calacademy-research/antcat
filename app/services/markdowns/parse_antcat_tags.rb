@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'English'
-
 module Markdowns
   class ParseAntcatTags
     include Rails.application.routes.url_helpers
