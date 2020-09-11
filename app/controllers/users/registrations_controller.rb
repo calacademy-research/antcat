@@ -5,6 +5,7 @@ module Users
     RECAPTCHA_V3_ACTION = 'registration'
 
     prepend_before_action :check_recaptcha, only: [:create]
+    before_action :configure_permitted_parameters
     before_action :check_if_too_many_registrations_today, only: :create
 
     def create
@@ -16,6 +17,15 @@ module Users
     end
 
     protected
+
+      def configure_permitted_parameters
+        devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
+        devise_parameter_sanitizer.permit(
+          :account_update, keys: [
+            :email, :name, :author_id, :enable_email_notifications, :password, :password_confirmation, :current_password
+          ]
+        )
+      end
 
       def update_resource resource, params
         # Require current password if user is trying to change password.
