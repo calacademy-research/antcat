@@ -25,9 +25,9 @@
             %tr
               %td
                 -if @taxon.subgenus == subgenus
-                  =link_to 'Remove', taxa_set_subgenus_path(@taxon), method: :delete,  class: 'btn-warning btn-very-tiny'
+                  =link_to 'Remove', taxa_set_subgenus_path(@taxon), method: :delete, class: 'btn-warning btn-very-tiny'
                 -else
-                  =link_to 'Set', taxa_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post,  class: 'btn-saves btn-tiny'
+                  =link_to 'Set', taxa_set_subgenus_path(@taxon, subgenus_id: subgenus.id), method: :post, class: 'btn-saves btn-tiny'
               %td=CatalogFormatter.link_to_taxon(subgenus)
               %td=subgenus.author_citation
               %td.shrink=subgenus.decorate.expanded_status

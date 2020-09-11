@@ -26,7 +26,7 @@
       %h6.margin-top
         %strong Related scripts
       %ul
-        -@database_script.related_scripts.each do|related_script|
+        -@database_script.related_scripts.each do |related_script|
           %li
             =link_to related_script.title, database_script_path(related_script)
             =DatabaseScriptDecorator.new(related_script).format_tags

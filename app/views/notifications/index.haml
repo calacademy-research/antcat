@@ -9,7 +9,7 @@
       -@notifications.each do |notification|
         %tr{class: ('unseen' if notification.unseen?)}
           -# There is no "unseen" icon, but it's used in tests.
-          %td.icon=antcat_icon (notification.seen? ? "seen" : "unseen")
+          %td.icon=antcat_icon(notification.seen? ? "seen" : "unseen")
           %td.no-wrap
             =notification.notifier.decorate.user_page_link
             =render partial: "notifications/notification_templates/#{notification.reason}", locals: { notification: notification }
