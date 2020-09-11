@@ -66,6 +66,6 @@ class User < ApplicationRecord
   end
 
   def mark_all_notifications_as_seen
-    unseen_notifications.find_each { |notification| notification.update(seen: true) }
+    unseen_notifications.find_each { |notification| notification.update!(seen: true) }
   end
 end

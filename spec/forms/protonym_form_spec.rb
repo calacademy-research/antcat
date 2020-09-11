@@ -18,7 +18,7 @@ describe ProtonymForm do
         end
 
         specify do
-          expect { described_class.new(protonym, protonym_params).save }.
+          expect { described_class.new(protonym, protonym_params).save! }.
             to change { protonym.reload.authorship.reference.id }.to(new_reference.id).
             and change { protonym.authorship.pages }.to('99b')
         end
@@ -37,7 +37,7 @@ describe ProtonymForm do
         end
 
         specify do
-          expect { described_class.new(protonym, protonym_params).save }.to change { protonym.reload.type_name }.from(nil)
+          expect { described_class.new(protonym, protonym_params).save! }.to change { protonym.reload.type_name }.from(nil)
 
           type_name = TypeName.last
           expect(type_name.protonym).to eq protonym
@@ -58,7 +58,7 @@ describe ProtonymForm do
         end
 
         it 'nullifies the `fixation_method`' do
-          expect { described_class.new(protonym, protonym_params).save }.
+          expect { described_class.new(protonym, protonym_params).save! }.
             to change { type_name.reload.fixation_method }.from(TypeName::BY_MONOTYPY).to(nil)
         end
       end
@@ -91,11 +91,11 @@ describe ProtonymForm do
       end
 
       it "nilifies the promtonym's type name" do
-        expect { described_class.new(protonym, {}, form_params).save }.to change { protonym.reload.type_name }.to(nil)
+        expect { described_class.new(protonym, {}, form_params).save! }.to change { protonym.reload.type_name }.to(nil)
       end
 
       it 'destroys the `TypeName` record' do
-        expect { described_class.new(protonym, {}, form_params).save }.to change { TypeName.count }.by(-1)
+        expect { described_class.new(protonym, {}, form_params).save! }.to change { TypeName.count }.by(-1)
       end
     end
 

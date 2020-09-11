@@ -47,7 +47,7 @@ class Species < SpeciesGroupTaxon
 
     def update_descendants
       subspecies.each do |subspecies|
-        subspecies.update(subfamily: subfamily, genus: genus)
+        subspecies.update!(subfamily: subfamily, genus: genus)
       end
     end
 
