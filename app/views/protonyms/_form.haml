@@ -41,7 +41,7 @@
             %td
               =label_tag :name do
                 Name
-                =db_tooltip_icon "rank_abbreviations", scope: :protonyms
+                =db_tooltip_icon "connecting_terms", scope: :protonyms
             %td
               -if protonym.name&.persisted?
                 %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'

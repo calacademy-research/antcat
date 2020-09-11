@@ -5,9 +5,8 @@
 class Name < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Trackable
 
-  # TODO: Rename to `CONNECTING_TERMS` (and Ctrl+F /rank.abbreviation/i).
   # See https://antcat.org/wiki_pages/12
-  RANK_ABBREVIATIONS = [
+  CONNECTING_TERMS = [
     'ab.',       # abberratio.
     'f.',        # forma, form.
     'f.interm.', # forma?
@@ -108,7 +107,7 @@ class Name < ApplicationRecord # rubocop:disable Metrics/ClassLength
       expected = Rank.number_of_name_parts(taxon_type)
       return if cleaned_name_parts.size == expected
 
-      errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part and rank abbreviations)"
+      errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part and connecting terms)"
     end
 
     def ensure_starts_with_upper_case_letter

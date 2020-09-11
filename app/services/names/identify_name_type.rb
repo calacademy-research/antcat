@@ -43,7 +43,7 @@ module Names
       end
 
       def countable_words
-        words_without_subgenus.reject { |word| word.in?(Name::RANK_ABBREVIATIONS) }
+        words_without_subgenus.reject { |word| word.in?(Name::CONNECTING_TERMS) }
       end
 
       def subgenus_name?

@@ -21,7 +21,7 @@ module Names
         name.
           downcase.
           gsub(/\(.*?\)/, '').
-          gsub(/ #{Regexp.union(Name::RANK_ABBREVIATIONS)} /, ' ').
+          gsub(/ #{Regexp.union(Name::CONNECTING_TERMS)} /, ' ').
           squish.
           capitalize
       end

@@ -19,14 +19,14 @@ describe Names::CleanName do
         expect(described_class['Formica (Hypochira) subspinosa']).to eq 'Formica subspinosa'
       end
 
-      describe 'rank abbreviations' do
-        it 'removes known rank abbreviations (full words, case insensitive)' do
+      describe 'connecting terms' do
+        it 'removes known connecting terms (full words, case insensitive)' do
           expect(described_class['Formica fusca var. flavus']).to eq 'Formica fusca flavus'
           expect(described_class['Formica fusca Var. flavus']).to eq 'Formica fusca flavus'
           expect(described_class['Formica fusca avar. flavus']).to eq 'Formica fusca avar. flavus'
         end
 
-        describe 'known rank abbreviations' do
+        describe 'known connecting terms' do
           %w[
             ab.
             f.
@@ -43,9 +43,9 @@ describe Names::CleanName do
             subsp.
             v.
             var.
-          ].each do |rank_abbreviation|
-            it "considers '#{rank_abbreviation}' a known rank abbreviation" do
-              expect(described_class["Formica fusca #{rank_abbreviation} flavus"]).to eq 'Formica fusca flavus'
+          ].each do |connecting_term|
+            it "considers '#{connecting_term}' a known connecting term" do
+              expect(described_class["Formica fusca #{connecting_term} flavus"]).to eq 'Formica fusca flavus'
             end
           end
         end

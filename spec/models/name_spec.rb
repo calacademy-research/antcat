@@ -21,7 +21,7 @@ describe Name do
       specify do
         expect(name.valid?).to eq false
         expect(name.errors[:name]).
-          to include "of type GenusName must contains 1 word parts (excluding subgenus part and rank abbreviations)"
+          to include "of type GenusName must contains 1 word parts (excluding subgenus part and connecting terms)"
       end
     end
 
