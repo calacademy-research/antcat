@@ -169,6 +169,10 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 100
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
   Exclude:
     - 'app/cleanup/**/*'
     - 'app/controllers/quick_and_dirty_fixes_controller.rb'

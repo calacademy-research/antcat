@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ProtonymForm # rubocop:disable Metrics/ClassLength
+class ProtonymForm
   include ActiveModel::Model
 
   ATTRIBUTES = %w[

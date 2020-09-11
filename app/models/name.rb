@@ -2,7 +2,7 @@
 
 # All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
 
-class Name < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Name < ApplicationRecord
   include Trackable
 
   # See https://antcat.org/wiki_pages/12
