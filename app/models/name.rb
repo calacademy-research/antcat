@@ -6,22 +6,22 @@ class Name < ApplicationRecord # rubocop:disable Metrics/ClassLength
   include Trackable
 
   # See https://antcat.org/wiki_pages/12
-  CONNECTING_TERMS = [
-    'ab.',       # abberratio.
-    'f.',        # forma, form.
-    'f.interm.', # forma?
-    'form.',     # forma.
-    'm.',
-    'morph.',    # morpha.
-    'n.',        # natio.
-    'nat.',      # natio.
-    'r.',
-    'ssp.',      # subspecies.
-    'st.',
-    'subp.',     # subspecies.
-    'subsp.',    # subspecies.
-    'v.',        # varietas, variety.
-    'var.'       # varietas, variety.
+  CONNECTING_TERMS = %w[
+    ab.
+    f.
+    f.interm.
+    form.
+    m.
+    morph.
+    n.
+    nat.
+    r.
+    ssp.
+    st.
+    subp.
+    subsp.
+    v.
+    var.
   ]
 
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
