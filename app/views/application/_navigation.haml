@@ -65,7 +65,7 @@
         =form_with url: references_search_index_path, method: :get do |f|
           .row.search-row
             .small-9.columns
-              =f.text_field 'reference_q', value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References",  id: nil, class: "typeahead-references-js"
+              =f.text_field 'reference_q', value: params[:reference_q], placeholder: "Search References", "aria-label" => "Search References", id: nil, class: "typeahead-references-js"
             .small-3.columns
               =button_tag search_icon, type: "submit", name: nil, class: "button expanded mobile-search-button"
 

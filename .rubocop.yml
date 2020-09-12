@@ -169,6 +169,10 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Max: 100
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
   Exclude:
     - 'app/cleanup/**/*'
     - 'app/controllers/quick_and_dirty_fixes_controller.rb'
@@ -184,6 +188,7 @@ Metrics/MethodLength:
 
 Metrics/PerceivedComplexity:
   Max: 14
+  Enabled: false
 
 ### Naming.
 
@@ -256,7 +261,7 @@ Rails/ReflectionClassName:
   Enabled: false
 
 Rails/RenderInline:
-  Enabled: true
+  Enabled: false
 
 Rails/RenderPlainText:
   Enabled: true
