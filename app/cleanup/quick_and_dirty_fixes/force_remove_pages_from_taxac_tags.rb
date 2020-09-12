@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `QuickAndDirtyFixesController#remove_pages_from_taxac_tags`.
+# TMPCLEANUP: Temporary code for `QuickAndDirtyFixesController#remove_pages_from_taxac_tags`.
 # NOTE: Difference from `RemovePagesFromTaxacTags` is that we don't check if hardcoded pages match the pages of the authorship.
 module QuickAndDirtyFixes
   class ForceRemovePagesFromTaxacTags

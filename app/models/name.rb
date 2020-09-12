@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-# All `Name` subclasses are for taxa and protonyms; `AuthorName`s are used for references.
+# All `Name` subclasses are for `Taxon` and `Protonym` records. `AuthorName`s are used for `Reference`..
+
+# TODO: Revisit validations, and extract somewhere.
 
 class Name < ApplicationRecord
   include Trackable
@@ -24,7 +26,7 @@ class Name < ApplicationRecord
     var.
   ]
 
-  # Parentheses are for subgenera, periods for infrasubspecific names (old-style protonyms).
+  # Parentheses are for subgenera, periods for infrasubspecific names (old-style species-group protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
   FAMILY_AND_GENUS_GROUP_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName SubgenusName]
@@ -77,6 +79,7 @@ class Name < ApplicationRecord
     Rank.italic?(taxon_type)
   end
 
+  # TODO: This is "meh", but it will not change until we have figured out how to properly model names/taxa/protonyms.
   def owner
     taxa.first || protonyms.first
   end
@@ -117,8 +120,8 @@ class Name < ApplicationRecord
       errors.add :name, "must start with a capital letter"
     end
 
-    # TODO: Uuhhh. See what to do here. There should not be any taxa with names that
-    # are `names.non_conforming` once the data has been cleaned up.
+    # TODO: Uuhhh. See what to do here and with other validations. There should not be any taxa with names that
+    # are `names.non_conforming` once the data has been cleaned up (since all `Taxon`s should have moden names).
     def ensure_identified_name_type_matches
       return if name.blank? || non_conforming?
       return unless (identified_name_type = Names::IdentifyNameType[name])

@@ -401,6 +401,7 @@ Style/CommentAnnotation:
     - HACK
     - REVIEW
     - NOTE
+    - TMPCLEANUP
 
 Style/DateTime:
   Enabled: true

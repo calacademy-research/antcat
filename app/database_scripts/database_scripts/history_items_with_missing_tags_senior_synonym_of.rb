@@ -66,7 +66,7 @@ module DatabaseScripts
         end
       end
 
-      # TODO: Get rid of all of this ASAP.
+      # TMPCLEANUP: Get rid of all of this ASAP.
       def replace_with_alt_tax_links history_item, helper
         normalized_name = helper.target_for_replacement[:normalized_name]
         replace_with_possible_subspecies_instead_of_species_links history_item, normalized_name

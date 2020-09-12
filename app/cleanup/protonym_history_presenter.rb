@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary(tm) code for migrating history items to protonyms.
+# TMPCLEANUP: Temporary(tm) code for migrating history items to protonyms.
 
 class ProtonymHistoryPresenter
   def initialize taxon
@@ -51,7 +51,7 @@ class ProtonymHistoryPresenter
     protonym.history_items.where(rank: [taxon.type, nil])
   end
 
-  # TODO: This is for a future column for family/subfamily/tribe trios.
+  # TMPCLEANUP: This is for a future column for family/subfamily/tribe trios.
   # rubocop:disable Style/MultipleComparison
   def rank_field_required? catalog_taxon, history_item_owner_taxon
     ranks = [catalog_taxon.type, history_item_owner_taxon.type].sort

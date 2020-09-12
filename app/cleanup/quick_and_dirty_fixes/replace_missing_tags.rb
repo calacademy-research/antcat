@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `QuickAndDirtyFixesController#replace_missing_tags`.
+# TMPCLEANUP: Temporary code for `QuickAndDirtyFixesController#replace_missing_tags`.
 module QuickAndDirtyFixes
   class ReplaceMissingTags
     include Service
