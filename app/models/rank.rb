@@ -63,6 +63,7 @@ class Rank
       type.in? GENUS_GROUP_NAMES
     end
 
+    # TODO: Rename to something like `number_of_countable_name_parts` to distinguish it from names with connecting terms.
     def number_of_name_parts type
       case type
       when *UNINOMIAL    then 1

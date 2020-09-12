@@ -8,6 +8,28 @@ describe Subtribe do
     it { is_expected.to belong_to(:tribe).required }
   end
 
+  describe ".valid_subtribe_name?" do
+    describe 'invalid names' do
+      context 'with non-subtribe ending' do
+        specify { expect(described_class.valid_subtribe_name?('Lasius')).to eq false }
+      end
+
+      context 'with more than one word part' do
+        specify { expect(described_class.valid_subtribe_name?('Lasius Iridomyrmecina')).to eq false }
+      end
+    end
+
+    describe 'possibly valid names' do
+      describe 'ending: -ina' do
+        specify { expect(described_class.valid_subtribe_name?('Iridomyrmecina')).to eq true }
+      end
+
+      describe 'ending: -iti' do
+        specify { expect(described_class.valid_subtribe_name?('Dacetiti')).to eq true }
+      end
+    end
+  end
+
   describe "#parent" do
     let(:subtribe) { build_stubbed :subtribe }
 

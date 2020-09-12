@@ -72,7 +72,7 @@
               =name_form.label :name do
                 Name
                 =db_tooltip_icon "protonym", scope: :taxa
-                =db_tooltip_icon "rank_abbreviations", scope: :protonyms
+                =db_tooltip_icon "connecting_terms", scope: :protonyms
             %td
               =text_field_tag :protonym_name_string, taxon.protonym.name.name, style: "display: inline-block"
               %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny.left-margin Same as name (copy)

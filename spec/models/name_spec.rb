@@ -21,7 +21,7 @@ describe Name do
       specify do
         expect(name.valid?).to eq false
         expect(name.errors[:name]).
-          to eq ["of type GenusName must contains 1 word parts (excluding subgenus part and rank abbreviations)"]
+          to include "of type GenusName must contains 1 word parts (excluding subgenus part and connecting terms)"
       end
     end
 
@@ -31,6 +31,56 @@ describe Name do
       specify do
         expect(name.valid?).to eq false
         expect(name.errors[:name]).to eq ["must start with a capital letter"]
+      end
+    end
+
+    describe '#ensure_identified_name_type_matches' do
+      context 'when name is identified as different to its type' do
+        context 'when not a `SubtribeName`' do
+          let(:name) { build_stubbed :family_name, name: 'Tribii' }
+
+          specify do
+            expect(name.valid?).to eq false
+            expect(name.errors[:name]).
+              to include "type (`FamilyName`) and identified name type (`TribeName`) must match. " \
+                "Flag name as 'Non-conforming' to bypass this validation."
+          end
+        end
+
+        context 'with `non_conforming` name' do
+          let(:name) { build_stubbed :family_name, :non_conforming, name: 'Tribii' }
+
+          it 'does not fail validations' do
+            expect(name.valid?).to eq true
+
+            expect { name.non_conforming = false }.
+             to change { name.valid? }.from(true).to(false)
+            expect(name.errors[:name]).
+              to include "type (`FamilyName`) and identified name type (`TribeName`) must match. " \
+                "Flag name as 'Non-conforming' to bypass this validation."
+          end
+        end
+
+        context 'when a `SubtribeName`' do
+          context 'with misidentified but valid -ina ending' do
+            let(:name) { build_stubbed :subtribe_name, name: 'Subtribina' }
+
+            it 'does not fail validations' do
+              expect(name.valid?).to eq true
+            end
+          end
+
+          context 'when name is not valid' do
+            let(:name) { build_stubbed :subtribe_name, name: 'Subtribinus' }
+
+            specify do
+              expect(name.valid?).to eq false
+              expect(name.errors[:name]).
+                to include "type (`SubtribeName`) and identified name type (`GenusName`) must match. " \
+                  "Flag name as 'Non-conforming' to bypass this validation."
+            end
+          end
+        end
       end
     end
   end
@@ -43,13 +93,21 @@ describe Name do
     end
 
     describe '#set_epithet' do
-      let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
+      describe 'when name is not a `SubgenusName`' do
+        let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca', epithet: 'pizza') }
 
-      before do
-        name.attributes = { epithet: 'pizza' }
+        it 'sets the epithet the last part of the name' do
+          expect { name.valid? }.to change { name.epithet }.from('pizza').to('fusca')
+        end
       end
 
-      specify { expect { name.save }.to change { name.epithet }.from('pizza').to('fusca') }
+      describe 'when name is a `SubgenusName`' do
+        let!(:name) { SubgenusName.new(name: 'Lasius (Austrolasius)', epithet: 'pizza') }
+
+        it 'sets the epithet the subgenus part of the name without parentheses' do
+          expect { name.valid? }.to change { name.epithet }.from('pizza').to('Austrolasius')
+        end
+      end
     end
 
     describe '#set_cleaned_name' do

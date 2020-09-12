@@ -11,6 +11,8 @@
   .small-12.columns
     %h5
       Name record: #{@name.name_html}
+      -if @name.non_conforming?
+        %span.bold-warning [non-conforming name]
       =tooltip_icon "'Name' in this context should not be confused with 'names' in the meaning of 'a taxon'. It is an internal representation of how the actual characters of a name are stored in the database."
     %table.table.unstriped
       %tbody

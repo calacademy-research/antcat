@@ -10,8 +10,17 @@ describe SpeciesGroupName do
   end
 
   describe "#species_epithet" do
-    let(:name) { described_class.new(name: 'Atta major') }
+    context 'when name does not contain a subgenus name' do
+      let(:name) { described_class.new(name: 'Atta major') }
 
-    specify { expect(name.species_epithet).to eq 'major' }
+      specify { expect(name.species_epithet).to eq 'major' }
+    end
+
+    # TODO: Probably.
+    xcontext 'when name contains a subgenus name' do
+      let(:name) { described_class.new(name: 'Atta (Lasius) major') }
+
+      specify { expect(name.species_epithet).to eq 'major' }
+    end
   end
 end

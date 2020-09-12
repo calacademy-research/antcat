@@ -28,12 +28,19 @@
             %th.no-wrap
               =f.label :name do
                 Name
-                =db_tooltip_icon "rank_abbreviations", scope: :protonyms
+                =db_tooltip_icon "connecting_terms", scope: :protonyms
             %td.grow=f.text_field :name, id: 'name_name_string', data: { name_id: name.id }
           %tr
             %td
             %td
               #name_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
+          %tr
+            %td{colspan: 2}
+              =f.check_box :non_conforming
+              =f.label :non_conforming do
+                Non-conforming name (WIP/beta)
+                =tooltip_icon "Check this to disable the validation for ensuring that the name is identified as the correct name types."
 
           %tr
             %th{colspan: 2}

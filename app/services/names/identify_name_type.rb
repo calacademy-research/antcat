@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 # Not handled:
-# Subtribes: -ina (genera can also end with "ina")
-# Names I don't know what they are: Formicariae,  Dorylida
+#   Subtribes: -ina endings (genera can also end with "-ina")
+#   Non-modern names: Formicariae, Dorylida
 
 module Names
   class IdentifyNameType
@@ -43,7 +43,7 @@ module Names
       end
 
       def countable_words
-        words_without_subgenus.reject { |word| word.in?(Name::RANK_ABBREVIATIONS) }
+        words_without_subgenus.reject { |word| word.in?(Name::CONNECTING_TERMS) }
       end
 
       def subgenus_name?
