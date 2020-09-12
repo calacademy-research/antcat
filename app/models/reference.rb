@@ -89,6 +89,7 @@ class Reference < ApplicationRecord
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
     end
 
+    # TODO: Keep only disambiguation letter in `citation_year` and extract year to a field in the reference form.
     def set_year_from_citation_year
       self.year = if citation_year.present?
                     citation_year.to_i

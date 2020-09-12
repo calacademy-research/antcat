@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `QuickAndDirtyFixesController#remove_pages_from_taxac_tags`.
+# TMPCLEANUP: Temporary code for `QuickAndDirtyFixesController#remove_pages_from_taxac_tags`.
 module QuickAndDirtyFixes
   class RemovePagesFromTaxacTags
     include Service

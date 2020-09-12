@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `QuickAndDirtyFixesController#replace_with_pro_tags`.
+# TMPCLEANUP: Temporary code for `QuickAndDirtyFixesController#replace_with_pro_tags`.
 module QuickAndDirtyFixes
   class HardcodedNameToProTag
     include Service

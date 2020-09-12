@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe My::RegistrationsController do
+describe Users::RegistrationsController do
   # To fix:
-  #   Could not find devise mapping for path "/my/users".
+  #   Could not find devise mapping for path "/users".
   #   ...
   #   2) You are testing a Devise controller bypassing the router.
   #      If so, you can explicitly tell Devise which mapping to use ...

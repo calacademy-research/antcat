@@ -133,7 +133,7 @@ Rails.application.routes.draw do
     end
   end
 
-  devise_for :users, path_prefix: 'my', controllers: { registrations: "my/registrations" }
+  devise_for :users, controllers: { registrations: "users/registrations" }
   resources :users do
     collection do
       get :mentionables
@@ -171,7 +171,7 @@ Rails.application.routes.draw do
   resources :comments, only: [:index, :create, :edit, :update]
 
   scope path: :panel, controller: :editors_panels do
-    root action: :index, as: "editors_panel"
+    root action: :show, as: "editors_panel"
     get :invite_users
 
     scope module: :editors_panels do

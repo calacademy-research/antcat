@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-module My
+module Users
   class RegistrationsController < Devise::RegistrationsController
     RECAPTCHA_V3_ACTION = 'registration'
 
     prepend_before_action :check_recaptcha, only: [:create]
+    before_action :configure_permitted_parameters
     before_action :check_if_too_many_registrations_today, only: :create
 
     def create
@@ -16,6 +17,15 @@ module My
     end
 
     protected
+
+      def configure_permitted_parameters
+        devise_parameter_sanitizer.permit(:sign_up, keys: [:email, :name, :password, :password_confirmation])
+        devise_parameter_sanitizer.permit(
+          :account_update, keys: [
+            :email, :name, :author_id, :enable_email_notifications, :password, :password_confirmation, :current_password
+          ]
+        )
+      end
 
       def update_resource resource, params
         # Require current password if user is trying to change password.
@@ -51,7 +61,7 @@ module My
 
       # Via https://github.com/heartcombo/devise/wiki/How-To:-Use-Recaptcha-with-Devise
       def check_recaptcha
-        unless recaptcha_v3_valid?(params[:recaptcha_token], My::RegistrationsController::RECAPTCHA_V3_ACTION)
+        unless recaptcha_v3_valid?(params[:recaptcha_token], Users::RegistrationsController::RECAPTCHA_V3_ACTION)
           self.resource = resource_class.new(sign_up_params)
           resource.validate # Look for any other validation errors besides reCAPTCHA.
           set_minimum_password_length

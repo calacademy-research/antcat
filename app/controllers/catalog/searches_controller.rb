@@ -73,7 +73,7 @@ module Catalog
       end
 
       def not_searching_yet?
-        params.except(:controller, :action).blank?
+        request.query_parameters.blank?
       end
 
       def searching_for_nothing_from_header?
@@ -93,11 +93,11 @@ module Catalog
         params[SEARCHING_FROM_HEADER].present?
       end
 
-      # AntWeb's "View in AntCat" links are hardcoded to use the now
-      # deprecated param "st" (starts_with). Links look like this:
-      # http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go
-      # (from https://www.antweb.org/images.do?subfamily=agroecomyrmecinae)
+      # Take into account AntWeb's "View in AntCat" links. Look like this:
+      #   http://www.antcat.org/catalog/search?st=m&qq=Agroecomyrmecinae&commit=Go
+      #   (from https://www.antweb.org/images.do?subfamily=agroecomyrmecinae)
       def antweb_legacy_route?
+        # "st" (starts_with) has been deprecated, but it's still used in links on AntWeb.
         params[:st].present? && params[:qq].present?
       end
 

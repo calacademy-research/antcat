@@ -5,6 +5,7 @@ class Journal < ApplicationRecord
 
   has_many :references, dependent: :restrict_with_error
 
+  # TODO: Make case insensitive (and Ctrl+F case_sensitive).
   validates :name, presence: true, uniqueness: { case_sensitive: true }
 
   has_paper_trail

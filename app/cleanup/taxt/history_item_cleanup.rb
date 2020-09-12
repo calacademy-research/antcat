@@ -2,7 +2,7 @@
 
 module Taxt
   class HistoryItemCleanup
-    # TODO: WIP, see https://github.com/calacademy-research/antcat/issues/779
+    # TMPCLEANUP: WIP, see https://github.com/calacademy-research/antcat/issues/779
     VIRTUAL_HISTORY_ITEM_CANDIDATES = [
       # Good next candidates to work on.
       # Good candidate because it often appears first in the list, and no tax tags.

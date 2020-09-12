@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `DatabaseScripts::MissingTaxaToBeCreated`.
+# TMPCLEANUP: Temporary code for `DatabaseScripts::MissingTaxaToBeCreated`.
 module QuickAdd
   class FromHardcodedSubgenusName
     def initialize name_string

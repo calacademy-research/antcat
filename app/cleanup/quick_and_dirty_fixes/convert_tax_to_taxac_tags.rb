@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Temporary code for `QuickAndDirtyFixesController#convert_to_taxac_tags`.
+# TMPCLEANUP: Temporary code for `QuickAndDirtyFixesController#convert_to_taxac_tags`.
 module QuickAndDirtyFixes
   class ConvertTaxToTaxacTags
     include Service

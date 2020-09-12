@@ -16,7 +16,7 @@ describe RevisionComparer, :versioning do
     end
 
     context "when item has been deleted" do
-      before { item.destroy }
+      before { item.destroy! }
 
       it "returns the item (similar to `Model#find`, but searches in versions too)" do
         expect { model.find(item_id) }.to raise_error ActiveRecord::RecordNotFound

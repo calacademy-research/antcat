@@ -5,9 +5,7 @@ module DatabaseScripts
     def results
       non_standard = []
 
-      ReferenceSection.find_each do |reference_section|
-        next unless reference_section.references_taxt
-
+      ReferenceSection.where.not(references_taxt: nil).find_each do |reference_section|
         reference_section.references_taxt.split(';').each do |content|
           case content.scan("{ref ").size
           when 0
@@ -26,7 +24,7 @@ module DatabaseScripts
         t.header 'Reference section', 'Taxon', 'Content', 'Issue'
         t.rows do |reference_section, content, issue|
           [
-            reference_section_link(reference_section.id),
+            link_to(reference_section.id, edit_reference_section_path(reference_section)),
             taxon_link(reference_section.taxon),
             content,
             issue
@@ -34,12 +32,6 @@ module DatabaseScripts
         end
       end
     end
-
-    private
-
-      def reference_section_link id
-        "<a href='/reference_sections/#{id}/edit'>#{id}</a>"
-      end
   end
 end
 

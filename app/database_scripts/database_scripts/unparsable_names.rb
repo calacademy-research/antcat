@@ -68,7 +68,7 @@ __END__
 
 section: pa-action-required
 category: Names
-tags: [high-priority]
+tags: [slow]
 
 description: >
   Many of these records can only be fixed by script.

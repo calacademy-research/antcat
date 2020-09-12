@@ -1,5 +1,5 @@
 # This makes all textareas with `data-previewable="true"` previewable.
-# Can also be invoked manually in case the previewable is not visible by default.
+# Can also be invoked manually in case the previewable is not visible on page load.
 #
 # "Previewable" means markdown in the textarea can be previewed (rendered
 # server-side as HTML and return to the client).
@@ -14,7 +14,7 @@ AntCat.makeAllPreviewable = ->
 $.fn.makePreviewable = -> new MakePreviewable this
 
 # Super dirty.
-$.fn.renderUnrenderedPreviewableHack = -> new MakePreviewable this, true
+$.fn.renderUnrenderedPreviewableHack = -> new MakePreviewable(this, true)
 
 class MakePreviewable
   constructor: (@textarea, justRender = false) ->
@@ -214,13 +214,11 @@ defaultReference = ->
   { id: id, referenceKey: referenceKey }
 
 # Global to make it callable by at.js.
-# This may be very *not* performant...
 makeLoadingSpinnersAvailableForAtJs = ->
-  # `object` is "something" that was passed by at.js.
-  findSpinner = (object) ->
-    textarea = object.$inputor
-    textarea.closest(".preview-area").find ".shared-spinner"
+  findSpinner = (inputorElement) ->
+    textarea = inputorElement
+    textarea.closest(".preview-area").find(".shared-spinner")
 
-  window.MDPreview =
-    showSpinner: (object) -> findSpinner(object).show()
-    hideSpinner: (object) -> findSpinner(object).hide()
+  window.MarkdownPreview =
+    showSpinner: (inputorElement) -> findSpinner(inputorElement).show()
+    hideSpinner: (inputorElement) -> findSpinner(inputorElement).hide()

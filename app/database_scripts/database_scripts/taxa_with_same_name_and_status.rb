@@ -13,11 +13,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Authorship', 'Status', 'Unresolved homonym?'
+        t.header 'Taxon', 'Authorship', 'Rank', 'Status', 'Unresolved homonym?'
         t.rows do |taxon|
           [
             taxon_link(taxon),
             taxon.authorship_reference.key_with_citation_year,
+            taxon.type,
             taxon.status,
             ('Yes' if taxon.unresolved_homonym?)
           ]

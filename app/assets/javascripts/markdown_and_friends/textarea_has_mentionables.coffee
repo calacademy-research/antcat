@@ -12,18 +12,18 @@ setupMentionables = ->
     callbacks:
       matcher: AntCat.allowSpacesWhileAutocompleting
 
-      # We use `remoteFilter` to avoid making the query before an "@" is typed.
+      # `remoteFilter` is used to delay the query until an "@" is typed.
       remoteFilter: (query, callback) ->
-        # Mentionable users are always the same, so use cached if possible.
-        if AntCat.cached_mentionables?
-          return callback AntCat.cached_mentionables
+        # Cached because mentionable users do not change very often.
+        if AntCat._cachedMentionableUsers?
+          return callback AntCat._cachedMentionableUsers
 
-        MDPreview.showSpinner this
+        MarkdownPreview.showSpinner this.$inputor
         $.getJSON "/users/mentionables.json", (data) =>
           data = data.map (user) ->
             user.search_key = "#{user.id} #{user.name} #{user.email}"
             user
 
-          AntCat.cached_mentionables = data
-          MDPreview.hideSpinner this
+          AntCat._cachedMentionableUsers = data
+          MarkdownPreview.hideSpinner this.$inputor
           callback data

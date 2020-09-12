@@ -9,11 +9,15 @@ module Catalog
       incertae_sedis_in
     ]
     PROTONYM_COLUMNS = %i[nomen_nudum]
-    MUST_HAVE_HISTORY_ITEMS = 'must_have'
-    CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
-    NAME_CONTAINS = 'contains'
-    NAME_MATCHES = 'matches'
-    NAME_BEGINS_WITH = 'begins_with'
+    NAME_SEARCH_TYPES = [
+      NAME_CONTAINS = 'contains',
+      NAME_MATCHES = 'matches',
+      NAME_BEGINS_WITH = 'begins_with'
+    ]
+    HISTORY_ITEMS = [
+      MUST_HAVE_HISTORY_ITEMS = 'must_have',
+      CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
+    ]
     BIOGEOGRAPHIC_REGION_NONE = 'None'
 
     def initialize params
