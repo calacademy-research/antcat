@@ -6,7 +6,7 @@
         %ul.no-bullet
           %li=link_to 'About', page_path('about')
           %li=link_to 'List of users', users_path
-          %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
+          %li=link_to 'Contact us ', "mailto:#{Settings.contact_us_email_address}"
       .small-4.columns{style: "margin-top: 0.7rem"}
         %ul.no-bullet
           %li=link_to 'Activity feed', activities_path

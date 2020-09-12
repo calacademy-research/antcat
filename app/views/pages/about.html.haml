@@ -15,7 +15,7 @@
   %li=link_to 'List of users', users_path
   %li=link_to 'Contribute', page_path('contribute')
   %li=external_link_to 'Source code', 'https://github.com/calacademy-research/antcat'
-  %li=link_to 'Contact us ', 'mailto:jrussack@calacademy.org'
+  %li=link_to 'Contact us ', "mailto:#{Settings.contact_us_email_address}"
   %li
     =link_to 'API docs', grape_swagger_rails_path
     =surround "(", ")" do
