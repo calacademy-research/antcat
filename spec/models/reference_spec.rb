@@ -25,6 +25,9 @@ describe Reference do
     it { is_expected.to allow_value('2000').for(:citation_year) }
     it { is_expected.to allow_value('2000a').for(:citation_year) }
     it { is_expected.to_not allow_value('2000A').for(:citation_year) }
+    it { is_expected.to allow_value('a').for(:year_suffix) }
+    it { is_expected.to_not allow_value('aa').for(:year_suffix) }
+    it { is_expected.to_not allow_value('A').for(:year_suffix) }
 
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
@@ -41,7 +44,6 @@ describe Reference do
 
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
-    it { is_expected.to strip_attributes(:title, :date, :stated_year, :series_volume_issue, :doi, :bolton_key, :author_names_suffix) }
 
     describe "#set_year_from_citation_year" do
       context 'when `citation_year` contains a letter' do
@@ -53,6 +55,9 @@ describe Reference do
         end
       end
     end
+
+    it { is_expected.to strip_attributes(:title, :date, :stated_year, :year_suffix, :bolton_key, :author_names_suffix) }
+    it { is_expected.to strip_attributes(:series_volume_issue, :doi) }
   end
 
   describe "scopes" do

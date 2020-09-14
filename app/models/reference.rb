@@ -26,6 +26,7 @@ class Reference < ApplicationRecord
   validates :year, :pagination, :title, :author_names, presence: true
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :citation_year, format: { with: /\A\d{4,}[a-z]?\z/, message: "must be a year, followed by an optional lowercase letter" }
+  validates :year_suffix, format: { with: /\A[a-z]\z/, message: "must be blank or a single lowercase letter", allow_nil: true }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 
@@ -38,7 +39,7 @@ class Reference < ApplicationRecord
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
   has_paper_trail
   strip_attributes only: [
-    :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year,
+    :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year, :year_suffix,
     :series_volume_issue, :doi, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: key_with_citation_year } }
