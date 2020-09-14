@@ -15,5 +15,5 @@ editors_panel:
 new_relic:
   apm_url: "https://example.com/set-url-in-settings-configs"
 
-contact_us_email_address: "jrussack@calacademy.org"
+contact_us_email_address: "bfisher@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"
