@@ -73,7 +73,7 @@ describe Reference do
     end
 
     describe '#start_reviewing!' do
-      it "none transitions to start" do
+      it "transitions from 'none' to 'reviewing'" do
         expect { reference.start_reviewing! }.to change { reference.reviewing? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -87,7 +87,7 @@ describe Reference do
         reference.start_reviewing!
       end
 
-      it "start transitions to finish" do
+      it "transitions from 'reviewing' to 'reviewed'" do
         expect { reference.finish_reviewing! }.to change { reference.reviewed? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -102,7 +102,7 @@ describe Reference do
         reference.finish_reviewing!
       end
 
-      it "reviewed can transition back to reviewing" do
+      it "can transition 'reviewed' back to 'reviewing'" do
         expect { reference.restart_reviewing! }.to change { reference.reviewing? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -127,7 +127,6 @@ describe Reference do
   end
 
   describe "#author_names_string" do
-    let(:ward) { create :author_name, name: 'Ward, P.S.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
 
     context "when reference has one author name" do
@@ -139,6 +138,7 @@ describe Reference do
     end
 
     context "when reference has more than one author name" do
+      let(:ward) { create :author_name, name: 'Ward, P.S.' }
       let(:reference) { create :any_reference, author_names: [fisher, ward] }
 
       it "separates multiple author names with semicolons" do
@@ -148,7 +148,7 @@ describe Reference do
   end
 
   describe "#author_names_string_with_suffix" do
-    context "when reference has a `author_names_suffix`" do
+    context "when reference has an `author_names_suffix`" do
       let(:reference) do
         fisher = create :author_name, name: 'Fisher, B.L.'
         create :any_reference, author_names: [fisher], author_names_suffix: '(ed.)'

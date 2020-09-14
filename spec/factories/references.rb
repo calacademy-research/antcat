@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Generate proper years.
+
 FactoryBot.define do
   factory :base_reference, class: 'Reference' do
     transient do
@@ -50,6 +52,14 @@ FactoryBot.define do
     factory :nested_reference, class: 'NestedReference' do
       sequence(:pagination) { |n| "Pp. #{n} in:" }
       nesting_reference { create :book_reference }
+    end
+
+    trait :with_year_suffix do
+      sequence(:year_suffix, ('a'..'z').cycle)
+    end
+
+    trait :with_stated_year do
+      sequence(:stated_year) { |n| "200#{n}" }
     end
 
     trait :with_doi do

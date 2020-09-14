@@ -36,8 +36,8 @@ Feature: Edit reference successfully
 
   Scenario: Change a reference's type
     Given this article reference exists
-      | author     | title | citation   | year |
-      | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
+      | author     | title | year |
+      | Fisher, B. | Ants  | 2010 |
 
     When I go to the edit page for the most recent reference
     And I select the reference tab "#book-tab"

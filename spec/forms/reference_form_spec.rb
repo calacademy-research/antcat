@@ -306,7 +306,6 @@ describe ReferenceForm do
           author_names_string: original.author_names_string,
           journal_name: original.journal.name,
           year: original.year,
-          year_suffix: original.year_suffix,
           title: original.title,
           series_volume_issue: original.series_volume_issue,
           pagination: original.pagination

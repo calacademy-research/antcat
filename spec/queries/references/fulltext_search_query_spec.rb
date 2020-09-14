@@ -38,7 +38,7 @@ describe References::FulltextSearchQuery, :search do
         before do
           create :any_reference, year: 1994
           create :any_reference, year: 1995
-          create :any_reference, year: 1996, year_suffix: 'a'
+          create :any_reference, year: 1996
           create :any_reference, year: 1998
           Sunspot.commit
         end
@@ -268,12 +268,12 @@ describe References::FulltextSearchQuery, :search do
         bolton = create :author_name, name: 'Bolton, B.'
         fisher = create :author_name, name: 'Fisher, B.'
 
-        create :any_reference, author_names: [bolton, fisher], year: 1970, year_suffix: 'a'
+        create :any_reference, author_names: [bolton, fisher], year: 1970
       end
 
       before { Sunspot.commit }
 
-      specify { expect(described_class[freetext: "Fisher & Bolton 1970a"]).to eq [reference] }
+      specify { expect(described_class[freetext: "Fisher & Bolton 1970"]).to eq [reference] }
     end
 
     context "when search query contains 'et al.'" do
@@ -282,12 +282,12 @@ describe References::FulltextSearchQuery, :search do
         fisher = create :author_name, name: 'Fisher, B.'
         ward = create :author_name, name: 'Ward, P.S.'
 
-        create :any_reference, author_names: [bolton, fisher, ward], year: 1970, year_suffix: 'a'
+        create :any_reference, author_names: [bolton, fisher, ward], year: 1970
       end
 
       before { Sunspot.commit }
 
-      specify { expect(described_class[freetext: "Fisher, et al. 1970a"]).to eq [reference] }
+      specify { expect(described_class[freetext: "Fisher, et al. 1970"]).to eq [reference] }
     end
 
     describe "replacing some characters to make search work" do

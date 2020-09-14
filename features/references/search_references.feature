@@ -2,9 +2,9 @@ Feature: Searching references
   @search
   Scenario: Searching for an author name with diacritics, using the diacritics in the query
     Given these references exist
-      | author         | title             |
-      | Hölldobler, B. | Hölldobler's Ants |
-      | Fisher, B.     | Fisher's Ants     |
+      | author         |
+      | Hölldobler, B. |
+      | Fisher, B.     |
     And I go to the references page
 
     When I fill in "reference_q" with "Hölldobler" within the desktop menu
