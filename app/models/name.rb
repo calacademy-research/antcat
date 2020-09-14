@@ -41,8 +41,7 @@ class Name < ApplicationRecord
     unless: -> { name.blank? }
   validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter, :ensure_identified_name_type_matches
 
-  # NOTE: Technically we don't need to do this, since it *should* not be different, but let's make sure.
-  before_validation :set_epithet, :set_cleaned_name
+  before_validation :set_cleaned_name
   after_save :set_taxon_name_cache
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
@@ -52,11 +51,13 @@ class Name < ApplicationRecord
   strip_attributes only: [:name, :epithet, :gender], replace_newlines: true
   trackable parameters: proc { { name_html: name_html } }
 
-  # NOTE: This may make code harder to debug, but we don't want to have to manually specify epithets,
-  # or have them diverge. Consider this to be a factory or persistence-related callback.
   def name= value
     self[:name] = value.squish if value
     set_epithet
+  end
+
+  def epithet= _value
+    raise ActiveRecord::ReadOnlyRecord
   end
 
   def taxon_type
@@ -97,11 +98,11 @@ class Name < ApplicationRecord
 
     def set_epithet
       return unless name
-      self.epithet = if is_a?(SubgenusName)
-                       name_parts.last.tr('()', '')
-                     else
-                       name_parts.last
-                     end
+      self[:epithet] = if is_a?(SubgenusName)
+                         name_parts.last.tr('()', '')
+                       else
+                         name_parts.last
+                       end
     end
 
     def validate_number_of_name_parts

@@ -89,23 +89,23 @@ describe Name do
     describe '#strip_attributes' do
       subject(:name) { SubspeciesName.new }
 
-      it { is_expected.to strip_attributes(:name, :epithet, :gender) }
+      it { is_expected.to strip_attributes(:name, :gender) }
     end
 
     describe '#set_epithet' do
       describe 'when name is not a `SubgenusName`' do
-        let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca', epithet: 'pizza') }
+        let!(:name) { SubspeciesName.new(name: 'Lasius niger fusca') }
 
         it 'sets the epithet the last part of the name' do
-          expect { name.valid? }.to change { name.epithet }.from('pizza').to('fusca')
+          expect(name.epithet).to eq 'fusca'
         end
       end
 
       describe 'when name is a `SubgenusName`' do
-        let!(:name) { SubgenusName.new(name: 'Lasius (Austrolasius)', epithet: 'pizza') }
+        let!(:name) { SubgenusName.new(name: 'Lasius (Austrolasius)') }
 
         it 'sets the epithet the subgenus part of the name without parentheses' do
-          expect { name.valid? }.to change { name.epithet }.from('pizza').to('Austrolasius')
+          expect(name.epithet).to eq 'Austrolasius'
         end
       end
     end
