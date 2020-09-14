@@ -112,17 +112,17 @@ describe Reference do
     end
   end
 
-  describe '#citation_year_with_stated_year' do
+  describe '#suffixed_year_with_stated_year' do
     context 'when reference does not have a `stated_year`' do
       let(:reference) { create :any_reference, year: 2000, year_suffix: 'a' }
 
-      specify { expect(reference.citation_year_with_stated_year).to eq '2000a' }
+      specify { expect(reference.suffixed_year_with_stated_year).to eq '2000a' }
     end
 
     context 'when reference has a `stated_year`' do
       let(:reference) { create :any_reference, year: 2000, year_suffix: 'a', stated_year: "2001" }
 
-      specify { expect(reference.citation_year_with_stated_year).to eq '2000a ("2001")' }
+      specify { expect(reference.suffixed_year_with_stated_year).to eq '2000a ("2001")' }
     end
   end
 

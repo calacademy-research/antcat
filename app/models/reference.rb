@@ -73,8 +73,7 @@ class Reference < ApplicationRecord
   end
 
   # Looks like: '2000a ("2001")' (and simply just the year if `suffixed_year` and `stated_year` are blank).
-  # TODO: Rename to `#suffixed_year_with_stated_year`.
-  def citation_year_with_stated_year
+  def suffixed_year_with_stated_year
     return suffixed_year unless stated_year
     %(#{suffixed_year} ("#{stated_year}"))
   end
