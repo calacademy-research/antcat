@@ -50,12 +50,13 @@ describe TooltipsController do
     end
 
     it 'creates an activity' do
-      expect { post(:create, params: { tooltip: tooltip_params }) }.
+      expect { post(:create, params: { tooltip: tooltip_params, edit_summary: 'summary' }) }.
         to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
       tooltip = Tooltip.last
       expect(activity.trackable).to eq tooltip
+      expect(activity.edit_summary).to eq "summary"
       expect(activity.parameters).to eq(scope_and_key: "#{tooltip.scope}.#{tooltip.key}")
     end
   end
@@ -83,6 +84,17 @@ describe TooltipsController do
       expect(tooltip.key).to eq tooltip_params[:key]
       expect(tooltip.scope).to eq tooltip_params[:scope]
       expect(tooltip.text).to eq tooltip_params[:text]
+    end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: tooltip.id, tooltip: tooltip_params, edit_summary: 'summary' }) }.
+        to change { Activity.where(action: :update).count }.by(1)
+
+      activity = Activity.last
+      tooltip = Tooltip.last
+      expect(activity.trackable).to eq tooltip
+      expect(activity.edit_summary).to eq "summary"
+      expect(activity.parameters).to eq(scope_and_key: "#{tooltip.scope}.#{tooltip.key}")
     end
   end
 
