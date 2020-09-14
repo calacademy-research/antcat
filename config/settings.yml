@@ -10,7 +10,7 @@ catalog:
   show_failed_soft_validations: true
 
 new_relic:
-  apm_url: "https://example.com"
+  apm_url: "https://example.com/set-url-in-settings-configs"
 
 contact_us_email_address: "jrussack@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"
