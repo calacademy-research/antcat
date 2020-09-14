@@ -6,7 +6,7 @@ FactoryBot.define do
       author_string {}
     end
 
-    sequence(:title) { |n| "Ants are my life#{n}" }
+    sequence(:title) { |n| "Ants#{n}" }
     sequence(:citation_year) { |n| "201#{n}d" }
 
     after(:stub) do |reference, evaluator|
