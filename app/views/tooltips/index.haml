@@ -5,23 +5,21 @@
   -content_for :breadcrumbs_right do
     =link_to 'New Tooltip', new_tooltip_path, class: "btn-normal"
 
-%table#tooltips
-  %thead
-    %tr
-      %th Key
-      %th Page scope
-      %th Tooltip text
-  %tbody
-    -if @grouped_tooltips.empty?
-      %tr
-        %td{colspan: 4}
-          No tooltips found.
-          =link_to 'Be a hero and create the first one?', new_tooltip_path
-    -else
-      -@grouped_tooltips.each do |scope, tooltips|
+-if @grouped_tooltips.empty?
+  %tr
+    %td{colspan: 4}
+      Found no tooltips.
+      =link_to 'Be a hero and create the first one?', new_tooltip_path
+-else
+  -@grouped_tooltips.each do |scope, tooltips|
+    %h5=scope.capitalize
+    %table.tooltips.huge-margin-bottom
+      %thead
         %tr
-          %th.scope{colspan: 4}
-            =scope.capitalize
+          %th Key
+          %th Page scope
+          %th Tooltip text
+      %tbody
         -tooltips.each do |tooltip|
           %tr
             %td=link_to tooltip.key, tooltip
