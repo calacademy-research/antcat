@@ -13,7 +13,7 @@ class Reference < ApplicationRecord
   ]
 
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
-  delegate :key_with_citation_year, :key_with_year, to: :key
+  delegate :key_with_suffixed_year, :key_with_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
   has_many :author_names, -> { order('reference_author_names.position') }, through: :reference_author_names
@@ -41,7 +41,7 @@ class Reference < ApplicationRecord
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year, :year_suffix,
     :series_volume_issue, :doi, :bolton_key, :author_names_suffix
   ], replace_newlines: true
-  trackable parameters: proc { { name: key_with_citation_year } }
+  trackable parameters: proc { { name: key_with_suffixed_year } }
 
   workflow_column :review_state
   workflow do

@@ -72,7 +72,7 @@ class ReferencesController < ApplicationController
       return
     end
 
-    activity_parameters = { name: reference.key_with_citation_year } # Grab key before reference author names are deleted.
+    activity_parameters = { name: reference.key_with_suffixed_year } # Grab key before reference author names are deleted.
 
     if reference.destroy
       reference.create_activity :destroy, current_user, parameters: activity_parameters

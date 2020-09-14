@@ -129,7 +129,7 @@ class ReferenceForm
 
       duplicate = Reference.find(duplicates.first[:match].id)
       errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
-        This may be a duplicate of #{duplicate.key_with_citation_year} (##{duplicate.id}).<br> To save, click "Save".
+        This may be a duplicate of #{duplicate.key_with_suffixed_year} (##{duplicate.id}).<br> To save, click "Save".
       MSG
     end
 end

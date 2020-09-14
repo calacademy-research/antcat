@@ -5,7 +5,7 @@ require 'rails_helper'
 describe References::Key do
   subject(:key) { described_class.new(reference) }
 
-  describe "#key_with_citation_year" do
+  describe "#key_with_suffixed_year" do
     let(:bolton) { create :author_name, name: 'Bolton, B.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.' }
 
@@ -13,20 +13,20 @@ describe References::Key do
       let(:reference) { create :any_reference, :with_author_name, year: 1970, year_suffix: 'a' }
 
       specify do
-        expect { reference.author_names = [] }.to change { key.key_with_citation_year }.to('[no authors], 1970a')
+        expect { reference.author_names = [] }.to change { key.key_with_suffixed_year }.to('[no authors], 1970a')
       end
     end
 
     context 'when one author' do
       let(:reference) { create :any_reference, author_names: [bolton], year: 1970, year_suffix: 'a' }
 
-      specify { expect(key.key_with_citation_year).to eq 'Bolton, 1970a' }
+      specify { expect(key.key_with_suffixed_year).to eq 'Bolton, 1970a' }
     end
 
     context 'when two authors' do
       let(:reference) { create :any_reference, author_names: [bolton, fisher], year: 1970, year_suffix: 'a' }
 
-      specify { expect(key.key_with_citation_year).to eq 'Bolton & Fisher, 1970a' }
+      specify { expect(key.key_with_suffixed_year).to eq 'Bolton & Fisher, 1970a' }
     end
 
     context 'when three authors' do
@@ -35,8 +35,8 @@ describe References::Key do
         create :any_reference, author_names: [bolton, fisher, ward], year: 1970, year_suffix: 'a'
       end
 
-      specify { expect(key.key_with_citation_year).to eq 'Bolton <i>et al.</i>, 1970a' }
-      specify { expect(key.key_with_citation_year.html_safe?).to eq true }
+      specify { expect(key.key_with_suffixed_year).to eq 'Bolton <i>et al.</i>, 1970a' }
+      specify { expect(key.key_with_suffixed_year.html_safe?).to eq true }
     end
   end
 

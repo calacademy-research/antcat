@@ -22,7 +22,7 @@ module DatabaseScripts
         t.header 'Reference', 'series_volume_issue'
         t.rows do |reference|
           [
-            link_to(reference.key_with_citation_year, reference_path(reference)),
+            link_to(reference.key_with_suffixed_year, reference_path(reference)),
             reference.series_volume_issue
           ]
         end

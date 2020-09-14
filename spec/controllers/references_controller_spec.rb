@@ -111,7 +111,7 @@ describe ReferencesController do
 
       activity = Activity.last
       expect(activity.edit_summary).to eq 'edited'
-      expect(activity.parameters).to eq(name: reference.key_with_citation_year)
+      expect(activity.parameters).to eq(name: reference.key_with_suffixed_year)
     end
   end
 
@@ -123,7 +123,7 @@ describe ReferencesController do
     end
 
     it 'creates an activity' do
-      reference_key = reference.key_with_citation_year
+      reference_key = reference.key_with_suffixed_year
 
       expect { delete(:destroy, params: { id: reference.id }) }.
         to change { Activity.where(action: :destroy, trackable: reference).count }.by(1)
