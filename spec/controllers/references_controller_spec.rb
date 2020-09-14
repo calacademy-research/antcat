@@ -25,6 +25,8 @@ describe ReferencesController do
       {
         title: 'New Ants',
         citation_year: '1999b',
+        year: 1999,
+        year_suffix: 'b',
         stated_year: '2000',
         author_names_string: "Batiatus, B.; Glaber, G.",
         pagination: '5',
@@ -51,8 +53,9 @@ describe ReferencesController do
       reference = Reference.last
       expect(reference.title).to eq reference_params[:title]
       expect(reference.citation_year).to eq reference_params[:citation_year]
+      expect(reference.year).to eq reference_params[:year]
+      expect(reference.year_suffix).to eq reference_params[:year_suffix]
       expect(reference.stated_year).to eq reference_params[:stated_year]
-      expect(reference.year).to eq 1999
 
       expect(reference.author_names_string).to eq reference_params[:author_names_string]
 

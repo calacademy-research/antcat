@@ -24,6 +24,8 @@ class ReferenceForm
     :stated_year,
     :taxonomic_notes,
     :title,
+    :year,
+    :year_suffix,
     document_attributes: [:id, :file, :url]
   ]
 

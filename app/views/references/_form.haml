@@ -22,6 +22,16 @@
         Year
         =db_tooltip_icon "references.citation_year", scope: :references
       =f.text_field :citation_year
+    .medium-1.columns
+      =f.label :year do
+        Year
+        =db_tooltip_icon "year", scope: :references
+      =f.text_field :year
+    .medium-1.columns
+      =f.label :year_suffix do
+        Suffix
+        =db_tooltip_icon "year_suffix", scope: :references
+      =f.text_field :year_suffix
     .medium-2.columns
       =f.label :stated_year do
         Stated year
