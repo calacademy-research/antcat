@@ -18,7 +18,7 @@ class ReferencesController < ApplicationController
   def new
     @reference = if params[:nesting_reference_id]
                    NestedReference.new(
-                     citation_year: params[:citation_year],
+                     year: params[:year],
                      stated_year: params[:stated_year],
                      pagination: "Pp. XX-XX in:",
                      nesting_reference_id: params[:nesting_reference_id]

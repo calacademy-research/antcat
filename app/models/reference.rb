@@ -24,16 +24,15 @@ class Reference < ApplicationRecord
   has_one :document, class_name: 'ReferenceDocument', dependent: false # TODO: See if we want to destroy it.
 
   validates :year, :pagination, :title, :author_names, presence: true
-  validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
-  validates :citation_year, format: { with: /\A\d{4,}[a-z]?\z/, message: "must be a year, followed by an optional lowercase letter" }
   validates :year_suffix, format: { with: /\A[a-z]\z/, message: "must be blank or a single lowercase letter", allow_nil: true }
+  validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 
-  before_validation :set_year_from_citation_year
   before_save :refresh_author_names_cache
 
-  scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :citation_year) }
+  scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :year, :year_suffix) }
+  scope :order_by_suffixed_year, -> { order(:year, :year_suffix) }
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
@@ -73,9 +72,14 @@ class Reference < ApplicationRecord
     save!(validate: false)
   end
 
+  # TODO: Rename to `#suffixed_year_with_stated_year`.
   def citation_year_with_stated_year
-    return citation_year unless stated_year
-    %(#{citation_year} ("#{stated_year}"))
+    return suffixed_year unless stated_year
+    %(#{suffixed_year} ("#{stated_year}"))
+  end
+
+  def suffixed_year
+    "#{year}#{year_suffix}"
   end
 
   def key
@@ -88,12 +92,5 @@ class Reference < ApplicationRecord
       return unless bolton_key
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
-    end
-
-    # TODO: Keep only disambiguation letter in `citation_year` and extract year to a field in the reference form.
-    def set_year_from_citation_year
-      self.year = if citation_year.present?
-                    citation_year.to_i
-                  end
     end
 end

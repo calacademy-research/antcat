@@ -6,9 +6,9 @@ Feature: Markdown autocompletion
   @skip_ci @search
   Scenario: References markdown autocompletion
     Given these references exist
-      | author       | title                    | citation_year |
-      | Giovanni, S. | Giovanni's Favorite Ants | 1810          |
-      | Joffre, J.   | Joffre's Favorite Ants   | 1810          |
+      | author       | title                    | year |
+      | Giovanni, S. | Giovanni's Favorite Ants | 1810 |
+      | Joffre, J.   | Joffre's Favorite Ants   | 1810 |
     And I am on a page with a textarea with markdown preview and autocompletion
 
     When I fill in "issue_description" with "{rfav"

@@ -7,7 +7,7 @@ Feature: Add reference unsuccessfully
   Scenario: Leaving required fields blank (general fields)
     When I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
-    And I fill in "reference_citation_year" with ""
+    And I fill in "reference_year" with ""
     And I fill in "reference_pagination" with ""
     And I press "Save"
     Then I should see "Author names can't be blank"

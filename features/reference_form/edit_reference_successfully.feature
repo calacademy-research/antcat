@@ -8,7 +8,7 @@ Feature: Edit reference successfully
     When I go to the edit page for the most recent reference
     And I fill in "reference_author_names_string" with ""
     And I fill in "reference_title" with ""
-    And I fill in "reference_citation_year" with ""
+    And I fill in "reference_year" with ""
     And I fill in "reference_pagination" with ""
     And I press "Save"
     Then I should see "Author names can't be blank"
@@ -36,8 +36,8 @@ Feature: Edit reference successfully
 
   Scenario: Change a reference's type
     Given this article reference exists
-      | author     | title | citation   | citation_year |
-      | Fisher, B. | Ants  | Psyche 6:4 | 2010          |
+      | author     | title | citation   | year |
+      | Fisher, B. | Ants  | Psyche 6:4 | 2010 |
 
     When I go to the edit page for the most recent reference
     And I select the reference tab "#book-tab"
@@ -56,11 +56,11 @@ Feature: Edit reference successfully
 
   Scenario: Edit a `NestedReference`
     Given this article reference exists
-      | author     | citation   | citation_year | title |
-      | Ward, P.S. | Psyche 5:3 | 2001          | Ants  |
+      | author     | citation   | year | title |
+      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
     And the following entry nests it
-      | author     | title            | citation_year | pagination |
-      | Bolton, B. | Ants are my life | 2001          | In:        |
+      | author     | title            | year | pagination |
+      | Bolton, B. | Ants are my life | 2001 | In:        |
 
     When I go to the references page
     Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"

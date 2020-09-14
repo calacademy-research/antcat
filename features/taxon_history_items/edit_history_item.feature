@@ -98,8 +98,8 @@ Feature: Editing a history item
   @javascript
   Scenario: Seeing the markdown preview (and cancelling)
     Given this reference exists
-      | author       | citation_year |
-      | Giovanni, S. | 1809          |
+      | author       | year |
+      | Giovanni, S. | 1809 |
     And there is a genus "Eciton" with a history item "Eciton history," and a markdown link to "Giovanni, 1809"
 
     When I go to the edit page for "Eciton"

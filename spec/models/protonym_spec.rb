@@ -56,10 +56,10 @@ describe Protonym do
   end
 
   describe "#author_citation" do
-    let!(:reference) { create :any_reference, author_string: 'Bolton', citation_year: '2005b' }
+    let!(:reference) { create :any_reference, author_string: 'Bolton', year: 2005, year_suffix: 'b' }
     let!(:protonym) { create :protonym, authorship: create(:citation, reference: reference) }
 
-    it 'does not include letters from the `citation_year`' do
+    it 'does not include year suffixes' do
       expect(protonym.author_citation).to eq 'Bolton, 2005'
     end
   end

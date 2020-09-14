@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Given("there is a species described in {int}") do |year|
-  reference = create :any_reference, citation_year: year
+  reference = create :any_reference, year: year
   taxon = create :species
   taxon.protonym.authorship.update!(reference: reference)
 end

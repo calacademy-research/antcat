@@ -5,14 +5,15 @@ require 'rails_helper'
 describe References::NewFromCopy do
   describe '#call' do
     describe 'copying common attributes' do
-      let!(:reference) { create :article_reference, :with_notes, stated_year: "2001" }
+      let!(:reference) { create :article_reference, :with_notes, year_suffix: 'a', stated_year: "2001" }
 
       specify do
         copy = described_class[reference]
 
         [
           :author_names_string_cache,
-          :citation_year,
+          :year,
+          :year_suffix,
           :stated_year,
           :title,
           :pagination,

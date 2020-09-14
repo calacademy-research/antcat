@@ -22,9 +22,6 @@ describe Reference do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
-    it { is_expected.to allow_value('2000').for(:citation_year) }
-    it { is_expected.to allow_value('2000a').for(:citation_year) }
-    it { is_expected.to_not allow_value('2000A').for(:citation_year) }
     it { is_expected.to allow_value('a').for(:year_suffix) }
     it { is_expected.to_not allow_value('aa').for(:year_suffix) }
     it { is_expected.to_not allow_value('A').for(:year_suffix) }
@@ -44,18 +41,6 @@ describe Reference do
 
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
-
-    describe "#set_year_from_citation_year" do
-      context 'when `citation_year` contains a letter' do
-        let(:reference) { create :any_reference, citation_year: '1910a' }
-
-        it "ignores letters when setting `year`" do
-          expect { reference.update!(citation_year: '2010b') }.
-            to change { reference.reload.year }.from(1910).to(2010)
-        end
-      end
-    end
-
     it { is_expected.to strip_attributes(:title, :date, :stated_year, :year_suffix, :bolton_key, :author_names_suffix) }
     it { is_expected.to strip_attributes(:series_volume_issue, :doi) }
   end
@@ -63,9 +48,9 @@ describe Reference do
   describe "scopes" do
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        one = create :any_reference, author_string: 'Fisher', citation_year: '1910b'
-        two = create :any_reference, author_string: 'Wheeler', citation_year: '1874'
-        three = create :any_reference, author_string: 'Fisher', citation_year: '1910a'
+        one = create :any_reference, author_string: 'Fisher', year: 1910, year_suffix: "b"
+        two = create :any_reference, author_string: 'Wheeler', year: 1874
+        three = create :any_reference, author_string: 'Fisher', year: 1910, year_suffix: "a"
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
@@ -129,13 +114,13 @@ describe Reference do
 
   describe '#citation_year_with_stated_year' do
     context 'when reference does not have a `stated_year`' do
-      let(:reference) { create :any_reference, citation_year: "2000a" }
+      let(:reference) { create :any_reference, year: 2000, year_suffix: 'a' }
 
       specify { expect(reference.citation_year_with_stated_year).to eq '2000a' }
     end
 
     context 'when reference has a `stated_year`' do
-      let(:reference) { create :any_reference, citation_year: "2000a", stated_year: "2001" }
+      let(:reference) { create :any_reference, year: 2000, year_suffix: 'a', stated_year: "2001" }
 
       specify { expect(reference.citation_year_with_stated_year).to eq '2000a ("2001")' }
     end

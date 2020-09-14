@@ -7,7 +7,7 @@ module Api
         :id,
         :title,
         :year,
-        :citation_year,
+        :year_suffix,
         :stated_year,
         :date,
         :doi,

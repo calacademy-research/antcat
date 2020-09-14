@@ -7,7 +7,7 @@ FactoryBot.define do
     end
 
     sequence(:title) { |n| "Ants#{n}" }
-    sequence(:citation_year) { |n| "201#{n}d" }
+    sequence(:year) { |n| "201#{n}".to_i }
 
     after(:stub) do |reference, evaluator|
       if evaluator.author_names.present?

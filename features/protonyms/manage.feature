@@ -6,8 +6,8 @@ Feature: Manage protonyms
   Scenario: Adding a protonym with a type name
     Given there is a genus "Atta"
     And these references exist
-      | author   | citation_year |
-      | Batiatus | 2004          |
+      | author   | year |
+      | Batiatus | 2004 |
 
     When I go to the protonyms page
     And I follow "New"

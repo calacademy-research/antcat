@@ -13,7 +13,7 @@ describe Autocomplete::LinkableReferencesSerializer do
             {
               id: reference.id,
               author: reference.author_names_string_with_suffix,
-              year: reference.citation_year,
+              year: reference.suffixed_year,
               title: "#{reference.title}.",
               full_pagination: "[pagination: #{reference.pagination} (#{reference.nesting_reference.pagination})]",
               bolton_key: "[Bolton key: #{reference.bolton_key}]"

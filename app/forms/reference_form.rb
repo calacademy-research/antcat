@@ -10,7 +10,6 @@ class ReferenceForm
     :author_names_string,
     :author_names_suffix,
     :bolton_key,
-    :citation_year,
     :date,
     :doi,
     :editor_notes,

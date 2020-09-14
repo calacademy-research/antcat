@@ -10,7 +10,7 @@ describe Wikipedia::ReferenceExporter do
     describe "when reference is an `ArticleReference`" do
       let(:reference) do
         create :article_reference, :with_doi, author_names: [batiatus], title: "*Formica* and Apples",
-          pagination: "7-14", citation_year: "2000"
+          pagination: "7-14", year: 2000
       end
 
       specify do
@@ -26,7 +26,7 @@ describe Wikipedia::ReferenceExporter do
     describe "when reference is a `BookReference`" do
       let(:reference) do
         create :book_reference, author_names: [batiatus, glaber], title: "*Formica* and Apples",
-          pagination: "7-14", citation_year: "2000", publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
+          pagination: "7-14", year: 2000, publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
       end
 
       specify do
@@ -41,7 +41,7 @@ describe Wikipedia::ReferenceExporter do
     end
 
     describe "name tag" do
-      let(:reference) { create :article_reference, author_names: author_names, citation_year: "2016" }
+      let(:reference) { create :article_reference, author_names: author_names, year: 2016 }
 
       context "when reference has one author" do
         let(:author_names) { [batiatus] }

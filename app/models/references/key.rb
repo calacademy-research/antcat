@@ -5,8 +5,9 @@ module References
     attr_private_initialize :reference
 
     # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978b".
+    # TODO: Rename to `#key_with_suffixed_year`.
     def key_with_citation_year
-      authors_for_key << ', ' << citation_year
+      authors_for_key << ', ' << suffixed_year
     end
 
     # Normal key: "Bolton, 1885g".
@@ -28,6 +29,6 @@ module References
 
     private
 
-      delegate :citation_year, :year, :author_names, to: :reference, private: true
+      delegate :year, :suffixed_year, :author_names, to: :reference, private: true
   end
 end

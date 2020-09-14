@@ -8,7 +8,7 @@ describe Exporters::Endnote::Formatter do
       let(:reference) do
         create :article_reference,
           author_names: [create(:author_name, name: 'MacKay, W.')],
-          citation_year: '1941',
+          year: 1941,
           title: '*A title*',
           journal: create(:journal, name: 'Psyche'),
           series_volume_issue: '1(2)',
@@ -34,7 +34,7 @@ describe Exporters::Endnote::Formatter do
       let(:reference) do
         create :article_reference,
           author_names: [create(:author_name, name: 'MacKay, W.')],
-          citation_year: '1941',
+          year: 1941,
           title: '*A title*',
           journal: create(:journal, name: 'Psyche'),
           series_volume_issue: '1(2)',
@@ -65,7 +65,7 @@ describe Exporters::Endnote::Formatter do
         create :book_reference,
           author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
           title: 'Ants Are My Life',
-          citation_year: '1933',
+          year: 1933,
           publisher: create(:publisher, name: 'Springer Verlag', place: 'Dresden'),
           pagination: 'ix + 33pp.'
       end
@@ -90,7 +90,7 @@ describe Exporters::Endnote::Formatter do
       let(:reference) do
         create :article_reference,
           author_names: [create(:author_name, name: 'MacKay, W.')],
-          citation_year: '1941',
+          year: 1941,
           title: 'A title',
           journal: create(:journal, name: 'Psyche'),
           series_volume_issue: '1(2)',

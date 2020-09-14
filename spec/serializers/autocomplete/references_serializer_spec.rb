@@ -18,7 +18,7 @@ describe Autocomplete::ReferencesSerializer do
             author: "E.O. Wilson",
             search_query: reference.title,
             title: reference.title,
-            year: reference.citation_year,
+            year: reference.suffixed_year,
             url: "/references/#{reference.id}"
           }
         ]
@@ -34,7 +34,7 @@ describe Autocomplete::ReferencesSerializer do
               author: "E.O. Wilson",
               search_query: "author:'E.O. Wilson'",
               title: reference.title,
-              year: reference.citation_year,
+              year: reference.suffixed_year,
               url: "/references/#{reference.id}"
             }
           ]
