@@ -4,13 +4,12 @@ module References
   class Key
     attr_private_initialize :reference
 
-    # Looks like: "Abdul-Rassoul, Dawah & Othman, 1978b".
+    # Looks like: "Forel, Emery & Mayr, 1878b" (and without the "b" if `suffixed_year` is blank).
     def key_with_suffixed_year
       authors_for_key << ', ' << suffixed_year
     end
 
-    # Normal key: "Bolton, 1885g".
-    # This:       "Bolton, 1885".
+    # Looks like: "Forel, Emery & Mayr, 1878".
     def key_with_year
       authors_for_key << ', ' << year.to_s
     end
