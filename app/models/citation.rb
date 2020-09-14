@@ -3,6 +3,8 @@
 class Citation < ApplicationRecord
   include OrderByPages
 
+  ICZN_APPLICABILITY_YEAR_RANGE = 1758..9999
+
   belongs_to :reference
 
   # TODO: [grep:notes_taxt].

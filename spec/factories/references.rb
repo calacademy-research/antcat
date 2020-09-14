@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Generate proper years.
-
 FactoryBot.define do
   factory :base_reference, class: 'Reference' do
     transient do
@@ -9,7 +7,7 @@ FactoryBot.define do
     end
 
     sequence(:title) { |n| "Ants#{n}" }
-    sequence(:year) { |n| "201#{n}".to_i }
+    year { rand(Citation::ICZN_APPLICABILITY_YEAR_RANGE) }
 
     after(:stub) do |reference, evaluator|
       if evaluator.author_names.present?
@@ -59,7 +57,7 @@ FactoryBot.define do
     end
 
     trait :with_stated_year do
-      sequence(:stated_year) { |n| "200#{n}" }
+      stated_year { rand(Citation::ICZN_APPLICABILITY_YEAR_RANGE) }
     end
 
     trait :with_doi do
