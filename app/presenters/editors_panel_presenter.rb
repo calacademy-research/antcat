@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class EditorsPanelPresenter
-  MAX_WIKI_PAGES_LINKS = 5
+  MAX_FEATURED_WIKI_PAGES_LINKS = Settings.editors_panel.max_featured_wiki_pages_links
 
   attr_private_initialize :current_user
 
@@ -30,7 +30,7 @@ class EditorsPanelPresenter
   end
 
   def featured_wiki_pages
-    @_featured_wiki_pages ||= WikiPage.featured.order(:title).select(:id, :title).limit(MAX_WIKI_PAGES_LINKS)
+    @_featured_wiki_pages ||= WikiPage.featured.order(:title).select(:id, :title).limit(MAX_FEATURED_WIKI_PAGES_LINKS)
   end
 
   def total_wiki_pages_count
