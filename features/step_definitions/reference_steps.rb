@@ -1,20 +1,5 @@
 # frozen_string_literal: true
 
-def find_reference_by_key key_with_year
-  parts = key_with_year.split ','
-  last_name = parts[0]
-  year = parts[1]
-  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
-end
-
-module ReferenceStepsHelpers
-  module_function
-
-  def find_or_create_author_name author_name_name
-    AuthorName.find_by(name: author_name_name) || FactoryBot.create(:author_name, name: author_name_name)
-  end
-end
-
 Given("there is a reference") do
   create :any_reference, :with_author_name
 end
@@ -86,7 +71,7 @@ When("I fill in {string} with a URL to a document that exists") do |field_name|
 end
 
 Given("the default reference is {string}") do |key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   References::DefaultReference.stub(:get).and_return(reference)
 end
 

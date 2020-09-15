@@ -38,7 +38,7 @@ When(/^I set the protonym authorship to the first search results of "([^"]*)"$/)
 end
 
 Then(/^the authorship should contain the reference "([^"]*)"$/) do |key_with_year|
-  reference_id = find_reference_by_key(key_with_year).id
+  reference_id = ReferenceStepsHelpers.find_reference_by_key(key_with_year).id
   selector = '#taxon_protonym_attributes_authorship_attributes_reference_id'
   expect(find(selector).value).to eq reference_id.to_s
 end

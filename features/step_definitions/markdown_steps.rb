@@ -28,17 +28,17 @@ Then("the markdown textarea should contain a markdown link to Archibald's user p
 end
 
 Then("the markdown textarea should contain a markdown link to {string}") do |key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   expect(markdown_textarea.value).to include "{ref #{reference.id}}"
 end
 
 When("I fill in {string} with {string} and a markdown link to {string}") do |field_name, value, key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   step %(I fill in "#{field_name}" with "#{value} {ref #{reference.id}}")
 end
 
 Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, content, key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   taxt = "#{content} {ref #{reference.id}}"
   step %(there is a genus "#{genus}" with a history item "#{taxt}")
 end
