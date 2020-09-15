@@ -10,11 +10,8 @@ end
 module ReferenceStepsHelpers
   module_function
 
-  def find_or_create_author_names hsh
-    if (author = hsh.delete 'author')
-      author_name = AuthorName.find_by(name: author) || FactoryBot.create(:author_name, name: author)
-      hsh[:author_names] = [author_name]
-    end
+  def find_or_create_author_name author_name_name
+    AuthorName.find_by(name: author_name_name) || FactoryBot.create(:author_name, name: author_name_name)
   end
 end
 
@@ -32,7 +29,11 @@ end
 
 Given("(this reference exists)/(these references exist)") do |table|
   table.hashes.each do |hsh|
-    ReferenceStepsHelpers.find_or_create_author_names(hsh)
+    if (author_name_name = hsh.delete('author'))
+      author_name = ReferenceStepsHelpers.find_or_create_author_name(author_name_name)
+      hsh[:author_names] = [author_name]
+    end
+
     create :any_reference, hsh
   end
 end
@@ -40,12 +41,15 @@ end
 Given("this article reference exists") do |table|
   hsh = table.hashes.first
 
+  if (author_name_name = hsh.delete('author'))
+    author_name = ReferenceStepsHelpers.find_or_create_author_name(author_name_name)
+    hsh[:author_names] = [author_name]
+  end
+
   if (journal_name = hsh.delete('journal'))
     journal = Journal.find_by(name: journal_name) || create(:journal, name: journal_name)
     hsh[:journal] = journal
   end
-
-  ReferenceStepsHelpers.find_or_create_author_names(hsh)
 
   create :article_reference, hsh
 end
