@@ -19,7 +19,7 @@ Then("the homonym replaced by name should be {string}") do |name|
   expected_value = if name == '(none)'
                      ''
                    else
-                     Taxon.find_by(name_cache: name).id.to_s
+                     Taxon.find_by!(name_cache: name).id.to_s
                    end
   expect(find('#taxon_homonym_replaced_by_id').value).to eq expected_value
 end
@@ -70,13 +70,13 @@ end
 
 # Misc.
 Then("{string} should be of the rank of {string}") do |name, rank|
-  taxon = Taxon.find_by(name_cache: name)
+  taxon = Taxon.find_by!(name_cache: name)
   expect(taxon.rank).to eq rank
 end
 
 Then("the {string} of {string} should be {string}") do |association, taxon_name, other_taxon_name|
-  taxon = Taxon.find_by(name_cache: taxon_name)
-  other_taxon = Taxon.find_by(name_cache: other_taxon_name)
+  taxon = Taxon.find_by!(name_cache: taxon_name)
+  other_taxon = Taxon.find_by!(name_cache: other_taxon_name)
 
   expect(taxon.public_send(association)).to eq other_taxon
 end
