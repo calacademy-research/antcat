@@ -5,8 +5,7 @@ replaced the missing reference
 
 with
 
--reference = Reference.find_by(id: activity.parameters[:target_reference_id])
--if reference
+-if (reference = Reference.find_by(id: activity.parameters[:target_reference_id]))
   =reference.decorate.expandable_reference
 -else
   [deleted]

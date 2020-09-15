@@ -24,9 +24,9 @@
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 
--if @versions.first
+-if (first_version = @versions.first)
   .center-text
-    -first_version_date = @versions.first.created_at
+    -first_version_date = first_version.created_at
     %h5=time_ago_in_words first_version_date
     %h6=first_version_date
 
@@ -59,9 +59,9 @@
             =inline_expandable version.inspect do
               %pre=version.to_yaml
 
--if @versions.last
+-if (last_verson = @versions.last)
   .center-text
-    -last_version_date = @versions.last.created_at
+    -last_version_date = last_verson.created_at
     %h5=time_ago_in_words last_version_date
     %h6=last_version_date
 

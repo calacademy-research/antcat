@@ -6,10 +6,9 @@
     =link_to 'New Tooltip', new_tooltip_path, class: "btn-normal"
 
 -if @grouped_tooltips.empty?
-  %tr
-    %td{colspan: 4}
-      Found no tooltips.
-      =link_to 'Be a hero and create the first one?', new_tooltip_path
+  %p
+    Found no tooltips.
+    =link_to 'Be a hero and create the first one?', new_tooltip_path
 -else
   -@grouped_tooltips.each do |scope, tooltips|
     %h5=scope.capitalize

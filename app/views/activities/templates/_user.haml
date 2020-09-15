@@ -1,7 +1,6 @@
 -# currently only :create
 
--user = User.find_by(id: activity.parameters[:user_id])
--if user
+-if (user = User.find_by(id: activity.parameters[:user_id]))
   =user.decorate.user_page_link
 -else
   [deleted user]
