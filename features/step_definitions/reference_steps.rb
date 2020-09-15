@@ -40,11 +40,10 @@ end
 Given("this article reference exists") do |table|
   hsh = table.hashes.first
 
-  citation = hsh.delete('citation') || "Psyche 1:1"
-  matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
-  journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
-
-  hsh.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
+  if (journal_name = hsh.delete('journal'))
+    journal = Journal.find_by(name: journal_name) || create(:journal, name: journal_name)
+    hsh[:journal] = journal
+  end
 
   ReferenceStepsHelpers.find_or_create_author_names(hsh)
 
