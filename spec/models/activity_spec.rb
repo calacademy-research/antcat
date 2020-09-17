@@ -8,6 +8,24 @@ describe Activity do
   describe 'validations' do
     it { is_expected.to validate_inclusion_of(:action).in_array(Activity::ACTIONS) }
     it { is_expected.to_not allow_value(nil).for(:action) }
+
+    describe '#user' do
+      context 'with `trackable_type` that requires a user' do
+        subject { build :activity, trackable: trackable }
+
+        let(:trackable) { create :journal }
+
+        it { is_expected.to validate_presence_of :user }
+      end
+
+      context 'with `trackable_type` that does not require a user' do
+        subject { build :activity, trackable: trackable }
+
+        let(:trackable) { create :feedback }
+
+        it { is_expected.to_not validate_presence_of :user }
+      end
+    end
   end
 
   describe 'callbacks' do
@@ -20,8 +38,10 @@ describe Activity do
 
   describe ".create_for_trackable" do
     it "creates an activity" do
-      expect { described_class.create_for_trackable(nil, :execute_script, user: nil) }.
-        to change { described_class.count }.by 1
+      user = create :user
+
+      expect { described_class.create_for_trackable(nil, :execute_script, user: user) }.
+        to change { described_class.count }.by(1)
     end
 
     it "assigns attributes for the activity" do
@@ -49,9 +69,11 @@ describe Activity do
   end
 
   describe ".create_without_trackable" do
+    let(:user) { create :user }
+
     it "creates an activity" do
-      expect { described_class.create_without_trackable(:execute_script, nil) }.
-        to change { described_class.count }.by 1
+      expect { described_class.create_without_trackable(:execute_script, user) }.
+        to change { described_class.count }.by(1)
     end
   end
 

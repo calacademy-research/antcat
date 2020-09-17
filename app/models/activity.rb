@@ -43,13 +43,15 @@ class Activity < ApplicationRecord
   }
   ACTIONS = ACTIONS_BY_GROUP.values.flatten
   DEPRECATED_TRACKABLE_TYPES = %w[Change Synonym]
+  OPTIONAL_USER_TRACKABLE_TYPES = %w[Feedback User]
 
   self.per_page = 30 # For `will_paginate`.
 
   belongs_to :trackable, polymorphic: true, optional: true
-  belongs_to :user, optional: true # TODO: Only optional for a few actions.
+  belongs_to :user, optional: true # NOTE: Only optional for a few actions.
 
   validates :action, inclusion: { in: ACTIONS }
+  validates :user, presence: true, unless: -> { trackable_type.in?(OPTIONAL_USER_TRACKABLE_TYPES) }
 
   scope :filter_where, ->(filter_params) do
     results = where(nil)

@@ -6,7 +6,7 @@ require 'rails_helper'
 
 describe ReferenceForm do
   describe "#save" do
-    describe "updating attributes" do
+    describe "updating attributes in its own columns" do
       let!(:reference) { create :article_reference }
       let(:params) do
         {
@@ -19,6 +19,39 @@ describe ReferenceForm do
       specify do
         expect { described_class.new(reference, params).save }.
           to change { reference.reload.bolton_key }.to(params[:bolton_key])
+      end
+    end
+
+    describe "updating journal" do
+      let!(:reference) { create :article_reference }
+
+      context 'when journal has changed' do
+        let!(:new_journal) { create :journal }
+        let(:params) do
+          {
+            author_names_string: reference.author_names_string,
+            journal_name: new_journal.name
+          }
+        end
+
+        specify do
+          expect { described_class.new(reference, params).save }.
+            to change { reference.reload.journal }.to(new_journal)
+        end
+      end
+
+      context 'when journal has not changed' do
+        let(:params) do
+          {
+            author_names_string: reference.author_names_string,
+            journal_name: reference.journal.name
+          }
+        end
+
+        specify do
+          expect { described_class.new(reference, params).save }.
+            to_not change { reference.reload.journal }
+        end
       end
     end
 

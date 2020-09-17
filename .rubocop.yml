@@ -27,6 +27,9 @@ Layout/ArgumentAlignment:
 Layout/ArrayAlignment:
   Enabled: true
 
+Layout/BeginEndAlignment:
+  Enabled: true
+
 Layout/BlockAlignment:
   Enabled: false
 
@@ -95,7 +98,15 @@ Lint/AmbiguousRegexpLiteral:
     - 'features/step_definitions/**/*'
     - 'spec/**/*'
 
+Lint/ConstantDefinitionInBlock:
+  Enabled: true
+  Exclude:
+    - 'lib/tasks/**/*.rake'
+
 Lint/BinaryOperatorWithIdenticalOperands:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
 Lint/DuplicateElsifCondition:
@@ -116,13 +127,13 @@ Lint/EmptyFile:
 Lint/FloatComparison:
   Enabled: true
 
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-
 Lint/HeredocMethodCallPosition:
+  Enabled: true
+
+Lint/IdentityComparison:
+  Enabled: true
+
+Lint/MixedRegexpCaptureTypes:
   Enabled: true
 
 Lint/MissingSuper:
@@ -155,6 +166,9 @@ Lint/UselessAccessModifier:
 
 Lint/UselessMethodDefinition:
   Enabled: false
+
+Lint/UselessTimes:
+  Enabled: true
 
 # Metrics.
 

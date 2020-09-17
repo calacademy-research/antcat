@@ -15,7 +15,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.joins(:taxa).group(:protonym_id).having(<<~SQL.squish, Status::TERMINAL_STATUSES)
+      Protonym.joins(:taxa).group('protonyms.id').having(<<~SQL.squish, Status::TERMINAL_STATUSES)
         COUNT(CASE WHEN status IN (?) THEN status ELSE NULL END) > 1
       SQL
     end

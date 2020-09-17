@@ -13,20 +13,20 @@ module CucumberHelpers
         catalog_search_path
 
       when /^the catalog page for "([^"]*)"$/
-        taxon = Taxon.find_by(name_cache: Regexp.last_match(1))
+        taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
         catalog_path(taxon)
       when 'the catalog'
         root_path
 
       # Editing (catalog).
       when /^the edit page for "(.*)"$/
-        taxon = Taxon.find_by(name_cache: Regexp.last_match(1))
+        taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
         edit_taxa_path(taxon)
 
       when 'the protonyms page'
         protonyms_path
       when /^the edit page for the protonym "(.*)"$/
-        protonym = Protonym.joins(:name).find_by(names: { name: Regexp.last_match(1) })
+        protonym = Protonym.joins(:name).find_by!(names: { name: Regexp.last_match(1) })
         edit_protonym_path(protonym)
 
       # References, authors, etc.
@@ -39,7 +39,7 @@ module CucumberHelpers
       when 'the page of the oldest reference'
         reference_path(Reference.first)
       when /^the page of the reference "([^"]*)"$/
-        reference = find_reference_by_key Regexp.last_match(1)
+        reference = ReferenceStepsHelpers.find_reference_by_key(Regexp.last_match(1))
         reference_path(reference)
       when 'the edit page for the most recent reference'
         edit_reference_path(Reference.last)
@@ -47,7 +47,7 @@ module CucumberHelpers
       when 'the authors page'
         authors_path
       when /^the author page for "(.*)"$/
-        author = AuthorName.find_by(name: Regexp.last_match(1)).author
+        author = AuthorName.find_by!(name: Regexp.last_match(1)).author
         author_path(author)
 
       # Editor's Panel.
@@ -78,7 +78,7 @@ module CucumberHelpers
       when 'the open issues page'
         issues_path
       when /^the issue page for "([^"]*)"$/
-        issue = Issue.find_by(title: Regexp.last_match(1))
+        issue = Issue.find_by!(title: Regexp.last_match(1))
         issue_path(issue)
       when 'the new issue page'
         new_issue_path
@@ -105,7 +105,7 @@ module CucumberHelpers
       when 'My account'
         edit_user_registration_path
       when /^the user page for "([^"]*)"$/
-        user = User.find_by(name: Regexp.last_match(1))
+        user = User.find_by!(name: Regexp.last_match(1))
         user_path(user)
       when 'the login page'
         new_user_session_path

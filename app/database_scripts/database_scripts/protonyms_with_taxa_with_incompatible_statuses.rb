@@ -21,7 +21,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.joins(:taxa).group(:protonym_id).having(<<~SQL.squish, TYPES)
+      Protonym.joins(:taxa).group('protonyms.id').having(<<~SQL.squish, TYPES)
         COUNT(CASE WHEN status IN (?) THEN status ELSE NULL END) > 1
       SQL
     end

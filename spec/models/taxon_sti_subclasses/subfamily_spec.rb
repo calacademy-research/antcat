@@ -16,7 +16,7 @@ describe Subfamily do
       tribe = create :tribe, subfamily: subfamily
       other_tribe = create :tribe, subfamily: subfamily
 
-      expect(subfamily.tribes).to eq [tribe, other_tribe]
+      expect(subfamily.tribes).to match_array [tribe, other_tribe]
       expect(subfamily.tribes).to eq subfamily.children
     end
   end

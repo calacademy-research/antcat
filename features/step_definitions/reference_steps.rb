@@ -1,23 +1,5 @@
 # frozen_string_literal: true
 
-def find_reference_by_key key_with_year
-  parts = key_with_year.split ','
-  last_name = parts[0]
-  year = parts[1]
-  Reference.where("author_names_string_cache LIKE ?", "#{last_name}%").find_by(year: year.to_i)
-end
-
-module ReferenceStepsHelpers
-  module_function
-
-  def find_or_create_author_names hsh
-    if (author = hsh.delete 'author')
-      author_name = AuthorName.find_by(name: author) || FactoryBot.create(:author_name, name: author)
-      hsh[:author_names] = [author_name]
-    end
-  end
-end
-
 Given("there is a reference") do
   create :any_reference, :with_author_name
 end
@@ -32,7 +14,11 @@ end
 
 Given("(this reference exists)/(these references exist)") do |table|
   table.hashes.each do |hsh|
-    ReferenceStepsHelpers.find_or_create_author_names(hsh)
+    if (author_name_name = hsh.delete('author'))
+      author_name = ReferenceStepsHelpers.find_or_create_author_name(author_name_name)
+      hsh[:author_names] = [author_name]
+    end
+
     create :any_reference, hsh
   end
 end
@@ -40,13 +26,15 @@ end
 Given("this article reference exists") do |table|
   hsh = table.hashes.first
 
-  citation = hsh.delete('citation') || "Psyche 1:1"
-  matches = citation.match(/(\w+) (\d+):([\d\-]+)/)
-  journal = Journal.find_by(name: matches[1]) || create(:journal, name: matches[1])
+  if (author_name_name = hsh.delete('author'))
+    author_name = ReferenceStepsHelpers.find_or_create_author_name(author_name_name)
+    hsh[:author_names] = [author_name]
+  end
 
-  hsh.merge!(journal: journal, series_volume_issue: matches[2], pagination: matches[3])
-
-  ReferenceStepsHelpers.find_or_create_author_names(hsh)
+  if (journal_name = hsh.delete('journal'))
+    journal = Journal.find_by(name: journal_name) || create(:journal, name: journal_name)
+    hsh[:journal] = journal
+  end
 
   create :article_reference, hsh
 end
@@ -83,7 +71,7 @@ When("I fill in {string} with a URL to a document that exists") do |field_name|
 end
 
 Given("the default reference is {string}") do |key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   References::DefaultReference.stub(:get).and_return(reference)
 end
 

@@ -20,7 +20,7 @@ describe Species do
       robusta = create :subspecies, species: species
       saltensis = create :subspecies, species: species
 
-      expect(species.subspecies).to eq [robusta, saltensis]
+      expect(species.subspecies).to match_array [robusta, saltensis]
       expect(species.children).to eq species.subspecies
     end
   end

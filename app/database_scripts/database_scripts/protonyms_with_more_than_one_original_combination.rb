@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ProtonymsWithMoreThanOneOriginalCombination < DatabaseScript
     def results
-      Protonym.joins(:taxa).where(taxa: { original_combination: true }).group(:protonym_id).having('COUNT(taxa.id) > 1')
+      Protonym.joins(:taxa).where(taxa: { original_combination: true }).group('protonyms.id').having('COUNT(taxa.id) > 1')
     end
 
     def render

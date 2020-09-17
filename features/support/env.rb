@@ -41,6 +41,6 @@ WebMock.disable_net_connect!(allow_localhost: true)
 World Warden::Test::Helpers
 Warden.test_mode!
 Warden::Manager.serialize_into_session(&:email)
-Warden::Manager.serialize_from_session { |email| User.find_by(email: email) }
+Warden::Manager.serialize_from_session { |email| User.find_by!(email: email) }
 
 World FactoryBot::Syntax::Methods # To avoid typing `FactoryBot.create`.

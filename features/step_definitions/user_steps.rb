@@ -9,7 +9,7 @@ Given("this/these user(s) exists") do |table|
 end
 
 When("I log in as {string}") do |name|
-  user = User.find_by(name: name)
+  user = User.find_by!(name: name)
   login_programmatically user
 end
 

@@ -41,7 +41,6 @@ class Name < ApplicationRecord
     unless: -> { name.blank? }
   validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter, :ensure_identified_name_type_matches
 
-  before_validation :set_cleaned_name
   after_save :set_taxon_name_cache
 
   scope :single_word_names, -> { where(type: SINGLE_WORD_NAMES) }
@@ -54,9 +53,14 @@ class Name < ApplicationRecord
   def name= value
     self[:name] = value.squish if value
     set_epithet
+    set_cleaned_name
   end
 
   def epithet= _value
+    raise ActiveRecord::ReadOnlyRecord
+  end
+
+  def cleaned_name= _value
     raise ActiveRecord::ReadOnlyRecord
   end
 
@@ -76,10 +80,6 @@ class Name < ApplicationRecord
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
-  def italic?
-    Rank.italic?(taxon_type)
-  end
-
   # TODO: This is "meh", but it will not change until we have figured out how to properly model names/taxa/protonyms.
   def owner
     taxa.first || protonyms.first
@@ -88,7 +88,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless italic?
+      return string unless Rank.italic?(taxon_type)
       Italicize[string]
     end
 
@@ -145,7 +145,7 @@ class Name < ApplicationRecord
     end
 
     def set_cleaned_name
-      self.cleaned_name = Names::CleanName[name]
+      self[:cleaned_name] = Names::CleanName[name]
     end
 
     def set_taxon_name_cache

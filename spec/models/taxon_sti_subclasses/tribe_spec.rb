@@ -17,7 +17,7 @@ describe Tribe do
       genus = create :genus, tribe: tribe
       another_genus = create :genus, tribe: tribe
 
-      expect(tribe.genera).to eq [genus, another_genus]
+      expect(tribe.genera).to match_array [genus, another_genus]
       expect(tribe.children).to eq tribe.genera
     end
   end

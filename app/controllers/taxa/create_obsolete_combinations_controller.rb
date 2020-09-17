@@ -6,11 +6,13 @@ module Taxa
 
     def show
       @taxon = find_taxon
+      @valid_parent_ranks = valid_parent_ranks
     end
 
     def create
       @taxon = find_taxon
       @obsolete_genus = find_obsolete_genus
+      @valid_parent_ranks = valid_parent_ranks
 
       unless @obsolete_genus
         flash.now[:alert] = "Obsolete genus must be set."
@@ -37,6 +39,10 @@ module Taxa
 
       def find_obsolete_genus
         Genus.find_by(id: params[:obsolete_genus_id])
+      end
+
+      def valid_parent_ranks
+        [Rank::GENUS]
       end
 
       def create_obsolete_combination

@@ -12,7 +12,7 @@ Given("I am on a page with a textarea with markdown preview and autocompletion")
 end
 
 When("I fill in {string} with {string} followed by the user id of {string}") do |textarea, text, name|
-  user = User.find_by(name: name)
+  user = User.find_by!(name: name)
   step %(I fill in "#{textarea}" with "#{text}#{user.id}")
 end
 
@@ -23,28 +23,28 @@ When("I click the suggestion containing {string}") do |text|
 end
 
 Then("the markdown textarea should contain a markdown link to Archibald's user page") do
-  archibald = User.find_by(name: "Archibald")
+  archibald = User.find_by!(name: "Archibald")
   expect(markdown_textarea.value).to include "@user#{archibald.id}"
 end
 
 Then("the markdown textarea should contain a markdown link to {string}") do |key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   expect(markdown_textarea.value).to include "{ref #{reference.id}}"
 end
 
 When("I fill in {string} with {string} and a markdown link to {string}") do |field_name, value, key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   step %(I fill in "#{field_name}" with "#{value} {ref #{reference.id}}")
 end
 
 Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, content, key_with_year|
-  reference = find_reference_by_key(key_with_year)
+  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   taxt = "#{content} {ref #{reference.id}}"
   step %(there is a genus "#{genus}" with a history item "#{taxt}")
 end
 
 Then("the markdown textarea should contain a markdown link to Eciton") do
-  eciton = Taxon.find_by(name_cache: "Eciton")
+  eciton = Taxon.find_by!(name_cache: "Eciton")
   expect(markdown_textarea.value).to include "{tax #{eciton.id}}"
 end
 

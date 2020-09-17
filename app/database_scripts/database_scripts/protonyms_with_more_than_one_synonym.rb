@@ -8,7 +8,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.joins(:taxa).where(taxa: { status: Status::SYNONYM }).group(:protonym_id).having('COUNT(protonym_id) > 1')
+      Protonym.joins(:taxa).where(taxa: { status: Status::SYNONYM }).group('protonyms.id').having('COUNT(protonyms.id) > 1')
     end
 
     def render

@@ -130,13 +130,13 @@ describe Operations::CreateNewCombination do
         end
 
         it 'does not update the `current_taxon` of the obsolete combinations' do
-          expect(current_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
+          expect(current_taxon.obsolete_combinations).to match_array [obsolete_combination_1, obsolete_combination_2]
 
           expect { operation.run }.
             to_not change { obsolete_combination_1.reload.current_taxon }.
             from(current_taxon)
 
-          expect(current_taxon.obsolete_combinations).to eq [obsolete_combination_1, obsolete_combination_2]
+          expect(current_taxon.obsolete_combinations).to match_array [obsolete_combination_1, obsolete_combination_2]
         end
       end
     end

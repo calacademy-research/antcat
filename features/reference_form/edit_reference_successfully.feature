@@ -56,16 +56,16 @@ Feature: Edit reference successfully
 
   Scenario: Edit a `NestedReference`
     Given this article reference exists
-      | author     | citation   | year | title |
-      | Ward, P.S. | Psyche 5:3 | 2001 | Ants  |
+      | author     | year | title | journal | series_volume_issue | pagination |
+      | Ward, P.S. | 2001 | Ants  | Acta    | 4                   | 9          |
     And the following entry nests it
-      | author     | title            | year | pagination |
-      | Bolton, B. | Ants are my life | 2001 | In:        |
+      | author     | title     | year | pagination |
+      | Bolton, B. | More ants | 2001 | In:        |
 
     When I go to the references page
-    Then I should see "Bolton, B. 2001. Ants are my life. In: Ward, P.S. 2001. Ants. Psyche 5:3"
+    Then I should see "Bolton, B. 2001. More ants. In: Ward, P.S. 2001. Ants. Acta 4:9"
 
     When I go to the edit page for the most recent reference
     And I fill in "reference_pagination" with "Pp. 32 in:"
     And I press "Save"
-    Then I should see "Bolton, B. 2001. Ants are my life. Pp. 32 in: Ward, P.S. 2001. Ants. Psyche 5:3"
+    Then I should see "Bolton, B. 2001. More ants. Pp. 32 in: Ward, P.S. 2001. Ants. Acta 4:9"

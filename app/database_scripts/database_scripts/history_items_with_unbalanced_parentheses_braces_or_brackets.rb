@@ -2,40 +2,51 @@
 
 module DatabaseScripts
   class HistoryItemsWithUnbalancedParenthesesBracesOrBrackets < DatabaseScript
+    LIMIT = 25
+
     def empty?
       !(
         unbalanced_parentheses.exists? ||
         unbalanced_curly_braces.exists? ||
         unbalanced_square_brackets.exists? ||
-        unbalanced_angle_brackets.exists?
+        unbalanced_angle_brackets.exists? ||
+        unbalanced_double_quotes.exists?
       )
     end
 
     def unbalanced_parentheses
-      TaxonHistoryItem.where(<<~SQL.squish)
+      TaxonHistoryItem.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '(', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ')', '') )
       SQL
     end
 
     def unbalanced_curly_braces
-      TaxonHistoryItem.where(<<~SQL.squish)
+      TaxonHistoryItem.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '{', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '}', '') )
       SQL
     end
 
     def unbalanced_square_brackets
-      TaxonHistoryItem.where(<<~SQL.squish)
+      TaxonHistoryItem.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ']', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '[', '') )
       SQL
     end
 
     def unbalanced_angle_brackets
-      TaxonHistoryItem.where(<<~SQL.squish)
+      TaxonHistoryItem.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '>', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '<', '') )
+      SQL
+    end
+
+    def unbalanced_double_quotes
+      TaxonHistoryItem.where(<<~SQL.squish).limit(LIMIT)
+        (
+          CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '"', '') )
+        ) % 2 != 0
       SQL
     end
 
@@ -43,7 +54,8 @@ module DatabaseScripts
       render_table(unbalanced_parentheses, "parentheses") +
         render_table(unbalanced_curly_braces, "curly braces") +
         render_table(unbalanced_square_brackets, "square brackets") +
-        render_table(unbalanced_angle_brackets, "angle brackets")
+        render_table(unbalanced_angle_brackets, "angle brackets") +
+        render_table(unbalanced_double_quotes, "double quotes")
     end
 
     def render_table table_results, tag_name
@@ -67,7 +79,7 @@ end
 
 __END__
 
-title: History items with unbalanced parentheses, braces or brackets
+title: History items with unbalanced parentheses, braces, brackets or double quotes.
 
 section: regression-test
 category: Taxt
