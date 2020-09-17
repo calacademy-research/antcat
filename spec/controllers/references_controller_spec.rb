@@ -24,7 +24,8 @@ describe ReferencesController do
     let!(:reference_params) do
       {
         title: 'New Ants',
-        citation_year: '1999b',
+        year: 1999,
+        year_suffix: 'b',
         stated_year: '2000',
         author_names_string: "Batiatus, B.; Glaber, G.",
         pagination: '5',
@@ -50,9 +51,9 @@ describe ReferencesController do
 
       reference = Reference.last
       expect(reference.title).to eq reference_params[:title]
-      expect(reference.citation_year).to eq reference_params[:citation_year]
+      expect(reference.year).to eq reference_params[:year]
+      expect(reference.year_suffix).to eq reference_params[:year_suffix]
       expect(reference.stated_year).to eq reference_params[:stated_year]
-      expect(reference.year).to eq 1999
 
       expect(reference.author_names_string).to eq reference_params[:author_names_string]
 
@@ -110,7 +111,7 @@ describe ReferencesController do
 
       activity = Activity.last
       expect(activity.edit_summary).to eq 'edited'
-      expect(activity.parameters).to eq(name: reference.key_with_citation_year)
+      expect(activity.parameters).to eq(name: reference.key_with_suffixed_year)
     end
   end
 
@@ -122,7 +123,7 @@ describe ReferencesController do
     end
 
     it 'creates an activity' do
-      reference_key = reference.key_with_citation_year
+      reference_key = reference.key_with_suffixed_year
 
       expect { delete(:destroy, params: { id: reference.id }) }.
         to change { Activity.where(action: :destroy, trackable: reference).count }.by(1)

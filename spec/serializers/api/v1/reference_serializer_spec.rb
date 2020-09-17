@@ -13,7 +13,7 @@ describe Api::V1::ReferenceSerializer do
             "id" => reference.id,
             "title" => reference.title,
             "year" => reference.year,
-            "citation_year" => reference.citation_year,
+            "year_suffix" => reference.year_suffix,
             "stated_year" => reference.stated_year,
             "date" => nil,
             "doi" => nil,

@@ -2,10 +2,10 @@ Feature: Reference selector
   Background:
     Given I log in as a catalog editor
     And these references exist
-      | author   | citation_year |
-      | Fisher   | 2004          |
-      | Fisher   | 2004          |
-      | Batiatus | 2004          |
+      | author   | year |
+      | Fisher   | 2004 |
+      | Fisher   | 2004 |
+      | Batiatus | 2004 |
     And there is a subfamily "Formicinae"
 
   @search @javascript

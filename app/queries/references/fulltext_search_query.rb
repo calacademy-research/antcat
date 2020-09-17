@@ -72,7 +72,7 @@ module References
 
           order_by :score, :desc
           order_by :author_names_string, :desc
-          order_by :citation_year, :asc
+          order_by :suffixed_year, :asc
         end.results
       end
 

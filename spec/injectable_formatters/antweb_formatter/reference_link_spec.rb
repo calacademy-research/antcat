@@ -8,7 +8,7 @@ describe AntwebFormatter::ReferenceLink do
     create :article_reference,
       :with_doi,
       author_names: [latreille],
-      citation_year: '1809',
+      year: 1809,
       title: "*Atta*",
       journal: create(:journal, name: 'Science'),
       series_volume_issue: '(1)',

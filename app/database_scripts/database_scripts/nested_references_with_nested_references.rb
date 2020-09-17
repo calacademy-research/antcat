@@ -25,7 +25,7 @@ module DatabaseScripts
     private
 
       def reference_link reference
-        link_to(reference.key_with_citation_year, reference_path(reference)) + ' ' + reference.pagination
+        link_to(reference.key_with_suffixed_year, reference_path(reference)) + ' ' + reference.pagination
       end
 
       def reference_link_with_type reference

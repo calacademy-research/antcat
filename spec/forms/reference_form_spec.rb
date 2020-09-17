@@ -221,7 +221,7 @@ describe ReferenceForm do
             ArticleReference.new(
               pagination: '12',
               title: 'Ants',
-              citation_year: '2000',
+              year: 2000,
               series_volume_issue: '123',
               journal: journal
             )
@@ -305,7 +305,7 @@ describe ReferenceForm do
         {
           author_names_string: original.author_names_string,
           journal_name: original.journal.name,
-          citation_year: original.citation_year,
+          year: original.year,
           title: original.title,
           series_volume_issue: original.series_volume_issue,
           pagination: original.pagination

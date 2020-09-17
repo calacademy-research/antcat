@@ -18,10 +18,15 @@
         =db_tooltip_icon :author_names_suffix, scope: :references
       =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
     .medium-1.columns
-      =f.label :reference_citation_year do
+      =f.label :year do
         Year
-        =db_tooltip_icon "references.citation_year", scope: :references
-      =f.text_field :citation_year
+        =db_tooltip_icon "year", scope: :references
+      =f.text_field :year
+    .medium-1.columns
+      =f.label :year_suffix do
+        Suffix
+        =db_tooltip_icon "year_suffix", scope: :references
+      =f.text_field :year_suffix
     .medium-2.columns
       =f.label :stated_year do
         Stated year

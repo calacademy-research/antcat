@@ -18,7 +18,7 @@ class ReferencesController < ApplicationController
   def new
     @reference = if params[:nesting_reference_id]
                    NestedReference.new(
-                     citation_year: params[:citation_year],
+                     year: params[:year],
                      stated_year: params[:stated_year],
                      pagination: "Pp. XX-XX in:",
                      nesting_reference_id: params[:nesting_reference_id]
@@ -72,7 +72,7 @@ class ReferencesController < ApplicationController
       return
     end
 
-    activity_parameters = { name: reference.key_with_citation_year } # Grab key before reference author names are deleted.
+    activity_parameters = { name: reference.key_with_suffixed_year } # Grab key before reference author names are deleted.
 
     if reference.destroy
       reference.create_activity :destroy, current_user, parameters: activity_parameters

@@ -5,8 +5,8 @@ Feature: Preview markdown
 
   Scenario: Previewing references markdown
     Given this reference exists
-      | author       | citation_year |
-      | Giovanni, S. | 1809          |
+      | author       | year |
+      | Giovanni, S. | 1809 |
     And I am on a page with a textarea with markdown preview and autocompletion
 
     When I fill in "issue_description" with "See:" and a markdown link to "Giovanni, 1809"

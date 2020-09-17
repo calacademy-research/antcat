@@ -3,7 +3,7 @@ Feature: Editing a taxon
     Given I log in as a catalog editor named "Archibald"
 
   @javascript
-  Scenario: Changing the authorship
+  Scenario: Changing protonym
     Given there is a genus "Eciton"
     And there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
 

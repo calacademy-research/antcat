@@ -17,7 +17,7 @@ module References
           integer(:year)
           text(:author_names_string)
           text(:author_names_string, as: :author_names_string_antcat_text)
-          text(:citation_year)
+          text(:suffixed_year)
           text(:stated_year)
           text(:title)
           # NOTE: Safe navigation for `.name` is for journals/publishers created at the same time as the reference.
@@ -29,7 +29,7 @@ module References
           text(:taxonomic_notes)
           text(:bolton_key)
           text(:authors_for_key) { key.authors_for_key } # To find "et al".
-          string(:citation_year)
+          string(:suffixed_year)
           string(:stated_year)
           string(:doi)
           string(:author_names_string)

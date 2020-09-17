@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Autocomplete::ReferencesSerializer do
   describe "#call" do
-    let!(:reference) { create :any_reference, author_string: 'E.O. Wilson' }
+    let!(:reference) { create :any_reference, :with_year_suffix, :with_stated_year, author_string: 'E.O. Wilson' }
 
     before do
       Sunspot.commit
@@ -18,7 +18,7 @@ describe Autocomplete::ReferencesSerializer do
             author: "E.O. Wilson",
             search_query: reference.title,
             title: reference.title,
-            year: reference.citation_year,
+            year: reference.suffixed_year_with_stated_year,
             url: "/references/#{reference.id}"
           }
         ]
@@ -34,7 +34,7 @@ describe Autocomplete::ReferencesSerializer do
               author: "E.O. Wilson",
               search_query: "author:'E.O. Wilson'",
               title: reference.title,
-              year: reference.citation_year,
+              year: reference.suffixed_year_with_stated_year,
               url: "/references/#{reference.id}"
             }
           ]

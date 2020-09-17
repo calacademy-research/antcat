@@ -56,7 +56,7 @@ describe ActivityDecorator do
 
           specify do
             expect(decorated.did_something.squish).
-              to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.key_with_citation_year}</a>)
+              to eq %(edited the reference <a href="/references/#{trackable.id}">#{trackable.key_with_suffixed_year}</a>)
           end
         end
 
@@ -66,7 +66,7 @@ describe ActivityDecorator do
 
           specify do
             expect(decorated.did_something.squish).
-              to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_citation_year}</a>)
+              to eq %(started reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_suffixed_year}</a>)
           end
         end
 
@@ -76,7 +76,7 @@ describe ActivityDecorator do
 
           specify do
             expect(decorated.did_something.squish).
-              to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_citation_year}</a>)
+              to eq %(finished reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_suffixed_year}</a>)
           end
         end
 
@@ -86,7 +86,7 @@ describe ActivityDecorator do
 
           specify do
             expect(decorated.did_something.squish).
-              to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_citation_year}</a>)
+              to eq %(restarted reviewing the reference <a href="/references/#{trackable.id}">#{trackable.key_with_suffixed_year}</a>)
           end
         end
       end

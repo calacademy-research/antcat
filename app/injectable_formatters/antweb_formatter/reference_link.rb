@@ -14,7 +14,7 @@ module AntwebFormatter
     private
 
       def reference_link
-        link_to reference.key_with_citation_year.html_safe, reference_url, title: title
+        link_to reference.key_with_suffixed_year.html_safe, reference_url, title: title
       end
 
       def document_links

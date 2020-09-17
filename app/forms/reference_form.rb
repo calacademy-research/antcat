@@ -10,7 +10,6 @@ class ReferenceForm
     :author_names_string,
     :author_names_suffix,
     :bolton_key,
-    :citation_year,
     :date,
     :doi,
     :editor_notes,
@@ -24,6 +23,8 @@ class ReferenceForm
     :stated_year,
     :taxonomic_notes,
     :title,
+    :year,
+    :year_suffix,
     document_attributes: [:id, :file, :url]
   ]
 
@@ -128,7 +129,7 @@ class ReferenceForm
 
       duplicate = Reference.find(duplicates.first[:match].id)
       errors.add POSSIBLE_DUPLICATE_ERROR_KEY, <<~MSG.html_safe
-        This may be a duplicate of #{duplicate.key_with_citation_year} (##{duplicate.id}).<br> To save, click "Save".
+        This may be a duplicate of #{duplicate.key_with_suffixed_year} (##{duplicate.id}).<br> To save, click "Save".
       MSG
     end
 end

@@ -8,7 +8,7 @@ describe References::Formatted::Expandable do
   describe '#call' do
     let(:author_name) { create :author_name, name: "Forel, A." }
     let(:reference) do
-      create :article_reference, :with_doi, author_names: [author_name], citation_year: '1874',
+      create :article_reference, :with_doi, author_names: [author_name], year: 1874,
         title: "*Italics* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
     end
 

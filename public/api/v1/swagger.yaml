@@ -899,7 +899,9 @@ definitions:
         type: integer
       date:
         type: string
-      citation_year:
+      year:
+        type: integer
+      year_suffix:
         type: string
       stated_year:
         type: string

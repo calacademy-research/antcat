@@ -2,8 +2,8 @@ Feature: Adding a taxon successfully
   Background:
     Given I log in as a catalog editor named "Archibald"
     And this reference exists
-      | author | citation_year |
-      | Fisher | 2004          |
+      | author | year |
+      | Fisher | 2004 |
     And the default reference is "Fisher, 2004"
 
   @javascript

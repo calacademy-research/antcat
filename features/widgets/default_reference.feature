@@ -2,8 +2,8 @@ Feature: Using the default reference
   Background:
     Given I log in as a catalog editor
     And this reference exists
-      | author     | citation_year |
-      | Ward, P.S. | 2010          |
+      | author     | year |
+      | Ward, P.S. | 2010 |
 
   Scenario: Default reference used for new taxon
     Given the Formicidae family exists

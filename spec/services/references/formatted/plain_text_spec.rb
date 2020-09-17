@@ -9,7 +9,7 @@ describe References::Formatted::PlainText do
     context 'when reference is an `ArticleReference`' do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do
-        create :article_reference, :with_doi, author_names: [author_name], citation_year: '1874',
+        create :article_reference, :with_doi, author_names: [author_name], year: 1874,
           title: "*Italics* <i>and such</i>", series_volume_issue: '(1)', pagination: '3'
       end
 
@@ -39,7 +39,7 @@ describe References::Formatted::PlainText do
       let(:author_name) { create :author_name, name: "Forel, A." }
       let(:reference) do
         create :book_reference, author_names: [author_name],
-          citation_year: "1874", title: '*Ants* <i>and such</i>', pagination: "22 pp.",
+          year: 1874, title: '*Ants* <i>and such</i>', pagination: "22 pp.",
           publisher: create(:publisher, name: 'Wiley', place: 'San Francisco')
       end
 
@@ -67,13 +67,13 @@ describe References::Formatted::PlainText do
     context 'when reference is a `NestedReference`' do
       let(:nestee_reference) do
         create :book_reference, author_names: [create(:author_name, name: "Mayr, E.")],
-          citation_year: '2010', title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
+          year: 2010, title: '*Lasius* <i>and such</i>', pagination: '32 pp.',
           publisher: create(:publisher, name: 'Wiley', place: 'New York')
       end
       let(:reference) do
         create :nested_reference, nesting_reference: nestee_reference,
           author_names: [create(:author_name, name: "Forel, A.")], title: '*Italics* <i>and such</i>',
-          citation_year: '1874', pagination: 'Pp. 32-45 in:'
+          year: 1874, pagination: 'Pp. 32-45 in:'
       end
 
       specify { expect(formatter.call.html_safe?).to eq true }

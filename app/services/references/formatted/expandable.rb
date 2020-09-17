@@ -14,7 +14,7 @@ module References
 
       def call
         # TODO: `tabindex: "0"` is required or tooltips won't stay open even with `data-click-open="true"`.
-        tag.span sanitize(reference.key_with_citation_year),
+        tag.span sanitize(reference.key_with_suffixed_year),
           data: { tooltip: true, allow_html: "true", tooltip_class: "foundation-tooltip" },
           tabindex: "0", title: inner_content.html_safe
       end

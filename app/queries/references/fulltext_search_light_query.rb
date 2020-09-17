@@ -19,14 +19,14 @@ module References
       def search_results
         Reference.search do
           keywords normalized_search_query do
-            fields :title, :author_names_string, :citation_year, :stated_year, :bolton_key, :authors_for_key
+            fields :title, :author_names_string, :suffixed_year, :stated_year, :bolton_key, :authors_for_key
             boost_fields author_names_string: 5.0
-            boost_fields citation_year: 2.0
+            boost_fields suffixed_year: 2.0
           end
 
           order_by :score, :desc
           order_by :author_names_string, :desc
-          order_by :citation_year, :asc
+          order_by :suffixed_year, :asc
           paginate page: 1, per_page: NUM_RESULTS
         end.results
       end

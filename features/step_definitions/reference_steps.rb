@@ -57,7 +57,8 @@ Given("the following entry nests it") do |table|
   NestedReference.create!(
     title: hsh[:title],
     author_names: [create(:author_name, name: hsh[:author])],
-    citation_year: hsh[:citation_year],
+    year: hsh[:year],
+    year_suffix: hsh[:year_suffix],
     pagination: hsh[:pagination],
     nesting_reference: Reference.last
   )

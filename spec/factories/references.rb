@@ -7,7 +7,7 @@ FactoryBot.define do
     end
 
     sequence(:title) { |n| "Ants#{n}" }
-    sequence(:citation_year) { |n| "201#{n}d" }
+    year { rand(Citation::ICZN_APPLICABILITY_YEAR_RANGE) }
 
     after(:stub) do |reference, evaluator|
       if evaluator.author_names.present?
@@ -50,6 +50,14 @@ FactoryBot.define do
     factory :nested_reference, class: 'NestedReference' do
       sequence(:pagination) { |n| "Pp. #{n} in:" }
       nesting_reference { create :book_reference }
+    end
+
+    trait :with_year_suffix do
+      sequence(:year_suffix, ('a'..'z').cycle)
+    end
+
+    trait :with_stated_year do
+      stated_year { rand(Citation::ICZN_APPLICABILITY_YEAR_RANGE) }
     end
 
     trait :with_doi do

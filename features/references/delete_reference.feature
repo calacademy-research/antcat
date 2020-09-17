@@ -4,8 +4,8 @@ Feature: Delete reference
 
   Scenario: Delete a reference (with feed)
     Given this reference exists
-      | author | citation_year |
-      | Fisher | 2004          |
+      | author | year |
+      | Fisher | 2004 |
 
     When I go to the page of the most recent reference
     And I follow "Delete"

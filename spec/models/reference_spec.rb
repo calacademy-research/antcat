@@ -22,9 +22,9 @@ describe Reference do
     it { is_expected.to validate_presence_of :title }
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
-    it { is_expected.to allow_value('2000').for(:citation_year) }
-    it { is_expected.to allow_value('2000a').for(:citation_year) }
-    it { is_expected.to_not allow_value('2000A').for(:citation_year) }
+    it { is_expected.to allow_value('a').for(:year_suffix) }
+    it { is_expected.to_not allow_value('aa').for(:year_suffix) }
+    it { is_expected.to_not allow_value('A').for(:year_suffix) }
 
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
@@ -34,33 +34,23 @@ describe Reference do
         expect { duplicate.bolton_key = conflict.bolton_key }.
           to change { duplicate.valid? }.from(true).to(false)
         expect(duplicate.errors[:bolton_key].first).to include "Bolton key has already been taken by"
-        expect(duplicate.errors[:bolton_key].first).to include conflict.key_with_citation_year
+        expect(duplicate.errors[:bolton_key].first).to include conflict.key_with_suffixed_year
       end
     end
   end
 
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
-    it { is_expected.to strip_attributes(:title, :date, :stated_year, :series_volume_issue, :doi, :bolton_key, :author_names_suffix) }
-
-    describe "#set_year_from_citation_year" do
-      context 'when `citation_year` contains a letter' do
-        let(:reference) { create :any_reference, citation_year: '1910a' }
-
-        it "ignores letters when setting `year`" do
-          expect { reference.update!(citation_year: '2010b') }.
-            to change { reference.reload.year }.from(1910).to(2010)
-        end
-      end
-    end
+    it { is_expected.to strip_attributes(:title, :date, :stated_year, :year_suffix, :bolton_key, :author_names_suffix) }
+    it { is_expected.to strip_attributes(:series_volume_issue, :doi) }
   end
 
   describe "scopes" do
     describe ".order_by_author_names_and_year" do
       it "sorts by author_name plus year plus letter" do
-        one = create :any_reference, author_string: 'Fisher', citation_year: '1910b'
-        two = create :any_reference, author_string: 'Wheeler', citation_year: '1874'
-        three = create :any_reference, author_string: 'Fisher', citation_year: '1910a'
+        one = create :any_reference, author_string: 'Fisher', year: 1910, year_suffix: "b"
+        two = create :any_reference, author_string: 'Wheeler', year: 1874
+        three = create :any_reference, author_string: 'Fisher', year: 1910, year_suffix: "a"
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
@@ -83,7 +73,7 @@ describe Reference do
     end
 
     describe '#start_reviewing!' do
-      it "none transitions to start" do
+      it "transitions from 'none' to 'reviewing'" do
         expect { reference.start_reviewing! }.to change { reference.reviewing? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -97,7 +87,7 @@ describe Reference do
         reference.start_reviewing!
       end
 
-      it "start transitions to finish" do
+      it "transitions from 'reviewing' to 'reviewed'" do
         expect { reference.finish_reviewing! }.to change { reference.reviewed? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -112,7 +102,7 @@ describe Reference do
         reference.finish_reviewing!
       end
 
-      it "reviewed can transition back to reviewing" do
+      it "can transition 'reviewed' back to 'reviewing'" do
         expect { reference.restart_reviewing! }.to change { reference.reviewing? }.to(true)
 
         expect(reference.can_start_reviewing?).to eq false
@@ -122,22 +112,21 @@ describe Reference do
     end
   end
 
-  describe '#citation_year_with_stated_year' do
+  describe '#suffixed_year_with_stated_year' do
     context 'when reference does not have a `stated_year`' do
-      let(:reference) { create :any_reference, citation_year: "2000a" }
+      let(:reference) { create :any_reference, year: 2000, year_suffix: 'a' }
 
-      specify { expect(reference.citation_year_with_stated_year).to eq '2000a' }
+      specify { expect(reference.suffixed_year_with_stated_year).to eq '2000a' }
     end
 
     context 'when reference has a `stated_year`' do
-      let(:reference) { create :any_reference, citation_year: "2000a", stated_year: "2001" }
+      let(:reference) { create :any_reference, year: 2000, year_suffix: 'a', stated_year: "2001" }
 
-      specify { expect(reference.citation_year_with_stated_year).to eq '2000a ("2001")' }
+      specify { expect(reference.suffixed_year_with_stated_year).to eq '2000a ("2001")' }
     end
   end
 
   describe "#author_names_string" do
-    let(:ward) { create :author_name, name: 'Ward, P.S.' }
     let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
 
     context "when reference has one author name" do
@@ -149,6 +138,7 @@ describe Reference do
     end
 
     context "when reference has more than one author name" do
+      let(:ward) { create :author_name, name: 'Ward, P.S.' }
       let(:reference) { create :any_reference, author_names: [fisher, ward] }
 
       it "separates multiple author names with semicolons" do
@@ -158,7 +148,7 @@ describe Reference do
   end
 
   describe "#author_names_string_with_suffix" do
-    context "when reference has a `author_names_suffix`" do
+    context "when reference has an `author_names_suffix`" do
       let(:reference) do
         fisher = create :author_name, name: 'Fisher, B.L.'
         create :any_reference, author_names: [fisher], author_names_suffix: '(ed.)'
