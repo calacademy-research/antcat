@@ -13,7 +13,7 @@ module DatabaseScripts
     def results
       Protonym.
         joins(:name).where("(LENGTH(names.cleaned_name) - LENGTH(REPLACE(names.cleaned_name, ' ', '')) = 1)").
-        where.not(id: protonyms_with_a_taxon_with_same_cleaned_name.select(:id)).
+        where.not(id: protonyms_with_a_taxon_with_same_cleaned_name.select(:protonym_id)).
         joins(taxa: :name).
         where(taxa: { type: Rank::SPECIES }).
         where('names_taxa.epithet = names.epithet').

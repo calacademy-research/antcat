@@ -10,7 +10,7 @@ module DatabaseScripts
     def results
       Protonym.joins(:taxa).
         where(taxa: { status: [Status::VALID, Status::SYNONYM] }).
-        group(:protonym_id).having('COUNT(protonym_id) > 1').
+        group('protonyms.id').having('COUNT(protonym_id) > 1').
         where.not(id: covered_in_related_scripts)
     end
 
