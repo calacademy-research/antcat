@@ -5,8 +5,8 @@ info:
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
-    name: Joe Russack
-    email: JRussack@calacademy.org
+    name: Brian Fisher
+    email: bfisher@calacademy.org
 
 host: antcat.org
 basePath: /v1

@@ -38,9 +38,13 @@ describe JournalsController do
     context 'when journal has references' do
       let!(:reference) { create :article_reference, journal: journal }
 
-      it 'invalidates reference caches' do
-        expect(References::Cache::Invalidate).to receive(:new).with(reference).and_call_original
+      it 'calls `References::Cache::Invalidate`' do
+        service_class = References::Cache::Invalidate
+        allow(service_class).to receive(:[]).and_call_original
+
         put(:update, params: { id: journal.id, journal: journal_params })
+
+        expect(service_class).to have_received(:[]).with([reference])
       end
     end
   end

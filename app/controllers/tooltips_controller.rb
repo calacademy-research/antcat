@@ -19,7 +19,7 @@ class TooltipsController < ApplicationController
   def create
     @tooltip = Tooltip.new(tooltip_params)
     if @tooltip.save
-      @tooltip.create_activity :create, current_user
+      @tooltip.create_activity :create, current_user, edit_summary: params[:edit_summary]
       redirect_to @tooltip, notice: 'Tooltip was successfully created.'
     else
       render :new
@@ -34,7 +34,7 @@ class TooltipsController < ApplicationController
     @tooltip = find_tooltip
 
     if @tooltip.update(tooltip_params)
-      @tooltip.create_activity :update, current_user
+      @tooltip.create_activity :update, current_user, edit_summary: params[:edit_summary]
       redirect_to @tooltip, notice: 'Tooltip was successfully updated.'
     else
       render :show

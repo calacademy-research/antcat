@@ -21,7 +21,7 @@ class JournalsController < ApplicationController
 
     if @journal.update(journal_params)
       @journal.create_activity :update, current_user
-      @journal.invalidate_reference_caches
+      References::Cache::Invalidate[@journal.references]
       redirect_to @journal, notice: "Successfully updated journal."
     else
       render :edit

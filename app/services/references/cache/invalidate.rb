@@ -5,22 +5,33 @@ module References
     class Invalidate
       include Service
 
-      attr_private_initialize :reference
+      def initialize references
+        @references = Array.wrap(references)
+      end
 
       def call
-        return if reference.new_record?
-
-        # rubocop:disable Rails/SkipsModelValidations
-        reference.update_columns(
-          plain_text_cache: nil,
-          expandable_reference_cache: nil,
-          expanded_reference_cache: nil
-        )
-        # rubocop:enable Rails/SkipsModelValidations
-        reference.nestees.each do |nestee|
-          References::Cache::Invalidate[nestee]
+        references.each do |reference|
+          invalidate_caches reference
         end
       end
+
+      private
+
+        attr_reader :references
+
+        def invalidate_caches reference
+          return if reference.new_record?
+
+          # rubocop:disable Rails/SkipsModelValidations
+          reference.update_columns(
+            plain_text_cache: nil,
+            expandable_reference_cache: nil,
+            expanded_reference_cache: nil
+          )
+          # rubocop:enable Rails/SkipsModelValidations
+
+          References::Cache::Invalidate[reference.nestees]
+        end
     end
   end
 end

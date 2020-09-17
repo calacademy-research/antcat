@@ -9,8 +9,11 @@ catalog:
   # To make is easier to disable 'Fix Random!' in case of performance issues.
   show_failed_soft_validations: true
 
-new_relic:
-  apm_url: "https://example.com"
+editors_panel:
+  max_featured_wiki_pages_links: 5
 
-contact_us_email_address: "jrussack@calacademy.org"
+new_relic:
+  apm_url: "https://example.com/set-url-in-settings-configs"
+
+contact_us_email_address: "bfisher@calacademy.org"
 suggest_edit_email_address: "bfisher@calacademy.org"
