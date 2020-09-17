@@ -80,10 +80,6 @@ class Name < ApplicationRecord
     "#{dagger_html if fossil}#{name_html}".html_safe
   end
 
-  def italic?
-    Rank.italic?(taxon_type)
-  end
-
   # TODO: This is "meh", but it will not change until we have figured out how to properly model names/taxa/protonyms.
   def owner
     taxa.first || protonyms.first
@@ -92,7 +88,7 @@ class Name < ApplicationRecord
   private
 
     def italicize_if_needed string
-      return string unless italic?
+      return string unless Rank.italic?(taxon_type)
       Italicize[string]
     end
 
