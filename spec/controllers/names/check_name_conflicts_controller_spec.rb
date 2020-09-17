@@ -10,7 +10,7 @@ describe Names::CheckNameConflictsController do
     specify do
       get :show, params: { qq: 'Antc' }
 
-      expect(json_response).to eq(
+      expect(json_response).to match_array(
         [
           {
             "id" => taxon.name.id,

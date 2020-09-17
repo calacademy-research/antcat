@@ -59,7 +59,7 @@ describe Author do
     before { create :species } # Unrelated.
 
     it "returns taxa described by the author" do
-      expect(author.described_taxa).to eq [species, genus]
+      expect(author.described_taxa).to match_array [species, genus]
     end
   end
 

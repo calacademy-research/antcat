@@ -49,7 +49,7 @@ describe Genus do
       species = create :species, genus: genus
       other_species = create :species, genus: genus
 
-      expect(genus.species).to eq [species, other_species]
+      expect(genus.species).to match_array [species, other_species]
       expect(genus.children).to eq genus.species
     end
   end

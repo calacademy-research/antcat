@@ -11,5 +11,5 @@ end
 
 When("I set author_to_merge_id to the ID of {string}") do |author_name|
   author = AuthorName.find_by!(name: author_name).author
-  find('#author_to_merge_id', visible: false).set author.id # HACK.
+  find('#author_to_merge_id', visible: false).set author.id # HACK: For when JavaScript is disabled.
 end

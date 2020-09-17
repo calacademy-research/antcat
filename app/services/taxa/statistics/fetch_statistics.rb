@@ -35,12 +35,11 @@ module Taxa
           ranks.each do |rank|
             taxa = taxon.public_send(rank)
 
-            # NOTE: regarding `order('NULL')` http://dev.housetrip.com/2013/04/19/mysql-order-by-null/
             by_fossil_and_status =
               if valid_only
-                taxa.valid.group(:fossil).order('NULL').count.transform_keys { |k| [k, Status::VALID] }
+                taxa.valid.group(:fossil).count.transform_keys { |k| [k, Status::VALID] }
               else
-                taxa.group(:fossil, :status).order('NULL').count
+                taxa.group(:fossil, :status).count
               end
 
             massage_count by_fossil_and_status, rank, statistics
