@@ -19,12 +19,14 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'Protonym'
+        t.header 'Taxon (and cleaned name of protonym)', 'Status', 'Protonym'
         t.rows do |taxon|
+          protonym = taxon.protonym
+
           [
-            taxon_link(taxon),
+            taxon_link(taxon) + "<br>#{protonym.name.cleaned_name}",
             taxon.status,
-            taxon.protonym.decorate.link_to_protonym
+            protonym.decorate.link_to_protonym
           ]
         end
       end
