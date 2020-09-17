@@ -19,9 +19,10 @@
         .medium-6.columns
           %fieldset.fieldset
             %legend obsolete genus
-            %p=taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: :genus
+            %p=taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: @valid_parent_ranks
             %p
-              Possible parent ranks: genus
+              Possible parent ranks:
+              =@valid_parent_ranks.to_sentence
       .row
         .medium-12.columns
           .center-text

@@ -44,11 +44,11 @@ module Taxa
 
       def valid_parent_ranks
         case @taxon
-        when ::Tribe      then [:subfamily]
-        when ::Genus      then [:family, :subfamily, :tribe]
-        when ::Subgenus   then [:genus]
-        when ::Species    then [:genus, :subgenus]
-        when ::Subspecies then [:species]
+        when ::Tribe      then [Rank::SUBFAMILY]
+        when ::Genus      then [Rank::FAMILY, Rank::SUBFAMILY, Rank::TRIBE]
+        when ::Subgenus   then [Rank::GENUS]
+        when ::Species    then [Rank::GENUS, Rank::SUBGENUS]
+        when ::Subspecies then [Rank::SPECIES]
         end
       end
 
