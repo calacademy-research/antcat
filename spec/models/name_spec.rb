@@ -113,7 +113,7 @@ describe Name do
     describe '#set_cleaned_name' do
       let!(:name) { SubspeciesName.new(name: 'Lasius (Forelophilus) niger var. fusca') }
 
-      specify { expect { name.save! }.to change { name.cleaned_name }.to('Lasius niger fusca') }
+      specify { expect(name.cleaned_name).to eq 'Lasius niger fusca' }
     end
 
     describe "#set_taxon_name_cache" do
