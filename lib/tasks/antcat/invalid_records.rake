@@ -10,12 +10,15 @@ namespace :antcat do
     MODELS_TO_CHECK = ApplicationRecord.descendants - IGNORED_MODELS - STI_SUBCLASS_MODELS
 
     MODELS_TO_CHECK.each do |model|
-      puts "Checking model #{model.name} (#{model.count} records)...".green
+      start_time = Time.current
+      print "Checking model #{model.name} (#{model.count} records)...".green
 
       invalid_ids = []
       model.find_each do |record|
         invalid_ids << record.id unless record.valid?
       end
+
+      puts " done in #{(Time.current - start_time).seconds} s".blue
 
       if invalid_ids.present?
         puts "Invalid #{model.name} records:".red

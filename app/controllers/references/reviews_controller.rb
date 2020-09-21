@@ -38,7 +38,7 @@ module References
 
       # Manually update since Worflow does not allow approving unreviewed references of any state.
       Reference.unreviewed.find_each do |reference|
-        reference.update!(review_state: "reviewed")
+        reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
       end
 
       Activity.create_without_trackable :approve_all_references, current_user, parameters: { count: count }

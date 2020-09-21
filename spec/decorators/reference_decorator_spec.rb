@@ -45,22 +45,22 @@ describe ReferenceDecorator do
   end
 
   describe "#format_review_state" do
+    context "when `review_state` is 'none'" do
+      let(:reference) { build_stubbed :any_reference, review_state: Reference::REVIEW_STATE_NONE }
+
+      specify { expect(decorated.format_review_state).to eq 'Not reviewed' }
+    end
+
     context "when `review_state` is 'reviewed'" do
-      let(:reference) { build_stubbed :any_reference, review_state: 'reviewed' }
+      let(:reference) { build_stubbed :any_reference, review_state: Reference::REVIEW_STATE_REVIEWED }
 
       specify { expect(decorated.format_review_state).to eq 'Reviewed' }
     end
 
     context "when `review_state` is 'reviewing'" do
-      let(:reference) { build_stubbed :any_reference, review_state: 'reviewing' }
+      let(:reference) { build_stubbed :any_reference, review_state: Reference::REVIEW_STATE_REVIEWING }
 
       specify { expect(decorated.format_review_state).to eq 'Being reviewed' }
-    end
-
-    context "when `review_state` is 'none'" do
-      let(:reference) { build_stubbed :any_reference, review_state: 'none' }
-
-      specify { expect(decorated.format_review_state).to eq 'Not reviewed' }
     end
   end
 

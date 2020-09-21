@@ -13,7 +13,7 @@ module Wikipedia
     attr_private_initialize :reference
 
     def call
-      return "<<<cannot export references of type #{reference.type}>>>" unless formatter_class
+      return "cannot export references of type #{reference.type}" unless formatter_class
       formatter_class.new(reference).format
     end
 

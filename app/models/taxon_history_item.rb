@@ -12,16 +12,6 @@ class TaxonHistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
 
-  # :nocov:
-  scope :vhic_unknown, -> do
-    scope = self
-    Taxt::HistoryItemCleanup::VIRTUAL_HISTORY_ITEM_CANDIDATES.each do |where_filter|
-      scope = scope.where.not(where_filter)
-    end
-    scope
-  end
-  # :nocov:
-
   acts_as_list scope: :taxon
   has_paper_trail
   strip_attributes only: [:taxt, :rank], replace_newlines: true

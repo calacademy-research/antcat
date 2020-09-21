@@ -30,6 +30,19 @@ describe Authors::FindOrInitializeNamesFromString do
       end
     end
 
+    describe 'where there exist author names with different diacritics' do
+      before do
+        AuthorName.create!(name: 'Vázquez, M.', author: Author.create!)
+      end
+
+      it "considers them as different" do
+        author_names = described_class['Vazquez, M.']
+
+        expect(author_names.map(&:name)).to eq ['Vazquez, M.']
+        expect(author_names.first.persisted?).to eq false
+      end
+    end
+
     context 'when there are suffixes' do
       it "ignores them" do
         author_names = described_class['Bolton, B. (eds.)']

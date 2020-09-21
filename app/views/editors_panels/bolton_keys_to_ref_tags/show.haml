@@ -5,7 +5,7 @@
 .row
   .medium-4.columns
     %h5 Content from Bolton
-    =form_with url: bolton_keys_to_ref_tags_path do
+    =form_with url: bolton_keys_to_ref_tags_path do |f|
       =f.text_area :bolton_content, value: params[:bolton_content]
       =f.submit "Convert", class: "btn-normal"
 
