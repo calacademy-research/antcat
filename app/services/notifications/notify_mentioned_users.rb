@@ -8,7 +8,7 @@ module Notifications
 
     def call
       Markdowns::MentionedUsers[string].each do |user|
-        Notifications::NotifyUser[user, Notification::MENTIONED_IN_THING, attached: attached, notifier: notifier]
+        Notifications::NotifyUser[user, Notification::MENTIONED_IN_ATTACHED, attached: attached, notifier: notifier]
       end
     end
   end

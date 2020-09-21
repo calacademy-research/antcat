@@ -34,9 +34,9 @@ describe UserMailer do
         end
       end
 
-      context 'when notification is a "mentioned_in_thing"' do
+      context 'when notification is a "mentioned_in_attached"' do
         let(:site_notice) { create :site_notice }
-        let(:notification) { create :notification, :mentioned_in_thing, user: user, attached: site_notice }
+        let(:notification) { create :notification, :mentioned_in_attached, user: user, attached: site_notice }
 
         it 'includes the reason for the notification' do
           expect(mail.body.encoded).to include "mentioned you in the"
