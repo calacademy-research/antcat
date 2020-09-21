@@ -31,7 +31,7 @@ describe Markdowns::ParseCatalogTags do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
           #{taxon_link(taxon)}
-          <span class="discret-author-citation"><a href="/references/#{taxon.authorship_reference.id}">#{taxon.author_citation}</a></span>
+          <span class="discret-author-citation">#{taxon_authorship_link(taxon)}</span>
         HTML
       end
 
@@ -60,7 +60,7 @@ describe Markdowns::ParseCatalogTags do
         protonym = create :protonym
         expect(described_class["{proac #{protonym.id}}"]).to eq <<~HTML.squish
           #{protonym_link(protonym)}
-          <span class="discret-author-citation"><a href="/references/#{protonym.authorship_reference.id}">#{protonym.author_citation}</a></span>
+          <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
         HTML
       end
 
