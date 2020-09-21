@@ -2,7 +2,6 @@
 
 class Notification < ApplicationRecord
   REASONS = [
-    'was_replied_to', # TODO: Deprecated. Remove.
     MENTIONED_IN_COMMENT = 'mentioned_in_comment',
     MENTIONED_IN_ATTACHED = 'mentioned_in_attached',
     ACTIVE_IN_DISCUSSION = 'active_in_discussion',
