@@ -57,7 +57,7 @@ class Reference < ApplicationRecord
   end
 
   def author_names_string_with_suffix
-    string = author_names_string
+    string = author_names_string.dup
     string << " #{author_names_suffix}" if author_names_suffix
     string
   end
