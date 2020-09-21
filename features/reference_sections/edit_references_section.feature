@@ -68,7 +68,6 @@ Feature: Editing references sections
     And I click on the edit reference section button
     And I will confirm on the next step
     And I click on the delete reference section button
-    And WAIT_FOR_JQUERY
     Then the reference section should be empty
 
     When I go to the activity feed
