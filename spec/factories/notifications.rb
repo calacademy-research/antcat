@@ -5,12 +5,12 @@ FactoryBot.define do
     user
     association :notifier, factory: :user
 
-    mentioned_in_thing
+    mentioned_in_attached
 
     trait :unread
 
-    trait :mentioned_in_thing do
-      reason { Notification::MENTIONED_IN_THING }
+    trait :mentioned_in_attached do
+      reason { Notification::MENTIONED_IN_ATTACHED }
       association :attached, factory: :site_notice
     end
 

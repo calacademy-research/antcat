@@ -52,8 +52,8 @@ class Name < ApplicationRecord
 
   def name= value
     self[:name] = value.squish if value
-    set_epithet
     set_cleaned_name
+    set_epithet
   end
 
   def epithet= _value
@@ -98,10 +98,11 @@ class Name < ApplicationRecord
 
     def set_epithet
       return unless name
+      last_name_part = name.split.last
       self[:epithet] = if is_a?(SubgenusName)
-                         name_parts.last.tr('()', '')
+                         last_name_part.tr('()', '')
                        else
-                         name_parts.last
+                         last_name_part
                        end
     end
 
@@ -134,10 +135,6 @@ class Name < ApplicationRecord
         type (`#{self.class.name}`) and identified name type (`#{identified_name_type.name}`) must match.
         Flag name as 'Non-conforming' to bypass this validation.
       STR
-    end
-
-    def name_parts
-      name.split
     end
 
     def cleaned_name_parts

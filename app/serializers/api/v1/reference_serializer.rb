@@ -29,7 +29,6 @@ module Api
         :taxonomic_notes,
 
         # Caches.
-        :plain_text_cache,
         :author_names_string_cache,
 
         :created_at,

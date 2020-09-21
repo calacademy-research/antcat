@@ -3,7 +3,7 @@
 # `ExtraTab`s are used for things where calling `#children` would
 # not work or make sense. Everything here is a special case.
 
-# TODO: Refactor.
+# TODO: Refactor, or wait and see if we can get rid of the taxon browser once we show more children in catalog pages.
 
 module TaxonBrowser
   module Tabs

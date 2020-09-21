@@ -22,7 +22,7 @@ class AuthorsController < ApplicationController
       author.create_activity :destroy, current_user
       redirect_to authors_path, notice: 'Author was successfully deleted.'
     else
-      redirect_to authors_path, alert: 'Could not delete author.'
+      redirect_to author, alert: 'Could not delete author.'
     end
   end
 

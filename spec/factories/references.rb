@@ -35,7 +35,6 @@ FactoryBot.define do
       end
     end
 
-    # TODO: Check if we want to re-use journals, now that this is the new `:any_reference`.
     factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do
       journal
       sequence(:series_volume_issue) { |n| n }

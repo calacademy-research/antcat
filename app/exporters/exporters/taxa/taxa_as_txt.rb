@@ -31,7 +31,6 @@ module Exporters
           taxon.name_cache
         end
 
-        # TODO: DRY w.r.t. `ExpandedStatus`.
         def format_status taxon
           labels = []
           labels << "incertae sedis in #{taxon.incertae_sedis_in.downcase}" if taxon.incertae_sedis_in

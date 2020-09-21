@@ -11,7 +11,6 @@ class AuthorName < ApplicationRecord
   validates :name, presence: true, uniqueness: { case_sensitive: true }
 
   after_update :invalidate_reference_caches
-  before_destroy :ensure_not_authors_only_author_name
 
   has_paper_trail
   trackable
@@ -27,11 +26,6 @@ class AuthorName < ApplicationRecord
   end
 
   private
-
-    def ensure_not_authors_only_author_name
-      return if author.names.count > 1
-      throw :abort
-    end
 
     def invalidate_reference_caches
       references.reload.find_each do |reference|

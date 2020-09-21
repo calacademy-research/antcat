@@ -2,6 +2,6 @@
 
 class GenusName < GenusGroupName
   def genus_epithet
-    name_parts[0]
+    cleaned_name_parts[0]
   end
 end

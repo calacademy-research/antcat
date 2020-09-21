@@ -39,6 +39,11 @@ class AuthorNamesController < ApplicationController
   def destroy
     author_name = find_author_name
 
+    if author_name.author.only_has_one_name?
+      redirect_to author_name.author, alert: "Could not delete author name since it is the author's only name."
+      return
+    end
+
     if author_name.destroy
       author_name.create_activity :destroy, current_user
       redirect_to author_name.author, notice: 'Author name was successfully deleted.'

@@ -61,7 +61,7 @@ describe ActivityDecorator do
         end
 
         context 'when action is `start_reviewing`' do
-          let(:trackable) { create :any_reference, review_state: 'none' }
+          let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity :start_reviewing, user }
 
           specify do
@@ -71,7 +71,7 @@ describe ActivityDecorator do
         end
 
         context 'when action is `finish_reviewing`' do
-          let(:trackable) { create :any_reference, review_state: 'reviewing' }
+          let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity :finish_reviewing, user }
 
           specify do
@@ -81,7 +81,7 @@ describe ActivityDecorator do
         end
 
         context 'when action is `restart_reviewing`' do
-          let(:trackable) { create :any_reference, review_state: 'reviewed' }
+          let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity :restart_reviewing, user }
 
           specify do

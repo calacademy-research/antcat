@@ -16,8 +16,7 @@ describe SpeciesGroupName do
       specify { expect(name.species_epithet).to eq 'major' }
     end
 
-    # TODO: Probably.
-    xcontext 'when name contains a subgenus name' do
+    context 'when name contains a subgenus name' do
       let(:name) { described_class.new(name: 'Atta (Lasius) major') }
 
       specify { expect(name.species_epithet).to eq 'major' }

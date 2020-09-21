@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  class HoverPreviewController < ApplicationController
+  class HoverPreviewsController < ApplicationController
     def show
       taxon = find_taxon
       render json: { preview: Taxa::HoverPreview[taxon] }

@@ -27,6 +27,10 @@ class Author < ApplicationRecord
     names.first&.name || '[no author name]'
   end
 
+  def only_has_one_name?
+    names.count <= 1
+  end
+
   def described_taxa
     Taxon.joins(protonym: { authorship: { reference: :authors } }).where(authors: { id: id })
   end

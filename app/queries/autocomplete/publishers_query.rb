@@ -14,7 +14,7 @@ module Autocomplete
 
       def search_results
         Publisher.
-          where("CONCAT(COALESCE(publishers.place, ''), ':', publishers.name) LIKE ?", search_expression)
+          where("CONCAT(publishers.place, ':', publishers.name) LIKE ?", search_expression)
       end
 
       def search_expression
