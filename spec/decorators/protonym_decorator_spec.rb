@@ -8,17 +8,13 @@ describe ProtonymDecorator do
   subject(:decorated) { protonym.decorate }
 
   describe "#link_to_protonym" do
-    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+    let(:protonym) { create :protonym }
 
-    specify do
-      expect(decorated.link_to_protonym).to eq <<~HTML.squish
-        <a class="protonym protonym-hover-preview-link" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>
-      HTML
-    end
+    specify { expect(decorated.link_to_protonym).to eq protonym_link(protonym) }
   end
 
   describe "#link_to_protonym_with_author_citation" do
-    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+    let(:protonym) { create :protonym }
 
     specify do
       expect(decorated.link_to_protonym_with_author_citation).to eq <<~HTML.squish
@@ -28,12 +24,12 @@ describe ProtonymDecorator do
   end
 
   describe "#link_to_protonym_with_linked_author_citation" do
-    let(:protonym) { create :protonym, :genus_group_name, name: create(:genus_name, name: 'Lasius') }
+    let(:protonym) { create :protonym }
 
     specify do
       expect(decorated.link_to_protonym_with_linked_author_citation).to eq <<~HTML.squish
         #{protonym_link(protonym)}
-        <span class="discret-author-citation"><a href="/references/#{protonym.authorship_reference.id}">#{protonym.author_citation}</a></span>
+        <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
       HTML
     end
   end

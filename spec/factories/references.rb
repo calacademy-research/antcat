@@ -6,7 +6,7 @@ FactoryBot.define do
       author_string {}
     end
 
-    sequence(:title) { |n| "Ants#{n}" }
+    sequence(:title) { |n| "Reference#{n}" }
     year { rand(Citation::ICZN_APPLICABILITY_YEAR_RANGE) }
 
     after(:stub) do |reference, evaluator|

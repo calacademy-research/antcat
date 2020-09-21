@@ -4,4 +4,4 @@ Feature: Export references to EndNote
 
     When I go to the page of the most recent reference
     And I follow "EndNote"
-    Then I should see "%0 Journal Article %A Fisher"
+    Then I should see "%0 Journal Article %A "

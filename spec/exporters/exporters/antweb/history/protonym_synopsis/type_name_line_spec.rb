@@ -7,7 +7,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::TypeNameLine do
 
   describe "#call" do
     context "when protonym has a type name" do
-      let(:type_species) { create :species, name_string: 'Atta major' }
+      let(:type_species) { create :species }
       let(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: type_species, pages: '1' }
       let(:protonym) { create :protonym, type_name: type_name }
 

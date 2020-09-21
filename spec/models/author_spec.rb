@@ -23,8 +23,8 @@ describe Author do
   end
 
   describe "#merge" do
-    let!(:target_author) { create(:author_name, name: 'Bolton, B').author }
-    let!(:author_to_merge) { create(:author_name, name: 'Bolton,B.').author }
+    let!(:target_author) { create(:author_name).author }
+    let!(:author_to_merge) { create(:author_name).author }
 
     it "makes all the names of the passed in authors belong to the same author" do
       expect(described_class.count).to eq 2

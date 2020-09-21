@@ -211,7 +211,7 @@ describe Exporters::Antweb::TaxonAttributes do
     describe "[23]: `current valid parent`" do
       let(:subfamily) { create :subfamily }
       let(:tribe) { create :tribe, subfamily: subfamily }
-      let(:genus) { create :genus, name_string: 'Atta', tribe: tribe, subfamily: subfamily }
+      let(:genus) { create :genus, tribe: tribe, subfamily: subfamily }
 
       context 'when taxon is a subfamily' do
         context 'when subfamily has no family' do

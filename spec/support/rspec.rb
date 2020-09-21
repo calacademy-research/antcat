@@ -15,6 +15,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.filter_run_when_matching :focus unless ENV['TRAVIS']
   config.use_transactional_fixtures = true
+  config.render_views
   Kernel.srand config.seed
 
   if ENV['PROFILE_EXAMPLES']

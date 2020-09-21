@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :publisher do
-    sequence(:name) { |n| "Wiley #{n}" }
-    sequence(:place) { |n| "San Francisco #{n}" }
+    sequence(:name) { |n| "Publisher #{n}" }
+    sequence(:place) { |n| "Place #{n}" }
   end
 end

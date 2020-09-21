@@ -14,7 +14,7 @@ describe Api::V1::PublishersController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:publisher) { create :publisher, name: 'AntPress', place: 'California' }
+    let!(:publisher) { create :publisher }
 
     specify do
       get :show, params: { id: publisher.id }
@@ -22,8 +22,8 @@ describe Api::V1::PublishersController, as: :visitor do
         {
           "publisher" => {
             "id" => publisher.id,
-            "name" => "AntPress",
-            "place" => "California",
+            "name" => publisher.name,
+            "place" => publisher.place,
 
             "created_at" => publisher.created_at.as_json,
             "updated_at" => publisher.updated_at.as_json

@@ -20,7 +20,7 @@ describe References::ReviewsController do
     let(:current_user) { create(:user, :superadmin, :editor) }
 
     before do
-      create :any_reference, review_state: 'none'
+      create :any_reference, review_state: Reference::REVIEW_STATE_NONE
     end
 
     it 'approves all references' do

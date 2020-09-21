@@ -5,8 +5,6 @@ require 'rails_helper'
 describe Taxa::SetSubgeneraController do
   include TestLinksHelpers
 
-  render_views
-
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
       specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }

@@ -39,11 +39,9 @@ Feature: Manage names
     And I should not see "Formicus (protonym)"
 
     When I fill in "name_name_string" with "formi"
-    And WAIT_FOR_JQUERY
     Then I should see "Similar names"
     And I should see "Formica (protonym)"
     And I should see "Formicus (protonym)"
 
     When I fill in "name_name_string" with "formica"
-    And WAIT_FOR_JQUERY
-    And I should see "Homonym Formica (protonym)"
+    Then I should see "Homonym Formica (protonym)"

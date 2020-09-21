@@ -11,7 +11,7 @@ module Taxa
       parts << nomen_synopsis
       parts << ''
       parts << protonym_synopsis
-      parts.join('<br>').html_safe
+      parts.join('<br> ').html_safe
     end
 
     private
@@ -24,14 +24,14 @@ module Taxa
           '<b>Author citation:</b> ' + taxon.author_citation,
           '<b>Rank:</b> ' + taxon.type,
           '<b>Status:</b> ' + taxon.decorate.expanded_status
-        ].join('<br>')
+        ].join('<br> ')
       end
 
       def protonym_synopsis
         [
           '<b>Protonym:</b> ' + decorated_protonym.link_to_protonym,
           '<b>Authorship:</b> ' + authorship
-        ].join('<br>')
+        ].join('<br> ')
       end
 
       def authorship

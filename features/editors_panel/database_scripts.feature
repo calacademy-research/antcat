@@ -23,3 +23,9 @@ Feature: Database scripts
   Scenario: Clicking on all scripts just to see if the page renders
     When I open all database scripts once by one
     Then I should have browsed at least 5 database scripts
+
+  Scenario: Checking 'empty' status
+    Then I should not see "Excluded (slow/list)"
+
+    When I follow "Show empty"
+    Then I should see "Excluded (slow/list)"

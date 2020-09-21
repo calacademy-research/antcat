@@ -19,12 +19,12 @@ describe References::FulltextSearchLightQuery, :search do
           bolton = create :author_name, name: 'Bolton, B.'
           fisher = create :author_name, name: 'Fisher, B.'
 
-          create :any_reference, author_names: [bolton, fisher], year: 1970
+          create :any_reference, author_names: [bolton, fisher]
         end
 
         before { Sunspot.commit }
 
-        specify { expect(described_class["Fisher & Bolton 1970"]).to eq [reference] }
+        specify { expect(described_class["Fisher & Bolton"]).to eq [reference] }
       end
 
       context "when search query contains 'et al.'" do
@@ -33,12 +33,12 @@ describe References::FulltextSearchLightQuery, :search do
           fisher = create :author_name, name: 'Fisher, B.'
           ward = create :author_name, name: 'Ward, P.S.'
 
-          create :any_reference, author_names: [bolton, fisher, ward], year: 1970
+          create :any_reference, author_names: [bolton, fisher, ward]
         end
 
         before { Sunspot.commit }
 
-        specify { expect(described_class["Fisher, et al. 1970"]).to eq [reference] }
+        specify { expect(described_class["Fisher, et al."]).to eq [reference] }
       end
     end
 

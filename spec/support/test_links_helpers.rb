@@ -18,4 +18,12 @@ module TestLinksHelpers
   def protonym_link protonym
     %(<a class="protonym protonym-hover-preview-link" href="/protonyms/#{protonym.id}">#{protonym.name.name_html}</a>)
   end
+
+  def reference_link reference
+    %(<a href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>)
+  end
+
+  def taxon_authorship_link taxon
+    %(<a href="/references/#{taxon.authorship_reference.id}">#{taxon.author_citation}</a>)
+  end
 end

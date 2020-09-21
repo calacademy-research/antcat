@@ -29,8 +29,9 @@ Feature: Working with authors and their names
     And I follow "Add alternative spelling"
     And I fill in "author_name_name" with "Fisher, B."
     And I press "Save"
-    And WAIT
-    And I follow "Authors" within the breadcrumbs
+    Then I should see "Author name was successfully created"
+
+    When I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, B.; Fisher, B."
 
   Scenario: Entering an existing author name
@@ -53,7 +54,8 @@ Feature: Working with authors and their names
     And I follow "Edit"
     And I fill in "author_name_name" with "Bolton, Z."
     And I press "Save"
-    And WAIT
-    And I follow "Authors" within the breadcrumbs
+    Then I should see "Author name was successfully updated"
+
+    When I follow "Authors" within the breadcrumbs
     Then I should see "Bolton, Z."
     And I should not see "Bolton, B."

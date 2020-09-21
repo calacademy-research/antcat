@@ -132,11 +132,11 @@ describe Catalog::AdvancedSearchQuery do
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = create :any_reference,
-          author_names: [create(:author_name, name: 'Bolton'), create(:author_name, name: 'Fisher')]
+          author_names: [create(:author_name), create(:author_name, name: 'Bolton')]
         taxon = create :any_taxon
         taxon.protonym.authorship.update!(reference: reference)
 
-        expect(described_class[author_name: 'Fisher']).to eq [taxon]
+        expect(described_class[author_name: 'Bolton']).to eq [taxon]
       end
 
       describe "when author in protonym has many different names" do
