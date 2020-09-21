@@ -1,0 +1,7 @@
+-if taxon.valid_status? && taxon.subgenera.valid.exists?
+  %h6.margin-top Subgenera
+  %ul.compact-list.no-bullet.margin-bottom
+    -TaxonQuery.new(taxon.subgenera.valid.order_by_name).with_common_includes.each do |subgenus|
+      %li
+        =CatalogFormatter.link_to_taxon(subgenus)
+        =subgenus.author_citation
