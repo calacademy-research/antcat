@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class SubspeciesName < SpeciesGroupName
-  # TODO: Change this and similar to use `names.cleaned_name`.
   def subspecies_epithet
-    name_parts[2]
+    cleaned_name_parts[2]
   end
 
   def short_name

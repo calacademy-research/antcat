@@ -8,7 +8,6 @@ module Taxa
 
     # This links the different parts of the binomial name. Only applicable to
     # species and below, since higher ranks consists of a single word.
-    # NOTE: This only works for modern names (connecting terms and subgenus parts are ignored).
     def call
       return CatalogFormatter.link_to_taxon(taxon) unless taxon.is_a?(::SpeciesGroupTaxon)
 
