@@ -25,7 +25,7 @@ class ReferenceSection < ApplicationRecord
           OR subtitle_taxt LIKE :q
       SQL
     when 'REGEXP'
-      where(<<~SQL.squish, q: "%#{search_query}%")
+      where(<<~SQL.squish, q: search_query)
         title_taxt REGEXP :q
           OR references_taxt REGEXP :q
           OR subtitle_taxt REGEXP :q
