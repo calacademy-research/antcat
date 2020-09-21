@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::AuthorNamesController, as: :visitor do
   describe "GET index" do
     specify do
-      author_name = create :author_name, name: 'Fisher'
+      author_name = create :author_name
       get :index
       expect(json_response).to eq([author_name.as_json(root: true)])
     end
@@ -14,7 +14,7 @@ describe Api::V1::AuthorNamesController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:author_name) { create :author_name, name: 'Bolton' }
+    let!(:author_name) { create :author_name }
 
     specify do
       get :show, params: { id: author_name.id }
@@ -23,7 +23,7 @@ describe Api::V1::AuthorNamesController, as: :visitor do
           "author_name" => {
             "id" => author_name.id,
             "author_id" => author_name.author.id,
-            "name" => "Bolton",
+            "name" => author_name.name,
 
             "created_at" => author_name.created_at.as_json,
             "updated_at" => author_name.updated_at.as_json

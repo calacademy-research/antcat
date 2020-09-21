@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :tooltip do
     sequence(:key) { |n| "test.key#{n}" }
     sequence(:text) { |n| "Tooltip text #{n}" }
-    scope { "references" }
+    sequence(:scope) { |n| "scope#{n}" }
   end
 end

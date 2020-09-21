@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::JournalsController, as: :visitor do
   describe "GET index" do
     specify do
-      journal = create :journal, name: 'Zootaxa'
+      journal = create :journal
       get :index
       expect(json_response).to eq([journal.as_json(root: true)])
     end
@@ -14,7 +14,7 @@ describe Api::V1::JournalsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:journal) { create :journal, name: 'Zootaxa' }
+    let!(:journal) { create :journal }
 
     specify do
       get :show, params: { id: journal.id }
@@ -22,7 +22,7 @@ describe Api::V1::JournalsController, as: :visitor do
         {
           "journal" => {
             "id" => journal.id,
-            "name" => "Zootaxa",
+            "name" => journal.name,
 
             "created_at" => journal.created_at.as_json,
             "updated_at" => journal.updated_at.as_json

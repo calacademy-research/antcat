@@ -4,11 +4,9 @@ require 'rails_helper'
 
 describe Journals::AutocompletesController do
   describe "GET show", as: :visitor do
-    let(:term) { "zoo" }
-
     it "calls `Autocomplete::JournalsQuery`" do
-      expect(Autocomplete::JournalsQuery).to receive(:new).with(term).and_call_original
-      get :show, params: { term: term, format: :json }
+      expect(Autocomplete::JournalsQuery).to receive(:new).with("query").and_call_original
+      get :show, params: { term: "query", format: :json }
     end
 
     context 'when there are results' do
@@ -16,11 +14,11 @@ describe Journals::AutocompletesController do
       let!(:zoological) { create :journal, name: 'Zoological Adventures' }
 
       before do
-        create :journal, name: 'Science'
+        create :journal # Non-match.
       end
 
       it 'returns an array of journal names' do
-        get :show, params: { term: term, format: :json }
+        get :show, params: { term: "zoo", format: :json }
         expect(json_response).to match_array [zootaxa.name, zoological.name]
       end
     end

@@ -90,7 +90,7 @@ describe ProtonymForm do
         }
       end
 
-      it "nilifies the promtonym's type name" do
+      it "nullifies the protonyms's type name" do
         expect { described_class.new(protonym, {}, form_params).save! }.to change { protonym.reload.type_name }.to(nil)
       end
 

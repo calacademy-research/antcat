@@ -8,7 +8,7 @@ describe EditorsPanels::BoltonKeysToRefTagsController do
   end
 
   describe "POST create", as: :visitor do
-    let(:bolton_content) { "zootaxa" }
+    let(:bolton_content) { "content" }
 
     it "calls `Markdowns::BoltonKeysToRefTags`" do
       expect(Markdowns::BoltonKeysToRefTags).to receive(:new).with(bolton_content).and_call_original

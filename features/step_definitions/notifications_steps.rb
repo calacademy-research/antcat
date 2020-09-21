@@ -17,6 +17,6 @@ Given("there is an open issue {string} created by {string}") do |title, name|
 end
 
 When(/^I write a new comment <at Batiatus's id> "([^"]*)"$/) do |content|
-  batiatus_id = User.find_by!(name: "Batiatus").id
-  first("#comment_body").set "@user#{batiatus_id} #{content}"
+  user = User.find_by!(name: "Batiatus")
+  first("#comment_body").set "@user#{user.id} #{content}"
 end

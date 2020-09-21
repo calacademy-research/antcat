@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :institution do
     sequence(:abbreviation) { |n| "AS#{n}" }
-    sequence(:name) { |n| "Academy of Science #{n}" }
+    sequence(:name) { |n| "Institution #{n}" }
 
     trait :casc do
       abbreviation { 'CASC' }

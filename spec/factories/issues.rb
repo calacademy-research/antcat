@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :issue do
     user
-    sequence(:title) { |n| "Issue #{n}" }
-    sequence(:description) { |n| "About Joffre's issue #{n}" }
+    sequence(:title) { |n| "Issue title #{n}" }
+    sequence(:description) { |n| "Issue description #{n}" }
 
     trait :open
 

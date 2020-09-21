@@ -2,6 +2,6 @@
 
 FactoryBot.define do
   factory :journal do
-    sequence(:name) { |n| "Ants#{n}" }
+    sequence(:name) { |n| "Journal #{n}" }
   end
 end

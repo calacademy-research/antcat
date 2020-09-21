@@ -52,20 +52,20 @@ describe AntwebFormatter do
   end
 
   describe ".link_to_protonym" do
-    let(:protonym) { create :protonym, :fossil, name: create(:genus_name, name: 'Atta') }
+    let(:protonym) { create :protonym, :fossil, :genus_group_name }
 
     # TODO: Check AntWeb. Skipped as an experiment.
     # specify { expect(described_class.link_to_protonym(protonym).html_safe?).to eq true }
 
     it "includes 'antcat.org' in the url" do
       expect(described_class.link_to_protonym(protonym)).to eq <<-HTML.squish
-        <a href="https://www.antcat.org/protonyms/#{protonym.id}"><i>†</i><i>Atta</i></a>
+        <a href="https://www.antcat.org/protonyms/#{protonym.id}"><i>†</i><i>#{protonym.name.name}</i></a>
       HTML
     end
   end
 
   describe ".link_to_protonym_with_author_citation" do
-    let(:protonym) { create :protonym, :fossil, name: create(:genus_name, name: 'Atta') }
+    let(:protonym) { create :protonym, :fossil, :genus_group_name }
 
     specify { expect(described_class.link_to_protonym_with_author_citation(protonym).html_safe?).to eq true }
 
