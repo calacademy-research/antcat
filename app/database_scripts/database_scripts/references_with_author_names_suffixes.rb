@@ -12,11 +12,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Reference', 'author_names_suffix'
+        t.header 'Reference', 'author_names_string', 'author_names_suffix', 'PDF'
         t.rows do |reference|
           [
             link_to(reference.key_with_suffixed_year, reference_path(reference)),
-            reference.author_names_suffix
+            reference.author_names_string,
+            reference.author_names_suffix,
+            reference.decorate.pdf_link
           ]
         end
       end

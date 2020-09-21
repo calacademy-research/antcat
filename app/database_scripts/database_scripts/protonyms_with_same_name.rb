@@ -2,6 +2,41 @@
 
 module DatabaseScripts
   class ProtonymsWithSameName < DatabaseScript
+    # Manually checked in September 2020.
+    CHECKED_PROTONYM_IDS = [
+      154756, 154757, 169314, 156734, 164429, 163369, 154904, 172617, 158436, 158816,
+      159305, 157623, 171491, 157847, 163207, 155095, 163234, 155159, 164381, 155259,
+      155413, 155400, 157797, 165860, 165415, 155748, 155762, 155783, 162103, 162146,
+      162368, 163192, 156643, 156677, 156566, 156582, 156849, 157172, 157758, 157943,
+      158856, 157952, 158319, 158030, 159263, 158198, 158240, 159344, 159002, 158795,
+      158808, 158875, 158957, 159101, 159045, 159106, 159166, 159167, 159177, 159236,
+      159358, 159405, 159597, 159609, 159615, 160580, 160701, 160828, 161005, 160947,
+      161068, 161401, 161352, 161538, 162036, 162116, 162370, 162767, 162827, 163004,
+      163041, 163057, 163140, 163420, 163201, 163225, 163261, 163326, 163397, 163475,
+      163487, 163566, 163868, 163919, 164053, 164054, 164082, 164089, 164129, 164566,
+      165164, 165498, 165749, 165962, 166604, 167102, 167347, 167134, 167841, 168344,
+      168527, 168546, 198742, 168837, 169301, 169761, 169769, 170570, 170667, 171299,
+      171377, 171587, 172071, 172932, 172706, 172752, 172809, 172837, 174998, 175921,
+      176056, 176262, 198692, 167115, 165302, 165271, 167356, 172724, 172689, 172697,
+      173542, 197604, 171262, 173517, 154759, 155923, 170602, 169766, 158776, 165251,
+      164565, 155677, 175029, 158437, 163313, 159306, 163030, 171492, 163080, 163079,
+      160120, 176066, 155096, 175040, 172783, 164261, 155233, 167729, 155743, 155414,
+      155733, 170953, 169828, 167130, 155778, 155766, 155864, 163837, 168642, 166701,
+      165093, 168619, 156644, 168328, 200719, 156583, 163223, 162291, 158322, 163071,
+      157759, 171241, 158857, 157953, 163183, 163128, 159264, 171391, 163486, 159345,
+      163373, 159004, 163307, 163310, 164538, 175069, 163360, 159102, 163387, 164588,
+      168045, 163429, 163435, 159178, 159237, 163489, 159406, 163567, 163568, 164634,
+      162857, 160703, 175525, 161006, 160948, 161069, 161402, 167235, 161539, 166758,
+      163873, 164577, 162768, 168989, 163593, 168620, 163193, 171107, 164438, 168504,
+      164478, 163421, 165236, 163226, 164521, 168252, 168394, 163476, 164613, 171078,
+      168863, 168766, 168641, 170779, 164090, 164130, 175071, 172232, 165868, 175903,
+      200722, 167436, 175870, 167348, 175941, 175392, 168345, 168528, 168547, 168838,
+      169302, 169762, 169770, 173611, 170668, 171300, 171378, 171588, 172155, 172933,
+      172707, 172754, 176664, 176685, 173623, 173622, 174999, 175922, 200416, 176263,
+      200441, 175499, 175256, 167357, 172725, 172690, 172698, 171263, 173518, 201160,
+      201220, 201225, 201227, 201229, 201230, 201236
+    ]
+
     def results
       same_name_name = Protonym.joins(:name).group('names.name').having('COUNT(protonyms.id) > 1')
 
@@ -12,7 +47,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Statuses of taxa', 'Any unresolved homonyms?'
+        t.header 'Protonym', 'Authorship', 'Statuses of taxa', 'Any unresolved homonyms?', 'Manually checked and OK'
         t.rows do |protonym|
           taxa_statuses = protonym.taxa.pluck(:status)
 
@@ -20,7 +55,8 @@ module DatabaseScripts
             protonym.decorate.link_to_protonym,
             protonym.author_citation,
             taxa_statuses.present? ? taxa_statuses.join(', ').truncate(50) : bold_warning('Orphaned protonym'),
-            protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''
+            (protonym.taxa.where(unresolved_homonym: true).exists? ? 'Yes' : ''),
+            ('Yes' if protonym.id.in?(CHECKED_PROTONYM_IDS))
           ]
         end
       end
@@ -36,26 +72,6 @@ tags: [slow]
 
 description: >
   Protonym records with the same name (`names.name`).
-
-
-  Many of these are OK. Most that are not OK will appear in various other database scripts.
-
-
-  It's still a little bit fuzzy to me how to identify true duplicates by script. Two different protonym records with the same name
-  are probably duplicates if both taxa linked to the protonym are valid.
-  If one the linked taxa has the status `homonym`, or `unresolved_homonym` set to true (this is
-  the unresolved junior homonym checkbox in the taxon form), then the protonyms are likely not true duplicates and should not be merged.
-
-
-  I think it's best to focus on other protonym scripts first.
-
-
-  **How to fix**
-
-
-  * Orphaned protonyms can be deleted or ignored
-
-  * If the authorship is identical: change protonym of one and delete the now orphaned protonym
 
 related_scripts:
   - SameNamedPassThroughNames

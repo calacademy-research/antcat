@@ -24,10 +24,8 @@ module Autocomplete
       def full_pagination reference
         if reference.is_a? NestedReference
           "[pagination: #{reference.pagination} (#{reference.nesting_reference.pagination})]"
-        elsif reference.pagination
-          "[pagination: #{reference.pagination}]"
         else
-          ""
+          "[pagination: #{reference.pagination}]"
         end
       end
 
