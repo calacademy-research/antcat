@@ -5,8 +5,7 @@ class Taxon < ApplicationRecord
 
   self.table_name = :taxa
 
-  delegate :policy, :soft_validations, :what_links_here, :virtual_history_items, :all_virtual_history_items,
-    to: :taxon_collaborators
+  delegate :policy, :soft_validations, :what_links_here, to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do
     belongs_to :homonym_replaced_by, optional: true

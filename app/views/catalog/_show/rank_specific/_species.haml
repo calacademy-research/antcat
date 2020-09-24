@@ -1,0 +1,19 @@
+-if taxon.valid_status? && taxon.subspecies.valid.exists?
+  %h6.margin-top Current subspecies (nominal plus)
+  %ul.compact-list.no-bullet.margin-bottom
+    -TaxonQuery.new(taxon.subspecies.valid.order_by_name).with_common_includes.each do |subspecies|
+      %li
+        %i=CatalogFormatter.link_to_taxon_with_label(subspecies, subspecies.name.short_name)
+        =subspecies.author_citation
+
+-if current_user && taxon.subspecies.invalid.exists?
+  .callout.no-border-callout.logged-in-only-background
+    %h6
+      Invalid subspecies
+      =logged_in_only_tooltip_icon "This section is currently only shown to logged-in users. We want to show subspecies somewhere in catalog pages, but we need to figure out how to present them."
+    %ul.compact-list.small-margin-bottom
+      -TaxonQuery.new(taxon.subspecies.invalid.order_by_name).with_common_includes_and_current_taxon_includes.each do |subspecies|
+        %li
+          %i=CatalogFormatter.link_to_taxon_with_label(subspecies, subspecies.name.short_name)
+          =subspecies.author_citation
+          %span.small-text=subspecies.decorate.expanded_status

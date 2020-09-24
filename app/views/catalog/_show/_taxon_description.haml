@@ -40,7 +40,7 @@
 -if current_user && current_user.settings(:editing_helpers).history_items_via_protonym
   =render 'catalog/_show/logged_in_only/history_items_via_protonym', taxon: taxon
 
--if taxon.all_virtual_history_items.present? || taxon.history_items.present?
+-if taxon.history_items.present?
   %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
       %li
@@ -57,11 +57,6 @@
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
-    -taxon.all_virtual_history_items.each do |history_item|
-      %li{class: ('virtual-taxt-item' if current_user)}
-        =history_item.render
-        -if current_user
-          =info_tooltip_icon 'This is a virtual history item.'
 
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes
@@ -87,6 +82,8 @@
   =render 'catalog/_show/child_lists', taxon: taxon
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon
+  -if taxon.is_a?(Species)
+    =render 'catalog/_show/rank_specific/species', taxon: taxon
   -if taxon.is_a?(Subspecies)
     =render 'catalog/_show/rank_specific/subspecies', taxon: taxon
 
@@ -116,11 +113,6 @@
               -if user_is_at_least_helper?
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
-
--# TODO: Figure out if/how to present subspecies, now
--# that https://github.com/calacademy-research/antcat/issues/780 has been fixed.
--if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
-  =render 'catalog/_show/logged_in_only/subspecies_in_species', taxon: taxon
 
 -unless catalog_presenter.formicidae_landing_page?
   %h6.huge-margin-top Citations
