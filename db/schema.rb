@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_180634) do
+ActiveRecord::Schema.define(version: 2020_09_24_181015) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -374,9 +374,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_180634) do
     t.text "object"
     t.datetime "created_at"
     t.text "object_changes"
-    t.integer "change_id"
     t.string "request_uuid"
-    t.index ["change_id"], name: "index_versions_on_change_id"
     t.index ["event"], name: "index_versions_on_event"
     t.index ["item_id"], name: "index_versions_on_item_id"
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
