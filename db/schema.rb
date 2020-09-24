@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_14_170320) do
+ActiveRecord::Schema.define(version: 2020_09_24_180634) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -214,7 +214,6 @@ ActiveRecord::Schema.define(version: 2020_09_14_170320) do
     t.string "date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "citation_year"
     t.string "type", null: false
     t.integer "publisher_id"
     t.integer "journal_id"
@@ -236,7 +235,7 @@ ActiveRecord::Schema.define(version: 2020_09_14_170320) do
     t.boolean "online_early", default: false, null: false
     t.string "stated_year"
     t.string "year_suffix", limit: 2
-    t.index ["author_names_string_cache", "citation_year"], name: "references_author_names_string_citation_year_idx", length: { author_names_string_cache: 255 }
+    t.index ["author_names_string_cache"], name: "references_author_names_string_citation_year_idx", length: 255
     t.index ["created_at"], name: "references_created_at_idx"
     t.index ["id", "type"], name: "index_references_on_id_and_type"
     t.index ["journal_id"], name: "references_journal_id_idx"

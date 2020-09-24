@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Remove `references.citation_year`.
-#   rails g migration RemoveCitationYearFromReferences
-#   remove_column :references, :citation_year, :string
-
 class AddYearSuffixToReferences < ActiveRecord::Migration[6.0]
   def change
     add_column :references, :year_suffix, :string, limit: 2
