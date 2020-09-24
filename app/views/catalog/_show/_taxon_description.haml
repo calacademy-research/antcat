@@ -119,11 +119,6 @@
                 =link_to "Edit", edit_reference_section_path(reference_section), class: "btn-normal btn-very-tiny"
               =link_to "History", reference_section_history_path(reference_section), class: "btn-normal btn-very-tiny"
 
--# TODO: Figure out if/how to present subspecies, now
--# that https://github.com/calacademy-research/antcat/issues/780 has been fixed.
--if current_user && taxon.is_a?(Species) && taxon.subspecies.exists?
-  =render 'catalog/_show/logged_in_only/subspecies_in_species', taxon: taxon
-
 -unless catalog_presenter.formicidae_landing_page?
   %h6.huge-margin-top Citations
   %ul#citations.compact-list
