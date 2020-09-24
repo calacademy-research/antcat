@@ -26,10 +26,7 @@
         %span Type notes:
         =::Types::FormatTypeField[protonym.type_notes_taxt]
 
-    -if taxon.all_virtual_history_items.present? || taxon.history_items.present?
+    -if taxon.history_items.present?
       -taxon.history_items.each do |history_item|
         %li
           =add_period_if_necessary Detax[history_item.to_taxt]
-      -taxon.all_virtual_history_items.each do |history_item|
-        %li{class: ('virtual-taxt-item' if current_user)}
-          =history_item.render
