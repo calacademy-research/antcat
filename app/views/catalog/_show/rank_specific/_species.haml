@@ -1,0 +1,7 @@
+-if taxon.valid_status? && taxon.subspecies.valid.exists?
+  %h6.margin-top Current subspecies (nominal plus)
+  %ul.compact-list.no-bullet.margin-bottom
+    -TaxonQuery.new(taxon.subspecies.valid.order_by_name).with_common_includes.each do |subspecies|
+      %li
+        %i=CatalogFormatter.link_to_taxon_with_label(subspecies, subspecies.name.short_name)
+        =subspecies.author_citation

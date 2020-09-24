@@ -87,6 +87,8 @@
   =render 'catalog/_show/child_lists', taxon: taxon
   -if taxon.is_a?(Genus)
     =render 'catalog/_show/rank_specific/genus', taxon: taxon
+  -if taxon.is_a?(Species)
+    =render 'catalog/_show/rank_specific/species', taxon: taxon
   -if taxon.is_a?(Subspecies)
     =render 'catalog/_show/rank_specific/subspecies', taxon: taxon
 
