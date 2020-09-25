@@ -90,7 +90,7 @@ module DatabaseScripts
       end
 
       def replace_with_alt_tax_link history_item, normalized_name, replace_with_taxon
-        has_relevant_history_item = has_junior_synonym_of_tax_item?(replace_with_taxon, history_item)
+        has_relevant_history_item = any_junior_synonym_of_tax_item?(replace_with_taxon, history_item)
         help_text = if has_relevant_history_item
                       bold_notice("[has relevant history item]")
                     else
@@ -109,7 +109,7 @@ module DatabaseScripts
         replace_with_taxon.decorate.link_to_taxon_with_author_citation + " #{help_text}<br>".html_safe + link
       end
 
-      def has_junior_synonym_of_tax_item? replace_with_taxon, history_item
+      def any_junior_synonym_of_tax_item? replace_with_taxon, history_item
         replace_with_taxon.history_items.where("taxt LIKE ?", "Junior synonym of {tax #{history_item.taxon.id}}%").exists?
       end
   end

@@ -213,7 +213,7 @@ Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 
 Naming/PredicateName:
-  Enabled: false
+  Enabled: true
 
 Naming/VariableNumber:
   Exclude:
