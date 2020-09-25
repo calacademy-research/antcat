@@ -4,30 +4,37 @@ module DatabaseScripts
   class TaxaWithDisagreeingNameParts < DatabaseScript
     def empty?
       !(
-        species_genus_vs_genus_genus.exists? ||
-        subspecies_species_vs_species_species.exists? ||
-        infrasubspecies_genus_vs_species_genus.exists? ||
-        infrasubspecies_species_vs_species_species.exists? ||
-        infrasubspecies_subspecies_vs_subspecies_subspecies.exists?
+        # Genus part.
+        genus_part_of_species_vs_genus.exists? ||
+        genus_part_of_subspecies_vs_species.exists? ||
+        genus_part_of_infrasubspecies_vs_species.exists? ||
+
+        # Species part.
+        species_part_of_subspecies_vs_species.exists? ||
+        species_part_of_infrasubspecies_vs_subspecies.exists? ||
+
+        # Subspecies part.
+        subspecies_part_of_infrasubspecies_vs_subspecies.exists?
       )
     end
 
-    def species_genus_vs_genus_genus
+    # Genus part.
+    def genus_part_of_species_vs_genus
       Species.joins(:name).joins(:genus).
         joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
         where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name")
     end
 
-    def subspecies_species_vs_species_species
+    def genus_part_of_subspecies_vs_species
       Subspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
         where(<<~SQL.squish)
-          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
-          SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
+          SUBSTRING_INDEX(names.name, ' ', 1) !=
+          SUBSTRING_INDEX(species_names.name, ' ', 1)
         SQL
     end
 
-    def infrasubspecies_genus_vs_species_genus
+    def genus_part_of_infrasubspecies_vs_species
       Infrasubspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
         where(<<~SQL.squish)
@@ -36,8 +43,9 @@ module DatabaseScripts
         SQL
     end
 
-    def infrasubspecies_species_vs_species_species
-      Infrasubspecies.joins(:name).joins(:species).
+    # Species part.
+    def species_part_of_subspecies_vs_species
+      Subspecies.joins(:name).joins(:species).
         joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
         where(<<~SQL.squish)
           SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
@@ -45,7 +53,17 @@ module DatabaseScripts
         SQL
     end
 
-    def infrasubspecies_subspecies_vs_subspecies_subspecies
+    def species_part_of_infrasubspecies_vs_subspecies
+      Infrasubspecies.joins(:name).joins(:subspecies).
+        joins("JOIN names subspecies_names ON subspecies_names.id = subspecies_taxa.name_id").
+        where(<<~SQL.squish)
+          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
+          SUBSTRING_INDEX(SUBSTRING_INDEX(subspecies_names.name, ' ', 2), ' ', -1)
+        SQL
+    end
+
+    # Subspecies part.
+    def subspecies_part_of_infrasubspecies_vs_subspecies
       Infrasubspecies.joins(:name).joins(:subspecies).
         joins("JOIN names subspecies_names ON subspecies_names.id = subspecies_taxa.name_id").
         where(<<~SQL.squish)
@@ -55,11 +73,17 @@ module DatabaseScripts
     end
 
     def render
-      render_table(species_genus_vs_genus_genus, "species", :genus_epithet, :genus) +
-        render_table(subspecies_species_vs_species_species, "subspecies", :species_epithet, :species) +
-        render_table(infrasubspecies_genus_vs_species_genus, "infrasubspecies", :genus_epithet, :species) +
-        render_table(infrasubspecies_species_vs_species_species, "infrasubspecies", :species_epithet, :species) +
-        render_table(infrasubspecies_subspecies_vs_subspecies_subspecies, "infrasubspecies", :subspecies_epithet, :subspecies)
+      # Genus part.
+      render_table(genus_part_of_species_vs_genus, "species", :genus_epithet, :genus) +
+        render_table(genus_part_of_subspecies_vs_species, "subspecies", :genus_epithet, :species) +
+        render_table(genus_part_of_infrasubspecies_vs_species, "infrasubspecies", :genus_epithet, :species) +
+
+        # Subspecies part.
+        render_table(species_part_of_subspecies_vs_species, "subspecies", :species_epithet, :species) +
+        render_table(species_part_of_infrasubspecies_vs_subspecies, "infrasubspecies", :species_epithet, :subspecies) +
+
+        # Subspecies part.
+        render_table(subspecies_part_of_infrasubspecies_vs_subspecies, "infrasubspecies", :subspecies_epithet, :subspecies)
     end
 
     def render_table table_results, disagreeing_rank, epithet_method, of_its_rank
@@ -96,7 +120,6 @@ tags: []
 issue_description:
 
 description: >
-  Revived from old scripts, see %dbscript:NowDeletedScripts.
 
 related_scripts:
   - TaxaWithDisagreeingNameParts

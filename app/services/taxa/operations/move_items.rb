@@ -25,6 +25,8 @@ module Taxa
 
         def move_history_items!
           history_items.each do |history_item|
+            history_item.reload # Reload to make sure positions are updated correctly.
+
             history_item.taxon = to_taxon
             history_item.save!
           end
@@ -32,6 +34,8 @@ module Taxa
 
         def move_reference_sections!
           reference_sections.each do |reference_section|
+            reference_section.reload # Reload to make sure positions are updated correctly.
+
             reference_section.taxon = to_taxon
             reference_section.save!
           end

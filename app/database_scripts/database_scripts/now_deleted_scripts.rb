@@ -45,21 +45,6 @@ module DatabaseScripts
             ok?: !Subspecies.joins(:species).where("species_taxa.subfamily_id != taxa.subfamily_id").exists?
           },
           {
-            title: 'Now deleted script: SubspeciesWithGenusEpithetsNotMatchingItsGenusEpithet ',
-            ok?: !Subspecies.joins(:name).joins(:genus).
-                    joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
-                    where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name").exists?
-          },
-          {
-            title: 'Now deleted script: SubspeciesWithSpeciesEpithetsNotMatchingItsSpeciesEpithet ',
-            ok?: !Subspecies.joins(:name).joins(:species).
-                    joins("JOIN names species_names ON species_names.id = species_taxa.name_id").
-                    where(<<~SQL.squish).exists?
-                      SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
-                      SUBSTRING_INDEX(SUBSTRING_INDEX(species_names.name, ' ', 2), ' ', -1)
-                    SQL
-          },
-          {
             title: 'Now deleted script: TaxaWithNonModernCapitalization',
             ok?: !Taxon.joins(:name).where("name NOT LIKE '%(%' AND BINARY SUBSTRING(name, 2) != LOWER(SUBSTRING(name, 2))").exists?
           }
