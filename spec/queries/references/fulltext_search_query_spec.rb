@@ -264,12 +264,7 @@ describe References::FulltextSearchQuery, :search do
     end
 
     context "when search query contains '&'" do
-      let!(:reference) do
-        bolton = create :author_name, name: 'Bolton, B.'
-        fisher = create :author_name, name: 'Fisher, B.'
-
-        create :any_reference, author_names: [bolton, fisher]
-      end
+      let!(:reference) { create :any_reference, author_string: ['Bolton, B.', 'Fisher, B.'] }
 
       before { Sunspot.commit }
 
@@ -277,13 +272,7 @@ describe References::FulltextSearchQuery, :search do
     end
 
     context "when search query contains 'et al.'" do
-      let!(:reference) do
-        bolton = create :author_name, name: 'Bolton, B.'
-        fisher = create :author_name, name: 'Fisher, B.'
-        ward = create :author_name, name: 'Ward, P.S.'
-
-        create :any_reference, author_names: [bolton, fisher, ward]
-      end
+      let!(:reference) { create :any_reference, author_string: ['Bolton, B.', 'Fisher, B.', 'Ward, P.S.'] }
 
       before { Sunspot.commit }
 
@@ -305,9 +294,7 @@ describe References::FulltextSearchQuery, :search do
 
   describe 'extracted keywords integration' do
     context 'when searching for multiple authors' do
-      let!(:bolton) { create :author_name, name: "Bolton Barry" }
-      let!(:fisher) { create :author_name, name: "Brian Fisher" }
-      let!(:reference) { create :any_reference, author_names: [bolton, fisher] }
+      let!(:reference) { create :any_reference, author_string: ["Bolton Barry", "Brian Fisher"] }
 
       before do
         Sunspot.commit

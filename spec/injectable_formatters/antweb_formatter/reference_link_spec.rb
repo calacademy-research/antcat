@@ -3,11 +3,10 @@
 require 'rails_helper'
 
 describe AntwebFormatter::ReferenceLink do
-  let(:latreille) { create :author_name, name: 'Latreille, P. A.' }
   let!(:reference) do
     create :article_reference,
       :with_doi,
-      author_names: [latreille],
+      author_string: 'Latreille, P. A.',
       year: 1809,
       title: "*Atta*",
       journal: create(:journal, name: 'Science'),

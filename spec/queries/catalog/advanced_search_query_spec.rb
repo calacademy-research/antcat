@@ -131,8 +131,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
-        reference = create :any_reference,
-          author_names: [create(:author_name), create(:author_name, name: 'Bolton')]
+        reference = create :any_reference, author_string: 'Bolton'
         taxon = create :any_taxon
         taxon.protonym.authorship.update!(reference: reference)
 

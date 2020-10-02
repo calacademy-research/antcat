@@ -6,10 +6,7 @@ describe Exporters::Endnote::Formatter do
   describe '#call' do
     context 'when reference has content in italics' do
       let(:reference) do
-        create :article_reference,
-          author_names: [create(:author_name, name: 'MacKay, W.')],
-          title: '*A title*',
-          series_volume_issue: '1(2)'
+        create :article_reference, author_string: 'MacKay, W.', title: '*A title*', series_volume_issue: '1(2)'
       end
 
       it "strips out the italics formatting" do
@@ -29,10 +26,8 @@ describe Exporters::Endnote::Formatter do
 
     context 'when reference has public or taxonomic notes' do
       let(:reference) do
-        create :article_reference, :with_notes,
-          author_names: [create(:author_name, name: 'MacKay, W.')],
-          title: '*A title*',
-          series_volume_issue: '1(2)'
+        create :article_reference, :with_notes, author_string: 'MacKay, W.',
+          title: '*A title*', series_volume_issue: '1(2)'
       end
 
       it "exports notes" do
@@ -54,9 +49,7 @@ describe Exporters::Endnote::Formatter do
 
     context 'when reference is a `BookReference`' do
       let(:reference) do
-        create :book_reference,
-          author_names: [create(:author_name, name: 'Bolton, B.'), create(:author_name, name: 'Fisher, B.L.')],
-          title: 'Ants Are My Life'
+        create :book_reference, author_string: ['Bolton, B.', 'Fisher, B.L.'], title: 'Ants'
       end
 
       specify do
@@ -65,7 +58,7 @@ describe Exporters::Endnote::Formatter do
           %A Bolton, B.
           %A Fisher, B.L.
           %D #{reference.year}
-          %T Ants Are My Life
+          %T Ants
           %C #{reference.publisher.place}
           %I #{reference.publisher.name}
           %P #{reference.pagination}
@@ -77,10 +70,7 @@ describe Exporters::Endnote::Formatter do
 
     context 'when reference is a `ArticleReference`' do
       let(:reference) do
-        create :article_reference,
-          author_names: [create(:author_name, name: 'MacKay, W.')],
-          title: 'A title',
-          series_volume_issue: '1(2)'
+        create :article_reference, author_string: 'MacKay, W.', title: 'A title', series_volume_issue: '1(2)'
       end
 
       before do

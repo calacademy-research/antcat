@@ -44,7 +44,7 @@ Given("the following entry nests it") do |table|
 
   create :nested_reference,
     title: hsh[:title],
-    author_names: [create(:author_name, name: hsh[:author])],
+    author_string: hsh[:author],
     year: hsh[:year],
     year_suffix: hsh[:year_suffix],
     pagination: hsh[:pagination],

@@ -7,7 +7,7 @@ Given("there is a species described in {int}") do |year|
 end
 
 Given("there is a species described by Bolton") do
-  reference = create :any_reference, author_names: [create(:author_name, name: 'Bolton')]
+  reference = create :any_reference, author_string: 'Bolton'
   taxon = create :species
   taxon.protonym.authorship.update!(reference: reference)
 end
