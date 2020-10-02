@@ -7,7 +7,6 @@ FactoryBot.define do
     end
 
     association :taxon, factory: :family
-    sequence(:position) { |n| n }
     sequence(:references_taxt) { |n| "references_taxt #{n}" }
 
     trait :with_all_taxts do

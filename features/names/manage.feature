@@ -5,7 +5,7 @@ Feature: Manage names
   Scenario: Editing a name (with edit summary)
     Given there is a genus protonym "Formica"
 
-    When I go to the edit page for the protonym "Formica"
+    When I go to the protonym page for "Formica"
     And I follow "Name record"
     Then I should see "Name record: Formica"
 
@@ -30,8 +30,7 @@ Feature: Manage names
     And there is a genus protonym "Formica"
     And there is a genus protonym "Formicus"
 
-    When I go to the protonyms page
-    And I follow the first "Formica"
+    When I go to the protonym page for "Formica"
     And I follow "Name record"
     And I follow "Edit"
     Then I should not see "Similar names"

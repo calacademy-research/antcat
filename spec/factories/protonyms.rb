@@ -24,6 +24,10 @@ FactoryBot.define do
       uncertain_locality { true }
     end
 
+    trait :family_group_name do
+      association :name, factory: :family_name
+    end
+
     trait :genus_group_name do
       association :name, factory: :genus_name
     end

@@ -2,13 +2,13 @@
 
 Given("there is a genus protonym {string}") do |name_string|
   name = create :genus_name, name: name_string
-  create :protonym, name: name
+  create :protonym, :genus_group_name, name: name
 end
 
 Given("there is a genus protonym {string} with pages and form 'page 9, dealate queen'") do |name_string|
   name = create :genus_name, name: name_string
   citation = create :citation, pages: 'page 9'
-  create :protonym, name: name, authorship: citation, forms: 'dealate queen'
+  create :protonym, :genus_group_name, name: name, authorship: citation, forms: 'dealate queen'
 end
 
 When("I pick {string} from the protonym selector") do |name|
