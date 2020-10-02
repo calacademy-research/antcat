@@ -23,7 +23,7 @@ Feature: Move items
 
     When I follow "Select all"
     And I press "Move selected items"
-    Then I should see "Successfully moved history items"
+    Then I should see "Successfully moved items"
 
     When I go to the catalog page for "Formica"
     And I should see "Best ant in the world"

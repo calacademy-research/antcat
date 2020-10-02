@@ -3,8 +3,8 @@
 module DatabaseScripts
   class ProtonymsWithMoreThanOneValidTaxon < DatabaseScript
     def self.looks_like_a_false_positive? protonym
-      Protonyms.all_taxa_above_genus_and_of_unique_different_ranks?(protonym.taxa) ||
-        Protonyms.taxa_genus_and_subgenus_pair?(protonym.taxa)
+      Protonyms.all_taxa_above_genus_and_of_unique_different_ranks?(protonym.taxa.valid) ||
+        Protonyms.taxa_genus_and_subgenus_pair?(protonym.taxa.valid)
     end
 
     def empty_status
