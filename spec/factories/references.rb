@@ -19,6 +19,8 @@ FactoryBot.define do
         author_names = build_stubbed_list(:author_name, 1)
         author_names.each { |author_name| reference.association(:author_names).add_to_target(author_name) }
       end
+
+      reference.refresh_author_names_cache
     end
 
     before(:create) do |reference, evaluator|
@@ -33,6 +35,8 @@ FactoryBot.define do
         raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
         reference.author_names = [create(:author_name)]
       end
+
+      reference.refresh_author_names_cache
     end
 
     factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do

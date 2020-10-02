@@ -42,14 +42,13 @@ end
 Given("the following entry nests it") do |table|
   hsh = table.hashes.first
 
-  NestedReference.create!(
+  create :nested_reference,
     title: hsh[:title],
     author_names: [create(:author_name, name: hsh[:author])],
     year: hsh[:year],
     year_suffix: hsh[:year_suffix],
     pagination: hsh[:pagination],
     nesting_reference: Reference.last
-  )
 end
 
 When("I select the reference tab {string}") do |tab_css_selector|
