@@ -3,11 +3,11 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  Scenario: Moving history items (with feed)
-    Given there is a genus "Lasius" with a history item "Best ant in the world"
+  Scenario: Moving reference sections (with feed)
+    Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
     And there is a genus "Formica"
 
-    When I go to the catalog page for "Lasius"
+    When I go to the catalog page for "Antcatinae"
     And I follow "Move items"
     Then I should see "Move items › Select target"
 
@@ -26,7 +26,7 @@ Feature: Move items
     Then I should see "Successfully moved items"
 
     When I go to the catalog page for "Formica"
-    And I should see "Best ant in the world"
+    And I should see "Antcatinae section"
 
     When I go to the activity feed
-    Then I should see "Archibald moved items belonging to Lasius to Formica" within the activity feed
+    Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed

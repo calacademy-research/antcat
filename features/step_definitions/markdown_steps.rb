@@ -37,12 +37,6 @@ When("I fill in {string} with {string} and a markdown link to {string}") do |fie
   step %(I fill in "#{field_name}" with "#{value} {ref #{reference.id}}")
 end
 
-Given("there is a genus {string} with a history item {string} and a markdown link to {string}") do |genus, content, key_with_year|
-  reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-  taxt = "#{content} {ref #{reference.id}}"
-  step %(there is a genus "#{genus}" with a history item "#{taxt}")
-end
-
 Then("the markdown textarea should contain a markdown link to Eciton") do
   eciton = Taxon.find_by!(name_cache: "Eciton")
   expect(markdown_textarea.value).to include "{tax #{eciton.id}}"
