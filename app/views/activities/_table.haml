@@ -1,4 +1,5 @@
 -show_delete_button ||= false
+-highlighted_activity = nil unless defined?(highlighted_activity)
 
 -if activities.empty?
   No activities.
@@ -7,7 +8,7 @@
     %tbody
       -activities.each do |activity|
         -decorated = activity.decorate
-        %tr.highlight-activity-anchor{id: decorated.css_anchor_id}
+        %tr{id: ('highlighted-activity' if activity == highlighted_activity)}
           %td.icon=decorated.icon
           %td
             -if activity.user&.unconfirmed?

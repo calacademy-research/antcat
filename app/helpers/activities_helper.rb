@@ -7,7 +7,6 @@ module ActivitiesHelper
 
   def activities_link trackable_type, trackable_id
     return unless trackable_type
-    return if trackable_type.in? Activity::DEPRECATED_TRACKABLE_TYPES
 
     sti_aware_type = trackable_type.constantize.base_class
     link_to(

@@ -66,6 +66,7 @@ describe Taxa::CreateCombinationsController do
       end
     end
 
+    # TODO: Use null-operation.
     context 'when operation fails' do
       let(:taxon_history_item) { create :taxon_history_item, taxon: taxon }
 

@@ -13,6 +13,24 @@ describe Name do
   describe 'validations' do
     describe '#name' do
       it { is_expected.to validate_presence_of :name }
+
+      describe 'allowed characters' do
+        subject(:name) { build_stubbed :family_name }
+
+        let(:error_message) { "can only contain Latin letters, periods, dashes and parentheses" }
+
+        it { is_expected.to_not allow_value('Capaö').for(:name).with_message(error_message) }
+        it { is_expected.to_not allow_value('Capa1').for(:name).with_message(error_message) }
+      end
+
+      describe 'first letter in name' do
+        let(:name) { build_stubbed :genus_name, name: 'lasius' }
+
+        it 'must start with a capital letter' do
+          expect(name.valid?).to eq false
+          expect(name.errors[:name]).to eq ["must start with a capital letter"]
+        end
+      end
     end
 
     describe '#validate_number_of_name_parts' do
@@ -22,15 +40,6 @@ describe Name do
         expect(name.valid?).to eq false
         expect(name.errors[:name]).
           to include "of type GenusName must contains 1 word parts (excluding subgenus part and connecting terms)"
-      end
-    end
-
-    describe '#ensure_starts_with_upper_case_letter' do
-      let(:name) { build_stubbed :genus_name, name: 'lasius' }
-
-      specify do
-        expect(name.valid?).to eq false
-        expect(name.errors[:name]).to eq ["must start with a capital letter"]
       end
     end
 

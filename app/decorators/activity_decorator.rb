@@ -28,10 +28,6 @@ class ActivityDecorator < Draper::Decorator
     h.time_ago_in_words(activity.created_at) + ' ago'
   end
 
-  def css_anchor_id
-    "activity-#{activity.id}"
-  end
-
   def revision_history_link
     return unless (url = RevisionHistoryPath[activity.trackable_type, activity.trackable_id])
     h.link_to "History", url, class: "btn-normal btn-tiny"

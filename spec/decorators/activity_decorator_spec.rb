@@ -111,15 +111,6 @@ describe ActivityDecorator do
         end
       end
 
-      context 'when action is `approve_all_changes`' do
-        let(:activity) { Activity.create_without_trackable :approve_all_changes, user, parameters: { count: 1 } }
-
-        specify do
-          expect(decorated.did_something.squish).
-            to eq "approved all unreviewed catalog changes (1 in total)."
-        end
-      end
-
       context 'when action is `approve_all_references`' do
         let(:activity) { Activity.create_without_trackable :approve_all_references, user, parameters: { count: 1 } }
 

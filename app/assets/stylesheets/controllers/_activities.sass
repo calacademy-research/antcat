@@ -1,13 +1,13 @@
 @import "colors"
 
 // Not restricted to the activities controller, as this is also used elsewhere.
-// Same trickery as in `_comments.sass`.
-.highlight-activity-anchor:target
-  background-color: $color_pale
-
 table.activities .activity-link-wrapper:hover
   .show-on-hover
     display: inline
-
   .hide-on-hover
     display: none
+
+#activities-controller
+  table.activities
+    #highlighted-activity
+      background-color: $color_pale

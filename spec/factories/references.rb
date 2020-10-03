@@ -19,20 +19,26 @@ FactoryBot.define do
         author_names = build_stubbed_list(:author_name, 1)
         author_names.each { |author_name| reference.association(:author_names).add_to_target(author_name) }
       end
+
+      reference.refresh_author_names_cache
     end
 
     before(:create) do |reference, evaluator|
       if evaluator.author_names.present?
         reference.author_names = evaluator.author_names
       elsif evaluator.author_string
-        author_name = AuthorName.find_by(name: evaluator.author_string)
-        author_name ||= create :author_name, name: evaluator.author_string
-        reference.author_names << author_name
+        Array.wrap(evaluator.author_string).each do |author_string|
+          author_name = AuthorName.find_by(name: author_string)
+          author_name ||= create :author_name, name: author_string
+          reference.author_names << author_name
+        end
       elsif reference.author_names.blank?
         # See comment above.
         raise 'author_names cannot be empty' if evaluator.__override_names__.include?(:author_names)
         reference.author_names = [create(:author_name)]
       end
+
+      reference.refresh_author_names_cache
     end
 
     factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do

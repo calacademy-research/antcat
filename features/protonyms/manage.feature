@@ -72,7 +72,7 @@ Feature: Manage protonyms
   Scenario: Editing type fields
     Given there is a genus protonym "Formica"
 
-    When I go to the edit page for the protonym "Formica"
+    When I go to the edit protonym page for "Formica"
     And I fill in "protonym_primary_type_information_taxt" with "Madagascar: Prov. Tolliara"
     And I fill in "protonym_secondary_type_information_taxt" with "A neotype had also been designated"
     And I fill in "protonym_type_notes_taxt" with "Note: Typo in Toliara"
@@ -85,7 +85,7 @@ Feature: Manage protonyms
   Scenario: Editing a protonym with errors
     Given there is a genus protonym "Formica"
 
-    When I go to the edit page for the protonym "Formica"
+    When I go to the edit protonym page for "Formica"
     And I fill in "protonym_authorship_attributes_pages" with ""
     And I select "by subsequent designation of" from "protonym_type_name_attributes_fixation_method"
     And I press "Save"

@@ -29,8 +29,6 @@ class Reference < ApplicationRecord
   validates :doi, format: { with: /\A[^<>]*\z/ }
   validate :ensure_bolton_key_unique
 
-  before_save :refresh_author_names_cache
-
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :year, :year_suffix) }
   scope :order_by_suffixed_year, -> { order(:year, :year_suffix) }
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }

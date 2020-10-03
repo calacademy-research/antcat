@@ -24,8 +24,7 @@ class ActivitiesController < ApplicationController
       Tooltip
       User
       WikiPage
-    ],
-    'Deprecated' => Activity::DEPRECATED_TRACKABLE_TYPES
+    ]
   }
 
   before_action :ensure_user_is_superadmin, only: :destroy
@@ -35,9 +34,12 @@ class ActivitiesController < ApplicationController
   end
 
   def show
-    activity = find_activity
-    page = activity.pagination_page(unpaginated_activities)
-    redirect_to activities_path(id: activity.id, page: page, anchor: activity.decorate.css_anchor_id)
+    @activity = find_activity
+
+    page = @activity.pagination_page(unpaginated_activities)
+    @activities = unpaginated_activities.most_recent_first.includes(:user).paginate(page: page)
+
+    render :index
   end
 
   def destroy

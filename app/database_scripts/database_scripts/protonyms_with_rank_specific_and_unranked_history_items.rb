@@ -3,9 +3,11 @@
 module DatabaseScripts
   class ProtonymsWithRankSpecificAndUnrankedHistoryItems < DatabaseScript
     def results
-      Protonym.joins(:history_items).group(:protonym_id).having(<<~SQL.squish).select(:protonym_id)
-        COUNT(DISTINCT(CASE WHEN rank IS NULL THEN 'unranked' ELSE 'rank-specific' END)) > 1
-      SQL
+      ranked_and_unranked =
+        Protonym.joins(:history_items).group("protonyms.id").having(<<~SQL.squish)
+          COUNT(DISTINCT(CASE WHEN rank IS NULL THEN 'unranked' ELSE 'rank-specific' END)) > 1
+        SQL
+      Protonym.where(id: ranked_and_unranked.select("protonyms.id"))
     end
 
     def render

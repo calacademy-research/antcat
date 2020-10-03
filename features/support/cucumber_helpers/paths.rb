@@ -25,7 +25,10 @@ module CucumberHelpers
 
       when 'the protonyms page'
         protonyms_path
-      when /^the edit page for the protonym "(.*)"$/
+      when /^the protonym page for "(.*)"$/
+        protonym = Protonym.joins(:name).find_by!(names: { name: Regexp.last_match(1) })
+        protonym_path(protonym)
+      when /^the edit protonym page for "(.*)"$/
         protonym = Protonym.joins(:name).find_by!(names: { name: Regexp.last_match(1) })
         edit_protonym_path(protonym)
 

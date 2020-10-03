@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# All `Name` subclasses are for `Taxon` and `Protonym` records. `AuthorName`s are used for `Reference`..
+# All `Name` subclasses are for `Taxon` and `Protonym` records. `AuthorName`s are used for `Reference`s.
 
 # TODO: Revisit validations, and extract somewhere.
 

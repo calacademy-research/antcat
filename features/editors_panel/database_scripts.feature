@@ -21,8 +21,7 @@ Feature: Database scripts
     Then I should see "Catalog: Extant taxa in fossil genera"
 
   Scenario: Clicking on all scripts just to see if the page renders
-    When I open all database scripts once by one
-    Then I should have browsed at least 5 database scripts
+    Given I open all database scripts one by one
 
   Scenario: Checking 'empty' status
     Then I should not see "Excluded (slow/list)"

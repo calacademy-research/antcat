@@ -16,9 +16,9 @@ describe ActivitiesController do
   describe "GET show", as: :visitor do
     let!(:activity) { create :activity }
 
-    it "redirects to the index" do
+    it "renders the index view" do
       get :show, params: { id: activity.id }
-      expect(response).to redirect_to activities_path(id: activity.id.to_s, page: '1', anchor: "activity-#{activity.id}")
+      expect(response).to render_template :index
     end
   end
 

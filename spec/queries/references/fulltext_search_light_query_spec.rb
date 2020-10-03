@@ -15,12 +15,7 @@ describe References::FulltextSearchLightQuery, :search do
       end
 
       context "when search query contains '&'" do
-        let!(:reference) do
-          bolton = create :author_name, name: 'Bolton, B.'
-          fisher = create :author_name, name: 'Fisher, B.'
-
-          create :any_reference, author_names: [bolton, fisher]
-        end
+        let!(:reference) { create :any_reference, author_string: ['Bolton, B.', 'Fisher, B.'] }
 
         before { Sunspot.commit }
 
@@ -28,13 +23,7 @@ describe References::FulltextSearchLightQuery, :search do
       end
 
       context "when search query contains 'et al.'" do
-        let!(:reference) do
-          bolton = create :author_name, name: 'Bolton, B.'
-          fisher = create :author_name, name: 'Fisher, B.'
-          ward = create :author_name, name: 'Ward, P.S.'
-
-          create :any_reference, author_names: [bolton, fisher, ward]
-        end
+        let!(:reference) { create :any_reference, author_string: ['Bolton, B.', 'Fisher, B.', 'Ward, P.S.'] }
 
         before { Sunspot.commit }
 
@@ -43,25 +32,21 @@ describe References::FulltextSearchLightQuery, :search do
     end
 
     describe "ordering" do
-      let(:service) { described_class.new("Forel 1911") }
-
       context "when references have the same `year` but different `year_suffix`" do
         let!(:forel_a) { create :any_reference, author_string: "Forel", year: 1911, year_suffix: "a" }
         let!(:forel_b) { create :any_reference, author_string: "Forel", year: 1911, year_suffix: "b" }
 
         it "orders by suffixed year" do
           Sunspot.commit
-          expect(service.call).to eq [forel_a, forel_b]
+          expect(described_class["Forel 1911"]).to eq [forel_a, forel_b]
         end
 
         context "when there is also a less relevant hit" do
-          let!(:less_relevant) do
-            create :any_reference, author_string: "Other", year: 1912, title: "Forel 1911 title hit"
-          end
+          let!(:less_relevant) { create :any_reference, year: 1912, title: "Forel 1911 title hit" }
 
           it "orders by suffixed year and places less relevant hits last" do
             Sunspot.commit
-            expect(service.call).to eq [forel_a, forel_b, less_relevant]
+            expect(described_class["Forel 1911"]).to eq [forel_a, forel_b, less_relevant]
           end
         end
       end

@@ -29,6 +29,7 @@ class Protonym < ApplicationRecord
   has_many :history_items, through: :taxa, class_name: 'TaxonHistoryItem'
   has_one :authorship_reference, through: :authorship, source: :reference
   has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
+  has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
 
   # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }

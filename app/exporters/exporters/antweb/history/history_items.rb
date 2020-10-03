@@ -17,7 +17,9 @@ module Exporters
 
         private
 
-          delegate :history_items, to: :taxon, private: true
+          def history_items
+            @_history_items ||= taxon.history_items
+          end
 
           def history_content
             tag.div  do

@@ -5,7 +5,6 @@ module References
     before_action :ensure_user_is_editor
     before_action :ensure_user_is_superadmin, only: :approve_all
 
-    # TODO: Allow JSON requests.
     def start
       reference = find_reference
 

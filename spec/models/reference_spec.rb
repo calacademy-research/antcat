@@ -127,10 +127,8 @@ describe Reference do
   end
 
   describe "#author_names_string" do
-    let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
-
     context "when reference has one author name" do
-      let(:reference) { create :any_reference, author_names: [fisher] }
+      let(:reference) { create :any_reference, author_string: 'Fisher, B.L.' }
 
       it 'returns the author name' do
         expect(reference.author_names_string).to eq 'Fisher, B.L.'
@@ -138,8 +136,7 @@ describe Reference do
     end
 
     context "when reference has more than one author name" do
-      let(:ward) { create :author_name, name: 'Ward, P.S.' }
-      let(:reference) { create :any_reference, author_names: [fisher, ward] }
+      let(:reference) { create :any_reference, author_string: ['Fisher, B.L.', 'Ward, P.S.'] }
 
       it "separates multiple author names with semicolons" do
         expect(reference.author_names_string).to eq 'Fisher, B.L.; Ward, P.S.'
@@ -149,10 +146,7 @@ describe Reference do
 
   describe "#author_names_string_with_suffix" do
     context "when reference has an `author_names_suffix`" do
-      let(:reference) do
-        fisher = create :author_name, name: 'Fisher, B.L.'
-        create :any_reference, author_names: [fisher], author_names_suffix: '(ed.)'
-      end
+      let(:reference) { create :any_reference, author_string: 'Fisher, B.L.', author_names_suffix: '(ed.)' }
 
       it "includes the `author_names_suffix` after the author names" do
         expect(reference.author_names_string_with_suffix).to eq 'Fisher, B.L. (ed.)'
@@ -162,12 +156,10 @@ describe Reference do
 
   describe "#refresh_author_names_cache!" do
     context "when an author name is added" do
-      let(:fisher) { create :author_name, name: 'Fisher, B.L.' }
-      let(:ward) { create :author_name, name: 'Ward, P.S.' }
-      let(:reference) { create :any_reference, author_names: [fisher] }
+      let(:reference) { create :any_reference, author_string: 'Fisher, B.L.' }
 
       it "updates its `author_names_string`" do
-        reference.author_names << ward
+        reference.author_names << create(:author_name, name: 'Ward, P.S.')
 
         expect { reference.refresh_author_names_cache! }.
           to change { reference.reload.author_names_string }.
