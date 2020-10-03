@@ -2,6 +2,8 @@
 
 class AddFeaturedToWikipages < ActiveRecord::Migration[6.0]
   def change
-    add_column :wiki_pages, :featured, :boolean, default: false, null: false
+    safety_assured do
+      add_column :wiki_pages, :featured, :boolean, default: false, null: false
+    end
   end
 end

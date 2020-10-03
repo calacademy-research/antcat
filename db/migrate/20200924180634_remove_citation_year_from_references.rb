@@ -2,6 +2,8 @@
 
 class RemoveCitationYearFromReferences < ActiveRecord::Migration[6.0]
   def change
-    remove_column :references, :citation_year, :string
+    safety_assured do
+      remove_column :references, :citation_year, :string
+    end
   end
 end

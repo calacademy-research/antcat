@@ -2,6 +2,8 @@
 
 class RemoveCitationFromReferences < ActiveRecord::Migration[6.0]
   def change
-    remove_column :references, :citation, :text
+    safety_assured do
+      remove_column :references, :citation, :text
+    end
   end
 end
