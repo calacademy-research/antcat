@@ -42,11 +42,6 @@ Feature: Activity feed
     Then I should see "was successfully deleted"
     And the query string should contain "page=2"
 
-    # Following an activity item link = the ID param doesn't stick around.
-    And the query string should not contain "id="
-    And I follow the first "Link"
-    Then the query string should contain "id="
-
     # Restore for future tests.
     Given activities are paginated with 30 per page
 

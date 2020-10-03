@@ -38,6 +38,7 @@ Rails.application.config.assets.precompile += %w[
   taxon_select.js
   taxt_editor.js
 
+  controllers/activities/scroll_to_highlighted_activity.js
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js
   controllers/feedbacks/show.js

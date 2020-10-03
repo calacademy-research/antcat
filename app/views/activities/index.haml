@@ -1,9 +1,11 @@
 -noindex_meta_tag
 
--# Another hack for the title/breadcrumb.
+-content_for :javascripts do
+  =javascript_include_tag 'controllers/activities/scroll_to_highlighted_activity'
+
 -if params[:id]
-  -title "Activity Item ##{params[:id]}"
-  -breadcrumb :activity_item, params[:id]
+  -title "Activity Item ##{@activity.id}"
+  -breadcrumb :activity_item, @activity.id
 -else
   -title "Activity Feed"
   -breadcrumb :activity_feed
@@ -27,7 +29,7 @@
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 
-=render "table", activities: @activities, show_delete_button: true
+=render "table", activities: @activities, highlighted_activity: @activity, show_delete_button: true
 
 -# HACK: So that the id param isn't included in pagination links.
-=will_paginate @activities, params: { id: nil }
+=will_paginate @activities, params: { id: nil, action: :index }
