@@ -24,8 +24,7 @@ class ActivitiesController < ApplicationController
       Tooltip
       User
       WikiPage
-    ],
-    'Deprecated' => Activity::DEPRECATED_TRACKABLE_TYPES
+    ]
   }
 
   before_action :ensure_user_is_superadmin, only: :destroy

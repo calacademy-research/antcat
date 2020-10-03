@@ -33,16 +33,9 @@ class Activity < ApplicationRecord
       restart_reviewing
       set_subgenus
       start_reviewing
-    ],
-    deprecated: %w[
-      approve_all_changes
-      approve_change
-      replace_missing_reference
-      undo_change
     ]
   }
   ACTIONS = ACTIONS_BY_GROUP.values.flatten
-  DEPRECATED_TRACKABLE_TYPES = %w[Change Synonym]
   OPTIONAL_USER_TRACKABLE_TYPES = %w[Feedback User]
 
   self.per_page = 30 # For `will_paginate`.
