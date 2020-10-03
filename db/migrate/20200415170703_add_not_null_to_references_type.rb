@@ -2,6 +2,8 @@
 
 class AddNotNullToReferencesType < ActiveRecord::Migration[6.0]
   def change
-    change_column_null :references, :type, false
+    safety_assured do
+      change_column_null :references, :type, false
+    end
   end
 end

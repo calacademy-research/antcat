@@ -2,6 +2,8 @@
 
 class RemoveReasonMissingFromReferences < ActiveRecord::Migration[6.0]
   def change
-    remove_column :references, :reason_missing, :string
+    safety_assured do
+      remove_column :references, :reason_missing, :string
+    end
   end
 end
