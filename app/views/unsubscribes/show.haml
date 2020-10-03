@@ -12,5 +12,5 @@
 
 =form_with(url: unsubscribe_path) do |f|
   =hidden_field_tag :token, params[:token]
-  =f.submit "Unsubscribe", class: "btn-warning"
+  =f.button "Unsubscribe", class: "btn-warning"
   =link_to 'Cancel', root_url, class: "btn-nodanger"
