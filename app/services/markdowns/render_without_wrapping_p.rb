@@ -17,9 +17,8 @@ module Markdowns
     private
 
       def strip_wrapping_p rendered
-        Regexp.new(P_HTML_ELEMENT_REGEX).match(rendered)[1]
-      rescue StandardError # TODO: Do not rescue `StandardError`.
-        rendered
+        return rendered unless (match = rendered.match(P_HTML_ELEMENT_REGEX))
+        match[1]
       end
   end
 end

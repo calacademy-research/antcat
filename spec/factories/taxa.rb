@@ -9,11 +9,9 @@ FactoryBot.define do
       name_string {}
     end
 
-    after(:create) do |taxon, evaluator|
+    before(:create) do |taxon, evaluator|
       if evaluator.name_string
-        # HACK: Because just assigning before did not work without `accepts_nested_attributes_for`.
-        taxon.name.update!(name: evaluator.name_string)
-        taxon.reload # For `taxa.name_cache`.
+        taxon.name.name = evaluator.name_string
       end
     end
 
