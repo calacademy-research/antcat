@@ -67,7 +67,7 @@ Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
-  Max: 140
+  Max: 145
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
@@ -294,7 +294,7 @@ Rails/WhereExists:
   Enabled: false
 
 Rails/WhereNot:
-  Enabled: true
+  Enabled: false
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:

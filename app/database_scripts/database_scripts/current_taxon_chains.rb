@@ -2,6 +2,14 @@
 
 module DatabaseScripts
   class CurrentTaxonChains < DatabaseScript
+    LIMIT = 500
+
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
+    end
+
     def results
       Taxon.where.not(current_taxon_id: nil).
         joins(:current_taxon).
@@ -10,7 +18,7 @@ module DatabaseScripts
           'NOT (taxa.status = :obsolete_combination AND current_taxons_taxa.status = :synonym)',
           obsolete_combination: Status::OBSOLETE_COMBINATION,
           synonym: Status::SYNONYM
-        ).where.not(status: Status::UNAVAILABLE_MISSPELLING)
+        ).where.not(status: Status::UNAVAILABLE_MISSPELLING).limit(LIMIT)
     end
 
     def render
