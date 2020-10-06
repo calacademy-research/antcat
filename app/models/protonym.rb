@@ -46,6 +46,11 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
+  # TODO: Cheating a little bit to avoid making an additional query when parsing `prott` tags.
+  def self.terminal_taxon_from_protonym_id protonym_id
+    Taxon.where(status: Status::TERMINAL_STATUSES).find_by(protonym_id: protonym_id)
+  end
+
   def author_citation
     authorship_reference.key_with_year
   end

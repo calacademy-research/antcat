@@ -71,6 +71,34 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
+    describe "tag: `PROTT_TAG_REGEX` (terminal taxon of protonym)" do
+      context "when protonym has a `terminal_taxon`" do
+        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:terminal_taxon) { create :genus, protonym: protonym }
+
+        it "links the terminal taxon" do
+          expect(described_class["{prott #{protonym.id}}"]).to eq taxon_link(terminal_taxon)
+        end
+      end
+
+      context "when protonym does not have a `terminal_taxon`" do
+        let!(:protonym) { create :protonym }
+
+        it "links the protonym with a note" do
+          expect(described_class["{prott #{protonym.id}}"]).to eq <<~HTML.squish
+            #{protonym_link(protonym)} (protonym)
+            <span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>
+          HTML
+        end
+      end
+
+      context "when protonym does not exists" do
+        it "adds a warning" do
+          expect(described_class["{prott 999}"]).to include "CANNOT FIND PROTONYM FOR TAG {prott 999}"
+        end
+      end
+    end
+
     describe "tag: `REF_TAG_REGEX` (references)" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :any_reference }
