@@ -6,10 +6,12 @@ describe TaxonHistoryItem do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
-    it { is_expected.to belong_to(:taxon).required }
+    it { is_expected.to belong_to(:taxon).optional } # TODO: Remove. [grep:proitem].
+    # TODO: [grep:proitem]. Add: it { is_expected.to belong_to(:protonym).required }
   end
 
   describe 'validations' do
+    # it { is_expected.to validate_presence_of(:protonym).on(:create) } # TODO: [grep:proitem].
     it { is_expected.to validate_presence_of :taxt }
     it { is_expected.to validate_inclusion_of(:rank).in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES) }
   end

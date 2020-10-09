@@ -7,7 +7,8 @@ FactoryBot.define do
     end
 
     sequence(:taxt) { |n| "history item content #{n}" }
-    association :taxon, factory: :family
+    association :taxon, factory: :family # TODO: Remove before going live. [grep:proitem].
+    association :protonym
 
     trait :with_all_taxts do
       sequence(:taxt) { |n| "taxt #{n} #{taxt_tag}" }

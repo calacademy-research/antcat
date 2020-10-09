@@ -27,6 +27,8 @@ class Protonym < ApplicationRecord
   # TODO: See https://github.com/calacademy-research/antcat/issues/702
   has_many :taxa_with_history_items, -> { distinct.joins(:history_items) }, class_name: 'Taxon'
   has_many :history_items, through: :taxa, class_name: 'TaxonHistoryItem'
+  has_many :protonym_history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem',
+    dependent: :restrict_with_error # TODO: Change to `dependent: :destroy`
   has_one :authorship_reference, through: :authorship, source: :reference
   has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
   has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
