@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# NOTE: Copy-pasted into `Taxa::ReorderHistoryItemsController`.
-
 module Taxa
   class ReorderReferenceSectionsController < ApplicationController
     before_action :ensure_user_is_editor
