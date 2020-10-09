@@ -11,15 +11,7 @@ module Protonyms
     private
 
       def serialized_protonyms
-        protonyms.map do |protonym|
-          {
-            id: protonym.id,
-            plaintext_name: protonym.name.name,
-            name_with_fossil: protonym.decorate.name_with_fossil,
-            author_citation: protonym.author_citation,
-            url: "/protonyms/#{protonym.id}"
-          }
-        end
+        Autocomplete::ProtonymsSerializer[protonyms]
       end
 
       def protonyms

@@ -7,7 +7,7 @@
     =text_area_tag :taxt, taxon_history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
 
     .row
-      .medium-3.columns.end
+      .medium-5.columns.end
         =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
 
     %a.taxt-editor-history-item-save-button.btn-saves Save

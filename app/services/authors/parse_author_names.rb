@@ -7,7 +7,7 @@ module Authors
     include Service
 
     def initialize string
-      @string = string&.dup
+      @string = string.dup
     end
 
     def call

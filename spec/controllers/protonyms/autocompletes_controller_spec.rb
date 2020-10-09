@@ -13,17 +13,7 @@ describe Protonyms::AutocompletesController do
       protonym = create :protonym, :fossil, name: create(:genus_name, name: 'Lasius')
 
       get :show, params: { qq: 'las', format: :json }
-      expect(json_response).to eq(
-        [
-          {
-            'id' => protonym.id,
-            'plaintext_name' => 'Lasius',
-            'name_with_fossil' => "<i>†</i><i>Lasius</i>",
-            'author_citation' => protonym.author_citation,
-            'url' => "/protonyms/#{protonym.id}"
-          }
-        ]
-      )
+      expect(json_response).to eq Autocomplete::ProtonymsSerializer[[protonym]].map(&:stringify_keys)
     end
   end
 end

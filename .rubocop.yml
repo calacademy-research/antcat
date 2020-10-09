@@ -67,7 +67,7 @@ Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
-  Max: 140
+  Max: 145
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
@@ -127,6 +127,9 @@ Lint/EmptyFile:
 Lint/FloatComparison:
   Enabled: true
 
+Lint/HashCompareByIdentity:
+  Enabled: true
+
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
@@ -143,6 +146,9 @@ Lint/OutOfRangeRegexpRef:
   Enabled: true
 
 Lint/RaiseException:
+  Enabled: true
+
+Lint/RedundantSafeNavigation:
   Enabled: true
 
 Lint/SelfAssignment:
@@ -294,7 +300,7 @@ Rails/WhereExists:
   Enabled: false
 
 Rails/WhereNot:
-  Enabled: true
+  Enabled: false
 
 # Indexes are not case sensitive in MySQL. Revisit if we ever migrate to Postgres.
 Rails/UniqueValidationWithoutIndex:
@@ -399,6 +405,9 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
+
+Style/ClassEqualityComparison:
+  Enabled: true
 
 Style/CollectionMethods:
   Enabled: true
