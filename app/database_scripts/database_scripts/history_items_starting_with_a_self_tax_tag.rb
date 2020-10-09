@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      TaxonHistoryItem.
+      TaxonHistoryItem.joins(protonym: [:terminal_taxa]).
         where("taxt LIKE CONCAT('{tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci").
         limit(LIMIT)
     end

@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       TaxonHistoryItem.
-        joins(taxon: [protonym: :name]).
+        joins(protonym: :name).
         where("taxt REGEXP CONCAT('^', names.name, ' ')").
         limit(LIMIT)
     end

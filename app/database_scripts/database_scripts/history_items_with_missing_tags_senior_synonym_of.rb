@@ -110,7 +110,7 @@ module DatabaseScripts
       end
 
       def any_junior_synonym_of_tax_item? replace_with_taxon, history_item
-        replace_with_taxon.history_items.where("taxt LIKE ?", "Junior synonym of {tax #{history_item.taxon.id}}%").exists?
+        replace_with_taxon.protonym_history_items.where("taxt LIKE ?", "Junior synonym of {tax #{history_item.taxon.id}}%").exists?
       end
   end
 end
