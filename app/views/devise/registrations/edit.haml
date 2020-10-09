@@ -36,13 +36,9 @@
       %h6 Enabled editing helpers
       =f.fields_for :settings do |settings_fields|
         =settings_fields.fields_for :editing_helpers, current_user.settings(:editing_helpers) do |editing_helpers_fields|
+
           =editing_helpers_fields.check_box :create_combination
           =editing_helpers_fields.label :create_combination, "Show 'Can be combined?' blue box on species pages"
-
-          %br
-
-          =editing_helpers_fields.check_box :history_items_via_protonym
-          =editing_helpers_fields.label :history_items_via_protonym, "Show 'History items via protonym' blue box"
 
   .row.margin-top
     .medium-6.columns

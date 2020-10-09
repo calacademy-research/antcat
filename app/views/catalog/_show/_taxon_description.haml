@@ -37,9 +37,6 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
--if current_user && current_user.settings(:editing_helpers).history_items_via_protonym
-  =render 'catalog/_show/logged_in_only/history_items_via_protonym', taxon: taxon
-
 -if taxon.history_items.present?
   %ul#history.small-margin-bottom
     -taxon.history_items.each do |history_item|
