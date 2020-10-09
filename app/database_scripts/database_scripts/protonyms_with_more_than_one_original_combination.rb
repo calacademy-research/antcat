@@ -36,7 +36,6 @@ related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
   - ProtonymsWithMoreThanOneSynonym
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxon
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses

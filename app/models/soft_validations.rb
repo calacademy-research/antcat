@@ -33,7 +33,6 @@ class SoftValidations
     DatabaseScripts::ProtonymsWithMoreThanOneOriginalCombination,
     DatabaseScripts::ProtonymsWithMoreThanOneSpeciesInTheSameGenus,
     DatabaseScripts::ProtonymsWithMoreThanOneSynonym,
-    DatabaseScripts::ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems,
     DatabaseScripts::ProtonymsWithMoreThanOneValidTaxon,
     DatabaseScripts::ProtonymsWithTaxaWithMoreThanOneCurrentTaxon,
     DatabaseScripts::ProtonymsWithTaxaWithVeryDifferentEpithets,
