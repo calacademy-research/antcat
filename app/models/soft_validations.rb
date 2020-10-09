@@ -16,7 +16,6 @@ class SoftValidations
     DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym,
     DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets,
-    DatabaseScripts::PassThroughNamesWithTaxts,
     DatabaseScripts::ReplacementNamesUsedForMoreThanOneTaxon,
     DatabaseScripts::SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym,
     DatabaseScripts::SynonymGeneraWithSpeciesWithIncompatibleStatuses,
