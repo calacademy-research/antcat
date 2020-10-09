@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_24_181015) do
+ActiveRecord::Schema.define(version: 2020_10_09_163504) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -311,9 +311,11 @@ ActiveRecord::Schema.define(version: 2020_09_24_181015) do
     t.text "taxt", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "taxon_id", null: false
+    t.integer "taxon_id"
     t.integer "position", null: false
     t.string "rank"
+    t.integer "protonym_id"
+    t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
     t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
   end
 
@@ -415,7 +417,7 @@ ActiveRecord::Schema.define(version: 2020_09_24_181015) do
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subspecies_id", name: "fk_taxa__subspecies_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
-  add_foreign_key "taxon_history_items", "taxa", column: "taxon_id", name: "fk_taxon_history_items__taxon_id__taxa__id"
+  add_foreign_key "taxon_history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
   add_foreign_key "type_names", "references", name: "fk_type_names__reference_id__references__id"
   add_foreign_key "type_names", "taxa", column: "taxon_id", name: "fk_type_names__taxon_id__taxa__id"
   add_foreign_key "users", "authors", name: "fk_users__author_id__authors__id"
