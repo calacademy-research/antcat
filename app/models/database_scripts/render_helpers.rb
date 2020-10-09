@@ -23,6 +23,10 @@ module DatabaseScripts
       "{tax #{taxon_or_id.try(:id) || taxon_or_id}}"
     end
 
+    def protonym_link protonym
+      protonym.decorate.link_to_protonym
+    end
+
     def bold_warning string
       %(<span class="bold-warning">#{string}</span>)
     end

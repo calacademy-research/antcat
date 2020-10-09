@@ -18,19 +18,19 @@ module DatabaseScripts
     end
 
     def blank_references_taxt
-      ReferenceSection.where(references_taxt: nil).includes(:taxon)
+      ReferenceSection.where(references_taxt: nil)
     end
 
     def blank_title_taxt
-      ReferenceSection.where(title_taxt: nil).includes(:taxon)
+      ReferenceSection.where(title_taxt: nil)
     end
 
     def non_blank_subtitle_taxt
-      ReferenceSection.where.not(subtitle_taxt: nil).includes(:taxon)
+      ReferenceSection.where.not(subtitle_taxt: nil)
     end
 
     def non_blank_title_taxt
-      ReferenceSection.where.not(title_taxt: nil).includes(:taxon)
+      ReferenceSection.where.not(title_taxt: nil)
     end
 
     def render

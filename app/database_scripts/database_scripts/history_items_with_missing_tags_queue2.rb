@@ -19,7 +19,7 @@ module DatabaseScripts
         t.header 'History item', 'Taxon', 'Hardcoded names', 'Highlighted taxt', 'Preview quick-fix', 'Quick-fix button'
         t.rows do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.taxon
+          taxon = history_item.terminal_taxon
 
           helper = QuickAndDirtyFixes::ReplaceMissingTags.new(taxt)
 

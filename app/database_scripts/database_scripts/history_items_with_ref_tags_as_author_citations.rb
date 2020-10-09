@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT).includes(:taxon)
+      TaxonHistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT)
     end
 
     def render
@@ -19,7 +19,7 @@ module DatabaseScripts
         t.header 'History item', 'Taxon', 'Status', 'taxt', 'Quick fix', 'Converted to taxac', "Check usage"
         t.rows do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.taxon
+          taxon = history_item.terminal_taxon
 
           usage_string, matches = check_usage taxt
 
@@ -167,7 +167,4 @@ description: >
 
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations
-  - HomonymsAsTaxTags
-  - PointsToReplacedNameAndUsesRefTagAsAuthorCitation
-  - PointsToReplacementNameAndUsesRefTagAsAuthorCitation
   - TaxacTagsWithPageNumbers

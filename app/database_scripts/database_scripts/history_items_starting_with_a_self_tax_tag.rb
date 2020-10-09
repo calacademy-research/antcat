@@ -20,7 +20,7 @@ module DatabaseScripts
       as_table do |t|
         t.header 'History item', 'Taxon', 'Rank', 'Status', 'taxt', "Replace with pro tag?"
         t.rows do |history_item|
-          taxon = history_item.taxon
+          taxon = history_item.protonym.terminal_taxon
 
           first_tax = history_item.taxt[/\{tax \d+\}/][/\d+/].to_i
           first_taxon = Taxon.find_by(id: first_tax)

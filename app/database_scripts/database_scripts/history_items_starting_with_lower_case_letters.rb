@@ -11,20 +11,18 @@ module DatabaseScripts
     end
 
     def results
-      TaxonHistoryItem.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").includes(:taxon).limit(LIMIT)
+      TaxonHistoryItem.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").limit(LIMIT)
     end
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt'
+        t.header 'History item', 'Protonym', 'Status', 'taxt'
         t.rows do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.taxon
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),
-            taxon_link(taxon),
-            taxon.status,
+            protonym_link(history_item.protonym),
             Detax[taxt]
           ]
         end
