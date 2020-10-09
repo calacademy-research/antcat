@@ -19,9 +19,6 @@ module Operations
           target_name_string: preview_new_taxon
         ),
 
-        "##### Operation: `MoveHistoryItems`",
-        MoveHistoryItems.description(to_taxon: preview_new_taxon, history_items: current_taxon.history_items),
-
         "##### Operation: `ConvertToObsoleteCombination`",
         ConvertToObsoleteCombination.description(
           current_taxon: preview_existing_taxon,
@@ -37,11 +34,6 @@ module Operations
         target_name_string: target_name_string
       ).run(context).results.new_combination
       results.new_combination = new_combination
-
-      Operations::MoveHistoryItems.new(
-        to_taxon: new_combination,
-        history_items: current_taxon.history_items
-      ).run(context)
 
       Operations::ConvertToObsoleteCombination.new(
         current_taxon: current_taxon,

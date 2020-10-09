@@ -12,6 +12,12 @@
   -if current_user
     =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
+  -if user_is_at_least_helper?
+    .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
+    #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
+      %ul.no-bullet
+        %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
+
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
     .row.margin-bottom

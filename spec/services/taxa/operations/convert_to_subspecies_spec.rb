@@ -92,16 +92,6 @@ describe Taxa::Operations::ConvertToSubspecies do
             expect(described_class[species, target_species_parent].subgenus_id).to eq nil
           end
         end
-
-        context "when taxon has history items" do
-          let!(:history_item) { create :taxon_history_item, taxon: species }
-
-          it 'moves them to the new subspecies' do
-            expect(history_item.taxon).to eq species
-            new_subspecies = described_class[species, target_species_parent]
-            expect(history_item.reload.taxon).to eq new_subspecies
-          end
-        end
       end
     end
   end

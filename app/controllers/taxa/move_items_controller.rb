@@ -21,13 +21,13 @@ module Taxa
       @taxon = find_taxon
       @to_taxon = find_to_taxon
 
-      if history_items.empty? && reference_sections.empty?
+      if reference_sections.empty?
         flash.now[:alert] = "At least one item must be selected."
         render :show
         return
       end
 
-      if Taxa::Operations::MoveItems[@to_taxon, history_items: history_items, reference_sections: reference_sections]
+      if Taxa::Operations::MoveItems[@to_taxon, reference_sections: reference_sections]
         @taxon.create_activity :move_items, current_user, parameters: { to_taxon_id: @to_taxon.id }
         redirect_to taxa_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
           notice: "Successfully moved items. Items can be re-ordered at the taxon's edit page."
@@ -48,10 +48,6 @@ module Taxa
 
       def find_to_taxon
         Taxon.find_by(id: params[:to_taxon_id])
-      end
-
-      def history_items
-        @_history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids]).order(:position)
       end
 
       def reference_sections

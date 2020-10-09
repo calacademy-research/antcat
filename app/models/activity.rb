@@ -26,6 +26,7 @@ class Activity < ApplicationRecord
       force_parent_change
       merge_authors
       move_items
+      move_protonym_items
       reopen_feedback
       reopen_issue
       reorder_reference_sections

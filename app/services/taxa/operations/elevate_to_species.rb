@@ -18,10 +18,7 @@ module Taxa
           return new_species
         end
 
-        if new_species.save
-          move_history_items! new_species
-        end
-
+        new_species.save
         new_species
       end
 
@@ -43,10 +40,6 @@ module Taxa
           new_name_string = "#{species.genus.name.name} #{subspecies.name.epithet}"
 
           SpeciesName.new(name: new_name_string)
-        end
-
-        def move_history_items! new_species
-          Taxa::Operations::MoveItems[new_species, history_items: subspecies.history_items]
         end
     end
   end

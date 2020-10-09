@@ -17,25 +17,9 @@
         %legend to
         =@to_taxon.decorate.id_and_name_and_author_citation
 
-  .row
+  .row.margin-bottom
     -# Move from.
     .medium-6.columns
-      -if @taxon.history_items.empty?
-        No history items.
-      -else
-        %table.history-items
-          %caption
-            History items
-            .right
-              =link_to "Select all", "#", id: "select-all-history-items", class: "btn-normal btn-tiny"
-              =link_to "Unselect all", "#", id: "unselect-all-history-items", class: "btn-normal btn-tiny"
-          %tbody
-            -@taxon.history_items.each do |history_item|
-              %tr
-                %td=check_box_tag "history_item_ids[]", history_item.id
-                %td
-                  %small=Detax[history_item.to_taxt]
-
       -if @taxon.reference_sections.empty?
         No reference sections.
       -else
@@ -54,17 +38,6 @@
 
     -# Move to.
     .medium-6.columns
-      -if @to_taxon.history_items.empty?
-        No history items.
-      -else
-        %table
-          %caption History items
-          %tbody
-            -@to_taxon.history_items.each do |history_item|
-              %tr
-                %td
-                  %small=Detax[history_item.to_taxt]
-
       -if @to_taxon.reference_sections.empty?
         No reference sections.
       -else

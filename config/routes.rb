@@ -97,6 +97,7 @@ Rails.application.routes.draw do
         resource :autocomplete, only: :show
       end
       resource :history, only: :show
+      resource :move_items, only: [:new, :show, :create]
       resource :what_links_here, only: :show
       resource :soft_validations, only: :show
       resource :hover_preview, only: :show

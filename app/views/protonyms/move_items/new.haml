@@ -1,0 +1,32 @@
+-title "Move items - select target"
+-breadcrumb :move_protonym_items_select_target, @protonym
+
+-content_for :javascripts do
+  =javascript_include_tag "protonym_select"
+
+=form_with url: protonym_move_items_path, method: :get do |f|
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Move items from
+        =@protonym.decorate.link_to_protonym
+
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend to
+        =protonym_select_tag :to_protonym_id, params[:to_protonym_id]
+        %br
+        =f.submit "Select...", class: "btn-normal"
+
+.row
+  .medium-6.columns
+    -if @protonym.protonym_history_items.empty?
+      No history items.
+    -else
+      %table
+        %caption History items
+        %tbody
+          -@protonym.protonym_history_items.each do |history_item|
+            %tr
+              %td
+                %small=Detax[history_item.to_taxt]
