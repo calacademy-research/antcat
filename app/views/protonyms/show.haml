@@ -128,7 +128,7 @@
   -content_for :javascripts do
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
     =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
-    =javascript_include_tag 'controllers/taxa/reorder_history_items'
+    =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render 'protonyms/quick_edit_history_items', protonym: @protonym
 
 -if current_user
