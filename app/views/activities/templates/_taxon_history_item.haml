@@ -2,5 +2,9 @@
 the history item
 =activity.link_trackable_if_exists
 
-belonging to
-=ActivityDecorator.link_taxon_if_exists activity.parameters[:taxon_id]
+-if (protonym_id = activity.parameters[:protonym_id])
+  belonging to
+  =ActivityDecorator.link_protonym_if_exists protonym_id
+-elsif (taxon_id = activity.parameters[:taxon_id])
+  belonging to
+  =ActivityDecorator.link_taxon_if_exists taxon_id

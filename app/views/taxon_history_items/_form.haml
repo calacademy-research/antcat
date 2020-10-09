@@ -14,7 +14,6 @@
   .row
     .medium-3.columns.end
       Show only for rank:
-      =beta_label
       =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, include_blank: 'All ranks (default)'
 
   .row
@@ -26,13 +25,13 @@
       =f.button 'Save', class: "btn-saves"
 
 %table.huge-margin-top
-  %caption Other history items belonging to #{taxon.name.name_html}
+  %caption Other history items belonging to #{protonym.name.name_html}
   %tbody
-    -if taxon.history_items.persisted.empty?
+    -if protonym.protonym_history_items.persisted.empty?
       %tr
-        %td{colspan: 2} Taxon has no history items.
+        %td{colspan: 2} Protonym has no history items.
     -else
-      -taxon.history_items.persisted.each do |history_item|
+      -protonym.protonym_history_items.persisted.each do |history_item|
         %tr{class: ('pale-background' if history_item == taxon_history_item)}
           %td
             =link_to "##{history_item.id}", history_item

@@ -3,9 +3,9 @@ Feature: Editing a history item
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Adding a history item (with edit summary)
-    Given there is a genus "Atta"
+    Given there is a genus protonym "Atta"
 
-    When I go to the edit page for "Atta"
+    When I go to the protonym page for "Atta"
     Then the history should be empty
 
     When I click on the add taxon history item button
@@ -20,9 +20,9 @@ Feature: Editing a history item
     And I should see the edit summary "added new stuff"
 
   Scenario: Adding a history item with blank taxt
-    Given there is a genus "Atta"
+    Given there is a genus protonym "Atta"
 
-    When I go to the edit page for "Atta"
+    When I go to the protonym page for "Atta"
     Then the history should be empty
 
     When I click on the add taxon history item button
@@ -31,15 +31,16 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Editing a history item (with edit summary)
-    Given there is a subfamily "Antcatinae" with a history item "Antcatinae as family"
+    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
-    When I go to the edit page for "Antcatinae"
+    When I go to the protonym page for "Antcatinae"
     Then the history should be "Antcatinae as family"
 
     When I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within "#history-items"
     And I click on the save taxon history item button
+    And I reload the page
     Then I should not see "Antcatinae as family"
     And the history should be "(none)"
 
@@ -52,7 +53,7 @@ Feature: Editing a history item
     And I should see the edit summary "fix typo"
 
   Scenario: Editing a history item (without JavaScript)
-    Given there is a subfamily "Antcatinae" with a history item "Antcatinae as family"
+    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
     When I go to the page of the most recent history item
     And I follow "Edit"
@@ -65,9 +66,9 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Editing a history item, but cancelling
-    Given there is a subfamily "Antcatinae" with a history item "Antcatinae as family"
+    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
-    When I go to the edit page for "Antcatinae"
+    When I go to the protonym page for "Antcatinae"
     And I click on the edit taxon history item button
     And I fill in "taxt" with "(none)"
     And I click on the cancel taxon history item button
@@ -78,15 +79,15 @@ Feature: Editing a history item
 
   @javascript
   Scenario: Deleting a history item (with feed)
-    Given there is a subfamily "Antcatinae" with a history item "Antcatinae history"
+    Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
-    When I go to the edit page for "Antcatinae"
-    Then I should see "Antcatinae history"
+    When I go to the protonym page for "Antcatinae"
+    Then I should see "Antcatinae as family"
 
     When I click on the edit taxon history item button
     And I will confirm on the next step
     And I click on the delete taxon history item button
-    Then I should be on the edit page for "Antcatinae"
+    Then I should be on the protonym page for "Antcatinae"
 
     When I reload the page
     Then the history should be empty
@@ -100,14 +101,14 @@ Feature: Editing a history item
     Given this reference exists
       | author       | year |
       | Giovanni, S. | 1809 |
-    And there is a subfamily "Antcatinae" with a history item "Antcatinae history," and a markdown link to "Giovanni, 1809"
+    And there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family," and a markdown link to "Giovanni, 1809"
 
-    When I go to the edit page for "Antcatinae"
-    Then I should see "Antcatinae history, Giovanni, 1809"
+    When I go to the protonym page for "Antcatinae"
+    Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should not be visible
 
     When I click on the edit taxon history item button
-    Then I should see "Antcatinae history, Giovanni, 1809"
+    Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should be visible
 
     When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
@@ -115,5 +116,5 @@ Feature: Editing a history item
     Then I should see "Lasius history, Giovanni, 1809"
 
     When I click on the cancel taxon history item button
-    Then I should see "Antcatinae history, Giovanni, 1809"
+    Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should not be visible

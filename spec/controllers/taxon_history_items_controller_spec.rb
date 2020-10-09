@@ -5,9 +5,9 @@ require 'rails_helper'
 describe TaxonHistoryItemsController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:new, params: { protonym_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { protonym_id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
@@ -17,7 +17,7 @@ describe TaxonHistoryItemsController do
   end
 
   describe "POST create", as: :helper do
-    let!(:taxon) { create :any_taxon }
+    let!(:protonym) { create :protonym }
     let!(:taxon_history_item_params) do
       {
         taxt: 'content'
@@ -26,7 +26,7 @@ describe TaxonHistoryItemsController do
 
     it 'creates a history item' do
       expect do
-        post(:create, params: { taxa_id: taxon.id, taxon_history_item: taxon_history_item_params })
+        post(:create, params: { protonym_id: protonym.id, taxon_history_item: taxon_history_item_params })
       end.to change { TaxonHistoryItem.count }.by(1)
 
       taxon_history_item = TaxonHistoryItem.last
@@ -35,14 +35,14 @@ describe TaxonHistoryItemsController do
 
     it 'creates a activity' do
       expect do
-        post(:create, params: { taxa_id: taxon.id, taxon_history_item: taxon_history_item_params, edit_summary: 'added' })
+        post(:create, params: { protonym_id: protonym.id, taxon_history_item: taxon_history_item_params, edit_summary: 'added' })
       end.to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
       taxon_history_item = TaxonHistoryItem.last
       expect(activity.trackable).to eq taxon_history_item
       expect(activity.edit_summary).to eq "added"
-      expect(activity.parameters).to eq(taxon_id: taxon_history_item.taxon_id)
+      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
     end
   end
 
@@ -74,7 +74,7 @@ describe TaxonHistoryItemsController do
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
-      expect(activity.parameters).to eq(taxon_id: taxon_history_item.taxon_id)
+      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
     end
   end
 
@@ -91,7 +91,7 @@ describe TaxonHistoryItemsController do
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
-      expect(activity.parameters).to eq(taxon_id: taxon_history_item.taxon_id)
+      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
     end
   end
 end

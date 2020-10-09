@@ -1,6 +1,12 @@
-.taxt-editor{data: { url: "/taxon_history_items/#{taxon_history_item.id}" }}
+.taxt-editor{data: { url: "/taxon_history_items/#{taxon_history_item.id}", taxt_editor_template: 'taxon_history_items/taxt_editor_template' }}
   .taxt-presenter
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Edit
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Quick edit
+    =link_to "Show", taxon_history_item, class: "btn-normal btn-very-tiny"
+    =link_to "Edit form", edit_taxon_history_item_path(taxon_history_item), class: "btn-normal btn-very-tiny"
+    =link_to "History", taxon_history_item_history_path(taxon_history_item), class: "btn-normal btn-very-tiny"
+    -if taxon_history_item.rank?
+      %small.bold-notice #{taxon_history_item.rank}-only item
+    %br
     =Detax[taxon_history_item.taxt]
 
   .taxt-editor-editor

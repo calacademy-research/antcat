@@ -92,6 +92,7 @@ Rails.application.routes.draw do
   end
 
   resources :protonyms do
+    resources :taxon_history_items, only: [:new, :create]
     scope module: :protonyms do
       collection do
         resource :autocomplete, only: :show
@@ -110,7 +111,6 @@ Rails.application.routes.draw do
   end
 
   resources :taxa, except: [:index, :show] do
-    resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
       resource :children, only: [:show]
@@ -203,6 +203,7 @@ Rails.application.routes.draw do
       resource :history, only: :show
     end
   end
+
   resources :reference_sections, except: [:new, :create] do
     scope module: :reference_sections do
       resource :history, only: :show

@@ -17,6 +17,7 @@
     #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
       %ul.no-bullet
         %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
+        =link_to "Add history item", new_protonym_taxon_history_item_path(@protonym), class: "btn-normal"
 
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
@@ -123,31 +124,32 @@
                 %br
                 =link_to "Show children", taxa_children_path(taxon), class: "btn-normal btn-tiny"
 
--# TMPCLEANUP: See https://github.com/calacademy-research/antcat/issues/702
 -if current_user
-  -if @protonym.taxa_with_history_items.present?
-    .row.margin-bottom
+  -content_for :javascripts do
+    =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+    =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
+    =javascript_include_tag 'controllers/taxa/reorder_history_items'
+  =render 'protonyms/quick_edit_history_items', protonym: @protonym
+
+-if current_user
+  -if @protonym.protonym_history_items.present?
+    .row.huge-margin-top.margin-bottom
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
           %h5
             Taxonomic history
             =logged_in_only_tooltip_icon
-          -@protonym.taxa_with_history_items.each do |taxon|
-            %h6
-              =CatalogFormatter.link_to_taxon(taxon)
-              %span.small-text=taxon.decorate.expanded_status
 
-            .left-margin
-              %ul.history
-                -taxon.history_items.each do |history_item|
-                  %li
-                    -if current_user && history_item.rank?
-                      %small.bold-notice
-                        #{history_item.rank}-only item
+          .left-margin
+            %ul.history
+              -@protonym.protonym_history_items.each do |history_item|
+                %li
+                  -if history_item.rank?
+                    %small.bold-notice #{history_item.rank}-only item
 
-                    =add_period_if_necessary Detax[history_item.to_taxt]
-                    -if current_user
-                      %span.show-on-hover
-                        -if user_is_at_least_helper?
-                          =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-                        =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+                  =add_period_if_necessary Detax[history_item.to_taxt]
+                  -if current_user
+                    %span.show-on-hover
+                      -if user_is_at_least_helper?
+                        =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+                      =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

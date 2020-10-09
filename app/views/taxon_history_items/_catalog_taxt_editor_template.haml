@@ -1,0 +1,16 @@
+.taxt-editor{data: { url: "/taxon_history_items/#{taxon_history_item.id}", taxt_editor_template: 'taxon_history_items/catalog_taxt_editor_template' }}
+  .taxt-presenter
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
+
+    =Detax[taxon_history_item.taxt]
+    %br
+
+  .taxt-editor-editor.callout
+    =text_area_tag :taxt, taxon_history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
+
+    .row
+      .medium-5.columns.end
+        =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+    %a.taxt-editor-history-item-save-button.btn-saves Save
+    %a.taxt-editor-cancel-button.btn-nodanger Cancel
