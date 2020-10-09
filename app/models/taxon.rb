@@ -20,7 +20,6 @@ class Taxon < ApplicationRecord
   belongs_to :protonym
 
   with_options inverse_of: :taxon, dependent: :destroy do
-    has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem'
     has_many :reference_sections, -> { order(:position) }
   end
 

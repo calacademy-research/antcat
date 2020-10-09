@@ -102,6 +102,7 @@ Rails.application.routes.draw do
       resource :what_links_here, only: :show
       resource :soft_validations, only: :show
       resource :hover_preview, only: :show
+      resource :reorder_history_items, only: [:create]
     end
   end
   namespace :protonyms do
@@ -122,7 +123,6 @@ Rails.application.routes.draw do
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
       resource :set_subgenus, only: [:show, :create, :destroy]
-      resource :reorder_history_items, only: [:create]
       resource :reorder_reference_sections, only: [:create]
     end
   end

@@ -10,7 +10,6 @@ describe Taxon do
   describe 'relations' do
     subject(:taxon) { create :any_taxon }
 
-    it { is_expected.to have_many(:history_items).dependent(:destroy) }
     it { is_expected.to have_many(:reference_sections).dependent(:destroy) }
     it { is_expected.to belong_to(:protonym).required.dependent(false) }
     it { is_expected.to belong_to(:name).required.dependent(:destroy) }

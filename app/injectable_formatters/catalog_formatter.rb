@@ -1,10 +1,17 @@
 # frozen_string_literal: true
 
 module CatalogFormatter
+  extend ActionView::Helpers::OutputSafetyHelper # For `#safe_join`.
+
   module_function
 
   def link_to_taxon taxon
     %(<a class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
+  end
+
+  # TODO: Experimental.
+  def link_to_taxa taxa
+    safe_join(taxa.map { |taxon| link_to_taxon(taxon) }, ', ')
   end
 
   def link_to_taxon_with_linked_author_citation taxon

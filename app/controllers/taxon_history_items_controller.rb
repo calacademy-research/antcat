@@ -12,7 +12,7 @@ class TaxonHistoryItemsController < ApplicationController
     @taxon_history_items = @taxon_history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
     @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
     @taxon_history_items = @taxon_history_items.exclude_search(params[:nq], params[:search_type]) if params[:nq].present?
-    @taxon_history_items = @taxon_history_items.includes(protonym: [:name]).paginate(page: params[:page], per_page: per_page)
+    @taxon_history_items = @taxon_history_items.distinct.includes(protonym: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
   def show

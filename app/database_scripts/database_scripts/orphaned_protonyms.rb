@@ -36,3 +36,4 @@ related_scripts:
   - OrphanedAuthorNames
   - OrphanedAuthors
   - OrphanedProtonyms
+  - ProtonymsWithoutATerminalTaxon

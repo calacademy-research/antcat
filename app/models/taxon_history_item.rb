@@ -3,14 +3,13 @@
 class TaxonHistoryItem < ApplicationRecord
   include Trackable
 
-  # TODO: Remove `belongs_to :taxon` and change to `belongs_to :protonym, optional: false`. [grep:proitem]
-  belongs_to :taxon, optional: true
+  # TODO: Change to `belongs_to :protonym, optional: false`. [grep:proitem]
   belongs_to :protonym, optional: true
 
   has_one :terminal_taxon, through: :protonym
   has_many :terminal_taxa, through: :protonym
 
-  validates :protonym, presence: true, on: :create # TODO: [grep:proitem].
+  validates :protonym, presence: true, on: :create # TODO: Remove `on: :create`. [grep:proitem].
   validates :taxt, presence: true
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, allow_nil: true }
 

@@ -28,7 +28,7 @@ module Taxa
 
       def taxt_content
         string = []
-        string << taxon.history_items.pluck(:taxt).join
+        string << taxon.history_items_for_taxon.pluck(:taxt).join
         string << taxon.reference_sections.pluck(:references_taxt).join
         string << (taxon.protonym.primary_type_information_taxt || '')
         string << (taxon.protonym.secondary_type_information_taxt || '')

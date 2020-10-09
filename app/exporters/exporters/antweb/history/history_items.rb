@@ -18,7 +18,7 @@ module Exporters
         private
 
           def history_items
-            @_history_items ||= taxon.history_items
+            @_history_items ||= taxon.history_items_for_taxon
           end
 
           def history_content

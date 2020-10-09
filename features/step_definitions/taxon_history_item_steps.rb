@@ -4,15 +4,15 @@ Given("there is a history item {string}") do |taxt|
   create :taxon_history_item, taxt: taxt
 end
 
-Given("there is a subfamily {string} with a history item {string}") do |name, taxt|
-  taxon = create :subfamily, name_string: name
-  create :taxon_history_item, taxt: taxt, taxon: taxon
+Given("there is a subfamily protonym {string} with a history item {string}") do |name, taxt|
+  protonym = create :protonym, :family_group_name, name: create(:subfamily_name, name: name)
+  create :taxon_history_item, taxt: taxt, protonym: protonym
 end
 
-Given("there is a subfamily {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|
+Given("there is a subfamily protonym {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   taxt = "#{content} {ref #{reference.id}}"
-  step %(there is a subfamily "#{name}" with a history item "#{taxt}")
+  step %(there is a subfamily protonym "#{name}" with a history item "#{taxt}")
 end
 
 # Editing.
