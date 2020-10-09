@@ -16,6 +16,7 @@ class TaxonHistoryItem < ApplicationRecord
   before_validation :cleanup_taxts
 
   scope :persisted, -> { where.not(id: nil) }
+  scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
 
   acts_as_list scope: :taxon
   has_paper_trail

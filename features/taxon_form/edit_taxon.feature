@@ -11,7 +11,7 @@ Feature: Editing a taxon
     Then I should not see "Formica"
 
     When I go to the edit page for "Eciton"
-    And I pick "Formica" from the protonym selector
+    And I pick "Formica" from the "taxon_protonym_id" protonym selector
     Then I should see "Formica"
 
     When I press "Save"

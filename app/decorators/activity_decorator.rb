@@ -15,6 +15,14 @@ class ActivityDecorator < Draper::Decorator
     end
   end
 
+  def self.link_protonym_if_exists id
+    if (protonym = Protonym.find_by(id: id))
+      CatalogFormatter.link_to_protonym(protonym)
+    else
+      "##{id} [deleted]"
+    end
+  end
+
   def link_user
     return if trackable_type.in?(HIDE_USER_FOR_TRACKABLE_TYPES) || user.nil?
     user.decorate.user_page_link
@@ -57,6 +65,10 @@ class ActivityDecorator < Draper::Decorator
 
   def link_taxon_trackable_if_exists id = trackable_id, deleted_label: nil
     self.class.link_taxon_if_exists(id, deleted_label: deleted_label)
+  end
+
+  def link_protonym_trackable_if_exists id = trackable_id
+    self.class.link_protonym_if_exists(id)
   end
 
   # NOTE: Missing actions are upcased to make sure they are ugly.
