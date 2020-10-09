@@ -127,6 +127,9 @@ Lint/EmptyFile:
 Lint/FloatComparison:
   Enabled: true
 
+Lint/HashCompareByIdentity:
+  Enabled: true
+
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
@@ -143,6 +146,9 @@ Lint/OutOfRangeRegexpRef:
   Enabled: true
 
 Lint/RaiseException:
+  Enabled: true
+
+Lint/RedundantSafeNavigation:
   Enabled: true
 
 Lint/SelfAssignment:
@@ -399,6 +405,9 @@ Style/ClassAndModuleChildren:
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
+
+Style/ClassEqualityComparison:
+  Enabled: true
 
 Style/CollectionMethods:
   Enabled: true
