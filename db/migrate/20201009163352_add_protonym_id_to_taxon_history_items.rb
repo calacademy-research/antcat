@@ -5,7 +5,6 @@
 
 class AddProtonymIdToTaxonHistoryItems < ActiveRecord::Migration[6.0]
   def change
-    # TODO: Add NOT NULL. [grep:proitem].
     add_reference :taxon_history_items, :protonym, type: :integer,
       index: { name: "ix_taxon_history_items__protonym_id" },
       foreign_key: { name: "fk_taxon_history_items__protonym_id__protonyms__id" }
