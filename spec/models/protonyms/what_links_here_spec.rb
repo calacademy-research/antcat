@@ -79,5 +79,30 @@ describe Protonyms::WhatLinksHere do
       specify { expect(what_links_here.any_taxts?).to eq true }
       specify { expect(what_links_here.any_columns?).to eq false }
     end
+
+    describe "tag: `prott`" do
+      let(:taxt_tag) { "{prott #{protonym.id}}" }
+
+      let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :taxon_history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
+
+      specify do
+        expect(what_links_here.all).to match_array [
+          WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   other_protonym.id),
+          WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, other_protonym.id),
+          WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 other_protonym.id),
+          WhatLinksHereItem.new('protonyms',           :notes_taxt,                      other_protonym.id),
+          WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
+          WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
+          WhatLinksHereItem.new('taxon_history_items', :taxt,                            history_item.id)
+        ]
+      end
+
+      specify { expect(what_links_here.any?).to eq true }
+      specify { expect(what_links_here.any_taxts?).to eq true }
+      specify { expect(what_links_here.any_columns?).to eq false }
+    end
   end
 end

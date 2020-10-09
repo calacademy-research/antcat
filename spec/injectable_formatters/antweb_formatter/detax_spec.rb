@@ -38,6 +38,28 @@ describe AntwebFormatter::Detax do
       end
     end
 
+    describe "tag: `PROTT_TAG_REGEX` (terminal taxon of protonyms)" do
+      context "when protonym has a `terminal_taxon`" do
+        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:terminal_taxon) { create :genus, protonym: protonym }
+
+        it "links the terminal taxon" do
+          expect(described_class["{prott #{protonym.id}}"]).to eq antweb_taxon_link(terminal_taxon)
+        end
+      end
+
+      context "when protonym does not have a `terminal_taxon`" do
+        let!(:protonym) { create :protonym }
+
+        it "links the protonym with a note" do
+          expect(described_class["{prott #{protonym.id}}"]).to eq <<~HTML.squish
+            #{antweb_protonym_link(protonym)}
+            (protonym)
+          HTML
+        end
+      end
+    end
+
     describe "tag: `REF_TAG_REGEX` (references)" do
       let!(:reference) { create :any_reference }
 

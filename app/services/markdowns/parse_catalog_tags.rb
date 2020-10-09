@@ -16,6 +16,7 @@ module Markdowns
 
       parse_pro_tags
       parse_proac_tags
+      parse_prott_tags
 
       parse_missing_tags
       parse_unmissing_tags
@@ -107,6 +108,23 @@ module Markdowns
         content.gsub!(Taxt::PROAC_TAG_REGEX) do
           if (protonym = Protonym.find_by(id: $LAST_MATCH_INFO[:protonym_id]))
             formatter.link_to_protonym_with_linked_author_citation(protonym)
+          else
+            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
+          end
+        end
+      end
+
+      # Matches: {prott 154742}
+      # Renders: link to terminal taxon of protonym.
+      def parse_prott_tags
+        content.gsub!(Taxt::PROTT_TAG_REGEX) do
+          protonym_id = $LAST_MATCH_INFO[:protonym_id]
+
+          if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
+            formatter.link_to_taxon(terminal_taxon)
+          elsif (protonym = Protonym.find_by(id: protonym_id))
+            editor_warning = %(<span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>)
+            "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
           else
             broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
