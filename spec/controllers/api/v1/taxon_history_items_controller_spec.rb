@@ -13,7 +13,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
           {
             "taxon_history_item" => {
               "id" => taxon_history_item.id,
-              "taxon_id" => taxon_history_item.taxon.id,
+              "protonym_id" => taxon_history_item.protonym.id,
               "position" => taxon_history_item.position,
               "taxt" => taxon_history_item.taxt,
 
@@ -37,7 +37,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
         {
           "taxon_history_item" => {
             "id" => taxon_history_item.id,
-            "taxon_id" => taxon_history_item.taxon.id,
+            "protonym_id" => taxon_history_item.protonym.id,
             "position" => taxon_history_item.position,
             "taxt" => taxon_history_item.taxt,
 
