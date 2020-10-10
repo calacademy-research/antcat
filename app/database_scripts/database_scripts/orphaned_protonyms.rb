@@ -8,12 +8,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'ID', 'Protonym', 'Any WLHs?'
+        t.header 'ID', 'Protonym', 'Any WLHs?', 'Has history items?'
         t.rows do |protonym|
           [
             protonym.id,
             protonym.decorate.link_to_protonym,
-            Protonyms::WhatLinksHere.new(protonym).any?
+            Protonyms::WhatLinksHere.new(protonym).any?,
+            protonym.protonym_history_items.any?
           ]
         end
       end
@@ -30,7 +31,7 @@ tags: [slow-render]
 issue_description: This protonym is orphaned.
 
 description: >
-  Orphaned protonyms can be deleted by editors from the protonym page, or by script on request (see %github430).
+  Orphaned protonyms without history items can be deleted by editors from the protonym page.
 
 related_scripts:
   - OrphanedAuthorNames

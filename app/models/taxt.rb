@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-# A "taxtable" is a database plaintext column which contains "taxt" tags which resolves to a `Taxon` or a `Reference`.
-
 module Taxt
+  # A "taxtable" is a plaintext database column which may contain "taxt" tags,
+  # which render with special markup and/or resolves to a `Taxon`, `Reference`, or `Protonym` record.
   TAXTABLES = [
     [ReferenceSection, 'reference_sections',  'references_taxt'],
     [ReferenceSection, 'reference_sections',  'subtitle_taxt'],

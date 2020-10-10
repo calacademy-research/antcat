@@ -7,7 +7,7 @@
 class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
-  # TODO: Not used.
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def convert_bolton_tags
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
 
@@ -88,7 +88,7 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
-  # TODO: Not used.
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def replace_missing_tag_with_tax_tag
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
     hardcoded_missing_name = params[:hardcoded_missing_name]
@@ -110,7 +110,7 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
-  # TODO: Not used.
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def switch_tax_tag
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
     replace_taxon = Taxon.find(params[:replace_tax_id])
