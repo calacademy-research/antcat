@@ -52,4 +52,26 @@ describe Status do
       end
     end
   end
+
+  describe '.display_history_items?' do
+    specify do
+      [
+        Status::VALID,
+        Status::SYNONYM,
+        Status::HOMONYM,
+        Status::UNIDENTIFIABLE,
+        Status::UNAVAILABLE,
+        Status::EXCLUDED_FROM_FORMICIDAE
+      ].each do |taxon_status|
+        expect(described_class.display_history_items?(taxon_status)).to eq true
+      end
+
+      [
+        Status::OBSOLETE_COMBINATION,
+        Status::UNAVAILABLE_MISSPELLING
+      ].each do |taxon_status|
+        expect(described_class.display_history_items?(taxon_status)).to eq false
+      end
+    end
+  end
 end

@@ -66,5 +66,11 @@ class Status
     def status_of_current_taxon_allowed? taxon_status, status_of_current_taxon
       status_of_current_taxon.in? ALLOWED_STATUSES_OF_CURRENT_TAXON.fetch(taxon_status)
     end
+
+    # TODO: History items may be rank-specific.
+    def display_history_items? taxon_status
+      raise 'unknown status' unless taxon_status.in?(STATUSES)
+      taxon_status.in?(DISPLAY_HISTORY_ITEMS_VIA_PROTONYM_STATUSES)
+    end
   end
 end

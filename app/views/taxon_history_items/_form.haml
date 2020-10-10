@@ -3,6 +3,31 @@
 
 =render "shared/default_reference"
 
+-if @protonym.taxa.present?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 Taxa belonging to this history item's protonym
+      %table
+        %thead
+          %th Taxon
+          %th Rank
+          %th Status
+          %th Show history items in catalog?
+        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+          %tr
+            %td=CatalogFormatter.link_to_taxon(taxon)
+            %td=taxon.rank.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                %br
+                %small=taxon.decorate.expanded_status
+            %td
+              -if Status.display_history_items?(taxon.status)
+                Yes
+                =antcat_icon 'check'
+                %small (unranked items, or with matching rank)
+
 =form_with model: taxon_history_item, url: url do |f|
   =render "shared/errors_for", resource: taxon_history_item
 

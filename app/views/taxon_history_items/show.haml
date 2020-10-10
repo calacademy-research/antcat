@@ -15,14 +15,41 @@
 
 -if @taxon_history_item.rank?
   %p
+    =antcat_icon "warning-icon"
     Show only for rank: #{@taxon_history_item.rank}
 
-.callout
+.callout.margin-bottom
   %p
     =Detax[@taxon_history_item.to_taxt]
 
+-# TODO: DRY w.r.t. 'taxon_history_items/_form.haml'.
+-if @protonym.taxa.present?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 Taxa belonging to this history item's protonym
+      %table
+        %thead
+          %th Taxon
+          %th Rank
+          %th Status
+          %th Show history items in catalog?
+        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+          %tr
+            %td=CatalogFormatter.link_to_taxon(taxon)
+            %td=taxon.rank.capitalize
+            %td
+              =taxon.status.capitalize
+              -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                %br
+                %small=taxon.decorate.expanded_status
+            %td
+              -if Status.display_history_items?(taxon.status)
+                Yes
+                =antcat_icon 'check'
+                %small (unranked items, or with matching rank)
+
 -if @protonym.protonym_history_items.count > 1
-  %table.huge-margin-top
+  %table.margin-top
     %caption Highlighted in context with other history items belonging to #{@protonym.name.name_html}
     %tbody
       -@protonym.protonym_history_items.each do |history_item|
