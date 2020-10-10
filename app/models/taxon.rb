@@ -20,13 +20,15 @@ class Taxon < ApplicationRecord
   belongs_to :protonym
 
   with_options inverse_of: :taxon, dependent: :destroy do
-    has_many :history_items, -> { order(:position) }, class_name: 'TaxonHistoryItem'
     has_many :reference_sections, -> { order(:position) }
   end
 
   has_one :authorship, through: :protonym
   has_one :authorship_reference, through: :authorship, source: :reference
   has_many :type_names, dependent: :restrict_with_error
+  has_many :protonym_history_items, through: :protonym
+  has_many :history_items_for_taxon_including_hidden, ->(taxon) { unranked_and_for_rank(taxon.type) },
+    through: :protonym, source: :protonym_history_items
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_TYPES, allow_nil: true }
@@ -100,6 +102,11 @@ class Taxon < ApplicationRecord
     end
 
     taxa.second_to_last || self
+  end
+
+  def history_items_for_taxon
+    return TaxonHistoryItem.none unless Status.display_history_items?(status)
+    history_items_for_taxon_including_hidden
   end
 
   def taxon_collaborators

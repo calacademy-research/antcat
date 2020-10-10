@@ -13,21 +13,18 @@ describe Taxa::MoveItemsController do
 
   describe "POST create", as: :editor do
     let!(:taxon) { create :any_taxon }
-    let!(:taxon_history_item) { create :taxon_history_item, taxon: taxon }
     let!(:reference_section) { create :reference_section, taxon: taxon }
     let!(:to_taxon) { create :any_taxon }
 
     it "calls `Taxa::Operations::MoveItems`" do
       expect(Taxa::Operations::MoveItems).to receive(:new).with(
         to_taxon,
-        history_items: [taxon_history_item],
         reference_sections: [reference_section]
       ).and_call_original
 
       params = {
         taxa_id: taxon.id,
         to_taxon_id: to_taxon.id,
-        history_item_ids: [taxon_history_item.id],
         reference_section_ids: [reference_section.id]
       }
 
@@ -35,7 +32,7 @@ describe Taxa::MoveItemsController do
     end
 
     it 'creates an activity' do
-      expect { post :create, params: { taxa_id: taxon.id, to_taxon_id: to_taxon.id, history_item_ids: [taxon_history_item.id] } }.
+      expect { post :create, params: { taxa_id: taxon.id, to_taxon_id: to_taxon.id, reference_section_ids: [reference_section.id] } }.
         to change { Activity.where(action: :move_items, trackable: taxon).count }.by(1)
 
       activity = Activity.last

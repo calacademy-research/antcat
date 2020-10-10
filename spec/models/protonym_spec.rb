@@ -10,6 +10,7 @@ describe Protonym do
     it { is_expected.to belong_to(:name).required }
     it { is_expected.to belong_to(:authorship).dependent(:destroy) }
     it { is_expected.to belong_to(:authorship).required }
+    it { is_expected.to have_many(:protonym_history_items).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:taxa).class_name('Taxon').dependent(:restrict_with_error) }
     it { is_expected.to have_one(:terminal_taxon).class_name('Taxon') }
   end

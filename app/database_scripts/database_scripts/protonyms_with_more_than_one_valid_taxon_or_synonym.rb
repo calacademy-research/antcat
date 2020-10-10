@@ -55,7 +55,6 @@ description: >
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination
   - ProtonymsWithMoreThanOneSpeciesInTheSameGenus
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
   - ProtonymsWithMoreThanOneValidTaxonOrSynonym
   - ProtonymsWithTaxaWithIncompatibleStatuses
   - ProtonymsWithTaxaWithMoreThanOneCurrentTaxon

@@ -8,10 +8,10 @@ Feature: Compare revisions
     Given I log in as a catalog editor
 
   Scenario: Comparing history item revisions
-    Given there is a genus "Atta"
+    Given there is a genus protonym "Atta"
 
     # Added item.
-    When I go to the edit page for "Atta"
+    When I go to the protonym page for "Atta"
     And I add a history item "initial content"
     And I go to the activity feed
     And I follow the first linked history item
@@ -51,8 +51,8 @@ Feature: Compare revisions
 
   @javascript
   Scenario: Comparing revisions with intermediate revisions
-    Given there is a genus "Atta"
-    And I go to the edit page for "Atta"
+    Given there is a genus protonym "Atta"
+    And I go to the protonym page for "Atta"
     And I add a history item "initial version"
     And I update the most recent history item to say "second version"
     And I update the most recent history item to say "last version"

@@ -44,6 +44,6 @@ issue_description:
 description: >
 
 related_scripts:
-  - ProtonymsWithMoreThanOneTaxonWithAssociatedHistoryItems
+  - OrphanedProtonyms
   - ProtonymsWithMoreThanOneTerminalTaxon
   - ProtonymsWithoutATerminalTaxon

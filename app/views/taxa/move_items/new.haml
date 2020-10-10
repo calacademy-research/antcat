@@ -20,19 +20,6 @@
 
 .row
   .medium-6.columns
-    -if @taxon.history_items.empty?
-      No history items.
-    -else
-      %table
-        %caption History items
-        %tbody
-          -@taxon.history_items.each do |history_item|
-            %tr
-              %td
-                %small=Detax[history_item.to_taxt]
-
-.row
-  .medium-6.columns
     -if @taxon.reference_sections.empty?
       No reference sections.
     -else

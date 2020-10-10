@@ -21,7 +21,7 @@ module DatabaseScripts
           [
             link_to(reference.key_with_suffixed_year, reference_path(reference)),
             link_to(reference.document.url, reference.document.url),
-            ('Yes' if reference.protonyms.any?)
+            ('Yes' if reference.citations.any?)
           ]
         end
       end

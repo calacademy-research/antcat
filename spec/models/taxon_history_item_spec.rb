@@ -6,7 +6,7 @@ describe TaxonHistoryItem do
   it { is_expected.to be_versioned }
 
   describe 'relations' do
-    it { is_expected.to belong_to(:taxon).required }
+    it { is_expected.to belong_to(:protonym).required }
   end
 
   describe 'validations' do

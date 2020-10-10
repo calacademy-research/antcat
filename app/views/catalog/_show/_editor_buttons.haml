@@ -34,7 +34,10 @@
 
         %li=editors_catalog_presenter.delete_unreferenced_taxon_button
         %li=link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"
-        %li=link_to "Add history item", new_taxa_taxon_history_item_path(taxon), class: "btn-normal"
+        -if Status.display_history_items?(taxon.status)
+          %li=link_to "Add history item", new_protonym_taxon_history_item_path(taxon.protonym), class: "btn-normal"
+        -else
+          %li=link_to "Add history item (will not be shown)", new_protonym_taxon_history_item_path(taxon.protonym), class: "btn-warning"
         %li=link_to "Show children", taxa_children_path(taxon), class: "btn-normal"
         %li=link_to "Soft validations", taxon_soft_validations_path(taxon), class: "btn-normal"
         %li=activities_link_for_trackable taxon

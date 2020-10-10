@@ -27,7 +27,7 @@ module Catalog
 
       def with_includes taxa
         TaxonQuery.new(taxa).order_by_epithet.
-          includes(:name, :history_items, protonym: [:name, authorship: { reference: :author_names }])
+          includes(:name, protonym: [:name, authorship: { reference: :author_names }])
       end
 
       def collected_references taxon

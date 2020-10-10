@@ -3,7 +3,10 @@
 class TaxonHistoryItem < ApplicationRecord
   include Trackable
 
-  belongs_to :taxon
+  belongs_to :protonym
+
+  has_one :terminal_taxon, through: :protonym
+  has_many :terminal_taxa, through: :protonym
 
   validates :taxt, presence: true
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, allow_nil: true }
@@ -11,11 +14,12 @@ class TaxonHistoryItem < ApplicationRecord
   before_validation :cleanup_taxts
 
   scope :persisted, -> { where.not(id: nil) }
+  scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
 
-  acts_as_list scope: :taxon
+  acts_as_list scope: :protonym
   has_paper_trail
   strip_attributes only: [:taxt, :rank], replace_newlines: true
-  trackable parameters: proc { { taxon_id: taxon_id } }
+  trackable parameters: proc { { protonym_id: protonym_id } }
 
   def self.search search_query, search_type
     search_type = search_type.presence || 'LIKE'

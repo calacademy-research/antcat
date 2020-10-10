@@ -68,10 +68,8 @@ describe Taxa::CreateCombinationsController do
 
     # TODO: Use null-operation.
     context 'when operation fails' do
-      let(:taxon_history_item) { create :taxon_history_item, taxon: taxon }
-
       before do
-        taxon_history_item.update_columns(taxt: '') # Artificially create history item in an invalid state.
+        create :species, name_string: target_name_string
       end
 
       it 'does not create a new taxon' do
@@ -81,7 +79,7 @@ describe Taxa::CreateCombinationsController do
       it 'renders errors' do
         post :create, params: valid_params
         expect(response).to render_template :show
-        expect(response.request.flash[:alert]).to eq "Could not update history item ##{taxon_history_item.id}"
+        expect(response.request.flash[:alert]).to eq "#{target_name_string} - This name is in use by another taxon"
       end
     end
   end

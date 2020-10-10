@@ -27,6 +27,22 @@ describe ActivityDecorator do
     end
   end
 
+  describe ".link_protonym_if_exists" do
+    context "when protonym exists" do
+      let(:protonym) { create :protonym }
+
+      it "returns a link" do
+        expect(described_class.link_protonym_if_exists(protonym.id)).to eq protonym_link(protonym)
+      end
+    end
+
+    context "when protonym doesn't exist" do
+      it "returns the id and more" do
+        expect(described_class.link_protonym_if_exists(99999)).to eq "#99999 [deleted]"
+      end
+    end
+  end
+
   describe "#link_user" do
     context "with a valid user" do
       let(:activity) { build_stubbed :activity, user: build_stubbed(:user) }

@@ -18,7 +18,7 @@ describe Exporters::Antweb::History::HistoryItems do
       let(:taxon) { create :any_taxon }
 
       before do
-        create :taxon_history_item, taxon: taxon, taxt: "Taxon: {tax #{taxon.id}}"
+        create :taxon_history_item, protonym: taxon.protonym, taxt: "Taxon: {tax #{taxon.id}}"
       end
 
       specify do

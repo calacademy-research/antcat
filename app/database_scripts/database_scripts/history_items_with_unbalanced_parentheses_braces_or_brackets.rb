@@ -64,7 +64,7 @@ module DatabaseScripts
         t.header 'History item', 'Taxon', 'taxt'
         t.rows(table_results) do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.taxon
+          taxon = history_item.terminal_taxon
 
           [
             link_to(history_item.id, taxon_history_item_path(history_item)),

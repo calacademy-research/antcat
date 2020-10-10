@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.5.1"
+  version: "1.5.2"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -829,9 +829,9 @@ definitions:
       id:
         type: integer
         description: taxon history id, primary key
-      taxon_id:
+      protonym_id:
         type: integer
-        description: fk to taxon
+        description: fk to protonyms
       position:
         type: integer
         description: relative priority of this particular taxon history item agsint others on this taxon

@@ -1,3 +1,7 @@
+-if user_is_at_least_helper?
+  -content_for :javascripts do
+    =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+
 #nomen-synopsis
   %span.name=Taxa::LinkEachEpithet[taxon]
   =taxon.author_citation
@@ -37,20 +41,20 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
--if current_user && current_user.settings(:editing_helpers).history_items_via_protonym
-  =render 'catalog/_show/logged_in_only/history_items_via_protonym', taxon: taxon
-
--if taxon.history_items.present?
+-if taxon.history_items_for_taxon.present?
   %ul#history.small-margin-bottom
-    -taxon.history_items.each do |history_item|
+    -taxon.history_items_for_taxon.each do |history_item|
       %li
         -if current_user && history_item.rank?
           %span.logged-in-only-background
-            %small.bold-notice
-              #{history_item.rank}-only item
+            %small.bold-notice #{history_item.rank}-only item
             =logged_in_only_tooltip_icon
 
-        =add_period_if_necessary Detax[history_item.to_taxt]
+        -if user_is_at_least_helper?
+          =render 'taxon_history_items/catalog_taxt_editor_template', taxon_history_item: history_item
+        -else
+          =add_period_if_necessary Detax[history_item.to_taxt]
+
         -if current_user
           %span.show-on-hover
             =link_to "Show", history_item, class: "btn-normal btn-very-tiny"

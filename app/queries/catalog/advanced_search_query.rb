@@ -64,9 +64,9 @@ module Catalog
 
         case history_items
         when MUST_HAVE_HISTORY_ITEMS
-          relation.distinct.joins(:history_items)
+          relation.distinct.joins(:protonym_history_items)
         when CANNOT_HAVE_HISTORY_ITEMS
-          relation.left_outer_joins(:history_items).where(taxon_history_items: { taxon_id: nil })
+          relation.left_outer_joins(:protonym_history_items).where(taxon_history_items: { protonym_id: nil })
         end
       end
 

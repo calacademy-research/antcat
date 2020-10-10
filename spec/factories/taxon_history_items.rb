@@ -7,7 +7,7 @@ FactoryBot.define do
     end
 
     sequence(:taxt) { |n| "history item content #{n}" }
-    association :taxon, factory: :family
+    association :protonym
 
     trait :with_all_taxts do
       sequence(:taxt) { |n| "taxt #{n} #{taxt_tag}" }

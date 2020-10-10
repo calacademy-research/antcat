@@ -1,3 +1,5 @@
+# TODO: Move and make more general.
+
 $ ->
   $(".history-items #select-all-history-items").click (event) ->
     event.preventDefault()

@@ -26,10 +26,12 @@ class Activity < ApplicationRecord
       force_parent_change
       merge_authors
       move_items
+      move_protonym_items
       reopen_feedback
       reopen_issue
       reorder_reference_sections
       reorder_taxon_history_items
+      reorder_protonym_history_items
       restart_reviewing
       set_subgenus
       start_reviewing

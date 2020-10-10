@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      TaxonHistoryItem.
+      TaxonHistoryItem.joins(protonym: [:terminal_taxa]).
         where("taxt LIKE CONCAT('{tax ', CONVERT(taxon_id, char), '}%') COLLATE utf8_unicode_ci").
         limit(LIMIT)
     end
@@ -20,7 +20,7 @@ module DatabaseScripts
       as_table do |t|
         t.header 'History item', 'Taxon', 'Rank', 'Status', 'taxt', "Replace with pro tag?"
         t.rows do |history_item|
-          taxon = history_item.taxon
+          taxon = history_item.protonym.terminal_taxon
 
           first_tax = history_item.taxt[/\{tax \d+\}/][/\d+/].to_i
           first_taxon = Taxon.find_by(id: first_tax)

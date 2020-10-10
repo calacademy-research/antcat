@@ -1,0 +1,14 @@
+-# TODO: Extract functionality for reordering items to a new page.
+
+.callout
+  %h5
+    History items
+    .right
+      =link_to 'Add', new_protonym_taxon_history_item_path(protonym), id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny tooltip2'
+      %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
+  #history-items{data: {protonym_id: protonym.id}}
+    -protonym.protonym_history_items.each do |history_item|
+      -# `#taxon_history_item_123` is used for reordering items.
+      .history-item{id: "taxon_history_item_#{history_item.id}"}
+        =render 'taxon_history_items/taxt_editor_template', taxon_history_item: history_item
+        %hr

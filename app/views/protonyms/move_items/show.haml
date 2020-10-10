@@ -1,0 +1,55 @@
+-title "Move items"
+-breadcrumb :move_protonym_items_to, @protonym, @to_protonym
+
+-content_for :javascripts do
+  =javascript_include_tag "controllers/taxa/move_items/select_checkboxes"
+
+=form_with path: protonym_move_items_path do |f|
+  =hidden_field_tag :to_protonym_id, @to_protonym.id
+  .row
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend Move items from
+        =@protonym.decorate.link_to_protonym
+
+    .medium-6.columns
+      %fieldset.fieldset
+        %legend to
+        =@to_protonym.decorate.link_to_protonym
+
+  .row
+    -# Move from.
+    .medium-6.columns
+      -if @protonym.protonym_history_items.empty?
+        No history items.
+      -else
+        %table.history-items
+          %caption
+            History items
+            .right
+              =link_to "Select all", "#", id: "select-all-history-items", class: "btn-normal btn-tiny"
+              =link_to "Unselect all", "#", id: "unselect-all-history-items", class: "btn-normal btn-tiny"
+          %tbody
+            -@protonym.protonym_history_items.each do |history_item|
+              %tr
+                %td=check_box_tag "history_item_ids[]", history_item.id
+                %td
+                  %small=Detax[history_item.to_taxt]
+
+    -# Move to.
+    .medium-6.columns
+      -if @to_protonym.protonym_history_items.empty?
+        No history items.
+      -else
+        %table
+          %caption History items
+          %tbody
+            -@to_protonym.protonym_history_items.each do |history_item|
+              %tr
+                %td
+                  %small=Detax[history_item.to_taxt]
+
+  .row.margin-bottom
+    .medium-12.columns
+      .center-text
+        =f.submit "Move selected items", class: "btn-saves"

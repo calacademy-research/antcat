@@ -7,6 +7,7 @@
 class QuickAndDirtyFixesController < ApplicationController
   before_action :ensure_user_is_at_least_helper
 
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def convert_bolton_tags
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
 
@@ -87,22 +88,7 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
-  def replace_with_pro_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
-
-    old_taxt = taxon_history_item.taxt
-    new_taxt = QuickAndDirtyFixes::HardcodedNameToProTag[taxon_history_item]
-
-    if old_taxt == new_taxt
-      render js: %(AntCat.notifyError("Replaced with pro tags, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced hardcoded name with `pro` tag(s)"
-      render js: %(AntCat.notifySuccess("Replaced with pro tags: '#{new_taxt}'"))
-    else
-      render js: %(AntCat.notifyError("Could not replace with pro tags"))
-    end
-  end
-
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def replace_missing_tag_with_tax_tag
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
     hardcoded_missing_name = params[:hardcoded_missing_name]
@@ -124,6 +110,7 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
+  # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def switch_tax_tag
     taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
     replace_taxon = Taxon.find(params[:replace_tax_id])

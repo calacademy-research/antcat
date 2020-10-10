@@ -74,7 +74,7 @@
                     No,
                     =taxon.protonym.decorate.link_to_protonym
                 %td
-                  -if taxon.history_items.present?
+                  -if taxon.history_items_for_taxon.present?
                     =antcat_icon("check")
 
   .row.margin-bottom
@@ -103,7 +103,7 @@
                 %td=taxon.status
                 %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                 %td
-                  -if taxon.history_items.present?
+                  -if taxon.history_items_for_taxon.present?
                     =antcat_icon("check")
 
   -if @taxon.is_a? Species
@@ -131,7 +131,7 @@
                     =taxon.author_citation
                   %td=link_to "What Links Here", taxon_what_links_here_path(taxon), class: 'btn-normal btn-tiny'
                   %td
-                    -if taxon.history_items.exists?
+                    -if taxon.history_items_for_taxon.exists?
                       =antcat_icon("check")
                   %td
                     -if taxon.valid_status? && Taxon.where(current_taxon: taxon).exists?

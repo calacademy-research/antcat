@@ -25,8 +25,6 @@ describe Operations::CreateNewCombination do
       let!(:new_genus) { create :genus, name_string: 'Atta' }
       let!(:target_name_string) { 'Atta mexicana' }
 
-      let!(:history_item) { create :taxon_history_item, taxon: current_taxon }
-
       # Make sure specs pass with the above setup.
       specify { expect(operation.run).to be_a_success }
 
@@ -50,27 +48,6 @@ describe Operations::CreateNewCombination do
         end
       end
 
-      context "when moving history items fails" do
-        before do
-          history_item.update_columns(taxt: '')
-        end
-
-        specify { expect(operation.run).to be_a_failure }
-
-        it "does not create a new taxon" do
-          expect { operation.run }.to_not change { Taxon.count }
-        end
-
-        it 'does not move any history items' do
-          expect(history_item.reload.valid?).to eq false
-          expect { operation.run }.to_not change { history_item.reload.taxon }.from(current_taxon)
-        end
-
-        it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_taxon.reload.attributes }
-        end
-      end
-
       context "when updating the now obsolete combination fails" do
         before do
           current_taxon.update_columns(homonym_replaced_by_id: Taxon.first.id)
@@ -84,11 +61,6 @@ describe Operations::CreateNewCombination do
 
         it "does not create a new taxon" do
           expect { operation.run }.to_not change { Taxon.count }
-        end
-
-        it 'does not move any history items' do
-          expect { operation.run }.
-            to_not change { history_item.reload.taxon }.from(current_taxon)
         end
 
         it "does not modify the original species record" do
@@ -118,11 +90,6 @@ describe Operations::CreateNewCombination do
 
         it "does not create a new taxon" do
           expect { operation.run }.to_not change { Taxon.count }
-        end
-
-        it 'does not move any history items' do
-          expect { operation.run }.
-            to_not change { history_item.reload.taxon }.from(current_taxon)
         end
 
         it "does not modify the original species record" do
@@ -178,16 +145,6 @@ describe Operations::CreateNewCombination do
           results = operation.run.results
           expect(results.new_combination.name).to be_a SpeciesName
           expect(results.new_combination.name.name).to eq target_name_string
-        end
-
-        describe "moving history items" do
-          let!(:history_item) { create :taxon_history_item, taxon: current_taxon }
-
-          it 'moves history items to the new combination' do
-            expect(history_item.reload.taxon).to eq current_taxon
-            new_combination = operation.run.results.new_combination
-            expect(history_item.reload.taxon).to eq new_combination
-          end
         end
       end
     end

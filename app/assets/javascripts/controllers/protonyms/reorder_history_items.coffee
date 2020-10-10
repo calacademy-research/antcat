@@ -67,11 +67,11 @@ disableReordering = ->
   $(AntCat.BUTTONS.SAVE_TAXON_FORM).undisable()
 
 saveNewOrder = ->
-  taxonId = $(SORTABLE).data "taxon-id"
+  protonymId = $(SORTABLE).data "protonym-id"
 
   $.ajax
     type: "POST"
-    url: "/taxa/#{taxonId}/reorder_history_items"
+    url: "/protonyms/#{protonymId}/reorder_history_items"
     dataType: 'json'
     data: $(SORTABLE).sortable "serialize"
     success: ->

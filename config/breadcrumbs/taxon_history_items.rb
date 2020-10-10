@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-crumb :taxon_history_items do |taxon|
+crumb :taxon_history_items do |protonym|
   link "History Items"
-  parent taxon || :catalog
+  parent :protonym, protonym
 end
 
 crumb :taxon_history_item do |taxon_history_item|
@@ -11,7 +11,7 @@ crumb :taxon_history_item do |taxon_history_item|
   else
     link "##{taxon_history_item.id} [deleted]"
   end
-  parent :taxon_history_items, taxon_history_item.taxon
+  parent :taxon_history_items, taxon_history_item.protonym
 end
 
 crumb :edit_taxon_history_item do |taxon_history_item|
@@ -26,5 +26,5 @@ end
 
 crumb :new_taxon_history_item do |taxon_history_item|
   link "New"
-  parent :taxon_history_items, taxon_history_item.taxon
+  parent :taxon_history_items, taxon_history_item.protonym
 end

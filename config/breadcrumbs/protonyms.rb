@@ -38,3 +38,19 @@ crumb :protonym_soft_validations do |protonym|
   link "Soft validations"
   parent :protonym, protonym
 end
+
+crumb :move_protonym_items do |protonym|
+  link "Move items", new_protonym_move_items_path(protonym)
+  parent :protonym, protonym
+end
+
+crumb :move_protonym_items_select_target do |protonym|
+  link "Select target"
+  parent :move_protonym_items, protonym
+end
+
+crumb :move_protonym_items_to do |protonym, to_protonym|
+  link "to #{to_protonym.decorate.name_with_fossil}".html_safe,
+    protonym_move_items_path(protonym, to_protonym_id: to_protonym.id)
+  parent :move_protonym_items, protonym
+end

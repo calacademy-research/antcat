@@ -85,7 +85,7 @@ describe WhatLinksHereItem do
       let(:table) { "taxon_history_items" }
       let!(:object) { create :taxon_history_item }
 
-      specify { expect(what_links_here_item.owner).to eq object.taxon }
+      specify { expect(what_links_here_item.owner).to eq object.protonym }
     end
   end
 end

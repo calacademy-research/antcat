@@ -18,7 +18,7 @@ module Taxa
       # "Combination in {tax 123}".
       # NOTE: Can be removed once we have normalized all 'combination in's.
       def combination_in_history_items
-        history_items.where('taxt LIKE ?', "Combination in%")
+        protonym_history_items.where('taxt LIKE ?', "Combination in%")
       end
   end
 end

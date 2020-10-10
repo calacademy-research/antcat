@@ -16,16 +16,14 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Alt. replacement', 'History item', 'Taxon', 'Hardcoded names', 'Highlighted taxt', 'Preview quick-fix', 'Quick-fix button'
+        t.header 'History item', 'Taxon', 'Hardcoded names', 'Highlighted taxt', 'Preview quick-fix', 'Quick-fix button'
         t.rows do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.taxon
+          taxon = history_item.terminal_taxon
 
           helper = QuickAndDirtyFixes::ReplaceMissingTags.new(taxt)
 
           [
-            replace_with_alt_tax_links(history_item, helper).presence || "-",
-
             link_to(history_item.id, taxon_history_item_path(history_item)),
             taxon_link(taxon),
 
@@ -65,50 +63,6 @@ module DatabaseScripts
           bold_notice $LAST_MATCH_INFO[:hardcoded_name]
         end
       end
-
-      # TMPCLEANUP: Get rid of all of this ASAP.
-      def replace_with_alt_tax_links history_item, helper
-        normalized_name = helper.target_for_replacement[:normalized_name]
-        replace_with_possible_subspecies_instead_of_species_links history_item, normalized_name
-      end
-
-      def replace_with_possible_subspecies_instead_of_species_links history_item, normalized_name
-        possible_subspecies_instead_of_species(normalized_name).map do |taxon|
-          replace_with_alt_tax_link(history_item, normalized_name, taxon)
-        end.join("<br><br>")
-      end
-
-      def possible_subspecies_instead_of_species normalized_name
-        name_parts = normalized_name.split
-        return [] unless name_parts.size == 2
-
-        genus_name, epithet = name_parts
-        Subspecies.joins(:name).
-          where("names.name LIKE ?", "#{genus_name} %").
-          where("names.epithet LIKE ?", "#{epithet[0..3]}%")
-      end
-
-      def replace_with_alt_tax_link history_item, normalized_name, replace_with_taxon
-        epithet = normalized_name.split.last
-        alt_tax_help_text = if epithet == replace_with_taxon.name.epithet
-                              bold_notice "[different rank; same epithet]"
-                            else
-                              bold_warning "[different rank; epithet not same, but similar]"
-                            end
-        alt_tax_help_text += bold_warning(" [IS SAME AS TAXON OF HISTORY ITEM]") if history_item.taxon_id == replace_with_taxon.id
-        alt_tax_help_text += purple_notice(" [has history item taxon as current_taxon]") if history_item.taxon_id == replace_with_taxon&.current_taxon&.id
-        alt_tax_help_text += gray_notice(" [is current_taxon of history item taxon]") if history_item.taxon.current_taxon&.id == replace_with_taxon.id
-
-        label = "Replace with <i>#{replace_with_taxon.name.short_name}</i>".html_safe
-        url = replace_missing_tag_with_tax_tag_quick_and_dirty_fix_path(
-          taxon_history_item_id: history_item.id,
-          hardcoded_missing_name: normalized_name,
-          replace_with_taxon_id: replace_with_taxon.id
-        )
-        link = link_to label, url, method: :post, remote: true, class: 'btn-warning btn-tiny'
-
-        alt_tax_help_text + replace_with_taxon.decorate.link_to_taxon_with_author_citation + link
-      end
   end
 end
 
@@ -126,29 +80,6 @@ description: >
   The quick-fix button replaces one `missing` tag at a time - if the first `missing` tag cannot be
   replaced (due to <span class="bold-warning">no matches</span> or <span class="bold-warning">multiple matches</span>),
   then the button cannot be used for <span class="bold-notice">convertable</span> tags until the first tag has been fixed.
-
-
-  **Alt. replacement**
-
-  <span class="bold-warning">Warning:</span> Use with care. It searches for existing subspecies like this:
-
-
-  * `{missing Acanthostichus obscuridens}` --> `Acanthostichus ANYTHING obscXXX` --> {tax 430258}
-
-
-  How often it's correct will vary based on the current batch of this script.
-
-
-  <span class="bold-notice">[same epithet]</span> means that the protonym of the suggested replacement is probably correct, but
-  beware of homonys, and the `tax` tag refers to a ssubspecies, which is not always correct.
-
-
-  I cross-checked a bunch of species/subspecies with AntCat history items and data from AntWiki.
-  Many have indeed at some point been species (which means we are missing a species record for it and the alt. replacement is not correct),
-  while other do not mention any such combination (which may simply mean that the data is not complete in AntCat/AntWiki).
-
-
-  More information here: %wiki6 and %github1052
 
 related_scripts:
   - HistoryItemsWithMissingTagsQueue1

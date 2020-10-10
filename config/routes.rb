@@ -92,14 +92,17 @@ Rails.application.routes.draw do
   end
 
   resources :protonyms do
+    resources :taxon_history_items, only: [:new, :create]
     scope module: :protonyms do
       collection do
         resource :autocomplete, only: :show
       end
       resource :history, only: :show
+      resource :move_items, only: [:new, :show, :create]
       resource :what_links_here, only: :show
       resource :soft_validations, only: :show
       resource :hover_preview, only: :show
+      resource :reorder_history_items, only: [:create]
     end
   end
   namespace :protonyms do
@@ -109,7 +112,6 @@ Rails.application.routes.draw do
   end
 
   resources :taxa, except: [:index, :show] do
-    resources :taxon_history_items, only: [:new, :create]
     resources :reference_sections, only: [:new, :create]
     scope module: :taxa do
       resource :children, only: [:show]
@@ -121,7 +123,6 @@ Rails.application.routes.draw do
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
       resource :set_subgenus, only: [:show, :create, :destroy]
-      resource :reorder_history_items, only: [:create]
       resource :reorder_reference_sections, only: [:create]
     end
   end
@@ -202,6 +203,7 @@ Rails.application.routes.draw do
       resource :history, only: :show
     end
   end
+
   resources :reference_sections, except: [:new, :create] do
     scope module: :reference_sections do
       resource :history, only: :show
@@ -247,7 +249,6 @@ Rails.application.routes.draw do
     post 'force_remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#force_remove_pages_from_taxac_tags'
     post 'remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#remove_pages_from_taxac_tags'
     post 'replace_missing_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tags'
-    post 'replace_with_pro_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_with_pro_tags'
     post 'replace_missing_tag_with_tax_tag_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tag_with_tax_tag'
     post 'switch_tax_tag_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#switch_tax_tag'
     post 'update_current_taxon_id_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#update_current_taxon_id'
