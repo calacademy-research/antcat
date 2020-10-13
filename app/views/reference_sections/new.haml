@@ -1,4 +1,4 @@
 -title "New Reference Section"
 -breadcrumb :new_reference_section, @reference_section
 
-=render "form", reference_section: @reference_section, url: "/taxa/#{@reference_section.taxon_id}/reference_sections"
+=render "form", reference_section: @reference_section, url: taxa_reference_sections_path(@reference_section.taxon)

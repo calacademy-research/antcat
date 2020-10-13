@@ -4,7 +4,7 @@
 
 =render "shared/default_reference"
 
--url = taxon.new_record? ? '/taxa' : "/taxa/#{taxon.id}"
+-url = taxon.new_record? ? taxa_index_path : taxa_path(taxon)
 =form_with model: taxon, scope: :taxon, url: url do |form|
   =hidden_field_tag 'rank_to_create', params[:rank_to_create]
   =hidden_field_tag 'parent_id', params[:parent_id]
