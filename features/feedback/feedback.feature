@@ -49,4 +49,4 @@ Feature: Feedback
 
     When I go to the catalog page for "Calyptites"
     And I follow "Suggest edit"
-    Then the page field within the feedback form should contain "catalog/"
+    Then the "feedback_page" field should contain "catalog/"

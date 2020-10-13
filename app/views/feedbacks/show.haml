@@ -5,8 +5,6 @@
   =javascript_include_tag "controllers/feedbacks/show"
 
 -content_for :breadcrumbs_right do
-  -if @feedback.open?
-    =link_to "Hide/show 'What you can do...'", "#", data: { show_hide_toggler_for: "guidelines_for_editors" }, class: "btn-nodanger"
   =link_to "Hide/show formatted for email", "#", data: { show_hide_toggler_for: "for_email" }, class: "btn-nodanger"
   -if @feedback.closed?
     =link_to("Re-open", reopen_feedback_path(@feedback), method: :put, class: "btn-warning")
@@ -24,10 +22,6 @@
   =preserve do
     %textarea#formatted_for_email
       =@feedback.decorate.format_feedback_for_email
-
--if @feedback.open?
-  %div{data: { show_hide_toggable_id: "guidelines_for_editors" }}
-    =render "guidelines_for_editors"
 
 .callout.primary.no-border-callout.medium-9
   %p Registered users will receive notifications for comments posted here (next time they sign in).

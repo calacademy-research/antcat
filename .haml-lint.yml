@@ -35,6 +35,7 @@ linters:
       - Lint/Void
       - Metrics/BlockLength
       - Metrics/BlockNesting
+      - Performance/CollectionLiteralInLoop
       - Rails/Presence
       - Style/ConditionalAssignment
       - Style/DoubleNegation

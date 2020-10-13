@@ -2,10 +2,6 @@
 
 module DatabaseScripts
   class GrabBagChecks < DatabaseScript
-    def empty_status
-      DatabaseScripts::EmptyStatus::NOT_APPLICABLE
-    end
-
     def results
       [
         all_infrasubspecies_are_invalid,

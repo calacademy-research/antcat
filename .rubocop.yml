@@ -206,6 +206,9 @@ Metrics/MethodLength:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
 Metrics/PerceivedComplexity:
   Max: 14
   Enabled: false

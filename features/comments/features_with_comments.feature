@@ -14,7 +14,7 @@ Feature: Features with comments
     Then I should see a comments section
 
   Scenario: Commenting on user feedbacks
-    Given a visitor has submitted a feedback
+    Given there is an open feedback item
 
     When I go to the most recent feedback item
     Then I should see a comments section
