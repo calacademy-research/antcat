@@ -71,14 +71,16 @@ group :development, :test do
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rspec'
-  gem 'sunspot_test'
+  gem 'sunspot_test',
+    git: 'https://github.com/jonkerz/sunspot_test.git',
+    ref: 'f72d876062b4ea5bae7e6ef194b859cd9f38ae1b'
 end
 
 group :test do
   gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber-rails', '< 2.1.0', require: false # TODO: Locked due to Cucumber 4.
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
