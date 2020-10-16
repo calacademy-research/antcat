@@ -92,6 +92,8 @@ setupSaveHistoryItemButtons = ->
         if response.error
           alert "Error: #{response.error}"
         else
+          AntCat.notifySuccess("Updated history item")
+
           taxtEditor.html response.content
           AntCat.makeReferenceKeysExpandable taxtEditor
           AntCat.enableCatalogLinkHoverPreview taxtEditor
@@ -122,6 +124,8 @@ setupSaveReferenceSectionButtons = ->
         if response.error
           alert "Error: #{response.error}"
         else
+          AntCat.notifySuccess("Updated reference section")
+
           taxtEditor.html response.content
           AntCat.makeReferenceKeysExpandable taxtEditor
           AntCat.enableCatalogLinkHoverPreview taxtEditor
@@ -145,7 +149,10 @@ setupDeleteButton = ->
       type: 'DELETE'
       dataType: 'json'
       data: data
-      success: -> taxtEditor.parent().remove()
+      success: ->
+        AntCat.notifySuccess("Deleted item")
+
+        taxtEditor.parent().remove()
       error: -> alert 'error :('
 
 setupCancelButtons = ->
