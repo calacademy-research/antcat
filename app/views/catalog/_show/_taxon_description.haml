@@ -1,6 +1,7 @@
 -if user_is_at_least_helper?
   -content_for :javascripts do
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+  =render "shared/default_reference"
 
 #nomen-synopsis
   %span.name=Taxa::LinkEachEpithet[taxon]
