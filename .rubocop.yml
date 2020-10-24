@@ -336,6 +336,9 @@ RSpec/NestedGroups:
 RSpec/NotToNot:
   Enabled: false
 
+RSpec/StubbedMock:
+  Enabled: false
+
 ### Performance.
 
 Performance/AncestorsInclude:
