@@ -490,7 +490,7 @@ Style/OptionalBooleanParameter:
   Enabled: true
 
 Style/OptionHash:
-  Enabled: true
+  Enabled: false
 
 Style/RedundantAssignment:
   Enabled: false

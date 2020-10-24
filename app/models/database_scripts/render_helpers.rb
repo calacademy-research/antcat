@@ -3,7 +3,10 @@
 module DatabaseScripts
   module RenderHelpers
     def as_table
-      renderer = DatabaseScripts::Renderers::AsTable.new(cached_results)
+      # TODO: Fix hack by passing `results_for_render` in `AsTable#rows`, or evaluate lazily.
+      results_for_render = cached_results unless paginate?
+
+      renderer = DatabaseScripts::Renderers::AsTable.new(results_for_render)
       yield renderer
       renderer.render
     end

@@ -40,6 +40,9 @@
   .callout
     =@rendered
 
+-if @database_script.paginate?
+  =will_paginate @database_script.paginated_results(page: params[:page])
+
 %small.left
   Soft-validated
   =antcat_icon(@decorated_database_script.soft_validated? ? "check" : "nope")
