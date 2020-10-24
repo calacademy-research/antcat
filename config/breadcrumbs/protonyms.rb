@@ -5,8 +5,10 @@ crumb :protonyms do
   parent :catalog
 end
 
-crumb :protonym do |protonym|
-  if protonym.persisted?
+crumb :protonym do |protonym, fallback_link|
+  if protonym.nil?
+    link fallback_link
+  elsif protonym.persisted?
     link protonym.decorate.name_with_fossil, protonym
   else
     link "##{protonym.id} [deleted]"
