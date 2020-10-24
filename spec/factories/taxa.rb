@@ -104,6 +104,7 @@ FactoryBot.define do
       genus
 
       species_group_name_protonym
+      unavailable
     end
 
     # Statuses.
