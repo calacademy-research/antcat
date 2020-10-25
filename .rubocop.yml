@@ -206,6 +206,9 @@ Metrics/MethodLength:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
 Metrics/PerceivedComplexity:
   Max: 14
   Enabled: false
@@ -334,6 +337,9 @@ RSpec/NestedGroups:
   Max: 6
 
 RSpec/NotToNot:
+  Enabled: false
+
+RSpec/StubbedMock:
   Enabled: false
 
 ### Performance.
@@ -490,7 +496,7 @@ Style/OptionalBooleanParameter:
   Enabled: true
 
 Style/OptionHash:
-  Enabled: true
+  Enabled: false
 
 Style/RedundantAssignment:
   Enabled: false

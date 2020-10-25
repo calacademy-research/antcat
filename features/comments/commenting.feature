@@ -1,7 +1,7 @@
 Feature: Commenting
   Background:
     Given I log in as a catalog editor named "Batiatus"
-    And a visitor has submitted a feedback
+    And there is an open feedback item
     And I go to the most recent feedback item
 
   Scenario: Leaving a comment (with feed)

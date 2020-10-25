@@ -2,12 +2,10 @@
 
 module DatabaseScripts
   class ProtonymsWithoutATaxonWithSameCleanedNameOnlySubspecies < DatabaseScript
-    LIMIT = 75
+    PER_PAGE = 200
 
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
+    def paginated_results page:
+      @_paginated_results ||= results.paginate(page: page, per_page: PER_PAGE)
     end
 
     def results
@@ -17,15 +15,15 @@ module DatabaseScripts
         joins(taxa: :name).
         where(taxa: { type: Rank::SPECIES }).
         where('names_taxa.epithet = names.epithet').
-        distinct.limit(LIMIT)
+        distinct
     end
 
-    def render
+    def render results_to_render: results
       as_table do |t|
         t.header 'Protonym (and cleaned name)', 'Author',
           'Protonym taxa', 'Taxa with same name',
           'Quick-add button', 'Quick-add attributes'
-        t.rows do |protonym|
+        t.rows(results_to_render) do |protonym|
           quick_adder = QuickAdd::FromExistingProtonymFactory.create_quick_adder(protonym)
           cleaned_name = protonym.name.cleaned_name
 

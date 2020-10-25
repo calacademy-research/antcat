@@ -8,12 +8,3 @@ elevated the subspecies
 to the rank of species (now
 =succeed ")" do
   =activity.link_taxon_trackable_if_exists deleted_label: activity.parameters[:name].html_safe
-
--unless activity.parameters[:original_subspecies_id]
-  -# TODO: Remove.
-  -if Subspecies.where(name_cache: activity.parameters[:name_was].gsub(%r{</?i>}, '')).exists?
-    %small{style: 'color: blue'}
-      %b [subspecies exists]
-  %small.bold-warning please see note
-  =inline_expandable("show more") do
-    This subspecies was elevated using the old code that modified the original record in place. The old subspecies record may be missing and may have to be recreated.

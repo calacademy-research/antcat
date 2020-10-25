@@ -1,4 +1,4 @@
-.taxt-editor{data: { url: "/reference_sections/#{reference_section.id}" }}
+.taxt-editor{data: { url: reference_section_path(reference_section) }}
   .taxt-presenter
     %h6.title_taxt=markdown_without_wrapping reference_section.title_taxt
     %h6.subtitle_taxt=Detax[reference_section.subtitle_taxt]

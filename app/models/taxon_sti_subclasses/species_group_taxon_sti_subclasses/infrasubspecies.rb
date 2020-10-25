@@ -4,6 +4,8 @@ class Infrasubspecies < SpeciesGroupTaxon
   belongs_to :species
   belongs_to :subspecies
 
+  validates :status, inclusion: { in: Status::STATUSES - [Status::VALID], message: 'is not allowed for rank.' }
+
   def parent
     subspecies
   end

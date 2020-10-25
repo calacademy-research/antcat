@@ -4,5 +4,6 @@
 -content_for :javascripts do
   =javascript_include_tag 'reference_select'
   =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
+  =javascript_include_tag "controllers/taxa/copy_name_to_protonym"
 
 =render 'form', taxon: @taxon, default_name_string: @default_name_string, taxon_form: @taxon_form

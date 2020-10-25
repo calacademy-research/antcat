@@ -8,7 +8,6 @@ module References
     UNFRIENDLY_SOLR_CHARACTERS_REGEX = /-|:/
     FREETEXT_SUBSTRINGS_TO_REMOVE = ['<i>', '</i>', '\*'] # Titles may contain these.
 
-    # rubocop:disable Metrics/ParameterLists
     def initialize(
       freetext: '', title: nil, author: nil, year: nil, start_year: nil, end_year: nil,
       doi: nil, reference_type: nil, page: 1, per_page: 30
@@ -24,7 +23,6 @@ module References
       @page = page
       @per_page = per_page
     end
-    # rubocop:enable Metrics/ParameterLists
 
     def call
       search_results

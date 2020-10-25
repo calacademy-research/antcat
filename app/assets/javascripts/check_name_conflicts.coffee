@@ -1,9 +1,7 @@
 DELAY_MS = 500
 
-# For the taxon form.
-TAXON_NAME_STRING = '#taxon_name_string'
-PROTONYM_NAME_STRING = '#protonym_name_string'
-COPY_NAME_TO_PROTONYM = '#copy-name-to-protonym-js-hook'
+TAXON_NAME_STRING = AntCat.CONSTANTS.TAXON_NAME_STRING # For the taxon form.
+PROTONYM_NAME_STRING = AntCat.CONSTANTS.PROTONYM_NAME_STRING # For the taxon and protonym forms.
 
 # For the name form.
 NAME_NAME_STRING = '#name_name_string'
@@ -55,12 +53,6 @@ $ ->
   $(NAME_NAME_STRING).keyup ->
     exceptNameId = $(NAME_NAME_STRING).data('name-id')
     AntCat.delay(checkNameConflicts, NAME_NAME_STRING, exceptNameId)
-
-  $(COPY_NAME_TO_PROTONYM).click (event) ->
-    event.preventDefault()
-    taxon_name_string = $(TAXON_NAME_STRING).val()
-    $(PROTONYM_NAME_STRING).val taxon_name_string
-    $(PROTONYM_NAME_STRING).trigger('keyup')
 
 AntCat.delay = do ->
   timer = 0

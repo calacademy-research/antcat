@@ -12,6 +12,7 @@ module Taxa
     # TODO: Move validations to service.
     def create
       @taxon = find_taxon
+      @convert_to_subspecies_policy = ConvertToSubspeciesPolicy.new(@taxon)
 
       if @taxon.subspecies.present?
         @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"

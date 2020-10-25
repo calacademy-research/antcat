@@ -48,8 +48,22 @@ class DatabaseScript
     basename
   end
 
+  # TODO: See how pagination works out for us and improve code.
+  def render_with_options_or_default options
+    if paginate?
+      render(results_to_render: paginated_results(page: options[:page].presence || 1))
+    else
+      render
+    end
+  end
+
+  def paginate?
+    respond_to?(:paginated_results)
+  end
+
   protected
 
+    # TODO: Probably remove.
     def cached_results
       return @_results if defined? @_results
       if respond_to?(:results)
@@ -67,6 +81,7 @@ class DatabaseScript
       @_end_data_attributes ||= DatabaseScripts::EndDataAttributes.new(basename)
     end
 
+    # TODO: Probably remove and/or inline special cases in `DatabaseScript` subclasses.
     def default_statistics
       return unless respond_to? :results
       count = cached_results.count

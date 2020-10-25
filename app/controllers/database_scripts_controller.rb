@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Implement pagination for lists inside scripts.
-
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
 
@@ -34,11 +32,16 @@ class DatabaseScriptsController < ApplicationController
       raise ActionController::RoutingError, "Not Found"
     end
 
+    # TODO: Probably move from controller and wrap in a renderer.
     def timed_render
       start = Time.current
-      rendered = DatabaseScripts::Render.new(@database_script).call
+      rendered = DatabaseScripts::Render.new(@database_script, render_options).call
       render_duration = Time.current - start
 
       [rendered, render_duration]
+    end
+
+    def render_options
+      params.slice(:page)
     end
 end
