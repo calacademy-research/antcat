@@ -39,7 +39,7 @@ Then("the history should be empty") do
 end
 
 When("I add a history item {string}") do |content|
-  step %(I click on the add taxon history item button)
+  step %(I click on the add history item button)
   step %(I fill in "taxt" with "#{content}")
   step %(I press "Save")
 end

@@ -94,12 +94,12 @@ module CucumberHelpers
       when 'the wiki pages index'
         wiki_pages_path
 
-      # Reference sections and taxon history items.
+      # Reference sections and history items.
       when 'the reference sections page'
         reference_sections_path
       when 'the page of the most recent reference section'
         reference_section_path(ReferenceSection.last)
-      when 'the taxon history items page'
+      when 'the history items page'
         history_items_path
       when 'the page of the most recent history item'
         history_item_path(HistoryItem.last)

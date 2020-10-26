@@ -46,7 +46,6 @@ Rails.application.config.assets.precompile += %w[
   controllers/references/form.js
   controllers/taxa/copy_name_to_protonym.js
   controllers/taxa/move_items/select_checkboxes.js
-  controllers/taxa/reorder_history_items.js
   controllers/taxa/reorder_reference_sections.js
 ]
 

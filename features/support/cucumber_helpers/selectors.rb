@@ -48,15 +48,15 @@ module CucumberHelpers
         '#references-section a.taxt-editor-delete-button'
 
       # Edit history items.
-      when 'the add taxon history item button'
+      when 'the add history item button'
         '#taxt-editor-add-history-item-button'
-      when 'the edit taxon history item button'
+      when 'the edit history item button'
         '#history-items .history-item a.taxt-editor-edit-button'
-      when 'the cancel taxon history item button'
+      when 'the cancel history item button'
         '#history-items .history-item a.taxt-editor-cancel-button'
-      when 'the save taxon history item button'
+      when 'the save history item button'
         '#history-items .history-item a.taxt-editor-history-item-save-button'
-      when 'the delete taxon history item button'
+      when 'the delete history item button'
         '#history-items .history-item a.taxt-editor-delete-button'
 
       # Editor's Panel.

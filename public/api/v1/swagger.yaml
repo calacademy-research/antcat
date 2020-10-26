@@ -298,7 +298,7 @@ paths:
           format: int32
       responses:
         "200":
-          description: Returns 100 taxon history items at a time starting at the specified history_item_id id. If no id is supplied, starts at zero
+          description: Returns 100 history items at a time starting at the specified history_item_id id. If no id is supplied, starts at zero
           schema:
             type: array
             items:
@@ -823,18 +823,18 @@ definitions:
         description: Automatically generated timestamp for most recent update
 
   HistoryItem:
-    description: Taxon history element
+    description: History item
     type: object
     properties:
       id:
         type: integer
-        description: taxon history id, primary key
+        description: History item id, primary key
       protonym_id:
         type: integer
         description: fk to protonyms
       position:
         type: integer
-        description: relative priority of this particular taxon history item agsint others on this taxon
+        description: relative priority of this particular history item
       taxt:
         type: string
         description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
@@ -1005,7 +1005,7 @@ definitions:
         type: integer
       position:
         type: integer
-        description: relative priority of this particular taxon history item agsint others on this taxon
+        description: relative priority of this particular reference section
       references_taxt:
         type: string
         description: Long field with text and notes. Contains references to taxaon and reference ids with format {ref *}:.
