@@ -18,7 +18,7 @@ describe TaxonHistoryItemsController do
 
   describe "POST create", as: :helper do
     let!(:protonym) { create :protonym }
-    let!(:taxon_history_item_params) do
+    let!(:history_item_params) do
       {
         taxt: 'content'
       }
@@ -26,29 +26,29 @@ describe TaxonHistoryItemsController do
 
     it 'creates a history item' do
       expect do
-        post(:create, params: { protonym_id: protonym.id, taxon_history_item: taxon_history_item_params })
+        post(:create, params: { protonym_id: protonym.id, history_item: history_item_params })
       end.to change { HistoryItem.count }.by(1)
 
-      taxon_history_item = HistoryItem.last
-      expect(taxon_history_item.taxt).to eq taxon_history_item_params[:taxt]
+      history_item = HistoryItem.last
+      expect(history_item.taxt).to eq history_item_params[:taxt]
     end
 
     it 'creates a activity' do
       expect do
-        post(:create, params: { protonym_id: protonym.id, taxon_history_item: taxon_history_item_params, edit_summary: 'added' })
+        post(:create, params: { protonym_id: protonym.id, history_item: history_item_params, edit_summary: 'added' })
       end.to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
-      taxon_history_item = HistoryItem.last
-      expect(activity.trackable).to eq taxon_history_item
+      history_item = HistoryItem.last
+      expect(activity.trackable).to eq history_item
       expect(activity.edit_summary).to eq "added"
-      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
+      expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
     end
   end
 
   describe "PUT update", as: :helper do
-    let!(:taxon_history_item) { create :taxon_history_item }
-    let!(:taxon_history_item_params) do
+    let!(:history_item) { create :taxon_history_item }
+    let!(:history_item_params) do
       {
         taxt: 'content',
         rank: Rank::SUBFAMILY
@@ -56,42 +56,42 @@ describe TaxonHistoryItemsController do
     end
 
     it 'updates the history item' do
-      expect(taxon_history_item.taxt).to_not eq taxon_history_item_params[:taxt]
-      expect(taxon_history_item.rank).to_not eq taxon_history_item_params[:rank]
+      expect(history_item.taxt).to_not eq history_item_params[:taxt]
+      expect(history_item.rank).to_not eq history_item_params[:rank]
 
-      put(:update, params: { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params })
+      put(:update, params: { id: history_item.id, history_item: history_item_params })
 
-      taxon_history_item.reload
-      expect(taxon_history_item.taxt).to eq taxon_history_item_params[:taxt]
-      expect(taxon_history_item.rank).to eq taxon_history_item_params[:rank]
+      history_item.reload
+      expect(history_item.taxt).to eq history_item_params[:taxt]
+      expect(history_item.rank).to eq history_item_params[:rank]
     end
 
     it 'creates an activity' do
       expect do
-        params = { id: taxon_history_item.id, taxon_history_item: taxon_history_item_params, edit_summary: 'Duplicate' }
+        params = { id: history_item.id, history_item: history_item_params, edit_summary: 'Duplicate' }
         put :update, params: params
-      end.to change { Activity.where(action: :update, trackable: taxon_history_item).count }.by(1)
+      end.to change { Activity.where(action: :update, trackable: history_item).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
-      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
+      expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
     end
   end
 
   describe "DELETE destroy", as: :editor do
-    let!(:taxon_history_item) { create :taxon_history_item }
+    let!(:history_item) { create :taxon_history_item }
 
     it 'deletes the history item' do
-      expect { delete(:destroy, params: { id: taxon_history_item.id }) }.to change { HistoryItem.count }.by(-1)
+      expect { delete(:destroy, params: { id: history_item.id }) }.to change { HistoryItem.count }.by(-1)
     end
 
     it 'creates an activity' do
-      expect { delete(:destroy, params: { id: taxon_history_item.id, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: :destroy, trackable: taxon_history_item).count }.by(1)
+      expect { delete(:destroy, params: { id: history_item.id, edit_summary: 'Duplicate' }) }.
+        to change { Activity.where(action: :destroy, trackable: history_item).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
-      expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
+      expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
     end
   end
 end

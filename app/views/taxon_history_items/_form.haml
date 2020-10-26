@@ -28,12 +28,12 @@
                 =antcat_icon 'check'
                 %small (unranked items, or with matching rank)
 
-=form_with model: taxon_history_item, scope: :taxon_history_item, url: url do |f|
-  =render "shared/errors_for", resource: taxon_history_item
+=form_with model: history_item, scope: :history_item, url: url do |f|
+  =render "shared/errors_for", resource: history_item
 
   .row
     .medium-12.columns
-      =text_area_tag :taxt, taxon_history_item.taxt, rows: 5, name: 'taxon_history_item[taxt]',
+      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]',
         data: { has_linkables: true, previewable: true, previewable_title: "History item", use_extras: true }
 
   .row
@@ -56,11 +56,11 @@
       %tr
         %td{colspan: 2} Protonym has no history items.
     -else
-      -protonym.protonym_history_items.persisted.each do |history_item|
-        %tr{class: ('pale-background' if history_item == taxon_history_item)}
+      -protonym.protonym_history_items.persisted.each do |protonym_history_item|
+        %tr{class: ('pale-background' if protonym_history_item == history_item)}
           %td
-            =link_to "##{history_item.id}", taxon_history_item_path(history_item)
-            -if history_item == taxon_history_item
+            =link_to "##{protonym_history_item.id}", taxon_history_item_path(protonym_history_item)
+            -if protonym_history_item == history_item
               %strong (selected)
           %td.grow
-            %small=Detax[history_item.to_taxt]
+            %small=Detax[protonym_history_item.to_taxt]

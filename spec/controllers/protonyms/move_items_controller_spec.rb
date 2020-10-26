@@ -13,19 +13,19 @@ describe Protonyms::MoveItemsController do
 
   describe "POST create", as: :editor do
     let!(:protonym) { create :protonym }
-    let!(:taxon_history_item) { create :taxon_history_item, protonym: protonym }
+    let!(:history_item) { create :taxon_history_item, protonym: protonym }
     let!(:to_protonym) { create :protonym }
 
     it "calls `Protonyms::Operations::MoveItems`" do
       expect(Protonyms::Operations::MoveItems).to receive(:new).with(
         to_protonym,
-        history_items: [taxon_history_item]
+        history_items: [history_item]
       ).and_call_original
 
       params = {
         protonym_id: protonym.id,
         to_protonym_id: to_protonym.id,
-        history_item_ids: [taxon_history_item.id]
+        history_item_ids: [history_item.id]
       }
 
       post :create, params: params
@@ -35,7 +35,7 @@ describe Protonyms::MoveItemsController do
       params = {
         protonym_id: protonym.id,
         to_protonym_id: to_protonym.id,
-        history_item_ids: [taxon_history_item.id]
+        history_item_ids: [history_item.id]
       }
 
       expect { post :create, params: params }.

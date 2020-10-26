@@ -52,7 +52,7 @@
             =logged_in_only_tooltip_icon
 
         -if user_is_at_least_helper?
-          =render 'taxon_history_items/catalog_taxt_editor_template', taxon_history_item: history_item
+          =render 'taxon_history_items/catalog_taxt_editor_template', history_item: history_item
         -else
           =add_period_if_necessary Detax[history_item.to_taxt]
 

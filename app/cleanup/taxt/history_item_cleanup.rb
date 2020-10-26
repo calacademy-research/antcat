@@ -54,7 +54,7 @@ module Taxt
     NO_REF_OR_TAX_OR_PRO_TAG =
       "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %' AND taxt NOT LIKE '%{pro %'"
 
-    # Example: `@taxon_history_items = Taxt::HistoryItemCleanup.vhic_unknown(@taxon_history_items)`.
+    # Example: `@history_item = Taxt::HistoryItemCleanup.vhic_unknown(@history_item)`.
     def self.vhic_unknown scope
       Taxt::HistoryItemCleanup::VIRTUAL_HISTORY_ITEM_CANDIDATES.each do |where_filter|
         scope = scope.where.not(where_filter)

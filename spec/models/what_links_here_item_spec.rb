@@ -5,10 +5,10 @@ require 'rails_helper'
 describe WhatLinksHereItem do
   describe '#detax' do
     context 'when `what_links_here_item` is a taxt item' do
-      let!(:taxon_history_item) { create :taxon_history_item }
-      let!(:what_links_here_item) { described_class.new('taxon_history_items', :taxt, taxon_history_item.id) }
+      let!(:history_item) { create :taxon_history_item }
+      let!(:what_links_here_item) { described_class.new('taxon_history_items', :taxt, history_item.id) }
 
-      specify { expect(what_links_here_item.detax).to eq Detax[taxon_history_item.taxt] }
+      specify { expect(what_links_here_item.detax).to eq Detax[history_item.taxt] }
     end
 
     context 'when `what_links_here_item` is not a taxt item' do
