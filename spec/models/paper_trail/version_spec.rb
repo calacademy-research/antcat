@@ -46,8 +46,8 @@ describe PaperTrail::Version do
   end
 
   describe '.search', :versioning do
-    let!(:lasius_item) { create :taxon_history_item, taxt: "Lasius content" }
-    let!(:formica_123_item) { create :taxon_history_item, taxt: "Formica content 123" }
+    let!(:lasius_item) { create :history_item, taxt: "Lasius content" }
+    let!(:formica_123_item) { create :history_item, taxt: "Formica content 123" }
 
     context "with search type 'LIKE'" do
       specify do

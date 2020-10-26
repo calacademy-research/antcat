@@ -7,9 +7,9 @@ describe Protonyms::Operations::MoveItems do
     describe 'moving history items' do
       let!(:from_protonym) { create :protonym }
       let!(:to_protonym) { create :protonym }
-      let!(:history_item_1) { create :taxon_history_item, protonym: from_protonym }
-      let!(:history_item_2) { create :taxon_history_item, protonym: from_protonym }
-      let!(:history_item_3) { create :taxon_history_item, protonym: from_protonym }
+      let!(:history_item_1) { create :history_item, protonym: from_protonym }
+      let!(:history_item_2) { create :history_item, protonym: from_protonym }
+      let!(:history_item_3) { create :history_item, protonym: from_protonym }
 
       context 'when moving all history items belonging to a taxon' do
         let(:history_items) { [history_item_1, history_item_2, history_item_3] }
@@ -27,7 +27,7 @@ describe Protonyms::Operations::MoveItems do
       end
 
       context 'when moving some but not all items belonging to a protonym' do
-        let!(:history_item_4) { create :taxon_history_item, protonym: from_protonym }
+        let!(:history_item_4) { create :history_item, protonym: from_protonym }
 
         let(:history_items) { [history_item_1, history_item_2, history_item_3] }
 
@@ -53,7 +53,7 @@ describe Protonyms::Operations::MoveItems do
         let(:history_items) { [history_item_1, history_item_2, history_item_3] }
 
         before do
-          create :taxon_history_item, protonym: to_protonym
+          create :history_item, protonym: to_protonym
         end
 
         it 'places moved history items last in correct order' do

@@ -165,7 +165,7 @@ FactoryBot.define do
 
     trait :with_history_item do
       after :create do |taxon|
-        create :taxon_history_item, protonym: taxon.protonym
+        create :history_item, protonym: taxon.protonym
       end
     end
 

@@ -135,7 +135,7 @@ describe Exporters::Antweb::TaxonAttributes do
 
       before do
         taxon.protonym.type_name = create :type_name, :by_monotypy, taxon: type_species
-        create :taxon_history_item, protonym: taxon.protonym, taxt: "Taxon: {tax #{type_species.id}}"
+        create :history_item, protonym: taxon.protonym, taxt: "Taxon: {tax #{type_species.id}}"
         taxon.reference_sections.create!(title_taxt: "Title", references_taxt: "{ref #{taxt_reference.id}}: 766")
       end
 

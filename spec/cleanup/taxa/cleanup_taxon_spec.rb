@@ -13,7 +13,7 @@ describe Taxa::CleanupTaxon do
 
     context "when taxon has 'Combination in' history items" do
       before do
-        create :taxon_history_item, protonym: taxon.protonym, taxt: "Combination in {tax #{obsolete_genus.id}}"
+        create :history_item, protonym: taxon.protonym, taxt: "Combination in {tax #{obsolete_genus.id}}"
       end
 
       specify { expect(described_class.new(taxon).combination_in_according_to_history_items).to eq [obsolete_genus] }

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 Given("there is a history item {string}") do |taxt|
-  create :taxon_history_item, taxt: taxt
+  create :history_item, taxt: taxt
 end
 
 Given("there is a subfamily protonym {string} with a history item {string}") do |name, taxt|
   protonym = create :protonym, :family_group_name, name: create(:subfamily_name, name: name)
-  create :taxon_history_item, taxt: taxt, protonym: protonym
+  create :history_item, taxt: taxt, protonym: protonym
 end
 
 Given("there is a subfamily protonym {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|

@@ -13,7 +13,7 @@ describe Protonyms::MoveItemsController do
 
   describe "POST create", as: :editor do
     let!(:protonym) { create :protonym }
-    let!(:history_item) { create :taxon_history_item, protonym: protonym }
+    let!(:history_item) { create :history_item, protonym: protonym }
     let!(:to_protonym) { create :protonym }
 
     it "calls `Protonyms::Operations::MoveItems`" do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :taxon_history_item, class: 'HistoryItem' do
+  factory :history_item, class: 'HistoryItem' do
     transient do
       taxt_tag {}
     end

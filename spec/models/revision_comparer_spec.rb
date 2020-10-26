@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe RevisionComparer, :versioning do
-  let(:item) { create :taxon_history_item, taxt: "initial content" }
+  let(:item) { create :history_item, taxt: "initial content" }
   let(:item_id) { item.id }
   let(:model) { HistoryItem }
 

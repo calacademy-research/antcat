@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::TaxonHistoryItemsController, as: :visitor do
   describe "GET index" do
     specify do
-      history_item = create :taxon_history_item
+      history_item = create :history_item
 
       get :index
       expect(json_response).to eq(
@@ -29,7 +29,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:history_item) { create :taxon_history_item }
+    let!(:history_item) { create :history_item }
 
     specify do
       get :show, params: { id: history_item.id }

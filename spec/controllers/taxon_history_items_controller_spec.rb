@@ -47,7 +47,7 @@ describe TaxonHistoryItemsController do
   end
 
   describe "PUT update", as: :helper do
-    let!(:history_item) { create :taxon_history_item }
+    let!(:history_item) { create :history_item }
     let!(:history_item_params) do
       {
         taxt: 'content',
@@ -79,7 +79,7 @@ describe TaxonHistoryItemsController do
   end
 
   describe "DELETE destroy", as: :editor do
-    let!(:history_item) { create :taxon_history_item }
+    let!(:history_item) { create :history_item }
 
     it 'deletes the history item' do
       expect { delete(:destroy, params: { id: history_item.id }) }.to change { HistoryItem.count }.by(-1)
