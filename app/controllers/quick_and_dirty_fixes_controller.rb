@@ -9,7 +9,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def convert_bolton_tags
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
     old_taxt = history_item.taxt
     new_taxt = Markdowns::BoltonKeysToRefTags[old_taxt]
@@ -25,7 +25,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def convert_to_taxac_tags
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ConvertTaxToTaxacTags[old_taxt]
@@ -41,7 +41,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def force_remove_pages_from_taxac_tags
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ForceRemovePagesFromTaxacTags[old_taxt]
@@ -57,7 +57,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def remove_pages_from_taxac_tags
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::RemovePagesFromTaxacTags[old_taxt]
@@ -73,7 +73,7 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def replace_missing_tags
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
     old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ReplaceMissingTags[old_taxt]
@@ -90,7 +90,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def replace_missing_tag_with_tax_tag
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
     hardcoded_missing_name = params[:hardcoded_missing_name]
     replace_with_taxon_id = params[:replace_with_taxon_id]
 
@@ -112,7 +112,7 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def switch_tax_tag
-    history_item = HistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
     replace_taxon = Taxon.find(params[:replace_tax_id])
     new_taxon = Taxon.find(params[:new_tax_id])
 
