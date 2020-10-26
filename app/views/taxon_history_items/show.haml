@@ -55,7 +55,7 @@
       -@protonym.protonym_history_items.each do |history_item|
         %tr{class: ('pale-background' if history_item == @taxon_history_item)}
           %td
-            =link_to "##{history_item.id}", history_item
+            =link_to "##{history_item.id}", taxon_history_item_path(history_item)
             -if history_item == @taxon_history_item
               %strong (selected)
           %td.grow

@@ -53,7 +53,7 @@ describe PaperTrail::Version do
       specify do
         versions = described_class.search('lasius', 'LIKE')
 
-        expect(versions.map(&:item_type)).to eq ["TaxonHistoryItem"]
+        expect(versions.map(&:item_type)).to eq ["HistoryItem"]
         expect(versions.map(&:item_id)).to eq [lasius_item.id]
       end
     end
@@ -62,7 +62,7 @@ describe PaperTrail::Version do
       specify do
         versions = described_class.search('content [0-9]', 'REGEXP')
 
-        expect(versions.map(&:item_type)).to eq ["TaxonHistoryItem"]
+        expect(versions.map(&:item_type)).to eq ["HistoryItem"]
         expect(versions.map(&:item_id)).to eq [formica_123_item.id]
       end
     end

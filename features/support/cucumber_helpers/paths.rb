@@ -102,7 +102,7 @@ module CucumberHelpers
       when 'the taxon history items page'
         taxon_history_items_path
       when 'the page of the most recent history item'
-        taxon_history_item_path(TaxonHistoryItem.last)
+        taxon_history_item_path(HistoryItem.last)
 
       # Users.
       when 'My account'

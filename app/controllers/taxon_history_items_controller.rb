@@ -7,7 +7,7 @@ class TaxonHistoryItemsController < ApplicationController
   before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
-    @taxon_history_items = TaxonHistoryItem.left_outer_joins(:terminal_taxa)
+    @taxon_history_items = HistoryItem.left_outer_joins(:terminal_taxa)
     @taxon_history_items = @taxon_history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
     @taxon_history_items = @taxon_history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
     @taxon_history_items = @taxon_history_items.search(params[:q], params[:search_type]) if params[:q].present?
@@ -56,7 +56,7 @@ class TaxonHistoryItemsController < ApplicationController
       format.json { render_json @taxon_history_item, partial: params[:taxt_editor_template] }
       format.html do
         if updated
-          redirect_to @taxon_history_item, notice: "Successfully updated history item."
+          redirect_to taxon_history_item_path(@taxon_history_item), notice: "Successfully updated history item."
         else
           render :edit
         end
@@ -86,7 +86,7 @@ class TaxonHistoryItemsController < ApplicationController
     end
 
     def find_taxon_history_item
-      TaxonHistoryItem.find(params[:id])
+      HistoryItem.find(params[:id])
     end
 
     def taxon_history_item_params

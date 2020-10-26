@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class TaxonHistoryItem < ApplicationRecord
+class HistoryItem < ApplicationRecord
   include Trackable
+
+  self.table_name = :taxon_history_items # NOTE: This model used to `belongs_to :taxon`.
 
   belongs_to :protonym
 

@@ -45,9 +45,9 @@ When("I add a history item {string}") do |content|
 end
 
 When("I update the most recent history item to say {string}") do |content|
-  TaxonHistoryItem.last.update!(taxt: content)
+  HistoryItem.last.update!(taxt: content)
 end
 
 When("I delete the most recent history item") do
-  TaxonHistoryItem.last.destroy
+  HistoryItem.last.destroy
 end

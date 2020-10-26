@@ -63,7 +63,7 @@
       %td{colspan: 3} Found no results.
   -@taxon_history_items.each do |history_item|
     %tr
-      %td=link_to "##{history_item.id}", history_item
+      %td=link_to "##{history_item.id}", taxon_history_item_path(history_item)
       %td=history_item.position
       %td=CatalogFormatter.link_to_protonym(history_item.protonym)
       %td=CatalogFormatter.link_to_taxa(history_item.terminal_taxa)

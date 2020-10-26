@@ -49,7 +49,7 @@ module Protonyms
       end
 
       def history_items
-        @_history_items ||= TaxonHistoryItem.where(id: params[:history_item_ids]).order(:position)
+        @_history_items ||= HistoryItem.where(id: params[:history_item_ids]).order(:position)
       end
   end
 end

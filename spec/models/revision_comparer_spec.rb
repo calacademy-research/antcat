@@ -5,7 +5,7 @@ require 'rails_helper'
 describe RevisionComparer, :versioning do
   let(:item) { create :taxon_history_item, taxt: "initial content" }
   let(:item_id) { item.id }
-  let(:model) { TaxonHistoryItem }
+  let(:model) { HistoryItem }
 
   describe "#most_recent" do
     context "when item exists" do

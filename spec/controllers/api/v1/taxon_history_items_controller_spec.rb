@@ -11,7 +11,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
       expect(json_response).to eq(
         [
           {
-            "taxon_history_item" => {
+            "history_item" => {
               "id" => taxon_history_item.id,
               "protonym_id" => taxon_history_item.protonym.id,
               "position" => taxon_history_item.position,
@@ -35,7 +35,7 @@ describe Api::V1::TaxonHistoryItemsController, as: :visitor do
       get :show, params: { id: taxon_history_item.id }
       expect(json_response).to eq(
         {
-          "taxon_history_item" => {
+          "history_item" => {
             "id" => taxon_history_item.id,
             "protonym_id" => taxon_history_item.protonym.id,
             "position" => taxon_history_item.position,

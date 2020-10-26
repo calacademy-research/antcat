@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe TaxonHistoryItem do
+describe HistoryItem do
   it { is_expected.to be_versioned }
 
   describe 'relations' do

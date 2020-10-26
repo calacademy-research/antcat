@@ -3,7 +3,7 @@
 module DatabaseScripts
   class TaxacTagsWithPageNumbers < DatabaseScript
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
+      HistoryItem.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
     end
 
     def render

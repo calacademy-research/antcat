@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.5.2"
+  version: "1.6.0"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -302,7 +302,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/TaxonHistoryItem'
+              $ref: '#/definitions/HistoryItem'
         "404":
           description: Record not found
 
@@ -323,7 +323,7 @@ paths:
         "200":
           description: a single getTaxonHistoryItem  record
           schema:
-            $ref: '#/definitions/TaxonHistoryItem'
+            $ref: '#/definitions/HistoryItem'
         "404":
           description: Record not found
 
@@ -822,7 +822,7 @@ definitions:
         format: date-time
         description: Automatically generated timestamp for most recent update
 
-  TaxonHistoryItem:
+  HistoryItem:
     description: Taxon history element
     type: object
     properties:

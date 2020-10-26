@@ -58,7 +58,7 @@
 
         -if current_user
           %span.show-on-hover
-            =link_to "Show", history_item, class: "btn-normal btn-very-tiny"
+            =link_to "Show", taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             -if user_is_at_least_helper?
               =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
             =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

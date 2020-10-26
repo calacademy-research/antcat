@@ -28,7 +28,7 @@
                 =antcat_icon 'check'
                 %small (unranked items, or with matching rank)
 
-=form_with model: taxon_history_item, url: url do |f|
+=form_with model: taxon_history_item, scope: :taxon_history_item, url: url do |f|
   =render "shared/errors_for", resource: taxon_history_item
 
   .row
@@ -59,7 +59,7 @@
       -protonym.protonym_history_items.persisted.each do |history_item|
         %tr{class: ('pale-background' if history_item == taxon_history_item)}
           %td
-            =link_to "##{history_item.id}", history_item
+            =link_to "##{history_item.id}", taxon_history_item_path(history_item)
             -if history_item == taxon_history_item
               %strong (selected)
           %td.grow

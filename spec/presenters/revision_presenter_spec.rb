@@ -7,7 +7,7 @@ describe RevisionPresenter do
     subject(:presenter) { described_class.new(comparer: comparer) }
 
     let(:item) { create :taxon_history_item, taxt: "initial content" }
-    let(:model) { TaxonHistoryItem }
+    let(:model) { HistoryItem }
 
     describe "comparing versions" do
       let!(:diff_with_id) { item.tap { |item| item.update!(taxt: "second version") }.versions.last.id }

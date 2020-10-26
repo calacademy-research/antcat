@@ -27,9 +27,9 @@ describe TaxonHistoryItemsController do
     it 'creates a history item' do
       expect do
         post(:create, params: { protonym_id: protonym.id, taxon_history_item: taxon_history_item_params })
-      end.to change { TaxonHistoryItem.count }.by(1)
+      end.to change { HistoryItem.count }.by(1)
 
-      taxon_history_item = TaxonHistoryItem.last
+      taxon_history_item = HistoryItem.last
       expect(taxon_history_item.taxt).to eq taxon_history_item_params[:taxt]
     end
 
@@ -39,7 +39,7 @@ describe TaxonHistoryItemsController do
       end.to change { Activity.where(action: :create).count }.by(1)
 
       activity = Activity.last
-      taxon_history_item = TaxonHistoryItem.last
+      taxon_history_item = HistoryItem.last
       expect(activity.trackable).to eq taxon_history_item
       expect(activity.edit_summary).to eq "added"
       expect(activity.parameters).to eq(protonym_id: taxon_history_item.protonym_id)
@@ -82,7 +82,7 @@ describe TaxonHistoryItemsController do
     let!(:taxon_history_item) { create :taxon_history_item }
 
     it 'deletes the history item' do
-      expect { delete(:destroy, params: { id: taxon_history_item.id }) }.to change { TaxonHistoryItem.count }.by(-1)
+      expect { delete(:destroy, params: { id: taxon_history_item.id }) }.to change { HistoryItem.count }.by(-1)
     end
 
     it 'creates an activity' do
