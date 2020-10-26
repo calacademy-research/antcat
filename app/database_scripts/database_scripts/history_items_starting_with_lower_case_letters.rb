@@ -21,7 +21,7 @@ module DatabaseScripts
           taxt = history_item.taxt
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             protonym_link(history_item.protonym),
             Detax[taxt]
           ]

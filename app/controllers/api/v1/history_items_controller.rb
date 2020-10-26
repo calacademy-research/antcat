@@ -2,7 +2,7 @@
 
 module Api
   module V1
-    class TaxonHistoryItemsController < Api::ApiController
+    class HistoryItemsController < Api::ApiController
       ATTRIBUTES = [:id, :protonym_id, :position, :taxt, :created_at, :updated_at]
 
       def index

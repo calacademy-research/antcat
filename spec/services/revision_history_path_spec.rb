@@ -10,7 +10,7 @@ describe RevisionHistoryPath do
     specify { expect(described_class['Reference', 1]).to eq "/references/1/history" }
     specify { expect(described_class['ReferenceSection', 1]).to eq "/reference_sections/1/history" }
     specify { expect(described_class['Taxon', 1]).to eq "/catalog/1/history" }
-    specify { expect(described_class['HistoryItem', 1]).to eq "/taxon_history_items/1/history" }
+    specify { expect(described_class['HistoryItem', 1]).to eq "/history_items/1/history" }
     specify { expect(described_class['Tooltip', 1]).to eq "/tooltips/1/history" }
     specify { expect(described_class['WikiPage', 1]).to eq "/wiki_pages/1/history" }
   end

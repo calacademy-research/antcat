@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TaxonHistoryItemsController < ApplicationController
+class HistoryItemsController < ApplicationController
   PER_PAGE_OPTIONS = [30, 100, 500]
 
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
@@ -56,7 +56,7 @@ class TaxonHistoryItemsController < ApplicationController
       format.json { render_json @history_item, partial: params[:taxt_editor_template] }
       format.html do
         if updated
-          redirect_to taxon_history_item_path(@history_item), notice: "Successfully updated history item."
+          redirect_to history_item_path(@history_item), notice: "Successfully updated history item."
         else
           render :edit
         end

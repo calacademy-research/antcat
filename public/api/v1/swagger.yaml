@@ -283,22 +283,22 @@ paths:
         "404":
           description: Record not found
 
-  /taxon_history_items:
+  /history_items:
     get:
-      summary: Get all taxon_history_items
-      operationId: getTaxonHistoryItems
+      summary: Get all history_items
+      operationId: getHistoryItems
       tags:
-        - taxon_history_items
+        - history_items
       parameters:
         - name: starts_at
           in: query
-          description: Lowest taxon_history_item id to be returned
+          description: Lowest history_item id to be returned
           required: false
           type: integer
           format: int32
       responses:
         "200":
-          description: Returns 100 taxon history items at a time starting at the specified taxon_history_item_id id. If no id is supplied, starts at zero
+          description: Returns 100 taxon history items at a time starting at the specified history_item_id id. If no id is supplied, starts at zero
           schema:
             type: array
             items:
@@ -306,22 +306,22 @@ paths:
         "404":
           description: Record not found
 
-  /taxon_history_items/{id}:
+  /history_items/{id}:
     get:
-      summary: Get a single taxon_history_item
-      operationId: getTaxonHistoryItem
+      summary: Get a single history_item
+      operationId: getHistoryItem
       tags:
-        - taxon_history_items
+        - history_items
       parameters:
         - name: id
           in: path
-          description: getTaxonHistoryItem id
+          description: getHistoryItem id
           required: true
           type: integer
           format: int32
       responses:
         "200":
-          description: a single getTaxonHistoryItem  record
+          description: a single getHistoryItem  record
           schema:
             $ref: '#/definitions/HistoryItem'
         "404":

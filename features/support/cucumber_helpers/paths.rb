@@ -100,9 +100,9 @@ module CucumberHelpers
       when 'the page of the most recent reference section'
         reference_section_path(ReferenceSection.last)
       when 'the taxon history items page'
-        taxon_history_items_path
+        history_items_path
       when 'the page of the most recent history item'
-        taxon_history_item_path(HistoryItem.last)
+        history_item_path(HistoryItem.last)
 
       # Users.
       when 'My account'

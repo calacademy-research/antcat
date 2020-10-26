@@ -7,7 +7,7 @@ end
 
 crumb :history_item do |history_item, protonym_fallback_link|
   if history_item.persisted?
-    link "##{history_item.id}", taxon_history_item_path(history_item)
+    link "##{history_item.id}", history_item_path(history_item)
   else
     link "##{history_item.id} [deleted]"
   end

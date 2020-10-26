@@ -19,7 +19,7 @@ module DatabaseScripts
           simple_known_format = simple_known_format?(taxt)
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],

@@ -26,7 +26,7 @@
     .small-6.medium-4.large-2.columns
       =f.select :taxon_status, options_for_select(Status::STATUSES, params[:taxon_status]), include_blank: "Taxon status"
     .small-6.medium-4.large-2.columns
-      =per_page_select TaxonHistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
+      =per_page_select HistoryItemsController::PER_PAGE_OPTIONS, params[:per_page]
     .small-6.medium-4.large-2.columns.end
       =button_tag "Search ".html_safe + search_icon, type: "submit", name: nil, class: "btn-normal"
       &nbsp;
@@ -63,7 +63,7 @@
       %td{colspan: 3} Found no results.
   -@history_items.each do |history_item|
     %tr
-      %td=link_to "##{history_item.id}", taxon_history_item_path(history_item)
+      %td=link_to "##{history_item.id}", history_item_path(history_item)
       %td=history_item.position
       %td=CatalogFormatter.link_to_protonym(history_item.protonym)
       %td=CatalogFormatter.link_to_taxa(history_item.terminal_taxa)

@@ -67,7 +67,7 @@ module DatabaseScripts
           taxon = history_item.terminal_taxon
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             Detax[taxt]
           ]

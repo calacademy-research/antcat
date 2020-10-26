@@ -24,7 +24,7 @@ module DatabaseScripts
           helper = QuickAndDirtyFixes::ReplaceMissingTags.new(taxt)
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
 
             format_hardcoded_names_with_taxa(helper.hardcoded_names_with_taxa).join('<br>'),

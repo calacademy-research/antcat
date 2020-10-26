@@ -27,7 +27,7 @@ module DatabaseScripts
           show_quick_fix_link = (converted_to_taxac != taxt) && matches
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],
@@ -163,7 +163,7 @@ description: >
 
 
   The first 100 results are included on this pagee. For all matches, see
-  [this link](/taxon_history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D)
+  [this link](/history_items?search_type=REGEXP&q=homonym+of+%7Btax+%5B0-9%5D%2B%7D+%7Bref+%5B0-9%5D%2B%7D)
 
 related_scripts:
   - HistoryItemsWithRefTagsAsAuthorCitations

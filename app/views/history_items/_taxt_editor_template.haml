@@ -1,9 +1,9 @@
-.taxt-editor{data: { url: taxon_history_item_path(history_item), taxt_editor_template: 'taxon_history_items/taxt_editor_template' }}
+.taxt-editor{data: { url: history_item_path(history_item), taxt_editor_template: 'history_items/taxt_editor_template' }}
   .taxt-presenter
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Quick edit
-    =link_to "Show", taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-    =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-    =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
     -if history_item.rank?
       %small.bold-notice #{history_item.rank}-only item
     %br

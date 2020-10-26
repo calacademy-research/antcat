@@ -1,7 +1,7 @@
 -# TODO: Remove once `TaxonHistoryItem` has been fully renamed to `HistoryItem`.
 =activity.action_to_verb
 the history item
-=activity.link_trackable_if_exists path: taxon_history_item_path(activity.trackable_id)
+=activity.link_trackable_if_exists path: history_item_path(activity.trackable_id)
 
 -if (protonym_id = activity.parameters[:protonym_id])
   belonging to

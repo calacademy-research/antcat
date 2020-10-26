@@ -27,7 +27,7 @@ module DatabaseScripts
           replace_with_pro_tag = first_taxon.name_cache == taxon.protonym.name.name
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.type,
             taxon.status,

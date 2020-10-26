@@ -23,7 +23,7 @@ module DatabaseScripts
           show_force_quick_fix_link = !show_quick_fix_link && (force_without_pages != taxt)
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],

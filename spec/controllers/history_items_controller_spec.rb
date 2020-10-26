@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe TaxonHistoryItemsController do
+describe HistoryItemsController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
       specify { expect(get(:new, params: { protonym_id: 1 })).to have_http_status :forbidden }
