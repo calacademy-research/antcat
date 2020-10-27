@@ -1,18 +1,18 @@
 =form.fields_for :name do |name_form|
-  .row
+  .row.margin-bottom
     .large-8.columns
       %table.unstriped
         %tr
           %td=form.label :parent, 'Parent'
           %td
             -if taxon.parent
-              =taxon.parent.decorate.id_and_name_and_author_citation
+              =taxon.parent.decorate.link_to_taxon_with_author_citation
             -else
               (none)
 
         %tr
           %td
-            =name_form.label :name do
+            =form.label :name do
               Name
               =db_tooltip_icon "name", scope: :taxa
           %td
@@ -81,28 +81,22 @@
 
     .large-4.columns
       .callout
+        %h6 Fossil-only fields
         %table.unstriped
-          %tr
-            %td
-              %h6 Fossil-only fields
-
           %tr
             %td
               =form.check_box :fossil
               =form.label :fossil do
                 Fossil
                 =db_tooltip_icon "fossil", scope: :taxa
-
           %tr
             %td
               =form.check_box :ichnotaxon
               =form.label :ichnotaxon
-
           %tr
             %td
               =form.check_box :collective_group_name
               =form.label :collective_group_name
-
           %tr
             %td
               =form.check_box :hong
