@@ -1,10 +1,11 @@
 .callout.margin-bottom
   %h6
     Create new protonym
+    %small.blue-help-text.padding-left-1rem leave blank if you have selected an existing protonym
     =tooltip_icon "This will be ignored if an existing protonym is selected"
 
   =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
-    %table.unstriped
+    %table.unstriped.get-rid-of-margins-and-paddings-from-tds.get-rid-of-margins-and-paddings-from-inputs
       %tr
         =protonym_form.fields_for :name do |name_form|
           %td
@@ -80,7 +81,7 @@
           %td
             =protonym_form.check_box :nomen_nudum
         %tr
-          %td
+          %td.no-wrap.shrink.padding-right-4rem
             =protonym_form.label :nomen_attributes do
               Nomen attributes (beta)
           %td.small-text Can be set after creating the new protonym
