@@ -1,6 +1,6 @@
 -if taxon.junior_synonyms.present?
-  .callout
-    %h5.callout-header Junior synonyms
+  .callout.margin-bottom
+    %h6 Junior synonyms
     %ul.compact-list
       -TaxonQuery.new(taxon.junior_synonyms.order_by_name).with_common_includes.each do |synonym|
         %li

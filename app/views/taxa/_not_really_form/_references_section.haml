@@ -1,9 +1,9 @@
 -# TODO: Extract functionality for reordering items to a new page.
 
 -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES)
-  #references-section.callout
-    %h5.callout-header
-      References
+  #references-section.callout.margin-bottom
+    %h6
+      Reference sections
       .right
         -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
         =link_to 'Add', new_taxa_reference_section_path(taxon), id: 'add-reference-section-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'button submit btn-normal btn-tiny tooltip2'
