@@ -1,14 +1,8 @@
 .protonym-section.callout
   %h5.callout-header
-    Protonym: Select existing or create new
+    Create new protonym
+    =tooltip_icon "this will be ignored if an existing protonym is set"
 
-  %h5.callout-header Existing protonym (leave blank if you are creating a new protonym)
-  %table.unstriped
-    %tr
-      %td=form.label :protonym
-      %td=form.protonym_select :protonym
-
-  %h5.callout-header New protonym (this will be ignored if an existing protonym is set)
   =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
     %table.unstriped
       %tr

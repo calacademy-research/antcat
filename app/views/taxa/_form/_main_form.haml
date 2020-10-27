@@ -69,10 +69,15 @@
             =form.check_box :unresolved_homonym
             =form.label :unresolved_homonym, 'Unresolved junior homonym'
 
-        -if taxon.persisted?
-          %tr
-            %td=form.label :protonym
-            %td=form.protonym_select :protonym
+        %tr
+          %td.shrink
+            =form.label :protonym
+            -unless taxon.persisted?
+              %small
+                Leave blank if you are
+                %br
+                creating a new protonym
+          %td=form.protonym_select :protonym
 
     .large-4.columns
       .callout
