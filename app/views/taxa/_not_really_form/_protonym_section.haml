@@ -3,7 +3,7 @@
     Protonym:
     =protonym.decorate.link_to_protonym
     .right
-      =link_to 'Edit', edit_protonym_path(protonym), title: "Note: Protonyms may be shared and must be edited in a different form. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny tooltip2'
+      =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-normal btn-tiny'
 
   %table.table.unstriped.gray-text.with-gray-links#existing-protonym
     %tbody
@@ -37,7 +37,6 @@
       %tr
         %td
           Nomen attributes (beta)
-          =logged_in_only_tooltip_icon
         %td=protonym.decorate.format_nomen_attributes
 
       -if protonym.primary_type_information_taxt?

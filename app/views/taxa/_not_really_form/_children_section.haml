@@ -5,7 +5,6 @@
       %p
         Too many children to show here.
         =link_to "Show all children", taxa_children_path(taxon), class: "btn-normal btn-tiny"
-        (open in a new tab or make sure you have saved first)
     -else
       %ul#children-list
         -TaxonQuery.new(taxon.children).with_common_includes.order(status: :desc, name_cache: :asc).each do |child|

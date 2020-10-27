@@ -4,8 +4,10 @@
   %h5
     History items
     .right
-      =link_to 'Add', new_protonym_history_item_path(protonym), id: 'taxt-editor-add-history-item-button', title: "Note: New items are added on a different page. Please save your changes first if you would like to keep them.", class: 'btn-normal btn-tiny tooltip2'
-      %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
+      -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
+      =link_to 'Add', new_protonym_history_item_path(protonym), id: 'taxt-editor-add-history-item-button', class: 'button submit btn-normal btn-tiny'
+      -if protonym.protonym_history_items.present?
+        %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
   #history-items{data: {protonym_id: protonym.id}}
     -protonym.protonym_history_items.each do |history_item|
       -# `#history_item_123` is used for reordering items.
