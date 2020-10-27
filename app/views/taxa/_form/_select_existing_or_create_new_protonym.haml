@@ -38,7 +38,6 @@
               Authorship
               =db_tooltip_icon "authorship", scope: :taxa
           %td=authorship_form.reference_select :reference
-
         %tr
           %td
             =authorship_form.label :pages do
@@ -46,7 +45,30 @@
               =db_tooltip_icon "pages", scope: :taxa
           %td=authorship_form.text_field :pages
 
-        -unless taxon.is_a? SpeciesGroupTaxon
+        -if taxon.is_a?(SpeciesGroupTaxon)
+          %tr
+            %td
+              =protonym_form.label :forms do
+                Forms
+                =db_tooltip_icon "forms", scope: :taxa
+            %td=protonym_form.text_field :forms
+          %tr
+            %td
+              =protonym_form.label :biogeographic_region do
+                Biogeographic region
+                =db_tooltip_icon "type.biogeographic_region", scope: :taxa
+            %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+          %tr
+            %td
+              =protonym_form.label :locality do
+                Locality
+                =db_tooltip_icon "locality", scope: :taxa
+            %td
+              =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+              =protonym_form.check_box :uncertain_locality
+              =protonym_form.label :uncertain_locality
+
+        -unless taxon.is_a?(SpeciesGroupTaxon)
           %tr
             %td=authorship_form.label :type_name
             %td.small-text Can be set after creating the new protonym
@@ -57,39 +79,12 @@
               %i Nomen nudum
           %td
             =protonym_form.check_box :nomen_nudum
-
-        %tr.logged-in-only-background
+        %tr
           %td
             =protonym_form.label :nomen_attributes do
               Nomen attributes (beta)
               =logged_in_only_tooltip_icon
           %td.small-text Can be set after creating the new protonym
-
-        -if taxon.is_a? SpeciesGroupTaxon
-          %tr
-            %td
-              =protonym_form.label :forms do
-                Forms
-                =db_tooltip_icon "forms", scope: :taxa
-            %td=protonym_form.text_field :forms
-
-        %tr
-          %td
-            =protonym_form.label :biogeographic_region do
-              Biogeographic region
-              =db_tooltip_icon "type.biogeographic_region", scope: :taxa
-          %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
-
-          %tr
-            %td
-              =protonym_form.label :locality do
-                Locality
-                =db_tooltip_icon "locality", scope: :taxa
-            %td
-              =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
-
-              =protonym_form.check_box :uncertain_locality
-              =protonym_form.label :uncertain_locality
 
         %tr
           %td=form.label :primary_type_information

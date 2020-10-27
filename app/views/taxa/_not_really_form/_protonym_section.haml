@@ -13,36 +13,46 @@
       %tr
         %td Pages
         %td=protonym.authorship.pages
-      %tr
-        %td Forms
-        %td=or_dash protonym.forms
-      -if (type_name = protonym.type_name)
+
+      -if taxon.is_a?(SpeciesGroupTaxon)
         %tr
-          %td Type name
-          %td
-            -type_name_decorated = type_name.decorate
-            =type_name_decorated.format_rank
-            =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
-      %tr.logged-in-only-background
+          %td Forms
+          %td=or_dash protonym.forms
+        %tr
+          %td Biogeographic region
+          %td=protonym.biogeographic_region
+        %tr
+          %td Locality
+          %td=protonym.decorate.format_locality
+
+      -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
+        -if (type_name = protonym.type_name)
+          %tr
+            %td Type name
+            %td
+              -type_name_decorated = type_name.decorate
+              =type_name_decorated.format_rank
+              =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
+
+      %tr
         %td
           Nomen attributes (beta)
           =logged_in_only_tooltip_icon
         %td=protonym.decorate.format_nomen_attributes
-      %tr
-        %td Biogeographic region
-        %td=protonym.biogeographic_region
-      %tr
-        %td Locality
-        %td=protonym.decorate.format_locality
-      %tr
-        %td Primary type information
-        %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
-      %tr
-        %td Secondary type information
-        %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
-      %tr
-        %td Type notes
-        %td=::Types::FormatTypeField[protonym.type_notes_taxt]
-      %tr
-        %td Notes
-        %td=or_dash Detax[protonym.notes_taxt]
+
+      -if protonym.primary_type_information_taxt?
+        %tr
+          %td Primary type information?
+          %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
+      -if protonym.secondary_type_information_taxt?
+        %tr
+          %td Secondary type information
+          %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+      -if protonym.type_notes_taxt?
+        %tr
+          %td Type notes
+          %td=::Types::FormatTypeField[protonym.type_notes_taxt]
+      -if protonym.notes_taxt?
+        %tr
+          %td Notes
+          %td=or_dash Detax[protonym.notes_taxt]

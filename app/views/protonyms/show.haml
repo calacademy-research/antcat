@@ -50,9 +50,17 @@
         %tr
           %th Pages
           %td=@protonym.authorship.pages
+
         %tr
           %th Forms
           %td=or_dash @protonym.forms
+        %tr
+          %th Biogeographic region
+          %td=@protonym.biogeographic_region
+        %tr
+          %th Locality
+          %td=@protonym.decorate.format_locality
+
         -if (type_name = @protonym.type_name)
           %tr
             %th Type name
@@ -66,24 +74,23 @@
               Nomen attributes (beta)
               =logged_in_only_tooltip_icon
             %td=@protonym.decorate.format_nomen_attributes
-        %tr
-          %th Biogeographic region
-          %td=@protonym.biogeographic_region
-        %tr
-          %th Locality
-          %td=@protonym.decorate.format_locality
-        %tr
-          %th Primary type information
-          %td=::Types::FormatTypeField[@protonym.primary_type_information_taxt]
-        %tr
-          %th Secondary type information
-          %td=::Types::FormatTypeField[@protonym.secondary_type_information_taxt]
-        %tr
-          %th Type notes
-          %td=::Types::FormatTypeField[@protonym.type_notes_taxt]
-        %tr
-          %th Notes
-          %td=or_dash Detax[@protonym.notes_taxt]
+
+        -if @protonym.primary_type_information_taxt?
+          %tr
+            %th Primary type information
+            %td=::Types::FormatTypeField[@protonym.primary_type_information_taxt]
+        -if @protonym.secondary_type_information_taxt?
+          %tr
+            %th Secondary type information
+            %td=::Types::FormatTypeField[@protonym.secondary_type_information_taxt]
+        -if @protonym.type_notes_taxt?
+          %tr
+            %th Type notes
+            %td=::Types::FormatTypeField[@protonym.type_notes_taxt]
+        -if @protonym.notes_taxt?
+          %tr
+            %th Notes
+            %td=or_dash Detax[@protonym.notes_taxt]
 
   -if current_user
     .medium-3.columns
