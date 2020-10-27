@@ -21,8 +21,9 @@
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   .callout
-    =render 'taxa/_form/main_form',        taxon: taxon, form: form, default_name_string: default_name_string
-    =render 'taxa/_form/protonym_section', taxon: taxon, form: form
+    =render 'taxa/_form/main_form', taxon: taxon, form: form, default_name_string: default_name_string
+    -unless taxon.persisted?
+      =render 'taxa/_form/select_existing_or_create_new_protonym', taxon: taxon, form: form
 
     .row
       .medium-3.columns

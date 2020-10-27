@@ -8,6 +8,7 @@
 =render 'form', taxon: @taxon, default_name_string: nil, taxon_form: @taxon_form
 
 #not-really-taxon-form
+  =render 'taxa/_not_really_form/protonym_section', taxon: @taxon, protonym: @taxon.protonym
   =render 'taxa/_not_really_form/synonyms_section', taxon: @taxon
   =render 'taxa/_not_really_form/children_section', taxon: @taxon
   =render 'taxa/_not_really_form/references_section', taxon: @taxon
