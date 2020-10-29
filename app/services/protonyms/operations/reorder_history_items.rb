@@ -22,7 +22,7 @@ module Protonyms
 
           protonym.transaction do
             reordered_ids.each_with_index do |id, index|
-              history_item = TaxonHistoryItem.find(id)
+              history_item = HistoryItem.find(id)
               history_item.update!(position: (index + 1))
             end
           end

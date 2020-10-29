@@ -1,0 +1,11 @@
+-title "Edit History Item"
+-breadcrumb :edit_history_item, @history_item
+
+%p
+  Current item before saving form:
+
+.callout.margin-bottom
+  %p
+    =Detax[@history_item.to_taxt]
+
+=render "form", history_item: @history_item, url: history_item_path(@history_item), protonym: @protonym

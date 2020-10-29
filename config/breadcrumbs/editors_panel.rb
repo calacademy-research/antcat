@@ -24,7 +24,7 @@ crumb :unconfirmed_activities do
   parent :activity_feed
 end
 
-crumb :search_taxon_history_items do
+crumb :search_history_items do
   link "Search History Items"
   parent :editors_panel
 end

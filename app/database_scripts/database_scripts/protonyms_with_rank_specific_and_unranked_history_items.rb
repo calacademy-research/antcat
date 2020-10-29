@@ -38,7 +38,7 @@ tags: []
 issue_description:
 
 description: >
-  This is for the "Protonym items simulation", and ultimately for moving `TaxonHistoryItem`s to the protonym.
+  This is for the "Protonym items simulation", and ultimately for moving `HistoryItem`s to the protonym.
 
 
   See also wiki page: %wiki7

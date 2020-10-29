@@ -9,15 +9,15 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def convert_bolton_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = Markdowns::BoltonKeysToRefTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Converted Bolton tags, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted Bolton tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted Bolton tags"
       render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert Bolton tags"))
@@ -25,15 +25,15 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def convert_to_taxac_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ConvertTaxToTaxacTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Converted to taxac tags, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted to taxac tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted to taxac tags"
       render js: %(AntCat.notifySuccess("Converted to taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert to taxac tags"))
@@ -41,15 +41,15 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def force_remove_pages_from_taxac_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ForceRemovePagesFromTaxacTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags, nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
       render js: %(AntCat.notifySuccess("Force-removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags"))
@@ -57,15 +57,15 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def remove_pages_from_taxac_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::RemovePagesFromTaxacTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags, nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Remove page numbers from taxac tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Remove page numbers from taxac tags"
       render js: %(AntCat.notifySuccess("Removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags"))
@@ -73,15 +73,15 @@ class QuickAndDirtyFixesController < ApplicationController
   end
 
   def replace_missing_tags
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = QuickAndDirtyFixes::ReplaceMissingTags[old_taxt]
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Replaced missing tags, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags"
       render js: %(AntCat.notifySuccess("Replaced missing tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags"))
@@ -90,11 +90,11 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def replace_missing_tag_with_tax_tag
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
     hardcoded_missing_name = params[:hardcoded_missing_name]
     replace_with_taxon_id = params[:replace_with_taxon_id]
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = old_taxt.dup.sub(
       /\{missing[0-9]? #{hardcoded_missing_name}\}/,
       "{tax #{replace_with_taxon_id}}"
@@ -102,8 +102,8 @@ class QuickAndDirtyFixesController < ApplicationController
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Replaced missing tags with selected tax, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
       render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
@@ -112,11 +112,11 @@ class QuickAndDirtyFixesController < ApplicationController
 
   # TODO: Not used (after migrating to protonym history items, 12faa7ec1). Use or remove.
   def switch_tax_tag
-    taxon_history_item = TaxonHistoryItem.find(params[:taxon_history_item_id])
+    history_item = HistoryItem.find(params[:history_item_id])
     replace_taxon = Taxon.find(params[:replace_tax_id])
     new_taxon = Taxon.find(params[:new_tax_id])
 
-    old_taxt = taxon_history_item.taxt
+    old_taxt = history_item.taxt
     new_taxt = old_taxt.dup.sub(
       "{tax #{replace_taxon.id}}",
       "{tax #{new_taxon.id}}"
@@ -124,8 +124,8 @@ class QuickAndDirtyFixesController < ApplicationController
 
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Switched tax tags, but nothing was changed"))
-    elsif taxon_history_item.update(taxt: new_taxt)
-      taxon_history_item.create_activity :update, current_user, edit_summary: "[automatic] Switch `tax` tags"
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity :update, current_user, edit_summary: "[automatic] Switch `tax` tags"
       render js: %(AntCat.notifySuccess("Switched tax tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not switch tax tags"))

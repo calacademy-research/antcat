@@ -23,7 +23,7 @@ module EditorsPanels
       SiteNotice
       Synonym
       Taxon
-      TaxonHistoryItem
+      HistoryItem
       TaxonState
       Tooltip
       WikiPage

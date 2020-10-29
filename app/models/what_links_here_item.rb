@@ -27,7 +27,7 @@ class WhatLinksHereItem
       when "protonyms"           then Protonym.find(id)
       when "reference_sections"  then ReferenceSection.find(id).taxon
       when "references"          then Reference.find(id)
-      when "taxon_history_items" then TaxonHistoryItem.find(id).protonym
+      when "taxon_history_items" then HistoryItem.find(id).protonym
       when "taxa"                then Taxon.find(id)
       when "type_names"          then TypeName.find(id).protonym
       else                       raise "unknown table #{table}"

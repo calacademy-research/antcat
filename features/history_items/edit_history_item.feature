@@ -8,7 +8,7 @@ Feature: Editing a history item
     When I go to the protonym page for "Atta"
     Then the history should be empty
 
-    When I click on the add taxon history item button
+    When I click on the add history item button
     And I fill in "taxt" with "Abc"
     And I fill in "edit_summary" with "added new stuff"
     And I press "Save"
@@ -25,7 +25,7 @@ Feature: Editing a history item
     When I go to the protonym page for "Atta"
     Then the history should be empty
 
-    When I click on the add taxon history item button
+    When I click on the add history item button
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
@@ -36,15 +36,15 @@ Feature: Editing a history item
     When I go to the protonym page for "Antcatinae"
     Then the history should be "Antcatinae as family"
 
-    When I click on the edit taxon history item button
+    When I click on the edit history item button
     And I fill in "taxt" with "(none)"
     And I fill in "edit_summary" with "fix typo" within "#history-items"
-    And I click on the save taxon history item button
+    And I click on the save history item button
     And I reload the page
     Then I should not see "Antcatinae as family"
     And the history should be "(none)"
 
-    When I click on the edit taxon history item button
+    When I click on the edit history item button
     Then the history item field should be "(none)"
 
     When I go to the activity feed
@@ -69,12 +69,12 @@ Feature: Editing a history item
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
     When I go to the protonym page for "Antcatinae"
-    And I click on the edit taxon history item button
+    And I click on the edit history item button
     And I fill in "taxt" with "(none)"
-    And I click on the cancel taxon history item button
+    And I click on the cancel history item button
     Then the history should be "Antcatinae as family"
 
-    When I click on the edit taxon history item button
+    When I click on the edit history item button
     Then the history item field should be "Antcatinae as family"
 
   @javascript
@@ -84,9 +84,9 @@ Feature: Editing a history item
     When I go to the protonym page for "Antcatinae"
     Then I should see "Antcatinae as family"
 
-    When I click on the edit taxon history item button
+    When I click on the edit history item button
     And I will confirm on the next step
-    And I click on the delete taxon history item button
+    And I click on the delete history item button
     Then I should be on the protonym page for "Antcatinae"
 
     When I reload the page
@@ -107,7 +107,7 @@ Feature: Editing a history item
     Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should not be visible
 
-    When I click on the edit taxon history item button
+    When I click on the edit history item button
     Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should be visible
 
@@ -115,6 +115,6 @@ Feature: Editing a history item
     And I press "Rerender preview"
     Then I should see "Lasius history, Giovanni, 1809"
 
-    When I click on the cancel taxon history item button
+    When I click on the cancel history item button
     Then I should see "Antcatinae as family, Giovanni, 1809"
     And the history item field should not be visible

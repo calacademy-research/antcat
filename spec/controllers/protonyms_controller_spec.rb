@@ -173,7 +173,7 @@ describe ProtonymsController do
 
       context 'when protonym has taxt references' do
         before do
-          create :taxon_history_item, taxt: "{pro #{protonym.id}} in Lasius"
+          create :history_item, taxt: "{pro #{protonym.id}} in Lasius"
         end
 
         specify do

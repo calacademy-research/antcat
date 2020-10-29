@@ -1,28 +1,28 @@
--title "History Item ##{@taxon_history_item.id}"
--breadcrumb :taxon_history_item, @taxon_history_item
+-title "History Item ##{@history_item.id}"
+-breadcrumb :history_item, @history_item
 
 -content_for :breadcrumbs_right do
   -if user_is_at_least_helper?
-    =link_to "Edit", edit_taxon_history_item_path(@taxon_history_item), class: "btn-normal"
-  =link_to "History", taxon_history_item_history_path(@taxon_history_item), class: "btn-normal"
-  =activities_link_for_trackable @taxon_history_item
+    =link_to "Edit", edit_history_item_path(@history_item), class: "btn-normal"
+  =link_to "History", history_item_history_path(@history_item), class: "btn-normal"
+  =activities_link_for_trackable @history_item
   -if user_is_editor?
-    =link_to "Delete", taxon_history_item_path(@taxon_history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
+    =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
 %p
   This history item belongs to
   =@protonym.decorate.link_to_protonym_with_author_citation
 
--if @taxon_history_item.rank?
+-if @history_item.rank?
   %p
     =antcat_icon "warning-icon"
-    Show only for rank: #{@taxon_history_item.rank}
+    Show only for rank: #{@history_item.rank}
 
 .callout.margin-bottom
   %p
-    =Detax[@taxon_history_item.to_taxt]
+    =Detax[@history_item.to_taxt]
 
--# TODO: DRY w.r.t. 'taxon_history_items/_form.haml'.
+-# TODO: DRY w.r.t. 'history_items/_form.haml'.
 -if @protonym.taxa.present?
   .row.margin-bottom
     .small-12.columns
@@ -52,11 +52,11 @@
   %table.margin-top
     %caption Highlighted in context with other history items belonging to #{@protonym.name.name_html}
     %tbody
-      -@protonym.protonym_history_items.each do |history_item|
-        %tr{class: ('pale-background' if history_item == @taxon_history_item)}
+      -@protonym.protonym_history_items.each do |protonym_history_item|
+        %tr{class: ('pale-background' if protonym_history_item == @history_item)}
           %td
-            =link_to "##{history_item.id}", history_item
-            -if history_item == @taxon_history_item
+            =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
+            -if protonym_history_item == @history_item
               %strong (selected)
           %td.grow
-            %small=Detax[history_item.to_taxt]
+            %small=Detax[protonym_history_item.to_taxt]

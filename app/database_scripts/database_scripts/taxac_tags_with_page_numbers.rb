@@ -3,7 +3,7 @@
 module DatabaseScripts
   class TaxacTagsWithPageNumbers < DatabaseScript
     def results
-      TaxonHistoryItem.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
+      HistoryItem.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
     end
 
     def render
@@ -23,7 +23,7 @@ module DatabaseScripts
           show_force_quick_fix_link = !show_quick_fix_link && (force_without_pages != taxt)
 
           [
-            link_to(history_item.id, taxon_history_item_path(history_item)),
+            link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
             Detax[taxt],
@@ -39,12 +39,12 @@ module DatabaseScripts
     private
 
       def quick_fix_link history_item
-        link_to 'Remove pages!', remove_pages_from_taxac_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
+        link_to 'Remove pages!', remove_pages_from_taxac_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
           method: :post, remote: true, class: 'btn-normal btn-tiny'
       end
 
       def force_quick_fix_link history_item
-        link_to 'Force-remove pages!', force_remove_pages_from_taxac_tags_quick_and_dirty_fix_path(taxon_history_item_id: history_item.id),
+        link_to 'Force-remove pages!', force_remove_pages_from_taxac_tags_quick_and_dirty_fix_path(history_item_id: history_item.id),
           method: :post, remote: true, class: 'btn-warning btn-tiny'
       end
 

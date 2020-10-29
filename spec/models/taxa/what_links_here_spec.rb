@@ -40,7 +40,7 @@ describe Taxa::WhatLinksHere do
       let(:taxt_tag) { "{tax #{taxon.id}}" }
 
       let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
-      let!(:history_item) { create :taxon_history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :history_item, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
@@ -65,7 +65,7 @@ describe Taxa::WhatLinksHere do
       let(:taxt_tag) { "{taxac #{taxon.id}}" }
 
       let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
-      let!(:history_item) { create :taxon_history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :history_item, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do

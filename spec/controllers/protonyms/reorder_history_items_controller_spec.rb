@@ -18,16 +18,16 @@ describe Protonyms::ReorderHistoryItemsController do
     it "calls `Protonyms::Operations::ReorderHistoryItems`" do
       expect(Protonyms::Operations::ReorderHistoryItems).
         to receive(:new).with(protonym, reordered_ids).and_call_original
-      post :create, params: { protonym_id: protonym.id, taxon_history_item: reordered_ids }
+      post :create, params: { protonym_id: protonym.id, history_item: reordered_ids }
     end
 
     it "reorders the history items" do
-      expect { post :create, params: { protonym_id: protonym.id, taxon_history_item: reordered_ids } }.
+      expect { post :create, params: { protonym_id: protonym.id, history_item: reordered_ids } }.
         to change { protonym.protonym_history_items.pluck(:id) }.to([second.id, first.id])
     end
 
     it 'creates an activity' do
-      expect { post(:create, params: { protonym_id: protonym.id, taxon_history_item: reordered_ids }) }.
+      expect { post(:create, params: { protonym_id: protonym.id, history_item: reordered_ids }) }.
         to change { Activity.where(action: :reorder_protonym_history_items).count }.by(1)
 
       activity = Activity.last

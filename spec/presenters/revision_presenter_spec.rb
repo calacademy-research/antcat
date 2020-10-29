@@ -6,8 +6,8 @@ describe RevisionPresenter do
   describe "#html_split_diff", :versioning do
     subject(:presenter) { described_class.new(comparer: comparer) }
 
-    let(:item) { create :taxon_history_item, taxt: "initial content" }
-    let(:model) { TaxonHistoryItem }
+    let(:item) { create :history_item, taxt: "initial content" }
+    let(:model) { HistoryItem }
 
     describe "comparing versions" do
       let!(:diff_with_id) { item.tap { |item| item.update!(taxt: "second version") }.versions.last.id }

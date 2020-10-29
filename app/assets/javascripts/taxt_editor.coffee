@@ -78,7 +78,7 @@ setupSaveHistoryItemButtons = ->
     taxtEditor = $(this).parent().parent()
 
     data =
-      taxon_history_item:
+      history_item:
         taxt: taxtEditor.find('textarea#taxt').val()
       taxt_editor_template: taxtEditor.data('taxt-editor-template')
       edit_summary: taxtEditor.find('#edit_summary').val()

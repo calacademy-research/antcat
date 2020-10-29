@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
-class TaxonHistoryItem < ApplicationRecord
+class HistoryItem < ApplicationRecord
   include Trackable
+
+  self.table_name = :taxon_history_items # NOTE: This model used to `belongs_to :taxon`.
 
   belongs_to :protonym
 
@@ -9,7 +11,7 @@ class TaxonHistoryItem < ApplicationRecord
   has_many :terminal_taxa, through: :protonym
 
   validates :taxt, presence: true
-  validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_TAXON_HISTORY_ITEM_TYPES, allow_nil: true }
+  validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
 
   before_validation :cleanup_taxts
 

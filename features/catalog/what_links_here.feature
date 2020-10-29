@@ -6,7 +6,7 @@ Feature: What links here
     Given I am logged in
     And there is a genus "Atta"
     And there is a genus protonym "Eciton"
-    And Eciton has a taxonomic history item that references Atta and a Batiatus reference
+    And Eciton has a history item that references Atta and a Batiatus reference
 
   Scenario: See related items (taxa, with detaxed taxt item)
     When I go to the catalog page for "Atta"

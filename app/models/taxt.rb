@@ -11,7 +11,7 @@ module Taxt
     [Protonym,         'protonyms',           'secondary_type_information_taxt'],
     [Protonym,         'protonyms',           'type_notes_taxt'],
     [Protonym,         'protonyms',           'notes_taxt'],
-    [TaxonHistoryItem, 'taxon_history_items', 'taxt']
+    [HistoryItem,      'taxon_history_items', 'taxt']
   ]
 
   TAX_TAG_REGEX = /\{tax (?<taxon_id>\d+)\}/

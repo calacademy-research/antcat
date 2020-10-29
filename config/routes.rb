@@ -92,7 +92,7 @@ Rails.application.routes.draw do
   end
 
   resources :protonyms do
-    resources :taxon_history_items, only: [:new, :create]
+    resources :history_items, only: [:new, :create]
     scope module: :protonyms do
       collection do
         resource :autocomplete, only: :show
@@ -150,7 +150,7 @@ Rails.application.routes.draw do
       resources :author_names, only: [:index, :show]
       resources :names, only: [:index, :show]
       resources :citations, only: [:index, :show]
-      resources :taxon_history_items, only: [:index, :show]
+      resources :history_items, only: [:index, :show]
       resources :journals, only: [:index, :show]
       resources :publishers, only: [:index, :show]
       resources :references, only: [:index, :show]
@@ -198,8 +198,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :taxon_history_items, except: [:new, :create] do
-    scope module: :taxon_history_items do
+  resources :history_items, except: [:new, :create] do
+    scope module: :history_items do
       resource :history, only: :show
     end
   end

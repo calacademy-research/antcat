@@ -105,7 +105,7 @@ class Taxon < ApplicationRecord
   end
 
   def history_items_for_taxon
-    return TaxonHistoryItem.none unless Status.display_history_items?(status)
+    return HistoryItem.none unless Status.display_history_items?(status)
     history_items_for_taxon_including_hidden
   end
 

@@ -1,0 +1,21 @@
+.taxt-editor{data: { url: history_item_path(history_item), taxt_editor_template: 'history_items/taxt_editor_template' }}
+  .taxt-presenter
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Quick edit
+    =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+    -if history_item.rank?
+      %small.bold-notice #{history_item.rank}-only item
+    %br
+    =Detax[history_item.taxt]
+
+  .taxt-editor-editor
+    =text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
+
+    .row
+      .medium-5.columns.end
+        =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+
+    %a.taxt-editor-history-item-save-button.btn-saves Save
+    %a.taxt-editor-cancel-button.btn-nodanger Cancel
+    %a.taxt-editor-delete-button.btn-warning Delete

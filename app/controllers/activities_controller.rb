@@ -6,7 +6,7 @@ class ActivitiesController < ApplicationController
       Protonym
       Reference
       Taxon
-      TaxonHistoryItem
+      HistoryItem
     ],
     'Catalog (other)' => %w[
       Author

@@ -1,0 +1,4 @@
+-title "New History Item"
+-breadcrumb :new_history_item, @history_item
+
+=render "form", history_item: @history_item, url: protonym_history_items_path(@history_item.protonym), protonym: @protonym

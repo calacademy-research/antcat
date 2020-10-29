@@ -6,7 +6,7 @@
   .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} Other Search forms
   #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
     %ul.no-bullet
-      %li=link_to "Search History Items form", taxon_history_items_path, class: 'btn-normal'
+      %li=link_to "Search History Items form", history_items_path, class: 'btn-normal'
 
 =form_with url: request.path, method: :get do |f|
   .row

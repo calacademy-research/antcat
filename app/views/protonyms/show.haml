@@ -17,7 +17,7 @@
     #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
       %ul.no-bullet
         %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
-        =link_to "Add history item", new_protonym_taxon_history_item_path(@protonym), class: "btn-normal"
+        =link_to "Add history item", new_protonym_history_item_path(@protonym), class: "btn-normal"
 
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
@@ -152,5 +152,5 @@
                   -if current_user
                     %span.show-on-hover
                       -if user_is_at_least_helper?
-                        =link_to "Edit", edit_taxon_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-                      =link_to "History", taxon_history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+                        =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+                      =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

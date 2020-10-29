@@ -7,8 +7,8 @@ module Protonyms
     def create
       protonym = find_protonym
 
-      # NOTE: "taxon_history_item_ids" would be better, but `params[:taxon_history_item]` is what jQuery sends it as.
-      if Protonyms::Operations::ReorderHistoryItems[protonym, params[:taxon_history_item]]
+      # NOTE: "history_item_ids" would be better, but `params[:history_item]` is what jQuery sends it as.
+      if Protonyms::Operations::ReorderHistoryItems[protonym, params[:history_item]]
         protonym.create_activity :reorder_protonym_history_items, current_user
         render json: { success: true }
       else
