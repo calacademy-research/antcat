@@ -1,18 +1,21 @@
+-# TODO: Use proper form layout without tables and random CSS classes,
+
 =form.fields_for :name do |name_form|
-  .row
-    .large-8.columns
-      %table.unstriped
+  .row.margin-bottom
+    .large-6.columns
+      %h6.bold Required fields
+      %table.unstriped.margin-bottom.get-rid-of-margins-and-paddings-from-inputs
         %tr
           %td=form.label :parent, 'Parent'
           %td
             -if taxon.parent
-              =taxon.parent.decorate.id_and_name_and_author_citation
+              =taxon.parent.decorate.link_to_taxon_with_author_citation
             -else
               (none)
 
         %tr
-          %td
-            =name_form.label :name do
+          %td.padding-right-4rem
+            =form.label :name do
               Name
               =db_tooltip_icon "name", scope: :taxa
           %td
@@ -27,75 +30,83 @@
                   Subgenus name format:
                   %i Genus (Subgenus)
         %tr
-          %td
-          %td
+          %td.no-padding-bottom
+          %td.no-padding-bottom
             #taxon_name_string-possible-conflicts-js-hook.possible-name-conflicts
-
-        -if Rank.genus_group_name?(taxon.type)
-          %tr
-            %td=name_form.label :gender
-            %td=name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
 
         %tr
           %td=form.label :status
           %td=form.select :status, Status::STATUSES
 
         %tr
-          %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
-          %td=form.taxon_select :homonym_replaced_by
+          %td.shrinks
+            =form.label :protonym
+            -unless taxon.persisted?
+              %small.blue-help-text
+                leave blank if you are
+                %br
+                creating a new protonym
+          %td=form.protonym_select :protonym
 
+      %h6.bold Status-specific fields
+      %table.unstriped
         %tr
           %td
             =form.label :current_taxon do
               Current taxon
               =db_tooltip_icon "current_taxon", scope: :taxa
           %td=form.taxon_select :current_taxon
-
         %tr
-          %td.no-wrap
-            =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
-          %td
-            =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_TYPES]
+          %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
+          %td=form.taxon_select :homonym_replaced_by
 
-        %tr
-          %td
-          %td
-            -if taxon.type.in?(Rank::CAN_BE_A_COMBINATION_TYPES)
-              =form.check_box :original_combination
-              =form.label :original_combination do
-                Original combination
-                =db_tooltip_icon "original_combination", scope: :taxa
-
-            =form.check_box :unresolved_homonym
-            =form.label :unresolved_homonym, 'Unresolved junior homonym'
-
-    .large-4.columns
+    .large-5.columns
       .callout
+        %h6.bold Fossil-only fields
         %table.unstriped
           %tr
-            %td
-              %h6 Fossil-only fields
+            %td.no-padding-top-bottom
+              %ul.no-bullet.compact-list
+                %li
+                  =form.check_box :fossil
+                  =form.label :fossil do
+                    Fossil
+                    =db_tooltip_icon "fossil", scope: :taxa
+                %li
+                  =form.check_box :ichnotaxon
+                  =form.label :ichnotaxon
+                %li
+                  =form.check_box :collective_group_name
+                  =form.label :collective_group_name
+                %li
+                  =form.check_box :hong
+                  =form.label :hong do
+                    Hong
+                    =db_tooltip_icon "hong", scope: :taxa
+
+        %h6.bold.margin-top.tiny-margin-top Misc. fields
+        %table.unstriped.small-padding-bottom.get-rid-of-margins-and-paddings-from-inputs
+          %tr
+            %td.no-padding-top-bottom{colspan: 2}
+              %ul.no-bullet.compact-list.tiny-margin-bottom
+                %li
+                  =form.check_box :unresolved_homonym
+                  =form.label :unresolved_homonym, 'Unresolved junior homonym?'
+                %li
+                  =form.check_box :original_combination
+                  =form.label :original_combination do
+                    Original combination?
+                    =db_tooltip_icon "original_combination", scope: :taxa
+
+          -if Rank.genus_group_name?(taxon.type)
+            %tr
+              %td
+                =name_form.label :gender
+              %td
+                =name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
 
           %tr
             %td
-              =form.check_box :fossil
-              =form.label :fossil do
-                Fossil
-                =db_tooltip_icon "fossil", scope: :taxa
-
-          %tr
+              =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
             %td
-              =form.check_box :ichnotaxon
-              =form.label :ichnotaxon
-
-          %tr
-            %td
-              =form.check_box :collective_group_name
-              =form.label :collective_group_name
-
-          %tr
-            %td
-              =form.check_box :hong
-              =form.label :hong do
-                Hong
-                =db_tooltip_icon "hong", scope: :taxa
+              =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_TYPES]
