@@ -3,6 +3,8 @@
 module DatabaseScripts
   class ProtonymsWithSameName < DatabaseScript
     # Manually checked in September 2020.
+    # Via:
+    # DatabaseScripts::ProtonymsWithSameName.new.results.pluck(:id).in_groups_of(10).each { |g| puts g.join(', ') }; nil
     CHECKED_PROTONYM_IDS = [
       154756, 154757, 169314, 156734, 164429, 163369, 154904, 172617, 158436, 158816,
       159305, 157623, 171491, 157847, 163207, 155095, 163234, 155159, 164381, 155259,
@@ -47,7 +49,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Statuses of taxa', 'Any unresolved homonyms?', 'Manually checked and OK'
+        t.header 'Protonym', 'Authorship', 'Statuses of taxa', 'Any unresolved homonyms?', 'Manually checked (September 2020)'
         t.rows do |protonym|
           taxa_statuses = protonym.taxa.pluck(:status)
 

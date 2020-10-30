@@ -1,1 +1,1 @@
-default: --format progress --order random
+default: --format progress --order random --publish-quiet
