@@ -42,3 +42,4 @@ description: >
 related_scripts:
   - AuthorsWithMultipleNames
   - IdenticalAuthorNames
+  - VeryShortAuthorNames

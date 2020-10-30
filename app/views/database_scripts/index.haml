@@ -16,6 +16,8 @@
           =database_scripts.size
           scripts in section
       -case section
+      -when DatabaseScripts::Tagging::CONVERT_TAX_TO_PROTT_TAGS_SECTION
+        %h5.left History items with <code>tax</code> tags to be converted to <code>prott</code> tags by script
       -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
         %h5.left History items with <code>missing</code> tags
       -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION

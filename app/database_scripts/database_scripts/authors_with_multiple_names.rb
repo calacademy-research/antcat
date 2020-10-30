@@ -31,3 +31,4 @@ tags: []
 related_scripts:
   - AuthorsWithMultipleNames
   - IdenticalAuthorNames
+  - VeryShortAuthorNames
