@@ -7,6 +7,7 @@ class ProtonymForm
     biogeographic_region
     forms
     fossil
+    ichnotaxon
     locality
     sic
     uncertain_locality

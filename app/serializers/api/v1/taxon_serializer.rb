@@ -13,7 +13,6 @@ module Api
         :hol_id,
         :homonym_replaced_by_id,
         :hong,
-        :ichnotaxon,
         :incertae_sedis_in,
         :name_cache,
         :name_id,

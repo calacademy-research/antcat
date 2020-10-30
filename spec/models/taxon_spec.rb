@@ -60,17 +60,6 @@ describe Taxon do
       end
     end
 
-    describe "#ichnotaxon" do
-      context 'when taxon is not fossil' do
-        let(:taxon) { build_stubbed :any_taxon }
-
-        it 'cannot be a `ichnotaxon`' do
-          expect { taxon.ichnotaxon = true }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(ichnotaxon: ["can only be set for fossil taxa"])
-        end
-      end
-    end
-
     describe "#collective_group_name" do
       context 'when taxon is not fossil' do
         let(:taxon) { build_stubbed :any_taxon }

@@ -36,8 +36,7 @@ module Taxa
           :protonym_id,
           :hong,
           :unresolved_homonym,
-          :current_taxon_id,
-          :ichnotaxon
+          :current_taxon_id
         ]
       end
   end

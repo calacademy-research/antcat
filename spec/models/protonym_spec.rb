@@ -33,6 +33,17 @@ describe Protonym do
         end
       end
     end
+
+    describe "#ichnotaxon" do
+      context 'when protonym is not fossil' do
+        let(:protonym) { build_stubbed :protonym }
+
+        it 'cannot be a `ichnotaxon`' do
+          expect { protonym.ichnotaxon = true }.to change { protonym.valid? }.to(false)
+          expect(protonym.errors.messages).to include(ichnotaxon: ["can only be set for fossil protonyms"])
+        end
+      end
+    end
   end
 
   describe 'callbacks' do

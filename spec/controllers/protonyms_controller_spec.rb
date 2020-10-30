@@ -29,6 +29,7 @@ describe ProtonymsController do
     let!(:protonym_params) do
       {
         fossil: false,
+        ichnotaxon: false,
         sic: false,
         biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
@@ -55,6 +56,7 @@ describe ProtonymsController do
 
       protonym = Protonym.last
       expect(protonym.fossil).to eq protonym_params[:fossil]
+      expect(protonym.ichnotaxon).to eq protonym_params[:ichnotaxon]
       expect(protonym.sic).to eq protonym_params[:sic]
       expect(protonym.locality).to eq protonym_params[:locality]
       expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]

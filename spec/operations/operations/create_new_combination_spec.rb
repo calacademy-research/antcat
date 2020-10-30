@@ -79,13 +79,13 @@ describe Operations::CreateNewCombination do
         end
 
         before do
-          obsolete_combination_2.update_columns(ichnotaxon: true) # Invalid state to prevent saving.
+          obsolete_combination_2.update_columns(collective_group_name: true) # Invalid state to prevent saving.
         end
 
         specify { expect(operation.run).to be_a_failure }
 
         it "returns errors" do
-          expect(operation.run.context.errors).to eq ["Ichnotaxon can only be set for fossil taxa"]
+          expect(operation.run.context.errors).to eq ["Collective group name can only be set for fossil taxa"]
         end
 
         it "does not create a new taxon" do

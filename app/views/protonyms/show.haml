@@ -61,6 +61,11 @@
           %th Locality
           %td=@protonym.decorate.format_locality
 
+        -if @protonym.ichnotaxon?
+          %tr
+            %th Ichnotaxon
+            %td Yes
+
         -if (type_name = @protonym.type_name)
           %tr
             %th Type name
