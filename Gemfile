@@ -72,8 +72,8 @@ group :development, :test do
   gem 'rubocop-rails'
   gem 'rubocop-rspec', '2.0.0.pre'
   gem 'sunspot_test',
-    git: 'https://github.com/jonkerz/sunspot_test.git',
-    ref: 'f72d876062b4ea5bae7e6ef194b859cd9f38ae1b'
+    git: 'https://github.com/collectiveidea/sunspot_test.git',
+    ref: '82eeafe3160057b17b00c41e31ce9e4d849a2ef5'
 end
 
 group :test do

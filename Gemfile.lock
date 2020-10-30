@@ -1,7 +1,7 @@
 GIT
-  remote: https://github.com/jonkerz/sunspot_test.git
-  revision: f72d876062b4ea5bae7e6ef194b859cd9f38ae1b
-  ref: f72d876062b4ea5bae7e6ef194b859cd9f38ae1b
+  remote: https://github.com/collectiveidea/sunspot_test.git
+  revision: 82eeafe3160057b17b00c41e31ce9e4d849a2ef5
+  ref: 82eeafe3160057b17b00c41e31ce9e4d849a2ef5
   specs:
     sunspot_test (0.4.2)
       sunspot_rails (>= 2.1.1)
@@ -578,7 +578,7 @@ GEM
       workflow (~> 2.0)
     xpath (3.2.0)
       nokogiri (~> 1.8)
-    zeitwerk (2.4.0)
+    zeitwerk (2.4.1)
 
 PLATFORMS
   ruby
