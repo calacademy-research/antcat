@@ -35,7 +35,6 @@ module Exporters
           labels = []
           labels << "incertae sedis in #{taxon.incertae_sedis_in.downcase}" if taxon.incertae_sedis_in
           labels << main_status(taxon)
-          labels << 'ichnotaxon' if taxon.ichnotaxon?
           labels.join(', ').html_safe
         end
 

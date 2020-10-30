@@ -5,10 +5,10 @@ module Catalog
     include Service
 
     TAXA_COLUMNS = %i[
-      fossil unresolved_homonym ichnotaxon hong status type collective_group_name
+      fossil unresolved_homonym hong status type collective_group_name
       incertae_sedis_in
     ]
-    PROTONYM_COLUMNS = %i[nomen_nudum]
+    PROTONYM_COLUMNS = %i[nomen_nudum ichnotaxon]
     NAME_SEARCH_TYPES = [
       NAME_CONTAINS = 'contains',
       NAME_MATCHES = 'matches',

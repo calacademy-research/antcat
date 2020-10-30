@@ -29,6 +29,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
             "type_name_id" => protonym.type_name.id, # TODO.
             "sic" => protonym.sic,
             "fossil" => protonym.fossil,
+            "ichnotaxon" => protonym.ichnotaxon,
             "biogeographic_region" => Protonym::NEARCTIC_REGION,
             "locality" => 'USA',
             "forms" => protonym.forms,

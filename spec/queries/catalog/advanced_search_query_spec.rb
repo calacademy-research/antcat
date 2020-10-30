@@ -269,7 +269,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by ichnotaxon" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :any_taxon, :fossil, ichnotaxon: true }
+      let!(:yes_match) { create :family, :fossil, protonym: create(:protonym, :family_group_name, :ichnotaxon) }
 
       specify { expect(described_class[ichnotaxon: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }

@@ -31,7 +31,6 @@ class CreateCombinationPolicy
         yielder << 'taxon has soft validation issues' if taxon.soft_validations.failed?
 
         # Rare.
-        yielder << 'taxon is an ichnotaxon' if taxon.ichnotaxon?
         yielder << 'taxon is a collective group name' if taxon.collective_group_name?
       end
     end

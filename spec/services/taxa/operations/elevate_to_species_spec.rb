@@ -48,8 +48,7 @@ describe Taxa::Operations::ElevateToSpecies do
             :protonym,
             :hong,
             :unresolved_homonym,
-            :current_taxon,
-            :ichnotaxon
+            :current_taxon
           ].each do |attribute|
             expect(new_species.public_send(attribute)).to eq subspecies.public_send(attribute)
           end

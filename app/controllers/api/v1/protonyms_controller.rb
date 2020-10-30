@@ -10,6 +10,7 @@ module Api
         :type_name_id,
         :sic,
         :fossil,
+        :ichnotaxon,
         :biogeographic_region,
         :locality,
         :forms,

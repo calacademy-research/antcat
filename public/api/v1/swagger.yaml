@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.6.0"
+  version: "1.7.0"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -683,8 +683,6 @@ definitions:
             type: boolean
           current_taxon_id:
             type: integer
-          ichnotaxon:
-            type: boolean
 
   Author:
     description: Author primary key IDs
@@ -725,7 +723,7 @@ definitions:
         description: Automatically generated timestamp for most recent update
 
   Protonym:
-    description: Taxon protonym record
+    description: Protonym record
     type: object
     properties:
       id:
@@ -737,6 +735,8 @@ definitions:
       name_id:
         type: integer
         description: FK to name
+      ichnotaxon:
+        type: boolean
       fossil:
         type: boolean
       biogeographic_region:

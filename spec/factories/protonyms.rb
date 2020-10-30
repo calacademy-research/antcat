@@ -16,6 +16,11 @@ FactoryBot.define do
       fossil { true }
     end
 
+    trait :ichnotaxon do
+      fossil
+      ichnotaxon { true }
+    end
+
     trait :nomen_nudum do
       nomen_nudum { true }
     end
