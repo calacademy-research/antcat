@@ -15,11 +15,13 @@ module Trackable
     class_attribute :activity_parameters
   end
 
+  # rubocop:disable Lint/EmptyBlock
   class_methods do
     def trackable parameters: proc {}
       self.activity_parameters = parameters
     end
   end
+  # rubocop:enable Lint/EmptyBlock
 
   def create_activity action, user, edit_summary: nil, parameters: nil
     parameters ||= instance_eval(&activity_parameters)
