@@ -83,6 +83,8 @@ class ReferenceForm
       end
     end
 
+    # TODO: This needs to be improved, but we want to make author names unique first
+    # (w.r.t. case and diacritics) and get rid of `FindOrInitializeNamesFromString`.
     def parse_author_names_string
       author_names_string = params[:author_names_string]
       return if author_names_string.strip == reference.author_names_string
@@ -92,6 +94,11 @@ class ReferenceForm
       if author_names.empty? && author_names_string.present?
         errors.add :author_names_string, "couldn't be parsed."
         raise ActiveRecord::RecordInvalid, reference
+      end
+
+      author_names.each do |author_name|
+        next if author_name.valid?
+        errors.add :author_names, "(#{author_name.name}): #{author_name.errors.full_messages.to_sentence}"
       end
 
       # TODO: Clearing author names creates more `PaperTrail::Version` than needed, but

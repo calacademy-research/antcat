@@ -59,6 +59,24 @@ describe ReferenceForm do
       let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
       let!(:reference) { create :article_reference, author_names: author_names }
 
+      context "when adding an invalid author name" do
+        let(:params) do
+          {
+            author_names_string: "A"
+          }
+        end
+
+        it "promotes validation errors" do
+          reference_form = described_class.new(reference, params)
+
+          reference_form.save
+          reference_form.collect_errors
+
+          expect(reference_form.errors[:author_names]).
+            to include "(A): Name is too short (minimum is #{AuthorName::NAME_MIN_LENGTH} characters)"
+        end
+      end
+
       context "when author names have not changed" do
         let(:params) do
           {
