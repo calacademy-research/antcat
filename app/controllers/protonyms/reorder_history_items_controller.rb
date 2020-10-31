@@ -9,7 +9,7 @@ module Protonyms
 
       # NOTE: "history_item_ids" would be better, but `params[:history_item]` is what jQuery sends it as.
       if Protonyms::Operations::ReorderHistoryItems[protonym, params[:history_item]]
-        protonym.create_activity :reorder_protonym_history_items, current_user
+        protonym.create_activity :reorder_history_items, current_user
         render json: { success: true }
       else
         render json: protonym.errors, status: :unprocessable_entity

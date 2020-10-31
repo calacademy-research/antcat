@@ -30,11 +30,13 @@ class Activity < ApplicationRecord
       reopen_feedback
       reopen_issue
       reorder_reference_sections
-      reorder_taxon_history_items
-      reorder_protonym_history_items
+      reorder_history_items
       restart_reviewing
       set_subgenus
       start_reviewing
+    ],
+    deprecated: %w[
+      reorder_taxon_history_items
     ]
   }
   ACTIONS = ACTIONS_BY_GROUP.values.flatten
