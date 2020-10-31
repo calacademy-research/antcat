@@ -23,15 +23,20 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'Protonym (and cleaned name)', 'Author',
+          'Original combination',
           'Protonym taxa', 'Taxa with same name',
           'Quick-add button', 'Quick-add attributes'
         t.rows do |protonym|
           quick_adder = QuickAdd::FromExistingProtonymFactory.create_quick_adder(protonym)
           cleaned_name = protonym.name.cleaned_name
 
+          original_combination = protonym.original_combination
+
           [
             protonym.decorate.link_to_protonym + "<br>#{cleaned_name}".html_safe,
             protonym.author_citation,
+
+            (original_combination ? taxon_link(original_combination) : 'No original combination'),
 
             taxon_links_with_author_citations(protonym.taxa),
             taxon_links_with_author_citations(Taxon.where(name_cache: cleaned_name)),
