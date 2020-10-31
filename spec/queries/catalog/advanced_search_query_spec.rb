@@ -40,12 +40,8 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching by year" do
-      let!(:taxon) { create :subfamily }
-
-      before do
-        reference = create :any_reference, year: 1977
-        taxon.protonym.authorship.update!(reference: reference)
-      end
+      let(:reference) { create :any_reference, year: 1977 }
+      let!(:taxon) { create :subfamily, protonym: create(:protonym, authorship_reference: reference) }
 
       specify do
         expect(described_class[year: "1977"]).to eq [taxon]
@@ -132,15 +128,12 @@ describe Catalog::AdvancedSearchQuery do
     describe "searching by author name" do
       it "finds the taxa for the author's references that are part of citations in the protonym" do
         reference = create :any_reference, author_string: 'Bolton'
-        taxon = create :any_taxon
-        taxon.protonym.authorship.update!(reference: reference)
+        taxon = create :any_taxon, protonym: create(:protonym, authorship_reference: reference)
 
         expect(described_class[author_name: 'Bolton']).to eq [taxon]
       end
 
       describe "when author in protonym has many different names" do
-        let!(:barry_taxon) { create :genus }
-        let!(:bolton_taxon) { create :genus }
         let!(:author) { create :author }
         let!(:bolton_reference) do
           create :any_reference, author_names: [create(:author_name, name: 'Bolton', author: author)]
@@ -148,11 +141,8 @@ describe Catalog::AdvancedSearchQuery do
         let!(:barry_reference) do
           create :any_reference, author_names: [create(:author_name, name: 'Barry', author: author)]
         end
-
-        before do
-          barry_taxon.protonym.authorship.update!(reference: barry_reference)
-          bolton_taxon.protonym.authorship.update!(reference: bolton_reference)
-        end
+        let!(:barry_taxon) { create :genus, protonym: create(:protonym, authorship_reference: barry_reference) }
+        let!(:bolton_taxon) { create :genus, protonym: create(:protonym, authorship_reference: bolton_reference) }
 
         specify do
           expect(described_class[author_name: 'Bolton']).to match_array [barry_taxon, bolton_taxon]

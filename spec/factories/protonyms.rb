@@ -1,14 +1,19 @@
 # frozen_string_literal: true
 
-# TODO: Add transient attributes for the authorship to avoid `taxon.protonym.authorship.update`.
-
 FactoryBot.define do
   factory :protonym do
     transient do
       taxt_tag {}
+      authorship_reference {}
     end
 
-    authorship factory: :citation
+    authorship do
+      if authorship_reference
+        association :citation, reference: authorship_reference
+      else
+        association :citation
+      end
+    end
 
     genus_group_name
 

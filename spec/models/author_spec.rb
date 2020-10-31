@@ -43,23 +43,16 @@ describe Author do
   describe '#described_taxa' do
     let(:author) { create :author }
     let(:author_name) { create :author_name, author: author }
-    let!(:species) do
-      reference = create :any_reference, author_names: [author_name]
-      species = create :species
-      species.protonym.authorship.update!(reference: reference)
-      species
-    end
-    let!(:genus) do
-      reference = create :any_reference, author_names: [author_name]
-      genus = create :genus
-      genus.protonym.authorship.update!(reference: reference)
-      genus
-    end
+
+    let(:reference_1) { create :any_reference, author_names: [author_name] }
+    let(:reference_2) { create :any_reference, author_names: [author_name] }
+    let!(:taxon_1) { create :any_taxon, protonym: create(:protonym, authorship_reference: reference_1) }
+    let!(:taxon_2) { create :any_taxon, protonym: create(:protonym, authorship_reference: reference_2) }
 
     before { create :species } # Unrelated.
 
     it "returns taxa described by the author" do
-      expect(author.described_taxa).to match_array [species, genus]
+      expect(author.described_taxa).to match_array [taxon_1, taxon_2]
     end
   end
 

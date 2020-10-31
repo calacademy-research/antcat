@@ -13,20 +13,19 @@ describe AuthorDecorator do
       specify { expect(decorated.published_between).to eq nil }
     end
 
-    context "when author has references" do
-      let!(:reference) { create :any_reference, author_names: [author_name], year: 2000 }
+    context "when there is a single year" do
+      let!(:reference_2000) { create :any_reference, author_names: [author_name], year: 2000 }
 
-      context "when start and end year are the same" do
-        specify { expect(decorated.published_between).to eq reference.year }
+      specify { expect(decorated.published_between).to eq reference_2000.year }
+    end
+
+    context "when there are two different years" do
+      before do
+        create :any_reference, author_names: [author_name], year: 2000
+        create :any_reference, author_names: [author_name], year: 2010
       end
 
-      context "when start and end year are not the same" do
-        before do
-          create :any_reference, author_names: [author_name], year: 2010
-        end
-
-        specify { expect(decorated.published_between).to eq "2000–2010" }
-      end
+      specify { expect(decorated.published_between).to eq "2000–2010" }
     end
   end
 
@@ -38,28 +37,26 @@ describe AuthorDecorator do
       specify { expect(decorated.taxon_descriptions_between).to eq nil }
     end
 
-    context "when there are two years" do
-      let!(:reference) { create :any_reference, author_names: [author_name], year: 2000 }
+    context "when there is a single year" do
+      let(:reference_2000) { create :any_reference, author_names: [author_name], year: 2000 }
 
       before do
-        create(:species).protonym.authorship.update!(reference: reference)
+        create :any_taxon, protonym: create(:protonym, authorship_reference: reference_2000)
       end
 
-      context "when start and end year are the same" do
-        specify { expect(decorated.taxon_descriptions_between).to eq reference.year }
+      specify { expect(decorated.taxon_descriptions_between).to eq reference_2000.year }
+    end
+
+    context "when there are two different years" do
+      let!(:reference_2000) { create :any_reference, author_names: [author_name], year: 2000 }
+      let!(:reference_1990) { create :any_reference, author_names: [author_name], year: 1990 }
+
+      before do
+        create :any_taxon, protonym: create(:protonym, authorship_reference: reference_2000)
+        create :any_taxon, protonym: create(:protonym, authorship_reference: reference_1990)
       end
 
-      context "when start and end year are not the same" do
-        before do
-          second_reference = create :any_reference, author_names: [author_name], year: 1990
-          create(:any_taxon).protonym.authorship.update!(reference: second_reference)
-
-          old_reference = create :any_reference, author_names: [author_name], year: 1980
-          create(:any_taxon).protonym.authorship.update!(reference: old_reference)
-        end
-
-        specify { expect(decorated.taxon_descriptions_between).to eq "1980–2000" }
-      end
+      specify { expect(decorated.taxon_descriptions_between).to eq "1990–2000" }
     end
   end
 end
