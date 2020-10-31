@@ -45,6 +45,7 @@ class Taxon < ApplicationRecord
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
+  scope :original_combinations, -> { where(original_combination: true) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :order_by_name, -> { order(:name_cache) }
 
