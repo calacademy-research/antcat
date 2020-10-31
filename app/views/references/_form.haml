@@ -7,163 +7,175 @@
   =render 'shared/errors_for', resource: reference_form
 
   .row
-    .medium-4.columns
-      =f.label :reference_author_names_string do
-        Authors
-        =db_tooltip_icon :authors, scope: :references
-      =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
-    .medium-2.columns
-      =f.label :author_names_suffix do
-        Authors suffix
-        =db_tooltip_icon :author_names_suffix, scope: :references
-      =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
-    .medium-1.columns
-      =f.label :year do
-        Year
-        =db_tooltip_icon "year", scope: :references
-      =f.text_field :year
-    .medium-1.columns
-      =f.label :year_suffix do
-        Suffix
-        =db_tooltip_icon "year_suffix", scope: :references
-      =f.text_field :year_suffix
-    .medium-2.columns
-      =f.label :stated_year do
-        Stated year
-        =db_tooltip_icon "references.stated_year", scope: :references
-      =f.text_field :stated_year
-    .medium-1.columns
-      =f.label :reference_date do
-        Date
-        =db_tooltip_icon "references.date", scope: :references
-      =f.text_field :date
-    .medium-2.columns.end
-      =f.label :online_early, class: 'margin-top' do
-        =f.check_box :online_early
-        Online early
-  .row
-    .medium-2.columns
-      =f.label :reference_pagination do
-        Pagination
-        =db_tooltip_icon "references.journal_pagination", scope: :references
-        =db_tooltip_icon "references.book_pagination", scope: :references
-        =db_tooltip_icon "references.nested_pagination", scope: :references
-      =f.text_field :pagination
-    .medium-4.columns
-      =f.label :reference_doi do
-        DOI
-        =db_tooltip_icon "references.doi", scope: :references
-      =f.text_field :doi
-    .medium-2.columns.end
-      =f.label :reference_bolton_key do
-        Bolton key
-        =db_tooltip_icon "references.bolton_key", scope: :references
-      =f.text_field :bolton_key
+    .medium-8.columns
+      .row
+        .medium-12.columns
+          =f.label :reference_author_names_string do
+            Authors
+            =db_tooltip_icon :authors, scope: :references
+          =f.text_field :author_names_string, value: params.dig(:reference, :author_names_string) || reference.author_names_string
 
-  .row
-    .medium-12.columns
-      =f.label :reference_title do
-        Title
-        =db_tooltip_icon "references.title", scope: :references
-      =f.text_area :title, rows: 1
+      .row
+        .medium-2.columns
+          =f.label :year do
+            Year
+            =db_tooltip_icon "year", scope: :references
+          =f.text_field :year
+        .medium-2.columns
+          =f.label :year_suffix do
+            Year suffix
+            =db_tooltip_icon "year_suffix", scope: :references
+          =f.text_field :year_suffix, placeholder: 'Optional'
+        .medium-4.columns.end
+          =f.label :reference_pagination do
+            Pagination
+            =db_tooltip_icon "references.journal_pagination", scope: :references
+            =db_tooltip_icon "references.book_pagination", scope: :references
+            =db_tooltip_icon "references.nested_pagination", scope: :references
+          =f.text_field :pagination
 
-  .row
-    .medium-12.columns
-      .css-tabs
-        %input#article-tab.tab-input{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
-        %label{for: "article-tab"} Article
-        %input#book-tab.tab-input{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
-        %label{for: "book-tab"} Book
-        %input#nested-tab.tab-input{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
-        %label{for: "nested-tab"} Nested
-        .tab.article-tab-content
-          .row
-            .medium-3.columns
-              =f.label :reference_journal_name do
-                Journal
-                =db_tooltip_icon "references.journal_name", scope: :references
-              =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
+      .row
+        .medium-12.columns
+          =f.label :reference_title do
+            Title
+            =db_tooltip_icon "references.title", scope: :references
+          =f.text_area :title, rows: 1
 
-            .medium-3.columns.end
-              =f.label :reference_series_volume_issue do
-                Series volume issue
-                =db_tooltip_icon "references.series_volume_issue", scope: :references
-              =f.text_field :series_volume_issue
+      .row.small-margin-top
+        .medium-12.columns
+          .css-tabs
+            %input#article-tab.tab-input{checked: ("checked" if reference.is_a?(ArticleReference)), name: "reference_type", type: "radio", value: 'ArticleReference'}
+            %label{for: "article-tab"} Article
+            %input#book-tab.tab-input{checked: ("checked" if reference.is_a?(BookReference)), name: "reference_type", type: "radio", value: 'BookReference'}
+            %label{for: "book-tab"} Book
+            %input#nested-tab.tab-input{checked: ("checked" if reference.is_a?(NestedReference)), name: "reference_type", type: "radio", value: 'NestedReference'}
+            %label{for: "nested-tab"} Nested
+            .tab.article-tab-content
+              .row
+                .medium-6.columns
+                  =f.label :reference_journal_name do
+                    Journal
+                    =db_tooltip_icon "references.journal_name", scope: :references
+                  =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
+                .medium-6.columns.end
+                  =f.label :reference_series_volume_issue do
+                    Series volume issue
+                    =db_tooltip_icon "references.series_volume_issue", scope: :references
+                  =f.text_field :series_volume_issue
 
-        .tab.book-tab-content
-          .row
-            .medium-3.columns.end
-              =f.label :reference_publisher_string do
-                Publisher
-                =db_tooltip_icon "references.publisher", scope: :references
-              =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
+            .tab.book-tab-content
+              .row
+                .medium-6.columns.end
+                  =f.label :reference_publisher_string do
+                    Publisher
+                    =db_tooltip_icon "references.publisher", scope: :references
+                  =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
-        .tab.nested-tab-content
-          .row
-            .medium-3.columns.end
-              =f.label :nesting_reference_id do
-                Nesting reference ID
-                =db_tooltip_icon "nesting_reference_id", scope: :references
-              =f.text_field :nesting_reference_id
+            .tab.nested-tab-content
+              .row
+                .medium-6.columns.end
+                  =f.label :nesting_reference_id do
+                    Nesting reference ID
+                    =db_tooltip_icon "nesting_reference_id", scope: :references
+                  =f.text_field :nesting_reference_id
 
-  .row
-    .medium-4.columns
-      =f.label :reference_public_notes, 'Public notes'
-      =f.text_area :public_notes, rows: 2
+      .row.margin-top.small-margin-bottom
+        .medium-12.columns
+          %h6.bold Notes
+        .medium-12.columns
+          =f.label :reference_public_notes, 'Public notes'
+          =f.text_area :public_notes, rows: 2
+        .medium-12.columns
+          =f.label :reference_editor_notes do
+            Editor notes
+            =db_tooltip_icon "EdNote", scope: :references
+          =f.text_area :editor_notes, rows: 2
+        .medium-12.columns
+          =f.label :reference_taxonomic_notes do
+            Taxonomic notes
+            =db_tooltip_icon "TaxNote", scope: :references
+          =f.text_area :taxonomic_notes, rows: 2
 
     .medium-4.columns
-      =f.label :reference_editor_notes do
-        Editor notes
-        =db_tooltip_icon "EdNote", scope: :references
-      =f.text_area :editor_notes, rows: 2
+      .callout
+        .row
+          .medium-12.columns
+            %h6.bold Misc. fields
+          .medium-12.columns
+            =f.label :reference_bolton_key do
+              Bolton key
+              =db_tooltip_icon "references.bolton_key", scope: :references
+            =f.text_field :bolton_key
 
-    .medium-4.columns
-      =f.label :reference_taxonomic_notes do
-        Taxonomic notes
-        =db_tooltip_icon "TaxNote", scope: :references
-      =f.text_area :taxonomic_notes, rows: 2
+          .medium-12.columns
+            =f.label :reference_doi do
+              DOI
+              =db_tooltip_icon "references.doi", scope: :references
+            =f.text_field :doi
 
-  %fieldset.fieldset
-    %legend
-      Reference document
-      =db_tooltip_icon "references.pdf.upload", scope: :references
-    =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
-      -if document_form.object.file_file_name.present? && document_form.object.url.present?
-        .row.margin-bottom
+          .medium-6.columns
+            =f.label :stated_year do
+              Stated year
+              =db_tooltip_icon "references.stated_year", scope: :references
+            =f.text_field :stated_year
+
           .medium-6.columns.end
-            -if document_form.object.url == document_form.object.__send__(:url_via_file_file_name)
-              .callout.success
-                %p
-                  This reference has both an uploaded PDF and an URL. The hardcoded URL is the same as
-                  the dynamically generated link, so this notice can be ignored. The plan is to
-                  blank the URL by script.
-            -else
-              .callout.alert
-                %p
-                  This reference has both an uploaded PDF and an URL. The hardcoded URL is not the same
-                  as the dynamically generated link. The URL will be ignored when displaying
-                  this reference on the site, since uploaded files have higher priority.
-      .row
-        .medium-3.columns
-          =document_form.file_field :file
-        .medium-6.columns.end
-          =f.label :document_url do
-            Source URL
-            =db_tooltip_icon "references.source.url", scope: :references
-          =document_form.text_field :url
-      .row
-        .medium-12.columns
-          =succeed ":" do
-            %code reference_documents.id
-          =document_form.object.id || '(none)'
-      .row
-        .medium-12.columns
-          =succeed ":" do
-            %code file_file_name
-          -if document_form.object.file_file_name.present?
-            =document_form.object.file_file_name
-          -else
-            (none)
+            =f.label :author_names_suffix do
+              Authors suffix
+              =db_tooltip_icon :author_names_suffix, scope: :references
+            =f.select :author_names_suffix, Reference.distinct.pluck(:author_names_suffix)
+          .medium-8.columns.end
+            =f.label :reference_date do
+              Date
+              =db_tooltip_icon "references.date", scope: :references
+            =f.text_field :date
+
+          .medium-12.columns
+            =f.label :online_early, class: 'margin-top2' do
+              =f.check_box :online_early
+              Online early
+
+    .medium-4.columns.end.small-margin-top
+      .callout
+        %h6.bold Reference document
+        =f.fields_for :document, (reference.document || ReferenceDocument.new) do |document_form|
+          -if document_form.object.file_file_name.present? && document_form.object.url.present?
+            .row.margin-bottom
+              .medium-12.columns.end
+                -if document_form.object.url == document_form.object.__send__(:url_via_file_file_name)
+                  .callout.success
+                    %p
+                      This reference has both an uploaded PDF and an URL. The hardcoded URL is the same as
+                      the dynamically generated link, so this notice can be ignored. The plan is to
+                      blank the URL by script.
+                -else
+                  .callout.alert
+                    %p
+                      This reference has both an uploaded PDF and an URL. The hardcoded URL is not the same
+                      as the dynamically generated link. The URL will be ignored when displaying
+                      this reference on the site, since uploaded files have higher priority.
+          .row
+            .medium-12.columns
+              =document_form.file_field :file
+          .row
+            .medium-12.columns.end
+              =f.label :document_url do
+                Source URL
+                =db_tooltip_icon "references.source.url", scope: :references
+              =document_form.text_field :url
+          .row
+            .medium-12.columns
+              =succeed ":" do
+                %code reference_documents.id
+              =document_form.object.id || '(none)'
+          .row
+            .medium-12.columns
+              =succeed ":" do
+                %code file_file_name
+              -if document_form.object.file_file_name.present?
+                =document_form.object.file_file_name
+              -else
+                (none)
 
   .row
     .medium-3.columns
