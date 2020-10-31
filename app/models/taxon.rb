@@ -26,9 +26,9 @@ class Taxon < ApplicationRecord
   has_one :authorship, through: :protonym
   has_one :authorship_reference, through: :authorship, source: :reference
   has_many :type_names, dependent: :restrict_with_error
-  has_many :protonym_history_items, through: :protonym
+  has_many :protonym_history_items, through: :protonym, source: :history_items
   has_many :history_items_for_taxon_including_hidden, ->(taxon) { unranked_and_for_rank(taxon.type) },
-    through: :protonym, source: :protonym_history_items
+    through: :protonym, source: :history_items
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_TYPES, allow_nil: true }

@@ -24,7 +24,7 @@ class Protonym < ApplicationRecord
   belongs_to :type_name, optional: true, dependent: :destroy
 
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
-  has_many :protonym_history_items, -> { order(:position) }, class_name: 'HistoryItem', dependent: :restrict_with_error
+  has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_one :authorship_reference, through: :authorship, source: :reference
   has_one :original_combination, -> { original_combinations }, class_name: 'Taxon'
   has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'

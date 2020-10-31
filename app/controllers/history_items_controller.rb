@@ -22,12 +22,12 @@ class HistoryItemsController < ApplicationController
 
   def new
     @protonym = find_protonym
-    @history_item = @protonym.protonym_history_items.new
+    @history_item = @protonym.history_items.new
   end
 
   def create
     @protonym = find_protonym
-    @history_item = @protonym.protonym_history_items.new(history_item_params)
+    @history_item = @protonym.history_items.new(history_item_params)
 
     if @history_item.save
       @history_item.create_activity :create, current_user, edit_summary: params[:edit_summary]

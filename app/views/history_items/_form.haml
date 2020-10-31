@@ -52,11 +52,11 @@
 %table.huge-margin-top
   %caption Other history items belonging to #{protonym.name.name_html}
   %tbody
-    -if protonym.protonym_history_items.persisted.empty?
+    -if protonym.history_items.persisted.empty?
       %tr
         %td{colspan: 2} Protonym has no history items.
     -else
-      -protonym.protonym_history_items.persisted.each do |protonym_history_item|
+      -protonym.history_items.persisted.each do |protonym_history_item|
         %tr{class: ('pale-background' if protonym_history_item == history_item)}
           %td
             =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
