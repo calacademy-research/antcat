@@ -3,7 +3,7 @@
 
 =render "shared/default_reference"
 
--if @protonym.taxa.present?
+-if protonym.taxa.present?
   .row.margin-bottom
     .small-12.columns
       %h5 Taxa belonging to this history item's protonym
@@ -13,7 +13,7 @@
           %th Rank
           %th Status
           %th Show history items in catalog?
-        -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+        -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
             %td=taxon.rank.capitalize

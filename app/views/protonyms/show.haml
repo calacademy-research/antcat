@@ -143,26 +143,3 @@
     =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym
-
--if current_user
-  -if @protonym.history_items.present?
-    .row.huge-margin-top.margin-bottom
-      .small-12.columns
-        .callout.no-border-callout.logged-in-only-background
-          %h5
-            Taxonomic history
-            =logged_in_only_tooltip_icon
-
-          .left-margin
-            %ul.history
-              -@protonym.history_items.each do |history_item|
-                %li
-                  -if history_item.rank?
-                    %small.bold-notice #{history_item.rank}-only item
-
-                  =add_period_if_necessary Detax[history_item.to_taxt]
-                  -if current_user
-                    %span.show-on-hover
-                      -if user_is_at_least_helper?
-                        =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-                      =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

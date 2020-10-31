@@ -5,7 +5,7 @@
     .right
       =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-normal btn-tiny'
 
-  %table.table.unstriped.gray-text.with-gray-links#existing-protonym
+  %table.table.unstriped.small-text
     %tbody
       %tr
         %td Authorship
@@ -41,7 +41,7 @@
 
       -if protonym.primary_type_information_taxt?
         %tr
-          %td Primary type information?
+          %td Primary type information
           %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
       -if protonym.secondary_type_information_taxt?
         %tr

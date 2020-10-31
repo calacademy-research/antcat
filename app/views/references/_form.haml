@@ -131,7 +131,7 @@
             =f.text_field :date
 
           .medium-12.columns
-            =f.label :online_early, class: 'margin-top2' do
+            =f.label :online_early do
               =f.check_box :online_early
               Online early
 
@@ -163,12 +163,13 @@
                 Source URL
                 =db_tooltip_icon "references.source.url", scope: :references
               =document_form.text_field :url
-          .row
+
+          .row.small-text
             .medium-12.columns
               =succeed ":" do
                 %code reference_documents.id
               =document_form.object.id || '(none)'
-          .row
+          .row.small-text
             .medium-12.columns
               =succeed ":" do
                 %code file_file_name

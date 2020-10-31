@@ -78,10 +78,10 @@ describe Activity do
   end
 
   describe '#pagination_page' do
-    let!(:activity_1) { create :activity, automated_edit: true }
+    let!(:activity_1) { create :activity, :automated_edit }
     let!(:activity_2) { create :activity }
     let!(:activity_3) { create :activity }
-    let!(:activity_4) { create :activity, automated_edit: true }
+    let!(:activity_4) { create :activity, :automated_edit }
     let!(:activity_5) { create :activity }
 
     before do

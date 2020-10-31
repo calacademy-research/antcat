@@ -22,7 +22,7 @@
 
   =render 'taxa/_form/main_form', taxon: taxon, form: form, default_name_string: default_name_string
   -unless taxon.persisted?
-    =render 'taxa/_form/select_existing_or_create_new_protonym', taxon: taxon, form: form
+    =render 'taxa/_form/create_new_protonym_form', taxon: taxon, form: form
 
   .row
     .medium-3.columns

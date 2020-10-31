@@ -53,8 +53,11 @@ class Taxon < ApplicationRecord
   has_paper_trail
   strip_attributes only: [:incertae_sedis_in], replace_newlines: true
   trackable parameters: proc {
-    parent_params = { rank: parent.rank, name: parent.name.name_html, id: parent.id } if parent
-    { rank: rank, name: name.name_html, parent: parent_params }
+    { rank: rank, name: name.name_html }.tap do |hsh|
+      if parent
+        hsh[:parent] = { rank: parent.rank, name: parent.name.name_html, id: parent.id }
+      end
+    end
   }
 
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|

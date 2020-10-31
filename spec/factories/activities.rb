@@ -15,5 +15,9 @@ FactoryBot.define do
       trackable { nil }
       action { Activity::EXECUTE_SCRIPT }
     end
+
+    trait :automated_edit do
+      automated_edit { true }
+    end
   end
 end

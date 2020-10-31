@@ -69,7 +69,7 @@
               =protonym_form.check_box :uncertain_locality
               =protonym_form.label :uncertain_locality
 
-        -unless taxon.is_a?(SpeciesGroupTaxon)
+        -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
           %tr
             %td=authorship_form.label :type_name
             %td.small-text Can be set after creating the new protonym
@@ -88,14 +88,14 @@
 
         %tr
           %td=form.label :primary_type_information
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt, id: :taxon_protonym_attributes_primary_type_information_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
         %tr
           %td=form.label :secondary_type_information
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt, id: :taxon_protonym_attributes_secondary_type_information_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt
         %tr
           %td=form.label :type_notes
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt, id: :taxon_protonym_attributes_type_notes
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
 
         %tr
           %td=form.label :notes_taxt, 'Notes'
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt, id: :taxon_protonym_attributes_notes_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt
