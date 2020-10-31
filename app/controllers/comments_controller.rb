@@ -17,7 +17,7 @@ class CommentsController < ApplicationController
     @comment = Comment.build_comment commentable, current_user, body: comment_params[:body]
 
     if @comment.save
-      @comment.create_activity :create, current_user
+      @comment.create_activity Activity::CREATE, current_user
       Notifications::NotifyUsersForComment[@comment]
       highlighted_comment_url = "#{request.referer}#comment-#{@comment.id}"
       redirect_to highlighted_comment_url, notice: <<-MSG

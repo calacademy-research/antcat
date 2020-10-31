@@ -39,7 +39,7 @@ class ProtonymsController < ApplicationController
     @protonym_form = ProtonymForm.new(@protonym, protonym_params, protonym_form_params)
 
     if @protonym_form.save
-      @protonym.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @protonym.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully created.'
     else
       render :new
@@ -56,7 +56,7 @@ class ProtonymsController < ApplicationController
     @protonym_form = ProtonymForm.new(@protonym, protonym_params, protonym_form_params)
 
     if @protonym_form.save
-      @protonym.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @protonym.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @protonym, notice: 'Protonym was successfully updated.'
     else
       render :edit
@@ -73,7 +73,7 @@ class ProtonymsController < ApplicationController
     end
 
     if protonym.destroy
-      protonym.create_activity :destroy, current_user
+      protonym.create_activity Activity::DESTROY, current_user
       redirect_to protonyms_path, notice: "Successfully deleted protonym."
     else
       redirect_to protonym, alert: protonym.errors.full_messages.to_sentence

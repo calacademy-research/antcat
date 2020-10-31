@@ -1,9 +1,9 @@
 -case activity.action
--when 'restart_reviewing'
+-when Activity::RESTART_REVIEWING
   restarted reviewing
--when 'finish_reviewing'
+-when Activity::FINISH_REVIEWING
   finished reviewing
--when 'start_reviewing'
+-when Activity::START_REVIEWING
   started reviewing
 -else
   =activity.action_to_verb

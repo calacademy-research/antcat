@@ -36,7 +36,7 @@ class ReferencesController < ApplicationController
     @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
     if @reference_form.save
-      @reference.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @reference.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully added."
     else
       @reference_form.collect_errors
@@ -54,7 +54,7 @@ class ReferencesController < ApplicationController
     @reference_form = ReferenceForm.new(@reference, reference_params, ignore_duplicates: params[:ignore_duplicates].present?)
 
     if @reference_form.save
-      @reference.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @reference.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to reference_path(@reference), notice: "Reference was successfully updated."
     else
       @reference_form.collect_errors
@@ -74,7 +74,7 @@ class ReferencesController < ApplicationController
     activity_parameters = { name: reference.key_with_suffixed_year } # Grab key before reference author names are deleted.
 
     if reference.destroy
-      reference.create_activity :destroy, current_user, parameters: activity_parameters
+      reference.create_activity Activity::DESTROY, current_user, parameters: activity_parameters
       redirect_to references_path, notice: 'Reference was successfully deleted.'
     else
       redirect_to reference_path(reference), alert: reference.errors.full_messages.to_sentence

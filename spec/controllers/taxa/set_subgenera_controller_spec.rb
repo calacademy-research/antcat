@@ -24,7 +24,7 @@ describe Taxa::SetSubgeneraController do
 
     it 'creates an activity' do
       expect { post :create, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
-        to change { Activity.where(action: :set_subgenus, trackable: taxon).count }.by(1)
+        to change { Activity.where(action: Activity::SET_SUBGENUS, trackable: taxon).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq set_subgenus_id_to: subgenus.id
@@ -46,7 +46,7 @@ describe Taxa::SetSubgeneraController do
 
     it 'creates an activity' do
       expect { delete :destroy, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
-        to change { Activity.where(action: :set_subgenus, trackable: taxon).count }.by(1)
+        to change { Activity.where(action: Activity::SET_SUBGENUS, trackable: taxon).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq removed_subgenus_id: subgenus.id

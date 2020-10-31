@@ -58,7 +58,7 @@ module Taxa
       end
 
       def create_activity new_combination
-        new_combination.create_activity :create_new_combination, current_user,
+        new_combination.create_activity Activity::CREATE_NEW_COMBINATION, current_user,
           parameters: { previous_combination_id: @taxon.id }
       end
   end

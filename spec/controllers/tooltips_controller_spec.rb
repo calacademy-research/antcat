@@ -51,7 +51,7 @@ describe TooltipsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { tooltip: tooltip_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       tooltip = Tooltip.last
@@ -88,7 +88,7 @@ describe TooltipsController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: tooltip.id, tooltip: tooltip_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :update).count }.by(1)
+        to change { Activity.where(action: Activity::UPDATE).count }.by(1)
 
       activity = Activity.last
       tooltip = Tooltip.last
@@ -108,7 +108,7 @@ describe TooltipsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: tooltip.id }) }.
-        to change { Activity.where(action: :destroy, trackable: tooltip).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: tooltip).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(scope_and_key: "#{tooltip.scope}.#{tooltip.key}")

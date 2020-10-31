@@ -35,7 +35,7 @@ describe Users::RegistrationsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { user: user_params }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
       expect(Activity.last.parameters).to eq(user_id: User.last.id)
     end
 

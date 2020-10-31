@@ -19,7 +19,7 @@ module Taxa
       end
 
       if @taxon.update(subgenus: @subgenus)
-        @taxon.create_activity :set_subgenus, current_user, parameters: { set_subgenus_id_to: @subgenus.id }
+        @taxon.create_activity Activity::SET_SUBGENUS, current_user, parameters: { set_subgenus_id_to: @subgenus.id }
         redirect_to catalog_path(@taxon), notice: "Successfully updated subgenus of species."
       else
         redirect_to({ action: :show }, alert: @taxon.errors.full_messages.to_sentence)
@@ -31,7 +31,7 @@ module Taxa
       activity_parameters = { removed_subgenus_id: taxon.subgenus.id }
 
       if taxon.update(subgenus: nil)
-        taxon.create_activity :set_subgenus, current_user, parameters: activity_parameters
+        taxon.create_activity Activity::SET_SUBGENUS, current_user, parameters: activity_parameters
         redirect_to catalog_path(taxon), notice: "Successfully removed subgenus from species."
       else
         redirect_to({ action: :show }, alert: taxon.errors.full_messages.to_sentence)

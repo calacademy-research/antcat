@@ -62,7 +62,7 @@ describe SiteNoticesController do
 
     it 'creates an activity' do
       expect { post(:create, params: { site_notice: site_notice_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       site_notice = SiteNotice.last
@@ -97,7 +97,7 @@ describe SiteNoticesController do
 
     it 'creates an activity' do
       expect { post(:update, params: { id: site_notice.id, site_notice: site_notice_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :update, trackable: site_notice).count }.by(1)
+        to change { Activity.where(action: Activity::UPDATE, trackable: site_notice).count }.by(1)
 
       activity = Activity.last
       site_notice.reload
@@ -116,7 +116,7 @@ describe SiteNoticesController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: site_notice.id }) }.
-        to change { Activity.where(action: :destroy, trackable: site_notice).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: site_notice).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(title: site_notice.title)

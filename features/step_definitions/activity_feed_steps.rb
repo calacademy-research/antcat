@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
 Given("there is an activity with the edit summary {string}") do |edit_summary|
-  create :activity, :execute_script, edit_summary: edit_summary
+  create :activity, Activity::EXECUTE_SCRIPT, edit_summary: edit_summary
 end
 
 Given("there is an automated activity with the edit summary {string}") do |edit_summary|
-  create :activity, :execute_script, edit_summary: edit_summary, automated_edit: true
+  create :activity, Activity::EXECUTE_SCRIPT, edit_summary: edit_summary, automated_edit: true
 end
 
 Then("I should see {int} item(s) in the activity feed") do |expected_count|

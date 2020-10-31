@@ -11,7 +11,7 @@ module Users
     def create
       super do |user|
         if user.persisted?
-          user.create_activity :create, current_user
+          user.create_activity Activity::CREATE, current_user
         end
       end
     end

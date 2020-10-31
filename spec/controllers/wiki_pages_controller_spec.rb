@@ -48,7 +48,7 @@ describe WikiPagesController do
 
     it 'creates an activity' do
       expect { post(:create, params: { wiki_page: wiki_page_params, edit_summary: 'create wiki page' }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       wiki_page = WikiPage.last
@@ -92,7 +92,7 @@ describe WikiPagesController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: wiki_page.id }) }.
-        to change { Activity.where(action: :destroy, trackable: wiki_page).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: wiki_page).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(title: wiki_page.title)

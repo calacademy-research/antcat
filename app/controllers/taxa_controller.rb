@@ -23,7 +23,7 @@ class TaxaController < ApplicationController
     )
 
     if @taxon_form.save
-      @taxon.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @taxon.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
     else
       render :new
@@ -38,7 +38,7 @@ class TaxaController < ApplicationController
     @taxon = find_taxon
 
     if @taxon.update(taxon_params)
-      @taxon.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @taxon.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to catalog_path(@taxon), notice: "Taxon was successfully updated."
     else
       render :edit
@@ -54,7 +54,7 @@ class TaxaController < ApplicationController
     end
 
     if taxon.destroy
-      taxon.create_activity :destroy, current_user
+      taxon.create_activity Activity::DESTROY, current_user
       redirect_to catalog_path(taxon.parent), notice: "Taxon was successfully deleted."
     else
       redirect_to catalog_path(taxon.parent), alert: taxon.errors.full_messages.to_sentence

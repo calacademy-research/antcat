@@ -24,7 +24,7 @@ describe Taxa::ConvertToSubspeciesController do
         to change { Activity.count }.by(1)
 
       activity = Activity.last
-      expect(activity.action).to eq 'convert_species_to_subspecies'
+      expect(activity.action).to eq Activity::CONVERT_SPECIES_TO_SUBSPECIES
       expect(activity.trackable).to be_a Subspecies
       expect(activity.parameters).to eq(
         name: "<i>#{activity.trackable.name.name}</i>",

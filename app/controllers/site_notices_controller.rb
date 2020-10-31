@@ -24,7 +24,7 @@ class SiteNoticesController < ApplicationController
     @site_notice.user = current_user
 
     if @site_notice.save
-      @site_notice.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @site_notice.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully created site notice."
     else
@@ -40,7 +40,7 @@ class SiteNoticesController < ApplicationController
     @site_notice = find_site_notice
 
     if @site_notice.update(site_notice_params)
-      @site_notice.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @site_notice.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       Notifications::NotifyMentionedUsers[@site_notice.message, attached: @site_notice, notifier: current_user]
       redirect_to @site_notice, notice: "Successfully updated site notice."
     else
@@ -52,7 +52,7 @@ class SiteNoticesController < ApplicationController
     site_notice = find_site_notice
 
     site_notice.destroy!
-    site_notice.create_activity :destroy, current_user
+    site_notice.create_activity Activity::DESTROY, current_user
 
     redirect_to site_notices_path, notice: "Site notice was successfully deleted."
   end

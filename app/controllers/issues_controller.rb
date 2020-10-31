@@ -23,7 +23,7 @@ class IssuesController < ApplicationController
     @issue.user = current_user
 
     if @issue.save
-      @issue.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @issue.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       Notifications::NotifyMentionedUsers[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully created issue."
     else
@@ -39,7 +39,7 @@ class IssuesController < ApplicationController
     @issue = find_issue
 
     if @issue.update(issue_params)
-      @issue.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @issue.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       Notifications::NotifyMentionedUsers[@issue.description, attached: @issue, notifier: current_user]
       redirect_to @issue, notice: "Successfully updated issue."
     else
@@ -51,7 +51,7 @@ class IssuesController < ApplicationController
     issue = find_issue
 
     issue.close! current_user
-    issue.create_activity :close_issue, current_user
+    issue.create_activity Activity::CLOSE_ISSUE, current_user
 
     redirect_to issue, notice: "Successfully closed issue."
   end
@@ -60,7 +60,7 @@ class IssuesController < ApplicationController
     issue = find_issue
 
     issue.reopen!
-    issue.create_activity :reopen_issue, current_user
+    issue.create_activity Activity::REOPEN_ISSUE, current_user
 
     redirect_to issue, notice: "Successfully re-opened issue."
   end

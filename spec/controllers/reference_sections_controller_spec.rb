@@ -40,7 +40,7 @@ describe ReferenceSectionsController do
     it 'creates a activity' do
       expect do
         post(:create, params: { taxa_id: taxon.id, reference_section: reference_section_params, edit_summary: 'added' })
-      end.to change { Activity.where(action: :create).count }.by(1)
+      end.to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       reference_section = ReferenceSection.last
@@ -71,7 +71,7 @@ describe ReferenceSectionsController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: reference_section.id, reference_section: reference_section_params, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: :update, trackable: reference_section).count }.by(1)
+        to change { Activity.where(action: Activity::UPDATE, trackable: reference_section).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
@@ -88,7 +88,7 @@ describe ReferenceSectionsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: reference_section.id, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: :destroy, trackable: reference_section).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: reference_section).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"

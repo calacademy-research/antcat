@@ -33,7 +33,7 @@ describe CommentsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { comment: comment_params }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       comment = Comment.last

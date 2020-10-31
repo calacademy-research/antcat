@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :activity do
     trackable factory: :journal
-    action { "create" }
+    action { Activity::CREATE }
 
     with_user
 
@@ -13,7 +13,7 @@ FactoryBot.define do
 
     trait :execute_script do
       trackable { nil }
-      action { :execute_script }
+      action { Activity::EXECUTE_SCRIPT }
     end
   end
 end

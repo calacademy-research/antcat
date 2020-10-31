@@ -28,7 +28,7 @@ module Protonyms
       end
 
       if Protonyms::Operations::MoveItems[@to_protonym, history_items: history_items]
-        @protonym.create_activity :move_protonym_items, current_user,
+        @protonym.create_activity Activity::MOVE_PROTONYM_ITEMS, current_user,
           parameters: { to_protonym_id: @to_protonym.id }
         redirect_to protonym_move_items_path(@protonym, to_protonym_id: @to_protonym.id),
           notice: "Successfully moved items. Items can be re-ordered at the protonyms page."

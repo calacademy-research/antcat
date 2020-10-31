@@ -39,7 +39,7 @@ describe Protonyms::MoveItemsController do
       }
 
       expect { post :create, params: params }.
-        to change { Activity.where(action: :move_protonym_items, trackable: protonym).count }.by(1)
+        to change { Activity.where(action: Activity::MOVE_PROTONYM_ITEMS, trackable: protonym).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(to_protonym_id: to_protonym.id)

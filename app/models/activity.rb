@@ -8,35 +8,35 @@ class Activity < ApplicationRecord
 
   EDIT_SUMMARY_MAX_LENGTH = 255
   ACTIONS_BY_GROUP = {
-    default: %w[
-      create
-      update
-      destroy
+    default: [
+      CREATE = 'create',
+      UPDATE = 'update',
+      DESTROY = 'destroy'
     ],
-    custom: %w[
-      approve_all_references
-      close_feedback
-      close_issue
-      convert_species_to_subspecies
-      create_new_combination
-      create_obsolete_combination
-      elevate_subspecies_to_species
-      execute_script
-      finish_reviewing
-      force_parent_change
-      merge_authors
-      move_items
-      move_protonym_items
-      reopen_feedback
-      reopen_issue
-      reorder_reference_sections
-      reorder_history_items
-      restart_reviewing
-      set_subgenus
-      start_reviewing
+    custom: [
+      APPROVE_ALL_REFERENCES =        'approve_all_references',
+      CLOSE_FEEDBACK =                'close_feedback',
+      CLOSE_ISSUE =                   'close_issue',
+      CONVERT_SPECIES_TO_SUBSPECIES = 'convert_species_to_subspecies',
+      CREATE_NEW_COMBINATION =        'create_new_combination',
+      CREATE_OBSOLETE_COMBINATION =   'create_obsolete_combination',
+      ELEVATE_SUBSPECIES_TO_SPECIES = 'elevate_subspecies_to_species',
+      EXECUTE_SCRIPT =                'execute_script',
+      FINISH_REVIEWING =              'finish_reviewing',
+      FORCE_PARENT_CHANGE =           'force_parent_change',
+      MERGE_AUTHORS =                 'merge_authors',
+      MOVE_ITEMS =                    'move_items',
+      MOVE_PROTONYM_ITEMS =           'move_protonym_items',
+      REOPEN_FEEDBACK =               'reopen_feedback',
+      REOPEN_ISSUE =                  'reopen_issue',
+      REORDER_REFERENCE_SECTIONS =    'reorder_reference_sections',
+      REORDER_HISTORY_ITEMS =         'reorder_history_items',
+      RESTART_REVIEWING =             'restart_reviewing',
+      SET_SUBGENUS =                  'set_subgenus',
+      START_REVIEWING =               'start_reviewing'
     ],
-    deprecated: %w[
-      reorder_taxon_history_items
+    deprecated: [
+      REORDER_TAXON_HISTORY_ITEMS = 'reorder_taxon_history_items'
     ]
   }
   ACTIONS = ACTIONS_BY_GROUP.values.flatten
@@ -87,7 +87,7 @@ class Activity < ApplicationRecord
     def execute_script_activity user, edit_summary
       raise "You must assign a user." unless user
       raise "You must include an edit summary." unless edit_summary
-      create!(trackable: nil, action: :execute_script, user: user, edit_summary: edit_summary)
+      create!(trackable: nil, action: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
     end
     # :nocov:
   end
