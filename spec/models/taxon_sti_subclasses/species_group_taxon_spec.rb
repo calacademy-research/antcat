@@ -6,12 +6,20 @@ describe SpeciesGroupTaxon do
   describe 'validations' do
     describe '#ensure_protonym_is_a_species_group_name' do
       let(:taxon) { create :species }
-      let(:genus_name) { create :genus_name }
 
       it 'must have genus-group protonym names' do
+        genus_name = create :genus_name
+
         expect { taxon.protonym.name = genus_name }.to change { taxon.valid? }.to(false)
         expect(taxon.errors[:base]).
           to eq ["Species and subspecies must have protonyms with species-group names"]
+      end
+
+      context 'when protonym is blank' do
+        it 'fails validations for other reasons (without raising, regression test)' do
+          expect { taxon.protonym = nil }.to change { taxon.valid? }.to(false)
+          expect(taxon.errors[:protonym]).to eq ["must exist"]
+        end
       end
     end
   end
