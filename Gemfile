@@ -67,10 +67,10 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '1.1.0', require: false
+  gem 'rubocop', '~> 1.2', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
-  gem 'rubocop-rspec', '2.0.0.pre'
+  gem 'rubocop-rspec'
   gem 'sunspot_test',
     git: 'https://github.com/collectiveidea/sunspot_test.git',
     ref: '82eeafe3160057b17b00c41e31ce9e4d849a2ef5'
