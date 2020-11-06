@@ -191,6 +191,7 @@ Metrics/AbcSize:
   Enabled: false
 
 Metrics/BlockLength:
+  Enabled: false
   Exclude:
     - 'spec/**/*'
     - 'config/routes.rb'
@@ -288,6 +289,9 @@ Rails/OutputSafety:
   Enabled: false
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
+
+Rails/RakeEnvironment:
+  Enabled: false
 
 Rails/ReflectionClassName:
   Enabled: false

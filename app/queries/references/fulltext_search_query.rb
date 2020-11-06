@@ -34,7 +34,7 @@ module References
         :reference_type, :page, :per_page
 
       def search_results
-        Reference.search(include: [:document]) do # rubocop:disable Metrics/BlockLength
+        Reference.search(include: [:document]) do
           keywords normalized_freetext
 
           if title
