@@ -1,59 +1,64 @@
-.callout.margin-bottom
-  %h6
-    Protonym:
-    =protonym.decorate.link_to_protonym
-    .right
-      =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-normal btn-tiny'
+-unless protonym
+  .callout.margin-bottom
+    %h6
+      Protonym: (none)
+-else
+  .callout.margin-bottom
+    %h6
+      Protonym:
+      =protonym.decorate.link_to_protonym
+      .right
+        =link_to 'Edit', edit_protonym_path(protonym), class: 'btn-normal btn-tiny'
 
-  %table.table.unstriped.small-text
-    %tbody
-      %tr
-        %td Authorship
-        %td=protonym.authorship_reference.decorate.expandable_reference
-      %tr
-        %td Pages
-        %td=protonym.authorship.pages
+    %table.table.unstriped.small-text
+      %tbody
+        %tr
+          %td Authorship
+          %td=protonym.authorship_reference.decorate.expandable_reference
+        %tr
+          %td Pages
+          %td=protonym.authorship.pages
 
-      -if taxon.is_a?(SpeciesGroupTaxon)
-        %tr
-          %td Forms
-          %td=or_dash protonym.forms
-        %tr
-          %td Biogeographic region
-          %td=protonym.biogeographic_region
-        %tr
-          %td Locality
-          %td=protonym.decorate.format_locality
-
-      -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
-        -if (type_name = protonym.type_name)
+        -if taxon.is_a?(SpeciesGroupTaxon)
           %tr
-            %td Type name
-            %td
-              -type_name_decorated = type_name.decorate
-              =type_name_decorated.format_rank
-              =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
+            %td Forms
+            %td=or_dash protonym.forms
+          %tr
+            %td Biogeographic region
+            %td=protonym.biogeographic_region
+          %tr
+            %td Locality
+            %td=protonym.decorate.format_locality
 
-      %tr
-        %td
-          Nomen attributes (beta)
-        %td=protonym.decorate.format_nomen_attributes
+        -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
+          -if (type_name = protonym.type_name)
+            %tr
+              %td Type name
+              %td
+                -type_name_decorated = type_name.decorate
+                =type_name_decorated.format_rank
+                =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
 
-      -if protonym.primary_type_information_taxt?
         %tr
-          %td Primary type information
-          %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
-      -if protonym.secondary_type_information_taxt?
-        %tr
-          %td Secondary type information
-          %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
-      -if protonym.type_notes_taxt?
-        %tr
-          %td Type notes
-          %td=::Types::FormatTypeField[protonym.type_notes_taxt]
-      -if protonym.notes_taxt?
-        %tr
-          %td Notes
-          %td=or_dash Detax[protonym.notes_taxt]
+          %td
+            Nomen attributes (beta)
+          %td=protonym.decorate.format_nomen_attributes
 
-=render 'protonyms/quick_edit_history_items', protonym: protonym
+        -if protonym.primary_type_information_taxt?
+          %tr
+            %td Primary type information
+            %td=::Types::FormatTypeField[protonym.primary_type_information_taxt]
+        -if protonym.secondary_type_information_taxt?
+          %tr
+            %td Secondary type information
+            %td=::Types::FormatTypeField[protonym.secondary_type_information_taxt]
+        -if protonym.type_notes_taxt?
+          %tr
+            %td Type notes
+            %td=::Types::FormatTypeField[protonym.type_notes_taxt]
+        -if protonym.notes_taxt?
+          %tr
+            %td Notes
+            %td=or_dash Detax[protonym.notes_taxt]
+
+  =render 'protonyms/quick_edit_history_items', protonym: protonym

@@ -4,98 +4,101 @@
     %small.blue-help-text.padding-left-1rem leave blank if you have selected an existing protonym
     =tooltip_icon "This will be ignored if an existing protonym is selected"
 
-  =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
-    %table.unstriped.get-rid-of-margins-and-paddings-from-tds.get-rid-of-margins-and-paddings-from-inputs
-      %tr
-        =protonym_form.fields_for :name do |name_form|
-          %td
-            =name_form.label :name do
-              Name
-              =db_tooltip_icon "protonym", scope: :taxa
-              =db_tooltip_icon "connecting_terms", scope: :protonyms
-          %td
-            =text_field_tag :protonym_name_string, taxon.protonym.name.name, style: "display: inline-block"
-            %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny.left-margin Same as name (copy)
+  -if taxon.protonym.persisted?
+    %p This section is not shown, because an existing protonym was selected.
+  -else
+    =form.fields_for :protonym_attributes, taxon.protonym do |protonym_form|
+      %table.unstriped.get-rid-of-margins-and-paddings-from-tds.get-rid-of-margins-and-paddings-from-inputs
+        %tr
+          =protonym_form.fields_for :name do |name_form|
+            %td
+              =name_form.label :name do
+                Name
+                =db_tooltip_icon "protonym", scope: :taxa
+                =db_tooltip_icon "connecting_terms", scope: :protonyms
+            %td
+              =text_field_tag :protonym_name_string, taxon.protonym.name.name, style: "display: inline-block"
+              %span#copy-name-to-protonym-js-hook.btn-nodanger.btn-tiny.left-margin Same as name (copy)
+          %tr
+            %td
+            %td
+              #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
+
         %tr
           %td
           %td
-            #protonym_name_string-possible-conflicts-js-hook.possible-name-conflicts
+            =protonym_form.check_box :fossil
+            =protonym_form.label :fossil
 
-      %tr
-        %td
-        %td
-          =protonym_form.check_box :fossil
-          =protonym_form.label :fossil
+            =protonym_form.check_box :sic
+            =form.label :sic do
+              Sic
+              =db_tooltip_icon "sic", scope: :taxa
 
-          =protonym_form.check_box :sic
-          =form.label :sic do
-            Sic
-            =db_tooltip_icon "sic", scope: :taxa
-
-      =protonym_form.fields_for :authorship_attributes, (protonym_form.object.authorship || Citation.new) do |authorship_form|
-        %tr
-          %td
-            =authorship_form.label :reference do
-              Authorship
-              =db_tooltip_icon "authorship", scope: :taxa
-          %td=authorship_form.reference_select :reference
-        %tr
-          %td
-            =authorship_form.label :pages do
-              Pages
-              =db_tooltip_icon "pages", scope: :taxa
-          %td=authorship_form.text_field :pages
-
-        -if taxon.is_a?(SpeciesGroupTaxon)
+        =protonym_form.fields_for :authorship_attributes, (protonym_form.object.authorship || Citation.new) do |authorship_form|
           %tr
             %td
-              =protonym_form.label :forms do
-                Forms
-                =db_tooltip_icon "forms", scope: :taxa
-            %td=protonym_form.text_field :forms
+              =authorship_form.label :reference do
+                Authorship
+                =db_tooltip_icon "authorship", scope: :taxa
+            %td=authorship_form.reference_select :reference
           %tr
             %td
-              =protonym_form.label :biogeographic_region do
-                Biogeographic region
-                =db_tooltip_icon "type.biogeographic_region", scope: :taxa
-            %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
-          %tr
-            %td
-              =protonym_form.label :locality do
-                Locality
-                =db_tooltip_icon "locality", scope: :taxa
-            %td
-              =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
-              =protonym_form.check_box :uncertain_locality
-              =protonym_form.label :uncertain_locality
+              =authorship_form.label :pages do
+                Pages
+                =db_tooltip_icon "pages", scope: :taxa
+            %td=authorship_form.text_field :pages
 
-        -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
+          -if taxon.is_a?(SpeciesGroupTaxon)
+            %tr
+              %td
+                =protonym_form.label :forms do
+                  Forms
+                  =db_tooltip_icon "forms", scope: :taxa
+              %td=protonym_form.text_field :forms
+            %tr
+              %td
+                =protonym_form.label :biogeographic_region do
+                  Biogeographic region
+                  =db_tooltip_icon "type.biogeographic_region", scope: :taxa
+              %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+            %tr
+              %td
+                =protonym_form.label :locality do
+                  Locality
+                  =db_tooltip_icon "locality", scope: :taxa
+              %td
+                =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
+                =protonym_form.check_box :uncertain_locality
+                =protonym_form.label :uncertain_locality
+
+          -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
+            %tr
+              %td=authorship_form.label :type_name
+              %td.small-text Can be set after creating the new protonym
+
           %tr
-            %td=authorship_form.label :type_name
+            %td
+              =protonym_form.label :nomen_nudum do
+                %i Nomen nudum
+            %td
+              =protonym_form.check_box :nomen_nudum
+          %tr
+            %td.no-wrap.shrink.padding-right-4rem
+              =protonym_form.label :nomen_attributes do
+                Nomen attributes (beta)
             %td.small-text Can be set after creating the new protonym
 
-        %tr
-          %td
-            =protonym_form.label :nomen_nudum do
-              %i Nomen nudum
-          %td
-            =protonym_form.check_box :nomen_nudum
-        %tr
-          %td.no-wrap.shrink.padding-right-4rem
-            =protonym_form.label :nomen_attributes do
-              Nomen attributes (beta)
-          %td.small-text Can be set after creating the new protonym
+          %tr
+            %td=form.label :primary_type_information
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
+          %tr
+            %td=form.label :secondary_type_information
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt
+          %tr
+            %td=form.label :type_notes
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
 
-        %tr
-          %td=form.label :primary_type_information
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
-        %tr
-          %td=form.label :secondary_type_information
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt
-        %tr
-          %td=form.label :type_notes
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
-
-        %tr
-          %td=form.label :notes_taxt, 'Notes'
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt
+          %tr
+            %td=form.label :notes_taxt, 'Notes'
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt

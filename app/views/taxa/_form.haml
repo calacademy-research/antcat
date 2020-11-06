@@ -21,7 +21,7 @@
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   =render 'taxa/_form/main_form', taxon: taxon, form: form, default_name_string: default_name_string
-  -unless taxon.persisted?
+  -if taxon.new_record?
     =render 'taxa/_form/create_new_protonym_form', taxon: taxon, form: form
 
   .row
