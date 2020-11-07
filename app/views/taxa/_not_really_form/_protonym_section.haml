@@ -47,6 +47,11 @@
             %td Nomen attributes (beta)
             %td=format_nomen_attributes
 
+        -if protonym.etymology_taxt?
+          %tr
+            %td Etymology
+            %td=::Detax[protonym.etymology_taxt]
+
         -if protonym.primary_type_information_taxt?
           %tr
             %td Primary type information

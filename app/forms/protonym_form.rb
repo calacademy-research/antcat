@@ -19,6 +19,7 @@ class ProtonymForm
     nomen_conservandum
     nomen_protectum
 
+    etymology_taxt
     primary_type_information_taxt
     secondary_type_information_taxt
     type_notes_taxt

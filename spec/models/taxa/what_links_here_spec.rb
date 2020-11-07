@@ -45,6 +45,7 @@ describe Taxa::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
+          WhatLinksHereItem.new('protonyms',           :etymology_taxt,                  protonym.id),
           WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
           WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
           WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),
@@ -70,6 +71,7 @@ describe Taxa::WhatLinksHere do
 
       specify do
         expect(what_links_here.all).to match_array [
+          WhatLinksHereItem.new('protonyms',           :etymology_taxt,                  protonym.id),
           WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
           WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
           WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),

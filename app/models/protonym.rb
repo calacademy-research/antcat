@@ -43,7 +43,7 @@ class Protonym < ApplicationRecord
 
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region, :forms, :notes_taxt], replace_newlines: true
-  strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
+  strip_attributes only: [:etymology_taxt, :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
   # TODO: Cheating a little bit to avoid making an additional query when parsing `prott` tags.
@@ -62,6 +62,7 @@ class Protonym < ApplicationRecord
   private
 
     def cleanup_taxts
+      self.etymology_taxt = Taxt::Cleanup[etymology_taxt]
       self.primary_type_information_taxt = Taxt::Cleanup[primary_type_information_taxt]
       self.secondary_type_information_taxt = Taxt::Cleanup[secondary_type_information_taxt]
       self.type_notes_taxt = Taxt::Cleanup[type_notes_taxt]

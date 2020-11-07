@@ -85,6 +85,11 @@
               =logged_in_only_tooltip_icon
             %td=format_nomen_attributes
 
+        -if @protonym.etymology_taxt?
+          %tr
+            %th Etymology
+            %td=Detax[@protonym.etymology_taxt]
+
         -if @protonym.primary_type_information_taxt?
           %tr
             %th Primary type information
