@@ -5,31 +5,6 @@
 
 =render "shared/default_reference"
 
--if protonym.taxa.present?
-  .callout.primary.margin-bottom.small-12.columns
-    %h5 Taxa belonging to this protonym
-    %table.pale-table
-      %thead
-        %th Taxon
-        %th Rank
-        %th Status
-        %th
-      -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
-        %tr
-          %td=CatalogFormatter.link_to_taxon(taxon)
-          %td=taxon.rank.capitalize
-          %td
-            =taxon.status.capitalize
-            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-              %br
-              %small=taxon.decorate.expanded_status
-          %td
-            -if taxon.original_combination?
-              Original combination
-              =antcat_icon 'check'
-
-  %hr.margin-bottom
-
 =form_with model: protonym_form do |f|
   =render 'shared/errors_for', resource: protonym_form
 
@@ -104,95 +79,84 @@
             =f.check_box :uncertain_locality
             =f.label :uncertain_locality
 
-    .large-4.columns
-      .callouts
-        %h6 Nomen attributes (except beta)
-        %ul.no-bullet
-          %li
-            =f.check_box :nomen_nudum
-            =f.label :nomen_nudum do
-              %i Nomen nudum
-
-        %h6 Nomen attributes (beta)
-        %ul.no-bullet
-          %li
-            =f.check_box :nomen_novum
-            =f.label :nomen_novum do
-              %i Nomen novum
-          %li
-            =f.check_box :nomen_oblitum
-            =f.label :nomen_oblitum do
-              %i Nomen oblitum
-          %li
-            =f.check_box :nomen_dubium
-            =f.label :nomen_dubium do
-              %i Nomen dubium
-          %li
-            =f.check_box :nomen_conservandum
-            =f.label :nomen_conservandum do
-              %i Nomen conservandum
-          %li
-            =f.check_box :nomen_protectum
-            =f.label :nomen_protectum do
-              %i Nomen protectum
+      %h6.bold.margin-top Nomen attributes
+      %ul.no-bullet
+        %li
+          =f.check_box :nomen_nudum
+          =f.label :nomen_nudum do
+            %i Nomen nudum
 
     .large-6.columns
-      .callout
+      .callout.margin-bottom
         %table.unstriped
-          %tr
-            %td
-              %h6
-                Type name
-                =db_tooltip_icon :type_name_reference, scope: :protonyms
-            %td
-              =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
-                %tr
-                  %td=type_name_fields.label :taxon
-                  %td=type_name_fields.taxon_select :taxon
+          %h6.bold
+            Type name
+            =db_tooltip_icon :type_name_reference, scope: :protonyms
+          =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
+            %tr
+              %td=type_name_fields.label :taxon
+              %td=type_name_fields.taxon_select :taxon
 
-                %tr
-                  %td
-                    =type_name_fields.label :fixation_method do
-                      Fixation method
-                  %td=type_name_fields.select :fixation_method, TypeName::FIXATION_METHODS, include_blank: true
+            %tr
+              %td
+                =type_name_fields.label :fixation_method do
+                  Fixation method
+              %td=type_name_fields.select :fixation_method, TypeName::FIXATION_METHODS, include_blank: true
 
-                %tr
-                  %td{colspan: 2}
-                    %br
-                    %br
-                    =label_tag :subsequent_designation_reference do
-                      Subsequent designation reference
-                      =db_tooltip_icon :type_name_reference, scope: :protonyms
+            %tr
+              %td{colspan: 2}
+                %br
+                =label_tag :subsequent_designation_reference do
+                  Subsequent designation reference
+                  =db_tooltip_icon :type_name_reference, scope: :protonyms
 
-                %tr
-                  %td
-                    =type_name_fields.label :reference do
-                      Reference
-                  %td=type_name_fields.reference_select :reference
+            %tr
+              %td=type_name_fields.label :reference
+              %td=type_name_fields.reference_select :reference
 
-                %tr
-                  %td
-                    =type_name_fields.label :pages do
-                      Pages
-                  %td=type_name_fields.text_field :pages
+            %tr
+              %td=type_name_fields.label :pages
+              %td=type_name_fields.text_field :pages
 
-                -if type_name_fields.object.persisted?
-                  %tr
-                    %td
-                      %br
-                      =label_tag 'Clear type name?'
-                    %td
-                      %br
-                      =check_box_tag :destroy_type_name
-                      -# TODO: Improve "(don't blank taxon)".
-                      =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
+            -if type_name_fields.object.persisted?
+              %tr
+                %td
+                  %br
+                  =label_tag 'Clear type name?'
+                %td
+                  %br
+                  =check_box_tag :destroy_type_name
+                  -# TODO: Improve "(don't blank taxon)".
+                  =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
+
+      %h6.bold
+        Nomen attributes (experimental attributes)
+        =beta_label
+      %ul.no-bullet
+        %li
+          =f.check_box :nomen_novum
+          =f.label :nomen_novum do
+            %i Nomen novum
+        %li
+          =f.check_box :nomen_oblitum
+          =f.label :nomen_oblitum do
+            %i Nomen oblitum
+        %li
+          =f.check_box :nomen_dubium
+          =f.label :nomen_dubium do
+            %i Nomen dubium
+        %li
+          =f.check_box :nomen_conservandum
+          =f.label :nomen_conservandum do
+            %i Nomen conservandum
+        %li
+          =f.check_box :nomen_protectum
+          =f.label :nomen_protectum do
+            %i Nomen protectum
 
     .large-12.columns.margin-bottom
       %hr
-        %table.unstriped
-        %tr
-          %td
-            %h6 Taxt fields
+      %table.unstriped
         %tr
           %td=f.label :etymology
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
@@ -217,3 +181,22 @@
           %td
             =edit_summary_text_field_tag
             =f.button "Save", class: "btn-saves"
+
+-if protonym.taxa.present?
+  %h5.margin-top Related records
+  .callout.primary.huge-margin-bottom.small-12.columns
+    %h6 Taxa belonging to this protonym
+    %table.pale-table
+      -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
+        %tr
+          %td=CatalogFormatter.link_to_taxon(taxon)
+          %td=taxon.rank.capitalize
+          %td
+            =taxon.status.capitalize
+            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+              %br
+              %small=taxon.decorate.expanded_status
+          %td
+            -if taxon.original_combination?
+              Original combination
+              =antcat_icon 'check'
