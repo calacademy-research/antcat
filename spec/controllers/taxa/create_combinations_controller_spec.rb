@@ -57,7 +57,7 @@ describe Taxa::CreateCombinationsController do
 
       it 'creates an activity' do
         expect { post(:create, params: valid_params) }.
-          to change { Activity.where(action: :create_new_combination).count }.by(1)
+          to change { Activity.where(action: Activity::CREATE_NEW_COMBINATION).count }.by(1)
 
         activity = Activity.last
         new_combination = taxon.reload.current_taxon

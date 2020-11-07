@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ProtonymsWithRankSpecificHistoryItems < DatabaseScript
     def results
-      Protonym.joins(:protonym_history_items).where.not(taxon_history_items: { rank: nil }).distinct
+      Protonym.joins(:history_items).where.not(taxon_history_items: { rank: nil }).distinct
     end
 
     def render

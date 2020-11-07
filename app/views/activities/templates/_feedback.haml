@@ -2,9 +2,9 @@
   An unregistered user
 
 -case activity.action
--when 'close_feedback'
+-when Activity::CLOSE_FEEDBACK
   closed
--when 'reopen_feedback'
+-when Activity::REOPEN_FEEDBACK
   re-opened
 -else
   =activity.action_to_verb

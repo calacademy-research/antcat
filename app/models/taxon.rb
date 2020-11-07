@@ -26,9 +26,9 @@ class Taxon < ApplicationRecord
   has_one :authorship, through: :protonym
   has_one :authorship_reference, through: :authorship, source: :reference
   has_many :type_names, dependent: :restrict_with_error
-  has_many :protonym_history_items, through: :protonym
+  has_many :protonym_history_items, through: :protonym, source: :history_items
   has_many :history_items_for_taxon_including_hidden, ->(taxon) { unranked_and_for_rank(taxon.type) },
-    through: :protonym, source: :protonym_history_items
+    through: :protonym, source: :history_items
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_TYPES, allow_nil: true }
@@ -45,6 +45,7 @@ class Taxon < ApplicationRecord
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
+  scope :original_combinations, -> { where(original_combination: true) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
   scope :order_by_name, -> { order(:name_cache) }
 
@@ -52,8 +53,11 @@ class Taxon < ApplicationRecord
   has_paper_trail
   strip_attributes only: [:incertae_sedis_in], replace_newlines: true
   trackable parameters: proc {
-    parent_params = { rank: parent.rank, name: parent.name.name_html, id: parent.id } if parent
-    { rank: rank, name: name.name_html, parent: parent_params }
+    { rank: rank, name: name.name_html }.tap do |hsh|
+      if parent
+        hsh[:parent] = { rank: parent.rank, name: parent.name.name_html, id: parent.id }
+      end
+    end
   }
 
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|

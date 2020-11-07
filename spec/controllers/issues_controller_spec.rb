@@ -48,7 +48,7 @@ describe IssuesController do
 
     it 'creates an activity' do
       expect { post(:create, params: { issue: issue_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :create).count }.by(1)
+        to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       issue = Issue.last
@@ -83,7 +83,7 @@ describe IssuesController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: issue.id, issue: issue_params, edit_summary: 'summary' }) }.
-        to change { Activity.where(action: :update).count }.by(1)
+        to change { Activity.where(action: Activity::UPDATE).count }.by(1)
 
       activity = Activity.last
       issue = Issue.last

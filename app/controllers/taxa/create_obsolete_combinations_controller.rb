@@ -50,7 +50,7 @@ module Taxa
       end
 
       def create_activity obsolete_combination
-        obsolete_combination.create_activity :create_obsolete_combination, current_user
+        obsolete_combination.create_activity Activity::CREATE_OBSOLETE_COMBINATION, current_user
       end
   end
 end

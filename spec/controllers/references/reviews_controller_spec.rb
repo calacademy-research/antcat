@@ -31,7 +31,7 @@ describe References::ReviewsController do
       expect {  put :approve_all }.to change { Activity.count }.by(1)
 
       activity = Activity.last
-      expect(activity.action).to eq "approve_all_references"
+      expect(activity.action).to eq Activity::APPROVE_ALL_REFERENCES
       expect(activity.parameters).to eq(count: 1)
     end
   end

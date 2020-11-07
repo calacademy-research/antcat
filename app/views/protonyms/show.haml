@@ -51,15 +51,19 @@
           %th Pages
           %td=@protonym.authorship.pages
 
-        %tr
-          %th Forms
-          %td=or_dash @protonym.forms
-        %tr
-          %th Biogeographic region
-          %td=@protonym.biogeographic_region
-        %tr
-          %th Locality
-          %td=@protonym.decorate.format_locality
+        -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
+        -if @protonym.forms?
+          %tr
+            %th Forms
+            %td=@protonym.forms
+        -if @protonym.biogeographic_region?
+          %tr
+            %th Biogeographic region
+            %td=@protonym.biogeographic_region
+        -if @protonym.locality?
+          %tr
+            %th Locality
+            %td=@protonym.decorate.format_locality
 
         -if @protonym.ichnotaxon?
           %tr
@@ -73,12 +77,13 @@
               -type_name_decorated = type_name.decorate
               =type_name_decorated.format_rank
               =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
-        -if current_user
+
+        -if current_user && (format_nomen_attributes = @protonym.decorate.format_nomen_attributes)
           %tr.logged-in-only-background
             %th
               Nomen attributes (beta)
               =logged_in_only_tooltip_icon
-            %td=@protonym.decorate.format_nomen_attributes
+            %td=format_nomen_attributes
 
         -if @protonym.primary_type_information_taxt?
           %tr
@@ -143,26 +148,3 @@
     =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym
-
--if current_user
-  -if @protonym.protonym_history_items.present?
-    .row.huge-margin-top.margin-bottom
-      .small-12.columns
-        .callout.no-border-callout.logged-in-only-background
-          %h5
-            Taxonomic history
-            =logged_in_only_tooltip_icon
-
-          .left-margin
-            %ul.history
-              -@protonym.protonym_history_items.each do |history_item|
-                %li
-                  -if history_item.rank?
-                    %small.bold-notice #{history_item.rank}-only item
-
-                  =add_period_if_necessary Detax[history_item.to_taxt]
-                  -if current_user
-                    %span.show-on-hover
-                      -if user_is_at_least_helper?
-                        =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-                      =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

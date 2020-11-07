@@ -23,7 +23,7 @@ module Authors
 
       names_for_activity = author_to_merge.names.map(&:name).join(", ")
       author.merge author_to_merge
-      author.create_activity :merge_authors, current_user, parameters: { names: names_for_activity }
+      author.create_activity Activity::MERGE_AUTHORS, current_user, parameters: { names: names_for_activity }
 
       redirect_to author, notice: 'Probably merged authors.'
     end

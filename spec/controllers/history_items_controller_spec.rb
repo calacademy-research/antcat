@@ -36,7 +36,7 @@ describe HistoryItemsController do
     it 'creates a activity' do
       expect do
         post(:create, params: { protonym_id: protonym.id, history_item: history_item_params, edit_summary: 'added' })
-      end.to change { Activity.where(action: :create).count }.by(1)
+      end.to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       history_item = HistoryItem.last
@@ -70,7 +70,7 @@ describe HistoryItemsController do
       expect do
         params = { id: history_item.id, history_item: history_item_params, edit_summary: 'Duplicate' }
         put :update, params: params
-      end.to change { Activity.where(action: :update, trackable: history_item).count }.by(1)
+      end.to change { Activity.where(action: Activity::UPDATE, trackable: history_item).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
@@ -87,7 +87,7 @@ describe HistoryItemsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: history_item.id, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: :destroy, trackable: history_item).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: history_item).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"

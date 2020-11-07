@@ -12,8 +12,8 @@ describe Protonyms::ReorderHistoryItemsController do
   describe "POST create", as: :editor do
     let(:protonym) { create :protonym }
     let(:reordered_ids) { [second.id.to_s, first.id.to_s] }
-    let!(:first) { protonym.protonym_history_items.create!(taxt: "A") }
-    let!(:second) { protonym.protonym_history_items.create!(taxt: "B") }
+    let!(:first) { protonym.history_items.create!(taxt: "A") }
+    let!(:second) { protonym.history_items.create!(taxt: "B") }
 
     it "calls `Protonyms::Operations::ReorderHistoryItems`" do
       expect(Protonyms::Operations::ReorderHistoryItems).
@@ -23,12 +23,12 @@ describe Protonyms::ReorderHistoryItemsController do
 
     it "reorders the history items" do
       expect { post :create, params: { protonym_id: protonym.id, history_item: reordered_ids } }.
-        to change { protonym.protonym_history_items.pluck(:id) }.to([second.id, first.id])
+        to change { protonym.history_items.pluck(:id) }.to([second.id, first.id])
     end
 
     it 'creates an activity' do
       expect { post(:create, params: { protonym_id: protonym.id, history_item: reordered_ids }) }.
-        to change { Activity.where(action: :reorder_protonym_history_items).count }.by(1)
+        to change { Activity.where(action: Activity::REORDER_HISTORY_ITEMS).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable).to eq protonym

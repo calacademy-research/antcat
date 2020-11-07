@@ -22,7 +22,7 @@ setupAdvancedAuthorAutocomplete = ->
     source: (request, response) ->
       selectionStart = AntCat.getInputSelection(@element.get(0), true)
       searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
-      if searchTerm.length >= 3
+      if searchTerm.length >= 1
         $.getJSON '/authors/autocomplete', { term: searchTerm }, response
       else
         response []

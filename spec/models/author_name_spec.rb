@@ -13,6 +13,7 @@ describe AuthorName do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
+    it { is_expected.to validate_length_of(:name).is_at_least(described_class::NAME_MIN_LENGTH) }
 
     describe "uniqueness validation" do
       subject { create :author_name }

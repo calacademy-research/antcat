@@ -22,15 +22,15 @@ class HistoryItemsController < ApplicationController
 
   def new
     @protonym = find_protonym
-    @history_item = @protonym.protonym_history_items.new
+    @history_item = @protonym.history_items.new
   end
 
   def create
     @protonym = find_protonym
-    @history_item = @protonym.protonym_history_items.new(history_item_params)
+    @history_item = @protonym.history_items.new(history_item_params)
 
     if @history_item.save
-      @history_item.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @history_item.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @history_item.protonym, notice: "Successfully added history item."
     else
       render :new
@@ -49,7 +49,7 @@ class HistoryItemsController < ApplicationController
     updated = @history_item.update(history_item_params)
 
     if updated
-      @history_item.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @history_item.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
     end
 
     respond_to do |format|
@@ -67,7 +67,7 @@ class HistoryItemsController < ApplicationController
   def destroy
     history_item = find_history_item
     history_item.destroy!
-    history_item.create_activity :destroy, current_user, edit_summary: params[:edit_summary]
+    history_item.create_activity Activity::DESTROY, current_user, edit_summary: params[:edit_summary]
 
     respond_to do |format|
       format.json do

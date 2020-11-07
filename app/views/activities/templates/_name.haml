@@ -1,3 +1,10 @@
 =activity.action_to_verb
 the name record
 =activity.link_trackable_if_exists sanitize(activity.parameters[:name_html]), path: name_path(activity.trackable_id)
+
+-if (name_was = activity.parameters[:name_was])
+  .small-text.bold-warning
+    Name changed from
+    =name_was
+    to
+    =activity.parameters[:name]

@@ -19,7 +19,7 @@ class AuthorsController < ApplicationController
     author = find_author
 
     if author.destroy
-      author.create_activity :destroy, current_user
+      author.create_activity Activity::DESTROY, current_user
       redirect_to authors_path, notice: 'Author was successfully deleted.'
     else
       redirect_to author, alert: 'Could not delete author.'

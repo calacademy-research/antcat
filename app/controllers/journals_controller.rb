@@ -20,7 +20,7 @@ class JournalsController < ApplicationController
     @journal = find_journal
 
     if @journal.update(journal_params)
-      @journal.create_activity :update, current_user
+      @journal.create_activity Activity::UPDATE, current_user
       References::Cache::Invalidate[@journal.references]
       redirect_to @journal, notice: "Successfully updated journal."
     else
@@ -32,7 +32,7 @@ class JournalsController < ApplicationController
     journal = find_journal
 
     if journal.destroy
-      journal.create_activity :destroy, current_user
+      journal.create_activity Activity::DESTROY, current_user
       redirect_to references_path, notice: "Journal was successfully deleted."
     else
       redirect_to journal, alert: journal.errors.full_messages.to_sentence

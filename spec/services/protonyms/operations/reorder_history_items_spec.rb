@@ -6,16 +6,16 @@ describe Protonyms::Operations::ReorderHistoryItems do
   describe "#call" do
     let(:protonym) { create :protonym }
     let(:original_order) { item_ids protonym }
-    let!(:first) { protonym.protonym_history_items.create!(taxt: "A") }
-    let!(:second) { protonym.protonym_history_items.create!(taxt: "B") }
-    let!(:third) { protonym.protonym_history_items.create!(taxt: "C") }
+    let!(:first) { protonym.history_items.create!(taxt: "A") }
+    let!(:second) { protonym.history_items.create!(taxt: "B") }
+    let!(:third) { protonym.history_items.create!(taxt: "C") }
 
     before do
       protonym.reload
     end
 
     def item_ids protonym
-      protonym.protonym_history_items.pluck(:id)
+      protonym.history_items.pluck(:id)
     end
 
     context "when valid and different" do
@@ -45,7 +45,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
 
         it 'adds an error to the protonym' do
           expect(described_class[protonym, reordered_ids]).to eq false
-          expect(protonym.errors.messages[:protonym_history_items]).to include(/are not valid, please fix them first/)
+          expect(protonym.errors.messages[:history_items]).to include(/are not valid, please fix them first/)
         end
       end
     end
@@ -60,7 +60,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
 
       it 'adds an error to the protonym' do
         expect(described_class[protonym, reordered_ids]).to eq false
-        expect(protonym.errors.messages[:protonym_history_items]).to include(/already ordered like this/)
+        expect(protonym.errors.messages[:history_items]).to include(/already ordered like this/)
       end
     end
 
@@ -74,7 +74,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
 
       it 'adds an error to the protonym' do
         expect(described_class[protonym, reordered_ids]).to eq false
-        expect(protonym.errors.messages[:protonym_history_items]).to include(/doesn't match current IDs/)
+        expect(protonym.errors.messages[:history_items]).to include(/doesn't match current IDs/)
       end
     end
   end

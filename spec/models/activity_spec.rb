@@ -40,7 +40,7 @@ describe Activity do
     it "creates an activity" do
       user = create :user
 
-      expect { described_class.create_for_trackable(nil, :execute_script, user: user) }.
+      expect { described_class.create_for_trackable(nil, Activity::EXECUTE_SCRIPT, user: user) }.
         to change { described_class.count }.by(1)
     end
 
@@ -72,16 +72,16 @@ describe Activity do
     let(:user) { create :user }
 
     it "creates an activity" do
-      expect { described_class.create_without_trackable(:execute_script, user) }.
+      expect { described_class.create_without_trackable(Activity::EXECUTE_SCRIPT, user) }.
         to change { described_class.count }.by(1)
     end
   end
 
   describe '#pagination_page' do
-    let!(:activity_1) { create :activity, automated_edit: true }
+    let!(:activity_1) { create :activity, :automated_edit }
     let!(:activity_2) { create :activity }
     let!(:activity_3) { create :activity }
-    let!(:activity_4) { create :activity, automated_edit: true }
+    let!(:activity_4) { create :activity, :automated_edit }
     let!(:activity_5) { create :activity }
 
     before do

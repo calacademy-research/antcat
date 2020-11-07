@@ -3,12 +3,14 @@
 class AuthorName < ApplicationRecord
   include Trackable
 
+  NAME_MIN_LENGTH = 2
+
   belongs_to :author
 
   has_many :reference_author_names, dependent: :restrict_with_error
   has_many :references, through: :reference_author_names, dependent: :restrict_with_error
 
-  validates :name, presence: true, uniqueness: { case_sensitive: true }
+  validates :name, presence: true, length: { minimum: NAME_MIN_LENGTH }, uniqueness: { case_sensitive: true }
 
   after_update :invalidate_reference_caches
 

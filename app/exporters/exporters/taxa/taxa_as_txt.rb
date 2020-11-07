@@ -61,7 +61,6 @@ module Exporters
 
           string = ''.html_safe
           string << reference.decorate.plain_text
-          string << " DOI: " << reference.doi if reference.doi?
           string << "   #{reference.id}"
           string
         end

@@ -17,13 +17,13 @@ describe NamesController do
 
   describe "PUT update", as: :editor do
     context 'with valid params' do
-      let!(:name) { create :subspecies_name }
+      let!(:name) { create :species_name, name: 'Lasius oldname' }
       let(:params) do
         {
           id: name.id,
           type: 'SubspeciesName',
           name: {
-            name: 'Brandus noviusia  nameus',
+            name: 'Lasius   newname',
             non_conforming: 'true'
           }
         }
@@ -33,8 +33,8 @@ describe NamesController do
         put :update, params: params
 
         name.reload
-        expect(name.name).to eq 'Brandus noviusia nameus'
-        expect(name.epithet).to eq 'nameus'
+        expect(name.name).to eq 'Lasius newname'
+        expect(name.epithet).to eq 'newname'
         expect(name.non_conforming).to eq true
       end
 
@@ -44,7 +44,11 @@ describe NamesController do
         activity = Activity.last
         expect(activity.trackable).to eq name
         expect(activity.action).to eq 'update'
-        expect(activity.parameters).to eq name_html: name.reload.name_html
+        expect(activity.parameters).to eq(
+          name: "Lasius newname",
+          name_was: "Lasius oldname",
+          name_html: name.reload.name_html
+        )
       end
     end
   end

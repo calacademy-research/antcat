@@ -48,7 +48,14 @@ class Name < ApplicationRecord
 
   has_paper_trail
   strip_attributes only: [:name, :epithet, :gender], replace_newlines: true
-  trackable parameters: proc { { name_html: name_html } }
+  trackable parameters: proc {
+    { name_html: name_html }.tap do |hsh|
+      if saved_change_to_name?
+        hsh[:name] = name
+        hsh[:name_was] = name_before_last_save
+      end
+    end
+  }
 
   def name= value
     self[:name] = value.squish if value

@@ -146,15 +146,12 @@ describe Taxon do
 
   describe "#author_citation" do
     let!(:reference) { create :any_reference, author_string: 'Bolton', year: 2005 }
-
-    before do
-      taxon.protonym.update!(name: protonym_name)
-      taxon.protonym.authorship.update!(reference: reference)
-    end
+    let(:taxon) { create :species, protonym: create(:protonym, :species_group_name, authorship_reference: reference) }
 
     context "when taxon is a recombination" do
-      let(:taxon) { create :species, name_string: 'Atta minor' }
-      let(:protonym_name) { create :species_name, name: 'Eciton minor' }
+      before do
+        allow(taxon).to receive(:recombination?).and_return(true)
+      end
 
       it "surrounds the author citation in parentheses" do
         expect(taxon.author_citation).to eq '(Bolton, 2005)'
@@ -164,8 +161,9 @@ describe Taxon do
     end
 
     context "when taxon is not a recombination" do
-      let(:taxon) { create :subspecies, name_string: 'Atta minor maxus' }
-      let(:protonym_name) { create :subspecies_name, name: 'Atta minor minus' }
+      before do
+        allow(taxon).to receive(:recombination?).and_return(false)
+      end
 
       it "doesn't surround the author citation in parentheses" do
         expect(taxon.author_citation).to eq 'Bolton, 2005'

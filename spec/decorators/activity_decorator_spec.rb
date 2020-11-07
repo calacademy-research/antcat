@@ -65,10 +65,41 @@ describe ActivityDecorator do
     let(:user) { build_stubbed :user }
 
     context 'when there is a trackable' do
+      context 'when trackable is a `Name`' do
+        let(:trackable) { create :genus_name, name: 'Lasius' }
+
+        context 'when `names.name` was not changed' do
+          let(:activity) do
+            trackable.update!(non_conforming: true)
+            trackable.create_activity Activity::UPDATE, user
+          end
+
+          specify do
+            expect(decorated.did_something.squish).to eq <<~STR.squish
+              edited the name record <a href="/names/#{trackable.id}">#{trackable.name_html}</a>
+            STR
+          end
+        end
+
+        context 'when `names.name` was changed' do
+          let(:activity) do
+            trackable.update!(name: 'Atta')
+            trackable.create_activity Activity::UPDATE, user
+          end
+
+          it 'includes the old and new names' do
+            expect(decorated.did_something.squish).to eq <<~STR.squish
+              edited the name record <a href="/names/#{trackable.id}">#{trackable.name_html}</a>
+              <div class='small-text bold-warning'> Name changed from Lasius to Atta </div>
+            STR
+          end
+        end
+      end
+
       context 'when trackable is a `Reference`' do
-        context 'when action is `update`' do
+        context 'when action is `Activity::UPDATE`' do
           let(:trackable) { create :any_reference }
-          let(:activity) { trackable.create_activity :update, user }
+          let(:activity) { trackable.create_activity Activity::UPDATE, user }
 
           specify do
             expect(decorated.did_something.squish).
@@ -76,9 +107,9 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `start_reviewing`' do
+        context 'when action is `Activity::START_REVIEWING`' do
           let(:trackable) { create :any_reference }
-          let(:activity) { trackable.create_activity :start_reviewing, user }
+          let(:activity) { trackable.create_activity Activity::START_REVIEWING, user }
 
           specify do
             expect(decorated.did_something.squish).
@@ -86,9 +117,9 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `finish_reviewing`' do
+        context 'when action is `Activity::FINISH_REVIEWING`' do
           let(:trackable) { create :any_reference }
-          let(:activity) { trackable.create_activity :finish_reviewing, user }
+          let(:activity) { trackable.create_activity Activity::FINISH_REVIEWING, user }
 
           specify do
             expect(decorated.did_something.squish).
@@ -96,9 +127,9 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `restart_reviewing`' do
+        context 'when action is `Activity::RESTART_REVIEWING`' do
           let(:trackable) { create :any_reference }
-          let(:activity) { trackable.create_activity :restart_reviewing, user }
+          let(:activity) { trackable.create_activity Activity::RESTART_REVIEWING, user }
 
           specify do
             expect(decorated.did_something.squish).
@@ -109,7 +140,7 @@ describe ActivityDecorator do
 
       context 'when trackable is a `Tooltip`' do
         let(:trackable) { create :tooltip, scope: 'taxa', key: 'authors' }
-        let(:activity) { trackable.create_activity :update, user }
+        let(:activity) { trackable.create_activity Activity::UPDATE, user }
 
         specify do
           expect(decorated.did_something.squish).
@@ -119,7 +150,7 @@ describe ActivityDecorator do
     end
 
     context 'when there is no trackable' do
-      context 'when action is `execute_script`' do
+      context 'when action is `Activity::EXECUTE_SCRIPT`' do
         let(:activity) { Activity.execute_script_activity(user, "an edit summary") }
 
         specify do
@@ -127,8 +158,8 @@ describe ActivityDecorator do
         end
       end
 
-      context 'when action is `approve_all_references`' do
-        let(:activity) { Activity.create_without_trackable :approve_all_references, user, parameters: { count: 1 } }
+      context 'when action is `Activity::APPROVE_ALL_REFERENCES`' do
+        let(:activity) { Activity.create_without_trackable Activity::APPROVE_ALL_REFERENCES, user, parameters: { count: 1 } }
 
         specify do
           expect(decorated.did_something.squish).
@@ -170,7 +201,7 @@ describe ActivityDecorator do
       end
 
       context "when action is 'destroy'" do
-        let(:activity) { build_stubbed :activity, trackable: nil, action: :destroy }
+        let(:activity) { build_stubbed :activity, trackable: nil, action: Activity::DESTROY }
 
         it "does not add '[deleted]' to the label" do
           expect(decorated.link_trackable_if_exists("label")).to eq "label"

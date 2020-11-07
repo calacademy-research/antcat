@@ -26,6 +26,14 @@ module DevMonkeyPatches
           nil # Suppress echo in console.
         end
         alias_method :peach, :dev_dev_puts_each
+
+        def dev_dev_localhost_link_open
+          each do |object|
+            object.ll.open
+          end
+          nil # Suppress echo in console.
+        end
+        alias_method :llo, :dev_dev_localhost_link_open
       end
     end
   end

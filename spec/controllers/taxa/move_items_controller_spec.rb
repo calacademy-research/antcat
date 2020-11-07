@@ -33,7 +33,7 @@ describe Taxa::MoveItemsController do
 
     it 'creates an activity' do
       expect { post :create, params: { taxa_id: taxon.id, to_taxon_id: to_taxon.id, reference_section_ids: [reference_section.id] } }.
-        to change { Activity.where(action: :move_items, trackable: taxon).count }.by(1)
+        to change { Activity.where(action: Activity::MOVE_ITEMS, trackable: taxon).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(to_taxon_id: to_taxon.id)

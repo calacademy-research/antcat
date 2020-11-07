@@ -21,7 +21,7 @@ class InstitutionsController < ApplicationController
     @institution = Institution.new(institution_params)
 
     if @institution.save
-      @institution.create_activity :create, current_user, edit_summary: params[:edit_summary]
+      @institution.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: 'Successfully created institution.'
     else
       render :new
@@ -36,7 +36,7 @@ class InstitutionsController < ApplicationController
     @institution = find_institution
 
     if @institution.update(institution_params)
-      @institution.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @institution.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
       render :edit
@@ -47,7 +47,7 @@ class InstitutionsController < ApplicationController
     institution = find_institution
 
     institution.destroy!
-    institution.create_activity :destroy, current_user
+    institution.create_activity Activity::DESTROY, current_user
 
     redirect_to institutions_path, notice: 'Institution was successfully deleted.'
   end

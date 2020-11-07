@@ -20,13 +20,13 @@
 
 .row
   .medium-6.columns
-    -if @protonym.protonym_history_items.empty?
+    -if @protonym.history_items.empty?
       No history items.
     -else
       %table
         %caption History items
         %tbody
-          -@protonym.protonym_history_items.each do |history_item|
+          -@protonym.history_items.each do |history_item|
             %tr
               %td
                 %small=Detax[history_item.to_taxt]

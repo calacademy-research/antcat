@@ -25,6 +25,7 @@
 # `ddlt.ll.open` = launch web browser (xdg-open) and open last taxon on localhost
 
 require_relative "dev_monkey_patches/ant_cat"
+require_relative "dev_monkey_patches/array"
 require_relative "dev_monkey_patches/object"
 require_relative "dev_monkey_patches/rails"
 
@@ -42,6 +43,7 @@ module DevMonkeyPatches
     DevMonkeyPatches.puts_enabled_notice
 
     DevMonkeyPatches::Object.patch!
+    DevMonkeyPatches::Array.patch!
     DevMonkeyPatches::Rails.patch!
     DevMonkeyPatches::AntCat.patch!
   end

@@ -58,6 +58,12 @@ Feature: Add reference unsuccessfully
     Then I should see "Author names string couldn't be parsed."
     And the "reference_author_names_string" field should contain "asdf"
 
+  Scenario: Invalid author name
+    When I fill in "reference_author_names_string" with "A"
+    And I press "Save"
+    Then I should see "Author names (A): Name is too short (minimum is 2 characters)"
+    And the "reference_author_names_string" field should contain "A"
+
   Scenario: Unparseable (blank) journal name (and maintain already filled in fields)
     When I fill in "reference_title" with "A reference title"
     And I fill in "reference_journal_name" with ""

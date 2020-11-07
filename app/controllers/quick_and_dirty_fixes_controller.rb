@@ -17,7 +17,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Converted Bolton tags, but nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted Bolton tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Converted Bolton tags"
       render js: %(AntCat.notifySuccess("Converted Bolton tags to: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert Bolton tags"))
@@ -33,7 +33,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Converted to taxac tags, but nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Converted to taxac tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Converted to taxac tags"
       render js: %(AntCat.notifySuccess("Converted to taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not convert to taxac tags"))
@@ -49,7 +49,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags, nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Force-remove page numbers from taxac tags"
       render js: %(AntCat.notifySuccess("Force-removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not force-remove pages from taxac tags"))
@@ -65,7 +65,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags, nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Remove page numbers from taxac tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Remove page numbers from taxac tags"
       render js: %(AntCat.notifySuccess("Removed pages from taxac tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not remove pages from taxac tags"))
@@ -81,7 +81,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Replaced missing tags, but nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Replaced `missing` tags"
       render js: %(AntCat.notifySuccess("Replaced missing tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags"))
@@ -103,7 +103,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Replaced missing tags with selected tax, but nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Replaced `missing` tags with selected tax"
       render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
@@ -125,7 +125,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if old_taxt == new_taxt
       render js: %(AntCat.notifyError("Switched tax tags, but nothing was changed"))
     elsif history_item.update(taxt: new_taxt)
-      history_item.create_activity :update, current_user, edit_summary: "[automatic] Switch `tax` tags"
+      history_item.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Switch `tax` tags"
       render js: %(AntCat.notifySuccess("Switched tax tags: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not switch tax tags"))
@@ -139,7 +139,7 @@ class QuickAndDirtyFixesController < ApplicationController
     if taxon.current_taxon == new_current_taxon
       render js: %(AntCat.notifyError("Updated current_taxon_id, but nothing was changed"))
     elsif taxon.update(current_taxon_id: new_current_taxon.id)
-      taxon.create_activity :update, current_user, edit_summary: "[automatic] Update `current_taxon_id`"
+      taxon.create_activity Activity::UPDATE, current_user, edit_summary: "[automatic] Update `current_taxon_id`"
       render js: %(AntCat.notifySuccess("Updated current_taxon_id"))
     else
       render js: %(AntCat.notifyError("Could not update current_taxon_id"))

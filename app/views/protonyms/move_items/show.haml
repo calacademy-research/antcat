@@ -20,7 +20,7 @@
   .row
     -# Move from.
     .medium-6.columns
-      -if @protonym.protonym_history_items.empty?
+      -if @protonym.history_items.empty?
         No history items.
       -else
         %table.history-items
@@ -30,7 +30,7 @@
               =link_to "Select all", "#", id: "select-all-history-items", class: "btn-normal btn-tiny"
               =link_to "Unselect all", "#", id: "unselect-all-history-items", class: "btn-normal btn-tiny"
           %tbody
-            -@protonym.protonym_history_items.each do |history_item|
+            -@protonym.history_items.each do |history_item|
               %tr
                 %td=check_box_tag "history_item_ids[]", history_item.id
                 %td
@@ -38,13 +38,13 @@
 
     -# Move to.
     .medium-6.columns
-      -if @to_protonym.protonym_history_items.empty?
+      -if @to_protonym.history_items.empty?
         No history items.
       -else
         %table
           %caption History items
           %tbody
-            -@to_protonym.protonym_history_items.each do |history_item|
+            -@to_protonym.history_items.each do |history_item|
               %tr
                 %td
                   %small=Detax[history_item.to_taxt]

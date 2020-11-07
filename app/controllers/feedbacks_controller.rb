@@ -45,7 +45,7 @@ class FeedbacksController < ApplicationController
     end
 
     if @feedback.save
-      @feedback.create_activity :create, current_user
+      @feedback.create_activity Activity::CREATE, current_user
       redirect_to root_path, notice: <<~MSG
         Message sent (feedback id #{@feedback.id}). Thanks for helping us make AntCat better!
       MSG
@@ -62,7 +62,7 @@ class FeedbacksController < ApplicationController
     @feedback = find_feedback
 
     if @feedback.update(feedback_params)
-      @feedback.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @feedback.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @feedback, notice: "Successfully updated feedback."
     else
       render :edit
@@ -73,7 +73,7 @@ class FeedbacksController < ApplicationController
     feedback = find_feedback
 
     feedback.destroy!
-    feedback.create_activity :destroy, current_user
+    feedback.create_activity Activity::DESTROY, current_user
 
     redirect_to feedbacks_path, notice: "Feedback item was successfully deleted."
   end
@@ -82,7 +82,7 @@ class FeedbacksController < ApplicationController
     feedback = find_feedback
 
     feedback.close!
-    feedback.create_activity :close_feedback, current_user
+    feedback.create_activity Activity::CLOSE_FEEDBACK, current_user
 
     redirect_to feedback, notice: "Successfully closed feedback item."
   end
@@ -91,7 +91,7 @@ class FeedbacksController < ApplicationController
     feedback = find_feedback
 
     feedback.reopen!
-    feedback.create_activity :reopen_feedback, current_user
+    feedback.create_activity Activity::REOPEN_FEEDBACK, current_user
 
     redirect_to feedback, notice: "Successfully re-opened feedback item."
   end

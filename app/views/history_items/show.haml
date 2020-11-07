@@ -48,11 +48,11 @@
                 =antcat_icon 'check'
                 %small (unranked items, or with matching rank)
 
--if @protonym.protonym_history_items.count > 1
+-if @protonym.history_items.count > 1
   %table.margin-top
     %caption Highlighted in context with other history items belonging to #{@protonym.name.name_html}
     %tbody
-      -@protonym.protonym_history_items.each do |protonym_history_item|
+      -@protonym.history_items.each do |protonym_history_item|
         %tr{class: ('pale-background' if protonym_history_item == @history_item)}
           %td
             =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)

@@ -8,10 +8,9 @@ describe Exporters::Taxa::TaxaAsTxt do
       protonym = create :protonym, :nomen_nudum
       taxon = create :genus, :unavailable, :incertae_sedis_in_subfamily, protonym: protonym
       reference = taxon.authorship_reference
-      reference.update!(doi: '123')
 
       expect(described_class[[taxon]]).to eq "#{taxon.name_cache} incertae sedis in subfamily, nomen nudum\n" \
-        "#{reference.decorate.plain_text} DOI: 123   #{reference.id}\n\n"
+        "#{reference.decorate.plain_text}   #{reference.id}\n\n"
     end
 
     context 'when taxon is a synonym' do

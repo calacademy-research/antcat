@@ -14,7 +14,7 @@ module DatabaseScripts
             protonym.id,
             protonym.decorate.link_to_protonym,
             Protonyms::WhatLinksHere.new(protonym).any?,
-            protonym.protonym_history_items.any?
+            protonym.history_items.any?
           ]
         end
       end

@@ -18,7 +18,7 @@ describe AuthorsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: author.id }) }.
-        to change { Activity.where(action: :destroy, trackable: author).count }.by(1)
+        to change { Activity.where(action: Activity::DESTROY, trackable: author).count }.by(1)
     end
   end
 end

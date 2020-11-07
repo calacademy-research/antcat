@@ -17,6 +17,7 @@ class SpeciesGroupTaxon < Taxon
   private
 
     def ensure_protonym_is_a_species_group_name
+      return unless protonym
       return if protonym.name.is_a?(SpeciesGroupName)
       errors.add :base, "Species and subspecies must have protonyms with species-group names"
     end

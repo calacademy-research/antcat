@@ -5,7 +5,7 @@ require 'rails_helper'
 describe ActivityTemplatePartial do
   context "without a `trackable_type`" do
     it "returns the template for the `action`" do
-      expect(described_class[action: 'elevate_subspecies_to_species', trackable_type: nil]).
+      expect(described_class[action: Activity::ELEVATE_SUBSPECIES_TO_SPECIES, trackable_type: nil]).
         to eq "activities/templates/actions/elevate_subspecies_to_species"
     end
   end

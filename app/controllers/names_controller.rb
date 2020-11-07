@@ -15,7 +15,7 @@ class NamesController < ApplicationController
     @name = find_name
 
     if @name.update(name_params)
-      @name.create_activity :update, current_user, edit_summary: params[:edit_summary]
+      @name.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to name_path(@name), notice: "Successfully updated name."
     else
       render :edit
