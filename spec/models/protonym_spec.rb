@@ -48,7 +48,11 @@ describe Protonym do
 
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:locality, :biogeographic_region, :forms, :notes_taxt) }
-    it { is_expected.to strip_attributes(:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
+    it { is_expected.to strip_attributes(:etymology_taxt, :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
+
+    it_behaves_like "a taxt column with cleanup", :etymology_taxt do
+      subject { build :protonym }
+    end
 
     it_behaves_like "a taxt column with cleanup", :primary_type_information_taxt do
       subject { build :protonym }
