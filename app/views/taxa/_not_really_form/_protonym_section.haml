@@ -19,13 +19,16 @@
           %td Pages
           %td=protonym.authorship.pages
 
-        -if taxon.is_a?(SpeciesGroupTaxon)
+        -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
+        -if protonym.forms?
           %tr
             %td Forms
-            %td=or_dash protonym.forms
+            %td=protonym.forms
+        -if protonym.biogeographic_region?
           %tr
             %td Biogeographic region
             %td=protonym.biogeographic_region
+        -if protonym.locality?
           %tr
             %td Locality
             %td=protonym.decorate.format_locality
