@@ -90,6 +90,10 @@
             %td.small-text Can be set after creating the new protonym
 
           %tr
+            %td=form.label :etymology
+            %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][etymology_taxt]', content: taxon.protonym.etymology_taxt
+
+          %tr
             %td=form.label :primary_type_information
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
           %tr
@@ -98,7 +102,6 @@
           %tr
             %td=form.label :type_notes
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
-
           %tr
             %td=form.label :notes_taxt, 'Notes'
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt

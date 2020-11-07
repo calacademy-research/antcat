@@ -194,6 +194,10 @@
           %td
             %h6 Taxt fields
         %tr
+          %td=f.label :etymology
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
+
+        %tr
           %td=f.label :primary_type_information
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt
         %tr

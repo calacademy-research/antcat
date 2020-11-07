@@ -34,6 +34,7 @@ describe ProtonymsController do
         biogeographic_region: Protonym::NEARCTIC_REGION,
         locality: 'Africa',
         forms: 'worker',
+        etymology_taxt: "etymology",
         primary_type_information_taxt: "primary type information",
         secondary_type_information_taxt: "secondary type information",
         type_notes_taxt: "type notes",
@@ -61,6 +62,8 @@ describe ProtonymsController do
       expect(protonym.locality).to eq protonym_params[:locality]
       expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
       expect(protonym.forms).to eq protonym_params[:forms]
+
+      expect(protonym.etymology_taxt).to eq protonym_params[:etymology_taxt]
       expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
       expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
       expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
