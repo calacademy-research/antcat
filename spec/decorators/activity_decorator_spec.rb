@@ -65,6 +65,37 @@ describe ActivityDecorator do
     let(:user) { build_stubbed :user }
 
     context 'when there is a trackable' do
+      context 'when trackable is a `Name`' do
+        let(:trackable) { create :genus_name, name: 'Lasius' }
+
+        context 'when `names.name` was not changed' do
+          let(:activity) do
+            trackable.update!(non_conforming: true)
+            trackable.create_activity Activity::UPDATE, user
+          end
+
+          specify do
+            expect(decorated.did_something.squish).to eq <<~STR.squish
+              edited the name record <a href="/names/#{trackable.id}">#{trackable.name_html}</a>
+            STR
+          end
+        end
+
+        context 'when `names.name` was changed' do
+          let(:activity) do
+            trackable.update!(name: 'Atta')
+            trackable.create_activity Activity::UPDATE, user
+          end
+
+          it 'includes the old and new names' do
+            expect(decorated.did_something.squish).to eq <<~STR.squish
+              edited the name record <a href="/names/#{trackable.id}">#{trackable.name_html}</a>
+              <div class='small-text bold-warning'> Name changed from Lasius to Atta </div>
+            STR
+          end
+        end
+      end
+
       context 'when trackable is a `Reference`' do
         context 'when action is `Activity::UPDATE`' do
           let(:trackable) { create :any_reference }
