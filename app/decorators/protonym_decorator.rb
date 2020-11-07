@@ -29,19 +29,11 @@ class ProtonymDecorator < Draper::Decorator
   end
 
   def format_nomen_attributes
-    return h.ndash if nomen_attributes.blank?
-    nomen_attributes.join.html_safe
-  end
+    return @_format_nomen_attributes if defined?(@_format_nomen_attributes)
 
-  def nomen_attributes
-    @_nomen_attributes ||= [
-      ('<i>Nomen nudum</i>' if protonym.nomen_nudum?),
-      ('<i>Nomen novum</i>' if protonym.nomen_novum?),
-      ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
-      ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
-      ('<i>Nomen conservandum</i>' if protonym.nomen_conservandum?),
-      ('<i>Nomen protectum</i>' if protonym.nomen_protectum?)
-    ].compact
+    @_format_nomen_attributes ||= begin
+      nomen_attributes.join.html_safe if nomen_attributes.present?
+    end
   end
 
   def format_locality
@@ -71,5 +63,16 @@ class ProtonymDecorator < Draper::Decorator
 
     def link_to_protonym_with_label label
       h.link_to label, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+    end
+
+    def nomen_attributes
+      @_nomen_attributes ||= [
+        ('<i>Nomen nudum</i>' if protonym.nomen_nudum?),
+        ('<i>Nomen novum</i>' if protonym.nomen_novum?),
+        ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
+        ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
+        ('<i>Nomen conservandum</i>' if protonym.nomen_conservandum?),
+        ('<i>Nomen protectum</i>' if protonym.nomen_protectum?)
+      ].compact
     end
 end

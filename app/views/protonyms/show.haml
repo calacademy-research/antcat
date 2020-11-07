@@ -73,12 +73,13 @@
               -type_name_decorated = type_name.decorate
               =type_name_decorated.format_rank
               =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
-        -if current_user
+
+        -if current_user && (format_nomen_attributes = @protonym.decorate.format_nomen_attributes)
           %tr.logged-in-only-background
             %th
               Nomen attributes (beta)
               =logged_in_only_tooltip_icon
-            %td=@protonym.decorate.format_nomen_attributes
+            %td=format_nomen_attributes
 
         -if @protonym.primary_type_information_taxt?
           %tr
