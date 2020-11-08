@@ -3,6 +3,7 @@
 # TODO: Add rank to make validations easier.
 
 class Protonym < ApplicationRecord
+  include CleanupAndConvertTaxtColumns
   include Trackable
 
   BIOGEOGRAPHIC_REGIONS = [
@@ -35,7 +36,7 @@ class Protonym < ApplicationRecord
   validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
 
-  before_validation :cleanup_taxts
+  before_validation :cleanup_and_convert_taxts
 
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
@@ -66,11 +67,13 @@ class Protonym < ApplicationRecord
 
   private
 
-    def cleanup_taxts
-      self.etymology_taxt = Taxt::Cleanup[etymology_taxt]
-      self.primary_type_information_taxt = Taxt::Cleanup[primary_type_information_taxt]
-      self.secondary_type_information_taxt = Taxt::Cleanup[secondary_type_information_taxt]
-      self.type_notes_taxt = Taxt::Cleanup[type_notes_taxt]
-      self.notes_taxt = Taxt::Cleanup[notes_taxt]
+    def cleanup_and_convert_taxts
+      cleanup_and_convert_taxt_columns(
+        :etymology_taxt,
+        :primary_type_information_taxt,
+        :secondary_type_information_taxt,
+        :type_notes_taxt,
+        :notes_taxt
+      )
     end
 end

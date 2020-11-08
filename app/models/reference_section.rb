@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class ReferenceSection < ApplicationRecord
+  include CleanupAndConvertTaxtColumns
   include Trackable
 
   TAXON_TYPES_WITH_REFERENCE_SECTIONS = %w[Family Subfamily Tribe Subtribe Genus Subgenus]
 
   belongs_to :taxon
 
-  before_validation :cleanup_taxts
+  before_validation :cleanup_and_convert_taxts
 
   acts_as_list scope: :taxon
   has_paper_trail
@@ -37,9 +38,7 @@ class ReferenceSection < ApplicationRecord
 
   private
 
-    def cleanup_taxts
-      self.references_taxt = Taxt::Cleanup[references_taxt]
-      self.subtitle_taxt = Taxt::Cleanup[subtitle_taxt]
-      self.title_taxt = Taxt::Cleanup[title_taxt]
+    def cleanup_and_convert_taxts
+      cleanup_and_convert_taxt_columns :references_taxt, :subtitle_taxt, :title_taxt
     end
 end

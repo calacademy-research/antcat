@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class HistoryItem < ApplicationRecord
+  include CleanupAndConvertTaxtColumns
   include Trackable
 
   self.table_name = :taxon_history_items # NOTE: This model used to `belongs_to :taxon`.
@@ -13,7 +14,7 @@ class HistoryItem < ApplicationRecord
   validates :taxt, presence: true
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
 
-  before_validation :cleanup_taxts
+  before_validation :cleanup_and_convert_taxts
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
@@ -61,7 +62,7 @@ class HistoryItem < ApplicationRecord
 
   private
 
-    def cleanup_taxts
-      self.taxt = Taxt::Cleanup[taxt]
+    def cleanup_and_convert_taxts
+      cleanup_and_convert_taxt_columns :taxt
     end
 end
