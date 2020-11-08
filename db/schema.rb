@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_07_121032) do
+ActiveRecord::Schema.define(version: 2020_11_07_121033) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -285,7 +285,6 @@ ActiveRecord::Schema.define(version: 2020_11_07_121032) do
     t.string "name_cache", null: false
     t.boolean "unresolved_homonym", default: false, null: false
     t.integer "current_taxon_id"
-    t.boolean "ichnotaxon", default: false, null: false
     t.integer "family_id"
     t.integer "hol_id"
     t.boolean "collective_group_name", default: false, null: false
