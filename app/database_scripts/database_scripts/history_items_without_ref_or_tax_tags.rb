@@ -51,7 +51,7 @@ module DatabaseScripts
             link_to(history_item.id, history_item_path(history_item)),
             taxon_link(taxon),
             taxon.status,
-            Detax[taxt],
+            taxt,
             ('Yes' if looks_like_it_belongs_to_the_protonym),
             ('Yes' if simple_known_format),
             protonym.decorate.link_to_protonym,

@@ -23,7 +23,7 @@ module DatabaseScripts
         t.header 'Protonym (and cleaned name)', 'Author',
           'Original combination',
           'Protonym taxa', 'Taxa with same name',
-          'Quick-add button', 'Quick-add attributes'
+          'Quick-add button', 'Warnings', 'Quick-add attributes'
         t.rows(results_to_render) do |protonym|
           quick_adder = QuickAdd::FromExistingProtonymFactory.create_quick_adder(protonym)
           cleaned_name = protonym.name.cleaned_name
@@ -40,6 +40,7 @@ module DatabaseScripts
             taxon_links_with_author_citations(Taxon.where(name_cache: cleaned_name)),
 
             (new_taxon_link(quick_adder) if quick_adder.can_add?),
+            (bold_warning('Protonym already has an original combination') if quick_adder.can_add? && original_combination),
             quick_adder.synopsis
           ]
         end

@@ -14,7 +14,7 @@ module DatabaseScripts
 
     def render results_to_render: results
       as_table do |t|
-        t.header 'History item', 'Protonym', 'Taxt', 'Extracted taxon', "TT of extracted's protonym", 'Same?'
+        t.header 'History item', 'Protonym', 'Taxt', "TT of extracted's protonym", 'Same?'
         t.rows(results_to_render) do |history_item|
           protonym = history_item.protonym
           taxt = history_item.taxt
@@ -28,11 +28,9 @@ module DatabaseScripts
           [
             link_to(history_item.id, history_item_path(history_item)),
             protonym_link(protonym),
-            Detax[taxt],
+            taxt,
 
-            taxon_link(extracted_taxon),
             taxon_link(terminal_taxon),
-
             (same ? 'Yes' : bold_warning('No'))
           ]
         end

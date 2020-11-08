@@ -18,7 +18,7 @@ module DatabaseScripts
 
           [
             protonym.decorate.link_to_protonym,
-            Detax[notes_taxt],
+            notes_taxt,
             notes_type(notes_taxt)
           ]
         end

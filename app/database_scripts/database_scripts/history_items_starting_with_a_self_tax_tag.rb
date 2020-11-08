@@ -31,7 +31,7 @@ module DatabaseScripts
             taxon_link(taxon),
             taxon.type,
             taxon.status,
-            Detax[history_item.taxt],
+            history_item.taxt,
             (replace_with_pro_tag ? 'Yes' : bold_warning('No'))
           ]
         end
