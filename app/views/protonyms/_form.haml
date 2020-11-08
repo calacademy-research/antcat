@@ -183,20 +183,20 @@
             =f.button "Save", class: "btn-saves"
 
 -if protonym.taxa.present?
-  %h5.margin-top Related records
-  .callout.primary.huge-margin-bottom.small-12.columns
-    %h6 Taxa belonging to this protonym
-    %table.pale-table
-      -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
-        %tr
-          %td=CatalogFormatter.link_to_taxon(taxon)
-          %td=taxon.rank.capitalize
-          %td
-            =taxon.status.capitalize
-            -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-              %br
-              %small=taxon.decorate.expanded_status
-          %td
-            -if taxon.original_combination?
-              Original combination
-              =antcat_icon 'check'
+  %h5.huge-margin-top.small-margin-bottom Related records
+
+  %h6.bold Taxa belonging to this protonym
+  %table
+    -TaxonQuery.new(protonym.taxa.order_by_name).with_common_includes.each do |taxon|
+      %tr
+        %td=CatalogFormatter.link_to_taxon(taxon)
+        %td=taxon.rank.capitalize
+        %td
+          =taxon.status.capitalize
+          -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+            %br
+            %small=taxon.decorate.expanded_status
+        %td
+          -if taxon.original_combination?
+            Original combination
+            =antcat_icon 'check'

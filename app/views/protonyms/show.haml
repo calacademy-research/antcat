@@ -120,13 +120,6 @@
     .small-12.columns
       %h5 Taxa belonging to this protonym
       %table
-        %thead
-          %th Taxon
-          %th Rank
-          %th Status
-          %th
-          -if current_user
-            %th
         -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
