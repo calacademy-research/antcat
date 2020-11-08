@@ -53,16 +53,18 @@
           %td=decorated.format_title
         %tr
           %th Pagination
-          %td=or_dash @reference.pagination
+          %td=@reference.pagination
         %tr
           %th Year
           %td=@reference.suffixed_year_with_stated_year
-        %tr
-          %th Date
-          %td
-            =or_dash References::FormatDate[@reference.date]
-            -if @reference.online_early?
-              [online early]
+
+        -if @reference.date? || @reference.online_early?
+          %tr
+            %th Date
+            %td
+              =or_dash References::FormatDate[@reference.date]
+              -if @reference.online_early?
+                [online early]
         %tr
           %th Type
           %td=@reference.type.underscore.humanize
@@ -70,21 +72,21 @@
           %th Bolton key
           %td=or_dash @reference.bolton_key
 
-        -if @reference.is_a? ArticleReference
+        -if @reference.is_a?(ArticleReference)
           %tr
             %th Journal
             %td
               %i=link_to @reference.journal.name, @reference.journal
           %tr
             %th Series/volume/issue
-            %td=or_dash @reference.series_volume_issue
+            %td=@reference.series_volume_issue
 
-        -if @reference.is_a? BookReference
+        -if @reference.is_a?(BookReference)
           %tr
             %th Publisher
             %td=@reference.publisher.display_name
 
-        -if @reference.is_a? NestedReference
+        -if @reference.is_a?(NestedReference)
           %tr
             %th Nested in
             %td=@reference.nesting_reference.decorate.expandable_reference
@@ -96,27 +98,31 @@
               %ul.no-bullet
                 -@reference.nestees.each do |nestee|
                   %li=nestee.decorate.expandable_reference
-        %tr
-          %th DOI
-          %td=or_dash decorated.doi_link
+        -if @reference.doi?
+          %tr
+            %th DOI
+            %td=decorated.doi_link
         %tr
           %th PDF link
           %td=or_dash decorated.pdf_link
 
-        %tr
-          %th Public notes
-          %td=or_dash decorated.format_public_notes
+        -if @reference.public_notes?
+          %tr
+            %th Public notes
+            %td=decorated.format_public_notes
         -if current_user
-          %tr.logged-in-only-background
-            %th
-              Editor notes
-              =logged_in_only_tooltip_icon
-            %td=or_dash decorated.format_editor_notes
-          %tr.logged-in-only-background
-            %th
-              Taxonomic notes
-              =logged_in_only_tooltip_icon
-            %td=or_dash decorated.format_taxonomic_notes
+          -if @reference.editor_notes?
+            %tr.logged-in-only-background
+              %th
+                Editor notes
+                =logged_in_only_tooltip_icon
+              %td=decorated.format_editor_notes
+          -if @reference.taxonomic_notes?
+            %tr.logged-in-only-background
+              %th
+                Taxonomic notes
+                =logged_in_only_tooltip_icon
+              %td=decorated.format_taxonomic_notes
 
 -if current_user
   -if @citations_presenter.any_citations?

@@ -46,10 +46,10 @@
       %tbody
         %tr
           %th Authorship
-          %td=@protonym.authorship_reference.decorate.expandable_reference
-        %tr
-          %th Pages
-          %td=@protonym.authorship.pages
+          %td
+            =succeed ':' do
+              =@protonym.authorship_reference.decorate.expandable_reference
+            =@protonym.authorship.pages
 
         -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
         -if @protonym.forms?
@@ -105,7 +105,7 @@
         -if @protonym.notes_taxt?
           %tr
             %th Notes
-            %td=or_dash Detax[@protonym.notes_taxt]
+            %td=Detax[@protonym.notes_taxt]
 
   -if current_user
     .medium-3.columns

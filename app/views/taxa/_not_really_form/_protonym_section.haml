@@ -14,10 +14,10 @@
       %tbody
         %tr
           %td Authorship
-          %td=protonym.authorship_reference.decorate.expandable_reference
-        %tr
-          %td Pages
-          %td=protonym.authorship.pages
+          %td
+            =succeed ':' do
+              =protonym.authorship_reference.decorate.expandable_reference
+            =protonym.authorship.pages
 
         -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
         -if protonym.forms?
@@ -67,6 +67,6 @@
         -if protonym.notes_taxt?
           %tr
             %td Notes
-            %td=or_dash Detax[protonym.notes_taxt]
+            %td=Detax[protonym.notes_taxt]
 
   =render 'protonyms/quick_edit_history_items', protonym: protonym
