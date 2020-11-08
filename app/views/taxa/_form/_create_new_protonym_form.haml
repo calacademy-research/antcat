@@ -90,18 +90,33 @@
             %td.small-text Can be set after creating the new protonym
 
           %tr
-            %td=form.label :etymology
+            %td
+              =form.label :etymology do
+                Etymology
+                =db_tooltip_icon "etymology", scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][etymology_taxt]', content: taxon.protonym.etymology_taxt
 
           %tr
-            %td=form.label :primary_type_information
+            %td
+              =form.label :primary_type_information do
+                Primary type information
+                =db_tooltip_icon "primary_type_information", scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
           %tr
-            %td=form.label :secondary_type_information
+            %td
+              =form.label :secondary_type_information do
+                Secondary type information
+                =db_tooltip_icon "secondary_type_information", scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt
           %tr
-            %td=form.label :type_notes
+            %td
+              =form.label :type_notes do
+                Type notes
+                =db_tooltip_icon "type_notes", scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
           %tr
-            %td=form.label :notes_taxt, 'Notes'
+            %td
+              =form.label :notes do
+                Notes
+                =db_tooltip_icon "notes", scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt
