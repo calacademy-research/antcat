@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: rails g migration RemoveTaxonIdFromTaxonHistoryItems. [grep:proitem].
-#   remove_column :taxon_history_items, :taxon_id, :integer
-
 class AddProtonymIdToTaxonHistoryItems < ActiveRecord::Migration[6.0]
   def change
     add_reference :taxon_history_items, :protonym, type: :integer,
