@@ -40,6 +40,7 @@ class Protonym < ApplicationRecord
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
+  scope :genus_group_names, -> { joins(:name).where(names: { type: Name::GENUS_GROUP_NAMES }) }
 
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region, :forms, :notes_taxt], replace_newlines: true
@@ -53,6 +54,10 @@ class Protonym < ApplicationRecord
 
   def author_citation
     authorship_reference.key_with_year
+  end
+
+  def genus_group_name?
+    Rank.genus_group_name?(name.taxon_type)
   end
 
   def soft_validations

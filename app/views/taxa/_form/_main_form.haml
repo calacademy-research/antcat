@@ -100,10 +100,10 @@
               %td
                 =name_form.label :gender
               %td
-                =name_form.select :gender, [['unknown', nil], 'masculine', 'feminine', 'neuter']
+                =name_form.select :gender, Name::GENDERS, include_blank: '(blank)'
 
           %tr
             %td
               =form.label :incertae_sedis_in, "<i>Incertae sedis</i> in".html_safe
             %td
-              =form.select :incertae_sedis_in, [['(none)', nil], *Rank::INCERTAE_SEDIS_IN_TYPES]
+              =form.select :incertae_sedis_in, Rank::INCERTAE_SEDIS_IN_TYPES, include_blank: '(none)'

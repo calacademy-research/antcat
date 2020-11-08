@@ -21,7 +21,7 @@ module Protonyms
       end
 
       def search_query
-        params[:q] || params[:qq]
+        (params[:q] || params[:qq]).lstrip
       end
   end
 end
