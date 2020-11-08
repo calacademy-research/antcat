@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_07_000837) do
+ActiveRecord::Schema.define(version: 2020_11_07_121032) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -313,12 +313,10 @@ ActiveRecord::Schema.define(version: 2020_11_07_000837) do
     t.text "taxt", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "taxon_id"
     t.integer "position", null: false
     t.string "rank"
     t.integer "protonym_id", null: false
     t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
-    t.index ["taxon_id"], name: "index_taxonomic_history_items_on_taxon_id"
   end
 
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
