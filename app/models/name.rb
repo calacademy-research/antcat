@@ -29,8 +29,14 @@ class Name < ApplicationRecord
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style species-group protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
-  FAMILY_AND_GENUS_GROUP_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName SubgenusName]
+  GENUS_GROUP_NAMES = %w[GenusName SubgenusName]
   SPECIES_GROUP_NAMES = %w[SpeciesName SubspeciesName InfrasubspeciesName]
+
+  GENDERS = [
+    MASCULINE_GENUS = 'masculine',
+    'feminine',
+    'neuter'
+  ]
 
   has_many :protonyms, dependent: :restrict_with_error
   has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
@@ -40,6 +46,7 @@ class Name < ApplicationRecord
     format: { with: VALID_CHARACTERS_REGEX, message: "can only contain Latin letters, periods, dashes and parentheses" },
     unless: -> { name.blank? }
   validate :validate_number_of_name_parts, :ensure_starts_with_upper_case_letter, :ensure_identified_name_type_matches
+  validates :gender, inclusion: { in: GENDERS, allow_nil: true }
 
   after_save :set_taxon_name_cache
 

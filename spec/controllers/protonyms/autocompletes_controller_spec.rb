@@ -9,6 +9,11 @@ describe Protonyms::AutocompletesController do
       get :show, params: { qq: "lasius", format: :json }
     end
 
+    it "trims leading whitespace from search queries" do
+      expect(Autocomplete::ProtonymsQuery).to receive(:new).with("lasius  ").and_call_original
+      get :show, params: { qq: "  lasius  ", format: :json }
+    end
+
     specify do
       protonym = create :protonym, :fossil, name: create(:genus_name, name: 'Lasius')
 

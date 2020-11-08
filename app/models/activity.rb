@@ -34,9 +34,6 @@ class Activity < ApplicationRecord
       RESTART_REVIEWING =             'restart_reviewing',
       SET_SUBGENUS =                  'set_subgenus',
       START_REVIEWING =               'start_reviewing'
-    ],
-    deprecated: [
-      REORDER_TAXON_HISTORY_ITEMS = 'reorder_taxon_history_items'
     ]
   }
   ACTIONS = ACTIONS_BY_GROUP.values.flatten

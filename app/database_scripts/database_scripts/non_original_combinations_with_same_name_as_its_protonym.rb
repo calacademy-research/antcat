@@ -19,12 +19,15 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Taxon', 'Status', 'Protonym'
+        t.header 'Taxon', 'Status', 'Protonym', 'Protonym already has an original combination?'
         t.rows do |taxon|
+          original_combination = taxon.protonym.original_combination
+
           [
             taxon_link(taxon),
             taxon.status,
-            taxon.protonym.decorate.link_to_protonym
+            taxon.protonym.decorate.link_to_protonym,
+            (original_combination ? bold_warning('Yes: ') + taxon_link(original_combination) : bold_notice('No'))
           ]
         end
       end

@@ -2,7 +2,13 @@
 
 class MarkdownController < ApplicationController
   def preview
-    text = params[:text] || ''
-    render json: Markdowns::Render[text]
+    render json: Markdowns::Render[text_with_converted_tags]
   end
+
+  private
+
+    def text_with_converted_tags
+      text = params[:text] || ''
+      Taxt::ConvertTags[text]
+    end
 end

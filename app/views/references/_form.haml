@@ -88,12 +88,12 @@
         .medium-12.columns
           =f.label :reference_editor_notes do
             Editor notes
-            =db_tooltip_icon "EdNote", scope: :references
+            =db_tooltip_icon :editor_notes, scope: :references
           =f.text_area :editor_notes, rows: 2
         .medium-12.columns
           =f.label :reference_taxonomic_notes do
             Taxonomic notes
-            =db_tooltip_icon "TaxNote", scope: :references
+            =db_tooltip_icon :taxonomic_notes, scope: :references
           =f.text_area :taxonomic_notes, rows: 2
 
     .medium-4.columns

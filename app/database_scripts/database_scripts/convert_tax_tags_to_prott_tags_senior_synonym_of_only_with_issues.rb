@@ -1,34 +1,31 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class ConvertTaxTagsToProttTagsSeniorSynonymOf < DatabaseScript
-    PER_PAGE = 500
-
-    def paginated_results page:
-      @_paginated_results ||= results.paginate(page: page, per_page: PER_PAGE)
+  class ConvertTaxTagsToProttTagsSeniorSynonymOfOnlyWithIssues < DatabaseScript
+    def statistics
     end
 
     def results
       HistoryItem.where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+\.?$")
     end
 
-    def render results_to_render: results
+    def render
       as_table do |t|
         t.header 'History item', 'Protonym', 'Taxt', "TT of extracted's protonym", 'Same?'
-        t.rows(results_to_render) do |history_item|
-          protonym = history_item.protonym
-          taxt = history_item.taxt
+        t.rows do |history_item|
+          extracted_taxon_id = history_item.ids_from_tax_or_taxac_tags.first
+          terminal_taxon_id = Protonym.joins(:taxa, :terminal_taxon).
+            where(taxa: { id: extracted_taxon_id }).pick('terminal_taxons_protonyms.id')
 
-          extracted_taxon = Taxon.find(history_item.ids_from_tax_or_taxac_tags.first)
-          protonym_of_extracted_taxon = extracted_taxon.protonym
-          terminal_taxon = protonym_of_extracted_taxon.terminal_taxon
+          same = extracted_taxon_id == terminal_taxon_id
+          next if same
 
-          same = extracted_taxon == terminal_taxon
+          terminal_taxon = Taxon.find(terminal_taxon_id)
 
           [
             link_to(history_item.id, history_item_path(history_item)),
-            protonym_link(protonym),
-            taxt,
+            protonym_link(history_item.protonym),
+            history_item.taxt,
 
             taxon_link(terminal_taxon),
             (same ? 'Yes' : bold_warning('No'))
@@ -41,7 +38,7 @@ end
 
 __END__
 
-title: Convert <code>tax</code> tags to <code>prott</code> tags (senior synonym of)
+title: Convert <code>tax</code> tags to <code>prott</code> tags (senior synonym of, only with issues)
 
 
 section: convert-tax-to-prott-tags
@@ -58,4 +55,4 @@ description: >
   **TT of extracted's protonym** | Terminal taxon of the protonym belonging to **Extracted taxon**
 
 related_scripts:
-  - ConvertTaxTagsToProttTagsSeniorSynonymOf
+  - ConvertTaxTagsToProttTagsSeniorSynonymOfOnlyWithIssues

@@ -11,6 +11,10 @@ describe Name do
   end
 
   describe 'validations' do
+    describe "#gender" do
+      it { is_expected.to validate_inclusion_of(:gender).in_array(described_class::GENDERS).allow_nil }
+    end
+
     describe '#name' do
       it { is_expected.to validate_presence_of :name }
 
