@@ -6,7 +6,7 @@ describe WhatLinksHereItem do
   describe '#detax' do
     context 'when `what_links_here_item` is a taxt item' do
       let!(:history_item) { create :history_item }
-      let!(:what_links_here_item) { described_class.new('taxon_history_items', :taxt, history_item.id) }
+      let!(:what_links_here_item) { described_class.new('history_items', :taxt, history_item.id) }
 
       specify { expect(what_links_here_item.detax).to eq Detax[history_item.taxt] }
     end
@@ -28,7 +28,7 @@ describe WhatLinksHereItem do
         expect(described_class.new('protonyms', :secondary_type_information_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :type_notes_taxt, 999).taxt?).to eq true
         expect(described_class.new('protonyms', :notes_taxt, 999).taxt?).to eq true
-        expect(described_class.new('taxon_history_items', :taxt, 999).taxt?).to eq true
+        expect(described_class.new('history_items', :taxt, 999).taxt?).to eq true
       end
     end
 
@@ -81,8 +81,8 @@ describe WhatLinksHereItem do
       specify { expect(what_links_here_item.owner).to eq object }
     end
 
-    context "when table is `taxon_history_items`" do
-      let(:table) { "taxon_history_items" }
+    context "when table is `history_items`" do
+      let(:table) { "history_items" }
       let!(:object) { create :history_item }
 
       specify { expect(what_links_here_item.owner).to eq object.protonym }

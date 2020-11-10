@@ -53,7 +53,7 @@ describe Taxa::WhatLinksHere do
           WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
-          WhatLinksHereItem.new('taxon_history_items', :taxt,                            history_item.id)
+          WhatLinksHereItem.new('history_items',       :taxt,                            history_item.id)
         ]
       end
 
@@ -79,7 +79,7 @@ describe Taxa::WhatLinksHere do
           WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
           WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
-          WhatLinksHereItem.new('taxon_history_items', :taxt,                            history_item.id)
+          WhatLinksHereItem.new('history_items',       :taxt,                            history_item.id)
         ]
       end
 

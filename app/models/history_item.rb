@@ -4,8 +4,6 @@ class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
-  self.table_name = :taxon_history_items # NOTE: This model used to `belongs_to :taxon`.
-
   belongs_to :protonym
 
   has_one :terminal_taxon, through: :protonym

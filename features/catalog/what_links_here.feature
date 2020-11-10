@@ -11,13 +11,13 @@ Feature: What links here
   Scenario: See related items (taxa, with detaxed taxt item)
     When I go to the catalog page for "Atta"
     And I follow "What Links Here"
-    Then I should see "taxon_history_items"
+    Then I should see "history_items"
     And I should see "Protonym: Eciton"
     And I should see "Atta: Batiatus"
 
   Scenario: See related items (references, with detaxed taxt item)
     When I go to the page of the most recent reference
     And I follow "What Links Here"
-    Then I should see "taxon_history_items"
+    Then I should see "history_items"
     And I should see "Protonym: Eciton"
     And I should see "Atta: Batiatus"

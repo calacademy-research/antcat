@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_07_121033) do
+ActiveRecord::Schema.define(version: 2020_11_10_210643) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -74,6 +74,16 @@ ActiveRecord::Schema.define(version: 2020_11_07_121033) do
     t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
+  create_table "history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
+    t.text "taxt", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "position", null: false
+    t.string "rank"
+    t.integer "protonym_id", null: false
+    t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
   end
 
   create_table "institutions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -308,16 +318,6 @@ ActiveRecord::Schema.define(version: 2020_11_07_121033) do
     t.index ["type"], name: "taxa_type_idx"
   end
 
-  create_table "taxon_history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "taxt", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "position", null: false
-    t.string "rank"
-    t.integer "protonym_id", null: false
-    t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
-  end
-
   create_table "tooltips", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "key", null: false
     t.text "text", null: false
@@ -395,6 +395,7 @@ ActiveRecord::Schema.define(version: 2020_11_07_121033) do
 
   add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"
   add_foreign_key "citations", "references", name: "fk_citations__reference_id__references__id"
+  add_foreign_key "history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"
@@ -416,7 +417,6 @@ ActiveRecord::Schema.define(version: 2020_11_07_121033) do
   add_foreign_key "taxa", "taxa", column: "subgenus_id", name: "fk_taxa__subgenus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "subspecies_id", name: "fk_taxa__subspecies_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
-  add_foreign_key "taxon_history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
   add_foreign_key "type_names", "references", name: "fk_type_names__reference_id__references__id"
   add_foreign_key "type_names", "taxa", column: "taxon_id", name: "fk_type_names__taxon_id__taxa__id"
   add_foreign_key "users", "authors", name: "fk_users__author_id__authors__id"

@@ -50,8 +50,8 @@ describe WhatLinksHereItemDecorator do
     specify { expect(decorated.owner_link).to eq taxon_link(object) }
   end
 
-  context "when table is `taxon_history_items`" do
-    let(:table) { "taxon_history_items" }
+  context "when table is `history_items`" do
+    let(:table) { "history_items" }
     let!(:object) { create :history_item }
 
     specify { expect(decorated.item_link).to eq %(<a href="/history_items/#{id}">#{id}</a>) }
