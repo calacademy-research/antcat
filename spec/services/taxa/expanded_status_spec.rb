@@ -53,12 +53,24 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon status is 'obsolete combination'" do
-        let!(:current_taxon) { create :genus }
-        let!(:taxon) { build_stubbed :species, :obsolete_combination, current_taxon: current_taxon }
+        context 'when taxon is a genus-group name' do
+          let!(:current_taxon) { create :genus }
+          let!(:taxon) { build_stubbed :genus, :obsolete_combination, current_taxon: current_taxon }
 
-        specify do
-          expect(described_class[taxon]).
-            to eq "an obsolete combination of #{taxon_link_with_author_citation(current_taxon)}"
+          specify do
+            expect(described_class[taxon]).
+              to eq "an obsolete classification of #{taxon_link_with_author_citation(current_taxon)}"
+          end
+        end
+
+        context 'when taxon is a species-group name' do
+          let!(:current_taxon) { create :species }
+          let!(:taxon) { build_stubbed :species, :obsolete_combination, current_taxon: current_taxon }
+
+          specify do
+            expect(described_class[taxon]).
+              to eq "an obsolete combination of #{taxon_link_with_author_citation(current_taxon)}"
+          end
         end
       end
 

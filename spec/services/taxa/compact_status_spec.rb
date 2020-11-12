@@ -52,12 +52,24 @@ describe Taxa::CompactStatus do
       end
 
       context "when taxon status is 'obsolete combination'" do
-        let!(:current_taxon) { build_stubbed :genus }
-        let!(:taxon) { build_stubbed :species, :obsolete_combination, current_taxon: current_taxon }
+        context 'when taxon is a genus-group name' do
+          let!(:current_taxon) { build_stubbed :genus }
+          let!(:taxon) { build_stubbed :genus, :obsolete_combination, current_taxon: current_taxon }
 
-        specify do
-          expect(described_class[taxon]).
-            to eq "obsolete combination of #{taxon_link(current_taxon)}"
+          specify do
+            expect(described_class[taxon]).
+              to eq "obsolete classification of #{taxon_link(current_taxon)}"
+          end
+        end
+
+        context 'when taxon is a species-group name' do
+          let!(:current_taxon) { build_stubbed :species }
+          let!(:taxon) { build_stubbed :species, :obsolete_combination, current_taxon: current_taxon }
+
+          specify do
+            expect(described_class[taxon]).
+              to eq "obsolete combination of #{taxon_link(current_taxon)}"
+          end
         end
       end
 
