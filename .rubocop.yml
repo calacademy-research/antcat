@@ -199,6 +199,7 @@ Metrics/BlockLength:
     - 'config/environments/**/*'
 
 Metrics/ClassLength:
+  Enabled: false
   Max: 100
   CountAsOne:
     - array

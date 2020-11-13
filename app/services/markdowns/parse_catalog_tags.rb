@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Markdowns
-  class ParseCatalogTags # rubocop:disable Metrics/ClassLength
+  class ParseCatalogTags
     include Service
 
     def initialize content
