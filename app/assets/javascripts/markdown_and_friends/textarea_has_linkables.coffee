@@ -45,7 +45,13 @@ setupLinkables = =>
       delay: 300
       maxLen: 50
       insertTpl: '{tax ${id}}:'
-      displayTpl: '<li><small>#${id}</small> ${name_with_fossil} <small>${author_citation}</small></li>'
+      displayTpl: """
+        <li>
+          <span class='record-id'>#${id}</span>
+          <span class='main-result'>${name_with_fossil}</span>
+          <span class='discret-author-citation'>${author_citation}</span>
+        </li>
+      """
       callbacks: reuseCallbacks "/catalog/autocomplete.json"
 
     .atwho
@@ -63,7 +69,13 @@ setupLinkables = =>
       delay: 300
       maxLen: 50
       insertTpl: '{pro ${id}}:'
-      displayTpl: '<li><small>#${id}</small> ${name_with_fossil} <small>${author_citation}</small></li>'
+      displayTpl: """
+        <li>
+          <span class='record-id'>#${id}</span>
+          <span class='main-result'>${name_with_fossil}</span>
+          <span class='discret-author-citation'>${author_citation}</span>
+        </li>
+      """
       callbacks: reuseCallbacks "/protonyms/autocomplete.json"
 
     .atwho
