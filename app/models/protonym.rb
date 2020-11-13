@@ -50,6 +50,8 @@ class Protonym < ApplicationRecord
 
   searchable do
     text(:name) { name.name }
+    text(:authors) { authorship_reference.key.authors_for_key }
+    text(:year_as_string) { authorship_reference.year.to_s }
   end
 
   # TODO: Cheating a little bit to avoid making an additional query when parsing `prott` tags.

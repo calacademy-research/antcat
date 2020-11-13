@@ -29,6 +29,8 @@ module Autocomplete
         Protonym.search(include: [:name, { authorship: :reference }]) do
           keywords search_query do
             fields(:name)
+            fields(:authors)
+            fields(:year_as_string)
           end
 
           paginate page: page, per_page: per_page
