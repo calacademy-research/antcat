@@ -48,7 +48,7 @@ setupLinkables = =>
       displayTpl: """
         <li>
           <span class='record-id'>#${id}</span>
-          <span class='main-result'>${name_with_fossil}</span>
+          <span class='main-result ${css_classes}'>${name_with_fossil}</span>
           <span class='discret-author-citation'>${author_citation}</span>
         </li>
       """

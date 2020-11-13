@@ -13,7 +13,7 @@ $.fn.taxonSelectify = ->
 
       """
         <span class='record-id'>##{item.id}</span>
-        <span class='main-result'>#{item.name_with_fossil}</span>
+        <span class='main-result #{item.css_classes}'>#{item.name_with_fossil}</span>
         <span class='discret-author-citation'>#{item.author_citation}</span>
       """
     templateSelection: (item) ->
@@ -21,10 +21,11 @@ $.fn.taxonSelectify = ->
 
       nameWithFossil = $(selectElement).data 'name-with-fossil'
       authorCitation = $(selectElement).data 'author-citation'
+      cssClasses = $(selectElement).data 'css-classes'
 
       """
         <span class='record-id'>##{item.id}</span>
-        <span class='main-result'>#{item.name_with_fossil || nameWithFossil}</span>
+        <span class='main-result #{item.css_classes || cssClasses}'>#{item.name_with_fossil || nameWithFossil}</span>
         <span class='discret-author-citation'>#{item.author_citation || authorCitation}</span>
       """
     escapeMarkup: (m) -> m
