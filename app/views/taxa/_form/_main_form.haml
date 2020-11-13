@@ -9,7 +9,7 @@
           %td=form.label :parent, 'Parent'
           %td
             -if taxon.parent
-              =taxon.parent.decorate.link_to_taxon_with_author_citation
+              =taxon.parent.decorate.link_to_taxon_with_linked_author_citation
             -else
               (none)
 
@@ -21,6 +21,7 @@
           %td
             -if taxon.name.persisted?
               =taxon.name.name_html
+              %span.spacer-2rem
               =link_to "Name record ##{taxon.name.id}", name_path(taxon.name), class: 'btn-normal btn-tiny'
             -else
               -number_of_words = Rank.single_word_name?(taxon.type) ? Names::FindConflicts::SINGLE_WORD_NAMES_ONLY : Names::FindConflicts::NO_SINGLE_WORD_NAMES
