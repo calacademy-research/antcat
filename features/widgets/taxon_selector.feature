@@ -1,4 +1,4 @@
-@javascript
+@javascript @search
 Feature: Taxon selector
   Background:
     Given I log in as a catalog editor

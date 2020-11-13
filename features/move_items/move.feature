@@ -3,6 +3,7 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  @search
   Scenario: Moving reference sections (with feed)
     Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
     And there is a genus "Formica"

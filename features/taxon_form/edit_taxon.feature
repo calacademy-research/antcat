@@ -18,7 +18,7 @@ Feature: Editing a taxon
     Then I should see "Formica" within "#protonym-synopsis"
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
-  @javascript
+  @javascript @search
   Scenario: Changing current taxon
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"

@@ -6,7 +6,12 @@ module Autocomplete
 
     TAXON_ID_REGEX = /^\d+ ?$/
 
-    attr_private_initialize :search_query, [rank: nil]
+    def initialize search_query, rank: nil, page: 1, per_page: 30
+      @search_query = search_query
+      @rank = Array.wrap(rank).presence
+      @page = page
+      @per_page = per_page
+    end
 
     def call
       exact_id_match || search_results
@@ -14,23 +19,25 @@ module Autocomplete
 
     private
 
+      attr_reader :search_query, :rank, :page, :per_page
+
       def exact_id_match
         return unless search_query.match?(TAXON_ID_REGEX)
         Taxon.where(id: search_query).presence
       end
 
       def search_results
-        taxa = Taxon.where("name_cache LIKE ? OR name_cache LIKE ?", crazy_search_query, not_as_crazy_search_query)
-        taxa = taxa.where(type: rank) if rank.present?
-        taxa
-      end
+        Taxon.search(include: [:name, protonym: [:name, { authorship: :reference }]]) do
+          keywords search_query do
+            fields(:name_cache)
+          end
 
-      def crazy_search_query
-        search_query.split('').join('%') + '%'
-      end
+          if rank
+            with(:type).any_of(rank)
+          end
 
-      def not_as_crazy_search_query
-        "%#{search_query}%"
+          paginate page: page, per_page: per_page
+        end.results
       end
   end
 end

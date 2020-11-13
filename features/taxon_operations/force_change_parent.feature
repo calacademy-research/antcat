@@ -2,7 +2,7 @@ Feature: Force-changing parent
   Background:
     Given I log in as a superadmin named "Archibald"
 
-  @javascript
+  @javascript @search
   Scenario: Changing a genus's subfamily (with feed)
     Given the Formicidae family exists
     And there is a subfamily "Attininae"

@@ -22,6 +22,7 @@ Feature: Markdown autocompletion
     And I click the suggestion containing "Joffre's Favorite Ants"
     Then the markdown textarea should contain a markdown link to "Joffre, 1810"
 
+  @search
   Scenario: Taxa markdown autocompletion
     Given there is a genus "Eciton"
     And there is a genus "Atta"
