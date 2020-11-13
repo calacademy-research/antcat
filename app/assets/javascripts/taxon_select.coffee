@@ -10,12 +10,23 @@ $.fn.taxonSelectify = ->
     theme: 'bootstrap'
     templateResult: (item) ->
       return if item.loading
-      "<small>##{item.id}</small> #{item.name_with_fossil} <small>#{item.author_citation}</small>"
+
+      """
+        <span class='record-id'>##{item.id}</span>
+        <span class='main-result'>#{item.name_with_fossil}</span>
+        <span class='discret-author-citation'>#{item.author_citation}</span>
+      """
     templateSelection: (item) ->
       return '(none)' unless item.id
+
       nameWithFossil = $(selectElement).data 'name-with-fossil'
       authorCitation = $(selectElement).data 'author-citation'
-      "<small>##{item.id}</small> #{item.name_with_fossil || nameWithFossil} <small>#{item.author_citation || authorCitation}</small>"
+
+      """
+        <span class='record-id'>##{item.id}</span>
+        <span class='main-result'>#{item.name_with_fossil || nameWithFossil}</span>
+        <span class='discret-author-citation'>#{item.author_citation || authorCitation}</span>
+      """
     escapeMarkup: (m) -> m
     minimumInputLength: 1
     placeholder: '???'
