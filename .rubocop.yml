@@ -105,6 +105,9 @@ Lint/ConstantDefinitionInBlock:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateBranch:
+  Enabled: false
+
 Lint/DuplicateElsifCondition:
   Enabled: true
 
