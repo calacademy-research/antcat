@@ -40,7 +40,7 @@ title: Genus-group names without a type name
 
 section: research
 category: Types
-tags: [slow, new!]
+tags: [slow]
 
 issue_description:
 

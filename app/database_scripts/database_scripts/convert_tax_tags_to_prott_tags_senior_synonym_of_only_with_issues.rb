@@ -43,7 +43,7 @@ title: Convert <code>tax</code> tags to <code>prott</code> tags (senior synonym 
 
 section: convert-tax-to-prott-tags
 category: Taxt
-tags: [new!]
+tags: [slow]
 
 description: >
   Script column | Description
