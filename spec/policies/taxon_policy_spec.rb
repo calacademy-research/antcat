@@ -28,22 +28,6 @@ describe TaxonPolicy do
     end
   end
 
-  describe '#show_create_combination_help_button?' do
-    %i[family subfamily tribe subtribe genus subgenus].each do |rank|
-      specify do
-        taxon = build_stubbed rank
-        expect(described_class.new(taxon).show_create_combination_help_button?).to eq false
-      end
-    end
-
-    %i[species subspecies].each do |rank|
-      specify do
-        taxon = build_stubbed rank
-        expect(described_class.new(taxon).show_create_combination_help_button?).to eq true
-      end
-    end
-  end
-
   describe '#allow_create_obsolete_combination?' do
     context 'when taxon is valid' do
       %i[family subfamily tribe subtribe genus subgenus subspecies].each do |rank|
