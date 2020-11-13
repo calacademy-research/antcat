@@ -48,6 +48,10 @@ class Protonym < ApplicationRecord
   strip_attributes only: [:etymology_taxt, :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
+  searchable do
+    text(:name) { name.name }
+  end
+
   # TODO: Cheating a little bit to avoid making an additional query when parsing `prott` tags.
   def self.terminal_taxon_from_protonym_id protonym_id
     Taxon.where(status: Status::TERMINAL_STATUSES).find_by(protonym_id: protonym_id)

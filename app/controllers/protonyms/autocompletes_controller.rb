@@ -15,9 +15,7 @@ module Protonyms
       end
 
       def protonyms
-        Autocomplete::ProtonymsQuery[search_query].
-          joins(:name).includes(:name, { authorship: { reference: :author_names } }).
-          limit(NUM_RESULTS)
+        Autocomplete::ProtonymsQuery[search_query, per_page: NUM_RESULTS]
       end
 
       def search_query
