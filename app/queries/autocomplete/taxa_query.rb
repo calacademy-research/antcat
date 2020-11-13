@@ -30,6 +30,8 @@ module Autocomplete
         Taxon.search(include: [:name, protonym: [:name, { authorship: :reference }]]) do
           keywords search_query do
             fields(:name_cache)
+            fields(:authors)
+            fields(:year_as_string)
           end
 
           if rank
