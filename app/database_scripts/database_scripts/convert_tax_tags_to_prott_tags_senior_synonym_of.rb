@@ -9,12 +9,12 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+\.?$")
+      HistoryItem.where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+")
     end
 
     def render results_to_render: results
       as_table do |t|
-        t.header 'History item', 'Protonym', 'Taxt', "TT of extracted's protonym", 'Same?'
+        t.header 'History item', 'Protonym', 'Taxt', "TT of extracted's protonym", 'Same?', 'OK?'
         t.rows(results_to_render) do |history_item|
           protonym = history_item.protonym
           taxt = history_item.taxt
@@ -24,6 +24,7 @@ module DatabaseScripts
           terminal_taxon = protonym_of_extracted_taxon.terminal_taxon
 
           same = extracted_taxon == terminal_taxon
+          single_tax_tag = history_item.ids_from_tax_or_taxac_tags.size == 1
 
           [
             link_to(history_item.id, history_item_path(history_item)),
@@ -31,7 +32,8 @@ module DatabaseScripts
             taxt,
 
             taxon_link(terminal_taxon),
-            (same ? 'Yes' : bold_warning('No'))
+            (same ? 'Yes' : bold_warning('No')),
+            (single_tax_tag ? 'Yes' : bold_warning('No, too many tax tags'))
           ]
         end
       end
@@ -58,4 +60,5 @@ description: >
   **TT of extracted's protonym** | Terminal taxon of the protonym belonging to **Extracted taxon**
 
 related_scripts:
+  - ConvertTaxTagsToProttTagsJuniorSynonymOf
   - ConvertTaxTagsToProttTagsSeniorSynonymOf
