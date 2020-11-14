@@ -2,21 +2,27 @@
 
 module DatabaseScripts
   class ProtonymsWithTypeNotesTaxt < DatabaseScript
+    PER_PAGE = 500
+
     def empty_status
       DatabaseScripts::EmptyStatus::NOT_APPLICABLE
+    end
+
+    def paginated_results page:
+      @_paginated_results ||= results.paginate(page: page, per_page: PER_PAGE)
     end
 
     def results
       Protonym.where.not(type_notes_taxt: nil)
     end
 
-    def render
+    def render results_to_render: results
       as_table do |t|
         t.header 'Protonym', 'type_notes_taxt'
-        t.rows do |protonym|
+        t.rows(results_to_render) do |protonym|
           [
             protonym.decorate.link_to_protonym,
-            Detax[protonym.type_notes_taxt]
+            ::Types::FormatTypeField[protonym.type_notes_taxt]
           ]
         end
       end
