@@ -60,6 +60,13 @@ class Taxon < ApplicationRecord
     end
   }
 
+  searchable do
+    string :type
+    text :name_cache
+    text(:authors) { authorship_reference.key.authors_for_key }
+    text(:year_as_string) { authorship_reference.year.to_s }
+  end
+
   [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status

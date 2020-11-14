@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe Catalog::AutocompletesController do
+describe Catalog::AutocompletesController, :search do
   describe "GET show", as: :visitor do
-    let!(:taxon) { create :genus, :fossil, name_string: "Ratta" }
+    let!(:taxon) { create :genus, :fossil, name_string: "Atta" }
 
     before do
-      create :genus, name_string: "Nylanderia"
+      Sunspot.commit
     end
 
     it "returns matches" do
@@ -17,8 +17,8 @@ describe Catalog::AutocompletesController do
         [
           {
             "id" => taxon.id,
-            "plaintext_name" => "Ratta",
-            "name_with_fossil" => "<i>†</i><i>Ratta</i>",
+            "plaintext_name" => taxon.name_cache,
+            "name_with_fossil" => "<i>†</i><i>#{taxon.name_cache}</i>",
             "author_citation" => taxon.author_citation,
             "css_classes" => CatalogFormatter.taxon_disco_mode_css(taxon),
             "url" => "/catalog/#{taxon.id}"

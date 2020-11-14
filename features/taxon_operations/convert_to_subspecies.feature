@@ -2,7 +2,7 @@ Feature: Converting a species to a subspecies
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript
+  @javascript @search
   Scenario: Converting a species to a subspecies (with feed)
     Given there is a species "Camponotus dallatorei" in the genus "Camponotus"
     And there is a species "Camponotus alii" in the genus "Camponotus"
@@ -20,7 +20,7 @@ Feature: Converting a species to a subspecies
     When I go to the activity feed
     Then I should see "Archibald converted the species Camponotus dallatorei to a subspecies (now Camponotus alii dallatorei)" within the activity feed
 
-  @javascript
+  @javascript @search
   Scenario: Converting a species to a subspecies when it already exists
     Given there is a species "Camponotus alii" in the genus "Camponotus"
     And there is a subspecies "Camponotus alii dallatorei" in the species "Camponotus alii"

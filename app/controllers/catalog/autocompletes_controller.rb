@@ -24,14 +24,15 @@ module Catalog
       end
 
       def taxa
-        Autocomplete::TaxaQuery[search_query, rank: params[:rank]].
-          includes(:name, authorship_reference: :author_names).
-          references(:reference_author_names).
-          limit(NUM_RESULTS)
+        Autocomplete::TaxaQuery[search_query, rank: rank, per_page: NUM_RESULTS]
       end
 
       def search_query
         params[:q] || params[:qq] || ''
+      end
+
+      def rank
+        params[:rank]
       end
   end
 end

@@ -2,7 +2,7 @@ Feature: Editing a taxon
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript
+  @javascript @search
   Scenario: Changing protonym
     Given there is a genus "Eciton"
     And there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
@@ -18,7 +18,7 @@ Feature: Editing a taxon
     Then I should see "Formica" within "#protonym-synopsis"
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
-  @javascript
+  @javascript @search
   Scenario: Changing current taxon
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"

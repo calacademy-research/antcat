@@ -3,6 +3,7 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
+  @search
   Scenario: Moving reference sections (with feed)
     Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
     And there is a genus "Formica"
@@ -31,6 +32,7 @@ Feature: Move items
     When I go to the activity feed
     Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed
 
+  @search
   Scenario: Moving history items (with feed)
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae history"
     And there is a genus protonym "Formica"
