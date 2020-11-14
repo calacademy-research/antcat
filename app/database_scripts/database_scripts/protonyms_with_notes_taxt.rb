@@ -62,4 +62,6 @@ description: >
 related_scripts:
   - ProtonymsWithEtymologyTaxt
   - ProtonymsWithNotesTaxt
+  - ProtonymsWithPrimaryTypeInformationTaxt
+  - ProtonymsWithSecondaryTypeInformationTaxt
   - ProtonymsWithTypeNotesTaxt
