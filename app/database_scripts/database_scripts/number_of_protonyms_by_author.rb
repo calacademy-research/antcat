@@ -7,21 +7,25 @@ module DatabaseScripts
     end
 
     def statistics
-      at_least_one_protonym = Author.joins(references: { citations: :protonym })
+      at_least_one_protonym = Author.joins(references: { citations: { protonym: :name } }).
+        where(names: { type: [Name::SPECIES_GROUP_NAMES] })
+      species_group_protonyms = Protonym.joins(:name).where(names: { type: [Name::SPECIES_GROUP_NAMES] })
 
       <<~STR.html_safe
-        Authors with at least one protonym (this list): #{at_least_one_protonym.distinct.count} <br>
+        Authors with at least one SGN protonym (this list): #{at_least_one_protonym.distinct.count} <br>
         Authors (total in database): #{Author.count} <br>
 
         <br>
 
         Protonyms (total in database): #{Protonym.count} <br>
-        Non-unique authors with at least one protonym: #{at_least_one_protonym.count} <br>
+        Protonyms (SGN, total in database): #{species_group_protonyms.count} <br>
+        Non-unique authors with at least one SGN protonym: #{at_least_one_protonym.count} <br>
       STR
     end
 
     def results
-      Author.left_joins(references: { citations: :protonym }).
+      Author.left_joins(references: { citations: { protonym: :name } }).
+        where(names: { type: [Name::SPECIES_GROUP_NAMES] }).
         group('authors.id').
         where.not(protonyms: { id: nil }).
         select("authors.id, COUNT(*) AS protonym_count")
@@ -49,11 +53,11 @@ tags: [new!]
 
 description: >
   For protonyms described by more than one author, counts are increased once for each author,
-  which is why "Non-unique authors with at least one protonym" in the bluebox is higher
+  which is why "Non-unique authors with at least one SGN protonym" in the bluebox is higher
   than the total number of protonyms.
 
 
-  All ranks are included.
+  Only species-group name protonyms are counted.
 
 related_scripts:
   - NumberOfProtonymsByAuthor
