@@ -41,7 +41,7 @@ title: Type names of replacement names for genus-group names
 
 section: research
 category: Types
-tags: [slow, new!]
+tags: [slow]
 
 issue_description:
 

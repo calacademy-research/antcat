@@ -54,5 +54,6 @@ description: >
   Some of the data here belongs more to `protonyms.forms` or `protonyms.type_notes_taxt` (see %dbscript:ProtonymsWithTypeNotesTaxt).
 
 related_scripts:
+  - ProtonymsWithEtymologyTaxt
   - ProtonymsWithNotesTaxt
   - ProtonymsWithTypeNotesTaxt

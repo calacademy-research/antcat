@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  class AdvancedSearchQuery # rubocop:disable Metrics/ClassLength
+  class AdvancedSearchQuery
     include Service
 
     TAXA_COLUMNS = %i[

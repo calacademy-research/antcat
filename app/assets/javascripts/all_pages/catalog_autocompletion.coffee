@@ -16,7 +16,7 @@ $ ->
     templates:
       header: """
         <h5 class="autocompletion-header">
-          Taxon results <small>(first 10)</small> #{ADVANCED_SEARCH_FORM_LINK}
+          Taxon results <small>(first 10)</small>
         </h5>
         """
       empty: """

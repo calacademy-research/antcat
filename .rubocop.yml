@@ -105,6 +105,9 @@ Lint/ConstantDefinitionInBlock:
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
 
+Lint/DuplicateBranch:
+  Enabled: false
+
 Lint/DuplicateElsifCondition:
   Enabled: true
 
@@ -199,6 +202,7 @@ Metrics/BlockLength:
     - 'config/environments/**/*'
 
 Metrics/ClassLength:
+  Enabled: false
   Max: 100
   CountAsOne:
     - array

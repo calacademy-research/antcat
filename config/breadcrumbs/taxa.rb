@@ -29,11 +29,6 @@ crumb :create_combination do |taxon|
   parent :edit_taxon, taxon
 end
 
-crumb :create_combination_help do |taxon|
-  link "Create combination help"
-  parent :edit_taxon, taxon
-end
-
 crumb :create_obsolete_combination do |taxon|
   link "Create obsolete combination"
   parent :edit_taxon, taxon

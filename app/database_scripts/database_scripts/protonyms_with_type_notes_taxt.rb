@@ -42,5 +42,6 @@ description: >
   **Plan for this column:** Keep as is.
 
 related_scripts:
+  - ProtonymsWithEtymologyTaxt
   - ProtonymsWithNotesTaxt
   - ProtonymsWithTypeNotesTaxt
