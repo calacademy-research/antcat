@@ -17,7 +17,8 @@ module TaxonSelectHelper
                     {
                       name_html: taxon.name.name_html,
                       name_with_fossil: taxon.name_with_fossil,
-                      author_citation: taxon.author_citation
+                      author_citation: taxon.author_citation,
+                      css_classes: CatalogFormatter.taxon_disco_mode_css(taxon)
                     }
                   end
 
