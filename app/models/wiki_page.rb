@@ -6,6 +6,8 @@ class WikiPage < ApplicationRecord
   TITLE_MAX_LENGTH = 70
 
   PERMANENT_IDENTIFIERS = [
+    SPECIES_GROUP_NAMES_CONNECTING_TERMS = 'species_group_names_connecting_terms',
+    FORMS = 'forms',
     NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page'
   ]
 
