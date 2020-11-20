@@ -2,6 +2,14 @@
 -breadcrumb :history_item, @history_item
 
 -content_for :breadcrumbs_right do
+  -if current_user
+    Standard format
+    -if @history_item.standard_format?
+      =antcat_icon 'check'
+    -else
+      =antcat_icon 'nope'
+    =logged_in_only_tooltip_icon "Beta feature. More formats will be supported in the future. This section is only visible to logged-in users."
+
   -if user_is_at_least_helper?
     =link_to "Edit", edit_history_item_path(@history_item), class: "btn-normal"
   =link_to "History", history_item_history_path(@history_item), class: "btn-normal"
