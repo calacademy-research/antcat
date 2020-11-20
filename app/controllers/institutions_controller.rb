@@ -59,6 +59,6 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:abbreviation, :name)
+      params.require(:institution).permit(:abbreviation, :name, :grscicoll_identifier)
     end
 end
