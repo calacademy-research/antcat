@@ -86,6 +86,15 @@ describe InstitutionsController do
       expect(institution.abbreviation).to eq institution_params[:abbreviation]
       expect(institution.name).to eq institution_params[:name]
     end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: institution.id, institution: institution_params }) }.
+        to change { Activity.where(action: Activity::UPDATE, trackable: institution).count }.by(1)
+
+      institution.reload
+      activity = Activity.last
+      expect(activity.parameters).to eq(abbreviation: institution.abbreviation)
+    end
   end
 
   describe "DELETE destroy", as: :current_user do

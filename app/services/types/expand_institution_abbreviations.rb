@@ -34,6 +34,8 @@ module Types
         content
       end
 
+      # TODO: Improve performance, since there are now way more
+      # institutions in the db than when this was written.
       def institutions_regex
         @_institutions_regex ||= Institution.pluck(:abbreviation).join('|')
       end
