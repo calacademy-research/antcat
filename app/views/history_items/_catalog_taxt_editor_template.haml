@@ -1,6 +1,5 @@
 .taxt-editor{data: { url: history_item_path(history_item), taxt_editor_template: 'history_items/catalog_taxt_editor_template' }}
   .taxt-presenter
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
 
     =Detax[history_item.taxt]
     %br
@@ -16,3 +15,9 @@
     %a.taxt-editor-cancel-button.btn-nodanger Cancel
     %span.spacer-1rem
     %a.taxt-editor-delete-button.btn-warning Delete
+
+  .taxt-presenter.tiny-margin-top
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
+    =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
