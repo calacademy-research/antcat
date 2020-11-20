@@ -13,6 +13,10 @@
   This history item belongs to
   =@protonym.decorate.link_to_protonym_with_author_citation
 
+%p
+  Its current taxon owner(s) is
+  =CatalogFormatter.link_to_taxa(@history_item.terminal_taxa)
+
 -if @history_item.rank?
   %p
     =antcat_icon "warning-icon"
@@ -20,7 +24,8 @@
 
 .callout.margin-bottom.large-8
   %p
-    =Detax[@history_item.to_taxt]
+    -if @history_item.valid?
+      =Detax[@history_item.to_taxt]
 
 -protonym_taxa_present = @protonym.taxa.present?
 -has_more_than_a_single_history_item = @protonym.history_items.size > 1

@@ -327,6 +327,9 @@ Rails/WhereNot:
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
 
+Rails/Validation:
+  Enabled: false
+
 ### RSpec.
 
 RSpec/EmptyExampleGroup:
