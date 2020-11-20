@@ -26,6 +26,11 @@ module TooltipHelper
     tag.span antcat_icon("info-tooltip"), tooltip2: title, class: "tooltip2"
   end
 
+  def link_to_wiki_page_or_missing permanent_identifier
+    wiki_page = WikiPage.from_permanent_identifier_or_missing permanent_identifier
+    link_to wiki_page.title, wiki_page
+  end
+
   private
 
     def wiki_page_icon text

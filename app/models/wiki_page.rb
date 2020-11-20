@@ -8,7 +8,8 @@ class WikiPage < ApplicationRecord
   PERMANENT_IDENTIFIERS = [
     SPECIES_GROUP_NAMES_CONNECTING_TERMS = 'species_group_names_connecting_terms',
     FORMS = 'forms',
-    NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page'
+    NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page',
+    TYPE_INFORMATION = 'type_information'
   ]
 
   MissingWikiPage = Struct.new(:permanent_identifier) do
