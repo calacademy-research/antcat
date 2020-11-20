@@ -16,6 +16,8 @@
           =database_scripts.size
           scripts in section
       -case section
+      -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
+        %h5.left History items and taxa not agreeing
       -when DatabaseScripts::Tagging::CONVERT_TAX_TO_PROTT_TAGS_SECTION
         %h5.left History items with <code>tax</code> tags to be converted to <code>prott</code> tags by script
       -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION

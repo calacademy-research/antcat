@@ -4,6 +4,8 @@ class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
+  alias_attribute :current_taxon_owner, :terminal_taxon
+
   belongs_to :protonym
 
   has_one :terminal_taxon, through: :protonym
