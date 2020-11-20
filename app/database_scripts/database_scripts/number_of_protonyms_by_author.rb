@@ -49,7 +49,7 @@ __END__
 
 section: list
 category: Protonyms
-tags: [new!]
+tags: []
 
 description: >
   For protonyms described by more than one author, counts are increased once for each author,

@@ -7,8 +7,7 @@ class DatabaseScriptsController < ApplicationController
 
   def index
     @total_number_of_database_scripts = DatabaseScript.all.size
-    @grouped_database_scripts = DatabaseScript.all.group_by(&:section).
-      sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
+    @grouped_database_scripts = grouped_database_scripts
     @check_if_empty = params[:check_if_empty]
   end
 
@@ -25,6 +24,11 @@ class DatabaseScriptsController < ApplicationController
   end
 
   private
+
+    def grouped_database_scripts
+      DatabaseScript.all.group_by(&:section).
+        sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
+    end
 
     def find_database_script
       DatabaseScript.new_from_basename(params[:id])
