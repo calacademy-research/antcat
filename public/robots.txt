@@ -31,6 +31,9 @@ Disallow: /
 User-agent: MegaIndex.ru/2.0
 Disallow: /
 
+User-agent: MauiBot (crawler.feedback+dc@gmail.com)
+Disallow: /
+
 User-agent: MegaIndex.ru
 Disallow: /
 
