@@ -9,6 +9,15 @@
       =link_to append_superadmin_icon("Delete"), @institution, method: :delete, data: { confirm: 'This institution may be referenced in other items. Are you sure?' }, class: 'btn-warning'
   =activities_link_for_trackable @institution
 
-=succeed ":" do
-  =@institution.abbreviation
-=@institution.name
+.row.margin-bottom
+  .small-12.columns
+    =succeed ":" do
+      =@institution.abbreviation
+    =@institution.name
+
+-if @institution.grscicoll_identifier?
+  .row.margin-bottom
+    .small-12.columns
+      %h5 External links
+      %ul
+        %li=@institution.decorate.link_to_grscicoll
