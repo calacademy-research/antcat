@@ -341,6 +341,9 @@ RSpec/ExpectChange:
 RSpec/FactoryBot/CreateList:
   EnforcedStyle: n_times
 
+RSpec/ImplicitSubject:
+  Enabled: false
+
 RSpec/LetSetup:
   Exclude:
     - 'spec/operations/**/*'
