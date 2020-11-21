@@ -21,6 +21,10 @@ class DatabaseScriptDecorator < Draper::Decorator
     h.safe_join(html_spans, " ")
   end
 
+  def undecorate
+    database_script
+  end
+
   def format_tags
     tags_and_sections = ([section] + tags).compact - [DatabaseScripts::Tagging::MAIN_SECTION]
     self.class.format_tags(tags_and_sections)
@@ -36,6 +40,10 @@ class DatabaseScriptDecorator < Draper::Decorator
 
   def slow?
     tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
+  end
+
+  def regression_test?
+    section == DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
   end
 
   def github_url

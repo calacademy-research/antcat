@@ -4,7 +4,8 @@ class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
   # TODO: Extract into a new class, `DatabaseScriptsPresenter` or `DatabaseScriptsQuery`.
   INDEX_VIEW_OPTIONS = [
-    CHECK_IF_EMPTY = 'check_if_empty'
+    CHECK_IF_EMPTY = 'check_if_empty',
+    NON_EMPTY_REGRESSION_TESTS = 'non_empty_regression_tests'
   ]
 
   before_action :authenticate_user!
@@ -35,7 +36,11 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def database_scripts_scope
-      @_database_scripts_scope ||= DatabaseScript.all
+      @_database_scripts_scope ||= if params[:view] == NON_EMPTY_REGRESSION_TESTS
+                                     DatabaseScript.non_empty_regression_tests
+                                   else
+                                     DatabaseScript.all
+                                   end
     end
 
     def find_database_script
@@ -45,7 +50,7 @@ class DatabaseScriptsController < ApplicationController
     end
 
     def check_if_empty?
-      params[:view].in?([CHECK_IF_EMPTY])
+      params[:view].in?([CHECK_IF_EMPTY, NON_EMPTY_REGRESSION_TESTS])
     end
 
     # TODO: Probably move from controller and wrap in a renderer.
