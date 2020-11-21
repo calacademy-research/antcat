@@ -6,6 +6,7 @@
 
 .callout.margin-bottom.large-8
   %p
-    =Detax[@history_item.to_taxt]
+    -if @history_item.valid?
+      =Detax[@history_item.to_taxt]
 
 =render "form", history_item: @history_item, url: history_item_path(@history_item), protonym: @protonym

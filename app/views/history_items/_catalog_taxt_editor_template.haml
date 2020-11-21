@@ -1,6 +1,5 @@
-.taxt-editor{data: { url: history_item_path(history_item), taxt_editor_template: 'history_items/catalog_taxt_editor_template' }}
+.taxt-editor.taxt-editor-catalog{data: { url: history_item_path(history_item), taxt_editor_template: 'history_items/catalog_taxt_editor_template' }}
   .taxt-presenter
-    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
 
     =Detax[history_item.taxt]
     %br
@@ -9,9 +8,16 @@
     =text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
 
     .row
-      .medium-5.columns.end
+      .medium-6.columns.end
         =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
 
     %a.taxt-editor-history-item-save-button.btn-saves Save
     %a.taxt-editor-cancel-button.btn-nodanger Cancel
+    %span.spacer-1rem
     %a.taxt-editor-delete-button.btn-warning Delete
+
+  .taxt-presenter.tiny-margin-top
+    %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
+    =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"

@@ -56,13 +56,6 @@
         -else
           =add_period_if_necessary Detax[history_item.to_taxt]
 
-        -if current_user
-          %span.show-on-hover
-            =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
-            -if user_is_at_least_helper?
-              =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-            =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
-
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
@@ -85,12 +78,6 @@
               =render 'history_items/catalog_taxt_editor_template', history_item: history_item
             -else
               =add_period_if_necessary Detax[history_item.to_taxt]
-
-            %span.show-on-hover
-              =link_to "Show", history_item, class: "btn-normal btn-very-tiny"
-              -if user_is_at_least_helper?
-                =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
-              =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
 
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes

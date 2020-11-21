@@ -51,6 +51,10 @@ class HistoryItem < ApplicationRecord
     end
   end
 
+  def standard_format?
+    Taxt::StandardHistoryItemFormats.standard?(taxt)
+  end
+
   # Facade for future "hybrid history items".
   def to_taxt
     taxt
