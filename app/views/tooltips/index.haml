@@ -11,16 +11,21 @@
     =link_to 'Be a hero and create the first one?', new_tooltip_path
 -else
   -@grouped_tooltips.each do |scope, tooltips|
-    %h5=scope.capitalize
+    %h5
+      Scope:
+      %code
+        =scope
     %table.tooltips.huge-margin-bottom
       %thead
         %tr
+          %th Scope
           %th Key
-          %th Page scope
           %th Tooltip text
       %tbody
         -tooltips.each do |tooltip|
           %tr
-            %td=link_to tooltip.key, tooltip
-            %td=tooltip.scope
+            %td
+              %code=tooltip.scope
+            %td
+              %code=link_to tooltip.key, tooltip
             %td=tooltip.text
