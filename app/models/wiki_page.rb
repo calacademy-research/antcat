@@ -6,8 +6,21 @@ class WikiPage < ApplicationRecord
   TITLE_MAX_LENGTH = 70
 
   PERMANENT_IDENTIFIERS = [
-    NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page'
+    SPECIES_GROUP_NAMES_CONNECTING_TERMS = 'species_group_names_connecting_terms',
+    FORMS = 'forms',
+    NEW_CONTRIBUTORS_HELP_PAGE = 'new_contributors_help_page',
+    TYPE_INFORMATION = 'type_information'
   ]
+
+  MissingWikiPage = Struct.new(:permanent_identifier) do
+    def title
+      "Error: Could not find wiki page '#{permanent_identifier}'"
+    end
+
+    def to_model
+      WikiPage.new
+    end
+  end
 
   validates :title, presence: true, length: { maximum: TITLE_MAX_LENGTH }, uniqueness: { case_sensitive: true }
   validates :content, presence: true
@@ -17,4 +30,8 @@ class WikiPage < ApplicationRecord
   trackable parameters: proc { { title: title } }
 
   scope :featured, -> { where(featured: true) }
+
+  def self.from_permanent_identifier_or_missing permanent_identifier
+    find_by(permanent_identifier: permanent_identifier) || MissingWikiPage.new(permanent_identifier)
+  end
 end

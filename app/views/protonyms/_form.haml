@@ -59,6 +59,7 @@
               =f.label :forms do
                 Forms
                 =db_tooltip_icon :forms, scope: :protonyms
+                =db_wiki_page_icon WikiPage::FORMS
             %td=f.text_field :forms
 
         %tr
@@ -159,6 +160,11 @@
 
     .large-12.columns.margin-bottom
       %hr
+
+      %p
+        See also related wiki page
+        =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
+
       %table.unstriped
         %tr
           %td
