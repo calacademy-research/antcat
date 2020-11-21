@@ -8,10 +8,17 @@
           =f.label :abbreviation
           =f.text_field :abbreviation, maxlength: Institution::ABBREVIATION_MAX_LENGTH
       .row
-        .medium-8.columns.end
+        .medium-12.columns
           =f.label :name
           =f.text_field :name, maxlength: Institution::NAME_MAX_LENGTH
       .row
+        .medium-12.columns
+          =f.label :grscicoll_identifier do
+            GRSciColl identifier (optional)
+            =db_tooltip_icon :grscicoll_identifier, scope: :institutions
+          =f.text_field :grscicoll_identifier, placeholder: "Format: <institution or collection>/e6e9d21b-faf8-4698-95e6-bacc55860a95"
+
+      .row.margin-top
         .medium-4.columns.end
           =edit_summary_text_field_tag
       .row
@@ -20,8 +27,14 @@
 
   .medium-4.columns
     .callout
-      %h6 Help
-      %p Institutions are used in "taxt items". Full names of institutions are shown when abbreviations are hovered.
+      %p Institutions are used in some "taxt items". Full names of institutions are shown when abbreviations are hovered.
+      %p
+        External search forms for
+        =external_link_to 'GRSciColl', 'https://www.gbif.org/grscicoll'
+        identifiers:
+        =external_link_to 'institutions', 'https://www.gbif.org/grscicoll/institution/search'
+        or
+        =external_link_to 'collections', 'https://www.gbif.org/grscicoll/collection/search'
       %p
         =antcat_icon 'warning-icon'
         %strong Note that there is no validation for checking if an abbreivation is used anywhere.

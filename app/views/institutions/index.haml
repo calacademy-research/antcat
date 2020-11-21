@@ -13,12 +13,16 @@
     %tr
       %th.no-wrap Abbreviation
       %th Name
+      %th GRSciColl
       %th.no-wrap.sorter-false
   %tbody
     -@institutions.each do |institution|
       %tr
         %td=institution.abbreviation
         %td=link_to institution.name, institution
+        %td
+          -if institution.grscicoll_identifier?
+            =institution.decorate.link_to_grscicoll
         %td.no-wrap
           -if user_is_editor?
             =link_to 'Edit', edit_institution_path(institution), class: 'btn-normal btn-tiny'

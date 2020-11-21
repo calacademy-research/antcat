@@ -20,6 +20,8 @@ class InstitutionsController < ApplicationController
   def create
     @institution = Institution.new(institution_params)
 
+    @institution.grscicoll_identifier = trim_grscicoll_identifier(@institution.grscicoll_identifier)
+
     if @institution.save
       @institution.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: 'Successfully created institution.'
@@ -35,7 +37,10 @@ class InstitutionsController < ApplicationController
   def update
     @institution = find_institution
 
-    if @institution.update(institution_params)
+    @institution.attributes = institution_params
+    @institution.grscicoll_identifier = trim_grscicoll_identifier(@institution.grscicoll_identifier)
+
+    if @institution.save
       @institution.create_activity Activity::UPDATE, current_user, edit_summary: params[:edit_summary]
       redirect_to @institution, notice: "Successfully updated institution."
     else
@@ -59,6 +64,11 @@ class InstitutionsController < ApplicationController
     end
 
     def institution_params
-      params.require(:institution).permit(:abbreviation, :name)
+      params.require(:institution).permit(:abbreviation, :name, :grscicoll_identifier)
+    end
+
+    def trim_grscicoll_identifier grscicoll_identifier
+      return unless grscicoll_identifier
+      grscicoll_identifier.delete_prefix(Institution::GRSCICOLL_BASE_URL)
     end
 end

@@ -62,6 +62,20 @@ describe InstitutionsController do
       expect(activity.trackable).to eq institution
       expect(activity.parameters).to eq(abbreviation: institution.abbreviation)
     end
+
+    context 'when `grscicoll_identifier` contains the base URL' do
+      let(:institution_params) do
+        attributes_for :institution,
+          grscicoll_identifier: 'https://www.gbif.org/grscicoll/collection/9e2854b1-5d3e-4424-80fc-a765e82e5b25'
+      end
+
+      it 'removes the base URL' do
+        expect { post(:create, params: { institution: institution_params }) }.to change { Institution.count }.by(1)
+
+        institution = Institution.last
+        expect(institution.grscicoll_identifier).to eq "collection/9e2854b1-5d3e-4424-80fc-a765e82e5b25"
+      end
+    end
   end
 
   describe "GET edit", as: :editor do
@@ -85,6 +99,29 @@ describe InstitutionsController do
       institution.reload
       expect(institution.abbreviation).to eq institution_params[:abbreviation]
       expect(institution.name).to eq institution_params[:name]
+    end
+
+    it 'creates an activity' do
+      expect { put(:update, params: { id: institution.id, institution: institution_params }) }.
+        to change { Activity.where(action: Activity::UPDATE, trackable: institution).count }.by(1)
+
+      institution.reload
+      activity = Activity.last
+      expect(activity.parameters).to eq(abbreviation: institution.abbreviation)
+    end
+
+    context 'when `grscicoll_identifier` contains the base URL' do
+      let!(:institution_params) do
+        {
+          grscicoll_identifier: 'https://www.gbif.org/grscicoll/institution/e6e9d21b-faf8-4698-95e6-bacc55860a95'
+        }
+      end
+
+      it 'removes the base URL' do
+        expect { put(:update, params: { id: institution.id, institution: institution_params }) }.
+          to change { institution.reload.grscicoll_identifier }.
+          to("institution/e6e9d21b-faf8-4698-95e6-bacc55860a95")
+      end
     end
   end
 
