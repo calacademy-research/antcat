@@ -22,7 +22,7 @@ end
 crumb :history_item_history do |history_item|
   protonym_fallback_link =
     if history_item.protonym.nil?
-      "[no protonym ID] (previous taxon ID: #{history_item.taxon_id || '[no ID]'})"
+      "[protonym ID not available for old revisions of taxon-based items]"
     end
 
   link "History"
