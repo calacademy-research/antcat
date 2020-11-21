@@ -17,7 +17,7 @@
           %td.padding-right-4rem
             =form.label :name do
               Name
-              =db_tooltip_icon "name", scope: :taxa
+              =db_tooltip_icon :name, scope: :taxa
           %td
             -if taxon.name.persisted?
               =taxon.name.name_html
@@ -55,7 +55,7 @@
           %td.shrink
             =form.label :current_taxon do
               Current taxon
-              =db_tooltip_icon "current_taxon", scope: :taxa
+              =db_tooltip_icon :current_taxon, scope: :taxa
           %td=form.taxon_select :current_taxon
         %tr
           %td.no-wrap=form.label :homonym_replaced_by, 'Replaced by'
@@ -72,7 +72,7 @@
                   =form.check_box :fossil
                   =form.label :fossil do
                     Fossil
-                    =db_tooltip_icon "fossil", scope: :taxa
+                    =db_tooltip_icon :fossil, scope: :taxa
                 %li
                   =form.check_box :collective_group_name
                   =form.label :collective_group_name
@@ -80,7 +80,7 @@
                   =form.check_box :hong
                   =form.label :hong do
                     Hong
-                    =db_tooltip_icon "hong", scope: :taxa
+                    =db_tooltip_icon :hong, scope: :taxa
 
         %h6.bold.margin-top.tiny-margin-top Misc. fields
         %table.unstriped.small-padding-bottom.get-rid-of-margins-and-paddings-from-inputs
@@ -94,7 +94,7 @@
                   =form.check_box :original_combination
                   =form.label :original_combination do
                     Original combination?
-                    =db_tooltip_icon "original_combination", scope: :taxa
+                    =db_tooltip_icon :original_combination, scope: :taxa
 
           -if Rank.genus_group_name?(taxon.type)
             %tr

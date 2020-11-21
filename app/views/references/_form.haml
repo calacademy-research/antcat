@@ -19,26 +19,26 @@
         .medium-2.columns
           =f.label :year do
             Year
-            =db_tooltip_icon "year", scope: :references
+            =db_tooltip_icon :year, scope: :references
           =f.text_field :year
         .medium-2.columns
           =f.label :year_suffix do
             Year suffix
-            =db_tooltip_icon "year_suffix", scope: :references
+            =db_tooltip_icon :year_suffix, scope: :references
           =f.text_field :year_suffix, placeholder: 'Optional'
         .medium-4.columns.end
           =f.label :reference_pagination do
             Pagination
-            =db_tooltip_icon "references.journal_pagination", scope: :references
-            =db_tooltip_icon "references.book_pagination", scope: :references
-            =db_tooltip_icon "references.nested_pagination", scope: :references
+            =db_tooltip_icon :journal_pagination, scope: :references
+            =db_tooltip_icon :book_pagination, scope: :references
+            =db_tooltip_icon :nested_pagination, scope: :references
           =f.text_field :pagination
 
       .row
         .medium-12.columns
           =f.label :reference_title do
             Title
-            =db_tooltip_icon "references.title", scope: :references
+            =db_tooltip_icon :title, scope: :references
           =f.text_area :title, rows: 1
 
       .row.small-margin-top
@@ -55,12 +55,12 @@
                 .medium-6.columns
                   =f.label :reference_journal_name do
                     Journal
-                    =db_tooltip_icon "references.journal_name", scope: :references
+                    =db_tooltip_icon :journal_name, scope: :references
                   =f.text_field :journal_name, value: params.dig(:reference, :journal_name) || (reference.journal&.name if reference.respond_to?(:journal)) || ''
                 .medium-6.columns.end
                   =f.label :reference_series_volume_issue do
                     Series volume issue
-                    =db_tooltip_icon "references.series_volume_issue", scope: :references
+                    =db_tooltip_icon :series_volume_issue, scope: :references
                   =f.text_field :series_volume_issue
 
             .tab.book-tab-content
@@ -68,7 +68,7 @@
                 .medium-6.columns.end
                   =f.label :reference_publisher_string do
                     Publisher
-                    =db_tooltip_icon "references.publisher", scope: :references
+                    =db_tooltip_icon :publisher, scope: :references
                   =f.text_field :publisher_string, value: params.dig(:reference, :publisher_string) || (reference.publisher&.display_name if reference.respond_to?(:publisher)) || ''
 
             .tab.nested-tab-content
@@ -76,7 +76,7 @@
                 .medium-6.columns.end
                   =f.label :nesting_reference_id do
                     Nesting reference ID
-                    =db_tooltip_icon "nesting_reference_id", scope: :references
+                    =db_tooltip_icon :nesting_reference_id, scope: :references
                   =f.text_field :nesting_reference_id
 
       .row.margin-top.small-margin-bottom
@@ -104,19 +104,19 @@
           .medium-12.columns
             =f.label :reference_bolton_key do
               Bolton key
-              =db_tooltip_icon "references.bolton_key", scope: :references
+              =db_tooltip_icon :bolton_key, scope: :references
             =f.text_field :bolton_key
 
           .medium-12.columns
             =f.label :reference_doi do
               DOI
-              =db_tooltip_icon "references.doi", scope: :references
+              =db_tooltip_icon :doi, scope: :references
             =f.text_field :doi
 
           .medium-6.columns
             =f.label :stated_year do
               Stated year
-              =db_tooltip_icon "references.stated_year", scope: :references
+              =db_tooltip_icon :stated_year, scope: :references
             =f.text_field :stated_year
 
           .medium-6.columns.end
@@ -127,7 +127,7 @@
           .medium-8.columns.end
             =f.label :reference_date do
               Date
-              =db_tooltip_icon "references.date", scope: :references
+              =db_tooltip_icon :date, scope: :references
             =f.text_field :date
 
           .medium-12.columns
@@ -161,7 +161,7 @@
             .medium-12.columns.end
               =f.label :document_url do
                 Source URL
-                =db_tooltip_icon "references.source.url", scope: :references
+                =db_tooltip_icon :document_url, scope: :references
               =document_form.text_field :url
 
           .row.small-text

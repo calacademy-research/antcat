@@ -16,7 +16,7 @@
             %td
               =label_tag :name do
                 Name
-                =db_tooltip_icon "connecting_terms", scope: :protonyms
+                =db_tooltip_icon :connecting_terms, scope: :protonyms
             %td
               -if protonym.name&.persisted?
                 %span.right=link_to "Name record ##{protonym.name.id}", name_path(protonym.name), class: 'btn-normal btn-tiny'
@@ -37,42 +37,42 @@
             =f.check_box :sic
             =f.label :sic do
               Sic
-              =db_tooltip_icon "sic", scope: :taxa
+              =db_tooltip_icon :sic, scope: :protonyms
 
         =f.fields_for :authorship do |authorship_fields|
           %tr
             %td
               =authorship_fields.label :reference do
                 Authorship
-                =db_tooltip_icon "authorship", scope: :taxa
+                =db_tooltip_icon :authorship, scope: :protonyms
             %td=authorship_fields.reference_select :reference
 
           %tr
             %td
               =authorship_fields.label :pages do
                 Pages
-                =db_tooltip_icon "pages", scope: :taxa
+                =db_tooltip_icon :pages, scope: :protonyms
             %td=authorship_fields.text_field :pages
 
           %tr
             %td
               =f.label :forms do
                 Forms
-                =db_tooltip_icon "forms", scope: :taxa
+                =db_tooltip_icon :forms, scope: :protonyms
             %td=f.text_field :forms
 
         %tr
           %td
             =f.label :biogeographic_region do
               Biogeographic region
-              =db_tooltip_icon "type.biogeographic_region", scope: :taxa
+              =db_tooltip_icon :biogeographic_region, scope: :protonyms
           %td=f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
         %tr
           %td
             =f.label :locality do
               Locality
-              =db_tooltip_icon "locality", scope: :taxa
+              =db_tooltip_icon :locality, scope: :protonyms
           %td
             =f.text_field :locality, class: 'locality-autocomplete-js-hook'
 
@@ -164,32 +164,32 @@
           %td
             =f.label :etymology do
               Etymology
-              =db_tooltip_icon "etymology", scope: :protonyms
+              =db_tooltip_icon :etymology, scope: :protonyms
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[etymology_taxt]', content: protonym.etymology_taxt
 
         %tr
           %td
             =f.label :primary_type_information do
               Primary type information
-              =db_tooltip_icon "primary_type_information", scope: :protonyms
+              =db_tooltip_icon :primary_type_information, scope: :protonyms
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt
         %tr
           %td.shrink
             =f.label :secondary_type_information do
               Secondary type information
-              =db_tooltip_icon "secondary_type_information", scope: :protonyms
+              =db_tooltip_icon :secondary_type_information, scope: :protonyms
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt
         %tr
           %td
             =f.label :type_notes do
               Type notes
-              =db_tooltip_icon "type_notes", scope: :protonyms
+              =db_tooltip_icon :type_notes, scope: :protonyms
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt
         %tr
           %td
             =f.label :notes do
               Notes
-              =db_tooltip_icon "notes", scope: :protonyms
+              =db_tooltip_icon :notes, scope: :protonyms
           %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[notes_taxt]', content: protonym.notes_taxt
 
   .row
