@@ -1,0 +1,47 @@
+# frozen_string_literal: true
+
+namespace :antcat do
+  namespace :tooltips do
+    desc "Find db tooltips referenced in the code but are not in the database"
+    task missing: [:environment] do
+      results = `grep -rh 'db_tooltip_icon' app/`
+      lines = results.split("\n")
+
+      lines.each do |line|
+        next if line.include?('def db_tooltip_icon')
+
+        key, scope = line.scan(/db_tooltip_icon[ (]["':](.*?)["']?, scope: ["':](.*)/).flatten
+        if Tooltip.where(key: key, scope: scope).exists?
+          puts "In database:      #{key} #{scope}".green
+        else
+          puts "Not in database:  #{key} #{scope}".red
+        end
+      end
+    end
+
+    desc "Find db tooltips in the database but are not referenced in the code"
+    task unused: [:environment] do
+      results = `grep -rh 'db_tooltip_icon' app/`
+      lines = results.split("\n")
+
+      tooltips_in_source_code = lines.map do |line|
+        next if line.include?('def db_tooltip_icon')
+
+        key, scope = line.scan(/db_tooltip_icon[ (]["':](.*?)["']?, scope: ["':](.*)/).flatten
+
+        { key: key, scope: scope }.stringify_keys
+      end.compact.uniq
+
+      Tooltip.all.each do |tooltip|
+        in_source_code = tooltip.slice(:key, :scope).in?(tooltips_in_source_code)
+
+        message = "#{tooltip.id.to_s.ljust(3)} #{tooltip.key} #{tooltip.scope}"
+        if in_source_code
+          puts "In source code      #{message}".green
+        else
+          puts "Not in souce code   #{message}".red
+        end
+      end
+    end
+  end
+end

@@ -21,6 +21,10 @@ class DatabaseScriptDecorator < Draper::Decorator
     h.safe_join(html_spans, " ")
   end
 
+  def undecorate
+    database_script
+  end
+
   def format_tags
     tags_and_sections = ([section] + tags).compact - [DatabaseScripts::Tagging::MAIN_SECTION]
     self.class.format_tags(tags_and_sections)
@@ -38,8 +42,16 @@ class DatabaseScriptDecorator < Draper::Decorator
     tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
   end
 
+  def regression_test?
+    section == DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
+  end
+
   def github_url
     "#{GITHUB_MASTER_BASE_URL}/#{DatabaseScript::SCRIPTS_DIR}/#{basename}.rb"
+  end
+
+  def empty?
+    empty_status == DatabaseScripts::EmptyStatus::NOT_EMPTY
   end
 
   def empty_status
@@ -49,7 +61,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   def empty_status_css
     return unless section == DatabaseScripts::Tagging::REGRESSION_TEST_SECTION
 
-    if empty_status == DatabaseScripts::EmptyStatus::NOT_EMPTY
+    if empty?
       'bold-warning'
     end
   end

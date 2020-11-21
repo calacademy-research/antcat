@@ -57,7 +57,7 @@ class SoftValidations
   end
 
   def total_runtime
-    @_total_runtime ||= all.map(&:runtime).sum
+    @_total_runtime ||= all.sum(&:runtime)
   end
 
   def warn_about_slow_runtime?

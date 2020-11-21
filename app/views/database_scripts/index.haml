@@ -5,17 +5,24 @@
   =javascript_include_tag "sortable_tables"
 
 -content_for :breadcrumbs_right do
-  -unless @check_if_empty
-    =link_to "Show empty", database_scripts_path(check_if_empty: 'yes'), class: "btn-normal"
+  -if @check_if_empty
+    =link_to "Show all", database_scripts_path, class: "btn-normal"
+  -else
+    =link_to "Show empty status", database_scripts_path(view: DatabaseScriptsController::CHECK_IF_EMPTY), class: "btn-normal"
+    =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-normal"
 
 .row
   .small-12.columns
+    -if @grouped_database_scripts.empty?
+      Found no database scripts.
     -@grouped_database_scripts.each do |section, database_scripts|
       %h5.right
         %small
           =database_scripts.size
           scripts in section
       -case section
+      -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
+        %h5.left History items and taxa not agreeing
       -when DatabaseScripts::Tagging::CONVERT_TAX_TO_PROTT_TAGS_SECTION
         %h5.left History items with <code>tax</code> tags to be converted to <code>prott</code> tags by script
       -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
@@ -90,7 +97,8 @@
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               -if @check_if_empty
-                %td.shrink{class: decorated.empty_status_css}=decorated.empty_status
+                %td.shrink{class: decorated.empty_status_css}
+                  =decorated.empty_status
 
 .row
   .small-12.columns

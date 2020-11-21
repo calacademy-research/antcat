@@ -63,7 +63,7 @@ title: Types of genus-group names
 
 section: list
 category: Types
-tags: [very-slow, new!]
+tags: [very-slow]
 
 description: >
 

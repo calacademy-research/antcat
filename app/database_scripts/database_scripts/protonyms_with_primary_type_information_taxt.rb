@@ -36,7 +36,7 @@ title: Protonyms with <code>primary_type_information_taxt</code>
 
 section: research
 category: Inline taxt
-tags: [list, new!]
+tags: [list]
 
 description: >
 

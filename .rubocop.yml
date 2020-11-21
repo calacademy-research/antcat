@@ -380,6 +380,9 @@ Performance/DeletePrefix:
 Performance/DeleteSuffix:
   Enabled: true
 
+Performance/MethodObjectAsBlock:
+  Enabled: false
+
 Performance/RedundantSortBlock:
   Enabled: true
 

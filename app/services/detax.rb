@@ -10,6 +10,6 @@ class Detax
   # into   "example <a href=\"/catalog/429361\">Melophorini</a>"
   def call
     return unless taxt
-    Markdowns::ParseCatalogTags[sanitize(taxt.dup).to_str].html_safe
+    Markdowns::ParseCatalogTags[sanitize(taxt.dup, attributes: %w[tooltip2]).to_str].html_safe
   end
 end

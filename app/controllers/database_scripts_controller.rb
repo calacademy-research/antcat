@@ -2,14 +2,18 @@
 
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
+  # TODO: Extract into a new class, `DatabaseScriptsPresenter` or `DatabaseScriptsQuery`.
+  INDEX_VIEW_OPTIONS = [
+    CHECK_IF_EMPTY = 'check_if_empty',
+    NON_EMPTY_REGRESSION_TESTS = 'non_empty_regression_tests'
+  ]
 
   before_action :authenticate_user!
 
   def index
-    @total_number_of_database_scripts = DatabaseScript.all.size
-    @grouped_database_scripts = DatabaseScript.all.group_by(&:section).
-      sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
-    @check_if_empty = params[:check_if_empty]
+    @total_number_of_database_scripts = database_scripts_scope.size
+    @grouped_database_scripts = grouped_database_scripts
+    @check_if_empty = check_if_empty?
   end
 
   def show
@@ -26,10 +30,27 @@ class DatabaseScriptsController < ApplicationController
 
   private
 
+    def grouped_database_scripts
+      database_scripts_scope.group_by(&:section).
+        sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
+    end
+
+    def database_scripts_scope
+      @_database_scripts_scope ||= if params[:view] == NON_EMPTY_REGRESSION_TESTS
+                                     DatabaseScript.non_empty_regression_tests
+                                   else
+                                     DatabaseScript.all
+                                   end
+    end
+
     def find_database_script
       DatabaseScript.new_from_basename(params[:id])
     rescue DatabaseScript::ScriptNotFound
       raise ActionController::RoutingError, "Not Found"
+    end
+
+    def check_if_empty?
+      params[:view].in?([CHECK_IF_EMPTY, NON_EMPTY_REGRESSION_TESTS])
     end
 
     # TODO: Probably move from controller and wrap in a renderer.

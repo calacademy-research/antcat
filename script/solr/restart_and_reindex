@@ -6,9 +6,10 @@ echo "*** Executing $0"
 
 full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
+production_current_release_path='/data/antcat/current'
 
 function restart_production() {
-  pushd /data/antcat/current
+  pushd $production_current_release_path
 
   bash "$dir_path/kill"
 

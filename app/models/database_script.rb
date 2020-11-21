@@ -29,6 +29,11 @@ class DatabaseScript
       @_all ||= Dir["#{SCRIPTS_DIR}/*"].sort.map { |path| new_from_basename(File.basename(path, ".rb")) }
     end
 
+    def non_empty_regression_tests
+      @_non_empty_regression_tests ||=
+        all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)
+    end
+
     # TODO: Indicate record type in scripts.
     def record_in_results? record
       new.results.where(id: record.id).exists?
