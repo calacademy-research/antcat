@@ -48,3 +48,5 @@ task :antcat do
     PROFILE_EXAMPLES=y     rspec
   STR
 end
+
+task ac: :antcat
