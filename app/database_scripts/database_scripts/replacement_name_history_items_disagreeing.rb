@@ -7,7 +7,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where("history_items.taxt LIKE 'Replacement name: %'")
+      HistoryItem.where("history_items.taxt LIKE 'Replacement name: {tax%'")
     end
 
     def render
@@ -44,6 +44,9 @@ category: History
 tags: [slow, new!]
 
 description: >
+  Only works with `tax/taxac` tags (that is, not protonym-based tags).
+
+
   May contain false positives (like replacement names that were later dropped).
 
 
