@@ -87,6 +87,10 @@ module ApplicationHelper
       placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
   end
 
+  def current_page_redirect_back_url
+    { redirect_back_url: request.fullpath }
+  end
+
   def current_page_for_feedback
     request.original_fullpath.delete_prefix('/')
   end

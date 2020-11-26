@@ -5,7 +5,7 @@
     Protonym history items
     .right
       -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
-      =link_to 'Add', new_protonym_history_item_path(protonym), id: 'taxt-editor-add-history-item-button', class: 'button submit btn-normal btn-tiny'
+      =link_to 'Add', new_protonym_history_item_path(protonym, current_page_redirect_back_url), id: 'taxt-editor-add-history-item-button', class: 'button submit btn-normal btn-tiny'
       -if protonym.history_items.present?
         %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
   #history-items{data: {protonym_id: protonym.id}}

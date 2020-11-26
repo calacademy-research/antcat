@@ -2,7 +2,7 @@
   .taxt-presenter
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny Quick edit
     =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
-    =link_to "Edit", edit_history_item_path(history_item), class: "btn-normal btn-very-tiny"
+    =link_to "Edit", edit_history_item_path(history_item, current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
     =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
     -if history_item.rank?
       %small.bold-notice #{history_item.rank}-only item
