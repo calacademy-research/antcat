@@ -11,7 +11,6 @@ module Types
       "LACMENT",
       "USNMENT",
       "USNMNH",
-      "USNM",
       "THNHM",
       "WJT",
       "AMNH",
