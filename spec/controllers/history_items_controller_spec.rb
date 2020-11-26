@@ -44,6 +44,34 @@ describe HistoryItemsController do
       expect(activity.edit_summary).to eq "added"
       expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
     end
+
+    describe 'param `redirect_back_url`' do
+      let(:params) do
+        {
+          protonym_id: protonym.id,
+          history_item: history_item_params,
+          redirect_back_url: redirect_back_url
+        }
+      end
+
+      context 'without `redirect_back_url`' do
+        let(:redirect_back_url) { '' }
+
+        specify do
+          post :create, params: params
+          expect(response).to redirect_to(protonym_path(protonym))
+        end
+      end
+
+      context 'with `redirect_back_url`' do
+        let(:redirect_back_url) { reference_path(Reference.first) }
+
+        specify do
+          post :create, params: params
+          expect(response).to redirect_to(redirect_back_url)
+        end
+      end
+    end
   end
 
   describe "PUT update", as: :helper do
@@ -75,6 +103,34 @@ describe HistoryItemsController do
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
       expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
+    end
+
+    describe 'param `redirect_back_url`' do
+      let(:params) do
+        {
+          id: history_item.id,
+          history_item: history_item_params,
+          redirect_back_url: redirect_back_url
+        }
+      end
+
+      context 'without `redirect_back_url`' do
+        let(:redirect_back_url) { '' }
+
+        specify do
+          post :update, params: params
+          expect(response).to redirect_to(history_item_path(history_item))
+        end
+      end
+
+      context 'with `redirect_back_url`' do
+        let(:redirect_back_url) { reference_path(Reference.first) }
+
+        specify do
+          post :update, params: params
+          expect(response).to redirect_to(redirect_back_url)
+        end
+      end
     end
   end
 

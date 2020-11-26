@@ -61,7 +61,7 @@ Feature: Editing a history item
 
     When I fill in "taxt" with "history item content"
     And I press "Save"
-    Then I should see "Successfully updated history item."
+    Then I should see "Successfully updated history item #"
     And I should see "history item content"
 
   @javascript

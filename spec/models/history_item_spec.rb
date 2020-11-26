@@ -11,7 +11,11 @@ describe HistoryItem do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :taxt }
-    it { is_expected.to validate_inclusion_of(:rank).in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES) }
+
+    it do
+      is_expected.to validate_inclusion_of(:rank).
+        in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
+    end
   end
 
   describe 'callbacks' do

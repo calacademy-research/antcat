@@ -31,7 +31,8 @@ class HistoryItemsController < ApplicationController
 
     if @history_item.save
       @history_item.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
-      redirect_to @history_item.protonym, notice: "Successfully added history item."
+      redirect_url = redirect_back_url || @history_item.protonym
+      redirect_to redirect_url, notice: "Successfully added history item " + history_item_link(@history_item) + '.'
     else
       render :new
     end
@@ -56,7 +57,8 @@ class HistoryItemsController < ApplicationController
       format.json { render_json @history_item, partial: params[:taxt_editor_template] }
       format.html do
         if updated
-          redirect_to history_item_path(@history_item), notice: "Successfully updated history item."
+          redirect_url = redirect_back_url || @history_item
+          redirect_to redirect_url, notice: "Successfully updated history item " + history_item_link(@history_item) + '.'
         else
           render :edit
         end
@@ -91,6 +93,14 @@ class HistoryItemsController < ApplicationController
 
     def history_item_params
       params.require(:history_item).permit(:taxt, :rank)
+    end
+
+    def redirect_back_url
+      params[:redirect_back_url].presence
+    end
+
+    def history_item_link history_item
+      view_context.link_to "##{history_item.id}", history_item
     end
 
     def per_page

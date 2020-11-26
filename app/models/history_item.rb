@@ -18,6 +18,7 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
+  scope :except_taxts, -> { all } # NOTE: Preparing for hybrid history items. [grep:hybrid].
 
   acts_as_list scope: :protonym
   has_paper_trail
@@ -37,7 +38,6 @@ class HistoryItem < ApplicationRecord
     end
   end
 
-  # TODO: Copy-pasta quick fix.
   def self.exclude_search search_query, search_type
     search_type = search_type.presence || 'LIKE'
 
@@ -55,7 +55,6 @@ class HistoryItem < ApplicationRecord
     Taxt::StandardHistoryItemFormats.standard?(taxt)
   end
 
-  # Facade for future "hybrid history items".
   def to_taxt
     taxt
   end

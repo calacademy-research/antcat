@@ -40,17 +40,9 @@ module DevMonkeyPatches
   end
 
   def self.enable!
-    DevMonkeyPatches.puts_enabled_notice
-
     DevMonkeyPatches::Object.patch!
     DevMonkeyPatches::Array.patch!
     DevMonkeyPatches::Rails.patch!
     DevMonkeyPatches::AntCat.patch!
-  end
-
-  def self.puts_enabled_notice
-    $stdout.puts "Monkey patched `Object` and some Rails classes in `DevMonkeyPatches`.".yellow
-    $stdout.puts "That's OK, ".green + "it's enabled in dev only by default. " +
-      "See `lib/dev_monkey_patches.rb` for more info.".light_blue
   end
 end
