@@ -2,22 +2,23 @@
 -breadcrumb :protonym, @protonym
 
 -content_for :breadcrumbs_right do
+  -if user_is_at_least_helper?
+    =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
   -if current_user
     =link_to "History", protonym_history_path(@protonym), class: "btn-normal"
     =link_to "What Links Here", protonym_what_links_here_path(@protonym), class: "btn-normal"
   -if user_is_at_least_helper?
-    =link_to 'Edit', edit_protonym_path(@protonym), class: "btn-normal"
     -if !@protonym.taxa.exists?
       =link_to "Delete", protonym_path(@protonym), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn-warning"
-  -if current_user
-    =link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
 
-  -if user_is_at_least_helper?
+  -if current_user
     .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} More
     #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
       %ul.no-bullet
-        %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
-        =link_to "Add history item", new_protonym_history_item_path(@protonym, current_page_redirect_back_url), class: "btn-normal"
+        -if user_is_at_least_helper?
+          %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
+        %li=link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
+        %li=activities_link_for_trackable @protonym
 
 -if Settings.catalog.show_failed_soft_validations
   -if current_user && @protonym.soft_validations.failed?
@@ -113,7 +114,11 @@
         %h6
           =@protonym.name.epithet_html
           =logged_in_only_tooltip_icon
+
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
+
+        -if user_is_at_least_helper?
+          =link_to "Add history item", new_protonym_history_item_path(@protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
 
 -if @protonym.taxa.present?
   .row.margin-bottom
