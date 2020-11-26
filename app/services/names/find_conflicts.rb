@@ -39,7 +39,7 @@ module Names
       attr_reader :search_query, :number_of_words, :except_name_id
 
       def wildcard_search_query
-        search_query.split(' ').join('%') + '%'
+        search_query.split.join('%') + '%'
       end
   end
 end
