@@ -4,6 +4,7 @@ module DatabaseScripts
   class ReplacementNameHistoryItemsMissing < DatabaseScript
     LIMIT = 500
 
+    # TODO: Needs to be updated for hybrid history items. [grep:hybrid].
     def results
       Taxon.where(status: Status::HOMONYM).
         joins(<<~SQL.squish).where("history_items.id IS NULL").limit(LIMIT)

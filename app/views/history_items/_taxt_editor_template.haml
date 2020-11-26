@@ -6,8 +6,10 @@
     =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
     -if history_item.rank?
       %small.bold-notice #{history_item.rank}-only item
+
     %br
-    =Detax[history_item.taxt]
+
+    =Detax[history_item.to_taxt]
 
   .taxt-editor-editor
     =text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }

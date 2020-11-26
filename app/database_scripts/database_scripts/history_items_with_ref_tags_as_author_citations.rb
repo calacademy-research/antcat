@@ -11,7 +11,8 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT)
+      HistoryItem.except_taxts.
+        where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT)
     end
 
     def render

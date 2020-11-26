@@ -8,7 +8,7 @@ describe WhatLinksHereItem do
       let!(:history_item) { create :history_item }
       let!(:what_links_here_item) { described_class.new('history_items', :taxt, history_item.id) }
 
-      specify { expect(what_links_here_item.detax).to eq Detax[history_item.taxt] }
+      specify { expect(what_links_here_item.detax).to eq Detax[history_item.to_taxt] }
     end
 
     context 'when `what_links_here_item` is not a taxt item' do

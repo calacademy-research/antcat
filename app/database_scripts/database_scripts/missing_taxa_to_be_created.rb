@@ -51,7 +51,7 @@ module DatabaseScripts
       end
 
       def all_hardcoded_taxts
-        HistoryItem.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}%").pluck(:taxt).join
+        HistoryItem.except_taxts.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}%").pluck(:taxt).join
       end
 
       def new_taxon_link quick_adder

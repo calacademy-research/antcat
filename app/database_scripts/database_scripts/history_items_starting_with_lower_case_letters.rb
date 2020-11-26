@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").limit(LIMIT)
+      HistoryItem.except_taxts.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").limit(LIMIT)
     end
 
     def render

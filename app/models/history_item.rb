@@ -18,6 +18,7 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
+  scope :except_taxts, -> { all } # NOTE: Preparing for hybrid history items. [grep:hybrid].
 
   acts_as_list scope: :protonym
   has_paper_trail

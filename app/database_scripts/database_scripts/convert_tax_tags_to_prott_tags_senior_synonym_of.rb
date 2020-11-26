@@ -9,7 +9,8 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+")
+      HistoryItem.except_taxts.
+        where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+")
     end
 
     def render results_to_render: results
