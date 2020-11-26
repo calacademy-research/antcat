@@ -24,7 +24,7 @@ class TaxaController < ApplicationController
 
     if @taxon_form.save
       @taxon.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
-      redirect_to catalog_path(@taxon), notice: "Taxon was successfully added." + add_another_species_link
+      redirect_to catalog_path(@taxon), notice: "Taxon was successfully added. " + add_another_species_link(@taxon)
     else
       render :new
     end
@@ -106,12 +106,10 @@ class TaxaController < ApplicationController
       ]
     end
 
-    def add_another_species_link
-      return "" unless @taxon.is_a? Species
+    def add_another_species_link taxon
+      return "" unless taxon.is_a?(Species)
 
-      link = view_context.link_to "Add another #{@taxon.genus.name.name_html} species?".html_safe,
-        new_taxa_path(rank_to_create: Rank::SPECIES, parent_id: @taxon.genus.id)
-
-      " <strong>#{link}</strong>".html_safe
+      view_context.link_to "Add another #{taxon.genus.name.name_html} species?".html_safe,
+        new_taxa_path(rank_to_create: Rank::SPECIES, parent_id: taxon.genus.id)
     end
 end

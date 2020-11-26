@@ -7,10 +7,15 @@ namespace :antcat do
       results = `grep -rh 'db_tooltip_icon' app/`
       lines = results.split("\n")
 
-      lines.each do |line|
+      keys_and_scope = lines.map do |line|
         next if line.include?('def db_tooltip_icon')
 
         key, scope = line.scan(/db_tooltip_icon[ (]["':](.*?)["']?, scope: ["':](.*)/).flatten
+
+        [key, scope]
+      end.compact.uniq
+
+      keys_and_scope.each do |key, scope|
         if Tooltip.where(key: key, scope: scope).exists?
           puts "In database:      #{key} #{scope}".green
         else

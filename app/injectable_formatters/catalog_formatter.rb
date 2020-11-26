@@ -9,7 +9,6 @@ module CatalogFormatter
     %(<a class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
-  # TODO: Experimental.
   def link_to_taxa taxa
     safe_join(taxa.map { |taxon| link_to_taxon(taxon) }, ', ')
   end

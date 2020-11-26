@@ -37,7 +37,6 @@ class HistoryItem < ApplicationRecord
     end
   end
 
-  # TODO: Copy-pasta quick fix.
   def self.exclude_search search_query, search_type
     search_type = search_type.presence || 'LIKE'
 
@@ -55,7 +54,6 @@ class HistoryItem < ApplicationRecord
     Taxt::StandardHistoryItemFormats.standard?(taxt)
   end
 
-  # Facade for future "hybrid history items".
   def to_taxt
     taxt
   end
