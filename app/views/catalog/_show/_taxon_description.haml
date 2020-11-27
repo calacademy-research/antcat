@@ -12,9 +12,6 @@
 #protonym-synopsis
   %span.name
     =protonym.decorate.link_to_protonym
-  -if user_is_at_least_helper?
-    %span.show-on-hover
-      =link_to "Edit", edit_protonym_path(protonym), class: "btn-normal btn-very-tiny"
   -if protonym.sic?
     [sic]
   =succeed ':' do
@@ -59,9 +56,7 @@
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-      %h6
-        Protonym history items not shown on this page
-        =logged_in_only_tooltip_icon
+      %h6 Protonym history items not shown on this page
 
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:
@@ -140,7 +135,7 @@
   %ul#citations.compact-list
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
-      %li.small-text
+      %li
         =decorated_reference.expanded_reference
         =decorated_reference.format_document_links
         -# NOTE: Useful for editors.

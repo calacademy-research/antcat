@@ -34,6 +34,11 @@
   .obsolete-combination
     color: $color_catalog_obsolete_combination !important
 
+  // Other.
+  .protonym
+    color: $color_catalog_protonym !important
+    font-weight: bold !important
+
 .color-coded-catalog-links-after-labels
   .unavailable-misspelling::after
     @include scream-orange-after-label
@@ -42,7 +47,3 @@
   .unresolved-homonym::after
     @include scream-orange-after-label
     content: "unresolved homonym"
-
-  .protonym::after
-    @include scream-green-after-label
-    content: "protonym"

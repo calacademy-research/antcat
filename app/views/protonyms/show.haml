@@ -25,9 +25,7 @@
     .row.margin-bottom
       .medium-9.columns
         .soft-validations-callout.callout.warning
-          %h6
-            Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
-            =logged_in_only_tooltip_icon
+          %h6 Issues (#{link_to("see more", protonym_soft_validations_path(@protonym))})
           =render 'shared/failed_soft_validations', soft_validations: @protonym.soft_validations
 
 .row.margin-bottom
@@ -111,9 +109,7 @@
   -if current_user
     .medium-3.columns
       .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
-        %h6
-          =@protonym.name.epithet_html
-          =logged_in_only_tooltip_icon
+        %h6=@protonym.name.epithet_html
 
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
 

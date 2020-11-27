@@ -2,31 +2,30 @@
   %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
-    =logged_in_only_tooltip_icon
 
   =render 'protonyms/shared/additional_data_for_editors', protonym: protonym
 
   -if user_is_at_least_helper?
-    -if Status.display_history_items?(taxon.status)
-      =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
-    -else
-      =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-warning btn-tiny"
-      (it will not be shown on this page)
+    %ul.no-bullet
+      %li.tiny-margin-bottom=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-normal btn-tiny"
+
+      -if Status.display_history_items?(taxon.status)
+        %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
+      -else
+        %li.tiny-margin-bottom
+          =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-warning btn-tiny"
+          (it will not be shown on this page)
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
 -if Settings.catalog.show_failed_soft_validations && !taxon.is_a?(Family)
   -if taxon.soft_validations.failed?
     .soft-validations-callout.callout.warning
-      %h6
-        Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
-        =logged_in_only_tooltip_icon
+      %h6 Issues (#{link_to("see more", taxon_soft_validations_path(taxon))})
       =render 'shared/failed_soft_validations', soft_validations: taxon.soft_validations
 
   -if protonym.soft_validations.failed?
     .soft-validations-callout.callout.warning
-      %h6
-        =link_to 'Protonym issues', protonym_soft_validations_path(protonym)
-        =logged_in_only_tooltip_icon
+      %h6=link_to 'Protonym issues', protonym_soft_validations_path(protonym)
       %p
         These issues listed here are for the protonym of this taxon,
         =succeed '.' do
@@ -40,7 +39,7 @@
     %h6
       'Combination in' according to history items
       =beta_label
-      =logged_in_only_tooltip_icon "This section is only shown to logged-in users. It is very beta but it has a lot of potential. The check for obsolete combinations representing the current catalog taxon is only run if the catalog taxon is a species, and if the history item says it was combined in a genus. The 'original combination event' does usually not appear in history items, so missing original combinations will usually not appear here. The 'create?' link is only visible when the system allows it."
+      =logged_in_only_tooltip_icon "The check for obsolete combinations representing the current catalog taxon is only run if the catalog taxon is a species, and if the history item says it was combined in a genus. The 'original combination event' does usually not appear in history items, so missing original combinations will usually not appear here. The 'create?' link is only visible when the system allows it."
     %ul.no-bullet.spaced-lis.small-margin-bottom
       -TaxonQuery.new(cleanup_taxon.combination_in_according_to_history_items).with_common_includes.each do |oc_per_item|
         %li
@@ -70,9 +69,7 @@
 
 -if editors_catalog_presenter.taxa_with_same_name.present?
   .additional-editor-data.callout.no-border-callout.logged-in-only-background
-    %h6
-      Taxa with same name
-      =logged_in_only_tooltip_icon
+    %h6 Taxa with same name
     %ul.compact-list.small-margin-bottom
       -editors_catalog_presenter.taxa_with_same_name.includes(:name, protonym: [{ authorship: :reference }]).each do |homonym|
         %li
@@ -82,9 +79,7 @@
 
 -if taxon.policy.show_create_combination_button?
   #can-be-combined-editing-helper.additional-editor-data.callout.no-border-callout.logged-in-only-background
-    %h6
-      Can be combined?
-      =logged_in_only_tooltip_icon
+    %h6 Can be combined?
 
     -if current_user.settings(:editing_helpers).create_combination
       -policy = CreateCombinationPolicy.new(taxon)
@@ -104,11 +99,9 @@
       =enable_editing_helper_link
 
 .additional-editor-data.callout.no-border-callout.logged-in-only-background
-  %h6
-    Additional data for editors
-    =logged_in_only_tooltip_icon
+  %h6 Additional data for editors
 
-  %ul
+  %ul.no-bullet
     %li Rank and status: #{taxon.type}, #{taxon.status}
     -if taxon.original_combination?
       %li
@@ -121,13 +114,13 @@
   -# Only show for species and below since this has only been an issue with these.
   -# TODO: Remove once we have made sure this does not happen (when we stop recreating deleted records, mostly).
   -if taxon.is_a?(SpeciesGroupTaxon)
-    %ul
+    %ul.no-bullet
       %li
         Name (from name record):
         =link_to taxon.name.name_html, name_path(taxon.name)
 
   -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
-  %ul
+  %ul.no-bullet
     -if taxon.is_a?(Species)
       %li
         Subgenus:
