@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: "automated edits" are currently simply activities with `automated_edits`
-# set to true and `user` set to a user named "AntCatBot" (`User.find 62`).
+# set to true and `user` set to a user named "AntCatBot".
 
 class Activity < ApplicationRecord
   include SetRequestUuid
@@ -85,6 +85,10 @@ class Activity < ApplicationRecord
       raise "You must assign a user." unless user
       raise "You must include an edit summary." unless edit_summary
       create!(trackable: nil, action: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
+    end
+
+    def antcatbot
+      @_antcatbot ||= User.find_by!(name: 'AntCatBot')
     end
     # :nocov:
   end

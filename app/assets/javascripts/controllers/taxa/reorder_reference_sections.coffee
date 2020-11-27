@@ -77,8 +77,8 @@ saveNewOrder = ->
     success: ->
       $(SORTABLE).sortable "refreshPositions"
       disableReordering()
+      AntCat.notifySuccess("Updated order")
     error: (error) ->
-      # TODO: Create modal for this and other errors.
       pleaseSee = "Please check the activity feed and see if there is a 'User reordered the reference
         sections...' and let us know via the 'Suggest edit' link or create an issue on GitHub."
 

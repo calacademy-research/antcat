@@ -52,9 +52,12 @@ module DatabaseScripts
       end
 
       def genus_protonym_names
+        ok = !Genus.where.not(status: Status::UNAVAILABLE_MISSPELLING).
+          joins(:name, protonym: :name).where('names.name != names_protonyms.name').exists?
+
         {
           title: "All genus names are the same as their protonym's names",
-          ok?: !Genus.joins(:name, protonym: :name).where('names.name != names_protonyms.name').exists?
+          ok?: ok
         }
       end
 

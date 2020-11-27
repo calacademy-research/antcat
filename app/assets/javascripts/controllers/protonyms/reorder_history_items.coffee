@@ -77,6 +77,7 @@ saveNewOrder = ->
     success: ->
       $(SORTABLE).sortable "refreshPositions"
       disableReordering()
+      AntCat.notifySuccess("Updated order")
     error: (error) ->
       pleaseSee = "Please check the activity feed and see if there is a 'User reordered the history
         items...' and let us know via the 'Suggest edit' link or create an issue on GitHub."
