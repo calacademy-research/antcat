@@ -59,9 +59,7 @@
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
-      %h6
-        Protonym history items not shown on this page
-        =logged_in_only_tooltip_icon
+      %h6 Protonym history items not shown on this page
 
       %p
         History items in this bluebox are shown on catalog pages for the protonym's terminal taxon:

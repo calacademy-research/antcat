@@ -34,9 +34,8 @@
 
 -if current_user && @history_items.present?
   .callout.no-border-callout.logged-in-only-background.small-text
-    %h6
-      Counts (rank/status of terminal taxa + protonym name types)
-      .right=logged_in_only_tooltip_icon
+    %h6 Counts (rank/status of terminal taxa + protonym name types)
+
     .row
       .medium-4.columns
         %pre=JSON.pretty_generate(@history_items.group('taxa.type').count)
