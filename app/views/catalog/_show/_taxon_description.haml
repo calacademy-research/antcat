@@ -12,9 +12,6 @@
 #protonym-synopsis
   %span.name
     =protonym.decorate.link_to_protonym
-  -if user_is_at_least_helper?
-    %span.show-on-hover
-      =link_to "Edit", edit_protonym_path(protonym), class: "btn-normal btn-very-tiny"
   -if protonym.sic?
     [sic]
   =succeed ':' do
