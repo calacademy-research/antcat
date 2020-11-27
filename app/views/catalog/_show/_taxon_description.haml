@@ -138,7 +138,7 @@
   %ul#citations.compact-list
     -catalog_presenter.collected_references.each do |reference|
       -decorated_reference = reference.decorate
-      %li.small-text
+      %li
         =decorated_reference.expanded_reference
         =decorated_reference.format_document_links
         -# NOTE: Useful for editors.
