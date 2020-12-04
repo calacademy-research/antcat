@@ -1,0 +1,19 @@
+-show_agreement_in_gender = taxon.is_a?(SpeciesGroupTaxon)
+
+-if protonym.etymology_taxt? || show_agreement_in_gender
+  .additional-editor-data.callout.no-border-callout.logged-in-only-background
+    -if protonym.etymology_taxt?
+      %p
+        %strong Etymology:
+        =Detax[protonym.etymology_taxt]
+
+    -if show_agreement_in_gender
+      %strong Agreement in gender
+      =tooltip_icon 'Which genus gender to agree with can currently only be shown on catalog pages (Taxon records)'
+      %p
+        The gender of this species-group name (#{CatalogFormatter.link_to_taxon(taxon)})
+        %i may
+        have to agree with the gender of
+        =CatalogFormatter.link_to_taxon_with_label(taxon.genus, 'its genus')
+        which is
+        %strong=taxon.genus.name.gender || '???'

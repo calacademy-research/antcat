@@ -108,13 +108,16 @@
 
   -if current_user
     .medium-3.columns
-      .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
+      .additional-editor-data.callout.no-border-callout.logged-in-only-background
         %h6=@protonym.name.epithet_html
 
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
 
         -if user_is_at_least_helper?
           =link_to "Add history item", new_protonym_history_item_path(@protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
+
+      -# TODO: Pass gender from protonym once it has been moved from `Name`s belonging to taxa.
+      =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil
 
 -if @protonym.taxa.present?
   .row.margin-bottom
