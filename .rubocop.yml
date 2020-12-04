@@ -242,6 +242,7 @@ Naming/PredicateName:
 Naming/VariableNumber:
   Exclude:
     - 'spec/**/*'
+    - 'lib/tasks/seed/**/*'
 
 ### Rails.
 
@@ -289,6 +290,10 @@ Rails/Pluck:
 
 Rails/PluckInWhere:
   Enabled: true
+
+Rails/Output:
+  Exclude:
+    - 'lib/tasks/**/*'
 
 Rails/OutputSafety:
   Enabled: false

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# rubocop:disable Rails/Output
 module AntCat
   class InvalidRecords
     def self.call
@@ -58,4 +57,3 @@ module AntCat
       end
   end
 end
-# rubocop:enable Rails/Output

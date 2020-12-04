@@ -7,8 +7,8 @@ task :antcat do
     antcat:
     antweb
     db:import_latest
-    dev
     factory_bot
+    seed:
     sunspot
     zeitwerk
   ]

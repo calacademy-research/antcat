@@ -4,9 +4,9 @@
 # If you want to develop locally with real data, please contact AntCat to request a database dump.
 
 if Rails.env.development? || Rails.env.test?
-  namespace :dev do
+  namespace :seed do
     desc "Sample data for local development environment"
-    task prime: [:environment] do
+    task catalog: [:environment] do
       require 'factory_bot'
       require 'sunspot_test'
 
