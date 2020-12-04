@@ -1,6 +1,7 @@
 require:
   - rubocop-performance
   - rubocop-rails
+  - rubocop-rake
   - rubocop-rspec
 
 AllCops:
@@ -377,6 +378,11 @@ Rails/UniqueValidationWithoutIndex:
   Enabled: false
 
 Rails/Validation:
+  Enabled: false
+
+### Rake.
+
+Rake/Desc:
   Enabled: false
 
 ### RSpec.

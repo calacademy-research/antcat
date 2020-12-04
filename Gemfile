@@ -67,9 +67,10 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.4', require: false
+  gem 'rubocop', '~> 1.5', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
+  gem 'rubocop-rake'
   gem 'rubocop-rspec'
   gem 'sunspot_test'
 end
