@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :citation do
     reference factory: :any_reference
-    sequence(:pages) { |n| n }
+    pages { generate(:pages) }
   end
 end
