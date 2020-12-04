@@ -10,8 +10,8 @@ class HistoryItemsController < ApplicationController
     @history_items = HistoryItem.left_outer_joins(:terminal_taxa)
     @history_items = @history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
     @history_items = @history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
-    @history_items = @history_items.search(params[:q], params[:search_type]) if params[:q].present?
-    @history_items = @history_items.exclude_search(params[:nq], params[:search_type]) if params[:nq].present?
+    @history_items = HistoryItemQuery.new(@history_items).search(params[:q], params[:search_type]) if params[:q].present?
+    @history_items = HistoryItemQuery.new(@history_items).exclude_search(params[:nq], params[:search_type]) if params[:nq].present?
     @history_items = @history_items.distinct.includes(protonym: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
