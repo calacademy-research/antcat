@@ -43,63 +43,63 @@ describe Rank do
 
   describe ".italic?" do
     specify do
-      expect(described_class.italic?('Family')).to eq false
-      expect(described_class.italic?('Subfamily')).to eq false
-      expect(described_class.italic?('Tribe')).to eq false
-      expect(described_class.italic?('Subtribe')).to eq false
+      expect(described_class.italic?(described_class::FAMILY)).to eq false
+      expect(described_class.italic?(described_class::SUBFAMILY)).to eq false
+      expect(described_class.italic?(described_class::TRIBE)).to eq false
+      expect(described_class.italic?(described_class::SUBTRIBE)).to eq false
 
-      expect(described_class.italic?('Genus')).to eq true
-      expect(described_class.italic?('Subgenus')).to eq true
-      expect(described_class.italic?('Species')).to eq true
-      expect(described_class.italic?('Subspecies')).to eq true
-      expect(described_class.italic?('Infrasubspecies')).to eq true
+      expect(described_class.italic?(described_class::GENUS)).to eq true
+      expect(described_class.italic?(described_class::SUBGENUS)).to eq true
+      expect(described_class.italic?(described_class::SPECIES)).to eq true
+      expect(described_class.italic?(described_class::SUBSPECIES)).to eq true
+      expect(described_class.italic?(described_class::INFRASUBSPECIES)).to eq true
     end
   end
 
   describe ".single_word_name?" do
     specify do
-      expect(described_class.single_word_name?('Family')).to eq true
-      expect(described_class.single_word_name?('Subfamily')).to eq true
-      expect(described_class.single_word_name?('Tribe')).to eq true
-      expect(described_class.single_word_name?('Subtribe')).to eq true
-      expect(described_class.single_word_name?('Genus')).to eq true
+      expect(described_class.single_word_name?(described_class::FAMILY)).to eq true
+      expect(described_class.single_word_name?(described_class::SUBFAMILY)).to eq true
+      expect(described_class.single_word_name?(described_class::TRIBE)).to eq true
+      expect(described_class.single_word_name?(described_class::SUBTRIBE)).to eq true
+      expect(described_class.single_word_name?(described_class::GENUS)).to eq true
 
-      expect(described_class.single_word_name?('Subgenus')).to eq false
-      expect(described_class.single_word_name?('Species')).to eq false
-      expect(described_class.single_word_name?('Subspecies')).to eq false
-      expect(described_class.single_word_name?('Infrasubspecies')).to eq false
+      expect(described_class.single_word_name?(described_class::SUBGENUS)).to eq false
+      expect(described_class.single_word_name?(described_class::SPECIES)).to eq false
+      expect(described_class.single_word_name?(described_class::SUBSPECIES)).to eq false
+      expect(described_class.single_word_name?(described_class::INFRASUBSPECIES)).to eq false
     end
   end
 
   describe ".genus_group_name?" do
     specify do
-      expect(described_class.genus_group_name?('Family')).to eq false
-      expect(described_class.genus_group_name?('Subfamily')).to eq false
-      expect(described_class.genus_group_name?('Tribe')).to eq false
-      expect(described_class.genus_group_name?('Subtribe')).to eq false
+      expect(described_class.genus_group_name?(described_class::FAMILY)).to eq false
+      expect(described_class.genus_group_name?(described_class::SUBFAMILY)).to eq false
+      expect(described_class.genus_group_name?(described_class::TRIBE)).to eq false
+      expect(described_class.genus_group_name?(described_class::SUBTRIBE)).to eq false
 
-      expect(described_class.genus_group_name?('Genus')).to eq true
-      expect(described_class.genus_group_name?('Subgenus')).to eq true
+      expect(described_class.genus_group_name?(described_class::GENUS)).to eq true
+      expect(described_class.genus_group_name?(described_class::SUBGENUS)).to eq true
 
-      expect(described_class.genus_group_name?('Species')).to eq false
-      expect(described_class.genus_group_name?('Subspecies')).to eq false
-      expect(described_class.genus_group_name?('Infrasubspecies')).to eq false
+      expect(described_class.genus_group_name?(described_class::SPECIES)).to eq false
+      expect(described_class.genus_group_name?(described_class::SUBSPECIES)).to eq false
+      expect(described_class.genus_group_name?(described_class::INFRASUBSPECIES)).to eq false
     end
   end
 
   describe ".number_of_name_parts" do
     specify do
-      expect(described_class.number_of_name_parts('Family')).to eq 1
-      expect(described_class.number_of_name_parts('Subfamily')).to eq 1
-      expect(described_class.number_of_name_parts('Tribe')).to eq 1
-      expect(described_class.number_of_name_parts('Subtribe')).to eq 1
+      expect(described_class.number_of_name_parts(described_class::FAMILY)).to eq 1
+      expect(described_class.number_of_name_parts(described_class::SUBFAMILY)).to eq 1
+      expect(described_class.number_of_name_parts(described_class::TRIBE)).to eq 1
+      expect(described_class.number_of_name_parts(described_class::SUBTRIBE)).to eq 1
 
-      expect(described_class.number_of_name_parts('Genus')).to eq 1
-      expect(described_class.number_of_name_parts('Subgenus')).to eq 1
+      expect(described_class.number_of_name_parts(described_class::GENUS)).to eq 1
+      expect(described_class.number_of_name_parts(described_class::SUBGENUS)).to eq 1
 
-      expect(described_class.number_of_name_parts('Species')).to eq 2
-      expect(described_class.number_of_name_parts('Subspecies')).to eq 3
-      expect(described_class.number_of_name_parts('Infrasubspecies')).to eq 4
+      expect(described_class.number_of_name_parts(described_class::SPECIES)).to eq 2
+      expect(described_class.number_of_name_parts(described_class::SUBSPECIES)).to eq 3
+      expect(described_class.number_of_name_parts(described_class::INFRASUBSPECIES)).to eq 4
     end
   end
 end

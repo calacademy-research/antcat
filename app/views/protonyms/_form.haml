@@ -67,7 +67,9 @@
             =f.label :biogeographic_region do
               Biogeographic region
               =db_tooltip_icon :biogeographic_region, scope: :protonyms
-          %td=f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+          %td
+            .small-max-width
+              =f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
         %tr
           %td
