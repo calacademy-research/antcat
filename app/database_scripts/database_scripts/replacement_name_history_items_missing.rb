@@ -36,7 +36,7 @@ title: >
 
 section: disagreeing-history
 category: History
-tags: [new!]
+tags: []
 
 description: >
 

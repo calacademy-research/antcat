@@ -59,8 +59,10 @@ module Taxt
 
   module_function
 
-  def to_ref_tag reference
-    "{ref #{reference.id}}"
+  # TODO: DRY w.r.t. `RecordToTag::reference_to_ref_tag`.
+  def to_ref_tag reference_or_id
+    reference_id = reference_or_id.is_a?(Reference) ? reference_or_id.id : reference_or_id
+    "{ref #{reference_id}}"
   end
 
   def extract_ids_from_tax_tags taxt

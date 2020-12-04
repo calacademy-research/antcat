@@ -35,8 +35,17 @@ module Exporters
           end
         end
 
+        # TODO: Decouple fetching/exporting.
         def taxon_ids
-          @_taxon_ids ||= Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
+          @_taxon_ids ||= begin
+            ids = Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
+
+            if (limit = ENV['AW_EXPORT_LIMIT']&.to_i)
+              ids[0...limit]
+            else
+              ids
+            end
+          end
         end
 
         def taxon_chunk chunk

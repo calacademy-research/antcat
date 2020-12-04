@@ -1,17 +1,22 @@
 # frozen_string_literal: true
 
 class HistoryItemQuery
+  SEARCH_TYPES = [
+    LIKE = 'LIKE',
+    REGEXP = 'REGEXP'
+  ]
+
   def initialize relation = HistoryItem.all
     @relation = relation
   end
 
   def search search_query, search_type
-    search_type = search_type.presence || 'LIKE'
+    search_type = search_type.presence || LIKE
 
     case search_type
-    when 'LIKE'
+    when LIKE
       relation.where("taxt LIKE :q", q: "%#{search_query}%")
-    when 'REGEXP'
+    when REGEXP
       relation.where("taxt REGEXP :q", q: search_query)
     else
       raise "unknown search_type #{search_type}"
@@ -19,12 +24,12 @@ class HistoryItemQuery
   end
 
   def exclude_search search_query, search_type
-    search_type = search_type.presence || 'LIKE'
+    search_type = search_type.presence || LIKE
 
     case search_type
-    when 'LIKE'
+    when LIKE
       relation.where.not("taxt LIKE :q", q: "%#{search_query}%")
-    when 'REGEXP'
+    when REGEXP
       relation.where.not("taxt REGEXP :q", q: search_query)
     else
       raise "unknown search_type #{search_type}"

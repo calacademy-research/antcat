@@ -26,6 +26,22 @@ describe HistoryItem do
     end
   end
 
+  describe '#standard_format?' do
+    context 'with `TAXT` item' do
+      context 'with standard format' do
+        let(:history_item) { create :history_item, taxt: 'Lectotype designation: {ref 1}: 23' }
+
+        specify { expect(history_item.standard_format?).to eq true }
+      end
+
+      context 'with non-standard format' do
+        let(:history_item) { create :history_item, taxt: 'Pizza designation: {ref 1}: 23' }
+
+        specify { expect(history_item.standard_format?).to eq false }
+      end
+    end
+  end
+
   describe '#ids_from_tax_or_taxac_tags' do
     context 'when taxt contains no tax or taxac tags' do
       let!(:history_item) { create :history_item, taxt: 'pizza festival' }
