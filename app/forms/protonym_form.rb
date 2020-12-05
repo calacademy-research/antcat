@@ -7,6 +7,7 @@ class ProtonymForm
     biogeographic_region
     forms
     fossil
+    gender_agreement_type
     ichnotaxon
     locality
     sic

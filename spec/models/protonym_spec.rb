@@ -34,6 +34,25 @@ describe Protonym do
       end
     end
 
+    describe "#gender_agreement_type" do
+      it do
+        expect(build_stubbed(:protonym, :species_group_name)).
+          to validate_inclusion_of(:gender_agreement_type).
+          in_array(described_class::GENDER_AGREEMENT_TYPES).allow_nil
+      end
+
+      context 'when protonym is not a species-group name' do
+        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+
+        it 'cannot have a `gender_agreement_type`' do
+          expect { protonym.gender_agreement_type = described_class::MUST_AGREE_WITH_GENUS }.
+            to change { protonym.valid? }.to(false)
+
+          expect(protonym.errors.messages).to include(gender_agreement_type: ["can only be set for species-group names"])
+        end
+      end
+    end
+
     describe "#ichnotaxon" do
       context 'when protonym is not fossil' do
         let(:protonym) { build_stubbed :protonym }
@@ -47,7 +66,7 @@ describe Protonym do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:locality, :biogeographic_region, :forms, :notes_taxt) }
+    it { is_expected.to strip_attributes(:locality, :biogeographic_region, :forms, :gender_agreement_type, :notes_taxt) }
     it { is_expected.to strip_attributes(:etymology_taxt, :primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
 
     it_behaves_like "a taxt column with cleanup", :etymology_taxt do
@@ -77,6 +96,29 @@ describe Protonym do
 
     it 'does not include year suffixes' do
       expect(protonym.author_citation).to eq 'Bolton, 2005'
+    end
+  end
+
+  describe "changable / unchangeable names" do
+    context 'when `gender_agreement_type` is `MUST_AGREE_WITH_GENUS`' do
+      let(:protonym) { build_stubbed :protonym, :must_agree_with_genus_gender_agreement_type }
+
+      specify { expect(protonym.changeable_name?).to eq true }
+      specify { expect(protonym.unchangeable_name?).to eq false }
+    end
+
+    context 'when `gender_agreement_type` is `UNCHANGEABLE_NAME`' do
+      let(:protonym) { build_stubbed :protonym, :unchangeable_name_gender_agreement_type }
+
+      specify { expect(protonym.changeable_name?).to eq false }
+      specify { expect(protonym.unchangeable_name?).to eq true }
+    end
+
+    context 'when `gender_agreement_type` is blank' do
+      let(:protonym) { build_stubbed :protonym, :blank_gender_agreement_type }
+
+      specify { expect(protonym.changeable_name?).to eq false }
+      specify { expect(protonym.unchangeable_name?).to eq false }
     end
   end
 end

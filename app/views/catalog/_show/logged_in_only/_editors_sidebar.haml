@@ -1,4 +1,4 @@
-.additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-bottom
+.additional-editor-data.callout.no-border-callout.logged-in-only-background
   %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
@@ -31,6 +31,8 @@
         =succeed '.' do
           =protonym.decorate.link_to_protonym
       =render 'shared/failed_soft_validations', soft_validations: protonym.soft_validations
+
+=render 'protonyms/shared/etymology_and_gender', protonym: protonym, taxon: taxon
 
 -# TODO: Replace with hybrid history items.
 -cleanup_taxon = Taxa::CleanupTaxon.new(taxon)

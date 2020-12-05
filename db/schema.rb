@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_193526) do
+ActiveRecord::Schema.define(version: 2020_12_04_224242) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(version: 2020_12_04_193526) do
     t.boolean "nomen_nudum", default: false, null: false
     t.boolean "ichnotaxon", default: false, null: false
     t.text "etymology_taxt"
+    t.string "gender_agreement_type"
     t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
     t.index ["name_id"], name: "protonyms_name_id_idx"
     t.index ["type_name_id"], name: "index_protonyms_on_type_name_id", unique: true

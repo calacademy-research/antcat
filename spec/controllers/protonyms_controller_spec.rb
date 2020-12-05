@@ -26,63 +26,120 @@ describe ProtonymsController do
   end
 
   describe "POST create", as: :helper do
-    let!(:protonym_params) do
-      {
-        fossil: false,
-        ichnotaxon: false,
-        sic: false,
-        biogeographic_region: Protonym::NEARCTIC_REGION,
-        locality: 'Africa',
-        forms: 'worker',
-        etymology_taxt: "etymology",
-        primary_type_information_taxt: "primary type information",
-        secondary_type_information_taxt: "secondary type information",
-        type_notes_taxt: "type notes",
-        notes_taxt: 'see Lasius',
-        authorship_attributes: {
-          pages: '99',
-          reference_id: create(:any_reference).id
+    describe 'creating a protonym (general attributes)' do
+      let(:protonym_params) do
+        {
+          fossil: false,
+          ichnotaxon: false,
+          sic: false,
+          etymology_taxt: "etymology",
+          primary_type_information_taxt: "primary type information",
+          secondary_type_information_taxt: "secondary type information",
+          type_notes_taxt: "type notes",
+          notes_taxt: 'see Lasius',
+          authorship_attributes: {
+            pages: '99',
+            reference_id: create(:any_reference).id
+          }
         }
-      }
+      end
+      let(:params) do
+        {
+          protonym_name_string: "Atta",
+          protonym: protonym_params
+        }
+      end
+
+      it 'creates a protonym' do
+        expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
+
+        protonym = Protonym.last
+
+        expect(protonym.fossil).to eq protonym_params[:fossil]
+        expect(protonym.ichnotaxon).to eq protonym_params[:ichnotaxon]
+        expect(protonym.sic).to eq protonym_params[:sic]
+
+        expect(protonym.etymology_taxt).to eq protonym_params[:etymology_taxt]
+        expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
+        expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
+        expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
+        expect(protonym.notes_taxt).to eq protonym_params[:notes_taxt]
+
+        authorship = protonym.authorship
+        expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
+        expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
+      end
+
+      it 'creates an activity' do
+        expect { post(:create, params: params.merge(edit_summary: 'Split protonym')) }.
+          to change { Activity.where(action: Activity::CREATE).count }.by(1)
+
+        activity = Activity.last
+        protonym = Protonym.last
+        expect(activity.trackable).to eq protonym
+        expect(activity.edit_summary).to eq "Split protonym"
+        expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
+      end
     end
-    let!(:params) do
-      {
-        protonym_name_string: "Atta",
-        protonym: protonym_params
-      }
+
+    describe 'creating a genus-group protonym' do
+      let!(:type_taxon) { create :species }
+      let(:protonym_params) do
+        attributes_for :protonym_params,
+          type_name_attributes: {
+            fixation_method: TypeName::BY_MONOTYPY,
+            taxon_id: type_taxon.id
+          }
+      end
+      let(:params) do
+        {
+          protonym_name_string: "Atta",
+          protonym: protonym_params
+        }
+      end
+
+      it 'creates a protonym' do
+        expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
+
+        protonym = Protonym.last
+
+        expect(protonym.name).to be_a GenusGroupName
+        expect(protonym.name.name).to eq params[:protonym_name_string]
+
+        type_name = protonym.type_name
+        expect(type_name.protonym).to eq protonym
+        expect(type_name.fixation_method).to eq TypeName::BY_MONOTYPY
+        expect(type_name.taxon).to eq type_taxon
+      end
     end
 
-    it 'creates a protonym' do
-      expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
+    describe 'creating a species-group protonym' do
+      let(:protonym_params) do
+        attributes_for :protonym_params,
+          biogeographic_region: Protonym::NEARCTIC_REGION,
+          locality: 'Africa',
+          forms: 'worker',
+          gender_agreement_type: Protonym::MUST_AGREE_WITH_GENUS
+      end
+      let(:params) do
+        {
+          protonym_name_string: "Formica fusca",
+          protonym: protonym_params
+        }
+      end
 
-      protonym = Protonym.last
-      expect(protonym.fossil).to eq protonym_params[:fossil]
-      expect(protonym.ichnotaxon).to eq protonym_params[:ichnotaxon]
-      expect(protonym.sic).to eq protonym_params[:sic]
-      expect(protonym.locality).to eq protonym_params[:locality]
-      expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
-      expect(protonym.forms).to eq protonym_params[:forms]
+      it 'creates a protonym' do
+        expect { post(:create, params: params) }.to change { Protonym.count }.by(1)
 
-      expect(protonym.etymology_taxt).to eq protonym_params[:etymology_taxt]
-      expect(protonym.primary_type_information_taxt).to eq protonym_params[:primary_type_information_taxt]
-      expect(protonym.secondary_type_information_taxt).to eq protonym_params[:secondary_type_information_taxt]
-      expect(protonym.type_notes_taxt).to eq protonym_params[:type_notes_taxt]
-      expect(protonym.notes_taxt).to eq protonym_params[:notes_taxt]
+        protonym = Protonym.last
 
-      authorship = protonym.authorship
-      expect(authorship.pages).to eq protonym_params[:authorship_attributes][:pages]
-      expect(authorship.reference_id).to eq protonym_params[:authorship_attributes][:reference_id]
-    end
+        expect(protonym.name).to be_a SpeciesGroupName
+        expect(protonym.name.name).to eq params[:protonym_name_string]
 
-    it 'creates an activity' do
-      expect { post(:create, params: params.merge(edit_summary: 'Split protonym')) }.
-        to change { Activity.where(action: Activity::CREATE).count }.by(1)
-
-      activity = Activity.last
-      protonym = Protonym.last
-      expect(activity.trackable).to eq protonym
-      expect(activity.edit_summary).to eq "Split protonym"
-      expect(activity.parameters).to eq(name: "<i>#{protonym.name.name}</i>")
+        expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
+        expect(protonym.forms).to eq protonym_params[:forms]
+        expect(protonym.gender_agreement_type).to eq Protonym::MUST_AGREE_WITH_GENUS
+      end
     end
   end
 

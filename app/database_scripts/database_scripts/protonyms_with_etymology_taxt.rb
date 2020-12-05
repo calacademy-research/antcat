@@ -12,11 +12,12 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'etymology_taxt'
+        t.header 'Protonym', 'etymology_taxt', 'gender_agreement_type'
         t.rows do |protonym|
           [
             protonym_link(protonym),
-            protonym.etymology_taxt
+            protonym.etymology_taxt,
+            protonym.gender_agreement_type
           ]
         end
       end

@@ -17,23 +17,7 @@ FactoryBot.define do
 
     genus_group_name
 
-    trait :fossil do
-      fossil { true }
-    end
-
-    trait :ichnotaxon do
-      fossil
-      ichnotaxon { true }
-    end
-
-    trait :nomen_nudum do
-      nomen_nudum { true }
-    end
-
-    trait :uncertain_locality do
-      uncertain_locality { true }
-    end
-
+    # Rank-related.
     trait :family_group_name do
       association :name, factory: :family_name
     end
@@ -44,6 +28,45 @@ FactoryBot.define do
 
     trait :species_group_name do
       association :name, factory: :species_name
+    end
+
+    # Fossil-related.
+    trait :fossil do
+      fossil { true }
+    end
+
+    trait :ichnotaxon do
+      fossil
+      ichnotaxon { true }
+    end
+
+    # Nomen attributes.
+    trait :nomen_nudum do
+      nomen_nudum { true }
+    end
+
+    # Gender agreement types.
+    trait :must_agree_with_genus_gender_agreement_type do
+      gender_agreement_type { Protonym::MUST_AGREE_WITH_GENUS }
+
+      species_group_name
+    end
+
+    trait :unchangeable_name_gender_agreement_type do
+      gender_agreement_type { Protonym::UNCHANGEABLE_NAME }
+
+      species_group_name
+    end
+
+    trait :blank_gender_agreement_type do
+      gender_agreement_type { nil }
+
+      species_group_name
+    end
+
+    # Misc.
+    trait :uncertain_locality do
+      uncertain_locality { true }
     end
 
     trait :with_type_name do

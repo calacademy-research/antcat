@@ -42,12 +42,13 @@
                 Authorship
                 =db_tooltip_icon :authorship, scope: :protonyms
             %td=authorship_form.reference_select :reference
-          %tr
+          %tr.space-under
             %td
               =authorship_form.label :pages do
                 Pages
                 =db_tooltip_icon :pages, scope: :protonyms
-            %td=authorship_form.text_field :pages
+            %td
+              .small-max-width=authorship_form.text_field :pages
 
           -if taxon.is_a?(SpeciesGroupTaxon)
             %tr
@@ -56,14 +57,17 @@
                   Forms
                   =db_tooltip_icon :forms, scope: :protonyms
                   =db_wiki_page_icon WikiPage::FORMS
-              %td=protonym_form.text_field :forms
+              %td
+                .small-max-width=protonym_form.text_field :forms
             %tr
               %td
                 =protonym_form.label :biogeographic_region do
                   Biogeographic region
                   =db_tooltip_icon :biogeographic_region, scope: :protonyms
-              %td=protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
-            %tr
+              %td
+                .small-max-width
+                  =protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+            %tr.space-under
               %td
                 =protonym_form.label :locality do
                   Locality
@@ -84,40 +88,50 @@
                 %i Nomen nudum
             %td
               =protonym_form.check_box :nomen_nudum
-          %tr
+          %tr.space-under
             %td.no-wrap.shrink.padding-right-4rem
               =protonym_form.label :nomen_attributes do
                 Nomen attributes (beta)
             %td.small-text Can be set after creating the new protonym
 
+          -if taxon.is_a?(SpeciesGroupTaxon)
+            %tr
+              %td
+                =protonym_form.label :gender_agreement_type do
+                  Gender agreement type (only for species-group names)
+                  =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+              %td
+                .small-max-width
+                  =protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+
           %tr
             %td
-              =form.label :etymology do
+              =protonym_form.label :etymology do
                 Etymology
                 =db_tooltip_icon :etymology, scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][etymology_taxt]', content: taxon.protonym.etymology_taxt
 
           %tr
             %td
-              =form.label :primary_type_information do
+              =protonym_form.label :primary_type_information do
                 Primary type information
                 =db_tooltip_icon :primary_type_information, scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][primary_type_information_taxt]', content: taxon.protonym.primary_type_information_taxt
           %tr
             %td
-              =form.label :secondary_type_information do
+              =protonym_form.label :secondary_type_information do
                 Secondary type information
                 =db_tooltip_icon :secondary_type_information, scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][secondary_type_information_taxt]', content: taxon.protonym.secondary_type_information_taxt
           %tr
             %td
-              =form.label :type_notes do
+              =protonym_form.label :type_notes do
                 Type notes
                 =db_tooltip_icon :type_notes, scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][type_notes_taxt]', content: taxon.protonym.type_notes_taxt
           %tr
             %td
-              =form.label :notes do
+              =protonym_form.label :notes do
                 Notes
                 =db_tooltip_icon :notes, scope: :protonyms
             %td=render 'shared/taxt_editor/taxt_editor_template', name: 'taxon[protonym_attributes][notes_taxt]', content: taxon.protonym.notes_taxt

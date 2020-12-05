@@ -52,7 +52,8 @@
               =authorship_fields.label :pages do
                 Pages
                 =db_tooltip_icon :pages, scope: :protonyms
-            %td=authorship_fields.text_field :pages
+            %td
+              .small-max-width=authorship_fields.text_field :pages
 
           %tr
             %td
@@ -60,14 +61,17 @@
                 Forms
                 =db_tooltip_icon :forms, scope: :protonyms
                 =db_wiki_page_icon WikiPage::FORMS
-            %td=f.text_field :forms
+            %td
+              .small-max-width=f.text_field :forms
 
         %tr
           %td
             =f.label :biogeographic_region do
               Biogeographic region
               =db_tooltip_icon :biogeographic_region, scope: :protonyms
-          %td=f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+          %td
+            .small-max-width
+              =f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
         %tr
           %td
@@ -120,7 +124,8 @@
 
             %tr
               %td=type_name_fields.label :pages
-              %td=type_name_fields.text_field :pages
+              %td
+                .small-max-width=type_name_fields.text_field :pages
 
             -if type_name_fields.object.persisted?
               %tr
@@ -166,6 +171,16 @@
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
       %table.unstriped
+        -# TODO: Show only for species-group names.
+        %tr
+          %td
+            =f.label :gender_agreement_type do
+              Gender agreement type (only for species-group names)
+              =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+          %td
+            .small-max-width
+              =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+
         %tr
           %td
             =f.label :etymology do
