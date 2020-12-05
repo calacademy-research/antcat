@@ -18,6 +18,6 @@ FactoryBot.define do
   trait :by_subsequent_designation_of do
     fixation_method { TypeName::BY_SUBSEQUENT_DESIGNATION_OF }
     association :reference, factory: :any_reference
-    sequence(:pages) { |n| n }
+    pages { generate(:pages) }
   end
 end

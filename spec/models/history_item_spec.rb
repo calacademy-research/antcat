@@ -26,56 +26,18 @@ describe HistoryItem do
     end
   end
 
-  describe '.search' do
-    let!(:lasius_item) { create :history_item, taxt: "Lasius content" }
-    let!(:formica_123_item) { create :history_item, taxt: "Formica content 123" }
+  describe '#standard_format?' do
+    context 'with `TAXT` item' do
+      context 'with standard format' do
+        let(:history_item) { create :history_item, taxt: 'Lectotype designation: {ref 1}: 23' }
 
-    context "with search type 'LIKE'" do
-      specify do
-        expect(described_class.search('cont', 'LIKE')).to match_array [lasius_item, formica_123_item]
-        expect(described_class.search('lasius', 'LIKE')).to match_array [lasius_item]
-        expect(described_class.search('content \d\d\d', 'LIKE')).to match_array []
+        specify { expect(history_item.standard_format?).to eq true }
       end
-    end
 
-    context "with search type 'REGEXP'" do
-      specify do
-        expect(described_class.search('cont', 'REGEXP')).to match_array [lasius_item, formica_123_item]
-        expect(described_class.search('lasius', 'REGEXP')).to match_array [lasius_item]
-        expect(described_class.search('content [0-9]', 'REGEXP')).to match_array [formica_123_item]
-      end
-    end
+      context 'with non-standard format' do
+        let(:history_item) { create :history_item, taxt: 'Pizza designation: {ref 1}: 23' }
 
-    context "with unknown search type" do
-      specify do
-        expect { described_class.search('cont', 'PIZZA') }.to raise_error("unknown search_type PIZZA")
-      end
-    end
-  end
-
-  describe '.exclude_search' do
-    let!(:lasius_item) { create :history_item, taxt: "Lasius content" }
-    let!(:formica_123_item) { create :history_item, taxt: "Formica content 123" }
-
-    context "with search type 'LIKE'" do
-      specify do
-        expect(described_class.exclude_search('cont', 'LIKE')).to match_array []
-        expect(described_class.exclude_search('lasius', 'LIKE')).to match_array [formica_123_item]
-        expect(described_class.exclude_search('content [0-9]', 'LIKE')).to match_array [lasius_item, formica_123_item]
-      end
-    end
-
-    context "with search type 'REGEXP'" do
-      specify do
-        expect(described_class.exclude_search('cont', 'REGEXP')).to match_array []
-        expect(described_class.exclude_search('lasius', 'REGEXP')).to match_array [formica_123_item]
-        expect(described_class.exclude_search('content [0-9]', 'REGEXP')).to match_array [lasius_item]
-      end
-    end
-
-    context "with unknown search type" do
-      specify do
-        expect { described_class.exclude_search('cont', 'PIZZA') }.to raise_error("unknown search_type PIZZA")
+        specify { expect(history_item.standard_format?).to eq false }
       end
     end
   end

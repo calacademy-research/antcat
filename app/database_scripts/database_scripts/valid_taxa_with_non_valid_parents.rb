@@ -2,6 +2,20 @@
 
 module DatabaseScripts
   class ValidTaxaWithNonValidParents < DatabaseScript
+    def self.record_in_results? taxon
+      instance = new
+
+      case taxon
+      when Genus
+        instance.genus_subfamily_results.where(id: taxon.id).exists? ||
+          instance.genus_tribe_results.where(id: taxon.id).exists?
+      when Subgenus        then instance.subgenus_results.where(id: taxon.id).exists?
+      when Species         then instance.species_results.where(id: taxon.id).exists?
+      when Subspecies      then instance.subspecies_results.where(id: taxon.id).exists?
+      when Infrasubspecies then instance.infrasubspecies_results.where(id: taxon.id).exists?
+      end
+    end
+
     def empty?
       !(
         genus_subfamily_results.exists? ||
@@ -121,6 +135,8 @@ title: Valid taxa with non-valid parents
 section: regression-test
 category: Catalog
 tags: []
+
+issue_description: This taxon is valid, but its parent is not.
 
 description: >
 

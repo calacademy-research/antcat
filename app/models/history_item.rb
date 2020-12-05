@@ -25,32 +25,6 @@ class HistoryItem < ApplicationRecord
   strip_attributes only: [:taxt, :rank], replace_newlines: true
   trackable parameters: proc { { protonym_id: protonym_id } }
 
-  def self.search search_query, search_type
-    search_type = search_type.presence || 'LIKE'
-
-    case search_type
-    when 'LIKE'
-      where("taxt LIKE :q", q: "%#{search_query}%")
-    when 'REGEXP'
-      where("taxt REGEXP :q", q: search_query)
-    else
-      raise "unknown search_type #{search_type}"
-    end
-  end
-
-  def self.exclude_search search_query, search_type
-    search_type = search_type.presence || 'LIKE'
-
-    case search_type
-    when 'LIKE'
-      where.not("taxt LIKE :q", q: "%#{search_query}%")
-    when 'REGEXP'
-      where.not("taxt REGEXP :q", q: search_query)
-    else
-      raise "unknown search_type #{search_type}"
-    end
-  end
-
   def standard_format?
     Taxt::StandardHistoryItemFormats.standard?(taxt)
   end

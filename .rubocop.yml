@@ -1,6 +1,7 @@
 require:
   - rubocop-performance
   - rubocop-rails
+  - rubocop-rake
   - rubocop-rspec
 
 AllCops:
@@ -242,6 +243,51 @@ Naming/PredicateName:
 Naming/VariableNumber:
   Exclude:
     - 'spec/**/*'
+    - 'lib/tasks/seed/**/*'
+
+### Performance.
+
+Performance/AncestorsInclude:
+  Enabled: true
+
+Performance/BigDecimalWithNumericArgument:
+  Enabled: true
+
+Performance/CollectionLiteralInLoop:
+  Enabled: true
+
+Performance/DeletePrefix:
+  Enabled: true
+
+Performance/DeleteSuffix:
+  Enabled: true
+
+Performance/MethodObjectAsBlock:
+  Enabled: false
+
+Performance/RedundantSortBlock:
+  Enabled: true
+
+Performance/RedundantStringChars:
+  Enabled: true
+
+Performance/ReverseFirst:
+  Enabled: true
+
+Performance/SortReverse:
+  Enabled: true
+
+Performance/StartWith:
+  Enabled: true
+
+Performance/Squeeze:
+  Enabled: true
+
+Performance/StringInclude:
+  Enabled: true
+
+Performance/Sum:
+  Enabled: true
 
 ### Rails.
 
@@ -290,6 +336,10 @@ Rails/Pluck:
 Rails/PluckInWhere:
   Enabled: true
 
+Rails/Output:
+  Exclude:
+    - 'lib/tasks/**/*'
+
 Rails/OutputSafety:
   Enabled: false
   Exclude:
@@ -330,6 +380,11 @@ Rails/UniqueValidationWithoutIndex:
 Rails/Validation:
   Enabled: false
 
+### Rake.
+
+Rake/Desc:
+  Enabled: false
+
 ### RSpec.
 
 RSpec/EmptyExampleGroup:
@@ -368,50 +423,6 @@ RSpec/NotToNot:
 
 RSpec/StubbedMock:
   Enabled: false
-
-### Performance.
-
-Performance/AncestorsInclude:
-  Enabled: true
-
-Performance/BigDecimalWithNumericArgument:
-  Enabled: true
-
-Performance/CollectionLiteralInLoop:
-  Enabled: true
-
-Performance/DeletePrefix:
-  Enabled: true
-
-Performance/DeleteSuffix:
-  Enabled: true
-
-Performance/MethodObjectAsBlock:
-  Enabled: false
-
-Performance/RedundantSortBlock:
-  Enabled: true
-
-Performance/RedundantStringChars:
-  Enabled: true
-
-Performance/ReverseFirst:
-  Enabled: true
-
-Performance/SortReverse:
-  Enabled: true
-
-Performance/StartWith:
-  Enabled: true
-
-Performance/Squeeze:
-  Enabled: true
-
-Performance/StringInclude:
-  Enabled: true
-
-Performance/Sum:
-  Enabled: true
 
 ### Style.
 
@@ -583,6 +594,9 @@ Style/SwapValues:
   Enabled: true
 
 Style/SymbolArray:
+  Enabled: false
+
+Style/SymbolProc:
   Enabled: false
 
 Style/TrailingCommaInBlockArgs:

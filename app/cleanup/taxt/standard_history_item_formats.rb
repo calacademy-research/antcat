@@ -24,14 +24,15 @@ module Taxt
       q.m
       s.
       w.
-    ].join.chars.uniq.join
+    ]
+    FORM_CHARACTERS = FORMS.join.chars.uniq.join
 
     FORMATS = [
       LECTOTYPE_DESIGNATION = "^Lectotype designation: #{CITATION}\.?$",
       NEOTYPE_DESIGNATION = "^Neotype designation: #{CITATION}\.?$",
       JUNIOR_SYNONYM_OF = "^Junior synonym of #{PROTT}: #{CITATION}\.?$",
       SENIOR_SYNONYM_OF = "^Senior synonym of #{PROTT}: #{CITATION}\.?$",
-      FORM_DESCRIPTIONS = "^#{CITATION} \\([#{FORMS}]+\\).?$"
+      FORM_DESCRIPTIONS = "^#{CITATION} \\([#{FORM_CHARACTERS}]+\\).?$"
     ]
 
     def self.standard? taxt

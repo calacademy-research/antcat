@@ -7,8 +7,8 @@ task :antcat do
     antcat:
     antweb
     db:import_latest
-    dev
     factory_bot
+    seed:
     sunspot
     zeitwerk
   ]
@@ -46,6 +46,9 @@ task :antcat do
     ### ENV variables (for specific commands):
     PRINT_FEATURE_NAME=y   cucumber
     PROFILE_EXAMPLES=y     rspec
+    GUARD=all              guard
+    GUARD=spec             guard
+    GUARD=rubocop          guard
   STR
 end
 

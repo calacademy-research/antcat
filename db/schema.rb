@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_11_20_215842) do
+ActiveRecord::Schema.define(version: 2020_12_04_193526) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -362,6 +362,7 @@ ActiveRecord::Schema.define(version: 2020_11_20_215842) do
     t.boolean "hidden", default: false, null: false
     t.boolean "enable_email_notifications", default: true
     t.integer "author_id"
+    t.boolean "developer", default: false, null: false
     t.index ["author_id"], name: "index_users_on_author_id", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["name"], name: "ux_users__name", unique: true

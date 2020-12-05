@@ -41,7 +41,7 @@ title: >
 
 section: disagreeing-history
 category: History
-tags: [slow, new!]
+tags: [slow]
 
 description: >
   Only works with `tax/taxac` tags (that is, not protonym-based tags).
