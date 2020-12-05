@@ -52,7 +52,8 @@
               =authorship_fields.label :pages do
                 Pages
                 =db_tooltip_icon :pages, scope: :protonyms
-            %td=authorship_fields.text_field :pages
+            %td
+              .small-max-width=authorship_fields.text_field :pages
 
           %tr
             %td
@@ -60,7 +61,8 @@
                 Forms
                 =db_tooltip_icon :forms, scope: :protonyms
                 =db_wiki_page_icon WikiPage::FORMS
-            %td=f.text_field :forms
+            %td
+              .small-max-width=f.text_field :forms
 
         %tr
           %td
@@ -122,7 +124,8 @@
 
             %tr
               %td=type_name_fields.label :pages
-              %td=type_name_fields.text_field :pages
+              %td
+                .small-max-width=type_name_fields.text_field :pages
 
             -if type_name_fields.object.persisted?
               %tr

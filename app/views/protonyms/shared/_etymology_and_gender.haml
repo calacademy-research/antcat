@@ -8,7 +8,8 @@
         =Detax[protonym.etymology_taxt]
 
     -if show_agreement_in_gender
-      %hr.discrete
+      -if protonym.etymology_taxt?
+        %hr.discrete
 
       Agreement in gender
       =tooltip_icon 'Which genus gender to agree with can currently only be shown on catalog pages (Taxon records)'

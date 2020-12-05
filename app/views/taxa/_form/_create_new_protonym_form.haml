@@ -42,12 +42,13 @@
                 Authorship
                 =db_tooltip_icon :authorship, scope: :protonyms
             %td=authorship_form.reference_select :reference
-          %tr
+          %tr.space-under
             %td
               =authorship_form.label :pages do
                 Pages
                 =db_tooltip_icon :pages, scope: :protonyms
-            %td=authorship_form.text_field :pages
+            %td
+              .small-max-width=authorship_form.text_field :pages
 
           -if taxon.is_a?(SpeciesGroupTaxon)
             %tr
@@ -56,7 +57,8 @@
                   Forms
                   =db_tooltip_icon :forms, scope: :protonyms
                   =db_wiki_page_icon WikiPage::FORMS
-              %td=protonym_form.text_field :forms
+              %td
+                .small-max-width=protonym_form.text_field :forms
             %tr
               %td
                 =protonym_form.label :biogeographic_region do
@@ -65,7 +67,7 @@
               %td
                 .small-max-width
                   =protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
-            %tr
+            %tr.space-under
               %td
                 =protonym_form.label :locality do
                   Locality
@@ -86,7 +88,7 @@
                 %i Nomen nudum
             %td
               =protonym_form.check_box :nomen_nudum
-          %tr
+          %tr.space-under
             %td.no-wrap.shrink.padding-right-4rem
               =protonym_form.label :nomen_attributes do
                 Nomen attributes (beta)
