@@ -45,6 +45,25 @@ FactoryBot.define do
       nomen_nudum { true }
     end
 
+    # Gender agreement types.
+    trait :must_agree_with_genus_gender_agreement_type do
+      gender_agreement_type { Protonym::MUST_AGREE_WITH_GENUS }
+
+      species_group_name
+    end
+
+    trait :unchangeable_name_gender_agreement_type do
+      gender_agreement_type { Protonym::UNCHANGEABLE_NAME }
+
+      species_group_name
+    end
+
+    trait :blank_gender_agreement_type do
+      gender_agreement_type { nil }
+
+      species_group_name
+    end
+
     # Misc.
     trait :uncertain_locality do
       uncertain_locality { true }

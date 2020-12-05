@@ -87,6 +87,22 @@ describe Rank do
     end
   end
 
+  describe ".species_group_name?" do
+    specify do
+      expect(described_class.species_group_name?(described_class::FAMILY)).to eq false
+      expect(described_class.species_group_name?(described_class::SUBFAMILY)).to eq false
+      expect(described_class.species_group_name?(described_class::TRIBE)).to eq false
+      expect(described_class.species_group_name?(described_class::SUBTRIBE)).to eq false
+
+      expect(described_class.species_group_name?(described_class::GENUS)).to eq false
+      expect(described_class.species_group_name?(described_class::SUBGENUS)).to eq false
+
+      expect(described_class.species_group_name?(described_class::SPECIES)).to eq true
+      expect(described_class.species_group_name?(described_class::SUBSPECIES)).to eq true
+      expect(described_class.species_group_name?(described_class::INFRASUBSPECIES)).to eq true
+    end
+  end
+
   describe ".number_of_name_parts" do
     specify do
       expect(described_class.number_of_name_parts(described_class::FAMILY)).to eq 1

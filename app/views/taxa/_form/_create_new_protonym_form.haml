@@ -92,6 +92,16 @@
                 Nomen attributes (beta)
             %td.small-text Can be set after creating the new protonym
 
+          -if taxon.is_a?(SpeciesGroupTaxon)
+            %tr
+              %td
+                =protonym_form.label :gender_agreement_type do
+                  Gender agreement type (only for species-group names)
+                  =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+              %td
+                .small-max-width
+                  =protonym_form.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+
           %tr
             %td
               =protonym_form.label :etymology do

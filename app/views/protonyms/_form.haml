@@ -168,6 +168,16 @@
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
       %table.unstriped
+        -# TODO: Show only for species-group names.
+        %tr
+          %td
+            =f.label :gender_agreement_type do
+              Gender agreement type (only for species-group names)
+              =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+          %td
+            .small-max-width
+              =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+
         %tr
           %td
             =f.label :etymology do

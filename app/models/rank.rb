@@ -62,6 +62,10 @@ class Rank
       type.in? GENUS_GROUP_NAMES
     end
 
+    def species_group_name? type
+      type.in? SPECIES_GROUP_NAMES
+    end
+
     # TODO: Rename to something like `number_of_countable_name_parts` to distinguish it from names with connecting terms.
     def number_of_name_parts type
       case type

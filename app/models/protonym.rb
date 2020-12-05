@@ -18,6 +18,14 @@ class Protonym < ApplicationRecord
     'Antarctic'
   ]
 
+  CHANGEABLE_GENDER_AGREEMENT_TYPES = [
+    MUST_AGREE_WITH_GENUS = 'must_agree_with_genus'
+  ]
+  UNCHANGEABLE_GENDER_AGREEMENT_TYPES = [
+    UNCHANGEABLE_NAME = 'unchangeable_name'
+  ]
+  GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
+
   delegate :pages, to: :authorship, prefix: true
 
   belongs_to :authorship, class_name: 'Citation', inverse_of: :protonym, dependent: :destroy
@@ -34,6 +42,8 @@ class Protonym < ApplicationRecord
   # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
   validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
+  validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
+  validates :gender_agreement_type, absence: { message: "can only be set for species-group names" }, unless: -> { species_group_name? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
 
   before_validation :cleanup_and_convert_taxts
@@ -44,7 +54,7 @@ class Protonym < ApplicationRecord
   scope :genus_group_names, -> { joins(:name).where(names: { type: Name::GENUS_GROUP_NAMES }) }
 
   has_paper_trail
-  strip_attributes only: [:locality, :biogeographic_region, :forms, :notes_taxt, :etymology_taxt], replace_newlines: true
+  strip_attributes only: [:locality, :biogeographic_region, :forms, :gender_agreement_type, :notes_taxt, :etymology_taxt], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 
@@ -63,8 +73,21 @@ class Protonym < ApplicationRecord
     authorship_reference.key_with_year
   end
 
+  def changeable_name?
+    gender_agreement_type.in?(CHANGEABLE_GENDER_AGREEMENT_TYPES)
+  end
+
+  def unchangeable_name?
+    gender_agreement_type.in?(UNCHANGEABLE_GENDER_AGREEMENT_TYPES)
+  end
+
   def genus_group_name?
     Rank.genus_group_name?(name.taxon_type)
+  end
+
+  def species_group_name?
+    return false unless name
+    Rank.species_group_name?(name.taxon_type)
   end
 
   def soft_validations
