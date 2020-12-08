@@ -6,7 +6,7 @@
 
 .callout.margin-bottom.large-8
   %p
-    -if @history_item.valid?
-      =Detax[@history_item.to_taxt]
+    -# HACK: To make sure changed and invalid records renders as the original.
+    =Detax[HistoryItem.find(@history_item.id).to_taxt]
 
 =render "form", history_item: @history_item, url: history_item_path(@history_item), protonym: @protonym

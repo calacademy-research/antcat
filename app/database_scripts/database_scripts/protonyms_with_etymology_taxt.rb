@@ -12,10 +12,11 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'etymology_taxt', 'gender_agreement_type'
+        t.header 'Protonym', 'Terminal taxon', 'etymology_taxt', 'gender_agreement_type'
         t.rows do |protonym|
           [
             protonym_link(protonym),
+            (taxon_link(protonym.terminal_taxon) if protonym.terminal_taxon),
             protonym.etymology_taxt,
             protonym.gender_agreement_type
           ]

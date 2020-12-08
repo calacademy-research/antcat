@@ -45,7 +45,7 @@ describe Protonym do
         let(:protonym) { build_stubbed :protonym, :genus_group_name }
 
         it 'cannot have a `gender_agreement_type`' do
-          expect { protonym.gender_agreement_type = described_class::MUST_AGREE_WITH_GENUS }.
+          expect { protonym.gender_agreement_type = described_class::PARTICIPLE }.
             to change { protonym.valid? }.to(false)
 
           expect(protonym.errors.messages).to include(gender_agreement_type: ["can only be set for species-group names"])
@@ -100,18 +100,32 @@ describe Protonym do
   end
 
   describe "changable / unchangeable names" do
-    context 'when `gender_agreement_type` is `MUST_AGREE_WITH_GENUS`' do
-      let(:protonym) { build_stubbed :protonym, :must_agree_with_genus_gender_agreement_type }
+    context 'when `gender_agreement_type` is `ADJECTIVE`' do
+      let(:protonym) { build_stubbed :protonym, :adjective_gender_agreement_type }
 
       specify { expect(protonym.changeable_name?).to eq true }
       specify { expect(protonym.unchangeable_name?).to eq false }
     end
 
-    context 'when `gender_agreement_type` is `UNCHANGEABLE_NAME`' do
-      let(:protonym) { build_stubbed :protonym, :unchangeable_name_gender_agreement_type }
+    context 'when `gender_agreement_type` is `NOUN_IN_APPOSITION`' do
+      let(:protonym) { build_stubbed :protonym, :noun_in_apposition_gender_agreement_type }
 
       specify { expect(protonym.changeable_name?).to eq false }
       specify { expect(protonym.unchangeable_name?).to eq true }
+    end
+
+    context 'when `gender_agreement_type` is `NOUN_IN_GENITIVE_CASE`' do
+      let(:protonym) { build_stubbed :protonym, :noun_in_genitive_case_gender_agreement_type }
+
+      specify { expect(protonym.changeable_name?).to eq false }
+      specify { expect(protonym.unchangeable_name?).to eq true }
+    end
+
+    context 'when `gender_agreement_type` is `PARTICIPLE`' do
+      let(:protonym) { build_stubbed :protonym, :participle_gender_agreement_type }
+
+      specify { expect(protonym.changeable_name?).to eq true }
+      specify { expect(protonym.unchangeable_name?).to eq false }
     end
 
     context 'when `gender_agreement_type` is blank' do

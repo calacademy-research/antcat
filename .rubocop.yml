@@ -238,7 +238,7 @@ Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 
 Naming/PredicateName:
-  Enabled: true
+  Enabled: false
 
 Naming/VariableNumber:
   Exclude:
@@ -366,6 +366,9 @@ Rails/ShortI18n:
 
 Rails/SquishedSQLHeredocs:
   Enabled: true
+
+Rails/WhereEquals:
+  Enabled: false
 
 Rails/WhereExists:
   Enabled: false

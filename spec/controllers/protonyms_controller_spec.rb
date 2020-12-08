@@ -119,7 +119,7 @@ describe ProtonymsController do
           biogeographic_region: Protonym::NEARCTIC_REGION,
           locality: 'Africa',
           forms: 'worker',
-          gender_agreement_type: Protonym::MUST_AGREE_WITH_GENUS
+          gender_agreement_type: Protonym::PARTICIPLE
       end
       let(:params) do
         {
@@ -138,7 +138,7 @@ describe ProtonymsController do
 
         expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
         expect(protonym.forms).to eq protonym_params[:forms]
-        expect(protonym.gender_agreement_type).to eq Protonym::MUST_AGREE_WITH_GENUS
+        expect(protonym.gender_agreement_type).to eq Protonym::PARTICIPLE
       end
     end
   end

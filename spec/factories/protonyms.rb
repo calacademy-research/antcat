@@ -46,14 +46,26 @@ FactoryBot.define do
     end
 
     # Gender agreement types.
-    trait :must_agree_with_genus_gender_agreement_type do
-      gender_agreement_type { Protonym::MUST_AGREE_WITH_GENUS }
+    trait :adjective_gender_agreement_type do
+      gender_agreement_type { Protonym::ADJECTIVE }
 
       species_group_name
     end
 
-    trait :unchangeable_name_gender_agreement_type do
-      gender_agreement_type { Protonym::UNCHANGEABLE_NAME }
+    trait :noun_in_apposition_gender_agreement_type do
+      gender_agreement_type { Protonym::NOUN_IN_APPOSITION }
+
+      species_group_name
+    end
+
+    trait :noun_in_genitive_case_gender_agreement_type do
+      gender_agreement_type { Protonym::NOUN_IN_GENITIVE_CASE }
+
+      species_group_name
+    end
+
+    trait :participle_gender_agreement_type do
+      gender_agreement_type { Protonym::PARTICIPLE }
 
       species_group_name
     end
