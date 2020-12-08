@@ -8,6 +8,7 @@ class HistoryItemsController < ApplicationController
 
   def index
     @history_items = HistoryItem.left_outer_joins(:terminal_taxa)
+    @history_items = @history_items.where(type: params[:type]) if params[:type].present?
     @history_items = @history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
     @history_items = @history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
     @history_items = HistoryItemQuery.new(@history_items).search(params[:q], params[:search_type]) if params[:q].present?
