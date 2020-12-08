@@ -4,6 +4,17 @@ class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
+  TYPE_ATTRIBUTES = [
+    :taxt
+  ]
+  # [grep:history_type].
+  TYPE_DEFINITIONS = {
+    TAXT = 'Taxt' => {
+      validates_presence_of: [:taxt]
+    },
+  }
+  TYPES = TYPE_DEFINITIONS.keys
+
   self.inheritance_column = :_type_column_disabled
 
   alias_attribute :current_taxon_owner, :terminal_taxon
@@ -13,8 +24,9 @@ class HistoryItem < ApplicationRecord
   has_one :terminal_taxon, through: :protonym
   has_many :terminal_taxa, through: :protonym
 
-  validates :taxt, presence: true
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
+  validates :type, inclusion: { in: TYPES }
+  validate :validate_type_specific_attributes
 
   before_validation :cleanup_and_convert_taxts
 
@@ -43,5 +55,15 @@ class HistoryItem < ApplicationRecord
 
     def cleanup_and_convert_taxts
       cleanup_and_convert_taxt_columns :taxt
+    end
+
+    def validate_type_specific_attributes
+      return unless type.in?(TYPES)
+
+      required_presence = definitions.fetch(:validates_presence_of)
+      required_absence = TYPE_ATTRIBUTES - required_presence
+
+      validates_presence_of required_presence
+      validates_absence_of required_absence
     end
 end

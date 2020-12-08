@@ -10,11 +10,17 @@ describe HistoryItem do
   end
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of :taxt }
+    it { is_expected.to validate_inclusion_of(:type).in_array(described_class::TYPES) }
 
     it do
       is_expected.to validate_inclusion_of(:rank).
         in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
+    end
+
+    context 'when `type` is `TAXT`' do
+      subject { create :history_item, :taxt }
+
+      it { is_expected.to validate_presence_of :taxt }
     end
   end
 
