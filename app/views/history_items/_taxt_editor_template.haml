@@ -2,6 +2,7 @@
   .taxt-presenter
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
 
+    %small.logged-in-only-gray-bold-notice.right-margin=history_item.underscored_type
     -if history_item.rank?
       %small.bold-notice.right-margin #{history_item.rank}-only item
 
