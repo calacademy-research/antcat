@@ -21,11 +21,18 @@ describe HistoryItem do
       subject { create :history_item, :taxt }
 
       it { is_expected.to validate_presence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_absence_of :text_value }
+
+      it { is_expected.to validate_absence_of :reference }
+      it { is_expected.to validate_absence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
     end
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:taxt, :rank) }
+    it { is_expected.to strip_attributes(:taxt, :rank, :subtype, :picked_value, :text_value) }
 
     it_behaves_like "a taxt column with cleanup", :taxt do
       subject { build :history_item }

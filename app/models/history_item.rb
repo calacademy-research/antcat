@@ -5,7 +5,7 @@ class HistoryItem < ApplicationRecord
   include Trackable
 
   TYPE_ATTRIBUTES = [
-    :taxt
+    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :reference, :pages
   ]
   # [grep:history_type].
   TYPE_DEFINITIONS = {
@@ -20,6 +20,8 @@ class HistoryItem < ApplicationRecord
   alias_attribute :current_taxon_owner, :terminal_taxon
 
   belongs_to :protonym
+  belongs_to :reference, optional: true
+  belongs_to :object_protonym, optional: true, class_name: 'Protonym'
 
   has_one :terminal_taxon, through: :protonym
   has_many :terminal_taxa, through: :protonym
@@ -32,15 +34,25 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
-  scope :except_taxts, -> { all } # NOTE: Preparing for hybrid history items. [grep:hybrid].
+  scope :except_taxts, -> { where.not(type: TAXT) }
+  scope :taxts_only, -> { where(type: TAXT) }
 
   acts_as_list scope: :protonym
   has_paper_trail
-  strip_attributes only: [:taxt, :rank], replace_newlines: true
+  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value],
+    replace_newlines: true
   trackable parameters: proc { { protonym_id: protonym_id } }
 
   def standard_format?
     Taxt::StandardHistoryItemFormats.standard?(taxt)
+  end
+
+  def taxt_type?
+    type == TAXT
+  end
+
+  def hybrid?
+    !taxt_type?
   end
 
   def to_taxt
