@@ -4,6 +4,8 @@ class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
+  self.inheritance_column = :_type_column_disabled
+
   alias_attribute :current_taxon_owner, :terminal_taxon
 
   belongs_to :protonym
