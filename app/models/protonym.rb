@@ -19,10 +19,12 @@ class Protonym < ApplicationRecord
   ]
 
   CHANGEABLE_GENDER_AGREEMENT_TYPES = [
-    MUST_AGREE_WITH_GENUS = 'must_agree_with_genus'
+    ADJECTIVE = 'adjective',
+    PARTICIPLE = 'participle'
   ]
   UNCHANGEABLE_GENDER_AGREEMENT_TYPES = [
-    UNCHANGEABLE_NAME = 'unchangeable_name'
+    NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case',
+    NOUN_IN_APPOSITION = 'noun_in_apposition'
   ]
   GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
 
