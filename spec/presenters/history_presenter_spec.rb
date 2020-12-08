@@ -25,6 +25,36 @@ describe HistoryPresenter do
           ]
         end
       end
+
+      context 'with `FORM_DESCRIPTIONS` items' do
+        let!(:item_1) { create :history_item, :form_descriptions, :with_2000_reference, protonym: protonym }
+        let!(:item_2) { create :history_item, :form_descriptions, :with_1758_reference, protonym: protonym }
+
+        it 'groups them (without prefix)' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "#{item_2.citation_taxt} (#{item_2.text_value}); #{item_1.citation_taxt} (#{item_1.text_value})."
+          ]
+        end
+      end
+
+      context 'with `SENIOR_SYNONYM` items' do
+        let(:object_protonym) { create :protonym }
+
+        let!(:item_1) do
+          create :history_item, :senior_synonym, :with_2000_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+        let!(:item_2) do
+          create :history_item, :senior_synonym, :with_1758_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+
+        it 'groups them by `object_protonym` (with prefix)' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Senior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+          ]
+        end
+      end
     end
 
     describe 'sorting grouped taxts' do
@@ -51,6 +81,22 @@ describe HistoryPresenter do
             'pos 1',
             'pos 2',
             'pos 3'
+          ]
+        end
+      end
+
+      context 'with hybrid items' do
+        let(:object_protonym) { create :protonym }
+
+        let!(:item_1) do
+          create :history_item, :senior_synonym, protonym: protonym, object_protonym: object_protonym
+        end
+        let!(:item_2) { create :history_item, :form_descriptions, protonym: protonym }
+
+        it 'sort grouped taxts by their sort definitions' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "#{item_2.citation_taxt} (#{item_2.text_value}).",
+            "Senior synonym of {prott #{object_protonym.id}}: #{item_1.citation_taxt}."
           ]
         end
       end

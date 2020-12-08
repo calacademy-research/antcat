@@ -20,6 +20,73 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:taxt]
     },
+    FORM_DESCRIPTIONS = 'FormDescriptions' => {
+      type_label: 'Form descriptions (additional)',
+      type_as_label: 'Form descriptions (additional) for {pro %<protonym_id>i}',
+
+      section_order: 1,
+      section_group_key: ->(o) { o.type },
+
+      group_template: '%<item_taxts>s.',
+
+      item_template: '%<citation>s (%<forms>s)',
+      item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
+
+      validates_presence_of: [:text_value, :reference, :pages]
+    },
+    TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
+      type_label: 'Type specimen designation',
+      type_as_label: 'Type specimen designation for {pro %<protonym_id>i}',
+
+      section_order: 2,
+      section_group_key: ->(o) { [o.type, o.id] },
+
+      group_template: '%<designation_type>s: %<item_taxts>s.',
+      group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      subtypes: [
+        LECTOTYPE_DESIGNATION = 'LectotypeDesignation',
+        NEOTYPE_DESIGNATION = 'NeotypeDesignation'
+      ],
+      subtype_options: [
+        ['Lectotype designation', LECTOTYPE_DESIGNATION],
+        ['Neotype designation', NEOTYPE_DESIGNATION]
+      ],
+      validates_presence_of: [:subtype, :reference, :pages]
+    },
+    JUNIOR_SYNONYM = 'JuniorSynonym' => {
+      type_label: 'Junior synonym of',
+      type_as_label: '{pro %<protonym_id>i} as junior synonym of ...',
+
+      section_order: 6,
+      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    },
+    SENIOR_SYNONYM = 'SeniorSynonym' => {
+      type_label: 'Senior synonym of',
+      type_as_label: '{pro %<protonym_id>i} as senior synonym of ...',
+
+      section_order: 5,
+      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    }
   }
   TYPES = TYPE_DEFINITIONS.keys
 
