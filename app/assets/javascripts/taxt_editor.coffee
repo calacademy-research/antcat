@@ -98,6 +98,8 @@ setupSaveHistoryItemButtons = ->
           AntCat.makeReferenceKeysExpandable taxtEditor
           AntCat.enableCatalogLinkHoverPreview taxtEditor
           AntCat.makeAllPreviewable()
+          AntCat.referenceSelectify()
+          AntCat.protonymSelectifyAll()
           window.setupTaxtEditors()
       error: ->
         alert 'error :('

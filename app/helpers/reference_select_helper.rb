@@ -7,6 +7,7 @@ module ReferenceSelectHelper
 
     select_tag reference_attribute_name,
       options_for_select([reference_id].compact, reference_id),
+      id: nil,
       class: 'select2-autocomplete', data: reference_data_attributes(reference)
   end
 
