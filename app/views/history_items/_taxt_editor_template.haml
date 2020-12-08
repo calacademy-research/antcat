@@ -15,7 +15,9 @@
     =Detax[history_item.to_taxt]
 
   .taxt-editor-editor
-    =text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }
+    %h6.bold.small-margin-bottom=Detax[history_item.type_label_to_taxt]
+    -# [grep:history_type].
+    =render partial: "history_items/edit_templates/#{history_item.underscored_type}", locals: { history_item: history_item }
 
     .row
       .medium-5.columns.end

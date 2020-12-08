@@ -146,6 +146,8 @@
 -if current_user
   -content_for :javascripts do
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+    =javascript_include_tag 'reference_select'
+    =javascript_include_tag 'protonym_select'
     =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
     =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render "shared/default_reference"

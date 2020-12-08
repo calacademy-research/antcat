@@ -92,7 +92,11 @@ class HistoryItemsController < ApplicationController
     end
 
     def history_item_params
-      params.require(:history_item).permit(:taxt, :rank)
+      params.require(:history_item).permit(
+        :taxt, :rank, :type,
+        :subtype, :picked_value, :text_value,
+        :reference_id, :pages, :object_protonym_id
+      )
     end
 
     def redirect_back_url

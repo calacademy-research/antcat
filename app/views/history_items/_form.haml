@@ -1,28 +1,99 @@
 -content_for :javascripts do
   =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
+  =javascript_include_tag 'reference_select'
+  =javascript_include_tag 'protonym_select'
+  =javascript_include_tag 'logged_in_only/history_item_form'
 
 =render "shared/default_reference"
+
+-content_for :breadcrumbs_right do
+  =link_to "Show/hide taxt textarea", "#", data: { show_hide_toggler_for: "taxt_textarea" }, class: "btn-nodanger"
 
 =form_with model: history_item, scope: :history_item, url: url do |f|
   =render "shared/errors_for", resource: history_item
   =hidden_field_tag :redirect_back_url, params[:redirect_back_url]
 
-  .row
+  .row{data: { show_hide_toggable_id: "taxt_textarea" }, class: ('show-hide-toggable-starts-open' unless collapse_history_item_taxt_textarea?(history_item))}
     .medium-12.columns
-      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "History item", use_extras: true }
+      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 
-  .row
-    .medium-3.columns.end
-      Show only for rank:
-      =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, include_blank: 'All ranks (default)'
+  .row.margin-top
+    .large-12.columns
+      .callout
+        %h6
+          Fields for relational history items
+          =beta_label
+          =tooltip_icon 'Still in beta. This section can be ignored for taxt items.'
+        .row
+          .medium-5.columns.end
+            %table.unstriped
+              %tr
+                %td
+                  =f.label :type do
+                    Item type
+                %td=f.select :type, (HistoryItem::TYPE_DEFINITIONS.map { |type, definitions| [definitions[:type_label], type] })
 
-  .row
-    .medium-3.columns.end
+        -# [grep:history_type].
+        %table.table.unstriped
+          %tbody
+            %tr#type-specific-subtype.type-specific-section
+              %th
+                =f.label :subtype, id: 'type-label-subtype' do
+                  subtype [???]
+              %td.grow
+                .small-max-width=f.select :subtype, [history_item.subtype, '???']
+              %td
+                %code subtype
+
+            %tr#type-specific-picked-value.type-specific-section
+              %th
+                =f.label :picked_value, id: 'type-label-picked-value' do
+                  picked_value [???]
+              %td.grow=f.select :picked_value, [history_item.picked_value, '???']
+              %td
+                %code picked_value
+
+            %tr#type-specific-text-value.type-specific-section
+              %th.no-wrap
+                =f.label :text_value, id: 'type-label-text-value' do
+                  text_value [???]
+              %td.grow
+                .small-max-width=f.text_field :text_value
+              %td
+                %code text_value
+
+            %tr#type-specific-object-protonym.type-specific-section
+              %th.no-wrap
+                =f.label :object_protonym, id: 'type-label-object-protonym' do
+                  object_protonym_id [???]
+              %td.grow=f.protonym_select :object_protonym
+              %td
+                %code object_protonym
+
+            %tr#type-specific-reference.type-specific-section
+              %th.no-wrap
+                =f.label :reference, id: 'type-label-reference' do
+                  Reference
+              %td.grow=f.reference_select :reference
+              %td
+                %code reference_id
+
+            %tr#type-specific-pages.type-specific-section
+              %th.no-wrap
+                =f.label :pages, id: 'type-label-pages' do
+                  Pages
+              %td.grow
+                .small-max-width=f.text_field :pages
+              %td
+                %code pages
+
+  .row.margin-top
+    .medium-3.columns
       =edit_summary_text_field_tag
-
-  .row
-    .medium-3.columns.end
+    .medium-6.columns
       =f.button 'Save', class: "btn-saves"
+    .medium-3.columns.end
+      =f.select :rank, Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, include_blank: 'Show for all ranks (default)'
 
 %h5.huge-margin-top.small-margin-bottom Related records
 

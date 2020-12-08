@@ -51,3 +51,16 @@ end
 When("I delete the most recent history item") do
   HistoryItem.last.destroy
 end
+
+# Hybrid history items.
+When(/^I set the history item reference to the first search results of "([^"]*)"$/) do |name|
+  select2 name, from: 'history_item_reference_id'
+end
+
+Given("Batiatus, 2004a: {string} has described the forms {string} for the protonym {string}") do |pages, forms, protonym_name|
+  protonym = create :protonym, :species_group_name, name: create(:species_name, name: protonym_name)
+  reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
+
+  create :history_item, :form_descriptions, protonym: protonym,
+    text_value: forms, reference: reference, pages: pages
+end
