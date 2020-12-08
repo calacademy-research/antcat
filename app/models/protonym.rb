@@ -40,6 +40,7 @@ class Protonym < ApplicationRecord
   has_one :original_combination, -> { original_combinations }, class_name: 'Taxon'
   has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
   has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
+  has_many :non_terminal_taxa, -> { where.not(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
 
   # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
@@ -54,6 +55,7 @@ class Protonym < ApplicationRecord
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
   scope :genus_group_names, -> { joins(:name).where(names: { type: Name::GENUS_GROUP_NAMES }) }
+  scope :species_group_names, -> { joins(:name).where(names: { type: Name::SPECIES_GROUP_NAMES }) }
 
   has_paper_trail
   strip_attributes only: [:locality, :biogeographic_region, :forms, :gender_agreement_type, :notes_taxt, :etymology_taxt], replace_newlines: true

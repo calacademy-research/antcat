@@ -20,5 +20,6 @@ makeShowHideToggler = (toggler) ->
     event.preventDefault()
     toggleable.slideToggle()
 
-# Start out with all toggleables hidden.
-hideToggleables = -> $("*[data-show-hide-toggable-id]").hide()
+# Start out with all toggleables hidden by default.
+hideToggleables = ->
+  $("*[data-show-hide-toggable-id]").not('.show-hide-toggable-starts-open').hide()
