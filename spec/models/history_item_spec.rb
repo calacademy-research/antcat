@@ -105,6 +105,12 @@ describe HistoryItem do
         specify { expect(history_item.standard_format?).to eq false }
       end
     end
+
+    context 'with hybrid item' do
+      let(:history_item) { create :history_item, :form_descriptions }
+
+      specify { expect(history_item.standard_format?).to eq true }
+    end
   end
 
   describe '#to_taxt' do

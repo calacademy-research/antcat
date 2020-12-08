@@ -119,7 +119,8 @@ class HistoryItem < ApplicationRecord
   trackable parameters: proc { { protonym_id: protonym_id } }
 
   def standard_format?
-    Taxt::StandardHistoryItemFormats.standard?(taxt)
+    return true if hybrid?
+    Taxt::StandardHistoryItemFormats.new(taxt).standard?
   end
 
   def taxt_type?

@@ -6,10 +6,10 @@ module Taxt
   class StandardHistoryItemFormats
     PROTT = "{prott [0-9]+}"
     PRO_ISH = "{(pro|proac|prott) [0-9]+}"
-    REF = "{ref [0-9]+}"
 
+    REF = "{ref [0-9]+}"
     PAGES = "[0-9]+"
-    CITATION = "#{REF}: #{PAGES}"
+    CITATION_TAXT = "#{REF}: #{PAGES}"
 
     # See also https://antcat.org/wiki_pages/5
     FORMS = %w[
@@ -27,17 +27,63 @@ module Taxt
     ]
     FORM_CHARACTERS = FORMS.join.chars.uniq.join
 
-    FORMATS = [
-      LECTOTYPE_DESIGNATION = "^Lectotype designation: #{CITATION}\.?$",
-      NEOTYPE_DESIGNATION = "^Neotype designation: #{CITATION}\.?$",
-      JUNIOR_SYNONYM_OF = "^Junior synonym of #{PROTT}: #{CITATION}\.?$",
-      SENIOR_SYNONYM_OF = "^Senior synonym of #{PROTT}: #{CITATION}\.?$",
-      FORM_DESCRIPTIONS = "^#{CITATION} \\([#{FORM_CHARACTERS}]+\\).?$"
+    NOT_IMPLEMENTED = 'not_implemented'
+
+    NON_STANDARD_FORMATS = [
+      TAXT_FORMAT = {
+        name: TAXT = HistoryItem::TAXT,
+        type: HistoryItem::TAXT
+      }
     ]
 
-    def self.standard? taxt
+    # [grep:history_type].
+    STANDARD_FORMATS = [
+      {
+        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\).?$",
+        name: HistoryItem::FORM_DESCRIPTIONS,
+        type: HistoryItem::FORM_DESCRIPTIONS
+      },
+      {
+        regex: "^Lectotype designation: #{CITATION_TAXT}\.?$",
+        name: HistoryItem::LECTOTYPE_DESIGNATION,
+        type: HistoryItem::TYPE_SPECIMEN_DESIGNATION,
+        subtype: HistoryItem::LECTOTYPE_DESIGNATION
+      },
+      {
+        regex: "^Neotype designation: #{CITATION_TAXT}\.?$",
+        name: HistoryItem::NEOTYPE_DESIGNATION,
+        type: HistoryItem::TYPE_SPECIMEN_DESIGNATION,
+        subtype: HistoryItem::NEOTYPE_DESIGNATION
+      },
+      {
+        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        name: HistoryItem::JUNIOR_SYNONYM,
+        type: HistoryItem::JUNIOR_SYNONYM
+      },
+      {
+        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        name: HistoryItem::SENIOR_SYNONYM,
+        type: HistoryItem::SENIOR_SYNONYM
+      }
+    ]
+
+    attr_private_initialize :taxt
+
+    def standard?
       return false if taxt.blank?
-      FORMATS.any? { |regex| taxt.match?(regex) }
+      identified_type != TAXT
+    end
+
+    def identified_format
+      return TAXT_FORMAT if taxt.blank?
+
+      @_identified_format ||= STANDARD_FORMATS.find do |standard_format|
+        taxt.match?(standard_format[:regex])
+      end || TAXT_FORMAT
+    end
+
+    def identified_type
+      identified_format[:type]
     end
   end
 end
