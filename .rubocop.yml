@@ -367,6 +367,9 @@ Rails/ShortI18n:
 Rails/SquishedSQLHeredocs:
   Enabled: true
 
+Rails/WhereEquals:
+  Enabled: false
+
 Rails/WhereExists:
   Enabled: false
 
