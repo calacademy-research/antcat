@@ -12,10 +12,11 @@ class HistoryPresenter
   private
 
     def grouped_items_array
-      items = history_items.left_joins(:reference).select('history_items.*, references.year AS reference_year')
+      items = history_items.left_joins(:reference).
+        select('history_items.*, references.year AS reference_year, references.date AS reference_date')
 
       items.
-        sort_by { |item| [section_order(item), item.reference_year] }.
+        sort_by { |item| [section_order(item), item.reference_year, item.reference_date] }.
         group_by { |item| section_group_key(item) }.
         values
     end

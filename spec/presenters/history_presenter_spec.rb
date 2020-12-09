@@ -57,6 +57,49 @@ describe HistoryPresenter do
       end
     end
 
+    describe 'sorting items inside grouped items' do
+      context 'when item references have the same year' do
+        let!(:item_20001201) do
+          reference = create :any_reference, year: 2000, date: '20001201'
+          create :history_item, :form_descriptions, protonym: protonym, reference: reference
+        end
+        let!(:item_20001116) do
+          reference = create :any_reference, year: 2000, date: '20001116'
+          create :history_item, :form_descriptions, protonym: protonym, reference: reference
+        end
+        let!(:item_200012) do
+          reference = create :any_reference, year: 2000, date: '200012'
+          create :history_item, :form_descriptions, protonym: protonym, reference: reference
+        end
+
+        it 'uses reference date as the tie-breaker' do
+          expect(presenter.grouped_items.first.items).to eq [
+            item_20001116,
+            item_200012,
+            item_20001201
+          ]
+        end
+      end
+
+      context 'when item references have the same year and date' do
+        let!(:item_200011_1) do
+          reference = create :any_reference, year: 2000, date: '200011'
+          create :history_item, :form_descriptions, protonym: protonym, reference: reference
+        end
+        let!(:item_200011_2) do
+          reference = create :any_reference, year: 2000, date: '200011'
+          create :history_item, :form_descriptions, protonym: protonym, reference: reference
+        end
+
+        it 'uses reference ID as the tie-breaker' do
+          expect(presenter.grouped_items.first.items).to eq [
+            item_200011_1,
+            item_200011_2
+          ]
+        end
+      end
+    end
+
     describe 'sorting grouped taxts' do
       context 'with `TAXT` items' do
         let!(:item_1) { create :history_item, taxt: 'pos 3', protonym: protonym }
