@@ -552,7 +552,7 @@ Style/RedundantAssignment:
   Enabled: false
 
 Style/RedundantFetchBlock:
-  Enabled: true
+  Enabled: false
 
 Style/RedundantFileExtensionInRequire:
   Enabled: true
