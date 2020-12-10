@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_04_224242) do
+ActiveRecord::Schema.define(version: 2020_12_08_172516) do
 
   create_table "activities", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -77,13 +77,24 @@ ActiveRecord::Schema.define(version: 2020_12_04_224242) do
   end
 
   create_table "history_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
-    t.text "taxt", null: false
+    t.text "taxt"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position", null: false
     t.string "rank"
     t.integer "protonym_id", null: false
+    t.string "type", default: "Taxt", null: false
+    t.string "subtype"
+    t.string "picked_value"
+    t.string "text_value"
+    t.integer "reference_id"
+    t.string "pages"
+    t.integer "object_protonym_id"
+    t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
     t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
+    t.index ["reference_id"], name: "ix_history_items__reference_id"
+    t.index ["subtype"], name: "ix_history_items__subtype"
+    t.index ["type"], name: "ix_history_items__type"
   end
 
   create_table "institutions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -398,7 +409,9 @@ ActiveRecord::Schema.define(version: 2020_12_04_224242) do
 
   add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"
   add_foreign_key "citations", "references", name: "fk_citations__reference_id__references__id"
+  add_foreign_key "history_items", "protonyms", column: "object_protonym_id", name: "fk_history_items__object_protonym_id__protonyms__id"
   add_foreign_key "history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
+  add_foreign_key "history_items", "references", name: "fk_history_items__reference_id__references__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"

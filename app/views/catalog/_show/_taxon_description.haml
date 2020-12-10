@@ -1,5 +1,7 @@
 -if user_is_at_least_helper?
   -content_for :javascripts do
+    =javascript_include_tag 'reference_select'
+    =javascript_include_tag 'protonym_select'
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =render "shared/default_reference"
 
@@ -39,19 +41,48 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
+-# Grouped items.
 -if taxon.history_items_for_taxon.present?
-  %ul#history.small-margin-bottom
-    -taxon.history_items_for_taxon.each do |history_item|
-      %li
-        -if current_user && history_item.rank?
-          %span.logged-in-only-background
-            %small.bold-notice #{history_item.rank}-only item
-            =logged_in_only_tooltip_icon
+  -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)
 
-        -if user_is_at_least_helper?
-          =render 'history_items/catalog_taxt_editor_template', history_item: history_item
-        -else
-          =add_period_if_necessary Detax[history_item.to_taxt]
+  -if current_user
+    %h6.margin-top
+      Taxonomic history
+      =info_tooltip_icon 'Automatically sorted and grouped items, logged-in version.'
+    %table.table.huge-margin-bottom
+      %tbody
+        -history_presenter.grouped_items.each do |grouped_item|
+          %tr
+            %td=Detax[grouped_item.taxt]
+            %td=grouped_item.type
+            %td
+              -grouped_item.items.each do |item|
+                =link_to "##{item.id}", edit_history_item_path(item)
+  -else
+    %ul#history.small-margin-bottom
+      -history_presenter.grouped_items.each do |grouped_item|
+        %li
+          =Detax[grouped_item.taxt]
+
+-# Ungrouped items, repeated to make it easier to edit.
+-if current_user
+  -if taxon.history_items_for_taxon.present?
+    .callout.no-border-callout.logged-in-only-background.huge-margin-bottom
+      %h6
+        Taxonomic history (ungrouped)
+        =info_tooltip_icon "Same items as above, but ungrouped and sorted by 'position' (repeated here to make it easier to edit)."
+      %ul#history.small-margin-bottom
+        -taxon.history_items_for_taxon.each do |history_item|
+          %li
+            -if current_user && history_item.rank?
+              %span.logged-in-only-background
+                %small.bold-notice #{history_item.rank}-only item
+                =logged_in_only_tooltip_icon
+
+            -if user_is_at_least_helper?
+              =render 'history_items/catalog_taxt_editor_template', history_item: history_item
+            -else
+              =add_period_if_necessary Detax[history_item.to_taxt]
 
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?

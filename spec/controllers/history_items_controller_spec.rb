@@ -18,58 +18,96 @@ describe HistoryItemsController do
 
   describe "POST create", as: :helper do
     let!(:protonym) { create :protonym }
-    let!(:history_item_params) do
-      {
-        taxt: 'content'
-      }
-    end
 
-    it 'creates a history item' do
-      expect do
-        post(:create, params: { protonym_id: protonym.id, history_item: history_item_params })
-      end.to change { HistoryItem.count }.by(1)
-
-      history_item = HistoryItem.last
-      expect(history_item.taxt).to eq history_item_params[:taxt]
-    end
-
-    it 'creates a activity' do
-      expect do
-        post(:create, params: { protonym_id: protonym.id, history_item: history_item_params, edit_summary: 'added' })
-      end.to change { Activity.where(action: Activity::CREATE).count }.by(1)
-
-      activity = Activity.last
-      history_item = HistoryItem.last
-      expect(activity.trackable).to eq history_item
-      expect(activity.edit_summary).to eq "added"
-      expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
-    end
-
-    describe 'param `redirect_back_url`' do
-      let(:params) do
+    describe 'creating history items (general functionality)' do
+      let!(:history_item_params) do
         {
-          protonym_id: protonym.id,
-          history_item: history_item_params,
-          redirect_back_url: redirect_back_url
+          taxt: 'content'
         }
       end
 
-      context 'without `redirect_back_url`' do
-        let(:redirect_back_url) { '' }
+      it 'creates a activity' do
+        expect do
+          post(:create, params: { protonym_id: protonym.id, history_item: history_item_params, edit_summary: 'added' })
+        end.to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
-        specify do
-          post :create, params: params
-          expect(response).to redirect_to(protonym_path(protonym))
-        end
+        activity = Activity.last
+        history_item = HistoryItem.last
+        expect(activity.trackable).to eq history_item
+        expect(activity.edit_summary).to eq "added"
+        expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
       end
 
-      context 'with `redirect_back_url`' do
-        let(:redirect_back_url) { reference_path(Reference.first) }
-
-        specify do
-          post :create, params: params
-          expect(response).to redirect_to(redirect_back_url)
+      describe 'param `redirect_back_url`' do
+        let(:params) do
+          {
+            protonym_id: protonym.id,
+            history_item: history_item_params,
+            redirect_back_url: redirect_back_url
+          }
         end
+
+        context 'without `redirect_back_url`' do
+          let(:redirect_back_url) { '' }
+
+          specify do
+            post :create, params: params
+            expect(response).to redirect_to(protonym_path(protonym))
+          end
+        end
+
+        context 'with `redirect_back_url`' do
+          let(:redirect_back_url) { reference_path(Reference.first) }
+
+          specify do
+            post :create, params: params
+            expect(response).to redirect_to(redirect_back_url)
+          end
+        end
+      end
+    end
+
+    describe 'creating taxt history items' do
+      let(:history_item_params) do
+        {
+          taxt: 'content'
+        }
+      end
+
+      it 'creates a history item' do
+        expect do
+          post(:create, params: { protonym_id: protonym.id, history_item: history_item_params })
+        end.to change { HistoryItem.count }.by(1)
+
+        history_item = HistoryItem.last
+        expect(history_item.type).to eq HistoryItem::TAXT
+        expect(history_item.taxt).to eq history_item_params[:taxt]
+      end
+    end
+
+    describe 'creating hybrid history items' do
+      let(:reference) { create :any_reference }
+      let(:object_protonym) { create :protonym }
+      let(:history_item_params) do
+        {
+          type: HistoryItem::JUNIOR_SYNONYM,
+          object_protonym_id: object_protonym.id,
+          reference_id: reference.id,
+          pages: '149'
+        }
+      end
+
+      it 'creates a history item' do
+        expect do
+          post(:create, params: { protonym_id: protonym.id, history_item: history_item_params })
+        end.to change { HistoryItem.count }.by(1)
+
+        history_item = HistoryItem.last
+        expect(history_item.type).to eq HistoryItem::JUNIOR_SYNONYM
+        expect(history_item.taxt).to eq nil
+        expect(history_item.reference).to eq reference
+        expect(history_item.pages).to eq '149'
+        expect(history_item.object_protonym).to eq object_protonym
       end
     end
   end

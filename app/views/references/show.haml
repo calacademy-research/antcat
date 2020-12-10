@@ -143,6 +143,28 @@
                 %td=citation.citation_synopsis
                 %td=citation.pages
 
+  -if @reference.history_items.exists?
+    .row.margin-bottom
+      .small-12.columns
+        .callout.no-border-callout.logged-in-only-background
+          %h5 Citations (via hybrid history items)
+
+          %table
+            %thead
+              %th History item
+              %th Item type
+              %th Protonym owner
+              %th Pages
+              %th As text
+            -@reference.history_items.order(:pages).each do |history_item|
+              %tr
+                %td=link_to "##{history_item.id}", history_item
+                %td=history_item.type_label
+                %td
+                  =history_item.protonym.decorate.link_to_protonym
+                %td=history_item.pages
+                %td=Detax[history_item.to_taxt]
+
 -if decorated.described_taxa.exists?
   .row.margin-bottom
     .small-12.columns

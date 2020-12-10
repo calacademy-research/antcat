@@ -2,6 +2,7 @@
 -breadcrumb :edit_taxon, @taxon
 
 -content_for :javascripts do
+  =javascript_include_tag 'reference_select'
   =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
   =javascript_include_tag 'controllers/taxa/reorder_reference_sections'
   =javascript_include_tag 'controllers/protonyms/reorder_history_items'

@@ -1,4 +1,7 @@
 $ ->
+  AntCat.protonymSelectifyAll()
+
+AntCat.protonymSelectifyAll = ->
   PROTONYM_SELECT_SELECTOR = 'select[data-protonym-select]'
   $(PROTONYM_SELECT_SELECTOR).each -> $(this).protonymSelectify()
 

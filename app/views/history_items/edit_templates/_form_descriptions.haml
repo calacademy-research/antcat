@@ -1,0 +1,10 @@
+%table.unstriped
+  %tr
+    %td Forms
+    %td
+      .row
+        .medium-10.columns
+          .small-max-width
+            =text_field_tag :text_value, history_item.text_value, id: nil
+
+  =tr_for_reference_and_pages history_item

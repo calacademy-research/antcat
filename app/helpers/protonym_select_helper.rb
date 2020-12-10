@@ -7,6 +7,7 @@ module ProtonymSelectHelper
 
     select_tag protonym_attribute_name,
       options_for_select([protonym_id].compact, protonym_id),
+      id: nil,
       class: 'select2-autocomplete', data: protonym_data_attributes(protonym)
   end
 

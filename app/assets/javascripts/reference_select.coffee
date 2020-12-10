@@ -1,4 +1,7 @@
 $ ->
+  AntCat.referenceSelectify()
+
+AntCat.referenceSelectify = ->
   REFERENCE_SELECT_SELECTOR = 'select[data-reference-select]'
   $(REFERENCE_SELECT_SELECTOR).each -> $(this).referenceSelectify()
 
