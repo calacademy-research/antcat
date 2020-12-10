@@ -43,6 +43,17 @@ describe Exporters::Antweb::History::HistoryItems do
         end
       end
 
+      context 'with grouped items' do
+        let!(:item_2) { create :history_item, :form_descriptions, :with_1758_reference, protonym: protonym }
+
+        specify do
+          antweb_item_1 = "#{antweb_reference_link(item_1.reference)}: #{item_1.pages} (#{item_1.text_value}).</div>"
+          antweb_item_2 = "<div>#{antweb_reference_link(item_2.reference)}: #{item_2.pages} (#{item_2.text_value}); "
+
+          expect(described_class[taxon]).to eq(header + '<div>' + antweb_item_2 + antweb_item_1 + '</div>')
+        end
+      end
+
       context 'with more than one item' do
         let!(:item_0) { create :history_item, taxt: "Taxon: {tax #{taxon.id}}", protonym: protonym }
 
