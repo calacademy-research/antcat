@@ -63,10 +63,6 @@ describe Reference do
 
     describe 'default state' do
       it "starts as 'none'" do
-        expect(reference.none?).to eq true
-        expect(reference.reviewing?).to eq false
-        expect(reference.reviewed?).to eq false
-
         expect(reference.can_start_reviewing?).to eq true
         expect(reference.can_finish_reviewing?).to eq false
         expect(reference.can_restart_reviewing?).to eq false
@@ -75,7 +71,8 @@ describe Reference do
 
     describe '#start_reviewing!' do
       it "transitions from 'none' to 'reviewing'" do
-        expect { reference.start_reviewing! }.to change { reference.reviewing? }.to(true)
+        expect { reference.start_reviewing! }.
+          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWING)
 
         expect(reference.can_start_reviewing?).to eq false
         expect(reference.can_finish_reviewing?).to eq true
@@ -89,7 +86,8 @@ describe Reference do
       end
 
       it "transitions from 'reviewing' to 'reviewed'" do
-        expect { reference.finish_reviewing! }.to change { reference.reviewed? }.to(true)
+        expect { reference.finish_reviewing! }.
+          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWED)
 
         expect(reference.can_start_reviewing?).to eq false
         expect(reference.can_finish_reviewing?).to eq false
@@ -104,7 +102,8 @@ describe Reference do
       end
 
       it "can transition 'reviewed' back to 'reviewing'" do
-        expect { reference.restart_reviewing! }.to change { reference.reviewing? }.to(true)
+        expect { reference.restart_reviewing! }.
+          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWING)
 
         expect(reference.can_start_reviewing?).to eq false
         expect(reference.can_finish_reviewing?).to eq true

@@ -49,7 +49,6 @@ gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'
-gem 'workflow-activerecord'
 
 group :development do
   gem 'awesome_print', require: 'ap'

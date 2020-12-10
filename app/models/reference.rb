@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Reference < ApplicationRecord
-  include WorkflowActiverecord
   include Trackable
   include References::Concerns::Searchable
 
@@ -42,11 +41,29 @@ class Reference < ApplicationRecord
   ], replace_newlines: true
   trackable parameters: proc { { name: key_with_suffixed_year } }
 
-  workflow_column :review_state
-  workflow do
-    state(:none)      { event :start_reviewing,   transitions_to: :reviewing }
-    state(:reviewing) { event :finish_reviewing,  transitions_to: :reviewed }
-    state(:reviewed)  { event :restart_reviewing, transitions_to: :reviewing }
+  def start_reviewing!
+    update!(review_state: REVIEW_STATE_REVIEWING)
+  end
+
+  def finish_reviewing!
+    update!(review_state: REVIEW_STATE_REVIEWED)
+  end
+
+  def restart_reviewing!
+    update!(review_state: REVIEW_STATE_REVIEWING)
+  end
+
+  # TODO: Remove, probably. They were added here when removing the `workflow-activerecord` gem.
+  def can_start_reviewing?
+    review_state.in?([REVIEW_STATE_NONE])
+  end
+
+  def can_finish_reviewing?
+    review_state.in?([REVIEW_STATE_REVIEWING])
+  end
+
+  def can_restart_reviewing?
+    review_state.in?([REVIEW_STATE_REVIEWED])
   end
 
   # TODO: Something regarding "_cache" vs. "string" vs. not.
