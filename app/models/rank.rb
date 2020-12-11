@@ -14,6 +14,11 @@ class Rank
   ]
   TYPES = SORTED_TYPES
 
+  ANY_RANK_GROUP = 'Any/all rank (-groups)'
+  FAMILY_GROUP = 'Family-group'
+  GENUS_GROUP = 'Genus-group'
+  SPECIES_GROUP = 'Species-group'
+
   ### Ranks in taxonomy, generally true.
   FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE]
   GENUS_GROUP_NAMES = [GENUS, SUBGENUS]

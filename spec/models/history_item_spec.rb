@@ -91,6 +91,24 @@ describe HistoryItem do
     end
   end
 
+  describe 'TYPE_DEFINITIONS' do
+    described_class::TYPE_DEFINITIONS.each do |type, definition|
+      describe "type definition for #{type}" do
+        it 'has all required attributes' do
+          expect(definition[:type_label]).to be_present
+          expect(definition[:ranks]).to be_present
+
+          expect(definition[:group_order]).to be_present
+          expect(definition[:group_key]).to be_present
+
+          expect(definition[:group_template]).to be_present
+
+          expect(definition[:validates_presence_of]).to be_present
+        end
+      end
+    end
+  end
+
   describe '#standard_format?' do
     context 'with `TAXT` item' do
       context 'with standard format' do

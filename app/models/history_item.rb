@@ -11,6 +11,7 @@ class HistoryItem < ApplicationRecord
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
+      ranks: Rank::ANY_RANK_GROUP,
 
       group_order: 999,
       group_key: ->(o) { o.id },
@@ -21,6 +22,7 @@ class HistoryItem < ApplicationRecord
     },
     FORM_DESCRIPTIONS = 'FormDescriptions' => {
       type_label: 'Form descriptions (additional)',
+      ranks: Rank::SPECIES_GROUP,
 
       group_order: 1,
       group_key: ->(o) { o.type },
@@ -34,6 +36,7 @@ class HistoryItem < ApplicationRecord
     },
     TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
       type_label: 'Type specimen designation',
+      ranks: Rank::SPECIES_GROUP,
 
       group_order: 2,
       group_key: ->(o) { o.id },
@@ -52,10 +55,12 @@ class HistoryItem < ApplicationRecord
         ['Lectotype designation', LECTOTYPE_DESIGNATION],
         ['Neotype designation', NEOTYPE_DESIGNATION]
       ],
+
       validates_presence_of: [:subtype, :reference, :pages]
     },
     JUNIOR_SYNONYM = 'JuniorSynonym' => {
       type_label: 'Junior synonym of',
+      ranks: Rank::ANY_RANK_GROUP,
 
       group_order: 6,
       group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
@@ -70,6 +75,7 @@ class HistoryItem < ApplicationRecord
     },
     SENIOR_SYNONYM = 'SeniorSynonym' => {
       type_label: 'Senior synonym of',
+      ranks: Rank::ANY_RANK_GROUP,
 
       group_order: 5,
       group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
