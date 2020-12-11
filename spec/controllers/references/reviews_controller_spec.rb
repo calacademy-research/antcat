@@ -16,6 +16,33 @@ describe References::ReviewsController do
     end
   end
 
+  describe 'POST start', as: :editor do
+    let(:reference) { create :any_reference, review_state: Reference::REVIEW_STATE_NONE }
+
+    specify do
+      expect { post :start, params: { id: reference.id } }.
+        to change { reference.reload.review_state }.to(Reference::REVIEW_STATE_REVIEWING)
+    end
+  end
+
+  describe 'POST finish', as: :editor do
+    let(:reference) { create :any_reference, review_state: Reference::REVIEW_STATE_REVIEWING }
+
+    specify do
+      expect { post :finish, params: { id: reference.id } }.
+        to change { reference.reload.review_state }.to(Reference::REVIEW_STATE_REVIEWED)
+    end
+  end
+
+  describe 'POST restart', as: :editor do
+    let(:reference) { create :any_reference, review_state: Reference::REVIEW_STATE_REVIEWED }
+
+    specify do
+      expect { post :restart, params: { id: reference.id } }.
+        to change { reference.reload.review_state }.to(Reference::REVIEW_STATE_REVIEWING)
+    end
+  end
+
   describe 'PUT approve_all', as: :current_user do
     let(:current_user) { create(:user, :superadmin, :editor) }
 

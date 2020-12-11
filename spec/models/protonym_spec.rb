@@ -29,7 +29,8 @@ describe Protonym do
           expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
             to change { protonym.valid? }.to(false)
 
-          expect(protonym.errors.messages).to include(biogeographic_region: ["cannot be set for fossil protonyms"])
+          expect(protonym.errors.where(:biogeographic_region).map(&:message)).
+            to include("cannot be set for fossil protonyms")
         end
       end
     end
@@ -48,7 +49,8 @@ describe Protonym do
           expect { protonym.gender_agreement_type = described_class::PARTICIPLE }.
             to change { protonym.valid? }.to(false)
 
-          expect(protonym.errors.messages).to include(gender_agreement_type: ["can only be set for species-group names"])
+          expect(protonym.errors.where(:gender_agreement_type).map(&:message)).
+            to include("can only be set for species-group names")
         end
       end
     end
@@ -59,7 +61,9 @@ describe Protonym do
 
         it 'cannot be a `ichnotaxon`' do
           expect { protonym.ichnotaxon = true }.to change { protonym.valid? }.to(false)
-          expect(protonym.errors.messages).to include(ichnotaxon: ["can only be set for fossil protonyms"])
+
+          expect(protonym.errors.where(:ichnotaxon).map(&:message)).
+            to include("can only be set for fossil protonyms")
         end
       end
     end

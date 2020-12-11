@@ -8,13 +8,13 @@ module Editors
     attr_private_initialize :reference, [session: nil]
 
     def review_reference_button
-      if reference.can_finish_reviewing?
+      if can_finish_reviewing?
         link_to 'Finish reviewing', finish_reviewing_reference_path(reference),
           method: :post, class: "btn-saves btn-tiny"
-      elsif reference.can_start_reviewing?
+      elsif can_start_reviewing?
         link_to 'Start reviewing', start_reviewing_reference_path(reference),
           method: :post, class: "btn-saves btn-tiny"
-      elsif reference.can_restart_reviewing?
+      elsif can_restart_reviewing?
         link_to 'Restart reviewing', restart_reviewing_reference_path(reference),
           method: :post, class: "btn-warning btn-tiny"
       end
@@ -29,5 +29,19 @@ module Editors
           method: :put, class: "btn-saves btn-tiny"
       end
     end
+
+    private
+
+      def can_start_reviewing?
+        reference.review_state == Reference::REVIEW_STATE_NONE
+      end
+
+      def can_finish_reviewing?
+        reference.review_state == Reference::REVIEW_STATE_REVIEWING
+      end
+
+      def can_restart_reviewing?
+        reference.review_state == Reference::REVIEW_STATE_REVIEWED
+      end
   end
 end

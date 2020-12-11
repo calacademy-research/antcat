@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.6.5'
 
-gem 'rails', '6.0.3.4'
+gem 'rails', '6.1.0'
 
 gem 'citrus'
 gem 'coffee-rails'
@@ -49,7 +49,6 @@ gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
 gem 'will_paginate'
-gem 'workflow-activerecord'
 
 group :development do
   gem 'awesome_print', require: 'ap'
@@ -67,7 +66,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.5', require: false
+  gem 'rubocop', '~> 1.6', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'

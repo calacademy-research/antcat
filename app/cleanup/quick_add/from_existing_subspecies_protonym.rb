@@ -77,7 +77,7 @@ module QuickAdd
       def most_accepted_taxa
         protonym.taxa.
           where(status: ['unavailable', 'homonym', 'synonym', 'valid']).
-          order("FIELD(status, 'unavailable', 'homonym', 'synonym', 'valid')")
+          order(Arel.sql("FIELD(status, 'unavailable', 'homonym', 'synonym', 'valid')"))
       end
 
       # ---

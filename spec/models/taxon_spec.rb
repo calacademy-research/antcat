@@ -35,7 +35,9 @@ describe Taxon do
 
         it 'must have a `homonym_replaced_by`' do
           expect { taxon.homonym_replaced_by = nil }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(homonym_replaced_by: ["must be set for homonyms"])
+
+          expect(taxon.errors.where(:homonym_replaced_by).map(&:message)).
+            to include("must be set for homonyms")
         end
       end
 
@@ -44,7 +46,9 @@ describe Taxon do
 
         it 'cannot have a `homonym_replaced_by`' do
           expect { taxon.homonym_replaced_by = build_stubbed(:any_taxon) }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(homonym_replaced_by: ["can't be set for non-homonyms"])
+
+          expect(taxon.errors.where(:homonym_replaced_by).map(&:message)).
+            to include("can't be set for non-homonyms")
         end
       end
     end
@@ -55,7 +59,9 @@ describe Taxon do
 
         it 'cannot be an `unresolved_homonym`' do
           expect { taxon.status = Status::HOMONYM }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(unresolved_homonym: ["can't be set for homonyms"])
+
+          expect(taxon.errors.where(:unresolved_homonym).map(&:message)).
+            to include("can't be set for homonyms")
         end
       end
     end
@@ -66,7 +72,9 @@ describe Taxon do
 
         it 'cannot be a `collective_group_name`' do
           expect { taxon.collective_group_name = true }.to change { taxon.valid? }.to(false)
-          expect(taxon.errors.messages).to include(collective_group_name: ["can only be set for fossil taxa"])
+
+          expect(taxon.errors.where(:collective_group_name).map(&:message)).
+            to include("can only be set for fossil taxa")
         end
       end
     end
@@ -84,7 +92,9 @@ describe Taxon do
 
           it 'cannot have a `current_taxon`' do
             taxon.valid?
-            expect(taxon.errors.messages).to include(current_taxon: ["can't be set for #{Status.plural(status)} taxa"])
+
+            expect(taxon.errors.where(:current_taxon).map(&:message)).
+              to include("can't be set for #{Status.plural(status)} taxa")
           end
         end
       end
@@ -99,7 +109,9 @@ describe Taxon do
 
           it 'must have a `current_taxon`' do
             taxon.valid?
-            expect(taxon.errors.messages).to include(current_taxon: ["must be set for #{Status.plural(status)}"])
+
+            expect(taxon.errors.where(:current_taxon).map(&:message)).
+              to include("must be set for #{Status.plural(status)}")
           end
         end
       end

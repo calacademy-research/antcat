@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Reference < ApplicationRecord
-  include WorkflowActiverecord
   include Trackable
   include References::Concerns::Searchable
 
@@ -41,13 +40,6 @@ class Reference < ApplicationRecord
     :series_volume_issue, :doi, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: key_with_suffixed_year } }
-
-  workflow_column :review_state
-  workflow do
-    state(:none)      { event :start_reviewing,   transitions_to: :reviewing }
-    state(:reviewing) { event :finish_reviewing,  transitions_to: :reviewed }
-    state(:reviewed)  { event :restart_reviewing, transitions_to: :reviewing }
-  end
 
   # TODO: Something regarding "_cache" vs. "string" vs. not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
