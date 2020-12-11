@@ -26,13 +26,66 @@ describe HistoryPresenter do
         end
       end
 
+      context 'with `TYPE_SPECIMEN_DESIGNATION`' do
+        context 'with subtype `LECTOTYPE_DESIGNATION`' do
+          let!(:item_1) do
+            create :history_item, :lectotype_designation, :with_1758_reference, protonym: protonym
+          end
+          let!(:item_2) do
+            create :history_item, :lectotype_designation, :with_2000_reference, protonym: protonym
+          end
+
+          it 'does not group them' do
+            expect(presenter.grouped_items.map(&:taxt)).to eq [
+              "Lectotype designation: #{item_1.citation_taxt}.",
+              "Lectotype designation: #{item_2.citation_taxt}."
+            ]
+          end
+        end
+
+        context 'with subtype `NEOTYPE_DESIGNATION`' do
+          let!(:item_1) do
+            create :history_item, :neotype_designation, :with_1758_reference, protonym: protonym
+          end
+          let!(:item_2) do
+            create :history_item, :neotype_designation, :with_2000_reference, protonym: protonym
+          end
+
+          it 'does not group them' do
+            expect(presenter.grouped_items.map(&:taxt)).to eq [
+              "Neotype designation: #{item_1.citation_taxt}.",
+              "Neotype designation: #{item_2.citation_taxt}."
+            ]
+          end
+        end
+      end
+
       context 'with `FORM_DESCRIPTIONS` items' do
         let!(:item_1) { create :history_item, :form_descriptions, :with_2000_reference, protonym: protonym }
         let!(:item_2) { create :history_item, :form_descriptions, :with_1758_reference, protonym: protonym }
 
-        it 'groups them (without prefix)' do
+        it 'groups them' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
             "#{item_2.citation_taxt} (#{item_2.text_value}); #{item_1.citation_taxt} (#{item_1.text_value})."
+          ]
+        end
+      end
+
+      context 'with `JUNIOR_SYNONYM` items' do
+        let(:object_protonym) { create :protonym }
+
+        let!(:item_1) do
+          create :history_item, :junior_synonym, :with_2000_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+        let!(:item_2) do
+          create :history_item, :junior_synonym, :with_1758_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+
+        it 'groups them by `object_protonym`' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Junior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]
         end
       end
@@ -49,7 +102,7 @@ describe HistoryPresenter do
             protonym: protonym, object_protonym: object_protonym
         end
 
-        it 'groups them by `object_protonym` (with prefix)' do
+        it 'groups them by `object_protonym`' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
             "Senior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]

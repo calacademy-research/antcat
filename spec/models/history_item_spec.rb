@@ -141,7 +141,7 @@ describe HistoryItem do
     end
 
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
-      context 'when `picked_value` is `LECTOTYPE_DESIGNATION`' do
+      context 'when `subtype` is `LECTOTYPE_DESIGNATION`' do
         let(:history_item) { create :history_item, :lectotype_designation }
 
         specify do
@@ -150,7 +150,7 @@ describe HistoryItem do
         end
       end
 
-      context 'when `picked_value` is `NEOTYPE_DESIGNATION`' do
+      context 'when `subtype` is `NEOTYPE_DESIGNATION`' do
         let(:history_item) { create :history_item, :neotype_designation }
 
         specify do

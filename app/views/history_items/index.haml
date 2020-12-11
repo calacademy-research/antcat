@@ -40,12 +40,14 @@
     %h6 Counts (rank/status of terminal taxa + protonym name types)
 
     .row
-      .medium-4.columns
+      .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group('taxa.type').count)
-      .medium-4.columns
+      .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group('taxa.status').count)
-      .medium-4.columns
+      .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.joins(protonym: :name).group('names.type').count)
+      .medium-3.columns
+        %pre=JSON.pretty_generate(@history_items.group(:type).count)
 
 %table.tablesorter
   %caption
