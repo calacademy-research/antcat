@@ -11,10 +11,9 @@ class HistoryItem < ApplicationRecord
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
-      type_as_label: 'Taxt (freeform text) for {pro %<protonym_id>i}',
 
       group_order: 999,
-      group_key: ->(o) { [o.type, o.id] },
+      group_key: ->(o) { o.id },
 
       group_template: '%<item_taxts>s',
 
@@ -22,7 +21,6 @@ class HistoryItem < ApplicationRecord
     },
     FORM_DESCRIPTIONS = 'FormDescriptions' => {
       type_label: 'Form descriptions (additional)',
-      type_as_label: 'Form descriptions (additional) for {pro %<protonym_id>i}',
 
       group_order: 1,
       group_key: ->(o) { o.type },
@@ -36,10 +34,9 @@ class HistoryItem < ApplicationRecord
     },
     TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
       type_label: 'Type specimen designation',
-      type_as_label: 'Type specimen designation for {pro %<protonym_id>i}',
 
       group_order: 2,
-      group_key: ->(o) { [o.type, o.id] },
+      group_key: ->(o) { o.id },
 
       group_template: '%<designation_type>s: %<item_taxts>s.',
       group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
@@ -59,7 +56,6 @@ class HistoryItem < ApplicationRecord
     },
     JUNIOR_SYNONYM = 'JuniorSynonym' => {
       type_label: 'Junior synonym of',
-      type_as_label: '{pro %<protonym_id>i} as junior synonym of ...',
 
       group_order: 6,
       group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
@@ -74,7 +70,6 @@ class HistoryItem < ApplicationRecord
     },
     SENIOR_SYNONYM = 'SeniorSynonym' => {
       type_label: 'Senior synonym of',
-      type_as_label: '{pro %<protonym_id>i} as senior synonym of ...',
 
       group_order: 5,
       group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
@@ -161,10 +156,6 @@ class HistoryItem < ApplicationRecord
 
   def type_label
     definitions.fetch(:type_label)
-  end
-
-  def type_label_to_taxt
-    definitions.fetch(:type_as_label) % attributes.slice('protonym_id').symbolize_keys
   end
 
   def underscored_type
