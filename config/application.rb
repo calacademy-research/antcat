@@ -4,6 +4,10 @@ require_relative "boot"
 
 require "rails/all"
 
+# TODO: Upgrade paper_trail and remove.
+# See https://github.com/paper-trail-gem/paper_trail/blob/master/lib/paper_trail/compatibility.rb
+ENV["PT_SILENCE_AR_COMPAT_WARNING"] = 'yes'
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

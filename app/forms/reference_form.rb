@@ -67,7 +67,7 @@ class ReferenceForm
 
         reference.save!
 
-        return true
+        true
       end
     rescue ActiveRecord::RecordInvalid
       false
