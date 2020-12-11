@@ -83,6 +83,10 @@ Layout/ParameterAlignment:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'config/environments/production.rb'
+
 ### Lint.
 
 Lint/AmbiguousBlockAssociation:
@@ -311,6 +315,10 @@ Rails/DefaultScope:
 
 Rails/Delegate:
   Enabled: false
+
+Rails/FilePath:
+  Exclude:
+    - 'config/environments/development.rb'
 
 Rails/FindById:
   Enabled: true
