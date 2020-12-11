@@ -58,60 +58,6 @@ describe Reference do
     end
   end
 
-  describe 'workflow' do
-    let(:reference) { create :any_reference }
-
-    describe 'default state' do
-      it "starts as 'none'" do
-        expect(reference.can_start_reviewing?).to eq true
-        expect(reference.can_finish_reviewing?).to eq false
-        expect(reference.can_restart_reviewing?).to eq false
-      end
-    end
-
-    describe '#start_reviewing!' do
-      it "transitions from 'none' to 'reviewing'" do
-        expect { reference.start_reviewing! }.
-          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWING)
-
-        expect(reference.can_start_reviewing?).to eq false
-        expect(reference.can_finish_reviewing?).to eq true
-        expect(reference.can_restart_reviewing?).to eq false
-      end
-    end
-
-    describe '#finish_reviewing!' do
-      before do
-        reference.start_reviewing!
-      end
-
-      it "transitions from 'reviewing' to 'reviewed'" do
-        expect { reference.finish_reviewing! }.
-          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWED)
-
-        expect(reference.can_start_reviewing?).to eq false
-        expect(reference.can_finish_reviewing?).to eq false
-        expect(reference.can_restart_reviewing?).to eq true
-      end
-    end
-
-    describe '#restart_reviewing!' do
-      before do
-        reference.start_reviewing!
-        reference.finish_reviewing!
-      end
-
-      it "can transition 'reviewed' back to 'reviewing'" do
-        expect { reference.restart_reviewing! }.
-          to change { reference.review_state }.to(described_class::REVIEW_STATE_REVIEWING)
-
-        expect(reference.can_start_reviewing?).to eq false
-        expect(reference.can_finish_reviewing?).to eq true
-        expect(reference.can_restart_reviewing?).to eq false
-      end
-    end
-  end
-
   describe '#suffixed_year_with_stated_year' do
     context 'when reference does not have a `stated_year`' do
       let(:reference) { create :any_reference, year: 2000, year_suffix: 'a' }

@@ -8,7 +8,7 @@ module References
     def start
       reference = find_reference
 
-      reference.start_reviewing!
+      reference.update!(review_state: Reference::REVIEW_STATE_REVIEWING)
       reference.create_activity Activity::START_REVIEWING, current_user
 
       redirect_back fallback_location: references_path
@@ -17,7 +17,7 @@ module References
     def finish
       reference = find_reference
 
-      reference.finish_reviewing!
+      reference.update!(review_state: Reference::REVIEW_STATE_REVIEWED)
       reference.create_activity Activity::FINISH_REVIEWING, current_user
 
       redirect_back fallback_location: references_path
@@ -26,7 +26,7 @@ module References
     def restart
       reference = find_reference
 
-      reference.restart_reviewing!
+      reference.update!(review_state: Reference::REVIEW_STATE_REVIEWING)
       reference.create_activity Activity::RESTART_REVIEWING, current_user
 
       redirect_back fallback_location: references_path
