@@ -13,8 +13,8 @@ class HistoryItem < ApplicationRecord
       type_label: 'Taxt (freeform text)',
       type_as_label: 'Taxt (freeform text) for {pro %<protonym_id>i}',
 
-      section_order: 999,
-      section_group_key: ->(o) { [o.type, o.id] },
+      group_order: 999,
+      group_key: ->(o) { [o.type, o.id] },
 
       group_template: '%<item_taxts>s',
 
@@ -24,8 +24,8 @@ class HistoryItem < ApplicationRecord
       type_label: 'Form descriptions (additional)',
       type_as_label: 'Form descriptions (additional) for {pro %<protonym_id>i}',
 
-      section_order: 1,
-      section_group_key: ->(o) { o.type },
+      group_order: 1,
+      group_key: ->(o) { o.type },
 
       group_template: '%<item_taxts>s.',
 
@@ -38,8 +38,8 @@ class HistoryItem < ApplicationRecord
       type_label: 'Type specimen designation',
       type_as_label: 'Type specimen designation for {pro %<protonym_id>i}',
 
-      section_order: 2,
-      section_group_key: ->(o) { [o.type, o.id] },
+      group_order: 2,
+      group_key: ->(o) { [o.type, o.id] },
 
       group_template: '%<designation_type>s: %<item_taxts>s.',
       group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
@@ -61,8 +61,8 @@ class HistoryItem < ApplicationRecord
       type_label: 'Junior synonym of',
       type_as_label: '{pro %<protonym_id>i} as junior synonym of ...',
 
-      section_order: 6,
-      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_order: 6,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
 
       group_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },
@@ -76,8 +76,8 @@ class HistoryItem < ApplicationRecord
       type_label: 'Senior synonym of',
       type_as_label: '{pro %<protonym_id>i} as senior synonym of ...',
 
-      section_order: 5,
-      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_order: 5,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
 
       group_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },

@@ -16,16 +16,16 @@ class HistoryPresenter
         select('history_items.*, references.year AS reference_year, references.date AS reference_date')
 
       items.
-        sort_by { |item| [section_order(item), item.reference_year, item.reference_date] }.
-        group_by { |item| section_group_key(item) }.
+        sort_by { |item| [group_order(item), item.reference_year, item.reference_date] }.
+        group_by { |item| group_key(item) }.
         values
     end
 
-    def section_order item
-      item.definitions.fetch(:section_order)
+    def group_order item
+      item.definitions.fetch(:group_order)
     end
 
-    def section_group_key item
-      item.definitions.fetch(:section_group_key).call(item)
+    def group_key item
+      item.definitions.fetch(:group_key).call(item)
     end
 end
