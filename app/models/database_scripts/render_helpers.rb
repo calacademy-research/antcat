@@ -30,6 +30,10 @@ module DatabaseScripts
       protonym.decorate.link_to_protonym
     end
 
+    def protonym_links protonyms
+      protonyms.map { |protonym| protonym.decorate.link_to_protonym }.join('<br>')
+    end
+
     def bold_warning string
       %(<span class="bold-warning">#{string}</span>)
     end

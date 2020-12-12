@@ -32,7 +32,7 @@ module DatabaseScripts
     ]
 
     def results
-      HistoryItem.except_taxts.where(Taxt::HistoryItemCleanup::NO_REF_OR_TAX_OR_PRO_TAG).
+      HistoryItem.taxts_only.where(Taxt::HistoryItemCleanup::NO_REF_OR_TAX_OR_PRO_TAG).
         includes(protonym: :name)
     end
 

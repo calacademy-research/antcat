@@ -31,13 +31,7 @@ section: research
 category: Protonyms
 tags: [slow]
 
-issue_description:
-
 description: >
-  This is for the "Protonym items simulation", and ultimately for moving `HistoryItem`s to the protonym.
-
-
-  See also wiki page: %wiki7
 
 related_scripts:
   - ProtonymsWithRankSpecificAndUnrankedHistoryItems
