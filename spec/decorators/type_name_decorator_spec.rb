@@ -45,7 +45,7 @@ describe TypeNameDecorator do
 
       it "uses the status of taxon before the fully resolved current taxon and links the fully resolved" do
         expect(decorated.compact_taxon_status).
-          to eq " (obsolete classification of #{taxon_link(second_current_taxon_of_type_taxon)})"
+          to eq " (now: obsolete classification of #{taxon_link(second_current_taxon_of_type_taxon)})"
       end
     end
   end

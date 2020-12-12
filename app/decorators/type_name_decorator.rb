@@ -4,12 +4,18 @@ class TypeNameDecorator < Draper::Decorator
   delegate :taxon, :fixation_method, :reference, :pages
 
   def format_rank
-    "Type-#{taxon.rank}: ".html_safe
+    "#{format_just_rank}: ".html_safe
+  end
+
+  def format_just_rank
+    "Type-#{taxon.rank}".html_safe
   end
 
   def compact_taxon_status
-    return '' if (compact_status = taxon.most_recent_before_now_taxon.decorate.compact_status).blank?
-    ' ('.html_safe + compact_status + ')'.html_safe
+    return '' if (compact_status = most_recent_before_now_taxon.decorate.compact_status).blank?
+
+    prefix = "now: " if show_now_prefix?
+    " (#{prefix}".html_safe + compact_status + ')'.html_safe
   end
 
   def format_fixation_method
@@ -27,6 +33,17 @@ class TypeNameDecorator < Draper::Decorator
   end
 
   private
+
+    # TODO: This belongs somewhere else or nowhere at all.
+    def show_now_prefix?
+      return false if most_recent_before_now_taxon == taxon
+      return false if most_recent_before_now_taxon == taxon.now_taxon
+      true
+    end
+
+    def most_recent_before_now_taxon
+      @_most_recent_before_now_taxon ||= taxon.most_recent_before_now_taxon
+    end
 
     # TODO: Cheating a lot to quickly make it work on the site and in the AntWeb export at the same time.
     def citation_for_by_subsequent_designation_of
