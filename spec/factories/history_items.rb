@@ -46,6 +46,14 @@ FactoryBot.define do
       with_reference
     end
 
+    trait :combination_in do
+      type { HistoryItem::COMBINATION_IN }
+
+      without_taxt
+      with_reference
+      with_object_protonym
+    end
+
     trait :senior_synonym do
       type { HistoryItem::SENIOR_SYNONYM }
 
@@ -60,6 +68,21 @@ FactoryBot.define do
       without_taxt
       with_reference
       with_object_protonym
+    end
+
+    trait :subspecies_of do
+      type { HistoryItem::SUBSPECIES_OF }
+
+      without_taxt
+      with_reference
+      with_object_protonym
+    end
+
+    trait :status_as_species do
+      type { HistoryItem::STATUS_AS_SPECIES }
+
+      without_taxt
+      with_reference
     end
 
     # Type-specific.

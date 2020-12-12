@@ -58,6 +58,21 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:subtype, :reference, :pages]
     },
+    COMBINATION_IN = 'CombinationIn' => {
+      type_label: 'Combination in',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 4,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Combination in {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    },
     JUNIOR_SYNONYM = 'JuniorSynonym' => {
       type_label: 'Junior synonym of',
       ranks: Rank::ANY_RANK_GROUP,
@@ -87,6 +102,35 @@ class HistoryItem < ApplicationRecord
       item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_protonym, :reference, :pages]
+    },
+    SUBSPECIES_OF = 'SubspeciesOf' => {
+      type_label: 'Subspecies of',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 18,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Subspecies of {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    },
+    STATUS_AS_SPECIES = 'StatusAsSpecies' => {
+      type_label: 'Status as species',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 20,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Status as species: %<item_taxts>s.',
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:reference, :pages]
     }
   }
   TYPES = TYPE_DEFINITIONS.keys

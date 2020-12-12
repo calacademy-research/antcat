@@ -71,6 +71,25 @@ describe HistoryPresenter do
         end
       end
 
+      context 'with `COMBINATION_IN` items' do
+        let(:object_protonym) { create :protonym }
+
+        let!(:item_1) do
+          create :history_item, :combination_in, :with_2000_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+        let!(:item_2) do
+          create :history_item, :combination_in, :with_1758_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+
+        it 'groups them by `object_protonym`' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Combination in {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+          ]
+        end
+      end
+
       context 'with `JUNIOR_SYNONYM` items' do
         let(:object_protonym) { create :protonym }
 
@@ -105,6 +124,40 @@ describe HistoryPresenter do
         it 'groups them by `object_protonym`' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
             "Senior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+          ]
+        end
+      end
+
+      context 'with `SUBSPECIES_OF` items' do
+        let(:object_protonym) { create :protonym }
+
+        let!(:item_1) do
+          create :history_item, :subspecies_of, :with_2000_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+        let!(:item_2) do
+          create :history_item, :subspecies_of, :with_1758_reference,
+            protonym: protonym, object_protonym: object_protonym
+        end
+
+        it 'groups them by `object_protonym`' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Subspecies of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+          ]
+        end
+      end
+
+      context 'with `STATUS_AS_SPECIES` items' do
+        let!(:item_1) do
+          create :history_item, :status_as_species, :with_2000_reference, protonym: protonym
+        end
+        let!(:item_2) do
+          create :history_item, :status_as_species, :with_1758_reference, protonym: protonym
+        end
+
+        it 'groups them' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Status as species: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]
         end
       end
