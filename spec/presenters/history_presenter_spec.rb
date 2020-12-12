@@ -128,6 +128,21 @@ describe HistoryPresenter do
         end
       end
 
+      context 'with `STATUS_AS_SPECIES` items' do
+        let!(:item_1) do
+          create :history_item, :status_as_species, :with_2000_reference, protonym: protonym
+        end
+        let!(:item_2) do
+          create :history_item, :status_as_species, :with_1758_reference, protonym: protonym
+        end
+
+        it 'groups them' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "Status as species: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+          ]
+        end
+      end
+
       context 'with `SUBSPECIES_OF` items' do
         let(:object_protonym) { create :protonym }
 
@@ -143,21 +158,6 @@ describe HistoryPresenter do
         it 'groups them by `object_protonym`' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
             "Subspecies of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
-        end
-      end
-
-      context 'with `STATUS_AS_SPECIES` items' do
-        let!(:item_1) do
-          create :history_item, :status_as_species, :with_2000_reference, protonym: protonym
-        end
-        let!(:item_2) do
-          create :history_item, :status_as_species, :with_1758_reference, protonym: protonym
-        end
-
-        it 'groups them' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Status as species: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]
         end
       end

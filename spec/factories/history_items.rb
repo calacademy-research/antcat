@@ -16,14 +16,6 @@ FactoryBot.define do
       sequence(:taxt) { |n| "history item content #{n}" }
     end
 
-    trait :form_descriptions do
-      type { HistoryItem::FORM_DESCRIPTIONS }
-      text_value { Taxt::StandardHistoryItemFormats::FORMS.sample }
-
-      without_taxt
-      with_reference
-    end
-
     trait :type_specimen_designation do
       type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
 
@@ -46,16 +38,16 @@ FactoryBot.define do
       with_reference
     end
 
-    trait :combination_in do
-      type { HistoryItem::COMBINATION_IN }
+    trait :form_descriptions do
+      type { HistoryItem::FORM_DESCRIPTIONS }
+      text_value { Taxt::StandardHistoryItemFormats::FORMS.sample }
 
       without_taxt
       with_reference
-      with_object_protonym
     end
 
-    trait :senior_synonym_of do
-      type { HistoryItem::SENIOR_SYNONYM_OF }
+    trait :combination_in do
+      type { HistoryItem::COMBINATION_IN }
 
       without_taxt
       with_reference
@@ -70,8 +62,8 @@ FactoryBot.define do
       with_object_protonym
     end
 
-    trait :subspecies_of do
-      type { HistoryItem::SUBSPECIES_OF }
+    trait :senior_synonym_of do
+      type { HistoryItem::SENIOR_SYNONYM_OF }
 
       without_taxt
       with_reference
@@ -83,6 +75,14 @@ FactoryBot.define do
 
       without_taxt
       with_reference
+    end
+
+    trait :subspecies_of do
+      type { HistoryItem::SUBSPECIES_OF }
+
+      without_taxt
+      with_reference
+      with_object_protonym
     end
 
     # Type-specific.

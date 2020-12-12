@@ -30,19 +30,6 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :object_protonym }
     end
 
-    context 'when `type` is `FORM_DESCRIPTIONS`' do
-      subject { create :history_item, :form_descriptions }
-
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_presence_of :text_value }
-
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-    end
-
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
       subject { create :history_item, :type_specimen_designation }
 
@@ -50,6 +37,19 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :subtype }
       it { is_expected.to validate_absence_of :picked_value }
       it { is_expected.to validate_absence_of :text_value }
+
+      it { is_expected.to validate_presence_of :reference }
+      it { is_expected.to validate_presence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
+    end
+
+    context 'when `type` is `FORM_DESCRIPTIONS`' do
+      subject { create :history_item, :form_descriptions }
+
+      it { is_expected.to validate_absence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_presence_of :text_value }
 
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
@@ -132,14 +132,6 @@ describe HistoryItem do
   end
 
   describe '#to_taxt' do
-    context 'when `type` is `FORM_DESCRIPTIONS`' do
-      let(:history_item) { create :history_item, :form_descriptions, text_value: 'q.' }
-
-      specify do
-        expect(history_item.to_taxt).to eq "#{history_item.citation_taxt} (q.)."
-      end
-    end
-
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
       context 'when `subtype` is `LECTOTYPE_DESIGNATION`' do
         let(:history_item) { create :history_item, :lectotype_designation }
@@ -160,12 +152,11 @@ describe HistoryItem do
       end
     end
 
-    context 'when `type` is `SENIOR_SYNONYM_OF`' do
-      let(:history_item) { create :history_item, :senior_synonym_of }
+    context 'when `type` is `FORM_DESCRIPTIONS`' do
+      let(:history_item) { create :history_item, :form_descriptions, text_value: 'q.' }
 
       specify do
-        expect(history_item.to_taxt).
-          to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        expect(history_item.to_taxt).to eq "#{history_item.citation_taxt} (q.)."
       end
     end
 
@@ -175,6 +166,15 @@ describe HistoryItem do
       specify do
         expect(history_item.to_taxt).
           to eq "Junior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `SENIOR_SYNONYM_OF`' do
+      let(:history_item) { create :history_item, :senior_synonym_of }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
       end
     end
   end
