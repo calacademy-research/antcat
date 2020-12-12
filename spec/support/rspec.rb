@@ -13,7 +13,7 @@ RSpec.configure do |config|
   config.fail_fast = false
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
-  config.filter_run_when_matching :focus unless ENV['TRAVIS']
+  config.filter_run_when_matching :focus unless ENV['CI']
   config.use_transactional_fixtures = true
   config.render_views
   Kernel.srand config.seed
@@ -30,9 +30,9 @@ RSpec.configure do |config|
     metadata[:aggregate_failures] = true
   end
 
-  if ENV["TRAVIS"]
+  if ENV["CI"]
     config.before(:each, :skip_ci) do |_example|
-      message = "spec disabled on Travis CI"
+      message = "spec disabled on CI"
       $stdout.puts message.red
       skip message
     end
