@@ -3,7 +3,7 @@
 module DatabaseScripts
   class TaxacTagsWithPageNumbers < DatabaseScript
     def results
-      HistoryItem.except_taxts.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
+      HistoryItem.taxts_only.where("taxt REGEXP ?", "{taxac [0-9]+}: [0-9]")
     end
 
     def render

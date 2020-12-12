@@ -41,10 +41,10 @@ module Seed
         reference: ref_2016, pages: '559'
 
       tatusia.history_items.create! type: COMBINATION_IN,
-        object_protonym: lasius, reference: ref_2020, pages: '7'
+        object_taxon: lasius_taxon, reference: ref_2020, pages: '7'
 
       tatusia.history_items.create! type: SUBSPECIES_OF,
-        object_protonym: fusca, reference: ref_2020, pages: '12'
+        object_taxon: fusca_taxon, reference: ref_2020, pages: '12'
 
       tatusia.history_items.create! type: STATUS_AS_SPECIES,
         reference: ref_2020, pages: '15'
@@ -81,11 +81,19 @@ module Seed
       end
 
       def fusca
-        @_fusca ||= Taxon.find_by!(name_cache: 'Formica fusca').protonym
+        fusca_taxon.protonym
+      end
+
+      def fusca_taxon
+        @_fusca_taxon ||= Taxon.find_by!(name_cache: 'Formica fusca')
       end
 
       def lasius
-        @_lasius ||= Taxon.find_by!(name_cache: 'Lasius').protonym
+        lasius_taxon.protonym
+      end
+
+      def lasius_taxon
+        @_lasius_taxon ||= Taxon.find_by!(name_cache: 'Lasius').protonym
       end
   end
 end

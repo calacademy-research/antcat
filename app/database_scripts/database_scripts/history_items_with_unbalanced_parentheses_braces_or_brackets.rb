@@ -15,35 +15,35 @@ module DatabaseScripts
     end
 
     def unbalanced_parentheses
-      HistoryItem.except_taxts.where(<<~SQL.squish).limit(LIMIT)
+      HistoryItem.taxts_only.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '(', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ')', '') )
       SQL
     end
 
     def unbalanced_curly_braces
-      HistoryItem.except_taxts.where(<<~SQL.squish).limit(LIMIT)
+      HistoryItem.taxts_only.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '{', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '}', '') )
       SQL
     end
 
     def unbalanced_square_brackets
-      HistoryItem.except_taxts.where(<<~SQL.squish).limit(LIMIT)
+      HistoryItem.taxts_only.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, ']', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '[', '') )
       SQL
     end
 
     def unbalanced_angle_brackets
-      HistoryItem.except_taxts.where(<<~SQL.squish).limit(LIMIT)
+      HistoryItem.taxts_only.where(<<~SQL.squish).limit(LIMIT)
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '>', '') ) !=
         CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '<', '') )
       SQL
     end
 
     def unbalanced_double_quotes
-      HistoryItem.except_taxts.where(<<~SQL.squish).limit(LIMIT)
+      HistoryItem.taxts_only.where(<<~SQL.squish).limit(LIMIT)
         (
           CHAR_LENGTH(taxt) - CHAR_LENGTH( REPLACE ( taxt, '"', '') )
         ) % 2 != 0

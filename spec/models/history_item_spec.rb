@@ -16,7 +16,9 @@ describe HistoryItem do
       is_expected.to validate_inclusion_of(:rank).
         in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
     end
+  end
 
+  describe 'type-related validations' do
     context 'when `type` is `TAXT`' do
       subject { create :history_item, :taxt }
 
@@ -28,6 +30,7 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :reference }
       it { is_expected.to validate_absence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
@@ -41,6 +44,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `FORM_DESCRIPTIONS`' do
@@ -54,6 +58,21 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
+    end
+
+    context 'when `type` is `COMBINATION_IN`' do
+      subject { create :history_item, :combination_in }
+
+      it { is_expected.to validate_absence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_absence_of :text_value }
+
+      it { is_expected.to validate_presence_of :reference }
+      it { is_expected.to validate_presence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_presence_of :object_taxon }
     end
 
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
@@ -67,6 +86,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `SENIOR_SYNONYM_OF`' do
@@ -80,6 +100,35 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
+    end
+
+    context 'when `type` is `STATUS_AS_SPECIES`' do
+      subject { create :history_item, :status_as_species }
+
+      it { is_expected.to validate_absence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_absence_of :text_value }
+
+      it { is_expected.to validate_presence_of :reference }
+      it { is_expected.to validate_presence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
+    end
+
+    context 'when `type` is `SUBSPECIES_OF`' do
+      subject { create :history_item, :subspecies_of }
+
+      it { is_expected.to validate_absence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_absence_of :text_value }
+
+      it { is_expected.to validate_presence_of :reference }
+      it { is_expected.to validate_presence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_presence_of :object_taxon }
     end
   end
 

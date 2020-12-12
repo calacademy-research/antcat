@@ -5,7 +5,7 @@ class HistoryItem < ApplicationRecord
   include Trackable
 
   TYPE_ATTRIBUTES = [
-    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :reference, :pages
+    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :object_taxon, :reference, :pages
   ]
   # [grep:history_type].
   TYPE_DEFINITIONS = {
@@ -63,22 +63,22 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::SPECIES_GROUP,
 
       group_order: 30,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
 
-      group_template: 'Combination in {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      group_template: 'Combination in {tax %<object_taxon_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_taxon, :reference, :pages]
     },
     JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
       type_label: 'Junior synonym of',
       ranks: Rank::ANY_RANK_GROUP,
 
       group_order: 40,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
       group_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },
@@ -93,7 +93,7 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::ANY_RANK_GROUP,
 
       group_order: 45,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
       group_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },
@@ -108,7 +108,7 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::SPECIES_GROUP,
 
       group_order: 0,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
       group_template: 'Status as species: %<item_taxts>s.',
 
@@ -122,15 +122,15 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::SPECIES_GROUP,
 
       group_order: 60,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
 
-      group_template: 'Subspecies of {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      group_template: 'Subspecies of {tax %<object_taxon_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_taxon, :reference, :pages]
     }
   }
   TYPES = TYPE_DEFINITIONS.keys
@@ -142,6 +142,7 @@ class HistoryItem < ApplicationRecord
   belongs_to :protonym
   belongs_to :reference, optional: true
   belongs_to :object_protonym, optional: true, class_name: 'Protonym'
+  belongs_to :object_taxon, optional: true, class_name: 'Taxon'
 
   has_one :terminal_taxon, through: :protonym
   has_many :terminal_taxa, through: :protonym

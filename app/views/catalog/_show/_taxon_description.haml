@@ -1,6 +1,7 @@
 -if user_is_at_least_helper?
   -content_for :javascripts do
     =javascript_include_tag 'reference_select'
+    =javascript_include_tag 'taxon_select'
     =javascript_include_tag 'protonym_select'
     =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =render "shared/default_reference"
@@ -23,10 +24,21 @@
   =protonym.decorate.format_locality
   =add_period_if_necessary(protonym.biogeographic_region)
 
-  -if (type_name = protonym.type_name)
-    -type_name_decorated = type_name.decorate
-    =type_name_decorated.format_rank
-    =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
+  -if (protonym_type_name = protonym.type_name)
+    -protonym_type_name_decorated = protonym_type_name.decorate
+    =protonym_type_name_decorated.format_rank
+    =CatalogFormatter.link_to_taxon(protonym_type_name.taxon) + protonym_type_name_decorated.compact_taxon_status + Detax[protonym_type_name_decorated.format_fixation_method]
+
+-if current_user
+  -if taxon.type_names.present?
+    .callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
+      %ul.no-bullet
+        -taxon.type_names.each do |as_type_name|
+          %li
+            -as_type_name_decorated = as_type_name.decorate
+            =as_type_name_decorated.format_just_rank
+            of
+            =as_type_name.protonym.decorate.link_to_protonym_with_author_citation + Detax[as_type_name_decorated.format_fixation_method]
 
 #type-fields
   -if protonym.primary_type_information_taxt?

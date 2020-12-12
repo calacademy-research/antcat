@@ -51,7 +51,7 @@ FactoryBot.define do
 
       without_taxt
       with_reference
-      with_object_protonym
+      with_object_taxon
     end
 
     trait :junior_synonym_of do
@@ -82,7 +82,7 @@ FactoryBot.define do
 
       without_taxt
       with_reference
-      with_object_protonym
+      with_object_taxon
     end
 
     # Type-specific.
@@ -110,6 +110,10 @@ FactoryBot.define do
 
     trait :with_object_protonym do
       object_protonym factory: :protonym
+    end
+
+    trait :with_object_taxon do
+      object_taxon factory: :family
     end
 
     # Misc.

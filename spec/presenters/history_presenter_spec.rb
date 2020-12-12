@@ -72,20 +72,20 @@ describe HistoryPresenter do
       end
 
       context 'with `COMBINATION_IN` items' do
-        let(:object_protonym) { create :protonym }
+        let(:object_taxon) { create :genus }
 
         let!(:item_1) do
           create :history_item, :combination_in, :with_2000_reference,
-            protonym: protonym, object_protonym: object_protonym
+            protonym: protonym, object_taxon: object_taxon
         end
         let!(:item_2) do
           create :history_item, :combination_in, :with_1758_reference,
-            protonym: protonym, object_protonym: object_protonym
+            protonym: protonym, object_taxon: object_taxon
         end
 
-        it 'groups them by `object_protonym`' do
+        it 'groups them by `object_taxon`' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Combination in {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+            "Combination in {tax #{object_taxon.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]
         end
       end
@@ -144,20 +144,20 @@ describe HistoryPresenter do
       end
 
       context 'with `SUBSPECIES_OF` items' do
-        let(:object_protonym) { create :protonym }
+        let(:object_taxon) { create :species }
 
         let!(:item_1) do
           create :history_item, :subspecies_of, :with_2000_reference,
-            protonym: protonym, object_protonym: object_protonym
+            protonym: protonym, object_taxon: object_taxon
         end
         let!(:item_2) do
           create :history_item, :subspecies_of, :with_1758_reference,
-            protonym: protonym, object_protonym: object_protonym
+            protonym: protonym, object_taxon: object_taxon
         end
 
-        it 'groups them by `object_protonym`' do
+        it 'groups them by `object_taxon`' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Subspecies of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
+            "Subspecies of {tax #{object_taxon.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
           ]
         end
       end

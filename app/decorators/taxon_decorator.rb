@@ -6,6 +6,10 @@ class TaxonDecorator < Draper::Decorator
   ANTWEB_BASE_URL = "https://www.antweb.org/description.do?"
   GOOGLE_SCHOLAR_BASE_URL = "//scholar.google.com/scholar?"
 
+  def link_to_taxon
+    CatalogFormatter.link_to_taxon(taxon)
+  end
+
   def link_to_taxon_with_author_citation
     CatalogFormatter.link_to_taxon(taxon) << ' ' << taxon.author_citation.html_safe
   end

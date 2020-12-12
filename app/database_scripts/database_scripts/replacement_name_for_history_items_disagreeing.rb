@@ -7,7 +7,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.except_taxts.where("history_items.taxt LIKE 'Replacement name for {tax%'")
+      HistoryItem.taxts_only.where("history_items.taxt LIKE 'Replacement name for {tax%'")
     end
 
     def render
