@@ -90,15 +90,15 @@ describe HistoryPresenter do
         end
       end
 
-      context 'with `JUNIOR_SYNONYM` items' do
+      context 'with `JUNIOR_SYNONYM_OF` items' do
         let(:object_protonym) { create :protonym }
 
         let!(:item_1) do
-          create :history_item, :junior_synonym, :with_2000_reference,
+          create :history_item, :junior_synonym_of, :with_2000_reference,
             protonym: protonym, object_protonym: object_protonym
         end
         let!(:item_2) do
-          create :history_item, :junior_synonym, :with_1758_reference,
+          create :history_item, :junior_synonym_of, :with_1758_reference,
             protonym: protonym, object_protonym: object_protonym
         end
 
@@ -113,11 +113,11 @@ describe HistoryPresenter do
         let(:object_protonym) { create :protonym }
 
         let!(:item_1) do
-          create :history_item, :senior_synonym, :with_2000_reference,
+          create :history_item, :senior_synonym_of, :with_2000_reference,
             protonym: protonym, object_protonym: object_protonym
         end
         let!(:item_2) do
-          create :history_item, :senior_synonym, :with_1758_reference,
+          create :history_item, :senior_synonym_of, :with_1758_reference,
             protonym: protonym, object_protonym: object_protonym
         end
 
@@ -238,7 +238,7 @@ describe HistoryPresenter do
         let(:object_protonym) { create :protonym }
 
         let!(:item_1) do
-          create :history_item, :senior_synonym, protonym: protonym, object_protonym: object_protonym
+          create :history_item, :senior_synonym_of, protonym: protonym, object_protonym: object_protonym
         end
         let!(:item_2) { create :history_item, :form_descriptions, protonym: protonym }
 

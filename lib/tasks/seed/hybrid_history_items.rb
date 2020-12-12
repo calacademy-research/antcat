@@ -15,14 +15,14 @@ module Seed
     def call
       tatusia.history_items.destroy_all
 
-      tatusia.history_items.create! type: SENIOR_SYNONYM,
+      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         reference: ref_2016, pages: '1'
-      tatusia.history_items.create! type: SENIOR_SYNONYM,
+      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         reference: ref_2012, pages: '69'
 
-      tatusia.history_items.create! type: JUNIOR_SYNONYM,
+      tatusia.history_items.create! type: JUNIOR_SYNONYM_OF,
         object_protonym: fusca, reference: ref_2020, pages: '4'
 
       tatusia.history_items.create! type: TAXT, taxt: 'Old-style taxt'

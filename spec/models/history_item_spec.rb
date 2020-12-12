@@ -56,8 +56,8 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :object_protonym }
     end
 
-    context 'when `type` is `JUNIOR_SYNONYM`' do
-      subject { create :history_item, :junior_synonym }
+    context 'when `type` is `JUNIOR_SYNONYM_OF`' do
+      subject { create :history_item, :junior_synonym_of }
 
       it { is_expected.to validate_absence_of :taxt }
       it { is_expected.to validate_absence_of :subtype }
@@ -69,8 +69,8 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :object_protonym }
     end
 
-    context 'when `type` is `SENIOR_SYNONYM`' do
-      subject { create :history_item, :senior_synonym }
+    context 'when `type` is `SENIOR_SYNONYM_OF`' do
+      subject { create :history_item, :senior_synonym_of }
 
       it { is_expected.to validate_absence_of :taxt }
       it { is_expected.to validate_absence_of :subtype }
@@ -160,8 +160,8 @@ describe HistoryItem do
       end
     end
 
-    context 'when `type` is `SENIOR_SYNONYM`' do
-      let(:history_item) { create :history_item, :senior_synonym }
+    context 'when `type` is `SENIOR_SYNONYM_OF`' do
+      let(:history_item) { create :history_item, :senior_synonym_of }
 
       specify do
         expect(history_item.to_taxt).
@@ -169,8 +169,8 @@ describe HistoryItem do
       end
     end
 
-    context 'when `type` is `JUNIOR_SYNONYM`' do
-      let(:history_item) { create :history_item, :junior_synonym }
+    context 'when `type` is `JUNIOR_SYNONYM_OF`' do
+      let(:history_item) { create :history_item, :junior_synonym_of }
 
       specify do
         expect(history_item.to_taxt).

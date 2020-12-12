@@ -73,7 +73,7 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:object_protonym, :reference, :pages]
     },
-    JUNIOR_SYNONYM = 'JuniorSynonym' => {
+    JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
       type_label: 'Junior synonym of',
       ranks: Rank::ANY_RANK_GROUP,
 
@@ -88,7 +88,7 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:object_protonym, :reference, :pages]
     },
-    SENIOR_SYNONYM = 'SeniorSynonym' => {
+    SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
       type_label: 'Senior synonym of',
       ranks: Rank::ANY_RANK_GROUP,
 

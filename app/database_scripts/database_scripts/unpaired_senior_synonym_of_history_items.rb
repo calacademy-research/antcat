@@ -3,13 +3,13 @@
 module DatabaseScripts
   class UnpairedSeniorSynonymOfHistoryItems < DatabaseScript
     def results
-      HistoryItem.where(type: HistoryItem::SENIOR_SYNONYM).
+      HistoryItem.where(type: HistoryItem::SENIOR_SYNONYM_OF).
         joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL")
           LEFT OUTER JOIN protonyms ON protonyms.id = history_items.object_protonym_id
             LEFT OUTER JOIN history_items history_items_protonyms
             ON (
               history_items_protonyms.protonym_id = protonyms.id
-              AND history_items_protonyms.type = 'JuniorSynonym'
+              AND history_items_protonyms.type = 'JuniorSynonymOf'
             )
         SQL
     end
@@ -21,7 +21,7 @@ module DatabaseScripts
           taxt = history_item.to_taxt
           protonym = history_item.protonym
 
-          missing_fact = "SeniorSynonym history item is missing for #{history_item.object_protonym.decorate.link_to_protonym}"
+          missing_fact = "JuniorSynonymOf history item is missing for #{history_item.object_protonym.decorate.link_to_protonym}"
 
           [
             link_to(history_item.id, history_item_path(history_item)),
@@ -47,7 +47,7 @@ description: >
   as long as we have a lot of taxt-based history items.
 
 
-  Ultimately, `SeniorSynonym` and `JuniorSynonym` items will be merged.
+  Ultimately, `SeniorSynonymOf` and `JuniorSynonymOf` items will be merged.
 
 related_scripts:
   - UnpairedJuniorSynonymOfHistoryItems

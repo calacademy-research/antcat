@@ -76,7 +76,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::JUNIOR_SYNONYM
+        expect(service.identified_type).to eq HistoryItem::JUNIOR_SYNONYM_OF
       end
     end
 
@@ -85,7 +85,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::SENIOR_SYNONYM
+        expect(service.identified_type).to eq HistoryItem::SENIOR_SYNONYM_OF
       end
     end
   end

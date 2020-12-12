@@ -54,16 +54,16 @@ FactoryBot.define do
       with_object_protonym
     end
 
-    trait :senior_synonym do
-      type { HistoryItem::SENIOR_SYNONYM }
+    trait :senior_synonym_of do
+      type { HistoryItem::SENIOR_SYNONYM_OF }
 
       without_taxt
       with_reference
       with_object_protonym
     end
 
-    trait :junior_synonym do
-      type { HistoryItem::JUNIOR_SYNONYM }
+    trait :junior_synonym_of do
+      type { HistoryItem::JUNIOR_SYNONYM_OF }
 
       without_taxt
       with_reference
