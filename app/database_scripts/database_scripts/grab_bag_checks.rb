@@ -2,12 +2,17 @@
 
 module DatabaseScripts
   class GrabBagChecks < DatabaseScript
+    def empty?
+      results.none? { |res| !res[:ok?] }
+    end
+
     def results
       [
         all_subgenera_have_names_with_parentheses,
         all_protonyms_have_taxa_with_compatible_ranks,
         original_combination_ranks,
-        genus_protonym_names,
+        # Disabled because it was extracted into `GeneraWithNamesThatAreDifferentFromTheirProtonymsName`:
+        # genus_protonym_names,
         taxa_cleaned_name_check,
         name_count_checks,
         name_caches_sync
