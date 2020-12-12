@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_08_172516) do
+ActiveRecord::Schema.define(version: 2020_12_12_190339) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -90,7 +90,10 @@ ActiveRecord::Schema.define(version: 2020_12_08_172516) do
     t.integer "reference_id"
     t.string "pages"
     t.integer "object_protonym_id"
+    t.integer "object_taxon_id"
     t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
+    t.index ["object_protonym_id"], name: "ix_history_items__object_taxon_id"
+    t.index ["object_taxon_id"], name: "fk_history_items__object_taxon_id__taxa__id"
     t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
     t.index ["reference_id"], name: "ix_history_items__reference_id"
     t.index ["subtype"], name: "ix_history_items__subtype"
@@ -412,6 +415,7 @@ ActiveRecord::Schema.define(version: 2020_12_08_172516) do
   add_foreign_key "history_items", "protonyms", column: "object_protonym_id", name: "fk_history_items__object_protonym_id__protonyms__id"
   add_foreign_key "history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
   add_foreign_key "history_items", "references", name: "fk_history_items__reference_id__references__id"
+  add_foreign_key "history_items", "taxa", column: "object_taxon_id", name: "fk_history_items__object_taxon_id__taxa__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
   add_foreign_key "issues", "users", name: "fk_issues__user_id__users__id"
   add_foreign_key "protonyms", "citations", column: "authorship_id", name: "fk_protonyms__authorship_id__citations__id"

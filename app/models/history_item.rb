@@ -5,7 +5,7 @@ class HistoryItem < ApplicationRecord
   include Trackable
 
   TYPE_ATTRIBUTES = [
-    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :reference, :pages
+    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :object_taxon, :reference, :pages
   ]
   # [grep:history_type].
   TYPE_DEFINITIONS = {
@@ -142,6 +142,7 @@ class HistoryItem < ApplicationRecord
   belongs_to :protonym
   belongs_to :reference, optional: true
   belongs_to :object_protonym, optional: true, class_name: 'Protonym'
+  belongs_to :object_taxon, optional: true, class_name: 'Taxon'
 
   has_one :terminal_taxon, through: :protonym
   has_many :terminal_taxa, through: :protonym

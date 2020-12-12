@@ -112,6 +112,10 @@ FactoryBot.define do
       object_protonym factory: :protonym
     end
 
+    trait :with_object_taxon do
+      object_taxon factory: :family
+    end
+
     # Misc.
     trait :without_taxt do
       taxt { nil }

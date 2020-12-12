@@ -28,6 +28,7 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :reference }
       it { is_expected.to validate_absence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
@@ -41,6 +42,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `FORM_DESCRIPTIONS`' do
@@ -54,6 +56,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `COMBINATION_IN`' do
@@ -67,6 +70,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
@@ -80,6 +84,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `SENIOR_SYNONYM_OF`' do
@@ -93,6 +98,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `STATUS_AS_SPECIES`' do
@@ -106,6 +112,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
 
     context 'when `type` is `SUBSPECIES_OF`' do
@@ -119,6 +126,7 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
       it { is_expected.to validate_presence_of :object_protonym }
+      it { is_expected.to validate_absence_of :object_taxon }
     end
   end
 

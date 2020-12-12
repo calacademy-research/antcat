@@ -1,6 +1,7 @@
 -content_for :javascripts do
   =javascript_include_tag 'markdown_and_friends', 'taxt_editor'
   =javascript_include_tag 'reference_select'
+  =javascript_include_tag 'taxon_select'
   =javascript_include_tag 'protonym_select'
   =javascript_include_tag 'logged_in_only/history_item_form'
 
@@ -69,6 +70,14 @@
               %td.grow=f.protonym_select :object_protonym
               %td
                 %code object_protonym
+
+            %tr#type-specific-object-taxon.type-specific-section
+              %th.no-wrap
+                =f.label :object_taxon, id: 'type-label-object-taxon' do
+                  object_taxon_id [???]
+              %td.grow=f.taxon_select :object_taxon
+              %td
+                %code object_taxon
 
             %tr#type-specific-reference.type-specific-section
               %th.no-wrap

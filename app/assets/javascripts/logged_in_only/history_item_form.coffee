@@ -5,6 +5,7 @@ TYPE_SPECIFIC_TEXT_VALUE = '#type-specific-text-value'
 TYPE_SPECIFIC_REFERENCE = '#type-specific-reference'
 TYPE_SPECIFIC_PAGES = '#type-specific-pages'
 TYPE_SPECIFIC_OBJECT_PROTONYM = '#type-specific-object-protonym'
+TYPE_SPECIFIC_OBJECT_TAXON = '#type-specific-object-taxon'
 
 # Type labels.
 TYPE_LABEL_SUBTYPE = '#type-label-subtype'
@@ -13,6 +14,7 @@ TYPE_LABEL_TEXT_VALUE = '#type-label-text-value'
 TYPE_LABEL_REFERENCE = '#type-label-reference'
 TYPE_LABEL_PAGES = '#type-label-pages'
 TYPE_LABEL_OBJECT_PROTONYM = '#type-label-object-protonym'
+TYPE_LABEL_OBJECT_TAXON = '#type-label-object-taxon'
 
 # Type-specific inputs.
 TYPE_SELECT = '#history_item_type'
