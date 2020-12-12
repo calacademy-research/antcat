@@ -49,7 +49,7 @@ Feature: Compare revisions
     And I follow "History"
     Then I should see "This item does not have any previous revisions"
 
-  @javascript
+  @skip_ci @javascript
   Scenario: Comparing revisions with intermediate revisions
     Given there is a genus protonym "Atta"
     And I go to the protonym page for "Atta"

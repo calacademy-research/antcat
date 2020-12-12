@@ -30,9 +30,9 @@ if ENV['PRINT_FEATURE_NAME']
   end
 end
 
-if ENV["TRAVIS"]
+if ENV["CI"]
   Before "@skip_ci" do
-    message = "scenario disabled on Travis CI"
+    message = "scenario disabled on CI"
     $stdout.puts message.red
     pending message
   end
