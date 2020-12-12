@@ -69,8 +69,8 @@ describe HistoryItem do
 
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_presence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+      it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_presence_of :object_taxon }
     end
 
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
@@ -125,8 +125,8 @@ describe HistoryItem do
 
       it { is_expected.to validate_presence_of :reference }
       it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_presence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+      it { is_expected.to validate_absence_of :object_protonym }
+      it { is_expected.to validate_presence_of :object_taxon }
     end
   end
 

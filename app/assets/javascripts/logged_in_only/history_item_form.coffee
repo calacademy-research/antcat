@@ -67,8 +67,8 @@ onSelectType = (selectedType) ->
         [TYPE_SPECIFIC_SUBTYPE, TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       when 'CombinationIn'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Combination in"
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        $(TYPE_LABEL_OBJECT_TAXON).text "Combination in"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'JuniorSynonymOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Junior synonym of"
@@ -79,8 +79,8 @@ onSelectType = (selectedType) ->
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
       when 'SubspeciesOf'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Subspecies of"
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        $(TYPE_LABEL_OBJECT_TAXON).text "Subspecies of"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'StatusAsSpecies'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"

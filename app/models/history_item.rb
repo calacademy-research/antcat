@@ -63,15 +63,15 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::SPECIES_GROUP,
 
       group_order: 30,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'tax:', o.object_taxon_id] },
 
-      group_template: 'Combination in {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      group_template: 'Combination in {tax %<object_taxon_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_taxon, :reference, :pages]
     },
     JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
       type_label: 'Junior synonym of',
@@ -122,15 +122,15 @@ class HistoryItem < ApplicationRecord
       ranks: Rank::SPECIES_GROUP,
 
       group_order: 60,
-      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_key: ->(o) { [o.type, 'tax:', o.object_taxon_id] },
 
-      group_template: 'Subspecies of {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      group_template: 'Subspecies of {tax %<object_taxon_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_taxon, :reference, :pages]
     }
   }
   TYPES = TYPE_DEFINITIONS.keys
