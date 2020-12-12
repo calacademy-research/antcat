@@ -31,7 +31,7 @@
                 %td
                   =f.label :type do
                     Item type
-                %td=f.select :type, (HistoryItem::TYPE_DEFINITIONS.map { |type, definitions| [definitions[:type_label], type] })
+                %td=f.select :type, options_for_history_item_types(history_item.type)
 
         -# [grep:history_type].
         %table.table.unstriped

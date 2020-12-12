@@ -64,13 +64,25 @@ onSelectType = (selectedType) ->
 
         [TYPE_SPECIFIC_SUBTYPE, TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
-      when 'JuniorSynonym'
+      when 'CombinationIn'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Combination in"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+
+      when 'JuniorSynonymOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Junior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
-      when 'SeniorSynonym'
+      when 'SeniorSynonymOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+
+      when 'SubspeciesOf'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Subspecies of"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+
+      when 'StatusAsSpecies'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       else
         alert "unknown type: #{selectedType}"

@@ -90,7 +90,7 @@ describe HistoryItemsController do
       let(:object_protonym) { create :protonym }
       let(:history_item_params) do
         {
-          type: HistoryItem::JUNIOR_SYNONYM,
+          type: HistoryItem::JUNIOR_SYNONYM_OF,
           object_protonym_id: object_protonym.id,
           reference_id: reference.id,
           pages: '149'
@@ -103,7 +103,7 @@ describe HistoryItemsController do
         end.to change { HistoryItem.count }.by(1)
 
         history_item = HistoryItem.last
-        expect(history_item.type).to eq HistoryItem::JUNIOR_SYNONYM
+        expect(history_item.type).to eq HistoryItem::JUNIOR_SYNONYM_OF
         expect(history_item.taxt).to eq nil
         expect(history_item.reference).to eq reference
         expect(history_item.pages).to eq '149'

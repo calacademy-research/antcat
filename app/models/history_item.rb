@@ -11,35 +11,21 @@ class HistoryItem < ApplicationRecord
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
-      type_as_label: 'Taxt (freeform text) for {pro %<protonym_id>i}',
+      ranks: Rank::ANY_RANK_GROUP,
 
-      section_order: 999,
-      section_group_key: ->(o) { [o.type, o.id] },
+      group_order: 999,
+      group_key: ->(o) { o.id },
 
       group_template: '%<item_taxts>s',
 
       validates_presence_of: [:taxt]
     },
-    FORM_DESCRIPTIONS = 'FormDescriptions' => {
-      type_label: 'Form descriptions (additional)',
-      type_as_label: 'Form descriptions (additional) for {pro %<protonym_id>i}',
-
-      section_order: 1,
-      section_group_key: ->(o) { o.type },
-
-      group_template: '%<item_taxts>s.',
-
-      item_template: '%<citation>s (%<forms>s)',
-      item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
-
-      validates_presence_of: [:text_value, :reference, :pages]
-    },
     TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
       type_label: 'Type specimen designation',
-      type_as_label: 'Type specimen designation for {pro %<protonym_id>i}',
+      ranks: Rank::SPECIES_GROUP,
 
-      section_order: 2,
-      section_group_key: ->(o) { [o.type, o.id] },
+      group_order: 10,
+      group_key: ->(o) { o.id },
 
       group_template: '%<designation_type>s: %<item_taxts>s.',
       group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
@@ -55,14 +41,44 @@ class HistoryItem < ApplicationRecord
         ['Lectotype designation', LECTOTYPE_DESIGNATION],
         ['Neotype designation', NEOTYPE_DESIGNATION]
       ],
+
       validates_presence_of: [:subtype, :reference, :pages]
     },
-    JUNIOR_SYNONYM = 'JuniorSynonym' => {
-      type_label: 'Junior synonym of',
-      type_as_label: '{pro %<protonym_id>i} as junior synonym of ...',
+    FORM_DESCRIPTIONS = 'FormDescriptions' => {
+      type_label: 'Form descriptions (additional)',
+      ranks: Rank::SPECIES_GROUP,
 
-      section_order: 6,
-      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_order: 20,
+      group_key: ->(o) { o.type },
+
+      group_template: '%<item_taxts>s.',
+
+      item_template: '%<citation>s (%<forms>s)',
+      item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
+
+      validates_presence_of: [:text_value, :reference, :pages]
+    },
+    COMBINATION_IN = 'CombinationIn' => {
+      type_label: 'Combination in',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 30,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Combination in {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    },
+    JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
+      type_label: 'Junior synonym of',
+      ranks: Rank::ANY_RANK_GROUP,
+
+      group_order: 40,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
 
       group_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },
@@ -72,14 +88,43 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:object_protonym, :reference, :pages]
     },
-    SENIOR_SYNONYM = 'SeniorSynonym' => {
+    SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
       type_label: 'Senior synonym of',
-      type_as_label: '{pro %<protonym_id>i} as senior synonym of ...',
+      ranks: Rank::ANY_RANK_GROUP,
 
-      section_order: 5,
-      section_group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+      group_order: 45,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
 
       group_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
+      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:object_protonym, :reference, :pages]
+    },
+    STATUS_AS_SPECIES = 'StatusAsSpecies' => {
+      type_label: 'Status as species',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 0,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Status as species: %<item_taxts>s.',
+
+      item_template: '%<citation>s',
+      item_template_vars: ->(o) { { citation: o.citation } },
+
+      validates_presence_of: [:reference, :pages]
+    },
+    SUBSPECIES_OF = 'SubspeciesOf' => {
+      type_label: 'Subspecies of',
+      ranks: Rank::SPECIES_GROUP,
+
+      group_order: 60,
+      group_key: ->(o) { [o.type, 'pro:', o.object_protonym_id] },
+
+      group_template: 'Subspecies of {prott %<object_protonym_id>i}: %<item_taxts>s.',
       group_template_vars: ->(o) { o.slice(:object_protonym_id) },
 
       item_template: '%<citation>s',
@@ -161,10 +206,6 @@ class HistoryItem < ApplicationRecord
 
   def type_label
     definitions.fetch(:type_label)
-  end
-
-  def type_label_to_taxt
-    definitions.fetch(:type_as_label) % attributes.slice('protonym_id').symbolize_keys
   end
 
   def underscored_type

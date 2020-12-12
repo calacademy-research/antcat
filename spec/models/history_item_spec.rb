@@ -30,19 +30,6 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :object_protonym }
     end
 
-    context 'when `type` is `FORM_DESCRIPTIONS`' do
-      subject { create :history_item, :form_descriptions }
-
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_presence_of :text_value }
-
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-    end
-
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
       subject { create :history_item, :type_specimen_designation }
 
@@ -56,8 +43,21 @@ describe HistoryItem do
       it { is_expected.to validate_absence_of :object_protonym }
     end
 
-    context 'when `type` is `JUNIOR_SYNONYM`' do
-      subject { create :history_item, :junior_synonym }
+    context 'when `type` is `FORM_DESCRIPTIONS`' do
+      subject { create :history_item, :form_descriptions }
+
+      it { is_expected.to validate_absence_of :taxt }
+      it { is_expected.to validate_absence_of :subtype }
+      it { is_expected.to validate_absence_of :picked_value }
+      it { is_expected.to validate_presence_of :text_value }
+
+      it { is_expected.to validate_presence_of :reference }
+      it { is_expected.to validate_presence_of :pages }
+      it { is_expected.to validate_absence_of :object_protonym }
+    end
+
+    context 'when `type` is `JUNIOR_SYNONYM_OF`' do
+      subject { create :history_item, :junior_synonym_of }
 
       it { is_expected.to validate_absence_of :taxt }
       it { is_expected.to validate_absence_of :subtype }
@@ -69,8 +69,8 @@ describe HistoryItem do
       it { is_expected.to validate_presence_of :object_protonym }
     end
 
-    context 'when `type` is `SENIOR_SYNONYM`' do
-      subject { create :history_item, :senior_synonym }
+    context 'when `type` is `SENIOR_SYNONYM_OF`' do
+      subject { create :history_item, :senior_synonym_of }
 
       it { is_expected.to validate_absence_of :taxt }
       it { is_expected.to validate_absence_of :subtype }
@@ -88,6 +88,24 @@ describe HistoryItem do
 
     it_behaves_like "a taxt column with cleanup", :taxt do
       subject { build :history_item }
+    end
+  end
+
+  describe 'TYPE_DEFINITIONS' do
+    described_class::TYPE_DEFINITIONS.each do |type, definition|
+      describe "type definition for #{type}" do
+        it 'has all required attributes' do
+          expect(definition[:type_label]).to be_present
+          expect(definition[:ranks]).to be_present
+
+          expect(definition[:group_order]).to be_present
+          expect(definition[:group_key]).to be_present
+
+          expect(definition[:group_template]).to be_present
+
+          expect(definition[:validates_presence_of]).to be_present
+        end
+      end
     end
   end
 
@@ -114,16 +132,8 @@ describe HistoryItem do
   end
 
   describe '#to_taxt' do
-    context 'when `type` is `FORM_DESCRIPTIONS`' do
-      let(:history_item) { create :history_item, :form_descriptions, text_value: 'q.' }
-
-      specify do
-        expect(history_item.to_taxt).to eq "#{history_item.citation_taxt} (q.)."
-      end
-    end
-
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
-      context 'when `picked_value` is `LECTOTYPE_DESIGNATION`' do
+      context 'when `subtype` is `LECTOTYPE_DESIGNATION`' do
         let(:history_item) { create :history_item, :lectotype_designation }
 
         specify do
@@ -132,7 +142,7 @@ describe HistoryItem do
         end
       end
 
-      context 'when `picked_value` is `NEOTYPE_DESIGNATION`' do
+      context 'when `subtype` is `NEOTYPE_DESIGNATION`' do
         let(:history_item) { create :history_item, :neotype_designation }
 
         specify do
@@ -142,21 +152,29 @@ describe HistoryItem do
       end
     end
 
-    context 'when `type` is `SENIOR_SYNONYM`' do
-      let(:history_item) { create :history_item, :senior_synonym }
+    context 'when `type` is `FORM_DESCRIPTIONS`' do
+      let(:history_item) { create :history_item, :form_descriptions, text_value: 'q.' }
 
       specify do
-        expect(history_item.to_taxt).
-          to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        expect(history_item.to_taxt).to eq "#{history_item.citation_taxt} (q.)."
       end
     end
 
-    context 'when `type` is `JUNIOR_SYNONYM`' do
-      let(:history_item) { create :history_item, :junior_synonym }
+    context 'when `type` is `JUNIOR_SYNONYM_OF`' do
+      let(:history_item) { create :history_item, :junior_synonym_of }
 
       specify do
         expect(history_item.to_taxt).
           to eq "Junior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `SENIOR_SYNONYM_OF`' do
+      let(:history_item) { create :history_item, :senior_synonym_of }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
       end
     end
   end

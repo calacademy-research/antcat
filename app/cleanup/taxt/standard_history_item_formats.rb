@@ -57,13 +57,13 @@ module Taxt
       },
       {
         regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::JUNIOR_SYNONYM,
-        type: HistoryItem::JUNIOR_SYNONYM
+        name: HistoryItem::JUNIOR_SYNONYM_OF,
+        type: HistoryItem::JUNIOR_SYNONYM_OF
       },
       {
         regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::SENIOR_SYNONYM,
-        type: HistoryItem::SENIOR_SYNONYM
+        name: HistoryItem::SENIOR_SYNONYM_OF,
+        type: HistoryItem::SENIOR_SYNONYM_OF
       }
     ]
 

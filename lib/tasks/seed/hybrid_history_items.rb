@@ -15,14 +15,14 @@ module Seed
     def call
       tatusia.history_items.destroy_all
 
-      tatusia.history_items.create! type: SENIOR_SYNONYM,
+      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         reference: ref_2016, pages: '1'
-      tatusia.history_items.create! type: SENIOR_SYNONYM,
+      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         reference: ref_2012, pages: '69'
 
-      tatusia.history_items.create! type: JUNIOR_SYNONYM,
+      tatusia.history_items.create! type: JUNIOR_SYNONYM_OF,
         object_protonym: fusca, reference: ref_2020, pages: '4'
 
       tatusia.history_items.create! type: TAXT, taxt: 'Old-style taxt'
@@ -39,6 +39,15 @@ module Seed
       tatusia.history_items.create! type: TYPE_SPECIMEN_DESIGNATION,
         subtype: HistoryItem::NEOTYPE_DESIGNATION,
         reference: ref_2016, pages: '559'
+
+      tatusia.history_items.create! type: COMBINATION_IN,
+        object_protonym: lasius, reference: ref_2020, pages: '7'
+
+      tatusia.history_items.create! type: SUBSPECIES_OF,
+        object_protonym: fusca, reference: ref_2020, pages: '12'
+
+      tatusia.history_items.create! type: STATUS_AS_SPECIES,
+        reference: ref_2020, pages: '15'
     end
 
     private
@@ -73,6 +82,10 @@ module Seed
 
       def fusca
         @_fusca ||= Taxon.find_by!(name_cache: 'Formica fusca').protonym
+      end
+
+      def lasius
+        @_lasius ||= Taxon.find_by!(name_cache: 'Lasius').protonym
       end
   end
 end
