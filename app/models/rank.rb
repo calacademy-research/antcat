@@ -14,9 +14,12 @@ class Rank
   ]
 
   ### Ranks in taxonomy, generally true.
-  FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE]
-  GENUS_GROUP_NAMES = [GENUS, SUBGENUS]
-  SPECIES_GROUP_NAMES = [SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  RANKS_BY_GROUP = {
+    FAMILY => FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE],
+    GENUS => GENUS_GROUP_NAMES = [GENUS, SUBGENUS],
+    SPECIES => SPECIES_GROUP_NAMES = [SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  }
+  GROUP_RANKS = RANKS_BY_GROUP.each_with_object({}) { |(k, v), memo| v.each { |vv| memo[vv] = k } }
 
   ABOVE_GENUS = FAMILY_GROUP_NAMES
   GENUS_AND_BELOW = GENUS_GROUP_NAMES + SPECIES_GROUP_NAMES
@@ -54,6 +57,10 @@ class Rank
 
     def single_word_name? type
       type.in? AntCatSpecific::SINGLE_WORD_TYPES
+    end
+
+    def group_rank type
+      GROUP_RANKS[type]
     end
 
     # See https://en.wikipedia.org/wiki/Taxonomic_rank#Ranks_in_zoology

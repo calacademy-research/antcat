@@ -61,8 +61,8 @@ describe Taxa::Statistics::FetchStatistics do
 
       before do
         create :tribe, subfamily: subfamily
-        create :genus, :synonym, subfamily: subfamily
         genus = create :genus, subfamily: subfamily
+        create :genus, :synonym, subfamily: subfamily, current_taxon: genus
         2.times { create :species, genus: genus, subfamily: subfamily }
       end
 
@@ -81,8 +81,8 @@ describe Taxa::Statistics::FetchStatistics do
 
       specify do
         genus = create :genus, tribe: tribe
-        create :species, genus: genus
-        create :species, :synonym, genus: genus
+        species = create :species, genus: genus
+        create :species, :synonym, genus: genus, current_taxon: species
 
         expect(described_class[tribe]).to eq extant: {
           genera: { "valid" => 1 },

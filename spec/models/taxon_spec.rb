@@ -115,6 +115,19 @@ describe Taxon do
           end
         end
       end
+
+      describe 'matching ranks' do
+        let(:family) { build_stubbed :family }
+        let(:genus) { build_stubbed :genus }
+        let(:taxon) { build_stubbed :family, :synonym, current_taxon: family }
+
+        it 'must have the same rank-group as its `current_taxon`' do
+          expect { taxon.current_taxon = genus }.to change { taxon.valid? }.to(false)
+
+          expect(taxon.errors.where(:current_taxon).map(&:message)).
+            to include("must be of same rank as taxon")
+        end
+      end
     end
 
     describe "#ensure_correct_name_type" do

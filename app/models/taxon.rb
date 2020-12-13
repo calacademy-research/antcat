@@ -140,6 +140,14 @@ class Taxon < ApplicationRecord
       elsif Status.requires_current_taxon?(status) && !current_taxon
         errors.add :current_taxon, "must be set for #{Status.plural(status)}"
       end
+
+      validate_current_taxon_rank
+    end
+
+    def validate_current_taxon_rank
+      return unless current_taxon
+      return if Rank.group_rank(type) == Rank.group_rank(current_taxon.type)
+      errors.add :current_taxon, "must be of same rank as taxon"
     end
 
     def ensure_correct_name_type
