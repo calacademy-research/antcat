@@ -2,7 +2,7 @@ Feature: Manage protonyms
   Background:
     Given I log in as a helper editor
 
-  @search @javascript
+  @skip_ci @search @javascript
   Scenario: Adding a protonym with a type name
     Given there is a genus "Atta"
     And these references exist
