@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Rank
-  SORTED_TYPES = [
+  TYPES = [
     FAMILY          = 'Family',
     SUBFAMILY       = 'Subfamily',
     TRIBE           = 'Tribe',
@@ -12,12 +12,6 @@ class Rank
     SUBSPECIES      = 'Subspecies',
     INFRASUBSPECIES = 'Infrasubspecies'
   ]
-  TYPES = SORTED_TYPES
-
-  ANY_RANK_GROUP = 'Any/all rank (-groups)'
-  FAMILY_GROUP = 'Family-group'
-  GENUS_GROUP = 'Genus-group'
-  SPECIES_GROUP = 'Species-group'
 
   ### Ranks in taxonomy, generally true.
   FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE]
@@ -30,7 +24,7 @@ class Rank
 
   CAN_HAVE_TYPE_TAXON_TYPES = ABOVE_SPECIES
   CAN_BE_A_COMBINATION_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
-  ITALIC_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  ITALIC_TYPES = GENUS_AND_BELOW
 
   UNINOMIAL = ABOVE_SPECIES
   BINOMIAL = [SPECIES]
