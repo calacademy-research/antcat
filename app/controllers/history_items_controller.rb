@@ -23,7 +23,7 @@ class HistoryItemsController < ApplicationController
 
   def new
     @protonym = find_protonym
-    @history_item = @protonym.history_items.new
+    @history_item = @protonym.history_items.new(position: params[:position])
   end
 
   def create
@@ -94,7 +94,7 @@ class HistoryItemsController < ApplicationController
 
     def history_item_params
       params.require(:history_item).permit(
-        :taxt, :rank, :type,
+        :taxt, :rank, :position, :type,
         :subtype, :picked_value, :text_value,
         :reference_id, :pages, :object_protonym_id, :object_taxon_id
       )
