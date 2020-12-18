@@ -54,3 +54,8 @@ crumb :move_items_to do |taxon, to_taxon|
   link "to #{to_taxon.name_with_fossil}".html_safe, taxa_move_items_path(taxon, to_taxon_id: to_taxon.id)
   parent :move_items, taxon
 end
+
+crumb :reorder_reference_sections do |taxon|
+  link "Reorder reference sections", taxa_reorder_reference_sections_path(taxon)
+  parent :edit_taxon, taxon
+end

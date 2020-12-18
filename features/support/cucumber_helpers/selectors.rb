@@ -37,7 +37,7 @@ module CucumberHelpers
 
       # Edit reference sections.
       when 'the add reference section button'
-        "#add-reference-section-button"
+        "#add-reference-section-button-test-hook"
       when 'the edit reference section button'
         "#references-section a.taxt-editor-edit-button"
       when 'the cancel reference section button'
