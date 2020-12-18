@@ -14,7 +14,7 @@
     .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
       %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
         -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-          %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:display]
+          %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 
         =render "taxon_browser/tab", tab: tab, taxon_browser_presenter: taxon_browser_presenter
 

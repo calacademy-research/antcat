@@ -4,13 +4,13 @@
 
 module TaxonBrowser
   class Browser
-    attr_reader :display
+    attr_reader :view
     attr_accessor :tabs
 
-    def initialize taxon, show_invalid, display
+    def initialize taxon, show_invalid, view
       @taxon = taxon
       @show_invalid = show_invalid
-      @display = default_or_display display
+      @view = default_or_view view
 
       setup_tabs
     end
@@ -29,12 +29,12 @@ module TaxonBrowser
 
     private
 
-      def default_or_display display
+      def default_or_view view
         case @taxon
-        when Subfamily then Tab::ALL_GENERA_IN_SUBFAMILY if display.blank?
+        when Subfamily then Tab::ALL_GENERA_IN_SUBFAMILY if view.blank?
         when Subtribe  then Tab::SUBTRIBES_IN_PARENT_TRIBE
         when Subgenus  then Tab::SUBGENERA_IN_PARENT_GENUS
-        end || display
+        end || view
       end
 
       def setup_tabs
@@ -42,7 +42,7 @@ module TaxonBrowser
           Tabs::TaxonTab.new taxon, self
         end
 
-        extra_tab = Tabs::ExtraTab.create @taxon, @display, self
+        extra_tab = Tabs::ExtraTab.create @taxon, @view, self
         tabs << extra_tab if extra_tab
       end
 

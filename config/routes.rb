@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     get "random", to: "random#show"
     get "fix_random", to: "fix_random#show"
     resource :search, only: :show
-    resource :toggle_display, only: :update
+    resource :toggle_view, only: :update
     resource :autocomplete, only: :show
   end
   get 'catalog/:id' => 'catalog#show', as: :catalog

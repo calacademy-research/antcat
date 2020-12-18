@@ -22,7 +22,7 @@ module TaxonBrowser
       SPECIES_WITHOUT_SUBGENUS    = :species_without_subgenus
     ]
 
-    delegate :display, :selected_in_tab?, :tab_open?, :show_invalid?, to: :taxon_browser
+    delegate :view, :selected_in_tab?, :tab_open?, :show_invalid?, to: :taxon_browser
 
     def initialize taxa_in_tab, taxon_browser
       @taxon_browser = taxon_browser

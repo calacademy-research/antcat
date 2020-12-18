@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Catalog
-  class ToggleDisplaysController < ApplicationController
+  class ToggleViewsController < ApplicationController
     VALID_ONLY = 'valid_only'
     VALID_AND_INVALID = 'valid_and_invalid'
 

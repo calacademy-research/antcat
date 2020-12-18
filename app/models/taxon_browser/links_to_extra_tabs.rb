@@ -7,8 +7,8 @@ module TaxonBrowser
     attr_private_initialize :taxon
 
     def call
-      links_to_extra_tabs.map do |(label, display)|
-        { label: label, display: display }
+      links_to_extra_tabs.map do |(label, view)|
+        { label: label, view: view }
       end
     end
 

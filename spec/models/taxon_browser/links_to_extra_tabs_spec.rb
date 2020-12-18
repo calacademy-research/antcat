@@ -13,8 +13,8 @@ describe TaxonBrowser::LinksToExtraTabs do
         specify do
           expect(described_class[taxon]).to eq(
             [
-              { label: "All genera", display: TaxonBrowser::Tab::ALL_GENERA_IN_FAMILY },
-              { label: "Incertae sedis", display: TaxonBrowser::Tab::INCERTAE_SEDIS_IN_FAMILY }
+              { label: "All genera", view: TaxonBrowser::Tab::ALL_GENERA_IN_FAMILY },
+              { label: "Incertae sedis", view: TaxonBrowser::Tab::INCERTAE_SEDIS_IN_FAMILY }
             ]
           )
         end
@@ -30,9 +30,9 @@ describe TaxonBrowser::LinksToExtraTabs do
         specify do
           expect(described_class[taxon]).to eq(
             [
-              { label: "All genera", display: TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY },
-              { label: "Without tribe", display: TaxonBrowser::Tab::GENERA_WITHOUT_TRIBE },
-              { label: "Incertae sedis", display: TaxonBrowser::Tab::INCERTAE_SEDIS_IN_SUBFAMILY }
+              { label: "All genera", view: TaxonBrowser::Tab::ALL_GENERA_IN_SUBFAMILY },
+              { label: "Without tribe", view: TaxonBrowser::Tab::GENERA_WITHOUT_TRIBE },
+              { label: "Incertae sedis", view: TaxonBrowser::Tab::INCERTAE_SEDIS_IN_SUBFAMILY }
             ]
           )
         end
@@ -46,7 +46,7 @@ describe TaxonBrowser::LinksToExtraTabs do
         specify do
           expect(described_class[taxon]).to eq(
             [
-              { label: "All taxa", display: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS }
+              { label: "All taxa", view: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS }
             ]
           )
         end
@@ -58,9 +58,9 @@ describe TaxonBrowser::LinksToExtraTabs do
         specify do
           expect(described_class[taxon]).to eq(
             [
-              { label: "All taxa", display: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS },
-              { label: "Subgenera", display: TaxonBrowser::Tab::SUBGENERA_IN_GENUS },
-              { label: "Without subgenus", display: TaxonBrowser::Tab::SPECIES_WITHOUT_SUBGENUS }
+              { label: "All taxa", view: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS },
+              { label: "Subgenera", view: TaxonBrowser::Tab::SUBGENERA_IN_GENUS },
+              { label: "Without subgenus", view: TaxonBrowser::Tab::SPECIES_WITHOUT_SUBGENUS }
             ]
           )
         end
@@ -76,7 +76,7 @@ describe TaxonBrowser::LinksToExtraTabs do
         specify do
           expect(described_class[taxon]).to eq(
             [
-              { label: "Subtribes", display: TaxonBrowser::Tab::SUBTRIBES_IN_TRIBE }
+              { label: "Subtribes", view: TaxonBrowser::Tab::SUBTRIBES_IN_TRIBE }
             ]
           )
         end
