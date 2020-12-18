@@ -114,7 +114,7 @@
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
 
         -if user_is_at_least_helper?
-          =link_to "Add history item", new_protonym_history_item_path(@protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
+          =link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
 
       -# TODO: Pass gender from protonym once it has been moved from `Name`s belonging to taxa.
       =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil

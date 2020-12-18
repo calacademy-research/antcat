@@ -4,7 +4,7 @@
   %h5
     -if selected
       Revision as of
-      =l selected.updated_at, format: :time_and_pretty
+      =l selected.updated_at, format: :time_with_full_date_in_words
     -else
       -if most_recent.persisted?
         Current version
@@ -19,7 +19,7 @@
   -if diff_with
     %h5.margin-top
       Revision as of
-      =l diff_with.updated_at, format: :time_and_pretty
+      =l diff_with.updated_at, format: :time_with_full_date_in_words
       (older)
     .callout.make-red.margin-bottom
       =preserve do
