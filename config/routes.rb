@@ -102,7 +102,7 @@ Rails.application.routes.draw do
       resource :what_links_here, only: :show
       resource :soft_validations, only: :show
       resource :hover_preview, only: :show
-      resource :reorder_history_items, only: [:create]
+      resource :reorder_history_items, only: [:show, :create]
     end
   end
   namespace :protonyms do

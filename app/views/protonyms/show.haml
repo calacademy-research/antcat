@@ -17,6 +17,7 @@
       %ul.no-bullet
         -if user_is_at_least_helper?
           %li=link_to "Move items", new_protonym_move_items_path(@protonym), class: "btn-normal"
+          %li=link_to "Reorder history item", protonym_reorder_history_items_path(@protonym), class: "btn-normal"
         %li=link_to "Soft validations", protonym_soft_validations_path(@protonym), class: "btn-normal"
         %li=activities_link_for_trackable @protonym
 
@@ -149,7 +150,5 @@
     =javascript_include_tag 'reference_select'
     =javascript_include_tag 'taxon_select'
     =javascript_include_tag 'protonym_select'
-    =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
-    =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym

@@ -1,0 +1,25 @@
+-title "Reorder history items"
+-breadcrumb :reorder_history_items, @protonym
+
+-content_for :javascripts do
+  =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable', 'reorder_items'
+
+%p.margin-bottom Drag and drop history items to reorder them.
+
+-if @protonym.history_items.blank?
+  %p This protonym does not have any history items.
+-else
+  =form_with url: protonym_reorder_history_items_path, id: 'reorder-form' do |f|
+    =f.hidden_field :new_order, value: @protonym.history_items.pluck(:id).join(','), id: 'new-order'
+
+    %ol#sortable
+      -@protonym.history_items.each do |history_item|
+        %li.sortable-item.history-item{id: history_item.id, class: ["#{history_item.underscored_type}-history-item"]}
+          %small.logged-in-only-gray-bold-notice=history_item.underscored_type
+          -if history_item.rank?
+            %small.bold-notice #{history_item.rank}-only item
+          %br
+          =Detax[history_item.to_taxt]
+          %hr
+
+    =f.button "Reorder", class: "btn-saves"

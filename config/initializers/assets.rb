@@ -33,6 +33,7 @@ Rails.application.config.assets.precompile += %w[
   locality_autocompletion.js
   protonym_select.js
   reference_select.js
+  reorder_items.js
   revision_comparer.js
   sortable_tables.js
   taxon_select.js
@@ -42,7 +43,6 @@ Rails.application.config.assets.precompile += %w[
   controllers/authors/merges.js
   controllers/catalog/search/authors_autocompletion.js
   controllers/feedbacks/show.js
-  controllers/protonyms/reorder_history_items.js
   controllers/references/form.js
   controllers/taxa/copy_name_to_protonym.js
   controllers/taxa/move_items/select_checkboxes.js
