@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_12_190339) do
+ActiveRecord::Schema.define(version: 2020_12_18_203312) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.string "edit_summary"
     t.boolean "automated_edit", default: false, null: false
     t.string "request_uuid"
-    t.index ["request_uuid"], name: "index_activities_on_request_uuid"
-    t.index ["trackable_id", "trackable_type"], name: "index_activities_on_trackable_id_and_trackable_type"
-    t.index ["user_id"], name: "index_activities_on_user_id"
+    t.index ["request_uuid"], name: "ix_activities__request_uuid"
+    t.index ["trackable_id", "trackable_type"], name: "ix_activities__trackable_id__trackable_type"
+    t.index ["user_id"], name: "ix_activities__user_id"
   end
 
   create_table "author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -33,9 +33,9 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "author_id", null: false
-    t.index ["author_id"], name: "author_names_author_id_idx"
-    t.index ["created_at", "name"], name: "author_created_at_name"
-    t.index ["name"], name: "author_name_idx"
+    t.index ["author_id"], name: "ix_author_names__author_id"
+    t.index ["created_at", "name"], name: "ix_author_names__created_at__name"
+    t.index ["name"], name: "ix_author_names__name"
   end
 
   create_table "authors", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -48,7 +48,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.string "pages", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["reference_id"], name: "index_authorships_on_reference_id"
+    t.index ["reference_id"], name: "ix_citations__reference_id"
   end
 
   create_table "comments", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "edited", default: false, null: false
-    t.index ["commentable_id", "commentable_type"], name: "index_comments_on_commentable_id_and_commentable_type"
-    t.index ["user_id"], name: "index_comments_on_user_id"
+    t.index ["commentable_id", "commentable_type"], name: "ix_comments__commentable_id__commentable_type"
+    t.index ["user_id"], name: "ix_comments__user_id"
   end
 
   create_table "feedbacks", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
-    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+    t.index ["user_id"], name: "ix_feedbacks__user_id"
   end
 
   create_table "history_items", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -92,9 +92,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.integer "object_protonym_id"
     t.integer "object_taxon_id"
     t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
-    t.index ["object_protonym_id"], name: "ix_history_items__object_taxon_id"
-    t.index ["object_taxon_id"], name: "fk_history_items__object_taxon_id__taxa__id"
-    t.index ["protonym_id"], name: "ix_taxon_history_items__protonym_id"
+    t.index ["object_taxon_id"], name: "ix_history_items__object_taxon_id__taxa__id"
+    t.index ["protonym_id"], name: "ix_history_items__protonym_id"
     t.index ["reference_id"], name: "ix_history_items__reference_id"
     t.index ["subtype"], name: "ix_history_items__subtype"
     t.index ["type"], name: "ix_history_items__type"
@@ -106,7 +105,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "grscicoll_identifier"
-    t.index ["abbreviation"], name: "index_institutions_on_abbreviation", unique: true
+    t.index ["abbreviation"], name: "ux_institutions__abbreviation", unique: true
   end
 
   create_table "issues", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -118,8 +117,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "updated_at", null: false
     t.boolean "open", default: true, null: false
     t.boolean "help_wanted", default: false, null: false
-    t.index ["closer_id"], name: "index_issues_on_closer_id"
-    t.index ["user_id"], name: "index_issues_on_user_id"
+    t.index ["closer_id"], name: "ix_issues__closer_id"
+    t.index ["user_id"], name: "ix_issues__user_id"
   end
 
   create_table "journals", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -138,8 +137,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.string "gender"
     t.string "cleaned_name", null: false
     t.boolean "non_conforming", default: false, null: false
-    t.index ["id", "type"], name: "index_names_on_id_and_type"
-    t.index ["name"], name: "name_name_index"
+    t.index ["id", "type"], name: "ix_names__id__type"
+    t.index ["name"], name: "ix_names__name"
   end
 
   create_table "notifications", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -151,9 +150,9 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.string "reason", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["attached_type", "attached_id"], name: "index_notifications_on_attached_type_and_attached_id"
-    t.index ["notifier_id"], name: "index_notifications_on_notifier_id"
-    t.index ["user_id"], name: "index_notifications_on_user_id"
+    t.index ["attached_type", "attached_id"], name: "ix_notifications__attached_type__attached_id"
+    t.index ["notifier_id"], name: "ix_notifications__notifier_id"
+    t.index ["user_id"], name: "ix_notifications__user_id"
   end
 
   create_table "protonyms", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -181,9 +180,9 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.boolean "ichnotaxon", default: false, null: false
     t.text "etymology_taxt"
     t.string "gender_agreement_type"
-    t.index ["authorship_id"], name: "index_protonyms_on_authorship_id"
-    t.index ["name_id"], name: "protonyms_name_id_idx"
-    t.index ["type_name_id"], name: "index_protonyms_on_type_name_id", unique: true
+    t.index ["authorship_id"], name: "ix_protonyms__authorship_id"
+    t.index ["name_id"], name: "ix_protonyms__name_id"
+    t.index ["type_name_id"], name: "ux_protonyms__type_name_id", unique: true
   end
 
   create_table "publishers", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -192,7 +191,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "updated_at", null: false
     t.string "place", null: false
     t.index ["name", "place"], name: "ux_publishers__name__place", unique: true
-    t.index ["name"], name: "publishers_name_idx"
+    t.index ["name"], name: "ix_publishers__name"
   end
 
   create_table "read_marks", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -201,7 +200,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.integer "reader_id"
     t.string "reader_type", null: false
     t.datetime "timestamp"
-    t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "read_marks_reader_readable_index"
+    t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "ix_x_read_marks__reader_readable_index"
   end
 
   create_table "reference_author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -210,9 +209,9 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "position", null: false
-    t.index ["author_name_id"], name: "author_participations_author_id_idx"
-    t.index ["reference_id", "position"], name: "author_participations_reference_id_position_idx"
-    t.index ["reference_id"], name: "author_participations_reference_id_idx"
+    t.index ["author_name_id"], name: "ix_reference_author_names__author_name_id"
+    t.index ["reference_id", "position"], name: "ix_reference_author_names__reference_id__position"
+    t.index ["reference_id"], name: "ix_reference_author_names__reference_id"
   end
 
   create_table "reference_documents", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -222,8 +221,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "updated_at", null: false
     t.integer "reference_id"
     t.boolean "public"
-    t.index ["reference_id"], name: "documents_reference_id_idx"
-    t.index ["reference_id"], name: "index_reference_documents_on_reference_id", unique: true
+    t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
 
   create_table "reference_sections", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -234,7 +232,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "subtitle_taxt"
-    t.index ["taxon_id", "position"], name: "index_reference_sections_on_taxon_id_and_position"
+    t.index ["taxon_id", "position"], name: "ix_reference_sections__taxon_id__position"
   end
 
   create_table "references", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -263,13 +261,13 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.boolean "online_early", default: false, null: false
     t.string "stated_year"
     t.string "year_suffix", limit: 2
-    t.index ["author_names_string_cache"], name: "references_author_names_string_citation_year_idx", length: 255
-    t.index ["created_at"], name: "references_created_at_idx"
-    t.index ["id", "type"], name: "index_references_on_id_and_type"
-    t.index ["journal_id"], name: "references_journal_id_idx"
-    t.index ["nesting_reference_id"], name: "references_nested_reference_id_idx"
-    t.index ["publisher_id"], name: "references_publisher_id_idx"
-    t.index ["updated_at"], name: "references_updated_at_idx"
+    t.index ["author_names_string_cache"], name: "ix_x_references__author_names_string_cache", length: 255
+    t.index ["created_at"], name: "ix_references__created_at"
+    t.index ["id", "type"], name: "ix_references__id__type"
+    t.index ["journal_id"], name: "ix_references__journal_id"
+    t.index ["nesting_reference_id"], name: "ix_references__nesting_reference_id"
+    t.index ["publisher_id"], name: "ix_references__publisher_id"
+    t.index ["updated_at"], name: "ix_references__updated_at"
   end
 
   create_table "settings", charset: "utf8", force: :cascade do |t|
@@ -279,8 +277,8 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.bigint "target_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["target_type", "target_id", "var"], name: "index_settings_on_target_type_and_target_id_and_var", unique: true
-    t.index ["target_type", "target_id"], name: "index_settings_on_target_type_and_target_id"
+    t.index ["target_type", "target_id", "var"], name: "ux_settings__target_type__target_id__var", unique: true
+    t.index ["target_type", "target_id"], name: "ix_settings__target_type__target_id"
   end
 
   create_table "site_notices", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -289,7 +287,7 @@ ActiveRecord::Schema.define(version: 2020_12_12_190339) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_site_notices_on_user_id"
+    t.index ["user_id"], name: "ix_site_notices__user_id"
   end
 
   create_table "taxa", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|

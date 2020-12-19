@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Rank
-  SORTED_TYPES = [
+  TYPES = [
     FAMILY          = 'Family',
     SUBFAMILY       = 'Subfamily',
     TRIBE           = 'Tribe',
@@ -12,17 +12,14 @@ class Rank
     SUBSPECIES      = 'Subspecies',
     INFRASUBSPECIES = 'Infrasubspecies'
   ]
-  TYPES = SORTED_TYPES
-
-  ANY_RANK_GROUP = 'Any/all rank (-groups)'
-  FAMILY_GROUP = 'Family-group'
-  GENUS_GROUP = 'Genus-group'
-  SPECIES_GROUP = 'Species-group'
 
   ### Ranks in taxonomy, generally true.
-  FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE]
-  GENUS_GROUP_NAMES = [GENUS, SUBGENUS]
-  SPECIES_GROUP_NAMES = [SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  RANKS_BY_GROUP = {
+    FAMILY => FAMILY_GROUP_NAMES = [FAMILY, SUBFAMILY, TRIBE, SUBTRIBE],
+    GENUS => GENUS_GROUP_NAMES = [GENUS, SUBGENUS],
+    SPECIES => SPECIES_GROUP_NAMES = [SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  }
+  GROUP_RANKS = RANKS_BY_GROUP.each_with_object({}) { |(k, v), memo| v.each { |vv| memo[vv] = k } }
 
   ABOVE_GENUS = FAMILY_GROUP_NAMES
   GENUS_AND_BELOW = GENUS_GROUP_NAMES + SPECIES_GROUP_NAMES
@@ -30,7 +27,7 @@ class Rank
 
   CAN_HAVE_TYPE_TAXON_TYPES = ABOVE_SPECIES
   CAN_BE_A_COMBINATION_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
-  ITALIC_TYPES = [GENUS, SUBGENUS, SPECIES, SUBSPECIES, INFRASUBSPECIES]
+  ITALIC_TYPES = GENUS_AND_BELOW
 
   UNINOMIAL = ABOVE_SPECIES
   BINOMIAL = [SPECIES]
@@ -60,6 +57,10 @@ class Rank
 
     def single_word_name? type
       type.in? AntCatSpecific::SINGLE_WORD_TYPES
+    end
+
+    def group_rank type
+      GROUP_RANKS[type]
     end
 
     # See https://en.wikipedia.org/wiki/Taxonomic_rank#Ranks_in_zoology

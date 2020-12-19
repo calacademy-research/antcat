@@ -10,10 +10,10 @@
       %li.tiny-margin-bottom=link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-normal btn-tiny"
 
       -if Status.display_history_items?(taxon.status)
-        %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-normal btn-tiny"
+        %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
       -else
         %li.tiny-margin-bottom
-          =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, current_page_redirect_back_url), class: "btn-warning btn-tiny"
+          =link_to "Add history item", new_protonym_history_item_path(taxon.protonym, **current_page_redirect_back_url), class: "btn-warning btn-tiny"
           (it will not be shown on this page)
 
 -# Ignore "Issue" sidebar for Formicidae for performance and a cleaner look.
@@ -76,15 +76,6 @@
         =antcat_icon 'check'
     %li Created at: #{l taxon.created_at, format: :ymd}
     %li Updated at: #{l taxon.updated_at, format: :ymd}
-
-  -# Show name to make it easier to spot inconsistent names, since `Taxa::LinkEachEpithet` uses parents' name parts.
-  -# Only show for species and below since this has only been an issue with these.
-  -# TODO: Remove once we have made sure this does not happen (when we stop recreating deleted records, mostly).
-  -if taxon.is_a?(SpeciesGroupTaxon)
-    %ul.no-bullet
-      %li
-        Name (from name record):
-        =link_to taxon.name.name_html, name_path(taxon.name)
 
   -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
   %ul.no-bullet

@@ -93,7 +93,7 @@ module Seed
       end
 
       def lasius_taxon
-        @_lasius_taxon ||= Taxon.find_by!(name_cache: 'Lasius').protonym
+        @_lasius_taxon ||= Taxon.find_by!(name_cache: 'Lasius')
       end
   end
 end

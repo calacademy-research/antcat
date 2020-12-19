@@ -1,28 +1,54 @@
 name: Main
 
-on: [push]
+on:
+  push:
+    branches:
+      - '**'
+    tags-ignore:
+      - '**'
+
+env:
+  DB_PORT: 33306
+  DB_USER: root
+  DB_PASSWORD: root
 
 jobs:
-  test:
-    name: CI
+  rubocop:
+    name: RuboCop
     runs-on: ubuntu-latest
 
-    env:
-      CI: true
-      DB_PORT: 33306
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6.5
+        bundler-cache: true
+
+    - name: Run rubocop
+      run: |
+        bundle exec rubocop
+
+  cucumber:
+    name: Cucumber
+    runs-on: ubuntu-latest
 
     services:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
         ports:
           - 33306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v1
+      uses: actions/checkout@v2
       with:
         fetch-depth: 1
 
@@ -38,21 +64,49 @@ jobs:
         cp config/server.yml.example config/server.yml
 
         sudo apt-get install -y mysql-client libmysqlclient-dev
-        sudo /etc/init.d/mysql start
+        sudo service mysql start
 
         RAILS_ENV=test bundle exec rake db:create
 
-    - name: Run rubocop
-      if: ${{ always() }}
-      run: |
-        bundle exec rubocop
-
     - name: Run cucumber
-      if: ${{ always() }}
       run: |
-        bundle exec cucumber --order random
+        bundle exec cucumber --order random --tags 'not @skip and not @skip_ci'
+
+  rspec:
+    name: RSpec
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 33306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 1
+
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.6.5
+        bundler-cache: true
+
+    - name: Setup database
+      run: |
+        cp config/database.github-actions.yml config/database.yml
+        cp config/server.yml.example config/server.yml
+
+        sudo apt-get install -y mysql-client libmysqlclient-dev
+        sudo service mysql start
+
+        RAILS_ENV=test bundle exec rake db:create
 
     - name: Run rspec
-      if: ${{ always() }}
       run: |
         bundle exec rspec spec --tag ~pending --order rand

@@ -39,10 +39,14 @@ __END__
 
 tags: [new!]
 
-section: disagreeing-history
+section: research
+# TODO: Change to: section: disagreeing-history
 category: History
 
 description: >
+  This script can be ignored for now.
+
+
   A quick-fix button could be added to this script, but it would do more harm than good for
   as long as we have a lot of taxt-based history items.
 

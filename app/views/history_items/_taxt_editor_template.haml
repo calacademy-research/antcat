@@ -8,7 +8,7 @@
 
     %span.show-on-hover
       =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
-      =link_to "Edit", edit_history_item_path(history_item, current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
+      =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
       =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
 
     %br

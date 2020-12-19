@@ -7,11 +7,17 @@ class HistoryItem < ApplicationRecord
   TYPE_ATTRIBUTES = [
     :taxt, :subtype, :picked_value, :text_value, :object_protonym, :object_taxon, :reference, :pages
   ]
+  RANK_LABELS = [
+    ANY_RANK_GROUP_LABEL = 'Any/all rank (-groups)',
+    FAMILY_GROUP_LABEL = 'Family-group',
+    GENUS_GROUP_LABEL = 'Genus-group',
+    SPECIES_GROUP_LABEL = 'Species-group'
+  ]
   # [grep:history_type].
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
-      ranks: Rank::ANY_RANK_GROUP,
+      ranks: ANY_RANK_GROUP_LABEL,
 
       group_order: 999,
       group_key: ->(o) { o.id },
@@ -22,7 +28,7 @@ class HistoryItem < ApplicationRecord
     },
     TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
       type_label: 'Type specimen designation',
-      ranks: Rank::SPECIES_GROUP,
+      ranks: SPECIES_GROUP_LABEL,
 
       group_order: 10,
       group_key: ->(o) { o.id },
@@ -46,7 +52,7 @@ class HistoryItem < ApplicationRecord
     },
     FORM_DESCRIPTIONS = 'FormDescriptions' => {
       type_label: 'Form descriptions (additional)',
-      ranks: Rank::SPECIES_GROUP,
+      ranks: SPECIES_GROUP_LABEL,
 
       group_order: 20,
       group_key: ->(o) { o.type },
@@ -60,7 +66,7 @@ class HistoryItem < ApplicationRecord
     },
     COMBINATION_IN = 'CombinationIn' => {
       type_label: 'Combination in',
-      ranks: Rank::SPECIES_GROUP,
+      ranks: SPECIES_GROUP_LABEL,
 
       group_order: 30,
       group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
@@ -75,7 +81,7 @@ class HistoryItem < ApplicationRecord
     },
     JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
       type_label: 'Junior synonym of',
-      ranks: Rank::ANY_RANK_GROUP,
+      ranks: ANY_RANK_GROUP_LABEL,
 
       group_order: 40,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
@@ -90,7 +96,7 @@ class HistoryItem < ApplicationRecord
     },
     SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
       type_label: 'Senior synonym of',
-      ranks: Rank::ANY_RANK_GROUP,
+      ranks: ANY_RANK_GROUP_LABEL,
 
       group_order: 45,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
@@ -105,7 +111,7 @@ class HistoryItem < ApplicationRecord
     },
     STATUS_AS_SPECIES = 'StatusAsSpecies' => {
       type_label: 'Status as species',
-      ranks: Rank::SPECIES_GROUP,
+      ranks: SPECIES_GROUP_LABEL,
 
       group_order: 0,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
@@ -119,7 +125,7 @@ class HistoryItem < ApplicationRecord
     },
     SUBSPECIES_OF = 'SubspeciesOf' => {
       type_label: 'Subspecies of',
-      ranks: Rank::SPECIES_GROUP,
+      ranks: SPECIES_GROUP_LABEL,
 
       group_order: 60,
       group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },

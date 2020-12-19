@@ -10,13 +10,13 @@ module TaxonBrowser
     class ExtraTab < Tab
       attr_reader :title
 
-      def self.create taxon, display, taxon_browser
-        return if display.blank?
+      def self.create taxon, view, taxon_browser
+        return if view.blank?
 
         name_html = taxon.name_with_fossil
 
         title, taxa_in_tab =
-          case display
+          case view
           when INCERTAE_SEDIS_IN_FAMILY, INCERTAE_SEDIS_IN_SUBFAMILY
             ["Genera <i>incertae sedis</i> in #{name_html}", taxon.genera_incertae_sedis_in]
 
@@ -47,7 +47,7 @@ module TaxonBrowser
             ["#{taxon.tribe.name_with_fossil} subtribes", taxon.tribe.subtribes]
 
           else
-            raise "Unknown display option '#{display}' for <#{taxon.type} id: #{taxon.id}>"
+            raise "Unknown view option '#{view}' for <#{taxon.type} id: #{taxon.id}>"
           end
 
         new title, taxa_in_tab, taxon_browser

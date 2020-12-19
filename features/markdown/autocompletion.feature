@@ -22,7 +22,7 @@ Feature: Markdown autocompletion
     And I click the suggestion containing "Joffre's Favorite Ants"
     Then the markdown textarea should contain a markdown link to "Joffre, 1810"
 
-  @search
+  @skip_ci @search
   Scenario: Taxa markdown autocompletion
     Given there is a genus "Eciton"
     And there is a genus "Atta"
@@ -34,6 +34,7 @@ Feature: Markdown autocompletion
     When I click the suggestion containing "Eciton"
     Then the markdown textarea should contain a markdown link to Eciton
 
+  @skip_ci
   Scenario: User markdown autocompletion
     Given I am on a page with a textarea with markdown preview and autocompletion
 

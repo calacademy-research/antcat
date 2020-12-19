@@ -24,7 +24,7 @@ Feature: Manage names
     Then I should see "Archibald edited the name record Lasius" within the activity feed
     And I should see the edit summary "fix name"
 
-  @javascript
+  @skip_ci @javascript
   Scenario: Checking for name conflicts
     Given there is a genus protonym "Formica"
     And there is a genus protonym "Formica"

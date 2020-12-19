@@ -4,7 +4,7 @@ class CatalogPresenter
   attr_private_initialize :taxon, [:params, :session, formicidae_landing_page: false]
 
   def taxon_browser
-    @_taxon_browser ||= TaxonBrowser::Browser.new(taxon, session[:show_invalid], params[:display]&.to_sym)
+    @_taxon_browser ||= TaxonBrowser::Browser.new(taxon, session[:show_invalid], params[:view]&.to_sym)
   end
 
   def taxon_browser_presenter

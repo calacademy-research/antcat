@@ -47,6 +47,11 @@ class Taxon < ApplicationRecord
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :original_combinations, -> { where(original_combination: true) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
+
+  scope :family_group_names, -> { where(type: Rank::FAMILY_GROUP_NAMES) }
+  scope :genus_group_names, -> { where(type: Rank::GENUS_GROUP_NAMES) }
+  scope :species_group_names, -> { where(type: Rank::SPECIES_GROUP_NAMES) }
+
   scope :order_by_name, -> { order(:name_cache) }
 
   accepts_nested_attributes_for :name, update_only: true
@@ -135,6 +140,14 @@ class Taxon < ApplicationRecord
       elsif Status.requires_current_taxon?(status) && !current_taxon
         errors.add :current_taxon, "must be set for #{Status.plural(status)}"
       end
+
+      validate_current_taxon_rank
+    end
+
+    def validate_current_taxon_rank
+      return unless current_taxon
+      return if Rank.group_rank(type) == Rank.group_rank(current_taxon.type)
+      errors.add :current_taxon, "must be of same rank as taxon"
     end
 
     def ensure_correct_name_type
