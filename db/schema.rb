@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_18_203312) do
+ActiveRecord::Schema.define(version: 2020_12_19_014058) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -92,7 +92,6 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.integer "object_protonym_id"
     t.integer "object_taxon_id"
     t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
-    t.index ["object_protonym_id"], name: "ix_history_items__object_taxon_id"
     t.index ["object_taxon_id"], name: "ix_history_items__object_taxon_id__taxa__id"
     t.index ["protonym_id"], name: "ix_history_items__protonym_id"
     t.index ["reference_id"], name: "ix_history_items__reference_id"
@@ -222,7 +221,6 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.datetime "updated_at", null: false
     t.integer "reference_id"
     t.boolean "public"
-    t.index ["reference_id"], name: "documents_reference_id_idx"
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
 
@@ -263,7 +261,7 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.boolean "online_early", default: false, null: false
     t.string "stated_year"
     t.string "year_suffix", limit: 2
-    t.index ["author_names_string_cache"], name: "references_author_names_string_citation_year_idx", length: 255
+    t.index ["author_names_string_cache"], name: "ix_x_references__author_names_string_cache", length: 255
     t.index ["created_at"], name: "ix_references__created_at"
     t.index ["id", "type"], name: "ix_references__id__type"
     t.index ["journal_id"], name: "ix_references__journal_id"
