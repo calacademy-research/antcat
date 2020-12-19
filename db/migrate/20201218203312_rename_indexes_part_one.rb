@@ -57,8 +57,6 @@ class RenameIndexesPartOne < ActiveRecord::Migration[6.1]
     rename_index :reference_sections, 'index_reference_sections_on_taxon_id_and_position',
       'ix_reference_sections__taxon_id__position'
 
-    rename_index :references, 'references_author_names_string_citation_year_idx',
-      'ix_x_references__author_names_string_cache'
     rename_index :references, 'references_created_at_idx', 'ix_references__created_at'
     rename_index :references, 'index_references_on_id_and_type', 'ix_references__id__type'
     rename_index :references, 'references_journal_id_idx', 'ix_references__journal_id'
@@ -73,16 +71,5 @@ class RenameIndexesPartOne < ActiveRecord::Migration[6.1]
       'ix_settings__target_type__target_id'
 
     rename_index :site_notices, 'index_site_notices_on_user_id', 'ix_site_notices__user_id'
-
-    reversible do |dir|
-      dir.up do
-        remove_index :reference_documents, name: :documents_reference_id_idx
-        remove_index :history_items, name: :ix_history_items__object_taxon_id
-      end
-      dir.down do
-        add_index :reference_documents, :reference_id, name: :documents_reference_id_idx
-        add_index :history_items, :object_protonym_id, name: :ix_history_items__object_taxon_id
-      end
-    end
   end
 end

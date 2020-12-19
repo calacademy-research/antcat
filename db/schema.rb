@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_18_203312) do
+ActiveRecord::Schema.define(version: 2020_12_19_014954) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.integer "object_protonym_id"
     t.integer "object_taxon_id"
     t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
-    t.index ["object_taxon_id"], name: "ix_history_items__object_taxon_id__taxa__id"
+    t.index ["object_taxon_id"], name: "ix_history_items__object_taxon_id"
     t.index ["protonym_id"], name: "ix_history_items__protonym_id"
     t.index ["reference_id"], name: "ix_history_items__reference_id"
     t.index ["subtype"], name: "ix_history_items__subtype"
@@ -314,22 +314,21 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.boolean "collective_group_name", default: false, null: false
     t.boolean "original_combination", default: false, null: false
     t.integer "subspecies_id"
-    t.index ["current_taxon_id"], name: "index_taxa_on_current_taxon_id"
-    t.index ["family_id"], name: "index_taxa_on_family_id"
-    t.index ["genus_id"], name: "taxa_genus_id_idx"
-    t.index ["homonym_replaced_by_id"], name: "index_taxa_on_homonym_replaced_by_id"
-    t.index ["homonym_replaced_by_id"], name: "taxa_homonym_resolved_to_id_index"
-    t.index ["id", "type"], name: "taxa_id_and_type_idx"
-    t.index ["name_cache"], name: "index_taxa_on_name_cache"
-    t.index ["name_id"], name: "taxa_name_id_idx"
-    t.index ["protonym_id"], name: "index_taxa_on_protonym_id"
-    t.index ["species_id"], name: "taxa_species_id_index"
-    t.index ["status"], name: "index_taxa_on_status"
-    t.index ["subfamily_id"], name: "taxa_subfamily_id_idx"
-    t.index ["subgenus_id"], name: "index_taxa_on_subgenus_id"
-    t.index ["subspecies_id"], name: "fk_taxa__subspecies_id__taxa__id"
-    t.index ["tribe_id"], name: "taxa_tribe_id_idx"
-    t.index ["type"], name: "taxa_type_idx"
+    t.index ["current_taxon_id"], name: "ix_taxa__current_taxon_id"
+    t.index ["family_id"], name: "ix_taxa__family_id"
+    t.index ["genus_id"], name: "ix_taxa__genus_id"
+    t.index ["homonym_replaced_by_id"], name: "ix_taxa__homonym_replaced_by_id"
+    t.index ["id", "type"], name: "ix_taxa__id__type"
+    t.index ["name_cache"], name: "ix_taxa__name_cache"
+    t.index ["name_id"], name: "ix_taxa__name_id"
+    t.index ["protonym_id"], name: "ix_taxa__protonym_id"
+    t.index ["species_id"], name: "ix_taxa__species_id"
+    t.index ["status"], name: "ix_taxa__status"
+    t.index ["subfamily_id"], name: "ix_taxa__subfamily_id"
+    t.index ["subgenus_id"], name: "ix_taxa__subgenus_id"
+    t.index ["subspecies_id"], name: "ix_taxa__subspecies_id"
+    t.index ["tribe_id"], name: "ix_taxa__tribe_id"
+    t.index ["type"], name: "ix_taxa__type"
   end
 
   create_table "tooltips", id: :integer, charset: "utf8", force: :cascade do |t|
@@ -347,8 +346,8 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.string "fixation_method"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["reference_id"], name: "index_type_names_on_reference_id"
-    t.index ["taxon_id"], name: "index_type_names_on_taxon_id"
+    t.index ["reference_id"], name: "ix_type_names__reference_id"
+    t.index ["taxon_id"], name: "ix_type_names__taxon_id"
   end
 
   create_table "users", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -376,10 +375,10 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.boolean "enable_email_notifications", default: true
     t.integer "author_id"
     t.boolean "developer", default: false, null: false
-    t.index ["author_id"], name: "index_users_on_author_id", unique: true
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["author_id"], name: "ux_users__author_id", unique: true
+    t.index ["email"], name: "ux_users__email", unique: true
     t.index ["name"], name: "ux_users__name", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["reset_password_token"], name: "ux_users__reset_password_token", unique: true
   end
 
   create_table "versions", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
@@ -391,11 +390,11 @@ ActiveRecord::Schema.define(version: 2020_12_18_203312) do
     t.datetime "created_at"
     t.text "object_changes"
     t.string "request_uuid"
-    t.index ["event"], name: "index_versions_on_event"
-    t.index ["item_id"], name: "index_versions_on_item_id"
-    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
-    t.index ["request_uuid"], name: "index_versions_on_request_uuid"
-    t.index ["whodunnit"], name: "index_versions_on_whodunnit"
+    t.index ["event"], name: "ix_versions__event"
+    t.index ["item_id"], name: "ix_versions__item_id"
+    t.index ["item_type", "item_id"], name: "ix_versions__item_type__item_id"
+    t.index ["request_uuid"], name: "ix_versions__request_uuid"
+    t.index ["whodunnit"], name: "ix_versions__whodunnit"
   end
 
   create_table "wiki_pages", charset: "utf8", force: :cascade do |t|

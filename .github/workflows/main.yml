@@ -70,7 +70,8 @@ jobs:
 
     - name: Run cucumber
       run: |
-        bundle exec cucumber --order random --tags 'not @skip and not @skip_ci'
+        bundle exec cucumber --order random --tags '@retry_ci' --retry 2
+        bundle exec cucumber --order random --tags 'not @skip and not @skip_ci and not @retry_ci'
 
   rspec:
     name: RSpec
