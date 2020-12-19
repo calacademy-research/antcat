@@ -1,16 +1,11 @@
--# TODO: Extract functionality for reordering items to a new page.
-
 .callout
   %h5
     Protonym history items
     .right
-      -# NOTE: CSS classes "button submit" are for disabling the "Add" button while reordering.
-      =link_to 'Add', new_protonym_history_item_path(protonym, **current_page_redirect_back_url), id: 'taxt-editor-add-history-item-button', class: 'button submit btn-normal btn-tiny'
-      -if protonym.history_items.present?
-        %a#start-reordering-history-items.btn-nodanger.btn-tiny.button Reorder
+      =link_to 'Add', new_protonym_history_item_path(protonym, **current_page_redirect_back_url), id: 'add-history-item-button-test-hook', class: 'btn-normal btn-tiny'
+      =link_to "Reorder", protonym_reorder_history_items_path(protonym), class: "btn-normal btn-tiny #{' button disabled' unless protonym.history_items.size > 1}"
   #history-items{data: {protonym_id: protonym.id}}
     -protonym.history_items.each do |history_item|
-      -# `#history_item_123` is used for reordering items.
-      .history-item{id: "history_item_#{history_item.id}", class: ["#{history_item.underscored_type}-history-item"]}
+      .history-item{class: ["#{history_item.underscored_type}-history-item"]}
         =render 'history_items/taxt_editor_template', history_item: history_item
         %hr

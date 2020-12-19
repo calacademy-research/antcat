@@ -1,0 +1,20 @@
+-title "Reorder reference sections"
+-breadcrumb :reorder_reference_sections, @taxon
+
+-content_for :javascripts do
+  =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable', 'reorder_items'
+
+.callout.medium-6.margin-bottom Drag and drop reference sections to reorder them.
+
+=form_with url: taxa_reorder_reference_sections_path, id: 'reorder-form' do |f|
+  =f.hidden_field :new_order, value: @taxon.reference_sections.pluck(:id).join(','), id: 'new-order'
+
+  %ol#sortable
+    -@taxon.reference_sections.each do |reference_section|
+      %li.sortable-item{id: reference_section.id}
+        -[:title_taxt, :subtitle_taxt, :references_taxt].each do |field|
+          -if reference_section[field].present?
+            %p=Detax[reference_section[field]]
+        %hr
+
+  =f.button "Reorder", class: "btn-saves"

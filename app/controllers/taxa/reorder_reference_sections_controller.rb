@@ -4,15 +4,19 @@ module Taxa
   class ReorderReferenceSectionsController < ApplicationController
     before_action :ensure_user_is_editor
 
-    def create
-      taxon = find_taxon
+    def show
+      @taxon = find_taxon
+    end
 
-      # NOTE: "reference_section_ids" would be better, but `params[:reference_section]` is what jQuery sends it as.
-      if Taxa::Operations::ReorderReferenceSections[taxon, params[:reference_section]]
-        taxon.create_activity :reorder_reference_sections, current_user
-        render json: { success: true }
+    def create
+      @taxon = find_taxon
+
+      if Taxa::Operations::ReorderReferenceSections[@taxon, new_order]
+        @taxon.create_activity :reorder_reference_sections, current_user
+        redirect_to taxa_reorder_reference_sections_path(@taxon), notice: 'Reference sections were successfully reordered.'
       else
-        render json: taxon.errors, status: :unprocessable_entity
+        flash.now[:alert] = @taxon.errors.full_messages.to_sentence
+        render :show
       end
     end
 
@@ -20,6 +24,10 @@ module Taxa
 
       def find_taxon
         Taxon.find(params[:taxa_id])
+      end
+
+      def new_order
+        params[:new_order].split(',')
       end
   end
 end

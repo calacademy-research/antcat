@@ -37,7 +37,7 @@ module CucumberHelpers
 
       # Edit reference sections.
       when 'the add reference section button'
-        "#add-reference-section-button"
+        "#add-reference-section-button-test-hook"
       when 'the edit reference section button'
         "#references-section a.taxt-editor-edit-button"
       when 'the cancel reference section button'
@@ -49,7 +49,7 @@ module CucumberHelpers
 
       # Edit history items.
       when 'the add history item button'
-        '#taxt-editor-add-history-item-button'
+        '#add-history-item-button-test-hook'
       when 'the edit history item button'
         '#history-items .history-item a.taxt-editor-edit-button'
       when 'the cancel history item button'

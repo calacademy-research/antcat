@@ -113,8 +113,11 @@
 
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
 
-        -if user_is_at_least_helper?
-          =link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
+        %ul.no-bullet
+          -if user_is_at_least_helper?
+            %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
+            -if @protonym.history_items.size > 1
+              %li.tiny-margin-bottom=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
 
       -# TODO: Pass gender from protonym once it has been moved from `Name`s belonging to taxa.
       =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil
@@ -149,7 +152,5 @@
     =javascript_include_tag 'reference_select'
     =javascript_include_tag 'taxon_select'
     =javascript_include_tag 'protonym_select'
-    =javascript_include_tag 'jquery-ui/widgets/draggable', 'jquery-ui/widgets/sortable'
-    =javascript_include_tag 'controllers/protonyms/reorder_history_items'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym

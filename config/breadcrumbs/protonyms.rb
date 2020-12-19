@@ -56,3 +56,8 @@ crumb :move_protonym_items_to do |protonym, to_protonym|
     protonym_move_items_path(protonym, to_protonym_id: to_protonym.id)
   parent :move_protonym_items, protonym
 end
+
+crumb :reorder_history_items do |protonym|
+  link "Reorder history items", protonym_reorder_history_items_path(protonym)
+  parent :protonym, protonym
+end

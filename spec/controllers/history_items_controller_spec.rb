@@ -113,37 +113,86 @@ describe HistoryItemsController do
   end
 
   describe "PUT update", as: :helper do
-    let!(:history_item) { create :history_item }
-    let!(:history_item_params) do
-      {
-        taxt: 'content',
-        rank: Rank::SUBFAMILY
-      }
+    describe 'creating an item' do
+      let!(:history_item) { create :history_item }
+      let(:history_item_params) do
+        {
+          taxt: 'content',
+          rank: Rank::SUBFAMILY
+        }
+      end
+
+      it 'updates the history item' do
+        expect(history_item.taxt).to_not eq history_item_params[:taxt]
+        expect(history_item.rank).to_not eq history_item_params[:rank]
+
+        put(:update, params: { id: history_item.id, history_item: history_item_params })
+
+        history_item.reload
+        expect(history_item.taxt).to eq history_item_params[:taxt]
+        expect(history_item.rank).to eq history_item_params[:rank]
+      end
+
+      it 'creates an activity' do
+        expect do
+          params = { id: history_item.id, history_item: history_item_params, edit_summary: 'Duplicate' }
+          put :update, params: params
+        end.to change { Activity.where(action: Activity::UPDATE, trackable: history_item).count }.by(1)
+
+        activity = Activity.last
+        expect(activity.edit_summary).to eq "Duplicate"
+        expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
+      end
     end
 
-    it 'updates the history item' do
-      expect(history_item.taxt).to_not eq history_item_params[:taxt]
-      expect(history_item.rank).to_not eq history_item_params[:rank]
+    describe "changing an items's position" do
+      let!(:protonym) { create :protonym }
+      let!(:history_item_1) { create :history_item, protonym: protonym }
+      let!(:history_item_2) { create :history_item, protonym: protonym }
+      let!(:history_item_3) { create :history_item, protonym: protonym }
+      let(:history_item_params) do
+        {
+          position: 3
+        }
+      end
 
-      put(:update, params: { id: history_item.id, history_item: history_item_params })
+      it "updates the position and re-orders other items" do
+        history_item_1.reload
+        history_item_2.reload
+        history_item_3.reload
 
-      history_item.reload
-      expect(history_item.taxt).to eq history_item_params[:taxt]
-      expect(history_item.rank).to eq history_item_params[:rank]
-    end
+        expect(protonym.history_items.pluck(:id, :position, :position)).to eq(
+          [
+            [history_item_1.id, history_item_1.position, 1],
+            [history_item_2.id, history_item_2.position, 2],
+            [history_item_3.id, history_item_3.position, 3]
+          ]
+        )
 
-    it 'creates an activity' do
-      expect do
-        params = { id: history_item.id, history_item: history_item_params, edit_summary: 'Duplicate' }
-        put :update, params: params
-      end.to change { Activity.where(action: Activity::UPDATE, trackable: history_item).count }.by(1)
+        put(:update, params: { id: history_item_2.id, history_item: history_item_params })
 
-      activity = Activity.last
-      expect(activity.edit_summary).to eq "Duplicate"
-      expect(activity.parameters).to eq(protonym_id: history_item.protonym_id)
+        history_item_1.reload
+        history_item_2.reload
+        history_item_3.reload
+
+        expect(protonym.history_items.pluck(:id, :position, :position)).to eq(
+          [
+            [history_item_1.id, history_item_1.position, 1],
+            [history_item_3.id, history_item_3.position, 2],
+            [history_item_2.id, history_item_2.position, 3]
+          ]
+        )
+      end
     end
 
     describe 'param `redirect_back_url`' do
+      let!(:history_item) { create :history_item }
+      let(:history_item_params) do
+        {
+          taxt: 'content',
+          rank: Rank::SUBFAMILY
+        }
+      end
       let(:params) do
         {
           id: history_item.id,

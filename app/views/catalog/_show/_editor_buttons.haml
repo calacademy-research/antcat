@@ -31,6 +31,8 @@
 
       -if user_is_at_least_helper?
         %li=link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"
+      -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES) && taxon.reference_sections.any?
+        %li=link_to "Reorder reference sections", taxa_reorder_reference_sections_path(taxon), class: "btn-normal"
 
       %li=link_to "Show children", taxa_children_path(taxon), class: "btn-normal"
       %li=link_to "Soft validations", taxon_soft_validations_path(taxon), class: "btn-normal"
