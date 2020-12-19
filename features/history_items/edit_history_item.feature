@@ -29,7 +29,7 @@ Feature: Editing a history item
     And I press "Save"
     Then I should see "Taxt can't be blank"
 
-  @javascript
+  @retry_ci @javascript
   Scenario: Editing a history item (with edit summary)
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 
