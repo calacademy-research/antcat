@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_014954) do
+ActiveRecord::Schema.define(version: 2020_12_19_125929) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -410,7 +410,7 @@ ActiveRecord::Schema.define(version: 2020_12_19_014954) do
   add_foreign_key "author_names", "authors", name: "fk_author_names__author_id__authors__id"
   add_foreign_key "citations", "references", name: "fk_citations__reference_id__references__id"
   add_foreign_key "history_items", "protonyms", column: "object_protonym_id", name: "fk_history_items__object_protonym_id__protonyms__id"
-  add_foreign_key "history_items", "protonyms", name: "fk_taxon_history_items__protonym_id__protonyms__id"
+  add_foreign_key "history_items", "protonyms", name: "fk_history_items__protonym_id__protonyms__id"
   add_foreign_key "history_items", "references", name: "fk_history_items__reference_id__references__id"
   add_foreign_key "history_items", "taxa", column: "object_taxon_id", name: "fk_history_items__object_taxon_id__taxa__id"
   add_foreign_key "issues", "users", column: "closer_id", name: "fk_issues__closer_id__users__id"
@@ -422,10 +422,9 @@ ActiveRecord::Schema.define(version: 2020_12_19_014954) do
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "references", "journals", name: "fk_references__journal_id__journals__id"
   add_foreign_key "references", "publishers", name: "fk_references__publisher_id__publishers__id"
-  add_foreign_key "site_notices", "users"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
   add_foreign_key "taxa", "protonyms", name: "fk_taxa__protonym_id__protonyms__id"
-  add_foreign_key "taxa", "taxa", column: "current_taxon_id", name: "fk_taxa__current_valid_taxon_id__taxa__id"
+  add_foreign_key "taxa", "taxa", column: "current_taxon_id", name: "fk_taxa__current_taxon_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "family_id", name: "fk_taxa__family_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "genus_id", name: "fk_taxa__genus_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "homonym_replaced_by_id", name: "fk_taxa__homonym_replaced_by_id__taxa__id"
