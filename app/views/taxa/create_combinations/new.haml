@@ -32,7 +32,7 @@
 
           %tr
             %td Combine in genus
-            %td=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: :genus
+            %td=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: Rank::GENUS
 
           %tr
             %td Species epithet
