@@ -1,0 +1,6 @@
+%span.bold-warning force-updated
+the record
+=activity.link_taxon_trackable_if_exists
+
+=surround "(", ")" do
+  %code #{activity.trackable_type}##{activity.trackable_id}
