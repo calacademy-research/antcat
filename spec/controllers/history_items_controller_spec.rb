@@ -189,8 +189,7 @@ describe HistoryItemsController do
       let!(:history_item) { create :history_item }
       let(:history_item_params) do
         {
-          taxt: 'content',
-          rank: Rank::SUBFAMILY
+          taxt: 'content'
         }
       end
       let(:params) do

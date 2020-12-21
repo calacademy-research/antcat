@@ -14,7 +14,7 @@
     .medium-6.columns
       %fieldset.fieldset
         %legend to
-        =protonym_select_tag :to_protonym_id, params[:to_protonym_id]
+        =protonym_select_tag :to_protonym_id, params[:to_protonym_id], css_id: :to_protonym_id
         %br
         =f.submit "Select...", class: "btn-normal"
 

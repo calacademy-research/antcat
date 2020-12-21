@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# Fulltext search, but not all fields. Used by at.js.
+# Fulltext search, but not all fields.
 
 module References
   class FulltextSearchLightQuery
@@ -17,7 +17,7 @@ module References
     private
 
       def search_results
-        Reference.search do
+        Reference.solr_search do
           keywords normalized_search_query do
             fields :title, :author_names_string, :suffixed_year, :stated_year, :bolton_key, :authors_for_key
             boost_fields author_names_string: 5.0

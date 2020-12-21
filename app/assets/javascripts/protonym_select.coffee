@@ -33,6 +33,7 @@ $.fn.protonymSelectify = ->
     escapeMarkup: (m) -> m
     minimumInputLength: 1
     placeholder: '???'
+    selectOnClose: true
     allowClear: true
     ajax:
       url: '/protonyms/autocomplete'

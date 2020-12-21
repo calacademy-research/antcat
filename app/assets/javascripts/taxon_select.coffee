@@ -31,6 +31,7 @@ $.fn.taxonSelectify = ->
     escapeMarkup: (m) -> m
     minimumInputLength: 1
     placeholder: '???'
+    selectOnClose: true
     allowClear: true
     ajax:
       url: '/catalog/autocomplete'

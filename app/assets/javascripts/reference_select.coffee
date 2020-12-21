@@ -21,6 +21,7 @@ $.fn.referenceSelectify = ->
     escapeMarkup: (m) -> m
     minimumInputLength: 1
     placeholder: '???'
+    selectOnClose: true
     allowClear: true
     ajax:
       url: '/references/autocomplete'

@@ -13,7 +13,7 @@ Feature: Commenting
     When I go to the activity feed
     Then I should see "Batiatus commented on the feedback #"
 
-  @javascript
+  @retry_ci @javascript
   Scenario: Editing a comment
     When I write a new comment "Helo!"
     And I press "Post Comment"

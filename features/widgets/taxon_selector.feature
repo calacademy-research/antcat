@@ -18,7 +18,7 @@ Feature: Taxon selector
     Then I should see "Eciton" within the nomen synopsis
 
   # TODO: Randomly fails without "@reset_driver". "The results could not be loaded [Capybara screenshot]".
-  @reset_driver
+  @retry_ci @reset_driver
   Scenario: Clearing a taxon field
     When I go to the edit page for "Atta"
     And I select "homonym" from "taxon_status"

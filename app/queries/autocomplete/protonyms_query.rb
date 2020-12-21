@@ -26,7 +26,7 @@ module Autocomplete
       end
 
       def search_results
-        Protonym.search(include: [:name, { authorship: :reference }]) do
+        Protonym.solr_search(include: [:name, { authorship: :reference }]) do
           keywords search_query do
             fields(:name)
             fields(:authors)

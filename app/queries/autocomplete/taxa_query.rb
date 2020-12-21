@@ -27,7 +27,7 @@ module Autocomplete
       end
 
       def search_results
-        Taxon.search(include: [:name, protonym: [:name, { authorship: :reference }]]) do
+        Taxon.solr_search(include: [:name, protonym: [:name, { authorship: :reference }]]) do
           keywords search_query do
             fields(:name_cache)
             fields(:authors)

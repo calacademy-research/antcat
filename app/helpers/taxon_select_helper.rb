@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
 module TaxonSelectHelper
-  def taxon_select_tag taxon_attribute_name, taxon_id, rank: nil
+  def taxon_select_tag taxon_attribute_name, taxon_id, rank: nil, css_id: nil
     taxon = Taxon.find_by(id: taxon_id)
     taxon_id = taxon&.id
 
     select_tag taxon_attribute_name,
       options_for_select([taxon_id].compact, taxon_id),
-      class: 'select2-autocomplete', data: taxon_data_attributes(taxon, rank)
+      class: 'select2-autocomplete',
+      id: css_id,
+      data: taxon_data_attributes(taxon, rank)
   end
 
   private

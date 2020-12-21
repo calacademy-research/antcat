@@ -32,9 +32,7 @@ Feature: Move items
     When I go to the activity feed
     Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed
 
-  # TODO: Broke in commit 4c371c9d1 when preparing the protonym selector for
-  # hybrid history items and I was too lazy to update `CucumberHelpers::Select2`.
-  @skip @search
+  @search
   Scenario: Moving history items (with feed)
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae history"
     And there is a genus protonym "Formica"
