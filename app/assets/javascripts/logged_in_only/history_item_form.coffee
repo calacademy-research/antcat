@@ -6,6 +6,7 @@ TYPE_SPECIFIC_REFERENCE = '#type-specific-reference'
 TYPE_SPECIFIC_PAGES = '#type-specific-pages'
 TYPE_SPECIFIC_OBJECT_PROTONYM = '#type-specific-object-protonym'
 TYPE_SPECIFIC_OBJECT_TAXON = '#type-specific-object-taxon'
+TYPE_SPECIFIC_FORCE_AUTHOR_CITATION = '#type-specific-force-author-citation'
 
 # Type labels.
 TYPE_LABEL_SUBTYPE = '#type-label-subtype'
@@ -82,11 +83,21 @@ onSelectType = (selectedType) ->
 
       when 'JuniorSynonymOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Junior synonym of"
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        [
+          TYPE_SPECIFIC_REFERENCE,
+          TYPE_SPECIFIC_PAGES,
+          TYPE_SPECIFIC_OBJECT_PROTONYM,
+          TYPE_SPECIFIC_FORCE_AUTHOR_CITATION
+        ]
 
       when 'SeniorSynonymOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        [
+          TYPE_SPECIFIC_REFERENCE,
+          TYPE_SPECIFIC_PAGES,
+          TYPE_SPECIFIC_OBJECT_PROTONYM,
+          TYPE_SPECIFIC_FORCE_AUTHOR_CITATION
+        ]
 
       when 'SubspeciesOf'
         $(TYPE_LABEL_OBJECT_TAXON).text "Subspecies of"

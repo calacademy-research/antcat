@@ -110,6 +110,10 @@ FactoryBot.define do
       object_taxon factory: :family
     end
 
+    trait :force_author_citation do
+      force_author_citation { true }
+    end
+
     # Misc.
     trait :with_all_taxts do
       sequence(:taxt) { |n| "taxt #{n} #{taxt_tag}" }

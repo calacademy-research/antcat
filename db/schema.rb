@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_19_125929) do
+ActiveRecord::Schema.define(version: 2020_12_21_204003) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -91,6 +91,7 @@ ActiveRecord::Schema.define(version: 2020_12_19_125929) do
     t.string "pages"
     t.integer "object_protonym_id"
     t.integer "object_taxon_id"
+    t.boolean "force_author_citation", default: false, null: false
     t.index ["object_protonym_id"], name: "ix_history_items__object_protonym_id"
     t.index ["object_taxon_id"], name: "ix_history_items__object_taxon_id"
     t.index ["protonym_id"], name: "ix_history_items__protonym_id"
