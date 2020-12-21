@@ -17,15 +17,11 @@ class HistoryPresenter
 
       items.
         sort_by { |item| [group_order(item), item.reference_year, item.reference_date] }.
-        group_by { |item| group_key(item) }.
+        group_by { |item| item.group_key }.
         values
     end
 
     def group_order item
       item.definitions.fetch(:group_order)
-    end
-
-    def group_key item
-      item.definitions.fetch(:group_key).call(item)
     end
 end

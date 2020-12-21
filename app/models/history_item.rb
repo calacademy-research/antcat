@@ -24,7 +24,6 @@ class HistoryItem < ApplicationRecord
       ranks: ANY_RANK_GROUP_LABEL,
 
       group_order: 999,
-      group_key: ->(o) { o.id },
 
       group_template: '%<item_taxts>s',
 
@@ -35,7 +34,6 @@ class HistoryItem < ApplicationRecord
       ranks: SPECIES_GROUP_LABEL,
 
       group_order: 10,
-      group_key: ->(o) { o.id },
 
       group_template: '%<designation_type>s: %<item_taxts>s.',
       group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
@@ -214,6 +212,20 @@ class HistoryItem < ApplicationRecord
 
   def object_protonym_prott_tag
     "{prott #{object_protonym_id}}"
+  end
+
+  def group_key
+    return @_group_key if defined?(@_group_key)
+
+    @_group_key ||= if (key = definitions.fetch(:group_key, nil))
+                      key.call(self)
+                    else
+                      id
+                    end
+  end
+
+  def groupable?
+    definitions.fetch(:group_key, nil).present?
   end
 
   def ids_from_tax_or_taxac_tags

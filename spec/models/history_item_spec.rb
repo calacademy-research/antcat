@@ -148,7 +148,6 @@ describe HistoryItem do
           expect(definition[:ranks]).to be_present
 
           expect(definition[:group_order]).to be_present
-          expect(definition[:group_key]).to be_present
 
           expect(definition[:group_template]).to be_present
 

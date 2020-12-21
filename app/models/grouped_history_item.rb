@@ -15,6 +15,10 @@ class GroupedHistoryItem
     @_type ||= any_item_in_group.type
   end
 
+  def groupable?
+    any_item_in_group.groupable?
+  end
+
   private
 
     # HACK: `items.first` is because any item in the same group can be used...
