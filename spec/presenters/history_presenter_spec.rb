@@ -204,6 +204,17 @@ describe HistoryPresenter do
           ]
         end
       end
+
+      # TODO: Enable when we have history items with optional `reference`s.
+      xcontext 'when item references are optional (not required)' do
+        let!(:item_1) { create :history_item, :replacement_name, :with_reference, protonym: protonym }
+        let!(:item_2) { create :history_item, :replacement_name, protonym: protonym }
+
+        it 'can be sorted when compared with items with non-nil references' do
+          expect(presenter.grouped_items.first.items).to eq [item_2]
+          expect(presenter.grouped_items.second.items).to eq [item_1]
+        end
+      end
     end
 
     describe 'sorting grouped taxts' do
