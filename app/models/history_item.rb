@@ -5,7 +5,10 @@ class HistoryItem < ApplicationRecord
   include Trackable
 
   TYPE_ATTRIBUTES = [
-    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :object_taxon, :reference, :pages
+    :taxt, :subtype,
+    :picked_value, :text_value,
+    :object_protonym, :object_taxon,
+    :reference, :pages
   ]
   RANK_LABELS = [
     ANY_RANK_GROUP_LABEL = 'Any/all rank (-groups)',
@@ -14,13 +17,13 @@ class HistoryItem < ApplicationRecord
     SPECIES_GROUP_LABEL = 'Species-group'
   ]
   # [grep:history_type].
+  # TODO: Extract into new class now that we have a bunch.
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
       ranks: ANY_RANK_GROUP_LABEL,
 
       group_order: 999,
-      group_key: ->(o) { o.id },
 
       group_template: '%<item_taxts>s',
 
@@ -31,7 +34,6 @@ class HistoryItem < ApplicationRecord
       ranks: SPECIES_GROUP_LABEL,
 
       group_order: 10,
-      group_key: ->(o) { o.id },
 
       group_template: '%<designation_type>s: %<item_taxts>s.',
       group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
@@ -39,7 +41,7 @@ class HistoryItem < ApplicationRecord
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      subtypes: [
+      subtypes: TYPE_SPECIMEN_DESIGNATION_SUBTYPES = [
         LECTOTYPE_DESIGNATION = 'LectotypeDesignation',
         NEOTYPE_DESIGNATION = 'NeotypeDesignation'
       ],
@@ -113,7 +115,7 @@ class HistoryItem < ApplicationRecord
       type_label: 'Status as species',
       ranks: SPECIES_GROUP_LABEL,
 
-      group_order: 0,
+      group_order: 50,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
       group_template: 'Status as species: %<item_taxts>s.',
@@ -156,6 +158,10 @@ class HistoryItem < ApplicationRecord
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
   validate :validate_type_specific_attributes
+  with_options if: :hybrid? do
+    validate :validate_subtype
+    validate :validate_reference_and_pages
+  end
 
   before_validation :cleanup_and_convert_taxts
 
@@ -166,7 +172,7 @@ class HistoryItem < ApplicationRecord
 
   acts_as_list scope: :protonym
   has_paper_trail
-  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value],
+  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages],
     replace_newlines: true
   trackable parameters: proc { { protonym_id: protonym_id } }
 
@@ -198,13 +204,29 @@ class HistoryItem < ApplicationRecord
   end
 
   def citation_taxt
-    raise 'not supported' unless reference_id && pages
-    "#{Taxt.to_ref_tag(reference_id)}: #{pages}"
+    raise 'not supported' if taxt_type?
+    return unless reference_id || pages
+
+    "#{Taxt.to_ref_tag(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}"
   end
   alias_method :citation, :citation_taxt
 
   def object_protonym_prott_tag
     "{prott #{object_protonym_id}}"
+  end
+
+  def group_key
+    return @_group_key if defined?(@_group_key)
+
+    @_group_key ||= if (key = definitions.fetch(:group_key, nil))
+                      key.call(self)
+                    else
+                      id
+                    end
+  end
+
+  def groupable?
+    definitions.fetch(:group_key, nil).present?
   end
 
   def ids_from_tax_or_taxac_tags
@@ -255,9 +277,31 @@ class HistoryItem < ApplicationRecord
       return unless type.in?(TYPES)
 
       required_presence = definitions.fetch(:validates_presence_of)
-      required_absence = TYPE_ATTRIBUTES - required_presence
+      required_absence = TYPE_ATTRIBUTES - required_presence - optional_attributes
 
-      validates_presence_of required_presence
-      validates_absence_of required_absence
+      validates_presence_of(required_presence) if required_presence.present?
+      validates_absence_of(required_absence) if required_absence.present?
+    end
+
+    def optional_attributes
+      @_optional_attributes ||= definitions[:optional_attributes] || []
+    end
+
+    def validate_subtype
+      return unless (subtypes = definitions[:subtypes])
+      validates_inclusion_of :subtype, in: subtypes
+    end
+
+    def validate_reference_and_pages
+      return unless optional_attributes.include?(:reference) || optional_attributes.include?(:pages)
+      return if reference_and_pages_both_blank_or_present?
+
+      errors.add :base, "Reference and pages can't be blank if one of them is not"
+    end
+
+    def reference_and_pages_both_blank_or_present?
+      return true if reference && pages
+      return true if !reference && !pages
+      false
     end
 end

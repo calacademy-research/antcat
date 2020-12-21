@@ -23,8 +23,8 @@ class Protonym < ApplicationRecord
     PARTICIPLE = 'participle'
   ]
   UNCHANGEABLE_GENDER_AGREEMENT_TYPES = [
-    NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case',
-    NOUN_IN_APPOSITION = 'noun_in_apposition'
+    NOUN_IN_APPOSITION = 'noun_in_apposition',
+    NOUN_IN_GENITIVE_CASE = 'noun_in_genitive_case'
   ]
   GENDER_AGREEMENT_TYPES = CHANGEABLE_GENDER_AGREEMENT_TYPES + UNCHANGEABLE_GENDER_AGREEMENT_TYPES
 
