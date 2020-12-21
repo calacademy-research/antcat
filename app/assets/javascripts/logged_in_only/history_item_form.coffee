@@ -23,6 +23,7 @@ PICKED_VALUE_SELECT = '#history_item_picked_value'
 
 # Misc.
 TYPE_SPECIFIC_SECTION = '.type-specific-section' # Any type-specific section.
+TYPE_SPECIFIC_HELP_PREFIX = '.type-specific-help-'
 
 $ ->
   onSelectType($(TYPE_SELECT).val())
@@ -51,6 +52,8 @@ resetTypeSpecific = ->
 
 onSelectType = (selectedType) ->
   resetTypeSpecific()
+
+  $("#{TYPE_SPECIFIC_HELP_PREFIX}#{selectedType}").show()
 
   # [grep:history_type].
   inputsToShow =

@@ -34,6 +34,36 @@
                     Item type
                 %td=f.select :type, options_for_history_item_types(history_item.type)
 
+        .row
+          .medium-12.columns
+            %table.unstriped
+              %tr
+                %td.type-specific-section.type-specific-help-Taxt
+                  %p
+                    Fields in this box are not relevant for
+                    %code Taxt
+                    items.
+
+                %td.type-specific-section.type-specific-help-JuniorSynonymOf.type-specific-help-SeniorSynonymOf
+                  %p
+                    Protonym-based. Currently only for species-group names, because the terminal taxon of the
+                    %code object_protonym
+                    is used for the link (for which cannot pick the correct rank for protonyms with both genera and subgenera).
+                  %p
+                    Like with
+                    %code Taxt
+                    items, mirrored items
+                    =surround "(", ")" do
+                      %code JuniorSynonymOf
+                      +
+                      %code SeniorSynonymOf
+                    must be added.
+
+                %td.type-specific-section.type-specific-help-FormDescriptions
+                  %p
+                    See also related wiki page
+                    =link_to_wiki_page_or_missing WikiPage::FORMS
+
         -# [grep:history_type].
         %table.table.unstriped
           %tbody
