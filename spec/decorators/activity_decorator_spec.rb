@@ -96,6 +96,22 @@ describe ActivityDecorator do
         end
       end
 
+      context 'when trackable is a `Taxon`' do
+        context 'when action is `Activity::FORCE_UPDATE_DATABASE_RECORD`' do
+          let(:trackable) { create :family }
+          let(:activity) { trackable.create_activity Activity::FORCE_UPDATE_DATABASE_RECORD, user }
+
+          specify do
+            expect(decorated.did_something.squish).to eq <<~HTML.squish
+              <span class='bold-warning'>force-updated</span>
+              the record
+              #{taxon_link(trackable)}
+              (<code>Taxon##{trackable.id}</code>)
+            HTML
+          end
+        end
+      end
+
       context 'when trackable is a `Reference`' do
         context 'when action is `Activity::UPDATE`' do
           let(:trackable) { create :any_reference }

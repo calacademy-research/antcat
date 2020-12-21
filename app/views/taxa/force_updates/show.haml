@@ -1,0 +1,125 @@
+-title "Force-update"
+-breadcrumb :force_update_taxon_database_record, @taxon
+
+.callout.alert.medium-9.margin-bottom
+  %h6
+    =antcat_icon 'warning-icon'
+    %strong Consider this an advanced (and #{beta_label}) feature
+
+  %p Force-updating database records may create data inconsistencies.
+  %p
+    This form allows changes that may not make any sense.
+    It can be used to fix, repair or update records that cannot be fixed by any other means.
+  %p
+    Changes are performed only for the currently selected record
+    =ndash
+    related records such as children that may need to be updated will not be changed.
+  %p IDs have to be entered manually.
+
+.row.margin-bottom
+  .medium-9.columns
+    %p
+      =@taxon.decorate.link_to_taxon
+      has
+      %strong=@taxon.what_links_here.all.count
+      'What Links Here's
+      =link_to "Show all", taxon_what_links_here_path(@taxon), class: "btn-normal btn-tiny"
+
+=form_with model: @taxon, url: taxa_force_update_path(@taxon), scope: :taxon do |f|
+  =render 'shared/errors_for', resource: @taxon
+
+  .row
+    .medium-6.columns
+      %table.unstriped
+        %tr
+          %td.shrink
+            =f.label :status do
+              %code status
+          %td=f.select :status, Status::STATUSES
+
+        %tr
+          %td
+            =f.label :incertae_sedis_in do
+              %code incertae_sedis_in
+          %td=f.select :incertae_sedis_in, Rank::INCERTAE_SEDIS_IN_TYPES, include_blank: '(none)'
+
+        %tr
+          %td
+            %hr
+
+        %tr
+          %td
+            =f.label :family_id do
+              %code family_id
+          %td=f.number_field :family_id
+
+        %tr
+          %td
+            =f.label :subfamily_id do
+              %code subfamily_id
+          %td=f.number_field :subfamily_id
+
+        %tr
+          %td
+            =f.label :tribe_id do
+              %code tribe_id
+          %td=f.number_field :tribe_id
+
+        %tr
+          %td
+            =f.label :genus_id do
+              %code genus_id
+          %td=f.number_field :genus_id
+
+        %tr
+          %td
+            =f.label :subgenus_id do
+              %code subgenus_id
+          %td=f.number_field :subgenus_id
+
+        %tr
+          %td
+            =f.label :species_id do
+              %code species_id
+          %td=f.number_field :species_id
+
+        %tr
+          %td
+            =f.label :subspecies_id do
+              %code subspecies_id
+          %td=f.number_field :subspecies_id
+
+        %tr
+          %td
+            %hr
+
+        %tr
+          %td
+            =f.label :homonym_replaced_by_id do
+              %code homonym_replaced_by_id
+          %td=f.number_field :homonym_replaced_by_id
+
+        %tr
+          %td
+            =f.label :current_taxon_id do
+              %code current_taxon_id
+          %td=f.number_field :current_taxon_id
+
+        %tr
+          %td
+            %hr
+
+        %tr
+          %td{colspan: 2}
+            =edit_summary_text_field_tag optional: false
+            %p
+              Please provide a short edit summary for this change.
+              For example what is supposed to change, or why it cannot be updated in other forms.
+            %p
+              If this change is part of a series of changes (such as updating
+              %code subfamily_id
+              for more than one record), then that would be useful to include in the edit summary.
+
+        %tr
+          %td{colspan: 2}
+            =f.button append_superadmin_icon("Force-update database record"), data: { confirm: "Are you sure?" }, class: "btn-warning"

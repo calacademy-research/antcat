@@ -24,6 +24,7 @@ class Activity < ApplicationRecord
       EXECUTE_SCRIPT =                'execute_script',
       FINISH_REVIEWING =              'finish_reviewing',
       FORCE_PARENT_CHANGE =           'force_parent_change',
+      FORCE_UPDATE_DATABASE_RECORD =  'force_update_database_record',
       MERGE_AUTHORS =                 'merge_authors',
       MOVE_ITEMS =                    'move_items',
       MOVE_PROTONYM_ITEMS =           'move_protonym_items',

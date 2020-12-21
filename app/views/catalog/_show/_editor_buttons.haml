@@ -27,6 +27,9 @@
         -if taxon.policy.allow_force_change_parent?
           %li=link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-warning"
 
+        -if user_is_superadmin?
+          %li=link_to append_superadmin_icon("Force-update"), taxa_force_update_path(taxon), class: "btn-warning"
+
         %li=editors_catalog_presenter.delete_unreferenced_taxon_button
 
       -if user_is_at_least_helper?

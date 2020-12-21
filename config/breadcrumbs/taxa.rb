@@ -39,6 +39,11 @@ crumb :force_parent_change do |taxon|
   parent :edit_taxon, taxon
 end
 
+crumb :force_update_taxon_database_record do |taxon|
+  link "Force-update"
+  parent :edit_taxon, taxon
+end
+
 # TODO: Rename to `move_taxon_items`.
 crumb :move_items do |taxon|
   link "Move items", new_taxa_move_items_path(taxon)

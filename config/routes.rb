@@ -118,6 +118,7 @@ Rails.application.routes.draw do
       resource :create_combination, only: [:new, :show, :create]
       resource :convert_to_subspecies, only: [:new, :create]
       resource :force_parent_change, only: [:show, :create]
+      resource :force_update, only: [:show, :update]
       resource :elevate_to_species, only: [:create]
       resource :create_obsolete_combination, only: [:show, :create]
       resource :move_items, only: [:new, :show, :create]
