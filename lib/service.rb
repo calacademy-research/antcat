@@ -8,18 +8,9 @@ module Service
     base.extend(ClassMethods)
   end
 
-  # TODO: For ruby 2.7, use:
-  # ```
-  #   module ClassMethods
-  #     def [](...) # rubocop_disable Style/MethodDefParentheses
-  #       new(...).call
-  #     end
-  #   end
-  # ```
-
   module ClassMethods
-    def [] *args
-      new(*args).call
+    def [](...) # rubocop:disable Style/MethodDefParentheses
+      new(...).call
     end
   end
 end

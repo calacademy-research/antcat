@@ -1,4 +1,4 @@
-FROM ruby:2.6.5
+FROM ruby:2.7.1
 
 # TODO: qt-related dependencies can be removed after switching from capybara-webkit to apparition.
 RUN apt-get update -qq && apt-get install -y nodejs default-mysql-client qt5-default libqt5webkit5-dev qtchooser openssh-server; gem install bundler -v '2.1.1';  mkdir /var/run/sshd ; echo 'root:root' | chpasswd ; sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config ; echo "export VISIBLE=now" >> /etc/profile
