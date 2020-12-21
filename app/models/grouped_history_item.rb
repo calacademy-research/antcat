@@ -11,7 +11,11 @@ class GroupedHistoryItem
   end
 
   def taxt
-    @_taxt ||= any_item_in_group.section_to_taxt(item_taxts)
+    @_taxt ||= if groupable?
+                 any_item_in_group.item_template_to_taxt(grouped_item_taxts: grouped_item_taxts)
+               else
+                 any_item_in_group.to_taxt
+               end
   end
 
   def grouped?
@@ -25,7 +29,7 @@ class GroupedHistoryItem
       @_any_item_in_group ||= items.first
     end
 
-    def item_taxts
-      items.map(&:groupable_item_taxt).join('; ')
+    def grouped_item_taxts
+      items.map(&:groupable_item_template_to_taxt).join('; ')
     end
 end
