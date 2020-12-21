@@ -19,10 +19,7 @@ describe HistoryPresenter do
         let!(:item_2) { create :history_item, :taxt, protonym: protonym }
 
         it 'does not group them' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            item_1.taxt,
-            item_2.taxt
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
         end
       end
 
@@ -36,10 +33,7 @@ describe HistoryPresenter do
           end
 
           it 'does not group them' do
-            expect(presenter.grouped_items.map(&:taxt)).to eq [
-              "Lectotype designation: #{item_1.citation_taxt}.",
-              "Lectotype designation: #{item_2.citation_taxt}."
-            ]
+            expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
           end
         end
 
@@ -52,10 +46,7 @@ describe HistoryPresenter do
           end
 
           it 'does not group them' do
-            expect(presenter.grouped_items.map(&:taxt)).to eq [
-              "Neotype designation: #{item_1.citation_taxt}.",
-              "Neotype designation: #{item_2.citation_taxt}."
-            ]
+            expect(presenter.grouped_items.map(&:items)).to eq [[item_1], [item_2]]
           end
         end
       end
@@ -65,9 +56,7 @@ describe HistoryPresenter do
         let!(:item_2) { create :history_item, :form_descriptions, :with_1758_reference, protonym: protonym }
 
         it 'groups them' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "#{item_2.citation_taxt} (#{item_2.text_value}); #{item_1.citation_taxt} (#{item_1.text_value})."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
 
@@ -84,9 +73,7 @@ describe HistoryPresenter do
         end
 
         it 'groups them by `object_taxon`' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Combination in {tax #{object_taxon.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
 
@@ -103,9 +90,7 @@ describe HistoryPresenter do
         end
 
         it 'groups them by `object_protonym`' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Junior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
 
@@ -122,9 +107,7 @@ describe HistoryPresenter do
         end
 
         it 'groups them by `object_protonym`' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Senior synonym of {prott #{object_protonym.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
 
@@ -137,9 +120,7 @@ describe HistoryPresenter do
         end
 
         it 'groups them' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Status as species: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
 
@@ -156,9 +137,7 @@ describe HistoryPresenter do
         end
 
         it 'groups them by `object_taxon`' do
-          expect(presenter.grouped_items.map(&:taxt)).to eq [
-            "Subspecies of {tax #{object_taxon.id}}: #{item_2.citation_taxt}; #{item_1.citation_taxt}."
-          ]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end
     end
@@ -179,10 +158,12 @@ describe HistoryPresenter do
         end
 
         it 'uses reference date as the tie-breaker' do
-          expect(presenter.grouped_items.first.items).to eq [
-            item_20001116,
-            item_200012,
-            item_20001201
+          expect(presenter.grouped_items.map(&:items)).to eq [
+            [
+              item_20001116,
+              item_200012,
+              item_20001201
+            ]
           ]
         end
       end
@@ -198,9 +179,11 @@ describe HistoryPresenter do
         end
 
         it 'uses reference ID as the tie-breaker' do
-          expect(presenter.grouped_items.first.items).to eq [
-            item_200011_1,
-            item_200011_2
+          expect(presenter.grouped_items.map(&:items)).to eq [
+            [
+              item_200011_1,
+              item_200011_2
+            ]
           ]
         end
       end
@@ -211,8 +194,7 @@ describe HistoryPresenter do
         let!(:item_2) { create :history_item, :replacement_name, protonym: protonym }
 
         it 'can be sorted when compared with items with non-nil references' do
-          expect(presenter.grouped_items.first.items).to eq [item_2]
-          expect(presenter.grouped_items.second.items).to eq [item_1]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2], [item_1]]
         end
       end
     end
