@@ -5,7 +5,7 @@ require 'rails_helper'
 describe WhatLinksHereItem do
   describe '#detax' do
     context 'when `what_links_here_item` is a taxt item' do
-      let!(:history_item) { create :history_item }
+      let!(:history_item) { create :history_item, :taxt }
       let!(:what_links_here_item) { described_class.new('history_items', :taxt, history_item.id) }
 
       specify { expect(what_links_here_item.detax).to eq Detax[history_item.to_taxt] }
@@ -83,7 +83,7 @@ describe WhatLinksHereItem do
 
     context "when table is `history_items`" do
       let(:table) { "history_items" }
-      let!(:object) { create :history_item }
+      let!(:object) { create :history_item, :taxt }
 
       specify { expect(what_links_here_item.owner).to eq object.protonym }
     end

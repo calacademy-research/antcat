@@ -181,13 +181,13 @@ describe HistoryItem do
   describe '#standard_format?' do
     context 'with `TAXT` item' do
       context 'with standard format' do
-        let(:history_item) { create :history_item, taxt: 'Lectotype designation: {ref 1}: 23' }
+        let(:history_item) { create :history_item, :taxt, taxt: 'Lectotype designation: {ref 1}: 23' }
 
         specify { expect(history_item.standard_format?).to eq true }
       end
 
       context 'with non-standard format' do
-        let(:history_item) { create :history_item, taxt: 'Pizza designation: {ref 1}: 23' }
+        let(:history_item) { create :history_item, :taxt, taxt: 'Pizza designation: {ref 1}: 23' }
 
         specify { expect(history_item.standard_format?).to eq false }
       end
@@ -299,7 +299,7 @@ describe HistoryItem do
 
   describe '#ids_from_tax_or_taxac_tags' do
     context 'when taxt contains no tax or taxac tags' do
-      let!(:history_item) { create :history_item, taxt: 'pizza festival' }
+      let!(:history_item) { create :history_item, :taxt, taxt: 'pizza festival' }
 
       specify { expect(history_item.ids_from_tax_or_taxac_tags).to eq [] }
     end
@@ -307,7 +307,7 @@ describe HistoryItem do
     context 'when taxt contains tax or taxac tags' do
       let(:taxon_1) { create :any_taxon }
       let(:taxon_2) { create :any_taxon }
-      let!(:history_item) { create :history_item, taxt: "{tax #{taxon_1.id}}, {taxac #{taxon_2.id}}" }
+      let!(:history_item) { create :history_item, :taxt, taxt: "{tax #{taxon_1.id}}, {taxac #{taxon_2.id}}" }
 
       it 'returns IDs of taxa referenced in tax and taxac tags' do
         expect(history_item.ids_from_tax_or_taxac_tags).to match_array [taxon_1.id, taxon_2.id]

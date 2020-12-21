@@ -7,13 +7,13 @@ describe HistoryItemDecorator do
 
   describe "#rank_specific_badge" do
     context "when history item is not rank-specific" do
-      let(:history_item) { build_stubbed :history_item }
+      let(:history_item) { build_stubbed :history_item, :taxt }
 
       specify { expect(decorated.rank_specific_badge).to eq nil }
     end
 
     context "when history item is rank-specific" do
-      let(:history_item) { build_stubbed :history_item, :family_rank_only_item }
+      let(:history_item) { build_stubbed :history_item, :taxt, :family_rank_only_item }
 
       specify do
         expect(decorated.rank_specific_badge).to eq <<~HTML.strip

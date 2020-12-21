@@ -8,8 +8,6 @@ FactoryBot.define do
 
     association :protonym
 
-    taxt
-
     trait :family_rank_only_item do
       rank { Rank::FAMILY }
     end
@@ -30,7 +28,6 @@ FactoryBot.define do
       type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
       subtype { HistoryItem::LECTOTYPE_DESIGNATION }
 
-      without_taxt
       with_reference
     end
 
@@ -38,7 +35,6 @@ FactoryBot.define do
       type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
       subtype { HistoryItem::NEOTYPE_DESIGNATION }
 
-      without_taxt
       with_reference
     end
 
@@ -46,14 +42,12 @@ FactoryBot.define do
       type { HistoryItem::FORM_DESCRIPTIONS }
       text_value { Taxt::StandardHistoryItemFormats::FORMS.sample }
 
-      without_taxt
       with_reference
     end
 
     trait :combination_in do
       type { HistoryItem::COMBINATION_IN }
 
-      without_taxt
       with_reference
       with_object_taxon
     end
@@ -61,7 +55,6 @@ FactoryBot.define do
     trait :junior_synonym_of do
       type { HistoryItem::JUNIOR_SYNONYM_OF }
 
-      without_taxt
       with_reference
       with_object_protonym
     end
@@ -69,7 +62,6 @@ FactoryBot.define do
     trait :senior_synonym_of do
       type { HistoryItem::SENIOR_SYNONYM_OF }
 
-      without_taxt
       with_reference
       with_object_protonym
     end
@@ -77,14 +69,12 @@ FactoryBot.define do
     trait :status_as_species do
       type { HistoryItem::STATUS_AS_SPECIES }
 
-      without_taxt
       with_reference
     end
 
     trait :subspecies_of do
       type { HistoryItem::SUBSPECIES_OF }
 
-      without_taxt
       with_reference
       with_object_taxon
     end
@@ -121,10 +111,6 @@ FactoryBot.define do
     end
 
     # Misc.
-    trait :without_taxt do
-      taxt { nil }
-    end
-
     trait :with_all_taxts do
       sequence(:taxt) { |n| "taxt #{n} #{taxt_tag}" }
     end

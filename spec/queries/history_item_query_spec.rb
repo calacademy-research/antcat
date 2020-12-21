@@ -6,8 +6,8 @@ describe HistoryItemQuery do
   subject(:query) { described_class.new }
 
   describe '#search' do
-    let!(:lasius_item) { create :history_item, taxt: "Lasius content" }
-    let!(:formica_123_item) { create :history_item, taxt: "Formica content 123" }
+    let!(:lasius_item) { create :history_item, :taxt, taxt: "Lasius content" }
+    let!(:formica_123_item) { create :history_item, :taxt, taxt: "Formica content 123" }
 
     context "with search type 'LIKE'" do
       specify do
@@ -33,8 +33,8 @@ describe HistoryItemQuery do
   end
 
   describe '#exclude_search' do
-    let!(:lasius_item) { create :history_item, taxt: "Lasius content" }
-    let!(:formica_123_item) { create :history_item, taxt: "Formica content 123" }
+    let!(:lasius_item) { create :history_item, :taxt, taxt: "Lasius content" }
+    let!(:formica_123_item) { create :history_item, :taxt, taxt: "Formica content 123" }
 
     context "with search type 'LIKE'" do
       specify do

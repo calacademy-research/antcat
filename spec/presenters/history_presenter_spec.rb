@@ -219,9 +219,9 @@ describe HistoryPresenter do
 
     describe 'sorting grouped taxts' do
       context 'with `TAXT` items' do
-        let!(:item_1) { create :history_item, taxt: 'pos 3', protonym: protonym }
-        let!(:item_2) { create :history_item, taxt: 'pos 1', protonym: protonym }
-        let!(:item_3) { create :history_item, taxt: 'pos 2', protonym: protonym }
+        let!(:item_1) { create :history_item, :taxt, taxt: 'pos 3', protonym: protonym }
+        let!(:item_2) { create :history_item, :taxt, taxt: 'pos 1', protonym: protonym }
+        let!(:item_3) { create :history_item, :taxt, taxt: 'pos 2', protonym: protonym }
 
         before do
           item_1.update_columns(position: 3)

@@ -18,7 +18,7 @@ describe Exporters::Antweb::History::HistoryItems do
       let(:taxon) { create :any_taxon }
 
       before do
-        create :history_item, protonym: taxon.protonym, taxt: "Taxon: {tax #{taxon.id}}"
+        create :history_item, :taxt, protonym: taxon.protonym, taxt: "Taxon: {tax #{taxon.id}}"
       end
 
       specify do
@@ -55,7 +55,7 @@ describe Exporters::Antweb::History::HistoryItems do
       end
 
       context 'with more than one item' do
-        let!(:item_0) { create :history_item, taxt: "Taxon: {tax #{taxon.id}}", protonym: protonym }
+        let!(:item_0) { create :history_item, :taxt, taxt: "Taxon: {tax #{taxon.id}}", protonym: protonym }
 
         specify do
           antweb_item_0 = "<div>Taxon: #{antweb_taxon_link(item_0.protonym.terminal_taxon)}.</div>"
