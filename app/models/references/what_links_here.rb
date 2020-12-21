@@ -4,9 +4,10 @@ module References
   class WhatLinksHere
     RECORD_TO_TAG_REGEX_TAXT_METHOD = :reference
     REFERENCING_COLUMNS = [
-      [Citation,  :reference_id],
+      [Citation, :reference_id],
       [Reference, :nesting_reference_id],
-      [TypeName,  :reference_id]
+      [TypeName, :reference_id],
+      [HistoryItem, :reference_id]
     ]
 
     attr_private_initialize :record

@@ -18,13 +18,16 @@ describe Taxa::WhatLinksHere do
 
   context 'when there are column references' do
     let(:taxon) { create :genus }
+
     let!(:species) { create :species, genus: taxon }
     let!(:type_name) { create :type_name, :by_subsequent_designation_of, taxon: taxon }
+    let!(:history_item) { create :history_item, :subspecies_of, object_taxon: taxon }
 
     specify do
       expect(what_links_here.all).to match_array [
-        WhatLinksHereItem.new('taxa',       :genus_id,       species.id),
-        WhatLinksHereItem.new('type_names', :taxon_id,       type_name.id)
+        WhatLinksHereItem.new('taxa',          :genus_id,        species.id),
+        WhatLinksHereItem.new('type_names',    :taxon_id,        type_name.id),
+        WhatLinksHereItem.new('history_items', :object_taxon_id, history_item.id)
       ]
     end
 

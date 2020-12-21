@@ -2,6 +2,8 @@
 
 require 'rails_helper'
 
+# TODO: Test less. Here and in other `WhatLinksHere`s.
+
 describe Protonyms::WhatLinksHere do
   subject(:what_links_here) { described_class.new(protonym) }
 
@@ -15,10 +17,12 @@ describe Protonyms::WhatLinksHere do
   context 'when there are column references' do
     let!(:protonym) { create :protonym }
     let!(:taxon) { create :any_taxon, protonym: protonym }
+    let!(:history_item) { create :history_item, :junior_synonym_of, object_protonym: protonym }
 
     specify do
       expect(what_links_here.all).to match_array [
-        WhatLinksHereItem.new('taxa', :protonym_id, taxon.id)
+        WhatLinksHereItem.new('taxa',          :protonym_id,        taxon.id),
+        WhatLinksHereItem.new('history_items', :object_protonym_id, history_item.id)
       ]
     end
 
