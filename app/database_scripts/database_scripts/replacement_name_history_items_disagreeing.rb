@@ -21,7 +21,7 @@ module DatabaseScripts
 
         t.rows do |history_item|
           taxt = history_item.taxt
-          extracted_taxon = Taxon.find(history_item.ids_from_tax_or_taxac_tags.first)
+          extracted_taxon = Taxon.find(history_item.ids_from_taxon_tags.first)
 
           same = extracted_taxon == history_item.current_taxon_owner.homonym_replaced_by
 
