@@ -52,7 +52,7 @@ describe WhatLinksHereItemDecorator do
 
   context "when table is `history_items`" do
     let(:table) { "history_items" }
-    let!(:object) { create :history_item }
+    let!(:object) { create :history_item, :taxt }
 
     specify { expect(decorated.item_link).to eq %(<a href="/history_items/#{id}">#{id}</a>) }
     specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }

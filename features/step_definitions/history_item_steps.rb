@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 Given("there is a history item {string}") do |taxt|
-  create :history_item, taxt: taxt
+  create :history_item, :taxt, taxt: taxt
 end
 
 Given("there is a subfamily protonym {string} with a history item {string}") do |name, taxt|
   protonym = create :protonym, :family_group_name, name: create(:subfamily_name, name: name)
-  create :history_item, taxt: taxt, protonym: protonym
+  create :history_item, :taxt, taxt: taxt, protonym: protonym
 end
 
 Given("there is a subfamily protonym {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|
@@ -52,7 +52,7 @@ When("I delete the most recent history item") do
   HistoryItem.last.destroy
 end
 
-# Hybrid history items.
+# Relational history items.
 When(/^I set the history item reference to the first search results of "([^"]*)"$/) do |name|
   select2 name, from: 'history_item_reference_id'
 end

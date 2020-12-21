@@ -25,7 +25,7 @@ class HistoryItem < ApplicationRecord
 
       group_order: 999,
 
-      group_template: '%<item_taxts>s',
+      item_template: '%<item_taxts>s',
 
       validates_presence_of: [:taxt]
     },
@@ -35,11 +35,8 @@ class HistoryItem < ApplicationRecord
 
       group_order: 10,
 
-      group_template: '%<designation_type>s: %<item_taxts>s.',
-      group_template_vars: ->(o) { { designation_type: o.underscored_subtype.humanize } },
-
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      item_template: '%<designation_type>s: %<citation>s.',
+      item_template_vars: ->(o) { { designation_type: o.subtype.underscore.humanize, citation: o.citation } },
 
       subtypes: TYPE_SPECIMEN_DESIGNATION_SUBTYPES = [
         LECTOTYPE_DESIGNATION = 'LectotypeDesignation',
@@ -59,10 +56,10 @@ class HistoryItem < ApplicationRecord
       group_order: 20,
       group_key: ->(o) { o.type },
 
-      group_template: '%<item_taxts>s.',
+      item_template: '%<grouped_item_taxts>s.',
 
-      item_template: '%<citation>s (%<forms>s)',
-      item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
+      groupable_item_template: '%<citation>s (%<forms>s)',
+      groupable_item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
 
       validates_presence_of: [:text_value, :reference, :pages]
     },
@@ -73,11 +70,11 @@ class HistoryItem < ApplicationRecord
       group_order: 30,
       group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
 
-      group_template: 'Combination in {tax %<object_taxon_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
+      item_template: 'Combination in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      groupable_item_template: '%<citation>s',
+      groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_taxon, :reference, :pages]
     },
@@ -88,11 +85,11 @@ class HistoryItem < ApplicationRecord
       group_order: 40,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-      group_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      item_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars: ->(o) { o.slice(:object_protonym_id) },
 
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      groupable_item_template: '%<citation>s',
+      groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_protonym, :reference, :pages]
     },
@@ -103,11 +100,11 @@ class HistoryItem < ApplicationRecord
       group_order: 45,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-      group_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      item_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars: ->(o) { o.slice(:object_protonym_id) },
 
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      groupable_item_template: '%<citation>s',
+      groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_protonym, :reference, :pages]
     },
@@ -118,10 +115,10 @@ class HistoryItem < ApplicationRecord
       group_order: 50,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-      group_template: 'Status as species: %<item_taxts>s.',
+      item_template: 'Status as species: %<grouped_item_taxts>s.',
 
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      groupable_item_template: '%<citation>s',
+      groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:reference, :pages]
     },
@@ -132,11 +129,11 @@ class HistoryItem < ApplicationRecord
       group_order: 60,
       group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
 
-      group_template: 'Subspecies of {tax %<object_taxon_id>i}: %<item_taxts>s.',
-      group_template_vars: ->(o) { o.slice(:object_taxon_id) },
+      item_template: 'Subspecies of {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars: ->(o) { o.slice(:object_taxon_id) },
 
-      item_template: '%<citation>s',
-      item_template_vars: ->(o) { { citation: o.citation } },
+      groupable_item_template: '%<citation>s',
+      groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_taxon, :reference, :pages]
     }
@@ -158,7 +155,7 @@ class HistoryItem < ApplicationRecord
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
   validate :validate_type_specific_attributes
-  with_options if: :hybrid? do
+  with_options if: :relational? do
     validate :validate_subtype
     validate :validate_reference_and_pages
   end
@@ -177,7 +174,7 @@ class HistoryItem < ApplicationRecord
   trackable parameters: proc { { protonym_id: protonym_id } }
 
   def standard_format?
-    return true if hybrid?
+    return true if relational?
     Taxt::StandardHistoryItemFormats.new(taxt).standard?
   end
 
@@ -185,22 +182,28 @@ class HistoryItem < ApplicationRecord
     type == TAXT
   end
 
-  def hybrid?
+  def relational?
     !taxt_type?
   end
 
   def to_taxt
     return taxt if taxt_type?
-    section_to_taxt(groupable_item_taxt)
+
+    if groupable?
+      item_template_to_taxt grouped_item_taxts: groupable_item_template_to_taxt
+    else
+      item_template_to_taxt
+    end
   end
 
-  def section_to_taxt item_taxts
-    group_template % group_template_vars.merge(item_taxts: item_taxts)
-  end
-
-  def groupable_item_taxt
+  def item_template_to_taxt vars = {}
     return taxt if taxt_type?
-    item_template % item_template_vars
+
+    item_template % item_template_vars.merge(vars)
+  end
+
+  def groupable_item_template_to_taxt
+    groupable_item_template % groupable_item_template_vars
   end
 
   def citation_taxt
@@ -210,10 +213,6 @@ class HistoryItem < ApplicationRecord
     "#{Taxt.to_ref_tag(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}"
   end
   alias_method :citation, :citation_taxt
-
-  def object_protonym_prott_tag
-    "{prott #{object_protonym_id}}"
-  end
 
   def group_key
     return @_group_key if defined?(@_group_key)
@@ -241,24 +240,11 @@ class HistoryItem < ApplicationRecord
     type.underscore
   end
 
-  def underscored_subtype
-    subtype.underscore
-  end
-
   def definitions
     @_definitions ||= TYPE_DEFINITIONS[type]
   end
 
   private
-
-    def group_template
-      definitions.fetch(:group_template)
-    end
-
-    def group_template_vars
-      return {} unless (vars = definitions[:group_template_vars])
-      vars.call(self).symbolize_keys
-    end
 
     def item_template
       definitions.fetch(:item_template)
@@ -266,6 +252,15 @@ class HistoryItem < ApplicationRecord
 
     def item_template_vars
       return {} unless (vars = definitions[:item_template_vars])
+      vars.call(self).symbolize_keys
+    end
+
+    def groupable_item_template
+      @_groupable_item_template ||= definitions.fetch(:groupable_item_template, nil)
+    end
+
+    def groupable_item_template_vars
+      return {} unless (vars = definitions[:groupable_item_template_vars])
       vars.call(self).symbolize_keys
     end
 

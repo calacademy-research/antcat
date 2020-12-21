@@ -16,14 +16,14 @@ module HistoryItemHelper
   end
 
   def collapse_history_item_taxt_textarea? history_item
-    return true if hybrid_history_item_without_taxt?(history_item)
+    return true if relational_history_item_without_taxt?(history_item)
     return false if is_or_was_taxt_history_item?(history_item)
   end
 
   private
 
-    def hybrid_history_item_without_taxt? history_item
-      history_item.hybrid? && history_item.taxt.blank?
+    def relational_history_item_without_taxt? history_item
+      history_item.relational? && history_item.taxt.blank?
     end
 
     def is_or_was_taxt_history_item? history_item

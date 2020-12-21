@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 module Seed
-  class HybridHistoryItems
+  class RelationalHistoryItems
     def self.call
       new.call
     end
 
     def initialize
       HistoryItem::TYPES.each do |type|
-        Seed::HybridHistoryItems.const_set(type.underscore.upcase, type) # Super lazy...
+        Seed::RelationalHistoryItems.const_set(type.underscore.upcase, type) # Super lazy...
       end
     end
 

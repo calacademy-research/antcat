@@ -34,7 +34,7 @@ describe Protonyms::WhatLinksHere do
       let(:taxt_tag) { "{pro #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
-      let!(:history_item) { create :history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
@@ -60,7 +60,7 @@ describe Protonyms::WhatLinksHere do
       let(:taxt_tag) { "{proac #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
-      let!(:history_item) { create :history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
@@ -86,7 +86,7 @@ describe Protonyms::WhatLinksHere do
       let(:taxt_tag) { "{prott #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
-      let!(:history_item) { create :history_item, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do

@@ -20,7 +20,7 @@ describe Taxa::CollectReferences do
     let(:reference_6) { create :any_reference }
 
     before do
-      create :history_item, protonym: protonym, taxt: "see {ref #{reference_5.id}}"
+      create :history_item, :taxt, protonym: protonym, taxt: "see {ref #{reference_5.id}}"
       create :reference_section, taxon: taxon, references_taxt: "see {ref #{reference_6.id}}"
     end
 

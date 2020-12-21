@@ -85,7 +85,7 @@ describe HistoryItemsController do
       end
     end
 
-    describe 'creating hybrid history items' do
+    describe 'creating relational history items' do
       let(:reference) { create :any_reference }
       let(:object_protonym) { create :protonym }
       let(:history_item_params) do
@@ -114,7 +114,7 @@ describe HistoryItemsController do
 
   describe "PUT update", as: :helper do
     describe 'creating an item' do
-      let!(:history_item) { create :history_item }
+      let!(:history_item) { create :history_item, :taxt }
       let(:history_item_params) do
         {
           taxt: 'content',
@@ -147,9 +147,9 @@ describe HistoryItemsController do
 
     describe "changing an items's position" do
       let!(:protonym) { create :protonym }
-      let!(:history_item_1) { create :history_item, protonym: protonym }
-      let!(:history_item_2) { create :history_item, protonym: protonym }
-      let!(:history_item_3) { create :history_item, protonym: protonym }
+      let!(:history_item_1) { create :history_item, :taxt, protonym: protonym }
+      let!(:history_item_2) { create :history_item, :taxt, protonym: protonym }
+      let!(:history_item_3) { create :history_item, :taxt, protonym: protonym }
       let(:history_item_params) do
         {
           position: 3
@@ -186,7 +186,7 @@ describe HistoryItemsController do
     end
 
     describe 'param `redirect_back_url`' do
-      let!(:history_item) { create :history_item }
+      let!(:history_item) { create :history_item, :taxt }
       let(:history_item_params) do
         {
           taxt: 'content'
@@ -221,7 +221,7 @@ describe HistoryItemsController do
   end
 
   describe "DELETE destroy", as: :editor do
-    let!(:history_item) { create :history_item }
+    let!(:history_item) { create :history_item, :taxt }
 
     it 'deletes the history item' do
       expect { delete(:destroy, params: { id: history_item.id }) }.to change { HistoryItem.count }.by(-1)
