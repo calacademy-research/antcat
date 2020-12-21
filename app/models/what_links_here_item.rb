@@ -10,8 +10,14 @@ class WhatLinksHereItem
   end
 
   def detax
-    return unless taxt?
-    Detax[model.find(id).public_send(field)]
+    taxt = if taxt?
+             model.find(id).public_send(field)
+           elsif table == "history_items"
+             model.find(id).to_taxt
+           end
+    return unless taxt
+
+    Detax[taxt]
   end
 
   def taxt?
