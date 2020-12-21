@@ -16,8 +16,7 @@
       -@protonym.history_items.each do |history_item|
         %li.sortable-item.history-item{id: history_item.id, class: ["#{history_item.underscored_type}-history-item"]}
           %small.logged-in-only-gray-bold-notice=history_item.underscored_type
-          -if history_item.rank?
-            %small.bold-notice #{history_item.rank}-only item
+          =history_item.decorate.rank_specific_badge if history_item.rank?
           %br
           =Detax[history_item.to_taxt]
           %hr

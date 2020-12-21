@@ -3,8 +3,7 @@
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
 
     %small.logged-in-only-gray-bold-notice.right-margin=history_item.underscored_type
-    -if history_item.rank?
-      %small.bold-notice.right-margin #{history_item.rank}-only item
+    =history_item.decorate.rank_specific_badge if history_item.rank?
 
     %span.show-on-hover
       =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"

@@ -10,6 +10,10 @@ FactoryBot.define do
 
     taxt
 
+    trait :family_rank_only_item do
+      rank { Rank::FAMILY }
+    end
+
     # Types. [grep:history_type].
     trait :taxt do
       type { HistoryItem::TAXT }
