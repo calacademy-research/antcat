@@ -85,7 +85,7 @@ describe HistoryItemsController do
       end
     end
 
-    describe 'creating hybrid history items' do
+    describe 'creating relational history items' do
       let(:reference) { create :any_reference }
       let(:object_protonym) { create :protonym }
       let(:history_item_params) do

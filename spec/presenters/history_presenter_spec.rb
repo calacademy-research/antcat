@@ -245,7 +245,7 @@ describe HistoryPresenter do
         end
       end
 
-      context 'with hybrid items' do
+      context 'with relational items' do
         let(:object_protonym) { create :protonym }
 
         let!(:item_1) do

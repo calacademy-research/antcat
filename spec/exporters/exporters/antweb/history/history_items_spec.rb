@@ -29,7 +29,7 @@ describe Exporters::Antweb::History::HistoryItems do
       specify { expect(described_class[taxon].html_safe?).to eq true }
     end
 
-    context 'when taxon has taxt and hybrid history items' do
+    context 'when taxon has taxt and relational history items' do
       let(:taxon) { create :any_taxon }
       let(:protonym) { taxon.protonym }
 

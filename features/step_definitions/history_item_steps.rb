@@ -52,7 +52,7 @@ When("I delete the most recent history item") do
   HistoryItem.last.destroy
 end
 
-# Hybrid history items.
+# Relational history items.
 When(/^I set the history item reference to the first search results of "([^"]*)"$/) do |name|
   select2 name, from: 'history_item_reference_id'
 end

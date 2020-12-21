@@ -193,7 +193,7 @@ describe HistoryItem do
       end
     end
 
-    context 'with hybrid item' do
+    context 'with relational item' do
       let(:history_item) { create :history_item, :form_descriptions }
 
       specify { expect(history_item.standard_format?).to eq true }
@@ -281,7 +281,7 @@ describe HistoryItem do
       specify { expect { history_item.citation_taxt }.to raise_error('not supported') }
     end
 
-    context 'with hybrid item' do
+    context 'with relational item' do
       context 'when item supports citations (`reference` + `pages`)' do
         let(:history_item) { create :history_item, :form_descriptions }
 

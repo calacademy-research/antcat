@@ -3,7 +3,7 @@ Feature: Editing a history item
     Given I log in as a catalog editor named "Archibald"
 
   @search @javascript
-  Scenario: Adding a hybrid history item
+  Scenario: Adding a relational history item
     Given there is a genus protonym "Atta"
     And these references exist
       | author   | year |
@@ -21,7 +21,7 @@ Feature: Editing a history item
     Then I should see "Successfully added history item"
     And I should see "Batiatus, 2004: 123 (w.q.)"
 
-  Scenario: Adding an hybrid history item with errors
+  Scenario: Adding a relational history item with errors
     Given there is a genus protonym "Atta"
 
     When I go to the protonym page for "Atta"

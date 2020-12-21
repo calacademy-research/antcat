@@ -155,7 +155,7 @@ class HistoryItem < ApplicationRecord
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
   validate :validate_type_specific_attributes
-  with_options if: :hybrid? do
+  with_options if: :relational? do
     validate :validate_subtype
     validate :validate_reference_and_pages
   end
@@ -174,7 +174,7 @@ class HistoryItem < ApplicationRecord
   trackable parameters: proc { { protonym_id: protonym_id } }
 
   def standard_format?
-    return true if hybrid?
+    return true if relational?
     Taxt::StandardHistoryItemFormats.new(taxt).standard?
   end
 
@@ -182,7 +182,7 @@ class HistoryItem < ApplicationRecord
     type == TAXT
   end
 
-  def hybrid?
+  def relational?
     !taxt_type?
   end
 
