@@ -21,6 +21,7 @@ module AntwebFormatter
       parse_pro_tags
       parse_proac_tags
       parse_prott_tags
+      parse_prottac_tags
 
       parse_ref_tags
 
@@ -88,6 +89,21 @@ module AntwebFormatter
 
           if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
             formatter.link_to_taxon(terminal_taxon)
+          elsif (protonym = Protonym.find_by(id: protonym_id))
+            formatter.link_to_protonym(protonym) + ' (protonym)'
+          else
+            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
+          end
+        end
+      end
+
+      # Terminal taxon of protonyms, with author citation, "{prottac 123}".
+      def parse_prottac_tags
+        content.gsub!(Taxt::PROTTAC_TAG_REGEX) do
+          protonym_id = $LAST_MATCH_INFO[:protonym_id]
+
+          if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
+            formatter.link_to_taxon_with_author_citation(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym) + ' (protonym)'
           else
