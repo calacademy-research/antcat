@@ -228,8 +228,9 @@ class HistoryItem < ApplicationRecord
     definitions.fetch(:group_key, nil).present?
   end
 
+  # TODO: Rename to `ids_from_taxon_tags`.
   def ids_from_tax_or_taxac_tags
-    Taxt.extract_ids_from_tax_or_taxac_tags taxt
+    Taxt.extract_ids_from_taxon_tags(taxt)
   end
 
   def type_label
