@@ -160,6 +160,9 @@ class HistoryItem < ApplicationRecord
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
   validate :validate_type_specific_attributes
+  with_options if: :hybrid? do
+    validate :validate_reference_and_pages
+  end
 
   before_validation :cleanup_and_convert_taxts
 
@@ -259,9 +262,26 @@ class HistoryItem < ApplicationRecord
       return unless type.in?(TYPES)
 
       required_presence = definitions.fetch(:validates_presence_of)
-      required_absence = TYPE_ATTRIBUTES - required_presence
+      required_absence = TYPE_ATTRIBUTES - required_presence - optional_attributes
 
-      validates_presence_of required_presence
-      validates_absence_of required_absence
+      validates_presence_of(required_presence) if required_presence.present?
+      validates_absence_of(required_absence) if required_absence.present?
+    end
+
+    def optional_attributes
+      @_optional_attributes ||= definitions[:optional_attributes] || []
+    end
+
+    def validate_reference_and_pages
+      return unless optional_attributes.include?(:reference) || optional_attributes.include?(:pages)
+      return if reference_and_pages_both_blank_or_present?
+
+      errors.add :base, "Reference and pages can't be blank if one of them is not"
+    end
+
+    def reference_and_pages_both_blank_or_present?
+      return true if reference && pages
+      return true if !reference && !pages
+      false
     end
 end
