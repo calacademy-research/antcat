@@ -133,7 +133,7 @@ describe HistoryItem do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:taxt, :rank, :subtype, :picked_value, :text_value) }
+    it { is_expected.to strip_attributes(:taxt, :rank, :subtype, :picked_value, :text_value, :pages) }
 
     it_behaves_like "a taxt column with cleanup", :taxt do
       subject { build :history_item }

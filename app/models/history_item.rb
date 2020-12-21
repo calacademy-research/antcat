@@ -5,7 +5,10 @@ class HistoryItem < ApplicationRecord
   include Trackable
 
   TYPE_ATTRIBUTES = [
-    :taxt, :subtype, :picked_value, :text_value, :object_protonym, :object_taxon, :reference, :pages
+    :taxt, :subtype,
+    :picked_value, :text_value,
+    :object_protonym, :object_taxon,
+    :reference, :pages
   ]
   RANK_LABELS = [
     ANY_RANK_GROUP_LABEL = 'Any/all rank (-groups)',
@@ -14,6 +17,7 @@ class HistoryItem < ApplicationRecord
     SPECIES_GROUP_LABEL = 'Species-group'
   ]
   # [grep:history_type].
+  # TODO: Extract into new class now that we have a bunch.
   TYPE_DEFINITIONS = {
     TAXT = 'Taxt' => {
       type_label: 'Taxt (freeform text)',
@@ -166,7 +170,7 @@ class HistoryItem < ApplicationRecord
 
   acts_as_list scope: :protonym
   has_paper_trail
-  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value],
+  strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages],
     replace_newlines: true
   trackable parameters: proc { { protonym_id: protonym_id } }
 
