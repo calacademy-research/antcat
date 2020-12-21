@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 module ProtonymSelectHelper
-  def protonym_select_tag protonym_attribute_name, protonym_id
+  def protonym_select_tag protonym_attribute_name, protonym_id, css_id: nil
     protonym = Protonym.find_by(id: protonym_id)
     protonym_id = protonym&.id
 
     select_tag protonym_attribute_name,
       options_for_select([protonym_id].compact, protonym_id),
-      id: nil,
-      class: 'select2-autocomplete', data: protonym_data_attributes(protonym)
+      id: css_id,
+      class: 'select2-autocomplete',
+      data: protonym_data_attributes(protonym)
   end
 
   private
