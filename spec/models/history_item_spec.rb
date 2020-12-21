@@ -49,6 +49,11 @@ describe HistoryItem do
         is_expected.to validate_absence_of :object_protonym
         is_expected.to validate_absence_of :object_taxon
       end
+
+      it do
+        is_expected.to validate_inclusion_of(:subtype).
+          in_array(described_class::TYPE_SPECIMEN_DESIGNATION_SUBTYPES)
+      end
     end
 
     context 'when `type` is `FORM_DESCRIPTIONS`' do

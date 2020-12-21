@@ -41,7 +41,7 @@ class HistoryItem < ApplicationRecord
       item_template: '%<citation>s',
       item_template_vars: ->(o) { { citation: o.citation } },
 
-      subtypes: [
+      subtypes: TYPE_SPECIMEN_DESIGNATION_SUBTYPES = [
         LECTOTYPE_DESIGNATION = 'LectotypeDesignation',
         NEOTYPE_DESIGNATION = 'NeotypeDesignation'
       ],
@@ -159,6 +159,7 @@ class HistoryItem < ApplicationRecord
   validates :type, inclusion: { in: TYPES }
   validate :validate_type_specific_attributes
   with_options if: :hybrid? do
+    validate :validate_subtype
     validate :validate_reference_and_pages
   end
 
@@ -284,6 +285,11 @@ class HistoryItem < ApplicationRecord
 
     def optional_attributes
       @_optional_attributes ||= definitions[:optional_attributes] || []
+    end
+
+    def validate_subtype
+      return unless (subtypes = definitions[:subtypes])
+      validates_inclusion_of :subtype, in: subtypes
     end
 
     def validate_reference_and_pages
