@@ -69,7 +69,11 @@
             %td
               -if grouped_item.grouped?
                 %p=Detax[grouped_item.taxt]
-                %p=link_to "Show/hide grouped", "#", data: { show_hide_toggler_for: "grouped-#{grouped_item.group_key}" }, class: "btn-tiny btn-nodanger"
+                %p
+                  =link_to "Show/hide grouped", "#", data: { show_hide_toggler_for: "grouped-#{grouped_item.group_key}" }, class: "btn-tiny btn-nodanger"
+
+                  %span.spacer-1rem
+                  %small.logged-in-only-gray-bold-notice.right-margin #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
                 %ul.compact-list.no-bullet.margin-bottom{data: { show_hide_toggable_id: "grouped-#{grouped_item.group_key}" }}
                   -grouped_item.items.each do |history_item|
