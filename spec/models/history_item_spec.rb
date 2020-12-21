@@ -20,115 +20,131 @@ describe HistoryItem do
 
   describe 'type-related validations' do
     context 'when `type` is `TAXT`' do
-      subject { create :history_item, :taxt }
+      subject { build_stubbed :history_item, :taxt }
 
-      it { is_expected.to validate_presence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_presence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_absence_of :reference }
-      it { is_expected.to validate_absence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_absence_of :reference
+        is_expected.to validate_absence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `TYPE_SPECIMEN_DESIGNATION`' do
-      subject { create :history_item, :type_specimen_designation }
+      subject { build_stubbed :history_item, :type_specimen_designation }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_presence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_presence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `FORM_DESCRIPTIONS`' do
-      subject { create :history_item, :form_descriptions }
+      subject { build_stubbed :history_item, :form_descriptions }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_presence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_presence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `COMBINATION_IN`' do
-      subject { create :history_item, :combination_in }
+      subject { build_stubbed :history_item, :combination_in }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_presence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
+      end
     end
 
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
-      subject { create :history_item, :junior_synonym_of }
+      subject { build_stubbed :history_item, :junior_synonym_of }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_presence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `SENIOR_SYNONYM_OF`' do
-      subject { create :history_item, :senior_synonym_of }
+      subject { build_stubbed :history_item, :senior_synonym_of }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_presence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `STATUS_AS_SPECIES`' do
-      subject { create :history_item, :status_as_species }
+      subject { build_stubbed :history_item, :status_as_species }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_absence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
     end
 
     context 'when `type` is `SUBSPECIES_OF`' do
-      subject { create :history_item, :subspecies_of }
+      subject { build_stubbed :history_item, :subspecies_of }
 
-      it { is_expected.to validate_absence_of :taxt }
-      it { is_expected.to validate_absence_of :subtype }
-      it { is_expected.to validate_absence_of :picked_value }
-      it { is_expected.to validate_absence_of :text_value }
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
 
-      it { is_expected.to validate_presence_of :reference }
-      it { is_expected.to validate_presence_of :pages }
-      it { is_expected.to validate_absence_of :object_protonym }
-      it { is_expected.to validate_presence_of :object_taxon }
+        is_expected.to validate_presence_of :reference
+        is_expected.to validate_presence_of :pages
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
+      end
     end
   end
 
@@ -208,6 +224,15 @@ describe HistoryItem do
       end
     end
 
+    context 'when `type` is `COMBINATION_IN`' do
+      let(:history_item) { create :history_item, :combination_in }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Combination in {tax #{history_item.object_taxon.id}}: #{history_item.citation_taxt}."
+      end
+    end
+
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
       let(:history_item) { create :history_item, :junior_synonym_of }
 
@@ -223,6 +248,23 @@ describe HistoryItem do
       specify do
         expect(history_item.to_taxt).
           to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `STATUS_AS_SPECIES`' do
+      let(:history_item) { create :history_item, :status_as_species }
+
+      specify do
+        expect(history_item.to_taxt).to eq "Status as species: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `SUBSPECIES_OF`' do
+      let(:history_item) { create :history_item, :subspecies_of }
+
+      specify do
+        expect(history_item.to_taxt).
+          to eq "Subspecies of {tax #{history_item.object_taxon.id}}: #{history_item.citation_taxt}."
       end
     end
   end

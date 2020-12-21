@@ -3,6 +3,9 @@
 class GroupedHistoryItem
   attr_reader :items
 
+  # TODO: This should be delegated to the definiton once they have been extracted into new classes.
+  delegate :groupable?, :group_key, :type, to: :any_item_in_group
+
   def initialize items
     @items = items
   end
@@ -11,12 +14,8 @@ class GroupedHistoryItem
     @_taxt ||= any_item_in_group.section_to_taxt(item_taxts)
   end
 
-  def type
-    @_type ||= any_item_in_group.type
-  end
-
-  def groupable?
-    any_item_in_group.groupable?
+  def grouped?
+    !items.one?
   end
 
   private

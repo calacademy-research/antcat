@@ -115,7 +115,7 @@ class HistoryItem < ApplicationRecord
       type_label: 'Status as species',
       ranks: SPECIES_GROUP_LABEL,
 
-      group_order: 0,
+      group_order: 50,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
       group_template: 'Status as species: %<item_taxts>s.',
