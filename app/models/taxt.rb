@@ -15,9 +15,9 @@ module Taxt
     [HistoryItem,      'history_items',       'taxt']
   ]
 
+  TAXON_TAG_REGEX = /\{(?<tag>tax|taxac) (?<taxon_id>[0-9]+)\}/
   TAX_TAG_REGEX = /\{tax (?<taxon_id>\d+)\}/
   TAXAC_TAG_REGEX = /\{taxac (?<taxon_id>\d+)\}/
-  TAX_OR_TAXAC_TAG_REGEX = /\{(?:tax|taxac) (?<taxon_id>[0-9]+\})/
 
   PRO_TAG_REGEX = /\{pro (?<protonym_id>\d+)\}/
   PROAC_TAG_REGEX = /\{proac (?<protonym_id>\d+)\}/
@@ -65,12 +65,16 @@ module Taxt
     "{ref #{reference_id}}"
   end
 
-  def extract_ids_from_tax_tags taxt
-    taxt.scan(TAX_TAG_REGEX).flatten.compact.map(&:to_i)
+  def extract_tags_and_ids_from_taxon_tags taxt
+    taxt.scan(TAXON_TAG_REGEX).map { |(tag, taxon_id)| [tag, taxon_id.to_i] }
   end
 
-  def extract_ids_from_tax_or_taxac_tags taxt
-    taxt.scan(TAX_OR_TAXAC_TAG_REGEX).flatten.map(&:to_i)
+  def extract_ids_from_taxon_tags taxt
+    extract_tags_and_ids_from_taxon_tags(taxt).map(&:last)
+  end
+
+  def extract_ids_from_tax_tags taxt
+    taxt.scan(TAX_TAG_REGEX).flatten.compact.map(&:to_i)
   end
 
   def extract_ids_from_ref_tags taxt

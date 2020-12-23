@@ -23,6 +23,7 @@ PICKED_VALUE_SELECT = '#history_item_picked_value'
 
 # Misc.
 TYPE_SPECIFIC_SECTION = '.type-specific-section' # Any type-specific section.
+TYPE_SPECIFIC_HELP_PREFIX = '.type-specific-help-'
 
 $ ->
   onSelectType($(TYPE_SELECT).val())
@@ -31,12 +32,28 @@ $ ->
     selectedType = $(this).val()
     onSelectType(selectedType)
 
-onSelectType = (selectedType) ->
+setupSelect = (identifier, options) ->
+  selectElement = $(identifier)
+  currentValue = selectElement.val()
+
+  selectElement.empty()
+  $.each options, (label, value) ->
+    selectElement.append($("<option></option>").attr("value", value).text(label))
+  selectElement.val(currentValue)
+
+resetTypeSpecific = ->
   $(TYPE_SPECIFIC_SECTION).hide()
 
   $(TYPE_LABEL_SUBTYPE).text "???"
   $(TYPE_LABEL_PICKED_VALUE).text "???"
   $(TYPE_LABEL_TEXT_VALUE).text "???"
+  $(TYPE_LABEL_OBJECT_PROTONYM).text "???"
+  $(TYPE_LABEL_OBJECT_TAXON).text "???"
+
+onSelectType = (selectedType) ->
+  resetTypeSpecific()
+
+  $("#{TYPE_SPECIFIC_HELP_PREFIX}#{selectedType}").show()
 
   # [grep:history_type].
   inputsToShow =
@@ -51,18 +68,11 @@ onSelectType = (selectedType) ->
       when 'TypeSpecimenDesignation'
         $(TYPE_LABEL_SUBTYPE).text "Designation type"
 
-        subtypeSelect = $(SUBTYPE_SELECT)
-        currentValue = subtypeSelect.val()
-        subtypeOptions = {
-          "(none)": "",
-          "Lectotype designation": "LectotypeDesignation",
+        setupSelect SUBTYPE_SELECT, {
+          "(none)": ""
+          "Lectotype designation": "LectotypeDesignation"
           "Neotype designation": "NeotypeDesignation"
         }
-
-        subtypeSelect.empty()
-        $.each subtypeOptions, (label, value) ->
-          subtypeSelect.append($("<option></option>").attr("value", value).text(label))
-        subtypeSelect.val(currentValue)
 
         [TYPE_SPECIFIC_SUBTYPE, TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 

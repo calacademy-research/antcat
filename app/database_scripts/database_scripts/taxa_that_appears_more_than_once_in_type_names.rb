@@ -27,7 +27,7 @@ title: Taxa that appears more than once in <code>TypeName</code>s
 
 section: research
 category: Types
-tags: [new!]
+tags: []
 
 description: >
 

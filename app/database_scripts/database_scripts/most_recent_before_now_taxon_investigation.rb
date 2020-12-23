@@ -43,7 +43,7 @@ title: <code>most_recent_before_now_taxon</code> investigation
 
 section: research
 category: Catalog
-tags: [new!, slow-render]
+tags: [slow-render]
 
 issue_description:
 

@@ -20,12 +20,12 @@ module DatabaseScripts
           protonym = history_item.protonym
           taxt = history_item.taxt
 
-          extracted_taxon = Taxon.find(history_item.ids_from_tax_or_taxac_tags.first)
+          extracted_taxon = Taxon.find(history_item.ids_from_taxon_tags.first)
           protonym_of_extracted_taxon = extracted_taxon.protonym
           terminal_taxon = protonym_of_extracted_taxon.terminal_taxon
 
           same = extracted_taxon == terminal_taxon
-          single_tax_tag = history_item.ids_from_tax_or_taxac_tags.size == 1
+          single_tax_tag = history_item.ids_from_taxon_tags.size == 1
 
           [
             link_to(history_item.id, history_item_path(history_item)),

@@ -31,12 +31,15 @@ title: Genera with names that are different from their protonyms' name
 
 section: main
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description: This genus does not have the same name as its protonym.
 
 description: >
   Excluded statuses: `unavailable misspelling`
+
+
+  It is OK for this sript not to be empty, since we need to figure out how to handle all cases for spelling changes.
 
 related_scripts:
   - GeneraWithNamesThatAreDifferentFromTheirProtonymsName

@@ -228,8 +228,8 @@ class HistoryItem < ApplicationRecord
     definitions.fetch(:group_key, nil).present?
   end
 
-  def ids_from_tax_or_taxac_tags
-    Taxt.extract_ids_from_tax_or_taxac_tags taxt
+  def ids_from_taxon_tags
+    Taxt.extract_ids_from_taxon_tags(taxt)
   end
 
   def type_label
