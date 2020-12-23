@@ -188,8 +188,7 @@ describe HistoryPresenter do
         end
       end
 
-      # TODO: Enable when we have history items with optional `reference`s.
-      xcontext 'when item references are optional (not required)' do
+      context 'when item references are optional (not required)' do
         let!(:item_1) { create :history_item, :replacement_name, :with_reference, protonym: protonym }
         let!(:item_2) { create :history_item, :replacement_name, protonym: protonym }
 

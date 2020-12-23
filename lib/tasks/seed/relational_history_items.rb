@@ -49,6 +49,15 @@ module Seed
 
       tatusia.history_items.create! type: STATUS_AS_SPECIES,
         reference: ref_2020, pages: '15'
+
+      tatusia.history_items.create! type: REPLACEMENT_NAME,
+        object_protonym: fusca, reference: ref_2020, pages: '12'
+
+      tatusia.history_items.create! type: REPLACEMENT_NAME,
+        object_protonym: fusca
+
+      tatusia.history_items.create! type: REPLACEMENT_NAME_FOR,
+        object_protonym: lasius
     end
 
     private
