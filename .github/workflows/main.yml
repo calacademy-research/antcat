@@ -26,7 +26,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.5
+        ruby-version: 2.7.1
         bundler-cache: true
 
     - name: Run rubocop
@@ -55,7 +55,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.5
+        ruby-version: 2.7.1
         bundler-cache: true
 
     - name: Setup database
@@ -95,7 +95,7 @@ jobs:
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.6.5
+        ruby-version: 2.7.1
         bundler-cache: true
 
     - name: Setup database
