@@ -67,7 +67,7 @@ describe HistoryItem do
 
       it do
         is_expected.to validate_inclusion_of(:subtype).
-          in_array(described_class::TYPE_SPECIMEN_DESIGNATION_SUBTYPES)
+          in_array(History::Definitions::TYPE_SPECIMEN_DESIGNATION_SUBTYPES)
       end
     end
 
@@ -214,23 +214,6 @@ describe HistoryItem do
 
     it_behaves_like "a taxt column with cleanup", :taxt do
       subject { build :history_item }
-    end
-  end
-
-  describe 'TYPE_DEFINITIONS' do
-    described_class::TYPE_DEFINITIONS.each do |type, definition|
-      describe "type definition for #{type}" do
-        it 'has all required attributes' do
-          expect(definition[:type_label]).to be_present
-          expect(definition[:ranks]).to be_present
-
-          expect(definition[:group_order]).to be_present
-
-          expect(definition[:item_template]).to be_present
-
-          expect(definition[:validates_presence_of]).to_not eq nil
-        end
-      end
     end
   end
 
