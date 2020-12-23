@@ -122,6 +122,8 @@ class HistoryItem < ApplicationRecord
 
   private
 
+    delegate :optional_attributes, to: :definition, private: true
+
     def item_template
       definitions.fetch(:item_template)
     end
@@ -152,10 +154,6 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of(required_presence) if required_presence.present?
       validates_absence_of(required_absence) if required_absence.present?
-    end
-
-    def optional_attributes
-      @_optional_attributes ||= definitions[:optional_attributes] || []
     end
 
     def validate_subtype

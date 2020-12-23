@@ -14,6 +14,10 @@ module History
       type_attributes.fetch(:group_order)
     end
 
+    def optional_attributes
+      @_optional_attributes ||= type_attributes[:optional_attributes] || []
+    end
+
     private
 
       attr_reader :type_attributes
