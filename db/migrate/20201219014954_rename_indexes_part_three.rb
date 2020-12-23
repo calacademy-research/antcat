@@ -2,8 +2,9 @@
 
 class RenameIndexesPartThree < ActiveRecord::Migration[6.1]
   def change
-    rename_index :history_items, 'ix_history_items__object_taxon_id__taxa__id',
-      'ix_history_items__object_taxon_id'
+    # Commented out to fix old migrations:
+    # rename_index :history_items, 'ix_history_items__object_taxon_id__taxa__id',
+    #   'ix_history_items__object_taxon_id'
 
     rename_index :taxa, 'index_taxa_on_current_taxon_id', 'ix_taxa__current_taxon_id'
     rename_index :taxa, 'index_taxa_on_family_id', 'ix_taxa__family_id'

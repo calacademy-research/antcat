@@ -20,8 +20,9 @@ class RenameIndexesPartOne < ActiveRecord::Migration[6.1]
     rename_index :feedbacks, 'index_feedbacks_on_user_id', 'ix_feedbacks__user_id'
 
     rename_index :history_items, 'ix_taxon_history_items__protonym_id', 'ix_history_items__protonym_id'
-    rename_index :history_items, 'fk_history_items__object_taxon_id__taxa__id',
-      'ix_history_items__object_taxon_id__taxa__id'
+    # Commented out to fix old migrations:
+    # rename_index :history_items, 'fk_history_items__object_taxon_id__taxa__id',
+    #   'ix_history_items__object_taxon_id__taxa__id'
 
     rename_index :institutions, 'index_institutions_on_abbreviation', 'ux_institutions__abbreviation'
 
