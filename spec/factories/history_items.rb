@@ -14,85 +14,85 @@ FactoryBot.define do
 
     # Types. [grep:history_type].
     trait :taxt do
-      type { HistoryItem::TAXT }
+      type { History::Definitions::TAXT }
       sequence(:taxt) { |n| "history item content #{n}" }
     end
 
     trait :type_specimen_designation do
-      type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
+      type { History::Definitions::TYPE_SPECIMEN_DESIGNATION }
 
       lectotype_designation
     end
 
     trait :lectotype_designation do
-      type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
-      subtype { HistoryItem::LECTOTYPE_DESIGNATION }
+      type { History::Definitions::TYPE_SPECIMEN_DESIGNATION }
+      subtype { History::Definitions::LECTOTYPE_DESIGNATION }
 
       with_reference
     end
 
     trait :neotype_designation do
-      type { HistoryItem::TYPE_SPECIMEN_DESIGNATION }
-      subtype { HistoryItem::NEOTYPE_DESIGNATION }
+      type { History::Definitions::TYPE_SPECIMEN_DESIGNATION }
+      subtype { History::Definitions::NEOTYPE_DESIGNATION }
 
       with_reference
     end
 
     trait :form_descriptions do
-      type { HistoryItem::FORM_DESCRIPTIONS }
+      type { History::Definitions::FORM_DESCRIPTIONS }
       text_value { Taxt::StandardHistoryItemFormats::FORMS.sample }
 
       with_reference
     end
 
     trait :combination_in do
-      type { HistoryItem::COMBINATION_IN }
+      type { History::Definitions::COMBINATION_IN }
 
       with_reference
       with_object_taxon
     end
 
     trait :junior_synonym_of do
-      type { HistoryItem::JUNIOR_SYNONYM_OF }
+      type { History::Definitions::JUNIOR_SYNONYM_OF }
 
       with_reference
       with_object_protonym
     end
 
     trait :senior_synonym_of do
-      type { HistoryItem::SENIOR_SYNONYM_OF }
+      type { History::Definitions::SENIOR_SYNONYM_OF }
 
       with_reference
       with_object_protonym
     end
 
     trait :status_as_species do
-      type { HistoryItem::STATUS_AS_SPECIES }
+      type { History::Definitions::STATUS_AS_SPECIES }
 
       with_reference
     end
 
     trait :subspecies_of do
-      type { HistoryItem::SUBSPECIES_OF }
+      type { History::Definitions::SUBSPECIES_OF }
 
       with_reference
       with_object_taxon
     end
 
     trait :replacement_name do
-      type { HistoryItem::REPLACEMENT_NAME }
+      type { History::Definitions::REPLACEMENT_NAME }
 
       with_object_protonym
     end
 
     trait :replacement_name_for do
-      type { HistoryItem::REPLACEMENT_NAME_FOR }
+      type { History::Definitions::REPLACEMENT_NAME_FOR }
 
       with_object_protonym
     end
 
     trait :unavailable_name do
-      type { HistoryItem::UNAVAILABLE_NAME }
+      type { History::Definitions::UNAVAILABLE_NAME }
     end
 
     # Type-specific.

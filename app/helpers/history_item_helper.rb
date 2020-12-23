@@ -2,7 +2,7 @@
 
 module HistoryItemHelper
   def options_for_history_item_types value
-    options = HistoryItem::TYPE_DEFINITIONS.each_with_object({}) do |(type, definition), memo|
+    options = History::Definitions::TYPE_DEFINITIONS.each_with_object({}) do |(type, definition), memo|
       ranks = definition[:ranks]
       memo[ranks] ||= []
       memo[ranks] << [definition[:type_label], type]
@@ -27,6 +27,6 @@ module HistoryItemHelper
     end
 
     def is_or_was_taxt_history_item? history_item
-      HistoryItem::TAXT.in?([history_item.type, history_item.type_was])
+      History::Definitions::TAXT.in?([history_item.type, history_item.type_was])
     end
 end

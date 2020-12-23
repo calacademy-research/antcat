@@ -6,57 +6,53 @@ module Seed
       new.call
     end
 
-    def initialize
-      HistoryItem::TYPES.each do |type|
-        Seed::RelationalHistoryItems.const_set(type.underscore.upcase, type) # Super lazy...
-      end
-    end
-
     def call
       tatusia.history_items.destroy_all
 
-      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
+      tatusia.history_items.create! type: History::Definitions::SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         reference: ref_2016, pages: '1'
-      tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
+      tatusia.history_items.create! type: History::Definitions::SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
         force_author_citation: true,
         reference: ref_2012, pages: '69'
 
-      tatusia.history_items.create! type: JUNIOR_SYNONYM_OF,
+      tatusia.history_items.create! type: History::Definitions::JUNIOR_SYNONYM_OF,
         object_protonym: fusca, reference: ref_2020, pages: '4'
 
-      tatusia.history_items.create! type: TAXT, taxt: 'Old-style taxt'
-      tatusia.history_items.create! type: TAXT, taxt: 'Old-style taxt 2'
+      tatusia.history_items.create! type: History::Definitions::TAXT,
+        taxt: 'Old-style taxt'
+      tatusia.history_items.create! type: History::Definitions::TAXT,
+        taxt: 'Old-style taxt 2'
 
-      tatusia.history_items.create! type: FORM_DESCRIPTIONS,
+      tatusia.history_items.create! type: History::Definitions::FORM_DESCRIPTIONS,
         text_value: 'w.q.',
         reference: ref_1968, pages: '2'
 
-      tatusia.history_items.create! type: TYPE_SPECIMEN_DESIGNATION,
-        subtype: HistoryItem::LECTOTYPE_DESIGNATION,
+      tatusia.history_items.create! type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
+        subtype: History::Definitions::LECTOTYPE_DESIGNATION,
         reference: ref_2016, pages: '555'
 
-      tatusia.history_items.create! type: TYPE_SPECIMEN_DESIGNATION,
-        subtype: HistoryItem::NEOTYPE_DESIGNATION,
+      tatusia.history_items.create! type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
+        subtype: History::Definitions::NEOTYPE_DESIGNATION,
         reference: ref_2016, pages: '559'
 
-      tatusia.history_items.create! type: COMBINATION_IN,
+      tatusia.history_items.create! type: History::Definitions::COMBINATION_IN,
         object_taxon: lasius_taxon, reference: ref_2020, pages: '7'
 
-      tatusia.history_items.create! type: SUBSPECIES_OF,
+      tatusia.history_items.create! type: History::Definitions::SUBSPECIES_OF,
         object_taxon: fusca_taxon, reference: ref_2020, pages: '12'
 
-      tatusia.history_items.create! type: STATUS_AS_SPECIES,
+      tatusia.history_items.create! type: History::Definitions::STATUS_AS_SPECIES,
         reference: ref_2020, pages: '15'
 
-      tatusia.history_items.create! type: REPLACEMENT_NAME,
+      tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME,
         object_protonym: fusca, reference: ref_2020, pages: '12'
 
-      tatusia.history_items.create! type: REPLACEMENT_NAME,
+      tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME,
         object_protonym: fusca
 
-      tatusia.history_items.create! type: REPLACEMENT_NAME_FOR,
+      tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME_FOR,
         object_protonym: lasius
     end
 

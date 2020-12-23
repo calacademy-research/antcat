@@ -4,6 +4,7 @@ class HistoryItem < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
+  TYPES = History::Definitions::TYPES
   TYPE_ATTRIBUTES = [
     :taxt, :subtype,
     :picked_value, :text_value,
@@ -12,15 +13,6 @@ class HistoryItem < ApplicationRecord
     :force_author_citation
   ]
   OPTIONAL_TYPE_ATTRIBUTES = [:force_author_citation]
-
-  # TODO: Remove temporary refactor helper once done.
-  History::Definitions::TYPES.each do |type|
-    HistoryItem.const_set(type.underscore.upcase, type)
-  end
-  TYPE_DEFINITIONS = History::Definitions::TYPE_DEFINITIONS
-  TYPES = History::Definitions::TYPES
-  LECTOTYPE_DESIGNATION = History::Definitions::LECTOTYPE_DESIGNATION
-  NEOTYPE_DESIGNATION = History::Definitions::NEOTYPE_DESIGNATION
 
   self.inheritance_column = :_type_column_disabled
 
@@ -48,8 +40,8 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
-  scope :except_taxts, -> { where.not(type: TAXT) }
-  scope :taxts_only, -> { where(type: TAXT) }
+  scope :except_taxts, -> { where.not(type: History::Definitions::TAXT) }
+  scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
 
   acts_as_list scope: :protonym
   has_paper_trail
@@ -63,7 +55,7 @@ class HistoryItem < ApplicationRecord
   end
 
   def taxt_type?
-    type == TAXT
+    type == History::Definitions::TAXT
   end
 
   def relational?
@@ -121,7 +113,7 @@ class HistoryItem < ApplicationRecord
   end
 
   def definitions
-    @_definitions ||= TYPE_DEFINITIONS[type]
+    @_definitions ||= History::Definitions::TYPE_DEFINITIONS[type]
   end
 
   def definition
