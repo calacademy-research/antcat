@@ -91,13 +91,7 @@ class HistoryItem < ApplicationRecord
   alias_method :citation, :citation_taxt
 
   def group_key
-    return @_group_key if defined?(@_group_key)
-
-    @_group_key ||= if (key = definitions.fetch(:group_key, nil))
-                      key.call(self)
-                    else
-                      id
-                    end
+    definition.group_key(self)
   end
 
   def ids_from_taxon_tags
@@ -108,12 +102,8 @@ class HistoryItem < ApplicationRecord
     type.underscore
   end
 
-  def definitions
-    @_definitions ||= History::Definitions::TYPE_DEFINITIONS[type]
-  end
-
   def definition
-    @_definition ||= History::Definition.new(definitions)
+    @_definition ||= History::Definition.new(History::Definitions::TYPE_DEFINITIONS[type])
   end
 
   private

@@ -18,6 +18,16 @@ module History
       type_attributes.fetch(:group_order)
     end
 
+    def group_key history_item
+      return @_group_key if defined?(@_group_key)
+
+      @_group_key ||= if (key = type_attributes.fetch(:group_key, nil))
+                        key.call(history_item)
+                      else
+                        history_item.id
+                      end
+    end
+
     def item_template
       type_attributes.fetch(:item_template)
     end
