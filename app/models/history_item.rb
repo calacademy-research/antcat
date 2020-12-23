@@ -185,6 +185,23 @@ class HistoryItem < ApplicationRecord
 
       validates_presence_of: [:object_protonym],
       optional_attributes: [:taxt, :reference, :pages]
+    },
+    UNAVAILABLE_NAME = 'UnavailableName' => {
+      type_label: 'Unavailable name',
+      ranks: ANY_RANK_GROUP_LABEL,
+
+      group_order: 100,
+
+      item_template: 'Unavailable name%<citation>s.',
+      item_template_vars: ->(o) {
+        {
+          object_taxon_id: o.object_taxon_id,
+          citation: (" (#{o.citation})" if o.citation)
+        }
+      },
+
+      validates_presence_of: [],
+      optional_attributes: [:reference, :pages]
     }
   }
   TYPES = TYPE_DEFINITIONS.keys

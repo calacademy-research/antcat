@@ -115,6 +115,9 @@ onSelectType = (selectedType) ->
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name for"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
+      when 'UnavailableName'
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
+
       else
         alert "unknown type: #{selectedType}"
 

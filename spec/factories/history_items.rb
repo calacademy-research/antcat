@@ -91,6 +91,10 @@ FactoryBot.define do
       with_object_protonym
     end
 
+    trait :unavailable_name do
+      type { HistoryItem::UNAVAILABLE_NAME }
+    end
+
     # Type-specific.
     trait :with_pages do
       sequence(:pages) { |n| n }

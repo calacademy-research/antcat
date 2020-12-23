@@ -16,6 +16,21 @@ describe HistoryItem do
       is_expected.to validate_inclusion_of(:rank).
         in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
     end
+
+    describe '#validate_reference_and_pages' do
+      context 'with relational history item' do
+        context 'when `reference` and `pages` are optional for item type' do
+          let(:history_item) { build_stubbed :history_item, :unavailable_name }
+
+          it 'must have both `reference` and `pages`, or neither' do
+            expect { history_item.pages = '5' }.to change { history_item.valid? }.to(false)
+
+            expect(history_item.errors.where(:base).map(&:message)).
+              to include("Reference and pages can't be blank if one of them is not")
+          end
+        end
+      end
+    end
   end
 
   describe 'type-related validations' do
@@ -175,6 +190,20 @@ describe HistoryItem do
         is_expected.to validate_absence_of :text_value
 
         is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
+    end
+
+    context 'when `type` is `UNAVAILABLE_NAME`' do
+      subject { build_stubbed :history_item, :unavailable_name }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_absence_of :object_protonym
         is_expected.to validate_absence_of :object_taxon
       end
     end
@@ -358,6 +387,24 @@ describe HistoryItem do
         specify do
           expect(history_item.to_taxt).
             to eq "Replacement name for {prottac #{history_item.object_protonym.id}} (#{history_item.citation_taxt})."
+        end
+      end
+    end
+
+    context 'when `type` is `UNAVAILABLE_NAME`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :unavailable_name }
+
+        specify do
+          expect(history_item.to_taxt).to eq "Unavailable name."
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :unavailable_name, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).to eq "Unavailable name (#{history_item.citation_taxt})."
         end
       end
     end
