@@ -20,6 +20,7 @@ module Seed
         reference: ref_2016, pages: '1'
       tatusia.history_items.create! type: SENIOR_SYNONYM_OF,
         object_protonym: kapasi,
+        force_author_citation: true,
         reference: ref_2012, pages: '69'
 
       tatusia.history_items.create! type: JUNIOR_SYNONYM_OF,

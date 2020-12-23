@@ -8,8 +8,10 @@ class HistoryItem < ApplicationRecord
     :taxt, :subtype,
     :picked_value, :text_value,
     :object_protonym, :object_taxon,
-    :reference, :pages
+    :reference, :pages,
+    :force_author_citation
   ]
+  OPTIONAL_TYPE_ATTRIBUTES = [:force_author_citation]
   RANK_LABELS = [
     ANY_RANK_GROUP_LABEL = 'Any/all rank (-groups)',
     FAMILY_GROUP_LABEL = 'Family-group',
@@ -85,13 +87,19 @@ class HistoryItem < ApplicationRecord
       group_order: 40,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-      item_template: 'Junior synonym of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-      item_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      item_template: 'Junior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars:  ->(o) {
+        {
+          object_protonym_id: o.object_protonym_id,
+          object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+        }
+      },
 
       groupable_item_template: '%<citation>s',
       groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_protonym, :reference, :pages],
+      allow_force_author_citation: true
     },
     SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
       type_label: 'Senior synonym of',
@@ -100,13 +108,19 @@ class HistoryItem < ApplicationRecord
       group_order: 45,
       group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-      item_template: 'Senior synonym of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-      item_template_vars: ->(o) { o.slice(:object_protonym_id) },
+      item_template: 'Senior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+      item_template_vars:  ->(o) {
+        {
+          object_protonym_id: o.object_protonym_id,
+          object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+        }
+      },
 
       groupable_item_template: '%<citation>s',
       groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
-      validates_presence_of: [:object_protonym, :reference, :pages]
+      validates_presence_of: [:object_protonym, :reference, :pages],
+      allow_force_author_citation: true
     },
     STATUS_AS_SPECIES = 'StatusAsSpecies' => {
       type_label: 'Status as species',
@@ -272,7 +286,7 @@ class HistoryItem < ApplicationRecord
       return unless type.in?(TYPES)
 
       required_presence = definitions.fetch(:validates_presence_of)
-      required_absence = TYPE_ATTRIBUTES - required_presence - optional_attributes
+      required_absence = TYPE_ATTRIBUTES - required_presence - optional_attributes - OPTIONAL_TYPE_ATTRIBUTES
 
       validates_presence_of(required_presence) if required_presence.present?
       validates_absence_of(required_absence) if required_absence.present?

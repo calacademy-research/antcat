@@ -126,6 +126,15 @@
               %td
                 %code pages
 
+            %tr#type-specific-force-author-citation.type-specific-section
+              %th.no-wrap
+                =f.label :pages, id: 'type-label-force-author-citation' do
+                  Force author citation
+              %td.grow
+                .small-max-width=f.check_box :force_author_citation
+              %td
+                %code force_author_citation
+
   .row.margin-top
     .medium-3.columns
       =edit_summary_text_field_tag

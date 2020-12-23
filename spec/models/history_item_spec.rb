@@ -239,20 +239,42 @@ describe HistoryItem do
     end
 
     context 'when `type` is `JUNIOR_SYNONYM_OF`' do
-      let(:history_item) { create :history_item, :junior_synonym_of }
+      context 'without `force_author_citation`' do
+        let(:history_item) { create :history_item, :junior_synonym_of }
 
-      specify do
-        expect(history_item.to_taxt).
-          to eq "Junior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Junior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
+      end
+
+      context 'with `force_author_citation`' do
+        let(:history_item) { create :history_item, :junior_synonym_of, :force_author_citation }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Junior synonym of {prottac #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
       end
     end
 
     context 'when `type` is `SENIOR_SYNONYM_OF`' do
-      let(:history_item) { create :history_item, :senior_synonym_of }
+      context 'without `force_author_citation`' do
+        let(:history_item) { create :history_item, :senior_synonym_of }
 
-      specify do
-        expect(history_item.to_taxt).
-          to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Senior synonym of {prott #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
+      end
+
+      context 'with `force_author_citation`' do
+        let(:history_item) { create :history_item, :senior_synonym_of, :force_author_citation }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Senior synonym of {prottac #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
       end
     end
 

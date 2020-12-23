@@ -96,7 +96,8 @@ class HistoryItemsController < ApplicationController
       params.require(:history_item).permit(
         :taxt, :rank, :position, :type,
         :subtype, :picked_value, :text_value,
-        :reference_id, :pages, :object_protonym_id, :object_taxon_id
+        :reference_id, :pages, :object_protonym_id, :object_taxon_id,
+        :force_author_citation
       )
     end
 
