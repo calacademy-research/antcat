@@ -210,6 +210,8 @@ class HistoryItem < ApplicationRecord
 
   alias_attribute :current_taxon_owner, :terminal_taxon
 
+  delegate :groupable?, to: :definition
+
   belongs_to :protonym
   belongs_to :reference, optional: true
   belongs_to :object_protonym, optional: true, class_name: 'Protonym'
@@ -290,10 +292,6 @@ class HistoryItem < ApplicationRecord
                     end
   end
 
-  def groupable?
-    definitions.fetch(:group_key, nil).present?
-  end
-
   def ids_from_taxon_tags
     Taxt.extract_ids_from_taxon_tags(taxt)
   end
@@ -308,6 +306,10 @@ class HistoryItem < ApplicationRecord
 
   def definitions
     @_definitions ||= TYPE_DEFINITIONS[type]
+  end
+
+  def definition
+    @_definition ||= History::Definition.new(definitions)
   end
 
   private
