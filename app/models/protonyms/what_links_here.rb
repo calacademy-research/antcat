@@ -4,7 +4,8 @@ module Protonyms
   class WhatLinksHere
     RECORD_TO_TAG_REGEX_TAXT_METHOD = :protonym
     REFERENCING_COLUMNS = [
-      [Taxon, :protonym_id]
+      [Taxon, :protonym_id],
+      [HistoryItem, :object_protonym_id]
     ]
 
     attr_private_initialize :record

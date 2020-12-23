@@ -11,6 +11,13 @@ describe WhatLinksHereItem do
       specify { expect(what_links_here_item.detax).to eq Detax[history_item.to_taxt] }
     end
 
+    context 'when `what_links_here_item` is a relational history item' do
+      let!(:history_item) { create :history_item, :junior_synonym_of }
+      let!(:what_links_here_item) { described_class.new('history_items', :object_protonym_id, history_item.id) }
+
+      specify { expect(what_links_here_item.detax).to eq Detax[history_item.to_taxt] }
+    end
+
     context 'when `what_links_here_item` is not a taxt item' do
       let!(:what_links_here_item) { described_class.new('taxa', :species_id, 999) }
 

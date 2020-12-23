@@ -16,12 +16,14 @@ describe References::WhatLinksHere do
     let!(:authorship) { create :citation, reference: reference }
     let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
     let!(:type_name) { create :type_name, :by_subsequent_designation_of, reference: reference }
+    let!(:history_item) { create :history_item, :junior_synonym_of, reference: reference }
 
     specify do
       expect(what_links_here.all).to match_array [
-        WhatLinksHereItem.new('citations',  :reference_id,         authorship.id),
-        WhatLinksHereItem.new('references', :nesting_reference_id, nested_reference.id),
-        WhatLinksHereItem.new('type_names', :reference_id,         type_name.id)
+        WhatLinksHereItem.new('citations',     :reference_id,         authorship.id),
+        WhatLinksHereItem.new('references',    :nesting_reference_id, nested_reference.id),
+        WhatLinksHereItem.new('type_names',    :reference_id,         type_name.id),
+        WhatLinksHereItem.new('history_items', :reference_id,         history_item.id)
       ]
     end
 

@@ -12,7 +12,8 @@ module Taxa
       [Taxon, :subspecies_id],
       [Taxon, :current_taxon_id],
       [Taxon, :homonym_replaced_by_id],
-      [TypeName, :taxon_id]
+      [TypeName, :taxon_id],
+      [HistoryItem, :object_taxon_id]
     ]
 
     attr_private_initialize :record
