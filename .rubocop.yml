@@ -226,6 +226,9 @@ Metrics/MethodLength:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
+Metrics/ModuleLength:
+  Enabled: false
+
 Metrics/ParameterLists:
   CountKeywordArgs: false
 

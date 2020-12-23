@@ -16,12 +16,8 @@ class HistoryPresenter
         select('history_items.*, references.year AS reference_year, references.date AS reference_date')
 
       items.
-        sort_by { |item| [group_order(item), (item.reference_year || -1), (item.reference_date || -1)] }.
+        sort_by { |item| [item.definition.group_order, (item.reference_year || -1), (item.reference_date || -1)] }.
         group_by { |item| item.group_key }.
         values
-    end
-
-    def group_order item
-      item.definitions.fetch(:group_order)
     end
 end

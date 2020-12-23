@@ -3,7 +3,7 @@
 module DatabaseScripts
   class UnpairedSeniorSynonymOfHistoryItems < DatabaseScript
     def results
-      HistoryItem.where(type: HistoryItem::SENIOR_SYNONYM_OF).
+      HistoryItem.where(type: History::Definitions::SENIOR_SYNONYM_OF).
         joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL")
           LEFT OUTER JOIN protonyms ON protonyms.id = history_items.object_protonym_id
             LEFT OUTER JOIN history_items history_items_protonyms

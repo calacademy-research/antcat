@@ -11,7 +11,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq false
-        expect(service.identified_type).to eq described_class::TAXT
+        expect(service.identified_type).to eq History::Definitions::TAXT
       end
     end
 
@@ -20,7 +20,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq false
-        expect(service.identified_type).to eq described_class::TAXT
+        expect(service.identified_type).to eq History::Definitions::TAXT
       end
     end
 
@@ -29,7 +29,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq false
-        expect(service.identified_type).to eq described_class::TAXT
+        expect(service.identified_type).to eq History::Definitions::TAXT
       end
     end
 
@@ -39,7 +39,7 @@ describe Taxt::StandardHistoryItemFormats do
 
         specify do
           expect(service.standard?).to eq true
-          expect(service.identified_type).to eq HistoryItem::FORM_DESCRIPTIONS
+          expect(service.identified_type).to eq History::Definitions::FORM_DESCRIPTIONS
         end
       end
 
@@ -48,7 +48,7 @@ describe Taxt::StandardHistoryItemFormats do
 
         specify do
           expect(service.standard?).to eq false
-          expect(service.identified_type).to eq described_class::TAXT
+          expect(service.identified_type).to eq History::Definitions::TAXT
         end
       end
     end
@@ -58,7 +58,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::TYPE_SPECIMEN_DESIGNATION
+        expect(service.identified_type).to eq History::Definitions::TYPE_SPECIMEN_DESIGNATION
       end
     end
 
@@ -67,7 +67,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::TYPE_SPECIMEN_DESIGNATION
+        expect(service.identified_type).to eq History::Definitions::TYPE_SPECIMEN_DESIGNATION
       end
     end
 
@@ -76,7 +76,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::JUNIOR_SYNONYM_OF
+        expect(service.identified_type).to eq History::Definitions::JUNIOR_SYNONYM_OF
       end
     end
 
@@ -85,7 +85,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq HistoryItem::SENIOR_SYNONYM_OF
+        expect(service.identified_type).to eq History::Definitions::SENIOR_SYNONYM_OF
       end
     end
   end

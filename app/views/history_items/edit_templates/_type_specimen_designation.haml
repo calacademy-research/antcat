@@ -5,6 +5,6 @@
       .row
         .medium-10.columns
           .small-max-width
-            =select_tag :subtype, options_for_select(HistoryItem::TYPE_DEFINITIONS[HistoryItem::TYPE_SPECIMEN_DESIGNATION][:subtype_options], history_item.subtype), id: nil
+            =select_tag :subtype, options_for_select(History::Definitions::TYPE_DEFINITIONS[History::Definitions::TYPE_SPECIMEN_DESIGNATION][:subtype_options], history_item.subtype), id: nil
 
   =tr_for_reference_and_pages history_item

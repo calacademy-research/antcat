@@ -31,8 +31,8 @@ module Taxt
 
     NON_STANDARD_FORMATS = [
       TAXT_FORMAT = {
-        name: TAXT = HistoryItem::TAXT,
-        type: HistoryItem::TAXT
+        name: History::Definitions::TAXT,
+        type: History::Definitions::TAXT
       }
     ]
 
@@ -40,30 +40,30 @@ module Taxt
     STANDARD_FORMATS = [
       {
         regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\).?$",
-        name: HistoryItem::FORM_DESCRIPTIONS,
-        type: HistoryItem::FORM_DESCRIPTIONS
+        name: History::Definitions::FORM_DESCRIPTIONS,
+        type: History::Definitions::FORM_DESCRIPTIONS
       },
       {
         regex: "^Lectotype designation: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::LECTOTYPE_DESIGNATION,
-        type: HistoryItem::TYPE_SPECIMEN_DESIGNATION,
-        subtype: HistoryItem::LECTOTYPE_DESIGNATION
+        name: History::Definitions::LECTOTYPE_DESIGNATION,
+        type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
+        subtype: History::Definitions::LECTOTYPE_DESIGNATION
       },
       {
         regex: "^Neotype designation: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::NEOTYPE_DESIGNATION,
-        type: HistoryItem::TYPE_SPECIMEN_DESIGNATION,
-        subtype: HistoryItem::NEOTYPE_DESIGNATION
+        name: History::Definitions::NEOTYPE_DESIGNATION,
+        type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
+        subtype: History::Definitions::NEOTYPE_DESIGNATION
       },
       {
         regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::JUNIOR_SYNONYM_OF,
-        type: HistoryItem::JUNIOR_SYNONYM_OF
+        name: History::Definitions::JUNIOR_SYNONYM_OF,
+        type: History::Definitions::JUNIOR_SYNONYM_OF
       },
       {
         regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
-        name: HistoryItem::SENIOR_SYNONYM_OF,
-        type: HistoryItem::SENIOR_SYNONYM_OF
+        name: History::Definitions::SENIOR_SYNONYM_OF,
+        type: History::Definitions::SENIOR_SYNONYM_OF
       }
     ]
 
@@ -71,7 +71,7 @@ module Taxt
 
     def standard?
       return false if taxt.blank?
-      identified_type != TAXT
+      identified_type != History::Definitions::TAXT
     end
 
     def identified_format
