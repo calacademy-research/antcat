@@ -10,8 +10,38 @@ module History
       type_attributes[:group_key].present?
     end
 
+    def type_label
+      type_attributes.fetch(:type_label)
+    end
+
     def group_order
       type_attributes.fetch(:group_order)
+    end
+
+    def item_template
+      type_attributes.fetch(:item_template)
+    end
+
+    def item_template_vars history_item
+      return {} unless (vars = type_attributes[:item_template_vars])
+      vars.call(history_item).symbolize_keys
+    end
+
+    def groupable_item_template
+      @_groupable_item_template ||= type_attributes.fetch(:groupable_item_template, nil)
+    end
+
+    def groupable_item_template_vars history_item
+      return {} unless (vars = type_attributes[:groupable_item_template_vars])
+      vars.call(history_item).symbolize_keys
+    end
+
+    def subtypes
+      type_attributes[:subtypes]
+    end
+
+    def validates_presence_of
+      type_attributes.fetch(:validates_presence_of)
     end
 
     def optional_attributes

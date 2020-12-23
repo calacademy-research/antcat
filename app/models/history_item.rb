@@ -18,7 +18,7 @@ class HistoryItem < ApplicationRecord
 
   alias_attribute :current_taxon_owner, :terminal_taxon
 
-  delegate :groupable?, to: :definition
+  delegate :groupable?, :type_label, to: :definition
 
   belongs_to :protonym
   belongs_to :reference, optional: true
@@ -75,11 +75,11 @@ class HistoryItem < ApplicationRecord
   def item_template_to_taxt vars = {}
     return taxt if taxt_type?
 
-    item_template % item_template_vars.merge(vars)
+    item_template % item_template_vars(self).merge(vars)
   end
 
   def groupable_item_template_to_taxt
-    groupable_item_template % groupable_item_template_vars
+    groupable_item_template % groupable_item_template_vars(self)
   end
 
   def citation_taxt
@@ -104,10 +104,6 @@ class HistoryItem < ApplicationRecord
     Taxt.extract_ids_from_taxon_tags(taxt)
   end
 
-  def type_label
-    definitions.fetch(:type_label)
-  end
-
   def underscored_type
     type.underscore
   end
@@ -122,25 +118,8 @@ class HistoryItem < ApplicationRecord
 
   private
 
-    delegate :optional_attributes, to: :definition, private: true
-
-    def item_template
-      definitions.fetch(:item_template)
-    end
-
-    def item_template_vars
-      return {} unless (vars = definitions[:item_template_vars])
-      vars.call(self).symbolize_keys
-    end
-
-    def groupable_item_template
-      @_groupable_item_template ||= definitions.fetch(:groupable_item_template, nil)
-    end
-
-    def groupable_item_template_vars
-      return {} unless (vars = definitions[:groupable_item_template_vars])
-      vars.call(self).symbolize_keys
-    end
+    delegate :item_template, :item_template_vars, :groupable_item_template, :groupable_item_template_vars,
+      :optional_attributes, to: :definition, private: true
 
     def cleanup_and_convert_taxts
       cleanup_and_convert_taxt_columns :taxt
@@ -149,7 +128,7 @@ class HistoryItem < ApplicationRecord
     def validate_type_specific_attributes
       return unless type.in?(TYPES)
 
-      required_presence = definitions.fetch(:validates_presence_of)
+      required_presence = definition.validates_presence_of
       required_absence = TYPE_ATTRIBUTES - required_presence - optional_attributes - OPTIONAL_TYPE_ATTRIBUTES
 
       validates_presence_of(required_presence) if required_presence.present?
@@ -157,7 +136,7 @@ class HistoryItem < ApplicationRecord
     end
 
     def validate_subtype
-      return unless (subtypes = definitions[:subtypes])
+      return unless (subtypes = definition.subtypes)
       validates_inclusion_of :subtype, in: subtypes
     end
 
