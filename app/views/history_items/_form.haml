@@ -16,7 +16,7 @@
 
   .row{data: { show_hide_toggable_id: "taxt_textarea" }, class: ('show-hide-toggable-starts-open' unless collapse_history_item_taxt_textarea?(history_item))}
     .medium-12.columns
-      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
+      =text_area_tag :taxt, history_item.taxt, rows: 5, name: 'history_item[taxt]', data: { has_linkables: true, previewable: true, previewable_title: "Taxt (freeform text) #{tooltip_icon('Required for taxt items; must it be blank for almost all other types of items. This textarea is always visible in order to make it easier to convert taxt item to relational items (or the other way around).')}", use_extras: true }
 
   .row.margin-top
     .large-12.columns
@@ -63,6 +63,22 @@
                   %p
                     See also related wiki page
                     =link_to_wiki_page_or_missing WikiPage::FORMS
+
+                %td.type-specific-section.type-specific-help-ReplacementName.type-specific-help-ReplacementNameFor
+                  %p
+                    Like with
+                    %code Taxt
+                    items, mirrored items
+                    =surround "(", ")" do
+                      %code ReplacementName
+                      +
+                      %code ReplacementNameFor
+                    must be added.
+                  %p.type-specific-section.type-specific-help-ReplacementNameFor
+                    For
+                    %code ReplacementNameFor
+                    items, the taxt textarea is allowed to contain "trailiers"
+                    like "[Junior secondary homonym of ...]"
 
         -# [grep:history_type].
         %table.table.unstriped

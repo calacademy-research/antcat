@@ -4,13 +4,16 @@ module DatabaseScripts
   class ReplacementNameHistoryItemsMissing < DatabaseScript
     LIMIT = 500
 
-    # TODO: Needs to be updated for hybrid history items. [grep:hybrid].
     def results
       Taxon.where(status: Status::HOMONYM).
         joins(<<~SQL.squish).where("history_items.id IS NULL").limit(LIMIT)
           LEFT OUTER JOIN protonyms ON protonyms.id = taxa.protonym_id
-          LEFT OUTER JOIN history_items
-            ON history_items.protonym_id = protonyms.id AND history_items.taxt LIKE 'Replacement name: %'
+          LEFT OUTER JOIN history_items ON history_items.protonym_id = protonyms.id AND
+            (
+              (history_items.taxt LIKE 'Replacement name: %')
+              OR
+              (history_items.type = 'ReplacementName')
+            )
         SQL
     end
 

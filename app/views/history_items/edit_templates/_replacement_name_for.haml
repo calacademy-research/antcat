@@ -1,0 +1,10 @@
+%table.unstriped
+  %tr
+    %td Replacement name for
+    %td=protonym_select_tag :object_protonym_id, history_item.object_protonym_id
+
+  =tr_for_reference_and_pages history_item
+
+  %tr
+    %td Legacy taxt
+    %td=text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }

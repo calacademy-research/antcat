@@ -107,6 +107,14 @@ onSelectType = (selectedType) ->
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
+      when 'ReplacementName'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+
+      when 'ReplacementNameFor'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name for"
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+
       else
         alert "unknown type: #{selectedType}"
 

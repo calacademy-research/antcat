@@ -150,6 +150,41 @@ class HistoryItem < ApplicationRecord
       groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
       validates_presence_of: [:object_taxon, :reference, :pages]
+    },
+    REPLACEMENT_NAME = 'ReplacementName' => {
+      type_label: 'Replacement name',
+      ranks: ANY_RANK_GROUP_LABEL,
+
+      group_order: 70,
+
+      item_template: 'Replacement name: {prottac %<object_protonym_id>i}%<citation>s.',
+      item_template_vars: ->(o) {
+        {
+          object_protonym_id: o.object_protonym_id,
+          citation: (" (#{o.citation})" if o.citation)
+        }
+      },
+
+      validates_presence_of: [:object_protonym],
+      optional_attributes: [:reference, :pages]
+    },
+    REPLACEMENT_NAME_FOR = 'ReplacementNameFor' => {
+      type_label: 'Replacement name for',
+      ranks: ANY_RANK_GROUP_LABEL,
+
+      group_order: 75,
+
+      item_template: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.%<legacy_taxt>s',
+      item_template_vars: ->(o) {
+        {
+          object_protonym_id: o.object_protonym_id,
+          citation: (" (#{o.citation})" if o.citation),
+          legacy_taxt: (" #{o.taxt}" if o.taxt?)
+        }
+      },
+
+      validates_presence_of: [:object_protonym],
+      optional_attributes: [:taxt, :reference, :pages]
     }
   }
   TYPES = TYPE_DEFINITIONS.keys

@@ -79,6 +79,18 @@ FactoryBot.define do
       with_object_taxon
     end
 
+    trait :replacement_name do
+      type { HistoryItem::REPLACEMENT_NAME }
+
+      with_object_protonym
+    end
+
+    trait :replacement_name_for do
+      type { HistoryItem::REPLACEMENT_NAME_FOR }
+
+      with_object_protonym
+    end
+
     # Type-specific.
     trait :with_pages do
       sequence(:pages) { |n| n }

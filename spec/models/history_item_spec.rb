@@ -151,6 +151,33 @@ describe HistoryItem do
         is_expected.to validate_presence_of :object_taxon
       end
     end
+
+    context 'when `type` is `REPLACEMENT_NAME`' do
+      subject { build_stubbed :history_item, :replacement_name }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
+    end
+
+    context 'when `type` is `REPLACEMENT_NAME_FOR`' do
+      subject { build_stubbed :history_item, :replacement_name_for }
+
+      it do
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
+      end
+    end
   end
 
   describe 'callbacks' do
@@ -292,6 +319,46 @@ describe HistoryItem do
       specify do
         expect(history_item.to_taxt).
           to eq "Subspecies of {tax #{history_item.object_taxon.id}}: #{history_item.citation_taxt}."
+      end
+    end
+
+    context 'when `type` is `REPLACEMENT_NAME`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :replacement_name }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Replacement name: {prottac #{history_item.object_protonym.id}}."
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :replacement_name, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Replacement name: {prottac #{history_item.object_protonym.id}} (#{history_item.citation_taxt})."
+        end
+      end
+    end
+
+    context 'when `type` is `REPLACEMENT_NAME_FOR`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :replacement_name_for }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Replacement name for {prottac #{history_item.object_protonym.id}}."
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :replacement_name_for, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Replacement name for {prottac #{history_item.object_protonym.id}} (#{history_item.citation_taxt})."
+        end
       end
     end
   end
