@@ -63,6 +63,9 @@ category: History
 tags: [slow]
 
 description: >
+  This script may or may not be up-to-date as we are migrating `Taxt` items to relational items.
+
+
   Only works with `tax/taxac` tags (that is, not protonym-based tags).
 
 

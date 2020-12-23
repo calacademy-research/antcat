@@ -37,7 +37,7 @@ end
 
 __END__
 
-tags: [new!]
+tags: []
 
 section: research
 # TODO: Change to: section: disagreeing-history
