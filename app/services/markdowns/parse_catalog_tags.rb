@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: DRY (like find all pro-ish tags in one go and then render them differently). Also `AntwebFormatter::Detax`.
+
 module Markdowns
   class ParseCatalogTags
     include Service
@@ -12,11 +14,13 @@ module Markdowns
     def call
       parse_tax_tags
       parse_taxac_tags
+
       parse_ref_tags
 
       parse_pro_tags
       parse_proac_tags
       parse_prott_tags
+      parse_prottac_tags
 
       parse_missing_tags
       parse_unmissing_tags
@@ -122,6 +126,23 @@ module Markdowns
 
           if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
             formatter.link_to_taxon(terminal_taxon)
+          elsif (protonym = Protonym.find_by(id: protonym_id))
+            editor_warning = %(<span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>)
+            "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
+          else
+            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
+          end
+        end
+      end
+
+      # Matches: {prottac 154742}
+      # Renders: link to terminal taxon of protonym (with author citation).
+      def parse_prottac_tags
+        content.gsub!(Taxt::PROTTAC_TAG_REGEX) do
+          protonym_id = $LAST_MATCH_INFO[:protonym_id]
+
+          if (terminal_taxon = Protonym.terminal_taxon_from_protonym_id(protonym_id))
+            formatter.link_to_taxon_with_linked_author_citation(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             editor_warning = %(<span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>)
             "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
