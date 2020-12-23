@@ -10,6 +10,10 @@ module History
       type_attributes[:group_key].present?
     end
 
+    def group_order
+      type_attributes.fetch(:group_order)
+    end
+
     private
 
       attr_reader :type_attributes
