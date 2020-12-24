@@ -54,6 +54,7 @@ class Protonym < ApplicationRecord
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
   scope :order_by_name, -> { joins(:name).order('names.name') }
+  scope :family_group_names, -> { joins(:name).where(names: { type: Name::FAMILY_GROUP_NAMES }) }
   scope :genus_group_names, -> { joins(:name).where(names: { type: Name::GENUS_GROUP_NAMES }) }
   scope :species_group_names, -> { joins(:name).where(names: { type: Name::SPECIES_GROUP_NAMES }) }
 
