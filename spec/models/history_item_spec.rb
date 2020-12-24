@@ -28,6 +28,22 @@ describe HistoryItem do
       end
     end
 
+    describe '#pages' do
+      subject(:history_item) { build_stubbed :history_item, :junior_synonym_of }
+
+      let(:format_error_message) { "cannot contain: ; < > { }" }
+
+      it { is_expected.to validate_length_of(:pages).is_at_most(described_class::PAGES_MAX_LENGTH) }
+
+      it { is_expected.to allow_value('1').for :pages }
+      it { is_expected.to allow_value('1, 2-3').for :pages }
+      it { is_expected.to allow_value('1 (in text)').for :pages }
+
+      it { is_expected.not_to allow_value('1; 2').for(:pages).with_message(format_error_message) }
+      it { is_expected.not_to allow_value('{ref 1}').for(:pages).with_message(format_error_message) }
+      it { is_expected.not_to allow_value('<').for(:pages).with_message(format_error_message) }
+    end
+
     describe '#validate_optional_reference_and_pages' do
       context 'with relational history item' do
         context 'when `reference` and `pages` are optional for item type' do

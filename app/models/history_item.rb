@@ -14,6 +14,9 @@ class HistoryItem < ApplicationRecord
   ]
   OPTIONAL_TYPE_ATTRIBUTES = [:force_author_citation]
 
+  PAGES_MAX_LENGTH = 50
+  VALID_PAGES_REGEX = /\A[^;<>{}]*\z/
+
   self.inheritance_column = :_type_column_disabled
 
   delegate :groupable?, :type_label, to: :definition
@@ -31,6 +34,10 @@ class HistoryItem < ApplicationRecord
 
   validate :validate_type_specific_attributes
   with_options if: :relational? do
+    validates :pages,
+      length: { maximum: PAGES_MAX_LENGTH },
+      format: { with: VALID_PAGES_REGEX, allow_nil: true, message: "cannot contain: ; < > { }" }
+
     validate :validate_subtype
     validate :validate_optional_reference_and_pages
     validate :validate_object_protonym_not_same_as_protonym
