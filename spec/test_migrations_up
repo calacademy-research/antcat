@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ "${RAILS_ENV:-}" != "development" ] && echo "RAILS_ENV must be 'development'" && exit 1
+
+echo "*** Executing $0"
+
+bundle exec rails db:drop
+bundle exec rails db:create
+bundle exec rails db:migrate

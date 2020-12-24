@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+[ "${RAILS_ENV:-}" != "development" ] && echo "RAILS_ENV must be 'development'" && exit 1
+
+echo "*** Executing $0"
+
+STEPS=`ls db/migrate | wc -l`
+bundle exec rake db:rollback STEP=$STEPS
