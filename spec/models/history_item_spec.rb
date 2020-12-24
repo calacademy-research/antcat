@@ -17,6 +17,17 @@ describe HistoryItem do
         in_array(Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES).allow_nil
     end
 
+    describe '#object_protonym_id' do
+      let(:history_item) { build_stubbed :history_item, :junior_synonym_of }
+
+      it 'cannot refer to its own protonym in `object_protonym_id`' do
+        expect { history_item.object_protonym = history_item.protonym }.to change { history_item.valid? }.to(false)
+
+        expect(history_item.errors.where(:object_protonym).map(&:message)).
+          to include("cannot be the same as the history item's protonym")
+      end
+    end
+
     describe '#validate_reference_and_pages' do
       context 'with relational history item' do
         context 'when `reference` and `pages` are optional for item type' do

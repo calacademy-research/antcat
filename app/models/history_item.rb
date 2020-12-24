@@ -28,10 +28,12 @@ class HistoryItem < ApplicationRecord
 
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
+
   validate :validate_type_specific_attributes
   with_options if: :relational? do
     validate :validate_subtype
     validate :validate_reference_and_pages
+    validate :validate_object_protonym_not_same_as_protonym
   end
 
   before_validation :cleanup_and_convert_taxts
@@ -126,6 +128,11 @@ class HistoryItem < ApplicationRecord
     def validate_subtype
       return unless (subtypes = definition.subtypes)
       validates_inclusion_of :subtype, in: subtypes
+    end
+
+    def validate_object_protonym_not_same_as_protonym
+      return if object_protonym_id != protonym_id
+      errors.add :object_protonym, "cannot be the same as the history item's protonym"
     end
 
     def validate_reference_and_pages
