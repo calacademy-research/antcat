@@ -32,7 +32,7 @@ class HistoryItem < ApplicationRecord
   validate :validate_type_specific_attributes
   with_options if: :relational? do
     validate :validate_subtype
-    validate :validate_reference_and_pages
+    validate :validate_optional_reference_and_pages
     validate :validate_object_protonym_not_same_as_protonym
   end
 
@@ -40,7 +40,7 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
-  scope :except_taxts, -> { where.not(type: History::Definitions::TAXT) }
+  scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
 
   acts_as_list scope: :protonym
@@ -135,7 +135,7 @@ class HistoryItem < ApplicationRecord
       errors.add :object_protonym, "cannot be the same as the history item's protonym"
     end
 
-    def validate_reference_and_pages
+    def validate_optional_reference_and_pages
       return unless optional_attributes.include?(:reference) || optional_attributes.include?(:pages)
       return if reference_and_pages_both_blank_or_present?
 

@@ -28,7 +28,7 @@ describe HistoryItem do
       end
     end
 
-    describe '#validate_reference_and_pages' do
+    describe '#validate_optional_reference_and_pages' do
       context 'with relational history item' do
         context 'when `reference` and `pages` are optional for item type' do
           let(:history_item) { build_stubbed :history_item, :unavailable_name }
