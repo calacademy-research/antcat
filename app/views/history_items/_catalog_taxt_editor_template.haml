@@ -22,9 +22,13 @@
     %a.taxt-editor-edit-button.btn-nodanger.btn-tiny.right-margin Quick edit
 
     %small.logged-in-only-gray-bold-notice.right-margin=history_item.underscored_type
+
     %span.show-on-hover
       =link_to "Show", history_item_path(history_item), class: "btn-normal btn-very-tiny"
       =link_to "Edit", edit_history_item_path(history_item, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
       =link_to "History", history_item_history_path(history_item), class: "btn-normal btn-very-tiny"
+
       -if history_item.taxt_type?
         =link_to "Add item before this", new_protonym_history_item_path(history_item.protonym, position: history_item.position, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
+      -if history_item.relational?
+        =link_to "Add another", new_protonym_history_item_path(history_item.protonym, **history_item.decorate.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"

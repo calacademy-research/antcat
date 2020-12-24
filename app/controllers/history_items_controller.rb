@@ -23,7 +23,7 @@ class HistoryItemsController < ApplicationController
 
   def new
     @protonym = find_protonym
-    @history_item = @protonym.history_items.new(position: params[:position])
+    @history_item = @protonym.history_items.new(prefilled_history_item_params)
   end
 
   def create
@@ -99,6 +99,10 @@ class HistoryItemsController < ApplicationController
         :reference_id, :pages, :object_protonym_id, :object_taxon_id,
         :force_author_citation
       )
+    end
+
+    def prefilled_history_item_params
+      params.permit(:position, :type, :subtype, :object_protonym_id, :object_taxon_id)
     end
 
     def redirect_back_url
