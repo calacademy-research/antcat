@@ -4,7 +4,7 @@ class GroupedHistoryItem
   attr_reader :items
 
   # TODO: This should be delegated to the definiton once they have been extracted into new classes.
-  delegate :underscored_type, :groupable?, :group_key, :type, to: :any_item_in_group
+  delegate :underscored_type, :groupable?, :group_key, :type, :relational?, :protonym, to: :any_item_in_group
 
   def initialize items
     @items = items
@@ -24,6 +24,10 @@ class GroupedHistoryItem
 
   def number_of_items
     items.size
+  end
+
+  def params_for_add_another_of_same_type
+    any_item_in_group.decorate.params_for_add_another_of_same_type
   end
 
   private

@@ -14,9 +14,10 @@ class HistoryItem < ApplicationRecord
   ]
   OPTIONAL_TYPE_ATTRIBUTES = [:force_author_citation]
 
-  self.inheritance_column = :_type_column_disabled
+  PAGES_MAX_LENGTH = 50
+  VALID_PAGES_REGEX = /\A[^;<>{}]*\z/
 
-  alias_attribute :current_taxon_owner, :terminal_taxon
+  self.inheritance_column = :_type_column_disabled
 
   delegate :groupable?, :type_label, to: :definition
 
@@ -30,20 +31,26 @@ class HistoryItem < ApplicationRecord
 
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }
+
   validate :validate_type_specific_attributes
   with_options if: :relational? do
+    validates :pages,
+      length: { maximum: PAGES_MAX_LENGTH },
+      format: { with: VALID_PAGES_REGEX, allow_nil: true, message: "cannot contain: ; < > { }" }
+
     validate :validate_subtype
-    validate :validate_reference_and_pages
+    validate :validate_optional_reference_and_pages
+    validate :validate_object_protonym_not_same_as_protonym
   end
 
   before_validation :cleanup_and_convert_taxts
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
-  scope :except_taxts, -> { where.not(type: History::Definitions::TAXT) }
+  scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
 
-  acts_as_list scope: :protonym
+  acts_as_list scope: :protonym, touch_on_update: false
   has_paper_trail
   strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages],
     replace_newlines: true
@@ -130,7 +137,12 @@ class HistoryItem < ApplicationRecord
       validates_inclusion_of :subtype, in: subtypes
     end
 
-    def validate_reference_and_pages
+    def validate_object_protonym_not_same_as_protonym
+      return if object_protonym_id != protonym_id
+      errors.add :object_protonym, "cannot be the same as the history item's protonym"
+    end
+
+    def validate_optional_reference_and_pages
       return unless optional_attributes.include?(:reference) || optional_attributes.include?(:pages)
       return if reference_and_pages_both_blank_or_present?
 

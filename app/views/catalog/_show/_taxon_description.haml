@@ -75,6 +75,9 @@
                   %span.spacer-1rem
                   %small.logged-in-only-gray-bold-notice.right-margin #{grouped_item.underscored_type} x #{grouped_item.number_of_items}
 
+                  -if grouped_item.relational?
+                    %span.show-on-hover=link_to "Add another", new_protonym_history_item_path(grouped_item.protonym, **grouped_item.params_for_add_another_of_same_type, **current_page_redirect_back_url), class: "btn-normal btn-very-tiny"
+
                 %ul.compact-list.no-bullet.margin-bottom{data: { show_hide_toggable_id: "grouped-#{grouped_item.group_key}" }}
                   -grouped_item.items.each do |history_item|
                     %li.padding-left-2rem

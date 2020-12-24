@@ -17,55 +17,68 @@
   -if user_is_editor?
     =link_to "Delete", history_item_path(@history_item), method: :delete, data: { confirm: "Are you sure?" }, class: "btn-warning"
 
-%p
-  This history item belongs to
-  =@protonym.decorate.link_to_protonym_with_author_citation
+.row.margin-bottom
+  .small-9.columns
+    %p
+      This history item belongs to
+      =@protonym.decorate.link_to_protonym_with_author_citation
 
-%p
-  Its current taxon owner(s) is
-  =CatalogFormatter.link_to_taxa(@history_item.terminal_taxa)
+    %p
+      Its current taxon owner(s) is
+      =CatalogFormatter.link_to_taxa(@history_item.terminal_taxa)
 
--if @history_item.rank?
-  %p
-    =antcat_icon "warning-icon"
-    Show only for rank: #{@history_item.rank}
+    -if @history_item.rank?
+      %p
+        =antcat_icon "warning-icon"
+        Show only for rank: #{@history_item.rank}
 
-.callout.margin-bottom.large-8
-  %p
-    -if @history_item.valid?
-      =Detax[@history_item.to_taxt]
+    .callout.margin-bottom.large-12
+      %p
+        -if @history_item.valid?
+          =Detax[@history_item.to_taxt]
 
--protonym_taxa_present = @protonym.taxa.present?
--has_more_than_a_single_history_item = @protonym.history_items.size > 1
+  .small-3.columns
+    .additional-editor-data.callout.no-border-callout.logged-in-only-background
+      %ul.no-bullet
+        %li
+          Item type:
+          %span.logged-in-only-gray-bold-notice.right-margin=@history_item.underscored_type
+        %li Created at: #{l @history_item.created_at, format: :ymd}
+        %li Updated at: #{l @history_item.updated_at, format: :ymd}
 
--if protonym_taxa_present || has_more_than_a_single_history_item
-  %h5.huge-margin-top.small-margin-bottom Related records
+.row.margin-top.margin-bottom
+  .small-12.columns
+    -protonym_taxa_present = @protonym.taxa.present?
+    -has_more_than_a_single_history_item = @protonym.history_items.size > 1
 
-  -# TODO: DRY w.r.t. 'history_items/_form.haml'.
-  -if protonym_taxa_present
-    .row.margin-bottom
-      .small-12.columns
-        %h6.bold Taxa belonging to this history item's protonym
+    -if protonym_taxa_present || has_more_than_a_single_history_item
+      %h5.huge-margin-top.small-margin-bottom Related records
+
+      -# TODO: DRY w.r.t. 'history_items/_form.haml'.
+      -if protonym_taxa_present
+        .row.margin-bottom
+          .small-12.columns
+            %h6.bold Taxa belonging to this history item's protonym
+            %table
+              -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
+                %tr
+                  %td=CatalogFormatter.link_to_taxon(taxon)
+                  %td=taxon.rank.capitalize
+                  %td
+                    =taxon.status.capitalize
+                    -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
+                      %br
+                      %small=taxon.decorate.expanded_status
+
+      -if has_more_than_a_single_history_item
+        %h6.bold.large-margin-top.small-margin-bottom This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
         %table
-          -TaxonQuery.new(@protonym.taxa.order_by_name).with_common_includes_and_current_taxon_includes.each do |taxon|
-            %tr
-              %td=CatalogFormatter.link_to_taxon(taxon)
-              %td=taxon.rank.capitalize
-              %td
-                =taxon.status.capitalize
-                -unless taxon.status.in?(Taxa::ExpandedStatus::SELF_STATUSES)
-                  %br
-                  %small=taxon.decorate.expanded_status
-
-  -if has_more_than_a_single_history_item
-    %h6.bold.large-margin-top.small-margin-bottom This history item highlighted in context with other history items belonging to #{@protonym.name.name_html}
-    %table
-      %tbody
-        -@protonym.history_items.each do |protonym_history_item|
-          %tr{class: ('pale-background' if protonym_history_item == @history_item)}
-            %td
-              =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
-              -if protonym_history_item == @history_item
-                %strong (selected)
-            %td.grow
-              %small=Detax[protonym_history_item.to_taxt]
+          %tbody
+            -@protonym.history_items.each do |protonym_history_item|
+              %tr{class: ('pale-background' if protonym_history_item == @history_item)}
+                %td
+                  =link_to "##{protonym_history_item.id}", history_item_path(protonym_history_item)
+                  -if protonym_history_item == @history_item
+                    %strong (selected)
+                %td.grow
+                  %small=Detax[protonym_history_item.to_taxt]

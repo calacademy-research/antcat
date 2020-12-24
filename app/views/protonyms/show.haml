@@ -154,3 +154,24 @@
     =javascript_include_tag 'protonym_select'
   =render "shared/default_reference"
   =render 'protonyms/quick_edit_history_items', protonym: @protonym
+
+-if current_user
+  -if @protonym.history_items_as_object.present?
+    .row.margin-top.margin-bottom
+      .small-12.columns
+        .callout.no-border-callout.logged-in-only-background.huge-margin-bottom
+          %h5 History items as object protonym
+
+          %table.table.stack
+            %thead
+              %th History item
+              %th Protonym owner / terminal taxa
+              %th Taxt
+            -@protonym.history_items_as_object.each do |history_item|
+              %tr
+                %td=link_to history_item.id, history_item
+                %td
+                  =history_item.protonym.decorate.link_to_protonym
+                  %br
+                  =CatalogFormatter.link_to_taxa(history_item.terminal_taxa)
+                %td=Detax[history_item.to_taxt]

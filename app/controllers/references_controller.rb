@@ -12,6 +12,8 @@ class ReferencesController < ApplicationController
     @reference = Reference.eager_load(:document, author_names: :author).find(params[:id])
     @editors_reference_presenter = Editors::ReferencePresenter.new(@reference, session: session)
     @citations_presenter = References::CitationsPresenter.new(@reference)
+
+    @history_citations = @reference.history_items.order(:pages).paginate(page: params[:history_citations_page])
   end
 
   def new

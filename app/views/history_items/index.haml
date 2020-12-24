@@ -57,8 +57,8 @@
     %tr
       %th ID
       %th Pos.
-      %th Protonym
-      %th Terminal taxa
+      %th Item type
+      %th Protonym / Terminal taxa
       %th Rank
       %th Status
       %th Taxt
@@ -69,8 +69,12 @@
     %tr
       %td=link_to "##{history_item.id}", history_item_path(history_item)
       %td=history_item.position
-      %td=CatalogFormatter.link_to_protonym(history_item.protonym)
-      %td=CatalogFormatter.link_to_taxa(history_item.terminal_taxa)
+      %td
+        .small-text.logged-in-only-gray-bold-notice=history_item.underscored_type
+      %td
+        =CatalogFormatter.link_to_protonym(history_item.protonym)
+        %br
+        =CatalogFormatter.link_to_taxa(history_item.terminal_taxa)
       %td=history_item.terminal_taxa.map(&:rank).join(', ')
       %td=history_item.terminal_taxa.map(&:status).join(', ')
       %td=Detax[history_item.to_taxt]
