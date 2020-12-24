@@ -143,10 +143,12 @@
                 %td=citation.citation_synopsis
                 %td=citation.pages
 
-  -if @reference.history_items.exists?
+  -if @history_citations.present?
     .row.margin-bottom
       .small-12.columns
         .callout.no-border-callout.logged-in-only-background
+          -# Anchor for the pagination.
+          %a{name: 'history_citations'}
           %h5 Citations (via relational history items)
 
           %table
@@ -156,7 +158,7 @@
               %th Protonym owner
               %th Pages
               %th As text
-            -@reference.history_items.order(:pages).each do |history_item|
+            -@history_citations.each do |history_item|
               %tr
                 %td=link_to "##{history_item.id}", history_item
                 %td=history_item.type_label
@@ -164,6 +166,8 @@
                   =history_item.protonym.decorate.link_to_protonym
                 %td=history_item.pages
                 %td=Detax[history_item.to_taxt]
+
+          =will_paginate @history_citations, param_name: "history_citations_page", params: { anchor: "history_citations" }
 
 -if decorated.described_taxa.exists?
   .row.margin-bottom
