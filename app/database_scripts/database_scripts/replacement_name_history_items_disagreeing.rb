@@ -23,7 +23,7 @@ module DatabaseScripts
           taxt = history_item.taxt
           extracted_taxon = Taxon.find(history_item.ids_from_taxon_tags.first)
 
-          same = extracted_taxon == history_item.current_taxon_owner.homonym_replaced_by
+          same = extracted_taxon == history_item.terminal_taxon.homonym_replaced_by
 
           protonym = history_item.protonym
 
@@ -44,7 +44,7 @@ module DatabaseScripts
             (different_author_citation ? 'Yes' : bold_warning('No')),
             (different_author_reference ? 'Yes' : bold_warning('No')),
 
-            taxon_link(history_item.current_taxon_owner.homonym_replaced_by),
+            taxon_link(history_item.terminal_taxon.homonym_replaced_by),
             (same ? 'Yes' : bold_warning('No'))
           ]
         end

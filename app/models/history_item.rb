@@ -16,8 +16,6 @@ class HistoryItem < ApplicationRecord
 
   self.inheritance_column = :_type_column_disabled
 
-  alias_attribute :current_taxon_owner, :terminal_taxon
-
   delegate :groupable?, :type_label, to: :definition
 
   belongs_to :protonym

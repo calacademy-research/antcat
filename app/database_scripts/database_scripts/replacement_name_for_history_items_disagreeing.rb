@@ -17,7 +17,7 @@ module DatabaseScripts
           taxt = history_item.taxt
           extracted_taxon = Taxon.find(history_item.ids_from_taxon_tags.first)
 
-          same = extracted_taxon.homonym_replaced_by == history_item.current_taxon_owner
+          same = extracted_taxon.homonym_replaced_by == history_item.terminal_taxon
 
           [
             link_to(history_item.id, history_item_path(history_item)),
