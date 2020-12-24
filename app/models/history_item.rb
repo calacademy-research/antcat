@@ -50,7 +50,7 @@ class HistoryItem < ApplicationRecord
   scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
 
-  acts_as_list scope: :protonym
+  acts_as_list scope: :protonym, touch_on_update: false
   has_paper_trail
   strip_attributes only: [:taxt, :rank, :subtype, :picked_value, :text_value, :pages],
     replace_newlines: true
