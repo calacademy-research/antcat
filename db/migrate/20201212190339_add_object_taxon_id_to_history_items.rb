@@ -14,7 +14,7 @@ class AddObjectTaxonIdToHistoryItems < ActiveRecord::Migration[6.0]
 
   def down
     safety_assured do
-      remove_column :history_items, :object_protonym_id
+      remove_column :history_items, :object_taxon_id
     end
   end
 end
