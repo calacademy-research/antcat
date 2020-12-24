@@ -7,7 +7,7 @@ gem 'rails', '6.1.0'
 
 gem 'citrus'
 gem 'coffee-rails'
-gem 'haml-rails'
+gem 'hamlit'
 gem 'mysql2'
 gem 'puma', '< 5'
 gem 'rack'

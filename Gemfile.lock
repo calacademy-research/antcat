@@ -281,25 +281,18 @@ GEM
     haml (5.2.1)
       temple (>= 0.8.0)
       tilt
-    haml-rails (2.0.1)
-      actionpack (>= 5.1)
-      activesupport (>= 5.1)
-      haml (>= 4.0.6, < 6.0)
-      html2haml (>= 1.0.1)
-      railties (>= 5.1)
     haml_lint (0.36.0)
       haml (>= 4.0, < 5.3)
       parallel (~> 1.10)
       rainbow
       rubocop (>= 0.50.0)
       sysexits (~> 1.1)
+    hamlit (2.13.0)
+      temple (>= 0.8.2)
+      thor
+      tilt
     hashdiff (1.0.1)
     high_voltage (3.1.2)
-    html2haml (2.2.0)
-      erubis (~> 2.7.0)
-      haml (>= 4.0, < 6)
-      nokogiri (>= 1.6.0)
-      ruby_parser (~> 3.5)
     htmlentities (4.3.4)
     i18n (1.8.5)
       concurrent-ruby (~> 1.0)
@@ -609,8 +602,8 @@ DEPENDENCIES
   gretel
   guard-rspec
   guard-rubocop
-  haml-rails
   haml_lint
+  hamlit
   high_voltage
   jquery-atwho-rails
   jquery-rails
