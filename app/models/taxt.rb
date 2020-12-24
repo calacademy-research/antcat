@@ -19,6 +19,7 @@ module Taxt
   TAX_TAG_REGEX = /\{tax (?<taxon_id>\d+)\}/
   TAXAC_TAG_REGEX = /\{taxac (?<taxon_id>\d+)\}/
 
+  PROTONYM_TAG_REGEX = /\{(?<tag>pro|proac|prott|prottac) (?<protonym_id>[0-9]+)\}/
   PRO_TAG_REGEX = /\{pro (?<protonym_id>\d+)\}/
   PROAC_TAG_REGEX = /\{proac (?<protonym_id>\d+)\}/
   PROTT_TAG_REGEX = /\{prott (?<protonym_id>\d+)\}/
@@ -66,6 +67,7 @@ module Taxt
     "{ref #{reference_id}}"
   end
 
+  # Taxon-related tags.
   def extract_tags_and_ids_from_taxon_tags taxt
     taxt.scan(TAXON_TAG_REGEX).map { |(tag, taxon_id)| [tag, taxon_id.to_i] }
   end
@@ -78,6 +80,16 @@ module Taxt
     taxt.scan(TAX_TAG_REGEX).flatten.compact.map(&:to_i)
   end
 
+  # Protonym-related tags.
+  def extract_tags_and_ids_from_protonym_tags taxt
+    taxt.scan(PROTONYM_TAG_REGEX).map { |(tag, protonym_id)| [tag, protonym_id.to_i] }
+  end
+
+  def extract_ids_from_protonym_tags taxt
+    extract_tags_and_ids_from_protonym_tags(taxt).map(&:last)
+  end
+
+  # Reference-related tags.
   def extract_ids_from_ref_tags taxt
     taxt.scan(REF_TAG_REGEX).flatten.compact.map(&:to_i)
   end

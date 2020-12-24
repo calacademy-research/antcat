@@ -29,6 +29,7 @@ class Name < ApplicationRecord
   # Parentheses are for subgenera, periods for infrasubspecific names (old-style species-group protonyms).
   VALID_CHARACTERS_REGEX = /\A[-a-zA-Z. ()]+\z/
   SINGLE_WORD_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName GenusName]
+  FAMILY_GROUP_NAMES = %w[FamilyName SubfamilyName TribeName SubtribeName]
   GENUS_GROUP_NAMES = %w[GenusName SubgenusName]
   SPECIES_GROUP_NAMES = %w[SpeciesName SubspeciesName InfrasubspeciesName]
 
