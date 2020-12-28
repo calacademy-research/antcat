@@ -9,10 +9,13 @@ chmod 600 ./docker/id_rsa
 host_name="antcat.org"
 username="deploy"
 runcommand="ssh -i ././docker/id_rsa -o StrictHostKeyChecking=no $username@$host_name"
-download_string=`$runcommand sudo -i eybackup -e mysql --list-backup antcat |   grep "9:antcat" | awk '{print $NF}'`
-download_id=9
-filename=$download_string
-command="$runcommand sudo -i eybackup -e mysql -d $download_id:antcat"
+
+# Get "backup index" and figure out filenames and such.
+# `most_recent_db_dump looks` like this: "9:antcat antcat.2019-10-11T10-15-04.sql.gz"
+most_recent_db_dump=$($runcommand sudo -i eybackup --list-backup antcat | grep -P "\d:antcat" | tail -n 1)
+download_id=$(echo "$most_recent_db_dump" | cut -d ' ' -f 1) # <-- "9:antcat".
+filename=$(echo "$most_recent_db_dump" | cut -d ' ' -f 2) # <-- "antcat.2019-10-11T10-15-04.sql.gz".
+
 $runcommand sudo -i eybackup -e mysql -d $download_id:antcat
 mkdir -p /code/database_export
 scp -i ././docker/id_rsa -o StrictHostKeyChecking=no $username@$host_name:/mnt/tmp/$filename /code/database_export
