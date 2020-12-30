@@ -8,11 +8,10 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'ID', 'Reference', 'What Links Here'
+        t.header 'Reference', 'What Links Here'
         t.rows do |reference|
           [
-            link_to(reference.id, reference_path(reference)),
-            reference.decorate.link_to_reference,
+            reference_link(reference),
             link_to('What Links Here', reference_what_links_here_path(reference), class: 'btn-normal btn-tiny')
           ]
         end

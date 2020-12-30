@@ -14,8 +14,8 @@ module DatabaseScripts
           second_nesting_reference = nesting_reference.try :nesting_reference
 
           [
-            reference_link(reference),
-            reference_link(nesting_reference),
+            reference_link(reference) + ' ' + reference.pagination,
+            reference_link(nesting_reference) + ' ' + reference.pagination,
             reference_link_with_type(second_nesting_reference)
           ]
         end
@@ -24,13 +24,9 @@ module DatabaseScripts
 
     private
 
-      def reference_link reference
-        link_to(reference.key_with_suffixed_year, reference_path(reference)) + ' ' + reference.pagination
-      end
-
       def reference_link_with_type reference
         return unless reference
-        reference_link(reference) + ' ' + reference.type
+        reference_link(reference) + ' ' + reference.pagination + ' ' + reference.type
       end
   end
 end
