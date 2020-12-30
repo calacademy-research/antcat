@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def results
       HistoryItem.taxts_only.
-        where('taxt REGEXP ?', "^Senior synonym of {tax [0-9]+}: {ref [0-9]+}: [0-9]+")
+        where('taxt REGEXP ?', "^Senior synonym of {(tax|taxac) [0-9]+}: {ref [0-9]+}: [0-9]+")
     end
 
     def render results_to_render: results

@@ -32,7 +32,7 @@ title: Non-standard 'Replacement name:' history items
 
 section: research
 category: History
-tags: [new!]
+tags: []
 
 issue_description:
 

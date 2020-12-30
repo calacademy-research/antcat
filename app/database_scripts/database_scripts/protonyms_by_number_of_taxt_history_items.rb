@@ -34,7 +34,7 @@ title: Protonyms by number of taxt history items
 
 section: list
 category: History
-tags: [new!]
+tags: []
 
 description: >
 

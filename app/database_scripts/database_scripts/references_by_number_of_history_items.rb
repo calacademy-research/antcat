@@ -33,7 +33,7 @@ title: References by number of history items
 
 section: list
 category: References
-tags: [new!]
+tags: []
 
 description: >
 
