@@ -15,7 +15,7 @@ module DatabaseScripts
         t.header 'Reference', 'author_names_string', 'author_names_suffix', 'PDF'
         t.rows do |reference|
           [
-            link_to(reference.key_with_suffixed_year, reference_path(reference)),
+            reference_link(reference),
             reference.author_names_string,
             reference.author_names_suffix,
             reference.decorate.pdf_link

@@ -26,6 +26,10 @@ module DatabaseScripts
       "{tax #{taxon_or_id.try(:id) || taxon_or_id}}"
     end
 
+    def reference_link reference
+      link_to(reference.key_with_suffixed_year, reference_path(reference))
+    end
+
     def protonym_link protonym
       protonym.decorate.link_to_protonym
     end

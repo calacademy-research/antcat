@@ -26,7 +26,7 @@ title: Protonyms above species with forms to blank
 
 section: pa-action-required
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 

@@ -34,7 +34,7 @@ title: Protonyms by number of history items as object
 
 section: list
 category: History
-tags: [new!]
+tags: []
 
 description: >
 

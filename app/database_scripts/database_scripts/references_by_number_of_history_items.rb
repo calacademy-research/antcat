@@ -18,7 +18,7 @@ module DatabaseScripts
         t.header 'Reference', 'History item count'
         t.rows do |reference|
           [
-            link_to(reference.key_with_suffixed_year, reference_path(reference)),
+            reference_link(reference),
             reference.history_item_count
           ]
         end
@@ -33,7 +33,7 @@ title: References by number of history items
 
 section: list
 category: References
-tags: [new!]
+tags: []
 
 description: >
 

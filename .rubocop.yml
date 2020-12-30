@@ -83,6 +83,10 @@ Layout/ParameterAlignment:
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 
+# Disabled due to false positives.
+Layout/SpaceBeforeBrackets:
+  Enabled: false
+
 Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'config/environments/production.rb'

@@ -14,11 +14,10 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'ID', 'Reference', 'Type'
+        t.header 'Reference', 'Type'
         t.rows do |reference|
           [
-            reference.id,
-            link_to(reference.key_with_suffixed_year, reference_path(reference)),
+            reference_link(reference),
             reference.type
           ]
         end

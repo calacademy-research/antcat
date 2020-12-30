@@ -23,7 +23,7 @@ module DatabaseScripts
           reference_document = reference.document
 
           [
-            link_to(reference.key_with_suffixed_year, reference_path(reference)),
+            reference_link(reference),
             reference_document.id,
             reference_document.created_at,
             document_versions_link(reference_document)
