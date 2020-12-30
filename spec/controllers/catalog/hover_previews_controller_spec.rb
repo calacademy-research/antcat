@@ -13,21 +13,22 @@ describe Catalog::HoverPreviewsController do
 
       preview = json_response['preview']
 
-      expected = <<~HTML
-        <b>Name:</b> #{taxon_link(taxon)}<br>
-        <b>Author citation:</b> #{taxon.author_citation}<br>
-        <b>Rank:</b> Genus<br>
-        <b>Status:</b> #{taxon.decorate.expanded_status}<br>
+      expect(preview.squish).to eq <<~HTML.squish
+        <strong>Taxon:</strong> #{taxon_link(taxon)} #{taxon.author_citation}
         <br>
 
-        <b>Protonym:</b> #{taxon.protonym.decorate.link_to_protonym}<br>
-        <b>Authorship:</b> #{taxon_authorship_link(taxon)}: #{taxon.protonym.authorship_pages}
-      HTML
+        <strong>Rank:</strong> Genus
+        <br>
 
-      expected.each_line do |line|
-        expect(preview.squish).to include line.squish
-      end
-      expect(preview.squish).to eq expected.squish
+        <strong>Status:</strong> #{taxon.decorate.expanded_status}
+        <br>
+        <br>
+
+        <strong>Protonym:</strong> #{protonym_link(taxon.protonym)}
+        <br>
+
+        <strong>Authorship:</strong> #{taxon_authorship_link(taxon)}: #{taxon.protonym.authorship_pages}
+      HTML
     end
   end
 end

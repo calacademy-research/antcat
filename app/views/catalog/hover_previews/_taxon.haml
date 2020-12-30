@@ -1,0 +1,23 @@
+-decorated_taxon = taxon.decorate
+-protonym = taxon.protonym
+-decorated_protonym = protonym.decorate
+
+%strong Taxon:
+=decorated_taxon.link_to_taxon_with_author_citation
+%br
+
+%strong Rank:
+=taxon.type
+%br
+
+%strong Status:
+=taxon.status
+%br
+%br
+
+%strong Protonym:
+=decorated_protonym.link_to_protonym
+%br
+
+%strong Authorship:
+=protonym.authorship_reference.decorate.link_to_reference + ': ' + protonym.authorship_pages
