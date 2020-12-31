@@ -23,7 +23,7 @@ module DatabaseScripts
     # that have been made for rendering "taxts" in the catalog.
     def taxon_link taxon_or_id
       return "" unless taxon_or_id
-      "{tax #{taxon_or_id.try(:id) || taxon_or_id}}"
+      "{#{Taxt::TAX_TAG} #{taxon_or_id.try(:id) || taxon_or_id}}"
     end
 
     def reference_link reference
