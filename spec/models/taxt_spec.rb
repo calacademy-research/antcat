@@ -65,4 +65,12 @@ describe Taxt do
       end
     end
   end
+
+  describe '.extract_ids_from_reference_tags' do
+    context 'with matching tags' do
+      specify do
+        expect(described_class.extract_ids_from_reference_tags("{ref 123}")).to eq [123]
+      end
+    end
+  end
 end

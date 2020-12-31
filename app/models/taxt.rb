@@ -90,7 +90,7 @@ module Taxt
   end
 
   # Reference-related tags.
-  def extract_ids_from_ref_tags taxt
+  def extract_ids_from_reference_tags taxt
     taxt.scan(REF_TAG_REGEX).flatten.compact.map(&:to_i)
   end
 end

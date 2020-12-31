@@ -71,7 +71,7 @@ module Markdowns
       # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
       def parse_ref_tags
         # HACK: To eager load records in a single query for performance reasons.
-        reference_ids = Taxt.extract_ids_from_ref_tags(content)
+        reference_ids = Taxt.extract_ids_from_reference_tags(content)
         return if reference_ids.blank?
 
         references_indexed_by_id =
