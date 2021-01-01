@@ -9,6 +9,8 @@ module References
         plain_text_cache
         expandable_reference_cache
         expanded_reference_cache
+
+        key_with_suffixed_year_cache
       ]
       SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 

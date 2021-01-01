@@ -28,5 +28,25 @@ namespace :antcat do
         References::Cache::Regenerate[reference]
       end
     end
+
+    desc 'Regenerate all reference key caches'
+    task regenerate_key_caches: :environment do
+      progress = ProgressBar.create(
+        total: Reference.count,
+        format: "%a %e %P% Processed: %c from %C",
+        throttle_rate: 0.5
+      )
+
+      Reference.find_each do |reference|
+        progress.increment
+        key_with_suffixed_year = reference.key_with_suffixed_year
+
+        if reference.key_with_suffixed_year_cache != key_with_suffixed_year
+          # rubocop:disable Rails/SkipsModelValidations
+          reference.update_columns key_with_suffixed_year_cache: key_with_suffixed_year
+          # rubocop:enable Rails/SkipsModelValidations
+        end
+      end
+    end
   end
 end

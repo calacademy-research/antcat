@@ -113,4 +113,18 @@ describe Reference do
       end
     end
   end
+
+  describe "#refresh_key_with_suffixed_year_cache!" do
+    context "when an author name is added" do
+      let(:reference) { create :any_reference, author_string: 'Fisher, B.L.', year: 2000, year_suffix: 'b' }
+
+      it "updates its `key_with_suffixed_year_cache`" do
+        reference.author_names << create(:author_name, name: 'Ward, P.S.')
+
+        expect { reference.refresh_key_with_suffixed_year_cache! }.
+          to change { reference.reload.key_with_suffixed_year_cache }.
+          from("Fisher, 2000b").to("Fisher & Ward, 2000b")
+      end
+    end
+  end
 end
