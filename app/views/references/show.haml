@@ -8,8 +8,6 @@
     -if current_user
       =link_to "History", reference_history_path(@reference), class: "btn-normal"
       =link_to "What Links Here", reference_what_links_here_path(@reference), class: "btn-normal"
-      =@editors_reference_presenter.set_as_default_reference_button
-      =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "add-to-recently-used-references-js-hook btn-saves"
 
     .btn-normal.dropdown.button{data: { toggle: "export-dropdown"}, type: "button"} Export
     #export-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
@@ -32,10 +30,22 @@
 -decorated = @reference.decorate
 
 .row.margin-bottom
-  .small-12.columns
+  .medium-9.columns
     %h5 Reference
     =decorated.expanded_reference
     =decorated.format_document_links
+
+  .medium-3.columns
+    -if current_user
+      .additional-editor-data.callout.no-border-callout.logged-in-only-background
+        %h6
+          Reference:
+          =@reference.key_with_suffixed_year
+
+        .tiny-margin-bottom
+          =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "btn-tiny add-to-recently-used-references-js-hook btn-saves"
+        .tiny-margin-bottom
+          =@editors_reference_presenter.set_as_default_reference_button
 
 .row.margin-bottom
   .small-12.columns

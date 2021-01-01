@@ -4,6 +4,7 @@ module Editors
   class ReferencePresenter
     include Rails.application.routes.url_helpers
     include ActionView::Helpers
+    include IconHelper
 
     attr_private_initialize :reference, [session: nil]
 
@@ -22,7 +23,7 @@ module Editors
 
     def set_as_default_reference_button
       if reference == References::DefaultReference.get(session)
-        tag.span 'Default reference', class: "btn-nodanger btn-tiny",
+        tag.span ('Is default reference ' + antcat_icon('check')).html_safe, class: "btn-tiny",
           title: "This referece is set as the default reference."
       else
         link_to 'Make default', my_default_reference_path(id: reference.id),
