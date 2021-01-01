@@ -111,6 +111,10 @@
       .additional-editor-data.callout.no-border-callout.logged-in-only-background
         %h6=@protonym.name.epithet_html
 
+        .tiny-margin-bottom
+          =copy_to_clipboard_button Taxt.protonym_to_pro_tag(@protonym), "pro #{@protonym.id}"
+          =copy_to_clipboard_button @protonym.id
+
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
 
         %ul.no-bullet

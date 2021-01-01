@@ -42,6 +42,10 @@
           Reference:
           =@reference.key_with_suffixed_year
 
+        .small-margin-bottom
+          =copy_to_clipboard_button Taxt.reference_to_ref_tag(@reference), "ref #{@reference.id}"
+          =copy_to_clipboard_button @reference.id
+
         .tiny-margin-bottom
           =link_to "Add to Recently Used", my_recently_used_references_path(id: @reference.id), method: :post, remote: true, class: "btn-tiny add-to-recently-used-references-js-hook btn-saves"
         .tiny-margin-bottom

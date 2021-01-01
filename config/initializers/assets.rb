@@ -47,6 +47,8 @@ Rails.application.config.assets.precompile += %w[
   controllers/taxa/copy_name_to_protonym.js
   controllers/taxa/move_items/select_checkboxes.js
 
+  globals/create_copy_buttons.js
+
   logged_in_only/history_item_form
 ]
 
