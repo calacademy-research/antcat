@@ -23,7 +23,7 @@ module Taxa
       end
 
       def reference_ids_from_taxts
-        Taxt.extract_ids_from_ref_tags(taxt_content).sort
+        Taxt.extract_ids_from_reference_tags(taxt_content).sort
       end
 
       def taxt_content

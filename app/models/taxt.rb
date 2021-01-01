@@ -15,17 +15,31 @@ module Taxt
     [HistoryItem,      'history_items',       'taxt']
   ]
 
-  TAXON_TAG_REGEX = /\{(?<tag>tax|taxac) (?<taxon_id>[0-9]+)\}/
-  TAX_TAG_REGEX = /\{tax (?<taxon_id>\d+)\}/
-  TAXAC_TAG_REGEX = /\{taxac (?<taxon_id>\d+)\}/
+  TAXON_TAGS = [
+    TAX_TAG = 'tax',
+    TAXAC_TAG = 'taxac'
+  ]
+  TAXON_TAG_REGEX = /\{(?<tag>#{TAXON_TAGS.join('|')}) (?<taxon_id>[0-9]+)\}/
+  TAX_TAG_REGEX = /\{#{TAX_TAG} (?<taxon_id>\d+)\}/
+  TAXAC_TAG_REGEX = /\{#{TAXAC_TAG} (?<taxon_id>\d+)\}/
 
-  PROTONYM_TAG_REGEX = /\{(?<tag>pro|proac|prott|prottac) (?<protonym_id>[0-9]+)\}/
-  PRO_TAG_REGEX = /\{pro (?<protonym_id>\d+)\}/
-  PROAC_TAG_REGEX = /\{proac (?<protonym_id>\d+)\}/
-  PROTT_TAG_REGEX = /\{prott (?<protonym_id>\d+)\}/
-  PROTTAC_TAG_REGEX = /\{prottac (?<protonym_id>\d+)\}/
+  PROTONYM_TAGS = [
+    PRO_TAG = 'pro',
+    PROAC_TAG = 'proac',
+    PROTT_TAG = 'prott',
+    PROTTAC_TAG = 'prottac'
+  ]
+  PROTONYM_TAG_REGEX = /\{(?<tag>#{PROTONYM_TAGS.join('|')}) (?<protonym_id>[0-9]+)\}/
+  PRO_TAG_REGEX = /\{#{PRO_TAG} (?<protonym_id>\d+)\}/
+  PROAC_TAG_REGEX = /\{#{PROAC_TAG} (?<protonym_id>\d+)\}/
+  PROTT_TAG_REGEX = /\{#{PROTT_TAG} (?<protonym_id>\d+)\}/
+  PROTTAC_TAG_REGEX = /\{#{PROTTAC_TAG} (?<protonym_id>\d+)\}/
 
-  REF_TAG_REGEX = /\{ref (?<reference_id>\d+)\}/
+  REFERENCE_TAGS = [
+    REF_TAG = 'ref'
+  ]
+  REFERENCE_TAG_REGEX = /\{(?<tag>#{REFERENCE_TAGS.join('|')}) (?<reference_id>\d+)\}/
+  REF_TAG_REGEX = REFERENCE_TAG_REGEX
 
   MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:missing|unmissing)(?:[0-9])? (?<hardcoded_name>.*?)\}/
   MISSING_TAG_REGEX = /\{missing[0-9]? (?<hardcoded_name>.*?)\}/
@@ -39,32 +53,40 @@ module Taxt
     module_function
 
     def taxon taxon
-      "{(tax|taxac) #{taxon.id}}"
+      "{(#{TAXON_TAGS.join('|')}) #{taxon.id}}"
     end
 
     def protonym protonym
-      "{(pro|proac|prott|prottac) #{protonym.id}}"
+      "{(#{PROTONYM_TAGS.join('|')}) #{protonym.id}}"
     end
 
     def reference reference
-      "{ref #{reference.id}}"
+      "{#{REFERENCE_TAGS.join('|')} #{reference.id}}"
     end
   end
 
   module RecordToTag
-    module_function
+    def taxon_to_tax_tag taxon
+      "{#{TAX_TAG} #{taxon.id}}"
+    end
+
+    def protonym_to_pro_tag protonym
+      "{#{PRO_TAG} #{protonym.id}}"
+    end
 
     def reference_to_ref_tag reference
-      "{ref #{reference.id}}"
+      "{#{REF_TAG} #{reference.id}}"
     end
   end
 
   module_function
 
+  extend RecordToTag # Included as a shorthand.
+
   # TODO: DRY w.r.t. `RecordToTag::reference_to_ref_tag`.
   def to_ref_tag reference_or_id
     reference_id = reference_or_id.is_a?(Reference) ? reference_or_id.id : reference_or_id
-    "{ref #{reference_id}}"
+    "{#{REF_TAG} #{reference_id}}"
   end
 
   # Taxon-related tags.
@@ -90,7 +112,7 @@ module Taxt
   end
 
   # Reference-related tags.
-  def extract_ids_from_ref_tags taxt
-    taxt.scan(REF_TAG_REGEX).flatten.compact.map(&:to_i)
+  def extract_ids_from_reference_tags taxt
+    taxt.scan(REFERENCE_TAG_REGEX).map(&:last).flatten.compact.map(&:to_i)
   end
 end

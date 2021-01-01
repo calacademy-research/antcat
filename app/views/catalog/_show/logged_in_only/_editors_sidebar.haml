@@ -1,7 +1,20 @@
 .additional-editor-data.callout.no-border-callout.logged-in-only-background
   %h6
+    Taxon:
+    =taxon.name_with_fossil
+
+  .tiny-margin-bottom
+    =copy_to_clipboard_button Taxt.taxon_to_tax_tag(taxon), "tax #{taxon.id}"
+    =copy_to_clipboard_button taxon.id
+
+.additional-editor-data.callout.no-border-callout.logged-in-only-background
+  %h6
     Protonym:
     =protonym.decorate.link_to_protonym_epithet
+
+  .tiny-margin-bottom
+    =copy_to_clipboard_button Taxt.protonym_to_pro_tag(protonym), "pro #{protonym.id}"
+    =copy_to_clipboard_button protonym.id
 
   =render 'protonyms/shared/additional_data_for_editors', protonym: protonym
 

@@ -4,7 +4,7 @@ module Taxt
   class ConvertTags
     include Service
 
-    TAX_TO_PROTONYM_REGEX = /\{tax (?<taxon_id>\d+)(?<to_tag>(?:p|pro|prott|proac))\}/
+    TAX_TO_PROTONYM_REGEX = /\{#{Taxt::TAX_TAG} (?<taxon_id>\d+)(?<to_tag>(?:p|#{Taxt::PROTONYM_TAGS.join('|')}))\}/
     SHORTCUTS = {
       'p' => 'pro'
     }
