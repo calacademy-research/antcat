@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_21_204003) do
+ActiveRecord::Schema.define(version: 2020_12_31_084512) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -262,6 +262,7 @@ ActiveRecord::Schema.define(version: 2020_12_21_204003) do
     t.boolean "online_early", default: false, null: false
     t.string "stated_year"
     t.string "year_suffix", limit: 2
+    t.string "key_with_suffixed_year_cache"
     t.index ["author_names_string_cache"], name: "ix_x_references__author_names_string_cache", length: 255
     t.index ["created_at"], name: "ix_references__created_at"
     t.index ["id", "type"], name: "ix_references__id__type"

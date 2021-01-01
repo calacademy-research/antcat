@@ -21,6 +21,7 @@ FactoryBot.define do
       end
 
       reference.refresh_author_names_cache
+      reference.refresh_key_with_suffixed_year_cache
     end
 
     before(:create) do |reference, evaluator|
@@ -39,6 +40,7 @@ FactoryBot.define do
       end
 
       reference.refresh_author_names_cache
+      reference.refresh_key_with_suffixed_year_cache
     end
 
     factory :article_reference, class: 'ArticleReference', aliases: [:any_reference] do
