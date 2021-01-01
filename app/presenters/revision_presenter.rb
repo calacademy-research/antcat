@@ -3,14 +3,12 @@
 require "diffy"
 
 class RevisionPresenter
-  ATTRIBUTES_IGNORED_IN_DIFF = %i[
+  REMOVED_REFERENCE_CACHE_COLUMNS = %i[
     formatted_cache
     inline_citation_cache
     principal_author_last_name_cache
-    plain_text_cache
-    expandable_reference_cache
-    expanded_reference_cache
   ]
+  ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + References::Concerns::Searchable::CACHE_COLUMNS
 
   attr_private_initialize [:comparer, template: nil]
 

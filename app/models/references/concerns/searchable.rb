@@ -5,11 +5,12 @@ module References
     module Searchable
       extend ActiveSupport::Concern
 
-      SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = %i[
+      CACHE_COLUMNS = %i[
         plain_text_cache
         expandable_reference_cache
         expanded_reference_cache
       ]
+      SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
       included do
         searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
