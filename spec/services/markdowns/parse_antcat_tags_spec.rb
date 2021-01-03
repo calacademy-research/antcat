@@ -11,14 +11,14 @@ describe Markdowns::ParseAntcatTags do
       end
     end
 
-    describe 'tag: `GITHUB_TAG_REGEX` (GitHub issue links)' do
+    describe 'tag: `GITHUB_TAG_REGEX`' do
       it "formats GitHub links" do
         expect(described_class["%github5"]).
           to eq %(<a href="https://github.com/calacademy-research/antcat/issues/5">GitHub #5</a>)
       end
     end
 
-    describe 'tag: `USER_TAG_REGEX` (AntCat user links)' do
+    describe 'tag: `USER_TAG_REGEX`' do
       let(:user) { create :user }
 
       it "formats user links" do
@@ -27,7 +27,7 @@ describe Markdowns::ParseAntcatTags do
       end
     end
 
-    describe 'tag: `DBSCRIPT_TAG_REGEX` (database script links)' do
+    describe 'tag: `DBSCRIPT_TAG_REGEX`' do
       context 'when database script exists' do
         specify do
           expect(described_class["%dbscript:TaxaWithSameName"].strip).to eq <<~HTML.squish
@@ -47,7 +47,7 @@ describe Markdowns::ParseAntcatTags do
       end
     end
 
-    describe 'tag: `WIKI_TAG_REGEX` (wiki pages links)' do
+    describe 'tag: `WIKI_TAG_REGEX`' do
       let!(:wiki_page) { create :wiki_page }
 
       specify do

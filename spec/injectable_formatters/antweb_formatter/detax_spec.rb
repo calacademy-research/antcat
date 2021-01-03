@@ -6,7 +6,7 @@ describe AntwebFormatter::Detax do
   include AntwebTestLinksHelpers
 
   describe "#call" do
-    describe "tag: `TAX_TAG_REGEX` (taxa)" do
+    describe "tag: `TAX_TAG_REGEX`" do
       let!(:taxon) { create :any_taxon }
 
       specify do
@@ -14,7 +14,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
+    describe "tag: `TAXAC_TAG_REGEX`" do
       let!(:taxon) { create :any_taxon }
 
       specify do
@@ -22,7 +22,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `PRO_TAG_REGEX` (protonyms)" do
+    describe "tag: `PRO_TAG_REGEX`" do
       let!(:protonym) { create :protonym }
 
       specify do
@@ -30,7 +30,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `PROAC_TAG_REGEX` (protonyms with author citation)" do
+    describe "tag: `PROAC_TAG_REGEX`" do
       let!(:protonym) { create :protonym }
 
       specify do
@@ -38,7 +38,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `PROTT_TAG_REGEX` (terminal taxon of protonyms)" do
+    describe "tag: `PROTT_TAG_REGEX`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
@@ -60,7 +60,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `PROTTAC_TAG_REGEX` (terminal taxon of protonyms, with author citation)" do
+    describe "tag: `PROTTAC_TAG_REGEX`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
@@ -83,7 +83,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `REF_TAG_REGEX` (references)" do
+    describe "tag: `REF_TAG_REGEX`" do
       let!(:reference) { create :any_reference }
 
       specify do
@@ -91,7 +91,7 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `MISSING_OR_UNMISSING_TAG_REGEX` (missing and unmissing hardcoded taxon names)" do
+    describe "tag: `MISSING_OR_UNMISSING_TAG_REGEX`" do
       it 'renders the hardcoded name' do
         expect(described_class["Synonym of {missing <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
         expect(described_class["Synonym of {missing2 <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
@@ -99,14 +99,14 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `MISSPELLING_TAG_REGEX` (misspelled hardcoded taxon names)" do
+    describe "tag: `MISSPELLING_TAG_REGEX`" do
       it 'renders the hardcoded name' do
         expect(described_class["Synonym of {misspelling <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
         expect(described_class["in family {misspelling Pices}"]).to eq "in family Pices"
       end
     end
 
-    describe "tag: `HIDDENNOTE_TAG_REGEX` (hidden editor notes)" do
+    describe "tag: `HIDDENNOTE_TAG_REGEX`" do
       it 'removes the note tag and its content' do
         expect(described_class["Synonym of Lasius{hiddennote check reference} and Formica"]).
           to eq "Synonym of Lasius and Formica"

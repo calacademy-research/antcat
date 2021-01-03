@@ -13,7 +13,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `TAX_TAG_REGEX` (taxa)" do
+    describe "tag: `TAX_TAG_REGEX`" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{tax #{taxon.id}}"]).to eq taxon_link(taxon)
@@ -26,7 +26,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
+    describe "tag: `TAXAC_TAG_REGEX`" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
         expect(described_class["{taxac #{taxon.id}}"]).to eq <<~HTML.squish
@@ -42,7 +42,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `PRO_TAG_REGEX` (protonyms)" do
+    describe "tag: `PRO_TAG_REGEX`" do
       it "uses the HTML version of the protonyms's name" do
         protonym = create :protonym
         expect(described_class["{pro #{protonym.id}}"]).to eq protonym_link(protonym)
@@ -55,7 +55,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `PROAC_TAG_REGEX` (protonyms with author citation)" do
+    describe "tag: `PROAC_TAG_REGEX`" do
       it "uses the HTML version of the protonyms's name" do
         protonym = create :protonym
         expect(described_class["{proac #{protonym.id}}"]).to eq <<~HTML.squish
@@ -71,7 +71,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `PROTT_TAG_REGEX` (terminal taxon of protonym)" do
+    describe "tag: `PROTT_TAG_REGEX`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
@@ -99,7 +99,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `PROTTAC_TAG_REGEX` (terminal taxon of protonym, with author citation)" do
+    describe "tag: `PROTTAC_TAG_REGEX`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
@@ -130,7 +130,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `REF_TAG_REGEX` (references)" do
+    describe "tag: `REF_TAG_REGEX`" do
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :any_reference }
 
@@ -147,7 +147,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `MISSING_TAG_REGEX` (missing hardcoded taxon names)" do
+    describe "tag: `MISSING_TAG_REGEX`" do
       it 'renders the hardcoded name' do
         expect(described_class["Synonym of {missing <i>Atta</i>}"]).
           to eq 'Synonym of <span class="logged-in-only-bold-warning"><i>Atta</i></span>'
@@ -160,7 +160,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `UNMISSING_TAG_REGEX` (unmissing hardcoded taxon names)" do
+    describe "tag: `UNMISSING_TAG_REGEX`" do
       it 'renders the hardcoded name' do
         expect(described_class["Homonym of {unmissing <i>Decamera</i>}"]).
           to eq 'Homonym of <span class="logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
@@ -170,7 +170,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `MISSPELLING_TAG_REGEX` (misspelled hardcoded taxon names)" do
+    describe "tag: `MISSPELLING_TAG_REGEX`" do
       it 'renders the hardcoded name' do
         expect(described_class["Homonym of {misspelling <i>Decamera</i>}"]).
           to eq 'Homonym of <span class="logged-in-only-gray-bold-notice"><i>Decamera</i></span>'
@@ -180,7 +180,7 @@ describe Markdowns::ParseCatalogTags do
       end
     end
 
-    describe "tag: `HIDDENNOTE_TAG_REGEX` (hidden editor notes)" do
+    describe "tag: `HIDDENNOTE_TAG_REGEX`" do
       it 'wraps the note content in a span only visible to logged-in users' do
         expect(described_class["Synonym of Lasius{hiddennote check reference} and Formica"]).
           to eq 'Synonym of Lasius<span class="taxt-hidden-note"><b>Hidden editor note:</b> check reference</span> and Formica'

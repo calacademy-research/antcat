@@ -17,7 +17,7 @@ module Taxt
 
   TAXON_TAGS = [
     TAX_TAG = 'tax',
-    TAXAC_TAG = 'taxac'
+    TAXAC_TAG = 'taxac' # Taxon with Author Citation.
   ]
   TAXON_TAG_REGEX = /\{(?<tag>#{TAXON_TAGS.join('|')}) (?<taxon_id>[0-9]+)\}/
   TAX_TAG_REGEX = /\{#{TAX_TAG} (?<taxon_id>\d+)\}/
@@ -25,9 +25,9 @@ module Taxt
 
   PROTONYM_TAGS = [
     PRO_TAG = 'pro',
-    PROAC_TAG = 'proac',
-    PROTT_TAG = 'prott',
-    PROTTAC_TAG = 'prottac'
+    PROAC_TAG = 'proac', # Protonym with Author Citation.
+    PROTT_TAG = 'prott', # Terminal Taxon of Protonym.
+    PROTTAC_TAG = 'prottac' # Terminal Taxon of Protonym, with Author Citation.
   ]
   PROTONYM_TAG_REGEX = /\{(?<tag>#{PROTONYM_TAGS.join('|')}) (?<protonym_id>[0-9]+)\}/
   PRO_TAG_REGEX = /\{#{PRO_TAG} (?<protonym_id>\d+)\}/
@@ -47,6 +47,7 @@ module Taxt
   UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
   MISSPELLING_TAG_REGEX = /\{misspelling (?<hardcoded_name>.*?)\}/
 
+  # Hidden editor notes, logged-in only.
   HIDDENNOTE_TAG_REGEX = /\{hiddennote (?<note_content>.*?)\}/
 
   module RecordToTagRegex
