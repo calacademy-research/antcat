@@ -131,12 +131,22 @@ describe Markdowns::ParseCatalogTags do
     end
 
     describe "tag: `REF_TAG_REGEX`" do
+      context 'when reference has an expandable_reference_cache' do
+        let(:reference) { create :any_reference }
+
+        it 'links the reference' do
+          reference.decorate.expandable_reference
+          expect(reference.expandable_reference_cache).to_not eq nil
+          expect(described_class["{ref #{reference.id}}"]).to eq reference_taxt_link(reference)
+        end
+      end
+
       context 'when reference has no expandable_reference_cache' do
         let(:reference) { create :any_reference }
 
         it 'generates it' do
           expect(reference.expandable_reference_cache).to eq nil
-          expect(described_class["{ref #{reference.id}}"]).to include reference.title
+          expect(described_class["{ref #{reference.id}}"]).to eq reference_taxt_link(reference)
         end
       end
 
