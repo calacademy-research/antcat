@@ -15,12 +15,12 @@ module Markdowns
       parse_tax_tags
       parse_taxac_tags
 
-      parse_ref_tags
-
       parse_pro_tags
       parse_proac_tags
       parse_prott_tags
       parse_prottac_tags
+
+      parse_ref_tags
 
       parse_missing_tags
       parse_unmissing_tags
@@ -63,33 +63,6 @@ module Markdowns
             formatter.link_to_taxon_with_linked_author_citation(taxon)
           else
             broken_taxt_tag "TAXON", $LAST_MATCH_INFO
-          end
-        end
-      end
-
-      # Matches: {ref 130628}
-      # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
-      def parse_ref_tags
-        # HACK: To eager load records in a single query for performance reasons.
-        reference_ids = Taxt.extract_ids_from_reference_tags(content)
-        return if reference_ids.blank?
-
-        references_indexed_by_id =
-          if ENV['NO_REF_CACHE']
-            {}
-          else
-            Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
-          end
-
-        content.gsub!(Taxt::REF_TAG_REGEX) do
-          reference_id = $LAST_MATCH_INFO[:reference_id]
-
-          if (expandable_reference_cache = references_indexed_by_id[reference_id.to_i])
-            expandable_reference_cache.html_safe
-          elsif (reference = Reference.find_by(id: reference_id))
-            formatter.expandable_reference(reference)
-          else
-            broken_taxt_tag "REFERENCE", $LAST_MATCH_INFO
           end
         end
       end
@@ -148,6 +121,33 @@ module Markdowns
             "#{formatter.link_to_protonym(protonym)} (protonym) #{editor_warning}"
           else
             broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
+          end
+        end
+      end
+
+      # Matches: {ref 130628}
+      # Renders: expandable referece as used in the catalog (Abdalla & Cruz-Landim, 2001).
+      def parse_ref_tags
+        # HACK: To eager load records in a single query for performance reasons.
+        reference_ids = Taxt.extract_ids_from_reference_tags(content)
+        return if reference_ids.blank?
+
+        references_indexed_by_id =
+          if ENV['NO_REF_CACHE']
+            {}
+          else
+            Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
+          end
+
+        content.gsub!(Taxt::REF_TAG_REGEX) do
+          reference_id = $LAST_MATCH_INFO[:reference_id]
+
+          if (expandable_reference_cache = references_indexed_by_id[reference_id.to_i])
+            expandable_reference_cache.html_safe
+          elsif (reference = Reference.find_by(id: reference_id))
+            formatter.expandable_reference(reference)
+          else
+            broken_taxt_tag "REFERENCE", $LAST_MATCH_INFO
           end
         end
       end

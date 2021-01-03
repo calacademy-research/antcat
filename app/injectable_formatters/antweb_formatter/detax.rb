@@ -55,15 +55,6 @@ module AntwebFormatter
         end
       end
 
-      # References, "{ref 123}".
-      def parse_ref_tags
-        content.gsub!(Taxt::REF_TAG_REGEX) do
-          if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:reference_id]))
-            formatter.link_to_reference(reference)
-          end
-        end
-      end
-
       # Protonyms, "{pro 123}".
       def parse_pro_tags
         content.gsub!(Taxt::PRO_TAG_REGEX) do
@@ -108,6 +99,15 @@ module AntwebFormatter
             formatter.link_to_protonym(protonym) + ' (protonym)'
           else
             broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
+          end
+        end
+      end
+
+      # References, "{ref 123}".
+      def parse_ref_tags
+        content.gsub!(Taxt::REF_TAG_REGEX) do
+          if (reference = Reference.find_by(id: $LAST_MATCH_INFO[:reference_id]))
+            formatter.link_to_reference(reference)
           end
         end
       end
