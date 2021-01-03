@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Cleanup.
+
 class ActivityDecorator < Draper::Decorator
   # Don't show user who created other users' accounts.
   HIDE_USER_FOR_TRACKABLE_TYPES = ['User']
@@ -15,11 +17,19 @@ class ActivityDecorator < Draper::Decorator
     end
   end
 
-  def self.link_protonym_if_exists id
+  def self.link_protonym_if_exists id, deleted_label: nil
     if (protonym = Protonym.find_by(id: id))
       CatalogFormatter.link_to_protonym(protonym)
     else
-      "##{id} [deleted]"
+      deleted_label || "##{id} [deleted]"
+    end
+  end
+
+  def self.link_reference_if_exists id, deleted_label: nil
+    if (reference = Reference.find_by(id: id))
+      reference.decorate.link_to_reference
+    else
+      deleted_label || "##{id} [deleted]"
     end
   end
 
@@ -67,8 +77,12 @@ class ActivityDecorator < Draper::Decorator
     self.class.link_taxon_if_exists(id, deleted_label: deleted_label)
   end
 
-  def link_protonym_trackable_if_exists id = trackable_id
-    self.class.link_protonym_if_exists(id)
+  def link_protonym_trackable_if_exists id = trackable_id, deleted_label: nil
+    self.class.link_protonym_if_exists(id, deleted_label: deleted_label)
+  end
+
+  def link_reference_trackable_if_exists id = trackable_id, deleted_label: nil
+    self.class.link_reference_if_exists(id, deleted_label: deleted_label)
   end
 
   # NOTE: Missing actions are upcased to make sure they are ugly.

@@ -77,7 +77,6 @@ class MakePreviewable
       tab.html "No content. Try this: <code>{tax 430207}</code>."
       return
 
-    tab.html "Loading preview... dot dot dot..."
     @showSpinner()
 
     $.ajax

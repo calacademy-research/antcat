@@ -1,7 +1,7 @@
 .additional-editor-data.callout.no-border-callout.logged-in-only-background
   %h6
     Taxon:
-    =taxon.name_with_fossil
+    =taxon.name.epithet_html
 
   .tiny-margin-bottom
     =copy_to_clipboard_button Taxt.taxon_to_tax_tag(taxon), "tax #{taxon.id}"
@@ -81,19 +81,13 @@
       =enable_editing_helper_link
 
 .additional-editor-data.callout.no-border-callout.logged-in-only-background
-  %h6 Additional data for editors
+  %h6 Additional data
 
   %ul.no-bullet
-    %li Rank and status: #{taxon.type}, #{taxon.status}
     -if taxon.original_combination?
       %li
         Original combination
         =antcat_icon 'check'
-    %li Created at: #{l taxon.created_at, format: :ymd}
-    %li Updated at: #{l taxon.updated_at, format: :ymd}
-
-  -# Show parents to make it easier to spot inconsistent records, since the breadcrumb shows the parent of the parent of the parent...
-  %ul.no-bullet
     -if taxon.is_a?(Species)
       %li
         Subgenus:
@@ -102,9 +96,7 @@
         -else
           (none)
           =link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
-    -if taxon.is_a?(SpeciesGroupTaxon)
-      %li Genus: #{CatalogFormatter.link_to_taxon(taxon.genus)}
-    -if taxon.is_a?(Subspecies) || taxon.is_a?(Infrasubspecies)
-      %li Species: #{CatalogFormatter.link_to_taxon(taxon.species)}
-    -if taxon.is_a?(Infrasubspecies)
-      %li Subspecies: #{CatalogFormatter.link_to_taxon(taxon.subspecies)}
+
+  %ul.no-bullet.small-text
+    %li Created at: #{l taxon.created_at, format: :ymd}
+    %li Updated at: #{l taxon.updated_at, format: :ymd}
