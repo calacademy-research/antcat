@@ -109,7 +109,9 @@
   -if current_user
     .medium-3.columns
       .additional-editor-data.callout.no-border-callout.logged-in-only-background
-        %h6=@protonym.name.epithet_html
+        %h6
+          Protonym:
+          =@protonym.name.epithet_html
 
         .tiny-margin-bottom
           =copy_to_clipboard_button Taxt.protonym_to_pro_tag(@protonym), "pro #{@protonym.id}"
@@ -122,6 +124,10 @@
             %li.tiny-margin-bottom=link_to "Add history item", new_protonym_history_item_path(@protonym, **current_page_redirect_back_url), class: "btn-normal btn-tiny"
             -if @protonym.history_items.size > 1
               %li.tiny-margin-bottom=link_to "Reorder history items", protonym_reorder_history_items_path(@protonym), class: "btn-normal btn-tiny"
+
+        %ul.no-bullet.small-text
+          %li Created at: #{l @protonym.created_at, format: :ymd}
+          %li Updated at: #{l @protonym.updated_at, format: :ymd}
 
       -# TODO: Pass gender from protonym once it has been moved from `Name`s belonging to taxa.
       =render 'protonyms/shared/etymology_and_gender', protonym: @protonym, taxon: nil
