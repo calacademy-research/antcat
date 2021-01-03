@@ -97,7 +97,7 @@ class QuickAndDirtyFixesController < ApplicationController
     old_taxt = history_item.taxt
     new_taxt = old_taxt.dup.sub(
       /\{missing[0-9]? #{hardcoded_missing_name}\}/,
-      "{tax #{replace_with_taxon_id}}"
+      "{#{Taxt::TAX_TAG} #{replace_with_taxon_id}}"
     )
 
     if old_taxt == new_taxt
@@ -118,8 +118,8 @@ class QuickAndDirtyFixesController < ApplicationController
 
     old_taxt = history_item.taxt
     new_taxt = old_taxt.dup.sub(
-      "{tax #{replace_taxon.id}}",
-      "{tax #{new_taxon.id}}"
+      "{#{Taxt::TAX_TAG} #{replace_taxon.id}}",
+      "{#{Taxt::TAX_TAG} #{new_taxon.id}}"
     )
 
     if old_taxt == new_taxt

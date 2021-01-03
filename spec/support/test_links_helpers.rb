@@ -23,6 +23,10 @@ module TestLinksHelpers
     %(<a href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>)
   end
 
+  def reference_taxt_link reference
+    References::Formatted::Expandable[reference]
+  end
+
   def taxon_authorship_link taxon
     %(<a href="/references/#{taxon.authorship_reference.id}">#{taxon.author_citation}</a>)
   end

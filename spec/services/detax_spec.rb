@@ -16,7 +16,7 @@ describe Detax do
       let(:taxon) { create :family }
 
       it "renders them" do
-        results = described_class["{tax #{taxon.id}} pizza"]
+        results = described_class["{#{Taxt::TAX_TAG} #{taxon.id}} pizza"]
         expect(results).to eq "#{taxon_link(taxon)} pizza"
       end
     end

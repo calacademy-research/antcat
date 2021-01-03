@@ -35,7 +35,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with form descriptions item" do
       context 'with known forms' do
-        let(:taxt) { '{ref 1}: 2 (w.q.m.).' }
+        let(:taxt) { "{#{Taxt::REF_TAG} 1}: 2 (w.q.m.)." }
 
         specify do
           expect(service.standard?).to eq true
@@ -44,7 +44,7 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       context 'with unknown forms' do
-        let(:taxt) { '{ref 1}: 2 (z.q.m.).' }
+        let(:taxt) { "{#{Taxt::REF_TAG} 1}: 2 (z.q.m.)." }
 
         specify do
           expect(service.standard?).to eq false
@@ -54,7 +54,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Lectotype designation' item" do
-      let(:taxt) { 'Lectotype designation: {ref 1}: 23' }
+      let(:taxt) { "Lectotype designation: {#{Taxt::REF_TAG} 1}: 23" }
 
       specify do
         expect(service.standard?).to eq true
@@ -63,7 +63,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Neotype designation' item" do
-      let(:taxt) { 'Neotype designation: {ref 1}: 23' }
+      let(:taxt) { "Neotype designation: {#{Taxt::REF_TAG} 1}: 23" }
 
       specify do
         expect(service.standard?).to eq true
@@ -72,7 +72,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Junior synonym of' item" do
-      let(:taxt) { 'Junior synonym of {prott 1}: {ref 2}: 3.' }
+      let(:taxt) { "Junior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
 
       specify do
         expect(service.standard?).to eq true
@@ -81,7 +81,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Senior synonym of' item" do
-      let(:taxt) { 'Senior synonym of {prott 1}: {ref 2}: 3.' }
+      let(:taxt) { "Senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
 
       specify do
         expect(service.standard?).to eq true

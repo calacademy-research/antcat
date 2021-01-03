@@ -9,7 +9,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
     let(:taxt_taxon) { create :any_taxon }
     let(:protonym) do
       create :protonym, :uncertain_locality, locality: 'Indonesia (Timor)',
-        forms: 'w.', notes_taxt: "see {tax #{taxt_taxon.id}}"
+        forms: 'w.', notes_taxt: "see {#{Taxt::TAX_TAG} #{taxt_taxon.id}}"
     end
 
     specify do

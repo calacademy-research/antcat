@@ -6,45 +6,45 @@ describe AntwebFormatter::Detax do
   include AntwebTestLinksHelpers
 
   describe "#call" do
-    describe "tag: `TAX_TAG_REGEX` (taxa)" do
+    describe "tag: `TAX_TAG`" do
       let!(:taxon) { create :any_taxon }
 
       specify do
-        expect(described_class["{tax #{taxon.id}}"]).to eq antweb_taxon_link(taxon)
+        expect(described_class["{#{Taxt::TAX_TAG} #{taxon.id}}"]).to eq antweb_taxon_link(taxon)
       end
     end
 
-    describe "tag: `TAXAC_TAG_REGEX` (taxa with author citation)" do
+    describe "tag: `TAXAC_TAG`" do
       let!(:taxon) { create :any_taxon }
 
       specify do
-        expect(described_class["{taxac #{taxon.id}}"]).to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
+        expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon.id}}"]).to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
       end
     end
 
-    describe "tag: `PRO_TAG_REGEX` (protonyms)" do
+    describe "tag: `PRO_TAG`" do
       let!(:protonym) { create :protonym }
 
       specify do
-        expect(described_class["{pro #{protonym.id}}"]).to eq antweb_protonym_link(protonym)
+        expect(described_class["{#{Taxt::PRO_TAG} #{protonym.id}}"]).to eq antweb_protonym_link(protonym)
       end
     end
 
-    describe "tag: `PROAC_TAG_REGEX` (protonyms with author citation)" do
+    describe "tag: `PROAC_TAG`" do
       let!(:protonym) { create :protonym }
 
       specify do
-        expect(described_class["{proac #{protonym.id}}"]).to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
+        expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
       end
     end
 
-    describe "tag: `PROTT_TAG_REGEX` (terminal taxon of protonyms)" do
+    describe "tag: `PROTT_TAG`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon" do
-          expect(described_class["{prott #{protonym.id}}"]).to eq antweb_taxon_link(terminal_taxon)
+          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq antweb_taxon_link(terminal_taxon)
         end
       end
 
@@ -52,7 +52,7 @@ describe AntwebFormatter::Detax do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{prott #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
             #{antweb_protonym_link(protonym)}
             (protonym)
           HTML
@@ -60,13 +60,13 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `PROTTAC_TAG_REGEX` (terminal taxon of protonyms, with author citation)" do
+    describe "tag: `PROTTAC_TAG`" do
       context "when protonym has a `terminal_taxon`" do
         let!(:protonym) { create :protonym, :genus_group_name }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon (with author citation)" do
-          expect(described_class["{prottac #{protonym.id}}"]).
+          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).
             to eq "#{antweb_taxon_link(terminal_taxon)} #{terminal_taxon.author_citation}"
         end
       end
@@ -75,7 +75,7 @@ describe AntwebFormatter::Detax do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{prottac #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
             #{antweb_protonym_link(protonym)}
             (protonym)
           HTML
@@ -83,32 +83,32 @@ describe AntwebFormatter::Detax do
       end
     end
 
-    describe "tag: `REF_TAG_REGEX` (references)" do
+    describe "tag: `REF_TAG`" do
       let!(:reference) { create :any_reference }
 
       specify do
-        expect(described_class["{ref #{reference.id}}"]).to eq AntwebFormatter::ReferenceLink[reference]
+        expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq AntwebFormatter::ReferenceLink[reference]
       end
     end
 
-    describe "tag: `MISSING_OR_UNMISSING_TAG_REGEX` (missing and unmissing hardcoded taxon names)" do
+    describe "tags: `MISSING_TAG` and `UNMISSING_TAG`" do
       it 'renders the hardcoded name' do
-        expect(described_class["Synonym of {missing <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
-        expect(described_class["Synonym of {missing2 <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
-        expect(described_class["in family {unmissing Pices}"]).to eq "in family Pices"
+        expect(described_class["Synonym of {#{Taxt::MISSING_TAG} <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
+        expect(described_class["Synonym of {#{Taxt::MISSING_TAG}2 <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
+        expect(described_class["in family {#{Taxt::UNMISSING_TAG} Pices}"]).to eq "in family Pices"
       end
     end
 
-    describe "tag: `MISSPELLING_TAG_REGEX` (misspelled hardcoded taxon names)" do
+    describe "tag: `MISSPELLING_TAG`" do
       it 'renders the hardcoded name' do
-        expect(described_class["Synonym of {misspelling <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
-        expect(described_class["in family {misspelling Pices}"]).to eq "in family Pices"
+        expect(described_class["Synonym of {#{Taxt::MISSPELLING_TAG} <i>Atta</i>}"]).to eq "Synonym of <i>Atta</i>"
+        expect(described_class["in family {#{Taxt::MISSPELLING_TAG} Pices}"]).to eq "in family Pices"
       end
     end
 
-    describe "tag: `HIDDENNOTE_TAG_REGEX` (hidden editor notes)" do
+    describe "tag: `HIDDENNOTE_TAG`" do
       it 'removes the note tag and its content' do
-        expect(described_class["Synonym of Lasius{hiddennote check reference} and Formica"]).
+        expect(described_class["Synonym of Lasius{#{Taxt::HIDDENNOTE_TAG} check reference} and Formica"]).
           to eq "Synonym of Lasius and Formica"
       end
     end

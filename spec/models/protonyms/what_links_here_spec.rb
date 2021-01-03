@@ -34,8 +34,8 @@ describe Protonyms::WhatLinksHere do
   context 'when there are taxt references' do
     let!(:protonym) { create :protonym }
 
-    describe "tag: `pro`" do
-      let(:taxt_tag) { "{pro #{protonym.id}}" }
+    describe "tag: `PRO_TAG`" do
+      let(:taxt_tag) { "{#{Taxt::PRO_TAG} #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -60,8 +60,8 @@ describe Protonyms::WhatLinksHere do
       specify { expect(what_links_here.any_columns?).to eq false }
     end
 
-    describe "tag: `proac`" do
-      let(:taxt_tag) { "{proac #{protonym.id}}" }
+    describe "tag: `PROAC_TAG`" do
+      let(:taxt_tag) { "{#{Taxt::PROAC_TAG} #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -86,8 +86,8 @@ describe Protonyms::WhatLinksHere do
       specify { expect(what_links_here.any_columns?).to eq false }
     end
 
-    describe "tag: `prott`" do
-      let(:taxt_tag) { "{prott #{protonym.id}}" }
+    describe "tag: `PROTT_TAG`" do
+      let(:taxt_tag) { "{#{Taxt::PROTT_TAG} #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -112,8 +112,8 @@ describe Protonyms::WhatLinksHere do
       specify { expect(what_links_here.any_columns?).to eq false }
     end
 
-    describe "tag: `prottac`" do
-      let(:taxt_tag) { "{prottac #{protonym.id}}" }
+    describe "tag: `PROTTAC_TAG`" do
+      let(:taxt_tag) { "{#{Taxt::PROTTAC_TAG} #{protonym.id}}" }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }

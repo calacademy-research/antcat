@@ -7,8 +7,8 @@ describe Taxt do
     let(:reference) { create :any_reference }
 
     it 'generates a taxt tag for the reference or reference ID' do
-      expect(described_class.to_ref_tag(reference)).to eq "{ref #{reference.id}}"
-      expect(described_class.to_ref_tag(reference.id)).to eq "{ref #{reference.id}}"
+      expect(described_class.to_ref_tag(reference)).to eq "{#{Taxt::REF_TAG} #{reference.id}}"
+      expect(described_class.to_ref_tag(reference.id)).to eq "{#{Taxt::REF_TAG} #{reference.id}}"
     end
   end
 
@@ -16,24 +16,25 @@ describe Taxt do
     context 'without matching tags' do
       specify do
         expect(described_class.extract_ids_from_taxon_tags("{taxa 123}")).to eq []
-        expect(described_class.extract_ids_from_taxon_tags("{tax 123d}")).to eq []
+        expect(described_class.extract_ids_from_taxon_tags("{#{Taxt::TAX_TAG} 123d}")).to eq []
 
-        expect(described_class.extract_ids_from_taxon_tags("{pro 123}")).to eq []
+        expect(described_class.extract_ids_from_taxon_tags("{#{Taxt::PRO_TAG} 123}")).to eq []
       end
     end
 
     context 'with matching tags' do
       specify do
-        expect(described_class.extract_ids_from_taxon_tags("{tax 123}")).to eq [123]
+        expect(described_class.extract_ids_from_taxon_tags("{#{Taxt::TAX_TAG} 123}")).to eq [123]
 
-        expect(described_class.extract_ids_from_taxon_tags("pizza {tax 123} pizza")).to eq [123]
-        expect(described_class.extract_ids_from_taxon_tags("pizza {taxac 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_taxon_tags("pizza {#{Taxt::TAX_TAG} 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_taxon_tags("pizza {#{Taxt::TAXAC_TAG} 123} pizza")).to eq [123]
       end
     end
 
     context 'with mixed tags' do
       specify do
-        expect(described_class.extract_ids_from_taxon_tags("pizza {taxac 1} {tax 2} {ref 3}")).to eq [1, 2]
+        results = described_class.extract_ids_from_taxon_tags("pizza {#{Taxt::TAXAC_TAG} 1} {#{Taxt::TAX_TAG} 2} {#{Taxt::REF_TAG} 3}")
+        expect(results).to eq [1, 2]
       end
     end
   end
@@ -42,26 +43,27 @@ describe Taxt do
     context 'without matching tags' do
       specify do
         expect(described_class.extract_ids_from_protonym_tags("{prot 123}")).to eq []
-        expect(described_class.extract_ids_from_protonym_tags("{pro 123d}")).to eq []
+        expect(described_class.extract_ids_from_protonym_tags("{#{Taxt::PRO_TAG} 123d}")).to eq []
 
-        expect(described_class.extract_ids_from_protonym_tags("{tax 123}")).to eq []
+        expect(described_class.extract_ids_from_protonym_tags("{#{Taxt::TAX_TAG} 123}")).to eq []
       end
     end
 
     context 'with matching tags' do
       specify do
-        expect(described_class.extract_ids_from_protonym_tags("{pro 123}")).to eq [123]
+        expect(described_class.extract_ids_from_protonym_tags("{#{Taxt::PRO_TAG} 123}")).to eq [123]
 
-        expect(described_class.extract_ids_from_protonym_tags("pizza {pro 123} pizza")).to eq [123]
-        expect(described_class.extract_ids_from_protonym_tags("pizza {prott 123} pizza")).to eq [123]
-        expect(described_class.extract_ids_from_protonym_tags("pizza {proac 123} pizza")).to eq [123]
-        expect(described_class.extract_ids_from_protonym_tags("pizza {prottac 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_protonym_tags("pizza {#{Taxt::PRO_TAG} 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_protonym_tags("pizza {#{Taxt::PROTT_TAG} 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_protonym_tags("pizza {#{Taxt::PROAC_TAG} 123} pizza")).to eq [123]
+        expect(described_class.extract_ids_from_protonym_tags("pizza {#{Taxt::PROTTAC_TAG} 123} pizza")).to eq [123]
       end
     end
 
     context 'with mixed tags' do
       specify do
-        expect(described_class.extract_ids_from_protonym_tags("pizza {pro 1} {prott 2} {ref 3}")).to eq [1, 2]
+        results = described_class.extract_ids_from_protonym_tags("pizza {#{Taxt::PRO_TAG} 1} {#{Taxt::PROTT_TAG} 2} {#{Taxt::REF_TAG} 3}")
+        expect(results).to eq [1, 2]
       end
     end
   end
@@ -69,7 +71,7 @@ describe Taxt do
   describe '.extract_ids_from_reference_tags' do
     context 'with matching tags' do
       specify do
-        expect(described_class.extract_ids_from_reference_tags("{ref 123}")).to eq [123]
+        expect(described_class.extract_ids_from_reference_tags("{#{Taxt::REF_TAG} 123}")).to eq [123]
       end
     end
   end

@@ -4,10 +4,10 @@
 
 module Taxt
   class StandardHistoryItemFormats
-    PROTT = "{prott [0-9]+}"
-    PRO_ISH = "{(pro|proac|prott) [0-9]+}"
+    PROTT = "{#{Taxt::PROTT_TAG} [0-9]+}"
+    PRO_ISH = "{(#{Taxt::PROTONYM_TAGS.join('|')}) [0-9]+}"
 
-    REF = "{ref [0-9]+}"
+    REF = "{#{Taxt::REF_TAG} [0-9]+}"
     PAGES = "[0-9]+"
     CITATION_TAXT = "#{REF}: #{PAGES}"
 

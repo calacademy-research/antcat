@@ -6,9 +6,9 @@ module Taxt
     VIRTUAL_HISTORY_ITEM_CANDIDATES = [
       # Good next candidates to work on.
       # Good candidate because it often appears first in the list, and no tax tags.
-      VHIC_FORM_DESCRIPTION = ["taxt REGEXP ?", "^{ref [0-9]+}: [0-9]+ \\("],
+      VHIC_FORM_DESCRIPTION = ["taxt REGEXP ?", "^{#{Taxt::REF_TAG} [0-9]+}: [0-9]+ \\("],
       # Good candiate because it ususally appears last in the list, and no tax tags.
-      VHIC_SEE_ALSO =         ["taxt LIKE ?", "See also: {ref %"],
+      VHIC_SEE_ALSO =         ["taxt LIKE ?", "See also: {#{Taxt::REF_TAG} %"],
 
       #### Synonym of.
       VHIC_SENIOR_SYNONYM_OF =             ["taxt LIKE ?", "Senior synonym of%"],

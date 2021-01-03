@@ -6,10 +6,10 @@ describe Taxa::CollectReferences do
   describe "#call" do
     let(:protonym) do
       create :protonym,
-        primary_type_information_taxt: "see {ref #{reference_1.id}}",
-        secondary_type_information_taxt: "see {ref #{reference_2.id}}",
-        type_notes_taxt: "see {ref #{reference_3.id}}",
-        notes_taxt: "see {ref #{reference_4.id}}"
+        primary_type_information_taxt: "see {#{Taxt::REF_TAG} #{reference_1.id}}",
+        secondary_type_information_taxt: "see {#{Taxt::REF_TAG} #{reference_2.id}}",
+        type_notes_taxt: "see {#{Taxt::REF_TAG} #{reference_3.id}}",
+        notes_taxt: "see {#{Taxt::REF_TAG} #{reference_4.id}}"
     end
     let(:taxon) { create :any_taxon, protonym: protonym }
     let(:reference_1) { create :any_reference }
@@ -20,8 +20,8 @@ describe Taxa::CollectReferences do
     let(:reference_6) { create :any_reference }
 
     before do
-      create :history_item, :taxt, protonym: protonym, taxt: "see {ref #{reference_5.id}}"
-      create :reference_section, taxon: taxon, references_taxt: "see {ref #{reference_6.id}}"
+      create :history_item, :taxt, protonym: protonym, taxt: "see {#{Taxt::REF_TAG} #{reference_5.id}}"
+      create :reference_section, taxon: taxon, references_taxt: "see {#{Taxt::REF_TAG} #{reference_6.id}}"
     end
 
     it 'collects references from various sources appearing on its catalog page' do

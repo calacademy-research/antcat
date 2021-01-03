@@ -7,7 +7,7 @@ module DatabaseScripts
 
       ReferenceSection.where.not(references_taxt: nil).find_each do |reference_section|
         reference_section.references_taxt.split(';').each do |content|
-          case content.scan("{ref ").size
+          case content.scan("{#{Taxt::REF_TAG} ").size
           when 0
             non_standard << [reference_section, content, 'no reference']
           when 2..99

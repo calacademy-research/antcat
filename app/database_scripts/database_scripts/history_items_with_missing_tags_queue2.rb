@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.taxts_only.where('taxt LIKE ?', "%#{Taxt::MISSING_TAG_START}2%").limit(LIMIT)
+      HistoryItem.taxts_only.where('taxt LIKE ?', "%{#{Taxt::MISSING_TAG}2%").limit(LIMIT)
     end
 
     def render

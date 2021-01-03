@@ -17,7 +17,7 @@ module Taxt
 
   TAXON_TAGS = [
     TAX_TAG = 'tax',
-    TAXAC_TAG = 'taxac'
+    TAXAC_TAG = 'taxac' # Taxon with Author Citation.
   ]
   TAXON_TAG_REGEX = /\{(?<tag>#{TAXON_TAGS.join('|')}) (?<taxon_id>[0-9]+)\}/
   TAX_TAG_REGEX = /\{#{TAX_TAG} (?<taxon_id>\d+)\}/
@@ -25,9 +25,9 @@ module Taxt
 
   PROTONYM_TAGS = [
     PRO_TAG = 'pro',
-    PROAC_TAG = 'proac',
-    PROTT_TAG = 'prott',
-    PROTTAC_TAG = 'prottac'
+    PROAC_TAG = 'proac', # Protonym with Author Citation.
+    PROTT_TAG = 'prott', # Terminal Taxon of Protonym.
+    PROTTAC_TAG = 'prottac' # Terminal Taxon of Protonym, with Author Citation.
   ]
   PROTONYM_TAG_REGEX = /\{(?<tag>#{PROTONYM_TAGS.join('|')}) (?<protonym_id>[0-9]+)\}/
   PRO_TAG_REGEX = /\{#{PRO_TAG} (?<protonym_id>\d+)\}/
@@ -41,13 +41,16 @@ module Taxt
   REFERENCE_TAG_REGEX = /\{(?<tag>#{REFERENCE_TAGS.join('|')}) (?<reference_id>\d+)\}/
   REF_TAG_REGEX = REFERENCE_TAG_REGEX
 
-  MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:missing|unmissing)(?:[0-9])? (?<hardcoded_name>.*?)\}/
-  MISSING_TAG_REGEX = /\{missing[0-9]? (?<hardcoded_name>.*?)\}/
-  MISSING_TAG_START = "{missing"
-  UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
-  MISSPELLING_TAG_REGEX = /\{misspelling (?<hardcoded_name>.*?)\}/
+  MISSING_TAG = 'missing'
+  MISSING_TAG_REGEX = /\{#{MISSING_TAG}[0-9]? (?<hardcoded_name>.*?)\}/
+  UNMISSING_TAG = 'unmissing'
+  UNMISSING_TAG_REGEX = /\{#{UNMISSING_TAG} (?<hardcoded_name>.*?)\}/
+  MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:#{MISSING_TAG}|#{UNMISSING_TAG})(?:[0-9])? (?<hardcoded_name>.*?)\}/
+  MISSPELLING_TAG = 'misspelling'
+  MISSPELLING_TAG_REGEX = /\{#{MISSPELLING_TAG} (?<hardcoded_name>.*?)\}/
 
-  HIDDENNOTE_TAG_REGEX = /\{hiddennote (?<note_content>.*?)\}/
+  HIDDENNOTE_TAG = 'hiddennote' # Hidden editor notes, logged-in only.
+  HIDDENNOTE_TAG_REGEX = /\{#{HIDDENNOTE_TAG} (?<note_content>.*?)\}/
 
   module RecordToTagRegex
     module_function
