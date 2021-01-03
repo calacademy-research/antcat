@@ -10,9 +10,9 @@ describe Exporters::Antweb::History::ProtonymSynopsis::TypeFields do
       let(:taxon) { create :genus }
       let(:protonym) do
         create :protonym,
-          primary_type_information_taxt: "uno {tax #{taxon.id}}",
-          secondary_type_information_taxt: "dos {tax #{taxon.id}}",
-          type_notes_taxt: "tres {tax #{taxon.id}}"
+          primary_type_information_taxt: "uno {#{Taxt::TAX_TAG} #{taxon.id}}",
+          secondary_type_information_taxt: "dos {#{Taxt::TAX_TAG} #{taxon.id}}",
+          type_notes_taxt: "tres {#{Taxt::TAX_TAG} #{taxon.id}}"
       end
 
       it "links the type name" do

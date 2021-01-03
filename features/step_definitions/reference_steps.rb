@@ -81,5 +81,5 @@ end
 
 Given("there is a reference referenced in a history item") do
   reference = create :any_reference
-  create :history_item, :taxt, taxt: "{ref #{reference.id}}"
+  create :history_item, :taxt, taxt: "{#{Taxt::REF_TAG} #{reference.id}}"
 end

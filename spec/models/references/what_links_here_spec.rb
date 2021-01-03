@@ -31,8 +31,8 @@ describe References::WhatLinksHere do
   end
 
   context 'when there are taxt references' do
-    describe "tag: `ref`" do
-      let(:taxt_tag) { "{ref #{reference.id}}" }
+    describe "tag: `REF_TAG`" do
+      let(:taxt_tag) { "{#{Taxt::REF_TAG} #{reference.id}}" }
 
       let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }

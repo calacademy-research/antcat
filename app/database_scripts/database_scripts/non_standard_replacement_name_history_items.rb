@@ -5,7 +5,7 @@ module DatabaseScripts
     def results
       HistoryItem.taxts_only.
         where("history_items.taxt LIKE 'Replacement name:%'").
-        where.not("taxt REGEXP ?", "^Replacement name: {taxac [0-9]+}\.?$")
+        where.not("taxt REGEXP ?", "^Replacement name: {#{Taxt::TAXAC_TAG} [0-9]+}\.?$")
     end
 
     def render

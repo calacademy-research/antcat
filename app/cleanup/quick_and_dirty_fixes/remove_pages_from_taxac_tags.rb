@@ -18,7 +18,7 @@ module QuickAndDirtyFixes
       attr_reader :taxt
 
       def remove_page_numbers_from_taxac_tags
-        ids = taxt.scan(/\{taxac (?<taxac_id>[0-9]+)\}: (?<pages>[0-9]+)/)
+        ids = taxt.scan(/\{#{Taxt::TAXAC_TAG} (?<taxac_id>[0-9]+)\}: (?<pages>[0-9]+)/o)
 
         string = taxt.dup
 
@@ -27,8 +27,8 @@ module QuickAndDirtyFixes
           next unless taxon.authorship.pages == pages
 
           string.gsub!(
-            /\{taxac #{taxac_id}\}: [0-9]+/,
-            "{taxac #{taxac_id}}"
+            /\{#{Taxt::TAXAC_TAG} #{taxac_id}\}: [0-9]+/,
+            "{#{Taxt::TAXAC_TAG} #{taxac_id}}"
           )
         end
 

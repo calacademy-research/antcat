@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       HistoryItem.taxts_only.
-        where("taxt REGEXP ?", "homonym of {tax [0-9]+}:? {ref [0-9]+}").limit(LIMIT)
+        where("taxt REGEXP ?", "homonym of {#{Taxt::TAX_TAG} [0-9]+}:? {#{Taxt::REF_TAG} [0-9]+}").limit(LIMIT)
     end
 
     def render
@@ -47,7 +47,7 @@ module DatabaseScripts
       def check_usage taxt
         matches = true
 
-        ids = taxt.scan(/\{tax (?<tax_id>[0-9]+\}) \{ref (?<ref_id>[0-9]+)\}/)
+        ids = taxt.scan(/\{#{Taxt::TAX_TAG} (?<tax_id>[0-9]+\}) \{#{Taxt::REF_TAG} (?<ref_id>[0-9]+)\}/o)
 
         string = +''
         ids.each do |(tax_id, ref_id)|

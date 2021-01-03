@@ -11,7 +11,7 @@ end
 
 Given("there is a subfamily protonym {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-  taxt = "#{content} {ref #{reference.id}}"
+  taxt = "#{content} {#{Taxt::REF_TAG} #{reference.id}}"
   step %(there is a subfamily protonym "#{name}" with a history item "#{taxt}")
 end
 

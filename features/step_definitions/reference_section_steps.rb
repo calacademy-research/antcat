@@ -13,7 +13,7 @@ Given("there is a reference section for {string} that includes a tag for {string
   taxon = Taxon.find_by!(name_cache: name)
   tag_taxon = Taxon.find_by!(name_cache: tagged_name)
 
-  create :reference_section, references_taxt: "{tax #{tag_taxon.id}}", taxon: taxon
+  create :reference_section, references_taxt: "{#{Taxt::TAX_TAG} #{tag_taxon.id}}", taxon: taxon
 end
 
 # Editing.

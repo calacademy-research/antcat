@@ -41,14 +41,16 @@ module Taxt
   REFERENCE_TAG_REGEX = /\{(?<tag>#{REFERENCE_TAGS.join('|')}) (?<reference_id>\d+)\}/
   REF_TAG_REGEX = REFERENCE_TAG_REGEX
 
-  MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:missing|unmissing)(?:[0-9])? (?<hardcoded_name>.*?)\}/
-  MISSING_TAG_REGEX = /\{missing[0-9]? (?<hardcoded_name>.*?)\}/
-  MISSING_TAG_START = "{missing"
-  UNMISSING_TAG_REGEX = /\{unmissing (?<hardcoded_name>.*?)\}/
-  MISSPELLING_TAG_REGEX = /\{misspelling (?<hardcoded_name>.*?)\}/
+  MISSING_TAG = 'missing'
+  MISSING_TAG_REGEX = /\{#{MISSING_TAG}[0-9]? (?<hardcoded_name>.*?)\}/
+  UNMISSING_TAG = 'unmissing'
+  UNMISSING_TAG_REGEX = /\{#{UNMISSING_TAG} (?<hardcoded_name>.*?)\}/
+  MISSING_OR_UNMISSING_TAG_REGEX = /\{(?:#{MISSING_TAG}|#{UNMISSING_TAG})(?:[0-9])? (?<hardcoded_name>.*?)\}/
+  MISSPELLING_TAG = 'misspelling'
+  MISSPELLING_TAG_REGEX = /\{#{MISSPELLING_TAG} (?<hardcoded_name>.*?)\}/
 
-  # Hidden editor notes, logged-in only.
-  HIDDENNOTE_TAG_REGEX = /\{hiddennote (?<note_content>.*?)\}/
+  HIDDENNOTE_TAG = 'hiddennote' # Hidden editor notes, logged-in only.
+  HIDDENNOTE_TAG_REGEX = /\{#{HIDDENNOTE_TAG} (?<note_content>.*?)\}/
 
   module RecordToTagRegex
     module_function

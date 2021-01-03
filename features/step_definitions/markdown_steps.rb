@@ -27,17 +27,17 @@ end
 
 Then("the markdown textarea should contain a markdown link to {string}") do |key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-  expect(markdown_textarea.value).to include "{ref #{reference.id}}"
+  expect(markdown_textarea.value).to include "{#{Taxt::REF_TAG} #{reference.id}}"
 end
 
 When("I fill in {string} with {string} and a markdown link to {string}") do |field_name, value, key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
-  step %(I fill in "#{field_name}" with "#{value} {ref #{reference.id}}")
+  step %(I fill in "#{field_name}" with "#{value} {#{Taxt::REF_TAG} #{reference.id}}")
 end
 
 Then("the markdown textarea should contain a markdown link to Eciton") do
   eciton = Taxon.find_by!(name_cache: "Eciton")
-  expect(markdown_textarea.value).to include "{tax #{eciton.id}}"
+  expect(markdown_textarea.value).to include "{#{Taxt::TAX_TAG} #{eciton.id}}"
 end
 
 When("I clear the markdown textarea") do
