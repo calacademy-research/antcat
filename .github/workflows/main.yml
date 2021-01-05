@@ -8,6 +8,9 @@ on:
       - '**'
 
 env:
+  RAILS_ENV: test
+  NODE_ENV: test
+
   DB_PORT: 33306
   DB_USER: root
   DB_PASSWORD: root
@@ -66,10 +69,11 @@ jobs:
         sudo apt-get install -y mysql-client libmysqlclient-dev
         sudo service mysql start
 
-        RAILS_ENV=test bundle exec rake db:create
+        bundle exec rake db:create
 
     - name: Run cucumber
       run: |
+        ./bin/yarn install
         bundle exec cucumber --order random --tags '@retry_ci' --retry 2
         bundle exec cucumber --order random --tags 'not @skip and not @skip_ci and not @retry_ci'
 
@@ -106,8 +110,9 @@ jobs:
         sudo apt-get install -y mysql-client libmysqlclient-dev
         sudo service mysql start
 
-        RAILS_ENV=test bundle exec rake db:create
+        bundle exec rake db:create
 
     - name: Run rspec
       run: |
+        ./bin/yarn install
         bundle exec rspec spec --tag ~pending --order rand
