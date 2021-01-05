@@ -1,4 +1,5 @@
 {
+  "private": true,
   "dependencies": {
     "@rails/webpacker": "5.1.1",
     "vue": "^2.6.12",
