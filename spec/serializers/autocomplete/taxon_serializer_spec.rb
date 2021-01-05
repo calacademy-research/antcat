@@ -18,5 +18,14 @@ describe Autocomplete::TaxonSerializer do
         }
       )
     end
+
+    context 'with `include_protonym`' do
+      specify do
+        serialized = described_class.new(taxon).as_json(include_protonym: true)
+        serialized_protonym = Autocomplete::ProtonymSerializer.new(taxon.protonym).as_json
+
+        expect(serialized[:protonym]).to eq serialized_protonym
+      end
+    end
   end
 end

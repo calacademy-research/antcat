@@ -12,7 +12,7 @@ module Protonyms
 
       def serialized_protonyms
         protonyms.map do |protonym|
-          Autocomplete::ProtonymSerializer.new(protonym).as_json
+          Autocomplete::ProtonymSerializer.new(protonym).as_json(include_terminal_taxon: include_terminal_taxon?)
         end
       end
 
@@ -22,6 +22,10 @@ module Protonyms
 
       def search_query
         (params[:q] || params[:qq]).lstrip
+      end
+
+      def include_terminal_taxon?
+        params[:include_terminal_taxon].present?
       end
   end
 end

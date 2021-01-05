@@ -20,5 +20,16 @@ describe Autocomplete::ProtonymSerializer do
         }
       )
     end
+
+    context 'with `include_terminal_taxon`' do
+      let!(:terminal_taxon) { create :species, protonym: protonym }
+
+      specify do
+        serialized = described_class.new(protonym).as_json(include_terminal_taxon: true)
+        serialized_terminal_taxon = Autocomplete::TaxonSerializer.new(terminal_taxon).as_json
+
+        expect(serialized[:terminal_taxon]).to eq serialized_terminal_taxon
+      end
+    end
   end
 end
