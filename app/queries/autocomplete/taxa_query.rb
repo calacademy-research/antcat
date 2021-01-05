@@ -32,6 +32,8 @@ module Autocomplete
             fields(:name_cache)
             fields(:authors)
             fields(:year_as_string)
+
+            boost_fields name_cache: 2.0
           end
 
           if rank
