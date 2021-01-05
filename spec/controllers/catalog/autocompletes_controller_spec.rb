@@ -13,18 +13,7 @@ describe Catalog::AutocompletesController, :search do
     it "returns matches" do
       get :show, params: { q: "att", format: :json }
 
-      expect(json_response).to eq(
-        [
-          {
-            "id" => taxon.id,
-            "plaintext_name" => taxon.name_cache,
-            "name_with_fossil" => "<i>†</i><i>#{taxon.name_cache}</i>",
-            "author_citation" => taxon.author_citation,
-            "css_classes" => CatalogFormatter.taxon_disco_mode_css(taxon),
-            "url" => "/catalog/#{taxon.id}"
-          }
-        ]
-      )
+      expect(json_response).to eq [Autocomplete::TaxonSerializer.new(taxon).as_json].map(&:stringify_keys)
     end
   end
 end
