@@ -11,7 +11,7 @@ describe Protonyms::AutocompletesController, :search do
         Sunspot.commit
 
         get :show, params: { qq: ' las ', format: :json }
-        expect(json_response).to eq Autocomplete::ProtonymsSerializer[[protonym]].map(&:stringify_keys)
+        expect(json_response).to eq [Autocomplete::ProtonymSerializer.new(protonym).as_json].map(&:stringify_keys)
       end
     end
   end

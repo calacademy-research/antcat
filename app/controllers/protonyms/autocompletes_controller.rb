@@ -11,7 +11,9 @@ module Protonyms
     private
 
       def serialized_protonyms
-        Autocomplete::ProtonymsSerializer[protonyms]
+        protonyms.map do |protonym|
+          Autocomplete::ProtonymSerializer.new(protonym).as_json
+        end
       end
 
       def protonyms
