@@ -12,7 +12,8 @@ function createPreview(el, value, fetcher) {
 
   el.onmouseover = function() {
     fetcher.fetch(recordId).
-      then((data) => { previewContent.innerHTML = data.preview })
+      then((data) => { previewContent.innerHTML = data.preview }).
+      then((_data) => { window.AntCat.CreateCopyButtons(previewContent) })
 
     const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop
