@@ -4,10 +4,7 @@ module Taxt
   class ConvertTags
     include Service
 
-    TAX_TO_PROTONYM_REGEX = /\{#{Taxt::TAX_TAG} (?<taxon_id>\d+)(?<to_tag>(?:p|#{Taxt::PROTONYM_TAGS.join('|')}))\}/
-    SHORTCUTS = {
-      'p' => 'pro'
-    }
+    TAX_TO_PROTONYM_REGEX = /\{#{Taxt::TAX_TAG} (?<taxon_id>\d+)(?<to_tag>(?:#{Taxt::PROTONYM_TAGS.join('|')}))\}/
 
     def initialize taxt
       @taxt = taxt.try(:dup)
@@ -30,7 +27,7 @@ module Taxt
         taxt.gsub!(TAX_TO_PROTONYM_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:taxon_id]))
             to_tag = $LAST_MATCH_INFO[:to_tag]
-            "{#{SHORTCUTS[to_tag] || to_tag} #{taxon.protonym.id}}"
+            "{#{to_tag} #{taxon.protonym.id}}"
           else
             $LAST_MATCH_INFO
           end

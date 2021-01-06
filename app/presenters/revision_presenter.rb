@@ -8,7 +8,7 @@ class RevisionPresenter
     inline_citation_cache
     principal_author_last_name_cache
   ]
-  ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + References::Concerns::Searchable::CACHE_COLUMNS
+  ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + Reference::CACHE_COLUMNS
 
   attr_private_initialize [:comparer, template: nil]
 

@@ -2,7 +2,6 @@
 
 class Reference < ApplicationRecord
   include Trackable
-  include References::Concerns::Searchable
 
   CONCRETE_SUBCLASS_NAMES = %w[ArticleReference BookReference NestedReference]
   REVIEW_STATES = [
@@ -10,6 +9,14 @@ class Reference < ApplicationRecord
     REVIEW_STATE_REVIEWED = "reviewed",
     REVIEW_STATE_REVIEWING = "reviewing"
   ]
+  CACHE_COLUMNS = %i[
+    plain_text_cache
+    expandable_reference_cache
+    expanded_reference_cache
+    key_with_suffixed_year_cache
+  ]
+  IGNORE_PAPER_TRAIL_COLUMNS = CACHE_COLUMNS
+  SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
   delegate :key_with_suffixed_year, :key_with_year, to: :key
@@ -34,12 +41,35 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
-  has_paper_trail
+  has_paper_trail ignore: IGNORE_PAPER_TRAIL_COLUMNS
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year, :year_suffix,
     :series_volume_issue, :doi, :bolton_key, :author_names_suffix
   ], replace_newlines: true
   trackable parameters: proc { { name: key_with_suffixed_year } }
+
+  searchable(ignore_attribute_changes_of: SOLR_IGNORE_ATTRIBUTE_CHANGES_OF) do
+    string(:type)
+    integer(:year)
+    text(:author_names_string)
+    text(:author_names_string, as: :author_names_string_antcat_text)
+    text(:suffixed_year)
+    text(:stated_year)
+    text(:title)
+    # NOTE: Safe navigation for `.name` is for journals/publishers created at the same time as the reference.
+    text(:journal_name) { journal&.name if respond_to?(:journal) }
+    text(:publisher_name) { publisher&.name if respond_to?(:publisher) }
+    text(:year_as_string) { year.to_s }
+    text(:public_notes)
+    text(:editor_notes)
+    text(:taxonomic_notes)
+    text(:bolton_key)
+    text(:authors_for_key) { key.authors_for_key } # To find "et al".
+    string(:suffixed_year)
+    string(:stated_year)
+    string(:doi)
+    string(:author_names_string)
+  end
 
   # TODO: Something regarding "_cache" vs. "string" vs. not.
   # Looks like: "Abdul-Rassoul, M. S.; Dawah, H. A.; Othman, N. Y.".
