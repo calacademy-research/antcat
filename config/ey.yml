@@ -9,3 +9,9 @@ defaults:
   migrate: true
   migration_command: rake db:migrate --trace
   precompile_assets: true
+
+  # See https://support.cloud.engineyard.com/hc/en-us/articles/360007753333-Deploy-a-Webpacker-app-on-Engine-Yard-Cloud
+  precompile_unchanged_assets: true
+
+  # See https://support.cloud.engineyard.com/hc/en-us/articles/115004734428-Using-yarn-to-manage-NodeJS-modules-for-assets-compilation
+  npm: false

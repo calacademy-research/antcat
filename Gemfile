@@ -48,6 +48,7 @@ gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
+gem 'webpacker', '5.1.1'
 gem 'will_paginate'
 
 group :development do
