@@ -60,7 +60,7 @@ describe Markdowns::ParseCatalogTags do
         protonym = create :protonym
         expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
           #{protonym_link(protonym)}
-          <span class="discret-author-citation">#{reference_link_without_hover(protonym.authorship_reference)}</span>
+          <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
         HTML
       end
 
