@@ -14,20 +14,6 @@ When("I set the current taxon name to {string}") do |name|
   select2 name, from: 'taxon_current_taxon_id'
 end
 
-# Homonym replaced by.
-Then("the homonym replaced by name should be {string}") do |name|
-  expected_value = if name == '(none)'
-                     ''
-                   else
-                     Taxon.find_by!(name_cache: name).id.to_s
-                   end
-  expect(find('#taxon_homonym_replaced_by_id').value).to eq expected_value
-end
-
-When("I set the homonym replaced by name to {string}") do |name|
-  select2 name, from: 'taxon_homonym_replaced_by_id'
-end
-
 # Authorship.
 When(/^I set the authorship to the first search results of "([^"]*)"$/) do |name|
   select2 name, from: 'taxon_protonym_attributes_authorship_attributes_reference_id'
