@@ -60,6 +60,7 @@ Rails.application.config.assets.precompile += %w[
   logged_in_only.css
   test_css.css
   vendor.css
+  vue.css
 
   controllers/*.css
   site/*.css

@@ -18,7 +18,7 @@
   -if protonym.sic?
     [sic]
   =succeed ':' do
-    =taxon.authorship_reference.decorate.expandable_reference
+    =CatalogFormatter.link_to_taxt_reference(taxon.authorship_reference)
   =protonym.decorate.format_pages_and_forms
   =Detax[protonym.notes_taxt]
   =protonym.decorate.format_locality

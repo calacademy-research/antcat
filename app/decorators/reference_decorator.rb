@@ -9,10 +9,16 @@ class ReferenceDecorator < Draper::Decorator
   }
 
   delegate :sanitize, to: :helpers
-  delegate :plain_text, :expandable_reference, :expanded_reference, to: :reference_formatter
+  delegate :plain_text, :expanded_reference, to: :reference_formatter
 
   def link_to_reference
-    h.link_to reference.key_with_suffixed_year, h.reference_path(reference)
+    h.link_to reference.key_with_suffixed_year, h.reference_path(reference),
+      'v-hover-reference' => reference.id
+  end
+
+  # TODO: Replace all callers with `#link_to_reference`. Previously in `CachedReferenceFormatter`.
+  def expandable_reference
+    link_to_reference
   end
 
   def format_public_notes

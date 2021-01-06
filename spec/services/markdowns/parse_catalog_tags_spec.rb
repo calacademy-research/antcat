@@ -60,7 +60,7 @@ describe Markdowns::ParseCatalogTags do
         protonym = create :protonym
         expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
           #{protonym_link(protonym)}
-          <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
+          <span class="discret-author-citation">#{reference_link_without_hover(protonym.authorship_reference)}</span>
         HTML
       end
 
@@ -134,21 +134,23 @@ describe Markdowns::ParseCatalogTags do
     end
 
     describe "tag: `REF_TAG`" do
-      context 'when reference has an expandable_reference_cache' do
+      context 'when reference has a `key_with_suffixed_year_cache`' do
         let(:reference) { create :any_reference }
 
         it 'links the reference' do
-          reference.decorate.expandable_reference
-          expect(reference.expandable_reference_cache).to_not eq nil
+          expect(reference.key_with_suffixed_year_cache).to_not eq nil
+
           expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq reference_taxt_link(reference)
         end
       end
 
-      context 'when reference has no expandable_reference_cache' do
+      context 'when reference has no `key_with_suffixed_year_cache`' do
         let(:reference) { create :any_reference }
 
         it 'generates it' do
-          expect(reference.expandable_reference_cache).to eq nil
+          reference.update_columns key_with_suffixed_year_cache: nil
+          expect(reference.key_with_suffixed_year_cache).to eq nil
+
           expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq reference_taxt_link(reference)
         end
       end

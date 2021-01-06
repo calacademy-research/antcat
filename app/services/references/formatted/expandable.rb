@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Remove.
+
 # Formats the reference with HTML, CSS, etc. Click to show expanded.
 
 module References

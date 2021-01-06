@@ -1,0 +1,21 @@
+-decorated_reference = reference.decorate
+
+-if current_user
+  .tiny-margin-bottom
+    -if user_is_at_least_helper?
+      =link_to "Edit", edit_reference_path(reference), class: "btn-tiny btn-normal"
+    =copy_to_clipboard_button Taxt.reference_to_ref_tag(reference), "ref #{reference.id}"
+    =copy_to_clipboard_button reference.id
+
+%strong Reference:
+=reference.key_with_suffixed_year
+%br
+
+%strong Pages:
+=reference.pagination
+%br
+%br
+
+.small-text
+  =decorated_reference.expanded_reference
+  =decorated_reference.format_document_links

@@ -15,10 +15,16 @@ class TaxonDecorator < Draper::Decorator
   end
 
   def link_to_taxon_with_linked_author_citation
+    authorship_reference = taxon.authorship_reference
+
     CatalogFormatter.link_to_taxon(taxon) <<
       ' ' <<
       h.tag.span(
-        h.link_to(taxon.author_citation.html_safe, h.reference_path(taxon.authorship_reference)),
+        h.link_to(
+          taxon.author_citation.html_safe,
+          h.reference_path(authorship_reference),
+          'v-hover-reference' => authorship_reference.id
+        ),
         class: 'discret-author-citation'
       )
   end

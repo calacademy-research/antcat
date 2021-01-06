@@ -58,6 +58,7 @@ Rails.application.routes.draw do
       end
 
       resource :history, only: :show
+      resource :hover_preview, only: :show
       resource :what_links_here, only: :show
 
       member do

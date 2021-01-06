@@ -2,6 +2,7 @@
   "private": true,
   "dependencies": {
     "@rails/webpacker": "5.1.1",
+    "axios": "^0.21.1",
     "vue": "^2.6.12",
     "vue-loader": "^15.9.6",
     "vue-template-compiler": "^2.6.12"
