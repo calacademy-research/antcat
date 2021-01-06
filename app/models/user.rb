@@ -7,6 +7,20 @@ class User < ApplicationRecord
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
 
+  IGNORE_PAPER_TRAIL_COLUMNS = %i[
+    current_sign_in_at
+    current_sign_in_ip
+    encrypted_password
+    last_sign_in_at
+    last_sign_in_ip
+    password_salt
+    remember_created_at
+    remember_token
+    reset_password_sent_at
+    reset_password_token
+    sign_in_count
+  ]
+
   belongs_to :author, optional: true
 
   has_many :activities, dependent: :restrict_with_error
@@ -27,7 +41,7 @@ class User < ApplicationRecord
 
   acts_as_reader
   devise :database_authenticatable, :recoverable, :registerable, :rememberable, :trackable, :validatable
-  has_paper_trail ignore: [:encrypted_password, :password_salt, :reset_password_token, :remember_token]
+  has_paper_trail ignore: IGNORE_PAPER_TRAIL_COLUMNS
   has_settings do |s|
     s.key :editing_helpers, defaults: { create_combination: false }
   end

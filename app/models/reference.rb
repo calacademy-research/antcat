@@ -15,6 +15,7 @@ class Reference < ApplicationRecord
     expanded_reference_cache
     key_with_suffixed_year_cache
   ]
+  IGNORE_PAPER_TRAIL_COLUMNS = CACHE_COLUMNS
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
   delegate :routed_url, :downloadable?, to: :document, allow_nil: true
@@ -40,7 +41,7 @@ class Reference < ApplicationRecord
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
 
   accepts_nested_attributes_for :document, reject_if: proc { |attrs| attrs['file'].blank? && attrs['url'].blank? }
-  has_paper_trail
+  has_paper_trail ignore: IGNORE_PAPER_TRAIL_COLUMNS
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year, :year_suffix,
     :series_volume_issue, :doi, :bolton_key, :author_names_suffix
