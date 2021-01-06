@@ -31,10 +31,6 @@ module TestLinksHelpers
   end
   # rubocop:enable Layout/LineLength
 
-  def reference_link_without_hover reference
-    %(<a v-hover-reference="#{reference.id}" href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>)
-  end
-
   def taxon_authorship_link taxon
     reference = taxon.authorship_reference
     %(<a v-hover-reference="#{reference.id}" href="/references/#{reference.id}">#{taxon.author_citation}</a>)
