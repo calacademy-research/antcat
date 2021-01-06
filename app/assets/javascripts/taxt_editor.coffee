@@ -66,8 +66,11 @@ setupOkButtons = ->
       success: (html) ->
         taxtEditor.find(TAXT_EDITOR_CONTENT).html html
         taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
-        taxtEditor.find(TAXT_PRESENTER).show()
-        window.AntCatVue.askForRecompile(taxtEditor)
+
+        taxtPresenter = taxtEditor.find(TAXT_PRESENTER)
+        taxtPresenter.show()
+        window.AntCatVue.askForRecompile(taxtPresenter)
+
         window.setupTaxtEditors()
       error: -> alert 'error :('
 
