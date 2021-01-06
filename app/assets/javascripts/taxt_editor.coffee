@@ -65,10 +65,10 @@ setupOkButtons = ->
       data: text: toParse
       success: (html) ->
         taxtEditor.find(TAXT_EDITOR_CONTENT).html html
-        AntCat.makeReferenceKeysExpandable taxtEditor
-        AntCat.enableCatalogLinkHoverPreview taxtEditor
         taxtEditor.find(TAXT_EDITOR_EDITOR).hide()
         taxtEditor.find(TAXT_PRESENTER).show()
+        window.AntCatVue.askForRecompile(taxtEditor)
+        window.setupTaxtEditors()
       error: -> alert 'error :('
 
 setupSaveHistoryItemButtons = ->
@@ -101,12 +101,12 @@ setupSaveHistoryItemButtons = ->
         else
           AntCat.notifySuccess("Updated history item")
 
-          taxtEditor.html response.content
-          AntCat.makeReferenceKeysExpandable taxtEditor
-          AntCat.enableCatalogLinkHoverPreview taxtEditor
-          AntCat.makeAllPreviewable()
+          parent = taxtEditor.parent()
+          parent.html response.content
+          window.AntCatVue.askForRecompile(parent)
           AntCat.referenceSelectify()
           AntCat.protonymSelectifyAll()
+          window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
         alert 'error :('
@@ -135,10 +135,10 @@ setupSaveReferenceSectionButtons = ->
         else
           AntCat.notifySuccess("Updated reference section")
 
-          taxtEditor.html response.content
-          AntCat.makeReferenceKeysExpandable taxtEditor
-          AntCat.enableCatalogLinkHoverPreview taxtEditor
-          AntCat.makeAllPreviewable()
+          parent = taxtEditor.parent()
+          parent.html response.content
+          window.AntCatVue.askForRecompile(parent)
+          window.setupLinkables()
           window.setupTaxtEditors()
       error: ->
         alert 'error :('

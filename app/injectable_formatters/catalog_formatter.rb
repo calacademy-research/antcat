@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
+# TODO: Cleanup methods/names.
+
 module CatalogFormatter
   extend ActionView::Helpers::OutputSafetyHelper # For `#safe_join`.
 
   module_function
 
   def link_to_taxon taxon
-    %(<a class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
+    %(<a v-hover-taxon="#{taxon.id}" class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{taxon.name_with_fossil}</a>).html_safe
   end
 
   def link_to_taxa taxa
@@ -18,11 +20,11 @@ module CatalogFormatter
   end
 
   def link_to_taxon_with_label taxon, label
-    %(<a class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{label}</a>).html_safe
+    %(<a v-hover-taxon="#{taxon.id}" class="#{taxon_disco_mode_css(taxon)}" href="/catalog/#{taxon.id}">#{label}</a>).html_safe
   end
 
   def taxon_disco_mode_css taxon
-    css_classes = ['taxon-hover-preview-link', taxon.status.tr(' ', '-')]
+    css_classes = [taxon.status.tr(' ', '-')]
     css_classes << ['unresolved-homonym'] if taxon.unresolved_homonym?
     css_classes.join(' ')
   end
@@ -35,7 +37,14 @@ module CatalogFormatter
     protonym.decorate.link_to_protonym_with_linked_author_citation
   end
 
-  def expandable_reference reference
-    reference.decorate.expandable_reference.html_safe
+  # rubocop:disable Layout/LineLength
+  def link_to_taxt_reference reference
+    %(<a v-hover-reference="#{reference.id}" class="taxt-hover-reference" href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>).html_safe
+  end
+  # rubocop:enable Layout/LineLength
+
+  # HACK: Performance hack for as long as we have history items with a lot of ref-tags.
+  def link_to_taxt_reference_cached reference_id, key_with_suffixed_year_cache
+    %(<a v-hover-reference="#{reference_id}" class="taxt-hover-reference" href="/references/#{reference_id}">#{key_with_suffixed_year_cache}</a>)
   end
 end

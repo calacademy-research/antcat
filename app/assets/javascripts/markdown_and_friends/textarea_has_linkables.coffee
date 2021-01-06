@@ -1,7 +1,7 @@
 # This adds some autocompletions to textareas with `data-has-linkables`.
 
 $ ->
-  setupLinkables()
+  window.setupLinkables()
 
 reuseCallbacks = (url) ->
   matcher: AntCat.allowSpacesWhileAutocompleting
@@ -34,7 +34,7 @@ reuseCallbacks = (url) ->
   # query isn't a substring of the field defined by `searchKey` (`name` by default).
   sorter: (query, items, searchKey) -> items
 
-setupLinkables = =>
+window.setupLinkables = =>
   referenceDisplayTpl =
     '<li><small>#${id}</small> ${author} (${year}) ${bolton_key} <small>${title}</small> ${full_pagination}</li>'
 

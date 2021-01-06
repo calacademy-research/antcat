@@ -4,17 +4,10 @@ AntCat.CONSTANTS ||= {}
 AntCat.CONSTANTS.TAXON_NAME_STRING = '#taxon_name_string' # For the taxon form.
 AntCat.CONSTANTS.PROTONYM_NAME_STRING = '#protonym_name_string' # For the taxon and protonym forms.
 
-TAXON_HOVER_PREVIEW_LINK_CSS_CLASS = 'taxon-hover-preview-link'
-TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS = 'taxon-hover-preview-content'
-
-PROTONYM_HOVER_PREVIEW_LINK_CSS_CLASS = 'protonym-hover-preview-link'
-PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS = 'protonym-hover-preview-content'
-
 $ ->
   $(document).foundation()
 
   enableInlineExpansions()
-  AntCat.enableCatalogLinkHoverPreview(document)
 
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
@@ -31,54 +24,10 @@ $.fn.disableButton = -> @addClass "disabled"
 AntCat.notifySuccess = (content, autoHide = true) -> $.notify content, className: "success", autoHide: autoHide
 AntCat.notifyError = (content, autoHide = true) -> $.notify content, autoHide: autoHide
 
-# Defined on `AntCat` to make it possible to re-trigger after generating
-# markdown preview of references (in `preview_markdown.coffee`).
-#
-# The `element` qualifier is because each time we setup the
-# same elements more than once, they alternate between working and not.
-# Reference keys already in the DOM should not be touched after making
-# references in the markdown preview expandable.
-AntCat.makeReferenceKeysExpandable = (element) -> $(element).foundation()
-
 # Used by `ApplicationHelper#inline_expandable`.
 enableInlineExpansions = ->
   $(".expandable").on "click", (event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
-
-AntCat.hoverPreviewContent = (preview, previewCssClass) ->
-  "<span class='color-coded-catalog-links #{previewCssClass}'>#{preview}</span>"
-
-AntCat.enableCatalogLinkHoverPreview = (element) ->
-  AntCat.hoverPreviewCache ||= {}
-
-  $(element).find(".#{TAXON_HOVER_PREVIEW_LINK_CSS_CLASS}").on "mouseenter", (event) ->
-    href = $(this).attr("href") # "/catalog/1234".
-    cachedPreview = AntCat.hoverPreviewCache[href]
-
-    if cachedPreview
-      alreadyAppendedToThisElement = $(this).find(".#{TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS}").length
-      return if alreadyAppendedToThisElement
-      $(this).append AntCat.hoverPreviewContent(cachedPreview, TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS)
-    else
-      $.getJSON "#{href}/hover_preview.json", (data) =>
-        preview = data.preview
-        $(this).append AntCat.hoverPreviewContent(preview, TAXON_HOVER_PREVIEW_CONTENT_CSS_CLASS)
-        AntCat.hoverPreviewCache[href] = preview
-
-  # TODO: Refactor copy-pasta.
-  $(element).find(".#{PROTONYM_HOVER_PREVIEW_LINK_CSS_CLASS}").on "mouseenter", (event) ->
-    href = $(this).attr("href") # "/protonyms/1234".
-    cachedPreview = AntCat.hoverPreviewCache[href]
-
-    if cachedPreview
-      alreadyAppendedToThisElement = $(this).find(".#{PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS}").length
-      return if alreadyAppendedToThisElement
-      $(this).append AntCat.hoverPreviewContent(cachedPreview, PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS)
-    else
-       $.getJSON "#{href}/hover_preview.json", (data) =>
-        preview = data.preview
-        $(this).append AntCat.hoverPreviewContent(preview, PROTONYM_HOVER_PREVIEW_CONTENT_CSS_CLASS)
-        AntCat.hoverPreviewCache[href] = preview
 
 AntCat.escapeRegExp = (string) ->
   string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')

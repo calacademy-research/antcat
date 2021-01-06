@@ -86,9 +86,10 @@ class MakePreviewable
       dataType: "html"
       success: (html) =>
         tab.html html
-        # Re-trigger to make references expandable.
-        AntCat.makeReferenceKeysExpandable tab
-        AntCat.enableCatalogLinkHoverPreview tab
+        window.AntCatVue.askForRecompile(tab)
+        window.setupLinkables()
+        if typeof variable != 'undefined'
+          window.setupTaxtEditors()
         @hideSpinner() # Only hide on success.
       error: -> tab.text "Error rendering preview"
 

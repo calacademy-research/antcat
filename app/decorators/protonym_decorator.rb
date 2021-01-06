@@ -16,10 +16,16 @@ class ProtonymDecorator < Draper::Decorator
   end
 
   def link_to_protonym_with_linked_author_citation
+    authorship_reference = protonym.authorship_reference
+
     link_to_protonym <<
       ' ' <<
       h.tag.span(
-        h.link_to(protonym.author_citation.html_safe, h.reference_path(protonym.authorship_reference)),
+        h.link_to(
+          protonym.author_citation.html_safe,
+          h.reference_path(authorship_reference),
+          'v-hover-reference' => authorship_reference.id
+        ),
         class: 'discret-author-citation'
       )
   end
@@ -62,7 +68,9 @@ class ProtonymDecorator < Draper::Decorator
   private
 
     def link_to_protonym_with_label label
-      h.link_to label, h.protonym_path(protonym), class: 'protonym protonym-hover-preview-link'
+      h.link_to label, h.protonym_path(protonym),
+        'v-hover-protonym' => protonym.id,
+        class: 'protonym'
     end
 
     def nomen_attributes

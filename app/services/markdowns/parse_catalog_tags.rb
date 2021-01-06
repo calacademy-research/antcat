@@ -136,16 +136,16 @@ module Markdowns
           if ENV['NO_REF_CACHE']
             {}
           else
-            Reference.where(id: reference_ids).pluck(:id, :expandable_reference_cache).to_h
+            Reference.where(id: reference_ids).pluck(:id, :key_with_suffixed_year_cache).to_h
           end
 
         content.gsub!(Taxt::REF_TAG_REGEX) do
           reference_id = $LAST_MATCH_INFO[:reference_id]
 
-          if (expandable_reference_cache = references_indexed_by_id[reference_id.to_i])
-            expandable_reference_cache.html_safe
+          if (key_with_suffixed_year_cache = references_indexed_by_id[reference_id.to_i])
+            formatter.link_to_taxt_reference_cached(reference_id, key_with_suffixed_year_cache)
           elsif (reference = Reference.find_by(id: reference_id))
-            formatter.expandable_reference(reference)
+            formatter.link_to_taxt_reference(reference)
           else
             broken_taxt_tag "REFERENCE", $LAST_MATCH_INFO
           end
