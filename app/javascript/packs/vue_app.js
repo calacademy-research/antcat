@@ -1,5 +1,8 @@
 import Vue from 'vue/dist/vue.esm'
 
+// TODO: Temporary random component with styles to make the compilation step not blow up.
+import TestDirective from './components/TestDirective'
+
 import CreateHoverPreview from './directives/CreateHoverPreview'
 import CachedFetcher from './services/CachedFetcher'
 import * as ApiUrls from './config/ApiUrls'
@@ -29,8 +32,13 @@ Vue.directive('hover-taxon', CreateHoverPreview(taxonFetcher))
 Vue.directive('hover-protonym', CreateHoverPreview(protonymFetcher))
 Vue.directive('hover-reference', CreateHoverPreview(refereneFetcher))
 
+Vue.directive('test-directive', TestDirective)
+
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
-    el: '#vue-app'
+    el: '#vue-app',
+    components: {
+      TestDirective,
+    },
   })
 })
