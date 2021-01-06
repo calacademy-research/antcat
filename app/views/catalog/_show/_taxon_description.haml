@@ -103,25 +103,6 @@
         %li
           =Detax[grouped_item.taxt]
 
--# Ungrouped items, repeated to make it easier to edit.
--if current_user
-  -if taxon.history_items_for_taxon.present?
-    .callout.no-border-callout.logged-in-only-background.huge-margin-bottom
-      %h6
-        Taxonomic history (ungrouped)
-        =info_tooltip_icon "Same items as above, but ungrouped and sorted by 'position' (repeated here to make it easier to edit)."
-        =link_to "Show/hide ungrouped", "#", data: { show_hide_toggler_for: "ungrouped-history" }, class: "btn-tiny btn-nodanger"
-
-      %ul#history.small-margin-bottom{data: { show_hide_toggable_id: "ungrouped-history" }}
-        -taxon.history_items_for_taxon.each do |history_item|
-          %li
-            =history_item.decorate.rank_specific_badge if history_item.rank?
-
-            -if user_is_at_least_helper?
-              =render 'history_items/catalog_taxt_editor_template', history_item: history_item
-            -else
-              =add_period_if_necessary Detax[history_item.to_taxt]
-
 -if current_user && !Status.display_history_items?(taxon.status)
   -if taxon.history_items_for_taxon_including_hidden.present?
     .additional-editor-data.callout.no-border-callout.logged-in-only-background.margin-top.margin-bottom
