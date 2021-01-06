@@ -12,14 +12,7 @@ module Catalog
 
       def serialized_taxa
         taxa.map do |taxon|
-          {
-            id: taxon.id,
-            plaintext_name: taxon.name_cache,
-            name_with_fossil: taxon.name_with_fossil,
-            author_citation: taxon.author_citation,
-            css_classes: CatalogFormatter.taxon_disco_mode_css(taxon),
-            url: "/catalog/#{taxon.id}"
-          }
+          Autocomplete::TaxonSerializer.new(taxon).as_json(include_protonym: include_protonym?)
         end
       end
 
@@ -33,6 +26,10 @@ module Catalog
 
       def rank
         params[:rank]
+      end
+
+      def include_protonym?
+        params[:include_protonym].present?
       end
   end
 end

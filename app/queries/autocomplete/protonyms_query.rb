@@ -31,6 +31,8 @@ module Autocomplete
             fields(:name)
             fields(:authors)
             fields(:year_as_string)
+
+            boost_fields name: 2.0
           end
 
           paginate page: page, per_page: per_page
