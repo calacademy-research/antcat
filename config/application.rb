@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 module AntCat
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.0
+    config.load_defaults 6.1
 
     config.middleware.insert_before(0, Rack::Cors) do
       allow do
@@ -19,9 +19,6 @@ module AntCat
         resource '*', headers: :any, methods: [:get, :post, :options]
       end
     end
-
-    config.active_record.belongs_to_required_by_default = true
-    config.action_view.form_with_generates_remote_forms = false
 
     config.action_mailer.delivery_method = :sendmail
     config.action_mailer.sendmail_settings = { arguments: '-i' }
