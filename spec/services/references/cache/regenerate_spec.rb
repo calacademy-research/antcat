@@ -10,17 +10,14 @@ describe References::Cache::Regenerate do
       formatter = References::CachedReferenceFormatter.new(reference)
 
       expect(reference.plain_text_cache).to eq nil
-      expect(reference.expandable_reference_cache).to eq nil
       expect(reference.expanded_reference_cache).to eq nil
 
       described_class[reference]
 
       expect(reference.plain_text_cache).to_not eq nil
-      expect(reference.expandable_reference_cache).to_not eq nil
       expect(reference.expanded_reference_cache).to_not eq nil
 
       expect(reference.plain_text_cache).to eq formatter.plain_text
-      expect(reference.expandable_reference_cache).to eq formatter.expandable_reference
       expect(reference.expanded_reference_cache).to eq formatter.expanded_reference
     end
 

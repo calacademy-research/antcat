@@ -9,7 +9,6 @@ namespace :antcat do
       # rubocop:disable Rails/SkipsModelValidations
       Reference.update_all(
         plain_text_cache: nil,
-        expandable_reference_cache: nil,
         expanded_reference_cache: nil
       )
       # rubocop:enable Rails/SkipsModelValidations
