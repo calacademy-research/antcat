@@ -82,17 +82,12 @@
               %td=authorship_form.label :type_name
               %td.small-text Can be set after creating the new protonym
 
-          %tr
+          %tr.space-under
             %td
               =protonym_form.label :nomen_nudum do
                 %i Nomen nudum
             %td
               =protonym_form.check_box :nomen_nudum
-          %tr.space-under
-            %td.no-wrap.shrink.padding-right-4rem
-              =protonym_form.label :nomen_attributes do
-                Nomen attributes (beta)
-            %td.small-text Can be set after creating the new protonym
 
           -if taxon.is_a?(SpeciesGroupTaxon)
             %tr

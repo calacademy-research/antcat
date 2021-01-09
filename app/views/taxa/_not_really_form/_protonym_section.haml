@@ -42,11 +42,6 @@
                 =type_name_decorated.format_rank
                 =CatalogFormatter.link_to_taxon(type_name.taxon) + type_name_decorated.compact_taxon_status + Detax[type_name_decorated.format_fixation_method]
 
-        -if (format_nomen_attributes = protonym.decorate.format_nomen_attributes)
-          %tr
-            %td Nomen attributes (beta)
-            %td=format_nomen_attributes
-
         -if protonym.etymology_taxt?
           %tr
             %td Etymology
