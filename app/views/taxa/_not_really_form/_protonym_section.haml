@@ -16,7 +16,7 @@
           %td Authorship
           %td
             =succeed ':' do
-              =protonym.authorship_reference.decorate.expandable_reference
+              =protonym.authorship_reference.decorate.link_to_reference
             =protonym.authorship.pages
 
         -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.

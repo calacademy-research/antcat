@@ -103,7 +103,7 @@
         -if @reference.is_a?(NestedReference)
           %tr
             %th Nested in
-            %td=@reference.nesting_reference.decorate.expandable_reference
+            %td=@reference.nesting_reference.decorate.link_to_reference
 
         -if @reference.nestees.present?
           %tr
@@ -111,7 +111,7 @@
             %td
               %ul.no-bullet
                 -@reference.nestees.each do |nestee|
-                  %li=nestee.decorate.expandable_reference
+                  %li=nestee.decorate.link_to_reference
         -if @reference.doi?
           %tr
             %th DOI
@@ -199,7 +199,7 @@
         -TaxonQuery.new(decorated.described_taxa.order_by_name).with_common_includes.each do |taxon|
           %tr
             %td=CatalogFormatter.link_to_taxon(taxon)
-            %td=taxon.authorship_reference.decorate.expandable_reference
+            %td=taxon.authorship_reference.decorate.link_to_reference
             %td=taxon.protonym.authorship.pages
             %td=taxon.rank.capitalize
             %td=taxon.status.capitalize

@@ -22,7 +22,7 @@ class WhatLinksHereItemDecorator
   def owner_link
     case owner
     when Taxon     then CatalogFormatter.link_to_taxon(owner)
-    when Reference then owner.decorate.expandable_reference
+    when Reference then owner.decorate.link_to_reference
     when Protonym  then ("Protonym: ".html_safe << owner.decorate.link_to_protonym)
     else           raise "unknown owner #{owner.class.name}"
     end

@@ -22,7 +22,6 @@ module References
         # necessarily what we want in the long run.
         def regenerate
           formatter.plain_text
-          formatter.expandable_reference
           formatter.expanded_reference
         end
 

@@ -14,10 +14,6 @@ module References
       cached_render References::Formatted::Expanded, :expanded_reference_cache
     end
 
-    def expandable_reference
-      cached_render References::Formatted::Expandable, :expandable_reference_cache
-    end
-
     private
 
       def cached_render formatter_class, column

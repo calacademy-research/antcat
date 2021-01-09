@@ -25,7 +25,6 @@ module References
           # rubocop:disable Rails/SkipsModelValidations
           reference.update_columns(
             plain_text_cache: nil,
-            expandable_reference_cache: nil,
             expanded_reference_cache: nil
           )
           # rubocop:enable Rails/SkipsModelValidations

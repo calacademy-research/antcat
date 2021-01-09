@@ -24,13 +24,4 @@ describe References::CachedReferenceFormatter do
       formatter.expanded_reference
     end
   end
-
-  describe "#expandable_reference" do
-    specify { expect(formatter.expandable_reference.html_safe?).to eq true }
-
-    specify do
-      expect(References::Formatted::Expandable).to receive(:new).with(reference).and_call_original
-      formatter.expandable_reference
-    end
-  end
 end

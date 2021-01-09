@@ -28,7 +28,7 @@
           =protonym.decorate.link_to_protonym
           -if protonym.sic?
             [sic]
-        %td=protonym.authorship_reference.decorate.expandable_reference
+        %td=protonym.authorship_reference.decorate.link_to_reference
         %td=protonym.authorship.pages
         %td=protonym.forms
         %td=protonym.decorate.format_locality

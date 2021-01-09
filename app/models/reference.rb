@@ -93,8 +93,7 @@ class Reference < ApplicationRecord
     save!(validate: false)
   end
 
-  # TODO: Move to Redis. This tech-debt was added for performance reasons for the new
-  # hover previews (which will make it possible to remove `references.expandable_reference_cache`).
+  # TODO: Move to Redis. This tech-debt was added for performance reasons for the new hover previews.
   def refresh_key_with_suffixed_year_cache
     self.key_with_suffixed_year_cache = key_with_suffixed_year
   end
