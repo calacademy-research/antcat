@@ -24,7 +24,7 @@ class CachedFetcher {
         cacheStore[url] = response.data
         return response.data
       }).
-      catch((err) => console.log(err))
+      catch((err) => console.log(err)) // eslint-disable-line no-console
   }
 }
 

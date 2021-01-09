@@ -15,13 +15,13 @@ Vue.config.devtools = false
 // HACK: To make server-rendered HTML in markdown previews works. Very hacky and
 // it will remain so for a some (long) time as long as we're mixing jQuery and Vue.
 window.AntCatVue.askForRecompile = function(element) {
-  const html = $(element).prop("outerHTML")
+  const html = $(element).prop("outerHTML") // eslint-disable-line no-undef
   const res = Vue.compile(html)
 
   new Vue({
     render: res.render,
     staticRenderFns: res.staticRenderFns,
-  }).$mount($(element)[0])
+  }).$mount($(element)[0]) // eslint-disable-line no-undef
 }
 
 const taxonFetcher = new CachedFetcher(ApiUrls.previewTaxonUrl)
@@ -35,7 +35,7 @@ Vue.directive('hover-reference', CreateHoverPreview(refereneFetcher))
 Vue.directive('test-directive', TestDirective)
 
 document.addEventListener('DOMContentLoaded', () => {
-  new Vue({
+  new Vue({ // eslint-disable-line no-new
     el: '#vue-app',
     components: {
       TestDirective,
