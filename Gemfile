@@ -55,7 +55,7 @@ group :development do
   gem 'awesome_print', require: 'ap'
   gem 'brakeman'
   gem 'bundler-audit'
-  gem 'rubycritic', require: false
+  gem 'rubycritic', '> 4', require: false
   gem 'tabulo'
 end
 
@@ -67,7 +67,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.8', require: false
+  gem 'rubocop', '~> 1.7', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
