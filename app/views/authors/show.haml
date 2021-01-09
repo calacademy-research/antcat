@@ -40,7 +40,7 @@
     -@taxa.each do |taxon|
       %tr
         %td=CatalogFormatter.link_to_taxon(taxon)
-        %td=taxon.authorship_reference.decorate.expandable_reference
+        %td=taxon.authorship_reference.decorate.link_to_reference
         %td=taxon.rank.capitalize
         %td=taxon.status.capitalize
         %td

@@ -16,11 +16,6 @@ class ReferenceDecorator < Draper::Decorator
       'v-hover-reference' => reference.id
   end
 
-  # TODO: Replace all callers with `#link_to_reference`. Previously in `CachedReferenceFormatter`.
-  def expandable_reference
-    link_to_reference
-  end
-
   def format_public_notes
     format_notes reference.public_notes
   end
