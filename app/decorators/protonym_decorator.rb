@@ -34,14 +34,6 @@ class ProtonymDecorator < Draper::Decorator
     protonym.name.name_with_fossil_html protonym.fossil?
   end
 
-  def format_nomen_attributes
-    return @_format_nomen_attributes if defined?(@_format_nomen_attributes)
-
-    @_format_nomen_attributes ||= begin
-      nomen_attributes.join.html_safe if nomen_attributes.present?
-    end
-  end
-
   def format_locality
     return unless locality
 
@@ -71,16 +63,5 @@ class ProtonymDecorator < Draper::Decorator
       h.link_to label, h.protonym_path(protonym),
         'v-hover-protonym' => protonym.id,
         class: 'protonym'
-    end
-
-    def nomen_attributes
-      @_nomen_attributes ||= [
-        ('<i>Nomen nudum</i>' if protonym.nomen_nudum?),
-        ('<i>Nomen novum</i>' if protonym.nomen_novum?),
-        ('<i>Nomen oblitum</i>' if protonym.nomen_oblitum?),
-        ('<i>Nomen dubium</i>' if protonym.nomen_dubium?),
-        ('<i>Nomen conservandum</i>' if protonym.nomen_conservandum?),
-        ('<i>Nomen protectum</i>' if protonym.nomen_protectum?)
-      ].compact
     end
 end

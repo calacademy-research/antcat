@@ -14,11 +14,6 @@ class ProtonymForm
     uncertain_locality
 
     nomen_nudum
-    nomen_novum
-    nomen_oblitum
-    nomen_dubium
-    nomen_conservandum
-    nomen_protectum
 
     etymology_taxt
     primary_type_information_taxt

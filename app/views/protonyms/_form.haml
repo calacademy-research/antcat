@@ -138,31 +138,6 @@
                   -# TODO: Improve "(don't blank taxon)".
                   =label_tag :destroy_type_name, "Clear type name on save (don't blank taxon)"
 
-      %h6.bold
-        Nomen attributes (experimental attributes)
-        =beta_label
-      %ul.no-bullet
-        %li
-          =f.check_box :nomen_novum
-          =f.label :nomen_novum do
-            %i Nomen novum
-        %li
-          =f.check_box :nomen_oblitum
-          =f.label :nomen_oblitum do
-            %i Nomen oblitum
-        %li
-          =f.check_box :nomen_dubium
-          =f.label :nomen_dubium do
-            %i Nomen dubium
-        %li
-          =f.check_box :nomen_conservandum
-          =f.label :nomen_conservandum do
-            %i Nomen conservandum
-        %li
-          =f.check_box :nomen_protectum
-          =f.label :nomen_protectum do
-            %i Nomen protectum
-
     .large-12.columns.margin-bottom
       %hr
 
