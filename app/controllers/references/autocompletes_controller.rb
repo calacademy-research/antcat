@@ -9,7 +9,9 @@ module References
     private
 
       def serialized_references
-        Autocomplete::ReferencesSerializer[references, fulltext_params]
+        references.map do |reference|
+          Autocomplete::ReferenceSerializer.new(reference, fulltext_params).as_json
+        end
       end
 
       def references
