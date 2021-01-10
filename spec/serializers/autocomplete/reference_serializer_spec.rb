@@ -11,7 +11,7 @@ describe Autocomplete::ReferenceSerializer do
     end
 
     specify do
-      expect(described_class.new(reference, { freetext: '' }).as_json).to eq(
+      expect(described_class.new(reference, { freetext: '' }).as_json(include_search_query: true)).to eq(
         {
           id: reference.id,
           author: "E.O. Wilson",
@@ -25,7 +25,9 @@ describe Autocomplete::ReferenceSerializer do
 
     context "with autosuggest keywords" do
       it 'expands partially typed keyword values' do
-        expect(described_class.new(reference, { author: 'wil', freetext: '' }).as_json).to eq(
+        serialized = described_class.new(reference, { author: 'wil', freetext: '' }).as_json(include_search_query: true)
+
+        expect(serialized).to eq(
           {
             id: reference.id,
             author: "E.O. Wilson",

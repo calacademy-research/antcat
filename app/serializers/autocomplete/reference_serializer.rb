@@ -4,15 +4,16 @@ module Autocomplete
   class ReferenceSerializer
     attr_private_initialize :reference, :fulltext_params
 
-    def as_json _options = {}
+    def as_json include_search_query: false
       {
-        search_query: formated_search_query,
         id: reference.id,
         title: reference.title,
         author: reference.author_names_string_with_suffix,
         year: reference.suffixed_year_with_stated_year,
         url: "/references/#{reference.id}"
-      }
+      }.tap do |hsh|
+        hsh[:search_query] = formated_search_query if include_search_query
+      end
     end
 
     def to_json options = {}
