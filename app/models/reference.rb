@@ -113,6 +113,10 @@ class Reference < ApplicationRecord
     "#{year}#{year_suffix}"
   end
 
+  def full_pagination
+    pagination
+  end
+
   def key
     @_key ||= References::Key.new(self)
   end

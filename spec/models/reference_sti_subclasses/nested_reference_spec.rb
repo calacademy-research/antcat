@@ -37,4 +37,12 @@ describe NestedReference do
       end
     end
   end
+
+  describe '#full_pagination' do
+    let(:reference) { create :nested_reference }
+
+    it 'includes pagination from the nesting refernece' do
+      expect(reference.full_pagination).to eq "#{reference.pagination} (#{reference.nesting_reference.pagination})"
+    end
+  end
 end

@@ -5,6 +5,10 @@ class NestedReference < Reference
 
   validate :validate_nested_reference_doesnt_point_to_itself
 
+  def full_pagination
+    "#{pagination} (#{nesting_reference.pagination})"
+  end
+
   private
 
     def validate_nested_reference_doesnt_point_to_itself

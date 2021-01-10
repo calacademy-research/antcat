@@ -22,11 +22,7 @@ module Autocomplete
     private
 
       def full_pagination reference
-        if reference.is_a? NestedReference
-          "[pagination: #{reference.pagination} (#{reference.nesting_reference.pagination})]"
-        else
-          "[pagination: #{reference.pagination}]"
-        end
+        "[pagination: #{reference.full_pagination}]"
       end
 
       def bolton_key reference

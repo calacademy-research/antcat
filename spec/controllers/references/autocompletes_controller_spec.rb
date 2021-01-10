@@ -34,7 +34,7 @@ describe References::AutocompletesController do
         end
 
         it "autocompletes" do
-          get :show, params: { reference_q: "author:höll", format: :json }
+          get :show, params: { reference_q: "author:höll", include_search_query: 'yes', format: :json }
 
           expect(json_response.size).to eq 1
           expect(json_response.first["author"]).to eq 'Bert Hölldobler'
@@ -48,7 +48,7 @@ describe References::AutocompletesController do
         end
 
         it "autocompletes" do
-          get :show, params: { reference_q: "author:abdul-ras", format: :json }
+          get :show, params: { reference_q: "author:abdul-ras", include_search_query: 'yes', format: :json }
 
           expect(json_response.size).to eq 1
           expect(json_response.first["author"]).to eq 'M.S. Abdul-Rassoul'
@@ -64,7 +64,7 @@ describe References::AutocompletesController do
       end
 
       it 'expands partially typed keyword values' do
-        get :show, params: { reference_q: 'author:wil', format: :json }
+        get :show, params: { reference_q: 'author:wil', include_search_query: 'yes', format: :json }
         expect(json_response).to eq(
           [
             {

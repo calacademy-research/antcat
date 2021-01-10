@@ -1,29 +1,30 @@
 # frozen_string_literal: true
 
 module Autocomplete
-  class ReferencesSerializer
-    include Service
+  class ReferenceSerializer
+    attr_private_initialize :reference, :fulltext_params
 
-    attr_private_initialize :references, :fulltext_params
-
-    def call
-      references.map do |reference|
-        {
-          search_query: formated_search_query(reference),
-          id: reference.id,
-          title: reference.title,
-          author: reference.author_names_string_with_suffix,
-          year: reference.suffixed_year_with_stated_year,
-          url: "/references/#{reference.id}"
-        }
+    def as_json include_search_query: false
+      {
+        id: reference.id,
+        title: reference.title,
+        author: reference.author_names_string_with_suffix,
+        year: reference.suffixed_year_with_stated_year,
+        url: "/references/#{reference.id}"
+      }.tap do |hsh|
+        hsh[:search_query] = formated_search_query if include_search_query
       end
+    end
+
+    def to_json options = {}
+      as_json(**options).to_json
     end
 
     private
 
-      def formated_search_query reference
+      def formated_search_query
         if searching_with_keywords?
-          format_autosuggest_keywords reference
+          format_autosuggest_keywords
         else
           reference.title
         end
@@ -33,7 +34,7 @@ module Autocomplete
         fulltext_params.size > 1
       end
 
-      def format_autosuggest_keywords reference
+      def format_autosuggest_keywords
         fulltext_params_dup = fulltext_params.dup
 
         replaced = []

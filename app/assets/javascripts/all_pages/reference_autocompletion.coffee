@@ -21,7 +21,7 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/references/autocomplete?reference_q=%QUERY'
+      url: '/references/autocomplete?reference_q=%QUERY&include_search_query=yes'
       wildcard: '%QUERY'
 
   referencesDataSet =
