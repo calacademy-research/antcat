@@ -15,9 +15,12 @@ class HistoryPresenter
       items = history_items.left_joins(:reference).
         select('history_items.*, references.year AS reference_year, references.date AS reference_date')
 
-      items.
-        sort_by { |item| [item.definition.group_order, (item.reference_year || -1), (item.reference_date || -1)] }.
-        group_by { |item| item.group_key }.
-        values
+      items.sort_by do |item|
+        [
+          item.definition.group_order,
+          (item.reference_year || -1),
+          (Integer(item.reference_date, exception: false) || -1).to_s
+        ]
+      end.group_by { |item| item.group_key }.values
     end
 end

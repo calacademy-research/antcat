@@ -18,6 +18,8 @@ describe Autocomplete::ReferenceSerializer do
           search_query: reference.title,
           title: reference.title,
           year: reference.suffixed_year_with_stated_year,
+          full_pagination: reference.full_pagination,
+          key_with_suffixed_year: reference.key_with_suffixed_year,
           url: "/references/#{reference.id}"
         }
       )
@@ -34,6 +36,8 @@ describe Autocomplete::ReferenceSerializer do
             search_query: "author:'E.O. Wilson'",
             title: reference.title,
             year: reference.suffixed_year_with_stated_year,
+            full_pagination: reference.full_pagination,
+            key_with_suffixed_year: reference.key_with_suffixed_year,
             url: "/references/#{reference.id}"
           }
         )

@@ -29,6 +29,7 @@ module AntwebFormatter
       parse_misspelling_tags
 
       parse_hiddennotes_tags
+      parse_parsertag_tags
 
       sanitize content.html_safe
     end
@@ -82,8 +83,6 @@ module AntwebFormatter
             formatter.link_to_taxon(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym) + ' (protonym)'
-          else
-            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end
@@ -97,8 +96,6 @@ module AntwebFormatter
             formatter.link_to_taxon_with_author_citation(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym) + ' (protonym)'
-          else
-            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end
@@ -129,6 +126,12 @@ module AntwebFormatter
       # Hidden editor notes (logged-in only) "{hiddennote string}".
       def parse_hiddennotes_tags
         content.gsub!(Taxt::HIDDENNOTE_TAG_REGEX) do
+          ''
+        end
+      end
+
+      def parse_parsertag_tags
+        content.gsub!(Taxt::PARSERTAG_TAG_REGEX) do
           ''
         end
       end

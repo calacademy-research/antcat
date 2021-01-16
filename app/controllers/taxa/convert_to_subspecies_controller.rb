@@ -12,21 +12,20 @@ module Taxa
     # TODO: Move validations to service.
     def create
       @taxon = find_taxon
+      @new_species = find_new_species
       @convert_to_subspecies_policy = ConvertToSubspeciesPolicy.new(@taxon)
+
+      unless @new_species.is_a?(Species)
+        @taxon.errors.add :base, 'Please select a species.'
+        render :new
+        return
+      end
 
       if @taxon.subspecies.present?
         @taxon.errors.add :base, "Species with subspecies of its own cannot be converted to subspecies"
         render :new
         return
       end
-
-      if params[:new_species_id].blank?
-        @taxon.errors.add :base, 'Please select a species.'
-        render :new
-        return
-      end
-
-      @new_species = Species.find(params[:new_species_id])
 
       unless @new_species.genus == @taxon.genus
         @taxon.errors.add :base, "The new parent must be in the same genus."
@@ -59,6 +58,10 @@ module Taxa
 
       def find_taxon
         Species.find(params[:taxa_id])
+      end
+
+      def find_new_species
+        Taxon.find_by(id: params[:new_species_id])
       end
 
       def create_activity original_species, new_subspecies
