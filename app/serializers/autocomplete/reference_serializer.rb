@@ -2,7 +2,10 @@
 
 module Autocomplete
   class ReferenceSerializer
-    attr_private_initialize :reference, :fulltext_params
+    def initialize reference, fulltext_params = nil
+      @reference = reference
+      @fulltext_params = fulltext_params
+    end
 
     def as_json include_search_query: false
       {
@@ -10,6 +13,8 @@ module Autocomplete
         title: reference.title,
         author: reference.author_names_string_with_suffix,
         year: reference.suffixed_year_with_stated_year,
+        key_with_suffixed_year: reference.key_with_suffixed_year_cache,
+        full_pagination: reference.full_pagination,
         url: "/references/#{reference.id}"
       }.tap do |hsh|
         hsh[:search_query] = formated_search_query if include_search_query
@@ -21,6 +26,8 @@ module Autocomplete
     end
 
     private
+
+      attr_reader :reference, :fulltext_params
 
       def formated_search_query
         if searching_with_keywords?

@@ -65,6 +65,7 @@ describe References::AutocompletesController do
 
       it 'expands partially typed keyword values' do
         get :show, params: { reference_q: 'author:wil', include_search_query: 'yes', format: :json }
+
         expect(json_response).to eq(
           [
             {
@@ -73,6 +74,8 @@ describe References::AutocompletesController do
               "search_query" => "author:'E.O. Wilson'",
               "title" => reference.title,
               "year" => reference.suffixed_year_with_stated_year,
+              "full_pagination" => reference.full_pagination,
+              "key_with_suffixed_year" => reference.key_with_suffixed_year,
               "url" => "/references/#{reference.id}"
             }
           ]
