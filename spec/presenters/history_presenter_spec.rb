@@ -196,6 +196,20 @@ describe HistoryPresenter do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_2], [item_1]]
         end
       end
+
+      context 'with unparsable reference dates' do
+        let(:reference_1) { create :any_reference, year: 2001, date: '20010600<' }
+        let(:reference_2) { create :any_reference, year: 2001, date: '20010100' }
+
+        let!(:item_1) { create :history_item, :form_descriptions, protonym: protonym, reference: reference_1 }
+        let!(:item_2) { create :history_item, :form_descriptions, protonym: protonym, reference: reference_2 }
+
+        it 'positions unparasable dates first' do
+          expect(presenter.grouped_items.map(&:taxt)).to eq [
+            "#{item_1.citation_taxt} (#{item_1.text_value}); #{item_2.citation_taxt} (#{item_2.text_value})."
+          ]
+        end
+      end
     end
 
     describe 'sorting grouped taxts' do
