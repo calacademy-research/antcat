@@ -1,11 +1,9 @@
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue'
 
-// TODO: Temporary random component with styles to make the compilation step not blow up.
-import TestDirective from './components/TestDirective'
-
-import CreateHoverPreview from './directives/CreateHoverPreview'
-import CachedFetcher from './services/CachedFetcher'
-import * as ApiUrls from './config/ApiUrls'
+import * as ApiUrls from '@config/ApiUrls'
+import CachedFetcher from '@services/CachedFetcher'
+import CreateHoverPreview from '@directives/CreateHoverPreview'
+import TestDirective from '@components/TestDirective'
 
 window.AntCatVue ||= {}
 
