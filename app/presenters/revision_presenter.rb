@@ -7,6 +7,7 @@ class RevisionPresenter
     formatted_cache
     inline_citation_cache
     principal_author_last_name_cache
+    expandable_reference_cache
   ]
   ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + Reference::CACHE_COLUMNS
 
