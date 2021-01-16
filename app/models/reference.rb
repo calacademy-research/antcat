@@ -11,7 +11,6 @@ class Reference < ApplicationRecord
   ]
   CACHE_COLUMNS = %i[
     plain_text_cache
-    expandable_reference_cache
     expanded_reference_cache
     key_with_suffixed_year_cache
   ]

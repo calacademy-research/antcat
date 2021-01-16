@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_180528) do
+ActiveRecord::Schema.define(version: 2021_01_16_180813) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -250,7 +250,6 @@ ActiveRecord::Schema.define(version: 2021_01_16_180528) do
     t.string "author_names_suffix"
     t.string "review_state", default: "none", null: false
     t.text "plain_text_cache"
-    t.text "expandable_reference_cache"
     t.string "doi"
     t.string "bolton_key"
     t.text "expanded_reference_cache"
