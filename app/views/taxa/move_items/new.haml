@@ -1,9 +1,6 @@
 -title "Move items - select target"
 -breadcrumb :move_taxon_items_select_target, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 =form_with url: taxa_move_items_path, method: :get do |f|
   .row
     .medium-6.columns

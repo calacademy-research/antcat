@@ -11,7 +11,6 @@
 //= require foundation.util.mediaQuery
 //= require foundation.util.triggers
 
-//= require select2
 //= require twitter/typeahead
 
 // app/assets/javascripts

@@ -1,9 +1,6 @@
 -title "Move items - select target"
 -breadcrumb :move_protonym_items_select_target, @protonym
 
--content_for :javascripts do
-  =javascript_include_tag "protonym_select"
-
 =form_with url: protonym_move_items_path, method: :get do |f|
   .row
     .medium-6.columns
