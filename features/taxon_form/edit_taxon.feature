@@ -2,7 +2,6 @@ Feature: Editing a taxon
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript @search
   Scenario: Changing protonym
     Given there is a genus "Eciton"
     And there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
@@ -11,14 +10,12 @@ Feature: Editing a taxon
     Then I should not see "Formica"
 
     When I go to the edit page for "Eciton"
-    And I pick "Formica" from the "taxon_protonym_id" protonym selector
-    Then I should see "Formica"
-
-    When I press "Save"
-    Then I should see "Formica" within "#protonym-synopsis"
+    And I pick "Formica" from the "#taxon_protonym_id" protonym picker
+    And I press "Save"
+    Then I should see "Taxon was successfully updated"
+    And I should see "Formica" within "#protonym-synopsis"
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
-  @javascript @search
   Scenario: Changing current taxon
     Given there is a species "Atta major" which is a junior synonym of "Lasius niger"
     And there is a species "Eciton minor"
@@ -26,12 +23,11 @@ Feature: Editing a taxon
     When I go to the catalog page for "Atta major"
     Then I should see "synonym of current valid taxon Lasius niger"
 
-    When I follow "Edit"
-    And I set the current taxon name to "Eciton minor"
-    Then I should see "Eciton minor"
-
-    When I press "Save"
-    Then I should see "synonym of current valid taxon Eciton minor"
+    When I go to the edit page for "Atta major"
+    And I pick "Eciton minor" from the "#taxon_current_taxon_id" taxon picker
+    And I press "Save"
+    Then I should see "Taxon was successfully updated"
+    And I should see "synonym of current valid taxon Eciton minor"
 
   Scenario: Changing incertae sedis (with edit summary)
     Given there is a genus "Atta"

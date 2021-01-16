@@ -2,7 +2,7 @@ Feature: Editing a history item
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @search @javascript
+  @javascript
   Scenario: Adding a relational history item
     Given there is a genus protonym "Atta"
     And these references exist
@@ -16,7 +16,7 @@ Feature: Editing a history item
     And I select "Form descriptions (additional)" from "history_item_type"
     And I fill in "history_item_text_value" with "w.q."
     And I fill in "history_item_pages" with "123"
-    And I set the history item reference to the first search results of "Batiatus (2004)"
+    And I pick "Batiatus, 2004" from the "#history_item_reference_id" reference picker
     And I press "Save"
     Then I should see "Successfully added history item"
     And I should see "Batiatus, 2004: 123 (w.q.)"

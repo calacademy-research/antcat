@@ -31,12 +31,9 @@ Rails.application.config.assets.precompile += %w[
   highlight_text.js
   jquery3.js
   locality_autocompletion.js
-  protonym_select.js
-  reference_select.js
   reorder_items.js
   revision_comparer.js
   sortable_tables.js
-  taxon_select.js
   taxt_editor.js
 
   controllers/activities/scroll_to_highlighted_activity.js

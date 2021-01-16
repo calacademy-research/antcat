@@ -7,8 +7,10 @@
     "@rails/webpacker": "5.1.1",
     "axios": "^0.21.1",
     "vue": "^2.6.12",
+    "vue-autosuggest": "^2.2.0",
     "vue-loader": "^15.9.6",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.12",
+    "vuex": "^3.6.0"
   },
   "devDependencies": {
     "eslint": "^7.17.0",

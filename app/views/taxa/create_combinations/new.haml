@@ -1,9 +1,6 @@
 -title "Create combination"
 -breadcrumb :create_combination, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 .row
   .small-12.columns
     .callout.margin-bottom
@@ -32,7 +29,7 @@
 
           %tr
             %td Combine in genus
-            %td=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: Rank::GENUS, css_id: :new_parent_id
+            %td=taxon_picker @new_parent, name: 'new_parent_id', ranks: Rank::GENUS
 
           %tr
             %td Species epithet

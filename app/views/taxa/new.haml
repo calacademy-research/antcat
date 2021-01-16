@@ -2,7 +2,6 @@
 -breadcrumb :new_taxon, params[:parent_id], params[:rank_to_create]
 
 -content_for :javascripts do
-  =javascript_include_tag 'reference_select'
   =javascript_include_tag 'check_name_conflicts', 'locality_autocompletion'
   =javascript_include_tag "controllers/taxa/copy_name_to_protonym"
 

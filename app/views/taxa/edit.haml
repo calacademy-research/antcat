@@ -1,9 +1,6 @@
 -title "Editing #{@taxon.name_cache}"
 -breadcrumb :edit_taxon, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag 'reference_select'
-
 =render 'form', taxon: @taxon, default_name_string: nil, taxon_form: @taxon_form
 
 .huge-margin-top

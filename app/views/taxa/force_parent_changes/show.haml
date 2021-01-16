@@ -1,9 +1,6 @@
 -title "Force parent change"
 -breadcrumb :force_parent_change, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 .callout.alert.medium-9.margin-bottom
   %h6
     =antcat_icon 'warning-icon'
@@ -31,7 +28,7 @@
     .medium-4.columns
       %fieldset.fieldset
         %legend to
-        %p=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks, css_id: :new_parent_id
+        %p=taxon_picker @new_parent, name: 'new_parent_id', ranks: @valid_parent_ranks
         %p
           Possible parent ranks:
           =@valid_parent_ranks.to_sentence

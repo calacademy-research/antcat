@@ -1,11 +1,14 @@
-import Vue from 'vue/dist/vue.esm'
+import Vue from 'vue'
 
-// TODO: Temporary random component with styles to make the compilation step not blow up.
-import TestDirective from './components/TestDirective'
+import store from '@/store'
 
-import CreateHoverPreview from './directives/CreateHoverPreview'
-import CachedFetcher from './services/CachedFetcher'
-import * as ApiUrls from './config/ApiUrls'
+import ThePanel from "@components/Panel/ThePanel"
+import RecordPicker from "@components/Picker/RecordPicker"
+
+import * as ApiUrls from '@config/ApiUrls'
+import CachedFetcher from '@services/CachedFetcher'
+import CreateHoverPreview from '@directives/CreateHoverPreview'
+import TestDirective from '@components/TestDirective'
 
 window.AntCatVue ||= {}
 
@@ -19,6 +22,7 @@ window.AntCatVue.askForRecompile = function(element) {
   const res = Vue.compile(html)
 
   new Vue({
+    components: { RecordPicker }, // Include `RecordPicker` since we're returning pickers in `HistoryItemsController`.
     render: res.render,
     staticRenderFns: res.staticRenderFns,
   }).$mount($(element)[0]) // eslint-disable-line no-undef
@@ -37,8 +41,12 @@ Vue.directive('test-directive', TestDirective)
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({ // eslint-disable-line no-new
     el: '#vue-app',
+    store,
     components: {
       TestDirective,
+
+      ThePanel,
+      RecordPicker,
     },
   })
 })

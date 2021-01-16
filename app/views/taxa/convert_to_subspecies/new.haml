@@ -1,9 +1,6 @@
 -title @taxon.name_cache
 -breadcrumb :convert_species_to_subspecies, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 .row
   .small-12.columns
     -unless @convert_to_subspecies_policy.allowed?
@@ -18,7 +15,7 @@
 
           .medium-12.columns.margin-bottom
             %h6 to be a subspecies of
-            =taxon_select_tag :new_species_id, params[:new_species_id], rank: Rank::SPECIES, css_id: :new_species_id
+            =taxon_picker @new_species, name: 'new_species_id', ranks: Rank::SPECIES
 
           .medium-12.columns
             =f.button "Convert", class: "btn-saves"

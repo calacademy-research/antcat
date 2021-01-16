@@ -6,9 +6,14 @@ $(function () {
   window.AntCat.CreateCopyButtons(document);
 });
 
-window.AntCat.CreateCopyButtons = function (element) {
+window.AntCat.CreateCopyButtons = function(element) {
+  if (!element) {
+    return;
+  }
+
   element.querySelectorAll('[data-copy-to-clipboard]').forEach(function (item) {
     item.addEventListener('click', function (event) {
+      event.preventDefault()
       var stringToCopy = item.getAttribute('data-copy-to-clipboard');
       CopyToClipboard(stringToCopy);
 

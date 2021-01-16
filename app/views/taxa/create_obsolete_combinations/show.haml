@@ -1,9 +1,6 @@
 -title "Create missing obsolete combination"
 -breadcrumb :create_obsolete_combination, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 =form_with url: taxa_create_obsolete_combination_path do |f|
   .row
     .medium-8.columns
@@ -19,7 +16,7 @@
         .medium-6.columns
           %fieldset.fieldset
             %legend obsolete genus
-            %p=taxon_select_tag :obsolete_genus_id, params[:obsolete_genus_id], rank: @valid_parent_ranks, css_id: :obsolete_genus_id
+            %p=taxon_picker @obsolete_genus, name: 'obsolete_genus_id', ranks: @valid_parent_ranks
             %p
               Possible parent ranks:
               =@valid_parent_ranks.to_sentence

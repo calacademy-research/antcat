@@ -2,7 +2,6 @@ Feature: Manage protonyms
   Background:
     Given I log in as a helper editor
 
-  @skip_ci @search @javascript
   Scenario: Adding a protonym with a type name
     Given there is a genus "Atta"
     And these references exist
@@ -12,8 +11,8 @@ Feature: Manage protonyms
     When I go to the protonyms page
     And I follow "New"
     And I set the protonym name to "Dotta"
-    And I set the type name taxon to "Atta"
-    And I set the protonym authorship to the first search results of "Batiatus (2004)"
+    And I pick "Atta" from the "#protonym_type_name_attributes_taxon_id" taxon picker
+    And I pick "Batiatus, 2004" from the "#protonym_authorship_attributes_reference_id" reference picker
     And I fill in "protonym_authorship_attributes_pages" with "page 35"
     And I select "by monotypy" from "protonym_type_name_attributes_fixation_method"
     And I press "Save"

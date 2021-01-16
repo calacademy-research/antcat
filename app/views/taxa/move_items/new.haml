@@ -1,9 +1,6 @@
 -title "Move items - select target"
 -breadcrumb :move_taxon_items_select_target, @taxon
 
--content_for :javascripts do
-  =javascript_include_tag "taxon_select"
-
 =form_with url: taxa_move_items_path, method: :get do |f|
   .row
     .medium-6.columns
@@ -14,7 +11,7 @@
     .medium-6.columns
       %fieldset.fieldset
         %legend to
-        =taxon_select_tag :to_taxon_id, params[:to_taxon_id] || @taxon.current_taxon&.id, css_id: :to_taxon_id
+        =taxon_picker @to_taxon || @taxon.current_taxon, name: 'to_taxon_id'
         %br
         =f.button "Select...", class: "btn-normal"
 

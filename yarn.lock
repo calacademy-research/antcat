@@ -7889,6 +7889,11 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
+vue-autosuggest@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/vue-autosuggest/-/vue-autosuggest-2.2.0.tgz#0202b9aaeeef6a3a4357bf401a73be2ecbe166f1"
+  integrity sha512-cHgEakpoRUOaqXXEo8RcRrbSTM3eAaCu9b55ZXiKbaS6IUD8ewqffQrMy/A1DXqHSQbyEEGui4oAsCbRge29Jg==
+
 vue-eslint-parser@^7.3.0:
   version "7.3.0"
   resolved "https://registry.npmjs.org/vue-eslint-parser/-/vue-eslint-parser-7.3.0.tgz#894085839d99d81296fa081d19643733f23d7559"
@@ -7942,6 +7947,11 @@ vue@^2.6.12:
   version "2.6.12"
   resolved "https://registry.npmjs.org/vue/-/vue-2.6.12.tgz#f5ebd4fa6bd2869403e29a896aed4904456c9123"
   integrity sha512-uhmLFETqPPNyuLLbsKz6ioJ4q7AZHzD8ZVFNATNyICSZouqP2Sz0rotWQC8UNBF6VGSCs5abnKJoStA6JbCbfg==
+
+vuex@^3.6.0:
+  version "3.6.0"
+  resolved "https://registry.npmjs.org/vuex/-/vuex-3.6.0.tgz#95efa56a58f7607c135b053350833a09e01aa813"
+  integrity sha512-W74OO2vCJPs9/YjNjW8lLbj+jzT24waTo2KShI8jLvJW8OaIkgb3wuAMA7D+ZiUxDOx3ubwSZTaJBip9G8a3aQ==
 
 watchpack-chokidar2@^2.0.1:
   version "2.0.1"

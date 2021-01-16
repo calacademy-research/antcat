@@ -15,6 +15,7 @@
     "vue"
   ],
   "rules": {
+    "consistent-return": "off",
     "dot-location": ["error", "object"],
     "func-names": "off",
     "import/no-unresolved": "off",
@@ -26,6 +27,7 @@
     "no-underscore-dangle": "off",
     "no-unused-expressions": ["error", { "allowShortCircuit": true }],
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-useless-return": "off",
     "operator-linebreak": "off",
     "quotes": "off",
     "semi": ["error", "never"],

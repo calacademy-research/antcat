@@ -107,8 +107,6 @@ setupSaveHistoryItemButtons = ->
           parent = taxtEditor.parent()
           parent.html response.content
           window.AntCatVue.askForRecompile(parent)
-          AntCat.referenceSelectify()
-          AntCat.protonymSelectifyAll()
           window.setupLinkables()
           window.setupTaxtEditors()
       error: ->

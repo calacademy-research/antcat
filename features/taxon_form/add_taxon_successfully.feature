@@ -6,7 +6,6 @@ Feature: Adding a taxon successfully
       | Fisher | 2004 |
     And the default reference is "Fisher, 2004"
 
-  @javascript
   Scenario: Adding a genus
     Given there is a subfamily "Formicinae"
 

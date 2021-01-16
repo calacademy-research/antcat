@@ -497,7 +497,6 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
-    select2-rails (4.0.13)
     semantic_range (2.3.1)
     sexp_processor (4.15.2)
     shellany (0.0.1)
@@ -643,7 +642,6 @@ DEPENDENCIES
   ruby-progressbar
   rubycritic (> 4)
   sass-rails (= 5.1.0)
-  select2-rails
   shoulda-matchers
   simplecov
   sprockets-rails
