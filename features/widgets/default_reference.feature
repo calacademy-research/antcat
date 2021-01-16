@@ -1,3 +1,5 @@
+# TODO: Remove.
+@skip
 Feature: Using the default reference
   Background:
     Given I log in as a catalog editor

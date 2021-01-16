@@ -45,8 +45,7 @@
               =authorship_fields.label :reference do
                 Authorship
                 =db_tooltip_icon :authorship, scope: :protonyms
-            %td=authorship_fields.reference_select :reference
-
+            %td=reference_picker authorship_fields.object.reference, name: 'protonym[authorship_attributes][reference_id]', id: 'protonym_authorship_attributes_reference_id'
           %tr
             %td
               =authorship_fields.label :pages do
@@ -103,7 +102,7 @@
           =f.fields_for :type_name, (protonym.type_name || TypeName.new) do |type_name_fields|
             %tr
               %td=type_name_fields.label :taxon
-              %td=type_name_fields.taxon_select :taxon
+              %td=taxon_picker type_name_fields.object.taxon, name: 'protonym[type_name_attributes][taxon_id]', id: 'protonym_type_name_attributes_taxon_id'
 
             %tr
               %td
@@ -120,7 +119,7 @@
 
             %tr
               %td=type_name_fields.label :reference
-              %td=type_name_fields.reference_select :reference
+              %td=reference_picker type_name_fields.object.reference, name: 'protonym[type_name_attributes][reference_id]', id: 'protonym_type_name_attributes_reference_id'
 
             %tr
               %td=type_name_fields.label :pages

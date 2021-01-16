@@ -113,7 +113,7 @@
               %th.no-wrap
                 =f.label :object_protonym, id: 'type-label-object-protonym' do
                   object_protonym_id [???]
-              %td.grow=f.protonym_select :object_protonym
+              %td.grow=protonym_picker f.object.object_protonym, name: 'history_item[object_protonym_id]', id: 'history_item_object_protonym_id'
               %td
                 %code object_protonym
 
@@ -121,7 +121,7 @@
               %th.no-wrap
                 =f.label :object_taxon, id: 'type-label-object-taxon' do
                   object_taxon_id [???]
-              %td.grow=f.taxon_select :object_taxon
+              %td.grow=taxon_picker f.object.object_taxon, name: 'history_item[object_taxon_id]', id: 'history_item_object_taxon_id'
               %td
                 %code object_taxon
 
@@ -129,7 +129,7 @@
               %th.no-wrap
                 =f.label :reference, id: 'type-label-reference' do
                   Reference
-              %td.grow=f.reference_select :reference
+              %td.grow=reference_picker f.object.reference, name: 'history_item[reference_id]', id: 'history_item_reference_id'
               %td
                 %code reference_id
 

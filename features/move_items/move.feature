@@ -3,7 +3,7 @@ Feature: Move items
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @skip_ci @search
+  @skip_ci
   Scenario: Moving reference sections (with feed)
     Given there is a subfamily "Antcatinae" with a reference section "Antcatinae section"
     And there is a genus "Formica"
@@ -15,7 +15,7 @@ Feature: Move items
     When I press "Select..."
     Then I should see "Target must be specified"
 
-    When I pick "Formica" from the "to_taxon_id" taxon selector
+    When I pick "Formica" from the "#to_taxon_id" taxon picker
     And I press "Select..."
     Then I should see "Move items › to Formica"
 
@@ -32,7 +32,7 @@ Feature: Move items
     When I go to the activity feed
     Then I should see "Archibald moved items belonging to Antcatinae to Formica" within the activity feed
 
-  @skip_ci @search
+  @skip_ci
   Scenario: Moving history items (with feed)
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae history"
     And there is a genus protonym "Formica"
@@ -44,7 +44,7 @@ Feature: Move items
     When I press "Select..."
     Then I should see "Target must be specified"
 
-    When I pick "Formica" from the "to_protonym_id" protonym selector
+    When I pick "Formica" from the "#to_protonym_id" protonym picker
     And I press "Select..."
     Then I should see "Move items › to Formica"
 

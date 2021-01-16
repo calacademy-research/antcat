@@ -31,7 +31,7 @@
     .medium-4.columns
       %fieldset.fieldset
         %legend to
-        %p=taxon_select_tag :new_parent_id, params[:new_parent_id], rank: @valid_parent_ranks, css_id: :new_parent_id
+        %p=taxon_picker @new_parent, name: 'new_parent_id', ranks: @valid_parent_ranks
         %p
           Possible parent ranks:
           =@valid_parent_ranks.to_sentence

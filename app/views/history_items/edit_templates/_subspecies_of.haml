@@ -1,6 +1,6 @@
 %table.unstriped
   %tr
     %td Subspecies of
-    %td=taxon_select_tag :object_taxon_id, history_item.object_taxon_id
+    %td=taxon_picker history_item.object_taxon, name: 'object_taxon_id'
 
   =tr_for_reference_and_pages history_item

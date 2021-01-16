@@ -8,6 +8,12 @@ Before do
   DatabaseCleaner.strategy = :transaction
 end
 
+Before do |scenario|
+  scenario_tags = scenario.source_tag_names
+
+  @cucumber_javascript_tag = '@javascript'.in?(scenario_tags)
+end
+
 Before "@javascript" do
   DatabaseCleaner.strategy = :deletion
 end
