@@ -82,8 +82,6 @@ module AntwebFormatter
             formatter.link_to_taxon(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym) + ' (protonym)'
-          else
-            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end
@@ -97,8 +95,6 @@ module AntwebFormatter
             formatter.link_to_taxon_with_author_citation(terminal_taxon)
           elsif (protonym = Protonym.find_by(id: protonym_id))
             formatter.link_to_protonym(protonym) + ' (protonym)'
-          else
-            broken_taxt_tag "PROTONYM", $LAST_MATCH_INFO
           end
         end
       end

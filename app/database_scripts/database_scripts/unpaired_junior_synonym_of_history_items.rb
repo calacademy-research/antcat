@@ -2,9 +2,17 @@
 
 module DatabaseScripts
   class UnpairedJuniorSynonymOfHistoryItems < DatabaseScript
+    LIMIT = 500
+
+    def statistics
+      <<~STR.html_safe
+        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+      STR
+    end
+
     def results
       HistoryItem.where(type: History::Definitions::JUNIOR_SYNONYM_OF).
-        joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL")
+        joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL").limit(LIMIT)
           LEFT OUTER JOIN protonyms ON protonyms.id = history_items.object_protonym_id
             LEFT OUTER JOIN history_items history_items_protonyms
             ON (
