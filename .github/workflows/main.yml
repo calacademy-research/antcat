@@ -32,6 +32,11 @@ jobs:
         ruby-version: 2.7.1
         bundler-cache: true
 
+    - name: Run eslint
+      run: |
+        ./bin/yarn install
+        ./bin/yarn lint
+
     - name: Run rubocop
       run: |
         bundle exec rubocop
