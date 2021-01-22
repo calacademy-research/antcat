@@ -13,6 +13,7 @@ module Taxt
       taxt.
         gsub(/ +:/, ': ').     # Spaces before colons.
         gsub(/:(?!= )/, ': '). # Colons not followed by a space.
+        gsub(/(; +;)+/, ';').  # Double semicolons separated by spacing.
         gsub(/(: +:)+/, ':').  # Double colons separated by spacing.
         gsub(/(::)+/, ':').    # Double colons.
         squish                 # Consecutive, and leading/trailing spaces.

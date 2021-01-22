@@ -16,6 +16,10 @@ describe Taxt::Cleanup do
       expect(described_class['   pizza ']).to eq 'pizza'
     end
 
+    it 'removes semicolons separated by spaces' do
+      expect(described_class['; ; pizza']).to eq '; pizza'
+    end
+
     it 'removes colons separated by spaces' do
       expect(described_class[': : pizza']).to eq ': pizza'
     end
@@ -29,7 +33,7 @@ describe Taxt::Cleanup do
     end
 
     it 'can beat the final boss and his minions' do
-      expect(described_class['  Pi   zz : : a pescatore :1:']).to eq 'Pi zz: a pescatore: 1:'
+      expect(described_class['  Pi; ;   zz : : a pescatore :1:']).to eq 'Pi; zz: a pescatore: 1:'
     end
   end
 end
