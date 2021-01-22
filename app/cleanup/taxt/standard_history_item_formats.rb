@@ -37,31 +37,32 @@ module Taxt
     ]
 
     # [grep:history_type].
+    # NOTE: Regexes as MySQL-compatiable strings.
     STANDARD_FORMATS = [
       {
-        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\).?$",
+        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\)\\.?$",
         name: History::Definitions::FORM_DESCRIPTIONS,
         type: History::Definitions::FORM_DESCRIPTIONS
       },
       {
-        regex: "^Lectotype designation: #{CITATION_TAXT}\.?$",
+        regex: "^Lectotype designation: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::LECTOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::LECTOTYPE_DESIGNATION
       },
       {
-        regex: "^Neotype designation: #{CITATION_TAXT}\.?$",
+        regex: "^Neotype designation: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::NEOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::NEOTYPE_DESIGNATION
       },
       {
-        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::JUNIOR_SYNONYM_OF,
         type: History::Definitions::JUNIOR_SYNONYM_OF
       },
       {
-        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::SENIOR_SYNONYM_OF,
         type: History::Definitions::SENIOR_SYNONYM_OF
       }

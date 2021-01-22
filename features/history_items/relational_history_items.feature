@@ -2,7 +2,7 @@ Feature: Editing a history item
   Background:
     Given I log in as a catalog editor named "Archibald"
 
-  @javascript
+  @skip_ci @javascript
   Scenario: Adding a relational history item
     Given there is a genus protonym "Atta"
     And these references exist
