@@ -14,6 +14,8 @@ TAXT_EDITOR_EDITOR              = '.taxt-editor-editor'
 TAXT_PRESENTER                  = '.taxt-presenter'
 TAXT_EDITOR_CONTENT             = '.taxt-editor-content'
 
+EDIT_SUMMARY_FIELD              = '.edit-summary-js-hook'
+
 window.setupTaxtEditors = ->
   unbindAllButtons()
 
@@ -91,7 +93,7 @@ setupSaveHistoryItemButtons = ->
         reference_id: taxtEditor.find('[name=reference_id]').val()
         pages: taxtEditor.find('input[name=pages]').val()
       taxt_editor_template: taxtEditor.data('taxt-editor-template')
-      edit_summary: taxtEditor.find('#edit_summary').val()
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
 
     $.ajax
       url: taxtEditor.data('url')
@@ -123,7 +125,7 @@ setupSaveReferenceSectionButtons = ->
         title_taxt:      taxtEditor.find('textarea#title_taxt').val()
         subtitle_taxt:   taxtEditor.find('textarea#subtitle_taxt').val()
         references_taxt: taxtEditor.find('textarea#references_taxt').val()
-      edit_summary:      taxtEditor.find('#edit_summary').val()
+      edit_summary:      taxtEditor.find(EDIT_SUMMARY_FIELD).val()
 
     $.ajax
       url: taxtEditor.data('url')
@@ -152,7 +154,7 @@ setupDeleteButton = ->
     taxtEditor = $(this).parent().parent()
 
     data =
-      edit_summary: taxtEditor.find('#edit_summary').val()
+      edit_summary: taxtEditor.find(EDIT_SUMMARY_FIELD).val()
 
     $.ajax
       url: taxtEditor.data('url')

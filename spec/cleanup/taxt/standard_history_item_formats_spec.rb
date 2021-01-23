@@ -88,5 +88,58 @@ describe Taxt::StandardHistoryItemFormats do
         expect(service.identified_type).to eq History::Definitions::SENIOR_SYNONYM_OF
       end
     end
+
+    context "with 'Material referred to' item with source" do
+      let(:taxt) do
+        "Material referred to {#{Taxt::TAX_TAG} 1} by {#{Taxt::REF_TAG} 125536}: 135"
+      end
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::MATERIAL_REFERRED_TO_BY
+      end
+    end
+
+    context "with 'Unavailable name' + 'material referred to' item with source" do
+      let(:taxt) do
+        "Unavailable name; material referred to {#{Taxt::TAX_TAG} 1} by {#{Taxt::REF_TAG} 125536}: 135"
+      end
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
+      end
+    end
+
+    context "with 'Declared as unavailable (infrasubspecific) name' item" do
+      let(:taxt) do
+        "Declared as unavailable (infrasubspecific) name: {#{Taxt::REF_TAG} 2}: 3."
+      end
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      end
+    end
+
+    context "with 'First available use of unavailable (infrasubspecific) name' item" do
+      let(:taxt) { "[First available use of {#{Taxt::TAXAC_TAG} 1}; unavailable (infrasubspecific) name.]" }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      end
+    end
+
+    context "with 'First available use of unavailable (infrasubspecific) name' item with source" do
+      let(:taxt) do
+        "[First available use of {#{Taxt::TAXAC_TAG} 1}; unavailable (infrasubspecific) name ({#{Taxt::REF_TAG} 2}: 3).]"
+      end
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE
+      end
+    end
   end
 end

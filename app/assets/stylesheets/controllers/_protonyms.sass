@@ -1,3 +1,5 @@
+@import "colors"
+
 .protonyms-controller
   .additional-editor-data
     font-size: 90%
@@ -6,9 +8,11 @@
     .history-item:hover .show-on-hover
       display: inline
 
-  #history-items > .history-item hr
-    margin-top: 2rem
-    margin-bottom: 2rem
+    .history-item
+      border-bottom: 1px solid $color_medium_gray
+      padding-bottom: 1rem
+      margin-bottom: 2rem
 
-  #history-items > .history-item:last-of-type hr
-    display: none
+    .history-item:last-child
+      border-bottom: none
+      padding-bottom: 0

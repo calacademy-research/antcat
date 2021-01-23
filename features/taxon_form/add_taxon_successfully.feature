@@ -106,7 +106,7 @@ Feature: Adding a taxon successfully
     When I follow "Formicidae subfamilies"
     Then I should see "Dorylinae" within the taxon browser
 
-  @javascript
+  @skip_ci @javascript
   Scenario: Adding a tribe (and copy name to protonym)
     Given there is a subfamily "Formicinae"
 

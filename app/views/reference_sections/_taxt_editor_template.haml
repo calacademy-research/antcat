@@ -12,7 +12,7 @@
 
     .row
       .medium-5.columns.end
-        =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH
+        =text_field_tag :edit_summary, nil, placeholder: "Edit summary (optional)", maxlength: Activity::EDIT_SUMMARY_MAX_LENGTH, class: 'edit-summary-js-hook'
 
     %a.taxt-editor-reference-section-save-button.btn-saves Save
     %a.taxt-editor-cancel-button.btn-nodanger Cancel

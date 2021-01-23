@@ -5,6 +5,8 @@
 module Taxt
   class StandardHistoryItemFormats
     PROTT = "{#{Taxt::PROTT_TAG} [0-9]+}"
+    TAX = "{#{Taxt::TAX_TAG} [0-9]+}"
+    TAXAC = "{#{Taxt::TAXAC_TAG} [0-9]+}"
     PRO_ISH = "{(#{Taxt::PROTONYM_TAGS.join('|')}) [0-9]+}"
 
     REF = "{#{Taxt::REF_TAG} [0-9]+}"
@@ -36,34 +38,72 @@ module Taxt
       }
     ]
 
+    STANDARD_FORMAT_CANDIDATES = [
+      MATERIAL_REFERRED_TO_BY = 'MATERIAL_REFERRED_TO_BY',
+      UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY = 'UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY',
+      DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
+      FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME =
+        'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
+      FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE =
+        'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE'
+    ]
+
     # [grep:history_type].
+    # NOTE: Regexes as MySQL-compatiable strings.
     STANDARD_FORMATS = [
       {
-        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\).?$",
+        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\)\\.?$",
         name: History::Definitions::FORM_DESCRIPTIONS,
         type: History::Definitions::FORM_DESCRIPTIONS
       },
       {
-        regex: "^Lectotype designation: #{CITATION_TAXT}\.?$",
+        regex: "^Lectotype designation: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::LECTOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::LECTOTYPE_DESIGNATION
       },
       {
-        regex: "^Neotype designation: #{CITATION_TAXT}\.?$",
+        regex: "^Neotype designation: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::NEOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::NEOTYPE_DESIGNATION
       },
       {
-        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::JUNIOR_SYNONYM_OF,
         type: History::Definitions::JUNIOR_SYNONYM_OF
       },
       {
-        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\.?$",
+        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::SENIOR_SYNONYM_OF,
         type: History::Definitions::SENIOR_SYNONYM_OF
+      },
+
+      # Future definition candidates.
+      {
+        regex: "^Material referred to #{TAX} by #{CITATION_TAXT}\.?$",
+        name: MATERIAL_REFERRED_TO_BY,
+        type: MATERIAL_REFERRED_TO_BY
+      },
+      {
+        regex: "^Unavailable name; material referred to #{TAX} by #{CITATION_TAXT}\.?$",
+        name: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY,
+        type: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
+      },
+      {
+        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATION_TAXT}\.?$",
+        name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
+        type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      },
+      {
+        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name\.?\\]$",
+        name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
+        type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      },
+      {
+        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION_TAXT}\\)\.?\\]$",
+        name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE,
+        type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE
       }
     ]
 
