@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class HistoryItemsWithLongPages < DatabaseScript
+  class HistoryItemsWithPagesContainingWeirdCharacters < DatabaseScript
     LIMIT = 150
 
     def statistics
@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.relational.where("LENGTH(pages) > 20").order("LENGTH(pages) DESC").limit(LIMIT)
+      HistoryItem.relational.where("pages REGEXP ?", "[^0-9A-Za-z -\\.,\\(\\)]").limit(LIMIT)
     end
 
     def render
