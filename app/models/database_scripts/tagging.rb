@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# TODO: Add section for relational history items.
+
 module DatabaseScripts
   module Tagging
     SECTIONS = [

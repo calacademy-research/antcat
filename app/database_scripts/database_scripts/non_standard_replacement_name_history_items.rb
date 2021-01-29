@@ -10,7 +10,7 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Protonym', 'Terminal taxon', 'taxt'
+        t.header 'History item', 'Protonym', 'Terminal taxon', 'taxt', 'Standard-ish?'
         t.rows do |history_item|
           taxt = history_item.taxt
 
@@ -18,7 +18,8 @@ module DatabaseScripts
             link_to(history_item.id, history_item_path(history_item)),
             protonym_link(history_item.protonym),
             taxon_link(history_item.terminal_taxon),
-            taxt
+            taxt,
+            (history_item.standard_format? ? 'Yes' : 'No')
           ]
         end
       end
