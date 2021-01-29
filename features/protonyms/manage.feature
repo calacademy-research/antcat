@@ -44,10 +44,10 @@ Feature: Manage protonyms
     And the "protonym_name_string" field should contain "Invalid a b c d e f protonym name"
 
   Scenario: Editing a protonym
-    Given there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
+    Given there is a species protonym "Formica fusca" with pages and form 'page 9, dealate queen'
 
     When I go to the protonyms page
-    And I follow "Formica"
+    And I follow "Formica fusca"
     Then I should see "page 9"
     And I should see "dealate queen"
 

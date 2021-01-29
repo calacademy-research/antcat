@@ -164,12 +164,12 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching for locality" do
-      let!(:indonesia) { create :protonym, locality: 'Indonesia (Bhutan)' }
-      let!(:taxon) { create :genus, protonym: indonesia }
+      let!(:indonesia) { create :protonym, :species_group_name, locality: 'Indonesia (Bhutan)' }
+      let!(:taxon) { create :species, protonym: indonesia }
 
       before do
-        china = create :protonym, locality: 'China'
-        create :genus, protonym: china
+        china = create :protonym, :species_group_name, locality: 'China'
+        create :species, protonym: china
       end
 
       it "only returns taxa with that locality" do

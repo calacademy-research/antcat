@@ -53,6 +53,9 @@
             %td
               .small-max-width=authorship_fields.text_field :pages
 
+        -# TODO: `protonym.(forms|biogeographic_region|locality)?` to make it possible to blank them in case
+        -# they are incorrectly filled in for new protonyms (fields are not hidden until we know the rank).
+        -if protonym.species_group_name? || protonym.forms?
           %tr
             %td
               =f.label :forms do
@@ -62,28 +65,31 @@
             %td
               .small-max-width=f.text_field :forms
 
-        %tr
-          %td
-            =f.label :biogeographic_region do
-              Biogeographic region
-              =db_tooltip_icon :biogeographic_region, scope: :protonyms
-          %td
-            .small-max-width
-              =f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+        -if protonym.species_group_name? || protonym.biogeographic_region?
+          %tr
+            %td
+              =f.label :biogeographic_region do
+                Biogeographic region
+                =db_tooltip_icon :biogeographic_region, scope: :protonyms
+            %td
+              .small-max-width
+                =f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
 
-        %tr
-          %td
-            =f.label :locality do
-              Locality
-              =db_tooltip_icon :locality, scope: :protonyms
-          %td
-            =f.text_field :locality, class: 'locality-autocomplete-js-hook'
+        -if protonym.species_group_name? || protonym.locality?
+          %tr
+            %td
+              =f.label :locality do
+                Locality
+                =db_tooltip_icon :locality, scope: :protonyms
+            %td
+              =f.text_field :locality, class: 'locality-autocomplete-js-hook'
 
-        %tr
-          %td
-            =f.label :uncertain_locality
-          %td
-            =f.check_box :uncertain_locality
+          -# TODO: Remove (just fill in "no locality given" instead).
+          %tr
+            %td
+              =f.label :uncertain_locality
+            %td
+              =f.check_box :uncertain_locality
 
       %h6.bold.margin-top Nomen attributes
       %ul.no-bullet
@@ -144,15 +150,16 @@
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
       %table.unstriped
-        -# TODO: Show only for species-group names.
-        %tr
-          %td
-            =f.label :gender_agreement_type do
-              Gender agreement type (only for species-group names)
-              =db_tooltip_icon :gender_agreement_type, scope: :protonyms
-          %td
-            .small-max-width
-              =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
+        -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/biogeographic_region/locality.
+        -if protonym.species_group_name? || protonym.gender_agreement_type?
+          %tr
+            %td
+              =f.label :gender_agreement_type do
+                Gender agreement type (only for species-group names)
+                =db_tooltip_icon :gender_agreement_type, scope: :protonyms
+            %td
+              .small-max-width
+                =f.select :gender_agreement_type, Protonym::GENDER_AGREEMENT_TYPES, include_blank: '(blank)'
 
         %tr
           %td

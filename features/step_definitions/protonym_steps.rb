@@ -10,8 +10,8 @@ Given("there is a genus protonym {string}") do |name_string|
   create :protonym, :genus_group_name, name: name
 end
 
-Given("there is a genus protonym {string} with pages and form 'page 9, dealate queen'") do |name_string|
-  name = create :genus_name, name: name_string
+Given("there is a species protonym {string} with pages and form 'page 9, dealate queen'") do |name_string|
+  name = create :species_name, name: name_string
   citation = create :citation, pages: 'page 9'
-  create :protonym, :genus_group_name, name: name, authorship: citation, forms: 'dealate queen'
+  create :protonym, :species_group_name, name: name, authorship: citation, forms: 'dealate queen'
 end

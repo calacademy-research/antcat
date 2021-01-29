@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Protonyms::Localities::AutocompletesController do
   describe "GET show", as: :visitor do
     before do
-      create :protonym, locality: 'Californa'
+      create :protonym, :species_group_name, locality: 'Californa'
     end
 
     it "returns all localities" do

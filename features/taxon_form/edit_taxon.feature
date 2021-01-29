@@ -3,17 +3,17 @@ Feature: Editing a taxon
     Given I log in as a catalog editor named "Archibald"
 
   Scenario: Changing protonym
-    Given there is a genus "Eciton"
-    And there is a genus protonym "Formica" with pages and form 'page 9, dealate queen'
+    Given there is a species "Eciton fusca"
+    And there is a species protonym "Formica fusca" with pages and form 'page 9, dealate queen'
 
-    When I go to the catalog page for "Eciton"
+    When I go to the catalog page for "Eciton fusca"
     Then I should not see "Formica"
 
-    When I go to the edit page for "Eciton"
-    And I pick "Formica" from the "#taxon_protonym_id" protonym picker
+    When I go to the edit page for "Eciton fusca"
+    And I pick "Formica fusca" from the "#taxon_protonym_id" protonym picker
     And I press "Save"
     Then I should see "Taxon was successfully updated"
-    And I should see "Formica" within "#protonym-synopsis"
+    And I should see "Formica fusca" within "#protonym-synopsis"
     And I should see "page 9 (dealate queen)" within "#protonym-synopsis"
 
   Scenario: Changing current taxon
