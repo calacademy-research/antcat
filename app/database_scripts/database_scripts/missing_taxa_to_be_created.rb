@@ -63,7 +63,7 @@ end
 
 __END__
 
-section: main
+section: missing-tags
 category: Taxt
 tags: [has-quick-fix, slow]
 
