@@ -19,19 +19,19 @@
               =protonym.authorship_reference.decorate.link_to_reference
             =protonym.authorship.pages
 
-        -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
-        -if protonym.forms?
-          %tr
-            %td Forms
-            %td=protonym.forms
-        -if protonym.biogeographic_region?
-          %tr
-            %td Biogeographic region
-            %td=protonym.biogeographic_region
-        -if protonym.locality?
-          %tr
-            %td Locality
-            %td=protonym.decorate.format_locality
+        -if protonym.species_group_name?
+          -if protonym.forms?
+            %tr
+              %td Forms
+              %td=protonym.forms
+          -if protonym.biogeographic_region?
+            %tr
+              %td Biogeographic region
+              %td=protonym.biogeographic_region
+          -if protonym.locality?
+            %tr
+              %td Locality
+              %td=protonym.decorate.format_locality
 
         -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
           -if (type_name = protonym.type_name)
