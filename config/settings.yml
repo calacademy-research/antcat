@@ -10,7 +10,7 @@ catalog:
   show_failed_soft_validations: true
 
 editors_panel:
-  max_featured_wiki_pages_links: 5
+  max_featured_wiki_pages_links: 6
 
 new_relic:
   apm_url: "https://example.com/set-url-in-settings-configs"
