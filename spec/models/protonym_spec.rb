@@ -33,6 +33,46 @@ describe Protonym do
             to include("cannot be set for fossil protonyms")
         end
       end
+
+      context 'when protonym is above species rank' do
+        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+
+        it 'cannot have `biogeographic_region`' do
+          expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
+            to change { protonym.valid? }.to(false)
+
+          expect(protonym.errors.where(:biogeographic_region).map(&:message)).
+            to include("can only be set for species-group protonyms")
+        end
+      end
+    end
+
+    describe "#forms" do
+      context 'when protonym is above species rank' do
+        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+
+        it 'cannot have `forms`' do
+          expect { protonym.forms = 'w.' }.
+            to change { protonym.valid? }.to(false)
+
+          expect(protonym.errors.where(:forms).map(&:message)).
+            to include("can only be set for species-group protonyms")
+        end
+      end
+    end
+
+    describe "#locality" do
+      context 'when protonym is above species rank' do
+        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+
+        it 'cannot have a `locality`' do
+          expect { protonym.locality = 'Lund' }.
+            to change { protonym.valid? }.to(false)
+
+          expect(protonym.errors.where(:locality).map(&:message)).
+            to include("can only be set for species-group protonyms")
+        end
+      end
     end
 
     describe "#gender_agreement_type" do

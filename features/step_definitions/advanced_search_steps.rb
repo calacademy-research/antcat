@@ -16,9 +16,9 @@ Given("there is an invalid family") do
   create :family, :excluded_from_formicidae
 end
 
-Given("there is a genus with locality {string}") do |locality|
-  protonym = create :protonym, locality: locality
-  create :genus, protonym: protonym
+Given("there is a species with locality {string}") do |locality|
+  protonym = create :protonym, :species_group_name, locality: locality
+  create :species, protonym: protonym
 end
 
 Given("there is a species with biogeographic region {string}") do |biogeographic_region|

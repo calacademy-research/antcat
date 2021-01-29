@@ -50,6 +50,7 @@ describe TaxaController do
     end
 
     context 'with valid params' do
+      # TODO: Add spec for species rank for things like `biogeographic_region`, `forms`, and `locality`.
       context "when rank is genus" do
         let(:parent) { create :subfamily }
         let(:genus_params) do
@@ -105,8 +106,6 @@ describe TaxaController do
               protonym_attributes: {
                 fossil: true,
                 sic: true,
-                locality: "San Francisco",
-                forms: "w.",
                 primary_type_information_taxt: "primary type information",
                 secondary_type_information_taxt: "secondary type information",
                 type_notes_taxt: "type notes",
@@ -126,8 +125,6 @@ describe TaxaController do
 
             expect(protonym.fossil).to eq protonym_attributes[:fossil]
             expect(protonym.sic).to eq protonym_attributes[:sic]
-            expect(protonym.locality).to eq protonym_attributes[:locality]
-            expect(protonym.forms).to eq protonym_attributes[:forms]
             expect(protonym.primary_type_information_taxt).to eq protonym_attributes[:primary_type_information_taxt]
             expect(protonym.secondary_type_information_taxt).to eq protonym_attributes[:secondary_type_information_taxt]
             expect(protonym.type_notes_taxt).to eq protonym_attributes[:type_notes_taxt]

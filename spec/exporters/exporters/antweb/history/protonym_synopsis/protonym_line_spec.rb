@@ -8,7 +8,7 @@ describe Exporters::Antweb::History::ProtonymSynopsis::ProtonymLine do
   describe "#call" do
     let(:taxt_taxon) { create :any_taxon }
     let(:protonym) do
-      create :protonym, :uncertain_locality, locality: 'Indonesia (Timor)',
+      create :protonym, :species_group_name, :uncertain_locality, locality: 'Indonesia (Timor)',
         forms: 'w.', notes_taxt: "see {#{Taxt::TAX_TAG} #{taxt_taxon.id}}"
     end
 

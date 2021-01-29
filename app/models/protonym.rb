@@ -43,9 +43,11 @@ class Protonym < ApplicationRecord
   has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
   has_many :non_terminal_taxa, -> { where.not(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
 
-  # TODO: See if wa want to validate this w.r.t. rank of name.
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
   validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
+  validates :biogeographic_region, :forms, :locality,
+    absence: { message: "can only be set for species-group protonyms" },
+    unless: -> { species_group_name? }
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
   validates :gender_agreement_type, absence: { message: "can only be set for species-group names" }, unless: -> { species_group_name? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }

@@ -197,7 +197,7 @@ describe Exporters::Antweb::TaxonAttributes do
     end
 
     describe "[20]: `country`" do
-      let(:taxon) { create :genus, protonym: create(:protonym, locality: 'Canada') }
+      let(:taxon) { create :species, protonym: create(:protonym, :species_group_name, locality: 'Canada') }
 
       specify { expect(described_class[taxon][:country]).to eq 'Canada' }
     end
