@@ -71,6 +71,15 @@ describe Taxt::StandardHistoryItemFormats do
       end
     end
 
+    context "with 'Combination in' item" do
+      let(:taxt) { "Combination in {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::COMBINATION_IN
+      end
+    end
+
     context "with 'Junior synonym of' item" do
       let(:taxt) { "Junior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
 
@@ -80,12 +89,48 @@ describe Taxt::StandardHistoryItemFormats do
       end
     end
 
+    context "with 'Status as species' item" do
+      let(:taxt) { "Status as species: {#{Taxt::REF_TAG} 1}: 23" }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::STATUS_AS_SPECIES
+      end
+    end
+
+    context "with 'Subspecies of' item" do
+      let(:taxt) { "Subspecies of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::SUBSPECIES_OF
+      end
+    end
+
     context "with 'Senior synonym of' item" do
       let(:taxt) { "Senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
 
       specify do
         expect(service.standard?).to eq true
         expect(service.identified_type).to eq History::Definitions::SENIOR_SYNONYM_OF
+      end
+    end
+
+    context "with 'Replacement name:' item" do
+      let(:taxt) { "Replacement name: {#{Taxt::PROTTAC_TAG} 1}." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::REPLACEMENT_NAME
+      end
+    end
+
+    context "with 'Replacement name:' item with source" do
+      let(:taxt) { "Replacement name: {#{Taxt::PROTTAC_TAG} 1} ({#{Taxt::REF_TAG} 2}: 3)." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::REPLACEMENT_NAME
       end
     end
 

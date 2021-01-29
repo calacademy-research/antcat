@@ -7,7 +7,9 @@ module Taxt
     PROTT = "{#{Taxt::PROTT_TAG} [0-9]+}"
     TAX = "{#{Taxt::TAX_TAG} [0-9]+}"
     TAXAC = "{#{Taxt::TAXAC_TAG} [0-9]+}"
+    TAX_ISH = "{(#{Taxt::TAXON_TAGS.join('|')}) [0-9]+}"
     PRO_ISH = "{(#{Taxt::PROTONYM_TAGS.join('|')}) [0-9]+}"
+    TAX_OR_PRO_ISH = "{(#{(Taxt::TAXON_TAGS + Taxt::PROTONYM_TAGS).join('|')}) [0-9]+}"
 
     REF = "{#{Taxt::REF_TAG} [0-9]+}"
     PAGES = "[0-9]+"
@@ -36,6 +38,10 @@ module Taxt
         name: History::Definitions::TAXT,
         type: History::Definitions::TAXT
       }
+    ]
+
+    STANDARD_FORMAT_VARIATIONS = [
+      REPLACEMENT_NAME_WITH_SOURCE = 'REPLACEMENT_NAME_WITH_SOURCE'
     ]
 
     STANDARD_FORMAT_CANDIDATES = [
@@ -69,6 +75,11 @@ module Taxt
         subtype: History::Definitions::NEOTYPE_DESIGNATION
       },
       {
+        regex: "^Combination in #{TAX_ISH}: #{CITATION_TAXT}\\.?$",
+        name: History::Definitions::COMBINATION_IN,
+        type: History::Definitions::COMBINATION_IN
+      },
+      {
         regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::JUNIOR_SYNONYM_OF,
         type: History::Definitions::JUNIOR_SYNONYM_OF
@@ -77,6 +88,26 @@ module Taxt
         regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
         name: History::Definitions::SENIOR_SYNONYM_OF,
         type: History::Definitions::SENIOR_SYNONYM_OF
+      },
+      {
+        regex: "^Status as species: #{CITATION_TAXT}\\.?$",
+        name: History::Definitions::STATUS_AS_SPECIES,
+        type: History::Definitions::STATUS_AS_SPECIES
+      },
+      {
+        regex: "^Subspecies of #{TAX_ISH}: #{CITATION_TAXT}\\.?$",
+        name: History::Definitions::SUBSPECIES_OF,
+        type: History::Definitions::SUBSPECIES_OF
+      },
+      {
+        regex: "^Replacement name: #{TAX_OR_PRO_ISH}\\.?$",
+        name: History::Definitions::REPLACEMENT_NAME,
+        type: History::Definitions::REPLACEMENT_NAME
+      },
+      {
+        regex: "^Replacement name: #{TAX_OR_PRO_ISH} \\(#{CITATION_TAXT}\\)\\.?$",
+        name: REPLACEMENT_NAME_WITH_SOURCE,
+        type: History::Definitions::REPLACEMENT_NAME
       },
 
       # Future definition candidates.
