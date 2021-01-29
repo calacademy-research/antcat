@@ -1,9 +1,15 @@
+-format_type_fields ||= false
+
 .taxt-editor
   .taxt-presenter
     %a.left.taxt-editor-edit-button.btn-nodanger.btn-tiny{style: 'margin-top: 0.8rem; margin-right: 0.8rem; margin-left: 0.8rem;'} Edit
-    .fake-input.taxt-editor-content=Detax[content]
+    .fake-input.taxt-editor-content
+      -if format_type_fields
+        =::Types::FormatTypeField[content]
+      -else
+        =Detax[content]
 
   .taxt-editor-editor.show-in-test-test-hook
-    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true }
+    =text_area_tag name, content, rows: 5, data: { has_linkables: true, previewable: true, use_extras: true, format_type_fields: format_type_fields }
 
     %a.taxt-editor-ok-button.btn-saves OK

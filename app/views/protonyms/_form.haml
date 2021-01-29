@@ -166,19 +166,19 @@
             =f.label :primary_type_information do
               Primary type information
               =db_tooltip_icon :primary_type_information, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[primary_type_information_taxt]', content: protonym.primary_type_information_taxt, format_type_fields: true
         %tr
           %td.shrink
             =f.label :secondary_type_information do
               Secondary type information
               =db_tooltip_icon :secondary_type_information, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[secondary_type_information_taxt]', content: protonym.secondary_type_information_taxt, format_type_fields: true
         %tr
           %td
             =f.label :type_notes do
               Type notes
               =db_tooltip_icon :type_notes, scope: :protonyms
-          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt
+          %td=render 'shared/taxt_editor/taxt_editor_template', name: 'protonym[type_notes_taxt]', content: protonym.type_notes_taxt, format_type_fields: true
         %tr
           %td
             =f.label :notes do

@@ -73,6 +73,8 @@ class MakePreviewable
     tab = @textarea.parent().parent().find(".preview-previewable")
 
     toParse = @textarea.val()
+    formatTypeFields = @textarea.data('format-type-fields')
+
     if toParse is ""
       tab.html "No content. Try this: <code>{tax 430207}</code>."
       return
@@ -82,7 +84,9 @@ class MakePreviewable
     $.ajax
       url: "/markdown/preview"
       type: "post"
-      data: text: toParse
+      data:
+        text: toParse
+        format_type_fields: formatTypeFields
       dataType: "html"
       success: (html) =>
         tab.html html
