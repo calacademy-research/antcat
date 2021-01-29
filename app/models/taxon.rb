@@ -45,6 +45,7 @@ class Taxon < ApplicationRecord
   scope :invalid, -> { where.not(status: Status::VALID) }
   scope :extant, -> { where(fossil: false) }
   scope :fossil, -> { where(fossil: true) }
+  scope :homonyms, -> { where(status: Status::HOMONYM) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :original_combinations, -> { where(original_combination: true) }
   scope :synonyms, -> { where(status: Status::SYNONYM) }
