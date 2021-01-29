@@ -50,6 +50,14 @@
     %strong Type notes:
     =::Types::FormatTypeField[protonym.type_notes_taxt]
 
+-if current_user && taxon.replacement_name_for.present?
+  .callout.no-border-callout.logged-in-only-background
+    %strong Replacement name for
+    -taxon.replacement_name_for.each do |replaced_name|
+      =CatalogFormatter.link_to_taxon(replaced_name)
+      =replaced_name.author_citation
+    =info_tooltip_icon "Via 'taxa.homonym_replaced_by_id'"
+
 -# Grouped items.
 -if taxon.history_items_for_taxon.present?
   -history_presenter = HistoryPresenter.new(taxon.history_items_for_taxon)

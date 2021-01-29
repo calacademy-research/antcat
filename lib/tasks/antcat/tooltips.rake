@@ -17,9 +17,9 @@ namespace :antcat do
 
       keys_and_scope.each do |key, scope|
         if Tooltip.where(key: key, scope: scope).exists?
-          puts "In database:      #{key} #{scope}".green
+          puts "[OK]     In database:      #{key} #{scope}".green
         else
-          puts "Not in database:  #{key} #{scope}".red
+          puts "[NOT OK] Not in database:  #{key} #{scope}".red
         end
       end
     end
@@ -42,9 +42,9 @@ namespace :antcat do
 
         message = "#{tooltip.id.to_s.ljust(3)} #{tooltip.key} #{tooltip.scope}"
         if in_source_code
-          puts "In source code      #{message}".green
+          puts "[OK]     In source code      #{message}".green
         else
-          puts "Not in souce code   #{message}".red
+          puts "[NOT OK] Not in souce code   #{message}".red
         end
       end
     end
