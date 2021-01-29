@@ -21,15 +21,17 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Locality', 'Suggested bio region', 'Terminal taxon'
+        t.header 'Protonym', 'Locality', 'Suggested bio region', 'Terminal taxon', 'TT status'
         t.rows do |protonym|
           locality = protonym.locality
+          terminal_taxon = protonym.terminal_taxon
 
           [
             protonym.decorate.link_to_protonym,
             locality,
             (country_mappings[locality] if locality),
-            taxon_link(protonym.terminal_taxon)
+            taxon_link(terminal_taxon),
+            terminal_taxon&.status
           ]
         end
       end

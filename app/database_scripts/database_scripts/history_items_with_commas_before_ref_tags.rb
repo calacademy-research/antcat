@@ -71,9 +71,9 @@ __END__
 
 title: History items with commas before <code>ref</code> tags
 
-section: main
+section: regression-test
 category: Taxt
-tags: [new!]
+tags: []
 
 description: >
   We want to use semicolons instead of commas to make items like this parsable by script:

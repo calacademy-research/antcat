@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class HistoryItemsStartingWithLowerCaseLetters < DatabaseScript
-    LIMIT = 100
+  class HistoryItemsWithLongPages < DatabaseScript
+    LIMIT = 150
 
     def statistics
       <<~STR.html_safe
@@ -11,19 +11,20 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.taxts_only.where("BINARY taxt REGEXP ?", "^(<i>)?[a-z]").limit(LIMIT)
+      HistoryItem.relational.where("LENGTH(pages) > 20").order("LENGTH(pages) DESC").limit(LIMIT)
     end
 
     def render
       as_table do |t|
-        t.header 'History item', 'Protonym', 'taxt'
+        t.header 'History item', 'Protonym', 'taxt', 'Pages'
         t.rows do |history_item|
-          taxt = history_item.taxt
+          taxt = history_item.to_taxt
 
           [
             link_to(history_item.id, history_item_path(history_item)),
             protonym_link(history_item.protonym),
-            Detax[taxt]
+            taxt,
+            history_item.pages
           ]
         end
       end
@@ -33,13 +34,13 @@ end
 
 __END__
 
-section: regression-test
-category: Taxt
-tags: []
-
-issue_description:
+section: research
+category: History
+tags: [new!, list]
 
 description: >
+  Indicates that the content may belong somewhere else.
 
 related_scripts:
-  - HistoryItemsStartingWithLowerCaseLetters
+  - HistoryItemsWithLongPages
+  - HistoryItemsWithPagesContainingWeirdCharacters
