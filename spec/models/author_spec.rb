@@ -57,6 +57,18 @@ describe Author do
   end
 
   describe '#described_protonyms' do
-    # TODO
+    let(:author) { create :author }
+    let(:author_name) { create :author_name, author: author }
+
+    let(:reference_1) { create :any_reference, author_names: [author_name] }
+    let(:reference_2) { create :any_reference, author_names: [create(:author_name), author_name] }
+    let!(:protonym_1) { create(:protonym, authorship_reference: reference_1) }
+    let!(:protonym_2) { create(:protonym, authorship_reference: reference_2) }
+
+    before { create :protonym } # Unrelated.
+
+    it "returns taxa described by the author" do
+      expect(author.described_protonyms).to match_array [protonym_1, protonym_2]
+    end
   end
 end
