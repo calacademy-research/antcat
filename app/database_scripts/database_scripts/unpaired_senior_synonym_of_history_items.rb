@@ -45,11 +45,10 @@ end
 
 __END__
 
-tags: []
-
-section: research
 # TODO: Change to: section: disagreeing-history
+section: research
 category: History
+tags: []
 
 description: >
   This script can be ignored for now.

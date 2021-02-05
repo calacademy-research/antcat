@@ -42,6 +42,8 @@ category: History
 tags: []
 
 description: >
+  Triggers for taxa with status `homonym` unless their protonym have a `ReplacementName` history item
+  (or a 'Replacement name: ' `Taxt` history item).
 
 related_scripts:
   - ReplacementNameForHistoryItemsDisagreeing
