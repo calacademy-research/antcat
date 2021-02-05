@@ -5,6 +5,52 @@ require 'rails_helper'
 describe Taxt::StandardHistoryItemFormats do
   subject(:service) { described_class.new(taxt) }
 
+  describe 'parsing pagination' do
+    let(:taxt) { "[Also described as new by {#{Taxt::REF_TAG} 2}: #{pagination}.]" }
+
+    context "with unparsable pagination" do
+      let(:pagination) { "123abc" }
+
+      specify { expect(service.standard?).to eq false }
+    end
+
+    context "with single page" do
+      let(:pagination) { "3" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with page with parens" do
+      let(:pagination) { "3 (in key)" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with Roman page" do
+      let(:pagination) { "xii" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with page + page with parens" do
+      let(:pagination) { "1, 3 (in key)" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with page + page with parens + Roman page" do
+      let(:pagination) { "1, 3 (in key), ci" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with page + page with parens + Roman page with parent" do
+      let(:pagination) { "1, 3 (in key), ci (footnote)" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+  end
+
   describe '#standard?' do
     context 'with blank item' do
       let(:taxt) { '' }
