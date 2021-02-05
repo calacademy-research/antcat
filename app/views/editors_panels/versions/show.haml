@@ -7,6 +7,10 @@
   =version_decorated.revision_history_link
   =version_decorated.activity_link
 
-%pre.wrapped=@version.inspect
-%hr
-%pre=@version.to_yaml
+%pre.pre-wrapped.small-text
+  =inline_expandable @version.inspect do
+    =@version.to_yaml
+
+%hr.discrete
+
+%pre.pre-wrapped.small-text=version_decorated.format_changeset
