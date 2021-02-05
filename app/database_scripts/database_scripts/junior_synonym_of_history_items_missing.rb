@@ -53,7 +53,6 @@ title: >
 # TODO: Change to: section: disagreeing-history
 section: research
 category: History
-
 tags: [new!, list]
 
 description: >

@@ -67,8 +67,8 @@ module DatabaseScripts
       Infrasubspecies.joins(:name).joins(:subspecies).
         joins("JOIN names subspecies_names ON subspecies_names.id = subspecies_taxa.name_id").
         where(<<~SQL.squish)
-          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 2), ' ', -1) !=
-          SUBSTRING_INDEX(SUBSTRING_INDEX(subspecies_names.name, ' ', 2), ' ', -1)
+          SUBSTRING_INDEX(SUBSTRING_INDEX(names.name, ' ', 3), ' ', -1) !=
+          SUBSTRING_INDEX(SUBSTRING_INDEX(subspecies_names.name, ' ', 3), ' ', -1)
         SQL
     end
 
@@ -122,4 +122,5 @@ issue_description:
 description: >
 
 related_scripts:
+  - TaxaWithDisagreeingTaxonRelations
   - TaxaWithDisagreeingNameParts

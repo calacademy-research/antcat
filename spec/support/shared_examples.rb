@@ -19,3 +19,12 @@ shared_examples_for "a model that assigns `request_id` on create" do
       from(nil).to(current_request_uuid)
   end
 end
+
+shared_examples_for "a database script with renderable results" do
+  it 'renders without errors' do
+    render_options = {}
+    rendered = DatabaseScripts::Render.new(script, render_options).call
+
+    expect(rendered).to be_a String
+  end
+end

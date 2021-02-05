@@ -25,47 +25,51 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.caption "Genera without subfamily"
-        t.header 'Genus', 'Status'
+        t.header 'Genus', 'Status', 'Created at'
 
         t.rows(genera_without_subfamily) do |taxon|
           [
             taxon_link(taxon),
-            taxon.status
+            taxon.status,
+            I18n.l(taxon.created_at, format: :ymd)
           ]
         end
       end <<
         as_table do |t|
           t.caption "Subgenera without subfamily"
-          t.header 'Species', 'Status', 'Subfamily of genus'
+          t.header 'Species', 'Status', 'Subfamily of genus', 'Created at'
 
           t.rows(subgenera_without_subfamily) do |taxon|
             [
               taxon_link(taxon),
               taxon.status,
-              taxon_link(taxon.genus.subfamily)
+              taxon_link(taxon.genus.subfamily),
+              I18n.l(taxon.created_at, format: :ymd)
             ]
           end
         end <<
         as_table do |t|
           t.caption "Genera without tribe"
-          t.header 'species', 'Status', 'Subfamily'
+          t.header 'species', 'Status', 'Subfamily', 'Created at'
 
           t.rows(genera_without_tribe) do |taxon|
             [
               taxon_link(taxon),
               taxon.status,
-              taxon_link(taxon.subfamily)
+              taxon_link(taxon.subfamily),
+              I18n.l(taxon.created_at, format: :ymd)
             ]
           end
         end <<
         as_table do |t|
           t.caption "Species without subfamily"
-          t.header 'Species', 'Status'
+          t.header 'Species', 'Status', 'Created at'
 
           t.rows(species_without_subfamily) do |taxon|
             [
               taxon_link(taxon),
-              taxon.status
+              taxon.status,
+              I18n.l(taxon.created_at, format: :ymd)
             ]
           end
         end
@@ -91,4 +95,4 @@ description: >
   Issue: %github453
 
 related_scripts:
-  - NonIncertaeSedisTaxaWithoutSubfamily
+  - NonExplicitIncertaeSedisTaxa
