@@ -65,14 +65,30 @@ module Taxt
     ]
 
     STANDARD_FORMAT_CANDIDATES = [
+      JUNIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP = 'JUNIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP',
+      SENIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP = 'SENIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP',
+      UNIDENTIFIABLE_TAXON = 'UNIDENTIFIABLE_TAXON',
+      AS_SUBFAMILY_OF = 'AS_SUBFAMILY_OF',
+      AS_TRIBE_OF = 'AS_TRIBE_OF',
+      AS_SUBTRIBE_OF = 'AS_SUBTRIBE_OF',
+      AS_GENUS = 'AS_GENUS',
+      AS_SUBGENUS_OF = 'AS_SUBGENUS_OF',
+      X_IN_X = 'X_IN_X',
+      X_IN_UNMISSING = 'X_IN_UNMISSING',
+      X_IN_X_X = 'X_IN_X_X',
+      X_INCERTAE_SEDIS_IN_X = 'X_INCERTAE_SEDIS_IN_X',
       UNNECESSARY_REPLACEMENT_NAME_FOR = 'UNNECESSARY_REPLACEMENT_NAME_FOR',
+      UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST = 'UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST',
       MATERIAL_REFERRED_TO_BY = 'MATERIAL_REFERRED_TO_BY',
       UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY = 'UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY',
       DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
       FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME =
         'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
       FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE =
-        'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE'
+        'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE',
+      ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP = 'ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP',
+      ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP = 'ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP',
+      MISSPELLED_AS_BY = 'MISSPELLED_AS_BY'
     ]
 
     # [grep:history_type].
@@ -130,8 +146,83 @@ module Taxt
         name: REPLACEMENT_NAME__WITH_SOURCE,
         type: History::Definitions::REPLACEMENT_NAME
       },
+      {
+        regex: "^Replacement name for #{TAX_OR_PRO_ISH}\\.?$",
+        name: History::Definitions::REPLACEMENT_NAME_FOR,
+        type: History::Definitions::REPLACEMENT_NAME_FOR
+      },
 
       # Future definition candidates.
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as junior synonym of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: JUNIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP,
+        type: JUNIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as senior synonym of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: SENIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP,
+        type: SENIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP
+      },
+      {
+        regex: "^Unidentifiable taxon: #{CITATION}\\.?$",
+        name: UNIDENTIFIABLE_TAXON,
+        type: UNIDENTIFIABLE_TAXON
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as subfamily of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: AS_SUBFAMILY_OF,
+        type: AS_SUBFAMILY_OF
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as tribe of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: AS_TRIBE_OF,
+        type: AS_TRIBE_OF
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as subtribe of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: AS_SUBTRIBE_OF,
+        type: AS_SUBTRIBE_OF
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as genus: #{CITATION}\\.?$",
+        name: AS_GENUS,
+        type: AS_GENUS
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} as subgenus of #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: AS_SUBGENUS_OF,
+        type: AS_SUBGENUS_OF
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} in #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: X_IN_X,
+        type: X_IN_X
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} in #{UNMISSING}: #{CITATION}\\.?$",
+        name: X_IN_UNMISSING,
+        type: X_IN_UNMISSING
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} in #{TAX_OR_PRO_ISH}, #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: X_IN_X_X,
+        type: X_IN_X_X
+      },
+      {
+        regex: "^#{TAX_OR_PRO_ISH} <i>incertae sedis<\/i> in #{TAX_OR_PRO_ISH}: #{CITATION}\\.?$",
+        name: X_INCERTAE_SEDIS_IN_X,
+        type: X_INCERTAE_SEDIS_IN_X
+      },
+      {
+        regex: "^Unnecessary replacement name for #{TAX_OR_PRO_ISH}\\.?$",
+        name: UNNECESSARY_REPLACEMENT_NAME_FOR,
+        type: UNNECESSARY_REPLACEMENT_NAME_FOR
+      },
+      {
+        regex: "^Unnecessary \\((second|third|fourth)\\) replacement name for #{TAX_OR_PRO_ISH}\\.?$",
+        name: UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST,
+        type: UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST
+      },
       {
         regex: "^Material referred to #{TAX} by #{CITATION}\.?$",
         name: MATERIAL_REFERRED_TO_BY,
@@ -156,6 +247,21 @@ module Taxt
         regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION}\\)\.?\\]$",
         name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE,
         type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
+      },
+      {
+        regex: "^\\[#{TAX_OR_PRO_ISH} also described as new by #{CITATION}\.?\\]$",
+        name: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP,
+        type: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP
+      },
+      {
+        regex: "^\\[Also described as new by #{CITATION}\.?\\]$",
+        name: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP,
+        type: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP
+      },
+      {
+        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATION}\.?\\]$",
+        name: MISSPELLED_AS_BY,
+        type: MISSPELLED_AS_BY
       }
     ]
 
