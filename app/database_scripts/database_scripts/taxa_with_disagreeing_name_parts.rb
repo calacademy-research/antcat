@@ -122,4 +122,5 @@ issue_description:
 description: >
 
 related_scripts:
+  - TaxaWithDisagreeingTaxonRelations
   - TaxaWithDisagreeingNameParts
