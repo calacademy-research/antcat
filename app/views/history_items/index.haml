@@ -44,7 +44,7 @@
 
     .row
       .medium-3.columns
-        %pre=JSON.pretty_generate(@history_items.group('taxa.type').count)
+        %pre=JSON.pretty_generate(Rank.sort_ranks_hash(@history_items.group('taxa.type').count))
       .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group('taxa.status').count)
       .medium-3.columns
