@@ -89,6 +89,15 @@ describe Taxt::StandardHistoryItemFormats do
       end
     end
 
+    context "with 'Senior synonym of' item" do
+      let(:taxt) { "Senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::SENIOR_SYNONYM_OF
+      end
+    end
+
     context "with 'Status as species' item" do
       let(:taxt) { "Status as species: {#{Taxt::REF_TAG} 1}: 23" }
 
@@ -104,15 +113,6 @@ describe Taxt::StandardHistoryItemFormats do
       specify do
         expect(service.standard?).to eq true
         expect(service.identified_type).to eq History::Definitions::SUBSPECIES_OF
-      end
-    end
-
-    context "with 'Senior synonym of' item" do
-      let(:taxt) { "Senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
-
-      specify do
-        expect(service.standard?).to eq true
-        expect(service.identified_type).to eq History::Definitions::SENIOR_SYNONYM_OF
       end
     end
 
@@ -134,13 +134,32 @@ describe Taxt::StandardHistoryItemFormats do
       end
     end
 
+    context "with 'Replacement name for' item" do
+      let(:taxt) { "Replacement name for {#{Taxt::TAXAC_TAG} 1}." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq History::Definitions::REPLACEMENT_NAME_FOR
+      end
+    end
+
+    context "with 'Unnecessary replacement name for' item" do
+      let(:taxt) { "Unnecessary replacement name for {#{Taxt::TAXAC_TAG} 1}." }
+
+      specify do
+        expect(service.standard?).to eq true
+        expect(service.identified_type).to eq described_class::UNNECESSARY_REPLACEMENT_NAME_FOR
+      end
+    end
+
+    # Candidates.
+
     context "with 'Material referred to' item with source" do
       let(:taxt) do
         "Material referred to {#{Taxt::TAX_TAG} 1} by {#{Taxt::REF_TAG} 125536}: 135"
       end
 
       specify do
-        expect(service.standard?).to eq true
         expect(service.identified_type).to eq described_class::MATERIAL_REFERRED_TO_BY
       end
     end
@@ -151,7 +170,6 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.standard?).to eq true
         expect(service.identified_type).to eq described_class::UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
       end
     end
@@ -162,7 +180,6 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.standard?).to eq true
         expect(service.identified_type).to eq described_class::DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       end
     end
@@ -171,7 +188,6 @@ describe Taxt::StandardHistoryItemFormats do
       let(:taxt) { "[First available use of {#{Taxt::TAXAC_TAG} 1}; unavailable (infrasubspecific) name.]" }
 
       specify do
-        expect(service.standard?).to eq true
         expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       end
     end
@@ -182,8 +198,7 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.standard?).to eq true
-        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME_WITH_SOURCE
+        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
       end
     end
   end
