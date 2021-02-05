@@ -5,7 +5,7 @@ module DatabaseScripts
     LIMIT = 500
 
     def results
-      Taxon.where(status: Status::HOMONYM).
+      Taxon.homonyms.
         joins(<<~SQL.squish).where("history_items.id IS NULL").limit(LIMIT)
           LEFT OUTER JOIN protonyms ON protonyms.id = taxa.protonym_id
           LEFT OUTER JOIN history_items ON history_items.protonym_id = protonyms.id AND

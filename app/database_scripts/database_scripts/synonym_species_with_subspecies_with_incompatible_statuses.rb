@@ -13,7 +13,7 @@ module DatabaseScripts
     ]
 
     def results
-      Species.where(status: Status::SYNONYM).joins(:subspecies).where.not(subspecies_taxa: { status: COMPATIBLE_STATUSES }).distinct
+      Species.synonyms.joins(:subspecies).where.not(subspecies_taxa: { status: COMPATIBLE_STATUSES }).distinct
     end
 
     def render

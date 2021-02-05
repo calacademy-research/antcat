@@ -11,8 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      Taxon.synonyms.
-        where(type: Rank::SPECIES_GROUP_NAMES).
+      Taxon.species_group_names.synonyms.
         joins(:current_taxon).where("current_taxons_taxa.type <> taxa.type").
         includes(:current_taxon).
         limit(LIMIT)

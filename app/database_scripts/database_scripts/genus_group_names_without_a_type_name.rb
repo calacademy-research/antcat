@@ -5,7 +5,7 @@ module DatabaseScripts
     LIMIT = 100
 
     def results
-      Taxon.where(type: Rank::GENUS_GROUP_NAMES).
+      Taxon.genus_group_names.
         includes(:name, protonym: :name).
         left_outer_joins(protonym: :type_name).
         where(type_names: { id: nil }).
