@@ -77,10 +77,6 @@ FactoryBot.define do
     end
 
     # Misc.
-    trait :uncertain_locality do
-      uncertain_locality { true }
-    end
-
     trait :with_type_name do
       type_name
     end
