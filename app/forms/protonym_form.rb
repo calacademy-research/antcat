@@ -11,7 +11,6 @@ class ProtonymForm
     ichnotaxon
     locality
     sic
-    uncertain_locality
 
     nomen_nudum
 

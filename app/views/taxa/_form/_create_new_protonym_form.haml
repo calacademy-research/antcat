@@ -74,8 +74,6 @@
                   =db_tooltip_icon :locality, scope: :protonyms
               %td
                 =protonym_form.text_field :locality, class: 'locality-autocomplete-js-hook'
-                =protonym_form.check_box :uncertain_locality
-                =protonym_form.label :uncertain_locality
 
           -if taxon.type.in?(Rank::CAN_HAVE_TYPE_TAXON_TYPES)
             %tr

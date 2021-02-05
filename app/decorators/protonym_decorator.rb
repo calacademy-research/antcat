@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ProtonymDecorator < Draper::Decorator
-  delegate :locality, :uncertain_locality?, :forms, :authorship
+  delegate :locality, :forms, :authorship
 
   def link_to_protonym
     link_to_protonym_with_label name_with_fossil
@@ -47,7 +47,6 @@ class ProtonymDecorator < Draper::Decorator
         locality.mb_chars.upcase
       end
 
-    capitalized += ' [uncertain]' if uncertain_locality?
     h.add_period_if_necessary capitalized
   end
 

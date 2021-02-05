@@ -51,14 +51,6 @@ describe ProtonymDecorator do
           expect(decorated.format_locality).to eq "SÃO TOMÉ & PRÍNCIPE (São Tomé I.)."
         end
       end
-
-      context 'when `uncertain_locality`' do
-        let(:protonym) { build_stubbed :protonym, :uncertain_locality, locality: 'Indonesia (Timor)' }
-
-        it 'includes it in brackets' do
-          expect(decorated.format_locality).to eq "INDONESIA (Timor) [uncertain]."
-        end
-      end
     end
   end
 
