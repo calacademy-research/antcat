@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 # See also https://antcat.org/wiki_pages/11
+# For Ctrl-c:
+#   Taxt::StandardHistoryItemFormats::PAGINATION_MANY
+#   Taxt::StandardHistoryItemFormats::PAGINATION_MANY_EXACT
 
 module Taxt
   class StandardHistoryItemFormats
@@ -12,8 +15,25 @@ module Taxt
     TAX_OR_PRO_ISH = "{(#{(Taxt::TAXON_TAGS + Taxt::PROTONYM_TAGS).join('|')}) [0-9]+}"
 
     REF = "{#{Taxt::REF_TAG} [0-9]+}"
-    PAGES = "[0-9]+"
-    CITATION_TAXT = "#{REF}: #{PAGES}"
+
+    ROMAN_NUMERALS = 'ivxlcdm'
+    PAGINATION_WORDS = [
+      'description',
+      'error',
+      'footnote',
+      'in key',
+      'in list',
+      'in table',
+      'in text',
+      'redescription'
+    ]
+    PAGINATION = "([0-9]+|[#{ROMAN_NUMERALS}]+)( \\((#{PAGINATION_WORDS.join('|')})\\))?"
+    PAGINATION_MANY = "(#{PAGINATION}, )*#{PAGINATION}"
+    PAGINATION_MANY_EXACT = "^(#{PAGINATION}, )*#{PAGINATION}$"
+    CITATION = "#{REF}: #{PAGINATION_MANY}"
+
+    MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(<\/i>)?}"
+    UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(<\/i>)?}"
 
     # See also https://antcat.org/wiki_pages/5
     FORMS = %w[
@@ -59,44 +79,44 @@ module Taxt
     # NOTE: Regexes as MySQL-compatiable strings.
     STANDARD_FORMATS = [
       {
-        regex: "^#{CITATION_TAXT} \\([#{FORMS}]+\\)\\.?$",
+        regex: "^#{CITATION} \\([#{FORMS}]+\\)\\.?$",
         name: History::Definitions::FORM_DESCRIPTIONS,
         type: History::Definitions::FORM_DESCRIPTIONS
       },
       {
-        regex: "^Lectotype designation: #{CITATION_TAXT}\\.?$",
+        regex: "^Lectotype designation: #{CITATION}\\.?$",
         name: History::Definitions::LECTOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::LECTOTYPE_DESIGNATION
       },
       {
-        regex: "^Neotype designation: #{CITATION_TAXT}\\.?$",
+        regex: "^Neotype designation: #{CITATION}\\.?$",
         name: History::Definitions::NEOTYPE_DESIGNATION,
         type: History::Definitions::TYPE_SPECIMEN_DESIGNATION,
         subtype: History::Definitions::NEOTYPE_DESIGNATION
       },
       {
-        regex: "^Combination in #{TAX_ISH}: #{CITATION_TAXT}\\.?$",
+        regex: "^Combination in #{TAX_ISH}: #{CITATION}\\.?$",
         name: History::Definitions::COMBINATION_IN,
         type: History::Definitions::COMBINATION_IN
       },
       {
-        regex: "^Junior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
+        regex: "^Junior synonym of #{PROTT}: #{CITATION}\\.?$",
         name: History::Definitions::JUNIOR_SYNONYM_OF,
         type: History::Definitions::JUNIOR_SYNONYM_OF
       },
       {
-        regex: "^Senior synonym of #{PROTT}: #{CITATION_TAXT}\\.?$",
+        regex: "^Senior synonym of #{PROTT}: #{CITATION}\\.?$",
         name: History::Definitions::SENIOR_SYNONYM_OF,
         type: History::Definitions::SENIOR_SYNONYM_OF
       },
       {
-        regex: "^Status as species: #{CITATION_TAXT}\\.?$",
+        regex: "^Status as species: #{CITATION}\\.?$",
         name: History::Definitions::STATUS_AS_SPECIES,
         type: History::Definitions::STATUS_AS_SPECIES
       },
       {
-        regex: "^Subspecies of #{TAX_ISH}: #{CITATION_TAXT}\\.?$",
+        regex: "^Subspecies of #{TAX_ISH}: #{CITATION}\\.?$",
         name: History::Definitions::SUBSPECIES_OF,
         type: History::Definitions::SUBSPECIES_OF
       },
@@ -106,24 +126,24 @@ module Taxt
         type: History::Definitions::REPLACEMENT_NAME
       },
       {
-        regex: "^Replacement name: #{TAX_OR_PRO_ISH} \\(#{CITATION_TAXT}\\)\\.?$",
+        regex: "^Replacement name: #{TAX_OR_PRO_ISH} \\(#{CITATION}\\)\\.?$",
         name: REPLACEMENT_NAME__WITH_SOURCE,
         type: History::Definitions::REPLACEMENT_NAME
       },
 
       # Future definition candidates.
       {
-        regex: "^Material referred to #{TAX} by #{CITATION_TAXT}\.?$",
+        regex: "^Material referred to #{TAX} by #{CITATION}\.?$",
         name: MATERIAL_REFERRED_TO_BY,
         type: MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Unavailable name; material referred to #{TAX} by #{CITATION_TAXT}\.?$",
+        regex: "^Unavailable name; material referred to #{TAX} by #{CITATION}\.?$",
         name: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY,
         type: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATION_TAXT}\.?$",
+        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATION}\.?$",
         name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
@@ -133,7 +153,7 @@ module Taxt
         type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
       {
-        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION_TAXT}\\)\.?\\]$",
+        regex: "^\\[First available use of #{TAXAC}; unavailable \\(infrasubspecific\\) name \\(#{CITATION}\\)\.?\\]$",
         name: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE,
         type: FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
       }
