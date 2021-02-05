@@ -10,7 +10,7 @@ module DatabaseScripts
     end
 
     def results
-      Taxon.extant.where(type: Rank::GENUS_GROUP_NAMES)
+      Taxon.extant.genus_group_names
     end
 
     def render

@@ -50,19 +50,19 @@
               =@protonym.authorship_reference.decorate.link_to_reference
             =@protonym.authorship.pages
 
-        -# TODO: Most of these *should* only be set for `SpeciesGroupTaxon`s.
-        -if @protonym.forms?
-          %tr
-            %th Forms
-            %td=@protonym.forms
-        -if @protonym.biogeographic_region?
-          %tr
-            %th Biogeographic region
-            %td=@protonym.biogeographic_region
-        -if @protonym.locality?
-          %tr
-            %th Locality
-            %td=@protonym.decorate.format_locality
+        -if @protonym.species_group_name?
+          -if @protonym.forms?
+            %tr
+              %th Forms
+              %td=@protonym.forms
+          -if @protonym.biogeographic_region?
+            %tr
+              %th Biogeographic region
+              %td=@protonym.biogeographic_region
+          -if @protonym.locality?
+            %tr
+              %th Locality
+              %td=@protonym.decorate.format_locality
 
         -if @protonym.ichnotaxon?
           %tr

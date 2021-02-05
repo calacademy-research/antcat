@@ -118,4 +118,28 @@ describe Rank do
       expect(described_class.number_of_name_parts(described_class::INFRASUBSPECIES)).to eq 4
     end
   end
+
+  describe ".sort_ranks" do
+    specify do
+      unsorted_ranks = [described_class::SPECIES, described_class::FAMILY]
+
+      expect(described_class.sort_ranks(unsorted_ranks)).to eq [described_class::FAMILY, described_class::SPECIES]
+    end
+  end
+
+  describe ".sort_ranks_hash" do
+    specify do
+      unsorted_ranks = {
+        described_class::SPECIES => 'a',
+        described_class::FAMILY => 'a',
+        nil => 'a'
+      }
+
+      expect(described_class.sort_ranks_hash(unsorted_ranks)).to eq(
+        nil => 'a',
+        described_class::FAMILY => 'a',
+        described_class::SPECIES => 'a'
+      )
+    end
+  end
 end

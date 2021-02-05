@@ -33,9 +33,14 @@
         Show only for rank: #{@history_item.rank}
 
     .callout.margin-bottom.large-12
-      %p
-        -if @history_item.valid?
+      -if @history_item.valid?
+        %p
           =Detax[@history_item.to_taxt]
+
+        %hr.discrete
+
+        %pre.pre-wrapped
+          =@history_item.to_taxt
 
   .small-3.columns
     .additional-editor-data.callout.no-border-callout.logged-in-only-background

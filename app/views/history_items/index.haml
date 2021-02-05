@@ -5,6 +5,9 @@
   =javascript_include_tag "sortable_tables"
 
 -content_for :breadcrumbs_right do
+  -if current_user && !params[:standard]
+    =link_to "Show 'Standard?' column", request.query_parameters.merge(standard: "y"), class: 'btn-normal'
+
   -# NOTE: Added as a dropdown because that was less confusing.
   .btn-normal.dropdown.button{data: { toggle: "more-dropdown"}, type: "button"} Other Search forms
   #more-dropdown.dropdown-pane{data: { dropdown: 'true', hover: 'true', hover_pane: 'true' }}
@@ -41,7 +44,7 @@
 
     .row
       .medium-3.columns
-        %pre=JSON.pretty_generate(@history_items.group('taxa.type').count)
+        %pre=JSON.pretty_generate(Rank.sort_ranks_hash(@history_items.group('taxa.type').count))
       .medium-3.columns
         %pre=JSON.pretty_generate(@history_items.group('taxa.status').count)
       .medium-3.columns
@@ -62,7 +65,7 @@
       %th Rank
       %th Status
       %th Taxt
-      -if params[:show_standard_format]
+      -if params[:standard]
         %th Standard?
   -if @history_items.empty?
     %tr
@@ -81,7 +84,7 @@
       %td=history_item.terminal_taxa.map(&:status).join(', ')
       %td=Detax[history_item.to_taxt]
       -# TODO: Secret option for investigating items.s
-      -if params[:show_standard_format]
+      -if params[:standard]
         %td
           -if history_item.standard_format?
             Yes

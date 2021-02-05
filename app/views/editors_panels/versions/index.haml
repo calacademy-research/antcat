@@ -10,7 +10,7 @@
     .small-6.medium-4.large-2.columns
       =f.number_field :item_id, value: params[:item_id], placeholder: 'Item ID'
     .small-6.medium-4.large-2.columns.end
-      =f.select :event, options_for_select(%w[create destroy update], params[:event]), prompt: 'Event'
+      =f.select :event, options_for_select(%w[create update destroy], params[:event]), prompt: 'Event'
 
   .row
     .small-6.medium-4.large-2.columns
@@ -42,7 +42,7 @@
         %th Item ID
         %th When
         %th
-        %th
+        %th Changeset
     %tbody
       -@versions.each do |version|
         %tr
@@ -56,8 +56,7 @@
             =version_decorated.revision_history_link
             =version_decorated.activity_link
           %td
-            =inline_expandable version.inspect do
-              %pre=version.to_yaml
+            %pre.pre-wrapped.small-text=version_decorated.format_compact_changeset
 
 -if (last_verson = @versions.last)
   .center-text

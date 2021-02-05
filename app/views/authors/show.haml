@@ -24,30 +24,33 @@
     =render "shared/reference_table", references: @references
     =will_paginate @references, param_name: "references_page", params: { anchor: "references" }
 
-%h5.margin-top Taxa originally described by author (including combinations)
+%h5.margin-top Protonyms originally described by author
 -# Anchor for the pagination.
-%a{name: 'taxa'}
--if @taxa.blank?
-  %p Found no taxa described by this author.
+%a{name: 'protonyms'}
+-if @described_protonyms.blank?
+  %p Found no protonyms described by this author.
 -else
   %table.table.stack
     %thead
+      %th Protonym
       %th Taxon
       %th Authorship
       %th Rank
       %th Status
       %th
-    -@taxa.each do |taxon|
+    -@described_protonyms.each do |protonym|
+      -terminal_taxon = protonym.terminal_taxon
       %tr
-        %td=CatalogFormatter.link_to_taxon(taxon)
-        %td=taxon.authorship_reference.decorate.link_to_reference
-        %td=taxon.rank.capitalize
-        %td=taxon.status.capitalize
+        %td=CatalogFormatter.link_to_protonym(protonym)
+        %td=CatalogFormatter.link_to_taxon(terminal_taxon)
+        %td=terminal_taxon.authorship_reference.decorate.link_to_reference
+        %td=terminal_taxon.rank.capitalize
+        %td=terminal_taxon.status.capitalize
         %td
-          -if taxon.original_combination?
+          -if terminal_taxon.original_combination?
             Original combination
             =antcat_icon 'check'
-  =will_paginate @taxa, param_name: "taxa_page", params: { anchor: "taxa" }
+  =will_paginate @described_protonyms, param_name: "protonyms_page", params: { anchor: "protonyms" }
 
 .row
   .small-12.medium-6.columns.margin-top.end

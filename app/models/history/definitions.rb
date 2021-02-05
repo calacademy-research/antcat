@@ -71,6 +71,7 @@ module History
 
         validates_presence_of: [:object_taxon, :reference, :pages]
       },
+      # Plan: To be merged with `SeniorSynonymOf` once migrated and synced, probably as `SubjectiveSynonym`.
       JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
         type_label: 'Junior synonym of',
         ranks: ANY_RANK_GROUP_LABEL,
@@ -92,6 +93,7 @@ module History
         validates_presence_of: [:object_protonym, :reference, :pages],
         allow_force_author_citation: true
       },
+      # Plan: Same as with `JuniorSynonymOf`.
       SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
         type_label: 'Senior synonym of',
         ranks: ANY_RANK_GROUP_LABEL,
@@ -118,7 +120,7 @@ module History
         ranks: SPECIES_GROUP_LABEL,
 
         group_order: 50,
-        group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
+        group_key: ->(o) { [o.type] },
 
         item_template: 'Status as species: %<grouped_item_taxts>s.',
 

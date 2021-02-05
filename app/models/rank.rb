@@ -82,5 +82,13 @@ class Rank
       else 0
       end
     end
+
+    def sort_ranks ranks
+      ranks.sort_by { |rank| TYPES.index(rank) }
+    end
+
+    def sort_ranks_hash hsh
+      hsh.sort_by { |(rank, _)| rank ? TYPES.index(rank) : 0 }.to_h
+    end
   end
 end
