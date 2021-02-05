@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class SubspeciesOfHistoryItemsWithSubspeciesAsObjectTaxon < DatabaseScript
+  class SubspeciesOfHistoryItemsWithSubspeciesAsTerminalTaxon < DatabaseScript
     LIMIT = 500
 
     def statistics
@@ -11,8 +11,8 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where(type: History::Definitions::SUBSPECIES_OF).joins(:object_taxon).
-        where(taxa: { type: Rank::SUBSPECIES }).limit(LIMIT)
+      HistoryItem.where(type: History::Definitions::SUBSPECIES_OF).joins(object_taxon: { protonym: :terminal_taxon }).
+        where(terminal_taxons_protonyms: { type: Rank::SUBSPECIES }).limit(LIMIT)
     end
 
     def render
@@ -36,14 +36,16 @@ end
 __END__
 
 title: >
-  'Subspecies of' history items with subspecies as object taxon
+  'Subspecies of' history items with subspecies as terminal taxon
 
 section: research
 category: History
 tags: [new!]
 
 description: >
+  Not an issue with `tax` tags, but if we want to use protonym-based tags, then these would read as
+  "Subspecies of [another subspecies]".
 
 related_scripts:
-  - SubspeciesOfHistoryItemsWithSubspeciesAsTerminalTaxon
   - SubspeciesOfHistoryItemsWithSubspeciesAsObjectTaxon
+  - SubspeciesOfHistoryItemsWithSubspeciesAsTerminalTaxon
