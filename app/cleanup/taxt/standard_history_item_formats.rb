@@ -31,6 +31,8 @@ module Taxt
     PAGINATION_MANY = "(#{PAGINATION}, )*#{PAGINATION}"
     PAGINATION_MANY_EXACT = "^(#{PAGINATION}, )*#{PAGINATION}$"
     CITATION = "#{REF}: #{PAGINATION_MANY}"
+    TRAILING_CITATION = "; #{CITATION}"
+    CITATIONS = "#{CITATION}(#{TRAILING_CITATION})*"
 
     MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(<\/i>)?}"
     UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(<\/i>)?}"
@@ -224,17 +226,17 @@ module Taxt
         type: UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST
       },
       {
-        regex: "^Material referred to #{TAX} by #{CITATION}\.?$",
+        regex: "^Material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
         name: MATERIAL_REFERRED_TO_BY,
         type: MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Unavailable name; material referred to #{TAX} by #{CITATION}\.?$",
+        regex: "^Unavailable name; material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
         name: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY,
         type: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATION}\.?$",
+        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATIONS}\.?$",
         name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
@@ -254,12 +256,12 @@ module Taxt
         type: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP
       },
       {
-        regex: "^\\[Also described as new by #{CITATION}\.?\\]$",
+        regex: "^\\[Also described as new by #{CITATIONS}\.?\\]$",
         name: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP,
         type: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP
       },
       {
-        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATION}\.?\\]$",
+        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATIONS}\.?\\]$",
         name: MISSPELLED_AS_BY,
         type: MISSPELLED_AS_BY
       }

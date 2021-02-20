@@ -51,6 +51,28 @@ describe Taxt::StandardHistoryItemFormats do
     end
   end
 
+  describe 'parsing grouped citations' do
+    let(:taxt) { "Material referred to {#{Taxt::TAX_TAG} 1} by #{citation}." }
+
+    context "with unparsable grouped citations" do
+      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 135; {#{Taxt::REF_TAG} 125536}:" }
+
+      specify { expect(service.standard?).to eq false }
+    end
+
+    context "with one citation" do
+      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 135" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+
+    context "with two citations" do
+      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 12; {#{Taxt::REF_TAG} 234567}: 13" }
+
+      specify { expect(service.standard?).to eq true }
+    end
+  end
+
   describe '#standard?' do
     context 'with blank item' do
       let(:taxt) { '' }
