@@ -42,14 +42,16 @@
       -terminal_taxon = protonym.terminal_taxon
       %tr
         %td=CatalogFormatter.link_to_protonym(protonym)
-        %td=CatalogFormatter.link_to_taxon(terminal_taxon)
-        %td=terminal_taxon.authorship_reference.decorate.link_to_reference
-        %td=terminal_taxon.rank.capitalize
-        %td=terminal_taxon.status.capitalize
-        %td
-          -if terminal_taxon.original_combination?
-            Original combination
-            =antcat_icon 'check'
+        -# TODO: Add and use a null object for protonyms without a terminal taxon.
+        -if terminal_taxon
+          %td=CatalogFormatter.link_to_taxon(terminal_taxon)
+          %td=terminal_taxon.authorship_reference.decorate.link_to_reference
+          %td=terminal_taxon.rank.capitalize
+          %td=terminal_taxon.status.capitalize
+          %td
+            -if terminal_taxon.original_combination?
+              Original combination
+              =antcat_icon 'check'
   =will_paginate @described_protonyms, param_name: "protonyms_page", params: { anchor: "protonyms" }
 
 .row

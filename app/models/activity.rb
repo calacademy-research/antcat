@@ -87,10 +87,6 @@ class Activity < ApplicationRecord
       raise "You must include an edit summary." unless edit_summary
       create!(trackable: nil, action: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
     end
-
-    def antcatbot
-      @_antcatbot ||= User.find_by!(name: 'AntCatBot')
-    end
     # :nocov:
   end
 
