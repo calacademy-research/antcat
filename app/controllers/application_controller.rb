@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   before_action :store_location_for_devise, if: :storable_location?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
-  delegate :editor?, :at_least_helper?, :superadmin?, to: :current_user, prefix: 'user_is', allow_nil: true
-  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
+  delegate :editor?, :at_least_helper?, :superadmin?, :developer?, to: :current_user, prefix: 'user_is', allow_nil: true
+  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?, :user_is_developer?
 
   rescue_from NotAuthorized do |exception|
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
