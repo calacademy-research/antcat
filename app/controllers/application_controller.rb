@@ -66,6 +66,11 @@ class ApplicationController < ActionController::Base
       raise NotAuthorized, User::SUPERADMIN unless user_is_superadmin?
     end
 
+    def ensure_user_is_developer
+      authenticate_user!
+      raise NotAuthorized, User::DEVELOPER unless user_is_developer?
+    end
+
     def recaptcha_v3_valid? token, recaptcha_action
       return true unless Settings.recaptcha.enabled
       return true if current_user

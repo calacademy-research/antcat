@@ -25,7 +25,7 @@ Feature: Activity feed
     And I should see "Automated edit"
 
   Scenario: Pagination with quirks
-    Given I log in as a superadmin
+    Given I log in as a developer
     And activities are paginated with 2 per page
     And there are 5 activity items
 

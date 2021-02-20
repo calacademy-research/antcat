@@ -48,6 +48,11 @@ When('I log in as a superadmin named {string}') do |name|
   login_programmatically user
 end
 
+When('I log in as a developer') do
+  user = create :user, :editor, :developer
+  login_programmatically user
+end
+
 Then("Batiatus' editing_helpers settings for create_combination should be {string} [Boolean]") do |value|
   user = User.find_by!(name: 'Batiatus')
   boolean_value = { 'true' => true, 'false' => false }.fetch(value)

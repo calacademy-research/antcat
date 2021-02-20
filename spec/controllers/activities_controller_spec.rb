@@ -11,6 +11,10 @@ describe ActivitiesController do
     context "when signed in as an editor", as: :editor do
       specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
     end
+
+    context "when signed in as an superadmin", as: :superadmin do
+      specify { expect(delete(:destroy, params: { id: 1 })).to have_http_status :forbidden }
+    end
   end
 
   describe "GET show", as: :visitor do
@@ -22,7 +26,7 @@ describe ActivitiesController do
     end
   end
 
-  describe "DELETE destroy", as: :superadmin do
+  describe "DELETE destroy", as: :developer do
     let!(:activity) { create :activity }
 
     it 'deletes the activity' do

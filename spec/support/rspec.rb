@@ -57,7 +57,7 @@ RSpec.configure do |config|
       sign_in current_user
     when :visitor
       nil # No-op.
-    when :user, :helper, :editor, :superadmin
+    when :user, :helper, :editor, :superadmin, :developer
       sign_in create(:user, as)
     else
       location = example.metadata[:example_group][:location]
