@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_16_180813) do
+ActiveRecord::Schema.define(version: 2021_02_20_225054) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -168,7 +168,6 @@ ActiveRecord::Schema.define(version: 2021_01_16_180813) do
     t.text "secondary_type_information_taxt"
     t.text "type_notes_taxt"
     t.string "biogeographic_region"
-    t.boolean "uncertain_locality", default: false, null: false
     t.integer "type_name_id"
     t.string "forms"
     t.text "notes_taxt"

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Remove column.
-
 class AddUncertainLocalityToProtonyms < ActiveRecord::Migration[6.0]
   def change
     safety_assured do
