@@ -8,7 +8,8 @@ class AddObjectTaxonIdToHistoryItems < ActiveRecord::Migration[6.0]
       add_foreign_key :history_items, :taxa, column: 'object_taxon_id',
         name: "fk_history_items__object_taxon_id__taxa__id"
 
-      add_index :history_items, :object_protonym_id, name: 'ix_history_items__object_taxon_id'
+      # Commented out failed and now fixed rename.
+      # add_index :history_items, :object_protonym_id, name: 'ix_history_items__object_taxon_id'
     end
   end
 
