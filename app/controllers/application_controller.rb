@@ -53,17 +53,17 @@ class ApplicationController < ActionController::Base
 
     def ensure_user_is_editor
       authenticate_user!
-      raise NotAuthorized, "editor" unless user_is_editor?
+      raise NotAuthorized, User::EDITOR unless user_is_editor?
     end
 
     def ensure_user_is_at_least_helper
       authenticate_user!
-      raise NotAuthorized, "helper" unless user_is_at_least_helper?
+      raise NotAuthorized, User::HELPER unless user_is_at_least_helper?
     end
 
     def ensure_user_is_superadmin
       authenticate_user!
-      raise NotAuthorized, "superadmin" unless user_is_superadmin?
+      raise NotAuthorized, User::SUPERADMIN unless user_is_superadmin?
     end
 
     def recaptcha_v3_valid? token, recaptcha_action

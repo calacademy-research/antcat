@@ -3,6 +3,13 @@
 class User < ApplicationRecord
   include Trackable
 
+  USER_ROLE_FLAGS = [
+    HELPER = 'helper',
+    EDITOR = 'editor',
+    SUPERADMIN = 'superadmin',
+    DEVELOPER = 'developer'
+  ]
+
   UNCONFIRMED_USER_EDIT_LIMIT_COUNT = 5
   UNCONFIRMED_USER_EDIT_LIMIT_PERIOD = 24.hours
   MAX_NEW_REGISTRATIONS_PER_DAY = 20
