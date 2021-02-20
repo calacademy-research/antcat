@@ -1,6 +1,11 @@
 #breadcrumbs
   .left
-    =breadcrumbs display_single_fragment: true, link_current: true
+    -breadcrumbs(display_single_fragment: true, link_current: true).tap do |links|
+      -if links.any?
+        -links.each do |link|
+          =link_to link.text, link.url, class: link.custom_class
+          -unless link.current?
+            &rsaquo;
 
   -if content_for? :breadcrumbs_right
     .right=yield :breadcrumbs_right
