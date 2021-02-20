@@ -346,6 +346,16 @@ describe Taxt::StandardHistoryItemFormats do
       end
     end
 
+    context "with 'As unavailable (infrasubspecific) name' item" do
+      let(:taxt) do
+        "As unavailable (infrasubspecific) name: {#{Taxt::REF_TAG} 2}: 3."
+      end
+
+      specify do
+        expect(service.identified_type).to eq described_class::AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      end
+    end
+
     context "with 'Declared as unavailable (infrasubspecific) name' item" do
       let(:taxt) do
         "Declared as unavailable (infrasubspecific) name: {#{Taxt::REF_TAG} 2}: 3."
@@ -395,6 +405,35 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.identified_type).to eq described_class::MISSPELLED_AS_BY
+      end
+    end
+  end
+
+  describe '#deprecated?' do
+    context "with 'See also' item" do
+      let(:taxt) { "See also: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.deprecated?).to eq true
+        expect(service.identified_type).to eq described_class::SEE_ALSO
+      end
+    end
+
+    context "with 'Revived status as species' item" do
+      let(:taxt) { "Revived status as species: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.deprecated?).to eq true
+        expect(service.identified_type).to eq described_class::REVIVED_STATUS_AS_SPECIES
+      end
+    end
+
+    context "with 'Raised to species' item" do
+      let(:taxt) { "Raised to species: {#{Taxt::REF_TAG} 2}: 3." }
+
+      specify do
+        expect(service.deprecated?).to eq true
+        expect(service.identified_type).to eq described_class::RAISED_TO_SPECIES
       end
     end
   end
