@@ -5,6 +5,13 @@ module PaperTrail
     include PaperTrail::VersionConcern
     include SetRequestUuid
 
+    # As defined in PaperTrail. Copied here since they are not in the gem's source code.
+    EVENTS = [
+      CREATE_EVENT = 'create',
+      UPDATE_EVENT = 'update',
+      DESTROY_EVENT = 'destroy'
+    ]
+
     belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
 
     scope :filter_where, ->(filter_params) do
