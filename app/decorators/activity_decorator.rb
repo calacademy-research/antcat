@@ -5,6 +5,11 @@
 class ActivityDecorator < Draper::Decorator
   # Don't show user who created other users' accounts.
   HIDE_USER_FOR_TRACKABLE_TYPES = ['User']
+  ACTION_TO_VERB = {
+    Activity::CREATE  => "added",
+    Activity::UPDATE  => "edited",
+    Activity::DESTROY => "deleted"
+  }
 
   delegate :user, :trackable, :trackable_id, :trackable_type,
     :parameters, :action, :edit_summary, :edit_summary?
@@ -69,7 +74,7 @@ class ActivityDecorator < Draper::Decorator
     if activity.trackable
       h.link_to(label, (path || activity.trackable))
     else
-      action == 'destroy' ? label : (label + ' [deleted]')
+      action == Activity::DESTROY ? label : (label + ' [deleted]')
     end
   end
 
@@ -87,11 +92,7 @@ class ActivityDecorator < Draper::Decorator
 
   # NOTE: Missing actions are upcased to make sure they are ugly.
   def action_to_verb
-    {
-      create: "added",
-      update: "edited",
-      destroy: "deleted"
-    }[activity.action.to_sym] || activity.action.upcase
+    ACTION_TO_VERB[activity.action] || activity.action.upcase
   end
 
   def locked_or_deleted_user_registration?

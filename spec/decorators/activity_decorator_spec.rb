@@ -228,7 +228,7 @@ describe ActivityDecorator do
 
   describe "#action_to_verb" do
     it "past participle-ifies defined actions" do
-      decorated = build_stubbed(:activity, action: "create").decorate
+      decorated = build_stubbed(:activity, action: Activity::CREATE).decorate
       expect(decorated.action_to_verb).to eq "added"
     end
 
