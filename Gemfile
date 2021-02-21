@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'rails', '6.1.1'
+gem 'rails', '6.1.3'
 
 gem 'citrus'
 gem 'coffee-rails'
@@ -66,7 +66,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.9.0', require: false
+  gem 'rubocop', '~> 1.10.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
