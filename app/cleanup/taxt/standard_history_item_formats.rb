@@ -31,6 +31,8 @@ module Taxt
     PAGINATION_MANY = "(#{PAGINATION}, )*#{PAGINATION}"
     PAGINATION_MANY_EXACT = "^(#{PAGINATION}, )*#{PAGINATION}$"
     CITATION = "#{REF}: #{PAGINATION_MANY}"
+    TRAILING_CITATION = "; #{CITATION}"
+    CITATIONS = "#{CITATION}(#{TRAILING_CITATION})*"
 
     MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(<\/i>)?}"
     UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(<\/i>)?}"
@@ -81,6 +83,7 @@ module Taxt
       UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST = 'UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST',
       MATERIAL_REFERRED_TO_BY = 'MATERIAL_REFERRED_TO_BY',
       UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY = 'UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY',
+      AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
       DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME = 'DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
       FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME =
         'FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME',
@@ -89,6 +92,13 @@ module Taxt
       ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP = 'ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP',
       ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP = 'ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP',
       MISSPELLED_AS_BY = 'MISSPELLED_AS_BY'
+    ]
+
+    # Deprecated styles, added to make it possible to filter it out.
+    DEPRECATED_FORMATS = [
+      SEE_ALSO = 'SEE_ALSO',
+      REVIVED_STATUS_AS_SPECIES = 'REVIVED_STATUS_AS_SPECIES',
+      RAISED_TO_SPECIES = 'RAISED_TO_SPECIES'
     ]
 
     # [grep:history_type].
@@ -224,17 +234,22 @@ module Taxt
         type: UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST
       },
       {
-        regex: "^Material referred to #{TAX} by #{CITATION}\.?$",
+        regex: "^Material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
         name: MATERIAL_REFERRED_TO_BY,
         type: MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Unavailable name; material referred to #{TAX} by #{CITATION}\.?$",
+        regex: "^Unavailable name; material referred to #{TAX_ISH} by #{CITATIONS}\.?$",
         name: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY,
         type: UNAVAILABLE_NAME_AND_MATERIAL_REFERRED_TO_BY
       },
       {
-        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATION}\.?$",
+        regex: "^As unavailable \\(infrasubspecific\\) name: #{CITATIONS}\.?$",
+        name: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
+        type: AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+      },
+      {
+        regex: "^Declared as unavailable \\(infrasubspecific\\) name: #{CITATIONS}\.?$",
         name: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME,
         type: DECLARED_AS_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       },
@@ -254,14 +269,31 @@ module Taxt
         type: ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP
       },
       {
-        regex: "^\\[Also described as new by #{CITATION}\.?\\]$",
+        regex: "^\\[Also described as new by #{CITATIONS}\.?\\]$",
         name: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP,
         type: ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP
       },
       {
-        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATION}\.?\\]$",
+        regex: "^\\[Misspelled as #{MISSPELLING} by #{CITATIONS}\.?\\]$",
         name: MISSPELLED_AS_BY,
         type: MISSPELLED_AS_BY
+      },
+
+      # Deprecated.
+      {
+        regex: "^See also: #{CITATIONS}\.?$",
+        name: SEE_ALSO,
+        type: SEE_ALSO
+      },
+      {
+        regex: "^Raised to species: #{CITATIONS}\.?$",
+        name: RAISED_TO_SPECIES,
+        type: RAISED_TO_SPECIES
+      },
+      {
+        regex: "^Revived status as species: #{CITATIONS}\.?$",
+        name: REVIVED_STATUS_AS_SPECIES,
+        type: REVIVED_STATUS_AS_SPECIES
       }
     ]
 
@@ -278,6 +310,10 @@ module Taxt
       @_identified_format ||= STANDARD_FORMATS.find do |standard_format|
         taxt.match?(standard_format[:regex])
       end || TAXT_FORMAT
+    end
+
+    def deprecated?
+      identified_type.in?(DEPRECATED_FORMATS)
     end
 
     def identified_type

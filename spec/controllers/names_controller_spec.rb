@@ -43,7 +43,7 @@ describe NamesController do
 
         activity = Activity.last
         expect(activity.trackable).to eq name
-        expect(activity.action).to eq 'update'
+        expect(activity.action).to eq Activity::UPDATE
         expect(activity.parameters).to eq(
           name: "Lasius newname",
           name_was: "Lasius oldname",

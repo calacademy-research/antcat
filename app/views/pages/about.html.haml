@@ -6,7 +6,7 @@
 
 %p AntCat is a catalog and bibliography of the taxonomy of the world's ants.
 
--if current_user&.developer?
+-if user_is_developer?
   %test-directive
     Vue does not work.
 

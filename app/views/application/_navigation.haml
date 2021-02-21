@@ -7,7 +7,7 @@
     #desktop-menu
       #desktop-upper-menu.top-bar-right
         %ul.menu
-          -if current_user&.developer?
+          -if user_is_developer?
             %li
               %small.left=link_to_current_page_on_live_site_or_localhost
           -if user_signed_in?

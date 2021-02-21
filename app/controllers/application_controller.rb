@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   before_action :store_location_for_devise, if: :storable_location?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
-  delegate :editor?, :at_least_helper?, :superadmin?, to: :current_user, prefix: 'user_is', allow_nil: true
-  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?
+  delegate :editor?, :at_least_helper?, :superadmin?, :developer?, to: :current_user, prefix: 'user_is', allow_nil: true
+  helper_method :user_is_editor?, :user_is_at_least_helper?, :user_is_superadmin?, :user_is_developer?
 
   rescue_from NotAuthorized do |exception|
     render plain: "You need the '#{exception.message}' permission to do that :(", status: :forbidden
@@ -53,17 +53,22 @@ class ApplicationController < ActionController::Base
 
     def ensure_user_is_editor
       authenticate_user!
-      raise NotAuthorized, "editor" unless user_is_editor?
+      raise NotAuthorized, User::EDITOR unless user_is_editor?
     end
 
     def ensure_user_is_at_least_helper
       authenticate_user!
-      raise NotAuthorized, "helper" unless user_is_at_least_helper?
+      raise NotAuthorized, User::HELPER unless user_is_at_least_helper?
     end
 
     def ensure_user_is_superadmin
       authenticate_user!
-      raise NotAuthorized, "superadmin" unless user_is_superadmin?
+      raise NotAuthorized, User::SUPERADMIN unless user_is_superadmin?
+    end
+
+    def ensure_user_is_developer
+      authenticate_user!
+      raise NotAuthorized, User::DEVELOPER unless user_is_developer?
     end
 
     def recaptcha_v3_valid? token, recaptcha_action

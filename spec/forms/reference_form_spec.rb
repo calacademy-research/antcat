@@ -193,14 +193,14 @@ describe ReferenceForm do
           it "creates 'create' versions for the added `ReferenceAuthorName`s" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
-                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: "create").count }.by(3)
+                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::CREATE_EVENT).count }.by(3)
             end
           end
 
           it "creates 'destroy' versions for the removed `ReferenceAuthorName`s" do
             with_versioning do
               expect { described_class.new(reference, params).save }.
-                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: "destroy").count }.by(1)
+                to change { PaperTrail::Version.where(item_type: 'ReferenceAuthorName', event: PaperTrail::Version::DESTROY_EVENT).count }.by(1)
             end
           end
 
