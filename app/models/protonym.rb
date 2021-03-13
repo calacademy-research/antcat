@@ -90,12 +90,16 @@ class Protonym < ApplicationRecord
   end
 
   def genus_group_name?
-    Rank.genus_group_name?(name.taxon_type)
+    Rank.genus_group_name?(rank_from_name)
   end
 
   def species_group_name?
     return false unless name
-    Rank.species_group_name?(name.taxon_type)
+    Rank.species_group_name?(rank_from_name)
+  end
+
+  def rank_from_name
+    name.taxon_type
   end
 
   def soft_validations
