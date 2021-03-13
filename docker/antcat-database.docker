@@ -13,11 +13,9 @@ RUN gem install bundler -v '2.1.1'
 
 RUN mkdir /var/run/sshd \
 && echo 'root:root' | chpasswd \
-&& sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-&& echo "export VISIBLE=now" >> /etc/profile
+&& sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-ENV NOTVISIBLE="in users profile" \
-    PATH="/code/bin:${PATH}"
+ENV PATH="/code/bin:${PATH}"
 
 # Run bundle install first so it can be cached between builds and not invalidated when code changes
 COPY Gemfile* /tmp/
