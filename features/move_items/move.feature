@@ -59,4 +59,4 @@ Feature: Move items
     And I should see "Antcatinae history"
 
     When I go to the activity feed
-    Then I should see "Archibald moved protonym items belonging to Antcatinae to Formica" within the activity feed
+    Then I should see "Archibald moved protonym items belonging to Antcatinae (no terminal taxon) to Formica" within the activity feed

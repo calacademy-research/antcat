@@ -30,6 +30,29 @@ describe CatalogFormatter do
     end
   end
 
+  describe ".link_to_protonym_with_terminal_taxa" do
+    let(:protonym) { create :protonym }
+
+    context 'when protonym does not have any terminal taxa' do
+      specify do
+        expect(described_class.link_to_protonym_with_terminal_taxa(protonym)).to eq <<~HTML.squish
+          #{protonym_link(protonym)} (no terminal taxon)
+        HTML
+      end
+    end
+
+    context 'when protonym has terminal taxa' do
+      let!(:taxon_1) { create :family, protonym: protonym }
+      let!(:taxon_2) { create :family, protonym: protonym }
+
+      specify do
+        expect(described_class.link_to_protonym_with_terminal_taxa(protonym)).to eq <<~HTML.squish
+          #{protonym_link(protonym)} (#{taxon_link(taxon_1)}, #{taxon_link(taxon_2)})
+        HTML
+      end
+    end
+  end
+
   describe ".taxon_disco_mode_css" do
     it 'replaces spaces in statuses with dashes' do
       taxon = build_stubbed :any_taxon, :obsolete_combination
