@@ -34,6 +34,11 @@ module DatabaseScripts
       protonym.decorate.link_to_protonym
     end
 
+    def protonym_link_with_terminal_taxa protonym
+      terminal_taxa_links = CatalogFormatter.link_to_taxa(protonym.terminal_taxa).presence || 'no terminal taxon'
+      protonym.decorate.link_to_protonym << "<br>".html_safe << terminal_taxa_links
+    end
+
     def protonym_links protonyms
       protonyms.map { |protonym| protonym.decorate.link_to_protonym }.join('<br>')
     end

@@ -105,7 +105,7 @@ __END__
 
 section: research
 category: Catalog
-tags: [new!]
+tags: []
 
 issue_description:
 

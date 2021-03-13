@@ -39,7 +39,7 @@ title: >
 
 section: research
 category: History
-tags: [new!]
+tags: []
 
 description: >
 

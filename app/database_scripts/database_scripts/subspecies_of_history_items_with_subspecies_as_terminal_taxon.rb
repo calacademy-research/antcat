@@ -40,7 +40,7 @@ title: >
 
 section: research
 category: History
-tags: [new!]
+tags: []
 
 description: >
   Not an issue with `tax` tags, but if we want to use protonym-based tags, then these would read as

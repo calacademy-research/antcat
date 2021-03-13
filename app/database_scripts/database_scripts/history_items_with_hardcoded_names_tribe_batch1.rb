@@ -55,7 +55,7 @@ title: History items with hardcoded names (tribe batch 1)
 
 section: missing-tags
 category: Taxt
-tags: [new!, very-slow]
+tags: [very-slow]
 
 description: >
   See [AntCat issue #63](/issues/63)

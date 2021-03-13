@@ -16,7 +16,10 @@ module DatabaseScripts
         <<-HTML.html_safe
           <table class="tablesorter hover margin-top">
             #{"<caption>#{caption_content}</caption>" if caption_content}
-            <thead>#{header_content}</thead>
+            <thead>
+              #{"<caption>#{info_content}</caption>" if info_content}
+              #{header_content}
+            </thead>
             <tbody>#{Markdowns::ParseCatalogTags[body_content]}</tbody>
           </table>
         HTML
@@ -24,6 +27,10 @@ module DatabaseScripts
 
       def caption string
         self.caption_content = string
+      end
+
+      def info string
+        self.info_content = string
       end
 
       def header *items
@@ -50,7 +57,7 @@ module DatabaseScripts
 
       private
 
-        attr_accessor :results, :caption_content, :header_content, :body_content
+        attr_accessor :results, :caption_content, :info_content, :header_content, :body_content
 
         def row _result, *fields
           return if fields.empty?
