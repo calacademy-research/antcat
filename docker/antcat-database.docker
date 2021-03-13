@@ -1,13 +1,9 @@
 FROM ruby:2.7.1
 
-# TODO: qt-related dependencies can be removed after switching from capybara-webkit to apparition.
 RUN apt-get update -qq && apt-get install -y \
 default-mysql-client \
-libqt5webkit5-dev \
 nodejs \
-openssh-server \
-qt5-default \
-qtchooser
+openssh-server
 
 RUN gem install bundler -v '2.1.1'
 
