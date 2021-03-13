@@ -53,7 +53,7 @@ title: >
 # TODO: Change to: section: disagreeing-history
 section: research
 category: History
-tags: [new!, list]
+tags: [list]
 
 description: >
   This script can be ignored until we have migrated history items to relational items.

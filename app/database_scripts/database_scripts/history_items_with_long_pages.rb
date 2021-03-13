@@ -36,7 +36,7 @@ __END__
 
 section: research
 category: History
-tags: [new!, list]
+tags: [list]
 
 description: >
   Indicates that the content may belong somewhere else.
