@@ -30,9 +30,10 @@ describe DatabaseScripts::Renderers::AsTable do
       expect(rendered.squish).to eq <<~HTML.squish
         <table class="tablesorter hover margin-top">
           <caption>My favorite ants</caption>
-          <thead><tr>
-            <th>Taxon</th>
-            <th>Status</th>
+          <thead>
+            <tr>
+              <th>Taxon</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody><tr><td>#{taxon_1.id}</td><td>#{taxon_1.status}</td></tr>
@@ -59,9 +60,10 @@ describe DatabaseScripts::Renderers::AsTable do
         expect(rendered.squish).to eq <<~HTML.squish
           <table class="tablesorter hover margin-top">
             <caption>My favorite ants</caption>
-            <thead><tr>
-              <th>Taxon</th>
-              <th>Status</th>
+            <thead>
+              <tr>
+                <th>Taxon</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody><tr><td>#{taxon_2.id}</td><td>#{taxon_2.status}</td></tr>
