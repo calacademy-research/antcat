@@ -11,7 +11,7 @@ describe ActivityDecorator do
     context "when taxon exists" do
       let(:taxon) { create :subfamily }
 
-      it "returns a link" do
+      it "links the taxon" do
         expect(described_class.link_taxon_if_exists(taxon.id)).to eq taxon_link(taxon)
       end
     end
@@ -31,8 +31,9 @@ describe ActivityDecorator do
     context "when protonym exists" do
       let(:protonym) { create :protonym }
 
-      it "returns a link" do
-        expect(described_class.link_protonym_if_exists(protonym.id)).to eq protonym_link(protonym)
+      it "links the protonym and its terminal taxa" do
+        expect(described_class.link_protonym_if_exists(protonym.id)).
+          to eq protonym_link(protonym) << " (no terminal taxon)"
       end
     end
 

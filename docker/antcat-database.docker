@@ -1,28 +1,17 @@
 FROM ruby:2.7.1
 
-# TODO: qt-related dependencies can be removed after switching from capybara-webkit to apparition.
 RUN apt-get update -qq && apt-get install -y \
-default-mysql-client \
-libqt5webkit5-dev \
-nodejs \
-openssh-server \
-qt5-default \
-qtchooser
+  default-mysql-client \
+  nodejs \
+  openssh-server
 
 RUN gem install bundler -v '2.1.1'
 
 RUN mkdir /var/run/sshd \
-&& echo 'root:root' | chpasswd \
-&& sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-&& echo "export VISIBLE=now" >> /etc/profile
-# SSH login fix. Otherwise user is kicked off after login
-#RUN sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+  && echo 'root:root' | chpasswd \
+  && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
-ENV NOTVISIBLE="in users profile" \
-    PATH="/code/bin:${PATH}"
-#RUN echo "export VISIBLE=now" >> /etc/profile
-#EXPOSE 22
-#CMD ["/usr/sbin/sshd", "-D", "-e", "-f", "/etc/ssh/sshd_config"]
+ENV PATH="/code/bin:${PATH}"
 
 # Run bundle install first so it can be cached between builds and not invalidated when code changes
 COPY Gemfile* /tmp/
@@ -32,10 +21,3 @@ RUN bundle install
 RUN mkdir /code
 ADD . /code/
 WORKDIR /code
-
-
-
-#ENTRYPOINT ["./download-database.sh"]
-#ENTRYPOINT ["/bin/bash"]
-
-

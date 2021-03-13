@@ -1,45 +1,60 @@
-## Installation (Linux, work in progress)
+## Install
+
+### Grab the code
 
 ```bash
 git clone https://github.com/calacademy/antcat.git
-cd antcat
-cp config/database.yml.example config/database.yml # edit database.yml
+```
+
+### Dependencies
+
+* git
+* [rvm](https://rvm.io/rvm/install)
+* [nvm](https://github.com/nvm-sh/nvm)
+* [yarn](https://github.com/yarnpkg/yarn)
+* MySQL
+* Java runtime (for Apache Solr)
+
+### Config and install
+
+```bash
+cp config/database.yml.example config/database.yml
 cp config/server.yml.example config/server.yml
 ```
 
-### Install dependencies
-## Basic deps
-```bash
-sudo apt-get install git
-```
-
-#### Manual installation
-First install RVM, Apache Solr, MySQL, curl, NodeJs (use Google).
+#### Ruby gems and npm packages
 
 ```bash
-bundle install # install gems
+bundle install
+rake yarn:install
 ```
-### Database
+
+#### Setup database
 ```bash
-bundle exec rake db:create && rake db:schema:load
-bundle exec rake db:test:prepare
+rake db:create
+rake db:schema:load
+rake db:test:prepare
 ```
+
+---
 
 #### Sample data
 ```bash
-bundle exec rake dev:prime
+rake seed:catalog
 ```
 
-## Run site
+See also `rake antcat`.
+
+#### Run site
 ```bash
-bundle exec rake sunspot:solr:start RAILS_ENV=development
-bundle exec rails server
+RAILS_ENV=development rake sunspot:solr:start
+rails server
 ```
 
 Visit http://localhost:3000/
 
-## Run tests
+#### Run tests
 ```bash
-bundle exec cucumber # feature/browser tests
-bundle exec rspec    # unit tests
+cucumber
+rspec
 ```

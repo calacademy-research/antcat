@@ -24,7 +24,7 @@ class ActivityDecorator < Draper::Decorator
 
   def self.link_protonym_if_exists id, deleted_label: nil
     if (protonym = Protonym.find_by(id: id))
-      CatalogFormatter.link_to_protonym(protonym)
+      CatalogFormatter.link_to_protonym_with_terminal_taxa(protonym)
     else
       deleted_label || "##{id} [deleted]"
     end

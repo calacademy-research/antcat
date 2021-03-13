@@ -37,6 +37,11 @@ module CatalogFormatter
     protonym.decorate.link_to_protonym_with_linked_author_citation
   end
 
+  def link_to_protonym_with_terminal_taxa protonym
+    terminal_taxa_links = link_to_taxa(protonym.terminal_taxa).presence || 'no terminal taxon'
+    protonym.decorate.link_to_protonym << " (" << terminal_taxa_links << ")"
+  end
+
   # rubocop:disable Layout/LineLength
   def link_to_taxt_reference reference
     %(<a v-hover-reference="#{reference.id}" class="taxt-hover-reference" href="/references/#{reference.id}">#{reference.key_with_suffixed_year}</a>).html_safe
