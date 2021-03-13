@@ -1,15 +1,15 @@
 FROM ruby:2.7.1
 
 RUN apt-get update -qq && apt-get install -y \
-default-mysql-client \
-nodejs \
-openssh-server
+  default-mysql-client \
+  nodejs \
+  openssh-server
 
 RUN gem install bundler -v '2.1.1'
 
 RUN mkdir /var/run/sshd \
-&& echo 'root:root' | chpasswd \
-&& sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+  && echo 'root:root' | chpasswd \
+  && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 
 ENV PATH="/code/bin:${PATH}"
 
