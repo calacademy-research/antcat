@@ -18,7 +18,7 @@ env:
 jobs:
   rubocop:
     name: RuboCop
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
     - name: Checkout
@@ -43,7 +43,7 @@ jobs:
 
   cucumber:
     name: Cucumber
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     services:
       mysql:
@@ -71,8 +71,7 @@ jobs:
         cp config/database.github-actions.yml config/database.yml
         cp config/server.yml.example config/server.yml
 
-        sudo apt-get install -y mysql-client libmysqlclient-dev
-        sudo service mysql start
+        sudo /etc/init.d/mysql start
 
         bundle exec rake db:create
 
@@ -84,7 +83,7 @@ jobs:
 
   rspec:
     name: RSpec
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     services:
       mysql:
@@ -112,8 +111,7 @@ jobs:
         cp config/database.github-actions.yml config/database.yml
         cp config/server.yml.example config/server.yml
 
-        sudo apt-get install -y mysql-client libmysqlclient-dev
-        sudo service mysql start
+        sudo /etc/init.d/mysql start
 
         bundle exec rake db:create
 
