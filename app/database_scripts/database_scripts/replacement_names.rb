@@ -9,13 +9,18 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Authorship', 'Taxon', 'Status', 'Replacement name for'
+        t.header 'Protonym', 'Authorship',
+          'Forms', 'Bio region', 'Locality',
+          'Taxon', 'Status', 'Replacement name for'
         t.rows do |taxon|
           protonym = taxon.protonym
 
           [
             protonym_link(protonym),
             protonym.author_citation,
+            protonym.forms,
+            protonym.biogeographic_region,
+            protonym.locality,
             taxon_link(taxon),
             taxon.status,
             taxon_links_with_author_citations(taxon.replacement_name_for)
