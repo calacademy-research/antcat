@@ -31,7 +31,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def soft_validated?
-    database_script.class.in?(SoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
+    database_script.class.in?(::DbScriptSoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
   end
 
   def fix_random?

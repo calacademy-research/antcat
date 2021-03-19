@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe SoftValidation do
+describe DbScriptSoftValidation do
   subject(:soft_validation) { described_class.run(taxon, database_script) }
 
   let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }

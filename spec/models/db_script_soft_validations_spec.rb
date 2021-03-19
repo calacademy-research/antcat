@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe SoftValidations do
-  # These specs do not really belong here, but it's tested here since the constants are defined in `SoftValidations`.
+describe DbScriptSoftValidations do
+  # These specs do not really belong here, but it's tested here since the constants are defined in `DbScriptSoftValidations`.
   describe 'scripts to check' do
     described_class::ALL_DATABASE_SCRIPTS_TO_CHECK.each do |klass|
       context klass.name do
@@ -47,7 +47,7 @@ describe SoftValidations do
           expect(failed_soft_validations.first.database_script).to be_a DatabaseScripts::ExtantTaxaInFossilGenera
         end
 
-        describe 'attributes from `SoftValidation`' do
+        describe 'attributes from `DbScriptSoftValidation`' do
           specify do
             failed = failed_soft_validations.first
 

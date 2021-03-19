@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SoftValidations
+class DbScriptSoftValidations
   WARN_ON_DATABASE_SCRIPTS_RUNTIME_OVER = 0.2.seconds
 
   # These scripts do not 100% belong here since scripts are injected to avoid coupling.
@@ -44,7 +44,7 @@ class SoftValidations
 
   def all
     @_all ||= database_script_klasses.map do |database_script_klass|
-      SoftValidation.run(record, database_script_klass)
+      DbScriptSoftValidation.run(record, database_script_klass)
     end
   end
 

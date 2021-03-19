@@ -9,7 +9,7 @@ module Taxa
     end
 
     def soft_validations
-      @_soft_validations ||= SoftValidations.new(taxon, SoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
+      @_soft_validations ||= DbScriptSoftValidations.new(taxon, DbScriptSoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
     end
 
     def what_links_here
