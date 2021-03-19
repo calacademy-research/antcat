@@ -2,6 +2,9 @@
 
 module DatabaseScripts
   class HistoryItemsWithoutRefOrTaxTags < DatabaseScript
+    NO_REF_OR_TAX_OR_PRO_TAG =
+      "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %' AND taxt NOT LIKE '%{pro %'"
+
     # Manually checked in October 2020.
     # Via:
     # DatabaseScripts::HistoryItemsWithoutRefOrTaxTags.new.results.pluck(:id).in_groups_of(10).each { |g| puts g.join(', ') }; nil
@@ -32,7 +35,7 @@ module DatabaseScripts
     ]
 
     def results
-      HistoryItem.taxts_only.where(Taxt::HistoryItemCleanup::NO_REF_OR_TAX_OR_PRO_TAG).
+      HistoryItem.taxts_only.where(NO_REF_OR_TAX_OR_PRO_TAG).
         includes(protonym: :name)
     end
 
