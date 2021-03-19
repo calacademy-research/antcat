@@ -6,15 +6,26 @@ echo "*** Executing $0"
 
 full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
-production_current_release_path='/data/antcat/current'
+remote_current_release_path='/data/antcat/current'
 
 function restart_production() {
-  pushd $production_current_release_path
+  pushd $remote_current_release_path
 
   bash "$dir_path/kill"
 
   RAILS_ENV=production bundle exec rake sunspot:solr:start
   RAILS_ENV=production bundle exec rake sunspot:solr:reindex
+
+  popd
+}
+
+function restart_staging() {
+  pushd $remote_current_release_path
+
+  bash "$dir_path/kill"
+
+  RAILS_ENV=staging bundle exec rake sunspot:solr:start
+  RAILS_ENV=staging bundle exec rake sunspot:solr:reindex
 
   popd
 }
@@ -28,6 +39,8 @@ function restart_development() {
 
 if [ "${1:-}" = "production" ]; then
   restart_production
+elif [ "${1:-}" = "staging" ]; then
+  restart_staging
 else
   restart_development
 fi
