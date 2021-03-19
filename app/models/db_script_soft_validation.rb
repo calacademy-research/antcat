@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SoftValidation
+class DbScriptSoftValidation
   include Draper::Decoratable
 
   attr_reader :runtime

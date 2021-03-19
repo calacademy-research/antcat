@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SoftValidationDecorator < Draper::Decorator
+class DbScriptSoftValidationDecorator < Draper::Decorator
   delegate :runtime
 
   def format_runtime
