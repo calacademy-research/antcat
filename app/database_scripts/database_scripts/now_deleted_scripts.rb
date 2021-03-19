@@ -31,10 +31,6 @@ module DatabaseScripts
             ok?: !Species.joins(:name).joins(:genus).
                     joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
                     where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name").exists?
-          },
-          {
-            title: 'Now deleted script: TaxaWithNonModernCapitalization',
-            ok?: !Taxon.joins(:name).where("name NOT LIKE '%(%' AND BINARY SUBSTRING(name, 2) != LOWER(SUBSTRING(name, 2))").exists?
           }
         ]
       end
