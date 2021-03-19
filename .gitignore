@@ -23,9 +23,10 @@
 /spec/examples.txt
 
 # Solr data.
-/solr/
-!/solr/conf/
-!/solr/solr.xml
+/solr/pids
+/solr/default/data
+/solr/development/data
+/solr/test/data
 
 # Allow developer to keep their own versions of these.
 .rspec
