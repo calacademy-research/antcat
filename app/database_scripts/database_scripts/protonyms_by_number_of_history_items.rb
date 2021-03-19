@@ -11,7 +11,7 @@ module DatabaseScripts
       Protonym.joins(:history_items).
         where.not(history_items: { type: History::Definitions::TAXT }).
         group(:id).order("COUNT(history_items.id) DESC").limit(LIMIT).
-        select("`protonyms`.*, COUNT(history_items.id) AS history_item_count")
+        select("protonyms.*, COUNT(history_items.id) AS history_item_count")
     end
 
     def render
