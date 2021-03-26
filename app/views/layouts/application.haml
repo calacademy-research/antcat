@@ -23,7 +23,7 @@
 
     =stylesheet_link_tag 'application'
     =stylesheet_link_tag 'logged_in_only' if current_user
-    =stylesheet_link_tag "env_specific/#{Rails.env}" if Rails.env.development? || Rails.env.test?
+    =stylesheet_link_tag "env_specific/#{Rails.env}" if Rails.env.in?(['staging', 'development', 'test'])
 
     =javascript_include_tag 'application'
 
