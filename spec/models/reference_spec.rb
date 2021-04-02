@@ -43,7 +43,7 @@ describe Reference do
   describe 'callbacks' do
     it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
     it { is_expected.to strip_attributes(:title, :date, :stated_year, :year_suffix, :bolton_key, :author_names_suffix) }
-    it { is_expected.to strip_attributes(:series_volume_issue, :doi) }
+    it { is_expected.to strip_attributes(:series_volume_issue, :doi, :normalized_bolton_key) }
   end
 
   describe "scopes" do
