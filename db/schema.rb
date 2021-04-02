@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_20_225054) do
+ActiveRecord::Schema.define(version: 2021_04_02_200514) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -256,11 +256,13 @@ ActiveRecord::Schema.define(version: 2021_02_20_225054) do
     t.string "stated_year"
     t.string "year_suffix", limit: 2
     t.string "key_with_suffixed_year_cache"
+    t.string "normalized_bolton_key"
     t.index ["author_names_string_cache"], name: "ix_x_references__author_names_string_cache", length: 255
     t.index ["created_at"], name: "ix_references__created_at"
     t.index ["id", "type"], name: "ix_references__id__type"
     t.index ["journal_id"], name: "ix_references__journal_id"
     t.index ["nesting_reference_id"], name: "ix_references__nesting_reference_id"
+    t.index ["normalized_bolton_key"], name: "ix_references__normalized_bolton_key"
     t.index ["publisher_id"], name: "ix_references__publisher_id"
     t.index ["updated_at"], name: "ix_references__updated_at"
   end

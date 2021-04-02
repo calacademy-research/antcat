@@ -43,7 +43,7 @@ class Reference < ApplicationRecord
   has_paper_trail ignore: IGNORE_PAPER_TRAIL_COLUMNS
   strip_attributes only: [
     :public_notes, :editor_notes, :taxonomic_notes, :title, :date, :stated_year, :year_suffix,
-    :series_volume_issue, :doi, :bolton_key, :author_names_suffix
+    :series_volume_issue, :doi, :bolton_key, :author_names_suffix, :normalized_bolton_key
   ], replace_newlines: true
   trackable parameters: proc { { name: key_with_suffixed_year } }
 
