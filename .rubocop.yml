@@ -350,6 +350,10 @@ Style/OptionHash:
 Style/RedundantAssignment:
   Enabled: false
 
+# Disabled to due to redundant begins blocks added on purpose for consistency.
+Style/RedundantBegin:
+  Enabled: false
+
 Style/RedundantFetchBlock:
   Enabled: false
 

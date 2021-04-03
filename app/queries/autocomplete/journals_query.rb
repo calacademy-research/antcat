@@ -21,7 +21,7 @@ module Autocomplete
       end
 
       def search_expression
-        search_query.split('').join('%') + '%'
+        search_query.chars.join('%') + '%'
       end
   end
 end
