@@ -14,7 +14,7 @@ gem 'rack'
 gem 'rack-cors'
 gem 'rake'
 gem 'request_store'
-gem 'sass-rails'
+gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 
