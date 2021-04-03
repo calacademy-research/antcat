@@ -14,6 +14,7 @@ gem 'rack'
 gem 'rack-cors'
 gem 'rake'
 gem 'request_store'
+# TODO: Upgrade after deploying foundation-rails 6.6.
 gem 'sass-rails', '5.1.0'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
@@ -27,7 +28,7 @@ gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
-gem 'foundation-rails', '6.3.1.0'
+gem 'foundation-rails', '6.6.2.0'
 gem 'grape-swagger-rails'
 gem 'gretel'
 gem 'high_voltage'
