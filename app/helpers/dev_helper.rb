@@ -9,9 +9,9 @@ module DevHelper
     path = "#{request.path}#{query_params}"
 
     if Rails.env.development?
-      link_to "on antcat.org", "#{Settings.production_url}#{path}", class: "show-on-hover"
+      link_to "on antcat.org", "#{Settings.production_url}#{path}", class: "show-on-hover dev-link"
     else
-      link_to "on localhost", "http://localhost:3000#{path}", class: "show-on-hover"
+      link_to "on localhost", "http://localhost:3000#{path}", class: "show-on-hover dev-link"
     end
   end
 end

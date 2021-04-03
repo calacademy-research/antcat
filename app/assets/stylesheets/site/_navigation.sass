@@ -43,15 +43,14 @@ $mobile-topbar-background: $color_primary
           background-color: #fff
 
   #desktop-only
-    // Show localhost link.
-    &:hover .show-on-hover
-      display: inline
-      margin-right: 1rem
     #desktop-logo, #desktop-logo-image
       margin-top: 1.3rem
       color: $almost_white !important
     #desktop-menu
+      #desktop-upper-menu
+        float: right
       #desktop-lower-menu
+        float: right
         .reference-search-form
           margin-right: 1rem
         .expandable-catalog-search
@@ -71,6 +70,9 @@ $mobile-topbar-background: $color_primary
 
   #mobile-only
     font-size: 90%
+    .top-bar
+      // To make the AntCat logo bigger on mobile.
+      display: block
     .menu-icon
       margin-top: 10px
     #mobile-menu

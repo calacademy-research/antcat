@@ -104,7 +104,7 @@
     border-radius: 3px 3px 0 0
 
 @mixin normal-sized-button
-  @include button-style($color_primary, auto, auto)
+  @include button-style($color_primary, auto, #fff)
   @include button-expand(false)
   padding: 0.5rem 0.7rem
   font-size: rem-calc(14)
@@ -154,7 +154,7 @@
   cursor: pointer
 
 .btn-lower-nav
-  @include button-style($color_primary, auto, auto)
+  @include button-style($color_primary, auto, #fff)
   border: 1px $color_pale solid
   color: #fff
 
@@ -271,11 +271,6 @@ abbr[title]
 table
   border-spacing: 0
 
-// TODO: see if we can remove this after updating to Foundation 6.5.
-// Fix double arrow icons in dropdowns.
-select
-  background-image: none
-
 button.radius, .button.radius
   border-radius: 3px !important
 
@@ -293,3 +288,11 @@ button.radius, .button.radius
 
 .no-border-callout
   border: 0
+
+// HACK: To override Foundation menu styles.
+#header
+  #desktop-only
+    a.dev-link
+      display: none
+    &:hover .show-on-hover
+      display: block
