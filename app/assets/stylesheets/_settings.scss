@@ -1,3 +1,14 @@
+// NOTE: Added to fix deprecation warnings like:
+//   "DEPRECATION WARNING on ... !global assignments won't be able to declare new variables in future versions.
+//   Consider adding `$-zf-size: null` at the top level."
+$-zf-bp-value: null;
+$-zf-size: null;
+$alert-color: null;
+$primary-color: null;
+$secondary-color: null;
+$success-color: null;
+$warning-color: null;
+
 //  Foundation for Sites Settings
 //  -----------------------------
 //
