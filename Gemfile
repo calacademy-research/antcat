@@ -14,8 +14,7 @@ gem 'rack'
 gem 'rack-cors'
 gem 'rake'
 gem 'request_store'
-# TODO: Upgrade after deploying foundation-rails 6.6.
-gem 'sass-rails', '5.1.0'
+gem 'sass-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 

@@ -17,6 +17,7 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 Rails.application.config.assets.precompile += %w[*.svg *.eot *.woff *.ttf *.gif *.png *.ico]
 Rails.application.config.assets.precompile += %w[*.png *.jpg *.jpeg *.gif *.ico]
 
+# TODO: Cleanup after deploying Sprockets 4.
 Rails.application.config.assets.precompile += %w[
   jquery-ui/core.js
   jquery-ui/widgets/autocomplete.js
