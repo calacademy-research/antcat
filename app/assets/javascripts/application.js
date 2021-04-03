@@ -1,15 +1,7 @@
 // gems
 //= require rails-ujs
-//= require foundation.core
-//= require foundation.dropdown
-//= require foundation.responsiveMenu
-//= require foundation.responsiveToggle
-//= require foundation.sticky
-//= require foundation.tabs
-//= require foundation.util.box
-//= require foundation.util.keyboard
-//= require foundation.util.mediaQuery
-//= require foundation.util.triggers
+// TODO: Import individual files instead of all of Foundation.
+//= require foundation
 
 //= require twitter/typeahead
 
