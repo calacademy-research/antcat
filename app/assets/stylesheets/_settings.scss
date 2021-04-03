@@ -61,6 +61,7 @@
 //  56. Xy Grid
 
 @import 'util/util';
+@import 'colors';
 
 // 1. Global
 // ---------
@@ -68,28 +69,57 @@
 $global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
+
+// NOTE: Changed.
+// Kept commented out to make upgrades easier.
+// $foundation-palette: (
+//   primary: #1779ba,
+//   secondary: #767676,
+//   success: #3adb76,
+//   warning: #ffae00,
+//   alert: #cc4b37,
+// );
 $foundation-palette: (
-  primary: #1779ba,
+  primary: $color_primary,
   secondary: #767676,
-  success: #3adb76,
+  success: $color_primary,
   warning: #ffae00,
-  alert: #cc4b37,
+  alert: $color_danger,
 );
-$light-gray: #e6e6e6;
-$medium-gray: #cacaca;
+
+// NOTE: Changed.
+// $light-gray: #e6e6e6;
+$light-gray: $color_light_gray;
+
+// NOTE: Changed.
+//$medium-gray: #cacaca;
+$medium-gray: $color_medium_gray;
+
 $dark-gray: #8a8a8a;
-$black: #0a0a0a;
+
+// NOTE: Changed.
+// $black: #0a0a0a;
+$black: $color_foundation_black;
+
 $white: #fefefe;
 $body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+
+// NOTE: Changed.
+// $body-font-family: 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-font-family: Montserrat, 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
 $global-position: 1rem;
 $global-weight-normal: normal;
 $global-weight-bold: bold;
-$global-radius: 0;
+
+// NOTE: Changed.
+// $global-radius: 0;
+$global-radius: 3px;
+
 $global-menu-padding: 0.7rem 1rem;
 $global-menu-nested-margin: 1rem;
 $global-text-direction: ltr;
@@ -105,13 +135,23 @@ $print-hrefs: true;
 // 2. Breakpoints
 // --------------
 
+// NOTE: Changed.
+// HACK: Ugly hack because "large: 1024px" is wider than the default Capybara window (which is 1000px).
+// $breakpoints: (
+//   small: 0,
+//   medium: 640px,
+//   large: 1024px,
+//   xlarge: 1200px,
+//   xxlarge: 1440px,
+// );
 $breakpoints: (
   small: 0,
   medium: 640px,
-  large: 1024px,
+  large: 999px,
   xlarge: 1200px,
   xxlarge: 1440px,
 );
+
 $breakpoints-hidpi: (
   hidpi-1: 1,
   hidpi-1-5: 1.5,
@@ -805,7 +845,11 @@ $table-hover-scale: 2%;
 $table-row-hover: darken($table-background, $table-hover-scale);
 $table-row-stripe-hover: darken($table-background, $table-color-scale + $table-hover-scale);
 $table-is-striped: true;
-$table-striped-background: smart-scale($table-background, $table-color-scale);
+
+// NOTE: changed.
+// $table-striped-background: smart-scale($table-background, $table-color-scale);
+$table-striped-background: $color_light_gray;
+
 $table-stripe: even;
 $table-head-background: smart-scale($table-background, $table-color-scale / 2);
 $table-head-row-hover: darken($table-head-background, $table-hover-scale);
@@ -872,7 +916,11 @@ $tooltip-radius: $global-radius;
 // -----------
 
 $topbar-padding: 0.5rem;
-$topbar-background: $light-gray;
+
+// NOTE: Changed.
+// $topbar-background: $light-gray;
+$topbar-background: inherit;
+
 $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 0.5rem 1rem 0.5rem 0;
 $topbar-input-width: 200px;
