@@ -14,10 +14,6 @@ module DatabaseScripts
       end_data[:section] || DatabaseScripts::Tagging::UNGROUPED_SECTION
     end
 
-    def category
-      end_data[:category] || ""
-    end
-
     def tags
       end_data[:tags] || []
     end

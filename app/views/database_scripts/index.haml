@@ -68,7 +68,6 @@
       %table.tablesorter.huge-margin-bottom
         %thead
           %tr
-            %th.no-wrap Category
             %th Script
             %th.no-wrap Tags
             %th Soft-validated
@@ -79,7 +78,6 @@
           -database_scripts.each do |database_script|
             -decorated = database_script.decorate
             %tr
-              %td.shrink=database_script.category
               %td
                 =link_to database_script.title, database_script_path(database_script)
                 -if database_script.issue_description.present?

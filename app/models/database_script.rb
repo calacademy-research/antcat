@@ -11,7 +11,7 @@ class DatabaseScript
 
   attr_accessor :results_runtime
 
-  delegate :title, :section, :category, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
+  delegate :title, :section, :tags, :issue_description, :description, :related_scripts, to: :end_data_attributes
 
   class << self
     def new_from_basename basename
