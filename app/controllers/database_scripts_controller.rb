@@ -2,7 +2,7 @@
 
 class DatabaseScriptsController < ApplicationController
   FLUSH_QUERY_CACHE_DEBUG = false
-  # TODO: Extract into a new class, `DatabaseScriptsPresenter` or `DatabaseScriptsQuery`.
+  # TODO: Move to `DatabaseScriptsPresenter`.
   INDEX_VIEW_OPTIONS = [
     CHECK_IF_EMPTY = 'check_if_empty',
     NON_EMPTY_REGRESSION_TESTS = 'non_empty_regression_tests'
@@ -14,6 +14,7 @@ class DatabaseScriptsController < ApplicationController
     @total_number_of_database_scripts = database_scripts_scope.size
     @grouped_database_scripts = grouped_database_scripts
     @check_if_empty = check_if_empty?
+    @database_scripts_presenter = DatabaseScriptsPresenter.new
   end
 
   def show
@@ -35,9 +36,12 @@ class DatabaseScriptsController < ApplicationController
         sort_by { |section, _scripts| DatabaseScripts::Tagging::SECTIONS_SORT_ORDER.index(section) || 0 }
     end
 
+    # TODO: Unify `params[:view]` and `params[:tag]`.
     def database_scripts_scope
       @_database_scripts_scope ||= if params[:view] == NON_EMPTY_REGRESSION_TESTS
                                      DatabaseScript.non_empty_regression_tests
+                                   elsif (tag = params[:tag])
+                                     DatabaseScript.with_tag(tag)
                                    else
                                      DatabaseScript.all
                                    end

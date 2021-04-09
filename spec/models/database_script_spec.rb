@@ -23,6 +23,16 @@ describe DatabaseScript do
     end
   end
 
+  describe ".with_tag" do
+    it "returns database scripts with at least one tag matching the given tags" do
+      results = described_class.with_tag(DatabaseScripts::Tagging::SLOW_RENDER_TAG)
+      results_basenames = results.map(&:basename)
+
+      expect(results_basenames).to include DatabaseScripts::OrphanedProtonyms.new.basename
+      expect(results_basenames).to_not include DatabaseScripts::ExtantTaxaInFossilGenera.new.basename
+    end
+  end
+
   describe '.record_in_results?' do
     context "when taxon is in the script's results" do
       subject(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
