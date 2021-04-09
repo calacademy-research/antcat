@@ -10,9 +10,6 @@
 .row.collapse.margin-bottom
   .medium-8.columns
     %h5
-      -if @database_script.category.present?
-        =succeed ":" do
-          =@database_script.category
       =@database_script.title
       =@decorated_database_script.format_tags
     %p=markdown @database_script.description

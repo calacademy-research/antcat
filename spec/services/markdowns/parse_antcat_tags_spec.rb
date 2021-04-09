@@ -30,9 +30,9 @@ describe Markdowns::ParseAntcatTags do
     describe 'tag: `DBSCRIPT_TAG_REGEX`' do
       context 'when database script exists' do
         specify do
-          expect(described_class["%dbscript:TaxaWithSameName"].strip).to eq <<~HTML.squish
-            <a href="/database_scripts/taxa_with_same_name">Taxa with same name</a>
-            <span class="white-label rounded-badge">list</span>
+          expect(described_class["%dbscript:OrphanedProtonyms"].strip).to eq <<~HTML.squish
+            <a href="/database_scripts/orphaned_protonyms">Orphaned protonyms</a>
+            <span class="warning-label rounded-badge">slow-render</span>
           HTML
         end
       end

@@ -26,8 +26,7 @@ class DatabaseScriptDecorator < Draper::Decorator
   end
 
   def format_tags
-    tags_and_sections = ([section] + tags).compact - [DatabaseScripts::Tagging::MAIN_SECTION]
-    self.class.format_tags(tags_and_sections)
+    self.class.format_tags(tags)
   end
 
   def soft_validated?

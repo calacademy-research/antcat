@@ -13,23 +13,9 @@ describe DatabaseScriptDecorator do
 
   describe "#format_tags" do
     context 'when testing with a real script' do
-      let(:database_script) { DatabaseScripts::TaxaWithSameName.new }
+      let(:database_script) { DatabaseScripts::OrphanedProtonyms.new }
 
-      specify { expect(decorated.format_tags).to eq '<span class="white-label rounded-badge">list</span>' }
-    end
-
-    context "when script is in the 'main' section" do
-      let(:database_script) { DatabaseScripts::TaxaWithSameName.new }
-
-      before do
-        def database_script.section
-          DatabaseScripts::Tagging::MAIN_SECTION
-        end
-      end
-
-      it "does not include 'main' in the tags" do
-        expect(decorated.format_tags).to eq ""
-      end
+      specify { expect(decorated.format_tags).to eq '<span class="warning-label rounded-badge">slow-render</span>' }
     end
 
     context 'when script is an `UnfoundDatabaseScript`' do
