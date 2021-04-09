@@ -29,6 +29,11 @@ class DatabaseScript
       @_all ||= Dir["#{SCRIPTS_DIR}/*"].sort.map { |path| new_from_basename(File.basename(path, ".rb")) }
     end
 
+    def with_tag tag_or_tags
+      tags = Array.wrap(tag_or_tags)
+      all.reject { _1.tags.intersection(tags).empty? }
+    end
+
     def non_empty_regression_tests
       @_non_empty_regression_tests ||=
         all.map(&:decorate).select(&:regression_test?).select(&:empty?).map(&:undecorate)

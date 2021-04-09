@@ -101,7 +101,17 @@
                   =decorated.empty_status
 
 .row
-  .small-12.columns
+  .small-12.columns.huge-margin-bottom
     %small.right
       Total number of scripts:
       =@total_number_of_database_scripts
+
+.row
+  .small-12.columns.margin-bottom
+    %h5
+      Filter by tags
+      -if params[:tag]
+        %small=link_to "(show all)", database_scripts_path
+    -@database_scripts_presenter.tallied_tags.each do |tag, count|
+      =link_to DatabaseScriptDecorator.format_tags([tag]), database_scripts_path(tag: tag)
+      %small.right-margin=count
