@@ -899,8 +899,6 @@ definitions:
         type: integer
       date:
         type: string
-      year:
-        type: integer
       year_suffix:
         type: string
       stated_year:
