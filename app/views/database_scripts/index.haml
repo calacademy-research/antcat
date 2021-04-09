@@ -72,7 +72,6 @@
             %th Script
             %th.no-wrap Tags
             %th Soft-validated
-            %th Fix random
             -if @check_if_empty
               %th Empty?
         %tbody
@@ -90,10 +89,6 @@
               %td=decorated.format_tags
               %td.shrink
                 -if decorated.soft_validated?
-                  %span.hidden-sort Yes
-                  =antcat_icon("check")
-              %td.shrink
-                -if decorated.fix_random?
                   %span.hidden-sort Yes
                   =antcat_icon("check")
               -if @check_if_empty

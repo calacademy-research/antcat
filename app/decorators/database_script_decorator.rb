@@ -34,10 +34,6 @@ class DatabaseScriptDecorator < Draper::Decorator
     database_script.class.in?(::DbScriptSoftValidations::ALL_DATABASE_SCRIPTS_TO_CHECK)
   end
 
-  def fix_random?
-    database_script.class.in?(Catalog::FixRandomController::DATABASE_SCRIPTS_TO_CHECK)
-  end
-
   def slow?
     tags.include?(DatabaseScripts::Tagging::SLOW_TAG) || tags.include?(DatabaseScripts::Tagging::VERY_SLOW_TAG)
   end
