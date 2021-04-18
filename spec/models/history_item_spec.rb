@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe HistoryItem do
+describe HistoryItem, :relational_hi do
   it { is_expected.to be_versioned }
 
   describe 'relations' do

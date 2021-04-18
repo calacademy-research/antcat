@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe GroupedHistoryItem do
+describe GroupedHistoryItem, :relational_hi do
   subject(:grouped_history_item) { described_class.new([item, item]) }
 
   describe '#taxt' do

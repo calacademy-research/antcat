@@ -21,6 +21,7 @@ task :antcat do
     cucumber
     haml-lint
     rspec
+    rspec --tag=relational_hi
     rubocop
 
   STR

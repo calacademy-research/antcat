@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe HistoryItemDecorator do
+describe HistoryItemDecorator, :relational_hi do
   subject(:decorated) { history_item.decorate }
 
   describe "#rank_specific_badge" do

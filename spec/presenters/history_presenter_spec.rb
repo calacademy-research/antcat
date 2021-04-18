@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe HistoryPresenter do
+describe HistoryPresenter, :relational_hi do
   subject(:presenter) { described_class.new(history_items) }
 
   let(:protonym) { create :protonym }

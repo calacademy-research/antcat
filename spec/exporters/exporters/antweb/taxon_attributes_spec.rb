@@ -128,7 +128,7 @@ describe Exporters::Antweb::TaxonAttributes do
       end
     end
 
-    describe "[17]: `taxonomic history html`" do
+    describe "[17]: `taxonomic history html`", :relational_hi do
       let(:taxon) { create :genus, hol_id: 9999 }
       let!(:type_species) { create :species, genus: taxon }
       let(:taxt_reference) { create :any_reference }
