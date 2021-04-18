@@ -12,14 +12,14 @@ class ReferenceDocument < ApplicationRecord
     preserve_files: true,
     url: ':s3_domain_url',
     path: ':id/:filename',
-    bucket: 'antcat',
+    bucket: Settings.s3.bucket,
     storage: :s3,
     s3_credentials: {
       access_key_id: Settings.s3.access_key_id,
       secret_access_key: Settings.s3.secret_access_key
     },
     s3_permissions: 'authenticated-read',
-    s3_region: 'us-east-1',
+    s3_region: Settings.s3.region,
     s3_protocol: 'http'
   before_post_process :transliterate_file_name
   do_not_validate_attachment_file_type :pdf
