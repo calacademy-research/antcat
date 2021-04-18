@@ -125,18 +125,18 @@ describe HistoryPresenter, :relational_hi do
       end
 
       context 'with `SUBSPECIES_OF` items' do
-        let(:object_taxon) { create :species }
+        let(:object_protonym) { create :protonym, :species_group_name }
 
         let!(:item_1) do
           create :history_item, :subspecies_of, :with_2000_reference,
-            protonym: protonym, object_taxon: object_taxon
+            protonym: protonym, object_protonym: object_protonym
         end
         let!(:item_2) do
           create :history_item, :subspecies_of, :with_1758_reference,
-            protonym: protonym, object_taxon: object_taxon
+            protonym: protonym, object_protonym: object_protonym
         end
 
-        it 'groups them by `object_taxon`' do
+        it 'groups them by `object_protonym`' do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
         end
       end

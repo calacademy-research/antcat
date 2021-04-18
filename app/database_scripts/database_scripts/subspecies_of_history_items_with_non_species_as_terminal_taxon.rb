@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module DatabaseScripts
-  class SubspeciesOfHistoryItemsWithSubspeciesAsObjectTaxon < DatabaseScript
+  class SubspeciesOfHistoryItemsWithNonSpeciesAsTerminalTaxon < DatabaseScript
     LIMIT = 500
 
     def statistics
@@ -11,8 +11,8 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where(type: History::Definitions::SUBSPECIES_OF).joins(:object_taxon).
-        where(taxa: { type: Rank::SUBSPECIES }).limit(LIMIT)
+      HistoryItem.where(type: History::Definitions::SUBSPECIES_OF).joins(object_protonym: :terminal_taxon).
+        where.not(taxa: { type: Rank::SPECIES }).limit(LIMIT)
     end
 
     def render
@@ -36,7 +36,7 @@ end
 __END__
 
 title: >
-  'Subspecies of' history items with subspecies as object taxon
+  'Subspecies of' history items with non-species as terminal taxon
 
 section: research
 category: History
@@ -45,5 +45,4 @@ tags: []
 description: >
 
 related_scripts:
-  - SubspeciesOfHistoryItemsWithSubspeciesAsTerminalTaxon
-  - SubspeciesOfHistoryItemsWithSubspeciesAsObjectTaxon
+  - SubspeciesOfHistoryItemsWithNonSpeciesAsTerminalTaxon

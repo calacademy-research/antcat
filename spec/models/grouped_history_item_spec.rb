@@ -76,7 +76,7 @@ describe GroupedHistoryItem, :relational_hi do
 
       specify do
         expect(grouped_history_item.taxt).
-          to eq "Subspecies of {#{Taxt::TAX_TAG} #{item.object_taxon.id}}: #{item.citation_taxt}; #{item.citation_taxt}."
+          to eq "Subspecies of {#{Taxt::PROTT_TAG} #{item.object_protonym.id}}: #{item.citation_taxt}; #{item.citation_taxt}."
       end
     end
   end

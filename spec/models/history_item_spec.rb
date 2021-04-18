@@ -189,8 +189,8 @@ describe HistoryItem, :relational_hi do
 
         is_expected.to validate_presence_of :reference
         is_expected.to validate_presence_of :pages
-        is_expected.to validate_absence_of :object_protonym
-        is_expected.to validate_presence_of :object_taxon
+        is_expected.to validate_presence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
       end
     end
 
@@ -357,7 +357,7 @@ describe HistoryItem, :relational_hi do
 
       specify do
         expect(history_item.to_taxt).
-          to eq "Subspecies of {#{Taxt::TAX_TAG} #{history_item.object_taxon.id}}: #{history_item.citation_taxt}."
+          to eq "Subspecies of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
       end
     end
 
