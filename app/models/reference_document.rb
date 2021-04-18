@@ -9,6 +9,7 @@ class ReferenceDocument < ApplicationRecord
   validate :check_url, :ensure_url_has_protocol
 
   has_attached_file :file,
+    preserve_files: true,
     url: ':s3_domain_url',
     path: ':id/:filename',
     bucket: 'antcat',
