@@ -134,15 +134,15 @@ module History
         ranks: SPECIES_GROUP_LABEL,
 
         group_order: 60,
-        group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
+        group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-        item_template: 'Subspecies of {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars: ->(o) { o.slice(:object_taxon_id) },
+        item_template: 'Subspecies of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+        item_template_vars: ->(o) { o.slice(:object_protonym_id) },
 
         groupable_item_template: '%<citation>s',
         groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
-        validates_presence_of: [:object_taxon, :reference, :pages]
+        validates_presence_of: [:object_protonym, :reference, :pages]
       },
       REPLACEMENT_NAME = 'ReplacementName' => {
         type_label: 'Replacement name',

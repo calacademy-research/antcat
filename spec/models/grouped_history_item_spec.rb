@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe GroupedHistoryItem do
+describe GroupedHistoryItem, :relational_hi do
   subject(:grouped_history_item) { described_class.new([item, item]) }
 
   describe '#taxt' do
@@ -76,7 +76,7 @@ describe GroupedHistoryItem do
 
       specify do
         expect(grouped_history_item.taxt).
-          to eq "Subspecies of {#{Taxt::TAX_TAG} #{item.object_taxon.id}}: #{item.citation_taxt}; #{item.citation_taxt}."
+          to eq "Subspecies of {#{Taxt::PROTT_TAG} #{item.object_protonym.id}}: #{item.citation_taxt}; #{item.citation_taxt}."
       end
     end
   end

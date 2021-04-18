@@ -247,8 +247,7 @@ RSpec/ImplicitSubject:
   Enabled: false
 
 RSpec/LetSetup:
-  Exclude:
-    - 'spec/operations/**/*'
+  Enabled: false
 
 RSpec/MessageSpies:
   Enabled: false

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe History::Definitions do
+describe History::Definitions, :relational_hi do
   describe 'TYPE_DEFINITIONS' do
     described_class::TYPE_DEFINITIONS.each do |type, definition|
       describe "type definition for #{type}" do

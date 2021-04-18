@@ -41,7 +41,7 @@ module Seed
         object_taxon: lasius_taxon, reference: ref_2020, pages: '7'
 
       tatusia.history_items.create! type: History::Definitions::SUBSPECIES_OF,
-        object_taxon: fusca_taxon, reference: ref_2020, pages: '12'
+        object_protonym: fusca, reference: ref_2020, pages: '12'
 
       tatusia.history_items.create! type: History::Definitions::STATUS_AS_SPECIES,
         reference: ref_2020, pages: '15'

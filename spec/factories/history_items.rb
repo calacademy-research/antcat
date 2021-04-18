@@ -76,7 +76,7 @@ FactoryBot.define do
       type { History::Definitions::SUBSPECIES_OF }
 
       with_reference
-      with_object_taxon
+      with_object_protonym
     end
 
     trait :replacement_name do
