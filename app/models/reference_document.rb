@@ -24,6 +24,7 @@ class ReferenceDocument < ApplicationRecord
   before_post_process :transliterate_file_name
   do_not_validate_attachment_file_type :pdf
   has_paper_trail
+  strip_attributes only: [:url]
 
   def pdf
     true

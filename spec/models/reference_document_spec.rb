@@ -24,6 +24,10 @@ describe ReferenceDocument do
     end
   end
 
+  describe 'callbacks' do
+    it { is_expected.to strip_attributes(:url) }
+  end
+
   describe "#routed_url" do
     it "creates the URL for an uploaded file so that it goes to our controller" do
       document = create :reference_document, file_file_name: '1.pdf'
@@ -68,19 +72,19 @@ describe ReferenceDocument do
 
   describe "#downloadable?" do
     context 'when reference has no `url` or `file_file_name`' do
-      let(:reference_document) { described_class.new(url: "", file_file_name: '') }
+      let(:reference_document) { described_class.new(url: nil, file_file_name: nil) }
 
       specify { expect(reference_document.downloadable?).to eq false }
     end
 
     context 'when reference has a `file_file_name`' do
-      let(:reference_document) { described_class.new(url: "", file_file_name: 'file.pdf') }
+      let(:reference_document) { described_class.new(url: nil, file_file_name: 'file.pdf') }
 
       specify { expect(reference_document.downloadable?).to eq true }
     end
 
     context 'when reference has a `url`' do
-      let(:reference_document) { described_class.new(url: "http://ancat.org/file.pdf", file_file_name: '') }
+      let(:reference_document) { described_class.new(url: "http://ancat.org/file.pdf", file_file_name: nil) }
 
       specify { expect(reference_document.downloadable?).to eq true }
     end

@@ -80,7 +80,7 @@ class ReferenceForm
       # TODO: Make sure documents have either a `file_file_name` or a `url`.
       # We cannot conditionally clear them before fixing current `ReferenceDocument`s.
       if params[:document_attributes][:file].present?
-        params[:document_attributes][:url] = "" # Probably nil, but most are blank string right now.
+        params[:document_attributes][:url] = nil
       end
     end
 
