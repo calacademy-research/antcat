@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-# TODO: See https://github.com/calacademy-research/antcat/issues/878
+# TODO: Remove `url` and only allow uploading files on S3.
 # TODO: Paperclip has been deprecated, see https://github.com/thoughtbot/paperclip
 
 class ReferenceDocument < ApplicationRecord
   belongs_to :reference, optional: true # TODO: Probably require after cleaning up records.
 
-  validate :check_url, :ensure_url_has_protocol
+  validate :check_url, :ensure_url_has_protocol, :ensure_file_or_url_present
 
   has_attached_file :file,
     preserve_files: true,
@@ -30,6 +30,7 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
+  # TODO: Check and simplify callers now that all existing documents are downloadable.
   def downloadable?
     hosted_on_s3? || url.present?
   end
@@ -38,7 +39,6 @@ class ReferenceDocument < ApplicationRecord
     hosted_on_s3? ? s3_url : url
   end
 
-  # TODO: Rename `reference_documents.url` --> `reference_documents.external_url`.
   def routed_url
     hosted_on_s3? ? url_via_file_file_name : url
   end
@@ -53,6 +53,16 @@ class ReferenceDocument < ApplicationRecord
       extension = File.extname(file_file_name).gsub(/^\.+/, '')
       filename = file_file_name.gsub(/\.#{extension}$/, '')
       "#{ActiveSupport::Inflector.parameterize(filename)}.#{ActiveSupport::Inflector.parameterize(extension)}"
+    end
+
+    def ensure_file_or_url_present
+      if file_file_name.present? && url.present?
+        errors.add :base, "URL and uploaded file cannot both be present"
+      end
+
+      if file_file_name.blank? && url.blank?
+        errors.add :base, "URL and uploaded file cannot both be blank"
+      end
     end
 
     def hosted_on_s3?

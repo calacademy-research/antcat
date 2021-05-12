@@ -14,13 +14,33 @@ describe ReferenceDocument do
     it "validates the URL" do
       document = described_class.new(url: 'http://:::')
       expect(document.valid?).to eq false
-      expect(document.errors.full_messages).to match_array ['Url is not in a valid format']
+      expect(document.errors.full_messages).to include 'Url is not in a valid format'
     end
 
     it "accepts URLs with spaces" do
       stub_request(:any, "http://antwiki.org/a%20url").to_return(body: "Hello World!")
       document = described_class.new(url: 'http://antwiki.org/a url')
       expect(document.valid?).to eq true
+    end
+
+    describe '#ensure_file_or_url_present' do
+      context 'when `url` and `file_file_name` are both blank' do
+        let(:document) { described_class.new(url: nil, file_file_name: nil) }
+
+        specify do
+          expect(document.valid?).to eq false
+          expect(document.errors.full_messages).to include "URL and uploaded file cannot both be blank"
+        end
+      end
+
+      context 'when `url` and `file_file_name` are both present' do
+        let(:document) { described_class.new(url: "http://ancat.org/file.pdf", file_file_name: 'file.pdf') }
+
+        specify do
+          expect(document.valid?).to eq false
+          expect(document.errors.full_messages).to include "URL and uploaded file cannot both be present"
+        end
+      end
     end
   end
 
@@ -71,12 +91,6 @@ describe ReferenceDocument do
   end
 
   describe "#downloadable?" do
-    context 'when reference has no `url` or `file_file_name`' do
-      let(:reference_document) { described_class.new(url: nil, file_file_name: nil) }
-
-      specify { expect(reference_document.downloadable?).to eq false }
-    end
-
     context 'when reference has a `file_file_name`' do
       let(:reference_document) { described_class.new(url: nil, file_file_name: 'file.pdf') }
 
