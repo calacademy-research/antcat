@@ -47,7 +47,7 @@ module Taxt
       l.
       m.
       q.
-      q.m
+      q.m.
       s.
       w.
     ]
