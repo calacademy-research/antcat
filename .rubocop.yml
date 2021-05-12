@@ -165,6 +165,10 @@ Naming/VariableNumber:
 
 ### Performance.
 
+# Disabled because `filter_map` and `map.compact` are not identical.
+Performance/MapCompact:
+  Enabled: false
+
 Performance/MethodObjectAsBlock:
   Enabled: false
 
@@ -177,6 +181,10 @@ Rails/DefaultScope:
   Enabled: true
 
 Rails/Delegate:
+  Enabled: false
+
+# Disabled because it flags dev ENV variables.
+Rails/EnvironmentVariableAccess:
   Enabled: false
 
 Rails/FilePath:
