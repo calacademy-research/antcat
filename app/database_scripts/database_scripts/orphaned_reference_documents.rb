@@ -3,17 +3,19 @@
 module DatabaseScripts
   class OrphanedReferenceDocuments < DatabaseScript
     def results
-      ReferenceDocument.where.not(reference_id: Reference.select(:id))
+      ReferenceDocument.left_joins(:reference).where(references: { id: nil })
     end
 
     def render
       as_table do |t|
-        t.header 'Document ID', 'Reference ID', 'Created at', 'Versions', 'Reference versions'
+        t.header 'Document ID', 'Reference ID', 'Created at', 'File', 'URL', 'Versions', 'Reference versions'
         t.rows do |document|
           [
             document.id,
-            (document.reference ? document.reference.decorate.link_to_reference : "[deleted] #{document.reference_id}"),
+            document.reference_id,
             document.created_at,
+            document.file_file_name,
+            document.url,
             document_versions_link(document),
             reference_versions_link(document.reference_id)
           ]
@@ -50,8 +52,10 @@ description: >
    These can only be deleted by script.
 
 
-   They can probably be safely deleted, but new cases can still appear when
-   references with PDFs are deleted.
+   * Records with `url` only are to be deleted.
+
+   * Records with `file_file_name` need special treatment because other `ReferenceDocument`s
+   may reference them in the `url` field.
 
 related_scripts:
   - OrphanedReferenceDocuments

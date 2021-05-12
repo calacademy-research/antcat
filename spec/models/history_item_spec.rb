@@ -58,6 +58,22 @@ describe HistoryItem, :relational_hi do
         end
       end
     end
+
+    describe '#text_value' do
+      subject(:history_item) { build_stubbed :history_item, :form_descriptions }
+
+      let(:format_error_message) { "cannot contain: ; < > { }" }
+
+      it { is_expected.to validate_length_of(:text_value).is_at_most(described_class::TEXT_VALUE_MAX_LENGTH) }
+
+      it { is_expected.to allow_value('w.').for :text_value }
+      it { is_expected.to allow_value('abc q, w.').for :text_value }
+      it { is_expected.to allow_value('w. (abc)').for :text_value }
+
+      it { is_expected.not_to allow_value('w.; q.').for(:text_value).with_message(format_error_message) }
+      it { is_expected.not_to allow_value("{#{Taxt::REF_TAG} 1}").for(:text_value).with_message(format_error_message) }
+      it { is_expected.not_to allow_value('<').for(:text_value).with_message(format_error_message) }
+    end
   end
 
   describe 'type-related validations' do

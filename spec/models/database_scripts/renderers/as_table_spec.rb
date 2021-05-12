@@ -14,41 +14,71 @@ describe DatabaseScripts::Renderers::AsTable do
   let(:dummy) { AsTableDummy.new }
 
   describe "#render" do
-    let!(:taxon_1) { create :any_taxon }
+    context 'with results' do
+      let!(:taxon_1) { create :any_taxon }
 
-    it 'renders the supplied `results` as an HTML table' do
-      rendered =
-        dummy.as_table do |t|
-          t.caption "My favorite ants"
-          t.header 'Taxon', 'Status'
+      it 'renders the supplied `results` as an HTML table' do
+        rendered =
+          dummy.as_table do |t|
+            t.header 'Taxon', 'Status'
 
-          t.rows(Taxon.all) do |taxon|
-            [taxon.id, taxon.status]
+            t.rows(Taxon.all) do |taxon|
+              [taxon.id, taxon.status]
+            end
           end
-        end
 
-      expect(rendered.squish).to eq <<~HTML.squish
-        <table class="tablesorter hover margin-top">
-          <caption>My favorite ants</caption>
-          <thead>
-            <tr>
-              <th>Taxon</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody><tr><td>#{taxon_1.id}</td><td>#{taxon_1.status}</td></tr>
-          </tbody>
-        </table>
-      HTML
+        expect(rendered.squish).to eq <<~HTML.squish
+          <table class="tablesorter hover margin-top">
+            <thead>
+              <tr>
+                <th>Taxon</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody><tr><td>#{taxon_1.id}</td><td>#{taxon_1.status}</td></tr>
+            </tbody>
+          </table>
+        HTML
+      end
+    end
+
+    context 'with `caption` and `info`' do
+      specify do
+        rendered =
+          dummy.as_table do |t|
+            t.caption "caption field"
+            t.info "info field"
+            t.header 'header1', 'header2'
+
+            t.rows(['pizza']) do |string|
+              [string]
+            end
+          end
+
+        expect(rendered.squish).to eq <<~HTML.squish
+          <table class="tablesorter hover margin-top">
+            <caption>caption field</caption>
+            <caption>info field</caption>
+            <thead>
+              <tr>
+                <th>header1</th>
+                <th>header2</th>
+              </tr>
+            </thead>
+            <tbody><tr><td>pizza</td></tr>
+            </tbody>
+          </table>
+        HTML
+      end
     end
 
     context 'when the block yields a falsey value' do
+      let!(:taxon_1) { create :any_taxon }
       let!(:taxon_2) { create :any_taxon }
 
       it 'skips that row' do
         rendered =
           dummy.as_table do |t|
-            t.caption "My favorite ants"
             t.header 'Taxon', 'Status'
 
             t.rows(Taxon.all) do |taxon|
@@ -59,7 +89,6 @@ describe DatabaseScripts::Renderers::AsTable do
 
         expect(rendered.squish).to eq <<~HTML.squish
           <table class="tablesorter hover margin-top">
-            <caption>My favorite ants</caption>
             <thead>
               <tr>
                 <th>Taxon</th>
