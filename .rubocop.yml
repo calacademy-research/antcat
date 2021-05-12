@@ -159,9 +159,7 @@ Naming/PredicateName:
   Enabled: false
 
 Naming/VariableNumber:
-  Exclude:
-    - 'spec/**/*'
-    - 'lib/tasks/seed/**/*'
+  Enabled: false
 
 ### Performance.
 

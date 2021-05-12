@@ -16,8 +16,8 @@ module DatabaseScripts
         <<-HTML.html_safe
           <table class="tablesorter hover margin-top">
             #{"<caption>#{caption_content}</caption>" if caption_content}
+            #{"<caption>#{info_content}</caption>" if info_content}
             <thead>
-              #{"<caption>#{info_content}</caption>" if info_content}
               #{header_content}
             </thead>
             <tbody>#{Markdowns::ParseCatalogTags[body_content]}</tbody>
