@@ -25,8 +25,7 @@ end
 __END__
 
 section: regression-test
-category: Protonyms
-tags: []
+tags: [protonyms, names]
 
 issue_description: This protonym has duplicated taxa.
 

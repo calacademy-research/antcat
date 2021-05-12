@@ -73,8 +73,7 @@ __END__
 title: <code>taxac</code> tags with page numbers
 
 section: regression-test
-category: Taxt
-tags: [has-quick-fix]
+tags: [taxt-hist, has-quick-fix]
 
 description: >
   `taxac` tags should be used for disambiguation purposes only, so no pages should appear after the tag.

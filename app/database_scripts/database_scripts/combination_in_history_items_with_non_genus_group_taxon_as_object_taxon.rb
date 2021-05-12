@@ -38,8 +38,7 @@ title: >
   'Combination in' history items with non-genus group taxon as object taxon
 
 section: research
-category: History
-tags: []
+tags: [rel-hist, combinations, future]
 
 description: >
 

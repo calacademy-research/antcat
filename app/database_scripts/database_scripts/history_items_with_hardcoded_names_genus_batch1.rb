@@ -54,8 +54,7 @@ __END__
 title: History items with hardcoded names (genus batch 1)
 
 section: missing-tags
-category: Taxt
-tags: [very-slow]
+tags: [taxt-hist, very-slow]
 
 description: >
   See [AntCat issue #63](/issues/63)

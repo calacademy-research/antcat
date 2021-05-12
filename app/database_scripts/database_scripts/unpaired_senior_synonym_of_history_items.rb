@@ -45,10 +45,8 @@ end
 
 __END__
 
-# TODO: Change to: section: disagreeing-history
 section: research
-category: History
-tags: []
+tags: [disagreeing-data, disagreeing-hist, rel-hist, synonyms, future]
 
 description: >
   This script can be ignored for now.

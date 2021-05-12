@@ -35,8 +35,7 @@ __END__
 title: Protonyms with <code>secondary_type_information_taxt</code>
 
 section: research
-category: Inline taxt
-tags: [list]
+tags: [protonyms, types, inline-taxt, list]
 
 description: >
 

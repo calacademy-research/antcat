@@ -50,10 +50,8 @@ __END__
 title: >
   'Junior synonym of' history items (missing)
 
-# TODO: Change to: section: disagreeing-history
 section: research
-category: History
-tags: [list]
+tags: [disagreeing-data, disagreeing-hist, rel-hist, taxt-hist, synonyms, future, list]
 
 description: >
   This script can be ignored until we have migrated history items to relational items.

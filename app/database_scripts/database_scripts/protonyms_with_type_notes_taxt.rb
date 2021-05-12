@@ -35,8 +35,7 @@ __END__
 title: Protonyms with <code>type_notes_taxt</code>
 
 section: research
-category: Inline taxt
-tags: [list]
+tags: [protonyms, types, inline-taxt, list]
 
 description: >
   **Table/column:** `protonyms.type_notes_taxt` (called "Type notes" in the protonym form)

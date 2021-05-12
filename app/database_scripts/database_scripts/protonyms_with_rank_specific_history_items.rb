@@ -28,8 +28,7 @@ __END__
 title: Protonyms with rank-specific history items
 
 section: research
-category: Protonyms
-tags: [slow]
+tags: [taxt/rel-hist, slow]
 
 description: >
 

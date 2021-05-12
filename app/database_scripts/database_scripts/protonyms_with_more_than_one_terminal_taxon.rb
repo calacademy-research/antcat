@@ -40,8 +40,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [protonyms]
 
 issue_description:
 

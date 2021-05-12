@@ -24,8 +24,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa]
 
 issue_description: This subspecies is valid, but its species is not valid.
 

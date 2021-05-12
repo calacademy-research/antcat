@@ -26,8 +26,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa]
 
 issue_description: The parent of this taxon is fossil, but this taxon is extant.
 

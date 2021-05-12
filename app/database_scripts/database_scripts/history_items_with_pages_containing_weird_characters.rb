@@ -35,8 +35,7 @@ end
 __END__
 
 section: research
-category: History
-tags: [list]
+tags: [rel-hist, future, list]
 
 description: >
   Indicates that the content may belong somewhere else.

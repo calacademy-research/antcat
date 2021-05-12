@@ -39,8 +39,7 @@ end
 __END__
 
 section: research
-category: Catalog
-tags: []
+tags: [protonyms, combinations]
 
 description: >
   "Original combination" as in a `Taxon` flagged as `original_combination`.

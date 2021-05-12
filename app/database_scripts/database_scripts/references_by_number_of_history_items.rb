@@ -32,8 +32,7 @@ __END__
 title: References by number of history items
 
 section: list
-category: References
-tags: []
+tags: [references, stats, rel-hist]
 
 description: >
 

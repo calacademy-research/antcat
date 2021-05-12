@@ -30,8 +30,7 @@ __END__
 title: References without PDFs
 
 section: long-running
-category: PDFs
-tags: [slow-render]
+tags: [references, pdfs, slow-render]
 
 description: >
   Issues: %github387, %github324, %github371

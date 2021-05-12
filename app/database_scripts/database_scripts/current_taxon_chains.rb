@@ -45,8 +45,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa]
 
 issue_description: This taxon has a `current_taxon` which itself has a `current_taxon`.
 

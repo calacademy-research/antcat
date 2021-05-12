@@ -34,8 +34,7 @@ end
 __END__
 
 section: research
-category: Homonyms
-tags: [list, slow]
+tags: [replacement-names, list, slow]
 
 description: >
   **Replacement name for** = via `taxa.homonym_replaced_by_id` (all of which has the status `homonym`)

@@ -44,7 +44,7 @@ end
 __END__
 
 section: orphaned-records
-category: PDFs
+tags: [references, pdfs]
 
 description: >
    These can only be deleted by script.

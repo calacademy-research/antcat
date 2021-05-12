@@ -36,8 +36,7 @@ __END__
 title: <code>series_volume_issue</code> investigation
 
 section: research
-category: References
-tags: []
+tags: [references]
 
 issue_description:
 

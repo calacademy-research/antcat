@@ -34,8 +34,7 @@ end
 __END__
 
 section: regression-test
-category: Protonyms
-tags: []
+tags: [protonyms, synonyms]
 
 issue_description: More than one of this protonym's taxa is a synonym.
 

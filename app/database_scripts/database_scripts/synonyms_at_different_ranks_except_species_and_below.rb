@@ -35,8 +35,7 @@ __END__
 title: Synonyms at different ranks (except species and below)
 
 section: research
-category: Catalog
-tags: []
+tags: [taxa, synonyms]
 
 issue_description:
 

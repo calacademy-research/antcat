@@ -59,8 +59,7 @@ title: >
   'Replacement name:' history items (disagreeing)
 
 section: disagreeing-history
-category: History
-tags: [slow]
+tags: [disagreeing-data, replacement-names, taxt-hist, slow]
 
 description: >
   This script may or may not be up-to-date as we are migrating `Taxt` items to relational items.

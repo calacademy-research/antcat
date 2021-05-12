@@ -30,7 +30,7 @@ __END__
 title: Protonym references without PDFs
 
 section: long-running
-category: PDFs
+tags: [references, pdfs, protonyms]
 
 description: >
   Issues: %github387, %github324, %github371

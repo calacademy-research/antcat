@@ -65,9 +65,8 @@ __END__
 
 title: Protonyms without a taxon with same cleaned name (only subspecies)
 
-section: main
-category: Catalog
-tags: [slow, has-quick-fix]
+section: research
+tags: [protonyms, names, slow, has-quick-fix]
 
 description: >
   Subspecies only in this batch, and only less advanced cases.

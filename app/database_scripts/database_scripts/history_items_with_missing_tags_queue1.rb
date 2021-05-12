@@ -71,8 +71,7 @@ __END__
 title: History items with <code>missing</code> tags (queue 1)
 
 section: missing-tags
-category: Taxt
-tags: [has-quick-fix, slow-render]
+tags: [taxt-hist, slow-render, has-quick-fix]
 
 issue_description:
 

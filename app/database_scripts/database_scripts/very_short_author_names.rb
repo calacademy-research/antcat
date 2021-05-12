@@ -33,8 +33,7 @@ end
 __END__
 
 section: research
-category: References
-tags: []
+tags: [authors]
 
 issue_description:
 

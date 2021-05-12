@@ -30,8 +30,7 @@ __END__
 title: Genera with names that are different from their protonyms' name
 
 section: code-changes-required
-category: Catalog
-tags: []
+tags: [taxa, names]
 
 issue_description: This genus does not have the same name as its protonym.
 

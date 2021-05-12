@@ -37,8 +37,7 @@ end
 __END__
 
 section: code-changes-required
-category: Catalog
-tags: []
+tags: [taxa, combinations, names]
 
 issue_description: This species-group taxon has "Original combination" checked, but it does not have the same cleaned name as its protonym.
 

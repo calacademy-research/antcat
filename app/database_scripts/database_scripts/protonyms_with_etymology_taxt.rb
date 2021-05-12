@@ -31,8 +31,7 @@ __END__
 title: Protonyms with <code>etymology_taxt</code>
 
 section: research
-category: Inline taxt
-tags: [list]
+tags: [protonyms, names, inline-taxt, list]
 
 description: >
 

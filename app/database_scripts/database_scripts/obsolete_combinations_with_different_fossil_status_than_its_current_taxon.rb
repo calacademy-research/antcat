@@ -34,8 +34,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa, combinations]
 
 issue_description: This obsolete combination does not have the same fossil status as its `current_taxon`.
 

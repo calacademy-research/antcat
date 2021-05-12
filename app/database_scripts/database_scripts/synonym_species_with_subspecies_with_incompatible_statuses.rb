@@ -38,8 +38,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa, synonyms]
 
 issue_description: This species is a synonym with subspecies that have incompatible statuses.
 

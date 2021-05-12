@@ -62,8 +62,7 @@ __END__
 title: Types of genus-group names
 
 section: list
-category: Types
-tags: [very-slow]
+tags: [types, very-slow]
 
 description: >
 

@@ -32,8 +32,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: [has-reversed]
+tags: [taxa, combinations, has-reversed]
 
 issue_description: This taxon has an obsolete combination that belongs to a different protonym.
 

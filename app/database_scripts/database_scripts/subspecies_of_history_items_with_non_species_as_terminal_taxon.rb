@@ -39,8 +39,7 @@ title: >
   'Subspecies of' history items with non-species as terminal taxon
 
 section: research
-category: History
-tags: []
+tags: [rel-hist, future]
 
 description: >
 

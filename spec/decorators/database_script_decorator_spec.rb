@@ -15,7 +15,12 @@ describe DatabaseScriptDecorator do
     context 'when testing with a real script' do
       let(:database_script) { DatabaseScripts::OrphanedProtonyms.new }
 
-      specify { expect(decorated.format_tags).to eq '<span class="warning-label rounded-badge">slow-render</span>' }
+      specify do
+        expect(decorated.format_tags).to eq <<~HTML.squish
+          <span class="white-label rounded-badge">protonyms</span>
+          <span class="warning-label rounded-badge">slow-render</span>
+        HTML
+      end
     end
 
     context 'when script is an `UnfoundDatabaseScript`' do

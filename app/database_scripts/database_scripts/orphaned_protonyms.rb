@@ -25,8 +25,7 @@ end
 __END__
 
 section: orphaned-records
-category: Protonyms
-tags: [slow-render]
+tags: [protonyms, slow-render]
 
 issue_description: This protonym is orphaned.
 

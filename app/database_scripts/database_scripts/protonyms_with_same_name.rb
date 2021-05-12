@@ -69,8 +69,7 @@ end
 __END__
 
 section: list
-category: Protonyms
-tags: [slow]
+tags: [protonyms, names, slow]
 
 description: >
   Protonym records with the same name (`names.name`).

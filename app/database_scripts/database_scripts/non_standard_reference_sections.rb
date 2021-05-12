@@ -40,8 +40,7 @@ __END__
 title: Non-standard reference sections
 
 section: research
-category: Taxt
-tags: [list]
+tags: [reference-sections, list]
 
 description: See %github452 for why we want this.
 

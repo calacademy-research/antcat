@@ -37,8 +37,7 @@ __END__
 title: References without <code>bolton_key</code>s
 
 section: list
-category: References
-tags: [slow-render]
+tags: [references, slow-render]
 
 issue_description:
 
