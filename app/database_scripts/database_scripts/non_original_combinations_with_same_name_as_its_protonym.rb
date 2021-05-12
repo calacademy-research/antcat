@@ -40,8 +40,7 @@ __END__
 title: Non-original combinations with same name as its protonym
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa, names]
 
 issue_description: This species-group taxon has the same cleaned name as its protonym, but "Original combination" is not checked.
 

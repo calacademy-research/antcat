@@ -34,8 +34,7 @@ end
 __END__
 
 section: research
-category: References
-tags: [list]
+tags: [references, list]
 
 description: >
   This is not an issue. The script was added to get an overview of how many such cases we have.

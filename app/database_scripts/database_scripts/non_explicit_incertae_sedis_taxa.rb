@@ -82,7 +82,7 @@ __END__
 title: Non-explicit <i>incertae sedis</i> taxa
 
 section: code-changes-required
-category: Catalog
+tags: [taxa]
 
 description: >
   This list contains taxa that are "_incertae sedis_ by implication" but have no

@@ -32,8 +32,7 @@ __END__
 title: Protonyms with rank-specific and unranked history items
 
 section: research
-category: Protonyms
-tags: [list]
+tags: [taxt/rel-hist, list]
 
 description: >
 

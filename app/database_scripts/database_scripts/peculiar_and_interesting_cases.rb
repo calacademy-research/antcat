@@ -56,8 +56,7 @@ end
 __END__
 
 section: research
-category: Grab bag
-tags: [new!]
+tags: [grab-bag]
 
 description: >
 

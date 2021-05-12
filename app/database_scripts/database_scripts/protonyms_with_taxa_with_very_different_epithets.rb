@@ -38,8 +38,7 @@ end
 __END__
 
 section: regression-test
-category: Protonyms
-tags: []
+tags: [protonyms, names]
 
 issue_description: The taxa of this protonym have very different epithets.
 

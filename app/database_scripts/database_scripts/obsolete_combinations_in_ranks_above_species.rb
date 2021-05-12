@@ -30,8 +30,7 @@ end
 __END__
 
 section: research
-category: Catalog
-tags: [list]
+tags: [taxa, combinations, list]
 
 description: >
   These can be ignored, they will be updated to the new status `obsolete classification` by script.

@@ -82,8 +82,7 @@ __END__
 title: History items with unbalanced parentheses, braces, brackets or double quotes.
 
 section: regression-test
-category: Taxt
-tags: []
+tags: [taxt-hist]
 
 issue_description:
 

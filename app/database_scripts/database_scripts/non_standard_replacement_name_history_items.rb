@@ -32,8 +32,7 @@ __END__
 title: Non-standard 'Replacement name:' history items
 
 section: research
-category: History
-tags: []
+tags: [replacement-names, taxt-hist]
 
 issue_description:
 

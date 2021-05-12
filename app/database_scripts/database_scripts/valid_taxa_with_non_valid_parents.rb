@@ -133,8 +133,7 @@ __END__
 title: Valid taxa with non-valid parents
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa]
 
 issue_description: This taxon is valid, but its parent is not.
 

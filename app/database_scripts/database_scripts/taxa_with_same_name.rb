@@ -100,8 +100,7 @@ end
 __END__
 
 section: list
-category: Catalog
-tags: []
+tags: [taxa, names]
 
 related_scripts:
   - SameNamedPassThroughNames

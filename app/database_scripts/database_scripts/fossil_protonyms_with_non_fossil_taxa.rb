@@ -30,8 +30,7 @@ __END__
 title: Fossil protonyms with non-fossil taxa
 
 section: reversed
-category: Protonyms
-tags: [regression-test]
+tags: [protonyms, regression-test]
 
 issue_description: This protonym is fossil, but one of its taxa is extant.
 

@@ -39,8 +39,7 @@ __END__
 title: Genus-group names without a type name
 
 section: research
-category: Types
-tags: [slow]
+tags: [types, taxa, slow]
 
 issue_description:
 

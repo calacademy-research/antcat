@@ -60,8 +60,7 @@ end
 __END__
 
 section: list
-category: Protonyms
-tags: []
+tags: [protonyms, stats]
 
 description: >
   For protonyms described by more than one author, counts are increased once for each author,

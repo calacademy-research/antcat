@@ -29,8 +29,7 @@ __END__
 title: Non-fossil taxa with fossil protonyms
 
 section: regression-test
-category: Protonyms
-tags: [has-reversed]
+tags: [protonyms, has-reversed]
 
 issue_description: This taxon is not fossil, but its protonym is fossil.
 

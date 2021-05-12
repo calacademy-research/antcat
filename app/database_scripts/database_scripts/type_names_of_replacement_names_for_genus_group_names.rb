@@ -40,8 +40,7 @@ __END__
 title: Type names of replacement names for genus-group names
 
 section: research
-category: Types
-tags: [slow]
+tags: [replacement-names, types, slow]
 
 issue_description:
 

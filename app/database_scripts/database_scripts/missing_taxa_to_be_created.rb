@@ -64,8 +64,7 @@ end
 __END__
 
 section: missing-tags
-category: Taxt
-tags: [has-quick-fix, slow]
+tags: [taxt-hist, slow, has-quick-fix]
 
 issue_description:
 

@@ -31,8 +31,7 @@ __END__
 title: Non-valid taxa with a current taxon that is not valid
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa]
 
 issue_description: This [non-pass-through] taxon has a `current_taxon` that is not valid.
 

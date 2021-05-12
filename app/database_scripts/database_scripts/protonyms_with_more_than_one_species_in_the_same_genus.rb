@@ -37,8 +37,7 @@ end
 __END__
 
 section: reversed
-category: Catalog
-tags: []
+tags: [taxa]
 
 description: >
   This script is the reverse of %dbscript:SpeciesWithGeneraAppearingMoreThanOnceInItsProtonym

@@ -104,8 +104,7 @@ end
 __END__
 
 section: research
-category: Catalog
-tags: []
+tags: [disagreeing-data, taxa]
 
 issue_description:
 

@@ -39,8 +39,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [taxa, synonyms]
 
 issue_description: This genus is a synonym with species that have incompatible statuses.
 

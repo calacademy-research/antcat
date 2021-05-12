@@ -34,8 +34,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: [has-reversed]
+tags: [taxa, has-reversed]
 
 issue_description: The genus of this species appears more than once among the protonym's taxa.
 

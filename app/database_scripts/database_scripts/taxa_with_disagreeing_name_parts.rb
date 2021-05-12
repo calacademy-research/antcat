@@ -114,8 +114,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [disagreeing-data, taxa, names]
 
 issue_description:
 

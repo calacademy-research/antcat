@@ -100,8 +100,7 @@ end
 __END__
 
 section: regression-test
-category: Everything
-tags: []
+tags: [grab-bag]
 
 description: >
   Random checks. This can be ignored.

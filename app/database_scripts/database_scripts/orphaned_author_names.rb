@@ -23,8 +23,7 @@ end
 __END__
 
 section: orphaned-records
-category: References
-tags: []
+tags: [authors]
 
 description: >
   `AuthorName` records without `ReferenceAuthorName` records.

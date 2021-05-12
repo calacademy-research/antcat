@@ -30,9 +30,8 @@ end
 
 __END__
 
-section: main
-category: References
-tags: []
+section: research
+tags: [authors, postgres]
 
 issue_description:
 

@@ -169,8 +169,7 @@ end
 __END__
 
 section: list
-category: Names
-tags: [slow]
+tags: [names, slow]
 
 related_scripts:
   - GenusGenderEndings

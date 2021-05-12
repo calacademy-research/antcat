@@ -23,17 +23,38 @@ module DatabaseScripts
     ]
     SECTIONS_SORT_ORDER = SECTIONS
     TAGS = [
-      SLOW_TAG = "slow",
-      VERY_SLOW_TAG = "very-slow",
-      SLOW_RENDER_TAG = "slow-render",
-      NEW_TAG = "new!",
-      UPDATED_TAG = "updated!",
+      "authors",
+      "combinations",
+      CODE_CHANGES_REQUIRED_SECTION,
+      "disagreeing-data",
+      "disagreeing-hist",
+      "future",
+      "grab-bag",
+      "has-reversed",
       HAS_QUICK_FIX_TAG = "has-quick-fix",
       HIGH_PRIORITY_TAG = "high-priority",
-      CODE_CHANGES_REQUIRED_SECTION,
-      REGRESSION_TEST_SECTION,
+      "inline-taxt",
       LIST_SECTION,
-      "has-reversed"
+      "names",
+      NEW_TAG = "new!",
+      "pdfs",
+      "postgres",
+      "protonyms",
+      "reference-sections",
+      REGRESSION_TEST_SECTION,
+      "references",
+      "rel-hist",
+      "replacement-names",
+      SLOW_RENDER_TAG = "slow-render",
+      SLOW_TAG = "slow",
+      "stats",
+      "synonyms",
+      "taxa",
+      "taxt-hist",
+      "taxt/rel-hist",
+      "types",
+      UPDATED_TAG = "updated!",
+      VERY_SLOW_TAG = "very-slow"
     ]
   end
 end

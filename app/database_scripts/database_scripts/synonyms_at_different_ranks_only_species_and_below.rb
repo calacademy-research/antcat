@@ -43,8 +43,7 @@ __END__
 title: Synonyms at different ranks (only species and below)
 
 section: research
-category: Catalog
-tags: [list]
+tags: [taxa, synonyms, list]
 
 issue_description:
 

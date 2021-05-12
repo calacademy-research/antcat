@@ -33,8 +33,7 @@ __END__
 title: Protonyms by number of history items
 
 section: list
-category: History
-tags: []
+tags: [protonyms, stats, rel-hist]
 
 description: >
 

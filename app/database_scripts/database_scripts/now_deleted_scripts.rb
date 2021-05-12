@@ -40,8 +40,7 @@ end
 __END__
 
 section: regression-test
-category: Everything
-tags: []
+tags: [grab-bag]
 
 description: >
   Incomplete (by design) list of database scripts that have been deleted. This can be ignored.

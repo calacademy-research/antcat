@@ -42,8 +42,7 @@ __END__
 title: <code>most_recent_before_now_taxon</code> investigation
 
 section: research
-category: Catalog
-tags: [slow-render, list]
+tags: [taxa, list, slow-render]
 
 issue_description:
 

@@ -60,8 +60,7 @@ __END__
 title: Reference documents with weird <code>actual_url</code>s
 
 section: pa-no-action-required
-category: PDFs
-tags: []
+tags: [references, pdfs]
 
 description: >
   Once confirmed, plan is to blank the `url`s, since documents with both a `url` and

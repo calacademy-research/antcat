@@ -49,8 +49,7 @@ __END__
 title: References with blank PDF URLs and filenames
 
 section: pa-no-action-required
-category: PDFs
-tags: [slow-render]
+tags: [references, pdfs, slow-render]
 
 description: >
   Once confirmed, the plan is to delete all these blank (unused) `ReferenceDocument` records.

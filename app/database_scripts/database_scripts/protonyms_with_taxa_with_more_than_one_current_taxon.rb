@@ -27,8 +27,7 @@ end
 __END__
 
 section: regression-test
-category: Catalog
-tags: []
+tags: [protonyms]
 
 issue_description: This protonym has taxa with different `current_taxon`s (obsolete combinations excluded).
 

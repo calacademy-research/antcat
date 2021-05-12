@@ -25,8 +25,7 @@ end
 __END__
 
 section: list
-category: References
-tags: []
+tags: [authors]
 
 related_scripts:
   - AuthorsWithMultipleNames

@@ -79,8 +79,7 @@ __END__
 title: History items with <code>ref</code> tags as author citations
 
 section: regression-test
-category: Taxt
-tags: [has-quick-fix]
+tags: [taxt-hist, has-quick-fix]
 
 description: >
   **Note that "tax/ref matches" in the "Check usage" column just means that the ID for `ref` tag

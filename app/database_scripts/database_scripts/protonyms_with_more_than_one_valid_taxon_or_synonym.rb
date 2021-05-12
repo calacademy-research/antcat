@@ -41,8 +41,7 @@ end
 __END__
 
 section: regression-test
-category: Protonyms
-tags: []
+tags: [protonyms, synonyms]
 
 description: >
   Matches already appearing in these two scripts are excluded:

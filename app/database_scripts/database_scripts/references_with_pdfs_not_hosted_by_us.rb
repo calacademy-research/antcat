@@ -34,8 +34,7 @@ __END__
 title: References with PDFs not hosted by us
 
 section: pa-no-action-required
-category: PDFs
-tags: [slow-render]
+tags: [references, pdfs, slow-render]
 
 description: >
   Once confirmed, the plan is to upload all externally hosted documents to S3, where
