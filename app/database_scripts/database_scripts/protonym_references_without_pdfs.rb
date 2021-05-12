@@ -38,6 +38,5 @@ description: >
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
-  - ReferencesWithBlankPdfUrlsAndFilenames
   - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs

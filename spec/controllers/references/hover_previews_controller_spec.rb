@@ -21,6 +21,7 @@ describe References::HoverPreviewsController do
 
         <div class='small-text'>
           #{reference.decorate.expanded_reference}
+          #{reference.decorate.format_document_links}
         </div>
       HTML
     end

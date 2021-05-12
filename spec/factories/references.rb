@@ -78,7 +78,7 @@ FactoryBot.define do
     end
 
     trait :with_document do
-      association :document, factory: :reference_document
+      association :document, factory: [:reference_document, :with_file]
     end
 
     trait :with_notes do

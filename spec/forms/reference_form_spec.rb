@@ -311,7 +311,6 @@ describe ReferenceForm do
             journal_name: reference.journal.name,
             title: "Should be updated",
             document_attributes: {
-              url: "http://localhost/123.pdf",
               id: reference.document.id
             }
           }
@@ -319,7 +318,7 @@ describe ReferenceForm do
 
         context 'when reference has a document' do
           let!(:reference) { create :article_reference }
-          let!(:reference_document) { create :reference_document, reference: reference }
+          let!(:reference_document) { create :reference_document, :with_file, reference: reference }
 
           it 'does not create a new `ReferenceDocument`s' do
             expect(ReferenceDocument.count).to eq 1
