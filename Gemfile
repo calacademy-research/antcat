@@ -26,6 +26,7 @@ gem 'config'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
+gem 'execjs', '< 2.8.0' # TODO: Version-locked because 2.8.0 made tests fail.
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'foundation-rails', '6.6.2.0'
 gem 'grape-swagger-rails'
@@ -35,7 +36,7 @@ gem 'jquery-atwho-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'ledermann-rails-settings'
-gem 'newrelic_rpm'
+gem 'newrelic_rpm', '< 7' # TODO: See https://docs.newrelic.com/docs/agents/ruby-agent/getting-started/migration-7x-guide/
 gem 'paperclip', '5.3.0'
 gem 'paper_trail', '~> 11.0'
 gem 'rails-observers'
