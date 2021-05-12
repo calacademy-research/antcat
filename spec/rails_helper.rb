@@ -8,9 +8,12 @@ require 'sunspot_test/rspec' # Tag blocks with `:search` to enable Sunspot. Comm
 require_relative '../config/environment'
 require 'rspec/rails'
 require 'paper_trail/frameworks/rspec'
+require 'aws-sdk'
 
 abort "The Rails environment is running in production mode!" if Rails.env.production?
 
 Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
+
+Aws.config[:s3] = { stub_responses: true }
 
 ActiveRecord::Migration.maintain_test_schema!

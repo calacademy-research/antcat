@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::ReferenceDocumentsController, as: :visitor do
   describe "GET index" do
     specify do
-      reference_document = create :reference_document
+      reference_document = create :reference_document, :with_file
       get :index
       expect(json_response).to eq([reference_document.as_json(root: true)])
     end
@@ -14,7 +14,7 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:reference_document) { create :reference_document, :with_reference }
+    let!(:reference_document) { create :reference_document, :with_file, :with_reference }
 
     specify do
       get :show, params: { id: reference_document.id }
