@@ -369,11 +369,22 @@ describe HistoryItem, :relational_hi do
     end
 
     context 'when `type` is `SUBSPECIES_OF`' do
-      let(:history_item) { create :history_item, :subspecies_of }
+      context 'without `force_author_citation`' do
+        let(:history_item) { create :history_item, :subspecies_of }
 
-      specify do
-        expect(history_item.to_taxt).
-          to eq "Subspecies of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Subspecies of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
+      end
+
+      context 'with `force_author_citation`' do
+        let(:history_item) { create :history_item, :subspecies_of, :force_author_citation }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "Subspecies of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
       end
     end
 
