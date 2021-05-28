@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where(type: History::Definitions::COMBINATION_IN).joins(:object_taxon).
+      HistoryItem.combination_in_relitems.joins(:object_taxon).
         where.not(taxa: { type: Rank::GENUS_GROUP_NAMES }).limit(LIMIT)
     end
 

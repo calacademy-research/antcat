@@ -11,7 +11,7 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where(type: History::Definitions::JUNIOR_SYNONYM_OF).
+      HistoryItem.junior_synonym_of_relitems.
         joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL").limit(LIMIT)
           LEFT OUTER JOIN protonyms ON protonyms.id = history_items.object_protonym_id
             LEFT OUTER JOIN history_items history_items_protonyms

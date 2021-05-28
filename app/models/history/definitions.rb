@@ -136,13 +136,19 @@ module History
         group_order: 60,
         group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-        item_template: 'Subspecies of {prott %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars: ->(o) { o.slice(:object_protonym_id) },
+        item_template: 'Subspecies of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+        item_template_vars:  ->(o) {
+          {
+            object_protonym_id: o.object_protonym_id,
+            object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+          }
+        },
 
         groupable_item_template: '%<citation>s',
         groupable_item_template_vars: ->(o) { { citation: o.citation } },
 
-        validates_presence_of: [:object_protonym, :reference, :pages]
+        validates_presence_of: [:object_protonym, :reference, :pages],
+        allow_force_author_citation: true
       },
       REPLACEMENT_NAME = 'ReplacementName' => {
         type_label: 'Replacement name',

@@ -101,7 +101,12 @@ onSelectType = (selectedType) ->
 
       when 'SubspeciesOf'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Subspecies of"
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        [
+          TYPE_SPECIFIC_REFERENCE,
+          TYPE_SPECIFIC_PAGES,
+          TYPE_SPECIFIC_OBJECT_PROTONYM,
+          TYPE_SPECIFIC_FORCE_AUTHOR_CITATION
+        ]
 
       when 'StatusAsSpecies'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"

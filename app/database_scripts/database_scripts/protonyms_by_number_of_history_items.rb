@@ -9,7 +9,7 @@ module DatabaseScripts
 
     def results
       Protonym.joins(:history_items).
-        where.not(history_items: { type: History::Definitions::TAXT }).
+        merge(HistoryItem.relational).
         group(:id).order("COUNT(history_items.id) DESC").limit(LIMIT).
         select("protonyms.*, COUNT(history_items.id) AS history_item_count")
     end
