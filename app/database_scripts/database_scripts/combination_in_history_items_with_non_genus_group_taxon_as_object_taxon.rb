@@ -34,8 +34,7 @@ module DatabaseScripts
 end
 __END__
 
-title: >
-  'Combination in' history items with non-genus group taxon as object taxon
+title: <code>CombinationIn</code> history items with non-genus group taxon as object taxon
 
 section: research
 tags: [rel-hist, combinations, future]

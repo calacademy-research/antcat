@@ -45,6 +45,8 @@ end
 
 __END__
 
+title: Unpaired <code>JuniorSynonymOf</code> history items
+
 section: research
 tags: [disagreeing-data, disagreeing-hist, rel-hist, synonyms, future]
 

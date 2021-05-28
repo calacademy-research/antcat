@@ -36,8 +36,7 @@ end
 
 __END__
 
-title: >
-  'Subspecies of' history items with non-species as terminal taxon
+title: <code>SubspeciesOf</code> history items with non-species as terminal taxon
 
 section: research
 tags: [rel-hist, future]
