@@ -16,13 +16,13 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Protonym', 'taxt', 'Pages'
+        t.header 'History item', 'Protonym/TT', 'taxt', 'Pages'
         t.rows do |history_item|
           taxt = history_item.to_taxt
 
           [
             link_to(history_item.id, history_item_path(history_item)),
-            protonym_link(history_item.protonym),
+            protonym_link_with_terminal_taxa(history_item.protonym),
             taxt,
             history_item.pages
           ]
