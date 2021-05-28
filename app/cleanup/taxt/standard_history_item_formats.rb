@@ -51,6 +51,28 @@ module Taxt
       s.
       w.
     ]
+    FORMS_ALT_FORMATS = [
+      'l',
+      'm',
+      'q',
+      'ergatoid m.',
+      'ergatoid q.',
+      'e.q.'
+    ]
+    FORMS_NON_STANDARD = [
+      'putative m.',
+      'putative q.',
+      'polymorphic m.',
+      'subapterous q.',
+      'putative w.q.m.',
+      'brachypterous q. ergatoid q. m.',
+      'gynandromorph',
+      'ergatandromorph',
+      'pseudogyne',
+      'gynecoid w.',
+      'q.m. ergatoid',
+      'q. ergatoid'
+    ]
     FORM_CHARACTERS = FORMS.join.chars.uniq.join
 
     NOT_IMPLEMENTED = 'not_implemented'
