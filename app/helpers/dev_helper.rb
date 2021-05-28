@@ -14,4 +14,9 @@ module DevHelper
       link_to "on localhost", "http://localhost:3000#{path}", class: "show-on-hover dev-link"
     end
   end
+
+  def link_to_current_page_on_live_site_from_staging
+    return unless Rails.env.staging?
+    link_to "on antcat.org", "#{Settings.production_url}#{path}", class: "show-on-hover"
+  end
 end

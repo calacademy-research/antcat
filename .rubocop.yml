@@ -214,6 +214,13 @@ Rails/SkipsModelValidations:
   Exclude:
     - 'spec/**/*'
 
+Rails/UnknownEnv:
+  Environments:
+    - production
+    - development
+    - test
+    - staging
+
 Rails/WhereEquals:
   Enabled: false
 
