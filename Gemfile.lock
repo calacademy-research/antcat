@@ -460,7 +460,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    rubocop (1.14.0)
+    rubocop (1.15.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -469,7 +469,7 @@ GEM
       rubocop-ast (>= 1.5.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.5.0)
+    rubocop-ast (1.7.0)
       parser (>= 3.0.1.1)
     rubocop-performance (1.11.3)
       rubocop (>= 1.7.0, < 2.0)
@@ -649,7 +649,7 @@ DEPENDENCIES
   redcarpet
   request_store
   rspec-rails
-  rubocop (~> 1.14.0)
+  rubocop (~> 1.15.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake
