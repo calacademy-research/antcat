@@ -59,3 +59,4 @@ description: >
 
 related_scripts:
   - FormDescriptionsHistoryItemsWithNonStandardForms
+  - NonRelationalFormDescriptionsHistoryItems
