@@ -53,8 +53,16 @@ class HistoryItem < ApplicationRecord
 
   scope :persisted, -> { where.not(id: nil) }
   scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
+
   scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
+
+  # Type scopes (the "_relitems" suffixes were added to make greping easier).
+  scope :combination_in_relitems, -> { where(type: History::Definitions::COMBINATION_IN) }
+  scope :form_descriptions_relitems, -> { where(type: History::Definitions::FORM_DESCRIPTIONS) }
+  scope :senior_synonym_of_relitems, -> { where(type: History::Definitions::SENIOR_SYNONYM_OF) }
+  scope :junior_synonym_of_relitems, -> { where(type: History::Definitions::JUNIOR_SYNONYM_OF) }
+  scope :subspecies_of_relitems, -> { where(type: History::Definitions::SUBSPECIES_OF) }
 
   acts_as_list scope: :protonym, touch_on_update: false
   has_paper_trail

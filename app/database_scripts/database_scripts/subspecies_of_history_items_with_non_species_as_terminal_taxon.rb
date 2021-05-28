@@ -11,7 +11,8 @@ module DatabaseScripts
     end
 
     def results
-      HistoryItem.where(type: History::Definitions::SUBSPECIES_OF).joins(object_protonym: :terminal_taxon).
+      HistoryItem.subspecies_of_relitems.
+        joins(object_protonym: :terminal_taxon).
         where.not(taxa: { type: Rank::SPECIES }).limit(LIMIT)
     end
 
