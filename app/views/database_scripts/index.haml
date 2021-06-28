@@ -84,7 +84,7 @@
                     %small.gray-text
                       Issue description:
                       =database_script.issue_description
-              %td=decorated.format_tags
+              %td=decorated.format_linked_tags
               %td.shrink
                 -if decorated.soft_validated?
                   %span.hidden-sort Yes
@@ -106,5 +106,5 @@
       -if params[:tag]
         %small=link_to "(show all)", database_scripts_path
     -@database_scripts_presenter.tallied_tags.each do |tag, count|
-      =link_to DatabaseScriptDecorator.format_tags([tag]), database_scripts_path(tag: tag)
+      =DatabaseScriptDecorator.format_linked_tags([tag])
       %small.right-margin=count

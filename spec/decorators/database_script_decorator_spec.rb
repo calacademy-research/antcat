@@ -11,6 +11,13 @@ describe DatabaseScriptDecorator do
     end
   end
 
+  describe '.format_linked_tags' do
+    specify do
+      expect(described_class.format_linked_tags(['new!'])).
+        to eq %(<a class="label rounded-badge" href="/database_scripts?tag=new%21">new!</a>)
+    end
+  end
+
   describe "#format_tags" do
     context 'when testing with a real script' do
       let(:database_script) { DatabaseScripts::OrphanedProtonyms.new }

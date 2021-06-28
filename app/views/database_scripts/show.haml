@@ -11,7 +11,7 @@
   .medium-8.columns
     %h5
       =@database_script.title
-      =@decorated_database_script.format_tags
+      =@decorated_database_script.format_linked_tags
     %p=markdown @database_script.description
 
     -if @database_script.issue_description.present?
@@ -26,7 +26,7 @@
         -@database_script.related_scripts.each do |related_script|
           %li
             =link_to related_script.title, database_script_path(related_script)
-            =DatabaseScriptDecorator.new(related_script).format_tags
+            =DatabaseScriptDecorator.new(related_script).format_linked_tags
 
   -if @database_script.statistics
     .medium-4.columns

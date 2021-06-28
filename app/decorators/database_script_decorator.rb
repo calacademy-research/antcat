@@ -21,12 +21,23 @@ class DatabaseScriptDecorator < Draper::Decorator
     h.safe_join(html_spans, " ")
   end
 
+  def self.format_linked_tags tags
+    html_spans = tags.map do |tag|
+      h.link_to tag, h.database_scripts_path(tag: tag), class: [TAG_CSS_CLASSES[tag] || "white-label"] + ["rounded-badge"]
+    end
+    h.safe_join(html_spans, " ")
+  end
+
   def undecorate
     database_script
   end
 
   def format_tags
     self.class.format_tags(tags)
+  end
+
+  def format_linked_tags
+    self.class.format_linked_tags(tags)
   end
 
   def soft_validated?
