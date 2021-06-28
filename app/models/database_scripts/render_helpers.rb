@@ -43,20 +43,24 @@ module DatabaseScripts
       protonyms.map { |protonym| protonym.decorate.link_to_protonym }.join('<br>')
     end
 
+    def color_span string, css_class
+      %(<span class="#{css_class}">#{string}</span>)
+    end
+
     def bold_warning string
-      %(<span class="bold-warning">#{string}</span>)
+      color_span string, 'bold-warning'
     end
 
     def bold_notice string
-      %(<span class="bold-notice">#{string}</span>)
+      color_span string, 'bold-notice'
     end
 
     def gray_notice string
-      %(<span class="gray-notice">#{string}</span>)
+      color_span string, 'gray-notice'
     end
 
     def purple_notice string
-      %(<span class="purple-notice">#{string}</span>)
+      color_span string, 'purple-notice'
     end
   end
 end
