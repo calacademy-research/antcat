@@ -11,6 +11,14 @@
     =link_to "Show empty status", database_scripts_path(view: DatabaseScriptsController::CHECK_IF_EMPTY), class: "btn-normal"
     =link_to "Non-empty regression tests", database_scripts_path(view: DatabaseScriptsController::NON_EMPTY_REGRESSION_TESTS), class: "btn-normal"
 
+-if params[:tag]
+  .row.margin-bottom
+    .small-12.columns
+      %p
+        Showing:
+        =DatabaseScriptDecorator.format_tags([params[:tag]])
+        =link_to "(show all)", database_scripts_path
+
 .row
   .small-12.columns
     -if @grouped_database_scripts.empty?
@@ -101,10 +109,7 @@
 
 .row
   .small-12.columns.margin-bottom
-    %h5
-      Filter by tags
-      -if params[:tag]
-        %small=link_to "(show all)", database_scripts_path
+    %h5 Filter by tags
     -@database_scripts_presenter.tallied_tags.each do |tag, count|
       =DatabaseScriptDecorator.format_linked_tags([tag])
       %small.right-margin=count
