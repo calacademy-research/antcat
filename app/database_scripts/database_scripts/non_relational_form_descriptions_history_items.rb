@@ -44,7 +44,7 @@ __END__
 title: Non-relational <code>FormDescriptions</code> history items
 
 section: research
-tags: [new!, taxt-hist, future]
+tags: [taxt-hist, future]
 
 description: >
   Matches taxt items with format `ref + pages-ish + (`, which will return some false/true positives/negatives.

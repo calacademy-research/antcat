@@ -55,7 +55,7 @@ Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineLength:
-  Max: 145
+  Max: 140
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 

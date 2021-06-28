@@ -39,7 +39,7 @@ __END__
 title: <code>SeniorSynonymOf</code> history items with a non-synonym terminal taxon
 
 section: research
-tags: [new!, rel-hist, synonyms, future]
+tags: [rel-hist, synonyms, future]
 
 description: >
 
