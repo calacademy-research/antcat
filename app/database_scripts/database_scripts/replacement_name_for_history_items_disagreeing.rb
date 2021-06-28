@@ -56,5 +56,6 @@ description: >
 
 related_scripts:
   - ReplacementNameForHistoryItemsDisagreeing
+  - ReplacementNameForHistoryItemsMissing
   - ReplacementNameHistoryItemsDisagreeing
   - ReplacementNameHistoryItemsMissing

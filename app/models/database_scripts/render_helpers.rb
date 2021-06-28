@@ -43,6 +43,10 @@ module DatabaseScripts
       protonyms.map { |protonym| protonym.decorate.link_to_protonym }.join('<br>')
     end
 
+    def protonym_links_with_author_citations protonyms
+      Array.wrap(protonyms).map { |protonym| protonym.decorate.link_to_protonym_with_author_citation }.join('<br>')
+    end
+
     def color_span string, css_class
       %(<span class="#{css_class}">#{string}</span>)
     end
