@@ -53,7 +53,7 @@ __END__
 title: <code>FormDescriptions</code> history items with non-standard forms
 
 section: research
-tags: [new!, rel-hist, future]
+tags: [rel-hist, future]
 
 description: >
 
