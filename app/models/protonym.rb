@@ -62,7 +62,10 @@ class Protonym < ApplicationRecord
   scope :species_group_names, -> { joins(:name).where(names: { type: Name::SPECIES_GROUP_NAMES }) }
 
   has_paper_trail
-  strip_attributes only: [:locality, :biogeographic_region, :forms, :gender_agreement_type, :notes_taxt, :etymology_taxt], replace_newlines: true
+  strip_attributes only: [
+    :locality, :biogeographic_region, :forms, :gender_agreement_type,
+    :notes_taxt, :etymology_taxt
+  ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]
   trackable parameters: proc { { name: decorate.name_with_fossil } }
 

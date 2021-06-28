@@ -18,7 +18,8 @@ describe AntwebFormatter::Detax do
       let!(:taxon) { create :any_taxon }
 
       specify do
-        expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon.id}}"]).to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
+        expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon.id}}"]).
+          to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
       end
     end
 
@@ -34,7 +35,8 @@ describe AntwebFormatter::Detax do
       let!(:protonym) { create :protonym }
 
       specify do
-        expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
+        expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).
+          to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
       end
     end
 

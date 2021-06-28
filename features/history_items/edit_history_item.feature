@@ -101,14 +101,14 @@ Feature: Editing a history item
     Given this reference exists
       | author       | year |
       | Giovanni, S. | 1809 |
-    And there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family," and a markdown link to "Giovanni, 1809"
+    And there is a protonym "Antcatinae" with a history item "As family," and a markdown link to "Giovanni, 1809"
 
     When I go to the protonym page for "Antcatinae"
-    Then I should see "Antcatinae as family, Giovanni, 1809"
+    Then I should see "As family, Giovanni, 1809"
     And the history item field should not be visible
 
     When I click on the edit history item button
-    Then I should see "Antcatinae as family, Giovanni, 1809"
+    Then I should see "As family, Giovanni, 1809"
     And the history item field should be visible
 
     When I fill in "taxt" with "Lasius history," and a markdown link to "Giovanni, 1809"
@@ -116,5 +116,5 @@ Feature: Editing a history item
     Then I should see "Lasius history, Giovanni, 1809"
 
     When I click on the cancel history item button
-    Then I should see "Antcatinae as family, Giovanni, 1809"
+    Then I should see "As family, Giovanni, 1809"
     And the history item field should not be visible

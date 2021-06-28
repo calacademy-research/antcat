@@ -24,7 +24,10 @@ describe Markdowns::BoltonKeysToRefTags do
       context "with 'et al.' in the key" do
         let!(:agosti) { create :any_reference, bolton_key: "Agosti et al. 1987b" }
 
-        specify { expect(described_class["Agosti et al., 1987b: 236"]).to eq "{#{Taxt::REF_TAG} #{agosti.id}}: 236" }
+        specify do
+          expect(described_class["Agosti et al., 1987b: 236"]).
+            to eq "{#{Taxt::REF_TAG} #{agosti.id}}: 236"
+        end
       end
 
       context "with prefixed group title" do
@@ -41,7 +44,8 @@ describe Markdowns::BoltonKeysToRefTags do
 
       context "when not all Bolton keys matches AntCat references" do
         it "replaces what it can and leaves the rest as is" do
-          expect(described_class[content]).to eq "{#{Taxt::REF_TAG} #{latreille.id}}: 236; Fisher, et al. 2002: 37"
+          expect(described_class[content]).
+            to eq "{#{Taxt::REF_TAG} #{latreille.id}}: 236; Fisher, et al. 2002: 37"
         end
 
         it "returns output that can safely be used as input again" do
@@ -55,7 +59,10 @@ describe Markdowns::BoltonKeysToRefTags do
       context "when both have matching Bolton keys on AntCat" do
         let!(:fisher_et_al) { create :any_reference, bolton_key: "Fisher et al. 2002" }
 
-        specify { expect(described_class[content]).to eq "{#{Taxt::REF_TAG} #{latreille.id}}: 236; {#{Taxt::REF_TAG} #{fisher_et_al.id}}: 37" }
+        specify do
+          expect(described_class[content]).
+            to eq "{#{Taxt::REF_TAG} #{latreille.id}}: 236; {#{Taxt::REF_TAG} #{fisher_et_al.id}}: 37"
+        end
       end
     end
   end

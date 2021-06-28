@@ -70,8 +70,10 @@ describe ReferenceSectionsController do
     end
 
     it 'creates an activity' do
-      expect { put(:update, params: { id: reference_section.id, reference_section: reference_section_params, edit_summary: 'Duplicate' }) }.
-        to change { Activity.where(action: Activity::UPDATE, trackable: reference_section).count }.by(1)
+      expect do
+        put :update,
+          params: { id: reference_section.id, reference_section: reference_section_params, edit_summary: 'Duplicate' }
+      end.to change { Activity.where(action: Activity::UPDATE, trackable: reference_section).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Duplicate"
