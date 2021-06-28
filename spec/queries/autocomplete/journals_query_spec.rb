@@ -15,6 +15,16 @@ describe Autocomplete::JournalsQuery do
       expect(described_class['BC']).to eq []
     end
 
+    describe 'matching diacritics' do
+      let!(:accented) { create :journal, name: 'Va' }
+      let!(:unaccented) { create :journal, name: 'Vál' }
+
+      specify do
+        expect(described_class['va']).to match_array [accented, unaccented]
+        expect(described_class['vá']).to match_array [accented, unaccented]
+      end
+    end
+
     it "returns results in order of most used" do
       most_used = create :journal
       never_used = create :journal

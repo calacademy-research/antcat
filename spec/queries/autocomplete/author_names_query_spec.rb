@@ -18,6 +18,16 @@ describe Autocomplete::AuthorNamesQuery do
       expect(described_class['ol']).to eq [bolton]
     end
 
+    describe 'matching diacritics' do
+      let!(:accented) { create :author_name, name: 'Vázquez' }
+      let!(:unaccented) { create :author_name, name: 'Vazquez' }
+
+      specify do
+        expect(described_class['va']).to match_array [accented, unaccented]
+        expect(described_class['vá']).to match_array [accented, unaccented]
+      end
+    end
+
     it "returns authors in order of most recently created" do
       recent = create :author_name
       old = create :author_name
