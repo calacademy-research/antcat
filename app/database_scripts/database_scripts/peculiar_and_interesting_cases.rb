@@ -24,6 +24,19 @@ module DatabaseScripts
         end
       end <<
         as_table do |t|
+          t.caption "Homonyms replaced by another replaced homonym"
+
+          t.header 'First replaced homonym, which was replaced by ...',
+            '... second replaced homonym ...', '... which has replacement name'
+          t.rows(homonyms_replaced_by_another_replaced_homonym) do |taxon|
+            [
+              taxon_links_with_author_citations(taxon.replacement_name_for),
+              taxon_links_with_author_citations([taxon]),
+              taxon_links_with_author_citations([taxon.homonym_replaced_by])
+            ]
+          end
+        end <<
+        as_table do |t|
           t.caption "Protonyms with weird type name ranks"
 
           t.header 'Protonym', 'Protonym rank', 'Case', 'TypeName.taxon', 'TN.t rank'
@@ -47,6 +60,10 @@ module DatabaseScripts
         Taxon.joins(:replacement_name_for).group(:id).having('COUNT(replacement_name_fors_taxa.id) > 1')
       end
 
+      def homonyms_replaced_by_another_replaced_homonym
+        Taxon.replaced_homonyms.joins(:replacement_name_for)
+      end
+
       def genus_protonyms_with_non_species_type_names
         Protonym.genus_group_names.joins(type_name: :taxon).where.not(taxa: { type: Rank::SPECIES })
       end
@@ -56,7 +73,7 @@ end
 __END__
 
 section: research
-tags: [grab-bag]
+tags: [grab-bag, updated!]
 
 description: >
 
