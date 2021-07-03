@@ -74,7 +74,7 @@ describe Markdowns::ParseCatalogTags do
 
     describe "tag: `PROTT_TAG`" do
       context "when protonym has a `terminal_taxon`" do
-        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:protonym) { create :protonym, :genus_group }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon" do
@@ -103,7 +103,7 @@ describe Markdowns::ParseCatalogTags do
 
     describe "tag: `PROTTAC_TAG`" do
       context "when protonym has a `terminal_taxon`" do
-        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:protonym) { create :protonym, :genus_group }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon (with author citation)" do

@@ -5,7 +5,7 @@ Given("there is a history item {string}") do |taxt|
 end
 
 Given("there is a subfamily protonym {string} with a history item {string}") do |name, taxt|
-  protonym = create :protonym, :family_group_name, name: create(:subfamily_name, name: name)
+  protonym = create :protonym, :family_group, name: create(:subfamily_name, name: name)
   create :history_item, :taxt, taxt: taxt, protonym: protonym
 end
 
@@ -54,7 +54,7 @@ end
 
 # Relational history items.
 Given("Batiatus, 2004a: {string} has described the forms {string} for the protonym {string}") do |pages, forms, protonym_name|
-  protonym = create :protonym, :species_group_name, name: create(:species_name, name: protonym_name)
+  protonym = create :protonym, :species_group, name: create(:species_name, name: protonym_name)
   reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
 
   create :history_item, :form_descriptions, protonym: protonym,

@@ -18,7 +18,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
 
     context 'with genus-group protonym' do
       let!(:protonym) do
-        create :protonym, :species_group_name, :with_type_name, :with_all_taxts
+        create :protonym, :species_group, :with_type_name, :with_all_taxts
       end
 
       specify do
@@ -50,7 +50,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
 
     context 'with species-group protonym' do
       let!(:protonym) do
-        create :protonym, :species_group_name, biogeographic_region: Protonym::NEARCTIC_REGION,
+        create :protonym, :species_group, biogeographic_region: Protonym::NEARCTIC_REGION,
           locality: "USA", forms: 'q.'
       end
 

@@ -20,13 +20,13 @@ FactoryBot.define do
     factory :family, class: Rank::FAMILY.to_s, aliases: [:any_taxon] do
       association :name, factory: :family_name
 
-      genus_group_name_protonym
+      genus_group_protonym
     end
 
     factory :subfamily, class: Rank::SUBFAMILY.to_s do
       association :name, factory: :subfamily_name
 
-      genus_group_name_protonym
+      genus_group_protonym
       without_family
 
       trait :with_family do
@@ -42,7 +42,7 @@ FactoryBot.define do
       association :name, factory: :tribe_name
       subfamily
 
-      genus_group_name_protonym
+      genus_group_protonym
     end
 
     factory :subtribe, class: Rank::SUBTRIBE.to_s do
@@ -50,7 +50,7 @@ FactoryBot.define do
       tribe
       subfamily { |taxon| taxon.tribe.subfamily }
 
-      genus_group_name_protonym
+      genus_group_protonym
     end
 
     factory :genus, class: Rank::GENUS.to_s do
@@ -58,7 +58,7 @@ FactoryBot.define do
       tribe
       subfamily { |taxon| taxon.tribe&.subfamily }
 
-      genus_group_name_protonym
+      genus_group_protonym
 
       trait :incertae_sedis_in_family do
         incertae_sedis_in { Rank::FAMILY }
@@ -74,14 +74,14 @@ FactoryBot.define do
       association :name, factory: :subgenus_name
       genus
 
-      genus_group_name_protonym
+      genus_group_protonym
     end
 
     factory :species, class: Rank::SPECIES.to_s do
       association :name, factory: :species_name
       genus
 
-      species_group_name_protonym
+      species_group_protonym
 
       trait :incertae_sedis_in_family do
         incertae_sedis_in { Rank::FAMILY }
@@ -94,7 +94,7 @@ FactoryBot.define do
       species
       genus
 
-      species_group_name_protonym
+      species_group_protonym
     end
 
     factory :infrasubspecies, class: Rank::INFRASUBSPECIES.to_s do
@@ -103,7 +103,7 @@ FactoryBot.define do
       species
       genus
 
-      species_group_name_protonym
+      species_group_protonym
       unavailable
     end
 
@@ -173,12 +173,12 @@ FactoryBot.define do
       end
     end
 
-    trait :genus_group_name_protonym do
-      association :protonym, :genus_group_name
+    trait :genus_group_protonym do
+      association :protonym, :genus_group
     end
 
-    trait :species_group_name_protonym do
-      association :protonym, :species_group_name
+    trait :species_group_protonym do
+      association :protonym, :species_group
     end
   end
 end

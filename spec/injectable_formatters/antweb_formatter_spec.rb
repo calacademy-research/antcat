@@ -52,7 +52,7 @@ describe AntwebFormatter do
   end
 
   describe ".link_to_protonym" do
-    let(:protonym) { create :protonym, :fossil, :genus_group_name }
+    let(:protonym) { create :protonym, :genus_group, :fossil }
 
     # TODO: Check AntWeb. Skipped as an experiment.
     # specify { expect(described_class.link_to_protonym(protonym).html_safe?).to eq true }
@@ -65,7 +65,7 @@ describe AntwebFormatter do
   end
 
   describe ".link_to_protonym_with_author_citation" do
-    let(:protonym) { create :protonym, :fossil, :genus_group_name }
+    let(:protonym) { create :protonym, :genus_group, :fossil }
 
     specify { expect(described_class.link_to_protonym_with_author_citation(protonym).html_safe?).to eq true }
 

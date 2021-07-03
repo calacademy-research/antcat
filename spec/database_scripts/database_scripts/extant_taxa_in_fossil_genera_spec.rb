@@ -7,7 +7,7 @@ describe DatabaseScripts::ExtantTaxaInFossilGenera do
 
   context "with results" do
     let!(:taxon) do
-      fossil_genus = create :genus, :fossil, protonym: create(:protonym, :genus_group_name, :fossil)
+      fossil_genus = create :genus, :fossil, protonym: create(:protonym, :genus_group, :fossil)
       create :species, genus: fossil_genus
     end
 

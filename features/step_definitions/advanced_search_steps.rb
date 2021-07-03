@@ -17,17 +17,17 @@ Given("there is an invalid family") do
 end
 
 Given("there is a species with locality {string}") do |locality|
-  protonym = create :protonym, :species_group_name, locality: locality
+  protonym = create :protonym, :species_group, locality: locality
   create :species, protonym: protonym
 end
 
 Given("there is a species with biogeographic region {string}") do |biogeographic_region|
-  protonym = create :protonym, :species_group_name, biogeographic_region: biogeographic_region
+  protonym = create :protonym, :species_group, biogeographic_region: biogeographic_region
   create :species, protonym: protonym
 end
 
 Given("there is a species with forms {string}") do |forms|
-  protonym = create :protonym, :species_group_name, forms: forms
+  protonym = create :protonym, :species_group, forms: forms
   create :species, protonym: protonym
 end
 

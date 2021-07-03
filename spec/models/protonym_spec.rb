@@ -35,7 +35,7 @@ describe Protonym do
       end
 
       context 'when protonym is above species rank' do
-        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+        let(:protonym) { build_stubbed :protonym, :genus_group }
 
         it 'cannot have `biogeographic_region`' do
           expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
@@ -49,7 +49,7 @@ describe Protonym do
 
     describe "#forms" do
       context 'when protonym is above species rank' do
-        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+        let(:protonym) { build_stubbed :protonym, :genus_group }
 
         it 'cannot have `forms`' do
           expect { protonym.forms = 'w.' }.
@@ -63,7 +63,7 @@ describe Protonym do
 
     describe "#locality" do
       context 'when protonym is above species rank' do
-        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+        let(:protonym) { build_stubbed :protonym, :genus_group }
 
         it 'cannot have a `locality`' do
           expect { protonym.locality = 'Lund' }.
@@ -77,13 +77,13 @@ describe Protonym do
 
     describe "#gender_agreement_type" do
       it do
-        expect(build_stubbed(:protonym, :species_group_name)).
+        expect(build_stubbed(:protonym, :species_group)).
           to validate_inclusion_of(:gender_agreement_type).
           in_array(described_class::GENDER_AGREEMENT_TYPES).allow_nil
       end
 
       context 'when protonym is not a species-group name' do
-        let(:protonym) { build_stubbed :protonym, :genus_group_name }
+        let(:protonym) { build_stubbed :protonym, :genus_group }
 
         it 'cannot have a `gender_agreement_type`' do
           expect { protonym.gender_agreement_type = described_class::PARTICIPLE }.

@@ -122,7 +122,7 @@ describe Taxa::CompactStatus do
       end
 
       context "when taxon's protonym is an ichnotaxon" do
-        let(:taxon) { build_stubbed :family, protonym: create(:protonym, :family_group_name, :ichnotaxon) }
+        let(:taxon) { build_stubbed :family, protonym: create(:protonym, :family_group, :ichnotaxon) }
 
         specify { expect(described_class[taxon]).to eq "" }
       end
