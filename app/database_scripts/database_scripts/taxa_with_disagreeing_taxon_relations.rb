@@ -103,7 +103,7 @@ end
 
 __END__
 
-section: research
+section: regression-test
 tags: [disagreeing-data, taxa]
 
 issue_description:

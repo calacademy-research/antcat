@@ -4,6 +4,10 @@ module DatabaseScripts
   class HistoryItemsWithLongPages < DatabaseScript
     LIMIT = 150
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_LIST
+    end
+
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
@@ -35,7 +39,7 @@ end
 __END__
 
 section: research
-tags: [rel-hist, future, list]
+tags: [rel-hist, future]
 
 description: >
   Indicates that the content may belong somewhere else.

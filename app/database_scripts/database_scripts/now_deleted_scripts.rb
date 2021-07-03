@@ -16,7 +16,7 @@ module DatabaseScripts
         t.rows do |check|
           [
             check[:title],
-            check[:ok?]
+            (check[:ok?] ? 'Yes' : bold_warning('No'))
           ]
         end
       end

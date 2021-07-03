@@ -35,7 +35,7 @@ end
 __END__
 
 section: research
-tags: [rel-hist, future, list]
+tags: [rel-hist, future]
 
 description: >
   Indicates that the content may belong somewhere else.

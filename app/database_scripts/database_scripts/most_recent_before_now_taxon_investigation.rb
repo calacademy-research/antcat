@@ -2,8 +2,12 @@
 
 module DatabaseScripts
   class MostRecentBeforeNowTaxonInvestigation < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_LIST
+    end
+
     def results
-      TypeName.limit(10000)
+      TypeName.all
     end
 
     def render
@@ -42,7 +46,7 @@ __END__
 title: <code>most_recent_before_now_taxon</code> investigation
 
 section: research
-tags: [taxa, list, slow-render]
+tags: [taxa, slow-render]
 
 issue_description:
 

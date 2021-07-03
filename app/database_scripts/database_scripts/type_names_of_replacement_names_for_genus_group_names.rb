@@ -4,6 +4,10 @@ module DatabaseScripts
   class TypeNamesOfReplacementNamesForGenusGroupNames < DatabaseScript
     LIMIT = 100
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_LIST
+    end
+
     def results
       Taxon.genus_group_names.
         where(id: Taxon.select(:homonym_replaced_by_id)).

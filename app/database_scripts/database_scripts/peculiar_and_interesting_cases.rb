@@ -6,10 +6,6 @@ module DatabaseScripts
       DatabaseScripts::EmptyStatus::NOT_APPLICABLE
     end
 
-    def results
-      []
-    end
-
     def render
       as_table do |t|
         t.caption "Replacement names used for more than one taxon"

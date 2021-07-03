@@ -3,7 +3,7 @@
 module DatabaseScripts
   class ReferencesWithoutPdfs < DatabaseScript
     def empty_status
-      DatabaseScripts::EmptyStatus::EXCLUDED
+      DatabaseScripts::EmptyStatus::EXCLUDED_LIST
     end
 
     def results

@@ -5,6 +5,10 @@ module DatabaseScripts
   class SpeciesGroupProtonymsWithoutBiogeographicRegions < DatabaseScript
     LIMIT = 1000
 
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def statistics
       <<~STR.html_safe
         Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>

@@ -9,6 +9,7 @@ module DatabaseScripts
       NOT_EMPTY = 'Not empty',
       NOT_APPLICABLE = 'N/A',
       EXCLUDED = 'Excluded (slow/list)',
+      EXCLUDED_LIST = 'Excluded (list)',
       FALSE_POSITIVES = 'Excluded (false positives)',
       EXCLUDED_REVERSED = 'Excluded (reversed)',
       UNKNOWN = '??'
