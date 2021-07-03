@@ -252,8 +252,7 @@ describe ReferenceForm do
               author_names_string: "Batiatus, B.",
               journal_name: reference.journal.name,
               document_attributes: {
-                url: "",
-                public: '1'
+                url: ""
               }
             }
           end
@@ -283,10 +282,8 @@ describe ReferenceForm do
             {
               author_names_string: "Batiatus, B.",
               journal_name: 'Zootaxa',
-              bolton_key: 'Smith 1958',
               document_attributes: {
-                url: "https://example.com/file.pdf",
-                public: '1'
+                url: "https://example.com/file.pdf"
               }
             }
           end

@@ -6,8 +6,10 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
   describe "GET index" do
     specify do
       reference_document = create :reference_document, :with_file
+
       get :index
-      expect(json_response).to eq([reference_document.as_json(root: true)])
+
+      expect(json_response).to eq([reference_document.as_json(root: true, only: described_class::ATTRIBUTES)])
     end
 
     specify { expect(get(:index)).to have_http_status :ok }
@@ -25,7 +27,6 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
             "reference_id" => reference_document.reference.id,
             "file_file_name" => reference_document.file_file_name,
             "url" => reference_document.url,
-            "public" => reference_document.public,
 
             "created_at" => reference_document.created_at.as_json,
             "updated_at" => reference_document.updated_at.as_json
