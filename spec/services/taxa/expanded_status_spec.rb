@@ -117,7 +117,7 @@ describe Taxa::ExpandedStatus do
       end
 
       context "when taxon is a collective group name" do
-        let(:taxon) { build_stubbed :any_taxon, collective_group_name: true }
+        let(:taxon) { build_stubbed :any_taxon, :collective_group_name }
 
         specify { expect(described_class[taxon]).to eq "collective group name, #{taxon.status}" }
       end

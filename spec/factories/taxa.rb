@@ -158,6 +158,10 @@ FactoryBot.define do
       original_combination { true }
     end
 
+    trait :collective_group_name do
+      collective_group_name { true }
+    end
+
     # Misc.
     trait :with_current_taxon do
       current_taxon { Family.first || FactoryBot.create(:family) }
