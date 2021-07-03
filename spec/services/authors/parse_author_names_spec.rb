@@ -94,9 +94,5 @@ describe Authors::ParseAuthorNames do
     it "handles a semicolon followed by a space at the end" do
       expect(described_class['Ward, P. S.; ']).to eq ['Ward, P. S.']
     end
-
-    it "handles an authors list separated by ampersand" do
-      expect(described_class['Espadaler & DuMerle']).to eq ['Espadaler', 'DuMerle']
-    end
   end
 end

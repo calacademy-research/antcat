@@ -16,7 +16,7 @@ grammar Authors::AuthorGrammar
   end
 
   rule author_separator
-    ';' | ',' | '&'
+    ';' | ','
   end
 
   rule initial
