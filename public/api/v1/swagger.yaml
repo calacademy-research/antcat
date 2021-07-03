@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.7.0"
+  version: "1.7.1"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -982,8 +982,6 @@ definitions:
       file_file_name:
         type: string
         description: Filename
-      public:
-        type: boolean
       created_at:
         type: string
         format: date-time

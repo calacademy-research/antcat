@@ -4,8 +4,7 @@ require 'rails_helper'
 
 describe Reference do
   it { is_expected.to be_versioned }
-  it { is_expected.to delegate_method(:routed_url).to(:document).allow_nil }
-  it { is_expected.to delegate_method(:downloadable?).to(:document).allow_nil }
+  it { is_expected.to delegate_method(:routed_url).to(:document) }
 
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
@@ -55,6 +54,20 @@ describe Reference do
 
         expect(described_class.order_by_author_names_and_year).to eq [three, one, two]
       end
+    end
+  end
+
+  describe '#downloadable?' do
+    context 'when referece has a `ReferenceDocument`' do
+      let(:reference) { create :any_reference, :with_document }
+
+      specify { expect(reference.downloadable?).to eq true }
+    end
+
+    context 'when referece does not have a `ReferenceDocument`' do
+      let(:reference) { create :any_reference }
+
+      specify { expect(reference.downloadable?).to eq false }
     end
   end
 

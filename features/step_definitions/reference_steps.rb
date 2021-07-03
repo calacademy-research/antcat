@@ -60,10 +60,6 @@ When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
 end
 
-Then("I should see a PDF link") do
-  find "a", text: "PDF", match: :first
-end
-
 When("I fill in {string} with a URL to a document that exists") do |field_name|
   stub_request :any, "http://google.com/foo"
   step %(I fill in "#{field_name}" with "http://google\.com/foo")

@@ -28,7 +28,7 @@ describe ReferenceDecorator do
   describe "#format_document_links" do
     let(:reference) { build_stubbed :any_reference }
 
-    context 'when reference does not have document' do
+    context 'when reference does not have a document' do
       specify { expect(decorated.format_document_links).to eq nil }
     end
 

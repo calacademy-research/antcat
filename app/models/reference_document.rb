@@ -6,7 +6,8 @@
 class ReferenceDocument < ApplicationRecord
   belongs_to :reference, optional: true # TODO: Probably require after cleaning up records.
 
-  validate :check_url, :ensure_url_has_protocol, :ensure_file_or_url_present
+  validates :url, absence: true, on: :create
+  validate :ensure_file_or_url_present
 
   has_attached_file :file,
     preserve_files: true,
@@ -28,11 +29,6 @@ class ReferenceDocument < ApplicationRecord
 
   def pdf
     true
-  end
-
-  # TODO: Check and simplify callers now that all existing documents are downloadable.
-  def downloadable?
-    hosted_on_s3? || url.present?
   end
 
   def actual_url
@@ -67,24 +63,6 @@ class ReferenceDocument < ApplicationRecord
 
     def hosted_on_s3?
       file_file_name.present?
-    end
-
-    def check_url
-      return if Rails.env.development? # HACK
-      return if file_file_name.present? || url.blank?
-      # This is to avoid authentication problems when a URL to one of "our" files is copied
-      # to another reference (e.g., nested).
-      return if /antcat/.match?(url)
-
-      URI.parse(url.gsub(' ', '%20'))
-    rescue URI::InvalidURIError
-      errors.add :url, 'is not in a valid format'
-    end
-
-    def ensure_url_has_protocol
-      return if url.blank?
-      return if url.match?(%r{^https?://})
-      errors.add :url, 'must start with http:// or https://'
     end
 
     def url_via_file_file_name

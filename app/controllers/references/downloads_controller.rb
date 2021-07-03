@@ -4,12 +4,7 @@ module References
   class DownloadsController < ApplicationController
     def show
       reference_document = find_reference_document
-
-      if reference_document.downloadable?
-        redirect_to reference_document.actual_url
-      else
-        head :unauthorized
-      end
+      redirect_to reference_document.actual_url
     end
 
     private

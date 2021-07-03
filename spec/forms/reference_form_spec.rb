@@ -245,15 +245,14 @@ describe ReferenceForm do
 
     describe 'reference documents' do
       context 'when creating a reference' do
-        context 'when no `file` or `url` is given' do
+        context 'when no `file` is uploaded' do
           let!(:reference) { build :article_reference }
           let(:params) do
             {
               author_names_string: "Batiatus, B.",
               journal_name: reference.journal.name,
               document_attributes: {
-                url: "",
-                public: '1'
+                file: ""
               }
             }
           end
@@ -268,7 +267,7 @@ describe ReferenceForm do
           end
         end
 
-        context 'when a `file` or `url` is given' do
+        context 'when a `file` is uploaded' do
           let!(:journal) { create :journal }
           let!(:reference) do
             ArticleReference.new(
@@ -283,10 +282,8 @@ describe ReferenceForm do
             {
               author_names_string: "Batiatus, B.",
               journal_name: 'Zootaxa',
-              bolton_key: 'Smith 1958',
               document_attributes: {
-                url: "https://example.com/file.pdf",
-                public: '1'
+                file: File.new(Rails.root.join('spec/fixtures/test_pdf.pdf'))
               }
             }
           end
@@ -299,7 +296,7 @@ describe ReferenceForm do
             expect { described_class.new(reference, params).save }.to change { Reference.count }
           end
 
-          it 'does creates a new `ReferenceDocument`' do
+          it 'creates a new `ReferenceDocument`' do
             expect { described_class.new(reference, params).save }.
               to change { ReferenceDocument.count }.from(0).to(1)
           end
