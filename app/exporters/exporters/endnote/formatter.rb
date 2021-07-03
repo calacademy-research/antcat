@@ -49,7 +49,7 @@ module Exporters
         attr_reader :reference
         attr_accessor :string
 
-        delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, :routed_url, to: :reference
+        delegate :author_names, :year, :title, :public_notes, :taxonomic_notes, to: :reference
 
         def add tag, value
           string << "%#{tag} #{value.to_s.gsub(/[|*]/, '')}" if value.present?
@@ -59,6 +59,11 @@ module Exporters
           author_names.each do |author|
             add "A", author.name
           end
+        end
+
+        def routed_url
+          return unless reference.downloadable?
+          reference.routed_url
         end
     end
 

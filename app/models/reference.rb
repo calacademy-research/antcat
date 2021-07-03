@@ -17,7 +17,7 @@ class Reference < ApplicationRecord
   IGNORE_PAPER_TRAIL_COLUMNS = CACHE_COLUMNS
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
-  delegate :routed_url, to: :document, allow_nil: true
+  delegate :routed_url, to: :document
   delegate :key_with_suffixed_year, :key_with_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy

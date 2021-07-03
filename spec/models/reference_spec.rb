@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Reference do
   it { is_expected.to be_versioned }
-  it { is_expected.to delegate_method(:routed_url).to(:document).allow_nil }
+  it { is_expected.to delegate_method(:routed_url).to(:document) }
 
   describe 'relations' do
     it { is_expected.to have_many(:reference_author_names).dependent(:destroy) }
