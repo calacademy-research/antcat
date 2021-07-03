@@ -59,6 +59,24 @@ describe ReferenceForm do
       let!(:author_names) { [create(:author_name, name: "Batiatus, B.")] }
       let!(:reference) { create :article_reference, author_names: author_names }
 
+      context 'with misparsed author name' do
+        let(:params) do
+          {
+            author_names_string: "Batiatus, B"
+          }
+        end
+
+        it 'prevents the form from saving' do
+          reference_form = described_class.new(reference, params)
+
+          reference_form.save
+          reference_form.collect_errors
+
+          expect(reference_form.errors[:author_names_string]).
+            to include "may have been misparsed. Input: <code>Batiatus, B</code>, parsed as: <code>Batiatus; B</code>\n"
+        end
+      end
+
       context "when adding an invalid author name" do
         let(:params) do
           {

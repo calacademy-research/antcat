@@ -11,13 +11,13 @@ Feature: Working with authors and their names
 
   Scenario: Seeing all the authors with their names
     Given the following names exist for an author
-      | Bolton, B. |
-      | Bolton,B.  |
+      | Bolton, B.  |
+      | Bolton, Ba. |
     And the following names exist for another author
       | Fisher, B. |
 
     When I go to the authors page
-    Then I should see "Bolton, B.; Bolton,B."
+    Then I should see "Bolton, B.; Bolton, Ba."
     And I should see "Fisher, B."
 
   Scenario: Adding an alternative spelling of an author name

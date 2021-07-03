@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :author_name do
-    sequence(:name) { |n| "Author#{n}, A.B." }
+    sequence(:name, 'a') { |n| "Author#{n}, A.B." }
     author
   end
 end

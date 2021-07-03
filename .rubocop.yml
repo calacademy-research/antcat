@@ -342,6 +342,9 @@ Style/HashAsLastArrayItem:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/InverseMethods:
+  Enabled: false
+
 Style/Lambda:
   Enabled: false
 
@@ -399,6 +402,9 @@ Style/SymbolProc:
 
 Style/TrailingCommaInBlockArgs:
   Enabled: true
+
+Style/TrailingUnderscoreVariable:
+  Enabled: false
 
 Style/WordArray:
   Enabled: false

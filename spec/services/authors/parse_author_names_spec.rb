@@ -33,8 +33,14 @@ describe Authors::ParseAuthorNames do
       expect(described_class["Sanetra, M; Ward, P."]).to eq ['Sanetra, M', 'Ward, P.']
     end
 
+    # TODO: Added to highlight bug. Fix by stop using this class.
+    xit "handles a name with an initial without a period" do
+      expect(described_class["Sanetra, M"]).to eq ['Sanetra, M']
+    end
+
     it "handles generation numbers" do
       expect(described_class["Coody, C. J.; Watkins, J. F., II"]).to eq ["Coody, C. J.", "Watkins, J. F., II"]
+      expect(described_class['Morrison, W.R., III']).to eq ['Morrison, W.R., III']
     end
 
     it "handles St." do
@@ -73,10 +79,6 @@ describe Authors::ParseAuthorNames do
       expect(described_class['Brown, W. L., Sr.']).to eq ['Brown, W. L., Sr.']
     end
 
-    it "handles 'III'" do
-      expect(described_class['Morrison, W.R., III']).to eq ['Morrison, W.R., III']
-    end
-
     it "handles 'Jr'" do
       expect(described_class['Brown, W. L., Jr; Kempf, W. W.']).to eq ['Brown, W. L., Jr', 'Kempf, W. W.']
     end
@@ -91,10 +93,6 @@ describe Authors::ParseAuthorNames do
 
     it "handles a semicolon followed by a space at the end" do
       expect(described_class['Ward, P. S.; ']).to eq ['Ward, P. S.']
-    end
-
-    it "handles an authors list separated by ampersand" do
-      expect(described_class['Espadaler & DuMerle']).to eq ['Espadaler', 'DuMerle']
     end
   end
 end
