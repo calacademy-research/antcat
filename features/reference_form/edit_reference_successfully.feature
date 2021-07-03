@@ -46,14 +46,6 @@ Feature: Edit reference successfully
     And I press "Save"
     Then I should see "Fisher, B. 2010. Ants. New York: Wiley, 22 pp."
 
-  Scenario: Specifying the document URL
-    Given there is a reference
-
-    When I go to the edit page for the most recent reference
-    And I fill in "reference_document_attributes_url" with a URL to a document that exists
-    And I press "Save"
-    Then I should see a PDF link
-
   Scenario: Edit a `NestedReference`
     Given this article reference exists
       | author     | year | title | journal | series_volume_issue | pagination |

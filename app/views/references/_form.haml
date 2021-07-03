@@ -142,12 +142,13 @@
           .row
             .medium-12.columns
               =document_form.file_field :file
-          .row
-            .medium-12.columns.end
-              =f.label :document_url do
-                Source URL
-                =db_tooltip_icon :document_url, scope: :references
-              =document_form.text_field :url
+
+          -if document_form.object.url?
+            .row
+              .medium-12.columns.end
+                =f.label :document_url do
+                  Source URL (legacy)
+                =document_form.text_field :url
 
           .row.small-text
             .medium-12.columns
