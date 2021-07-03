@@ -32,13 +32,19 @@ class CatalogPresenter
   private
 
     def fetch_statistics
-      decorated_taxon = taxon.decorate
-
       if show_full_statistics?
-        decorated_taxon.full_statistics
+        full_statistics
       else
         # If there's no valid-only stats, try including invalid too before giving up.
-        decorated_taxon.valid_only_statistics || decorated_taxon.full_statistics
+        valid_only_statistics || full_statistics
       end
+    end
+
+    def full_statistics
+      Taxa::Statistics::FetchStatistics[taxon]
+    end
+
+    def valid_only_statistics
+      Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
     end
 end

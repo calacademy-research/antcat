@@ -47,14 +47,6 @@ class TaxonDecorator < Draper::Decorator
     Taxa::CompactStatus[taxon]
   end
 
-  def full_statistics
-    Taxa::Statistics::FetchStatistics[taxon]
-  end
-
-  def valid_only_statistics
-    Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
-  end
-
   def name_of_obsoletes
     taxon.is_a?(SpeciesGroupTaxon) ? 'combination' : 'classification'
   end
