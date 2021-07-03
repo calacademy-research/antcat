@@ -16,6 +16,7 @@ class AuthorName < ApplicationRecord
     format: { with: VALID_CHARACTERS_REGEX, message: "contains unsupported characters" }
   # TODO: Remove `on: :create` (or just squish the string) once records have been fixed.
   validates :name, format: { without: /  /, message: "cannot contain consecutive spaces" }, on: :create
+  validates :name, format: { without: /,[^ ]/, message: "cannot contain commas not followed by a space" }
   after_update :invalidate_reference_caches
 
   has_paper_trail
