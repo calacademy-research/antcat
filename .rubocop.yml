@@ -342,6 +342,9 @@ Style/HashAsLastArrayItem:
 Style/IfUnlessModifier:
   Enabled: false
 
+Style/InverseMethods:
+  Enabled: false
+
 Style/Lambda:
   Enabled: false
 
