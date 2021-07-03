@@ -1,26 +1,11 @@
 # frozen_string_literal: true
 
 class ProtonymsController < ApplicationController
-  TAXON_COUNT_ORDER = "taxon_count"
-
   before_action :ensure_user_is_at_least_helper, except: [:index, :show]
 
-  # TODO: Fix.
   def index
-    protonyms =
-      if current_user
-        scope = Protonym.select("protonyms.*, COUNT(taxa.id) AS taxa_count").
-                  left_outer_joins(:taxa).group(:id).references('taxa_count').
-                  preload(:name, authorship: :reference)
-        if params[:order] == TAXON_COUNT_ORDER
-          scope.order("taxa_count DESC")
-        else
-          scope.order_by_name
-        end
-      else
-        Protonym.includes(:name, authorship: :reference).order_by_name
-      end
-    @protonyms = protonyms.paginate(page: params[:page], per_page: 50)
+    @protonyms = Protonym.includes(:name, authorship: :reference).order_by_name.
+      paginate(page: params[:page], per_page: 50)
   end
 
   def show
