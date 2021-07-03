@@ -33,6 +33,11 @@ describe Authors::ParseAuthorNames do
       expect(described_class["Sanetra, M; Ward, P."]).to eq ['Sanetra, M', 'Ward, P.']
     end
 
+    # TODO: Added to highlight bug. Fix by stop using this class.
+    xit "handles a name with an initial without a period" do
+      expect(described_class["Sanetra, M"]).to eq ['Sanetra, M']
+    end
+
     it "handles generation numbers" do
       expect(described_class["Coody, C. J.; Watkins, J. F., II"]).to eq ["Coody, C. J.", "Watkins, J. F., II"]
     end
