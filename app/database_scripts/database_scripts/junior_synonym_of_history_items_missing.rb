@@ -47,8 +47,7 @@ end
 
 __END__
 
-title: >
-  'Junior synonym of' history items (missing)
+title: <code>JuniorSynonymOf</code> history items (missing)
 
 section: research
 tags: [disagreeing-data, disagreeing-hist, rel-hist, taxt-hist, synonyms, future, list]
