@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class TaxaThatAppearsMoreThanOnceInTypeNames < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::EXCLUDED_LIST
+    end
+
     def results
       Taxon.where(id: TypeName.group(:taxon_id).having('COUNT(id) > 1').select(:taxon_id)).limit(100)
     end
@@ -26,7 +30,7 @@ __END__
 title: Taxa that appears more than once in <code>TypeName</code>s
 
 section: research
-tags: [taxa, types, list]
+tags: [taxa, types]
 
 description: >
 

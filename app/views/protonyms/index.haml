@@ -3,10 +3,6 @@
 
 -content_for :breadcrumbs_right do
   -if current_user
-    -if params[:order] == ProtonymsController::TAXON_COUNT_ORDER
-      =link_to "Order by name", protonyms_path(request.params.merge(order: nil)), class: "btn-normal"
-    -else
-      =link_to "Order by taxon count", protonyms_path(request.params.merge(order: ProtonymsController::TAXON_COUNT_ORDER)), class: "btn-normal"
     -if user_is_at_least_helper?
       =link_to "New", new_protonym_path, class: "btn-normal"
 
@@ -19,8 +15,6 @@
       %th Forms
       %th Locality
       %th Notes
-      -if current_user
-        %th Taxa
   %tbody
     -@protonyms.each do |protonym|
       %tr
@@ -33,7 +27,5 @@
         %td=protonym.forms
         %td=protonym.decorate.format_locality
         %td=Detax[protonym.notes_taxt]
-        -if current_user
-          %td=protonym.taxa_count
 
 =will_paginate @protonyms

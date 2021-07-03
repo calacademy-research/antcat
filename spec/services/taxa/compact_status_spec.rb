@@ -116,13 +116,13 @@ describe Taxa::CompactStatus do
       end
 
       context "when taxon is a collective group name" do
-        let(:taxon) { build_stubbed :any_taxon, collective_group_name: true }
+        let(:taxon) { build_stubbed :any_taxon, :collective_group_name }
 
         specify { expect(described_class[taxon]).to eq "" }
       end
 
       context "when taxon's protonym is an ichnotaxon" do
-        let(:taxon) { build_stubbed :family, protonym: create(:protonym, :family_group_name, :ichnotaxon) }
+        let(:taxon) { build_stubbed :family, protonym: create(:protonym, :family_group, :ichnotaxon) }
 
         specify { expect(described_class[taxon]).to eq "" }
       end

@@ -6,12 +6,10 @@ namespace :antcat do
   namespace :reference_caches do
     desc 'Invalidates all reference caches'
     task invalidate: :environment do
-      # rubocop:disable Rails/SkipsModelValidations
       Reference.update_all(
         plain_text_cache: nil,
         expanded_reference_cache: nil
       )
-      # rubocop:enable Rails/SkipsModelValidations
     end
 
     desc 'Regenerate all reference caches'
@@ -41,9 +39,7 @@ namespace :antcat do
         key_with_suffixed_year = reference.key_with_suffixed_year
 
         if reference.key_with_suffixed_year_cache != key_with_suffixed_year
-          # rubocop:disable Rails/SkipsModelValidations
-          reference.update_columns key_with_suffixed_year_cache: key_with_suffixed_year
-          # rubocop:enable Rails/SkipsModelValidations
+          reference.update_columns(key_with_suffixed_year_cache: key_with_suffixed_year)
         end
       end
     end

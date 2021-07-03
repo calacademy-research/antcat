@@ -22,24 +22,6 @@ describe Author do
     end
   end
 
-  describe "#merge" do
-    let!(:target_author) { create(:author_name).author }
-    let!(:author_to_merge) { create(:author_name).author }
-
-    it "makes all the names of the passed in authors belong to the same author" do
-      expect(described_class.count).to eq 2
-      expect(AuthorName.count).to eq 2
-
-      all_names = (target_author.names + author_to_merge.names).uniq.sort
-
-      target_author.merge author_to_merge
-      expect(all_names.all? { |name| name.author == target_author }).to eq true
-
-      expect(described_class.count).to eq 1
-      expect(AuthorName.count).to eq 2
-    end
-  end
-
   describe '#described_taxa' do
     let(:author) { create :author }
     let(:author_name) { create :author_name, author: author }

@@ -13,7 +13,7 @@ describe Autocomplete::ProtonymsQuery, :search do
     end
 
     describe 'searching by protonym name' do
-      let!(:protonym) { create :protonym, :species_group_name, name: create(:species_name, name: 'Lasius niger') }
+      let!(:protonym) { create :protonym, :species_group, name: create(:species_name, name: 'Lasius niger') }
 
       before do
         create :protonym # Non-match.

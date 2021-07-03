@@ -125,7 +125,7 @@ describe HistoryPresenter, :relational_hi do
       end
 
       context 'with `SUBSPECIES_OF` items' do
-        let(:object_protonym) { create :protonym, :species_group_name }
+        let(:object_protonym) { create :protonym, :species_group }
 
         let!(:item_1) do
           create :history_item, :subspecies_of, :with_2000_reference,

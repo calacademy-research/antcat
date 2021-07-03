@@ -2,8 +2,11 @@
 
 module DatabaseScripts
   class HistoryItemsWithoutRefOrTaxTags < DatabaseScript
-    NO_REF_OR_TAX_OR_PRO_TAG =
-      "taxt NOT LIKE '%{ref %' AND taxt NOT LIKE '%{tax %' AND taxt NOT LIKE '%{taxac %' AND taxt NOT LIKE '%{pro %'"
+    NO_REF_OR_TAX_OR_PRO_TAG = <<~SQL.squish
+      taxt NOT LIKE '%{ref%'
+        AND taxt NOT LIKE '%{tax%'
+        AND taxt NOT LIKE '%{pro%'
+    SQL
 
     # Manually checked in October 2020.
     # Via:
@@ -41,23 +44,16 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'History item', 'Taxon', 'Status', 'taxt',
-          'Looks like protonym data?', 'Simple known format?', 'Protonym', 'Manually checked (October 2020)'
+        t.header 'History item', 'Protonym/TT', 'taxt',
+          'Simple known format?', 'Manually checked (October 2020)'
         t.rows do |history_item|
           taxt = history_item.taxt
-          taxon = history_item.terminal_taxon
-          protonym = history_item.protonym
-          looks_like_it_belongs_to_the_protonym = looks_like_it_belongs_to_the_protonym?(taxt)
-          simple_known_format = simple_known_format?(taxt)
 
           [
             link_to(history_item.id, history_item_path(history_item)),
-            taxon_link(taxon),
-            taxon.status,
+            protonym_link_with_terminal_taxa(history_item.protonym),
             taxt,
-            ('Yes' if looks_like_it_belongs_to_the_protonym),
-            ('Yes' if simple_known_format),
-            protonym.decorate.link_to_protonym,
+            ('Yes' if simple_known_format?(taxt)),
             ('Yes' if history_item.id.in?(CHECKED_HISTORY_ITEM_IDS))
           ]
         end
@@ -65,12 +61,8 @@ module DatabaseScripts
     end
 
     def simple_known_format? taxt
-      taxt.in?(['Unavailable name', '<i>Nomen nudum</i>'])
-    end
-
-    def looks_like_it_belongs_to_the_protonym? taxt
-      taxt.starts_with?(',') ||
-        taxt =~ /[A-Z]{5,}/
+      taxt.in?(['Unavailable name', '<i>Nomen nudum</i>']) ||
+        taxt.match?(%r{^<i>Nomen nudum</i>, attributed to \w+(, \w\.?)?\.?$})
     end
   end
 end
@@ -83,4 +75,3 @@ section: research
 tags: [taxt-hist]
 
 description: >
-  "Looks like protonym data" = item starts with a comma, or contains five or more uppercase letters

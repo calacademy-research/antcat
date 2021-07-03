@@ -74,7 +74,7 @@ describe Markdowns::ParseCatalogTags do
 
     describe "tag: `PROTT_TAG`" do
       context "when protonym has a `terminal_taxon`" do
-        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:protonym) { create :protonym, :genus_group }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon" do
@@ -103,7 +103,7 @@ describe Markdowns::ParseCatalogTags do
 
     describe "tag: `PROTTAC_TAG`" do
       context "when protonym has a `terminal_taxon`" do
-        let!(:protonym) { create :protonym, :genus_group_name }
+        let!(:protonym) { create :protonym, :genus_group }
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon (with author citation)" do
@@ -148,7 +148,7 @@ describe Markdowns::ParseCatalogTags do
         let(:reference) { create :any_reference }
 
         it 'generates it' do
-          reference.update_columns key_with_suffixed_year_cache: nil
+          reference.update_columns(key_with_suffixed_year_cache: nil)
           expect(reference.key_with_suffixed_year_cache).to eq nil
 
           expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq reference_taxt_link(reference)

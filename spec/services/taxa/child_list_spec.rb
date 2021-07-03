@@ -51,7 +51,7 @@ describe Taxa::ChildList do
       end
 
       context "when taxon has collective group names" do
-        let!(:taxon) { create :genus, :fossil, subfamily: subfamily, collective_group_name: true }
+        let!(:taxon) { create :genus, :fossil, :collective_group_name, subfamily: subfamily }
 
         specify do
           expect(described_class[subfamily]).to eq(

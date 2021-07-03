@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   # :nocov:
   if Rails.env.development?
     rescue_from RSolr::Error::ConnectionRefused do
-      render plain: "Start Solr: `bundle exec rake sunspot:solr:start RAILS_ENV=development`"
+      render plain: "Start Solr: `RAILS_ENV=development bundle exec rake sunspot:solr:start`"
     end
   end
   # :nocov:

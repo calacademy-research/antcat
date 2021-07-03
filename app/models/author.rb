@@ -12,15 +12,6 @@ class Author < ApplicationRecord
   has_paper_trail
   trackable
 
-  def merge author_to_merge
-    transaction do
-      author_to_merge.names.each do |name|
-        name.update!(author: self)
-      end
-      author_to_merge.reload.destroy! # Reload first to avoid deleting transferred `AuthorName`s.
-    end
-  end
-
   # NOTE: "first" doesn't mean "primary", or "most correct", it
   # simply refers to the name with the oldest ID.
   def first_author_name_name

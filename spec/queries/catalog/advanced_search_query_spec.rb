@@ -164,11 +164,11 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching for locality" do
-      let!(:indonesia) { create :protonym, :species_group_name, locality: 'Indonesia (Bhutan)' }
+      let!(:indonesia) { create :protonym, :species_group, locality: 'Indonesia (Bhutan)' }
       let!(:taxon) { create :species, protonym: indonesia }
 
       before do
-        china = create :protonym, :species_group_name, locality: 'China'
+        china = create :protonym, :species_group, locality: 'China'
         create :species, protonym: china
       end
 
@@ -179,9 +179,9 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching for biogeographic region" do
       it "only returns taxa with that biogeographic_region" do
-        create :species, protonym: create(:protonym, :species_group_name, biogeographic_region: Protonym::NEOTROPIC_REGION)
+        create :species, protonym: create(:protonym, :species_group, biogeographic_region: Protonym::NEOTROPIC_REGION)
         indomanayan_species = create :species,
-          protonym: create(:protonym, :species_group_name, biogeographic_region: Protonym::NEARCTIC_REGION)
+          protonym: create(:protonym, :species_group, biogeographic_region: Protonym::NEARCTIC_REGION)
         no_region_species = create :species
 
         expect(described_class[biogeographic_region: Protonym::NEARCTIC_REGION]).to eq [indomanayan_species]
@@ -192,11 +192,11 @@ describe Catalog::AdvancedSearchQuery do
     end
 
     describe "searching type fields" do
-      let!(:one) { create :species, protonym: create(:protonym, :species_group_name, primary_type_information_taxt: 'one') }
-      let!(:two) { create :species, protonym: create(:protonym, :species_group_name, secondary_type_information_taxt: 'one two') }
-      let!(:three) { create :species, protonym: create(:protonym, :species_group_name, type_notes_taxt: 'one two three') }
+      let!(:one) { create :species, protonym: create(:protonym, :species_group, primary_type_information_taxt: 'one') }
+      let!(:two) { create :species, protonym: create(:protonym, :species_group, secondary_type_information_taxt: 'one two') }
+      let!(:three) { create :species, protonym: create(:protonym, :species_group, type_notes_taxt: 'one two three') }
 
-      before { create :species, protonym: create(:protonym, :species_group_name, primary_type_information_taxt: 'unrelated') }
+      before { create :species, protonym: create(:protonym, :species_group, primary_type_information_taxt: 'unrelated') }
 
       it "returns taxa with type fields matching the query" do
         expect(described_class[type_information: 'one']).to match_array [one, two, three]
@@ -207,10 +207,10 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching for forms" do
       it "only returns taxa with those forms" do
-        protonym = create :protonym, :species_group_name, forms: 'w.q.'
+        protonym = create :protonym, :species_group, forms: 'w.q.'
         atta = create :species, protonym: protonym
 
-        protonym = create :protonym, :species_group_name, forms: 'q.'
+        protonym = create :protonym, :species_group, forms: 'q.'
         create :species, protonym: protonym
 
         expect(described_class[forms: 'w.']).to eq [atta]
@@ -259,7 +259,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by ichnotaxon" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :family, :fossil, protonym: create(:protonym, :family_group_name, :ichnotaxon) }
+      let!(:yes_match) { create :family, :fossil, protonym: create(:protonym, :family_group, :ichnotaxon) }
 
       specify { expect(described_class[ichnotaxon: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }
@@ -277,7 +277,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by collective group name" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :any_taxon, :fossil, collective_group_name: true }
+      let!(:yes_match) { create :any_taxon, :fossil, :collective_group_name }
 
       specify { expect(described_class[collective_group_name: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[collective_group_name: "true"]).to eq [yes_match] }

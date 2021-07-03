@@ -211,6 +211,7 @@ Rails/RenderInline:
   Enabled: false
 
 Rails/SkipsModelValidations:
+  Enabled: false
   Exclude:
     - 'spec/**/*'
 

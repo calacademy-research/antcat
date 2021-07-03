@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class NonStandardReferenceSections < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def results
       non_standard = []
 

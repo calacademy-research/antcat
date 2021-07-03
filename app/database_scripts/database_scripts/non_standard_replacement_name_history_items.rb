@@ -2,6 +2,10 @@
 
 module DatabaseScripts
   class NonStandardReplacementNameHistoryItems < DatabaseScript
+    def empty_status
+      DatabaseScripts::EmptyStatus::FALSE_POSITIVES
+    end
+
     def results
       HistoryItem.taxts_only.
         where("history_items.taxt LIKE 'Replacement name:%'").

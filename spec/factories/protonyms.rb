@@ -15,18 +15,18 @@ FactoryBot.define do
       end
     end
 
-    genus_group_name
+    genus_group
 
     # Rank-related.
-    trait :family_group_name do
+    trait :family_group do
       association :name, factory: :family_name
     end
 
-    trait :genus_group_name do
+    trait :genus_group do
       association :name, factory: :genus_name
     end
 
-    trait :species_group_name do
+    trait :species_group do
       association :name, factory: :species_name
     end
 
@@ -49,31 +49,31 @@ FactoryBot.define do
     trait :adjective_gender_agreement_type do
       gender_agreement_type { Protonym::ADJECTIVE }
 
-      species_group_name
+      species_group
     end
 
     trait :noun_in_apposition_gender_agreement_type do
       gender_agreement_type { Protonym::NOUN_IN_APPOSITION }
 
-      species_group_name
+      species_group
     end
 
     trait :noun_in_genitive_case_gender_agreement_type do
       gender_agreement_type { Protonym::NOUN_IN_GENITIVE_CASE }
 
-      species_group_name
+      species_group
     end
 
     trait :participle_gender_agreement_type do
       gender_agreement_type { Protonym::PARTICIPLE }
 
-      species_group_name
+      species_group
     end
 
     trait :blank_gender_agreement_type do
       gender_agreement_type { nil }
 
-      species_group_name
+      species_group
     end
 
     # Misc.

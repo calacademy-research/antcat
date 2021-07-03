@@ -171,7 +171,7 @@ describe Taxon do
 
   describe "#author_citation" do
     let!(:reference) { create :any_reference, author_string: 'Bolton', year: 2005 }
-    let(:taxon) { create :species, protonym: create(:protonym, :species_group_name, authorship_reference: reference) }
+    let(:taxon) { create :species, protonym: create(:protonym, :species_group, authorship_reference: reference) }
 
     context "when taxon is a recombination" do
       before do

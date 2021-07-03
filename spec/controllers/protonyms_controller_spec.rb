@@ -196,7 +196,7 @@ describe ProtonymsController do
     end
 
     context 'with species-group protonym' do
-      let!(:protonym) { create :protonym, :species_group_name }
+      let!(:protonym) { create :protonym, :species_group }
       let(:protonym_params) do
         {
           biogeographic_region: Protonym::NEARCTIC_REGION,
