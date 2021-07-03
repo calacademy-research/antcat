@@ -73,6 +73,11 @@ describe AuthorName do
         is_expected.to_not allow_value('Author; A.').for(:name).with_message(error_message)
         is_expected.to_not allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
       end
+
+      it 'does not allow consecutive spaces' do
+        is_expected.to_not allow_value('Author,   A.').for(:name).on(:create).
+          with_message("cannot contain consecutive spaces")
+      end
     end
 
     describe "uniqueness validation" do
