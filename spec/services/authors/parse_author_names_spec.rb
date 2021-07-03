@@ -40,6 +40,7 @@ describe Authors::ParseAuthorNames do
 
     it "handles generation numbers" do
       expect(described_class["Coody, C. J.; Watkins, J. F., II"]).to eq ["Coody, C. J.", "Watkins, J. F., II"]
+      expect(described_class['Morrison, W.R., III']).to eq ['Morrison, W.R., III']
     end
 
     it "handles St." do
@@ -76,10 +77,6 @@ describe Authors::ParseAuthorNames do
 
     it "handles 'Sr.'" do
       expect(described_class['Brown, W. L., Sr.']).to eq ['Brown, W. L., Sr.']
-    end
-
-    it "handles 'III'" do
-      expect(described_class['Morrison, W.R., III']).to eq ['Morrison, W.R., III']
     end
 
     it "handles 'Jr'" do

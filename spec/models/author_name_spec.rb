@@ -15,6 +15,42 @@ describe AuthorName do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_length_of(:name).is_at_least(described_class::NAME_MIN_LENGTH) }
 
+    describe 'allowed formats' do
+      it 'allows single-word names' do
+        is_expected.to allow_value('CSIRO').for(:name)
+      end
+
+      it 'allows hyphenated first and last names' do
+        is_expected.to allow_value('Kim, J.-H.').for(:name)
+        is_expected.to allow_value('Abdul-Rassoul, M. S.').for(:name)
+      end
+
+      it 'allows more than one last names' do
+        is_expected.to allow_value('Baroni Urbani, C.').for(:name)
+      end
+
+      it 'allows prefixes, prepositions and nobiliary particles' do
+        is_expected.to allow_value('Silva, R. R. da').for(:name)
+        is_expected.to allow_value('da Silva, R. R.').for(:name)
+        is_expected.to allow_value('Feitosa, R. dos S. M.').for(:name)
+        is_expected.to allow_value('do Nascimento, I. C.').for(:name)
+
+        is_expected.to allow_value('Frauenfeld, G. R. von').for(:name)
+        is_expected.to allow_value('von Aesch, L.').for(:name)
+        is_expected.to allow_value('Boven, J. K. A. van').for(:name)
+
+        is_expected.to allow_value('St. Romain, M. K.').for(:name)
+      end
+
+      it 'allows suffixes (including comma before the suffix)' do
+        is_expected.to allow_value('Morrison, W. R., III').for(:name)
+        is_expected.to allow_value('Watkins, J. F., II').for(:name)
+
+        is_expected.to allow_value('Cresson, E. T. Sr.').for(:name)
+        is_expected.to allow_value('Arnaud, P. H., Jr.').for(:name)
+      end
+    end
+
     describe 'allowed characters' do
       it 'allows diacritics, apostrophes and hyphens' do
         is_expected.to allow_value('André, Edm.').for(:name)
