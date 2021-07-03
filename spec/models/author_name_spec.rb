@@ -15,6 +15,30 @@ describe AuthorName do
     it { is_expected.to validate_presence_of :name }
     it { is_expected.to validate_length_of(:name).is_at_least(described_class::NAME_MIN_LENGTH) }
 
+    describe 'allowed characters' do
+      it 'allows diacritics, apostrophes and hyphens' do
+        is_expected.to allow_value('André, Edm.').for(:name)
+        is_expected.to allow_value('Depa, Ł.').for(:name)
+
+        is_expected.to allow_value("O'Donnell, S.").for(:name)
+        is_expected.to allow_value('Israel Kamakawiwoʻole').for(:name)
+        is_expected.to allow_value('Kim, J.-H.').for(:name)
+      end
+
+      # TODO: Probably do not allow this.
+      it 'allows Unicode Mark diacritics' do
+        is_expected.to allow_value("Guénard, B.").for(:name)
+      end
+
+      it 'does not allow digits or weird characters' do
+        error_message = "contains unsupported characters"
+
+        is_expected.to_not allow_value('Author1, A.').for(:name).with_message(error_message)
+        is_expected.to_not allow_value('Author; A.').for(:name).with_message(error_message)
+        is_expected.to_not allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
+      end
+    end
+
     describe "uniqueness validation" do
       subject { create :author_name }
 

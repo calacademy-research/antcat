@@ -4,14 +4,16 @@ class AuthorName < ApplicationRecord
   include Trackable
 
   NAME_MIN_LENGTH = 2
+  # TODO: Probably do not allow Unicode Marks once records have been fixed.
+  VALID_CHARACTERS_REGEX = /\A[ ',.\-\p{L}\p{M}]+\z/ # {L} = Unicode Letter; {M} = Unicode Mark.
 
   belongs_to :author
 
   has_many :reference_author_names, dependent: :restrict_with_error
   has_many :references, through: :reference_author_names, dependent: :restrict_with_error
 
-  validates :name, presence: true, length: { minimum: NAME_MIN_LENGTH }, uniqueness: { case_sensitive: true }
-
+  validates :name, presence: true, length: { minimum: NAME_MIN_LENGTH }, uniqueness: { case_sensitive: true },
+    format: { with: VALID_CHARACTERS_REGEX, message: "contains unsupported characters" }
   after_update :invalidate_reference_caches
 
   has_paper_trail
