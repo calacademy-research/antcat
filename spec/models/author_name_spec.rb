@@ -105,39 +105,30 @@ describe AuthorName do
   end
 
   describe "#last_name and #first_name_and_initials" do
-    context "when there's only one word" do
-      let(:author_name) { described_class.new(name: 'Bolton') }
-
-      it "returns the name as the last name" do
-        expect(author_name.last_name).to eq 'Bolton'
-        expect(author_name.first_name_and_initials).to eq nil
-      end
-    end
-
-    context 'when there are multiple words' do
-      let(:author_name) { described_class.new(name: 'Bolton, B.L.') }
-
-      it "separates the words" do
-        expect(author_name.last_name).to eq 'Bolton'
-        expect(author_name.first_name_and_initials).to eq 'B.L.'
-      end
-    end
-
-    context 'when there is no comma' do
+    context 'with no comma in name' do
       let(:author_name) { described_class.new(name: 'Royal Academy') }
 
-      it "uses all words" do
+      it "uses all words for the last name" do
         expect(author_name.last_name).to eq 'Royal Academy'
         expect(author_name.first_name_and_initials).to eq nil
       end
     end
 
-    context 'when there are multiple commas' do
-      let(:author_name) { described_class.new(name: 'Baroni Urbani, C.') }
+    context 'with one comma in name' do
+      let(:author_name) { described_class.new(name: 'Bolton, B.L.') }
 
-      it "uses all words before the comma" do
-        expect(author_name.last_name).to eq 'Baroni Urbani'
-        expect(author_name.first_name_and_initials).to eq 'C.'
+      it "splits on the comma" do
+        expect(author_name.last_name).to eq 'Bolton'
+        expect(author_name.first_name_and_initials).to eq 'B.L.'
+      end
+    end
+
+    context 'with two commas in name' do
+      let(:author_name) { described_class.new(name: 'Arnaud, P. H., Jr.') }
+
+      it "splits on the first comma" do
+        expect(author_name.last_name).to eq 'Arnaud'
+        expect(author_name.first_name_and_initials).to eq 'P. H., Jr.'
       end
     end
   end

@@ -23,12 +23,14 @@ class AuthorName < ApplicationRecord
 
   # TODO: Store in db?
   def last_name
-    name_parts[:last]
+    last, _ = name_parts
+    last
   end
 
   # TODO: Store in db?
   def first_name_and_initials
-    name_parts[:first_and_initials]
+    _, first = name_parts
+    first
   end
 
   private
@@ -42,6 +44,6 @@ class AuthorName < ApplicationRecord
     end
 
     def name_parts
-      @_name_parts ||= Authors::ExtractAuthorNameParts[name]
+      @_name_parts ||= name.split(', ', 2)
     end
 end
