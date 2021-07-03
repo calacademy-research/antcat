@@ -65,18 +65,4 @@ describe ReferenceDocument do
       expect(reference_document.reload.actual_url).to eq reference_document.url
     end
   end
-
-  describe "#downloadable?" do
-    context 'when reference has a `file_file_name`' do
-      let(:reference_document) { described_class.new(url: nil, file_file_name: 'file.pdf') }
-
-      specify { expect(reference_document.downloadable?).to eq true }
-    end
-
-    context 'when reference has a `url`' do
-      let(:reference_document) { described_class.new(url: "http://ancat.org/file.pdf", file_file_name: nil) }
-
-      specify { expect(reference_document.downloadable?).to eq true }
-    end
-  end
 end

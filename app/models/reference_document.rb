@@ -31,11 +31,6 @@ class ReferenceDocument < ApplicationRecord
     true
   end
 
-  # TODO: Check and simplify callers now that all existing documents are downloadable.
-  def downloadable?
-    hosted_on_s3? || url.present?
-  end
-
   def actual_url
     hosted_on_s3? ? s3_url : url
   end

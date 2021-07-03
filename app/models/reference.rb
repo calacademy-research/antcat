@@ -17,7 +17,7 @@ class Reference < ApplicationRecord
   IGNORE_PAPER_TRAIL_COLUMNS = CACHE_COLUMNS
   SOLR_IGNORE_ATTRIBUTE_CHANGES_OF = CACHE_COLUMNS
 
-  delegate :routed_url, :downloadable?, to: :document, allow_nil: true
+  delegate :routed_url, to: :document, allow_nil: true
   delegate :key_with_suffixed_year, :key_with_year, to: :key
 
   has_many :reference_author_names, -> { order(:position) }, inverse_of: :reference, dependent: :destroy
@@ -68,6 +68,10 @@ class Reference < ApplicationRecord
     string(:stated_year)
     string(:doi)
     string(:author_names_string)
+  end
+
+  def downloadable?
+    !!document
   end
 
   # TODO: Something regarding "_cache" vs. "string" vs. not.

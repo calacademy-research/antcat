@@ -3,23 +3,22 @@
 require 'rails_helper'
 
 describe AntwebFormatter::ReferenceLink do
-  let!(:reference) do
-    create :article_reference,
-      :with_doi,
-      author_string: 'Latreille, P. A.',
-      year: 1809,
-      title: "*Atta*",
-      journal: create(:journal, name: 'Science'),
-      series_volume_issue: '(1)',
-      pagination: '3'
-  end
-
-  before { allow(reference).to receive(:routed_url).and_return 'example.com' }
-
   describe "#call" do
-    context "when PDF is not available to the user" do
-      it "doesn't include the PDF link" do
+    let(:reference) do
+      create :article_reference,
+        :with_doi,
+        author_string: 'Latreille, P. A.',
+        year: 1809,
+        title: "*Atta*",
+        journal: create(:journal, name: 'Science'),
+        series_volume_issue: '(1)',
+        pagination: '3'
+    end
+
+    context "when reference is not downloadable" do
+      specify do
         allow(reference).to receive(:downloadable?).and_return false
+        allow(reference).to receive(:routed_url).and_return 'example.com'
 
         expect(described_class[reference]).to eq(
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
@@ -29,9 +28,10 @@ describe AntwebFormatter::ReferenceLink do
       end
     end
 
-    context "when PDF is available to the user" do
+    context "when reference is downloadable" do
       it "includes the PDF link" do
         allow(reference).to receive(:downloadable?).and_return true
+        allow(reference).to receive(:routed_url).and_return 'example.com'
 
         expect(described_class[reference]).to eq(
           %{<a title="Latreille, P. A. 1809. Atta. Science (1):3." } +
