@@ -97,19 +97,6 @@ class ReferenceForm
         raise ActiveRecord::RecordInvalid, reference
       end
 
-      # TODO: Fix and remove. Added to prevent silent data corruptions.
-      if author_names_string.present?
-        normalized_input = author_names_string.squish.delete_suffix(';').gsub(/;(?! )/, '; ')
-        parsed_input = author_names.map(&:name).join('; ')
-
-        if normalized_input != parsed_input
-          errors.add :author_names_string, <<~MSG
-            may have been misparsed. Input: <code>#{normalized_input}</code>, parsed as: <code>#{parsed_input}</code>
-          MSG
-          raise ActiveRecord::RecordInvalid, reference
-        end
-      end
-
       author_names.each do |author_name|
         next if author_name.valid?
         errors.add :author_names, "(#{author_name.name}): #{author_name.errors.full_messages.to_sentence}"
