@@ -2,12 +2,24 @@
 
 module History
   class Definition
+    def self.from_type type_name
+      new(History::Definitions::TYPE_DEFINITIONS[type_name])
+    end
+
+    def self.all
+      History::Definitions::TYPES.map { |type_name| from_type type_name }
+    end
+
     def initialize type_attributes
       @type_attributes = type_attributes
     end
 
     def groupable?
       type_attributes[:group_key].present?
+    end
+
+    def type_name
+      type_attributes.fetch(:type_name)
     end
 
     def type_label
