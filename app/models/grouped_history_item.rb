@@ -41,6 +41,6 @@ class GroupedHistoryItem
     end
 
     def grouped_item_taxts
-      items.map(&:groupable_item_template_to_taxt).join('; ')
+      items.map(&:groupable_template_to_taxt).join('; ')
     end
 end

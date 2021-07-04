@@ -66,8 +66,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s (%<forms>s)',
-        groupable_item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
+        groupable_template_content: '%<citation>s (%<forms>s)',
+        groupable_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
 
         validates_presence_of: [:text_value, :reference, :pages]
       },
@@ -86,8 +86,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s',
-        groupable_item_template_vars: ->(o) { { citation: o.citation } },
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:object_taxon, :reference, :pages]
       },
@@ -112,8 +112,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s',
-        groupable_item_template_vars: ->(o) { { citation: o.citation } },
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:object_protonym, :reference, :pages],
         allow_force_author_citation: true
@@ -139,8 +139,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s',
-        groupable_item_template_vars: ->(o) { { citation: o.citation } },
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:object_protonym, :reference, :pages],
         allow_force_author_citation: true
@@ -159,8 +159,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s',
-        groupable_item_template_vars: ->(o) { { citation: o.citation } },
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:reference, :pages]
       },
@@ -184,8 +184,8 @@ module History
           }
         },
 
-        groupable_item_template: '%<citation>s',
-        groupable_item_template_vars: ->(o) { { citation: o.citation } },
+        groupable_template_content: '%<citation>s',
+        groupable_template_vars: ->(o) { { citation: o.citation } },
 
         validates_presence_of: [:object_protonym, :reference, :pages],
         allow_force_author_citation: true

@@ -87,7 +87,7 @@ class HistoryItem < ApplicationRecord
     return taxt if taxt_type?
 
     if groupable?
-      item_template_to_taxt template_name, grouped_item_taxts: groupable_item_template_to_taxt
+      item_template_to_taxt template_name, grouped_item_taxts: groupable_template_to_taxt
     else
       item_template_to_taxt template_name
     end
@@ -99,8 +99,8 @@ class HistoryItem < ApplicationRecord
     definition.render_template(template_name, self, vars)
   end
 
-  def groupable_item_template_to_taxt
-    groupable_item_template % groupable_item_template_vars(self)
+  def groupable_template_to_taxt
+    groupable_template_content % groupable_template_vars(self)
   end
 
   def citation_taxt
@@ -129,7 +129,7 @@ class HistoryItem < ApplicationRecord
 
   private
 
-    delegate :groupable_item_template, :groupable_item_template_vars,
+    delegate :groupable_template_content, :groupable_template_vars,
       :optional_attributes, to: :definition, private: true
 
     def cleanup_and_convert_taxts

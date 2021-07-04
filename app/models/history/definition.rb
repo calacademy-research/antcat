@@ -48,12 +48,12 @@ module History
       template.fetch(:content) % (template_vars || {}).merge(vars)
     end
 
-    def groupable_item_template
-      @_groupable_item_template ||= type_attributes.fetch(:groupable_item_template, nil)
+    def groupable_template_content
+      @_groupable_template_content ||= type_attributes.fetch(:groupable_template_content, nil)
     end
 
-    def groupable_item_template_vars history_item
-      return {} unless (vars = type_attributes[:groupable_item_template_vars])
+    def groupable_template_vars history_item
+      return {} unless (vars = type_attributes[:groupable_template_vars])
       vars.call(history_item).symbolize_keys
     end
 
