@@ -21,14 +21,8 @@ module Taxa
         child_list_fossil_pairs(taxon.tribes)
 
         child_list_fossil_pairs(
-          taxon.genera_incertae_sedis_in.where(hong: false),
+          taxon.genera_incertae_sedis_in,
           incertae_sedis_in: true
-        )
-
-        child_list_fossil_pairs(
-          taxon.genera_incertae_sedis_in.where(hong: true),
-          incertae_sedis_in: true,
-          hong: true
         )
 
         child_list(taxon.collective_group_names, false, collective_group_names: true)
@@ -59,7 +53,6 @@ module Taxa
 
       def child_list_label children, show_extinct_or_extant, label_options
         label = ''.html_safe
-        label << 'Hong (2002) ' if label_options[:hong]
 
         label << if label_options[:collective_group_names]
                    "Collective group names"
