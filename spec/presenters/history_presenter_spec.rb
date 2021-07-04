@@ -3,10 +3,9 @@
 require 'rails_helper'
 
 describe HistoryPresenter, :relational_hi do
-  subject(:presenter) { described_class.new(history_items) }
+  subject(:presenter) { described_class.new(protonym.history_items) }
 
   let(:protonym) { create :protonym }
-  let(:history_items) { protonym.history_items }
 
   describe "#grouped_items" do
     context 'without history items' do
@@ -88,9 +87,21 @@ describe HistoryPresenter, :relational_hi do
           create :history_item, :junior_synonym_of, :with_1758_reference,
             protonym: protonym, object_protonym: object_protonym
         end
+        let!(:item_3) do
+          create :history_item, :junior_synonym_of, :with_1758_reference,
+            protonym: protonym
+        end
 
         it 'groups them by `object_protonym`' do
-          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
+          expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1], [item_3]]
+        end
+
+        context 'with `object` template' do
+          subject(:presenter) { described_class.new(object_protonym.history_items_as_object, :object) }
+
+          it 'groups them by `protonym` (subject protonym)' do
+            expect(presenter.grouped_items.map(&:items)).to eq [[item_2, item_1]]
+          end
         end
       end
 
@@ -226,7 +237,7 @@ describe HistoryPresenter, :relational_hi do
 
         it 'sort taxt items by their position' do
           # Make sure positions are not auto updated for this spec.
-          expect(history_items.pluck(:id, :position, :taxt)).to eq [
+          expect(protonym.history_items.pluck(:id, :position, :taxt)).to eq [
             [item_2.id, 1, 'pos 1'],
             [item_3.id, 2, 'pos 2'],
             [item_1.id, 3, 'pos 3']

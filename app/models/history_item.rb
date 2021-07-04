@@ -56,6 +56,7 @@ class HistoryItem < ApplicationRecord
 
   scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
+  scope :visible_as_object, -> { where(type: History::Definitions::VISIBLE_AS_OBJECT) }
 
   # Type scopes (the "_relitems" suffixes were added to make greping easier).
   scope :combination_in_relitems, -> { where(type: History::Definitions::COMBINATION_IN) }
@@ -111,8 +112,8 @@ class HistoryItem < ApplicationRecord
   end
   alias_method :citation, :citation_taxt
 
-  def group_key
-    definition.group_key(self)
+  def group_key template_name = :default
+    definition.group_key(self, template_name)
   end
 
   def ids_from_taxon_tags

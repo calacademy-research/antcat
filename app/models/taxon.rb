@@ -30,6 +30,9 @@ class Taxon < ApplicationRecord
   has_many :protonym_history_items, through: :protonym, source: :history_items
   has_many :history_items_for_taxon_including_hidden, ->(taxon) { unranked_and_for_rank(taxon.type) },
     through: :protonym, source: :history_items
+  has_many :history_items_as_object_for_taxon_including_hidden,
+    ->(taxon) { visible_as_object.unranked_and_for_rank(taxon.type) },
+    through: :protonym, source: :history_items_as_object
 
   validates :status, inclusion: { in: Status::STATUSES }
   validates :incertae_sedis_in, inclusion: { in: Rank::INCERTAE_SEDIS_IN_TYPES, allow_nil: true }
@@ -125,6 +128,11 @@ class Taxon < ApplicationRecord
   def history_items_for_taxon
     return HistoryItem.none unless Status.display_history_items?(status)
     history_items_for_taxon_including_hidden
+  end
+
+  def history_items_as_object_for_taxon
+    return HistoryItem.none unless Status.display_history_items?(status)
+    history_items_as_object_for_taxon_including_hidden
   end
 
   def taxon_collaborators

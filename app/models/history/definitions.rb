@@ -109,6 +109,16 @@ module History
                 object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
               }
             }
+          },
+          object: {
+            content: 'Senior synonym of {%<subject_protonym_tag>s %<subject_protonym_id>i}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                subject_protonym_id: o.protonym_id,
+                subject_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+              }
+            },
+            group_key: ->(o) { [o.type, 'as_object', 'subject_protonym_id', o.protonym_id] }
           }
         },
 
@@ -258,6 +268,10 @@ module History
         optional_attributes: [:reference, :pages]
       }
     }
+
     TYPES = TYPE_DEFINITIONS.keys
+    VISIBLE_AS_OBJECT = [
+      JUNIOR_SYNONYM_OF
+    ]
   end
 end

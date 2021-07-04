@@ -30,14 +30,18 @@ module History
       type_attributes.fetch(:group_order)
     end
 
-    def group_key history_item
-      return @_group_key if defined?(@_group_key)
+    def group_key history_item, template_name
+      @_group_key_cache ||= {}
 
-      @_group_key ||= if (key = type_attributes.fetch(:group_key, nil))
-                        key.call(history_item)
-                      else
-                        history_item.id
-                      end
+      @_group_key_cache[template_name] ||= begin
+        template = type_attributes[:templates].fetch(template_name)
+
+        if (key = template[:group_key] || type_attributes.fetch(:group_key, nil))
+          key.call(history_item)
+        else
+          history_item.id
+        end
+      end
     end
 
     def render_template template_name, history_item, vars = {}
