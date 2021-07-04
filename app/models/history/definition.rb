@@ -30,31 +30,34 @@ module History
       type_attributes.fetch(:group_order)
     end
 
-    def group_key history_item
-      return @_group_key if defined?(@_group_key)
+    def group_key history_item, template_name
+      @_group_key_cache ||= {}
 
-      @_group_key ||= if (key = type_attributes.fetch(:group_key, nil))
-                        key.call(history_item)
-                      else
-                        history_item.id
-                      end
+      @_group_key_cache[template_name] ||= begin
+        template = type_attributes[:templates].fetch(template_name)
+
+        if (key = template[:group_key] || type_attributes.fetch(:group_key, nil))
+          key.call(history_item)
+        else
+          history_item.id
+        end
+      end
     end
 
-    def item_template
-      type_attributes.fetch(:item_template)
+    def render_template template_name, history_item, vars = {}
+      template = type_attributes[:templates].fetch(template_name)
+      raise "missing template '#{template_name}'" unless template
+
+      template_vars = template[:vars].call(history_item).symbolize_keys if template[:vars]
+      template.fetch(:content) % (template_vars || {}).merge(vars)
     end
 
-    def item_template_vars history_item
-      return {} unless (vars = type_attributes[:item_template_vars])
-      vars.call(history_item).symbolize_keys
+    def groupable_template_content
+      @_groupable_template_content ||= type_attributes.fetch(:groupable_template_content, nil)
     end
 
-    def groupable_item_template
-      @_groupable_item_template ||= type_attributes.fetch(:groupable_item_template, nil)
-    end
-
-    def groupable_item_template_vars history_item
-      return {} unless (vars = type_attributes[:groupable_item_template_vars])
+    def groupable_template_vars history_item
+      return {} unless (vars = type_attributes[:groupable_template_vars])
       vars.call(history_item).symbolize_keys
     end
 

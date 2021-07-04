@@ -56,6 +56,7 @@ class HistoryItem < ApplicationRecord
 
   scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }
+  scope :visible_as_object, -> { where(type: History::Definitions::VISIBLE_AS_OBJECT) }
 
   # Type scopes (the "_relitems" suffixes were added to make greping easier).
   scope :combination_in_relitems, -> { where(type: History::Definitions::COMBINATION_IN) }
@@ -83,24 +84,24 @@ class HistoryItem < ApplicationRecord
     !taxt_type?
   end
 
-  def to_taxt
+  def to_taxt template_name = :default
     return taxt if taxt_type?
 
     if groupable?
-      item_template_to_taxt grouped_item_taxts: groupable_item_template_to_taxt
+      item_template_to_taxt template_name, grouped_item_taxts: groupable_template_to_taxt
     else
-      item_template_to_taxt
+      item_template_to_taxt template_name
     end
   end
 
-  def item_template_to_taxt vars = {}
+  def item_template_to_taxt template_name, vars = {}
     return taxt if taxt_type?
 
-    item_template % item_template_vars(self).merge(vars)
+    definition.render_template(template_name, self, vars)
   end
 
-  def groupable_item_template_to_taxt
-    groupable_item_template % groupable_item_template_vars(self)
+  def groupable_template_to_taxt
+    groupable_template_content % groupable_template_vars(self)
   end
 
   def citation_taxt
@@ -111,8 +112,8 @@ class HistoryItem < ApplicationRecord
   end
   alias_method :citation, :citation_taxt
 
-  def group_key
-    definition.group_key(self)
+  def group_key template_name = :default
+    definition.group_key(self, template_name)
   end
 
   def ids_from_taxon_tags
@@ -129,7 +130,7 @@ class HistoryItem < ApplicationRecord
 
   private
 
-    delegate :item_template, :item_template_vars, :groupable_item_template, :groupable_item_template_vars,
+    delegate :groupable_template_content, :groupable_template_vars,
       :optional_attributes, to: :definition, private: true
 
     def cleanup_and_convert_taxts

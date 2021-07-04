@@ -338,6 +338,15 @@ describe HistoryItem, :relational_hi do
             to eq "Junior synonym of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
         end
       end
+
+      context 'with `object` template' do
+        let(:history_item) { create :history_item, :junior_synonym_of }
+
+        specify do
+          expect(history_item.to_taxt(:object)).
+            to eq "Senior synonym of {#{Taxt::PROTT_TAG} #{history_item.protonym.id}}: #{history_item.citation_taxt}."
+        end
+      end
     end
 
     context 'when `type` is `SENIOR_SYNONYM_OF`' do
