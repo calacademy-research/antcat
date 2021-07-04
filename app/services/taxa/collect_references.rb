@@ -18,7 +18,8 @@ module Taxa
 
       def reference_ids_from_relations
         [
-          taxon.authorship_reference.id
+          taxon.authorship_reference.id,
+          *taxon.history_items_for_taxon.relational.where.not(reference_id: nil).pluck(:reference_id)
         ]
       end
 
