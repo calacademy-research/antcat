@@ -19,7 +19,11 @@ module History
 
         group_order: 999,
 
-        item_template: '%<item_taxts>s',
+        templates: {
+          default: {
+            content: '%<item_taxts>s'
+          }
+        },
 
         validates_presence_of: [:taxt]
       },
@@ -30,8 +34,12 @@ module History
 
         group_order: 10,
 
-        item_template: '%<designation_type>s: %<citation>s.',
-        item_template_vars: ->(o) { { designation_type: o.subtype.underscore.humanize, citation: o.citation } },
+        templates: {
+          default: {
+            content: '%<designation_type>s: %<citation>s.',
+            vars: ->(o) { { designation_type: o.subtype.underscore.humanize, citation: o.citation } }
+          }
+        },
 
         subtypes: TYPE_SPECIMEN_DESIGNATION_SUBTYPES = [
           LECTOTYPE_DESIGNATION = 'LectotypeDesignation',
@@ -52,7 +60,11 @@ module History
         group_order: 20,
         group_key: ->(o) { o.type },
 
-        item_template: '%<grouped_item_taxts>s.',
+        templates: {
+          default: {
+            content: '%<grouped_item_taxts>s.'
+          }
+        },
 
         groupable_item_template: '%<citation>s (%<forms>s)',
         groupable_item_template_vars: ->(o) { { citation: o.citation, forms: o.text_value } },
@@ -67,8 +79,12 @@ module History
         group_order: 30,
         group_key: ->(o) { [o.type, 'object_taxon_id', o.object_taxon_id] },
 
-        item_template: 'Combination in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars: ->(o) { o.slice(:object_taxon_id) },
+        templates: {
+          default: {
+            content: 'Combination in {tax %<object_taxon_id>i}: %<grouped_item_taxts>s.',
+            vars: ->(o) { o.slice(:object_taxon_id) }
+          }
+        },
 
         groupable_item_template: '%<citation>s',
         groupable_item_template_vars: ->(o) { { citation: o.citation } },
@@ -84,11 +100,15 @@ module History
         group_order: 40,
         group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-        item_template: 'Junior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars:  ->(o) {
-          {
-            object_protonym_id: o.object_protonym_id,
-            object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+        templates: {
+          default: {
+            content: 'Junior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+            vars: ->(o) {
+              {
+                object_protonym_id: o.object_protonym_id,
+                object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+              }
+            }
           }
         },
 
@@ -107,11 +127,15 @@ module History
         group_order: 45,
         group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-        item_template: 'Senior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars:  ->(o) {
-          {
-            object_protonym_id: o.object_protonym_id,
-            object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+        templates: {
+          default: {
+            content: 'Senior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+            vars:  ->(o) {
+              {
+                object_protonym_id: o.object_protonym_id,
+                object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+              }
+            }
           }
         },
 
@@ -129,7 +153,11 @@ module History
         group_order: 50,
         group_key: ->(o) { [o.type] },
 
-        item_template: 'Status as species: %<grouped_item_taxts>s.',
+        templates: {
+          default: {
+            content: 'Status as species: %<grouped_item_taxts>s.'
+          }
+        },
 
         groupable_item_template: '%<citation>s',
         groupable_item_template_vars: ->(o) { { citation: o.citation } },
@@ -144,11 +172,15 @@ module History
         group_order: 60,
         group_key: ->(o) { [o.type, 'object_protonym_id', o.object_protonym_id] },
 
-        item_template: 'Subspecies of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-        item_template_vars:  ->(o) {
-          {
-            object_protonym_id: o.object_protonym_id,
-            object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+        templates: {
+          default: {
+            content: 'Subspecies of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
+            vars:  ->(o) {
+              {
+                object_protonym_id: o.object_protonym_id,
+                object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
+              }
+            }
           }
         },
 
@@ -165,11 +197,15 @@ module History
 
         group_order: 70,
 
-        item_template: 'Replacement name: {prottac %<object_protonym_id>i}%<citation>s.',
-        item_template_vars: ->(o) {
-          {
-            object_protonym_id: o.object_protonym_id,
-            citation: (" (#{o.citation})" if o.citation)
+        templates: {
+          default: {
+            content: 'Replacement name: {prottac %<object_protonym_id>i}%<citation>s.',
+            vars: ->(o) {
+              {
+                object_protonym_id: o.object_protonym_id,
+                citation: (" (#{o.citation})" if o.citation)
+              }
+            }
           }
         },
 
@@ -183,12 +219,16 @@ module History
 
         group_order: 75,
 
-        item_template: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.%<legacy_taxt>s',
-        item_template_vars: ->(o) {
-          {
-            object_protonym_id: o.object_protonym_id,
-            citation: (" (#{o.citation})" if o.citation),
-            legacy_taxt: (" #{o.taxt}" if o.taxt?)
+        templates: {
+          default: {
+            content: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.%<legacy_taxt>s',
+            vars: ->(o) {
+              {
+                object_protonym_id: o.object_protonym_id,
+                citation: (" (#{o.citation})" if o.citation),
+                legacy_taxt: (" #{o.taxt}" if o.taxt?)
+              }
+            }
           }
         },
 
@@ -202,11 +242,15 @@ module History
 
         group_order: 100,
 
-        item_template: 'Unavailable name%<citation>s.',
-        item_template_vars: ->(o) {
-          {
-            object_taxon_id: o.object_taxon_id,
-            citation: (" (#{o.citation})" if o.citation)
+        templates: {
+          default: {
+            content: 'Unavailable name%<citation>s.',
+            vars: ->(o) {
+              {
+                object_taxon_id: o.object_taxon_id,
+                citation: (" (#{o.citation})" if o.citation)
+              }
+            }
           }
         },
 

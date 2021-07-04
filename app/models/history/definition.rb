@@ -40,13 +40,12 @@ module History
                       end
     end
 
-    def item_template
-      type_attributes.fetch(:item_template)
-    end
+    def render_template template_name, history_item, vars = {}
+      template = type_attributes[:templates].fetch(template_name)
+      raise "missing template '#{template_name}'" unless template
 
-    def item_template_vars history_item
-      return {} unless (vars = type_attributes[:item_template_vars])
-      vars.call(history_item).symbolize_keys
+      template_vars = template[:vars].call(history_item).symbolize_keys if template[:vars]
+      template.fetch(:content) % (template_vars || {}).merge(vars)
     end
 
     def groupable_item_template

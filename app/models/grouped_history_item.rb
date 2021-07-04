@@ -10,12 +10,15 @@ class GroupedHistoryItem
     @items = items
   end
 
-  def taxt
-    @_taxt ||= if groupable?
-                 any_item_in_group.item_template_to_taxt(grouped_item_taxts: grouped_item_taxts)
-               else
-                 any_item_in_group.to_taxt
-               end
+  def taxt template_name = :default
+    @_taxt_cache ||= {}
+
+    @_taxt_cache[template_name] ||=
+      if groupable?
+        any_item_in_group.item_template_to_taxt(template_name, grouped_item_taxts: grouped_item_taxts)
+      else
+        any_item_in_group.to_taxt template_name
+      end
   end
 
   def grouped?
