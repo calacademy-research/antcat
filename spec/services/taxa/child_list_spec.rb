@@ -24,15 +24,14 @@ describe Taxa::ChildList do
     context 'when taxon is a subfamily' do
       let!(:subfamily) { create :subfamily }
 
-      context "when taxon has extant and extinct tribes" do
+      context "when taxon has tribes" do
         let!(:taxon) { create :tribe, subfamily: subfamily }
         let!(:fossil_taxon) { create :tribe, :fossil, subfamily: subfamily }
 
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Tribes (extant) of #{subfamily.name_cache}", children: [taxon] },
-              { label: "Tribes (extinct) of #{subfamily.name_cache}", children: [fossil_taxon] }
+              { label: "Tribes of #{subfamily.name_cache}", children: [taxon, fossil_taxon] }
             ]
           )
         end
