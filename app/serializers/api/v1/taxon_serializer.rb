@@ -12,7 +12,6 @@ module Api
         :genus_id,
         :hol_id,
         :homonym_replaced_by_id,
-        :hong,
         :incertae_sedis_in,
         :name_cache,
         :name_id,

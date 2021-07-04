@@ -16,6 +16,7 @@ module Taxa
       #  :name
       #  :name_cache
       #  :hol_id
+      #  ... and more
       #
       #  Taxonomic relationships:
       #    :subfamily,
@@ -34,7 +35,6 @@ module Taxa
           :homonym_replaced_by_id,
           :incertae_sedis_in,
           :protonym_id,
-          :hong,
           :unresolved_homonym,
           :current_taxon_id
         ]

@@ -671,8 +671,6 @@ definitions:
             description: Populated only if this is a homonym that has been superseded by another taxa.
           incertae_sedis_in:
             type: string
-          hong:
-            type: boolean
           name_cache:
             type: string
             description: de-normalized cache of the name object

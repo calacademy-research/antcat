@@ -18,7 +18,6 @@ describe Api::V1::TaxonSerializer do
             "genus_id" => taxon.genus.id,
             "hol_id" => nil,
             "homonym_replaced_by_id" => nil,
-            "hong" => false,
             "incertae_sedis_in" => nil,
             "name_cache" => taxon.name.name,
             "name_html_cache" => taxon.name.name_html,
