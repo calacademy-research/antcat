@@ -184,8 +184,7 @@ describe TaxaController do
           base_params.deep_merge(
             incertae_sedis_in: Rank::FAMILY,
             fossil: true,
-            collective_group_name: true,
-            hong: true
+            collective_group_name: true
           )
         end
 
@@ -199,7 +198,6 @@ describe TaxaController do
 
           expect(taxon.incertae_sedis_in).to eq taxon_params[:incertae_sedis_in]
           expect(taxon.collective_group_name).to eq taxon_params[:collective_group_name]
-          expect(taxon.hong).to eq taxon_params[:hong]
         end
       end
     end

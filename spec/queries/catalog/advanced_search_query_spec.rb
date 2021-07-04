@@ -266,15 +266,6 @@ describe Catalog::AdvancedSearchQuery do
       specify { expect(described_class[ichnotaxon: "false"]).to eq [no_match] }
     end
 
-    describe "searching by Hong" do
-      let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :any_taxon, hong: true }
-
-      specify { expect(described_class[hong: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
-      specify { expect(described_class[hong: "true"]).to eq [yes_match] }
-      specify { expect(described_class[hong: "false"]).to eq [no_match] }
-    end
-
     describe "searching by collective group name" do
       let!(:no_match) { create :any_taxon }
       let!(:yes_match) { create :any_taxon, :fossil, :collective_group_name }

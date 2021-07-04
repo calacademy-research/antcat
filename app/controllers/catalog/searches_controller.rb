@@ -50,7 +50,6 @@ module Catalog
           :fossil,
           :genus,
           :history_items,
-          :hong,
           :ichnotaxon,
           :incertae_sedis_in,
           :locality,

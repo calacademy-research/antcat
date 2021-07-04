@@ -65,12 +65,9 @@
     .medium-2.columns
       Ichnotaxon
       =f.select :ichnotaxon, yes_no_options_for_select(params[:ichnotaxon]), include_blank: "Either"
-    .medium-2.columns
+    .medium-2.columns.end
       %i Nomen nudum
       =f.select :nomen_nudum, yes_no_options_for_select(params[:nomen_nudum]), include_blank: "Either"
-    .medium-2.columns.end
-      Hong
-      =f.select :hong, yes_no_options_for_select(params[:hong]), include_blank: "Either"
 
   .row
     .medium-2.columns.end

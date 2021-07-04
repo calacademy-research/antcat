@@ -73,7 +73,6 @@ class TaxaController < ApplicationController
         :current_taxon_id,
         :fossil,
         :homonym_replaced_by_id,
-        :hong,
         :incertae_sedis_in,
         :original_combination,
         :protonym_id,

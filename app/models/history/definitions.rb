@@ -13,6 +13,7 @@ module History
 
     TYPE_DEFINITIONS = {
       TAXT = 'Taxt' => {
+        type_name: TAXT,
         type_label: 'Taxt (freeform text)',
         ranks: ANY_RANK_GROUP_LABEL,
 
@@ -23,6 +24,7 @@ module History
         validates_presence_of: [:taxt]
       },
       TYPE_SPECIMEN_DESIGNATION = 'TypeSpecimenDesignation' => {
+        type_name: TYPE_SPECIMEN_DESIGNATION,
         type_label: 'Type specimen designation',
         ranks: SPECIES_GROUP_LABEL,
 
@@ -43,6 +45,7 @@ module History
         validates_presence_of: [:subtype, :reference, :pages]
       },
       FORM_DESCRIPTIONS = 'FormDescriptions' => {
+        type_name: FORM_DESCRIPTIONS,
         type_label: 'Form descriptions (additional)',
         ranks: SPECIES_GROUP_LABEL,
 
@@ -57,6 +60,7 @@ module History
         validates_presence_of: [:text_value, :reference, :pages]
       },
       COMBINATION_IN = 'CombinationIn' => {
+        type_name: COMBINATION_IN,
         type_label: 'Combination in',
         ranks: SPECIES_GROUP_LABEL,
 
@@ -73,6 +77,7 @@ module History
       },
       # Plan: To be merged with `SeniorSynonymOf` once migrated and synced, probably as `SubjectiveSynonym`.
       JUNIOR_SYNONYM_OF = 'JuniorSynonymOf' => {
+        type_name: JUNIOR_SYNONYM_OF,
         type_label: 'Junior synonym of',
         ranks: ANY_RANK_GROUP_LABEL,
 
@@ -95,6 +100,7 @@ module History
       },
       # Plan: Same as with `JuniorSynonymOf`.
       SENIOR_SYNONYM_OF = 'SeniorSynonymOf' => {
+        type_name: SENIOR_SYNONYM_OF,
         type_label: 'Senior synonym of',
         ranks: ANY_RANK_GROUP_LABEL,
 
@@ -116,6 +122,7 @@ module History
         allow_force_author_citation: true
       },
       STATUS_AS_SPECIES = 'StatusAsSpecies' => {
+        type_name: STATUS_AS_SPECIES,
         type_label: 'Status as species',
         ranks: SPECIES_GROUP_LABEL,
 
@@ -130,6 +137,7 @@ module History
         validates_presence_of: [:reference, :pages]
       },
       SUBSPECIES_OF = 'SubspeciesOf' => {
+        type_name: SUBSPECIES_OF,
         type_label: 'Subspecies of',
         ranks: SPECIES_GROUP_LABEL,
 
@@ -151,6 +159,7 @@ module History
         allow_force_author_citation: true
       },
       REPLACEMENT_NAME = 'ReplacementName' => {
+        type_name: REPLACEMENT_NAME,
         type_label: 'Replacement name',
         ranks: ANY_RANK_GROUP_LABEL,
 
@@ -168,6 +177,7 @@ module History
         optional_attributes: [:reference, :pages]
       },
       REPLACEMENT_NAME_FOR = 'ReplacementNameFor' => {
+        type_name: REPLACEMENT_NAME_FOR,
         type_label: 'Replacement name for',
         ranks: ANY_RANK_GROUP_LABEL,
 
@@ -186,6 +196,7 @@ module History
         optional_attributes: [:taxt, :reference, :pages]
       },
       UNAVAILABLE_NAME = 'UnavailableName' => {
+        type_name: UNAVAILABLE_NAME,
         type_label: 'Unavailable name',
         ranks: ANY_RANK_GROUP_LABEL,
 

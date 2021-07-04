@@ -13,12 +13,12 @@ module DatabaseScripts
     def results
       HistoryItem.senior_synonym_of_relitems.
         joins(<<~SQL.squish).where("history_items_protonyms.protonym_id IS NULL").limit(LIMIT)
-          LEFT OUTER JOIN protonyms ON protonyms.id = history_items.object_protonym_id
-            LEFT OUTER JOIN history_items history_items_protonyms
-            ON (
-              history_items_protonyms.protonym_id = protonyms.id
-              AND history_items_protonyms.type = 'JuniorSynonymOf'
-            )
+          LEFT OUTER JOIN protonyms object_protonyms ON object_protonyms.id = history_items.object_protonym_id
+          LEFT OUTER JOIN history_items history_items_protonyms
+          ON (
+            history_items_protonyms.protonym_id = object_protonyms.id
+            AND history_items_protonyms.type = 'JuniorSynonymOf'
+          )
         SQL
     end
 

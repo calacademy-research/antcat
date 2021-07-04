@@ -124,7 +124,7 @@ class HistoryItem < ApplicationRecord
   end
 
   def definition
-    @_definition ||= History::Definition.new(History::Definitions::TYPE_DEFINITIONS[type])
+    @_definition ||= History::Definition.from_type(type)
   end
 
   private
