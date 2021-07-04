@@ -46,7 +46,7 @@ describe Authors::FindOrInitializeNamesFromString do
     context 'when there are suffixes' do
       it "ignores them" do
         author_names = described_class['Bolton, B. (eds.)']
-        expect(author_names.map(&:name)).to eq ['Bolton, B.']
+        expect(author_names.map(&:name)).to eq ['Bolton, B. (eds.)']
       end
     end
 

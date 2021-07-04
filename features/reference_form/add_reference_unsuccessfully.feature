@@ -52,11 +52,20 @@ Feature: Add reference unsuccessfully
     Then the "reference_publisher_string" field should contain "Capua: House of Batiatus"
     And the "reference_pagination" field should contain "2"
 
-  Scenario: Unparseable author string (and maintain already filled in fields)
-    When I fill in "reference_author_names_string" with "...asdf sdf dsfdsf"
+  Scenario: Invalid author name (and maintain already filled in fields and correcting)
+    When I fill in "reference_author_names_string" with "Bolton, B., Pizza; Fisher, B.; "
     And I press "Save"
-    Then I should see "Author names string couldn't be parsed."
-    And the "reference_author_names_string" field should contain "asdf"
+    Then I should see "Author names (Bolton, B., Pizza): Name can only contain a single comma"
+    And the "reference_author_names_string" field should contain "Bolton, B., Pizza; Fisher, B.; "
+
+    When I fill in "reference_author_names_string" with "Bolton, B.P.; Fisher, B.; "
+    And I fill in "reference_title" with "A reference title"
+    And I fill in "reference_year" with "1981"
+    And I fill in "reference_journal_name" with "Ant Journal"
+    And I fill in "reference_series_volume_issue" with "1"
+    And I fill in "reference_pagination" with "2"
+    And I press "Save"
+    Then I should see "Bolton, B.P.; Fisher, B. 1981. A reference title. Ant Journal 1:2"
 
   Scenario: Invalid author name
     When I fill in "reference_author_names_string" with "A"

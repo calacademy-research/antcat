@@ -18,7 +18,7 @@ module Authors
     private
 
       def parsed_author_names
-        Authors::ParseAuthorNames[author_names_string]
+        author_names_string.split(';').map(&:squish).reject(&:blank?)
       end
   end
 end

@@ -49,6 +49,12 @@ describe AuthorName do
         is_expected.to allow_value('Cresson, E. T. Sr.').for(:name)
         is_expected.to allow_value('Arnaud, P. H., Jr.').for(:name)
       end
+
+      it 'only allows no comma or a single comma (excluding allowed suffixes)' do
+        error_message = "can only contain a single comma (excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
+
+        is_expected.to_not allow_value('Author, A., Pizza').for(:name).with_message(error_message)
+      end
     end
 
     describe 'allowed characters' do
