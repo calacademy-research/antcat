@@ -112,8 +112,8 @@ onSelectType = (selectedType) ->
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
-      when 'ReplacementName'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name"
+      when 'HomonymReplacedBy'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name (homonym replaced by)"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
       when 'ReplacementNameFor'

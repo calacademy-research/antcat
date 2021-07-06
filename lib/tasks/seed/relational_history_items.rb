@@ -46,10 +46,10 @@ module Seed
       tatusia.history_items.create! type: History::Definitions::STATUS_AS_SPECIES,
         reference: ref_2020, pages: '15'
 
-      tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME,
+      tatusia.history_items.create! type: History::Definitions::HOMONYM_REPLACED_BY,
         object_protonym: fusca, reference: ref_2020, pages: '12'
 
-      tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME,
+      tatusia.history_items.create! type: History::Definitions::HOMONYM_REPLACED_BY,
         object_protonym: fusca
 
       tatusia.history_items.create! type: History::Definitions::REPLACEMENT_NAME_FOR,

@@ -200,8 +200,8 @@ describe HistoryPresenter, :relational_hi do
       end
 
       context 'when item references are optional (not required)' do
-        let!(:item_1) { create :history_item, :replacement_name, :with_reference, protonym: protonym }
-        let!(:item_2) { create :history_item, :replacement_name, protonym: protonym }
+        let!(:item_1) { create :history_item, :homonym_replaced_by, :with_reference, protonym: protonym }
+        let!(:item_2) { create :history_item, :homonym_replaced_by, protonym: protonym }
 
         it 'can be sorted when compared with items with non-nil references' do
           expect(presenter.grouped_items.map(&:items)).to eq [[item_2], [item_1]]

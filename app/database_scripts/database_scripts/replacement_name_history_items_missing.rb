@@ -12,7 +12,7 @@ module DatabaseScripts
             (
               (history_items.taxt LIKE 'Replacement name: %')
               OR
-              (history_items.type = 'ReplacementName')
+              (history_items.type = 'HomonymReplacedBy')
             )
         SQL
     end
@@ -41,7 +41,7 @@ section: disagreeing-history
 tags: [disagreeing-data, replacement-names, rel-hist, taxt-hist]
 
 description: >
-  Triggers for taxa with status `homonym` unless their protonym have a `ReplacementName` history item
+  Triggers for taxa with status `homonym` unless their protonym have a `HomonymReplacedBy` history item
   (or a 'Replacement name: ' `Taxt` history item).
 
 related_scripts:

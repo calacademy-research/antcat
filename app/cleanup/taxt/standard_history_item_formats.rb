@@ -85,7 +85,7 @@ module Taxt
     ]
 
     STANDARD_FORMAT_VARIATIONS = [
-      REPLACEMENT_NAME__WITH_SOURCE = 'REPLACEMENT_NAME__WITH_SOURCE'
+      HOMONYM_REPLACED_BY__WITH_SOURCE = 'HOMONYM_REPLACED_BY__WITH_SOURCE'
     ]
 
     STANDARD_FORMAT_CANDIDATES = [
@@ -170,13 +170,13 @@ module Taxt
       },
       {
         regex: "^Replacement name: #{TAX_OR_PRO_ISH}\\.?$",
-        name: History::Definitions::REPLACEMENT_NAME,
-        type: History::Definitions::REPLACEMENT_NAME
+        name: History::Definitions::HOMONYM_REPLACED_BY,
+        type: History::Definitions::HOMONYM_REPLACED_BY
       },
       {
         regex: "^Replacement name: #{TAX_OR_PRO_ISH} \\(#{CITATION}\\)\\.?$",
-        name: REPLACEMENT_NAME__WITH_SOURCE,
-        type: History::Definitions::REPLACEMENT_NAME
+        name: HOMONYM_REPLACED_BY__WITH_SOURCE,
+        type: History::Definitions::HOMONYM_REPLACED_BY
       },
       {
         regex: "^Replacement name for #{TAX_OR_PRO_ISH}\\.?$",

@@ -189,7 +189,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq History::Definitions::REPLACEMENT_NAME
+        expect(service.identified_type).to eq History::Definitions::HOMONYM_REPLACED_BY
       end
     end
 
@@ -198,7 +198,7 @@ describe Taxt::StandardHistoryItemFormats do
 
       specify do
         expect(service.standard?).to eq true
-        expect(service.identified_type).to eq History::Definitions::REPLACEMENT_NAME
+        expect(service.identified_type).to eq History::Definitions::HOMONYM_REPLACED_BY
       end
     end
 

@@ -210,8 +210,8 @@ describe HistoryItem, :relational_hi do
       end
     end
 
-    context 'when `type` is `REPLACEMENT_NAME`' do
-      subject { build_stubbed :history_item, :replacement_name }
+    context 'when `type` is `HOMONYM_REPLACED_BY`' do
+      subject { build_stubbed :history_item, :homonym_replaced_by }
 
       it do
         is_expected.to validate_absence_of :taxt
@@ -397,9 +397,9 @@ describe HistoryItem, :relational_hi do
       end
     end
 
-    context 'when `type` is `REPLACEMENT_NAME`' do
+    context 'when `type` is `HOMONYM_REPLACED_BY`' do
       context 'without reference' do
-        let(:history_item) { create :history_item, :replacement_name }
+        let(:history_item) { create :history_item, :homonym_replaced_by }
 
         specify do
           expect(history_item.to_taxt).
@@ -408,7 +408,7 @@ describe HistoryItem, :relational_hi do
       end
 
       context 'with reference' do
-        let(:history_item) { create :history_item, :replacement_name, :with_reference }
+        let(:history_item) { create :history_item, :homonym_replaced_by, :with_reference }
 
         specify do
           expect(history_item.to_taxt).
