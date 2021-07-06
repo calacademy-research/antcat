@@ -9,7 +9,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.caption "Replacement names used for more than one taxon"
-        t.info Markdowns::ParseAntcatTags['See also %dbscript:ReplacementNamesUsedForMoreThanOneTaxon']
+        t.info 'Rhytidoponera clarki can be ignored. It is a rare case where a replacement name was applied twice.'
 
         t.header 'Taxon', 'Replacement name for'
         t.rows(replacement_names_for_more_than_one_taxon) do |taxon|
