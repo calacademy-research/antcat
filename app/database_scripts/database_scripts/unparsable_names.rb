@@ -66,7 +66,7 @@ end
 
 __END__
 
-section: pa-action-required
+section: research
 tags: [names, slow]
 
 description: >

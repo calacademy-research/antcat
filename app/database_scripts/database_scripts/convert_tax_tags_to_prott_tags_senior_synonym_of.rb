@@ -47,7 +47,7 @@ __END__
 title: Convert <code>tax</code> tags to <code>prott</code> tags (senior synonym of)
 
 
-section: convert-tax-to-prott-tags
+section: pa-no-action-required
 tags: [taxt-hist, synonyms, slow]
 
 description: >
