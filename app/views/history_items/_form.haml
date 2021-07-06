@@ -77,15 +77,6 @@
                     items, the taxt textarea is allowed to contain "trailiers"
                     like "[Junior secondary homonym of ...]"
 
-              -History::Definition.all.each do |definition|
-                -if definition.optional_attributes.present?
-                  %tr
-                    %td.type-specific-section{class: "type-specific-help-#{definition.type_name}"}
-                      %p.small-text
-                        Optional attributes:
-                        -definition.optional_attributes.each do |optional_attribute|
-                          %code=optional_attribute
-
         -# [grep:history_type].
         %table.table.unstriped
           %tbody
