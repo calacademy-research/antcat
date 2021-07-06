@@ -40,7 +40,7 @@ describe DatabaseScript do
       let!(:extant_species) { create :species }
 
       specify do
-        expect { extant_species.genus.update!(fossil: true) }.
+        expect { extant_species.genus.protonym.update!(fossil: true) }.
           to change { database_script.record_in_results?(extant_species) }.
           from(false).to(true)
       end

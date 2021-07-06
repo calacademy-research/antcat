@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.7.1"
+  version: "1.7.2"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -633,9 +633,6 @@ definitions:
             type: string
             format: date-time
             description: Automatically generated timestamp for most recent update
-          fossil:
-            type: boolean
-            description: is it a fossil?
           status:
             type: string
             description: State (status of this record)

@@ -6,7 +6,7 @@ describe CatalogFormatter do
   include TestLinksHelpers
 
   describe 'test support code in `TestLinksHelpers`' do
-    let(:taxon) { build_stubbed :any_taxon, :fossil }
+    let(:taxon) { build_stubbed :any_taxon }
 
     it 'returns the same as this code' do
       expect(described_class.link_to_taxon(taxon)).to eq taxon_link(taxon)

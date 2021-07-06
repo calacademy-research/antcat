@@ -35,7 +35,7 @@ module Exporters
             current_valid_name:       current_valid_name,
             original_combination:     taxon.original_combination?,
             was_original_combination: original_combination&.name&.name,
-            fossil:                   taxon.fossil?,
+            fossil:                   taxon.protonym.fossil?,
             taxonomic_history_html:   export_history,
             reference_id:             taxon.authorship_reference.id,
             bioregion:                taxon.protonym.biogeographic_region,

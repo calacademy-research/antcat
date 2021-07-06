@@ -34,7 +34,7 @@ module Taxa
 
       def genus_link
         # Link name of the genus, but add dagger per taxon's fossil status.
-        label = taxon.genus.name.name_with_fossil_html taxon.fossil?
+        label = taxon.genus.name.name_with_fossil_html taxon.protonym.fossil?
         CatalogFormatter.link_to_taxon_with_label(taxon.genus, label) << " "
       end
 

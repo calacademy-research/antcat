@@ -14,7 +14,6 @@ describe Api::V1::TaxonSerializer do
             "collective_group_name" => false,
             "current_taxon_id" => nil,
             "family_id" => nil,
-            "fossil" => false,
             "genus_id" => taxon.genus.id,
             "hol_id" => nil,
             "homonym_replaced_by_id" => nil,

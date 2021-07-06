@@ -15,7 +15,7 @@ describe Taxa::Statistics::FetchStatistics do
 
       before do
         create :subfamily
-        create :subfamily, :fossil
+        create :subfamily, protonym: create(:protonym, :family_group, :fossil)
       end
 
       it "separates extant and fossil children in groups" do
@@ -37,7 +37,7 @@ describe Taxa::Statistics::FetchStatistics do
         subfamily = create :subfamily
         tribe = create :tribe, subfamily: subfamily
         genus = create :genus, :homonym, subfamily: subfamily, tribe: tribe
-        2.times { create :subfamily, :fossil }
+        2.times { create :subfamily, protonym: create(:protonym, :family_group, :fossil) }
         create :species, genus: genus
       end
 

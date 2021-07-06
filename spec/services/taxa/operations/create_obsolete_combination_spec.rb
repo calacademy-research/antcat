@@ -26,8 +26,8 @@ describe Taxa::Operations::CreateObsoleteCombination do
 
     describe "successful case" do
       context "when there is no name collision" do
-        let!(:current_taxon) { create :species, :fossil }
-        let!(:obsolete_genus) { create :genus, :fossil }
+        let!(:current_taxon) { create :species }
+        let!(:obsolete_genus) { create :genus }
 
         it "does not modify the original species record" do
           expect { described_class[current_taxon, obsolete_genus] }.to_not change { current_taxon.reload.attributes }
@@ -67,7 +67,6 @@ describe Taxa::Operations::CreateObsoleteCombination do
           obsolete_combination = described_class[current_taxon, obsolete_genus]
 
           expect(obsolete_combination.protonym).to eq current_taxon.protonym
-          expect(obsolete_combination.fossil).to eq current_taxon.fossil
         end
 
         it "sets the parent genus to the obsolete genus" do

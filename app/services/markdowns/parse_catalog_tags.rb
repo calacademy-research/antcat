@@ -43,8 +43,8 @@ module Markdowns
         taxon_ids = Taxt.extract_ids_from_tax_tags(content)
         return if taxon_ids.blank?
 
-        taxa_indexed_by_id = Taxon.where(id: taxon_ids).select(
-          :id, :name_id, :fossil, :status, :unresolved_homonym
+        taxa_indexed_by_id = Taxon.where(id: taxon_ids).joins(:protonym).includes(:protonym).select(
+          :id, :name_id, :protonym_id, :status, :unresolved_homonym
         ).includes(:name).index_by(&:id)
 
         content.gsub!(Taxt::TAX_TAG_REGEX) do

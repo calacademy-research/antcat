@@ -39,15 +39,16 @@ class Taxon < ApplicationRecord
   validates :homonym_replaced_by, absence: { message: "can't be set for non-homonyms" }, unless: -> { homonym? }
   validates :homonym_replaced_by, presence: { message: "must be set for homonyms" }, if: -> { homonym? }
   validates :unresolved_homonym, absence: { message: "can't be set for homonyms" }, if: -> { homonym? }
-  validates :collective_group_name, absence: { message: "can only be set for fossil taxa" }, unless: -> { fossil? }
+  validates :collective_group_name, absence: { message: "can only be set for fossil taxa" },
+    unless: -> { protonym&.fossil? }
   validate :current_taxon_validation, :ensure_correct_name_type
 
   before_save :set_name_cache
 
   scope :valid, -> { where(status: Status::VALID) }
   scope :invalid, -> { where.not(status: Status::VALID) }
-  scope :extant, -> { where(fossil: false) }
-  scope :fossil, -> { where(fossil: true) }
+  scope :extant, -> { joins(:protonym).where(protonyms: { fossil: false }) }
+  scope :fossil, -> { joins(:protonym).where(protonyms: { fossil: true }) }
   scope :homonyms, -> { where(status: Status::HOMONYM) }
   scope :obsolete_combinations, -> { where(status: Status::OBSOLETE_COMBINATION) }
   scope :original_combinations, -> { where(original_combination: true) }
@@ -97,7 +98,7 @@ class Taxon < ApplicationRecord
   end
 
   def name_with_fossil
-    name.name_with_fossil_html fossil?
+    name.name_with_fossil_html protonym.fossil?
   end
 
   def author_citation

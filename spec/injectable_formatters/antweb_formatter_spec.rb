@@ -6,7 +6,7 @@ describe AntwebFormatter do
   include AntwebTestLinksHelpers
 
   describe 'test support code in `TestLinksHelpers`' do
-    let(:taxon) { build_stubbed :genus, :fossil }
+    let(:taxon) { build_stubbed :genus }
     let(:protonym) { create :protonym, :fossil }
 
     it 'returns the same as this code' do

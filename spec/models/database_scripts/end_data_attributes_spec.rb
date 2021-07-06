@@ -9,9 +9,7 @@ describe DatabaseScripts::EndDataAttributes do
     let(:basename) { "extant_taxa_in_fossil_genera" }
 
     describe "#title" do
-      let(:basename) { "fossil_protonyms_with_non_fossil_taxa" }
-
-      specify { expect(end_data_attributes.title).to eq "Fossil protonyms with non-fossil taxa" }
+      specify { expect(end_data_attributes.title).to eq "Extant taxa in fossil genera" }
     end
 
     describe "#section" do

@@ -27,11 +27,14 @@ describe DbScriptSoftValidation do
 
   describe 'testing with a taxon with issues' do
     context 'when taxon is an extant species in a fossil genus' do
-      let(:taxon) { create :species, name_string: 'Lasius niger', genus: create(:genus, :fossil, name_string: 'Lasius') }
+      let(:taxon) do
+        fossil_genus = create :genus, name_string: 'Lasius', protonym: create(:protonym, :genus_group, :fossil)
+        create :species, name_string: 'Lasius niger', genus: fossil_genus
+      end
 
       describe '#failed?' do
         specify do
-          expect { taxon.update!(fossil: true) }.
+          expect { taxon.protonym.update!(fossil: true) }.
             to change { described_class.run(taxon, database_script).failed? }.from(true).to(false)
         end
       end

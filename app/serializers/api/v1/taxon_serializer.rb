@@ -8,7 +8,6 @@ module Api
         :collective_group_name,
         :current_taxon_id,
         :family_id,
-        :fossil,
         :genus_id,
         :hol_id,
         :homonym_replaced_by_id,

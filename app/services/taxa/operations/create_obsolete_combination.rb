@@ -29,7 +29,6 @@ module Taxa
           obsolete_combination = Species.new
           obsolete_combination.name = obsolete_combination_name
           obsolete_combination.protonym = current_taxon.protonym
-          obsolete_combination.fossil = current_taxon.fossil
           obsolete_combination.parent = obsolete_genus
           obsolete_combination.current_taxon = current_taxon
           obsolete_combination.status = Status::OBSOLETE_COMBINATION

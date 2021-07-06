@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Catalog::AutocompletesController, :search do
   describe "GET show", as: :visitor do
-    let!(:taxon) { create :genus, :fossil, name_string: "Atta" }
+    let!(:taxon) { create :genus, name_string: "Atta" }
 
     before do
       Sunspot.commit

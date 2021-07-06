@@ -112,7 +112,7 @@ describe Exporters::Antweb::TaxonAttributes do
       end
 
       context "when taxon is fossil" do
-        let(:taxon) { create :family, :fossil }
+        let(:taxon) { create :family, protonym: create(:protonym, :family_group, :fossil) }
 
         specify { expect(described_class[taxon][:fossil]).to eq true }
       end

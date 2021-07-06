@@ -8,7 +8,6 @@ describe Taxa::CopyAttributes do
 
     it "returns a hash with the copied attriutes" do
       expect(described_class[taxon]).to eq(
-        "fossil" => taxon.fossil,
         "status" => taxon.status,
         "homonym_replaced_by_id" => taxon.homonym_replaced_by_id,
         "incertae_sedis_in" => taxon.incertae_sedis_in,
