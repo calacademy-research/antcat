@@ -31,8 +31,6 @@
       -case section
       -when DatabaseScripts::Tagging::DISAGREEING_HISTORY_SECTION
         %h5.left History items and taxa not agreeing
-      -when DatabaseScripts::Tagging::CONVERT_TAX_TO_PROTT_TAGS_SECTION
-        %h5.left History items with <code>tax</code> tags to be converted to <code>prott</code> tags by script
       -when DatabaseScripts::Tagging::MISSING_TAGS_SECTION
         %h5.left History items with hardcoded names or <code>missing</code> tags
       -when DatabaseScripts::Tagging::CODE_CHANGES_REQUIRED_SECTION
@@ -44,8 +42,6 @@
       -when DatabaseScripts::Tagging::PENDING_AUTOMATION_NO_ACTION_REQUIRED_SECTION
         %h5.left Pending automation, no editor action required
         =info_tooltip_icon 'For issues that can be fixed by script once agreed upon, but require little to no manual editing.'
-      -when DatabaseScripts::Tagging::LONG_RUNNING_SECTION
-        %h5.left Long-running scripts
       -when DatabaseScripts::Tagging::REVERSED_SECTION
         %h5.left Reversed scripts
         =info_tooltip_icon 'Some scripts have "reversed" scripts, for finding the same issue from the other side of the relation. This section was added to make other sections less populated.'

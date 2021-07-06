@@ -79,8 +79,8 @@ FactoryBot.define do
       with_object_protonym
     end
 
-    trait :replacement_name do
-      type { History::Definitions::REPLACEMENT_NAME }
+    trait :homonym_replaced_by do
+      type { History::Definitions::HOMONYM_REPLACED_BY }
 
       with_object_protonym
     end

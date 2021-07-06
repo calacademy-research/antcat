@@ -51,6 +51,9 @@ resetTypeSpecific = ->
   $(TYPE_LABEL_OBJECT_PROTONYM).text "???"
   $(TYPE_LABEL_OBJECT_TAXON).text "???"
 
+  $(TYPE_LABEL_REFERENCE).text "Reference"
+  $(TYPE_LABEL_PAGES).text "Pages"
+
 onSelectType = (selectedType) ->
   resetTypeSpecific()
 
@@ -112,15 +115,21 @@ onSelectType = (selectedType) ->
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
-      when 'ReplacementName'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name"
+      when 'HomonymReplacedBy'
+        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name (homonym replaced by)"
+        markCitationAsOptional()
+
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
       when 'ReplacementNameFor'
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name for"
+        markCitationAsOptional()
+
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
 
       when 'UnavailableName'
+        markCitationAsOptional()
+
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       else
@@ -128,3 +137,7 @@ onSelectType = (selectedType) ->
 
   for input in inputsToShow
     $(input).show()
+
+markCitationAsOptional = ->
+  $(TYPE_LABEL_REFERENCE).text "Optional reference"
+  $(TYPE_LABEL_PAGES).text "Optional pages"

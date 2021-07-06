@@ -29,14 +29,12 @@ __END__
 
 title: Protonym references without PDFs
 
-section: long-running
+section: list
 tags: [references, pdfs, protonyms]
 
 description: >
-  Issues: %github387, %github324, %github371
 
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
-  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs

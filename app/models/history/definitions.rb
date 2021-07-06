@@ -200,9 +200,9 @@ module History
         validates_presence_of: [:object_protonym, :reference, :pages],
         allow_force_author_citation: true
       },
-      REPLACEMENT_NAME = 'ReplacementName' => {
-        type_name: REPLACEMENT_NAME,
-        type_label: 'Replacement name',
+      HOMONYM_REPLACED_BY = 'HomonymReplacedBy' => {
+        type_name: HOMONYM_REPLACED_BY,
+        type_label: 'Replacement name (homonym replaced by)',
         ranks: ANY_RANK_GROUP_LABEL,
 
         group_order: 70,

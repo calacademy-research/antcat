@@ -17,7 +17,7 @@ describe DatabaseScripts::ReplacementNameHistoryItemsMissing do
     let!(:taxon) { create :subfamily, :homonym }
 
     before do
-      create :history_item, :replacement_name, protonym: taxon.protonym
+      create :history_item, :homonym_replaced_by, protonym: taxon.protonym
     end
 
     specify { expect(script.results).to eq [] }

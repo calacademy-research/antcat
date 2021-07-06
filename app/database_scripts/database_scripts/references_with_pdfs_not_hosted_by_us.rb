@@ -50,5 +50,4 @@ description: >
 related_scripts:
   - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
-  - ReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs

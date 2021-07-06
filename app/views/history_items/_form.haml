@@ -61,13 +61,13 @@
                     See also related wiki page
                     =link_to_wiki_page_or_missing WikiPage::FORMS
 
-                %td.type-specific-section.type-specific-help-ReplacementName.type-specific-help-ReplacementNameFor
+                %td.type-specific-section.type-specific-help-HomonymReplacedBy.type-specific-help-ReplacementNameFor
                   %p
                     Like with
                     %code Taxt
                     items, mirrored items
                     =surround "(", ")" do
-                      %code ReplacementName
+                      %code HomonymReplacedBy
                       +
                       %code ReplacementNameFor
                     must be added.
@@ -76,15 +76,6 @@
                     %code ReplacementNameFor
                     items, the taxt textarea is allowed to contain "trailiers"
                     like "[Junior secondary homonym of ...]"
-
-              -History::Definition.all.each do |definition|
-                -if definition.optional_attributes.present?
-                  %tr
-                    %td.type-specific-section{class: "type-specific-help-#{definition.type_name}"}
-                      %p.small-text
-                        Optional attributes:
-                        -definition.optional_attributes.each do |optional_attribute|
-                          %code=optional_attribute
 
         -# [grep:history_type].
         %table.table.unstriped
