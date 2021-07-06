@@ -27,7 +27,7 @@ module DatabaseScripts
             taxon.author_citation,
             taxon.status,
             taxon.type,
-            taxon.fossil,
+            taxon.protonym.fossil,
 
             taxon_link(now_taxon),
             now_taxon.status,

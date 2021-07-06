@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-Given("there is an extant species Lasius niger in an fossil genus") do
-  genus = create :genus, :fossil
+Given("there is an extant species Lasius niger in a fossil genus") do
+  genus = create :genus, protonym: create(:protonym, :genus_group, :fossil)
   create :species, name_string: "Lasius niger", genus: genus
 end
 

@@ -33,7 +33,10 @@ describe DbScriptSoftValidations do
         -> { described_class.new(taxon_with_issues, scripts_to_check) }
       end
 
-      let!(:taxon_with_issues) { create :species, name_string: 'Lasius niger', genus: create(:genus, :fossil, name_string: 'Lasius') }
+      let!(:taxon_with_issues) do
+        fossil_genus = create :genus, name_string: 'Lasius', protonym: create(:protonym, :genus_group, :fossil)
+        create :species, name_string: 'Lasius niger', genus: fossil_genus
+      end
 
       describe '#all' do
         specify { expect(soft_validations.call.all.size).to eq scripts_to_check.size }
@@ -68,7 +71,8 @@ describe DbScriptSoftValidations do
           end
 
           specify do
-            expect { taxon_with_issues.update!(fossil: true) }.to change { soft_validations.call.failed? }.from(true).to(false)
+            expect { taxon_with_issues.protonym.update!(fossil: true) }.
+              to change { soft_validations.call.failed? }.from(true).to(false)
           end
         end
       end

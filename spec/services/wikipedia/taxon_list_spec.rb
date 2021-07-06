@@ -7,7 +7,10 @@ describe Wikipedia::TaxonList do
     context 'when taxon is a genus' do
       let!(:taxon) { create :genus }
       let!(:species_2) { create :species, name_string: "Atta mexicana", genus: taxon }
-      let!(:species_1) { create :species, :fossil, name_string: "Atta cephalotes", genus: taxon }
+      let!(:species_1) do
+        fossil_protonym = create :protonym, :species_group, :fossil
+        create :species, name_string: "Atta cephalotes", protonym: fossil_protonym, genus: taxon
+      end
 
       it "returns a wiki-formatted species list" do
         expect(described_class[taxon]).to eq <<~STR

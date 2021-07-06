@@ -232,7 +232,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by fossil" do
       let!(:extant) { create :any_taxon }
-      let!(:fossil) { create :any_taxon, :fossil }
+      let!(:fossil) { create :family, protonym: create(:protonym, :family_group, :fossil) }
 
       specify { expect(described_class[fossil: "", dummy: 'see NOTE']).to match_array [extant, fossil] }
       specify { expect(described_class[fossil: "true"]).to eq [fossil] }
@@ -259,7 +259,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by ichnotaxon" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :family, :fossil, protonym: create(:protonym, :family_group, :ichnotaxon) }
+      let!(:yes_match) { create :family, protonym: create(:protonym, :family_group, :ichnotaxon) }
 
       specify { expect(described_class[ichnotaxon: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[ichnotaxon: "true"]).to eq [yes_match] }
@@ -268,7 +268,7 @@ describe Catalog::AdvancedSearchQuery do
 
     describe "searching by collective group name" do
       let!(:no_match) { create :any_taxon }
-      let!(:yes_match) { create :any_taxon, :fossil, :collective_group_name }
+      let!(:yes_match) { create :family, :collective_group_name, protonym: create(:protonym, :family_group, :fossil) }
 
       specify { expect(described_class[collective_group_name: "", dummy: 'see NOTE']).to match_array [no_match, yes_match] }
       specify { expect(described_class[collective_group_name: "true"]).to eq [yes_match] }

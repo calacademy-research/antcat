@@ -25,7 +25,7 @@ module Wikipedia
         name = taxon.name_cache
         name = "''#{name}''" if Rank.italic?(taxon.type)
 
-        "#{dagger if taxon.fossil?}#{name}"
+        "#{dagger if taxon.protonym.fossil?}#{name}"
       end
 
       def dagger

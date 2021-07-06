@@ -14,7 +14,10 @@ describe Wikipedia::CiteTemplate do
     end
 
     context 'when taxon is fossil' do
-      let(:taxon) { create :species, :fossil, name_string: "Atta texana" }
+      let(:taxon) do
+        fossil_protonym = create :protonym, :species_group, :fossil
+        create :species, name_string: "Atta texana", protonym: fossil_protonym
+      end
 
       it 'includes a dagger' do
         expect(described_class[taxon]).to include "†''Atta texana''"

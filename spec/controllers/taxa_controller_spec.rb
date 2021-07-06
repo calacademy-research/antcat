@@ -70,7 +70,6 @@ describe TaxaController do
       describe "general taxon attributes" do
         let(:taxon_params) do
           base_params.deep_merge(
-            fossil: true,
             unresolved_homonym: true
           )
         end
@@ -81,7 +80,6 @@ describe TaxaController do
           taxon = Taxon.last
 
           expect(taxon.status).to eq taxon_params[:status]
-          expect(taxon.fossil).to eq taxon_params[:fossil]
           expect(taxon.unresolved_homonym).to eq taxon_params[:unresolved_homonym]
         end
       end
@@ -183,8 +181,10 @@ describe TaxaController do
         let(:taxon_params) do
           base_params.deep_merge(
             incertae_sedis_in: Rank::FAMILY,
-            fossil: true,
-            collective_group_name: true
+            collective_group_name: true,
+            protonym_attributes: {
+              fossil: true
+            }
           )
         end
 

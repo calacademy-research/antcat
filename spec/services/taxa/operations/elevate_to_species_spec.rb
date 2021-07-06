@@ -41,7 +41,6 @@ describe Taxa::Operations::ElevateToSpecies do
           new_species = described_class[subspecies]
 
           [
-            :fossil,
             :status,
             :homonym_replaced_by_id,
             :incertae_sedis_in,

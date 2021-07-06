@@ -33,13 +33,13 @@ module Taxa
           statistics = {}
 
           ranks.each do |rank|
-            taxa = taxon.public_send(rank)
+            taxa = taxon.public_send(rank).joins(:protonym)
 
             by_fossil_and_status =
               if valid_only
-                taxa.valid.group(:fossil).count.transform_keys { |k| [k, Status::VALID] }
+                taxa.valid.group('protonyms.fossil').count.transform_keys { |k| [k, Status::VALID] }
               else
-                taxa.group(:fossil, :status).count
+                taxa.group('protonyms.fossil', :status).count
               end
 
             massage_count by_fossil_and_status, rank, statistics
@@ -49,7 +49,9 @@ module Taxa
 
         def massage_count by_fossil_and_status, rank, statistics
           by_fossil_and_status.each_key do |fossil, status|
-            extant_or_fossil = fossil ? :fossil : :extant
+            # TODO: Hmm. `TrueClass` is for when the column `taxa.fossil` exists; `fossil == 1`
+            # is for when it does not. Cleanup after removing `taxa.fossil`.
+            extant_or_fossil = (fossil.is_a?(TrueClass) || fossil == 1) ? :fossil : :extant
             count = by_fossil_and_status[[fossil, status]]
 
             statistics[extant_or_fossil] ||= {}

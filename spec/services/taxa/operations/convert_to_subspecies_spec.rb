@@ -58,7 +58,6 @@ describe Taxa::Operations::ConvertToSubspecies do
           new_subspecies = described_class[species, target_species_parent]
 
           [
-            :fossil,
             :status,
             :homonym_replaced_by_id,
             :incertae_sedis_in,

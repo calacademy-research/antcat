@@ -4,7 +4,8 @@ require 'rails_helper'
 
 describe Autocomplete::TaxonSerializer do
   describe "#as_json" do
-    let!(:taxon) { create :genus, :fossil, name_string: "Atta" }
+    let!(:protonym) { create :protonym, :genus_group, :fossil }
+    let!(:taxon) { create :genus, name_string: "Atta", protonym: protonym }
 
     specify do
       expect(described_class.new(taxon).as_json).to eq(

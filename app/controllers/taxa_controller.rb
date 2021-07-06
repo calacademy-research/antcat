@@ -71,7 +71,6 @@ class TaxaController < ApplicationController
       params.require(:taxon).permit(
         :collective_group_name,
         :current_taxon_id,
-        :fossil,
         :homonym_replaced_by_id,
         :incertae_sedis_in,
         :original_combination,
@@ -87,7 +86,7 @@ class TaxaController < ApplicationController
     end
 
     def prefilled_taxon_params
-      params.permit(:current_taxon_id, :protonym_id, :status, :fossil, :original_combination)
+      params.permit(:current_taxon_id, :protonym_id, :status, :original_combination)
     end
 
     def prefilled_authorship_params

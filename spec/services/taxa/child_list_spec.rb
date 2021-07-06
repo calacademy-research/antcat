@@ -26,7 +26,10 @@ describe Taxa::ChildList do
 
       context "when taxon has tribes" do
         let!(:taxon) { create :tribe, subfamily: subfamily }
-        let!(:fossil_taxon) { create :tribe, :fossil, subfamily: subfamily }
+        let!(:fossil_taxon) do
+          fossil_protonym = create :protonym, :family_group, :fossil
+          create :tribe, subfamily: subfamily, protonym: fossil_protonym
+        end
 
         specify do
           expect(described_class[subfamily]).to eq(
@@ -50,7 +53,10 @@ describe Taxa::ChildList do
       end
 
       context "when taxon has collective group names" do
-        let!(:taxon) { create :genus, :fossil, :collective_group_name, subfamily: subfamily }
+        let!(:taxon) do
+          fossil_protonym = create :protonym, :genus_group, :fossil
+          create :genus, :collective_group_name, subfamily: subfamily, protonym: fossil_protonym
+        end
 
         specify do
           expect(described_class[subfamily]).to eq(

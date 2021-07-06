@@ -400,6 +400,9 @@ Style/SymbolArray:
 Style/SymbolProc:
   Enabled: false
 
+Style/TernaryParentheses:
+  Enabled: false
+
 Style/TrailingCommaInBlockArgs:
   Enabled: true
 

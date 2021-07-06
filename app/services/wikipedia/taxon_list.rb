@@ -72,7 +72,7 @@ module Wikipedia
         name = "[[#{name}]]" if wikilink_child? child
         name = "''#{name}''" if Rank.italic?(child.type)
 
-        "#{dagger if child.fossil}#{name}"
+        "#{dagger if child.protonym.fossil}#{name}"
       end
 
       def dagger
@@ -81,7 +81,7 @@ module Wikipedia
 
       def wikilink_child? child
         # Don't link species in fossil genera per WP:PALEO.
-        return false if taxon.fossil? && child.is_a?(Species)
+        return false if taxon.protonym.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
         return false if child.is_a? Subspecies

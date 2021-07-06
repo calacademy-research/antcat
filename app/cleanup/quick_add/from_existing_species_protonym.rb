@@ -22,7 +22,6 @@ module QuickAdd
         taxon_name_string: cleaned_protonym_name,
         current_taxon_id: current_taxon&.id,
         protonym_id: protonym.id,
-        fossil: protonym.fossil,
         original_combination: true,
         edit_summary: "[semi-automatic] Quick-add missing obsolete combination for protonym"
       }

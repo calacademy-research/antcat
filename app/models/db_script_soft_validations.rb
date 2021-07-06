@@ -7,12 +7,9 @@ class DbScriptSoftValidations
   TAXA_DATABASE_SCRIPTS_TO_CHECK = [
     DatabaseScripts::CurrentTaxonChains,
     DatabaseScripts::ExtantTaxaInFossilGenera,
-    DatabaseScripts::FossilTaxaWithNonFossilProtonyms,
     DatabaseScripts::GeneraWithNamesThatAreDifferentFromTheirProtonymsName,
-    DatabaseScripts::NonFossilTaxaWithFossilProtonyms,
     DatabaseScripts::NonValidTaxaWithACurrentTaxonThatIsNotValid,
     DatabaseScripts::NonValidTaxaWithJuniorSynonyms,
-    DatabaseScripts::ObsoleteCombinationsWithDifferentFossilStatusThanItsCurrentTaxon,
     DatabaseScripts::ObsoleteCombinationsWithObsoleteCombinations,
     DatabaseScripts::ObsoleteCombinationsWithProtonymsNotMatchingItsCurrentTaxonsProtonym,
     DatabaseScripts::ObsoleteCombinationsWithVeryDifferentEpithets,
@@ -25,8 +22,6 @@ class DbScriptSoftValidations
     DatabaseScripts::ValidTaxaWithNonValidParents
   ]
   PROTONYM_DATABASE_SCRIPTS_TO_CHECK = [
-    DatabaseScripts::FossilProtonymsWithNonFossilTaxa,
-    DatabaseScripts::NonFossilProtonymsWithFossilTaxa,
     DatabaseScripts::OrphanedProtonyms,
     DatabaseScripts::ProtonymsWithDuplicatedTaxa,
     DatabaseScripts::ProtonymsWithMoreThanOneOriginalCombination,

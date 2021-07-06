@@ -30,7 +30,6 @@ module Taxa
       # In the order the appear in `schema.rb`.
       def attributes_to_copy
         [
-          :fossil,
           :status,
           :homonym_replaced_by_id,
           :incertae_sedis_in,

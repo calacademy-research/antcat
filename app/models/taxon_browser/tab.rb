@@ -21,6 +21,7 @@ module TaxonBrowser
       SUBGENERA_IN_PARENT_GENUS   = :subgenera_in_parent_genus,
       SPECIES_WITHOUT_SUBGENUS    = :species_without_subgenus
     ]
+    SELECT_COLUMNS = [:id, :type, :status, 'protonyms.fossil AS fossil_protonym', 'names.epithet AS name_epithet']
 
     delegate :view, :selected_in_tab?, :tab_open?, :show_invalid?, to: :taxon_browser
 
@@ -31,7 +32,7 @@ module TaxonBrowser
     end
 
     def each_taxon
-      sorted_taxa.select(:id, :type, :status, :fossil, 'names.epithet AS name_epithet').each do |taxon|
+      sorted_taxa.joins(:protonym).select(SELECT_COLUMNS).each do |taxon|
         yield taxon, selected_in_tab?(taxon)
       end
     end
