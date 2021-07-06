@@ -35,7 +35,7 @@ gem 'jquery-atwho-rails'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'ledermann-rails-settings'
-gem 'newrelic_rpm', '< 7' # TODO: See https://docs.newrelic.com/docs/agents/ruby-agent/getting-started/migration-7x-guide/
+gem 'newrelic_rpm'
 gem 'paperclip', '5.3.0'
 gem 'paper_trail', '~> 11.0'
 gem 'rails-observers'
