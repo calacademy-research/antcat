@@ -48,6 +48,5 @@ description: >
   Issues: %github387, %github324, %github371
 
 related_scripts:
-  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs

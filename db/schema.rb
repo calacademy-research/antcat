@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_200514) do
+ActiveRecord::Schema.define(version: 2021_07_07_172450) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_200514) do
     t.string "file_file_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "reference_id"
+    t.integer "reference_id", null: false
     t.boolean "public"
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
@@ -416,6 +416,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_200514) do
   add_foreign_key "protonyms", "type_names", name: "fk_protonyms__type_name_id__type_names__id"
   add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
   add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"
+  add_foreign_key "reference_documents", "references", name: "fk_reference_documents__reference_id__references__id"
   add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "references", "journals", name: "fk_references__journal_id__journals__id"
   add_foreign_key "references", "publishers", name: "fk_references__publisher_id__publishers__id"

@@ -27,7 +27,7 @@ class Reference < ApplicationRecord
   has_many :citations, dependent: :restrict_with_error
   has_many :citations_from_type_names, class_name: 'TypeName', dependent: :restrict_with_error # [grep:unify_citations].
   has_many :history_items, class_name: 'HistoryItem', dependent: :restrict_with_error # [grep:unify_citations].
-  has_one :document, class_name: 'ReferenceDocument', dependent: false
+  has_one :document, class_name: 'ReferenceDocument', dependent: :destroy
 
   validates :year, :pagination, :title, :author_names, presence: true
   validates :year_suffix, format: { with: /\A[a-z]\z/, message: "must be blank or a single lowercase letter", allow_nil: true }

@@ -5,6 +5,10 @@ require 'rails_helper'
 describe ReferenceDocument do
   it { is_expected.to be_versioned }
 
+  describe 'relations' do
+    it { is_expected.to belong_to(:reference).required }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_absence_of(:url).on(:create) }
 
@@ -35,7 +39,7 @@ describe ReferenceDocument do
 
   describe "#routed_url" do
     it "creates the URL for an uploaded file so that it goes to our controller" do
-      document = create :reference_document, file_file_name: '1.pdf'
+      document = create :reference_document, :with_reference, file_file_name: '1.pdf'
       expect(document.reload.routed_url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
     end
 
@@ -49,7 +53,7 @@ describe ReferenceDocument do
     end
 
     context "when the file is hosted by us" do
-      let(:document) { described_class.create!(file_file_name: 'foo') }
+      let(:document) { described_class.create!(file_file_name: 'foo', reference: create(:any_reference)) }
 
       specify do
         expect(document.url).to eq nil
@@ -59,7 +63,7 @@ describe ReferenceDocument do
   end
 
   describe "#actual_url" do
-    let!(:reference_document) { create :reference_document, :with_deprecated_url }
+    let!(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
 
     it "simply is the `url`" do
       expect(reference_document.reload.actual_url).to eq reference_document.url

@@ -16,13 +16,5 @@ describe ReferenceDocumentObserver do
       described_class.instance.before_update reference_document
       expect(reference.plain_text_cache).to eq nil
     end
-
-    context "when reference document has no associated reference" do
-      let(:reference_document) { create :reference_document, :with_file }
-
-      it "doesn't croak/bork" do
-        described_class.instance.before_update reference_document
-      end
-    end
   end
 end

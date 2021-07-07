@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe References::DownloadsController do
   describe "GET show", as: :visitor do
-    let!(:reference_document) { create :reference_document, :with_file }
+    let!(:reference_document) { create :reference_document, :with_reference, :with_file }
 
     it "redirects to the file" do
       get :show, params: { id: reference_document.id, file_name: "not_even_stubbed.pdf" }

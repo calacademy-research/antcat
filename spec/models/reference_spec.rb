@@ -12,7 +12,7 @@ describe Reference do
     it { is_expected.to have_many(:citations_from_type_names).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:history_items).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:nestees).dependent(:restrict_with_error) }
-    it { is_expected.to have_one(:document).dependent(false) }
+    it { is_expected.to have_one(:document).dependent(:destroy) }
   end
 
   describe 'validations' do

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Api::V1::ReferenceDocumentsController, as: :visitor do
   describe "GET index" do
     specify do
-      reference_document = create :reference_document, :with_file
+      reference_document = create :reference_document, :with_reference, :with_file
 
       get :index
 
@@ -16,7 +16,7 @@ describe Api::V1::ReferenceDocumentsController, as: :visitor do
   end
 
   describe "GET show" do
-    let!(:reference_document) { create :reference_document, :with_file, :with_reference }
+    let!(:reference_document) { create :reference_document, :with_reference, :with_file }
 
     specify do
       get :show, params: { id: reference_document.id }

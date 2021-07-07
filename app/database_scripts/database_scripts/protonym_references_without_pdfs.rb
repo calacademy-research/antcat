@@ -35,6 +35,5 @@ tags: [references, pdfs, protonyms]
 description: >
 
 related_scripts:
-  - OrphanedReferenceDocuments
   - ProtonymReferencesWithoutPdfs
   - ReferencesWithPdfsNotHostedByUs
