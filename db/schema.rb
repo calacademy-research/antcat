@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_02_200514) do
+ActiveRecord::Schema.define(version: 2021_07_07_172135) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2021_04_02_200514) do
     t.string "file_file_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "reference_id"
+    t.integer "reference_id", null: false
     t.boolean "public"
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
