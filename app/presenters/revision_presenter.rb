@@ -13,10 +13,6 @@ class RevisionPresenter
 
   attr_private_initialize [:comparer, template: nil]
 
-  def show_formatted?
-    @_show_formatted ||= template.present?
-  end
-
   def left_side_diff
     html_split_diff.left
   end
@@ -45,7 +41,11 @@ class RevisionPresenter
   end
 
   def render_revision item, view_context:
-    render_revision_with_template(item, view_context: view_context)
+    if template
+      render_revision_with_template(item, view_context: view_context)
+    else
+      "<pre class='small-text'>#{revision_as_json(item)}</pre>".html_safe
+    end
   end
 
   private

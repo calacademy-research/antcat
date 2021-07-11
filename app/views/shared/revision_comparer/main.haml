@@ -12,19 +12,18 @@
       =render "shared/revision_comparer/help"
 
   .medium-9.medium-pull-3.columns
-    -if revision_presenter.show_formatted?
-      =render "shared/revision_comparer/formatted",
-        comparer: comparer,
-        revision_presenter: revision_presenter,
-        most_recent: most_recent,
-        selected: selected
-
     -if diff_with
       =render "shared/revision_comparer/difference_between_revisions",
         left_side_revision: diff_with,
         left_side_diff: revision_presenter.left_side_diff,
         right_side_revision: selected || most_recent,
         right_side_diff: revision_presenter.right_side_diff
+    -else
+      =render "shared/revision_comparer/formatted",
+        comparer: comparer,
+        revision_presenter: revision_presenter,
+        most_recent: most_recent,
+        selected: selected
 
   .medium-9.columns.medium-pull-3.margin-bottom.margin-top
     =render "shared/revision_comparer/revision_history_table",
