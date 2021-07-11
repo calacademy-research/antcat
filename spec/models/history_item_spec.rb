@@ -210,6 +210,34 @@ describe HistoryItem, :relational_hi do
       end
     end
 
+    context 'when `type` is `JUNIOR_PRIMARY_HOMONYM_OF`' do
+      subject { build_stubbed :history_item, :junior_primary_homonym_of }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
+      end
+    end
+
+    context 'when `type` is `JUNIOR_SECONDARY_HOMONYM_OF`' do
+      subject { build_stubbed :history_item, :junior_secondary_homonym_of }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_absence_of :text_value
+
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
+      end
+    end
+
     context 'when `type` is `HOMONYM_REPLACED_BY`' do
       subject { build_stubbed :history_item, :homonym_replaced_by }
 
@@ -394,6 +422,46 @@ describe HistoryItem, :relational_hi do
         specify do
           expect(history_item.to_taxt).
             to eq "Subspecies of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+        end
+      end
+    end
+
+    context 'when `type` is `JUNIOR_PRIMARY_HOMONYM_OF`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :junior_primary_homonym_of }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior primary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}.]"
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :junior_primary_homonym_of, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior primary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt}).]"
+        end
+      end
+    end
+
+    context 'when `type` is `JUNIOR_SECONDARY_HOMONYM_OF`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :junior_secondary_homonym_of }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior secondary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}.]"
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :junior_secondary_homonym_of, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior secondary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt}).]"
         end
       end
     end

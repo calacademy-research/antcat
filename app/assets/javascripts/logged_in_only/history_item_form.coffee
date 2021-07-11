@@ -115,6 +115,18 @@ onSelectType = (selectedType) ->
         $(TYPE_LABEL_OBJECT_PROTONYM).text "Senior synonym of"
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
+      when 'JuniorPrimaryHomonymOf'
+        $(TYPE_LABEL_OBJECT_TAXON).text "Junior primary homonym of"
+        markCitationAsOptional()
+
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
+
+      when 'JuniorSecondaryHomonymOf'
+        $(TYPE_LABEL_OBJECT_TAXON).text "Junior secondary homonym of"
+        markCitationAsOptional()
+
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
+
       when 'HomonymReplacedBy'
         $(TYPE_LABEL_OBJECT_TAXON).text "Replacement name (homonym replaced by)"
         markCitationAsOptional()

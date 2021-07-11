@@ -79,6 +79,18 @@ FactoryBot.define do
       with_object_protonym
     end
 
+    trait :junior_primary_homonym_of do
+      type { History::Definitions::JUNIOR_PRIMARY_HOMONYM_OF }
+
+      with_object_taxon
+    end
+
+    trait :junior_secondary_homonym_of do
+      type { History::Definitions::JUNIOR_SECONDARY_HOMONYM_OF }
+
+      with_object_taxon
+    end
+
     trait :homonym_replaced_by do
       type { History::Definitions::HOMONYM_REPLACED_BY }
 
