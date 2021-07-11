@@ -222,6 +222,28 @@ module History
         validates_presence_of: [:object_taxon],
         optional_attributes: [:reference, :pages]
       },
+      JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS = 'JuniorPrimaryHomonymOfHardcodedGenus' => {
+        type_name: JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS,
+        type_label: 'Junior primary homonym of hardcoded genus',
+        ranks: GENUS_GROUP_LABEL,
+
+        group_order: 71,
+
+        templates: {
+          default: {
+            content: '[Junior primary homonym of {unmissing %<hardcoded_genus>s}%<citation>s.]',
+            vars: ->(o) {
+              {
+                hardcoded_genus: o.text_value,
+                citation: (" [#{o.citation}]" if o.citation)
+              }
+            }
+          }
+        },
+
+        validates_presence_of: [:text_value],
+        optional_attributes: [:reference, :pages]
+      },
       JUNIOR_SECONDARY_HOMONYM_OF = 'JuniorSecondaryHomonymOf' => {
         type_name: JUNIOR_SECONDARY_HOMONYM_OF,
         type_label: 'Junior secondary homonym of',
@@ -282,7 +304,7 @@ module History
                 citation: (" (#{o.citation})" if o.citation),
                 trailers: (
                   # TODO: Hmm.
-                  trailer_types = [JUNIOR_PRIMARY_HOMONYM_OF, JUNIOR_SECONDARY_HOMONYM_OF]
+                  trailer_types = [JUNIOR_PRIMARY_HOMONYM_OF, JUNIOR_SECONDARY_HOMONYM_OF, JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS]
                   if (items = o.object_taxon.protonym_history_items.where(type: trailer_types)).present?
                     " #{items.map(&:to_taxt).join('; ')}"
                   end

@@ -62,7 +62,7 @@ describe HistoryItem, :relational_hi do
     describe '#text_value' do
       subject(:history_item) { build_stubbed :history_item, :form_descriptions }
 
-      let(:format_error_message) { "cannot contain: ; < > { }" }
+      let(:format_error_message) { "cannot contain: ; { }" }
 
       it { is_expected.to validate_length_of(:text_value).is_at_most(described_class::TEXT_VALUE_MAX_LENGTH) }
 
@@ -72,7 +72,6 @@ describe HistoryItem, :relational_hi do
 
       it { is_expected.not_to allow_value('w.; q.').for(:text_value).with_message(format_error_message) }
       it { is_expected.not_to allow_value("{#{Taxt::REF_TAG} 1}").for(:text_value).with_message(format_error_message) }
-      it { is_expected.not_to allow_value('<').for(:text_value).with_message(format_error_message) }
     end
   end
 
@@ -221,6 +220,20 @@ describe HistoryItem, :relational_hi do
 
         is_expected.to validate_absence_of :object_protonym
         is_expected.to validate_presence_of :object_taxon
+      end
+    end
+
+    context 'when `type` is `JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS`' do
+      subject { build_stubbed :history_item, :junior_primary_homonym_of_hardcoded_genus }
+
+      it do
+        is_expected.to validate_absence_of :taxt
+        is_expected.to validate_absence_of :subtype
+        is_expected.to validate_absence_of :picked_value
+        is_expected.to validate_presence_of :text_value
+
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_absence_of :object_taxon
       end
     end
 
@@ -446,6 +459,26 @@ describe HistoryItem, :relational_hi do
       end
     end
 
+    context 'when `type` is `JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS`' do
+      context 'without reference' do
+        let(:history_item) { create :history_item, :junior_primary_homonym_of_hardcoded_genus }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior primary homonym of {#{Taxt::UNMISSING_TAG} #{history_item.text_value}}.]"
+        end
+      end
+
+      context 'with reference' do
+        let(:history_item) { create :history_item, :junior_primary_homonym_of_hardcoded_genus, :with_reference }
+
+        specify do
+          expect(history_item.to_taxt).
+            to eq "[Junior primary homonym of {#{Taxt::UNMISSING_TAG} #{history_item.text_value}} [#{history_item.citation_taxt}].]"
+        end
+      end
+    end
+
     context 'when `type` is `JUNIOR_SECONDARY_HOMONYM_OF`' do
       context 'without reference' do
         let(:history_item) { create :history_item, :junior_secondary_homonym_of }
@@ -514,6 +547,18 @@ describe HistoryItem, :relational_hi do
         it 'renders them as "trailers"' do
           expect(history_item.to_taxt).
             to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}. #{trailer_1.to_taxt}; #{trailer_2.to_taxt}"
+        end
+      end
+
+      context "when `object_taxon`'s protonym have hardcoded 'junior homonym of' history items" do
+        let!(:object_taxon) { create :species }
+        let!(:trailer_1) { create :history_item, :junior_primary_homonym_of_hardcoded_genus, protonym: object_taxon.protonym }
+
+        let(:history_item) { create :history_item, :replacement_name_for, object_taxon: object_taxon }
+
+        it 'renders them as "trailers"' do
+          expect(history_item.to_taxt).
+            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}. #{trailer_1.to_taxt}"
         end
       end
     end

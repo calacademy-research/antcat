@@ -121,6 +121,12 @@ onSelectType = (selectedType) ->
 
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
+      when 'JuniorPrimaryHomonymOfHardcodedGenus'
+        $(TYPE_LABEL_TEXT_VALUE).text "Junior primary homonym of hardcoded genus"
+        markCitationAsOptional()
+
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_TEXT_VALUE]
+
       when 'JuniorSecondaryHomonymOf'
         $(TYPE_LABEL_OBJECT_TAXON).text "Junior secondary homonym of"
         markCitationAsOptional()
