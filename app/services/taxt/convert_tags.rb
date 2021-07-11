@@ -4,7 +4,7 @@ module Taxt
   class ConvertTags
     include Service
 
-    TAX_TO_PROTONYM_REGEX = /\{#{Taxt::TAX_TAG} (?<taxon_id>\d+)(?<to_tag>(?:#{Taxt::PROTONYM_TAGS.join('|')}))\}/
+    TAXON_TO_PROTONYM_REGEX = /\{(?:#{Taxt::TAXON_TAGS.join('|')}) (?<taxon_id>\d+)(?<to_tag>(?:#{Taxt::PROTONYM_TAGS.join('|')}))\}/
 
     def initialize taxt
       @taxt = taxt.try(:dup)
@@ -14,7 +14,7 @@ module Taxt
       return if taxt.nil?
       raise unless taxt.is_a?(String)
 
-      convert_tax_to_protonym_tags
+      convert_taxon_to_protonym_tags
 
       taxt
     end
@@ -23,8 +23,8 @@ module Taxt
 
       attr_reader :taxt
 
-      def convert_tax_to_protonym_tags
-        taxt.gsub!(TAX_TO_PROTONYM_REGEX) do
+      def convert_taxon_to_protonym_tags
+        taxt.gsub!(TAXON_TO_PROTONYM_REGEX) do
           if (taxon = Taxon.find_by(id: $LAST_MATCH_INFO[:taxon_id]))
             to_tag = $LAST_MATCH_INFO[:to_tag]
             "{#{to_tag} #{taxon.protonym.id}}"
