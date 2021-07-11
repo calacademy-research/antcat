@@ -275,11 +275,18 @@ module History
 
         templates: {
           default: {
-            content: 'Replacement name for {taxac %<object_taxon_id>i}%<citation>s.',
+            content: 'Replacement name for {taxac %<object_taxon_id>i}%<citation>s.%<trailers>s',
             vars: ->(o) {
               {
                 object_taxon_id: o.object_taxon_id,
-                citation: (" (#{o.citation})" if o.citation)
+                citation: (" (#{o.citation})" if o.citation),
+                trailers: (
+                  # TODO: Hmm.
+                  trailer_types = [JUNIOR_PRIMARY_HOMONYM_OF, JUNIOR_SECONDARY_HOMONYM_OF]
+                  if (items = o.object_taxon.protonym_history_items.where(type: trailer_types)).present?
+                    " #{items.map(&:to_taxt).join('; ')}"
+                  end
+                )
               }
             }
           }

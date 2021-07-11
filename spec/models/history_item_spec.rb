@@ -504,6 +504,18 @@ describe HistoryItem, :relational_hi do
             to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt})."
         end
       end
+
+      context "when `object_taxon`'s protonym have 'junior homonym of' history items" do
+        let!(:object_taxon) { create :species }
+        let!(:trailer_1) { create :history_item, :junior_primary_homonym_of, protonym: object_taxon.protonym }
+        let!(:trailer_2) { create :history_item, :junior_secondary_homonym_of, protonym: object_taxon.protonym }
+        let(:history_item) { create :history_item, :replacement_name_for, object_taxon: object_taxon }
+
+        it 'renders them as "trailers"' do
+          expect(history_item.to_taxt).
+            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}. #{trailer_1.to_taxt}; #{trailer_2.to_taxt}"
+        end
+      end
     end
 
     context 'when `type` is `UNAVAILABLE_NAME`' do
