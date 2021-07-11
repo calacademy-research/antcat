@@ -224,7 +224,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :wiki_pages do
+  resources :wiki_pages, path: :wiki do
     scope module: :wiki_pages do
       collection do
         resource :autocomplete, only: :show

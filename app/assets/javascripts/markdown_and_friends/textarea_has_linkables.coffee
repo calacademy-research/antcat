@@ -84,7 +84,7 @@ window.setupLinkables = =>
       delay: 300
       insertTpl: '%wiki${id}'
       displayTpl: '<li><small>#${id}</small> ${title}</li>'
-      callbacks: reuseCallbacks "/wiki_pages/autocomplete.json"
+      callbacks: reuseCallbacks "/wiki/autocomplete.json"
 
     .atwho
       at: '!!'

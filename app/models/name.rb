@@ -7,7 +7,7 @@
 class Name < ApplicationRecord
   include Trackable
 
-  # See https://antcat.org/wiki_pages/12
+  # See https://antcat.org/wiki/12
   CONNECTING_TERMS = %w[
     ab.
     f.

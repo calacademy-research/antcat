@@ -24,7 +24,7 @@ describe TooltipHelper do
     context 'when wiki page does not exists' do
       specify do
         expect(helper.db_wiki_page_icon('pizza')).to eq <<~HTML.squish
-          <a href="/wiki_pages"><span tooltip2="Related wiki page: Error:
+          <a href="/wiki"><span tooltip2="Related wiki page: Error:
           Could not find wiki page 'pizza'" class="tooltip2"><i
           class="antcat_icon wiki-page-icon"></i></span></a>
         HTML
@@ -36,7 +36,7 @@ describe TooltipHelper do
         wiki_page = create :wiki_page, :forms
 
         expect(helper.db_wiki_page_icon(wiki_page.permanent_identifier)).to eq <<~HTML.squish
-          <a href="/wiki_pages/#{wiki_page.id}"><span tooltip2="Related wiki page: #{wiki_page.title}"
+          <a href="/wiki/#{wiki_page.id}"><span tooltip2="Related wiki page: #{wiki_page.title}"
           class="tooltip2"><i class="antcat_icon wiki-page-icon"></i></span></a>
         HTML
       end

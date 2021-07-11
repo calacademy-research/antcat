@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# See also https://antcat.org/wiki_pages/11
+# See also https://antcat.org/wiki/11
 # For Ctrl-c:
 #   Taxt::StandardHistoryItemFormats::PAGINATION_MANY
 #   Taxt::StandardHistoryItemFormats::PAGINATION_MANY_EXACT
@@ -37,7 +37,7 @@ module Taxt
     MISSPELLING = "{#{Taxt::MISSPELLING_TAG} (<i>)?[A-Za-z0-9 ä-]+(<\/i>)?}"
     UNMISSING = "{#{Taxt::UNMISSING_TAG} (<i>)?[A-Za-z]+(<\/i>)?}"
 
-    # See also https://antcat.org/wiki_pages/5
+    # See also https://antcat.org/wiki/5
     FORMS = %w[
       aq.
       dq.
