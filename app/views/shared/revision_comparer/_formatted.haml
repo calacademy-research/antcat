@@ -1,5 +1,3 @@
--# This is for showing selected/diff_wiff as formatted in the catalog.
-
 %div
   %h5
     -if selected
@@ -15,12 +13,3 @@
   .callout{class: (comparer.looking_at_a_single_old_revision? ? "make-red" : "make-green")}
     =preserve do
       =revision_presenter.render_revision(selected || most_recent, view_context: self)
-
-  -if diff_with
-    %h5.margin-top
-      Revision as of
-      =l diff_with.updated_at, format: :time_with_full_date_in_words
-      (older)
-    .callout.make-red.margin-bottom
-      =preserve do
-        =revision_presenter.render_revision(diff_with, view_context: self)
