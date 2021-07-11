@@ -70,7 +70,7 @@ end
 __END__
 
 section: research
-tags: [replacement-names, list, slow-render, updated!]
+tags: [replacement-names, list, slow-render]
 
 description: >
   Via `taxa.homonym_replaced_by_id`.

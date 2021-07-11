@@ -69,7 +69,7 @@ end
 __END__
 
 section: research
-tags: [grab-bag, updated!]
+tags: [grab-bag]
 
 description: >
 
