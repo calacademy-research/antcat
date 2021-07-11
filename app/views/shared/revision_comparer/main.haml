@@ -18,14 +18,9 @@
         revision_presenter: revision_presenter,
         most_recent: most_recent,
         selected: selected,
-        diff_with: diff_with,
-        collapse_formatted: diff_with.present?
+        diff_with: diff_with
 
     -if diff_with
-      -if revision_presenter.show_formatted?
-        -content_for :breadcrumbs_right do
-          =link_to "Hide/show formatted", "#", data: { show_hide_toggler_for: "formatted" }, class: "btn-nodanger"
-
       =render "shared/revision_comparer/difference_between_revisions",
         left_side_revision: diff_with,
         left_side_diff: revision_presenter.left_side_diff,
