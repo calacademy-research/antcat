@@ -231,19 +231,18 @@ module History
 
         templates: {
           default: {
-            content: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.%<legacy_taxt>s',
+            content: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.',
             vars: ->(o) {
               {
                 object_protonym_id: o.object_protonym_id,
-                citation: (" (#{o.citation})" if o.citation),
-                legacy_taxt: (" #{o.taxt}" if o.taxt?)
+                citation: (" (#{o.citation})" if o.citation)
               }
             }
           }
         },
 
         validates_presence_of: [:object_protonym],
-        optional_attributes: [:taxt, :reference, :pages]
+        optional_attributes: [:reference, :pages]
       },
       UNAVAILABLE_NAME = 'UnavailableName' => {
         type_name: UNAVAILABLE_NAME,
