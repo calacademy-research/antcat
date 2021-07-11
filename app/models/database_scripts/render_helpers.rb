@@ -47,6 +47,11 @@ module DatabaseScripts
       Array.wrap(protonyms).map { |protonym| protonym.decorate.link_to_protonym_with_author_citation }.join('<br>')
     end
 
+    def history_item_link_and_taxt history_item
+      return '' unless history_item
+      link_to("##{history_item.id}", history_item_path(history_item)) << ":<br>#{history_item.taxt}".html_safe
+    end
+
     def color_span string, css_class
       %(<span class="#{css_class}">#{string}</span>)
     end

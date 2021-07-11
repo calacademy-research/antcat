@@ -40,6 +40,18 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
+  def delete_history_item
+    history_item = HistoryItem.find(params[:history_item_id])
+    edit_summary = params[:edit_summary]
+
+    if history_item.destroy
+      history_item.create_activity Activity::DESTROY, current_user, edit_summary: "[semi-automatic] #{edit_summary}"
+      render js: %(AntCat.notifySuccess("Deleted history item"))
+    else
+      render js: %(AntCat.notifyError("Could not delete history item"))
+    end
+  end
+
   def force_remove_pages_from_taxac_tags
     history_item = HistoryItem.find(params[:history_item_id])
 
@@ -107,6 +119,26 @@ class QuickAndDirtyFixesController < ApplicationController
       render js: %(AntCat.notifySuccess("Replaced missing tags with selected tax: '#{new_taxt}'"))
     else
       render js: %(AntCat.notifyError("Could not replace missing tags with selected tax"))
+    end
+  end
+
+  def strip_except_replacement_name_for
+    history_item = HistoryItem.find(params[:history_item_id])
+    edit_summary = params[:edit_summary]
+
+    old_taxt = history_item.taxt
+    new_taxt = old_taxt[/^Replacement name for {\w+ [0-9]+}/]
+
+    if new_taxt.blank?
+      render js: %(AntCat.notifyError("Could not strip item (blank taxt?)"))
+    elsif old_taxt == new_taxt
+      render js: %(AntCat.notifyError("Stripped item, but nothing was changed"))
+    elsif history_item.update(taxt: new_taxt)
+      history_item.create_activity Activity::UPDATE, current_user,
+        edit_summary: "[automatic] Strip except 'Replacement name for TAG ID' (#{edit_summary})"
+      render js: %(AntCat.notifySuccess("Stripped to: '#{new_taxt}'"))
+    else
+      render js: %(AntCat.notifyError("Could not strip item"))
     end
   end
 
