@@ -1,10 +1,6 @@
 %table.unstriped
   %tr
     %td Replacement name for
-    %td=protonym_picker history_item.object_protonym, name: 'object_protonym_id'
+    %td=taxon_picker history_item.object_taxon, name: 'object_taxon_id'
 
   =tr_for_optional_reference_and_pages history_item
-
-  %tr
-    %td Legacy taxt
-    %td=text_area_tag :taxt, history_item.taxt, rows: 5, data: { has_linkables: true, previewable: true, previewable_title: 'History item', use_extras: true }

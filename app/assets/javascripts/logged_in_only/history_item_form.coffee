@@ -116,16 +116,16 @@ onSelectType = (selectedType) ->
         [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES]
 
       when 'HomonymReplacedBy'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name (homonym replaced by)"
+        $(TYPE_LABEL_OBJECT_TAXON).text "Replacement name (homonym replaced by)"
         markCitationAsOptional()
 
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'ReplacementNameFor'
-        $(TYPE_LABEL_OBJECT_PROTONYM).text "Replacement name for"
+        $(TYPE_LABEL_OBJECT_TAXON).text "Replacement name for"
         markCitationAsOptional()
 
-        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_PROTONYM]
+        [TYPE_SPECIFIC_REFERENCE, TYPE_SPECIFIC_PAGES, TYPE_SPECIFIC_OBJECT_TAXON]
 
       when 'UnavailableName'
         markCitationAsOptional()
