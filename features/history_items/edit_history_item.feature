@@ -64,7 +64,7 @@ Feature: Editing a history item
     Then I should see "Successfully updated history item #"
     And I should see "history item content"
 
-  @javascript
+  @skip_ci @javascript
   Scenario: Editing a history item, but cancelling
     Given there is a subfamily protonym "Antcatinae" with a history item "Antcatinae as family"
 

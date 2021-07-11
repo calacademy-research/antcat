@@ -38,7 +38,7 @@ title: >
   'Replacement name for' history items (missing)
 
 section: disagreeing-history
-tags: [disagreeing-data, replacement-names, rel-hist, taxt-hist, new!]
+tags: [disagreeing-data, replacement-names, rel-hist, taxt-hist]
 
 description: >
   Triggers for taxa that are set as the `taxa.homonym_replaced_by_id` of other taxa unless their protonym has

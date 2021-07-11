@@ -53,7 +53,7 @@ describe Markdowns::ParseAntcatTags do
 
       specify do
         expect(described_class["%wiki#{wiki_page.id}"]).
-          to eq %(<a href="/wiki_pages/#{wiki_page.id}">#{wiki_page.title}</a>)
+          to eq %(<a href="/wiki/#{wiki_page.id}">#{wiki_page.title}</a>)
       end
     end
   end

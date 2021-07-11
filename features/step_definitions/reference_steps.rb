@@ -60,11 +60,6 @@ When('I fill in "reference_nesting_reference_id" with the ID for {string}') do |
   step %(I fill in "reference_nesting_reference_id" with "#{reference.id}")
 end
 
-When("I fill in {string} with a URL to a document that exists") do |field_name|
-  stub_request :any, "http://google.com/foo"
-  step %(I fill in "#{field_name}" with "http://google\.com/foo")
-end
-
 Given("the default reference is {string}") do |key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   References::DefaultReference.stub(:get).and_return(reference)

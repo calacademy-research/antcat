@@ -13,10 +13,6 @@ class RevisionPresenter
 
   attr_private_initialize [:comparer, template: nil]
 
-  def show_formatted?
-    @_show_formatted ||= template.present?
-  end
-
   def left_side_diff
     html_split_diff.left
   end
@@ -44,31 +40,39 @@ class RevisionPresenter
     end
   end
 
-  # Rescues anything. Rendering old revisions can raise for many reasons.
-  def render_revision_with_rescue item, view_context:
-    view_context.render template, item: item
-  rescue ActionView::MissingTemplate
-    raise
-  rescue StandardError => e
-    "Failed to render revision. Thrown error: #{e.message}".html_safe <<
-      "<br><br><pre>#{diff_format(item)}</pre>".html_safe
+  def render_revision item, view_context:
+    if template
+      render_revision_with_template(item, view_context: view_context)
+    else
+      "<pre class='small-text'>#{revision_as_json(item)}</pre>".html_safe
+    end
   end
 
   private
 
     delegate :selected, :diff_with, :most_recent, to: :comparer, private: true
 
+    # Rescues anything. Rendering old revisions can raise for many reasons.
+    def render_revision_with_template item, view_context:
+      view_context.render template, item: item
+    rescue ActionView::MissingTemplate
+      raise
+    rescue StandardError => e
+      "Failed to render revision. Thrown error: #{e.message}".html_safe <<
+        "<br><br><pre>#{revision_as_json(item)}</pre>".html_safe
+    end
+
     def html_split_diff
       return unless diff_with
 
       @_html_split_diff ||= begin
-        left = diff_format diff_with
-        right = diff_format selected || most_recent
+        left = revision_as_json(diff_with)
+        right = revision_as_json(selected || most_recent)
         Diffy::SplitDiff.new(left, right, format: :html)
       end
     end
 
-    def diff_format item
+    def revision_as_json item
       as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
       JSON.pretty_generate(as_json)
     end

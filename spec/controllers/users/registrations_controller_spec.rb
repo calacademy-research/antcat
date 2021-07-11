@@ -44,7 +44,7 @@ describe Users::RegistrationsController do
 
       it 'redirects to it' do
         post(:create, params: { user: user_params })
-        expect(response).to redirect_to "/wiki_pages/#{wiki_page.id}"
+        expect(response).to redirect_to "/wiki/#{wiki_page.id}"
       end
     end
 

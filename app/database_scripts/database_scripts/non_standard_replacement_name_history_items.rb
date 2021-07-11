@@ -9,7 +9,7 @@ module DatabaseScripts
     def results
       HistoryItem.taxts_only.
         where("history_items.taxt LIKE 'Replacement name:%'").
-        where.not("taxt REGEXP ?", "^Replacement name: {#{Taxt::TAXAC_TAG} [0-9]+}\.?$")
+        where.not("taxt REGEXP ?", "^Replacement name: {#{Taxt::TAXAC_TAG} [0-9]+}( \\({#{Taxt::REF_TAG} [0-9]+}: [0-9]+\\))?\.?$")
     end
 
     def render
@@ -38,15 +38,7 @@ title: Non-standard 'Replacement name:' history items
 section: research
 tags: [replacement-names, taxt-hist]
 
-issue_description:
-
 description: >
-  This does not mean that they are incorrect, because we want to support these cases:
-
-
-  * Replacement name: {taxac 441598} ({ref 132776}: 221).
-
-  * Replacement name: {taxac 507625} (replacement name for {taxac 446502}).
 
 related_scripts:
   - NonStandardReplacementNameHistoryItems

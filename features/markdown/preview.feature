@@ -1,4 +1,4 @@
-@javascript
+@skip_ci @javascript
 Feature: Preview markdown
   Background:
     Given I log in as a catalog editor named "Archibald"

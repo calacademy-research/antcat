@@ -130,9 +130,3 @@ And('I will confirm on the next step') do
 rescue Capybara::NotSupportedByDriverError
   nil
 end
-
-When("I will enter {string} in the prompt and confirm on the next step") do |string|
-  evaluate_script "window.prompt = function(msg) { return '#{string}'; }"
-rescue Capybara::NotSupportedByDriverError => e
-  warn e
-end
