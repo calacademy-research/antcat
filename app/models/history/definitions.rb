@@ -209,17 +209,17 @@ module History
 
         templates: {
           default: {
-            content: 'Replacement name: {prottac %<object_protonym_id>i}%<citation>s.',
+            content: 'Replacement name: {taxac %<object_taxon_id>i}%<citation>s.',
             vars: ->(o) {
               {
-                object_protonym_id: o.object_protonym_id,
+                object_taxon_id: o.object_taxon_id,
                 citation: (" (#{o.citation})" if o.citation)
               }
             }
           }
         },
 
-        validates_presence_of: [:object_protonym],
+        validates_presence_of: [:object_taxon],
         optional_attributes: [:reference, :pages]
       },
       REPLACEMENT_NAME_FOR = 'ReplacementNameFor' => {
@@ -231,17 +231,17 @@ module History
 
         templates: {
           default: {
-            content: 'Replacement name for {prottac %<object_protonym_id>i}%<citation>s.',
+            content: 'Replacement name for {taxac %<object_taxon_id>i}%<citation>s.',
             vars: ->(o) {
               {
-                object_protonym_id: o.object_protonym_id,
+                object_taxon_id: o.object_taxon_id,
                 citation: (" (#{o.citation})" if o.citation)
               }
             }
           }
         },
 
-        validates_presence_of: [:object_protonym],
+        validates_presence_of: [:object_taxon],
         optional_attributes: [:reference, :pages]
       },
       UNAVAILABLE_NAME = 'UnavailableName' => {

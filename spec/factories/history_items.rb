@@ -82,13 +82,13 @@ FactoryBot.define do
     trait :homonym_replaced_by do
       type { History::Definitions::HOMONYM_REPLACED_BY }
 
-      with_object_protonym
+      with_object_taxon
     end
 
     trait :replacement_name_for do
       type { History::Definitions::REPLACEMENT_NAME_FOR }
 
-      with_object_protonym
+      with_object_taxon
     end
 
     trait :unavailable_name do

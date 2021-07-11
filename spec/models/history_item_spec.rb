@@ -219,8 +219,8 @@ describe HistoryItem, :relational_hi do
         is_expected.to validate_absence_of :picked_value
         is_expected.to validate_absence_of :text_value
 
-        is_expected.to validate_presence_of :object_protonym
-        is_expected.to validate_absence_of :object_taxon
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
       end
     end
 
@@ -233,8 +233,8 @@ describe HistoryItem, :relational_hi do
         is_expected.to validate_absence_of :picked_value
         is_expected.to validate_absence_of :text_value
 
-        is_expected.to validate_presence_of :object_protonym
-        is_expected.to validate_absence_of :object_taxon
+        is_expected.to validate_absence_of :object_protonym
+        is_expected.to validate_presence_of :object_taxon
       end
     end
 
@@ -404,7 +404,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name: {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}."
+            to eq "Replacement name: {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}."
         end
       end
 
@@ -413,7 +413,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name: {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}} (#{history_item.citation_taxt})."
+            to eq "Replacement name: {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt})."
         end
       end
     end
@@ -424,7 +424,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}."
+            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}."
         end
       end
 
@@ -433,7 +433,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}} (#{history_item.citation_taxt})."
+            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt})."
         end
       end
     end
