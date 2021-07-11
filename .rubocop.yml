@@ -170,6 +170,9 @@ Performance/MapCompact:
 Performance/MethodObjectAsBlock:
   Enabled: false
 
+Performance/Casecmp:
+  Enabled: false
+
 ### Rails.
 
 Rails/BulkChangeTable:

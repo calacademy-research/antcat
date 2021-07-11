@@ -18,7 +18,7 @@ class HistoryItem < ApplicationRecord
   VALID_PAGES_REGEX = /\A[^;<>{}]*\z/ # Allow any format except weird characters for now.
 
   TEXT_VALUE_MAX_LENGTH = 50
-  VALID_TEXT_VALUE_REGEX = /\A[^;<>{}]*\z/ # Allow any format except weird characters for now.
+  VALID_TEXT_VALUE_REGEX = /\A[^;{}]*\z/ # Allow any format except weird characters for now.
 
   self.inheritance_column = :_type_column_disabled
 
@@ -42,7 +42,7 @@ class HistoryItem < ApplicationRecord
       format: { with: VALID_PAGES_REGEX, allow_nil: true, message: "cannot contain: ; < > { }" }
     validates :text_value,
       length: { maximum: TEXT_VALUE_MAX_LENGTH },
-      format: { with: VALID_TEXT_VALUE_REGEX, allow_nil: true, message: "cannot contain: ; < > { }" }
+      format: { with: VALID_TEXT_VALUE_REGEX, allow_nil: true, message: "cannot contain: ; { }" }
 
     validate :validate_subtype
     validate :validate_optional_reference_and_pages
