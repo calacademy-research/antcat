@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Cleanup methods/names.
-
 module TestLinksHelpers
   def author_link author_name
     %(<a href="/authors/#{author_name.author.id}">#{author_name.name}</a>)

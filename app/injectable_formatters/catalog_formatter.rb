@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# TODO: Cleanup methods/names.
-
 module CatalogFormatter
   extend ActionView::Helpers::OutputSafetyHelper # For `#safe_join`.
 

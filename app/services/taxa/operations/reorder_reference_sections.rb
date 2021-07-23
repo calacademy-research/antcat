@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Copy-pasted from `Taxa::Operations::ReorderHistoryItems`.
+# NOTE: Copy-pasted from `Taxa::Operations::ReorderHistoryItems`.
 
 module Taxa
   module Operations

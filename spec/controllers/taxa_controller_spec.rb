@@ -160,7 +160,7 @@ describe TaxaController do
         params = params_without_taxon.merge(taxon: base_params)
         expect { post :create, params: params }.to_not change { Taxon.count }
 
-        taxon_assign = assigns(:taxon) # TODO: Hmm.
+        taxon_assign = assigns(:taxon)
         expect(taxon_assign.errors.empty?).to eq false
         expect(taxon_assign.errors[:base]).to eq ["Rank (`Genus`) and name type (`TribeName`) must match."]
       end

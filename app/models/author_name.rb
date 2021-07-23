@@ -24,13 +24,11 @@ class AuthorName < ApplicationRecord
   has_paper_trail
   trackable
 
-  # TODO: Store in db?
   def last_name
     last, _ = name_parts
     last
   end
 
-  # TODO: Store in db?
   def first_name_and_initials
     _, first = name_parts
     first

@@ -7,7 +7,7 @@ class Citation < ApplicationRecord
 
   belongs_to :reference
 
-  # TODO: [grep:notes_taxt].
+  # [grep:notes_taxt].
   has_one :protonym, inverse_of: :authorship, foreign_key: :authorship_id, dependent: :destroy
 
   validates :pages, presence: true
