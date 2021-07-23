@@ -108,7 +108,7 @@ class HistoryItem < ApplicationRecord
     raise 'not supported' if taxt_type?
     return unless reference_id || pages
 
-    "#{Taxt.to_ref_tag(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}"
+    "#{Taxt.ref(reference_id || 'REFERENCE_ID MISSING')}: #{pages || 'PAGES_MISSING'}"
   end
   alias_method :citation, :citation_taxt
 

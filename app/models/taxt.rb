@@ -85,11 +85,6 @@ module Taxt
     tag REF_TAG, reference_id
   end
 
-  def to_ref_tag reference_or_id
-    reference_id = reference_or_id.is_a?(Reference) ? reference_or_id.id : reference_or_id
-    "{#{REF_TAG} #{reference_id}}"
-  end
-
   def tag tag, content
     "{#{tag} #{content}}"
   end

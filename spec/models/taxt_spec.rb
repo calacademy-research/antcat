@@ -3,15 +3,6 @@
 require 'rails_helper'
 
 describe Taxt do
-  describe '.to_ref_tag' do
-    let(:reference) { create :any_reference }
-
-    it 'generates a taxt tag for the reference or reference ID' do
-      expect(described_class.to_ref_tag(reference)).to eq "{#{Taxt::REF_TAG} #{reference.id}}"
-      expect(described_class.to_ref_tag(reference.id)).to eq "{#{Taxt::REF_TAG} #{reference.id}}"
-    end
-  end
-
   describe '.extract_ids_from_taxon_tags' do
     context 'without matching tags' do
       specify do
