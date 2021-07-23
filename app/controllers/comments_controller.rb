@@ -14,7 +14,7 @@ class CommentsController < ApplicationController
   end
 
   def create
-    @comment = Comment.build_comment commentable, current_user, body: comment_params[:body]
+    @comment = Comment.build_comment(commentable, current_user, body: comment_params[:body])
 
     if @comment.save
       @comment.create_activity Activity::CREATE, current_user

@@ -12,7 +12,7 @@ class FeedbacksController < ApplicationController
 
   def show
     @feedback = find_feedback
-    @new_comment = Comment.build_comment @feedback, current_user
+    @new_comment = Comment.build_comment(@feedback, current_user)
   end
 
   def new

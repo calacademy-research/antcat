@@ -12,7 +12,7 @@ class SiteNoticesController < ApplicationController
 
   def show
     @site_notice = find_site_notice
-    @new_comment = Comment.build_comment @site_notice, current_user
+    @new_comment = Comment.build_comment(@site_notice, current_user)
   end
 
   def new

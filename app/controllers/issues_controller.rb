@@ -11,7 +11,7 @@ class IssuesController < ApplicationController
 
   def show
     @issue = find_issue
-    @new_comment = Comment.build_comment @issue, current_user
+    @new_comment = Comment.build_comment(@issue, current_user)
   end
 
   def new
