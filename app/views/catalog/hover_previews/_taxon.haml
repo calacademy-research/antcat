@@ -6,7 +6,7 @@
   .tiny-margin-bottom
     -if user_is_editor?
       =link_to "Edit taxon", edit_taxa_path(taxon), class: "btn-tiny btn-normal"
-    =copy_to_clipboard_button Taxt.taxon_to_tax_tag(taxon), "tax #{taxon.id}"
+    =copy_to_clipboard_button Taxt.tax(taxon.id), "tax #{taxon.id}"
     =copy_to_clipboard_button taxon.id
 %strong Taxon:
 =decorated_taxon.link_to_taxon_with_author_citation
@@ -25,7 +25,7 @@
   .tiny-margin-bottom
     -if user_is_editor?
       =link_to "Edit protonym", edit_protonym_path(protonym), class: "btn-tiny btn-normal"
-    =copy_to_clipboard_button Taxt.protonym_to_pro_tag(protonym), "pro #{protonym.id}"
+    =copy_to_clipboard_button Taxt.pro(protonym.id), "pro #{protonym.id}"
     =copy_to_clipboard_button protonym.id
 %strong Protonym:
 =decorated_protonym.link_to_protonym

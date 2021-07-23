@@ -107,7 +107,7 @@
           =@protonym.name.epithet_html
 
         .tiny-margin-bottom
-          =copy_to_clipboard_button Taxt.protonym_to_pro_tag(@protonym), "pro #{@protonym.id}"
+          =copy_to_clipboard_button Taxt.pro(@protonym.id), "pro #{@protonym.id}"
           =copy_to_clipboard_button @protonym.id
 
         =render 'protonyms/shared/additional_data_for_editors', protonym: @protonym
