@@ -40,7 +40,7 @@ describe HistoryItem, :relational_hi do
       it { is_expected.to allow_value('1 (in text)').for :pages }
 
       it { is_expected.not_to allow_value('1; 2').for(:pages).with_message(format_error_message) }
-      it { is_expected.not_to allow_value("{#{Taxt::REF_TAG} 1}").for(:pages).with_message(format_error_message) }
+      it { is_expected.not_to allow_value(Taxt.ref(1)).for(:pages).with_message(format_error_message) }
       it { is_expected.not_to allow_value('<').for(:pages).with_message(format_error_message) }
     end
 
@@ -71,7 +71,7 @@ describe HistoryItem, :relational_hi do
       it { is_expected.to allow_value('w. (abc)').for :text_value }
 
       it { is_expected.not_to allow_value('w.; q.').for(:text_value).with_message(format_error_message) }
-      it { is_expected.not_to allow_value("{#{Taxt::REF_TAG} 1}").for(:text_value).with_message(format_error_message) }
+      it { is_expected.not_to allow_value(Taxt.ref(1)).for(:text_value).with_message(format_error_message) }
     end
   end
 
@@ -305,13 +305,13 @@ describe HistoryItem, :relational_hi do
   describe '#standard_format?' do
     context 'with `TAXT` item' do
       context 'with standard format' do
-        let(:history_item) { create :history_item, :taxt, taxt: "Lectotype designation: {#{Taxt::REF_TAG} 1}: 23" }
+        let(:history_item) { create :history_item, :taxt, taxt: "Lectotype designation: #{Taxt.ref(1)}: 23" }
 
         specify { expect(history_item.standard_format?).to eq true }
       end
 
       context 'with non-standard format' do
-        let(:history_item) { create :history_item, :taxt, taxt: "Pizza designation: {#{Taxt::REF_TAG} 1}: 23" }
+        let(:history_item) { create :history_item, :taxt, taxt: "Pizza designation: #{Taxt.ref(1)}: 23" }
 
         specify { expect(history_item.standard_format?).to eq false }
       end
@@ -358,7 +358,7 @@ describe HistoryItem, :relational_hi do
 
       specify do
         expect(history_item.to_taxt).
-          to eq "Combination in {#{Taxt::TAX_TAG} #{history_item.object_taxon.id}}: #{history_item.citation_taxt}."
+          to eq "Combination in #{Taxt.tax(history_item.object_taxon.id)}: #{history_item.citation_taxt}."
       end
     end
 
@@ -368,7 +368,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Junior synonym of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Junior synonym of #{Taxt.prott(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
 
@@ -377,7 +377,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Junior synonym of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Junior synonym of #{Taxt.prottac(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
 
@@ -386,7 +386,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt(:object)).
-            to eq "Senior synonym of {#{Taxt::PROTT_TAG} #{history_item.protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Senior synonym of #{Taxt.prott(history_item.protonym.id)}: #{history_item.citation_taxt}."
         end
       end
     end
@@ -397,7 +397,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Senior synonym of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Senior synonym of #{Taxt.prott(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
 
@@ -406,7 +406,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Senior synonym of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Senior synonym of #{Taxt.prottac(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
     end
@@ -425,7 +425,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Subspecies of {#{Taxt::PROTT_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Subspecies of #{Taxt.prott(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
 
@@ -434,7 +434,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Subspecies of {#{Taxt::PROTTAC_TAG} #{history_item.object_protonym.id}}: #{history_item.citation_taxt}."
+            to eq "Subspecies of #{Taxt.prottac(history_item.object_protonym.id)}: #{history_item.citation_taxt}."
         end
       end
     end
@@ -445,7 +445,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "[Junior primary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}.]"
+            to eq "[Junior primary homonym of #{Taxt.taxac(history_item.object_taxon.id)}.]"
         end
       end
 
@@ -454,7 +454,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "[Junior primary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt}).]"
+            to eq "[Junior primary homonym of #{Taxt.taxac(history_item.object_taxon.id)} (#{history_item.citation_taxt}).]"
         end
       end
     end
@@ -485,7 +485,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "[Junior secondary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}.]"
+            to eq "[Junior secondary homonym of #{Taxt.taxac(history_item.object_taxon.id)}.]"
         end
       end
 
@@ -494,7 +494,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "[Junior secondary homonym of {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt}).]"
+            to eq "[Junior secondary homonym of #{Taxt.taxac(history_item.object_taxon.id)} (#{history_item.citation_taxt}).]"
         end
       end
     end
@@ -505,7 +505,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name: {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}."
+            to eq "Replacement name: #{Taxt.taxac(history_item.object_taxon.id)}."
         end
       end
 
@@ -514,7 +514,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name: {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt})."
+            to eq "Replacement name: #{Taxt.taxac(history_item.object_taxon.id)} (#{history_item.citation_taxt})."
         end
       end
     end
@@ -525,7 +525,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}."
+            to eq "Replacement name for #{Taxt.taxac(history_item.object_taxon.id)}."
         end
       end
 
@@ -534,7 +534,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}} (#{history_item.citation_taxt})."
+            to eq "Replacement name for #{Taxt.taxac(history_item.object_taxon.id)} (#{history_item.citation_taxt})."
         end
       end
 
@@ -546,7 +546,7 @@ describe HistoryItem, :relational_hi do
 
         it 'renders them as "trailers"' do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}. #{trailer_1.to_taxt}; #{trailer_2.to_taxt}"
+            to eq "Replacement name for #{Taxt.taxac(history_item.object_taxon.id)}. #{trailer_1.to_taxt}; #{trailer_2.to_taxt}"
         end
       end
 
@@ -558,7 +558,7 @@ describe HistoryItem, :relational_hi do
 
         it 'renders them as "trailers"' do
           expect(history_item.to_taxt).
-            to eq "Replacement name for {#{Taxt::TAXAC_TAG} #{history_item.object_taxon.id}}. #{trailer_1.to_taxt}"
+            to eq "Replacement name for #{Taxt.taxac(history_item.object_taxon.id)}. #{trailer_1.to_taxt}"
         end
       end
     end
@@ -584,7 +584,7 @@ describe HistoryItem, :relational_hi do
 
   describe '#citation_taxt' do
     context 'with `TAXT` item' do
-      let(:history_item) { create :history_item, taxt: "Lectotype designation: {#{Taxt::REF_TAG} 1}: 23" }
+      let(:history_item) { create :history_item, taxt: "Lectotype designation: #{Taxt.ref(1)}: 23" }
 
       specify { expect { history_item.citation_taxt }.to raise_error('not supported') }
     end
@@ -595,7 +595,7 @@ describe HistoryItem, :relational_hi do
 
         specify do
           expect(history_item.citation_taxt).
-            to eq "{#{Taxt::REF_TAG} #{history_item.reference.id}}: #{history_item.pages}"
+            to eq "#{Taxt.ref(history_item.reference.id)}: #{history_item.pages}"
         end
       end
 
@@ -615,7 +615,7 @@ describe HistoryItem, :relational_hi do
     context 'when taxt contains tax or taxac tags' do
       let(:taxon_1) { create :any_taxon }
       let(:taxon_2) { create :any_taxon }
-      let!(:history_item) { create :history_item, :taxt, taxt: "{#{Taxt::TAX_TAG} #{taxon_1.id}}, {#{Taxt::TAXAC_TAG} #{taxon_2.id}}" }
+      let!(:history_item) { create :history_item, :taxt, taxt: "#{Taxt.tax(taxon_1.id)}, #{Taxt.taxac(taxon_2.id)}" }
 
       it 'returns IDs of taxa referenced in tax and taxac tags' do
         expect(history_item.ids_from_taxon_tags).to match_array [taxon_1.id, taxon_2.id]

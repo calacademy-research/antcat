@@ -71,28 +71,38 @@ module Taxt
     end
   end
 
-  module RecordToTag
-    def taxon_to_tax_tag taxon
-      "{#{TAX_TAG} #{taxon.id}}"
-    end
-
-    def protonym_to_pro_tag protonym
-      "{#{PRO_TAG} #{protonym.id}}"
-    end
-
-    def reference_to_ref_tag reference
-      "{#{REF_TAG} #{reference.id}}"
-    end
-  end
-
   module_function
 
-  extend RecordToTag # Included as a shorthand.
+  def tax taxon_id
+    tag TAX_TAG, taxon_id
+  end
 
-  # TODO: DRY w.r.t. `RecordToTag::reference_to_ref_tag`.
-  def to_ref_tag reference_or_id
-    reference_id = reference_or_id.is_a?(Reference) ? reference_or_id.id : reference_or_id
-    "{#{REF_TAG} #{reference_id}}"
+  def taxac taxon_id
+    tag TAXAC_TAG, taxon_id
+  end
+
+  def pro protonym_id
+    tag PRO_TAG, protonym_id
+  end
+
+  def proac protonym_id
+    tag PROAC_TAG, protonym_id
+  end
+
+  def prott protonym_id
+    tag PROTT_TAG, protonym_id
+  end
+
+  def prottac protonym_id
+    tag PROTTAC_TAG, protonym_id
+  end
+
+  def ref reference_id
+    tag REF_TAG, reference_id
+  end
+
+  def tag tag, content
+    "{#{tag} #{content}}"
   end
 
   # Taxon-related tags.

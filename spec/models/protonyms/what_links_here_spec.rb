@@ -35,7 +35,7 @@ describe Protonyms::WhatLinksHere do
     let!(:protonym) { create :protonym }
 
     describe "tag: `PRO_TAG`" do
-      let(:taxt_tag) { "{#{Taxt::PRO_TAG} #{protonym.id}}" }
+      let(:taxt_tag) { Taxt.pro(protonym.id) }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -61,7 +61,7 @@ describe Protonyms::WhatLinksHere do
     end
 
     describe "tag: `PROAC_TAG`" do
-      let(:taxt_tag) { "{#{Taxt::PROAC_TAG} #{protonym.id}}" }
+      let(:taxt_tag) { Taxt.proac(protonym.id) }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -87,7 +87,7 @@ describe Protonyms::WhatLinksHere do
     end
 
     describe "tag: `PROTT_TAG`" do
-      let(:taxt_tag) { "{#{Taxt::PROTT_TAG} #{protonym.id}}" }
+      let(:taxt_tag) { Taxt.prott(protonym.id) }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
@@ -113,7 +113,7 @@ describe Protonyms::WhatLinksHere do
     end
 
     describe "tag: `PROTTAC_TAG`" do
-      let(:taxt_tag) { "{#{Taxt::PROTTAC_TAG} #{protonym.id}}" }
+      let(:taxt_tag) { Taxt.prottac(protonym.id) }
 
       let!(:other_protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }

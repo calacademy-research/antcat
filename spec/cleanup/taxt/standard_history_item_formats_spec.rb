@@ -6,7 +6,7 @@ describe Taxt::StandardHistoryItemFormats do
   subject(:service) { described_class.new(taxt) }
 
   describe 'parsing pagination' do
-    let(:taxt) { "[Also described as new by {#{Taxt::REF_TAG} 2}: #{pagination}.]" }
+    let(:taxt) { "[Also described as new by #{Taxt.ref(2)}: #{pagination}.]" }
 
     context "with unparsable pagination" do
       let(:pagination) { "123abc" }
@@ -52,22 +52,22 @@ describe Taxt::StandardHistoryItemFormats do
   end
 
   describe 'parsing grouped citations' do
-    let(:taxt) { "Material referred to {#{Taxt::TAX_TAG} 1} by #{citation}." }
+    let(:taxt) { "Material referred to #{Taxt.tax(1)} by #{citation}." }
 
     context "with unparsable grouped citations" do
-      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 135; {#{Taxt::REF_TAG} 125536}:" }
+      let(:citation) { "#{Taxt.ref(125536)}: 135; #{Taxt.ref(125536)}:" }
 
       specify { expect(service.standard?).to eq false }
     end
 
     context "with one citation" do
-      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 135" }
+      let(:citation) { "#{Taxt.ref(125536)}: 135" }
 
       specify { expect(service.standard?).to eq true }
     end
 
     context "with two citations" do
-      let(:citation) { "{#{Taxt::REF_TAG} 125536}: 12; {#{Taxt::REF_TAG} 234567}: 13" }
+      let(:citation) { "#{Taxt.ref(125536)}: 12; #{Taxt.ref(234567)}: 13" }
 
       specify { expect(service.standard?).to eq true }
     end
@@ -103,7 +103,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with form descriptions item" do
       context 'with known forms' do
-        let(:taxt) { "{#{Taxt::REF_TAG} 1}: 2 (w.q.m.)." }
+        let(:taxt) { "#{Taxt.ref(1)}: 2 (w.q.m.)." }
 
         specify do
           expect(service.standard?).to eq true
@@ -112,7 +112,7 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       context 'with unknown forms' do
-        let(:taxt) { "{#{Taxt::REF_TAG} 1}: 2 (z.q.m.)." }
+        let(:taxt) { "#{Taxt.ref(1)}: 2 (z.q.m.)." }
 
         specify do
           expect(service.standard?).to eq false
@@ -122,7 +122,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Lectotype designation' item" do
-      let(:taxt) { "Lectotype designation: {#{Taxt::REF_TAG} 1}: 23" }
+      let(:taxt) { "Lectotype designation: #{Taxt.ref(1)}: 23" }
 
       specify do
         expect(service.standard?).to eq true
@@ -131,7 +131,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Neotype designation' item" do
-      let(:taxt) { "Neotype designation: {#{Taxt::REF_TAG} 1}: 23" }
+      let(:taxt) { "Neotype designation: #{Taxt.ref(1)}: 23" }
 
       specify do
         expect(service.standard?).to eq true
@@ -140,7 +140,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Combination in' item" do
-      let(:taxt) { "Combination in {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Combination in #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.standard?).to eq true
@@ -149,7 +149,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Junior synonym of' item" do
-      let(:taxt) { "Junior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Junior synonym of #{Taxt.prott(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.standard?).to eq true
@@ -158,7 +158,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Senior synonym of' item" do
-      let(:taxt) { "Senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Senior synonym of #{Taxt.prott(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.standard?).to eq true
@@ -167,7 +167,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Status as species' item" do
-      let(:taxt) { "Status as species: {#{Taxt::REF_TAG} 1}: 23" }
+      let(:taxt) { "Status as species: #{Taxt.ref(1)}: 23" }
 
       specify do
         expect(service.standard?).to eq true
@@ -176,7 +176,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Subspecies of' item" do
-      let(:taxt) { "Subspecies of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Subspecies of #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.standard?).to eq true
@@ -185,7 +185,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Replacement name:' item" do
-      let(:taxt) { "Replacement name: {#{Taxt::PROTTAC_TAG} 1}." }
+      let(:taxt) { "Replacement name: #{Taxt.prottac(1)}." }
 
       specify do
         expect(service.standard?).to eq true
@@ -194,7 +194,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Replacement name:' item with source" do
-      let(:taxt) { "Replacement name: {#{Taxt::PROTTAC_TAG} 1} ({#{Taxt::REF_TAG} 2}: 3)." }
+      let(:taxt) { "Replacement name: #{Taxt.prottac(1)} (#{Taxt.ref(2)}: 3)." }
 
       specify do
         expect(service.standard?).to eq true
@@ -203,7 +203,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Replacement name for' item" do
-      let(:taxt) { "Replacement name for {#{Taxt::TAXAC_TAG} 1}." }
+      let(:taxt) { "Replacement name for #{Taxt.taxac(1)}." }
 
       specify do
         expect(service.standard?).to eq true
@@ -212,7 +212,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Unnecessary replacement name for' item" do
-      let(:taxt) { "Unnecessary replacement name for {#{Taxt::TAXAC_TAG} 1}." }
+      let(:taxt) { "Unnecessary replacement name for #{Taxt.taxac(1)}." }
 
       specify do
         expect(service.standard?).to eq true
@@ -223,7 +223,7 @@ describe Taxt::StandardHistoryItemFormats do
     # Candidates.
 
     context "with genus- or family-group 'Junior synonym of' item" do
-      let(:taxt) { "{#{Taxt::TAXAC_TAG} 1} as junior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.taxac(1)} as junior synonym of #{Taxt.prott(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::JUNIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP
@@ -231,7 +231,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with genus- or family-group 'Senior synonym of' item" do
-      let(:taxt) { "{#{Taxt::TAXAC_TAG} 1} as senior synonym of {#{Taxt::PROTT_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.taxac(1)} as senior synonym of #{Taxt.prott(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::SENIOR_SYNONYM_OF__GENUS_OR_FAMILY_GROUP
@@ -239,7 +239,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Unidentifiable taxon' item" do
-      let(:taxt) { "Unidentifiable taxon: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Unidentifiable taxon: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::UNIDENTIFIABLE_TAXON
@@ -247,7 +247,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'as subfamily of' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} as subfamily of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} as subfamily of #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::AS_SUBFAMILY_OF
@@ -255,7 +255,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'as tribe of' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} as tribe of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} as tribe of #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::AS_TRIBE_OF
@@ -263,7 +263,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'as subtribe of' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} as subtribe of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} as subtribe of #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::AS_SUBTRIBE_OF
@@ -271,7 +271,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'as genus' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} as genus: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} as genus: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::AS_GENUS
@@ -279,7 +279,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'as subgenus of' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} as subgenus of {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} as subgenus of #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::AS_SUBGENUS_OF
@@ -287,7 +287,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'x in x' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} in {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} in #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::X_IN_X
@@ -295,7 +295,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'x in unmissing' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} in {#{Taxt::UNMISSING_TAG} <i>a</i>}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} in {#{Taxt::UNMISSING_TAG} <i>a</i>}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::X_IN_UNMISSING
@@ -303,7 +303,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'x in x, x' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} in {#{Taxt::TAX_TAG} 1}, {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} in #{Taxt.tax(1)}, #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::X_IN_X_X
@@ -311,7 +311,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'x incertae sedis in x' item" do
-      let(:taxt) { "{#{Taxt::TAX_TAG} 1} <i>incertae sedis</i> in {#{Taxt::TAX_TAG} 1}: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "#{Taxt.tax(1)} <i>incertae sedis</i> in #{Taxt.tax(1)}: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.identified_type).to eq described_class::X_INCERTAE_SEDIS_IN_X
@@ -319,7 +319,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Unnecessary ([not first]) replacement name for' item" do
-      let(:taxt) { "Unnecessary (second) replacement name for {#{Taxt::TAXAC_TAG} 1}." }
+      let(:taxt) { "Unnecessary (second) replacement name for #{Taxt.taxac(1)}." }
 
       specify do
         expect(service.identified_type).to eq described_class::UNNECESSARY_REPLACEMENT_NAME_FOR__AFTER_FIRST
@@ -328,7 +328,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with 'Material referred to' item with source" do
       let(:taxt) do
-        "Material referred to {#{Taxt::TAX_TAG} 1} by {#{Taxt::REF_TAG} 125536}: 135"
+        "Material referred to #{Taxt.tax(1)} by #{Taxt.ref(125536)}: 135"
       end
 
       specify do
@@ -338,7 +338,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with 'Unavailable name' + 'material referred to' item with source" do
       let(:taxt) do
-        "Unavailable name; material referred to {#{Taxt::TAX_TAG} 1} by {#{Taxt::REF_TAG} 125536}: 135"
+        "Unavailable name; material referred to #{Taxt.tax(1)} by #{Taxt.ref(125536)}: 135"
       end
 
       specify do
@@ -348,7 +348,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with 'As unavailable (infrasubspecific) name' item" do
       let(:taxt) do
-        "As unavailable (infrasubspecific) name: {#{Taxt::REF_TAG} 2}: 3."
+        "As unavailable (infrasubspecific) name: #{Taxt.ref(2)}: 3."
       end
 
       specify do
@@ -358,7 +358,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with 'Declared as unavailable (infrasubspecific) name' item" do
       let(:taxt) do
-        "Declared as unavailable (infrasubspecific) name: {#{Taxt::REF_TAG} 2}: 3."
+        "Declared as unavailable (infrasubspecific) name: #{Taxt.ref(2)}: 3."
       end
 
       specify do
@@ -367,7 +367,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'First available use of unavailable (infrasubspecific) name' item" do
-      let(:taxt) { "[First available use of {#{Taxt::TAXAC_TAG} 1}; unavailable (infrasubspecific) name.]" }
+      let(:taxt) { "[First available use of #{Taxt.taxac(1)}; unavailable (infrasubspecific) name.]" }
 
       specify do
         expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
@@ -376,7 +376,7 @@ describe Taxt::StandardHistoryItemFormats do
 
     context "with 'First available use of unavailable (infrasubspecific) name' item with source" do
       let(:taxt) do
-        "[First available use of {#{Taxt::TAXAC_TAG} 1}; unavailable (infrasubspecific) name ({#{Taxt::REF_TAG} 2}: 3).]"
+        "[First available use of #{Taxt.taxac(1)}; unavailable (infrasubspecific) name (#{Taxt.ref(2)}: 3).]"
       end
 
       specify do
@@ -385,7 +385,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with genus-group 'Also described as new by' item" do
-      let(:taxt) { "[{#{Taxt::TAXAC_TAG} 1} also described as new by {#{Taxt::REF_TAG} 2}: 3.]" }
+      let(:taxt) { "[#{Taxt.taxac(1)} also described as new by #{Taxt.ref(2)}: 3.]" }
 
       specify do
         expect(service.identified_type).to eq described_class::ALSO_DESCRIBED_AS_NEW_BY__GENUS_GROUP
@@ -393,7 +393,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with species-group 'Also described as new by' item" do
-      let(:taxt) { "[Also described as new by {#{Taxt::REF_TAG} 2}: 3.]" }
+      let(:taxt) { "[Also described as new by #{Taxt.ref(2)}: 3.]" }
 
       specify do
         expect(service.identified_type).to eq described_class::ALSO_DESCRIBED_AS_NEW_BY__SPECIES_GROUP
@@ -401,7 +401,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Misspelled as by' item" do
-      let(:taxt) { "[Misspelled as {#{Taxt::MISSPELLING_TAG} <i>rhomboidea</i>} by {#{Taxt::REF_TAG} 2}: 3.]" }
+      let(:taxt) { "[Misspelled as {#{Taxt::MISSPELLING_TAG} <i>rhomboidea</i>} by #{Taxt.ref(2)}: 3.]" }
 
       specify do
         expect(service.identified_type).to eq described_class::MISSPELLED_AS_BY
@@ -411,7 +411,7 @@ describe Taxt::StandardHistoryItemFormats do
 
   describe '#deprecated?' do
     context "with 'See also' item" do
-      let(:taxt) { "See also: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "See also: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.deprecated?).to eq true
@@ -420,7 +420,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Revived status as species' item" do
-      let(:taxt) { "Revived status as species: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Revived status as species: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.deprecated?).to eq true
@@ -429,7 +429,7 @@ describe Taxt::StandardHistoryItemFormats do
     end
 
     context "with 'Raised to species' item" do
-      let(:taxt) { "Raised to species: {#{Taxt::REF_TAG} 2}: 3." }
+      let(:taxt) { "Raised to species: #{Taxt.ref(2)}: 3." }
 
       specify do
         expect(service.deprecated?).to eq true

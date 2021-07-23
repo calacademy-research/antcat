@@ -17,7 +17,7 @@ module Markdowns
           part.gsub(/(?<bolton_key>.*?):/) do
             reference = find_reference $LAST_MATCH_INFO[:bolton_key]
             if reference
-              "{#{Taxt::REF_TAG} #{reference.id}}:"
+              "#{Taxt.ref(reference.id)}:"
             else
               "#{Regexp.last_match(1)}: "
             end

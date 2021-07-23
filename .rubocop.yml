@@ -248,6 +248,9 @@ Rake/Desc:
 
 ### RSpec.
 
+RSpec/DescribedClass:
+  Enabled: false
+
 RSpec/EmptyExampleGroup:
   Enabled: false
 

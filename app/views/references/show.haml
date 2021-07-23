@@ -43,7 +43,7 @@
           =@reference.key_with_suffixed_year
 
         .small-margin-bottom
-          =copy_to_clipboard_button Taxt.reference_to_ref_tag(@reference), "ref #{@reference.id}"
+          =copy_to_clipboard_button Taxt.ref(@reference.id), "ref #{@reference.id}"
           =copy_to_clipboard_button @reference.id
 
         .tiny-margin-bottom
