@@ -266,7 +266,7 @@ describe TaxaController do
     let!(:taxon) { create :subfamily }
     let!(:taxon_params) do
       {
-        status:  Status::EXCLUDED_FROM_FORMICIDAE
+        status: Status::EXCLUDED_FROM_FORMICIDAE
       }
     end
 

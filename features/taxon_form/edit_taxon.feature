@@ -32,7 +32,7 @@ Feature: Editing a taxon
   Scenario: Changing incertae sedis (with edit summary)
     Given there is a genus "Atta"
 
-    When  I go to the catalog page for "Atta"
+    When I go to the catalog page for "Atta"
     Then I should not see "incertae sedis in subfamily"
 
     When I go to the edit page for "Atta"

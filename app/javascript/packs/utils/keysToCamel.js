@@ -1,14 +1,14 @@
 const toCamel = (s) => s.replace(/([-_][a-z])/ig, ($1) => $1.toUpperCase().replace('-', '').replace('_', ''))
 
-const isArray = function (a) {
+const isArray = function(a) {
   return Array.isArray(a)
 }
 
-const isObject = function (o) {
+const isObject = function(o) {
   return o === Object(o) && !isArray(o) && typeof o !== 'function'
 }
 
-const keysToCamel = function (o) {
+const keysToCamel = function(o) {
   if (isObject(o)) {
     const n = {}
 
