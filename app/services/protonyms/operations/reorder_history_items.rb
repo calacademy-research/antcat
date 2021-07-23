@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# TODO: Copy-pasted into `Taxa::Operations::ReorderReferenceSections`.
+# NOTE: Copy-pasted into `Taxa::Operations::ReorderReferenceSections`.
 
 module Protonyms
   module Operations

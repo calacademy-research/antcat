@@ -26,7 +26,7 @@ module Exporters
           end
 
           def history_content
-            tag.div  do
+            tag.div do
               string = ''.html_safe
 
               history_presenter.grouped_items.each do |grouped_item|

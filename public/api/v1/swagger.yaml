@@ -321,7 +321,7 @@ paths:
           format: int32
       responses:
         "200":
-          description: a single getHistoryItem  record
+          description: a single getHistoryItem record
           schema:
             $ref: '#/definitions/HistoryItem'
         "404":

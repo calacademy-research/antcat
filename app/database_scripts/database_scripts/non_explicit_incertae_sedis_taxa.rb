@@ -37,7 +37,7 @@ module DatabaseScripts
       end <<
         as_table do |t|
           t.caption "Subgenera without subfamily"
-          t.header 'Species', 'Status', 'Subfamily of genus', 'Created at'
+          t.header 'Subgenus', 'Status', 'Subfamily of genus', 'Created at'
 
           t.rows(subgenera_without_subfamily) do |taxon|
             [
@@ -50,7 +50,7 @@ module DatabaseScripts
         end <<
         as_table do |t|
           t.caption "Genera without tribe"
-          t.header 'species', 'Status', 'Subfamily', 'Created at'
+          t.header 'Genus', 'Status', 'Subfamily', 'Created at'
 
           t.rows(genera_without_tribe) do |taxon|
             [

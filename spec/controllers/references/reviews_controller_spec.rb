@@ -55,7 +55,7 @@ describe References::ReviewsController do
     end
 
     it 'creates an activity' do
-      expect {  put :approve_all }.to change { Activity.count }.by(1)
+      expect { put :approve_all }.to change { Activity.count }.by(1)
 
       activity = Activity.last
       expect(activity.action).to eq Activity::APPROVE_ALL_REFERENCES

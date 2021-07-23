@@ -140,7 +140,7 @@ module History
         templates: {
           default: {
             content: 'Senior synonym of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-            vars:  ->(o) {
+            vars: ->(o) {
               {
                 object_protonym_id: o.object_protonym_id,
                 object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'
@@ -185,7 +185,7 @@ module History
         templates: {
           default: {
             content: 'Subspecies of {%<object_protonym_tag>s %<object_protonym_id>i}: %<grouped_item_taxts>s.',
-            vars:  ->(o) {
+            vars: ->(o) {
               {
                 object_protonym_id: o.object_protonym_id,
                 object_protonym_tag: o.force_author_citation? ? 'prottac' : 'prott'

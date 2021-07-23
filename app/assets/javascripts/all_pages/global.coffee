@@ -12,21 +12,12 @@ $ ->
   # To make ".disabled" link be unclickable.
   $('body').on 'click', 'a.disabled', (event) -> event.preventDefault()
 
-# Something seems to override this method when
-# it's named "enable" - it doesn't get called.
-$.fn.undisable = -> @.removeClass('ui-state-disabled').removeAttr('disabled')
-$.fn.disable = -> @.addClass('ui-state-disabled').attr('disabled', 'true')
-
-# Like above, but without jQuery UI classes.
-$.fn.enableButton = -> @removeClass "disabled"
-$.fn.disableButton = -> @addClass "disabled"
-
 AntCat.notifySuccess = (content, autoHide = true) -> $.notify content, className: "success", autoHide: autoHide
 AntCat.notifyError = (content, autoHide = true) -> $.notify content, autoHide: autoHide
 
 # Used by `ApplicationHelper#inline_expandable`.
 enableInlineExpansions = ->
-  $(".expandable").on "click", (event) ->
+  $(".expandable").on "click", (_event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
 AntCat.escapeRegExp = (string) ->

@@ -15,8 +15,7 @@ class AuthorName < ApplicationRecord
 
   validates :name, presence: true, length: { minimum: NAME_MIN_LENGTH }, uniqueness: { case_sensitive: true },
     format: { with: VALID_CHARACTERS_REGEX, message: "contains unsupported characters" }
-  # TODO: Remove `on: :create` (or just squish the string) once records have been fixed.
-  validates :name, format: { without: /  /, message: "cannot contain consecutive spaces" }, on: :create
+  validates :name, format: { without: /  /, message: "cannot contain consecutive spaces" }
   validates :name, format: { without: /,[^ ]/, message: "cannot contain commas not followed by a space" }
   validate :validate_commas_and_suffixes, if: -> { name.present? }
   after_update :invalidate_reference_caches
@@ -24,13 +23,11 @@ class AuthorName < ApplicationRecord
   has_paper_trail
   trackable
 
-  # TODO: Store in db?
   def last_name
     last, _ = name_parts
     last
   end
 
-  # TODO: Store in db?
   def first_name_and_initials
     _, first = name_parts
     first

@@ -8,7 +8,6 @@ module Taxa
       attr_private_initialize :current_taxon, :obsolete_genus
 
       def call
-        # TODO: Raises are not tested nor handled because it should not happen but probably test anyways.
         raise "not allowed" unless current_taxon.policy.allow_create_obsolete_combination?
         raise "obsolete_genus must be a genus" unless obsolete_genus.is_a?(Genus)
 

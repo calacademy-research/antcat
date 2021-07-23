@@ -5,7 +5,7 @@
 #
 # * `#selected` - Previous revision of the item. If there is a
 #   a `selected_id` but no `diff_with_id` = just show that
-#   revision without comparing.  Always shown to the right when comparing.
+#   revision without comparing. Always shown to the right when comparing.
 #
 # * `#diff_with` - Another previous revision. If there is a `diff_with_id`
 #   but no `selected_id` = compare with `#most_recent`. Instantiate with both

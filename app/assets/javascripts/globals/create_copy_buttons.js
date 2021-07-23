@@ -2,7 +2,7 @@
 // It will remain horrible for some time since it's used both in Sprockets JS and Vue.
 // And it's ES5.
 
-$(function () {
+$(function() {
   window.AntCat.CreateCopyButtons(document);
 });
 
@@ -11,8 +11,8 @@ window.AntCat.CreateCopyButtons = function(element) {
     return;
   }
 
-  element.querySelectorAll('[data-copy-to-clipboard]').forEach(function (item) {
-    item.addEventListener('click', function (event) {
+  element.querySelectorAll('[data-copy-to-clipboard]').forEach(function(item) {
+    item.addEventListener('click', function(event) {
       event.preventDefault()
       var stringToCopy = item.getAttribute('data-copy-to-clipboard');
       CopyToClipboard(stringToCopy);

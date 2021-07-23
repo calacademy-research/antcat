@@ -51,7 +51,7 @@ module Autocomplete
         replaced << "year:#{fulltext_params_dup[:year]}" if fulltext_params_dup[:year]
 
         start_year = fulltext_params_dup[:start_year]
-        end_year   = fulltext_params_dup[:end_year]
+        end_year = fulltext_params_dup[:end_year]
         if start_year && end_year
           replaced << "year:#{start_year}-#{end_year}"
         end

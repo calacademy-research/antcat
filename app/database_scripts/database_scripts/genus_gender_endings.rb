@@ -124,7 +124,6 @@ module DatabaseScripts
       end
 
       # These can only be applied once the above endings have been assigned.
-      # TODO: Move non-conflicting ending to the first pass.
       def second_pass_endings
         {
           feminine: %w[a e opsis lepis],

@@ -26,7 +26,7 @@ class DatabaseScriptsController < ApplicationController
 
     @database_script = find_database_script
     @decorated_database_script = @database_script.decorate
-    @rendered, @render_duration = timed_render
+    @rendered, @render_duration = timed_render @database_script
   end
 
   private
@@ -58,9 +58,9 @@ class DatabaseScriptsController < ApplicationController
     end
 
     # TODO: Probably move from controller and wrap in a renderer.
-    def timed_render
+    def timed_render database_script
       start = Time.current
-      rendered = DatabaseScripts::Render.new(@database_script, render_options).call
+      rendered = DatabaseScripts::Render.new(database_script, render_options).call
       render_duration = Time.current - start
 
       [rendered, render_duration]

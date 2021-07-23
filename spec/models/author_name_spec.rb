@@ -86,7 +86,7 @@ describe AuthorName do
       end
 
       it 'does not allow consecutive spaces' do
-        is_expected.to_not allow_value('Author,   A.').for(:name).on(:create).
+        is_expected.to_not allow_value('Author,   A.').for(:name).
           with_message("cannot contain consecutive spaces")
       end
     end

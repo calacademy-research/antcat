@@ -20,7 +20,7 @@ module Taxa
         return
       end
 
-      obsolete_combination = create_obsolete_combination
+      obsolete_combination = Taxa::Operations::CreateObsoleteCombination[@taxon, @obsolete_genus]
 
       if obsolete_combination.persisted?
         create_activity obsolete_combination
@@ -43,10 +43,6 @@ module Taxa
 
       def valid_parent_ranks
         [Rank::GENUS]
-      end
-
-      def create_obsolete_combination
-        Taxa::Operations::CreateObsoleteCombination[@taxon, @obsolete_genus]
       end
 
       def create_activity obsolete_combination

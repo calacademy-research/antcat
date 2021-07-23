@@ -26,10 +26,20 @@ module DevMonkeyPatches
       end
       alias_method :l, :dev_dev_link
 
+      def dev_dev_link_open
+        dev_dev_link.open
+      end
+      alias_method :lo, :dev_dev_link_open
+
       def dev_dev_link_localhost
         dev_dev_link localhost: true
       end
       alias_method :ll, :dev_dev_link_localhost
+
+      def dev_dev_link_localhost_open
+        dev_dev_link_localhost.open
+      end
+      alias_method :llo, :dev_dev_link_localhost_open
     end
 
     module Protonym

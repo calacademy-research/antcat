@@ -28,9 +28,9 @@ module AntCat
       attr_reader :start_time
 
       def models_to_check
-        Zeitwerk::Loader.eager_load_all
+        Zeitwerk::Loader.eager_load_all # For STI subclasses.
 
-        ignored_models = [PaperTrail::Version]
+        ignored_models = [PaperTrail::Version, Activity]
         sti_subclass_models = [Taxon.descendants, Reference.descendants, Name.descendants].flatten
 
         ApplicationRecord.descendants - ignored_models - sti_subclass_models

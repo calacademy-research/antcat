@@ -19,7 +19,7 @@ setupAdvancedAuthorAutocomplete = ->
   $('#reference_author_names_string').autocomplete
     autoFocus: true
     minLength: 1
-    source: (request, response) ->
+    source: (_request, response) ->
       selectionStart = AntCat.getInputSelection(@element.get(0), true)
       searchTerm = extractAuthorSearchTerm(@element.val(), selectionStart)
       if searchTerm.length >= 1
@@ -28,7 +28,7 @@ setupAdvancedAuthorAutocomplete = ->
         response []
       return
     focus: -> false
-    select: (event, ui) ->
+    select: (_event, ui) ->
       $this = $(this)
       selectionStart = AntCat.getInputSelection($this.get(0), true)
       value_and_position = insertAuthor(@value, selectionStart, ui.item.value)

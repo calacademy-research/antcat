@@ -30,7 +30,7 @@ REMOTE_DB_DUMP_PATH="/tmp/${REMOTE_DB_DUMP_FILENAME}"
 REMOTE_DB_DUMP_GZIP_PATH="/tmp/${REMOTE_DB_DUMP_FILENAME}.gz"
 LOCAL_DB_DUMP_GZIP_PATH="${db_dumps_path}/${REMOTE_DB_DUMP_FILENAME}.gz"
 
-echo "Remote: Running mysqldump...  [target file: ${REMOTE_DB_DUMP_PATH}]"
+echo "Remote: Running mysqldump... [target file: ${REMOTE_DB_DUMP_PATH}]"
 $ssh_command "mysqldump -u deploy antcat > ${REMOTE_DB_DUMP_PATH}"
 echo
 

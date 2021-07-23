@@ -10,7 +10,7 @@ describe VerifyRecaptchaV3 do
 
   # Default to a successful response above minimum score.
   let(:response_success) { true }
-  let(:response_score) {  Settings.recaptcha.v3.minimum_score + 0.1 }
+  let(:response_score) { Settings.recaptcha.v3.minimum_score + 0.1 }
   let(:response_action) { recaptcha_action }
 
   before do
@@ -44,7 +44,7 @@ describe VerifyRecaptchaV3 do
       end
 
       context 'with score below minimum score' do
-        let(:response_score) {  Settings.recaptcha.v3.minimum_score - 0.1 }
+        let(:response_score) { Settings.recaptcha.v3.minimum_score - 0.1 }
 
         specify { expect(service.call).to eq false }
       end
