@@ -16,12 +16,12 @@ describe Markdowns::ParseCatalogTags do
     describe "tag: `TAX_TAG`" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
-        expect(described_class["{#{Taxt::TAX_TAG} #{taxon.id}}"]).to eq taxon_link(taxon)
+        expect(described_class[Taxt.tax(taxon.id)]).to eq taxon_link(taxon)
       end
 
       context "when taxon does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::TAX_TAG} 999}"]).to include "CANNOT FIND TAXON FOR TAG {#{Taxt::TAX_TAG} 999}"
+          expect(described_class[Taxt.tax(999)]).to include "CANNOT FIND TAXON FOR TAG #{Taxt.tax(999)}"
         end
       end
     end
@@ -29,7 +29,7 @@ describe Markdowns::ParseCatalogTags do
     describe "tag: `TAXAC_TAG`" do
       it "uses the HTML version of the taxon's name" do
         taxon = create :genus
-        expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon.id}}"]).to eq <<~HTML.squish
+        expect(described_class[Taxt.taxac(taxon.id)]).to eq <<~HTML.squish
           #{taxon_link(taxon)}
           <span class="discret-author-citation">#{taxon_authorship_link(taxon)}</span>
         HTML
@@ -37,7 +37,7 @@ describe Markdowns::ParseCatalogTags do
 
       context "when taxon does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::TAXAC_TAG} 999}"]).to include "CANNOT FIND TAXON FOR TAG {#{Taxt::TAXAC_TAG} 999}"
+          expect(described_class[Taxt.taxac(999)]).to include "CANNOT FIND TAXON FOR TAG #{Taxt.taxac(999)}"
         end
       end
     end
@@ -45,12 +45,12 @@ describe Markdowns::ParseCatalogTags do
     describe "tag: `PRO_TAG`" do
       it "uses the HTML version of the protonyms's name" do
         protonym = create :protonym
-        expect(described_class["{#{Taxt::PRO_TAG} #{protonym.id}}"]).to eq protonym_link(protonym)
+        expect(described_class[Taxt.pro(protonym.id)]).to eq protonym_link(protonym)
       end
 
       context "when protonym does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::PRO_TAG} 999}"]).to include "CANNOT FIND PROTONYM FOR TAG {#{Taxt::PRO_TAG} 999}"
+          expect(described_class[Taxt.pro(999)]).to include "CANNOT FIND PROTONYM FOR TAG #{Taxt.pro(999)}"
         end
       end
     end
@@ -58,7 +58,7 @@ describe Markdowns::ParseCatalogTags do
     describe "tag: `PROAC_TAG`" do
       it "uses the HTML version of the protonyms's name" do
         protonym = create :protonym
-        expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+        expect(described_class[Taxt.proac(protonym.id)]).to eq <<~HTML.squish
           #{protonym_link(protonym)}
           <span class="discret-author-citation">#{reference_link(protonym.authorship_reference)}</span>
         HTML
@@ -66,8 +66,8 @@ describe Markdowns::ParseCatalogTags do
 
       context "when protonym does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::PROAC_TAG} 999}"]).
-            to include "CANNOT FIND PROTONYM FOR TAG {#{Taxt::PROAC_TAG} 999}"
+          expect(described_class[Taxt.proac(999)]).
+            to include "CANNOT FIND PROTONYM FOR TAG #{Taxt.proac(999)}"
         end
       end
     end
@@ -78,7 +78,7 @@ describe Markdowns::ParseCatalogTags do
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon" do
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq taxon_link(terminal_taxon)
+          expect(described_class[Taxt.prott(protonym.id)]).to eq taxon_link(terminal_taxon)
         end
       end
 
@@ -86,7 +86,7 @@ describe Markdowns::ParseCatalogTags do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class[Taxt.prott(protonym.id)]).to eq <<~HTML.squish
             #{protonym_link(protonym)} (protonym)
             <span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>
           HTML
@@ -95,8 +95,8 @@ describe Markdowns::ParseCatalogTags do
 
       context "when protonym does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::PROTT_TAG} 999}"]).
-            to include "CANNOT FIND PROTONYM FOR TAG {#{Taxt::PROTT_TAG} 999}"
+          expect(described_class[Taxt.prott(999)]).
+            to include "CANNOT FIND PROTONYM FOR TAG #{Taxt.prott(999)}"
         end
       end
     end
@@ -107,7 +107,7 @@ describe Markdowns::ParseCatalogTags do
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon (with author citation)" do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class[Taxt.prottac(protonym.id)]).to eq <<~HTML.squish
             #{taxon_link(terminal_taxon)}
             <span class="discret-author-citation">#{taxon_authorship_link(terminal_taxon)}</span>
           HTML
@@ -118,7 +118,7 @@ describe Markdowns::ParseCatalogTags do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class[Taxt.prottac(protonym.id)]).to eq <<~HTML.squish
             #{protonym_link(protonym)} (protonym)
             <span class="logged-in-only-bold-warning">protonym has no terminal taxon</span>
           HTML
@@ -127,8 +127,8 @@ describe Markdowns::ParseCatalogTags do
 
       context "when protonym does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} 999}"]).
-            to include "CANNOT FIND PROTONYM FOR TAG {#{Taxt::PROTTAC_TAG} 999}"
+          expect(described_class[Taxt.prottac(999)]).
+            to include "CANNOT FIND PROTONYM FOR TAG #{Taxt.prottac(999)}"
         end
       end
     end
@@ -140,7 +140,7 @@ describe Markdowns::ParseCatalogTags do
         it 'links the reference' do
           expect(reference.key_with_suffixed_year_cache).to_not eq nil
 
-          expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq reference_taxt_link(reference)
+          expect(described_class[Taxt.ref(reference.id)]).to eq reference_taxt_link(reference)
         end
       end
 
@@ -151,13 +151,13 @@ describe Markdowns::ParseCatalogTags do
           reference.update_columns(key_with_suffixed_year_cache: nil)
           expect(reference.key_with_suffixed_year_cache).to eq nil
 
-          expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq reference_taxt_link(reference)
+          expect(described_class[Taxt.ref(reference.id)]).to eq reference_taxt_link(reference)
         end
       end
 
       context "when reference does not exists" do
         it "adds a warning" do
-          expect(described_class["{#{Taxt::REF_TAG} 999}"]).to include "CANNOT FIND REFERENCE FOR TAG {#{Taxt::REF_TAG} 999}"
+          expect(described_class[Taxt.ref(999)]).to include "CANNOT FIND REFERENCE FOR TAG #{Taxt.ref(999)}"
         end
       end
     end

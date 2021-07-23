@@ -5,5 +5,5 @@ Given("Eciton has a history item that references Atta and a Batiatus reference")
   atta = Taxon.find_by!(name_cache: "Atta")
   reference = create :any_reference, author_string: 'Batiatus'
 
-  create :history_item, :taxt, taxt: "{#{Taxt::TAX_TAG} #{atta.id}}: {#{Taxt::REF_TAG} #{reference.id}}", protonym: eciton
+  create :history_item, :taxt, taxt: "#{Taxt.tax(atta.id)}: #{Taxt.ref(reference.id)}", protonym: eciton
 end

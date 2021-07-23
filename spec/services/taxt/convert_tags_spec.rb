@@ -12,26 +12,26 @@ describe Taxt::ConvertTags do
       context "when taxon exists" do
         let!(:taxon) { create :family }
         let!(:taxon_id) { taxon.id }
-        let!(:protonym_id) { taxon.protonym.id }
+        let!(:protonym) { taxon.protonym }
 
         specify do
-          expect(described_class["{#{Taxt::TAX_TAG} #{taxon_id}pro}"]).to eq "{#{Taxt::PRO_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAX_TAG} #{taxon_id}prott}"]).to eq "{#{Taxt::PROTT_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAX_TAG} #{taxon_id}proac}"]).to eq "{#{Taxt::PROAC_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAX_TAG} #{taxon_id}prottac}"]).to eq "{#{Taxt::PROTTAC_TAG} #{protonym_id}}"
+          expect(described_class[Taxt.tax("#{taxon_id}pro")]).to eq Taxt.pro(protonym.id)
+          expect(described_class[Taxt.tax("#{taxon_id}prott")]).to eq Taxt.prott(protonym.id)
+          expect(described_class[Taxt.tax("#{taxon_id}proac")]).to eq Taxt.proac(protonym.id)
+          expect(described_class[Taxt.tax("#{taxon_id}prottac")]).to eq Taxt.prottac(protonym.id)
         end
 
         specify do
-          expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon_id}pro}"]).to eq "{#{Taxt::PRO_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon_id}prott}"]).to eq "{#{Taxt::PROTT_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon_id}proac}"]).to eq "{#{Taxt::PROAC_TAG} #{protonym_id}}"
-          expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon_id}prottac}"]).to eq "{#{Taxt::PROTTAC_TAG} #{protonym_id}}"
+          expect(described_class[Taxt.taxac("#{taxon_id}pro")]).to eq Taxt.pro(protonym.id)
+          expect(described_class[Taxt.taxac("#{taxon_id}prott")]).to eq Taxt.prott(protonym.id)
+          expect(described_class[Taxt.taxac("#{taxon_id}proac")]).to eq Taxt.proac(protonym.id)
+          expect(described_class[Taxt.taxac("#{taxon_id}prottac")]).to eq Taxt.prottac(protonym.id)
         end
       end
 
       context "when taxon does not exists" do
-        specify { expect(described_class["{#{Taxt::TAX_TAG} 00pro}"]).to eq "{#{Taxt::TAX_TAG} 00pro}" }
-        specify { expect(described_class["{#{Taxt::TAXAC_TAG} 00pro}"]).to eq "{#{Taxt::TAXAC_TAG} 00pro}" }
+        specify { expect(described_class[Taxt.tax("00pro")]).to eq "{#{Taxt::TAX_TAG} 00pro}" }
+        specify { expect(described_class[Taxt.taxac("00pro")]).to eq "{#{Taxt::TAXAC_TAG} 00pro}" }
       end
     end
 
@@ -40,26 +40,26 @@ describe Taxt::ConvertTags do
         let!(:protonym) { create :protonym, :family_group }
         let!(:protonym_id) { protonym.id }
         let!(:taxon) { create :family, protonym: protonym }
-        let!(:taxon_id) { protonym.terminal_taxon.id }
+        let!(:terminal_taxon) { protonym.terminal_taxon }
 
         specify do
-          expect(described_class["{#{Taxt::PRO_TAG} #{protonym_id}tax}"]).to eq "{#{Taxt::TAX_TAG} #{taxon_id}}"
-          expect(described_class["{#{Taxt::PRO_TAG} #{protonym_id}taxac}"]).to eq "{#{Taxt::TAXAC_TAG} #{taxon_id}}"
+          expect(described_class[Taxt.pro("#{protonym_id}tax")]).to eq Taxt.tax(terminal_taxon.id)
+          expect(described_class[Taxt.pro("#{protonym_id}taxac")]).to eq Taxt.taxac(terminal_taxon.id)
         end
 
         specify do
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym_id}tax}"]).to eq "{#{Taxt::TAX_TAG} #{taxon_id}}"
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym_id}taxac}"]).to eq "{#{Taxt::TAXAC_TAG} #{taxon_id}}"
+          expect(described_class[Taxt.prott("#{protonym_id}tax")]).to eq Taxt.tax(terminal_taxon.id)
+          expect(described_class[Taxt.prott("#{protonym_id}taxac")]).to eq Taxt.taxac(terminal_taxon.id)
         end
 
         specify do
-          expect(described_class["{#{Taxt::PROAC_TAG} #{protonym_id}tax}"]).to eq "{#{Taxt::TAX_TAG} #{taxon_id}}"
-          expect(described_class["{#{Taxt::PROAC_TAG} #{protonym_id}taxac}"]).to eq "{#{Taxt::TAXAC_TAG} #{taxon_id}}"
+          expect(described_class[Taxt.proac("#{protonym_id}tax")]).to eq Taxt.tax(terminal_taxon.id)
+          expect(described_class[Taxt.proac("#{protonym_id}taxac")]).to eq Taxt.taxac(terminal_taxon.id)
         end
 
         specify do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym_id}tax}"]).to eq "{#{Taxt::TAX_TAG} #{taxon_id}}"
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym_id}taxac}"]).to eq "{#{Taxt::TAXAC_TAG} #{taxon_id}}"
+          expect(described_class[Taxt.prottac("#{protonym_id}tax")]).to eq Taxt.tax(terminal_taxon.id)
+          expect(described_class[Taxt.prottac("#{protonym_id}taxac")]).to eq Taxt.taxac(terminal_taxon.id)
         end
       end
 
@@ -68,13 +68,13 @@ describe Taxt::ConvertTags do
         let!(:protonym_id) { protonym.id }
 
         specify do
-          expect(described_class["{#{Taxt::PRO_TAG} #{protonym_id}tax}"]).
+          expect(described_class[Taxt.pro("#{protonym_id}tax")]).
             to eq "{#{Taxt::PRO_TAG} #{protonym_id}tax}"
         end
       end
 
       context "when protonym does not exists" do
-        specify { expect(described_class["{#{Taxt::PRO_TAG} 00tax}"]).to eq "{#{Taxt::PRO_TAG} 00tax}" }
+        specify { expect(described_class[Taxt.pro("00tax")]).to eq "{#{Taxt::PRO_TAG} 00tax}" }
       end
     end
   end

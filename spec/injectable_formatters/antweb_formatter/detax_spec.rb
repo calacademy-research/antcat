@@ -10,7 +10,7 @@ describe AntwebFormatter::Detax do
       let!(:taxon) { create :any_taxon }
 
       specify do
-        expect(described_class["{#{Taxt::TAX_TAG} #{taxon.id}}"]).to eq antweb_taxon_link(taxon)
+        expect(described_class[Taxt.tax(taxon.id)]).to eq antweb_taxon_link(taxon)
       end
     end
 
@@ -18,7 +18,7 @@ describe AntwebFormatter::Detax do
       let!(:taxon) { create :any_taxon }
 
       specify do
-        expect(described_class["{#{Taxt::TAXAC_TAG} #{taxon.id}}"]).
+        expect(described_class[Taxt.taxac(taxon.id)]).
           to eq "#{antweb_taxon_link(taxon)} #{taxon.author_citation}"
       end
     end
@@ -27,7 +27,7 @@ describe AntwebFormatter::Detax do
       let!(:protonym) { create :protonym }
 
       specify do
-        expect(described_class["{#{Taxt::PRO_TAG} #{protonym.id}}"]).to eq antweb_protonym_link(protonym)
+        expect(described_class[Taxt.pro(protonym.id)]).to eq antweb_protonym_link(protonym)
       end
     end
 
@@ -35,7 +35,7 @@ describe AntwebFormatter::Detax do
       let!(:protonym) { create :protonym }
 
       specify do
-        expect(described_class["{#{Taxt::PROAC_TAG} #{protonym.id}}"]).
+        expect(described_class[Taxt.proac(protonym.id)]).
           to eq "#{antweb_protonym_link(protonym)} #{protonym.author_citation}"
       end
     end
@@ -46,7 +46,7 @@ describe AntwebFormatter::Detax do
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon" do
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq antweb_taxon_link(terminal_taxon)
+          expect(described_class[Taxt.prott(protonym.id)]).to eq antweb_taxon_link(terminal_taxon)
         end
       end
 
@@ -54,7 +54,7 @@ describe AntwebFormatter::Detax do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{#{Taxt::PROTT_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class[Taxt.prott(protonym.id)]).to eq <<~HTML.squish
             #{antweb_protonym_link(protonym)}
             (protonym)
           HTML
@@ -68,7 +68,7 @@ describe AntwebFormatter::Detax do
         let!(:terminal_taxon) { create :genus, protonym: protonym }
 
         it "links the terminal taxon (with author citation)" do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).
+          expect(described_class[Taxt.prottac(protonym.id)]).
             to eq "#{antweb_taxon_link(terminal_taxon)} #{terminal_taxon.author_citation}"
         end
       end
@@ -77,7 +77,7 @@ describe AntwebFormatter::Detax do
         let!(:protonym) { create :protonym }
 
         it "links the protonym with a note" do
-          expect(described_class["{#{Taxt::PROTTAC_TAG} #{protonym.id}}"]).to eq <<~HTML.squish
+          expect(described_class[Taxt.prottac(protonym.id)]).to eq <<~HTML.squish
             #{antweb_protonym_link(protonym)}
             (protonym)
           HTML
@@ -89,7 +89,7 @@ describe AntwebFormatter::Detax do
       let!(:reference) { create :any_reference }
 
       specify do
-        expect(described_class["{#{Taxt::REF_TAG} #{reference.id}}"]).to eq AntwebFormatter::ReferenceLink[reference]
+        expect(described_class[Taxt.ref(reference.id)]).to eq AntwebFormatter::ReferenceLink[reference]
       end
     end
 

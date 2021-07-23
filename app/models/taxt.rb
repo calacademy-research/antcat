@@ -77,8 +77,24 @@ module Taxt
     tag TAX_TAG, taxon_id
   end
 
+  def taxac taxon_id
+    tag TAXAC_TAG, taxon_id
+  end
+
   def pro protonym_id
     tag PRO_TAG, protonym_id
+  end
+
+  def proac protonym_id
+    tag PROAC_TAG, protonym_id
+  end
+
+  def prott protonym_id
+    tag PROTT_TAG, protonym_id
+  end
+
+  def prottac protonym_id
+    tag PROTTAC_TAG, protonym_id
   end
 
   def ref reference_id

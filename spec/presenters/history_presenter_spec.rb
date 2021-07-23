@@ -262,7 +262,7 @@ describe HistoryPresenter, :relational_hi do
         it 'sort grouped taxts by their sort definitions' do
           expect(presenter.grouped_items.map(&:taxt)).to eq [
             "#{item_2.citation_taxt} (#{item_2.text_value}).",
-            "Senior synonym of {#{Taxt::PROTT_TAG} #{object_protonym.id}}: #{item_1.citation_taxt}."
+            "Senior synonym of #{Taxt.prott(object_protonym.id)}: #{item_1.citation_taxt}."
           ]
         end
       end
