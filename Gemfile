@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'rails', '6.1.3.2'
+gem 'rails', '6.1.4'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -66,7 +66,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.15.0', require: false
+  gem 'rubocop', '~> 1.18.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
@@ -78,7 +78,8 @@ group :test do
   gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber-rails', require: false
+  # TODO: Locked due to Cucumber 6.
+  gem 'cucumber-rails', '< 2.4', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'

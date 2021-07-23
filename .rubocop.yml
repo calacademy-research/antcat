@@ -54,6 +54,9 @@ Layout/HeredocArgumentClosingParenthesis:
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
+Layout/LineEndStringConcatenationIndentation:
+  Enabled: false
+
 Layout/LineLength:
   Max: 140
   Exclude:
