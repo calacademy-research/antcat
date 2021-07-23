@@ -6,12 +6,12 @@ module Taxa
 
     def show
       @taxon = find_taxon
-      @valid_parent_ranks = valid_parent_ranks
+      @valid_parent_ranks = valid_parent_ranks @taxon
     end
 
     def create
       @taxon = find_taxon
-      @valid_parent_ranks = valid_parent_ranks
+      @valid_parent_ranks = valid_parent_ranks @taxon
       @new_parent = find_new_parent
 
       if @new_parent.nil? && !@taxon.is_a?(Genus)
@@ -20,8 +20,8 @@ module Taxa
         return
       end
 
-      if update_parent_and_save
-        create_activity
+      if Taxa::Operations::ForceParentChange[@taxon, @new_parent]
+        create_activity @taxon
         redirect_to catalog_path(@taxon), notice: "Successfully changed the parent."
       else
         flash.now[:alert] = "Something went wrong... ?"
@@ -42,8 +42,8 @@ module Taxa
         Taxon.find(params[:taxa_id])
       end
 
-      def valid_parent_ranks
-        case @taxon
+      def valid_parent_ranks taxon
+        case taxon
         when ::Tribe      then [Rank::SUBFAMILY]
         when ::Genus      then [Rank::FAMILY, Rank::SUBFAMILY, Rank::TRIBE]
         when ::Subgenus   then [Rank::GENUS]
@@ -56,12 +56,8 @@ module Taxa
         Taxon.find_by(id: params[:new_parent_id])
       end
 
-      def update_parent_and_save
-        Taxa::Operations::ForceParentChange[@taxon, @new_parent]
-      end
-
-      def create_activity
-        @taxon.create_activity Activity::FORCE_PARENT_CHANGE, current_user
+      def create_activity taxon
+        taxon.create_activity Activity::FORCE_PARENT_CHANGE, current_user
       end
   end
 end

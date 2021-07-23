@@ -29,7 +29,7 @@ class FeedbacksController < ApplicationController
 
     @feedback.ip = request.remote_ip
 
-    if rate_throttle?
+    if rate_throttle?(@feedback.ip)
       @feedback.errors.add :base, <<~MSG
         You have already posted a couple of feedbacks in the last few minutes. Thanks for that!
         Please wait for a few minutes while we are trying to figure out if you are a bot...
@@ -106,8 +106,8 @@ class FeedbacksController < ApplicationController
       params.require(:feedback).permit(:comment, :name, :email, :user, :page)
     end
 
-    def rate_throttle?
+    def rate_throttle? remote_ip
       return if current_user
-      Feedback.submitted_by_ip(@feedback.ip).recent.count >= 5
+      Feedback.submitted_by_ip(remote_ip).recent.count >= 5
     end
 end
