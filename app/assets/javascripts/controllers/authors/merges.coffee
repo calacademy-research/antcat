@@ -6,4 +6,4 @@ setupAuthorAutocomplete = ->
     autoFocus: true
     minLength: 1
     source: '/authors/autocomplete'
-    select: (event, ui) -> $("#author_to_merge_id").val ui.item.author_id
+    select: (_event, ui) -> $("#author_to_merge_id").val(ui.item.author_id)

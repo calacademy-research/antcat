@@ -26,7 +26,7 @@ AntCat.notifyError = (content, autoHide = true) -> $.notify content, autoHide: a
 
 # Used by `ApplicationHelper#inline_expandable`.
 enableInlineExpansions = ->
-  $(".expandable").on "click", (event) ->
+  $(".expandable").on "click", (_event) ->
     $(this).find(".show-when-expanded, .hide-when-expanded").toggle()
 
 AntCat.escapeRegExp = (string) ->
