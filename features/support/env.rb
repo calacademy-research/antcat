@@ -22,7 +22,13 @@ require 'webmock/cucumber'
 require 'sunspot_test/cucumber'
 
 Capybara.register_driver :apparition do |app|
-  Capybara::Apparition::Driver.new(app, js_errors: false)
+  Capybara::Apparition::Driver.new(
+    app,
+    js_errors: false,
+    browser_options: [
+      :no_sandbox # For Docker, see https://stackoverflow.com/a/57508822.
+    ]
+  )
 end
 
 Capybara.javascript_driver = :apparition

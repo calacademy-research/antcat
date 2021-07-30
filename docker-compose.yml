@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  app:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      DB_USERNAME: root
+      DB_DATABASE: antcat_docker
+      DB_PORT: 3306
+      DB_HOST: db
+      NO_DEV_MONKEY_PATCHES: "false"
+    volumes:
+      - .:/app
+      - ./docker_dev/database.docker-dev.yml:/app/config/database.yml
+      - ./config/server.yml.example:/app/config/server.yml
+    user: antcat
+    stdin_open: true
+    tty: true
+
+  db:
+    image: mysql:5.7
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - mysql:/var/lib/mysql
+
+volumes:
+  mysql:
