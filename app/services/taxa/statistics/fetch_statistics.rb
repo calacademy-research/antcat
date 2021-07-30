@@ -49,9 +49,7 @@ module Taxa
 
         def massage_count by_fossil_and_status, rank, statistics
           by_fossil_and_status.each_key do |fossil, status|
-            # TODO: Hmm. `TrueClass` is for when the column `taxa.fossil` exists; `fossil == 1`
-            # is for when it does not. Cleanup after removing `taxa.fossil`.
-            extant_or_fossil = (fossil.is_a?(TrueClass) || fossil == 1) ? :fossil : :extant
+            extant_or_fossil = fossil == 1 ? :fossil : :extant # TODO: Improve.
             count = by_fossil_and_status[[fossil, status]]
 
             statistics[extant_or_fossil] ||= {}

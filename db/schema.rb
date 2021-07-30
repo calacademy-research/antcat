@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_07_172450) do
+ActiveRecord::Schema.define(version: 2021_07_30_183547) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -215,7 +215,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_172450) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "reference_id", null: false
-    t.boolean "public"
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
 
@@ -291,7 +290,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_172450) do
     t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "fossil", default: false, null: false
     t.string "status", null: false
     t.integer "subfamily_id"
     t.integer "tribe_id"
@@ -301,7 +299,6 @@ ActiveRecord::Schema.define(version: 2021_07_07_172450) do
     t.integer "species_id"
     t.integer "protonym_id", null: false
     t.integer "subgenus_id"
-    t.boolean "hong", default: false, null: false
     t.integer "name_id", null: false
     t.string "name_cache", null: false
     t.boolean "unresolved_homonym", default: false, null: false
