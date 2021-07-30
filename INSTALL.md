@@ -1,13 +1,16 @@
 ## Install
 
 ### Grab the code
-
-```bash
+```sh
 git clone https://github.com/calacademy/antcat.git
 ```
 
-### Dependencies
+## Install locally in Docker container
+See [`docker_dev/README.md`](docker_dev/README.md)
 
+## Install locally with native dependencies
+
+### Dependencies
 * git
 * [rvm](https://rvm.io/rvm/install)
 * [nvm](https://github.com/nvm-sh/nvm)
@@ -16,45 +19,43 @@ git clone https://github.com/calacademy/antcat.git
 * Java runtime (for Apache Solr)
 
 ### Config and install
-
-```bash
+```sh
 cp config/database.yml.example config/database.yml
 cp config/server.yml.example config/server.yml
 ```
 
 #### Ruby gems and npm packages
-
-```bash
+```sh
 bundle install
-rake yarn:install
+rails yarn:install
 ```
 
 #### Setup database
-```bash
-rake db:create
-rake db:schema:load
-rake db:test:prepare
+```sh
+rails db:create
+rails db:schema:load
+rails db:test:prepare
 ```
 
 ---
 
 #### Sample data
-```bash
-rake seed:catalog
+```sh
+rails seed:catalog
 ```
 
-See also `rake antcat`.
+See also `rake antcat`
 
-#### Run site
-```bash
-RAILS_ENV=development rake sunspot:solr:start
+#### Launch site
+```sh
+rails sunspot:solr:start
 rails server
 ```
 
 Visit http://localhost:3000/
 
 #### Run tests
-```bash
+```sh
 cucumber
 rspec
 ```

@@ -21,6 +21,7 @@
 /pids
 /coverage
 /spec/examples.txt
+/vendor/bundle/ruby
 
 # Solr data.
 /solr/pids
