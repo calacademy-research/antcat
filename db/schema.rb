@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_30_183416) do
+ActiveRecord::Schema.define(version: 2021_07_30_183547) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -299,7 +299,6 @@ ActiveRecord::Schema.define(version: 2021_07_30_183416) do
     t.integer "species_id"
     t.integer "protonym_id", null: false
     t.integer "subgenus_id"
-    t.boolean "hong", default: false, null: false
     t.integer "name_id", null: false
     t.string "name_cache", null: false
     t.boolean "unresolved_homonym", default: false, null: false
