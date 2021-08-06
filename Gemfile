@@ -25,7 +25,6 @@ gem 'config'
 gem 'devise'
 gem 'diffy', require: false
 gem 'draper'
-gem 'execjs', '< 2.8.0' # TODO: Version-locked because 2.8.0 made tests fail.
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'foundation-rails', '6.6.2.0'
 gem 'grape-swagger-rails'
