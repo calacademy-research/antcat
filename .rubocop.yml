@@ -345,9 +345,6 @@ Style/GlobalStdStream:
 Style/GuardClause:
   Enabled: false
 
-Style/HashAsLastArrayItem:
-  Enabled: false
-
 Style/IfUnlessModifier:
   Enabled: false
 

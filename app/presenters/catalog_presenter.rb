@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CatalogPresenter
-  attr_private_initialize :taxon, [:params, :session, formicidae_landing_page: false]
+  attr_private_initialize :taxon, [:params, :session, { formicidae_landing_page: false }]
 
   def taxon_browser
     @_taxon_browser ||= TaxonBrowser::Browser.new(taxon, session[:show_invalid], params[:view]&.to_sym)

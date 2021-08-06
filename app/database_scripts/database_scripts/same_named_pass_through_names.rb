@@ -8,7 +8,7 @@ module DatabaseScripts
         where("current_taxons_taxa.name_cache = taxa.name_cache").
         includes(
           :name,
-          current_taxon: [:name, protonym: [:name, { authorship: :reference }]],
+          current_taxon: [:name, { protonym: [:name, { authorship: :reference }] }],
           protonym: [:name, { authorship: :reference }]
         )
     end

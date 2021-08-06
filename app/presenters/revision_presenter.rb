@@ -11,7 +11,7 @@ class RevisionPresenter
   ]
   ATTRIBUTES_IGNORED_IN_DIFF = REMOVED_REFERENCE_CACHE_COLUMNS + Reference::CACHE_COLUMNS
 
-  attr_private_initialize [:comparer, template: nil]
+  attr_private_initialize [:comparer, { template: nil }]
 
   def left_side_diff
     html_split_diff.left
