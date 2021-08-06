@@ -39,7 +39,7 @@ end
 __END__
 
 section: research
-tags: [protonyms, combinations]
+tags: [protonyms, combinations, original-combinations]
 
 description: >
   "Original combination" as in a `Taxon` flagged as `original_combination`.

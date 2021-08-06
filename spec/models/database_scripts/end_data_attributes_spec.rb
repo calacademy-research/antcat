@@ -17,7 +17,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     describe "#tags" do
-      specify { expect(end_data_attributes.tags).to eq ['taxa'] }
+      specify { expect(end_data_attributes.tags).to eq ["taxa", "disagreeing-data"] }
     end
 
     describe "#issue_description" do

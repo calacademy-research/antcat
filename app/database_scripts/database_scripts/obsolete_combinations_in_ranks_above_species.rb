@@ -30,7 +30,7 @@ end
 __END__
 
 section: research
-tags: [taxa, combinations, list]
+tags: [taxa, combinations, obsolete-combinations, list]
 
 description: >
   These can be ignored, they will be updated to the new status `obsolete classification` by script.

@@ -32,6 +32,8 @@ module DatabaseScripts
       LIST_SECTION,
       "names",
       NEW_TAG = "new!",
+      "obsolete-combinations",
+      "original-combinations",
       "pdfs",
       "postgres",
       "protonyms",

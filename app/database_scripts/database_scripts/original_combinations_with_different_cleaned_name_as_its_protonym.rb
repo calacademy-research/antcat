@@ -37,7 +37,7 @@ end
 __END__
 
 section: code-changes-required
-tags: [taxa, combinations, names]
+tags: [taxa, combinations, names, original-combinations]
 
 issue_description: This species-group taxon has "Original combination" checked, but it does not have the same cleaned name as its protonym.
 
