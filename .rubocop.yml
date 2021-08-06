@@ -311,6 +311,9 @@ Style/CaseLikeIf:
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
+Style/ClassEqualityComparison:
+  Enabled: false
+
 Style/CollectionMethods:
   Enabled: true
 

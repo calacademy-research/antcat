@@ -2,24 +2,17 @@
 
 module DatabaseScripts
   class ProtonymsWithoutAnOriginalCombination < DatabaseScript
-    LIMIT = 500
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
-    end
-
     def results
-      protonyms.limit(LIMIT)
+      protonyms.includes(:name)
     end
 
     def render
       as_table do |t|
-        t.header 'Protonym'
+        t.header 'Protonym', 'Taxa'
         t.rows do |protonym|
           [
-            protonym.decorate.link_to_protonym
+            protonym.decorate.link_to_protonym,
+            taxa_quick_fix_links(protonym)
           ]
         end
       end
@@ -33,13 +26,27 @@ module DatabaseScripts
           where(taxa: { id: nil }).group('protonyms.id').distinct
         Protonym.where(id: records.select(:id))
       end
+
+      def taxa_quick_fix_links protonym
+        protonym.taxa.map do |taxon|
+          quick_fix_link(taxon, protonym) << " " << CatalogFormatter.link_to_taxon(taxon)
+        end.join('<br>')
+      end
+
+      def quick_fix_link taxon, protonym
+        return +'Cannot quick-fix (incompatible name types)' unless taxon.name.class == protonym.name.class
+
+        link_to 'Flag as Original combination! -->',
+          flag_as_original_combination_quick_and_dirty_fix_path(taxon_id: taxon.id),
+          method: :post, remote: true, class: 'btn-normal btn-tiny'
+      end
   end
 end
 
 __END__
 
 section: research
-tags: [protonyms, combinations, original-combinations]
+tags: [protonyms, combinations, original-combinations, has-quick-fix, updated!]
 
 description: >
   "Original combination" as in a `Taxon` flagged as `original_combination`.

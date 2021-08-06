@@ -245,6 +245,7 @@ Rails.application.routes.draw do
     post 'convert_bolton_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_bolton_tags'
     post 'convert_to_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#convert_to_taxac_tags'
     post 'delete_history_item_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#delete_history_item'
+    post 'flag_as_original_combination_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#flag_as_original_combination'
     post 'force_remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#force_remove_pages_from_taxac_tags'
     post 'remove_pages_from_taxac_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#remove_pages_from_taxac_tags'
     post 'replace_missing_tags_quick_and_dirty_fix', to: 'quick_and_dirty_fixes#replace_missing_tags'
