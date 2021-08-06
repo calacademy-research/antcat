@@ -52,7 +52,7 @@ describe DatabaseScripts::EndDataAttributes do
         tags: ['pescatore, funghi'],
         issue_description: "pizza was cold",
         description: "with tuna",
-        related_scripts: ["ValidSubspeciesInInvalidSpecies"]
+        related_scripts: ["ValidTaxaWithNonValidParents"]
       }
     end
 
@@ -67,7 +67,7 @@ describe DatabaseScripts::EndDataAttributes do
     specify { expect(end_data_attributes.tags).to eq end_data[:tags] }
     specify { expect(end_data_attributes.issue_description).to eq end_data[:issue_description] }
     specify { expect(end_data_attributes.description).to eq end_data[:description] }
-    specify { expect(end_data_attributes.related_scripts.first).to be_a DatabaseScripts::ValidSubspeciesInInvalidSpecies }
+    specify { expect(end_data_attributes.related_scripts.first).to be_a DatabaseScripts::ValidTaxaWithNonValidParents }
 
     context 'when related scripts include a non-existing script' do
       let(:end_data) do
