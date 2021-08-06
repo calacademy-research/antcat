@@ -27,6 +27,7 @@ module DatabaseScripts
       "grab-bag",
       "has-reversed",
       HAS_QUICK_FIX_TAG = "has-quick-fix",
+      HAS_SCRIPT_TAG = "has-script",
       HIGH_PRIORITY_TAG = "high-priority",
       "inline-taxt",
       LIST_SECTION,

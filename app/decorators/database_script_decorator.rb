@@ -9,6 +9,7 @@ class DatabaseScriptDecorator < Draper::Decorator
     DatabaseScripts::Tagging::NEW_TAG           => "label",
     DatabaseScripts::Tagging::UPDATED_TAG       => "label",
     DatabaseScripts::Tagging::HAS_QUICK_FIX_TAG => "green-label",
+    DatabaseScripts::Tagging::HAS_SCRIPT_TAG    => "green-label",
     DatabaseScripts::Tagging::HIGH_PRIORITY_TAG => "high-priority-label"
   }
 
