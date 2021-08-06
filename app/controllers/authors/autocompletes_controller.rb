@@ -19,7 +19,7 @@ module Authors
       end
 
       def author_names
-        Autocomplete::AuthorNamesQuery[params[:term]]
+        Autocomplete::AuthorNamesQuery[params[:term]].limit(params[:limit])
       end
   end
 end
