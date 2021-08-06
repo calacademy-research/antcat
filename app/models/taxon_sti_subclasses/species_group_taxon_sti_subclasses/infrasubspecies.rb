@@ -6,6 +6,8 @@ class Infrasubspecies < SpeciesGroupTaxon
 
   validates :status, inclusion: { in: Status::STATUSES - [Status::VALID], message: 'is not allowed for rank.' }
 
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id, :subgenus_id, :species_id, :subspecies_id]), absence: true)
+
   def parent
     subspecies
   end

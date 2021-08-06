@@ -19,6 +19,8 @@ class Genus < GenusGroupTaxon
   scope :without_subfamily, -> { where(subfamily_id: nil) }
   scope :without_tribe, -> { where(tribe_id: nil) }
 
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :tribe_id]), absence: true)
+
   def parent
     tribe || subfamily || Family.first
   end

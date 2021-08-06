@@ -6,6 +6,8 @@ class Species < SpeciesGroupTaxon
 
   scope :without_subgenus, -> { where(subgenus_id: nil) }
 
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id, :subgenus_id]), absence: true)
+
   def parent
     subgenus || genus
   end

@@ -10,6 +10,14 @@ describe Genus do
     it { is_expected.to have_many(:descendants).dependent(:restrict_with_error) }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_absence_of(:family_id) }
+    it { is_expected.to validate_absence_of(:genus_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+    it { is_expected.to validate_absence_of(:species_id) }
+    it { is_expected.to validate_absence_of(:subspecies_id) }
+  end
+
   describe "#descendants" do
     let!(:genus) { create :genus }
     let!(:species) { create :species, genus: genus }

@@ -10,6 +10,15 @@ describe Subfamily do
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_absence_of(:subfamily_id) }
+    it { is_expected.to validate_absence_of(:tribe_id) }
+    it { is_expected.to validate_absence_of(:genus_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+    it { is_expected.to validate_absence_of(:species_id) }
+    it { is_expected.to validate_absence_of(:subspecies_id) }
+  end
+
   describe "#children" do
     it "returns the tribes" do
       subfamily = create :subfamily

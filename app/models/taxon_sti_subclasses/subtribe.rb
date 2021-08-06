@@ -6,6 +6,8 @@ class Subtribe < Taxon
   belongs_to :subfamily
   belongs_to :tribe
 
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :tribe_id]), absence: true)
+
   # TMPCLEANUP: Added here for now while refactoring and cleaning up data. Not sure where it really belongs.
   # NOTE: This method is more like "not_invalid_subtribe_name?", since validations already
   # present in `Name` (like valid characters) are not repeated here.

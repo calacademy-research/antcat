@@ -14,6 +14,8 @@ class Subfamily < Taxon
   # TODO: See note in `Family` regarding incertae sedis.
   has_many :genera_incertae_sedis_in, -> { incertae_sedis_in_subfamily }, class_name: Rank::GENUS
 
+  validates(*(TAXA_COLUMNS - [:family_id]), absence: true)
+
   def parent
     Family.first
   end

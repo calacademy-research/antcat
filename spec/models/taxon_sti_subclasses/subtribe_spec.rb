@@ -8,6 +8,14 @@ describe Subtribe do
     it { is_expected.to belong_to(:tribe).required }
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_absence_of(:family_id) }
+    it { is_expected.to validate_absence_of(:genus_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+    it { is_expected.to validate_absence_of(:species_id) }
+    it { is_expected.to validate_absence_of(:subspecies_id) }
+  end
+
   describe ".valid_subtribe_name?" do
     describe 'invalid names' do
       context 'with non-subtribe ending' do

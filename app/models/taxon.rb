@@ -3,6 +3,16 @@
 class Taxon < ApplicationRecord
   include Trackable
 
+  TAXA_COLUMNS = [
+    :family_id,
+    :subfamily_id,
+    :tribe_id,
+    :genus_id,
+    :subgenus_id,
+    :species_id,
+    :subspecies_id
+  ]
+
   self.table_name = :taxa
 
   delegate :policy, :soft_validations, :what_links_here, to: :taxon_collaborators
