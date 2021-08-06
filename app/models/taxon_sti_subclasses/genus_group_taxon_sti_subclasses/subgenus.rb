@@ -5,7 +5,7 @@ class Subgenus < GenusGroupTaxon
 
   has_many :species, dependent: :restrict_with_error
 
-  validates(*(TAXA_COLUMNS - [:subfamily_id, :tribe_id, :genus_id]), absence: true)
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id]), absence: true)
 
   def parent
     genus
