@@ -47,7 +47,6 @@ FactoryBot.define do
     factory :subtribe, class: Rank::SUBTRIBE.to_s do
       association :name, factory: :subtribe_name
       tribe
-      subfamily { |taxon| taxon.tribe.subfamily }
 
       genus_group_protonym
     end

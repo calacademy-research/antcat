@@ -5,7 +5,6 @@ module DatabaseScripts
     def empty?
       !(
         # subfamily_id.
-        subfamily_id_of_subtribe_vs_tribe.exists? ||
         subfamily_id_of_genus_vs_tribe.exists? ||
         subfamily_id_of_subgenus_vs_genus.exists? ||
         subfamily_id_of_species_vs_genus.exists? ||
@@ -23,10 +22,6 @@ module DatabaseScripts
     end
 
     # subfamily_id.
-    def subfamily_id_of_subtribe_vs_tribe
-      Subtribe.joins(:tribe).where("tribes_taxa.subfamily_id != taxa.subfamily_id")
-    end
-
     def subfamily_id_of_genus_vs_tribe
       Genus.joins(:tribe).where("tribes_taxa.subfamily_id != taxa.subfamily_id")
     end
@@ -67,8 +62,7 @@ module DatabaseScripts
 
     def render
       # subfamily_id.
-      render_table(subfamily_id_of_subtribe_vs_tribe, "subtribe", :subfamily, :tribe) +
-        render_table(subfamily_id_of_genus_vs_tribe, "genus", :subfamily, :tribe) +
+      render_table(subfamily_id_of_genus_vs_tribe, "genus", :subfamily, :tribe) +
         render_table(subfamily_id_of_subgenus_vs_genus, "subgenus", :subfamily, :genus) +
         render_table(subfamily_id_of_species_vs_genus, "species", :subfamily, :genus) +
         render_table(subfamily_id_of_subspecies_vs_species, "subspecies", :subfamily, :species) +
