@@ -17,7 +17,6 @@ class Infrasubspecies < SpeciesGroupTaxon
 
     self.subfamily = parent_taxon.subfamily
     self.genus = parent_taxon.genus
-    self.subgenus = parent_taxon.subgenus
     self.species = parent_taxon.species
     self.subspecies = parent_taxon
   end

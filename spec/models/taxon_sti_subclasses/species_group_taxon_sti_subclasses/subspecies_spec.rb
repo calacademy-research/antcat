@@ -30,7 +30,6 @@ describe Subspecies do
 
       expect(subspecies.reload.species).to eq new_parent
       expect(subspecies.reload.genus).to eq new_parent.genus
-      expect(subspecies.reload.subgenus).to eq new_parent.subgenus
       expect(subspecies.reload.subfamily).to eq new_parent.subfamily
     end
 
