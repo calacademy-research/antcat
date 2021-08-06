@@ -5,7 +5,7 @@ Feature: Editing a history item
   @skip_ci @javascript
   Scenario: Adding a relational history item
     Given there is a genus protonym "Atta"
-    And these references exist
+    And this reference exists
       | author   | year |
       | Batiatus | 2004 |
 

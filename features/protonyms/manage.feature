@@ -4,7 +4,7 @@ Feature: Manage protonyms
 
   Scenario: Adding a protonym with a type name
     Given there is a genus "Atta"
-    And these references exist
+    And this reference exists
       | author   | year |
       | Batiatus | 2004 |
 

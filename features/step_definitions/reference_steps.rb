@@ -12,7 +12,7 @@ Given("there is a book reference") do
   create :book_reference, :with_author_name
 end
 
-Given("(this reference exists)/(these references exist)") do |table|
+Given(/^(?:this reference exists|these references exist)$/) do |table|
   table.hashes.each do |hsh|
     if (author_name_name = hsh.delete('author'))
       author_name = ReferenceStepsHelpers.find_or_create_author_name(author_name_name)

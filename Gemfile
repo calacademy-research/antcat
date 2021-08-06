@@ -12,10 +12,10 @@ gem 'puma', '< 5'
 gem 'rack'
 gem 'rack-cors'
 gem 'rake'
-gem 'request_store'
 gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
+gem 'webpacker', '5.1.1'
 
 gem 'acts_as_list'
 gem 'attr_extras'
@@ -23,9 +23,8 @@ gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paper
 gem 'colorize'
 gem 'config'
 gem 'devise'
-gem 'diffy', require: false
+gem 'diffy'
 gem 'draper'
-gem 'execjs', '< 2.8.0' # TODO: Version-locked because 2.8.0 made tests fail.
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'foundation-rails', '6.6.2.0'
 gem 'grape-swagger-rails'
@@ -38,8 +37,10 @@ gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'paperclip', '5.3.0'
 gem 'paper_trail', '~> 11.0'
+gem 'psych', '< 4' # Locked due to https://github.com/ruby/psych/pull/488
 gem 'rails-observers'
 gem 'redcarpet'
+gem 'request_store'
 gem 'ruby-progressbar'
 gem 'strip_attributes'
 gem 'strong_migrations'
@@ -47,7 +48,6 @@ gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
-gem 'webpacker', '5.1.1'
 gem 'will_paginate'
 
 group :development do
@@ -78,8 +78,7 @@ group :test do
   gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  # TODO: Locked due to Cucumber 6.
-  gem 'cucumber-rails', '< 2.4', require: false
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
