@@ -13,6 +13,7 @@ module PaperTrail
     ]
 
     belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
+    belongs_to :user, optional: true, foreign_key: :whodunnit
 
     scope :filter_where, ->(filter_params) do
       results = where(nil)
@@ -34,10 +35,6 @@ module PaperTrail
       else
         raise "unknown search_type #{search_type}"
       end
-    end
-
-    def user
-      User.find(whodunnit) if whodunnit
     end
   end
 end
