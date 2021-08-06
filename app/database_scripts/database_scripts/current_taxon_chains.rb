@@ -2,23 +2,14 @@
 
 module DatabaseScripts
   class CurrentTaxonChains < DatabaseScript
-    LIMIT = 500
-
-    def statistics
-      <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
-      STR
-    end
-
     def results
-      Taxon.where.not(current_taxon_id: nil).
-        joins(:current_taxon).
+      Taxon.joins(:current_taxon).
         where.not(current_taxons_taxa: { current_taxon_id: nil }).
         where(
           'NOT (taxa.status = :obsolete_combination AND current_taxons_taxa.status = :synonym)',
           obsolete_combination: Status::OBSOLETE_COMBINATION,
           synonym: Status::SYNONYM
-        ).where.not(status: Status::UNAVAILABLE_MISSPELLING).limit(LIMIT)
+        ).where.not(status: Status::UNAVAILABLE_MISSPELLING)
     end
 
     def render
@@ -50,13 +41,13 @@ tags: [taxa]
 issue_description: This taxon has a `current_taxon` which itself has a `current_taxon`.
 
 description: >
-  Taxa with a `current_taxon` that has a `current_taxon`.
+  Taxa with a `current_taxon` that itself has a `current_taxon`.
 
 
-  Status 'unavailable misspelling' is excluded from **Taxon** (but not **current_taxon**).
+  Status `unavailable misspelling` is excluded from **Taxon** (but not **current_taxon**).
 
 
-  **Taxon** status 'obsolete combination' + **current_taxon** status 'synonym' are also excluded.
+  **Taxon** status `obsolete combination` + **current_taxon** status `synonym` are also excluded.
 
 related_scripts:
   - CurrentTaxonChains

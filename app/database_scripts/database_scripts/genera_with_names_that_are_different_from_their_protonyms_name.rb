@@ -38,7 +38,7 @@ description: >
   Excluded statuses: `unavailable misspelling`
 
 
-  It is OK for this sript not to be empty, since we need to figure out how to handle all cases for spelling changes.
+  It is OK for this script not to be empty, since we need to figure out how to handle all cases for spelling changes.
 
 related_scripts:
   - GeneraWithNamesThatAreDifferentFromTheirProtonymsName

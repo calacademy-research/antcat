@@ -7,7 +7,7 @@ module DatabaseScripts
     end
 
     def results
-      disagreeing_name_parts
+      placeholder
     end
 
     def render
@@ -24,13 +24,11 @@ module DatabaseScripts
 
     private
 
-      def disagreeing_name_parts
+      def placeholder
         [
           {
-            title: 'Now deleted script: SpeciesWithGenusEpithetsNotMatchingItsGenusEpithet ',
-            ok?: !Species.joins(:name).joins(:genus).
-                    joins("JOIN names genus_names ON genus_names.id = genera_taxa.name_id").
-                    where("SUBSTRING_INDEX(names.name, ' ', 1) != genus_names.name").exists?
+            title: 'placeholder',
+            ok?: true
           }
         ]
       end
@@ -43,7 +41,6 @@ section: regression-test
 tags: [grab-bag]
 
 description: >
-  Incomplete (by design) list of database scripts that have been deleted. This can be ignored.
 
 related_scripts:
   - GrabBagChecks

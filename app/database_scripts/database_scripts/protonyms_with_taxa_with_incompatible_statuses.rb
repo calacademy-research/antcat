@@ -54,29 +54,29 @@ description: >
   Incompatible statuses:
 
 
-  * Valid
+  * `valid`
 
-  * Synonym
+  * `synonym`
 
-  * Homonym
+  * `homonym`
 
-  * Excluded from Formicidae
+  * `excluded from Formicidae`
 
 
   Compatible statuses:
 
 
-  * Obsolete combination
+  * `obsolete combination`
 
-  * Unavailable misspelling
+  * `unavailable misspelling`
 
 
   Not checked but should probably be checked:
 
 
-  * Unidentifiable
+  * `unidentifiable`
 
-  * Unavailable
+  * `unavailable`
 
 related_scripts:
   - ProtonymsWithMoreThanOneOriginalCombination

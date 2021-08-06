@@ -46,19 +46,19 @@ description: >
   Compatible statuses:
 
 
-  * synonym
+  * `synonym`
 
-  * homonym
+  * `homonym`
 
-  * obsolete combination
+  * `obsolete combination`
 
-  * unidentifiable
+  * `unidentifiable`
 
-  * unavailable
+  * `unavailable`
 
-  * excluded from Formicidae
+  * `excluded from Formicidae`
 
-  * unavailable misspelling
+  * `unavailable misspelling`
 
 related_scripts:
   - SynonymGeneraWithSpeciesWithIncompatibleStatuses

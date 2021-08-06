@@ -45,11 +45,10 @@ tags: [taxa, names, combinations, original-combinations]
 issue_description: This species-group taxon has the same cleaned name as its protonym, but "Original combination" is not checked.
 
 description: >
-  **This script can be ignored**, since we do not rely on this data point at the moment, and the flag can be updated by script.
-  It may become more relevant in the future.
-
-
   "Non-original combinations" as is not having the `taxa.original_combination` flag.
+
+
+  Can be updated by script (see %github1091).
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym

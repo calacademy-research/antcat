@@ -45,7 +45,7 @@ description: >
   We may have to store original spellings of protonym names to effectively filter out false positives.
 
 
-  "Original combinations" as is not having the `taxa.original_combination` flag.
+  "Original combinations" as is in having the `taxa.original_combination` flag.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym
