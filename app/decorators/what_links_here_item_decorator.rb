@@ -4,7 +4,7 @@ class WhatLinksHereItemDecorator
   include Rails.application.routes.url_helpers
   include ActionView::Helpers::UrlHelper
 
-  attr_private_initialize :what_links_here_items
+  attr_private_initialize :what_links_here_item
 
   def item_link
     case table
@@ -30,5 +30,5 @@ class WhatLinksHereItemDecorator
 
   private
 
-    delegate :table, :id, :owner, to: :what_links_here_items, private: true
+    delegate :table, :id, :owner, to: :what_links_here_item, private: true
 end

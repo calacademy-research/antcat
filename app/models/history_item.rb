@@ -63,6 +63,7 @@ class HistoryItem < ApplicationRecord
   scope :form_descriptions_relitems, -> { where(type: History::Definitions::FORM_DESCRIPTIONS) }
   scope :senior_synonym_of_relitems, -> { where(type: History::Definitions::SENIOR_SYNONYM_OF) }
   scope :junior_synonym_of_relitems, -> { where(type: History::Definitions::JUNIOR_SYNONYM_OF) }
+  scope :replacement_name_for_relitems, -> { where(type: History::Definitions::REPLACEMENT_NAME_FOR) }
   scope :subspecies_of_relitems, -> { where(type: History::Definitions::SUBSPECIES_OF) }
 
   acts_as_list scope: :protonym, touch_on_update: false
