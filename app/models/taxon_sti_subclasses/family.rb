@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Family < Taxon
+  validates(*TAXA_COLUMNS, absence: true)
+
   def parent
   end
 

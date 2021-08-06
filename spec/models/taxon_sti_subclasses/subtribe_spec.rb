@@ -4,8 +4,16 @@ require 'rails_helper'
 
 describe Subtribe do
   describe 'relations' do
-    it { is_expected.to belong_to(:subfamily).required }
     it { is_expected.to belong_to(:tribe).required }
+  end
+
+  describe 'validations' do
+    it { is_expected.to validate_absence_of(:family_id) }
+    it { is_expected.to validate_absence_of(:subfamily_id) }
+    it { is_expected.to validate_absence_of(:genus_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+    it { is_expected.to validate_absence_of(:species_id) }
+    it { is_expected.to validate_absence_of(:subspecies_id) }
   end
 
   describe ".valid_subtribe_name?" do

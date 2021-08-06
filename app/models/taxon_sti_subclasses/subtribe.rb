@@ -3,8 +3,9 @@
 class Subtribe < Taxon
   VALID_ENDINGS_REGEX = /(ina|iti)\z/
 
-  belongs_to :subfamily
   belongs_to :tribe
+
+  validates(*(TAXA_COLUMNS - [:tribe_id]), absence: true)
 
   # TMPCLEANUP: Added here for now while refactoring and cleaning up data. Not sure where it really belongs.
   # NOTE: This method is more like "not_invalid_subtribe_name?", since validations already

@@ -9,6 +9,8 @@ class Tribe < Taxon
     has_many :species, through: :genera
   end
 
+  validates(*(TAXA_COLUMNS - [:subfamily_id]), absence: true)
+
   def parent
     subfamily
   end

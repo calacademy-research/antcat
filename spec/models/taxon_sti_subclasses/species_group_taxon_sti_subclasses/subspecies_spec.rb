@@ -14,6 +14,13 @@ describe Subspecies do
     end
   end
 
+  describe 'validations' do
+    it { is_expected.to validate_absence_of(:family_id) }
+    it { is_expected.to validate_absence_of(:tribe_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+    it { is_expected.to validate_absence_of(:subspecies_id) }
+  end
+
   describe "#update_parent" do
     let(:subspecies) { create :subspecies }
     let(:new_parent) { create :species }
@@ -24,7 +31,6 @@ describe Subspecies do
 
       expect(subspecies.reload.species).to eq new_parent
       expect(subspecies.reload.genus).to eq new_parent.genus
-      expect(subspecies.reload.subgenus).to eq new_parent.subgenus
       expect(subspecies.reload.subfamily).to eq new_parent.subfamily
     end
 

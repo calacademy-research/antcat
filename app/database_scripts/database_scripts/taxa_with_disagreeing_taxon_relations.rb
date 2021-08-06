@@ -5,7 +5,6 @@ module DatabaseScripts
     def empty?
       !(
         # subfamily_id.
-        subfamily_id_of_subtribe_vs_tribe.exists? ||
         subfamily_id_of_genus_vs_tribe.exists? ||
         subfamily_id_of_subgenus_vs_genus.exists? ||
         subfamily_id_of_species_vs_genus.exists? ||
@@ -13,6 +12,7 @@ module DatabaseScripts
         subfamily_id_of_infrasubspecies_vs_subspecies.exists? ||
 
         # genus_id.
+        genus_id_of_species_vs_subgenus.exists? ||
         genus_id_of_subspecies_vs_species.exists? ||
         genus_id_of_infrasubspecies_vs_subspecies.exists? ||
 
@@ -22,10 +22,6 @@ module DatabaseScripts
     end
 
     # subfamily_id.
-    def subfamily_id_of_subtribe_vs_tribe
-      Subtribe.joins(:tribe).where("tribes_taxa.subfamily_id != taxa.subfamily_id")
-    end
-
     def subfamily_id_of_genus_vs_tribe
       Genus.joins(:tribe).where("tribes_taxa.subfamily_id != taxa.subfamily_id")
     end
@@ -47,6 +43,10 @@ module DatabaseScripts
     end
 
     # genus_id.
+    def genus_id_of_species_vs_subgenus
+      Species.joins(:subgenus).where("subgenera_taxa.genus_id != taxa.genus_id")
+    end
+
     def genus_id_of_subspecies_vs_species
       Subspecies.joins(:species).where("species_taxa.genus_id != taxa.genus_id")
     end
@@ -62,14 +62,14 @@ module DatabaseScripts
 
     def render
       # subfamily_id.
-      render_table(subfamily_id_of_subtribe_vs_tribe, "subtribe", :subfamily, :tribe) +
-        render_table(subfamily_id_of_genus_vs_tribe, "genus", :subfamily, :tribe) +
+      render_table(subfamily_id_of_genus_vs_tribe, "genus", :subfamily, :tribe) +
         render_table(subfamily_id_of_subgenus_vs_genus, "subgenus", :subfamily, :genus) +
         render_table(subfamily_id_of_species_vs_genus, "species", :subfamily, :genus) +
         render_table(subfamily_id_of_subspecies_vs_species, "subspecies", :subfamily, :species) +
         render_table(subfamily_id_of_infrasubspecies_vs_subspecies, "infrasubspecies", :subfamily, :subspecies) +
 
         # genus_id.
+        render_table(genus_id_of_species_vs_subgenus, "species", :genus, :subgenus) +
         render_table(genus_id_of_subspecies_vs_species, "subspecies", :genus, :species) +
         render_table(genus_id_of_infrasubspecies_vs_subspecies, "infrasubspecies", :genus, :subspecies) +
 

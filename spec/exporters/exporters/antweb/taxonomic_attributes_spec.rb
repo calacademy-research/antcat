@@ -110,7 +110,7 @@ describe Exporters::Antweb::TaxonomicAttributes do
 
         context 'when species has a subgenus' do
           let(:genus) { create :genus, subfamily: subfamily, tribe: tribe }
-          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, tribe: tribe, genus: genus }
+          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, genus: genus }
           let(:taxon) { create :species, name_string: 'Atta robustus', genus: genus, subgenus: subgenus }
 
           it 'exports the subgenus as the subgenus part of the name' do
@@ -159,11 +159,11 @@ describe Exporters::Antweb::TaxonomicAttributes do
 
         context 'when subspecies has a subgenus' do
           let(:genus) { create :genus, subfamily: subfamily, tribe: tribe }
-          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, tribe: tribe, genus: genus }
+          let(:subgenus) { create :subgenus, name_string: 'Atta (Subgenusia)', subfamily: subfamily, genus: genus }
           let(:species) { create :species, name_string: 'Atta robustus', genus: genus, subgenus: subgenus }
           let(:taxon) do
             create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily,
-              genus: genus, subgenus: subgenus, species: species
+              genus: genus, species: species
           end
 
           it 'exports the subgenus as the subgenus part of the name' do

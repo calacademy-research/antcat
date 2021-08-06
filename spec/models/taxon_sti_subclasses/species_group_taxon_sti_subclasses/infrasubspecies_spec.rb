@@ -14,6 +14,10 @@ describe Infrasubspecies do
   end
 
   describe 'validations' do
+    it { is_expected.to validate_absence_of(:family_id) }
+    it { is_expected.to validate_absence_of(:tribe_id) }
+    it { is_expected.to validate_absence_of(:subgenus_id) }
+
     describe '#rank`' do
       subject(:taxon) { create :infrasubspecies }
 
@@ -43,7 +47,6 @@ describe Infrasubspecies do
       expect(infrasubspecies.subspecies).to eq new_parent
       expect(infrasubspecies.species).to eq new_parent.species
       expect(infrasubspecies.genus).to eq new_parent.genus
-      expect(infrasubspecies.subgenus).to eq new_parent.subgenus
       expect(infrasubspecies.subfamily).to eq new_parent.subfamily
     end
 

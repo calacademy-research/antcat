@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class Species < SpeciesGroupTaxon
+  belongs_to :subgenus, optional: true
+
   has_many :subspecies, dependent: :restrict_with_error
   has_many :infrasubspecies, dependent: :restrict_with_error
 
   scope :without_subgenus, -> { where(subgenus_id: nil) }
+
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id, :subgenus_id]), absence: true)
 
   def parent
     subgenus || genus

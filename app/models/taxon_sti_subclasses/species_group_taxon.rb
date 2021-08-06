@@ -3,7 +3,6 @@
 class SpeciesGroupTaxon < Taxon
   belongs_to :subfamily, optional: true
   belongs_to :genus
-  belongs_to :subgenus, optional: true
 
   validate :ensure_protonym_is_a_species_group_name
 
