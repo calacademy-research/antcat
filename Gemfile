@@ -78,8 +78,7 @@ group :test do
   gem 'apparition'
   gem 'capybara'
   gem 'capybara-screenshot'
-  # TODO: Locked due to Cucumber 6.
-  gem 'cucumber-rails', '< 2.4', require: false
+  gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
