@@ -150,7 +150,7 @@ Metrics/ParameterLists:
   CountKeywordArgs: false
 
 Metrics/PerceivedComplexity:
-  Max: 14
+  Max: 12
   Enabled: false
 
 ### Naming.
@@ -207,9 +207,7 @@ Rails/OutputSafety:
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
 
-Rails/RakeEnvironment:
-  Enabled: false
-
+# Disabled because it does not consider string constants to be strings.
 Rails/ReflectionClassName:
   Enabled: false
 
@@ -340,12 +338,11 @@ Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
 
 Style/GlobalStdStream:
-  Enabled: false
+  Exclude:
+    - 'config/environments/production.rb'
+    - 'config/environments/staging.rb'
 
 Style/GuardClause:
-  Enabled: false
-
-Style/HashAsLastArrayItem:
   Enabled: false
 
 Style/IfUnlessModifier:

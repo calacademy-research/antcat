@@ -25,7 +25,7 @@ class TaxonQuery
 
   def with_common_includes_and_current_taxon_includes
     with_common_includes.
-      includes(current_taxon: [:name, protonym: [:name, { authorship: { reference: :author_names } }]])
+      includes(current_taxon: [:name, { protonym: [:name, { authorship: { reference: :author_names } }] }])
   end
 
   private

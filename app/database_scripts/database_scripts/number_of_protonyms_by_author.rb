@@ -9,7 +9,6 @@ module DatabaseScripts
     def statistics
       at_least_one_protonym = Author.joins(references: { citations: { protonym: :name } }).
         where("names.type IN (?)", Name::SPECIES_GROUP_NAMES)
-      species_group_protonyms = Protonym.joins(:name).where(names: { type: [Name::SPECIES_GROUP_NAMES] })
 
       <<~STR.html_safe
         Authors with at least one SGN protonym (this list): #{at_least_one_protonym.distinct.count} <br>
@@ -18,7 +17,7 @@ module DatabaseScripts
         <br>
 
         Protonyms (total in database): #{Protonym.count} <br>
-        Protonyms (SGN, total in database): #{species_group_protonyms.count} <br>
+        Protonyms (SGN, total in database): #{Protonym.species_group_names.count} <br>
         Non-unique authors with at least one SGN protonym: #{at_least_one_protonym.count} <br>
       STR
     end

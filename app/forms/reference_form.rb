@@ -25,7 +25,7 @@ class ReferenceForm
     :title,
     :year,
     :year_suffix,
-    document_attributes: [:id, :file, :url]
+    { document_attributes: [:id, :file, :url] }
   ]
 
   attr_private_initialize :reference, :params, [ignore_duplicates: false]

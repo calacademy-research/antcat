@@ -41,7 +41,7 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   if ENV['DLL']
-    config.logger = Logger.new(STDOUT)
+    config.logger = Logger.new($stdout)
     config.log_level = :debug
   else
     config.logger = Logger.new(nil)

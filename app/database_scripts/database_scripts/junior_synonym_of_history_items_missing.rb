@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       Taxon.species_group_names.synonyms.
-        joins(<<~SQL.squish).where("history_items.id IS NULL").limit(LIMIT)
+        joins(<<~SQL.squish).where(history_items: { id: nil }).limit(LIMIT)
           JOIN taxa current_taxons_taxa ON current_taxons_taxa.id = taxa.current_taxon_id
           LEFT OUTER JOIN protonyms ON protonyms.id = taxa.protonym_id
           LEFT OUTER JOIN history_items ON history_items.protonym_id = protonyms.id AND

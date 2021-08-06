@@ -82,7 +82,7 @@ module Catalog
         return relation unless (year = params[:year])
 
         if year.match?(/^\d{4,}$/)
-          relation.where('references.year = ?', year)
+          relation.where(references: { year: year })
         elsif (matches = year.match(/^(?<start_year>\d{4})-(?<end_year>\d{4})$/))
           relation.where('references.year BETWEEN ? AND ?', matches[:start_year], matches[:end_year])
         else
@@ -102,7 +102,7 @@ module Catalog
 
       def epithet_clause relation
         return relation unless (epithet = params[:epithet]&.strip.presence)
-        relation.joins(:name).where('names.epithet = ?', epithet)
+        relation.joins(:name).where(names: { epithet: epithet })
       end
 
       def genus_clause relation

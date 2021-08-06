@@ -3,7 +3,7 @@
 module DatabaseScripts
   class OrphanedAuthors < DatabaseScript
     def results
-      Author.distinct.left_outer_joins(:references).where('references.id IS NULL').
+      Author.distinct.left_outer_joins(:references).where(references: { id: nil }).
         includes(:names)
     end
 

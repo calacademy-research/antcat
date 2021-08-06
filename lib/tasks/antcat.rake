@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 desc "List interesting tasks and commands (AntCat, AntWeb, Solr, etc.)"
-task :antcat do
+task antcat: :environment do
   puts "### Rake tasks:"
   prefixes = %w[
     antcat:

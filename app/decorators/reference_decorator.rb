@@ -8,7 +8,6 @@ class ReferenceDecorator < Draper::Decorator
     Reference::REVIEW_STATE_REVIEWING => 'Being reviewed'
   }
 
-  delegate :sanitize, to: :helpers
   delegate :plain_text, :expanded_reference, to: :reference_formatter
 
   def link_to_reference
@@ -49,7 +48,7 @@ class ReferenceDecorator < Draper::Decorator
   # TODO: `sanitize(reference.title)` converts ampersands to "&amp;" (only an issue in `Exporters::TaxaAsTxt`).
   # Example: "Brandão &amp; Martins-Neto" from `Taxon.find(429023).authorship.reference.decorate.send(:format_title)`.
   def format_title
-    format_italics h.add_period_if_necessary sanitize(reference.title)
+    format_italics h.add_period_if_necessary h.sanitize(reference.title)
   end
 
   def described_taxa
@@ -63,7 +62,7 @@ class ReferenceDecorator < Draper::Decorator
     end
 
     def format_notes notes
-      format_italics sanitize(notes)
+      format_italics h.sanitize(notes)
     end
 
     def format_italics string

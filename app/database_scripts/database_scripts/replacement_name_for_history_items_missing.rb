@@ -6,7 +6,7 @@ module DatabaseScripts
 
     def results
       Taxon.joins(:replacement_name_for).
-        joins(<<~SQL.squish).where("history_items.id IS NULL").limit(LIMIT)
+        joins(<<~SQL.squish).where(history_items: { id: nil }).limit(LIMIT)
           LEFT OUTER JOIN protonyms ON protonyms.id = taxa.protonym_id
           LEFT OUTER JOIN history_items ON history_items.protonym_id = protonyms.id AND
             (
