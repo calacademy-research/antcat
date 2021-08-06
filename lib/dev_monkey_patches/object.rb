@@ -64,7 +64,7 @@ module DevMonkeyPatches
     end
 
     def dd_log_much
-      ActiveRecord::Base.logger = Logger.new STDOUT
+      ActiveRecord::Base.logger = Logger.new($stdout)
     end
   end
 end

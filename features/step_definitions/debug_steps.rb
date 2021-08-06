@@ -2,7 +2,7 @@
 
 And("PAUSE") do
   print "Paused. Hit enter to continue."
-  STDIN.getc
+  $stdin.getc
 end
 
 And("PRY") do
