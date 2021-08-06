@@ -37,6 +37,7 @@ gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'paperclip', '5.3.0'
 gem 'paper_trail', '~> 11.0'
+gem 'psych', '< 4' # Locked due to https://github.com/ruby/psych/pull/488
 gem 'rails-observers'
 gem 'redcarpet'
 gem 'request_store'
