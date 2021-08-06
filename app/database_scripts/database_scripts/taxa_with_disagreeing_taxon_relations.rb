@@ -20,10 +20,6 @@ module DatabaseScripts
         genus_id_of_subspecies_vs_species.exists? ||
         genus_id_of_infrasubspecies_vs_subspecies.exists? ||
 
-        # subgenus_id.
-        subgenus_id_of_subspecies_vs_species.exists? ||
-        subgenus_id_of_infrasubspecies_vs_subspecies.exists? ||
-
         # species_id.
         species_id_of_infrasubspecies_vs_subspecies.exists?
       )
@@ -72,15 +68,6 @@ module DatabaseScripts
       Infrasubspecies.joins(:subspecies).where("subspecies_taxa.genus_id != taxa.genus_id")
     end
 
-    # subgenus_id.
-    def subgenus_id_of_subspecies_vs_species
-      Subspecies.joins(:species).where("species_taxa.subgenus_id != taxa.subgenus_id")
-    end
-
-    def subgenus_id_of_infrasubspecies_vs_subspecies
-      Infrasubspecies.joins(:subspecies).where("subspecies_taxa.subgenus_id != taxa.subgenus_id")
-    end
-
     # species_id.
     def species_id_of_infrasubspecies_vs_subspecies
       Infrasubspecies.joins(:subspecies).where("subspecies_taxa.species_id != taxa.species_id")
@@ -102,10 +89,6 @@ module DatabaseScripts
         render_table(genus_id_of_species_vs_subgenus, "species", :genus, :subgenus) +
         render_table(genus_id_of_subspecies_vs_species, "subspecies", :genus, :species) +
         render_table(genus_id_of_infrasubspecies_vs_subspecies, "infrasubspecies", :genus, :subspecies) +
-
-        # subgenus_id.
-        render_table(subgenus_id_of_subspecies_vs_species, "subspecies", :subgenus, :species) +
-        render_table(subgenus_id_of_infrasubspecies_vs_subspecies, "infrasubspecies", :subgenus, :subspecies) +
 
         # species_id.
         render_table(species_id_of_infrasubspecies_vs_subspecies, "infrasubspecies", :species, :subspecies)

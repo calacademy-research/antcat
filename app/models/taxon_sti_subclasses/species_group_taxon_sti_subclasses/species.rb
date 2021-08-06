@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Species < SpeciesGroupTaxon
+  belongs_to :subgenus, optional: true
+
   has_many :subspecies, dependent: :restrict_with_error
   has_many :infrasubspecies, dependent: :restrict_with_error
 

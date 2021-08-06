@@ -5,7 +5,7 @@ class Subspecies < SpeciesGroupTaxon
 
   has_many :infrasubspecies, dependent: :restrict_with_error
 
-  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id, :subgenus_id, :species_id]), absence: true)
+  validates(*(TAXA_COLUMNS - [:subfamily_id, :genus_id, :species_id]), absence: true)
 
   def parent
     species

@@ -163,7 +163,7 @@ describe Exporters::Antweb::TaxonomicAttributes do
           let(:species) { create :species, name_string: 'Atta robustus', genus: genus, subgenus: subgenus }
           let(:taxon) do
             create :subspecies, name_string: 'Atta robustus emeryii', subfamily: subfamily,
-              genus: genus, subgenus: subgenus, species: species
+              genus: genus, species: species
           end
 
           it 'exports the subgenus as the subgenus part of the name' do
