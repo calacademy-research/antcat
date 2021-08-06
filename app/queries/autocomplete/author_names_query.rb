@@ -13,10 +13,7 @@ module Autocomplete
     private
 
       def search_results
-        AuthorName.where('name LIKE ?', "%#{search_query}%").
-          includes(:reference_author_names).
-          distinct.
-          order('reference_author_names.created_at DESC', 'name')
+        AuthorName.where('name LIKE ?', "%#{search_query}%")
       end
   end
 end
