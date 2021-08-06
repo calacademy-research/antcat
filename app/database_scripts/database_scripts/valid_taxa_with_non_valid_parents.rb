@@ -6,25 +6,45 @@ module DatabaseScripts
       instance = new
 
       case taxon
+      when Tribe
+        instance.tribe_results.where(id: taxon.id).exists?
+      when Subtribe
+        instance.subtribe_results.where(id: taxon.id).exists?
       when Genus
         instance.genus_subfamily_results.where(id: taxon.id).exists? ||
           instance.genus_tribe_results.where(id: taxon.id).exists?
-      when Subgenus        then instance.subgenus_results.where(id: taxon.id).exists?
-      when Species         then instance.species_results.where(id: taxon.id).exists?
-      when Subspecies      then instance.subspecies_results.where(id: taxon.id).exists?
-      when Infrasubspecies then instance.infrasubspecies_results.where(id: taxon.id).exists?
+      when Subgenus
+        instance.subgenus_results.where(id: taxon.id).exists?
+      when Species
+        instance.species_genus_results.where(id: taxon.id).exists? ||
+          instance.species_subgenus_results.where(id: taxon.id).exists?
+      when Subspecies
+        instance.subspecies_results.where(id: taxon.id).exists?
+      when Infrasubspecies
+        instance.infrasubspecies_results.where(id: taxon.id).exists?
       end
     end
 
     def empty?
       !(
+        tribe_results.exists? ||
+        subtribe_results.exists? ||
         genus_subfamily_results.exists? ||
         genus_tribe_results.exists? ||
         subgenus_results.exists? ||
-        species_results.exists? ||
+        species_genus_results.exists? ||
+        species_subgenus_results.exists? ||
         subspecies_results.exists? ||
         infrasubspecies_results.exists?
       )
+    end
+
+    def tribe_results
+      Tribe.valid.joins(:subfamily).where.not(subfamilies_taxa: { status: Status::VALID })
+    end
+
+    def subtribe_results
+      Subtribe.valid.joins(:tribe).where.not(tribes_taxa: { status: Status::VALID })
     end
 
     def genus_subfamily_results
@@ -39,8 +59,12 @@ module DatabaseScripts
       Subgenus.valid.joins(:genus).where.not(genera_taxa: { status: Status::VALID })
     end
 
-    def species_results
+    def species_genus_results
       Species.valid.joins(:genus).where.not(genera_taxa: { status: Status::VALID })
+    end
+
+    def species_subgenus_results
+      Species.valid.joins(:subgenus).where.not(subgenera_taxa: { status: Status::VALID })
     end
 
     def subspecies_results
@@ -53,17 +77,41 @@ module DatabaseScripts
 
     def render
       as_table do |t|
-        t.header 'Genus', 'Genus status', 'Subfamily', 'Subfamily status'
+        t.header 'Tribe', 'Tribe status', 'Subfamily', 'Subfamily status'
 
-        t.rows(genus_subfamily_results) do |genus|
+        t.rows(tribe_results) do |tribe|
           [
-            taxon_link(genus),
-            genus.status,
-            taxon_link(genus.subfamily),
-            genus.subfamily.status
+            taxon_link(tribe),
+            tribe.status,
+            taxon_link(tribe.subfamily),
+            tribe.subfamily.status
           ]
         end
       end <<
+        as_table do |t|
+          t.header 'Subtribe', 'Subtribe status', 'Tribe', 'Tribe status'
+
+          t.rows(subtribe_results) do |subtribe|
+            [
+              taxon_link(subtribe),
+              subtribe.status,
+              taxon_link(subtribe.tribe),
+              subtribe.tribe.status
+            ]
+          end
+        end <<
+        as_table do |t|
+          t.header 'Genus', 'Genus status', 'Subfamily', 'Subfamily status'
+
+          t.rows(genus_subfamily_results) do |genus|
+            [
+              taxon_link(genus),
+              genus.status,
+              taxon_link(genus.subfamily),
+              genus.subfamily.status
+            ]
+          end
+        end <<
         as_table do |t|
           t.header 'Genus', 'Genus status', 'Tribe', 'Tribe status'
 
@@ -91,12 +139,24 @@ module DatabaseScripts
         as_table do |t|
           t.header 'Species', 'Species status', 'Genus', 'Genus status'
 
-          t.rows(species_results) do |species|
+          t.rows(species_genus_results) do |species|
             [
               taxon_link(species),
               species.status,
               taxon_link(species.genus),
               species.genus.status
+            ]
+          end
+        end <<
+        as_table do |t|
+          t.header 'Species', 'Species status', 'Subgenus', 'Subgenus status'
+
+          t.rows(species_subgenus_results) do |species|
+            [
+              taxon_link(species),
+              species.status,
+              taxon_link(species.subgenus),
+              species.subgenus.status
             ]
           end
         end <<
@@ -133,7 +193,7 @@ __END__
 title: Valid taxa with non-valid parents
 
 section: regression-test
-tags: [taxa, disagreeing-data]
+tags: [taxa, disagreeing-data, updated!]
 
 issue_description: This taxon is valid, but its parent is not.
 
