@@ -3,26 +3,31 @@
 # TODO: Add validations once script has been cleared.
 module DatabaseScripts
   class SpeciesGroupProtonymsWithoutBiogeographicRegions < DatabaseScript
-    LIMIT = 1000
-
     def empty_status
       DatabaseScripts::EmptyStatus::FALSE_POSITIVES
     end
 
     def statistics
       <<~STR.html_safe
-        Results: #{results.limit(nil).count} (showing first #{LIMIT})<br>
+        Results: #{results.except(:select).count}
       STR
     end
 
     def results
-      Protonym.species_group_names.where(biogeographic_region: nil, fossil: false).
-        limit(LIMIT).includes(:terminal_taxon)
+      Protonym.extant.species_group_names.where(biogeographic_region: nil).
+        select(<<~SQL.squish)
+          protonyms.*, (
+            SELECT hi.type FROM history_items hi
+            WHERE hi.protonym_id = protonyms.id
+            AND hi.type = "ReplacementNameFor" LIMIT 1
+          ) AS has_replacement_name_for_history_item
+        SQL
     end
 
     def render
       as_table do |t|
-        t.header 'Protonym', 'Locality', 'Suggested bio region', 'Terminal taxon', 'TT status'
+        t.header 'Protonym', 'Locality', 'Suggested bio region', 'Terminal taxon',
+          'TT status', 'ReplacementNameFor HI?'
         t.rows do |protonym|
           locality = protonym.locality
           terminal_taxon = protonym.terminal_taxon
@@ -32,7 +37,8 @@ module DatabaseScripts
             locality,
             (country_mappings[locality] if locality),
             taxon_link(terminal_taxon),
-            terminal_taxon&.status
+            terminal_taxon&.status,
+            protonym.has_replacement_name_for_history_item
           ]
         end
       end
@@ -57,7 +63,7 @@ tags: [protonyms, slow-render]
 issue_description: This [non-fossil] species-group name protonym has no biogeographic region.
 
 description: >
-  Not handled: Protonym that (should) share types.
+  **ReplacementNameFor HI?** = may be a new replacement name which should inherit types (and bioregion).
 
 related_scripts:
   - SpeciesGroupProtonymsWithoutBiogeographicRegions
