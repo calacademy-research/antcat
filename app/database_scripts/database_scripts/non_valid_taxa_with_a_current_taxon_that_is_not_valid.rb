@@ -36,7 +36,7 @@ tags: [taxa]
 issue_description: This [non-pass-through] taxon has a `current_taxon` that is not valid.
 
 description: >
-  Pass-through names are not included (statuses `'obsolete combination'` and `'unavailable misspellings'`).
+  Pass-through names are excluded from **Taxon** (statuses `obsolete combination` and `unavailable misspellings`).
 
 related_scripts:
   - CurrentTaxonChains

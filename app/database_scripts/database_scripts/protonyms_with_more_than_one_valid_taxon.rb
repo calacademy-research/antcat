@@ -34,7 +34,7 @@ end
 __END__
 
 section: regression-test
-tags: [protonyms]
+tags: [protonyms, disagreeing-data]
 
 issue_description: This protonym has more than one taxon with the status valid.
 

@@ -48,7 +48,7 @@ title: Convert <code>tax</code> tags to <code>prott</code> tags (senior synonym 
 
 
 section: pa-no-action-required
-tags: [taxt-hist, synonyms, slow]
+tags: [taxt-hist, synonyms, slow, has-script]
 
 description: >
   Script column | Description

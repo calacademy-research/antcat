@@ -35,7 +35,6 @@ tags: [taxa, synonyms]
 issue_description:
 
 description: >
-  "Species-group names" as is in where `taxa.type` is one of `Species`, `Subspecies` or `Infrasubspecies`.
 
 related_scripts:
   - SpeciesGroupNamesWithSeniorSynonymsInDifferentGenus

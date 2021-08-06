@@ -37,7 +37,7 @@ end
 __END__
 
 section: code-changes-required
-tags: [taxa, combinations, names]
+tags: [taxa, combinations, names, original-combinations]
 
 issue_description: This species-group taxon has "Original combination" checked, but it does not have the same cleaned name as its protonym.
 
@@ -45,7 +45,7 @@ description: >
   We may have to store original spellings of protonym names to effectively filter out false positives.
 
 
-  "Original combinations" as is not having the `taxa.original_combination` flag.
+  "Original combinations" as is in having the `taxa.original_combination` flag.
 
 related_scripts:
   - NonOriginalCombinationsWithSameNameAsItsProtonym

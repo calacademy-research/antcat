@@ -40,7 +40,7 @@ end
 __END__
 
 section: regression-test
-tags: [taxa, names, combinations, slow-render]
+tags: [taxa, names, combinations, obsolete-combinations, slow-render]
 
 issue_description: This obsolete combination has a very different epithet compared to its `current_taxon`.
 

@@ -39,7 +39,7 @@ __END__
 title: Obsolete combinations with protonyms not matching its current taxon's protonym
 
 section: reversed
-tags: [taxa, combinations, regression-test, slow-render]
+tags: [taxa, combinations, obsolete-combinations, regression-test, slow-render]
 
 issue_description: This obsolete combination and its `current_taxon` do not share the same protonym.
 

@@ -60,7 +60,7 @@ __END__
 title: Obsolete combinations with <code>current_taxon</code>s that are also obsolete combinations
 
 section: regression-test
-tags: [taxa, combinations, has-quick-fix]
+tags: [taxa, combinations, obsolete-combinations, has-quick-fix]
 
 issue_description: This taxon has an obsolete combinations as its `current_taxon`, but it is itself an obsolete combination.
 

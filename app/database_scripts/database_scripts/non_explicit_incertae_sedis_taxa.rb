@@ -86,10 +86,10 @@ tags: [taxa]
 
 description: >
   This list contains taxa that are "_incertae sedis_ by implication" but have no
-  value for "Incertae sedis in".
+  value for `taxa.incertae_sedis_in`.
 
 
-  Taxa that are "Excluded from Formicidae" are not included here.
+  Taxa with status `Excluded from Formicidae` are not included here.
 
 
   Issue: %github453

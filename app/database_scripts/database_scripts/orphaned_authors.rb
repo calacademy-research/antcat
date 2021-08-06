@@ -25,10 +25,10 @@ end
 __END__
 
 section: orphaned-records
-tags: [authors]
+tags: [authors, has-script]
 
 description: >
-  Non-orphaned authors with references in this list indicates that at least one of their author names has no references.
+  Authors with references in this list means that at least one of their author names has no references.
 
 related_scripts:
   - OrphanedAuthorNames

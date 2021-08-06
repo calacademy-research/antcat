@@ -52,6 +52,22 @@ class QuickAndDirtyFixesController < ApplicationController
     end
   end
 
+  # TODO: Remove after clearing `ProtonymsWithoutAnOriginalCombination`.
+  def flag_as_original_combination
+    taxon = Taxon.find(params[:taxon_id])
+
+    if taxon.original_combination?
+      render js: %(AntCat.notifyError("Taxon's is already flagged as 'original_combination'"))
+    elsif taxon.protonym.original_combination
+      render js: %(AntCat.notifyError("Taxon's protonym already has an original_combination"))
+    elsif taxon.update(original_combination: true)
+      taxon.create_activity Activity::UPDATE, current_user, edit_summary: "[semi-automatic] Flag as `original_combination`"
+      render js: %(AntCat.notifySuccess("Flagged as 'original_combination'"))
+    else
+      render js: %(AntCat.notifyError("Could not update 'original_combination'"))
+    end
+  end
+
   def force_remove_pages_from_taxac_tags
     history_item = HistoryItem.find(params[:history_item_id])
 
