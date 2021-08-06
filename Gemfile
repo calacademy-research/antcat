@@ -23,7 +23,7 @@ gem 'aws-sdk', '< 3.0' # Version locked, see https://github.com/thoughtbot/paper
 gem 'colorize'
 gem 'config'
 gem 'devise'
-gem 'diffy', require: false
+gem 'diffy'
 gem 'draper'
 gem 'ey_config' # Required for accessing service configurations through `EY::Config` on EngineYard.
 gem 'foundation-rails', '6.6.2.0'

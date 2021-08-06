@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "diffy"
-
 class RevisionPresenter
   REMOVED_REFERENCE_CACHE_COLUMNS = %i[
     formatted_cache
