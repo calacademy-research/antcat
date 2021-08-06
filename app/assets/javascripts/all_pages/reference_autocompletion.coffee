@@ -3,14 +3,14 @@ $ ->
     datumTokenizer: Bloodhound.tokenizers.whitespace
     queryTokenizer: Bloodhound.tokenizers.whitespace
     remote:
-      url: '/authors/autocomplete?term=%QUERY'
+      url: '/authors/autocomplete?term=%QUERY&limit=5'
       wildcard: '%QUERY'
 
   authorsDataSet =
     name: 'authors'
-    limit: 5 # NOTE: Limited on client-side to not interfer with other author autocompletions and because lazy.
-    display: (authorName) -> "author:'#{authorName.label}'"
+    displayKey: 'label'
     source: authors.ttAdapter()
+    limit: Infinity # NOTE: Bug in typeahead.js v0.11.1. See https://github.com/twitter/typeahead.js/issues/1232.
     templates:
       header: '<h5 class="autocompletion-header">Author results <small>(first 5)</small></h5>'
       empty: '<div class="empty-message">Unable to find any authors that match the current query.</div>'
