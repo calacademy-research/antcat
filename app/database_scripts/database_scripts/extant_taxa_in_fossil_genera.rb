@@ -3,8 +3,7 @@
 module DatabaseScripts
   class ExtantTaxaInFossilGenera < DatabaseScript
     def results
-      SpeciesGroupTaxon.joins(:protonym, { genus: :protonym }).
-        where(protonyms: { fossil: false }, protonyms_taxa: { fossil: true })
+      SpeciesGroupTaxon.extant.joins(genus: :protonym).where(protonyms_taxa: { fossil: true })
     end
 
     def render

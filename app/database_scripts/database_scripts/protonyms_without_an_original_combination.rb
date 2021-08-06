@@ -28,7 +28,7 @@ module DatabaseScripts
     private
 
       def protonyms
-        records = Protonym.joins(:name).where(names: { type: Name::SPECIES_GROUP_NAMES }).
+        records = Protonym.species_group_names.
           joins("LEFT OUTER JOIN taxa ON protonyms.id = taxa.protonym_id AND taxa.original_combination = True").
           where("taxa.id IS NULL").group('protonyms.id').distinct
         Protonym.where(id: records.select(:id))

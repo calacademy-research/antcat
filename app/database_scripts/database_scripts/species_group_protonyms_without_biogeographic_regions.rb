@@ -16,10 +16,7 @@ module DatabaseScripts
     end
 
     def results
-      Protonym.joins(:name).
-        where(names: { type: Name::SPECIES_GROUP_NAMES }).
-        where(biogeographic_region: nil).
-        where(fossil: false).
+      Protonym.species_group_names.where(biogeographic_region: nil, fossil: false).
         limit(LIMIT).includes(:terminal_taxon)
     end
 
