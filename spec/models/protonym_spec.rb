@@ -16,20 +16,20 @@ describe Protonym do
   end
 
   describe 'validations' do
-    describe "#biogeographic_region" do
+    describe "#bioregion" do
       it do
-        expect(build_stubbed(:protonym)).to validate_inclusion_of(:biogeographic_region).
-          in_array(described_class::BIOGEOGRAPHIC_REGIONS).allow_nil
+        expect(build_stubbed(:protonym)).to validate_inclusion_of(:bioregion).
+          in_array(described_class::BIOREGIONS).allow_nil
       end
 
       context 'when protonym is fossil' do
         let(:protonym) { build_stubbed :protonym, :fossil }
 
-        it 'cannot have a `biogeographic_region`' do
-          expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
+        it 'cannot have a `bioregion`' do
+          expect { protonym.bioregion = described_class::NEARCTIC_REGION }.
             to change { protonym.valid? }.to(false)
 
-          expect(protonym.errors.where(:biogeographic_region).map(&:message)).
+          expect(protonym.errors.where(:bioregion).map(&:message)).
             to include("cannot be set for fossil protonyms")
         end
       end
@@ -37,11 +37,11 @@ describe Protonym do
       context 'when protonym is above species rank' do
         let(:protonym) { build_stubbed :protonym, :genus_group }
 
-        it 'cannot have `biogeographic_region`' do
-          expect { protonym.biogeographic_region = described_class::NEARCTIC_REGION }.
+        it 'cannot have `bioregion`' do
+          expect { protonym.bioregion = described_class::NEARCTIC_REGION }.
             to change { protonym.valid? }.to(false)
 
-          expect(protonym.errors.where(:biogeographic_region).map(&:message)).
+          expect(protonym.errors.where(:bioregion).map(&:message)).
             to include("can only be set for species-group names")
         end
       end
@@ -110,7 +110,7 @@ describe Protonym do
   end
 
   describe 'callbacks' do
-    it { is_expected.to strip_attributes(:locality, :biogeographic_region, :forms, :gender_agreement_type, :notes_taxt) }
+    it { is_expected.to strip_attributes(:locality, :bioregion, :forms, :gender_agreement_type, :notes_taxt) }
     it { is_expected.to strip_attributes(:etymology_taxt) }
     it { is_expected.to strip_attributes(:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt) }
 

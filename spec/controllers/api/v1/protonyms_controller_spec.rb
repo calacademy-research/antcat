@@ -32,7 +32,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "sic" => protonym.sic,
               "fossil" => protonym.fossil,
               "ichnotaxon" => protonym.ichnotaxon,
-              "biogeographic_region" => nil,
+              "bioregion" => nil,
               "locality" => nil,
               "forms" => nil,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,
@@ -50,7 +50,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
 
     context 'with species-group protonym' do
       let!(:protonym) do
-        create :protonym, :species_group, biogeographic_region: Protonym::NEARCTIC_REGION,
+        create :protonym, :species_group, bioregion: Protonym::NEARCTIC_REGION,
           locality: "USA", forms: 'q.'
       end
 
@@ -65,7 +65,7 @@ describe Api::V1::ProtonymsController, as: :visitor do
               "sic" => protonym.sic,
               "fossil" => protonym.fossil,
               "ichnotaxon" => protonym.ichnotaxon,
-              "biogeographic_region" => Protonym::NEARCTIC_REGION,
+              "bioregion" => Protonym::NEARCTIC_REGION,
               "locality" => 'USA',
               "forms" => protonym.forms,
               "primary_type_information_taxt" => protonym.primary_type_information_taxt,

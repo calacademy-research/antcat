@@ -177,16 +177,16 @@ describe Catalog::AdvancedSearchQuery do
       end
     end
 
-    describe "searching for biogeographic region" do
-      it "only returns taxa with that biogeographic_region" do
-        create :species, protonym: create(:protonym, :species_group, biogeographic_region: Protonym::NEOTROPIC_REGION)
+    describe "searching for bioregion" do
+      it "only returns taxa with that bioregion" do
+        create :species, protonym: create(:protonym, :species_group, bioregion: Protonym::NEOTROPIC_REGION)
         indomanayan_species = create :species,
-          protonym: create(:protonym, :species_group, biogeographic_region: Protonym::NEARCTIC_REGION)
+          protonym: create(:protonym, :species_group, bioregion: Protonym::NEARCTIC_REGION)
         no_region_species = create :species
 
-        expect(described_class[biogeographic_region: Protonym::NEARCTIC_REGION]).to eq [indomanayan_species]
+        expect(described_class[bioregion: Protonym::NEARCTIC_REGION]).to eq [indomanayan_species]
         # NOTE: `type: Rank::SPECIES` is to filter out unrelated taxa created in factories.
-        expect(described_class[type: Rank::SPECIES, biogeographic_region: described_class::BIOGEOGRAPHIC_REGION_NONE]).
+        expect(described_class[type: Rank::SPECIES, bioregion: described_class::BIOREGION_NONE]).
           to eq [no_region_species]
       end
     end

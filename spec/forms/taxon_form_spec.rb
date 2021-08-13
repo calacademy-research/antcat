@@ -38,7 +38,7 @@ describe TaxonForm do
             status: Status::VALID,
             protonym_attributes: {
               fossil: true,
-              biogeographic_region: Protonym::NEARCTIC_REGION,
+              bioregion: Protonym::NEARCTIC_REGION,
               authorship_attributes: {
                 reference_id: create(:any_reference).id,
                 pages: '99'
@@ -56,7 +56,7 @@ describe TaxonForm do
           )
 
           expect { form.save }.to_not change { Protonym.count }
-          expect(form.errors[:base]).to include "Protonym: Biogeographic region cannot be set for fossil protonyms"
+          expect(form.errors[:base]).to include "Protonym: Bioregion cannot be set for fossil protonyms"
         end
       end
     end

@@ -18,7 +18,7 @@ module Exporters
             def type_name_line
               string = ''.html_safe
               string << type_name_and_taxt
-              string << AddPeriodIfNecessary[protonym.biogeographic_region]
+              string << AddPeriodIfNecessary[protonym.bioregion]
               string.html_safe
             end
 

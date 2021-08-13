@@ -116,7 +116,7 @@ describe ProtonymsController do
     describe 'creating a species-group protonym' do
       let(:protonym_params) do
         attributes_for :protonym_params,
-          biogeographic_region: Protonym::NEARCTIC_REGION,
+          bioregion: Protonym::NEARCTIC_REGION,
           locality: 'Africa',
           forms: 'worker',
           gender_agreement_type: Protonym::PARTICIPLE
@@ -136,7 +136,7 @@ describe ProtonymsController do
         expect(protonym.name).to be_a SpeciesGroupName
         expect(protonym.name.name).to eq params[:protonym_name_string]
 
-        expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
+        expect(protonym.bioregion).to eq protonym_params[:bioregion]
         expect(protonym.forms).to eq protonym_params[:forms]
         expect(protonym.gender_agreement_type).to eq Protonym::PARTICIPLE
       end
@@ -199,7 +199,7 @@ describe ProtonymsController do
       let!(:protonym) { create :protonym, :species_group }
       let(:protonym_params) do
         {
-          biogeographic_region: Protonym::NEARCTIC_REGION,
+          bioregion: Protonym::NEARCTIC_REGION,
           locality: 'Africa',
           forms: 'worker',
           primary_type_information_taxt: "primary type information",
@@ -213,7 +213,7 @@ describe ProtonymsController do
 
         protonym.reload
 
-        expect(protonym.biogeographic_region).to eq protonym_params[:biogeographic_region]
+        expect(protonym.bioregion).to eq protonym_params[:bioregion]
         expect(protonym.locality).to eq protonym_params[:locality]
         expect(protonym.forms).to eq protonym_params[:forms]
 

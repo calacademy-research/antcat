@@ -4,7 +4,7 @@ class ProtonymForm
   include ActiveModel::Model
 
   ATTRIBUTES = %w[
-    biogeographic_region
+    bioregion
     forms
     fossil
     gender_agreement_type

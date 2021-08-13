@@ -53,7 +53,7 @@
             %td
               .small-max-width=authorship_fields.text_field :pages
 
-        -# TODO: `protonym.(forms|biogeographic_region|locality)?` to make it possible to blank them in case
+        -# TODO: `protonym.(forms|bioregion|locality)?` to make it possible to blank them in case
         -# they are incorrectly filled in for new protonyms (fields are not hidden until we know the rank).
         -if protonym.species_group_name? || protonym.forms?
           %tr
@@ -65,15 +65,15 @@
             %td
               .small-max-width=f.text_field :forms
 
-        -if protonym.species_group_name? || protonym.biogeographic_region?
+        -if protonym.species_group_name? || protonym.bioregion?
           %tr
             %td
-              =f.label :biogeographic_region do
-                Biogeographic region
-                =db_tooltip_icon :biogeographic_region, scope: :protonyms
+              =f.label :bioregion do
+                Bioregion
+                =db_tooltip_icon :bioregion, scope: :protonyms
             %td
               .small-max-width
-                =f.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+                =f.select :bioregion, Protonym::BIOREGIONS, include_blank: true
 
         -if protonym.species_group_name? || protonym.locality?
           %tr
@@ -143,7 +143,7 @@
         =link_to_wiki_page_or_missing WikiPage::TYPE_INFORMATION
 
       %table.unstriped
-        -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/biogeographic_region/locality.
+        -# TODO: `protonym.gender_agreement_type?` for same reason as for forms/bioregion/locality.
         -if protonym.species_group_name? || protonym.gender_agreement_type?
           %tr
             %td

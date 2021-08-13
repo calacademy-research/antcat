@@ -1,7 +1,7 @@
 swagger: '2.0'
 
 info:
-  version: "1.7.2"
+  version: "1.8.2"
   title: AntCat REST API
   description: Read only API to access antcat.org
   contact:
@@ -734,7 +734,7 @@ definitions:
         type: boolean
       fossil:
         type: boolean
-      biogeographic_region:
+      bioregion:
         type: string
       locality:
         type: string

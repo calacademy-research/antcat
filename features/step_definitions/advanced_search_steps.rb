@@ -21,8 +21,8 @@ Given("there is a species with locality {string}") do |locality|
   create :species, protonym: protonym
 end
 
-Given("there is a species with biogeographic region {string}") do |biogeographic_region|
-  protonym = create :protonym, :species_group, biogeographic_region: biogeographic_region
+Given("there is a species with bioregion {string}") do |bioregion|
+  protonym = create :protonym, :species_group, bioregion: bioregion
   create :species, protonym: protonym
 end
 

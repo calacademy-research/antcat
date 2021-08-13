@@ -44,23 +44,23 @@ Feature: Searching the catalog
     Then I should see "1 result"
     And I should see "MEXICO" within the search results
 
-  Scenario: Searching for biogeographic_region
-    Given there is a species with biogeographic region "Malagasy"
-    And there is a species with biogeographic region "Afrotropic"
-    And there is a species with biogeographic region "Afrotropic"
+  Scenario: Searching for bioregion
+    Given there is a species with bioregion "Malagasy"
+    And there is a species with bioregion "Afrotropic"
+    And there is a species with bioregion "Afrotropic"
 
-    When I select "Afrotropic" from "biogeographic_region"
+    When I select "Afrotropic" from "bioregion"
     And I press "Search"
     Then I should see "2 result(s)"
     And I should see "Afrotropic" within the search results
 
-  Scenario: Searching for 'None' biogeographic_region
-    Given there is a species with biogeographic region "Malagasy"
-    And there is a species with biogeographic region "Afrotropic"
-    And there is a species with biogeographic region ""
+  Scenario: Searching for 'None' bioregion
+    Given there is a species with bioregion "Malagasy"
+    And there is a species with bioregion "Afrotropic"
+    And there is a species with bioregion ""
 
     When I select "Species" from "type"
-    And I select "None" from "biogeographic_region"
+    And I select "None" from "bioregion"
     And I press "Search"
     Then I should see "1 result"
 

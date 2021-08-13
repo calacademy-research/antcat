@@ -55,7 +55,7 @@ Feature: Manage protonyms
     And I fill in "protonym_authorship_attributes_pages" with "page 35"
     And I fill in "protonym_forms" with "male"
     And I fill in "protonym_locality" with "Lund"
-    And I select "Malagasy" from "protonym_biogeographic_region"
+    And I select "Malagasy" from "protonym_bioregion"
     And I press "Save"
     Then I should see "Protonym was successfully updated"
     And I should see "page 35"

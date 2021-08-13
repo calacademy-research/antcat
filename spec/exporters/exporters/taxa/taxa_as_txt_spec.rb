@@ -31,9 +31,9 @@ describe Exporters::Taxa::TaxaAsTxt do
       end
     end
 
-    context "when taxon's protonym has a locality and a biogeographic region" do
+    context "when taxon's protonym has a locality and a bioregion" do
       let!(:protonym) do
-        create :protonym, :species_group, biogeographic_region: Protonym::NEARCTIC_REGION, locality: "USA"
+        create :protonym, :species_group, bioregion: Protonym::NEARCTIC_REGION, locality: "USA"
       end
       let(:taxon) { create :species, protonym: protonym }
 
