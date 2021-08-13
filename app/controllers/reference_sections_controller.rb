@@ -96,7 +96,10 @@ class ReferenceSectionsController < ApplicationController
 
     def render_json reference_section
       render json: {
-        content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { reference_section: reference_section }),
+        content: render_to_string(
+          partial: 'reference_sections/taxt_editor_template',
+          locals: { reference_section: reference_section }
+        ),
         error: reference_section.errors.full_messages.to_sentence
       }
     end

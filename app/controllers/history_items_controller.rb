@@ -120,7 +120,10 @@ class HistoryItemsController < ApplicationController
     # TODO: "partial" is very "hmm". Pass proper JSON or ignore until we don't need this at all.
     def render_json history_item, partial:
       render json: {
-        content: render_to_string(partial: partial, locals: { history_item: history_item }),
+        content: render_to_string(
+          partial: partial,
+          locals: { history_item: history_item }
+        ),
         error: history_item.errors.full_messages.to_sentence
       }
     end
