@@ -19,7 +19,8 @@
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.irregular 'genus', 'genera'
   inflect.irregular 'subgenus', 'subgenera'
-  inflect.irregular 'infrasubspecies', 'infrasubspecies'
+
   inflect.uncountable 'species'
   inflect.uncountable 'subspecies'
+  inflect.uncountable 'infrasubspecies'
 end
