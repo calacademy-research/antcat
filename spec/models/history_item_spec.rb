@@ -473,8 +473,8 @@ describe HistoryItem, :relational_hi do
         let(:history_item) { create :history_item, :junior_primary_homonym_of_hardcoded_genus, :with_reference }
 
         specify do
-          expect(history_item.to_taxt).
-            to eq "[Junior primary homonym of {#{Taxt::UNMISSING_TAG} #{history_item.text_value}} [#{history_item.citation_taxt}].]"
+          expect(history_item.to_taxt).to eq "[Junior primary homonym of " \
+          "{#{Taxt::UNMISSING_TAG} #{history_item.text_value}} [#{history_item.citation_taxt}].]"
         end
       end
     end

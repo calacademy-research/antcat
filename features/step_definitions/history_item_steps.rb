@@ -9,7 +9,9 @@ Given("there is a subfamily protonym {string} with a history item {string}") do 
   create :history_item, :taxt, taxt: taxt, protonym: protonym
 end
 
-Given("there is a protonym {string} with a history item {string} and a markdown link to {string}") do |name, content, key_with_year|
+Given(
+  "there is a protonym {string} with a history item {string} and a markdown link to {string}"
+) do |name, content, key_with_year|
   reference = ReferenceStepsHelpers.find_reference_by_key(key_with_year)
   taxt = "#{content} #{Taxt.ref(reference.id)}"
   step %(there is a subfamily protonym "#{name}" with a history item "#{taxt}")
@@ -53,7 +55,9 @@ When("I delete the most recent history item") do
 end
 
 # Relational history items.
-Given("Batiatus, 2004a: {string} has described the forms {string} for the protonym {string}") do |pages, forms, protonym_name|
+Given(
+  "Batiatus, 2004a: {string} has described the forms {string} for the protonym {string}"
+) do |pages, forms, protonym_name|
   protonym = create :protonym, :species_group, name: create(:species_name, name: protonym_name)
   reference = create :any_reference, author_string: 'Batiatus', year: 2004, year_suffix: 'a'
 

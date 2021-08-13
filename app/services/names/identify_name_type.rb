@@ -52,12 +52,12 @@ module Names
 
       def single_word_name
         case name
-        when /idae$/ then ::FamilyName    # "idae" has also been used for subfamilies (like Odontomachidae), but it's non-standard.
+        when /idae$/ then ::FamilyName
         when /inae$/ then ::SubfamilyName
         when /ini$/  then ::TribeName
         when /ii$/   then ::TribeName     # Emery and Forel among others used this convention.
         when /iti$/  then ::SubtribeName  # Brown tried to create a new trend.
-        else              ::GenusName     # TODO: It could also be a subtribe (and probably other non-modern ranks).
+        else              ::GenusName     # Subtribes (-ina) cannot be distinguished from genera with the same ending.
         end
       end
   end

@@ -9,7 +9,9 @@ describe Notifications::NotifyUsersForComment do
 
   describe "#notify_mentioned_users" do
     let(:mentioned_user) { create(:user) }
-    let(:comment) { create :comment, body: "@user#{mentioned_user.id}", commentable: commentable, user: notifier }
+    let(:comment) do
+      create :comment, body: "@user#{mentioned_user.id}", commentable: commentable, user: notifier
+    end
 
     before do
       make_sure_creator_of_commentable_is_already_notified commentable, comment
@@ -17,7 +19,12 @@ describe Notifications::NotifyUsersForComment do
 
     context "when user has already been notified" do
       before do
-        Notifications::NotifyUser[mentioned_user, Notification::MENTIONED_IN_COMMENT, attached: comment, notifier: comment.user]
+        Notifications::NotifyUser[
+          mentioned_user,
+          Notification::MENTIONED_IN_COMMENT,
+          attached: comment,
+          notifier: comment.user
+        ]
       end
 
       it "doesn't notify for this reason" do
@@ -49,7 +56,12 @@ describe Notifications::NotifyUsersForComment do
 
     context "when user has already been notified" do
       before do
-        Notifications::NotifyUser[same_discussion_user, Notification::ACTIVE_IN_DISCUSSION, attached: comment, notifier: comment.user]
+        Notifications::NotifyUser[
+          same_discussion_user,
+          Notification::ACTIVE_IN_DISCUSSION,
+          attached: comment,
+          notifier: comment.user
+        ]
       end
 
       it "doesn't notify for this reason" do
@@ -97,6 +109,11 @@ describe Notifications::NotifyUsersForComment do
   end
 
   def make_sure_creator_of_commentable_is_already_notified commentable, comment
-    Notifications::NotifyUser[commentable.user, Notification::CREATOR_OF_COMMENTABLE, attached: comment, notifier: comment.user]
+    Notifications::NotifyUser[
+      commentable.user,
+      Notification::CREATOR_OF_COMMENTABLE,
+      attached: comment,
+      notifier: comment.user
+    ]
   end
 end

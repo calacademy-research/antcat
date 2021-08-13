@@ -37,14 +37,12 @@ module Taxa
           taxon.genus = new_species_parent.genus
           taxon.species = new_species_parent
 
-          taxon.name = subspecies_name
+          taxon.name = SubspeciesName.new(name: subspecies_name_string)
           taxon
         end
 
-        def subspecies_name
-          new_name_string = "#{new_species_parent.genus.name.name} #{new_species_parent.name.epithet} #{original_species.name.epithet}"
-
-          SubspeciesName.new(name: new_name_string)
+        def subspecies_name_string
+          "#{new_species_parent.genus.name.name} #{new_species_parent.name.epithet} #{original_species.name.epithet}"
         end
     end
   end

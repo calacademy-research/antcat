@@ -33,7 +33,9 @@ describe Taxa::Statistics::FormatStatistics do
     end
 
     context "when statistics contains only fossil statistics" do
-      specify { expect(described_class[fossil: { subfamilies: { 'valid' => 2 } }]).to eq '<p>Fossil: 2 valid subfamilies</p>' }
+      specify do
+        expect(described_class[fossil: { subfamilies: { 'valid' => 2 } }]).to eq '<p>Fossil: 2 valid subfamilies</p>'
+      end
     end
 
     describe 'pluralization' do
@@ -47,10 +49,12 @@ describe Taxa::Statistics::FormatStatistics do
       end
 
       context 'when statistics contains statuses that should not be pluralized' do
-        it "doesn't pluralize the statuses" do
+        it "doesn't pluralize statuses" do
           expect(described_class[extant: { species: { 'valid' => 2 } }]).to eq '<p>Extant: 2 valid species</p>'
-          expect(described_class[extant: { species: { 'synonym' => 2 } }]).to eq '<p>Extant: 0 valid species (2 synonyms)</p>'
-          expect(described_class[extant: { species: { 'unavailable' => 2 } }]).to eq '<p>Extant: 0 valid species (2 unavailable)</p>'
+          expect(described_class[extant: { species: { 'synonym' => 2 } }]).
+            to eq '<p>Extant: 0 valid species (2 synonyms)</p>'
+          expect(described_class[extant: { species: { 'unavailable' => 2 } }]).
+            to eq '<p>Extant: 0 valid species (2 unavailable)</p>'
           expect(described_class[extant: { species: { 'excluded from Formicidae' => 2 } }]).
             to eq '<p>Extant: 0 valid species (2 excluded from Formicidae)</p>'
         end

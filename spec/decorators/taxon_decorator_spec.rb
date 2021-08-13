@@ -62,7 +62,8 @@ describe TaxonDecorator do
       let(:taxon) { build_stubbed :subfamily, hol_id: 1234 }
 
       specify do
-        expect(decorated.link_to_hol).to eq '<a class="external-link" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
+        expect(decorated.link_to_hol).
+          to eq '<a class="external-link" href="http://hol.osu.edu/index.html?id=1234">HOL</a>'
       end
     end
   end
@@ -99,7 +100,8 @@ describe TaxonDecorator do
       let(:taxon) { create :species, name_string: 'Atta major', genus: create(:genus, name_string: 'Atta') }
 
       specify do
-        expect(taxon.decorate.link_to_antweb).to eq antweb_link_with_params('rank=species&genus=atta&species=major&project=worldants')
+        expect(taxon.decorate.link_to_antweb).
+          to eq antweb_link_with_params('rank=species&genus=atta&species=major&project=worldants')
       end
     end
 

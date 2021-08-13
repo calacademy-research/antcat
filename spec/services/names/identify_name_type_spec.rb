@@ -70,15 +70,23 @@ describe Names::IdentifyNameType do
       specify { expect(described_class['Leptothorax rottenbergi scabrosus kabyla']).to eq InfrasubspeciesName }
 
       context 'when 5 name parts' do
-        specify { expect(described_class['Leptothorax (Hypochira) rottenbergi scabrosus kabyla']).to eq InfrasubspeciesName }
+        specify do
+          expect(described_class['Leptothorax (Hypochira) rottenbergi scabrosus kabyla']).to eq InfrasubspeciesName
+        end
       end
 
       context 'when 6 name parts' do
-        specify { expect(described_class['Camponotus herculeanus subsp. pennsylvanicus var. mahican']).to eq InfrasubspeciesName }
+        specify do
+          expect(described_class['Camponotus herculeanus subsp. pennsylvanicus var. mahican']).
+            to eq InfrasubspeciesName
+        end
       end
 
       context 'when 7 name parts' do
-        specify { expect(described_class['Atta (Acromyrmex) moelleri subsp. panamensis var. angustata']).to eq InfrasubspeciesName }
+        specify do
+          expect(described_class['Atta (Acromyrmex) moelleri subsp. panamensis var. angustata']).
+            to eq InfrasubspeciesName
+        end
       end
     end
 

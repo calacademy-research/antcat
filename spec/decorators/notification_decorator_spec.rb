@@ -11,19 +11,26 @@ describe NotificationDecorator do
     context "when `attached` is an `Issue`" do
       let(:attached) { build_stubbed :issue }
 
-      specify { expect(decorated.link_attached).to eq %(issue <a href="/issues/#{attached.id}">#{attached.title}</a>) }
+      specify do
+        expect(decorated.link_attached).to eq %(issue <a href="/issues/#{attached.id}">#{attached.title}</a>)
+      end
     end
 
     context "when `attached` is a `SiteNotice`" do
       let(:attached) { build_stubbed :site_notice }
 
-      specify { expect(decorated.link_attached).to eq %(site notice <a href="/site_notices/#{attached.id}">#{attached.title}</a>) }
+      specify do
+        expect(decorated.link_attached).
+          to eq %(site notice <a href="/site_notices/#{attached.id}">#{attached.title}</a>)
+      end
     end
 
     context "when `attached` is a `Feedback`" do
       let(:attached) { build_stubbed :feedback }
 
-      specify { expect(decorated.link_attached).to eq %(feedback <a href="/feedbacks/#{attached.id}">##{attached.id}</a>) }
+      specify do
+        expect(decorated.link_attached).to eq %(feedback <a href="/feedbacks/#{attached.id}">##{attached.id}</a>)
+      end
     end
   end
 end

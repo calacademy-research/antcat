@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-# TODO: Names are randomly generated for each associated rank (for example the genus epithet of a species is not it's genus epithet).
+# TODO: Names are randomly generated for associated ranks (for example
+# the genus epithet of a species does not always agree with its genus' epithet).
 
 FactoryBot.define do
   factory :base_taxon, class: 'Taxon' do

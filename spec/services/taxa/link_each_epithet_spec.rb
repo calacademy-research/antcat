@@ -44,7 +44,8 @@ describe Taxa::LinkEachEpithet do
         create :subspecies, name_string: 'NOTUSED NOTUSED pratensis', species: species, genus: genus
       end
       let(:infrasubspecies) do
-        create :infrasubspecies, name_string: 'NOTUSED NOTUSED pratensis major', subspecies: subspecies, species: species, genus: genus
+        create :infrasubspecies, name_string: 'NOTUSED NOTUSED pratensis major',
+          subspecies: subspecies, species: species, genus: genus
       end
 
       specify do
