@@ -4,7 +4,7 @@ module DatabaseScripts
   class NonValidTaxaWithACurrentTaxonThatIsNotValid < DatabaseScript
     def results
       TaxonQuery.new.excluding_pass_through_names.joins(:current_taxon).
-        where.not(current_taxons_taxa: { status: Status::VALID }).
+        where.not(current_taxa_taxa: { status: Status::VALID }).
         includes(:current_taxon)
     end
 

@@ -4,9 +4,9 @@ module DatabaseScripts
   class CurrentTaxonChains < DatabaseScript
     def results
       Taxon.joins(:current_taxon).
-        where.not(current_taxons_taxa: { current_taxon_id: nil }).
+        where.not(current_taxa_taxa: { current_taxon_id: nil }).
         where(
-          'NOT (taxa.status = :obsolete_combination AND current_taxons_taxa.status = :synonym)',
+          'NOT (taxa.status = :obsolete_combination AND current_taxa_taxa.status = :synonym)',
           obsolete_combination: Status::OBSOLETE_COMBINATION,
           synonym: Status::SYNONYM
         ).where.not(status: Status::UNAVAILABLE_MISSPELLING)

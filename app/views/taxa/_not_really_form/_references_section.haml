@@ -3,9 +3,9 @@
     %h6
       Reference sections
       .right
-        =link_to 'Add', new_taxa_reference_section_path(taxon), id: 'add-reference-section-button-test-hook', class: 'btn-normal btn-tiny'
+        =link_to 'Add', new_taxon_reference_section_path(taxon), id: 'add-reference-section-button-test-hook', class: 'btn-normal btn-tiny'
         -if taxon.reference_sections.present?
-          =link_to "Reorder", taxa_reorder_reference_sections_path(taxon), class: "btn-normal btn-tiny"
+          =link_to "Reorder", taxon_reorder_reference_sections_path(taxon), class: "btn-normal btn-tiny"
 
     -if taxon.reference_sections.present?
       #reference-sections

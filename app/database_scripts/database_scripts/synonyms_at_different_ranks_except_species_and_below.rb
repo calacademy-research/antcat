@@ -5,7 +5,7 @@ module DatabaseScripts
     def results
       Taxon.synonyms.
         where(type: Rank::ABOVE_SPECIES).
-        joins(:current_taxon).where("current_taxons_taxa.type <> taxa.type").
+        joins(:current_taxon).where("current_taxa_taxa.type <> taxa.type").
         includes(:current_taxon)
     end
 

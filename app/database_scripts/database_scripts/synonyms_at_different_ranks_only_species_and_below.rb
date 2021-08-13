@@ -12,7 +12,7 @@ module DatabaseScripts
 
     def results
       Taxon.species_group_names.synonyms.
-        joins(:current_taxon).where("current_taxons_taxa.type <> taxa.type").
+        joins(:current_taxon).where("current_taxa_taxa.type <> taxa.type").
         includes(:current_taxon).
         limit(LIMIT)
     end

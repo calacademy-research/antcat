@@ -13,8 +13,6 @@ class Taxon < ApplicationRecord
     :subspecies_id
   ]
 
-  self.table_name = :taxa
-
   delegate :policy, :soft_validations, :what_links_here, to: :taxon_collaborators
 
   with_options class_name: 'Taxon' do

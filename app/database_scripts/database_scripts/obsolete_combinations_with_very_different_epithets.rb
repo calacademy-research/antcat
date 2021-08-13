@@ -8,7 +8,7 @@ module DatabaseScripts
 
     def results
       Taxon.species_group_names.obsolete_combinations.joins(:name, current_taxon: :name).
-        where(current_taxons_taxa: { type: Rank::SPECIES_GROUP_NAMES }).
+        where(current_taxa_taxa: { type: Rank::SPECIES_GROUP_NAMES }).
         where("SUBSTR(names_taxa.epithet, 1, 3) != SUBSTR(names.epithet, 1, 3)").
         where.not(current_taxon_id: FALSE_POSITIVES_CURRENT_TAXON_IDS).
         includes(:name, current_taxon: :name)

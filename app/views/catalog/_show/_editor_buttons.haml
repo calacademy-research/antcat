@@ -13,31 +13,31 @@
         %li=editors_catalog_presenter.add_subgenus_button
 
         -if taxon.is_a?(Species)
-          %li=link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal"
+          %li=link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-normal"
 
         %li=editors_catalog_presenter.elevate_to_species_button
         %li=editors_catalog_presenter.convert_to_subspecies_button
 
         -if taxon.policy.show_create_combination_button?
-          %li=link_to "Create combination#{' (blocked)' unless taxon.policy.allow_create_combination?}", new_taxa_create_combination_path(taxon), class: "btn-normal"
+          %li=link_to "Create combination#{' (blocked)' unless taxon.policy.allow_create_combination?}", new_taxon_create_combination_path(taxon), class: "btn-normal"
 
         -if taxon.policy.allow_create_obsolete_combination?
-          %li=link_to "Create obsolete combination", taxa_create_obsolete_combination_path(taxon), class: "btn-normal"
+          %li=link_to "Create obsolete combination", taxon_create_obsolete_combination_path(taxon), class: "btn-normal"
 
         -if taxon.policy.allow_force_change_parent?
-          %li=link_to "Force parent change...", taxa_force_parent_change_path(taxon), class: "btn-warning"
+          %li=link_to "Force parent change...", taxon_force_parent_change_path(taxon), class: "btn-warning"
 
         -if user_is_superadmin?
-          %li=link_to append_superadmin_icon("Force-update"), taxa_force_update_path(taxon), class: "btn-warning"
+          %li=link_to append_superadmin_icon("Force-update"), taxon_force_update_path(taxon), class: "btn-warning"
 
         %li=editors_catalog_presenter.delete_unreferenced_taxon_button
 
       -if user_is_at_least_helper?
-        %li=link_to "Move items", new_taxa_move_items_path(taxon), class: "btn-normal"
+        %li=link_to "Move items", new_taxon_move_items_path(taxon), class: "btn-normal"
       -if taxon.type.in?(Rank::AntCatSpecific::CAN_HAVE_REFERENCE_SECTIONS_TYPES) && taxon.reference_sections.any?
-        %li=link_to "Reorder reference sections", taxa_reorder_reference_sections_path(taxon), class: "btn-normal"
+        %li=link_to "Reorder reference sections", taxon_reorder_reference_sections_path(taxon), class: "btn-normal"
 
-      %li=link_to "Show children", taxa_children_path(taxon), class: "btn-normal"
+      %li=link_to "Show children", taxon_children_path(taxon), class: "btn-normal"
       %li=link_to "Soft validations", taxon_soft_validations_path(taxon), class: "btn-normal"
       -if taxon.type.in?(Catalog::BoltonController::SUPPORTED_TYPES)
         %li=link_to "Bolton view (beta)", bolton_catalog_view_path(taxon), class: "btn-normal"

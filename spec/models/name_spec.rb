@@ -135,7 +135,7 @@ describe Name do
       context 'when name is assigned to a taxon' do
         let!(:taxon) { create :genus }
 
-        it "sets the taxons's `name_cache`" do
+        it "sets the taxon's `name_cache`" do
           expect { taxon.update!(name: eciton_name) }.
             to change { taxon.reload.name_cache }.to('Eciton')
         end

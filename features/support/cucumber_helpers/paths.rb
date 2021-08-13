@@ -21,7 +21,7 @@ module CucumberHelpers
       # Editing (catalog).
       when /^the edit page for "(.*)"$/
         taxon = Taxon.find_by!(name_cache: Regexp.last_match(1))
-        edit_taxa_path(taxon)
+        edit_taxon_path(taxon)
 
       when 'the protonyms page'
         protonyms_path

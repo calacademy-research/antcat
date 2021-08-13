@@ -68,7 +68,7 @@
       -if policy.allowed?
         %p
           Probably!
-          =link_to "Create combination", new_taxa_create_combination_path(taxon), class: "btn-normal btn-tiny"
+          =link_to "Create combination", new_taxon_create_combination_path(taxon), class: "btn-normal btn-tiny"
       -else
         No, because:
         %ul
@@ -95,7 +95,7 @@
           =CatalogFormatter.link_to_taxon(taxon.subgenus)
         -else
           (none)
-          =link_to "Set subgenus", taxa_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
+          =link_to "Set subgenus", taxon_set_subgenus_path(taxon), class: "btn-normal btn-very-tiny"
 
   %ul.no-bullet.small-text
     %li Created at: #{l taxon.created_at, format: :ymd}

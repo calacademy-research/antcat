@@ -4,7 +4,7 @@ module DatabaseScripts
   class SpeciesGroupNamesWithSeniorSynonymsInDifferentGenus < DatabaseScript
     def results
       Taxon.species_group_names.synonyms.
-        joins(:current_taxon).where("current_taxons_taxa.genus_id != taxa.genus_id")
+        joins(:current_taxon).where("current_taxa_taxa.genus_id != taxa.genus_id")
     end
 
     def render

@@ -25,7 +25,7 @@
       'What Links Here's
       =link_to "Show all", taxon_what_links_here_path(@taxon), class: "btn-normal btn-tiny"
 
-=form_with model: @taxon, url: taxa_force_update_path(@taxon), scope: :taxon do |f|
+=form_with model: @taxon, url: taxon_force_update_path(@taxon), scope: :taxon do |f|
   =render 'shared/errors_for', resource: @taxon
 
   .row

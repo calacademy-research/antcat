@@ -30,7 +30,7 @@ class HistoryItem < ApplicationRecord
   belongs_to :object_taxon, optional: true, class_name: 'Taxon'
 
   has_one :terminal_taxon, through: :protonym
-  has_many :terminal_taxa, through: :protonym
+  has_many :terminal_taxa, through: :protonym, source: :terminal_taxon
 
   validates :rank, inclusion: { in: Rank::AntCatSpecific::TYPE_SPECIFIC_HISTORY_ITEM_TYPES, allow_nil: true }
   validates :type, inclusion: { in: TYPES }

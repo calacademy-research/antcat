@@ -8,7 +8,7 @@ module Taxa
       @taxon = find_taxon
 
       unless @taxon.is_a? Subspecies
-        redirect_to edit_taxa_path(@taxon), notice: "Not a subspecies"
+        redirect_to edit_taxon_path(@taxon), notice: "Not a subspecies"
         return
       end
 
@@ -38,7 +38,7 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxa_id])
+        Taxon.find(params[:taxon_id])
       end
 
       def species_activity subspecies, new_species

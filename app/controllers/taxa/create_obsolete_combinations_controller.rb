@@ -34,7 +34,7 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxa_id])
+        Taxon.find(params[:taxon_id])
       end
 
       def find_obsolete_genus
