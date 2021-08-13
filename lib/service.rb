@@ -9,7 +9,7 @@ module Service
   end
 
   module ClassMethods
-    def [](...) # rubocop:disable Style/MethodDefParentheses
+    def [](...)
       new(...).call
     end
   end
