@@ -10,7 +10,7 @@ module Api
         :sic,
         :fossil,
         :ichnotaxon,
-        :biogeographic_region,
+        :bioregion,
         :locality,
         :forms,
         :primary_type_information_taxt,

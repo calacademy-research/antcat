@@ -38,8 +38,8 @@
 
   .row
     .medium-2.columns
-      Biogeographic region
-      =f.select :biogeographic_region, options_for_select(Protonym::BIOGEOGRAPHIC_REGIONS + [Catalog::AdvancedSearchQuery::BIOGEOGRAPHIC_REGION_NONE], params[:biogeographic_region]), include_blank: "Any"
+      Bioregion
+      =f.select :bioregion, options_for_select(Protonym::BIOREGIONS + [Catalog::AdvancedSearchQuery::BIOREGION_NONE], params[:bioregion]), include_blank: "Any"
     .medium-2.columns
       Locality contains
       =f.text_field :locality, value: params[:locality]

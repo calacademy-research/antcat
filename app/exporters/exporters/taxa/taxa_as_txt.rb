@@ -70,8 +70,8 @@ module Exporters
           if taxon.protonym.locality
             string << AddPeriodIfNecessary[taxon.protonym.locality]
           end
-          if taxon.protonym.biogeographic_region
-            string << ' ' << taxon.protonym.biogeographic_region
+          if taxon.protonym.bioregion
+            string << ' ' << taxon.protonym.bioregion
             string << '.'
           end
           string

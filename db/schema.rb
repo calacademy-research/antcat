@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_30_183547) do
+ActiveRecord::Schema.define(version: 2021_08_13_211550) do
 
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
@@ -167,7 +167,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_183547) do
     t.text "primary_type_information_taxt"
     t.text "secondary_type_information_taxt"
     t.text "type_notes_taxt"
-    t.string "biogeographic_region"
+    t.string "bioregion"
     t.integer "type_name_id"
     t.string "forms"
     t.text "notes_taxt"
@@ -414,7 +414,7 @@ ActiveRecord::Schema.define(version: 2021_07_30_183547) do
   add_foreign_key "reference_author_names", "author_names", name: "fk_reference_author_names__author_name_id__author_names__id"
   add_foreign_key "reference_author_names", "references", name: "fk_reference_author_names__reference_id__references__id"
   add_foreign_key "reference_documents", "references", name: "fk_reference_documents__reference_id__references__id"
-  add_foreign_key "reference_sections", "taxa", column: "taxon_id", name: "fk_reference_sections__taxon_id__taxa__id"
+  add_foreign_key "reference_sections", "taxa", name: "fk_reference_sections__taxon_id__taxa__id"
   add_foreign_key "references", "journals", name: "fk_references__journal_id__journals__id"
   add_foreign_key "references", "publishers", name: "fk_references__publisher_id__publishers__id"
   add_foreign_key "site_notices", "users", name: "fk_site_notices__user_id__users__id"
@@ -429,6 +429,6 @@ ActiveRecord::Schema.define(version: 2021_07_30_183547) do
   add_foreign_key "taxa", "taxa", column: "subspecies_id", name: "fk_taxa__subspecies_id__taxa__id"
   add_foreign_key "taxa", "taxa", column: "tribe_id", name: "fk_taxa__tribe_id__taxa__id"
   add_foreign_key "type_names", "references", name: "fk_type_names__reference_id__references__id"
-  add_foreign_key "type_names", "taxa", column: "taxon_id", name: "fk_type_names__taxon_id__taxa__id"
+  add_foreign_key "type_names", "taxa", name: "fk_type_names__taxon_id__taxa__id"
   add_foreign_key "users", "authors", name: "fk_users__author_id__authors__id"
 end

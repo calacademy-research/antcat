@@ -43,7 +43,7 @@ module Catalog
       def advanced_search_params
         params.slice(
           :author_name,
-          :biogeographic_region,
+          :bioregion,
           :collective_group_name,
           :epithet,
           :forms,

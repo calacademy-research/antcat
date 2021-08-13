@@ -13,7 +13,7 @@ module DatabaseScripts
     def render
       as_table do |t|
         t.header 'Replaced protonym (1)', 'Replaced by protonym (2)',
-          'Forms, locality, bio region (1)', 'Forms, locality, bio region (2)',
+          'Forms, locality, bioregion (1)', 'Forms, locality, bioregion (2)',
           'Type name of replaced protonym (1)', 'Type name of replaced by protonym (2)',
           'Taxa of replaced protonym (1)', 'Taxa of replaced by protonym (2)'
         t.rows do |taxon|
@@ -41,7 +41,7 @@ module DatabaseScripts
 
       def replaced_protonym_synopsis protonym
         return unless protonym.species_group_name?
-        "#{protonym.forms || '[blank]'}<br>#{protonym.locality || '[blank]'}<br>#{protonym.biogeographic_region || '[blank]'}"
+        "#{protonym.forms || '[blank]'}<br>#{protonym.locality || '[blank]'}<br>#{protonym.bioregion || '[blank]'}"
       end
 
       def replaced_by_protonym_synopsis r_pro, rbp_pro
@@ -57,12 +57,12 @@ module DatabaseScripts
           rbp_pro.locality.in?([nil, r_pro.locality]) ? 'bold-notice' : 'bold-warning'
         )
 
-        bio_region = color_span(
-          rbp_pro.biogeographic_region || '[blank]',
-          rbp_pro.biogeographic_region.in?([nil, r_pro.biogeographic_region]) ? 'bold-notice' : 'bold-warning'
+        bioregion = color_span(
+          rbp_pro.bioregion || '[blank]',
+          rbp_pro.bioregion.in?([nil, r_pro.bioregion]) ? 'bold-notice' : 'bold-warning'
         )
 
-        "#{forms}<br>#{locality}<br>#{bio_region}"
+        "#{forms}<br>#{locality}<br>#{bioregion}"
       end
   end
 end

@@ -18,7 +18,7 @@ module Catalog
       MUST_HAVE_HISTORY_ITEMS = 'must_have',
       CANNOT_HAVE_HISTORY_ITEMS = 'cannot_have'
     ]
-    BIOGEOGRAPHIC_REGION_NONE = 'None'
+    BIOREGION_NONE = 'None'
 
     def initialize params
       @params = params.delete_if { |_key, value| value.blank? }
@@ -55,7 +55,7 @@ module Catalog
           yield_self(&method(:protonym_clause)).
           yield_self(&method(:type_information_clause)).
           yield_self(&method(:locality_clause)).
-          yield_self(&method(:biogeographic_region_clause)).
+          yield_self(&method(:bioregion_clause)).
           yield_self(&method(:forms_clause))
       end
 
@@ -135,11 +135,11 @@ module Catalog
         relation.where('protonyms.locality LIKE ?', "%#{locality}%")
       end
 
-      def biogeographic_region_clause relation
-        return relation unless (biogeographic_region = params[:biogeographic_region])
+      def bioregion_clause relation
+        return relation unless (bioregion = params[:bioregion])
 
-        value = biogeographic_region == BIOGEOGRAPHIC_REGION_NONE ? nil : biogeographic_region
-        relation.where(protonyms: { biogeographic_region: value })
+        value = bioregion == BIOREGION_NONE ? nil : bioregion
+        relation.where(protonyms: { bioregion: value })
       end
 
       def forms_clause relation

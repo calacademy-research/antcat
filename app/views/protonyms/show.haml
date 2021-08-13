@@ -55,10 +55,10 @@
             %tr
               %th Forms
               %td=@protonym.forms
-          -if @protonym.biogeographic_region?
+          -if @protonym.bioregion?
             %tr
-              %th Biogeographic region
-              %td=@protonym.biogeographic_region
+              %th Bioregion
+              %td=@protonym.bioregion
           -if @protonym.locality?
             %tr
               %th Locality

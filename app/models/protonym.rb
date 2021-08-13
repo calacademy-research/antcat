@@ -6,7 +6,7 @@ class Protonym < ApplicationRecord
   include CleanupAndConvertTaxtColumns
   include Trackable
 
-  BIOGEOGRAPHIC_REGIONS = [
+  BIOREGIONS = [
     NEARCTIC_REGION = 'Nearctic',
     NEOTROPIC_REGION = 'Neotropic',
     'Palearctic',
@@ -45,9 +45,9 @@ class Protonym < ApplicationRecord
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
 
-  validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
-  validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
-  validates :biogeographic_region, :forms, :locality, :gender_agreement_type,
+  validates :bioregion, inclusion: { in: BIOREGIONS, allow_nil: true }
+  validates :bioregion, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
+  validates :bioregion, :forms, :locality, :gender_agreement_type,
     absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
@@ -64,7 +64,7 @@ class Protonym < ApplicationRecord
 
   has_paper_trail
   strip_attributes only: [
-    :locality, :biogeographic_region, :forms, :gender_agreement_type,
+    :locality, :bioregion, :forms, :gender_agreement_type,
     :notes_taxt, :etymology_taxt
   ], replace_newlines: true
   strip_attributes only: [:primary_type_information_taxt, :secondary_type_information_taxt, :type_notes_taxt]

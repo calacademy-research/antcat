@@ -61,12 +61,12 @@
                 .small-max-width=protonym_form.text_field :forms
             %tr
               %td
-                =protonym_form.label :biogeographic_region do
-                  Biogeographic region
-                  =db_tooltip_icon :biogeographic_region, scope: :protonyms
+                =protonym_form.label :bioregion do
+                  Bioregion
+                  =db_tooltip_icon :bioregion, scope: :protonyms
               %td
                 .small-max-width
-                  =protonym_form.select :biogeographic_region, Protonym::BIOGEOGRAPHIC_REGIONS, include_blank: true
+                  =protonym_form.select :bioregion, Protonym::BIOREGIONS, include_blank: true
             %tr.space-under
               %td
                 =protonym_form.label :locality do

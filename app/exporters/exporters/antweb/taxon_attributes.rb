@@ -38,7 +38,7 @@ module Exporters
             fossil:                   taxon.protonym.fossil?,
             taxonomic_history_html:   export_history,
             reference_id:             taxon.authorship_reference.id,
-            bioregion:                taxon.protonym.biogeographic_region,
+            bioregion:                taxon.protonym.bioregion,
             country:                  taxon.protonym.locality,
             current_valid_rank:       taxon.class.to_s,
             hol_id:                   taxon.hol_id,
