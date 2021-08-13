@@ -21,20 +21,20 @@ module Exporters
             @_history_items ||= taxon.history_items_for_taxon
           end
 
-          def history_presenter
-            HistoryPresenter.new(history_items)
-          end
-
           def history_content
             tag.div do
               string = ''.html_safe
 
               history_presenter.grouped_items.each do |grouped_item|
-                string << tag.div(AddPeriodIfNecessary[AntwebFormatter.detax(grouped_item.taxt)])
+                string << tag.div(AntwebFormatter.detax(grouped_item.taxt))
               end
 
               string
             end
+          end
+
+          def history_presenter
+            HistoryPresenter.new(history_items)
           end
       end
     end

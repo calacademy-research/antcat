@@ -138,7 +138,7 @@
             -if user_is_at_least_helper?
               =render 'history_items/catalog_taxt_editor_template', history_item: history_item
             -else
-              =add_period_if_necessary Detax[history_item.to_taxt]
+              =Detax[history_item.to_taxt]
 
 -if taxon.junior_synonyms.exists?
   -name_of_obsoletes = taxon.decorate.name_of_obsoletes

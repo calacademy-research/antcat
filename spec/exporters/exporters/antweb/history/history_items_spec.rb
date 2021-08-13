@@ -22,7 +22,7 @@ describe Exporters::Antweb::History::HistoryItems, :relational_hi do
       end
 
       specify do
-        antweb_item_1 = "<div>Taxon: #{antweb_taxon_link(taxon)}.</div>"
+        antweb_item_1 = "<div>Taxon: #{antweb_taxon_link(taxon)}</div>"
         expect(described_class[taxon]).to eq(header + '<div>' + antweb_item_1 + '</div>')
       end
 
@@ -58,7 +58,7 @@ describe Exporters::Antweb::History::HistoryItems, :relational_hi do
         let!(:item_0) { create :history_item, :taxt, taxt: "Taxon: #{Taxt.tax(taxon.id)}", protonym: protonym }
 
         specify do
-          antweb_item_0 = "<div>Taxon: #{antweb_taxon_link(item_0.protonym.terminal_taxon)}.</div>"
+          antweb_item_0 = "<div>Taxon: #{antweb_taxon_link(item_0.protonym.terminal_taxon)}</div>"
           antweb_item_1 = "<div>#{antweb_reference_link(item_1.reference)}: #{item_1.pages} (#{item_1.text_value}).</div>"
 
           expect(described_class[taxon]).to eq(header + '<div>' + antweb_item_1 + antweb_item_0 + '</div>')
