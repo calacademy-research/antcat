@@ -5,16 +5,16 @@ require 'rails_helper'
 describe Taxa::CreateCombinationsController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:new, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:show, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxon_id: 1 })).to have_http_status :forbidden }
     end
   end
 
   describe "GET new", as: :editor do
     let(:taxon) { create :species }
 
-    specify { expect(get(:new, params: { taxa_id: taxon.id })).to render_template :new }
+    specify { expect(get(:new, params: { taxon_id: taxon.id })).to render_template :new }
   end
 
   describe "GET show", as: :editor do
@@ -22,12 +22,12 @@ describe Taxa::CreateCombinationsController do
     let(:new_parent) { create :genus }
 
     specify do
-      expect(get(:show, params: { taxa_id: taxon.id, new_parent_id: new_parent.id })).to render_template :show
+      expect(get(:show, params: { taxon_id: taxon.id, new_parent_id: new_parent.id })).to render_template :show
     end
 
     context 'when `new_parent_id` is missing' do
       specify do
-        expect(get(:show, params: { taxa_id: taxon.id })).to redirect_to action: :new
+        expect(get(:show, params: { taxon_id: taxon.id })).to redirect_to action: :new
         expect(response.request.flash[:alert]).to eq "Target must be specified."
       end
     end
@@ -39,7 +39,7 @@ describe Taxa::CreateCombinationsController do
     end
     let!(:new_parent) { create :genus, name_string: 'Atta' }
     let!(:target_name_string) { 'Atta mexicana' }
-    let!(:valid_params) { { taxa_id: taxon.id, new_parent_id: new_parent.id, species_epithet: 'mexicana' } }
+    let!(:valid_params) { { taxon_id: taxon.id, new_parent_id: new_parent.id, species_epithet: 'mexicana' } }
 
     it 'calls `Operations::CreateNewCombination`' do
       expect(Operations::CreateNewCombination).to receive(:new).with(

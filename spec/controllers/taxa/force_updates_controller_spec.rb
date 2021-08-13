@@ -5,15 +5,15 @@ require 'rails_helper'
 describe Taxa::ForceUpdatesController do
   describe "forbidden actions" do
     context "when signed in as an editor", as: :editor do
-      specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(put(:update, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:show, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(put(:update, params: { taxon_id: 1 })).to have_http_status :forbidden }
     end
   end
 
   describe "GET show", as: :superadmin do
     let(:taxon) { create :family }
 
-    specify { expect(get(:show, params: { taxa_id: taxon.id })).to render_template :show }
+    specify { expect(get(:show, params: { taxon_id: taxon.id })).to render_template :show }
   end
 
   describe "PUT update", as: :superadmin do
@@ -22,7 +22,7 @@ describe Taxa::ForceUpdatesController do
     context 'when edit summary is missing' do
       let(:params) do
         {
-          taxa_id: taxon.id,
+          taxon_id: taxon.id,
           taxon: { status: taxon.status }
         }
       end
@@ -38,7 +38,7 @@ describe Taxa::ForceUpdatesController do
       let(:new_subfamily) { create :subfamily }
       let(:params) do
         {
-          taxa_id: taxon.id,
+          taxon_id: taxon.id,
           edit_summary: 'Fix broken',
           taxon: {
             subfamily_id: new_subfamily.id

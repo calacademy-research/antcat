@@ -3,7 +3,7 @@
 module DatabaseScripts
   class SynonymsBelongingToTheSameProtonymAsItsCurrentTaxon < DatabaseScript
     def results
-      Taxon.synonyms.joins(:current_taxon).where("taxa.protonym_id = current_taxons_taxa.protonym_id").
+      Taxon.synonyms.joins(:current_taxon).where("taxa.protonym_id = current_taxa_taxa.protonym_id").
         includes(protonym: [:name], current_taxon: { protonym: [:name] })
     end
 

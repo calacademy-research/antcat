@@ -5,7 +5,7 @@ module DatabaseScripts
     def results
       Taxon.obsolete_combinations.
         joins(:current_taxon).
-        where(current_taxons_taxa: { status: Status::OBSOLETE_COMBINATION })
+        where(current_taxa_taxa: { status: Status::OBSOLETE_COMBINATION })
     end
 
     def render

@@ -29,7 +29,7 @@ class ReferenceSectionsController < ApplicationController
 
     if @reference_section.save
       @reference_section.create_activity Activity::CREATE, current_user, edit_summary: params[:edit_summary]
-      redirect_to edit_taxa_path(@reference_section.taxon), notice: "Successfully added reference section."
+      redirect_to edit_taxon_path(@reference_section.taxon), notice: "Successfully added reference section."
     else
       render :new
     end
@@ -79,7 +79,7 @@ class ReferenceSectionsController < ApplicationController
   private
 
     def find_taxon
-      Taxon.find(params[:taxa_id])
+      Taxon.find(params[:taxon_id])
     end
 
     def find_reference_section

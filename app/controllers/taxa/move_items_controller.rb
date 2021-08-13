@@ -29,7 +29,7 @@ module Taxa
 
       if Taxa::Operations::MoveItems[@to_taxon, reference_sections: reference_sections]
         @taxon.create_activity Activity::MOVE_ITEMS, current_user, parameters: { to_taxon_id: @to_taxon.id }
-        redirect_to taxa_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
+        redirect_to taxon_move_items_path(@taxon, to_taxon_id: @to_taxon.id),
           notice: "Successfully moved items. Items can be re-ordered at the taxon's edit page."
       else
         flash.now[:alert] = "Something went wrong... ?"
@@ -43,7 +43,7 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxa_id])
+        Taxon.find(params[:taxon_id])
       end
 
       def find_to_taxon

@@ -5,8 +5,8 @@ require 'rails_helper'
 describe Taxa::ConvertToSubspeciesController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:new, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxon_id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -16,11 +16,11 @@ describe Taxa::ConvertToSubspeciesController do
 
     it 'calls `Taxa::Operations::ConvertToSubspecies`' do
       expect(Taxa::Operations::ConvertToSubspecies).to receive(:new).with(species, new_species).and_call_original
-      post :create, params: { taxa_id: species.id, new_species_id: new_species.id }
+      post :create, params: { taxon_id: species.id, new_species_id: new_species.id }
     end
 
     it 'creates an activity' do
-      expect { post :create, params: { taxa_id: species.id, new_species_id: new_species.id } }.
+      expect { post :create, params: { taxon_id: species.id, new_species_id: new_species.id } }.
         to change { Activity.count }.by(1)
 
       activity = Activity.last

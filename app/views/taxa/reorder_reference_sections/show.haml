@@ -6,7 +6,7 @@
 
 .callout.medium-6.margin-bottom Drag and drop reference sections to reorder them.
 
-=form_with url: taxa_reorder_reference_sections_path, id: 'reorder-form' do |f|
+=form_with url: taxon_reorder_reference_sections_path, id: 'reorder-form' do |f|
   =f.hidden_field :new_order, value: @taxon.reference_sections.pluck(:id).join(','), id: 'new-order'
 
   %ol#sortable

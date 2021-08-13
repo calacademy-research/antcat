@@ -5,9 +5,9 @@ require 'rails_helper'
 describe ReferenceSectionsController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:new, params: { taxon_id: 1 })).to have_http_status :forbidden }
       specify { expect(get(:edit, params: { id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxon_id: 1 })).to have_http_status :forbidden }
       specify { expect(put(:update, params: { id: 1 })).to have_http_status :forbidden }
     end
 
@@ -28,7 +28,7 @@ describe ReferenceSectionsController do
 
     it 'creates a reference section' do
       expect do
-        post(:create, params: { taxa_id: taxon.id, reference_section: reference_section_params })
+        post(:create, params: { taxon_id: taxon.id, reference_section: reference_section_params })
       end.to change { ReferenceSection.count }.by(1)
 
       reference_section = ReferenceSection.last
@@ -39,7 +39,7 @@ describe ReferenceSectionsController do
 
     it 'creates a activity' do
       expect do
-        post(:create, params: { taxa_id: taxon.id, reference_section: reference_section_params, edit_summary: 'added' })
+        post(:create, params: { taxon_id: taxon.id, reference_section: reference_section_params, edit_summary: 'added' })
       end.to change { Activity.where(action: Activity::CREATE).count }.by(1)
 
       activity = Activity.last

@@ -4,7 +4,7 @@
     -if taxon.children.count > 50
       %p
         Too many children to show here.
-        =link_to "Show all children", taxa_children_path(taxon), class: "btn-normal btn-tiny"
+        =link_to "Show all children", taxon_children_path(taxon), class: "btn-normal btn-tiny"
     -else
       %ul#children-list
         -TaxonQuery.new(taxon.children).with_common_includes.order(status: :desc, name_cache: :asc).each do |child|

@@ -7,9 +7,9 @@ describe Taxa::SetSubgeneraController do
 
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(delete(:destroy, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:show, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(delete(:destroy, params: { taxon_id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -18,12 +18,12 @@ describe Taxa::SetSubgeneraController do
     let!(:subgenus) { create :subgenus, genus: taxon.genus }
 
     it "set the subgenus of the species" do
-      expect { post :create, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
+      expect { post :create, params: { taxon_id: taxon.id, subgenus_id: subgenus.id } }.
         to change { taxon.reload.subgenus }.from(nil).to(subgenus)
     end
 
     it 'creates an activity' do
-      expect { post :create, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
+      expect { post :create, params: { taxon_id: taxon.id, subgenus_id: subgenus.id } }.
         to change { Activity.where(action: Activity::SET_SUBGENUS, trackable: taxon).count }.by(1)
 
       activity = Activity.last
@@ -40,12 +40,12 @@ describe Taxa::SetSubgeneraController do
     let!(:taxon) { create :species, genus: genus, subgenus: subgenus }
 
     it "removes the subgenus from the species" do
-      expect { delete :destroy, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
+      expect { delete :destroy, params: { taxon_id: taxon.id, subgenus_id: subgenus.id } }.
         to change { taxon.reload.subgenus }.from(subgenus).to(nil)
     end
 
     it 'creates an activity' do
-      expect { delete :destroy, params: { taxa_id: taxon.id, subgenus_id: subgenus.id } }.
+      expect { delete :destroy, params: { taxon_id: taxon.id, subgenus_id: subgenus.id } }.
         to change { Activity.where(action: Activity::SET_SUBGENUS, trackable: taxon).count }.by(1)
 
       activity = Activity.last

@@ -57,7 +57,7 @@ module Taxa
     private
 
       def find_taxon
-        Species.find(params[:taxa_id])
+        Species.find(params[:taxon_id])
       end
 
       def find_new_species

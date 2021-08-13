@@ -11,7 +11,7 @@ end
 
 crumb :edit_taxon do |taxon|
   if taxon
-    link "Edit", edit_taxa_path(taxon)
+    link "Edit", edit_taxon_path(taxon)
     parent taxon
   else
     link "[deleted]"
@@ -45,7 +45,7 @@ crumb :force_update_taxon_database_record do |taxon|
 end
 
 crumb :move_taxon_items do |taxon|
-  link "Move items", new_taxa_move_items_path(taxon)
+  link "Move items", new_taxon_move_items_path(taxon)
   parent :edit_taxon, taxon
 end
 
@@ -55,11 +55,11 @@ crumb :move_taxon_items_select_target do |taxon|
 end
 
 crumb :move_taxon_items_to do |taxon, to_taxon|
-  link "to #{to_taxon.name_with_fossil}".html_safe, taxa_move_items_path(taxon, to_taxon_id: to_taxon.id)
+  link "to #{to_taxon.name_with_fossil}".html_safe, taxon_move_items_path(taxon, to_taxon_id: to_taxon.id)
   parent :move_taxon_items, taxon
 end
 
 crumb :reorder_reference_sections do |taxon|
-  link "Reorder reference sections", taxa_reorder_reference_sections_path(taxon)
+  link "Reorder reference sections", taxon_reorder_reference_sections_path(taxon)
   parent :edit_taxon, taxon
 end

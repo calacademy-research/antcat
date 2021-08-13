@@ -5,9 +5,9 @@ require 'rails_helper'
 describe Taxa::MoveItemsController do
   describe "forbidden actions" do
     context "when signed in as a user", as: :user do
-      specify { expect(get(:new, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(get(:show, params: { taxa_id: 1 })).to have_http_status :forbidden }
-      specify { expect(post(:create, params: { taxa_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:new, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(get(:show, params: { taxon_id: 1 })).to have_http_status :forbidden }
+      specify { expect(post(:create, params: { taxon_id: 1 })).to have_http_status :forbidden }
     end
   end
 
@@ -23,7 +23,7 @@ describe Taxa::MoveItemsController do
       ).and_call_original
 
       params = {
-        taxa_id: taxon.id,
+        taxon_id: taxon.id,
         to_taxon_id: to_taxon.id,
         reference_section_ids: [reference_section.id]
       }
@@ -34,7 +34,7 @@ describe Taxa::MoveItemsController do
     it 'creates an activity' do
       expect do
         post :create,
-          params: { taxa_id: taxon.id, to_taxon_id: to_taxon.id, reference_section_ids: [reference_section.id] }
+          params: { taxon_id: taxon.id, to_taxon_id: to_taxon.id, reference_section_ids: [reference_section.id] }
       end.to change { Activity.where(action: Activity::MOVE_ITEMS, trackable: taxon).count }.by(1)
 
       activity = Activity.last

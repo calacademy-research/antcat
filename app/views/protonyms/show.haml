@@ -147,7 +147,7 @@
               %td
                 =taxon.decorate.link_to_antwiki
                 %br
-                =link_to "Show children", taxa_children_path(taxon), class: "btn-normal btn-tiny"
+                =link_to "Show children", taxon_children_path(taxon), class: "btn-normal btn-tiny"
 
 -if current_user
   -content_for :javascripts do

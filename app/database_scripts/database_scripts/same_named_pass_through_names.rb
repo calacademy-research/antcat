@@ -5,7 +5,7 @@ module DatabaseScripts
     def results
       TaxonQuery.new.pass_through_names.
         joins(:current_taxon).
-        where("current_taxons_taxa.name_cache = taxa.name_cache").
+        where("current_taxa_taxa.name_cache = taxa.name_cache").
         includes(
           :name,
           current_taxon: [:name, { protonym: [:name, { authorship: :reference }] }],

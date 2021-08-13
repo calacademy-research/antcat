@@ -4,7 +4,7 @@
 -if current_user
   -unless @check_what_links_heres
     -content_for :breadcrumbs_right do
-      =link_to "Check 'What Links Here's (slow)", taxa_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
+      =link_to "Check 'What Links Here's (slow)", taxon_children_path(@taxon, check_what_links_heres: 'yes'), class: "btn-normal"
 
 %table
   %caption
@@ -31,7 +31,7 @@
             -unless Taxon.is_a?(Infrasubspecies)
               -# TODO: N+1 query.
               -if child.children.exists?
-                =link_to "Children", taxa_children_path(child), class: 'btn-normal btn-tiny'
+                =link_to "Children", taxon_children_path(child), class: 'btn-normal btn-tiny'
           %td.shrink
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'
             -if @check_what_links_heres

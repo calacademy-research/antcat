@@ -17,7 +17,7 @@
     -unless @create_combination_policy.allowed?
       =render 'shared/operation_not_supported', callout_title: 'Cannot create combination', errors: @create_combination_policy.errors
     -else
-      =form_with url: taxa_create_combination_path, method: :get do |f|
+      =form_with url: taxon_create_combination_path, method: :get do |f|
         %table.unstriped
           %tr
             %td Create new combination for

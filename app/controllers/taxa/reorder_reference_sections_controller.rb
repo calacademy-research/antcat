@@ -13,7 +13,7 @@ module Taxa
 
       if Taxa::Operations::ReorderReferenceSections[@taxon, new_order]
         @taxon.create_activity :reorder_reference_sections, current_user
-        redirect_to taxa_reorder_reference_sections_path(@taxon), notice: 'Reference sections were successfully reordered.'
+        redirect_to taxon_reorder_reference_sections_path(@taxon), notice: 'Reference sections were successfully reordered.'
       else
         flash.now[:alert] = @taxon.errors.full_messages.to_sentence
         render :show
@@ -23,7 +23,7 @@ module Taxa
     private
 
       def find_taxon
-        Taxon.find(params[:taxa_id])
+        Taxon.find(params[:taxon_id])
       end
 
       def new_order
