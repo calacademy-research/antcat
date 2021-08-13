@@ -58,8 +58,9 @@ Layout/LineEndStringConcatenationIndentation:
   Enabled: false
 
 Layout/LineLength:
-  Max: 140
+  Max: 130
   Exclude:
+    - 'app/controllers/quick_and_dirty_fixes_controller.rb'
     - 'app/database_scripts/database_scripts/**/*'
 
 Layout/MultilineHashKeyLineBreaks:

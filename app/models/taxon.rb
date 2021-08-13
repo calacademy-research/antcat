@@ -89,7 +89,13 @@ class Taxon < ApplicationRecord
     text(:year_as_string) { authorship_reference.year.to_s }
   end
 
-  [Status::SYNONYM, Status::HOMONYM, Status::UNIDENTIFIABLE, Status::UNAVAILABLE, Status::EXCLUDED_FROM_FORMICIDAE].each do |status|
+  [
+    Status::SYNONYM,
+    Status::HOMONYM,
+    Status::UNIDENTIFIABLE,
+    Status::UNAVAILABLE,
+    Status::EXCLUDED_FROM_FORMICIDAE
+  ].each do |status|
     define_method "#{status.downcase.tr(' ', '_')}?" do
       self.status == status
     end

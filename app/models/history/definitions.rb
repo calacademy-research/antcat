@@ -304,7 +304,11 @@ module History
                 citation: (" (#{o.citation})" if o.citation),
                 trailers: (
                   # TODO: Hmm.
-                  trailer_types = [JUNIOR_PRIMARY_HOMONYM_OF, JUNIOR_SECONDARY_HOMONYM_OF, JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS]
+                  trailer_types = [
+                    JUNIOR_PRIMARY_HOMONYM_OF,
+                    JUNIOR_SECONDARY_HOMONYM_OF,
+                    JUNIOR_PRIMARY_HOMONYM_OF_HARDCODED_GENUS
+                  ]
                   if (items = o.object_taxon.protonym_history_items.where(type: trailer_types)).present?
                     " #{items.map(&:to_taxt).join('; ')}"
                   end

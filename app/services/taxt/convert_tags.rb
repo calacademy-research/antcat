@@ -4,8 +4,10 @@ module Taxt
   class ConvertTags
     include Service
 
-    TAXON_TO_PROTONYM_REGEX = /\{(?:#{Taxt::TAXON_TAGS.join('|')}) (?<taxon_id>\d+)(?<to_tag>(?:#{Taxt::PROTONYM_TAGS.join('|')}))\}/
-    PROTONYM_TO_TAXON_REGEX = /\{(?:#{Taxt::PROTONYM_TAGS.join('|')}) (?<protonym_id>\d+)(?<to_tag>(?:#{Taxt::TAXON_TAGS.join('|')}))\}/
+    TAXON_TO_PROTONYM_REGEX =
+      /\{(?:#{Taxt::TAXON_TAGS.join('|')}) (?<taxon_id>\d+)(?<to_tag>(?:#{Taxt::PROTONYM_TAGS.join('|')}))\}/
+    PROTONYM_TO_TAXON_REGEX =
+      /\{(?:#{Taxt::PROTONYM_TAGS.join('|')}) (?<protonym_id>\d+)(?<to_tag>(?:#{Taxt::TAXON_TAGS.join('|')}))\}/
 
     def initialize taxt
       @taxt = taxt.try(:dup)

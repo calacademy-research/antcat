@@ -7,11 +7,11 @@ class ReferenceSectionsController < ApplicationController
   before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
-    @reference_sections = ReferenceSection.all.joins(:taxon)
-    @reference_sections = @reference_sections.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
-    @reference_sections = @reference_sections.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
-    @reference_sections = @reference_sections.search(params[:q], params[:search_type]) if params[:q].present?
-    @reference_sections = @reference_sections.includes(taxon: [:name]).paginate(page: params[:page], per_page: per_page)
+    scope = ReferenceSection.all.joins(:taxon)
+    scope = scope.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    scope = scope.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
+    scope = scope.search(params[:q], params[:search_type]) if params[:q].present?
+    @reference_sections = scope.includes(taxon: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
   def show
@@ -96,7 +96,10 @@ class ReferenceSectionsController < ApplicationController
 
     def render_json reference_section
       render json: {
-        content: render_to_string(partial: 'reference_sections/taxt_editor_template', locals: { reference_section: reference_section }),
+        content: render_to_string(
+          partial: 'reference_sections/taxt_editor_template',
+          locals: { reference_section: reference_section }
+        ),
         error: reference_section.errors.full_messages.to_sentence
       }
     end

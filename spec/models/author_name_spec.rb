@@ -51,7 +51,8 @@ describe AuthorName do
       end
 
       it 'only allows no comma or a single comma (excluding allowed suffixes)' do
-        error_message = "can only contain a single comma (excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
+        error_message = "can only contain a single comma " \
+          "(excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
 
         is_expected.to_not allow_value('Author, A., Pizza').for(:name).with_message(error_message)
       end

@@ -34,22 +34,23 @@ class Protonym < ApplicationRecord
   belongs_to :name, dependent: :destroy
   belongs_to :type_name, optional: true, dependent: :destroy
 
-  has_many :taxa, class_name: 'Taxon', dependent: :restrict_with_error
+  with_options class_name: 'Taxon' do
+    has_many :taxa, dependent: :restrict_with_error
+    has_one :original_combination, -> { original_combinations }
+    has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }
+    has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }
+    has_many :non_terminal_taxa, -> { where.not(status: Status::TERMINAL_STATUSES) }
+  end
   has_many :history_items, -> { order(:position) }, dependent: :restrict_with_error
   has_many :history_items_as_object, class_name: 'HistoryItem', foreign_key: :object_protonym_id, dependent: false
   has_one :authorship_reference, through: :authorship, source: :reference
-  has_one :original_combination, -> { original_combinations }, class_name: 'Taxon'
-  has_one :terminal_taxon, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
-  has_many :terminal_taxa, -> { where(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
-  has_many :non_terminal_taxa, -> { where.not(status: Status::TERMINAL_STATUSES) }, class_name: 'Taxon'
 
   validates :biogeographic_region, inclusion: { in: BIOGEOGRAPHIC_REGIONS, allow_nil: true }
   validates :biogeographic_region, absence: { message: "cannot be set for fossil protonyms" }, if: -> { fossil? }
-  validates :biogeographic_region, :forms, :locality,
-    absence: { message: "can only be set for species-group protonyms" },
+  validates :biogeographic_region, :forms, :locality, :gender_agreement_type,
+    absence: { message: "can only be set for species-group names" },
     unless: -> { species_group_name? }
   validates :gender_agreement_type, inclusion: { in: GENDER_AGREEMENT_TYPES, allow_nil: true }
-  validates :gender_agreement_type, absence: { message: "can only be set for species-group names" }, unless: -> { species_group_name? }
   validates :ichnotaxon, absence: { message: "can only be set for fossil protonyms" }, unless: -> { fossil? }
 
   before_validation :cleanup_and_convert_taxts

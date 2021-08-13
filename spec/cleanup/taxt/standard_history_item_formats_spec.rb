@@ -370,7 +370,8 @@ describe Taxt::StandardHistoryItemFormats do
       let(:taxt) { "[First available use of #{Taxt.taxac(1)}; unavailable (infrasubspecific) name.]" }
 
       specify do
-        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
+        expect(service.identified_type).
+          to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME
       end
     end
 
@@ -380,7 +381,8 @@ describe Taxt::StandardHistoryItemFormats do
       end
 
       specify do
-        expect(service.identified_type).to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
+        expect(service.identified_type).
+          to eq described_class::FIRST_AVAILABLE_USE_OF_UNAVAILABLE_INFRASUBSPECIFIC_NAME__WITH_SOURCE
       end
     end
 

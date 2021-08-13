@@ -49,16 +49,13 @@ Feature: Compare revisions
     And I follow "History"
     Then I should see "This item does not have any previous revisions"
 
-  @skip_ci @javascript
+  @javascript
   Scenario: Comparing revisions with intermediate revisions
-    Given there is a genus protonym "Atta"
-    And I go to the protonym page for "Atta"
-    And I add a history item "initial version"
+    Given there is a history item "initial version"
     And I update the most recent history item to say "second version"
     And I update the most recent history item to say "last version"
 
-    When I go to the activity feed
-    And I follow the first linked history item
+    When I go to the page of the most recent history item
     And I follow "History"
     And I press "Compare selected revisions"
     Then I should see "second version" within the left side of the diff

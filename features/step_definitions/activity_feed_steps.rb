@@ -25,10 +25,6 @@ Given("there is a {string} journal activity by {string}") do |action, name|
   create :activity, action: action.to_sym, trackable: journal, user: user
 end
 
-When("I click on Show more") do
-  find("a", text: "Show more").click
-end
-
 Given("activities are paginated with {int} per page") do |per_page|
   Activity.per_page = per_page.to_i
 end

@@ -166,7 +166,7 @@ describe Exporters::Antweb::TaxonAttributes do
             # History items.
             %(<p><b>Taxonomic history</b></p>) +
             %(<div>) +
-              %(<div>Taxon: #{antweb_taxon_link(type_species)}.</div>) +
+              %(<div>Taxon: #{antweb_taxon_link(type_species)}</div>) +
             %(</div>) +
 
             # Reference sections.

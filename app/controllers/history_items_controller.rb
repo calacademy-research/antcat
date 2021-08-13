@@ -7,13 +7,13 @@ class HistoryItemsController < ApplicationController
   before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
-    @history_items = HistoryItem.left_outer_joins(:terminal_taxa)
-    @history_items = @history_items.where(type: params[:type]) if params[:type].present?
-    @history_items = @history_items.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
-    @history_items = @history_items.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
-    @history_items = HistoryItemQuery.new(@history_items).search(params[:q], params[:search_type]) if params[:q].present?
-    @history_items = HistoryItemQuery.new(@history_items).exclude_search(params[:nq], params[:search_type]) if params[:nq].present?
-    @history_items = @history_items.distinct.includes(protonym: [:name]).paginate(page: params[:page], per_page: per_page)
+    scope = HistoryItem.left_outer_joins(:terminal_taxa)
+    scope = scope.where(type: params[:type]) if params[:type].present?
+    scope = scope.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
+    scope = scope.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
+    scope = HistoryItemQuery.new(scope).search(params[:q], params[:search_type]) if params[:q].present?
+    scope = HistoryItemQuery.new(scope).exclude_search(params[:nq], params[:search_type]) if params[:nq].present?
+    @history_items = scope.distinct.includes(protonym: [:name]).paginate(page: params[:page], per_page: per_page)
   end
 
   def show
@@ -120,7 +120,10 @@ class HistoryItemsController < ApplicationController
     # TODO: "partial" is very "hmm". Pass proper JSON or ignore until we don't need this at all.
     def render_json history_item, partial:
       render json: {
-        content: render_to_string(partial: partial, locals: { history_item: history_item }),
+        content: render_to_string(
+          partial: partial,
+          locals: { history_item: history_item }
+        ),
         error: history_item.errors.full_messages.to_sentence
       }
     end
