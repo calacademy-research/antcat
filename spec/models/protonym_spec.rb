@@ -42,7 +42,7 @@ describe Protonym do
             to change { protonym.valid? }.to(false)
 
           expect(protonym.errors.where(:biogeographic_region).map(&:message)).
-            to include("can only be set for species-group protonyms")
+            to include("can only be set for species-group names")
         end
       end
     end
@@ -56,7 +56,7 @@ describe Protonym do
             to change { protonym.valid? }.to(false)
 
           expect(protonym.errors.where(:forms).map(&:message)).
-            to include("can only be set for species-group protonyms")
+            to include("can only be set for species-group names")
         end
       end
     end
@@ -70,7 +70,7 @@ describe Protonym do
             to change { protonym.valid? }.to(false)
 
           expect(protonym.errors.where(:locality).map(&:message)).
-            to include("can only be set for species-group protonyms")
+            to include("can only be set for species-group names")
         end
       end
     end
