@@ -8,7 +8,6 @@ if Rails.env.development? || Rails.env.test?
     task relational_history_items: [:environment] do
       Seed::RelationalHistoryItems.call
     end
-
     task hi: :relational_history_items
   end
 end

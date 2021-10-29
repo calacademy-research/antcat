@@ -8,3 +8,4 @@ namespace :antcat do
     AntCat::InvalidRecords.call
   end
 end
+task 'ac:ir': :'antcat:invalid_records' # Shortcut.

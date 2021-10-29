@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 desc "List interesting tasks and commands (AntCat, AntWeb, Solr, etc.)"
-task antcat: :environment do
+task :antcat do
   puts "### Rake tasks:"
   prefixes = %w[
     antcat:
@@ -52,5 +52,4 @@ task antcat: :environment do
     GUARD=rubocop          guard
   STR
 end
-
-task ac: :antcat
+task ac: :antcat # Shortcut.

@@ -120,9 +120,9 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Enabled: false
   Exclude:
-    - 'spec/**/*'
-    - 'config/routes.rb'
     - 'config/environments/**/*'
+    - 'config/routes.rb'
+    - 'spec/**/*'
 
 Metrics/ClassLength:
   Enabled: false
@@ -207,6 +207,10 @@ Rails/OutputSafety:
   Enabled: false
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
+
+# Disabled because not all tasks require `:environment`.
+Rails/RakeEnvironment:
+  Enabled: false
 
 # Disabled because it does not consider string constants to be strings.
 Rails/ReflectionClassName:
