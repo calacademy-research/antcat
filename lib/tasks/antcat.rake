@@ -18,10 +18,18 @@ task :antcat do
 
   puts <<~STR
     ### Other commands:
+    brakeman
+    bundle audit check --update
     cucumber
+      PRINT_FEATURE_NAME=y   cucumber
+    guard
+      GUARD=all              guard
+      GUARD=spec             guard
+      GUARD=rubocop          guard
     haml-lint
     rspec
-    rspec --tag=relational_hi
+      PROFILE_EXAMPLES=y     rspec
+      rspec --tag=relational_hi
     rubocop
 
   STR
@@ -40,16 +48,6 @@ task :antcat do
     NO_REF_CACHE=y         rails s       # Don't show cached `Reference`s (always render).
     SIMULATE_PRODUCTION=y  rails s       # Ctrl+F for more info.
     SIMULATE_STAGING=y     rails s
-
-  STR
-
-  puts <<~STR
-    ### ENV variables (for specific commands):
-    PRINT_FEATURE_NAME=y   cucumber
-    PROFILE_EXAMPLES=y     rspec
-    GUARD=all              guard
-    GUARD=spec             guard
-    GUARD=rubocop          guard
   STR
 end
 task ac: :antcat # Shortcut.
