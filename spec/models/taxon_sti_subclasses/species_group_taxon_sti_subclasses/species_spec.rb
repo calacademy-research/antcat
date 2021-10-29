@@ -26,32 +26,6 @@ describe Species do
     let!(:genus) { create :genus, subfamily: subfamily }
     let!(:species) { create :species, subfamily: subfamily, genus: genus }
 
-    it "assigns the subfamily of its descendants" do
-      # TODO: Commented out (hmm) because it's not supported and will raise (since subspecies names are not updated).
-      # subspecies = create :subspecies, species: species, genus: genus, subfamily: subfamily
-      new_genus = create :genus
-
-      expect(new_genus.subfamily).to_not eq subfamily
-
-      # Test initial.
-      expect(species.reload.subfamily).to eq subfamily
-      expect(species.reload.genus).to eq genus
-      # TODO: Commented out, see above.
-      # expect(subspecies.reload.genus).to eq genus
-      # expect(subspecies.reload.subfamily).to eq subfamily
-
-      # Act.
-      species.update_parent new_genus
-      species.save!
-
-      # Assert.
-      expect(species.reload.subfamily).to eq new_genus.subfamily
-      expect(species.reload.genus).to eq new_genus
-      # TODO: Commented out, see above.
-      # expect(subspecies.reload.genus).to eq new_genus
-      # expect(subspecies.reload.subfamily).to eq new_genus.subfamily
-    end
-
     describe "updating the name" do
       let(:species) { create :species, name_string: 'Atta niger' }
       let(:new_parent) { create :genus, name_string: 'Eciton' }
