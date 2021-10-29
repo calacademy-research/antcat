@@ -3,8 +3,8 @@
 class Genus < GenusGroupTaxon
   belongs_to :tribe, optional: true
 
-  # TODO: Probably rename.
-  has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
+  has_many :species_group_children, -> { where(type: Rank::SPECIES_GROUP_NAMES) },
+    class_name: 'Taxon', dependent: :restrict_with_error
   has_many :species_without_subgenus, -> { without_subgenus }, class_name: Rank::SPECIES
 
   with_options dependent: :restrict_with_error do

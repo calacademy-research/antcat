@@ -7,7 +7,19 @@ describe Genus do
     it { is_expected.to have_many(:species).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subspecies).dependent(:restrict_with_error) }
     it { is_expected.to have_many(:subgenera).dependent(:restrict_with_error) }
-    it { is_expected.to have_many(:descendants).dependent(:restrict_with_error) }
+    it { is_expected.to have_many(:species_group_children).dependent(:restrict_with_error) }
+
+    describe "#species_group_children" do
+      let!(:genus) { create :genus }
+
+      let!(:species) { create :species, genus: genus }
+      let!(:subspecies) { create :subspecies, genus: genus, species: species }
+      let!(:infrasubspecies) { create :infrasubspecies, genus: genus, species: species, subspecies: subspecies }
+
+      it "returns all species, subspecies and infrasubspecies of the genus" do
+        expect(genus.species_group_children).to match_array [species, subspecies, infrasubspecies]
+      end
+    end
   end
 
   describe 'validations' do
@@ -16,17 +28,6 @@ describe Genus do
     it { is_expected.to validate_absence_of(:subgenus_id) }
     it { is_expected.to validate_absence_of(:species_id) }
     it { is_expected.to validate_absence_of(:subspecies_id) }
-  end
-
-  describe "#descendants" do
-    let!(:genus) { create :genus }
-    let!(:species) { create :species, genus: genus }
-    let!(:subgenus) { create :subgenus, genus: genus }
-    let!(:subspecies) { create :subspecies, genus: genus, species: species }
-
-    it "returns all species, subspecies and subgenera of the genus" do
-      expect(genus.descendants).to match_array [species, subgenus, subspecies]
-    end
   end
 
   describe "scopes" do
