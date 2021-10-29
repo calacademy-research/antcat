@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'rails', '6.1.4'
+gem 'rails', '6.1.4.1'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -37,7 +37,6 @@ gem 'ledermann-rails-settings'
 gem 'newrelic_rpm'
 gem 'paperclip', '5.3.0'
 gem 'paper_trail', '~> 11.0'
-gem 'psych', '< 4' # Locked due to https://github.com/ruby/psych/pull/488
 gem 'rails-observers'
 gem 'redcarpet'
 gem 'request_store'
@@ -66,7 +65,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.19.0', require: false
+  gem 'rubocop', '~> 1.22.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'
@@ -75,7 +74,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'apparition'
+  # TODO: To fix `Unexpected inner loop exception`, see https://github.com/twalpole/apparition/issues/81
+  gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'cucumber-rails', require: false

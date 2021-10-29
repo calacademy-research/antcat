@@ -86,6 +86,9 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
 
+Lint/AmbiguousOperatorPrecedence:
+  Enabled: false
+
 Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/**/*'
@@ -104,6 +107,10 @@ Lint/EmptyBlock:
 
 Lint/HeredocMethodCallPosition:
   Enabled: true
+
+# Disabled because it does not handle `.rake` files.
+Lint/RequireRelativeSelfPath:
+  Enabled: false
 
 Lint/UselessAccessModifier:
   MethodCreatingMethods:
@@ -195,6 +202,10 @@ Rails/EnvironmentVariableAccess:
 Rails/FilePath:
   Exclude:
     - 'config/environments/development.rb'
+
+# TODO: Check if we want to enable.
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
 
 Rails/InverseOf:
   Enabled: false
