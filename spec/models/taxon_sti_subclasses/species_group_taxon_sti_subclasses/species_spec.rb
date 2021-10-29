@@ -21,17 +21,6 @@ describe Species do
     it { is_expected.to validate_absence_of(:subspecies_id) }
   end
 
-  describe "#children" do
-    it "returns the subspecies" do
-      species = create :species
-      robusta = create :subspecies, species: species
-      saltensis = create :subspecies, species: species
-
-      expect(species.subspecies).to match_array [robusta, saltensis]
-      expect(species.children).to eq species.subspecies
-    end
-  end
-
   describe "#update_parent" do
     let!(:subfamily) { create :subfamily }
     let!(:genus) { create :genus, subfamily: subfamily }

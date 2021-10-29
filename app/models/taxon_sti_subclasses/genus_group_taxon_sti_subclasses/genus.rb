@@ -3,8 +3,7 @@
 class Genus < GenusGroupTaxon
   belongs_to :tribe, optional: true
 
-  # TODO: Maybe rename to `children` after investigating if we want to keep the methods
-  # currently named `#children` (or rename them to `#direct_children`).
+  # TODO: Probably rename.
   has_many :descendants, class_name: 'Taxon', dependent: :restrict_with_error
   has_many :species_without_subgenus, -> { without_subgenus }, class_name: Rank::SPECIES
 

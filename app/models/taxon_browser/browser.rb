@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# This class is responsibe for preparing all tabs for `_taxon_browser.haml`.
-
 module TaxonBrowser
   class Browser
     attr_reader :view
@@ -46,24 +44,20 @@ module TaxonBrowser
         tabs << extra_tab if extra_tab
       end
 
-      # Follows the "main progression", which from the lowest rank and up is:
-      # Subspecies -> Species -> Genus -> Tribe -> Subfamily -> Family.
-      # See https://github.com/calacademy-research/antcat/wiki/For-developers
       def taxa_for_tabs
-        # We do not want to include all ranks in the tabs.
         taxon_and_ancestors.reject do |taxon|
           # Don't show [subspecies in] species tab unless the species has subspecies.
-          (taxon.is_a?(Species) && !taxon.children.exists?) ||
+          (taxon.is_a?(Species) && !taxon.immediate_children.exists?) ||
 
             # Show "Camponotus > Componotus subgenera" instead of
             # "Camponotus > Camponotus (Myrmentoma) species > Componotus subgenera"
             # when a subgenus is selected.
             taxon.is_a?(Subgenus) && @taxon.is_a?(Subgenus) ||
 
-            # Never show the [children of] subtribe tab (has no children).
+            # Never show the [immediate children of] subtribe tab (has no immediate children).
             taxon.is_a?(Subtribe) ||
 
-            # Never show the [children of] subtribe tab (has no children).
+            # Never show the [immediate children of] subtribe tab (has no immediate children).
             taxon.is_a?(Infrasubspecies)
         end
       end

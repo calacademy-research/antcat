@@ -26,11 +26,11 @@ class Subspecies < SpeciesGroupTaxon
     self.parent = new_parent
   end
 
-  def children
+  def immediate_children
     infrasubspecies
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "infrasubspecies"
   end
 

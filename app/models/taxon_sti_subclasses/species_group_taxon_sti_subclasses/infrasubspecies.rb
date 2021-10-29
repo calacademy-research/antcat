@@ -25,7 +25,7 @@ class Infrasubspecies < SpeciesGroupTaxon
     raise "cannot update parent of infrasubspecies"
   end
 
-  def children
+  def immediate_children
     Taxon.none
   end
 end

@@ -51,17 +51,6 @@ describe Genus do
     end
   end
 
-  describe "#children" do
-    it "returns the species" do
-      genus = create :genus
-      species = create :species, genus: genus
-      other_species = create :species, genus: genus
-
-      expect(genus.species).to match_array [species, other_species]
-      expect(genus.children).to eq genus.species
-    end
-  end
-
   describe "#parent" do
     context "when genus has no subfamily" do
       let!(:genus) { create :genus, subfamily: nil, tribe: nil }

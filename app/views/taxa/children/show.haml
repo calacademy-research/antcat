@@ -18,7 +18,7 @@
     %th
     %th
   %tbody
-    -if @taxon.children.empty?
+    -if @children.empty?
       %tr
         %td{colspan: 5} Found no immediate children.
     -else
@@ -29,8 +29,7 @@
           %td=child.decorate.expanded_status
           %td.shrink
             -unless Taxon.is_a?(Infrasubspecies)
-              -# TODO: N+1 query.
-              -if child.children.exists?
+              -if child.immediate_children.exists?
                 =link_to "Children", taxon_children_path(child), class: 'btn-normal btn-tiny'
           %td.shrink
             =link_to 'What Links Here', taxon_what_links_here_path(child), class: 'btn-normal btn-tiny'

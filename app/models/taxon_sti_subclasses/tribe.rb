@@ -24,11 +24,11 @@ class Tribe < Taxon
     raise "cannot update parent of tribes"
   end
 
-  def children
+  def immediate_children
     genera
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "genera"
   end
 end

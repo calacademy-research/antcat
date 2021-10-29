@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# A `TaxonTab` requires a taxon for which `#children` returns something.
+# A `TaxonTab` requires a taxon for which `#immediate_children` returns something.
 
 module TaxonBrowser
   module Tabs
@@ -9,7 +9,7 @@ module TaxonBrowser
 
       def initialize tab_taxon, taxon_browser
         @tab_taxon = tab_taxon
-        super tab_taxon.children, taxon_browser
+        super tab_taxon.immediate_children, taxon_browser
       end
 
       def id
@@ -18,7 +18,7 @@ module TaxonBrowser
 
       def title
         return tab_taxon.name_with_fossil if use_epithet_as_title?
-        "#{tab_taxon.name_with_fossil} #{tab_taxon.childrens_rank_in_words}".html_safe
+        "#{tab_taxon.name_with_fossil} #{tab_taxon.immediate_children_rank}".html_safe
       end
 
       def notify_about_no_valid_taxa?

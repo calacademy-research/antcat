@@ -39,11 +39,11 @@ class Species < SpeciesGroupTaxon
     update_descendants
   end
 
-  def children
+  def immediate_children
     subspecies
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "subspecies"
   end
 
