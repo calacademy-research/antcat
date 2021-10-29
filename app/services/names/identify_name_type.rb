@@ -39,7 +39,7 @@ module Names
       end
 
       def words_without_subgenus
-        @_words_without_subgenus ||= words.reject { |word| word =~ /^\(.+?\)$/ }
+        @_words_without_subgenus ||= words.grep_v(/^\(.+?\)$/)
       end
 
       def countable_words
