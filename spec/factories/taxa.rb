@@ -11,7 +11,7 @@ FactoryBot.define do
 
     before(:create) do |taxon, evaluator|
       if evaluator.name_string
-        taxon.name.name = evaluator.name_string
+        taxon.name = taxon.name_class.new(name: evaluator.name_string)
       end
     end
 
