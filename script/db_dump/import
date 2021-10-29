@@ -18,6 +18,8 @@ echo "*** Executing $0"
 db_dump_path="${1:-}"
 [ -z "${db_dump_path}" ] && echo "missing arg for db dump file" && exit 1
 
+# ---
+
 # To fix:
 #   ERROR 3167 (HY000) at line 17: The 'INFORMATION_SCHEMA.SESSION_VARIABLES'
 #   feature is disabled; see the documentation for 'show_compatibility_56'
@@ -26,16 +28,32 @@ set +e
 echo 'SET GLOBAL show_compatibility_56 = ON;' | RAILS_ENV=development bundle exec rails db -p
 set -e
 
-# Import.
-if ! command -v pv &> /dev/null
-then
-  echo "pv could not be found - install for an optional progress bar"
-  zcat "$db_dump_path" | RAILS_ENV=development bundle exec rails db -p
-else
-  zcat "$db_dump_path" | pv -cN zcat | RAILS_ENV=development bundle exec rails db -p
+# ---
+
+cmd="zcat $db_dump_path"
+
+if command -v pv &> /dev/null; then
+  cmd+=" | pv -cN zcat"
 fi
 
-# Set environment because `SELECT * FROM ar_internal_metadata;` is set to "production" in exported db dumps.
-RAILS_ENV=development bundle exec rake db:environment:set
+if [ "${WITH_PAPERTRAIL:-}" != "y" ]; then
+  echo "Skipping PaperTrail versions (use WITH_PAPERTRAIL=y to include them)"
+  cmd+=" | sed '/INSERT INTO \`versions\`/d'"
+fi
+
+# Set environment because `SELECT * FROM ar_internal_metadata;` is set to "production"
+# in exported db dumps. Same as: RAILS_ENV=development bundle exec rake db:environment:set
+cmd+=$(cat <<'EOF'
+ | sed 's/\(INSERT INTO `ar_internal_metadata` VALUES ('\''environment'"','"'\)production'"'"'/\1development'"'"'/g'
+EOF
+)
+
+cmd+=' | RAILS_ENV=development bundle exec rails db -p'
+
+echo "Executing: ${cmd}"
+
+eval $cmd
+
+# ---
 
 echo "Import done."
