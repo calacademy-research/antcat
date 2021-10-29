@@ -21,7 +21,7 @@ module Catalog
       def taxa taxon
         case taxon
         when SpeciesGroupTaxon then [taxon]
-        when Genus             then with_includes(taxon.descendants)
+        when Genus             then with_includes(taxon.species_group_children)
         end
       end
 

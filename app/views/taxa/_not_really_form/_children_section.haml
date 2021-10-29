@@ -1,13 +1,13 @@
--if taxon.children.exists?
+-if taxon.immediate_children.exists?
   .callout.margin-bottom
     %h6 Children
-    -if taxon.children.count > 50
+    -if taxon.immediate_children.count > 50
       %p
         Too many children to show here.
         =link_to "Show all children", taxon_children_path(taxon), class: "btn-normal btn-tiny"
     -else
       %ul#children-list
-        -TaxonQuery.new(taxon.children).with_common_includes.order(status: :desc, name_cache: :asc).each do |child|
+        -TaxonQuery.new(taxon.immediate_children).with_common_includes.order(status: :desc, name_cache: :asc).each do |child|
           %li
             =CatalogFormatter.link_to_taxon(child)
             %br=child.decorate.expanded_status

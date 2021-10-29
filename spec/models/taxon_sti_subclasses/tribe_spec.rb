@@ -19,18 +19,6 @@ describe Tribe do
     it { is_expected.to validate_absence_of(:subspecies_id) }
   end
 
-  describe "#children" do
-    it "returns the genera" do
-      tribe = create :tribe
-
-      genus = create :genus, tribe: tribe
-      another_genus = create :genus, tribe: tribe
-
-      expect(tribe.genera).to match_array [genus, another_genus]
-      expect(tribe.children).to eq tribe.genera
-    end
-  end
-
   describe "#update_parent" do
     specify do
       expect { described_class.new.update_parent(nil) }.to raise_error("cannot update parent of tribes")

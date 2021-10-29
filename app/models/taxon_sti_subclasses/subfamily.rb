@@ -29,12 +29,11 @@ class Subfamily < Taxon
     raise "cannot update parent of subfamilies"
   end
 
-  # TODO: This does not include incertae sedis taxa (genera in this case).
-  def children
+  def immediate_children
     tribes
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "tribes"
   end
 end

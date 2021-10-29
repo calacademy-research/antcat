@@ -25,12 +25,6 @@ describe Infrasubspecies do
     end
   end
 
-  describe "#children" do
-    let(:taxon) { described_class.new }
-
-    specify { expect(taxon.children).to eq Taxon.none }
-  end
-
   describe "#parent" do
     let(:taxon) { create :infrasubspecies }
 

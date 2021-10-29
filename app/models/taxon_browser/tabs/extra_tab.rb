@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# `ExtraTab`s are used for things where calling `#children` would
+# `ExtraTab`s are used for things where calling `#immediate_children` would
 # not work or make sense. Everything here is a special case.
 
 # TODO: Refactor, or wait and see if we can get rid of the taxon browser once we show more children in catalog pages.
@@ -27,7 +27,7 @@ module TaxonBrowser
             ["All #{name_html} genera", taxon.genera]
 
           when ALL_TAXA_IN_GENUS
-            ["All #{name_html} taxa", taxon.descendants]
+            ["All #{name_html} taxa", taxon.species_group_children]
 
           # Special case because subgenera are outside of the "main progression".
           when SUBGENERA_IN_GENUS # The catalog page in this case will be that of a genus.

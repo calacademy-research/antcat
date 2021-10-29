@@ -3,13 +3,12 @@
 class GenusGroupTaxon < Taxon
   belongs_to :subfamily, optional: true
 
-  # TODO: Probably get rid of all `#children` and `#childrens_rank_in_words` in all classes,
-  # or rename (like "direct_children" or "direct_descendants").
-  def children
+  # TODO: Probably get rid of all `#immediate_children` and `#immediate_children_rank` in all classes.
+  def immediate_children
     species
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "species"
   end
 end

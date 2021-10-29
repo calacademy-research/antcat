@@ -14,11 +14,11 @@ class Family < Taxon
     raise "cannot update parent of families"
   end
 
-  def children
+  def immediate_children
     subfamilies
   end
 
-  def childrens_rank_in_words
+  def immediate_children_rank
     "subfamilies"
   end
 
