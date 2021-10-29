@@ -36,7 +36,7 @@ most_recent_local_path="$db_dumps_path/$most_recent_filename"
 
 # Export db dump on EngineYard unless it already exists.
 if $ssh_command "test -e $most_recent_remote_path"; then
-  echo "Most recent db dump has already been exported to EngineYard."
+  echo "Most recent db dump has already been exported on EngineYard."
 else
   echo "Exporting file on EngineYard..."
   $ssh_command sudo -i eybackup --download "$ey_most_recent_backup_index"

@@ -26,5 +26,4 @@ if [ ! -f "$most_recent_local_path" ]; then
   exit 1
 fi
 
-bash "$dir_path/reset_db"
-bash "$dir_path/import" "$most_recent_local_path"
+"$dir_path/import" "$most_recent_local_path"
