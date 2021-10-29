@@ -65,19 +65,19 @@ describe Rank do
     end
   end
 
-  describe ".number_of_name_parts" do
+  describe ".number_of_countable_name_parts" do
     specify do
-      expect(described_class.number_of_name_parts(described_class::FAMILY)).to eq 1
-      expect(described_class.number_of_name_parts(described_class::SUBFAMILY)).to eq 1
-      expect(described_class.number_of_name_parts(described_class::TRIBE)).to eq 1
-      expect(described_class.number_of_name_parts(described_class::SUBTRIBE)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::FAMILY)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::SUBFAMILY)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::TRIBE)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::SUBTRIBE)).to eq 1
 
-      expect(described_class.number_of_name_parts(described_class::GENUS)).to eq 1
-      expect(described_class.number_of_name_parts(described_class::SUBGENUS)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::GENUS)).to eq 1
+      expect(described_class.number_of_countable_name_parts(described_class::SUBGENUS)).to eq 1
 
-      expect(described_class.number_of_name_parts(described_class::SPECIES)).to eq 2
-      expect(described_class.number_of_name_parts(described_class::SUBSPECIES)).to eq 3
-      expect(described_class.number_of_name_parts(described_class::INFRASUBSPECIES)).to eq 4
+      expect(described_class.number_of_countable_name_parts(described_class::SPECIES)).to eq 2
+      expect(described_class.number_of_countable_name_parts(described_class::SUBSPECIES)).to eq 3
+      expect(described_class.number_of_countable_name_parts(described_class::INFRASUBSPECIES)).to eq 4
     end
   end
 
