@@ -124,7 +124,7 @@ class Name < ApplicationRecord
     def validate_number_of_name_parts
       return if name.blank?
 
-      expected = Rank.number_of_name_parts(taxon_type)
+      expected = Rank.number_of_countable_name_parts(taxon_type)
       return if cleaned_name_parts.size == expected
 
       errors.add :name, "of type #{type} must contains #{expected} word parts (excluding subgenus part and connecting terms)"

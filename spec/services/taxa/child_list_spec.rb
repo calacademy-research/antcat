@@ -26,15 +26,11 @@ describe Taxa::ChildList do
 
       context "when taxon has tribes" do
         let!(:taxon) { create :tribe, subfamily: subfamily }
-        let!(:fossil_taxon) do
-          fossil_protonym = create :protonym, :family_group, :fossil
-          create :tribe, subfamily: subfamily, protonym: fossil_protonym
-        end
 
         specify do
           expect(described_class[subfamily]).to eq(
             [
-              { label: "Tribes of #{subfamily.name_cache}", children: [taxon, fossil_taxon] }
+              { label: "Tribes of #{subfamily.name_cache}", children: [taxon] }
             ]
           )
         end

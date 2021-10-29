@@ -11,9 +11,12 @@
 /config/server.yml
 
 # Generated AntCat output.
-/data/output/
-/data/db_dumps/*.sql.gz
-/data/db_dumps/*.sql
+/data/db_dumps/*
+!/data/db_dumps/.keep
+/data/output/*
+!/data/output/.keep
+/data/gbif_exports/*
+!/data/gbif_exports/.keep
 
 # Temp/cache.
 /tmp
