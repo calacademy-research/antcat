@@ -8,20 +8,6 @@ describe Rank do
       it_covers_all_types_without_overlaps :FAMILY_GROUP_NAMES, :GENUS_GROUP_NAMES, :SPECIES_GROUP_NAMES
     end
 
-    describe "'ABOVE_*' and 'BELOW_*'" do
-      specify 'ABOVE_GENUS' do
-        it_covers_all_types_without_overlaps :ABOVE_GENUS, :GENUS_AND_BELOW
-      end
-
-      specify 'GENUS_AND_BELOW' do
-        it_covers_all_types_without_overlaps :FAMILY_GROUP_NAMES, :GENUS_AND_BELOW
-      end
-
-      specify 'ABOVE_SPECIES' do
-        it_covers_all_types_without_overlaps :ABOVE_SPECIES, :SPECIES_GROUP_NAMES
-      end
-    end
-
     specify "'UNI-BI-TRI-QUADRI-NOMIAL'" do
       it_covers_all_types_without_overlaps :UNINOMIAL, :BINOMIAL, :TRINOMIAL, :QUADRINOMIAL
     end

@@ -13,7 +13,7 @@ module Protonyms
   # TMPCLEANUP: This does not belong anywhere, but it's a step towards moving data to the protonym.
   def all_taxa_above_genus_and_of_unique_different_ranks? taxa
     ranks = taxa.pluck(:type)
-    (ranks - Rank::ABOVE_GENUS).empty? && ranks.uniq.size == ranks.size
+    (ranks - Rank::FAMILY_GROUP_NAMES).empty? && ranks.uniq.size == ranks.size
   end
 
   def all_statuses_same? taxa
@@ -22,7 +22,7 @@ module Protonyms
 
   # TMPCLEANUP: This does not belong anywhere, but it's a step towards moving data to the protonym.
   def taxa_genus_and_subgenus_pair? taxa
-    taxa.pluck(:type).sort == %w[Genus Subgenus]
+    taxa.pluck(:type).sort == [Rank::GENUS, Rank::SUBGENUS]
   end
 
   def semi_normalized_notes_taxt? notes_taxt

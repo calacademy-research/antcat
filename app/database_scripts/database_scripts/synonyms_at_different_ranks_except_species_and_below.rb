@@ -4,7 +4,7 @@ module DatabaseScripts
   class SynonymsAtDifferentRanksExceptSpeciesAndBelow < DatabaseScript
     def results
       Taxon.synonyms.
-        where(type: Rank::ABOVE_SPECIES).
+        where(type: Rank::FAMILY_AND_GENUS_GROUP_NAMES).
         joins(:current_taxon).where("current_taxa_taxa.type <> taxa.type").
         includes(:current_taxon)
     end
