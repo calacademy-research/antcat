@@ -117,7 +117,6 @@ class HistoryItemsController < ApplicationController
       params[:per_page] if params[:per_page].to_i <= PER_PAGE_OPTIONS.max
     end
 
-    # TODO: "partial" is very "hmm". Pass proper JSON or ignore until we don't need this at all.
     def render_json history_item, partial:
       render json: {
         content: render_to_string(
