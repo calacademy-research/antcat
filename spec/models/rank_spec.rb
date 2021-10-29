@@ -3,30 +3,6 @@
 require 'rails_helper'
 
 describe Rank do
-  describe 'constants' do
-    specify "'*_GROUP_TYPES'" do
-      it_covers_all_types_without_overlaps :FAMILY_GROUP_NAMES, :GENUS_GROUP_NAMES, :SPECIES_GROUP_NAMES
-    end
-
-    specify "'UNI-BI-TRI-QUADRI-NOMIAL'" do
-      it_covers_all_types_without_overlaps :UNINOMIAL, :BINOMIAL, :TRINOMIAL, :QUADRINOMIAL
-    end
-
-    described_class.constants.select { |const_sym| const_sym.to_s['TYPE'] }.each do |const_sym|
-      it "keeps types in `#{const_sym}` sorted with higher ranks first`" do
-        types = described_class.const_get(const_sym)
-        sorted_types = types.sort_by { |type| described_class::TYPES.index(type) }
-
-        expect(types).to eq sorted_types
-      end
-    end
-
-    def it_covers_all_types_without_overlaps *rank_collections
-      type_constants = rank_collections.map { |const_sym| described_class.const_get(const_sym) }
-      expect(type_constants.flatten).to eq described_class::TYPES
-    end
-  end
-
   describe ".italic?" do
     specify do
       expect(described_class.italic?(described_class::FAMILY)).to eq false
