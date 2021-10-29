@@ -203,6 +203,10 @@ Rails/FilePath:
   Exclude:
     - 'config/environments/development.rb'
 
+# TODO: Check if we want to enable.
+Rails/HasManyOrHasOneDependent:
+  Enabled: false
+
 Rails/InverseOf:
   Enabled: false
 

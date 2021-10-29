@@ -167,7 +167,7 @@ describe ReferenceForm do
             }
           end
 
-          it "saves author names in the given order " do
+          it "saves author names in the given order" do
             expect { described_class.new(reference, reverse_authors_params).save }.
               to change { reference.reload.author_names_string_cache }.
               from(original_author_names_string).to(reversed_author_names_string)
