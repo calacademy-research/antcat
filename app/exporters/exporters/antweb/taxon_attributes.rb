@@ -36,7 +36,7 @@ module Exporters
             original_combination:     taxon.original_combination?,
             was_original_combination: original_combination&.name&.name,
             fossil:                   taxon.protonym.fossil?,
-            taxonomic_history_html:   export_history,
+            taxonomic_history_html:   taxonomic_history_html,
             reference_id:             taxon.authorship_reference.id,
             bioregion:                taxon.protonym.bioregion,
             country:                  taxon.protonym.locality,
@@ -64,7 +64,7 @@ module Exporters
           taxon.class.where(original_combination: true, current_taxon: taxon).first
         end
 
-        def export_history
+        def taxonomic_history_html
           valid_only_statistics = ::Taxa::Statistics::FetchStatistics[taxon, valid_only: true]
 
           tag.div class: 'antcat_taxon' do # NOTE: `.antcat_taxon` is used on AntWeb.

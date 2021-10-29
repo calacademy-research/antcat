@@ -5,7 +5,7 @@ Given("there is an activity with the edit summary {string}") do |edit_summary|
 end
 
 Given("there is an automated activity with the edit summary {string}") do |edit_summary|
-  create :activity, Activity::EXECUTE_SCRIPT, edit_summary: edit_summary, automated_edit: true
+  create :activity, Activity::EXECUTE_SCRIPT, :automated_edit, edit_summary: edit_summary
 end
 
 Then("I should see {int} item(s) in the activity feed") do |expected_count|
