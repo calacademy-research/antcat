@@ -74,7 +74,8 @@ group :development, :test do
 end
 
 group :test do
-  gem 'apparition'
+  # TODO: To fix `Unexpected inner loop exception`, see https://github.com/twalpole/apparition/issues/81
+  gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
   gem 'cucumber-rails', require: false

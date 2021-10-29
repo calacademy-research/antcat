@@ -1,3 +1,12 @@
+GIT
+  remote: https://github.com/twalpole/apparition.git
+  revision: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  ref: ca86be4d54af835d531dbcd2b86e7b2c77f85f34
+  specs:
+    apparition (0.6.0)
+      capybara (~> 3.13, < 4)
+      websocket-driver (>= 0.6.5)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -68,9 +77,6 @@ GEM
       activerecord (>= 4.2)
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
-    apparition (0.6.0)
-      capybara (~> 3.13, < 4)
-      websocket-driver (>= 0.6.5)
     ast (2.4.2)
     attr_extras (6.2.4)
     awesome_print (1.9.2)
@@ -605,7 +611,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
-  apparition
+  apparition!
   attr_extras
   awesome_print
   aws-sdk (< 3.0)
