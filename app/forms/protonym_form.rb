@@ -134,6 +134,6 @@ class ProtonymForm
     end
 
     def type_name_attributes_blank? attributes
-      attributes.with_indifferent_access.slice(:taxon_id, :fixation_method, :reference_id, :pages).values.reject(&:blank?).blank?
+      attributes.with_indifferent_access.slice(:taxon_id, :fixation_method, :reference_id, :pages).values.compact_blank.blank?
     end
 end

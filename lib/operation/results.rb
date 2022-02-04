@@ -3,7 +3,7 @@
 # `Results` belong to a single instance of an `Operation`.
 
 module Operation
-  class Results < OpenStruct
+  class Results < OpenStruct # rubocop:disable Style/OpenStructUse
     def fail!
       self.failure = true
     end
