@@ -45,5 +45,3 @@ module AntCat
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
-
-ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true
