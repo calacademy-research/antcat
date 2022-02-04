@@ -203,7 +203,6 @@ Rails/FilePath:
   Exclude:
     - 'config/environments/development.rb'
 
-# TODO: Check if we want to enable.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
@@ -242,12 +241,15 @@ Rails/UnknownEnv:
     - test
     - staging
 
+# Disabled because it's not safe (for example with handwritten SQL/joins).
 Rails/WhereEquals:
   Enabled: false
 
+# Disabled because it makes queries less chainable which makes them harder to test/debug in the console.
 Rails/WhereExists:
   Enabled: false
 
+# Disabled because it's not safe (for example with handwritten SQL/joins).
 Rails/WhereNot:
   Enabled: false
 
@@ -280,8 +282,10 @@ RSpec/ExpectChange:
 RSpec/FactoryBot/CreateList:
   EnforcedStyle: n_times
 
+# Disabled because grouped Shoulda Matchers makes sense sometimes.
 RSpec/ImplicitSubject:
   Enabled: false
+  EnforcedStyle: single_statement_only
 
 RSpec/LetSetup:
   Enabled: false
