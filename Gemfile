@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'rails', '6.1.4.1'
+gem 'rails', '6.1.4.4'
 
 gem 'coffee-rails'
 gem 'hamlit'
