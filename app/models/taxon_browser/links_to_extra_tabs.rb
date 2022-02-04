@@ -35,7 +35,7 @@ module TaxonBrowser
           end
         end
 
-        links.reject(&:blank?)
+        links.compact_blank
       end
   end
 end
