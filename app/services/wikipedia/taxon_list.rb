@@ -84,7 +84,7 @@ module Wikipedia
         return false if taxon.protonym.fossil? && child.is_a?(Species)
 
         # Don't link subspecies (we should not have article on these).
-        return false if child.is_a? Subspecies
+        return false if child.is_a?(Subspecies)
 
         true
       end

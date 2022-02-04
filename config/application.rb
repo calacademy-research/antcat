@@ -20,8 +20,6 @@ module AntCat
       end
     end
 
-    config.action_mailer.delivery_method = :sendmail
-    config.action_mailer.sendmail_settings = { arguments: '-i' }
     config.active_record.observers = [
       :reference_document_observer,
       :reference_observer
@@ -47,5 +45,3 @@ module AntCat
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
-
-ActiveSupport::JSON::Encoding.escape_html_entities_in_json = true

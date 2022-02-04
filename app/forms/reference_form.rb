@@ -49,8 +49,8 @@ class ReferenceForm
       Reference.transaction do
         clear_document_url_if_new_file_is_being_uploaded
         parse_author_names_string
-        set_journal if reference.is_a? ::ArticleReference
-        set_publisher if reference.is_a? ::BookReference
+        set_journal if reference.is_a?(::ArticleReference)
+        set_publisher if reference.is_a?(::BookReference)
 
         reference.attributes = params.except(*VIRTUAL_ATTRIBUTES)
         reference.refresh_author_names_cache

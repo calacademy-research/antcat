@@ -1,7 +1,7 @@
 -# This is for the revision history table and split diff. Looks like this:
 -# "07:45 12 December 2016<link to revision> (about 19 hours ago)"
 
--if revision.is_a? PaperTrail::Version
+-if revision.is_a?(PaperTrail::Version)
   -date = revision.reify.updated_at
   -link_selected_id = revision.id
 -else
