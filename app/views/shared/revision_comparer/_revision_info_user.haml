@@ -1,6 +1,6 @@
 -# User link for the revision history table.
 
--if revision.is_a? PaperTrail::Version
+-if revision.is_a?(PaperTrail::Version)
   -originator = revision.try(:paper_trail_originator)
 -else
   -originator = revision.try(:paper_trail).try(:originator)

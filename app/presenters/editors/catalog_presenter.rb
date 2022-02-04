@@ -42,12 +42,12 @@ module Editors
     end
 
     def convert_to_subspecies_button
-      return unless taxon.is_a? Species
+      return unless taxon.is_a?(Species)
       link_to 'Convert to subspecies', new_taxon_convert_to_subspecies_path(taxon), class: "btn-normal"
     end
 
     def elevate_to_species_button
-      return unless taxon.is_a? Subspecies
+      return unless taxon.is_a?(Subspecies)
 
       link_to 'Elevate to species', taxon_elevate_to_species_path(taxon),
         method: :post, class: "btn-warning",

@@ -7,7 +7,7 @@ module Taxa
     def create
       @taxon = find_taxon
 
-      unless @taxon.is_a? Subspecies
+      unless @taxon.is_a?(Subspecies)
         redirect_to edit_taxon_path(@taxon), notice: "Not a subspecies"
         return
       end
