@@ -27,7 +27,6 @@ module AntCat
 
     config.secret_key_base = Settings.rails.secret_key_base
 
-    config.action_dispatch.cookies_serializer = :hybrid
     config.assets.enabled = true
     config.after_initialize do
       if Rails.env.development? || ENV['DEV_MONKEY_PATCHES'] # Disable with `NO_DEV_MONKEY_PATCHES=y rails c`
