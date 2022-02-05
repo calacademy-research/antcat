@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# NOTE: Dont' forget to update `staging.rb` too when running `rails app:update`!
+
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do

@@ -79,6 +79,7 @@ Layout/SpaceBeforeBrackets:
 Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'config/environments/production.rb'
+    - 'config/environments/staging.rb'
 
 ### Lint.
 
