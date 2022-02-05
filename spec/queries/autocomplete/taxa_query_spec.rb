@@ -42,9 +42,10 @@ describe Autocomplete::TaxaQuery, :search do
   end
 
   describe 'searching by protonym author names' do
-    let!(:reference) { create :any_reference, author_string: 'Batiatus' }
-    let!(:protonym) { create :protonym, authorship_reference: reference }
-    let!(:taxon) { create :genus, protonym: protonym }
+    let!(:taxon) do
+      protonym = create :protonym, authorship_reference: create(:any_reference, author_string: 'Batiatus')
+      create :genus, protonym: protonym
+    end
 
     before do
       create :any_taxon # Non-match.
@@ -57,24 +58,31 @@ describe Autocomplete::TaxaQuery, :search do
   end
 
   describe 'searching by protonym author year' do
-    let!(:reference) { create :any_reference, year: 2005 }
-    let!(:protonym) { create :protonym, authorship_reference: reference }
-    let!(:taxon) { create :genus, protonym: protonym }
+    let!(:taxon_2005) do
+      protonym = create :protonym, authorship_reference: create(:any_reference, year: 2005)
+      create :genus, protonym: protonym
+    end
+    let!(:taxon_1995) do
+      protonym = create :protonym, authorship_reference: create(:any_reference, year: 1995)
+      create :family, protonym: protonym
+    end
 
     before do
-      create :any_taxon # Non-match.
       Sunspot.commit
     end
 
     specify do
-      expect(described_class['200']).to eq [taxon]
+      expect(described_class['200']).to include(taxon_2005)
+      expect(described_class['200']).to_not include(taxon_1995)
+      expect(described_class['199']).to include(taxon_1995)
     end
   end
 
   describe 'searching in different fields at the same time' do
-    let!(:reference) { create :any_reference, author_string: 'Batiatus', year: 2005 }
-    let!(:protonym) { create :protonym, authorship_reference: reference }
-    let!(:taxon) { create :genus, name_string: 'Lasius', protonym: protonym }
+    let!(:taxon) do
+      protonym = create :protonym, authorship_reference: create(:any_reference, author_string: 'Batiatus', year: 2005)
+      create :genus, name_string: 'Lasius', protonym: protonym
+    end
 
     before do
       create :any_taxon # Non-match.

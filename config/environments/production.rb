@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# NOTE: Dont' forget to update `staging.rb` too when running `rails app:update`!
+
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
@@ -139,7 +141,7 @@ Rails.application.configure do
   #        \______  /\____/|___|  /__|  \___  >___|  /__|
   #               \/            \/          \/     \/
   # #############################################################################
-  # # Simulate production locally for debugging/profiling
+  # # Simulate env locally for debugging/profiling
   # #############################################################################
   #
   #   RAILS_ENV=production rake assets:precompile
@@ -158,8 +160,4 @@ Rails.application.configure do
 
     ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
-
-  #
-  #   To enable `gem 'rack-mini-profiler'` in "production":
-  #   Add `before_action { Rack::MiniProfiler.authorize_request }` to ApplicationController.
 end

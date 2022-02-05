@@ -87,4 +87,5 @@ group :test do
 end
 
 # Uncomment for profiling.
+# For production/staging envs, add `before_action { Rack::MiniProfiler.authorize_request }` to `ApplicationController`.
 # gem 'rack-mini-profiler'

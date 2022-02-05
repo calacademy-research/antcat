@@ -112,7 +112,7 @@ end
 __END__
 
 section: research
-tags: [protonyms, combinations, original-combinations, has-quick-fix, updated!]
+tags: [protonyms, combinations, original-combinations, has-quick-fix]
 
 description: >
   "Original combination" as in a `Taxon` flagged as `original_combination`.
