@@ -81,7 +81,7 @@ __END__
 title: History items with <code>ref</code> tags as author citations
 
 section: regression-test
-tags: [taxt-hist, has-quick-fix, updated!]
+tags: [taxt-hist, has-quick-fix]
 
 description: >
   The current batch mainly contains false positives due to how we format *nomina nuda* and some unavailable names.

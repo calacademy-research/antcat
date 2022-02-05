@@ -72,7 +72,7 @@ title: >
   'Replacement name for' history items with duplicated sibling items
 
 section: pa-action-required
-tags: [taxt-hist, replacement-names, very-slow, new!, has-quick-fix]
+tags: [taxt-hist, replacement-names, very-slow, has-quick-fix]
 
 description: >
   **Example**

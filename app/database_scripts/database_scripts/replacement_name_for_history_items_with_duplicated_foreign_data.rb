@@ -69,7 +69,7 @@ title: >
   'Replacement name for' history items with duplicated foreign data
 
 section: pa-action-required
-tags: [taxt-hist, replacement-names, very-slow, new!, has-quick-fix]
+tags: [taxt-hist, replacement-names, very-slow, has-quick-fix]
 
 description: >
   Like %dbscript:ReplacementNameForHistoryItemsWithDuplicatedSiblingItems but for inlined data

@@ -193,7 +193,7 @@ __END__
 title: Valid taxa with non-valid parents
 
 section: regression-test
-tags: [taxa, disagreeing-data, updated!]
+tags: [taxa, disagreeing-data]
 
 issue_description: This taxon is valid, but its parent is not.
 
