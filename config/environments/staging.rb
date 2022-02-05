@@ -142,7 +142,7 @@ Rails.application.configure do
   #        \______  /\____/|___|  /__|  \___  >___|  /__|
   #               \/            \/          \/     \/
   # #############################################################################
-  # # Simulate staging locally for debugging/profiling
+  # # Simulate env locally for debugging/profiling
   # #############################################################################
   #
   #   RAILS_ENV=staging rake assets:precompile
@@ -161,8 +161,4 @@ Rails.application.configure do
 
     ActiveRecord::Base.logger = Logger.new(STDOUT)
   end
-
-  #
-  #   To enable `gem 'rack-mini-profiler'` in "staging":
-  #   Add `before_action { Rack::MiniProfiler.authorize_request }` to ApplicationController.
 end
