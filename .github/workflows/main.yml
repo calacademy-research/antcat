@@ -81,7 +81,7 @@ jobs:
 
         sudo /etc/init.d/mysql start
 
-        bundle exec rake db:create
+        bundle exec rake db:create db:migrate
 
     - name: Run cucumber
       run: |
@@ -125,7 +125,7 @@ jobs:
 
         sudo /etc/init.d/mysql start
 
-        bundle exec rake db:create
+        bundle exec rake db:create db:migrate
 
     - name: Run rspec
       run: |

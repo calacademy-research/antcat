@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 ruby '2.7.1'
 
-gem 'rails', '6.1.4.4'
+gem 'rails', '7.0.1'
 
 gem 'coffee-rails'
 gem 'hamlit'
@@ -78,7 +78,8 @@ group :test do
   gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
-  gem 'cucumber-rails', require: false
+  # TODO: Waiting for new release for Rails 7, see https://github.com/cucumber/cucumber-rails/pull/526
+  gem 'cucumber-rails', github: 'cucumber/cucumber-rails', ref: '4919c18b89dcb476a908b667a3ee85ccafe7d249', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
