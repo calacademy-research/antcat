@@ -9,7 +9,3 @@ Given('Batiatus has commented "Cool" on an issue with the title "Typos"') do
   user = User.find_by!(name: "Batiatus")
   Comment.build_comment(issue, user, body: "Cool").save!
 end
-
-Then("I should see a comments section") do
-  find ".comments-section"
-end
