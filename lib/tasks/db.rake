@@ -6,4 +6,10 @@ namespace :db do
     sh "RAILS_ENV=development ./script/db_dump/import_latest"
   end
   task il: :import_latest # Shortcut.
+
+  desc "Like `rake db:import_latest`, but withuot PaperTrail versions to speed up the import"
+  task :import_latest_quick do
+    sh "RAILS_ENV=development SKIP_VERSIONS=y ./script/db_dump/import_latest"
+  end
+  task ilq: :import_latest_quick # Shortcut.
 end
