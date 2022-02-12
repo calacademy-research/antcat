@@ -35,7 +35,6 @@
             -previous = revisions[index + 1] unless index == revisions.size - 1
             %td=link_to "cur", diff_with_id: revision.id
             %td
-              -# Only link "prev" if there's a previous revision.
               -if previous
                 =link_to "prev", diff_with_id: previous.id, selected_id: revision.id
               -else
@@ -43,7 +42,6 @@
 
             %td=radio_button_tag :diff_with_id, revision.id, comparer.revision_diff_with?(revision)
             %td
-              -# Only show the right radio option if there's a previous revision.
               -if previous
                 =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision)
             %td=render "shared/revision_comparer/revision_info_date", revision: revision
