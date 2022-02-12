@@ -302,7 +302,7 @@ describe References::FulltextSearchQuery, :search do
 
       it "returns references by the authors" do
         fulltext_params = References::Search::ExtractKeywords['author:"Bolton Fisher"']
-        expect(described_class[**fulltext_params]).to eq [reference]
+        expect(described_class[**fulltext_params.to_solr]).to eq [reference]
       end
     end
   end

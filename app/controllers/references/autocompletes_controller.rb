@@ -16,7 +16,7 @@ module References
       end
 
       def references
-        Autocomplete::ReferencesQuery[search_query, fulltext_params]
+        Autocomplete::ReferencesQuery[search_query, fulltext_params.to_solr]
       end
 
       def search_query
