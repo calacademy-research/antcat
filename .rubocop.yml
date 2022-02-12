@@ -87,11 +87,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
 
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'features/step_definitions/**/*'
-    - 'spec/**/*'
-
 Lint/ConstantDefinitionInBlock:
   Exclude:
     - 'lib/tasks/**/*.rake'

@@ -20,12 +20,12 @@ end
 # Editing.
 Then("the history should be {string}") do |content|
   element = first('#history-items').find('.taxt-presenter')
-  expect(element.text).to match /#{content}/
+  expect(element.text).to match(/#{content}/)
 end
 
 Then("the history item field should be {string}") do |content|
   element = first('#history-items').find('textarea')
-  expect(element.text).to match /#{content}/
+  expect(element.text).to match(/#{content}/)
 end
 
 Then("the history item field should not be visible") do
