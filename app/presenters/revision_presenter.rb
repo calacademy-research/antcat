@@ -41,8 +41,6 @@ class RevisionPresenter
 
   private
 
-    delegate :selected, :diff_with, :most_recent, to: :comparer, private: true
-
     # Rescues anything. Rendering old revisions can raise for many reasons.
     def render_revision_with_template item, view_context:
       view_context.render template, item: item
@@ -54,11 +52,11 @@ class RevisionPresenter
     end
 
     def html_split_diff
-      return unless diff_with
+      return unless comparer.diff_with
 
       @_html_split_diff ||= begin
-        left = revision_as_json(diff_with)
-        right = revision_as_json(selected || most_recent)
+        left = revision_as_json(comparer.diff_with)
+        right = revision_as_json(comparer.selected || comparer.most_recent)
         Diffy::SplitDiff.new(left, right, format: :html)
       end
     end
