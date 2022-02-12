@@ -72,10 +72,6 @@ Layout/MultilineMethodCallIndentation:
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
-# Disabled due to false positives.
-Layout/SpaceBeforeBrackets:
-  Enabled: false
-
 Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'config/environments/production.rb'
@@ -85,14 +81,6 @@ Layout/SpaceInsideArrayLiteralBrackets:
 
 Lint/AmbiguousBlockAssociation:
   Exclude:
-    - 'spec/**/*'
-
-Lint/AmbiguousOperatorPrecedence:
-  Enabled: false
-
-Lint/AmbiguousRegexpLiteral:
-  Exclude:
-    - 'features/step_definitions/**/*'
     - 'spec/**/*'
 
 Lint/ConstantDefinitionInBlock:
@@ -109,9 +97,9 @@ Lint/EmptyBlock:
 Lint/HeredocMethodCallPosition:
   Enabled: true
 
-# Disabled because it does not handle `.rake` files.
 Lint/RequireRelativeSelfPath:
-  Enabled: false
+  Exclude:
+    - 'lib/tasks/**/*.rake'
 
 Lint/UselessAccessModifier:
   MethodCreatingMethods:
@@ -199,10 +187,6 @@ Rails/Delegate:
 # Disabled because it flags dev ENV variables.
 Rails/EnvironmentVariableAccess:
   Enabled: false
-
-Rails/FilePath:
-  Exclude:
-    - 'config/environments/development.rb'
 
 Rails/HasManyOrHasOneDependent:
   Enabled: false
@@ -317,14 +301,8 @@ Style/Alias:
 Style/ArrayCoercion:
   Enabled: true
 
-Style/AsciiComments:
-  Enabled: false
-
 Style/AutoResourceCleanup:
   Enabled: true
-
-Style/BisectedAttrAccessor:
-  Enabled: false
 
 Style/CaseLikeIf:
   Enabled: false
@@ -400,9 +378,6 @@ Style/RedundantAssignment:
 Style/RedundantBegin:
   Enabled: false
 
-Style/RedundantFetchBlock:
-  Enabled: false
-
 Style/ReturnNil:
   Enabled: true
 
@@ -428,9 +403,6 @@ Style/SymbolArray:
   Enabled: false
 
 Style/SymbolProc:
-  Enabled: false
-
-Style/TernaryParentheses:
   Enabled: false
 
 Style/TrailingCommaInBlockArgs:

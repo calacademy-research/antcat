@@ -52,7 +52,7 @@ module TaxonBrowser
             # Show "Camponotus > Componotus subgenera" instead of
             # "Camponotus > Camponotus (Myrmentoma) species > Componotus subgenera"
             # when a subgenus is selected.
-            taxon.is_a?(Subgenus) && @taxon.is_a?(Subgenus) ||
+            (taxon.is_a?(Subgenus) && @taxon.is_a?(Subgenus)) ||
 
             # Never show the [immediate children of] subtribe tab (has no immediate children).
             taxon.is_a?(Subtribe) ||

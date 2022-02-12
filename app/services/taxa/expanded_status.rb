@@ -34,12 +34,12 @@ module Taxa
 
       def main_status
         case status
-        when Status::SYNONYM                   then "junior synonym of current valid taxon #{link_current_taxon}"
-        when Status::HOMONYM                   then "homonym replaced by #{link_homonym_replaced_by}"
-        when Status::OBSOLETE_COMBINATION      then "an obsolete #{name_of_obsoletes} of #{link_current_taxon}"
-        when Status::UNAVAILABLE_MISSPELLING   then "a misspelling of #{link_current_taxon}"
-        when *SELF_STATUSES                    then status
-        else                                   raise "unknown status: #{status}"
+        when Status::SYNONYM                 then "junior synonym of current valid taxon #{link_current_taxon}"
+        when Status::HOMONYM                 then "homonym replaced by #{link_homonym_replaced_by}"
+        when Status::OBSOLETE_COMBINATION    then "an obsolete #{name_of_obsoletes} of #{link_current_taxon}"
+        when Status::UNAVAILABLE_MISSPELLING then "a misspelling of #{link_current_taxon}"
+        when *SELF_STATUSES                  then status
+        else                                 raise "unknown status: #{status}"
         end
       end
 

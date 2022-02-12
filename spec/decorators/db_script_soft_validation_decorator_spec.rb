@@ -10,7 +10,7 @@ describe DbScriptSoftValidationDecorator do
     let(:soft_validation) { DbScriptSoftValidation.run(taxon, database_script) }
     let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
 
-    specify { expect(decorated.format_runtime).to match /^\d+ ms$/ }
+    specify { expect(decorated.format_runtime).to match(/^\d+ ms$/) }
   end
 
   describe "#format_runtime_percent" do
@@ -18,6 +18,6 @@ describe DbScriptSoftValidationDecorator do
     let(:soft_validation) { DbScriptSoftValidation.run(taxon, database_script) }
     let(:database_script) { DatabaseScripts::ExtantTaxaInFossilGenera }
 
-    specify { expect(decorated.format_runtime_percent(20)).to match /^\d+\.\d+%$/ }
+    specify { expect(decorated.format_runtime_percent(20)).to match(/^\d+\.\d+%$/) }
   end
 end

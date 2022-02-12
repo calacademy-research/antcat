@@ -47,28 +47,7 @@ describe Exporters::Endnote::Formatter do
       end
     end
 
-    context 'when reference is a `BookReference`' do
-      let(:reference) do
-        create :book_reference, author_string: ['Bolton, B.', 'Fisher, B.L.'], title: 'Ants'
-      end
-
-      specify do
-        expect(described_class[[reference]]).to eq <<~STRING
-          %0 Book
-          %A Bolton, B.
-          %A Fisher, B.L.
-          %D #{reference.year}
-          %T Ants
-          %C #{reference.publisher.place}
-          %I #{reference.publisher.name}
-          %P #{reference.pagination}
-          %~ AntCat
-
-        STRING
-      end
-    end
-
-    context 'when reference is a `ArticleReference`' do
+    context 'when reference is an `ArticleReference`' do
       let(:reference) do
         create :article_reference, author_string: 'MacKay, W.', title: 'A title', series_volume_issue: '1(2)'
       end
@@ -87,6 +66,27 @@ describe Exporters::Endnote::Formatter do
           %N 1(2)
           %P #{reference.pagination}
           %U http://antcat.org/article.pdf
+          %~ AntCat
+
+        STRING
+      end
+    end
+
+    context 'when reference is a `BookReference`' do
+      let(:reference) do
+        create :book_reference, author_string: ['Bolton, B.', 'Fisher, B.L.'], title: 'Ants'
+      end
+
+      specify do
+        expect(described_class[[reference]]).to eq <<~STRING
+          %0 Book
+          %A Bolton, B.
+          %A Fisher, B.L.
+          %D #{reference.year}
+          %T Ants
+          %C #{reference.publisher.place}
+          %I #{reference.publisher.name}
+          %P #{reference.pagination}
           %~ AntCat
 
         STRING

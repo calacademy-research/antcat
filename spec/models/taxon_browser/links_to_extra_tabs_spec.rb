@@ -39,6 +39,22 @@ describe TaxonBrowser::LinksToExtraTabs do
       end
     end
 
+    context 'when taxon is a tribe' do
+      context 'when tribe has subtribes' do
+        let!(:taxon) { create :tribe }
+
+        before { create :subtribe, tribe: taxon }
+
+        specify do
+          expect(described_class[taxon]).to eq(
+            [
+              { label: "Subtribes", view: TaxonBrowser::Tab::SUBTRIBES_IN_TRIBE }
+            ]
+          )
+        end
+      end
+    end
+
     context 'when taxon is a genus' do
       let!(:taxon) { create :genus }
 
@@ -61,22 +77,6 @@ describe TaxonBrowser::LinksToExtraTabs do
               { label: "All taxa", view: TaxonBrowser::Tab::ALL_TAXA_IN_GENUS },
               { label: "Subgenera", view: TaxonBrowser::Tab::SUBGENERA_IN_GENUS },
               { label: "Without subgenus", view: TaxonBrowser::Tab::SPECIES_WITHOUT_SUBGENUS }
-            ]
-          )
-        end
-      end
-    end
-
-    context 'when taxon is a tribe' do
-      context 'when tribe has subtribes' do
-        let!(:taxon) { create :tribe }
-
-        before { create :subtribe, tribe: taxon }
-
-        specify do
-          expect(described_class[taxon]).to eq(
-            [
-              { label: "Subtribes", view: TaxonBrowser::Tab::SUBTRIBES_IN_TRIBE }
             ]
           )
         end

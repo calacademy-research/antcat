@@ -18,6 +18,14 @@ describe WhatLinksHereItemDecorator do
     specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }
   end
 
+  context "when table is `history_items`" do
+    let(:table) { "history_items" }
+    let!(:object) { create :history_item, :taxt }
+
+    specify { expect(decorated.item_link).to eq %(<a href="/history_items/#{id}">#{id}</a>) }
+    specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }
+  end
+
   context "when table is `protonyms`" do
     let(:table) { "protonyms" }
     let!(:object) { create :protonym }
@@ -48,14 +56,6 @@ describe WhatLinksHereItemDecorator do
 
     specify { expect(decorated.item_link).to eq %(<a href="/catalog/#{id}">#{id}</a>) }
     specify { expect(decorated.owner_link).to eq taxon_link(object) }
-  end
-
-  context "when table is `history_items`" do
-    let(:table) { "history_items" }
-    let!(:object) { create :history_item, :taxt }
-
-    specify { expect(decorated.item_link).to eq %(<a href="/history_items/#{id}">#{id}</a>) }
-    specify { expect(decorated.owner_link).to eq %(Protonym: #{protonym_link(object.protonym)}) }
   end
 
   context "when table is `type_names`" do

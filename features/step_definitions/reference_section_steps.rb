@@ -23,5 +23,5 @@ end
 
 Then("the reference section should be {string}") do |content|
   element = first('#references-section').find('.taxt-presenter')
-  expect(element.text).to match /#{content}/
+  expect(element.text).to match(/#{content}/)
 end
