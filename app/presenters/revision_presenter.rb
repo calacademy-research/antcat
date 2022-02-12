@@ -63,6 +63,6 @@ class RevisionPresenter
 
     def revision_as_json item
       as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
-      JSON.pretty_generate(as_json)
+      JSON.pretty_generate(as_json.compact_blank)
     end
 end
