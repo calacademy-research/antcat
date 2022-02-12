@@ -46,18 +46,18 @@ module TaxonBrowser
 
       def taxa_for_tabs
         taxon_and_ancestors.reject do |taxon|
-          # Don't show [subspecies in] species tab unless the species has subspecies.
+          # Don't show subspecies-belonging-to-species tab unless the species has subspecies.
           (taxon.is_a?(Species) && !taxon.immediate_children.exists?) ||
 
-            # Show "Camponotus > Componotus subgenera" instead of
+            # When a subgenus is selected, show:
+            # "Camponotus > Componotus subgenera" instead of
             # "Camponotus > Camponotus (Myrmentoma) species > Componotus subgenera"
-            # when a subgenus is selected.
             (taxon.is_a?(Subgenus) && @taxon.is_a?(Subgenus)) ||
 
-            # Never show the [immediate children of] subtribe tab (has no immediate children).
+            # Never show the children-of-subtribe tab (has no immediate children).
             taxon.is_a?(Subtribe) ||
 
-            # Never show the [immediate children of] subtribe tab (has no immediate children).
+            # Never show the children-of-infrasubspecies tab (has no immediate children).
             taxon.is_a?(Infrasubspecies)
         end
       end

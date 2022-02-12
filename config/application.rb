@@ -27,6 +27,10 @@ module AntCat
 
     config.secret_key_base = Settings.rails.secret_key_base
 
+    console do
+      ARGV.push "-r", root.join("config/initializers/console_prompt.rb")
+    end
+
     config.after_initialize do
       if Rails.env.development? || ENV['DEV_MONKEY_PATCHES'] # Disable with `NO_DEV_MONKEY_PATCHES=y rails c`
         require Rails.root.join('lib/dev_monkey_patches')

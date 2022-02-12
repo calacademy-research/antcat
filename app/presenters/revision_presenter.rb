@@ -19,18 +19,11 @@ class RevisionPresenter
     html_split_diff.right
   end
 
-  # This is for the `revisions` loop, ie `most_recent` is not handled here.
   def revision_css revision
-    # If `revision.id` isn't opened in `selected` or `diff_with`, that means user is not comparing
-    # revisions or looking at an old revision --> do not highlight.
     return unless comparer.revision_selected?(revision) || comparer.revision_diff_with?(revision)
 
-    # User is looking at an old revision without comparig --> highlight
-    # in red to indicate that it's an old revision.
     return "make-red" if comparer.looking_at_a_single_old_revision?
 
-    # User is comparing --> highlight the oldest revision red
-    # and the more recent (`selected_id`) green.
     if comparer.revision_selected? revision
       "make-green"
     else
@@ -48,8 +41,6 @@ class RevisionPresenter
 
   private
 
-    delegate :selected, :diff_with, :most_recent, to: :comparer, private: true
-
     # Rescues anything. Rendering old revisions can raise for many reasons.
     def render_revision_with_template item, view_context:
       view_context.render template, item: item
@@ -61,17 +52,17 @@ class RevisionPresenter
     end
 
     def html_split_diff
-      return unless diff_with
+      return unless comparer.diff_with
 
       @_html_split_diff ||= begin
-        left = revision_as_json(diff_with)
-        right = revision_as_json(selected || most_recent)
+        left = revision_as_json(comparer.diff_with)
+        right = revision_as_json(comparer.selected || comparer.most_recent)
         Diffy::SplitDiff.new(left, right, format: :html)
       end
     end
 
     def revision_as_json item
       as_json = item.as_json(except: ATTRIBUTES_IGNORED_IN_DIFF)
-      JSON.pretty_generate(as_json)
+      JSON.pretty_generate(as_json.compact_blank)
     end
 end

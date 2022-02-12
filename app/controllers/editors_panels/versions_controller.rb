@@ -37,7 +37,13 @@ module EditorsPanels
       @versions = @versions.search(params[:q], params[:search_type]) if params[:q].present?
       @versions = @versions.order(:id).paginate(page: params[:page], per_page: 50)
 
-      @version_count = PaperTrail::Version.count
+      # HACK: Workaround for `WillPaginate::ActiveRecord::RelationMethods#first`,
+      # https://github.com/mislav/will_paginate/blob/e8013db0d4394ce4e2b64e817d96824a6109055f/lib/will_paginate/active_record.rb#L43
+      @versions.load
+      @first_version = @versions[0] # Because `@versions.first` triggers the query an additional time.
+      @last_version = @versions.last
+
+      @total_versions_count = PaperTrail::Version.count
     end
 
     def show

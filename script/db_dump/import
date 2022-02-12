@@ -36,9 +36,11 @@ if command -v pv &> /dev/null; then
   cmd+=" | pv -cN zcat"
 fi
 
-if [ "${WITH_PAPERTRAIL:-}" != "y" ]; then
-  echo "Skipping PaperTrail versions (use WITH_PAPERTRAIL=y to include them)"
+if [ "${SKIP_VERSIONS:-}" == "y" ]; then
+  echo "Skipping PaperTrail versions"
   cmd+=" | sed '/INSERT INTO \`versions\`/d'"
+else
+  echo "Not skipping PaperTrail versions (use SKIP_VERSIONS=y to exclude them)"
 fi
 
 # Set environment because `SELECT * FROM ar_internal_metadata;` is set to "production"

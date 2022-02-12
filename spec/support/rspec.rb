@@ -9,6 +9,7 @@ RSpec.configure do |config|
     mocks.verify_partial_doubles = true
   end
 
+  config.expose_dsl_globally = true # Restore to default, see `config/initializers/console_prompt.rb`.
   config.order = :random # Run `rspec --seed 1234` for debugging order dependency.
   config.fail_fast = false
   config.infer_spec_type_from_file_location!

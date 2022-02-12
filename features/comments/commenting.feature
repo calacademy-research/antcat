@@ -12,19 +12,3 @@ Feature: Commenting
 
     When I go to the activity feed
     Then I should see "Batiatus commented on the feedback #"
-
-  @retry_ci @javascript
-  Scenario: Editing a comment
-    When I write a new comment "Helo!"
-    And I press "Post Comment"
-    Then I should see "Comment was successfully added"
-    And I should see my comment highlighted in the comments section
-    And I should not see "ago*"
-
-    When I hover the comment
-    And I follow "edit"
-    And I fill in "comment_body" with "Hello!"
-    And I press "Save edited comment"
-    Then I should see "Comment was successfully updated"
-    And I should see "Hello!"
-    And I should see "ago*"

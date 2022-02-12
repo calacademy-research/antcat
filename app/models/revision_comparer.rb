@@ -1,21 +1,8 @@
 # frozen_string_literal: true
 
-# * `#most_recent` - The current item or a reified instance of the most
-#   recently deleted version. This is the "owner" of the URL and all revisions.
-#
-# * `#selected` - Previous revision of the item. If there is a
-#   a `selected_id` but no `diff_with_id` = just show that
-#   revision without comparing. Always shown to the right when comparing.
-#
-# * `#diff_with` - Another previous revision. If there is a `diff_with_id`
-#   but no `selected_id` = compare with `#most_recent`. Instantiate with both
-#   to compare those revisions. This revision will always be older than
-#   both `#selected` and `#most_recent`. Always shown to the left when comparing.
-
 class RevisionComparer
   attr_reader :most_recent, :revisions, :selected, :diff_with
 
-  # `id` is the only required argument; it's used for `#most_recent`.
   def initialize klass, id, selected_id = nil, diff_with_id = nil
     @selected_id = selected_id
     @diff_with_id = diff_with_id

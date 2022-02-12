@@ -8,39 +8,11 @@ full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
 remote_current_release_path='/data/antcat/current'
 
-function restart_production() {
-  pushd $remote_current_release_path
-
-  bash "$dir_path/kill"
-
-  RAILS_ENV=production bundle exec rake sunspot:solr:start
-  RAILS_ENV=production bundle exec rake sunspot:solr:reindex
-
-  popd
-}
-
-function restart_staging() {
-  pushd $remote_current_release_path
-
-  bash "$dir_path/kill"
-
-  RAILS_ENV=staging bundle exec rake sunspot:solr:start
-  RAILS_ENV=staging bundle exec rake sunspot:solr:reindex
-
-  popd
-}
-
-function restart_development() {
-  bash "$dir_path/kill"
-
-  RAILS_ENV=development bundle exec rake sunspot:solr:start
-  RAILS_ENV=development bundle exec rake sunspot:solr:reindex
-}
-
-if [ "${1:-}" = "production" ]; then
-  restart_production
-elif [ "${1:-}" = "staging" ]; then
-  restart_staging
-else
-  restart_development
+if [ "${RAILS_ENV:-}" = "production" ] || [ "${RAILS_ENV:-}" = "staging" ]; then
+  pushd $remote_current_release_path || exit 1
 fi
+
+bash "$dir_path/kill"
+
+bundle exec rake sunspot:solr:start
+bundle exec rake sunspot:solr:reindex
