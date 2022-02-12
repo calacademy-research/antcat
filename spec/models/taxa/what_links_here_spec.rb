@@ -24,8 +24,8 @@ describe Taxa::WhatLinksHere do
 
     specify do
       expect(what_links_here.all).to match_array [
-        WhatLinksHereItem.new('taxa',          :genus_id,        species.id),
-        WhatLinksHereItem.new('type_names',    :taxon_id,        type_name.id)
+        WhatLinksHereItem.new('taxa',       :genus_id, species.id),
+        WhatLinksHereItem.new('type_names', :taxon_id, type_name.id)
       ]
     end
 
@@ -40,21 +40,21 @@ describe Taxa::WhatLinksHere do
     describe "tag: `tax`" do
       let(:taxt_tag) { Taxt.tax(taxon.id) }
 
-      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('protonyms',           :etymology_taxt,                  protonym.id),
-          WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
-          WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
-          WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),
-          WhatLinksHereItem.new('protonyms',           :notes_taxt,                      protonym.id),
-          WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
-          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
-          WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
-          WhatLinksHereItem.new('history_items',       :taxt,                            history_item.id)
+          WhatLinksHereItem.new('history_items',      :taxt,                            history_item.id),
+          WhatLinksHereItem.new('protonyms',          :etymology_taxt,                  protonym.id),
+          WhatLinksHereItem.new('protonyms',          :primary_type_information_taxt,   protonym.id),
+          WhatLinksHereItem.new('protonyms',          :secondary_type_information_taxt, protonym.id),
+          WhatLinksHereItem.new('protonyms',          :type_notes_taxt,                 protonym.id),
+          WhatLinksHereItem.new('protonyms',          :notes_taxt,                      protonym.id),
+          WhatLinksHereItem.new('reference_sections', :title_taxt,                      reference_section.id),
+          WhatLinksHereItem.new('reference_sections', :subtitle_taxt,                   reference_section.id),
+          WhatLinksHereItem.new('reference_sections', :references_taxt,                 reference_section.id)
         ]
       end
 
@@ -66,21 +66,21 @@ describe Taxa::WhatLinksHere do
     describe "tag: `taxac`" do
       let(:taxt_tag) { Taxt.taxac(taxon.id) }
 
-      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:history_item) { create :history_item, :taxt, :with_all_taxts, taxt_tag: taxt_tag }
+      let!(:protonym) { create :protonym, :with_all_taxts, taxt_tag: taxt_tag }
       let!(:reference_section) { create :reference_section, :with_all_taxts, taxt_tag: taxt_tag }
 
       specify do
         expect(what_links_here.all).to match_array [
-          WhatLinksHereItem.new('protonyms',           :etymology_taxt,                  protonym.id),
-          WhatLinksHereItem.new('protonyms',           :primary_type_information_taxt,   protonym.id),
-          WhatLinksHereItem.new('protonyms',           :secondary_type_information_taxt, protonym.id),
-          WhatLinksHereItem.new('protonyms',           :type_notes_taxt,                 protonym.id),
-          WhatLinksHereItem.new('protonyms',           :notes_taxt,                      protonym.id),
-          WhatLinksHereItem.new('reference_sections',  :title_taxt,                      reference_section.id),
-          WhatLinksHereItem.new('reference_sections',  :subtitle_taxt,                   reference_section.id),
-          WhatLinksHereItem.new('reference_sections',  :references_taxt,                 reference_section.id),
-          WhatLinksHereItem.new('history_items',       :taxt,                            history_item.id)
+          WhatLinksHereItem.new('history_items',      :taxt,                            history_item.id),
+          WhatLinksHereItem.new('protonyms',          :etymology_taxt,                  protonym.id),
+          WhatLinksHereItem.new('protonyms',          :primary_type_information_taxt,   protonym.id),
+          WhatLinksHereItem.new('protonyms',          :secondary_type_information_taxt, protonym.id),
+          WhatLinksHereItem.new('protonyms',          :type_notes_taxt,                 protonym.id),
+          WhatLinksHereItem.new('protonyms',          :notes_taxt,                      protonym.id),
+          WhatLinksHereItem.new('reference_sections', :title_taxt,                      reference_section.id),
+          WhatLinksHereItem.new('reference_sections', :subtitle_taxt,                   reference_section.id),
+          WhatLinksHereItem.new('reference_sections', :references_taxt,                 reference_section.id)
         ]
       end
 
