@@ -1,11 +1,31 @@
 # frozen_string_literal: true
 
-# Accepts a search query as a string and returns a hash, with unmatch content in `freetext`.
+# Accepts a search query as a string and returns a struct, with unmatch content in `freetext`.
 
 module References
   module Search
     class ExtractKeywords
       include Service
+
+      Extracted = Struct.new(
+        :freetext,
+        :year,
+        :start_year,
+        :end_year,
+        :reference_type,
+        :title,
+        :author,
+        :doi,
+        keyword_init: true
+      ) do
+        def to_solr
+          to_h.compact_blank
+        end
+
+        def searching_with_keywords?
+          to_h.except(:freetext).compact_blank.present?
+        end
+      end
 
       def initialize search_query
         @search_query = search_query.dup
@@ -20,7 +40,7 @@ module References
         attr_reader :search_query
 
         def extract_keywords
-          keywords = {}
+          extracted = Extracted.new
 
           regexes.each do |keyword, regex|
             next unless (match = search_query.match(/#{keyword}:#{regex}/i))
@@ -28,21 +48,21 @@ module References
             # `match.names` contains named captured groups.
             if match.names.empty?
               # If there are no named captures, use the 'keyword' as key.
-              # Eg 'year:2004' --> keywords[:year] = '2004'
-              keywords[keyword.to_sym] = Regexp.last_match(1)
+              # Eg 'year:2004' --> extracted[:year] = '2004'
+              extracted[keyword.to_sym] = Regexp.last_match(1)
             else
               # If there are named captures, use them as keys.
               # Eg 'year:2004-2005' -->
-              #   keywords[:start_year] = '2004'
-              #   keywords[:end_year] = '2005'
-              match.names.each { |param| keywords[param.to_sym] = match[param] }
+              #   extracted[:start_year] = '2004'
+              #   extracted[:end_year] = '2005'
+              match.names.each { |param| extracted[param.to_sym] = match[param] }
             end
 
             search_query.gsub!(match.to_s, "") # Remove matched and continue matching.
           end
 
-          keywords[:freetext] = search_query.squish # Remove redundant spaces (artifacts from `.gsub!`).
-          keywords
+          extracted[:freetext] = search_query.squish # Remove redundant spaces (artifacts from `.gsub!`).
+          extracted
         end
 
         # Array of arrays used to compile regexes: [["keyword", "regex_as_string"]].
@@ -65,7 +85,7 @@ module References
             ["author", '"(.*?)"'],                                             # author:"Barry Bolton"
             ["author", '\'(.*?)\''],                                           # author:'Barry Bolton'
             ["author", '([^ ]+)'],                                             # author:Bolton
-            ["doi", '([^ ]+)']                                                 # doi:10.11865/zs.201806
+            ["doi",    '([^ ]+)']                                              # doi:10.11865/zs.201806
           ]
         end
     end

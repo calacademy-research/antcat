@@ -30,32 +30,25 @@ module Autocomplete
       attr_reader :reference, :fulltext_params
 
       def formated_search_query
-        if searching_with_keywords?
-          format_autosuggest_keywords
-        else
-          reference.title
-        end
-      end
-
-      def searching_with_keywords?
-        fulltext_params.size > 1
+        return reference.title unless fulltext_params.searching_with_keywords?
+        format_autosuggest_keywords
       end
 
       def format_autosuggest_keywords
-        fulltext_params_dup = fulltext_params.dup
+        formatted = []
 
-        replaced = []
-        replaced << fulltext_params_dup[:keywords] || ''
-        replaced << "author:'#{reference.author_names_string}'" if fulltext_params_dup[:author]
-        replaced << "title:'#{reference.title}'" if fulltext_params_dup[:title]
-        replaced << "year:#{fulltext_params_dup[:year]}" if fulltext_params_dup[:year]
+        formatted << fulltext_params.freetext if fulltext_params.freetext
+        formatted << "author:'#{reference.author_names_string}'" if fulltext_params.author
+        formatted << "title:'#{reference.title}'" if fulltext_params.title
+        formatted << "year:#{fulltext_params.year}" if fulltext_params.year
 
-        start_year = fulltext_params_dup[:start_year]
-        end_year = fulltext_params_dup[:end_year]
+        start_year = fulltext_params.start_year
+        end_year = fulltext_params.end_year
         if start_year && end_year
-          replaced << "year:#{start_year}-#{end_year}"
+          formatted << "year:#{start_year}-#{end_year}"
         end
-        replaced.join(" ").strip
+
+        formatted.join(" ").strip
       end
   end
 end
