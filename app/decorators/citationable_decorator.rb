@@ -8,10 +8,8 @@ class CitationableDecorator
 
   def link_to_citationable
     case citationable
-    when Protonym
-      citationable.decorate.link_to_protonym
-    else
-      raise "unknown citationable #{citationable.class.name}"
+    when Protonym then citationable.decorate.link_to_protonym
+    else          raise "unknown citationable #{citationable.class.name}"
     end
   end
 end

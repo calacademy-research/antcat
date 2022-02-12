@@ -29,14 +29,14 @@ class WhatLinksHereItem
   def owner
     @_owner ||=
       case table
-      when "citations"           then Citation.find(id).protonym
-      when "protonyms"           then Protonym.find(id)
-      when "reference_sections"  then ReferenceSection.find(id).taxon
-      when "references"          then Reference.find(id)
-      when "history_items"       then HistoryItem.find(id).protonym
-      when "taxa"                then Taxon.find(id)
-      when "type_names"          then TypeName.find(id).protonym
-      else                       raise "unknown table #{table}"
+      when "citations"          then Citation.find(id).protonym
+      when "history_items"      then HistoryItem.find(id).protonym
+      when "protonyms"          then Protonym.find(id)
+      when "reference_sections" then ReferenceSection.find(id).taxon
+      when "references"         then Reference.find(id)
+      when "taxa"               then Taxon.find(id)
+      when "type_names"         then TypeName.find(id).protonym
+      else                      raise "unknown table #{table}"
       end
   end
 

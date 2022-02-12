@@ -13,7 +13,7 @@ module Wikipedia
       when Family, Tribe then generate(:genera)
       when Subfamily     then generate(:genera) << divider << generate(:tribes)
       when Genus         then generate(:species)
-      else               "cannot generate children list for this taxon"
+      else                    "cannot generate children list for this taxon"
       end
     end
 

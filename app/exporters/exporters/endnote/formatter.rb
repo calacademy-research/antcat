@@ -20,7 +20,7 @@ module Exporters
           when ArticleReference then ArticleFormatter
           when BookReference    then BookFormatter
           when NestedReference  then NestedFormatter
-          else raise "reference type not supported"
+          else                  raise "reference type not supported"
           end
         end
     end

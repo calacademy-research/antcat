@@ -75,7 +75,7 @@ class Rank
       when *BINOMIAL     then 2
       when *TRINOMIAL    then 3
       when *QUADRINOMIAL then 4
-      else 0
+      else                    0
       end
     end
 

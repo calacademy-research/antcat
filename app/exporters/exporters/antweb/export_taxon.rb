@@ -82,7 +82,7 @@ module Exporters
           when true  then 'TRUE'
           when false then 'FALSE'
           when nil   then nil
-          else            raise
+          else       raise
           end
         end
     end
