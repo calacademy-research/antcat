@@ -3,16 +3,18 @@
 require 'rails_helper'
 
 describe References::WhatLinksHere do
-  subject(:what_links_here) { described_class.new(reference.reload) }
-
-  let(:reference) { create :any_reference }
+  subject(:what_links_here) { described_class.new(reference) }
 
   context 'when there are no references' do
+    let(:reference) { create :any_reference }
+
     specify { expect(what_links_here.all).to eq [] }
     specify { expect(what_links_here.any?).to eq false }
   end
 
   context 'when there are column references' do
+    let(:reference) { create :any_reference }
+
     let!(:authorship) { create :citation, reference: reference }
     let!(:history_item) { create :history_item, :junior_synonym_of, reference: reference }
     let!(:nested_reference) { create :nested_reference, nesting_reference: reference }
@@ -31,6 +33,8 @@ describe References::WhatLinksHere do
   end
 
   context 'when there are taxt references' do
+    let(:reference) { create :any_reference }
+
     describe "tag: `REF_TAG`" do
       let(:taxt_tag) { Taxt.ref(reference.id) }
 
