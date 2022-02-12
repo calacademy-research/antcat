@@ -84,18 +84,6 @@ Rails.application.config.action_controller.raise_on_open_redirects = true
 # The `:mini_magick` option is not deprecated; it's fine to keep using it.
 # Rails.application.config.active_storage.variant_processor = :vips
 
-# If you're upgrading and haven't set `cookies_serializer` previously, your cookie serializer
-# was `:marshal`. Convert all cookies to JSON, using the `:hybrid` formatter.
-#
-# If you're confident all your cookies are JSON formatted, you can switch to the `:json` formatter.
-#
-# Continue to use `:marshal` for backward-compatibility with old cookies.
-#
-# If you have configured the serializer elsewhere, you can remove this.
-#
-# See https://guides.rubyonrails.org/action_controller_overview.html#cookies for more information.
-# Rails.application.config.action_dispatch.cookies_serializer = :hybrid
-
 # Enable parameter wrapping for JSON.
 # Previously this was set in an initializer. It's fine to keep using that initializer if you've customized it.
 # To disable parameter wrapping entirely, set this config to `false`.
