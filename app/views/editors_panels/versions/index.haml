@@ -24,13 +24,12 @@
       &nbsp;
       =link_to "Clear", request.path, class: "button btn-nodanger"
 
--if (first_version = @versions.first)
+-if @first_version
   .center-text
-    -first_version_date = first_version.created_at
-    %h5=time_ago_in_words first_version_date
-    %h6=first_version_date
+    %h5=time_ago_in_words @first_version.created_at
+    %h6=@first_version.created_at
 
--if @versions.count.zero?
+-if @versions.blank?
   .alert.callout.small-6.medium Found no versions ('User' versions not searched).
 -else
   %table
@@ -58,13 +57,12 @@
           %td
             %pre.pre-wrapped.small-text=version_decorated.format_compact_changeset
 
--if (last_verson = @versions.last)
+-if @last_version
   .center-text
-    -last_version_date = last_verson.created_at
-    %h5=time_ago_in_words last_version_date
-    %h6=last_version_date
+    %h5=time_ago_in_words @last_version.created_at
+    %h6=@last_version.created_at
 
 %p
-  %small.right Total versions: #{@version_count} (#{Time.current})
+  %small.right Total versions: #{@total_versions_count} (#{Time.current})
 
 =will_paginate @versions
