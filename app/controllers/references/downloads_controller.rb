@@ -4,7 +4,7 @@ module References
   class DownloadsController < ApplicationController
     def show
       reference_document = find_reference_document
-      redirect_to reference_document.actual_url
+      redirect_to reference_document.actual_url, allow_other_host: true
     end
 
     private
