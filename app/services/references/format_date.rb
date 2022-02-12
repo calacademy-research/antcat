@@ -25,8 +25,8 @@ module References
         day   = digits[6...8]
 
         date = year
-        date << '-' + month if month.present?
-        date << '-' + day if day.present?
+        date << ('-' + month) if month.present?
+        date << ('-' + day) if day.present?
 
         prefix + date + suffix
       end

@@ -87,9 +87,6 @@ Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
 
-Lint/AmbiguousOperatorPrecedence:
-  Enabled: false
-
 Lint/AmbiguousRegexpLiteral:
   Exclude:
     - 'features/step_definitions/**/*'
