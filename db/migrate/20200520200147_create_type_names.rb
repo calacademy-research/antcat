@@ -2,7 +2,7 @@
 
 class CreateTypeNames < ActiveRecord::Migration[6.0]
   def change
-    create_table :type_names, id: :integer do |t|
+    create_table :type_names, id: :integer, charset: "utf8" do |t|
       t.integer :taxon_id, null: false
       t.integer :reference_id
       t.string :pages

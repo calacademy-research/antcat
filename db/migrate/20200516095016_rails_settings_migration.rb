@@ -2,7 +2,7 @@
 
 class RailsSettingsMigration < ActiveRecord::Migration[6.0]
   def up
-    create_table :settings do |t|
+    create_table :settings, charset: "utf8" do |t|
       t.string :var, null: false
       t.text :value
       t.references :target, type: :bigint, null: false, polymorphic: true
