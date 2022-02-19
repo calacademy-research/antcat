@@ -28,7 +28,7 @@ module AntCat
     config.secret_key_base = Settings.rails.secret_key_base
 
     console do
-      ARGV.push "-r", root.join("config/initializers/console_prompt.rb")
+      ARGV.push "-r", root.join("config/initializers/irb.rb")
     end
 
     config.after_initialize do

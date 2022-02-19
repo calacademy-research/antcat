@@ -6,6 +6,8 @@ require 'irb'
 # with default config (where `expose_dsl_globally = true`), see https://stackoverflow.com/a/24973151
 RSpec.configure { |config| config.expose_dsl_globally = false } if defined?(RSpec)
 
+IRB.conf[:USE_MULTILINE] = false
+
 IRB.conf[:PROMPT] ||= {}
 IRB.conf[:PROMPT][:RAILS_APP] = {
   PROMPT_I: "antcat (#{Rails.env})> ",
