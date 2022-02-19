@@ -6,6 +6,16 @@ set -euo pipefail
 
 echo "*** Executing $0"
 
-bundle exec rails db:drop
-bundle exec rails db:create
-bundle exec rails db:migrate
+full_path=$(realpath "$0")
+dir_path=$(dirname "$full_path")
+schema_rb="${dir_path}/../../db/schema.rb"
+
+bundle exec rails db:drop db:create db:migrate
+echo "Checking if schema.rb was changed by rails db:drop db:create db:migrate..."
+if ! git diff --exit-code --quiet "${schema_rb}"; then
+  echo "schema.rb was changed!"
+  git diff "${schema_rb}"
+  exit 1
+else
+  echo "ok!"
+fi
