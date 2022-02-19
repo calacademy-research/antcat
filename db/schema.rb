@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_211550) do
-
+ActiveRecord::Schema[7.0].define(version: 2021_08_13_211550) do
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
     t.integer "user_id"
     t.string "action", null: false
     t.text "parameters"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "edit_summary"
     t.boolean "automated_edit", default: false, null: false
     t.string "request_uuid"
@@ -30,8 +29,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
 
   create_table "author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "author_id", null: false
     t.index ["author_id"], name: "ix_author_names__author_id"
     t.index ["created_at", "name"], name: "ix_author_names__created_at__name"
@@ -39,15 +38,15 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   end
 
   create_table "authors", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "citations", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.integer "reference_id", null: false
     t.string "pages", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["reference_id"], name: "ix_citations__reference_id"
   end
 
@@ -56,8 +55,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "commentable_type"
     t.text "body", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "edited", default: false, null: false
     t.index ["commentable_id", "commentable_type"], name: "ix_comments__commentable_id__commentable_type"
     t.index ["user_id"], name: "ix_comments__user_id"
@@ -70,16 +69,16 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.text "comment", null: false
     t.string "ip"
     t.string "page"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "open", default: true, null: false
     t.index ["user_id"], name: "ix_feedbacks__user_id"
   end
 
   create_table "history_items", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.text "taxt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "position", null: false
     t.string "rank"
     t.integer "protonym_id", null: false
@@ -103,8 +102,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   create_table "institutions", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "abbreviation", null: false
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "grscicoll_identifier"
     t.index ["abbreviation"], name: "ux_institutions__abbreviation", unique: true
   end
@@ -114,8 +113,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.integer "user_id", null: false
     t.string "title", null: false
     t.text "description", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "open", default: true, null: false
     t.boolean "help_wanted", default: false, null: false
     t.index ["closer_id"], name: "ix_issues__closer_id"
@@ -124,8 +123,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
 
   create_table "journals", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["name"], name: "ux_journals__name", unique: true
   end
 
@@ -133,8 +132,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "type", null: false
     t.string "name", null: false
     t.string "epithet", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "gender"
     t.string "cleaned_name", null: false
     t.boolean "non_conforming", default: false, null: false
@@ -149,16 +148,16 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "attached_type"
     t.boolean "seen", default: false, null: false
     t.string "reason", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["attached_type", "attached_id"], name: "ix_notifications__attached_type__attached_id"
     t.index ["notifier_id"], name: "ix_notifications__notifier_id"
     t.index ["user_id"], name: "ix_notifications__user_id"
   end
 
   create_table "protonyms", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "authorship_id", null: false
     t.boolean "fossil", default: false, null: false
     t.boolean "sic", default: false, null: false
@@ -182,8 +181,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
 
   create_table "publishers", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "place", null: false
     t.index ["name", "place"], name: "ux_publishers__name__place", unique: true
     t.index ["name"], name: "ix_publishers__name"
@@ -194,15 +193,15 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "readable_type", null: false
     t.integer "reader_id"
     t.string "reader_type", null: false
-    t.datetime "timestamp"
+    t.datetime "timestamp", precision: nil
     t.index ["reader_id", "reader_type", "readable_type", "readable_id"], name: "ix_x_read_marks__reader_readable_index"
   end
 
   create_table "reference_author_names", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.integer "author_name_id", null: false
     t.integer "reference_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "position", null: false
     t.index ["author_name_id"], name: "ix_reference_author_names__author_name_id"
     t.index ["reference_id", "position"], name: "ix_reference_author_names__reference_id__position"
@@ -212,8 +211,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   create_table "reference_documents", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "url"
     t.string "file_file_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "reference_id", null: false
     t.index ["reference_id"], name: "ux_reference_documents__reference_id", unique: true
   end
@@ -223,8 +222,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.integer "position", null: false
     t.string "title_taxt"
     t.text "references_taxt"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.text "subtitle_taxt"
     t.index ["taxon_id", "position"], name: "ix_reference_sections__taxon_id__position"
   end
@@ -232,8 +231,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   create_table "references", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.integer "year", null: false
     t.string "date"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "type", null: false
     t.integer "publisher_id"
     t.integer "journal_id"
@@ -271,8 +270,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.text "value"
     t.string "target_type", null: false
     t.bigint "target_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["target_type", "target_id", "var"], name: "ux_settings__target_type__target_id__var", unique: true
     t.index ["target_type", "target_id"], name: "ix_settings__target_type__target_id"
   end
@@ -281,15 +280,15 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "title", null: false
     t.text "message", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "ix_site_notices__user_id"
   end
 
   create_table "taxa", id: :integer, charset: "utf8", collation: "utf8_unicode_ci", force: :cascade do |t|
     t.string "type", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "status", null: false
     t.integer "subfamily_id"
     t.integer "tribe_id"
@@ -328,8 +327,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   create_table "tooltips", id: :integer, charset: "utf8", force: :cascade do |t|
     t.string "key", null: false
     t.text "text", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "scope", null: false
   end
 
@@ -338,8 +337,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.integer "reference_id"
     t.string "pages"
     t.string "fixation_method"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["reference_id"], name: "ix_type_names__reference_id"
     t.index ["taxon_id"], name: "ix_type_names__taxon_id"
   end
@@ -350,15 +349,15 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "password_salt", default: ""
     t.string "reset_password_token"
     t.string "remember_token"
-    t.datetime "remember_created_at"
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "reset_password_sent_at"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "reset_password_sent_at", precision: nil
     t.boolean "editor", default: false, null: false
     t.string "name", null: false
     t.boolean "superadmin", default: false, null: false
@@ -381,7 +380,7 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at"
+    t.datetime "created_at", precision: nil
     t.text "object_changes"
     t.string "request_uuid"
     t.index ["event"], name: "ix_versions__event"
@@ -394,8 +393,8 @@ ActiveRecord::Schema.define(version: 2021_08_13_211550) do
   create_table "wiki_pages", charset: "utf8", force: :cascade do |t|
     t.string "title", null: false
     t.text "content", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "permanent_identifier"
     t.boolean "featured", default: false, null: false
     t.index ["permanent_identifier"], name: "ux_wiki_pages__permanent_identifier", unique: true
