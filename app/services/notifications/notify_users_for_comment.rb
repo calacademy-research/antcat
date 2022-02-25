@@ -18,8 +18,6 @@ module Notifications
 
     private
 
-      delegate :commentable, to: :comment, private: true
-
       def notify_mentioned_users
         users_mentioned_in_comment.each do |mentioned_user|
           notify mentioned_user, Notification::MENTIONED_IN_COMMENT
@@ -31,13 +29,13 @@ module Notifications
       end
 
       def notify_users_in_the_same_discussion
-        commentable.commenters.each do |co_commenter|
+        comment.commentable.commenters.each do |co_commenter|
           notify co_commenter, Notification::ACTIVE_IN_DISCUSSION
         end
       end
 
       def notify_commentable_creator
-        return unless (creator = commentable.user)
+        return unless (creator = comment.commentable.user)
         notify creator, Notification::CREATOR_OF_COMMENTABLE
       end
 

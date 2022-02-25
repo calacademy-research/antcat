@@ -14,18 +14,18 @@ describe References::ReferenceSimilarity do
     end
 
     describe "author + year matching" do
-      context "when the author names don't match but the years do" do
+      context "when author names don't match but years do" do
         let(:lhs) { Reference.new(year: 2010) }
         let(:rhs) { Reference.new(year: 2010) }
 
-        it "doesn't match if the author name is different" do
+        it "doesn't match if author name is different" do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Bolton')])
 
           expect(described_class[lhs, rhs]).to eq 0.00
         end
 
-        it "doesn't match if the author name is a prefix" do
+        it "doesn't match if author name is a prefix" do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fish')])
 
@@ -42,14 +42,14 @@ describe References::ReferenceSimilarity do
           allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher, B. L.')])
         end
 
-        it "doesn't match if the author name is the same but the year is different" do
+        it "doesn't match if author name is same but year is different" do
           lhs.year = 1970
           rhs.year = 1980
 
           expect(described_class[lhs, rhs]).to eq 0.001
         end
 
-        it "matches better if the author name matches and the year is within 1" do
+        it "matches better if author name matches and year is within 1" do
           lhs.year = 1979
           rhs.year = 1980
 
@@ -61,14 +61,14 @@ describe References::ReferenceSimilarity do
         let(:lhs) { Reference.new(title: 'A', year: 1979) }
         let(:rhs) { Reference.new(title: 'B', year: 1980) }
 
-        it "matches if the author names differ by accentation" do
+        it "matches if author names differ by accentation" do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csösz')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Csősz')])
 
           expect(described_class[lhs, rhs]).to eq 0.001
         end
 
-        it "matches if the author names differ by case" do
+        it "matches if author names differ by case" do
           expect(lhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'MacKay')])
           expect(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Mackay')])
 
@@ -87,7 +87,7 @@ describe References::ReferenceSimilarity do
         let(:lhs) { Reference.new(title: 'Ants') }
         let(:rhs) { Reference.new(title: 'Ants') }
 
-        it "matches with much less confidence if the author and title are the same but the year is not within 1" do
+        it "matches with much less confidence if author and title are same but year is not within 1" do
           lhs.year = 1975
           rhs.year = 1971
 
@@ -99,7 +99,7 @@ describe References::ReferenceSimilarity do
         let(:lhs) { Reference.new(year: 1979) }
         let(:rhs) { Reference.new(year: 1980) }
 
-        it "matches with complete confidence if the author and title are the same" do
+        it "matches with complete confidence if author and title are same" do
           lhs.title = 'Ants'
           rhs.title = 'Ants'
 
@@ -189,14 +189,14 @@ describe References::ReferenceSimilarity do
         allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
-      it 'matches with much less confidence when the year does not match' do
+      it 'matches with much less confidence when year does not match' do
         lhs.year = 1971
         rhs.year = 1980
 
         expect(described_class[lhs, rhs]).to be_within(0.001).of(0.30)
       end
 
-      it "matches perfectly when the year does match" do
+      it "matches perfectly when year does match" do
         lhs.year = 1979
         rhs.year = 1980
 
@@ -210,8 +210,8 @@ describe References::ReferenceSimilarity do
         allow(rhs).to receive(:author_names).and_return([build_stubbed(:author_name, name: 'Fisher')])
       end
 
-      context 'when the pagination matches' do
-        context 'when the year does not match' do
+      context 'when pagination matches' do
+        context 'when year does not match' do
           let(:lhs) { ArticleReference.new(title: 'Myrmicinae', pagination: '1-76', series_volume_issue: '(21) 4') }
           let(:rhs) { ArticleReference.new(title: 'Formica', pagination: '1-76', series_volume_issue: '(21) 4') }
 
@@ -223,7 +223,7 @@ describe References::ReferenceSimilarity do
           end
         end
 
-        context 'when the year matches' do
+        context 'when year matches' do
           let(:lhs) { ArticleReference.new(title: 'Myrmicinae', pagination: '1-76', year: 1979) }
           let(:rhs) { ArticleReference.new(title: 'Formica', pagination: '1-76', year: 1980) }
 
@@ -234,21 +234,21 @@ describe References::ReferenceSimilarity do
             expect(described_class[lhs, rhs]).to eq 0.90
           end
 
-          it "matches when the series/volume/issue has spaces after the volume (issue first)" do
+          it "matches when series/volume/issue has spaces after the volume (issue first)" do
             lhs.series_volume_issue = '(21)4'
             rhs.series_volume_issue = '(21) 4'
 
             expect(described_class[lhs, rhs]).to eq 0.90
           end
 
-          it "matches when the series/volume/issue has spaces after the volume (issue last)" do
+          it "matches when series/volume/issue has spaces after the volume (issue last)" do
             lhs.series_volume_issue = '4(21)'
             rhs.series_volume_issue = '4 (21)'
 
             expect(described_class[lhs, rhs]).to eq 0.90
           end
 
-          context "when the series/volume/issue has a space after the series, but the space separates words" do
+          context "when series/volume/issue has a space after the series, but the space separates words" do
             it "doesn't match the series_volume_issue" do
               lhs.series_volume_issue = '21 4'
               rhs.series_volume_issue = '214'
@@ -281,7 +281,7 @@ describe References::ReferenceSimilarity do
       end
     end
 
-    describe 'matching everything except the pagination' do
+    describe 'matching everything except pagination' do
       let(:lhs) { ArticleReference.new(title: 'Ant', pagination: '8-9', series_volume_issue: '1', year: 2002) }
       let(:rhs) { ArticleReference.new(title: 'Ant', pagination: '1-7', series_volume_issue: '1', year: 2002) }
 

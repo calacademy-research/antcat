@@ -6,11 +6,11 @@
     .small-6.medium-4.large-2.columns
       =f.select :whodunnit, options_for_select(User.order(:name).pluck(:name, :id), params[:whodunnit]), prompt: 'User'
     .small-6.medium-4.large-2.columns
-      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTER_ITEM_TYPES, params[:item_type]), prompt: 'Item type'
+      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTERABLE_ITEM_TYPES, params[:item_type]), prompt: 'Item type'
     .small-6.medium-4.large-2.columns
       =f.number_field :item_id, value: params[:item_id], placeholder: 'Item ID'
     .small-6.medium-4.large-2.columns.end
-      =f.select :event, options_for_select(%w[create update destroy], params[:event]), prompt: 'Event'
+      =f.select :event, options_for_select(PaperTrail::Version::EVENTS, params[:event]), prompt: 'Event'
 
   .row
     .small-6.medium-4.large-2.columns
@@ -30,7 +30,7 @@
     %h6=@first_version.created_at
 
 -if @versions.blank?
-  .alert.callout.small-6.medium Found no versions ('User' versions not searched).
+  .alert.callout.small-6.medium Found no versions
 -else
   %table
     %thead
@@ -46,8 +46,10 @@
       -@versions.each do |version|
         %tr
           %td=link_to version.id, version_path(version)
-          %td=version.event
-          %td=version.item_type
+          %td
+            %code=version.event
+          %td
+            %code=version.item_type
           %td=version.item_id
           %td.no-wrap=version.created_at
           %td

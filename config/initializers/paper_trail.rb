@@ -4,7 +4,7 @@
 #
 # This can probably be removed if tests pass without it. Before adding it there were failures like these:
 #   NoMethodError: undefined method `search' for #<Class:0x00005636cbee64b8>
-#   NameError: uninitialized constant #<Class:0x00005636cbee64b8>::CREATE_EVENT
+#   NameError: uninitialized constant #<Class:0x00005636cbee64b8>::CREATE
 
 module PaperTrail
   remove_const :Version

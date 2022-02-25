@@ -34,7 +34,8 @@ class User < ApplicationRecord
   has_many :comments, dependent: :restrict_with_error
   has_many :notifications, dependent: :restrict_with_error
   has_many :unseen_notifications, -> { unseen }, class_name: "Notification"
-  has_many :created_paper_trail_versions, class_name: "PaperTrail::Version", foreign_key: :whodunnit, dependent: false
+  has_many :created_paper_trail_versions, -> { base_scope }, class_name: "PaperTrail::Version",
+    foreign_key: :whodunnit, dependent: false
 
   validates :author, uniqueness: true, allow_nil: true
   validates :name, presence: true, uniqueness: { case_sensitive: true }, format: { with: /\A[^<>]*\z/ }

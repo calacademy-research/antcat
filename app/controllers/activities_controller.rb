@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ActivitiesController < ApplicationController
-  FILTER_TRACKABLE_TYPES_BY_GROUP = {
+  FILTERABLE_TRACKABLE_TYPES_BY_GROUP = {
     'Catalog (common)' => %w[
       Protonym
       Reference
@@ -45,6 +45,7 @@ class ActivitiesController < ApplicationController
   def destroy
     activity = find_activity
     activity.destroy!
+
     redirect_back fallback_location: root_path,
       notice: "Activity item ##{activity.id} was successfully deleted."
   end

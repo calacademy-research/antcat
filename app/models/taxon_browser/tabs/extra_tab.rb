@@ -50,7 +50,7 @@ module TaxonBrowser
             raise "Unknown view option '#{view}' for <#{taxon.type} id: #{taxon.id}>"
           end
 
-        new title, taxa_in_tab, taxon_browser
+        new(title, taxa_in_tab, taxon_browser)
       end
 
       def initialize title, taxa_in_tab, taxon_browser

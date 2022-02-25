@@ -7,10 +7,12 @@ module PaperTrail
 
     # As defined in PaperTrail. Copied here since they are not in the gem's source code.
     EVENTS = [
-      CREATE_EVENT = 'create',
-      UPDATE_EVENT = 'update',
-      DESTROY_EVENT = 'destroy'
+      CREATE = 'create',
+      UPDATE = 'update',
+      DESTROY = 'destroy'
     ]
+    DEPRECATED_ITEM_TYPES = %w[Synonym TaxonState]
+    HIDDEN_ITEM_TYPES = %w[User]
 
     belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
     belongs_to :user, optional: true, foreign_key: :whodunnit
@@ -22,7 +24,12 @@ module PaperTrail
       end
       results
     end
-    scope :without_user_versions, -> { where.not(item_type: "User") }
+    scope :base_scope, -> { without_deprecated_item_types.without_hidden }
+    scope :without_deprecated_item_types, -> { where.not(item_type: DEPRECATED_ITEM_TYPES) }
+    scope :without_hidden, -> { where.not(item_type: HIDDEN_ITEM_TYPES) }
+    # TODO: Use this scope if it makes sense -- this most likely requires changes for how PaperTrail orders versions
+    # internally (and add index on `versions.created_at`). Because IDs in the prod db are not ordered 100% chronologically.
+    scope :oldest_last, -> { order(created_at: :desc, id: :desc) }
 
     def self.search search_query, search_type
       search_type = search_type.presence || 'LIKE'

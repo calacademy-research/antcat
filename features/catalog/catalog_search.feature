@@ -6,7 +6,7 @@ Feature: Searching the catalog
   Scenario: Searching when no results
     When I fill in "qq" with "zxxz" within the desktop menu
     And I click on the catalog search button
-    Then I should see "No results found."
+    Then I should see "No results found"
 
   Scenario: Searching with results
     Given there is a species "Formica niger"
