@@ -66,14 +66,11 @@ module References
       end
 
       def comparable_as_article?
-        return unless lhs.type == 'ArticleReference'
-        lhs.series_volume_issue.present? && rhs.series_volume_issue.present?
-        lhs.pagination.present? && rhs.pagination.present?
+        lhs.type == 'ArticleReference'
       end
 
       def comparable_as_book?
-        return unless lhs.type == 'BookReference'
-        lhs.pagination.present? && rhs.pagination.present?
+        lhs.type == 'BookReference'
       end
   end
 end
