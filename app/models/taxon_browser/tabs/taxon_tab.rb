@@ -35,8 +35,8 @@ module TaxonBrowser
         def use_epithet_as_title?
           return false unless tab_taxon.is_a?(Tribe) || tab_taxon.is_a?(Genus)
 
-          view.in?([SUBTRIBES_IN_TRIBE, SUBTRIBES_IN_PARENT_TRIBE]) ||
-            view.in?([ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS])
+          taxon_browser.view.in?([SUBTRIBES_IN_TRIBE, SUBTRIBES_IN_PARENT_TRIBE]) ||
+            taxon_browser.view.in?([ALL_TAXA_IN_GENUS, SUBGENERA_IN_GENUS, SUBGENERA_IN_PARENT_GENUS])
         end
     end
   end

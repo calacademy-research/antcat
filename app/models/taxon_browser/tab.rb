@@ -23,22 +23,20 @@ module TaxonBrowser
     ]
     SELECT_COLUMNS = [:id, :type, :status, 'protonyms.fossil AS fossil_protonym', 'names.epithet AS name_epithet']
 
-    delegate :view, :selected_in_tab?, :tab_open?, :show_invalid?, to: :taxon_browser
-
     def initialize taxa_in_tab, taxon_browser
       @taxon_browser = taxon_browser
       @taxa_in_tab = taxa_in_tab
-      @taxa_in_tab = taxa_in_tab.valid unless show_invalid?
+      @taxa_in_tab = taxa_in_tab.valid unless taxon_browser.show_invalid?
     end
 
     def each_taxon
       sorted_taxa.joins(:protonym).select(SELECT_COLUMNS).each do |taxon|
-        yield taxon, selected_in_tab?(taxon)
+        yield taxon, taxon_browser.selected_in_tab?(taxon)
       end
     end
 
     def open?
-      tab_open? self
+      taxon_browser.tab_open?(self)
     end
 
     private
