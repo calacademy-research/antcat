@@ -6,7 +6,7 @@
     .small-6.medium-4.large-2.columns
       =f.select :whodunnit, options_for_select(User.order(:name).pluck(:name, :id), params[:whodunnit]), prompt: 'User'
     .small-6.medium-4.large-2.columns
-      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTER_ITEM_TYPES, params[:item_type]), prompt: 'Item type'
+      =f.select :item_type, options_for_select(EditorsPanels::VersionsController::FILTERABLE_ITEM_TYPES, params[:item_type]), prompt: 'Item type'
     .small-6.medium-4.large-2.columns
       =f.number_field :item_id, value: params[:item_id], placeholder: 'Item ID'
     .small-6.medium-4.large-2.columns.end
@@ -30,7 +30,7 @@
     %h6=@first_version.created_at
 
 -if @versions.blank?
-  .alert.callout.small-6.medium Found no versions.
+  .alert.callout.small-6.medium Found no versions
 -else
   %table
     %thead
