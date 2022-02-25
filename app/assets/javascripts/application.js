@@ -1,6 +1,5 @@
 // gems
 //= require rails-ujs
-// TODO: Import individual files instead of all of Foundation.
 //= require foundation
 
 //= require twitter/typeahead

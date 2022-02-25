@@ -214,6 +214,12 @@ Rails/ReflectionClassName:
 Rails/RenderInline:
   Enabled: false
 
+Rails/SaveBang:
+  Enabled: false
+  AllowedReceivers:
+    - 'ProgressBar'
+    - 'reference_form' # Actually `ReferenceForm`.
+
 Rails/SkipsModelValidations:
   Enabled: false
   Exclude:

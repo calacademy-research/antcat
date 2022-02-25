@@ -30,8 +30,8 @@ class Activity < ApplicationRecord
       MOVE_PROTONYM_ITEMS =           'move_protonym_items',
       REOPEN_FEEDBACK =               'reopen_feedback',
       REOPEN_ISSUE =                  'reopen_issue',
-      REORDER_REFERENCE_SECTIONS =    'reorder_reference_sections',
       REORDER_HISTORY_ITEMS =         'reorder_history_items',
+      REORDER_REFERENCE_SECTIONS =    'reorder_reference_sections',
       RESTART_REVIEWING =             'restart_reviewing',
       SET_SUBGENUS =                  'set_subgenus',
       START_REVIEWING =               'start_reviewing'

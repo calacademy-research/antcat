@@ -51,7 +51,7 @@ When("I update the most recent history item to say {string}") do |content|
 end
 
 When("I delete the most recent history item") do
-  HistoryItem.last.destroy
+  HistoryItem.last.destroy!
 end
 
 # Relational history items.

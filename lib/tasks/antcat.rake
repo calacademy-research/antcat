@@ -36,7 +36,8 @@ task :antcat do
 
   puts <<~STR
     ### script subdir:
-    /data/antcat/current/script/solr/restart_and_reindex production
+    ./script/solr/restart_and_reindex                          # Any env, also works on EngineYard.
+    /data/antcat/current/script/solr/restart_and_reindex       # Absolute path on EngineYard (because lazy).
     script/db_dump/README.md
 
   STR
