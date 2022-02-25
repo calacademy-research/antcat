@@ -58,6 +58,7 @@ describe RevisionComparer, :versioning do
     end
   end
 
+  # TODO: Split/reorganize specs.
   describe 'predicate methods' do
     let!(:diff_with_id) { item.tap { |item| item.update!(taxt: "second version") }.versions.last.id }
     let!(:selected_id) { item.tap { |item| item.update!(taxt: "last version") }.versions.last.id }

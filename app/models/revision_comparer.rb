@@ -22,6 +22,7 @@ class RevisionComparer
     !selected.nil? && !diff_with
   end
 
+  # TODO: Probably move this and `#revision_diff_with?` to `RevisionPresenter`.
   def revision_selected? revision
     revision.id == selected_id.to_i
   end

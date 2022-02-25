@@ -9,6 +9,7 @@ module EditorsPanels
       Citation
       Comment
       Feedback
+      HistoryItem
       Institution
       Issue
       Journal
@@ -23,9 +24,9 @@ module EditorsPanels
       SiteNotice
       Synonym
       Taxon
-      HistoryItem
       TaxonState
       Tooltip
+      TypeName
       WikiPage
     ]
 
