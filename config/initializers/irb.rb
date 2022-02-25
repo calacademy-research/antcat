@@ -8,9 +8,18 @@ RSpec.configure { |config| config.expose_dsl_globally = false } if defined?(RSpe
 
 IRB.conf[:USE_MULTILINE] = false
 
+ENV_COLORS = {
+  'production' => :light_blue,
+  'staging' => :light_magenta,
+  'development' => :light_green,
+  'test' => :light_yellow
+}
+env_color = ENV_COLORS.fetch(Rails.env)
+colorized_env = Rails.env.to_s.on_black.public_send(env_color)
+
 IRB.conf[:PROMPT] ||= {}
 IRB.conf[:PROMPT][:RAILS_APP] = {
-  PROMPT_I: "antcat (#{Rails.env})> ",
+  PROMPT_I: "antcat (#{colorized_env})> ",
   PROMPT_N: nil,
   PROMPT_S: nil,
   PROMPT_C: nil,
