@@ -11,6 +11,7 @@ module PaperTrail
       UPDATE = 'update',
       DESTROY = 'destroy'
     ]
+    DEPRECATED_ITEM_TYPES = %w[Synonym TaxonState]
 
     belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
     belongs_to :user, optional: true, foreign_key: :whodunnit
@@ -22,6 +23,8 @@ module PaperTrail
       end
       results
     end
+    scope :base_scope, -> { without_deprecated_item_types.without_user_versions }
+    scope :without_deprecated_item_types, -> { where.not(item_type: DEPRECATED_ITEM_TYPES) }
     scope :without_user_versions, -> { where.not(item_type: "User") }
     # TODO: Use this scope if it makes sense -- this most likely requires changes for how PaperTrail orders versions
     # internally (and add index on `versions.created_at`). Because IDs in the prod db are not ordered 100% chronologically.
