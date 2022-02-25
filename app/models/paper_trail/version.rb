@@ -7,9 +7,9 @@ module PaperTrail
 
     # As defined in PaperTrail. Copied here since they are not in the gem's source code.
     EVENTS = [
-      CREATE_EVENT = 'create',
-      UPDATE_EVENT = 'update',
-      DESTROY_EVENT = 'destroy'
+      CREATE = 'create',
+      UPDATE = 'update',
+      DESTROY = 'destroy'
     ]
 
     belongs_to :activity, optional: true, foreign_key: :request_uuid, primary_key: :request_uuid
