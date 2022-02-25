@@ -23,6 +23,9 @@ module PaperTrail
       results
     end
     scope :without_user_versions, -> { where.not(item_type: "User") }
+    # TODO: Use this scope if it makes sense -- this most likely requires changes for how PaperTrail orders versions
+    # internally (and add index on `versions.created_at`). Because IDs in the prod db are not ordered 100% chronologically.
+    scope :oldest_last, -> { order(created_at: :desc, id: :desc) }
 
     def self.search search_query, search_type
       search_type = search_type.presence || 'LIKE'
