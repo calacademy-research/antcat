@@ -11,12 +11,18 @@
 /config/server.yml
 
 # Generated AntCat output.
+/data/antweb_exports/antcat.antweb.txt
+/data/antweb_exports/antcat.antweb.txt.stderr.log
+/data/antweb_exports/antcat.antweb.txt.stdout.log
+
 /data/db_dumps/*
 !/data/db_dumps/.keep
-/data/output/*
-!/data/output/.keep
+
 /data/gbif_exports/*
 !/data/gbif_exports/.keep
+
+/data/output/*
+!/data/output/.keep
 
 # Temp/cache.
 /tmp

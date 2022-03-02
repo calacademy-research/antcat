@@ -7,6 +7,10 @@ services:
     command: /bin/bash
     depends_on:
       - "db"
+    environment:
+      RAILS_ENV: "development"
+      # Uncomment for quicker testing.
+      # AW_EXPORT_LIMIT: "500"
     volumes:
       - ../:/code
     stdin_open: true

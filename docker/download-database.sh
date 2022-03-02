@@ -2,7 +2,7 @@
 echo "Starting download database inside docker..."
 cd /code
 
-bundle install # TODO: Probably not required any longer.
+bundle install
 
 chmod 600 ./docker/id_rsa
 
