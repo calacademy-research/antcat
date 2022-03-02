@@ -258,6 +258,9 @@ Rake/Desc:
 
 ### RSpec.
 
+RSpec/BeEq:
+  Enabled: false
+
 RSpec/DescribedClass:
   Enabled: false
 
