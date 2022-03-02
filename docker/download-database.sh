@@ -25,7 +25,6 @@ cp /code/database_export/$filename /code/database_archive
 gunzip -f /code/database_export/$filename
 
 unzipped=`echo $filename | rev | cut -c 4- | rev`
-perl -p -i -e "s/mysql -u root/mysql -h db -u root/g" /code/script/*.sh
 echo "Unzipped: $unzipped"
 
 echo -e "development:\n\
