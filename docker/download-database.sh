@@ -41,13 +41,9 @@ echo "Resetting database..."
 ./reset_database.sh
 echo "Loading new data..."
 ./load.sh /code/database_export/$unzipped
+
 cd /code
-#echo "Removling lockfile..."
-#rm /code/Gemfile.lock
-#echo "reinstalling bundle hack..."
-#bundle install
 echo "Starting export..."
-#bundle exec rake antweb:export
-rake antweb:export
+bundle exec rake antweb:export
 cp /code/data/output/antcat.antweb.txt /code/database_export/antcat.antweb.txt
 rm /code/database_export/$unzipped
