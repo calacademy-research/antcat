@@ -2,7 +2,7 @@
 echo "Starting download database inside docker..."
 cd /code
 
-bundle install # TODO: Probably not required any longer.
+bundle install
 
 chmod 600 ./docker/id_rsa
 
@@ -25,7 +25,6 @@ cp /code/database_export/$filename /code/database_archive
 gunzip -f /code/database_export/$filename
 
 unzipped=`echo $filename | rev | cut -c 4- | rev`
-perl -p -i -e "s/mysql -u root/mysql -h db -u root/g" /code/script/*.sh
 echo "Unzipped: $unzipped"
 
 echo -e "development:\n\
@@ -41,13 +40,9 @@ echo "Resetting database..."
 ./reset_database.sh
 echo "Loading new data..."
 ./load.sh /code/database_export/$unzipped
+
 cd /code
-#echo "Removling lockfile..."
-#rm /code/Gemfile.lock
-#echo "reinstalling bundle hack..."
-#bundle install
 echo "Starting export..."
-#bundle exec rake antweb:export
-rake antweb:export
+bundle exec rake antweb:export
 cp /code/data/output/antcat.antweb.txt /code/database_export/antcat.antweb.txt
 rm /code/database_export/$unzipped

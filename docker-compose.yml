@@ -12,7 +12,7 @@ services:
       DB_DATABASE: antcat_docker
       DB_PORT: 3306
       DB_HOST: db
-      NO_DEV_MONKEY_PATCHES: "false"
+      NO_DEV_MONKEY_PATCHES: "y"
     volumes:
       - .:/app
       - ./docker_dev/database.docker-dev.yml:/app/config/database.yml
