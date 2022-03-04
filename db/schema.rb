@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2021_08_13_211550) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_04_173615) do
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
@@ -380,7 +380,7 @@ ActiveRecord::Schema[7.0].define(version: 2021_08_13_211550) do
     t.string "event", null: false
     t.string "whodunnit"
     t.text "object"
-    t.datetime "created_at", precision: nil
+    t.datetime "created_at", precision: nil, null: false
     t.text "object_changes"
     t.string "request_uuid"
     t.index ["event"], name: "ix_versions__event"

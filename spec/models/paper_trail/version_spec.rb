@@ -46,14 +46,14 @@ describe PaperTrail::Version do
   end
 
   describe 'scopes' do
-    describe '.oldest_last' do
+    describe '.chronological' do
       let!(:version_2) { create :version, created_at: 3.years.ago }
       let!(:version_3) { create :version, created_at: version_2.created_at }
       let!(:version_4) { create :version, created_at: 2.years.ago }
       let!(:version_1) { create :version, created_at: 5.years.ago }
 
-      it 'orders by `created_at` (and uses lowest `id` as a tiebreaker)' do
-        expect(described_class.oldest_last).to eq [version_4, version_3, version_2, version_1]
+      it 'orders by chronological order (most recent `created_at` last, with `id` as a tiebreaker)' do
+        expect(described_class.chronological).to eq [version_1, version_2, version_3, version_4]
       end
     end
   end

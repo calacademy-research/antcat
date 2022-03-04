@@ -29,7 +29,7 @@ module PaperTrail
     scope :without_hidden, -> { where.not(item_type: HIDDEN_ITEM_TYPES) }
     # TODO: Use this scope if it makes sense -- this most likely requires changes for how PaperTrail orders versions
     # internally (and add index on `versions.created_at`). Because IDs in the prod db are not ordered 100% chronologically.
-    scope :oldest_last, -> { order(created_at: :desc, id: :desc) }
+    scope :chronological, -> { order(created_at: :asc, id: :asc) }
 
     def self.search search_query, search_type
       search_type = search_type.presence || 'LIKE'
