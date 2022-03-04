@@ -1,20 +1,27 @@
 # frozen_string_literal: true
 
 class RevisionComparer
-  attr_reader :selected, :diff_with
-
   def initialize item_class, item_id, selected_id = nil, diff_with_id = nil
     @item_class = item_class
     @item_id = item_id
     @selected_id = selected_id
     @diff_with_id = diff_with_id
-
-    @selected = find_revision selected_id
-    @diff_with = find_revision diff_with_id
   end
 
   def most_recent
     @_most_recent ||= live_item || last_live_item
+  end
+
+  def selected
+    @_selected ||= if selected_id.present?
+                     revisions.find(selected_id).reify
+                   end
+  end
+
+  def diff_with
+    @_diff_with ||= if diff_with_id.present?
+                      revisions.find(diff_with_id).reify
+                    end
   end
 
   def revisions
@@ -54,10 +61,6 @@ class RevisionComparer
 
     def last_live_item
       versions.last.reify
-    end
-
-    def find_revision id
-      revisions.find(id).reify if id.present?
     end
 
     def versions
