@@ -13,23 +13,11 @@
 
   .medium-9.medium-pull-3.columns
     -if diff_with
-      -left_side_revision = diff_with
-      -left_side_diff = revision_presenter.left_side_diff
-      -right_side_revision = selected || most_recent
-      -right_side_diff = revision_presenter.right_side_diff
-
       %h5 Difference between revisions
-
-      .row.center-text
-        .medium-6.columns
-          =render "shared/revision_comparer/revision_info_date", revision: left_side_revision
-        .medium-6.columns
-          =render "shared/revision_comparer/revision_info_date", revision: right_side_revision
-
       .callout.margin-bottom
         .row
-          .medium-6.columns=left_side_diff.html_safe
-          .medium-6.columns=right_side_diff.html_safe
+          .medium-6.columns=revision_presenter.left_side_diff.html_safe
+          .medium-6.columns=revision_presenter.right_side_diff.html_safe
     -else
       %h5
         -if selected
