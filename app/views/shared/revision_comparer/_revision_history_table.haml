@@ -25,7 +25,7 @@
           %td.shrink cur
           %td.shrink=link_to "prev", diff_with_id: revisions.first.id
           %td.shrink
-          %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?
+          %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, data: { radio_button_index: -1 }
           %td.shrink=render "shared/revision_comparer/revision_info_date", revision: most_recent
           %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
           %td
@@ -40,10 +40,10 @@
               -else
                 prev
 
-            %td=radio_button_tag :diff_with_id, revision.id, comparer.revision_diff_with?(revision)
+            %td=radio_button_tag :diff_with_id, revision.id, comparer.revision_diff_with?(revision), data: { radio_button_index: index }
             %td
               -if previous
-                =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision)
+                =radio_button_tag :selected_id, revision.id, comparer.revision_selected?(revision), data: { radio_button_index: index }
             %td=render "shared/revision_comparer/revision_info_date", revision: revision
             %td=render "shared/revision_comparer/revision_info_user", revision: revision
             %td
