@@ -1,7 +1,3 @@
--most_recent = comparer.most_recent
--diff_with   = comparer.diff_with
--selected    = comparer.selected
-
 -content_for :javascripts do
   =stylesheet_link_tag "diffy"
   =javascript_include_tag "revision_comparer"
@@ -12,7 +8,7 @@
       =render "shared/revision_comparer/help"
 
   .medium-9.medium-pull-3.columns
-    -if diff_with
+    -if comparer.diff_with
       %h5 Difference between revisions
       .callout.margin-bottom
         .row
@@ -20,23 +16,23 @@
           .medium-6.columns=revision_presenter.right_side_diff.html_safe
     -else
       %h5
-        -if selected
+        -if comparer.selected
           Revision as of
-          =l selected.updated_at, format: :time_with_full_date_in_words
+          =l comparer.selected.updated_at, format: :time_with_full_date_in_words
         -else
-          -if most_recent.persisted?
+          -if comparer.most_recent.persisted?
             Current version
           -else
             Version before item was deleted
-          %small=most_recent.updated_at
+          %small=comparer.most_recent.updated_at
 
       .callout{class: (comparer.looking_at_a_single_old_revision? ? "make-red" : "make-green")}
         =preserve do
-          =revision_presenter.render_revision(selected || most_recent, view_context: self)
+          =revision_presenter.render_revision(comparer.selected || comparer.most_recent, view_context: self)
 
   .medium-9.columns.medium-pull-3.margin-bottom.margin-top
     =render "shared/revision_comparer/revision_history_table",
       comparer: comparer,
       revision_presenter: revision_presenter,
       revisions: comparer.revisions.reverse,
-      most_recent: most_recent
+      most_recent: comparer.most_recent
