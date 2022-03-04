@@ -9,7 +9,14 @@ class RevisionComparer
     @selected_id = selected_id
     @diff_with_id = diff_with_id
 
-    set_most_recent_and_revisions
+    if live_item
+      @most_recent = live_item
+      @revisions = live_item.versions.not_creates
+    else
+      versions = PaperTrail::Version.where(item_type: item_class.name, item_id: item_id)
+      @most_recent = versions.last.reify
+      @revisions = versions.updates
+    end
 
     @selected = find_revision selected_id
     @diff_with = find_revision diff_with_id
@@ -37,23 +44,9 @@ class RevisionComparer
 
     attr_reader :item_class, :item_id, :selected_id, :diff_with_id
 
-    def set_most_recent_and_revisions
-      @most_recent = item_class.find(item_id)
-      @revisions = @most_recent.versions.not_creates
-    rescue ActiveRecord::RecordNotFound
-      reify_and_set_most_recent_and_revisions
-    end
-
-    # To make deleted object comparable.
-    def reify_and_set_most_recent_and_revisions
-      versions = PaperTrail::Version.with_item_keys(item_class.name, item_id)
-
-      # Since we can only get here by following links leading to now deleted
-      # taxa, the last version will be the most recent destroy event.
-      @most_recent = versions.last.reify
-
-      # Don't include the "destroy" event in the versions (or it shows up twice).
-      @revisions = versions.updates
+    def live_item
+      return @_live_item if defined?(@_live_item)
+      @_live_item = item_class.find_by(id: item_id)
     end
 
     def find_revision id
