@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class RevisionComparer
-  attr_reader :most_recent, :revisions, :selected, :diff_with
+  attr_reader :revisions, :selected, :diff_with
 
   def initialize item_class, item_id, selected_id = nil, diff_with_id = nil
     @item_class = item_class
@@ -9,16 +9,18 @@ class RevisionComparer
     @selected_id = selected_id
     @diff_with_id = diff_with_id
 
-    if live_item
-      @most_recent = live_item
+    if live_item # rubocop:disable Style/ConditionalAssignment
       @revisions = live_item.versions.not_creates
     else
-      @most_recent = last_live_item
       @revisions = versions.updates
     end
 
     @selected = find_revision selected_id
     @diff_with = find_revision diff_with_id
+  end
+
+  def most_recent
+    @_most_recent ||= live_item || last_live_item
   end
 
   def looking_at_most_recent?
