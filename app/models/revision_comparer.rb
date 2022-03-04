@@ -13,8 +13,7 @@ class RevisionComparer
       @most_recent = live_item
       @revisions = live_item.versions.not_creates
     else
-      versions = PaperTrail::Version.where(item_type: item_class.name, item_id: item_id)
-      @most_recent = versions.last.reify
+      @most_recent = last_live_item
       @revisions = versions.updates
     end
 
@@ -49,7 +48,15 @@ class RevisionComparer
       @_live_item = item_class.find_by(id: item_id)
     end
 
+    def last_live_item
+      versions.last.reify
+    end
+
     def find_revision id
       revisions.find(id).reify if id.present?
+    end
+
+    def versions
+      @_versions ||= PaperTrail::Version.where(item_type: item_class.name, item_id: item_id)
     end
 end
