@@ -23,6 +23,13 @@ module Trackable
 
   def create_activity action, user, edit_summary: nil, parameters: nil
     parameters ||= instance_eval(&activity_parameters)
-    Activity.create_for_trackable self, action, user: user, edit_summary: edit_summary, parameters: parameters
+
+    Activity.create_for_trackable(
+      self,
+      action,
+      user: user,
+      edit_summary: edit_summary,
+      parameters: parameters
+    )
   end
 end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # NOTE: "automated edits" are currently simply activities with `automated_edits`
-# set to true and `user` set to a user named "AntCatBot".
+# set to true (and by convention `user` set to a user named "AntCatBot").
 
 class Activity < ApplicationRecord
   include SetRequestUuid
@@ -77,7 +77,13 @@ class Activity < ApplicationRecord
     end
 
     def create_without_trackable action, user, edit_summary: nil, parameters: {}
-      create_for_trackable nil, action, user: user, edit_summary: edit_summary, parameters: parameters
+      create_for_trackable(
+        nil,
+        action,
+        user: user,
+        edit_summary: edit_summary,
+        parameters: parameters
+      )
     end
 
     # :nocov:
