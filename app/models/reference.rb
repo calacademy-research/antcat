@@ -33,6 +33,7 @@ class Reference < ApplicationRecord
   validates :year_suffix, format: { with: /\A[a-z]\z/, message: "must be blank or a single lowercase letter", allow_nil: true }
   validates :nesting_reference_id, absence: true, unless: -> { is_a?(NestedReference) }
   validates :doi, format: { with: /\A[^<>]*\z/ }
+  validates :review_state, inclusion: { in: REVIEW_STATES }
   validate :ensure_bolton_key_unique
 
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :year, :year_suffix) }

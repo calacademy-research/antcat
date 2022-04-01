@@ -21,29 +21,29 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '10.17.0'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "10.17.0"
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.3
-        bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.3
+          bundler-cache: true
 
-    - name: Run eslint
-      run: |
-        ./bin/yarn install
-        ./bin/yarn lint
+      - name: Run eslint
+        run: |
+          ./bin/yarn install
+          ./bin/yarn lint
 
-    - name: Run rubocop
-      run: |
-        bundle exec rubocop
+      - name: Run rubocop
+        run: |
+          bundle exec rubocop
 
   cucumber:
     name: Cucumber
@@ -59,35 +59,35 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '10.17.0'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "10.17.0"
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.3
-        bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.3
+          bundler-cache: true
 
-    - name: Setup database
-      run: |
-        cp config/database.github-actions.yml config/database.yml
-        cp config/server.yml.example config/server.yml
+      - name: Setup database
+        run: |
+          cp config/database.github-actions.yml config/database.yml
+          cp config/server.yml.example config/server.yml
 
-        sudo /etc/init.d/mysql start
+          sudo /etc/init.d/mysql start
 
-        bundle exec rails db:create db:schema:load
+          bundle exec rails db:create db:schema:load
 
-    - name: Run cucumber
-      run: |
-        ./bin/yarn install
-        bundle exec cucumber --order random --tags '@retry_ci' --retry 2
-        bundle exec cucumber --order random --tags 'not @skip and not @skip_ci and not @retry_ci'
+      - name: Run cucumber
+        run: |
+          ./bin/yarn install
+          bundle exec cucumber --order random --tags '@retry_ci' --retry 2
+          bundle exec cucumber --order random --tags 'not @skip and not @skip_ci and not @retry_ci'
 
   rspec:
     name: RSpec
@@ -103,34 +103,34 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '10.17.0'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "10.17.0"
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.3
-        bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.3
+          bundler-cache: true
 
-    - name: Setup database
-      run: |
-        cp config/database.github-actions.yml config/database.yml
-        cp config/server.yml.example config/server.yml
+      - name: Setup database
+        run: |
+          cp config/database.github-actions.yml config/database.yml
+          cp config/server.yml.example config/server.yml
 
-        sudo /etc/init.d/mysql start
+          sudo /etc/init.d/mysql start
 
-        bundle exec rails db:create db:schema:load
+          bundle exec rails db:create db:schema:load
 
-    - name: Run rspec
-      run: |
-        ./bin/yarn install
-        bundle exec rspec spec --tag ~pending --order rand
+      - name: Run rspec
+        run: |
+          ./bin/yarn install
+          bundle exec rspec spec --tag ~pending --order rand
 
   migrations:
     name: Migrations
@@ -146,24 +146,24 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
-    - name: Setup Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: 2.7.3
-        bundler-cache: true
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.3
+          bundler-cache: true
 
-    - name: Setup database
-      run: |
-        cp config/database.github-actions.yml config/database.yml
-        cp config/server.yml.example config/server.yml
+      - name: Setup database
+        run: |
+          cp config/database.github-actions.yml config/database.yml
+          cp config/server.yml.example config/server.yml
 
-        sudo /etc/init.d/mysql start
+          sudo /etc/init.d/mysql start
 
-    - name: Run migrations (up)
-      run: |
-        RAILS_ENV=development ./spec/migrations/test_migrations_up
+      - name: Run migrations (up)
+        run: |
+          RAILS_ENV=development ./spec/migrations/test_migrations_up

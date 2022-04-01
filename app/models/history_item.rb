@@ -52,7 +52,7 @@ class HistoryItem < ApplicationRecord
   before_validation :cleanup_and_convert_taxts
 
   scope :persisted, -> { where.not(id: nil) }
-  scope :unranked_and_for_rank, ->(type) { where(rank: [nil, type]) }
+  scope :unranked_and_for_rank, ->(taxon_type) { where(rank: [nil, taxon_type]) }
 
   scope :relational, -> { where.not(type: History::Definitions::TAXT) }
   scope :taxts_only, -> { where(type: History::Definitions::TAXT) }

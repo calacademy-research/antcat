@@ -2,7 +2,7 @@
 
 # Taxon browser.
 Then('{string} should be selected in the taxon browser') do |name|
-  within '#taxon-browser-container' do
+  within '#taxon-browser-new' do
     expect(page).to have_css ".selected", text: name
   end
 end
