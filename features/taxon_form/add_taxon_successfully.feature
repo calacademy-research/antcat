@@ -102,9 +102,7 @@ Feature: Adding a taxon successfully
     And I press "Save"
     Then I should be on the catalog page for "Dorylinae"
     And I should see "Dorylinae" within the protonym
-
-    When I follow "Formicidae subfamilies"
-    Then I should see "Dorylinae" within the taxon browser
+    And I should see "Dorylinae" within the taxon browser
 
   @skip_ci @javascript
   Scenario: Adding a tribe (and copy name to protonym)
@@ -120,5 +118,4 @@ Feature: Adding a taxon successfully
     And I should see "Dorylini" within the protonym
 
     When I go to the catalog page for "Formicinae"
-    And I follow "Formicinae tribes"
     Then I should see "Tribes of Formicinae: Dorylini"
