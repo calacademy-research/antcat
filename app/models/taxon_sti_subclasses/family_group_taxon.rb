@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 
-class SubtribeName < Name
+class FamilyGroupTaxon < Taxon
 end

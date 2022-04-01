@@ -4,10 +4,12 @@
 # organizational purposes only, without using proper namespaces.
 Rails.autoloaders.each do |autoloader|
   autoloader.collapse("app/models/taxon_sti_subclasses")
+  autoloader.collapse("app/models/taxon_sti_subclasses/family_group_taxon_sti_subclasses")
   autoloader.collapse("app/models/taxon_sti_subclasses/genus_group_taxon_sti_subclasses")
   autoloader.collapse("app/models/taxon_sti_subclasses/species_group_taxon_sti_subclasses")
 
   autoloader.collapse("app/models/name_sti_subclasses")
+  autoloader.collapse("app/models/name_sti_subclasses/family_group_name_sti_subclasses")
   autoloader.collapse("app/models/name_sti_subclasses/genus_group_name_sti_subclasses")
   autoloader.collapse("app/models/name_sti_subclasses/species_group_name_sti_subclasses")
 

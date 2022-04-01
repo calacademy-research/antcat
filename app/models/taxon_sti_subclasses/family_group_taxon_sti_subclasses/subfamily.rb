@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Subfamily < Taxon
+class Subfamily < FamilyGroupTaxon
   belongs_to :family, optional: true
 
   with_options dependent: :restrict_with_error do

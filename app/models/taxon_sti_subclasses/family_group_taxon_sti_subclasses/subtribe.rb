@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Subtribe < Taxon
+class Subtribe < FamilyGroupTaxon
   VALID_ENDINGS_REGEX = /(ina|iti)\z/
 
   belongs_to :tribe
