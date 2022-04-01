@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Tribe < Taxon
+class Tribe < FamilyGroupTaxon
   belongs_to :subfamily
 
   with_options dependent: :restrict_with_error do
