@@ -21,7 +21,7 @@ module Catalog
     BIOREGION_NONE = 'None'
 
     def initialize params
-      @params = params.delete_if { |_key, value| value.blank? }
+      @params = params.compact_blank!
     end
 
     def call

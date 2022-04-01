@@ -20,7 +20,7 @@ module DevHelper
 
     # To make URLs prettier.
     def current_path_without_blank_params
-      non_blank_query_params = request.query_parameters.dup.delete_if { |_key, value| value.blank? }
+      non_blank_query_params = request.query_parameters.dup.compact_blank!
       query_params = "?#{non_blank_query_params.to_param}" if non_blank_query_params.present?
       "#{request.path}#{query_params}"
     end
