@@ -33,7 +33,7 @@ module DatabaseScripts
             protonym_link(history_item.protonym),
             taxt,
             taxt_without_ok_tags,
-            (bold_notice('Yes') unless taxt_without_ok_tags.match?(NAMES_REGEX))
+            (taxt_without_ok_tags.match?(NAMES_REGEX) ? bold_warning('No') : bold_notice('Yes'))
           ]
         end
       end

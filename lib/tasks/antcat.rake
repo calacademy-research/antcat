@@ -31,6 +31,8 @@ task :antcat do
     rspec
       PROFILE_EXAMPLES=y     rspec
       rspec --tag=relational_hi
+      rspec --only-failures
+      rspec --next-failure
     rubocop
 
   STR

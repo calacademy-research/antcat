@@ -22,6 +22,7 @@ describe Reference do
     it { is_expected.to_not allow_values('<', '>').for(:doi) }
 
     it { is_expected.to allow_value('a').for(:year_suffix) }
+    it { is_expected.to allow_value(nil).for(:year_suffix) }
     it { is_expected.to_not allow_value('aa').for(:year_suffix) }
     it { is_expected.to_not allow_value('A').for(:year_suffix) }
 
