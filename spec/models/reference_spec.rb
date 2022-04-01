@@ -25,6 +25,9 @@ describe Reference do
     it { is_expected.to_not allow_value('aa').for(:year_suffix) }
     it { is_expected.to_not allow_value('A').for(:year_suffix) }
 
+    it { is_expected.to validate_inclusion_of(:review_state).in_array(Reference::REVIEW_STATES) }
+    it { is_expected.to_not allow_value(nil).for(:review_state) }
+
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }
       let!(:duplicate) { create :any_reference }
