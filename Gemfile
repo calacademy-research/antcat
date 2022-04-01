@@ -79,9 +79,7 @@ group :test do
   gem 'apparition', github: 'twalpole/apparition', ref: 'ca86be4d54af835d531dbcd2b86e7b2c77f85f34'
   gem 'capybara'
   gem 'capybara-screenshot'
-  # TODO: Waiting for new release for Rails 7, see https://github.com/cucumber/cucumber-rails/pull/526
-  # version must be above at least https://rubygems.org/gems/cucumber-rails/versions/2.4.0
-  gem 'cucumber-rails', github: 'cucumber/cucumber-rails', ref: '4919c18b89dcb476a908b667a3ee85ccafe7d249', require: false
+  gem 'cucumber-rails', '> 2.4.0', require: false
   gem 'database_cleaner'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers'
