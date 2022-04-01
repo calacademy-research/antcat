@@ -10,6 +10,7 @@ task :antcat do
     factory_bot
     seed:
     sunspot
+    yamllint
     zeitwerk
   ]
   tasks = `rake -T`.lines
