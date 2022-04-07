@@ -42,7 +42,6 @@ gem 'redcarpet'
 gem 'request_store'
 gem 'ruby-progressbar'
 gem 'strip_attributes'
-gem 'strong_migrations', '< 1' # "MySQL version (5.6.47) not supported in this version of Strong Migrations (1.0.0)"
 gem 'sunspot_rails'
 gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'

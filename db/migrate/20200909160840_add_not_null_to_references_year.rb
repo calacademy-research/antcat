@@ -2,9 +2,7 @@
 
 class AddNotNullToReferencesYear < ActiveRecord::Migration[6.0]
   def up
-    safety_assured do
-      change_column_null :references, :year, false
-    end
+    change_column_null :references, :year, false
   end
 
   def down

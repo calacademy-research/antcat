@@ -2,9 +2,7 @@
 
 class AddNotNullToReferencesPages < ActiveRecord::Migration[6.0]
   def up
-    safety_assured do
-      change_column_null :references, :pagination, false
-    end
+    change_column_null :references, :pagination, false
   end
 
   def down

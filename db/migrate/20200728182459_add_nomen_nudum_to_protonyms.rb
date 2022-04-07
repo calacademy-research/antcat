@@ -2,9 +2,7 @@
 
 class AddNomenNudumToProtonyms < ActiveRecord::Migration[6.0]
   def change
-    safety_assured do
-      add_column :protonyms, :nomen_nudum, :boolean, default: false, null: false
-    end
+    add_column :protonyms, :nomen_nudum, :boolean, default: false, null: false
 
     reversible do |dir|
       dir.up do
