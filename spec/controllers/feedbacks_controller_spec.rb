@@ -51,9 +51,9 @@ describe FeedbacksController do
         expect { post :create, params: valid_params }.to_not change { Feedback.count }.from(1)
       end
 
-      it "includes a friendly error message in the response" do
+      it "includes an error message in the response" do
         post :create, params: valid_params
-        expect(assigns(:feedback).errors.full_messages.to_sentence).to include "Comment has already been submitted."
+        expect(response.body).to include("Comment has already been submitted.")
       end
     end
   end

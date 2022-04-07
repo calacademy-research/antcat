@@ -37,8 +37,8 @@ describe TaxaController do
 
   describe "POST create", as: :editor do
     let(:authorship_reference) { create :any_reference }
-    let(:base_params) do
-      HashWithIndifferentAccess.new(
+    let(:base_taxon_params) do
+      {
         status: Status::VALID,
         protonym_attributes: {
           authorship_attributes: {
@@ -46,12 +46,12 @@ describe TaxaController do
             pages: '99'
           }
         }
-      )
+      }
     end
 
     describe "general attributes not specific for a single rank (using a genus as a stand-in)" do
       let(:parent) { create :subfamily }
-      let(:params_without_taxon) do
+      let(:base_params) do
         {
           parent_id: parent.id,
           rank_to_create: Rank::GENUS,
@@ -61,21 +61,23 @@ describe TaxaController do
       end
 
       describe "most minimal amount of params" do
+        let(:taxon_params) { base_taxon_params }
+
         it "creates a record" do
-          params = params_without_taxon.merge(taxon: base_params)
+          params = base_params.merge(taxon: taxon_params)
           expect { post :create, params: params }.to change { Taxon.count }.by(1)
         end
       end
 
       describe "general taxon attributes" do
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             unresolved_homonym: true
           )
         end
 
         specify do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           taxon = Taxon.last
 
@@ -86,7 +88,7 @@ describe TaxaController do
 
       describe "general protonym attributes" do
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             protonym_attributes: {
               fossil: true,
               sic: true,
@@ -99,7 +101,7 @@ describe TaxaController do
         end
 
         it 'sets protonym_attributes' do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           protonym = Taxon.last.protonym
           protonym_attributes = taxon_params[:protonym_attributes]
@@ -111,7 +113,7 @@ describe TaxaController do
         end
 
         it 'sets authorship_attributes' do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           authorship = Taxon.last.protonym.authorship
           authorship_attributes = taxon_params[:protonym_attributes][:authorship_attributes]
@@ -123,7 +125,7 @@ describe TaxaController do
           let(:protonym) { create :protonym }
 
           it 'uses the ID and ignores the protonym attributes' do
-            post :create, params: params_without_taxon.merge(taxon: taxon_params.merge(protonym_id: protonym.id))
+            post :create, params: base_params.merge(taxon: taxon_params.merge(protonym_id: protonym.id))
             expect(Taxon.last.protonym.id).to eq protonym.id
           end
         end
@@ -132,14 +134,14 @@ describe TaxaController do
       describe "setting `current_taxon`" do
         let(:current_taxon) { create :genus }
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             status: Status::SYNONYM,
             current_taxon_id: current_taxon.id
           )
         end
 
         specify do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
           expect(Taxon.last.current_taxon).to eq current_taxon
         end
       end
@@ -147,7 +149,7 @@ describe TaxaController do
 
     context 'with non-matching name type' do
       let(:parent) { create :subfamily }
-      let(:params_without_taxon) do
+      let(:base_params) do
         {
           parent_id: parent.id,
           rank_to_create: Rank::GENUS,
@@ -155,20 +157,19 @@ describe TaxaController do
           protonym_name_string: "Atta"
         }
       end
+      let(:taxon_params) { base_taxon_params }
 
       it "does not create a record" do
-        params = params_without_taxon.merge(taxon: base_params)
-        expect { post :create, params: params }.to_not change { Taxon.count }
+        params = base_params.merge(taxon: taxon_params)
 
-        taxon_assign = assigns(:taxon)
-        expect(taxon_assign.errors.empty?).to eq false
-        expect(taxon_assign.errors[:base]).to eq ["Rank (`Genus`) and name type (`TribeName`) must match."]
+        expect { post :create, params: params }.to_not change { Taxon.count }
+        expect(response.body).to include("Rank (`Genus`) and name type (`TribeName`) must match.")
       end
     end
 
     context "when rank is genus" do
       let(:parent) { create :subfamily }
-      let(:params_without_taxon) do
+      let(:base_params) do
         {
           parent_id: parent.id,
           rank_to_create: Rank::GENUS,
@@ -179,7 +180,7 @@ describe TaxaController do
 
       describe "genus-group taxon attributes" do
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             incertae_sedis_in: Rank::FAMILY,
             collective_group_name: true,
             protonym_attributes: {
@@ -189,7 +190,7 @@ describe TaxaController do
         end
 
         it 'creates a genus record' do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           taxon = Taxon.last
 
@@ -204,7 +205,7 @@ describe TaxaController do
 
     context "when rank is species" do
       let(:parent) { create :genus }
-      let(:params_without_taxon) do
+      let(:base_params) do
         {
           parent_id: parent.id,
           rank_to_create: Rank::SPECIES,
@@ -215,13 +216,13 @@ describe TaxaController do
 
       describe "species-group taxon attributes" do
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             original_combination: true
           )
         end
 
         it 'creates a species record' do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           taxon = Taxon.last
 
@@ -234,7 +235,7 @@ describe TaxaController do
 
       describe "species-group protonym attributes" do
         let(:taxon_params) do
-          base_params.deep_merge(
+          base_taxon_params.deep_merge(
             protonym_attributes: {
               locality: "San Francisco",
               forms: "w.",
@@ -246,7 +247,7 @@ describe TaxaController do
         end
 
         it 'sets protonym_attributes' do
-          post :create, params: params_without_taxon.merge(taxon: taxon_params)
+          post :create, params: base_params.merge(taxon: taxon_params)
 
           protonym = Taxon.last.protonym
           protonym_attributes = taxon_params[:protonym_attributes]
