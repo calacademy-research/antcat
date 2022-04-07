@@ -161,11 +161,9 @@ describe TaxaController do
 
       it "does not create a record" do
         params = base_params.merge(taxon: taxon_params)
-        expect { post :create, params: params }.to_not change { Taxon.count }
 
-        taxon_assign = assigns(:taxon)
-        expect(taxon_assign.errors.empty?).to eq false
-        expect(taxon_assign.errors[:base]).to eq ["Rank (`Genus`) and name type (`TribeName`) must match."]
+        expect { post :create, params: params }.to_not change { Taxon.count }
+        expect(response.body).to include("Rank (`Genus`) and name type (`TribeName`) must match.")
       end
     end
 
