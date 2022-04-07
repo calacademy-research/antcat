@@ -548,8 +548,6 @@ GEM
       sprockets (>= 3.0.0)
     strip_attributes (1.12.0)
       activemodel (>= 3.0, < 8.0)
-    strong_migrations (0.8.0)
-      activerecord (>= 5.2)
     strscan (3.0.1)
     sunspot (2.5.0)
       pr_geohash (~> 1.0)
@@ -675,7 +673,6 @@ DEPENDENCIES
   simplecov
   sprockets-rails
   strip_attributes
-  strong_migrations (< 1)
   sunspot_rails
   sunspot_solr (= 2.2.0)
   sunspot_test

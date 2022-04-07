@@ -2,10 +2,8 @@
 
 class RemoveFormsAndNotesTaxtFromCitations < ActiveRecord::Migration[6.0]
   def up
-    safety_assured do
-      remove_column :citations, :notes_taxt, :text
-      remove_column :citations, :forms, :string
-    end
+    remove_column :citations, :notes_taxt, :text
+    remove_column :citations, :forms, :string
   end
 
   def down
