@@ -21,7 +21,6 @@ module AntCat
     end
 
     config.active_record.observers = [
-      :reference_document_observer,
       :reference_observer
     ]
 
