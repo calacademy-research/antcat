@@ -8,6 +8,7 @@ task :antcat do
     antweb
     db:import_latest
     factory_bot
+    logged
     seed:
     sunspot
     yamllint
