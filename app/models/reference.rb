@@ -36,6 +36,8 @@ class Reference < ApplicationRecord
   validates :review_state, inclusion: { in: REVIEW_STATES }
   validate :ensure_bolton_key_unique
 
+  before_update :invalidate_content_caches
+
   scope :order_by_author_names_and_year, -> { order(:author_names_string_cache, :year, :year_suffix) }
   scope :order_by_suffixed_year, -> { order(:year, :year_suffix) }
   scope :unreviewed, -> { where.not(review_state: REVIEW_STATE_REVIEWED) }
@@ -130,5 +132,9 @@ class Reference < ApplicationRecord
       return unless bolton_key
       return unless (conflict = self.class.where(bolton_key: bolton_key).where.not(id: id).first)
       errors.add :bolton_key, "Bolton key has already been taken by #{conflict.decorate.link_to_reference}."
+    end
+
+    def invalidate_content_caches
+      References::Cache::Invalidate[self]
     end
 end

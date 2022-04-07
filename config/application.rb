@@ -20,10 +20,6 @@ module AntCat
       end
     end
 
-    config.active_record.observers = [
-      :reference_observer
-    ]
-
     config.secret_key_base = Settings.rails.secret_key_base
 
     console do
