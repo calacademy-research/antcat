@@ -38,7 +38,7 @@ describe TaxaController do
   describe "POST create", as: :editor do
     let(:authorship_reference) { create :any_reference }
     let(:base_params) do
-      HashWithIndifferentAccess.new(
+      {
         status: Status::VALID,
         protonym_attributes: {
           authorship_attributes: {
@@ -46,7 +46,7 @@ describe TaxaController do
             pages: '99'
           }
         }
-      )
+      }
     end
 
     describe "general attributes not specific for a single rank (using a genus as a stand-in)" do

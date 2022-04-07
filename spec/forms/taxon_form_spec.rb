@@ -8,7 +8,7 @@ describe TaxonForm do
       context 'with passing validations' do
         let(:taxon) { Taxa::BuildTaxon[Rank::SUBFAMILY, create(:family)] }
         let(:params) do
-          HashWithIndifferentAccess.new(
+          {
             status: Status::VALID,
             protonym_attributes: {
               authorship_attributes: {
@@ -16,7 +16,7 @@ describe TaxonForm do
                 pages: '99'
               }
             }
-          )
+          }
         end
 
         it 'creates a new `Protonym`' do
@@ -34,7 +34,7 @@ describe TaxonForm do
       context 'with failing validations' do
         let(:taxon) { Taxa::BuildTaxon[Rank::SUBFAMILY, create(:family)] }
         let(:params) do
-          HashWithIndifferentAccess.new(
+          {
             status: Status::VALID,
             protonym_attributes: {
               fossil: true,
@@ -44,7 +44,7 @@ describe TaxonForm do
                 pages: '99'
               }
             }
-          )
+          }
         end
 
         it 'does not create a new `Protonym`' do
