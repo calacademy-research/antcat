@@ -46,6 +46,34 @@ describe Reference do
     it { is_expected.to strip_attributes(:public_notes, :editor_notes, :taxonomic_notes) }
     it { is_expected.to strip_attributes(:title, :date, :stated_year, :year_suffix, :bolton_key, :author_names_suffix) }
     it { is_expected.to strip_attributes(:series_volume_issue, :doi, :normalized_bolton_key) }
+
+    describe '#before_update' do
+      let!(:reference) { create :article_reference }
+
+      it "invalidates caches" do
+        References::Cache::Regenerate[reference]
+
+        expect { reference.save! }.to change { reference.reload.plain_text_cache }.to(nil)
+      end
+
+      context "when reference has nestees" do
+        let!(:nestee) { create :nested_reference, nesting_reference: reference }
+
+        it "nilifies caches for its nestees" do
+          expect(reference.reload.nestees).to eq [nestee]
+
+          References::Cache::Regenerate[nestee]
+          expect(nestee.plain_text_cache).not_to eq nil
+          expect(nestee.expanded_reference_cache).not_to eq nil
+
+          reference.save!
+          nestee.reload
+
+          expect(nestee.plain_text_cache).to eq nil
+          expect(nestee.expanded_reference_cache).to eq nil
+        end
+      end
+    end
   end
 
   describe "scopes" do
