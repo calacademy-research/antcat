@@ -1,7 +1,7 @@
 FROM ruby:2.7.3-slim
 
 ENV APP_PATH /app
-ENV BUNDLE_VERSION 2.1.4
+ENV BUNDLER_VERSION 2.3.10
 
 ARG ANTCAT_UID=1000
 ARG ANTCAT_GID=1001
@@ -33,7 +33,7 @@ RUN curl \
   --output /tmp/google-chrome-stable_current_amd64.deb
 RUN apt --fix-broken install -y /tmp/google-chrome-stable_current_amd64.deb
 
-RUN gem install bundler --version "$BUNDLE_VERSION"
+RUN gem install bundler --version "$BUNDLER_VERSION"
 RUN npm install -g yarn
 
 WORKDIR $APP_PATH
