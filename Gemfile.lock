@@ -105,7 +105,7 @@ GEM
       babel-source (>= 4.0, < 6)
       execjs (~> 2.0)
     bcrypt (3.1.17)
-    brakeman (5.2.1)
+    brakeman (5.2.2)
     builder (3.2.4)
     bundler-audit (0.9.0.1)
       bundler (>= 1.2.0, < 3)
@@ -167,7 +167,7 @@ GEM
     cucumber-html-formatter (17.0.0)
       cucumber-messages (~> 17.1, >= 17.1.0)
     cucumber-messages (17.1.1)
-    cucumber-rails (2.5.0)
+    cucumber-rails (2.5.1)
       capybara (>= 2.18, < 4)
       cucumber (>= 3.2, < 8)
       mime-types (~> 3.3)
@@ -364,7 +364,7 @@ GEM
       digest
       net-protocol
       timeout
-    newrelic_rpm (8.5.0)
+    newrelic_rpm (8.6.0)
     nio4r (2.5.8)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
@@ -472,7 +472,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.11.0)
-    rubocop (1.26.1)
+    rubocop (1.27.0)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -496,7 +496,7 @@ GEM
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    ruby_parser (3.19.0)
+    ruby_parser (3.19.1)
       sexp_processor (~> 4.16)
     rubycritic (4.6.1)
       flay (~> 2.8)
@@ -658,7 +658,7 @@ DEPENDENCIES
   redcarpet
   request_store
   rspec-rails
-  rubocop (~> 1.26.0)
+  rubocop (~> 1.27.0)
   rubocop-performance
   rubocop-rails
   rubocop-rake
@@ -685,4 +685,4 @@ RUBY VERSION
    ruby 2.7.3p183
 
 BUNDLED WITH
-   2.1.4
+   2.3.10
