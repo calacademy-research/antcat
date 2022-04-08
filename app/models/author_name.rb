@@ -18,6 +18,7 @@ class AuthorName < ApplicationRecord
   validates :name, format: { without: /  /, message: "cannot contain consecutive spaces" }
   validates :name, format: { without: /,[^ ]/, message: "cannot contain commas not followed by a space" }
   validate :validate_commas_and_suffixes, if: -> { name.present? }
+
   after_update :invalidate_reference_caches
 
   has_paper_trail
