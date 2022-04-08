@@ -3,17 +3,17 @@
 # Formatted references are cached in the database. Use this to regenerate or invalidate them.
 
 namespace :antcat do
-  namespace :reference_caches do
-    desc 'Invalidates all reference caches'
-    task invalidate: :environment do
+  namespace :references do
+    desc 'Invalidates all reference content caches'
+    task invalidate_content_caches: :environment do
       Reference.update_all(
         plain_text_cache: nil,
         expanded_reference_cache: nil
       )
     end
 
-    desc 'Regenerate all reference caches'
-    task regenerate: :environment do
+    desc 'Regenerate all reference content caches'
+    task regenerate_content_caches: :environment do
       progress = ProgressBar.create(
         total: Reference.count,
         format: "%a %e %P% Processed: %c from %C",
