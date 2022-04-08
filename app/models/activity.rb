@@ -96,6 +96,11 @@ class Activity < ApplicationRecord
     # :nocov:
   end
 
+  def action= value
+    self[:event] = value
+    self[:action] = value
+  end
+
   def pagination_page activities
     index = activities.where("id > ?", id).count
     per_page = self.class.per_page
