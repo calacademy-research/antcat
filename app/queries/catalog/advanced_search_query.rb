@@ -108,15 +108,15 @@ module Catalog
       def genus_clause relation
         return relation unless (genus = params[:genus]&.strip.presence)
 
-        relation.joins('JOIN taxa AS genera ON genera.id = taxa.genus_id').
-          joins('JOIN names AS genus_names ON genera.name_id = genus_names.id').
+        relation.joins('JOIN taxa genera ON genera.id = taxa.genus_id').
+          joins('JOIN names genus_names ON genus_names.id = genera.name_id').
           where('genus_names.name LIKE ?', "%#{genus}%")
       end
 
       def protonym_clause relation
         return relation unless (protonym = params[:protonym]&.strip.presence)
 
-        relation.joins('JOIN names AS protonym_names ON protonyms.name_id = protonym_names.id').
+        relation.joins('JOIN names protonym_names ON protonym_names.id = protonyms.name_id').
           where('protonym_names.name LIKE ?', "%#{protonym}%")
       end
 

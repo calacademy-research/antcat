@@ -10,7 +10,7 @@ class AddProtonymIdToTaxonHistoryItems < ActiveRecord::Migration[6.0]
       dir.up do
         execute <<~SQL.squish
           UPDATE taxon_history_items
-            INNER JOIN taxa ON taxon_history_items.taxon_id = taxa.id
+            INNER JOIN taxa ON taxa.id = taxon_history_items.taxon_id
             SET taxon_history_items.protonym_id = taxa.protonym_id
         SQL
       end

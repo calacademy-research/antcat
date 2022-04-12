@@ -19,7 +19,7 @@ module DatabaseScripts
             (
               history_items.type = 'JuniorSynonymOf'
               AND
-              current_taxa_taxa.protonym_id = history_items.object_protonym_id
+              history_items.object_protonym_id = current_taxa_taxa.protonym_id
             )
         SQL
     end
