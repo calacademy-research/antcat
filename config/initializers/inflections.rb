@@ -17,6 +17,8 @@
 #   inflect.acronym "RESTful"
 # end
 ActiveSupport::Inflector.inflections do |inflect|
+  inflect.acronym "AntCat"
+
   inflect.irregular 'taxon', 'taxa'
   inflect.irregular 'genus', 'genera'
   inflect.irregular 'subgenus', 'subgenera'

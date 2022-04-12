@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AntcatVersionLink
+class AntCatVersionLink
   include ActionView::Helpers::UrlHelper
 
   GITHUB_COMMIT_BASE_URL = "https://github.com/calacademy/antcat/commit/"

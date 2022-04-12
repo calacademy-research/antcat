@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Markdowns
-  class ParseAntcatTags
+  class ParseAntCatTags
     include Rails.application.routes.url_helpers
     include ActionView::Helpers::UrlHelper
     include Service

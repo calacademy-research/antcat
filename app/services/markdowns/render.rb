@@ -29,7 +29,7 @@ module Markdowns
           fenced_code_blocks: true
         }
 
-        Redcarpet::Markdown.new renderer, extensions
+        Redcarpet::Markdown.new(renderer, extensions)
       end
 
       def renderer
@@ -39,10 +39,10 @@ module Markdowns
           underline: false
         }
 
-        AntcatMarkdown.new options
+        AntCatMarkdown.new(options)
       end
 
-      class AntcatMarkdown < Redcarpet::Render::HTML
+      class AntCatMarkdown < Redcarpet::Render::HTML
         def postprocess content
           Markdowns::ParseAllTags[content]
         end
