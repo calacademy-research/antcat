@@ -5,6 +5,10 @@ http_basic_auth:
   name:
   password:
 
+github:
+  repo_url: "https://github.com/calacademy-research/antcat"
+  issues_url: "https://github.com/calacademy-research/antcat/issues"
+
 catalog:
   # To make is easier to disable in case of performance issues.
   show_failed_soft_validations: true

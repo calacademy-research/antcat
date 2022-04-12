@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class DatabaseScriptDecorator < Draper::Decorator
-  GITHUB_MASTER_BASE_URL = "https://github.com/calacademy-research/antcat/blob/master"
+  GITHUB_MASTER_BASE_URL = "#{Settings.github.repo_url}/blob/master"
   TAG_CSS_CLASSES = {
     DatabaseScripts::Tagging::SLOW_TAG          => "warning-label",
     DatabaseScripts::Tagging::VERY_SLOW_TAG     => "warning-label",

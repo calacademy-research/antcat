@@ -11,8 +11,6 @@ module Markdowns
     WIKI_TAG_REGEX = /%wiki(?<wiki_page_id>\d+)/
     DBSCRIPT_TAG_REGEX = /%dbscript:(?<basename>[A-Z][A-Za-z0-9_]+)/
 
-    GITHUB_ISSUES_BASE_URL = "https://github.com/calacademy-research/antcat/issues/"
-
     def initialize content
       @content = content.dup
     end
@@ -35,7 +33,7 @@ module Markdowns
       def parse_github_tags
         content.gsub!(GITHUB_TAG_REGEX) do
           github_issue_id = $LAST_MATCH_INFO[:issue_id]
-          link_to "GitHub ##{github_issue_id}", "#{GITHUB_ISSUES_BASE_URL}#{github_issue_id}"
+          link_to "GitHub ##{github_issue_id}", "#{Settings.github.issues_url}/#{github_issue_id}"
         end
       end
 
