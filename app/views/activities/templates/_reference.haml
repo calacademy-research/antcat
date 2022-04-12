@@ -1,4 +1,4 @@
--case activity.action
+-case activity.event
 -when Activity::RESTART_REVIEWING
   restarted reviewing
 -when Activity::FINISH_REVIEWING
@@ -6,7 +6,7 @@
 -when Activity::START_REVIEWING
   started reviewing
 -else
-  =activity.action_to_verb
+  =activity.event_to_verb
 
 the reference
 =activity.link_reference_trackable_if_exists deleted_label: sanitize(activity.parameters[:name])

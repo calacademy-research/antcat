@@ -72,7 +72,7 @@ describe ProtonymsController do
 
       it 'creates an activity' do
         expect { post(:create, params: params.merge(edit_summary: 'Split protonym')) }.
-          to change { Activity.where(action: Activity::CREATE).count }.by(1)
+          to change { Activity.where(event: Activity::CREATE).count }.by(1)
 
         activity = Activity.last
         protonym = Protonym.last
@@ -173,7 +173,7 @@ describe ProtonymsController do
 
       it 'creates an activity' do
         expect { put(:update, params: { id: protonym.id, protonym: protonym_params, edit_summary: 'edited' }) }.
-          to change { Activity.where(action: Activity::UPDATE, trackable: protonym).count }.by(1)
+          to change { Activity.where(event: Activity::UPDATE, trackable: protonym).count }.by(1)
 
         activity = Activity.last
         expect(activity.edit_summary).to eq "edited"
@@ -233,7 +233,7 @@ describe ProtonymsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: protonym.id }) }.
-        to change { Activity.where(action: Activity::DESTROY, trackable: protonym).count }.by(1)
+        to change { Activity.where(event: Activity::DESTROY, trackable: protonym).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable_id).to eq protonym.id

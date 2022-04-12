@@ -1,12 +1,12 @@
 Feature: Activity feed
-  Scenario: Filtering activities by action
+  Scenario: Filtering activities by event
     Given there is a "destroy" journal activity by "Batiatus"
     And there is a "update" journal activity by "Batiatus"
 
     When I go to the activity feed
     Then I should see 2 items in the activity feed
 
-    When I select "Destroy" from "activity_action"
+    When I select "Destroy" from "activity_event"
     And I press "Filter"
     Then I should see 1 items in the activity feed
     And I should see "Batiatus deleted the journal" within the activity feed

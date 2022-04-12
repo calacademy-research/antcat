@@ -280,7 +280,7 @@ describe TaxaController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: taxon.id, taxon: taxon_params, edit_summary: 'Fix status' }) }.
-        to change { Activity.where(action: Activity::UPDATE, trackable: taxon).count }.by(1)
+        to change { Activity.where(event: Activity::UPDATE, trackable: taxon).count }.by(1)
 
       activity = Activity.last
       expect(activity.edit_summary).to eq "Fix status"
@@ -296,7 +296,7 @@ describe TaxaController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: taxon.id }) }.
-        to change { Activity.where(action: Activity::DESTROY, trackable: taxon).count }.by(1)
+        to change { Activity.where(event: Activity::DESTROY, trackable: taxon).count }.by(1)
     end
   end
 end

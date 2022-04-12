@@ -98,7 +98,7 @@ describe ActivityDecorator do
       end
 
       context 'when trackable is a `Taxon`' do
-        context 'when action is `Activity::FORCE_UPDATE_DATABASE_RECORD`' do
+        context 'when event is `Activity::FORCE_UPDATE_DATABASE_RECORD`' do
           let(:trackable) { create :family }
           let(:activity) { trackable.create_activity Activity::FORCE_UPDATE_DATABASE_RECORD, user }
 
@@ -114,7 +114,7 @@ describe ActivityDecorator do
       end
 
       context 'when trackable is a `Reference`' do
-        context 'when action is `Activity::UPDATE`' do
+        context 'when event is `Activity::UPDATE`' do
           let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity Activity::UPDATE, user }
 
@@ -124,7 +124,7 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `Activity::START_REVIEWING`' do
+        context 'when event is `Activity::START_REVIEWING`' do
           let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity Activity::START_REVIEWING, user }
 
@@ -134,7 +134,7 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `Activity::FINISH_REVIEWING`' do
+        context 'when event is `Activity::FINISH_REVIEWING`' do
           let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity Activity::FINISH_REVIEWING, user }
 
@@ -144,7 +144,7 @@ describe ActivityDecorator do
           end
         end
 
-        context 'when action is `Activity::RESTART_REVIEWING`' do
+        context 'when event is `Activity::RESTART_REVIEWING`' do
           let(:trackable) { create :any_reference }
           let(:activity) { trackable.create_activity Activity::RESTART_REVIEWING, user }
 
@@ -167,7 +167,7 @@ describe ActivityDecorator do
     end
 
     context 'when there is no trackable' do
-      context 'when action is `Activity::EXECUTE_SCRIPT`' do
+      context 'when event is `Activity::EXECUTE_SCRIPT`' do
         let(:activity) { Activity.execute_script_activity(user, "an edit summary") }
 
         specify do
@@ -175,7 +175,7 @@ describe ActivityDecorator do
         end
       end
 
-      context 'when action is `Activity::APPROVE_ALL_REFERENCES`' do
+      context 'when event is `Activity::APPROVE_ALL_REFERENCES`' do
         let(:activity) { Activity.create_without_trackable Activity::APPROVE_ALL_REFERENCES, user, parameters: { count: 1 } }
 
         specify do
@@ -209,7 +209,7 @@ describe ActivityDecorator do
     end
 
     context "without a valid trackable" do
-      context "when action is not 'destroy'" do
+      context "when event is not 'destroy'" do
         let(:activity) { build_stubbed :activity, trackable: nil }
 
         it "adds '[deleted]' to the label" do
@@ -217,8 +217,8 @@ describe ActivityDecorator do
         end
       end
 
-      context "when action is 'destroy'" do
-        let(:activity) { build_stubbed :activity, trackable: nil, action: Activity::DESTROY }
+      context "when event is 'destroy'" do
+        let(:activity) { build_stubbed :activity, trackable: nil, event: Activity::DESTROY }
 
         it "does not add '[deleted]' to the label" do
           expect(decorated.link_trackable_if_exists("label")).to eq "label"
@@ -227,15 +227,15 @@ describe ActivityDecorator do
     end
   end
 
-  describe "#action_to_verb" do
-    it "past participle-ifies defined actions" do
-      decorated = build_stubbed(:activity, action: Activity::CREATE).decorate
-      expect(decorated.action_to_verb).to eq "added"
+  describe "#event_to_verb" do
+    it "past participle-ifies defined events" do
+      decorated = build_stubbed(:activity, event: Activity::CREATE).decorate
+      expect(decorated.event_to_verb).to eq "added"
     end
 
-    it "uglifies missing actions" do
-      decorated = build_stubbed(:activity, action: "bake_a_cake").decorate
-      expect(decorated.action_to_verb).to eq "BAKE_A_CAKE"
+    it "uglifies missing event" do
+      decorated = build_stubbed(:activity, event: "bake_a_cake").decorate
+      expect(decorated.event_to_verb).to eq "BAKE_A_CAKE"
     end
   end
 end

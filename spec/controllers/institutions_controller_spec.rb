@@ -55,7 +55,7 @@ describe InstitutionsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { institution: institution_params }) }.
-        to change { Activity.where(action: Activity::CREATE).count }.by(1)
+        to change { Activity.where(event: Activity::CREATE).count }.by(1)
 
       activity = Activity.last
       institution = Institution.last
@@ -103,7 +103,7 @@ describe InstitutionsController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: institution.id, institution: institution_params }) }.
-        to change { Activity.where(action: Activity::UPDATE, trackable: institution).count }.by(1)
+        to change { Activity.where(event: Activity::UPDATE, trackable: institution).count }.by(1)
 
       institution.reload
       activity = Activity.last
@@ -135,7 +135,7 @@ describe InstitutionsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: institution.id }) }.
-        to change { Activity.where(action: Activity::DESTROY, trackable: institution).count }.by(1)
+        to change { Activity.where(event: Activity::DESTROY, trackable: institution).count }.by(1)
 
       activity = Activity.last
       expect(activity.parameters).to eq(abbreviation: institution.abbreviation)

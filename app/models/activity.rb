@@ -7,7 +7,7 @@ class Activity < ApplicationRecord
   include SetRequestUuid
 
   EDIT_SUMMARY_MAX_LENGTH = 255
-  ACTIONS_BY_GROUP = {
+  EVENTS_BY_GROUP = {
     default: [
       CREATE = 'create',
       UPDATE = 'update',
@@ -37,15 +37,15 @@ class Activity < ApplicationRecord
       START_REVIEWING =               'start_reviewing'
     ]
   }
-  ACTIONS = ACTIONS_BY_GROUP.values.flatten
+  EVENTS = EVENTS_BY_GROUP.values.flatten
   OPTIONAL_USER_TRACKABLE_TYPES = %w[Feedback User]
 
   self.per_page = 30 # For `will_paginate`.
 
   belongs_to :trackable, polymorphic: true, optional: true
-  belongs_to :user, optional: true # NOTE: Only optional for a few actions.
+  belongs_to :user, optional: true # NOTE: Only optional for a few events.
 
-  validates :action, inclusion: { in: ACTIONS }
+  validates :event, inclusion: { in: EVENTS }
   validates :user, presence: true, unless: -> { trackable_type.in?(OPTIONAL_USER_TRACKABLE_TYPES) }
 
   scope :filter_where, ->(filter_params) do
@@ -66,20 +66,20 @@ class Activity < ApplicationRecord
   strip_attributes only: [:edit_summary], replace_newlines: true
 
   class << self
-    def create_for_trackable trackable, action, user:, edit_summary: nil, parameters: {}
+    def create_for_trackable trackable, event, user:, edit_summary: nil, parameters: {}
       create!(
         trackable: trackable,
-        action: action,
+        event: event,
         user: user,
         edit_summary: edit_summary,
         parameters: parameters
       )
     end
 
-    def create_without_trackable action, user, edit_summary: nil, parameters: {}
+    def create_without_trackable event, user, edit_summary: nil, parameters: {}
       create_for_trackable(
         nil,
-        action,
+        event,
         user: user,
         edit_summary: edit_summary,
         parameters: parameters
@@ -91,12 +91,12 @@ class Activity < ApplicationRecord
     def execute_script_activity user, edit_summary
       raise "You must assign a user." unless user
       raise "You must include an edit summary." unless edit_summary
-      create!(trackable: nil, action: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
+      create!(trackable: nil, event: Activity::EXECUTE_SCRIPT, user: user, edit_summary: edit_summary)
     end
     # :nocov:
   end
 
-  def action= value
+  def event= value
     self[:event] = value
     self[:action] = value
   end

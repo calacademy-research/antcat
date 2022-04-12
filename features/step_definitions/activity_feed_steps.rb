@@ -19,10 +19,10 @@ Then("I should see the edit summary {string}") do |content|
   end
 end
 
-Given("there is a {string} journal activity by {string}") do |action, name|
+Given("there is a {string} journal activity by {string}") do |event, name|
   journal = create :journal
   user = User.find_by(name: name) || create(:user, name: name)
-  create :activity, action: action.to_sym, trackable: journal, user: user
+  create :activity, event: event.to_sym, trackable: journal, user: user
 end
 
 Given("activities are paginated with {int} per page") do |per_page|

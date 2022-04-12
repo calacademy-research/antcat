@@ -3,14 +3,14 @@
 class ActivityDecorator < Draper::Decorator
   # Don't show user who created other users' accounts.
   HIDE_USER_FOR_TRACKABLE_TYPES = ['User']
-  ACTION_TO_VERB = {
+  EVENT_TO_VERB = {
     Activity::CREATE  => "added",
     Activity::UPDATE  => "edited",
     Activity::DESTROY => "deleted"
   }
 
   delegate :user, :trackable, :trackable_id, :trackable_type,
-    :parameters, :action, :edit_summary, :edit_summary?
+    :parameters, :event, :edit_summary, :edit_summary?
 
   def self.link_taxon_if_exists id, deleted_label: nil
     if (taxon = Taxon.find_by(id: id))
@@ -60,7 +60,7 @@ class ActivityDecorator < Draper::Decorator
     else
       css_classes = []
       css_classes << activity.trackable_type.underscore.downcase if activity.trackable_type
-      css_classes << activity.action if activity.action
+      css_classes << activity.event if activity.event
     end
 
     h.antcat_icon css_classes
@@ -72,7 +72,7 @@ class ActivityDecorator < Draper::Decorator
     if activity.trackable
       h.link_to(label, (path || activity.trackable))
     else
-      action == Activity::DESTROY ? label : (label + ' [deleted]')
+      event == Activity::DESTROY ? label : (label + ' [deleted]')
     end
   end
 
@@ -88,9 +88,9 @@ class ActivityDecorator < Draper::Decorator
     self.class.link_reference_if_exists(id, deleted_label: deleted_label)
   end
 
-  # NOTE: Missing actions are upcased to make sure they are ugly.
-  def action_to_verb
-    ACTION_TO_VERB[activity.action] || activity.action.upcase
+  # NOTE: Missing events are upcased to make sure they are ugly.
+  def event_to_verb
+    EVENT_TO_VERB[activity.event] || activity.event.upcase
   end
 
   def locked_or_deleted_user_registration?
@@ -101,6 +101,6 @@ class ActivityDecorator < Draper::Decorator
   private
 
     def template_partial
-      ActivityTemplatePartial[action: activity.action, trackable_type: activity.trackable_type]
+      ActivityTemplatePartial[event: activity.event, trackable_type: activity.trackable_type]
     end
 end
