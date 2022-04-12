@@ -24,7 +24,7 @@ module DatabaseScripts
 
       def protonyms
         records = Protonym.species_group_names.
-          joins("LEFT OUTER JOIN taxa ON protonyms.id = taxa.protonym_id AND taxa.original_combination = True").
+          joins("LEFT JOIN taxa ON protonyms.id = taxa.protonym_id AND taxa.original_combination = True").
           where(taxa: { id: nil }).group('protonyms.id').distinct
         Protonym.where(id: records.select(:id))
       end
