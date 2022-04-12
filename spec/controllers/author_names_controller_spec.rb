@@ -22,7 +22,7 @@ describe AuthorNamesController do
       end.to change { Activity.count }.by(1)
 
       activity = Activity.last
-      expect(activity.action).to eq Activity::CREATE
+      expect(activity.event).to eq Activity::CREATE
       expect(activity.trackable).to be_a AuthorName
       expect(activity.edit_summary).to eq "Add name"
     end
@@ -37,7 +37,7 @@ describe AuthorNamesController do
       end.to change { Activity.count }.by(1)
 
       activity = Activity.last
-      expect(activity.action).to eq Activity::UPDATE
+      expect(activity.event).to eq Activity::UPDATE
       expect(activity.trackable).to be_a AuthorName
       expect(activity.edit_summary).to eq "Edit name"
     end
@@ -59,7 +59,7 @@ describe AuthorNamesController do
       expect { delete(:destroy, params: { id: author_name.id }) }.to change { Activity.count }.by(1)
 
       activity = Activity.last
-      expect(activity.action).to eq Activity::DESTROY
+      expect(activity.event).to eq Activity::DESTROY
       expect(activity.trackable_type).to eq 'AuthorName'
       expect(activity.trackable_id).to eq author_name.id
     end

@@ -38,7 +38,7 @@ describe Taxa::ReorderReferenceSectionsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { taxon_id: taxon.id, new_order: new_order }) }.
-        to change { Activity.where(action: Activity::REORDER_REFERENCE_SECTIONS).count }.by(1)
+        to change { Activity.where(event: Activity::REORDER_REFERENCE_SECTIONS).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable).to eq taxon

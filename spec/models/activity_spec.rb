@@ -6,8 +6,8 @@ describe Activity do
   it { is_expected.to be_versioned }
 
   describe 'validations' do
-    it { is_expected.to validate_inclusion_of(:action).in_array(Activity::ACTIONS) }
-    it { is_expected.to_not allow_value(nil).for(:action) }
+    it { is_expected.to validate_inclusion_of(:event).in_array(Activity::EVENTS) }
+    it { is_expected.to_not allow_value(nil).for(:event) }
 
     describe '#user' do
       context 'with `trackable_type` that requires a user' do
@@ -46,7 +46,7 @@ describe Activity do
 
     it "assigns attributes for the activity" do
       trackable = create :issue
-      action = :update
+      event = :update
       user = create :user
       edit_summary = 'pizza'
       parameters = { pizza: 'Hawaii' }
@@ -54,14 +54,14 @@ describe Activity do
       activity =
         described_class.create_for_trackable(
           trackable,
-          action,
+          event,
           user: user,
           edit_summary: edit_summary,
           parameters: parameters
         )
 
       expect(activity.trackable).to eq trackable
-      expect(activity.action).to eq action.to_s
+      expect(activity.event).to eq event.to_s
       expect(activity.user).to eq user
       expect(activity.edit_summary).to eq edit_summary
       expect(activity.parameters).to eq parameters

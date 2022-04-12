@@ -16,12 +16,12 @@ table.activities
       @extend .icon-minus
       color: $color_danger
 
-    // Approving actions = green check.
+    // Approving events = green check.
     &.finish_reviewing, &.approve_all_references, &.close_feedback, &.close_issue
       @extend .icon-ok
       color: $color_primary
 
-    // Mean actions = red exclamation mark.
+    // Mean events = red exclamation mark.
     &.restart_reviewing, &.reopen_feedback, &.execute_script, &.reopen_issue
       @extend .icon-attention-alt
       color: $color_danger

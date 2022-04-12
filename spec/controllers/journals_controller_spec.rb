@@ -28,7 +28,7 @@ describe JournalsController do
 
     it 'creates an activity' do
       expect { put(:update, params: { id: journal.id, journal: journal_params }) }.
-        to change { Activity.where(action: Activity::UPDATE).count }.by(1)
+        to change { Activity.where(event: Activity::UPDATE).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable).to eq journal
@@ -58,7 +58,7 @@ describe JournalsController do
 
     it 'creates an activity' do
       expect { delete(:destroy, params: { id: journal.id }) }.
-        to change { Activity.where(action: Activity::DESTROY, trackable: journal).count }.by(1)
+        to change { Activity.where(event: Activity::DESTROY, trackable: journal).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable_id).to eq journal.id

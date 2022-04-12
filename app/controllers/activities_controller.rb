@@ -62,10 +62,7 @@ class ActivitiesController < ApplicationController
       activities
     end
 
-    # HACK: Because `params[:action]` (for filtering) is overridden by Rails (controller action param).
     def filter_params
-      params.permit(:activity_action, :trackable_type, :trackable_id, :user_id).tap do |hsh|
-        hsh[:action] = hsh.delete(:activity_action)
-      end
+      params.permit(:event, :trackable_type, :trackable_id, :user_id)
     end
 end

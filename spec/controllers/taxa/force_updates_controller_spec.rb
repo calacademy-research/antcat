@@ -60,7 +60,7 @@ describe Taxa::ForceUpdatesController do
 
       it 'creates an activity' do
         expect { put(:update, params: params) }.
-          to change { Activity.where(action: Activity::FORCE_UPDATE_DATABASE_RECORD).count }.by(1)
+          to change { Activity.where(event: Activity::FORCE_UPDATE_DATABASE_RECORD).count }.by(1)
 
         activity = Activity.last
         expect(activity.trackable).to eq taxon

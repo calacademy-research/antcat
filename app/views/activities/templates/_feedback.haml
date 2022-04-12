@@ -1,13 +1,13 @@
 -unless activity.user
   An unregistered user
 
--case activity.action
+-case activity.event
 -when Activity::CLOSE_FEEDBACK
   closed
 -when Activity::REOPEN_FEEDBACK
   re-opened
 -else
-  =activity.action_to_verb
+  =activity.event_to_verb
 
 the feedback item
 =activity.link_trackable_if_exists

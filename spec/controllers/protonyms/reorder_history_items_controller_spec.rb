@@ -38,7 +38,7 @@ describe Protonyms::ReorderHistoryItemsController do
 
     it 'creates an activity' do
       expect { post(:create, params: { protonym_id: protonym.id, new_order: new_order }) }.
-        to change { Activity.where(action: Activity::REORDER_HISTORY_ITEMS).count }.by(1)
+        to change { Activity.where(event: Activity::REORDER_HISTORY_ITEMS).count }.by(1)
 
       activity = Activity.last
       expect(activity.trackable).to eq protonym
