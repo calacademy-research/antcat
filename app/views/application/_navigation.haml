@@ -53,7 +53,8 @@
         #mobile-logo.top-bar-title{data: { hide_for: "large", responsive_toggle: "mobile-menu" }}
           %span.float-left
             %span.menu-icon{data: { toggle: true }}
-          =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', data: { toggle: true }
+          =link_to root_path do
+            =image_tag 'logos/antcat_white_174x37.png', alt: 'AntCat', data: { toggle: true }
       =unseen_notifications_badge
       =unread_site_notices_badge
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Markdowns::ParseAntcatTags do
+describe Markdowns::ParseAntCatTags do
   describe "#call" do
     context 'with unsafe tags' do
       it "does not sanitize them" do

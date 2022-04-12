@@ -9,7 +9,7 @@ module Markdowns
     end
 
     def call
-      parsed = Markdowns::ParseAntcatTags[content]
+      parsed = Markdowns::ParseAntCatTags[content]
       parsed = Markdowns::ParseCatalogTags[parsed]
 
       parsed

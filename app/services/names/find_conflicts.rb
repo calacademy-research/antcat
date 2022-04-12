@@ -17,7 +17,7 @@ module Names
 
     def call
       names = Name.select('names.*, taxa.id AS taxon_id, protonyms.id AS protonym_id').
-        left_outer_joins(:taxa, :protonyms).
+        left_joins(:taxa, :protonyms).
         where("taxa.id IS NOT NULL OR protonyms.id IS NOT NULL")
 
       case number_of_words

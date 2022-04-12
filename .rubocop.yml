@@ -279,6 +279,11 @@ RSpec/ExpectChange:
 RSpec/FactoryBot/CreateList:
   EnforcedStyle: n_times
 
+RSpec/FilePath:
+  CustomTransform:
+    AntCatVersionLink: antcat_version_link
+    ParseAntCatTags: parse_antcat_tags
+
 # Disabled because grouped Shoulda Matchers makes sense sometimes.
 RSpec/ImplicitSubject:
   Enabled: false

@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-class AntcatVersionLink
+class AntCatVersionLink
   include ActionView::Helpers::UrlHelper
 
-  GITHUB_COMMIT_BASE_URL = "https://github.com/calacademy/antcat/commit/"
+  GITHUB_COMMIT_BASE_URL = "#{Settings.github.repo_url}/commit/"
 
   def call
     link_to latest_tag, url, title: commit_hash, class: 'external-link'

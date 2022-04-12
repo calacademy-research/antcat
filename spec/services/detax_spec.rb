@@ -26,7 +26,7 @@ describe Detax do
         expect(described_class['%github1']).to eq '%github1'
 
         # Sanity check.
-        expect(Markdowns::ParseAntcatTags['%github1']).to include 'github.com'
+        expect(Markdowns::ParseAntCatTags['%github1']).to include 'github.com'
       end
     end
   end

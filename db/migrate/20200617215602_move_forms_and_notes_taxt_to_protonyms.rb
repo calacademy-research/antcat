@@ -9,7 +9,7 @@ class MoveFormsAndNotesTaxtToProtonyms < ActiveRecord::Migration[6.0]
       dir.up do
         execute <<~SQL.squish
           UPDATE protonyms
-            INNER JOIN citations ON protonyms.authorship_id = citations.id
+            INNER JOIN citations ON citations.id = protonyms.authorship_id
             SET
               protonyms.forms = citations.forms,
               protonyms.notes_taxt = citations.notes_taxt;

@@ -67,7 +67,7 @@ Rails.application.configure do
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "ant_cat_staging"
+  # config.active_job.queue_name_prefix = "antcat_staging"
 
   config.action_mailer.default_url_options = { host: "antcat.org" }
   config.action_mailer.perform_caching = false

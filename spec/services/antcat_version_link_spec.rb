@@ -2,10 +2,10 @@
 
 require 'rails_helper'
 
-describe AntcatVersionLink do
+describe AntCatVersionLink do
   describe "#call" do
     specify do
-      expect(described_class.new.call).to include %(href="https://github.com/calacademy/antcat/commit/)
+      expect(described_class.new.call).to include %(href="https://github.com/calacademy-research/antcat/commit/)
     end
   end
 end

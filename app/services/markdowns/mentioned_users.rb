@@ -13,7 +13,7 @@ module Markdowns
     private
 
       def user_ids
-        content.scan(Markdowns::ParseAntcatTags::USER_TAG_REGEX).flatten.uniq
+        content.scan(Markdowns::ParseAntCatTags::USER_TAG_REGEX).flatten.uniq
       end
   end
 end
