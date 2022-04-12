@@ -6,7 +6,7 @@ Feature: Activity feed
     When I go to the activity feed
     Then I should see 2 items in the activity feed
 
-    When I select "Destroy" from "activity_event"
+    When I select "Destroy" from "event"
     And I press "Filter"
     Then I should see 1 items in the activity feed
     And I should see "Batiatus deleted the journal" within the activity feed
