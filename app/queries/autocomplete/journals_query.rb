@@ -14,7 +14,7 @@ module Autocomplete
 
       def search_results
         Journal.
-          left_outer_joins(:references).
+          left_joins(:references).
           where('journals.name LIKE ?', search_expression).
           group('journals.id').
           order(Arel.sql('COUNT(*) DESC'))

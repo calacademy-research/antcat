@@ -75,7 +75,7 @@ module DatabaseScripts
       end
 
       def name_count_checks
-        orphaned_names = Name.left_outer_joins(:taxa, :protonyms).where(protonyms: { id: nil }, taxa: { id: nil })
+        orphaned_names = Name.left_joins(:taxa, :protonyms).where(protonyms: { id: nil }, taxa: { id: nil })
 
         ok =
           !Protonym.where(name_id: Taxon.distinct.select(:name_id)).exists? &&

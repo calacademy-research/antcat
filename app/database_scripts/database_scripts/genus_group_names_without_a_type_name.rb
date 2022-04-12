@@ -7,7 +7,7 @@ module DatabaseScripts
     def results
       Taxon.genus_group_names.
         includes(:name, protonym: :name).
-        left_outer_joins(protonym: :type_name).
+        left_joins(protonym: :type_name).
         where(type_names: { id: nil }).
         limit(LIMIT)
     end

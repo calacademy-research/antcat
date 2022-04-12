@@ -7,7 +7,7 @@ module DatabaseScripts
     end
 
     def results
-      Reference.left_outer_joins(:document).
+      Reference.left_joins(:document).
         where.not(reference_documents: { url: [nil, ''] }).
         where("url NOT LIKE ?", "%antcat.org/documents%").
         order_by_author_names_and_year.

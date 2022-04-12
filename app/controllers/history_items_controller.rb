@@ -7,7 +7,7 @@ class HistoryItemsController < ApplicationController
   before_action :ensure_user_is_editor, only: [:destroy]
 
   def index
-    scope = HistoryItem.left_outer_joins(:terminal_taxa)
+    scope = HistoryItem.left_joins(:terminal_taxa)
     scope = scope.where(type: params[:type]) if params[:type].present?
     scope = scope.where(taxa: { type: params[:taxon_type] }) if params[:taxon_type].present?
     scope = scope.where(taxa: { status: params[:taxon_status] }) if params[:taxon_status].present?
