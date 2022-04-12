@@ -3,51 +3,11 @@
     {
       "warning_type": "Command Injection",
       "warning_code": 14,
-      "fingerprint": "0ae1118819ff8ab6f5493ca83760a0d69a93094ea97bf0cebde4e086ade94f27",
+      "fingerprint": "0319cfaf7af84d943c6e3042bc922f76195aa97748fbdc054ed6e357bf61e884",
       "check_name": "Execute",
       "message": "Possible command injection",
-      "file": "lib/dev_monkey_patches/ant_cat.rb",
-      "line": 41,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "`xdg-open \"#{self}\"`",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "DevMonkeyPatches::AntCat::Protonym",
-        "method": "s(:lvar, :link).open"
-      },
-      "user_input": "self",
-      "confidence": "Medium",
-      "note": "Dev-only monkey patch"
-    },
-    {
-      "warning_type": "Command Injection",
-      "warning_code": 14,
-      "fingerprint": "229829e99b3f809125308005002e78510b7f7c666d7c00d8a141a2da44da7d2d",
-      "check_name": "Execute",
-      "message": "Possible command injection",
-      "file": "lib/dev_monkey_patches/ant_cat.rb",
-      "line": 79,
-      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
-      "code": "`xdg-open \"#{self}\"`",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "DevMonkeyPatches::AntCat::ReferenceSection",
-        "method": "s(:lvar, :link).open"
-      },
-      "user_input": "self",
-      "confidence": "Medium",
-      "note": "Dev-only monkey patch"
-    },
-    {
-      "warning_type": "Command Injection",
-      "warning_code": 14,
-      "fingerprint": "773628aa027a4539914c179260903a1ff1d0e1dd998cd3463d8823ce363d9fc8",
-      "check_name": "Execute",
-      "message": "Possible command injection",
-      "file": "lib/dev_monkey_patches/ant_cat.rb",
-      "line": 60,
+      "file": "lib/dev_monkey_patches/antcat.rb",
+      "line": 70,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "`xdg-open \"#{self}\"`",
       "render_path": null,
@@ -58,15 +18,15 @@
       },
       "user_input": "self",
       "confidence": "Medium",
-      "note": "Dev-only monkey match"
+      "note": ""
     },
     {
       "warning_type": "Command Injection",
       "warning_code": 14,
-      "fingerprint": "ad6e8c6237d2fe512730fe131c909cbe5256a6fdce4ad44c66b2a59928677b60",
+      "fingerprint": "1431d81f7248eb22a04bf4124821e9f001be6c37f8f53e26a3ab172849bcdfb7",
       "check_name": "Execute",
       "message": "Possible command injection",
-      "file": "lib/dev_monkey_patches/ant_cat.rb",
+      "file": "lib/dev_monkey_patches/antcat.rb",
       "line": 22,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "`xdg-open \"#{self}\"`",
@@ -78,9 +38,291 @@
       },
       "user_input": "self",
       "confidence": "Medium",
-      "note": "Dev-only monkey path"
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "29815fa4de713d9ec9591ef1b040bfbfa132a6e256afcead42ae736e6199813f",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/shared/revision_comparer/main.haml",
+      "line": 15,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "RevisionPresenter.new(:comparer => RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id]), :template => \"history_items/histories/compare_revision_template\").left_side_diff",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "HistoryItems::HistoriesController",
+          "method": "show",
+          "line": 10,
+          "file": "app/controllers/history_items/histories_controller.rb",
+          "rendered": {
+            "name": "history_items/histories/show",
+            "file": "app/views/history_items/histories/show.haml"
+          }
+        },
+        {
+          "type": "template",
+          "name": "history_items/histories/show",
+          "line": 8,
+          "file": "app/views/history_items/histories/show.haml",
+          "rendered": {
+            "name": "shared/revision_comparer/main",
+            "file": "app/views/shared/revision_comparer/main.haml"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "shared/revision_comparer/main"
+      },
+      "user_input": "RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id])",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "2d353ae7a266f1e02e5b1d115a70f22bf3e2dd1706e5a6432f59f3798e995c2f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/database_scripts/database_scripts/history_items_with_hardcoded_names_genus_batch3.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "HistoryItem.taxts_only.where(\"taxt LIKE '%#{NAMES.join(\"%' OR taxt LIKE '%\")}%'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DatabaseScripts::HistoryItemsWithHardcodedNamesGenusBatch3",
+        "method": "results"
+      },
+      "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "Denial of Service",
+      "warning_code": 76,
+      "fingerprint": "2f7ec2c56ebf475ec62cee6875c25681f339ae560b1633d0119c81276d66826f",
+      "check_name": "RegexDoS",
+      "message": "Parameter value used in regular expression",
+      "file": "app/controllers/quick_and_dirty_fixes_controller.rb",
+      "line": 127,
+      "link": "https://brakemanscanner.org/docs/warning_types/denial_of_service/",
+      "code": "/\\{missing[0-9]? #{params[:hardcoded_missing_name]}\\}/",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "QuickAndDirtyFixesController",
+        "method": "replace_missing_tag_with_tax_tag"
+      },
+      "user_input": "params[:hardcoded_missing_name]",
+      "confidence": "High",
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "352d9638a31e44a3819afa4c158a37bf03d095c7db94d58122d8a66a3136fe2b",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/shared/revision_comparer/main.haml",
+      "line": 16,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "RevisionPresenter.new(:comparer => RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id]), :template => \"history_items/histories/compare_revision_template\").right_side_diff",
+      "render_path": [
+        {
+          "type": "controller",
+          "class": "HistoryItems::HistoriesController",
+          "method": "show",
+          "line": 10,
+          "file": "app/controllers/history_items/histories_controller.rb",
+          "rendered": {
+            "name": "history_items/histories/show",
+            "file": "app/views/history_items/histories/show.haml"
+          }
+        },
+        {
+          "type": "template",
+          "name": "history_items/histories/show",
+          "line": 8,
+          "file": "app/views/history_items/histories/show.haml",
+          "rendered": {
+            "name": "shared/revision_comparer/main",
+            "file": "app/views/shared/revision_comparer/main.haml"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "shared/revision_comparer/main"
+      },
+      "user_input": "RevisionComparer.new(HistoryItem, params[:history_item_id], params[:selected_id], params[:diff_with_id])",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "40b1edcc4f24b00d6cb160b39bc9505b26c8d480ee3825e3f4a862c2c403a810",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/database_scripts/database_scripts/history_items_with_hardcoded_names_genus_batch1.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "HistoryItem.taxts_only.where(\"taxt LIKE '%#{NAMES.join(\"%' OR taxt LIKE '%\")}%'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DatabaseScripts::HistoryItemsWithHardcodedNamesGenusBatch1",
+        "method": "results"
+      },
+      "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "4212ec068bd459ac9edcc0297174f67fd2d341ed5b99dd98b19cd48178a5016b",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/database_scripts/database_scripts/history_items_with_hardcoded_names_tribe_batch1.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "HistoryItem.taxts_only.where(\"taxt LIKE '%#{NAMES.join(\"%' OR taxt LIKE '%\")}%'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DatabaseScripts::HistoryItemsWithHardcodedNamesTribeBatch1",
+        "method": "results"
+      },
+      "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "616adbab33326af2bba6675c17fd828dae4e9a96b1914c80b488f9a4ca861643",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/what_links_here_taxts.rb",
+      "line": 23,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "model.where(\"#{column} REGEXP ?\", taxt_tag)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "WhatLinksHereTaxts",
+        "method": "any_taxts?"
+      },
+      "user_input": "column",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "99817ec872946df9017130ad99467ac2499b30fce0278b256ec9f14b80050e59",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/services/what_links_here_taxts.rb",
+      "line": 30,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "model.where(\"#{column} REGEXP ?\", taxt_tag)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "WhatLinksHereTaxts",
+        "method": "taxts"
+      },
+      "user_input": "column",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "c347dd90cfcf71a1ae34cbdda616b33db92587be41f996fb55cea1256c457d80",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/antcat.rb",
+      "line": 89,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::ReferenceSection",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "cfa8534c822621b9aa4ed5a44355b69d4a05a8290b2003b9989630faee0c5ecb",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/database_scripts/database_scripts/history_items_with_hardcoded_names_genus_batch2.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "HistoryItem.taxts_only.where(\"taxt LIKE '%#{NAMES.join(\"%' OR taxt LIKE '%\")}%'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DatabaseScripts::HistoryItemsWithHardcodedNamesGenusBatch2",
+        "method": "results"
+      },
+      "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "db074065d5532b181a1f97cd45fc4171d0f99651e23faa07649e5f687c2b3f32",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "lib/dev_monkey_patches/antcat.rb",
+      "line": 51,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`xdg-open \"#{self}\"`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DevMonkeyPatches::AntCat::Protonym",
+        "method": "s(:lvar, :link).open"
+      },
+      "user_input": "self",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "fed3cea19ee08501bba7ee3be7b331fab1b550c91f8365c4281fbc34ae93f9f9",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/database_scripts/database_scripts/history_items_with_hardcoded_names_subfamily_batch1.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "HistoryItem.taxts_only.where(\"taxt LIKE '%#{NAMES.join(\"%' OR taxt LIKE '%\")}%'\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DatabaseScripts::HistoryItemsWithHardcodedNamesSubfamilyBatch1",
+        "method": "results"
+      },
+      "user_input": "NAMES.join(\"%' OR taxt LIKE '%\")",
+      "confidence": "Medium",
+      "note": ""
     }
   ],
-  "updated": "2020-06-19 00:02:52 +0200",
-  "brakeman_version": "4.8.2"
+  "updated": "2022-04-12 18:04:39 +0200",
+  "brakeman_version": "5.2.2"
 }
