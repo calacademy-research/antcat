@@ -12,11 +12,11 @@
 
 common: &default_settings
   # Required license key associated with your New Relic account.
-  license_key: zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+  license_key: '<%= EY::Config.get("New Relic", 'license_key') %>'
 
   # Your application name. Renaming here affects where data displays in New
   # Relic. For more details, see https://docs.newrelic.com/docs/apm/new-relic-apm/maintenance/renaming-applications
-  app_name: My Application
+  app_name: '<%= EY::Config.get("base", "app_environment_name") %>'
 
   # To disable the agent regardless of other settings, uncomment the following:
   # agent_enabled: false
@@ -623,7 +623,7 @@ common: &default_settings
 # If your application has other named environments, configure them here.
 development:
   <<: *default_settings
-  app_name: My Application (Development)
+  monitor_mode: false
 
 test:
   <<: *default_settings
@@ -632,7 +632,6 @@ test:
 
 staging:
   <<: *default_settings
-  app_name: My Application (Staging)
 
 production:
   <<: *default_settings
