@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# Migration for renaming `activities.action` to `activities.event`.
-# TODO: `remove_column :activities, :action, :string`.
 class AddEventToActivities < ActiveRecord::Migration[7.0]
   def up
     add_column :activities, :event, :string

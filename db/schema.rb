@@ -10,12 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_13_164737) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_13_170109) do
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
     t.integer "user_id"
-    t.string "action", null: false
     t.text "parameters"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
