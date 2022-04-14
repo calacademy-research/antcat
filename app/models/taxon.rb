@@ -13,8 +13,6 @@ class Taxon < ApplicationRecord
     :subspecies_id
   ]
 
-  delegate :policy, :soft_validations, :what_links_here, to: :taxon_collaborators
-
   with_options class_name: 'Taxon' do
     belongs_to :homonym_replaced_by, optional: true
     belongs_to :current_taxon, optional: true
@@ -150,8 +148,16 @@ class Taxon < ApplicationRecord
     history_items_as_object_for_taxon_including_hidden
   end
 
-  def taxon_collaborators
-    @_taxon_collaborators ||= Taxa::TaxonCollaborators.new(self)
+  def policy
+    @_policy ||= TaxonPolicy.new(self)
+  end
+
+  def soft_validations
+    @_soft_validations ||= DbScriptSoftValidations.new(self, DbScriptSoftValidations::TAXA_DATABASE_SCRIPTS_TO_CHECK)
+  end
+
+  def what_links_here
+    @_what_links_here ||= Taxa::WhatLinksHere.new(self)
   end
 
   private
