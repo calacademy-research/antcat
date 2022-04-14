@@ -10,19 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_08_190142) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_13_170109) do
   create_table "activities", id: :integer, charset: "utf8", force: :cascade do |t|
     t.integer "trackable_id"
     t.string "trackable_type"
     t.integer "user_id"
-    t.string "action", null: false
     t.text "parameters"
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "edit_summary"
     t.boolean "automated_edit", default: false, null: false
     t.string "request_uuid"
-    t.string "event"
+    t.string "event", null: false
     t.index ["request_uuid"], name: "ix_activities__request_uuid"
     t.index ["trackable_id", "trackable_type"], name: "ix_activities__trackable_id__trackable_type"
     t.index ["user_id"], name: "ix_activities__user_id"
