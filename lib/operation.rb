@@ -30,7 +30,7 @@ module Operation
   end
 
   def execute
-    raise NotImplementedError
+    raise NoMethodError, "implement method in subclass"
   end
 
   def fail! error = nil

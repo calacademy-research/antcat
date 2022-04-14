@@ -58,6 +58,10 @@ class DatabaseScript
     basename
   end
 
+  def execute
+    raise NoMethodError, "implement method in subclass"
+  end
+
   # TODO: See how pagination works out for us and improve code.
   def render_with_options_or_default options
     if paginate?

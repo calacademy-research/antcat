@@ -35,7 +35,7 @@ describe Operation do
     context 'when `#execute` is not implemented' do
       let(:dummy_class) { Class.new { include Operation } }
 
-      specify { expect { dummy_class.new.run }.to raise_error(NotImplementedError) }
+      specify { expect { dummy_class.new.run }.to raise_error(NoMethodError, 'implement method in subclass') }
     end
   end
 
