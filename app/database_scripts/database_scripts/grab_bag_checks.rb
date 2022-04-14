@@ -2,6 +2,8 @@
 
 module DatabaseScripts
   class GrabBagChecks < DatabaseScript
+    include MarkdownHelper
+
     def empty?
       results.none? { |res| !res[:ok?] }
     end
@@ -25,7 +27,7 @@ module DatabaseScripts
         t.header 'Check', 'Ok?'
         t.rows do |check|
           [
-            check[:title],
+            markdown_without_wrapping(check[:title]),
             (check[:ok?] ? 'Yes' : bold_warning('No'))
           ]
         end
@@ -52,7 +54,7 @@ module DatabaseScripts
 
       def original_combination_ranks
         {
-          title: "All 'taxa.original_combination' are of correct ranks",
+          title: "All `taxa.original_combination` are of correct ranks",
           ok?: !Taxon.where(original_combination: true).where.not(type: Rank::CAN_BE_A_COMBINATION_TYPES).exists?
         }
       end
@@ -69,7 +71,7 @@ module DatabaseScripts
 
       def taxa_cleaned_name_check
         {
-          title: "All 'names.cleaned_name' of non-subgenus taxa match its 'names.name'",
+          title: "All `names.cleaned_name` of non-subgenus taxa match its `names.name`",
           ok?: !Taxon.where.not(type: Rank::SUBGENUS).joins(:name).where("names.cleaned_name != names.name").exists?
         }
       end
@@ -84,21 +86,21 @@ module DatabaseScripts
           !orphaned_names.exists?
 
         {
-          title: 'Name count checks',
+          title: 'All taxa and protonyms have unique `Name` records',
           ok?: ok
         }
       end
 
       def name_caches_sync
         {
-          title: "All 'taxa.name_cache' fields are in sync with its 'names.name' fields",
+          title: "All `taxa.name_cache` fields are in sync with its `names.name` fields",
           ok?: !Taxon.joins(:name).where("names.name != taxa.name_cache").exists?
         }
       end
 
       def no_harcoded_antcat_org_reference_documents
         {
-          title: "No reference documents have hardcoded 'antcat.org' URLs",
+          title: "No reference documents have hardcoded `antcat.org` URLs",
           ok?: !ReferenceDocument.where("url LIKE ?", "%antcat\.org%").exists?
         }
       end

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# To run on production/staging: /data/antcat/current/script/solr/restart_and_reindex
+
 set -u
 
 echo "*** Executing $0"

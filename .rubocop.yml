@@ -27,6 +27,7 @@ Layout/BlockAlignment:
 Layout/ClassStructure:
   Enabled: true
 
+# Trailing dot to make it easier to copy-paste into the console.
 Layout/DotPosition:
   EnforcedStyle: trailing
 
@@ -72,6 +73,7 @@ Layout/MultilineMethodCallIndentation:
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
 
+# Disabled for files included in `rails app:update`.
 Layout/SpaceInsideArrayLiteralBrackets:
   Exclude:
     - 'config/environments/production.rb'
@@ -356,6 +358,7 @@ Style/EmptyMethod:
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
 
+# Disabled for files included in `rails app:update`.
 Style/GlobalStdStream:
   Exclude:
     - 'config/environments/production.rb'

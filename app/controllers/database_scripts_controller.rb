@@ -26,7 +26,7 @@ class DatabaseScriptsController < ApplicationController
 
     @database_script = find_database_script
     @decorated_database_script = @database_script.decorate
-    @rendered, @render_duration = timed_render @database_script
+    @rendered, @render_duration = timed_render(@database_script)
   end
 
   private

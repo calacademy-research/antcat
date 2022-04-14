@@ -35,7 +35,6 @@ module Exporters
           end
         end
 
-        # TODO: Decouple fetching/exporting.
         def taxon_ids
           @_taxon_ids ||= begin
             ids = Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
