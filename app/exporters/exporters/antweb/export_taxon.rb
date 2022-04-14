@@ -45,10 +45,8 @@ module Exporters
         end
 
         def antweb_array
-          convert_to_antweb_array(Exporters::Antweb::TaxonAttributes[taxon])
-        end
+          values = Exporters::Antweb::TaxonAttributes[taxon]
 
-        def convert_to_antweb_array values
           [
             values[:antcat_id],
             values[:subfamily],
