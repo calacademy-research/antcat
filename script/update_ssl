@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# See also https://github.com/calacademy-research/antcat-issues/wiki/Setup-SSL-certificate-(for-HTTPS)
+# To run on production: /data/antcat/current/script/update_ssl
+
+echo "Running certbot renew..."
+sudo certbot renew
+
+echo "Backuping..."
+TODAY=$(date +"%Y_%m_%d__%H%M%S")
+sudo cp /etc/nginx/ssl/antcat/antcat.crt "/etc/nginx/ssl/antcat/antcat.crt.old_$TODAY"
+sudo cp /etc/nginx/ssl/antcat/antcat.key "/etc/nginx/ssl/antcat/antcat.key.old_$TODAY"
+
+echo "Copying..."
+sudo cp /etc/letsencrypt/live/antcat.org/fullchain.pem /etc/nginx/ssl/antcat/antcat.crt
+sudo cp /etc/letsencrypt/live/antcat.org/privkey.pem /etc/nginx/ssl/antcat/antcat.key
+
+echo "Restarting nginx..."
+sudo service nginx restart
+
+echo "Done"

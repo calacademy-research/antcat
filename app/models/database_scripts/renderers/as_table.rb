@@ -41,7 +41,7 @@ module DatabaseScripts
         header_content << string
       end
 
-      # Gets the results from `#results` unless specified.
+      # Defaults results to the scripts's `#results` unless specified.
       def rows rows_results = nil
         res = rows_results || results
 

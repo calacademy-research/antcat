@@ -45,10 +45,8 @@ module Exporters
         end
 
         def antweb_array
-          convert_to_antweb_array(Exporters::Antweb::TaxonAttributes[taxon])
-        end
+          values = Exporters::Antweb::TaxonAttributes[taxon]
 
-        def convert_to_antweb_array values
           [
             values[:antcat_id],
             values[:subfamily],
@@ -62,11 +60,11 @@ module Exporters
             values[:authors],
             values[:year],
             values[:status],
-            boolean_to_antweb(values[:available]),
+            boolean_to_string(values[:available]),
             values[:current_valid_name],
-            boolean_to_antweb(values[:original_combination]),
+            boolean_to_string(values[:original_combination]),
             values[:was_original_combination],
-            boolean_to_antweb(values[:fossil]),
+            boolean_to_string(values[:fossil]),
             values[:taxonomic_history_html],
             values[:reference_id],
             values[:bioregion],
@@ -77,7 +75,7 @@ module Exporters
           ]
         end
 
-        def boolean_to_antweb boolean
+        def boolean_to_string boolean
           case boolean
           when true  then 'TRUE'
           when false then 'FALSE'

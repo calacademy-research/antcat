@@ -35,7 +35,6 @@ module Exporters
           end
         end
 
-        # TODO: Decouple fetching/exporting.
         def taxon_ids
           @_taxon_ids ||= begin
             ids = Taxon.where(type: EXPORTABLE_TYPES).order(:status).pluck(:id).reverse
@@ -57,6 +56,11 @@ module Exporters
         def taxon_row taxon
           Exporters::Antweb::ExportTaxon[taxon]
         rescue StandardError => e
+          unless ENV['AW_EXPORT_IGNORE_EXCEPTIONS']
+            $stdout.puts "Could not export taxon #{taxon.id} (run with `AW_EXPORT_IGNORE_EXCEPTIONS=y` to ignore exceptions)"
+            raise
+          end
+
           warn "========================#{taxon.id}===================="
           warn "An error of type #{e} happened, message is #{e.message}"
           warn e.backtrace
