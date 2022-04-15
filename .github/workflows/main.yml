@@ -33,7 +33,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 3.0.1
           bundler-cache: true
 
       - name: Run eslint
@@ -71,7 +71,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 3.0.1
           bundler-cache: true
 
       - name: Setup database
@@ -115,7 +115,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 3.0.1
           bundler-cache: true
 
       - name: Setup database
@@ -154,7 +154,7 @@ jobs:
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.3
+          ruby-version: 3.0.1
           bundler-cache: true
 
       - name: Setup database

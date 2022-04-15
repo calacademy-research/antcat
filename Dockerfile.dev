@@ -1,4 +1,4 @@
-FROM ruby:2.7.3-slim
+FROM ruby:3.0.1-slim
 
 ENV APP_PATH /app
 ENV BUNDLER_VERSION 2.3.10

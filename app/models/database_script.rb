@@ -26,7 +26,7 @@ class DatabaseScript
     end
 
     def all
-      @_all ||= Dir["#{SCRIPTS_DIR}/*"].sort.map { |path| new_from_basename(File.basename(path, ".rb")) }
+      @_all ||= Dir["#{SCRIPTS_DIR}/*"].map { |path| new_from_basename(File.basename(path, ".rb")) }
     end
 
     def with_tag tag_or_tags
