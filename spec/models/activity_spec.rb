@@ -7,7 +7,7 @@ describe Activity do
 
   describe 'validations' do
     it { is_expected.to validate_inclusion_of(:event).in_array(Activity::EVENTS) }
-    it { is_expected.to_not allow_value(nil).for(:event) }
+    it { is_expected.not_to allow_value(nil).for(:event) }
 
     describe '#user' do
       context 'with `trackable_type` that requires a user' do
@@ -23,7 +23,7 @@ describe Activity do
 
         let(:trackable) { create :feedback }
 
-        it { is_expected.to_not validate_presence_of :user }
+        it { is_expected.not_to validate_presence_of :user }
       end
     end
   end

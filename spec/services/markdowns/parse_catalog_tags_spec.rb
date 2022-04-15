@@ -138,7 +138,7 @@ describe Markdowns::ParseCatalogTags do
         let(:reference) { create :any_reference }
 
         it 'links the reference' do
-          expect(reference.key_with_suffixed_year_cache).to_not eq nil
+          expect(reference.key_with_suffixed_year_cache).not_to eq nil
 
           expect(described_class[Taxt.ref(reference.id)]).to eq reference_taxt_link(reference)
         end

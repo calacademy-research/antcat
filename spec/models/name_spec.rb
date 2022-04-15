@@ -23,8 +23,8 @@ describe Name do
 
         let(:error_message) { "can only contain Latin letters, periods, dashes and parentheses" }
 
-        it { is_expected.to_not allow_value('Capaö').for(:name).with_message(error_message) }
-        it { is_expected.to_not allow_value('Capa1').for(:name).with_message(error_message) }
+        it { is_expected.not_to allow_value('Capaö').for(:name).with_message(error_message) }
+        it { is_expected.not_to allow_value('Capa1').for(:name).with_message(error_message) }
       end
 
       describe 'first letter in name' do
@@ -66,8 +66,7 @@ describe Name do
           it 'does not fail validations' do
             expect(name.valid?).to eq true
 
-            expect { name.non_conforming = false }.
-             to change { name.valid? }.from(true).to(false)
+            expect { name.non_conforming = false }.to change { name.valid? }.from(true).to(false)
             expect(name.errors[:name]).
               to include "type (`FamilyName`) and identified name type (`TribeName`) must match. " \
                 "Flag name as 'Non-conforming' to bypass this validation."

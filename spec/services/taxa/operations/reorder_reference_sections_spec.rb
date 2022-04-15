@@ -32,7 +32,7 @@ describe Taxa::Operations::ReorderReferenceSections do
 
       it "doesn't update the positions" do
         expect { described_class[taxon, reordered_ids] }.
-          to_not change { item_ids(taxon) }.from(original_order)
+          not_to change { item_ids(taxon) }.from(original_order)
       end
 
       it 'adds an error to the taxon' do
@@ -46,7 +46,7 @@ describe Taxa::Operations::ReorderReferenceSections do
 
       it "doesn't update the positions" do
         expect { described_class[taxon, reordered_ids] }.
-          to_not change { item_ids(taxon) }.from(original_order)
+          not_to change { item_ids(taxon) }.from(original_order)
       end
 
       it 'adds an error to the taxon' do

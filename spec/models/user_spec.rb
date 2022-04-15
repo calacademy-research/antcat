@@ -13,7 +13,7 @@ describe User do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of :name }
-    it { is_expected.to_not allow_values('<', '>').for(:name) }
+    it { is_expected.not_to allow_values('<', '>').for(:name) }
 
     describe "uniqueness validation" do
       subject { create :user }

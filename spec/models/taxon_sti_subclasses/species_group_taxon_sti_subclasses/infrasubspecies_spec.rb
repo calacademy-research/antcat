@@ -21,7 +21,7 @@ describe Infrasubspecies do
     describe '#rank`' do
       subject(:taxon) { create :infrasubspecies }
 
-      it { is_expected.to_not allow_value(Status::VALID).for(:status).with_message("is not allowed for rank.") }
+      it { is_expected.not_to allow_value(Status::VALID).for(:status).with_message("is not allowed for rank.") }
     end
   end
 

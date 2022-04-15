@@ -13,7 +13,7 @@ describe Operation do
     specify { expect(operation.run.context.errors).to eq [] }
 
     it "updates the record(s)" do
-      expect { operation.run }.to_not change { records_to_update.map { |record| record&.reload } }
+      expect { operation.run }.not_to change { records_to_update.map { |record| record&.reload } }
     end
   end
 
@@ -27,7 +27,7 @@ describe Operation do
     end
 
     it 'does not update the record(s)' do
-      expect { operation.run }.to_not change { records_to_not_update.map { |record| record&.reload } }
+      expect { operation.run }.not_to change { records_to_not_update.map { |record| record&.reload } }
     end
   end
 
@@ -126,7 +126,7 @@ describe Operation do
             end
 
             it "does not update the second record" do
-              expect { operation.run }.to_not change { journal_2.reload.name }
+              expect { operation.run }.not_to change { journal_2.reload.name }
             end
           end
 

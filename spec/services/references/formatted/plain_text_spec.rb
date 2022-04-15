@@ -28,8 +28,8 @@ describe References::Formatted::PlainText do
 
         it "sanitizes them" do
           results = formatter.call
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+          expect(results).not_to include '<script>xss</script>'
+          expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
           expect(results).to include 'xss'
         end
       end
@@ -57,8 +57,8 @@ describe References::Formatted::PlainText do
 
         it "sanitizes them" do
           results = formatter.call
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+          expect(results).not_to include '<script>xss</script>'
+          expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
           expect(results).to include 'xss'
         end
       end
@@ -93,8 +93,8 @@ describe References::Formatted::PlainText do
 
         it "sanitizes them" do
           results = formatter.call
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+          expect(results).not_to include '<script>xss</script>'
+          expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
           expect(results).to include 'xss'
         end
       end

@@ -73,7 +73,7 @@ describe Taxa::CreateCombinationsController do
       end
 
       it 'does not create a new taxon' do
-        expect { post :create, params: valid_params }.to_not change { Taxon.count }
+        expect { post :create, params: valid_params }.not_to change { Taxon.count }
       end
 
       it 'renders errors' do

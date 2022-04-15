@@ -7,9 +7,9 @@ echo "Running certbot renew..."
 sudo certbot renew
 
 echo "Backuping..."
-TODAY=$(date +"%Y_%m_%d__%H%M%S")
-sudo cp /etc/nginx/ssl/antcat/antcat.crt "/etc/nginx/ssl/antcat/antcat.crt.old_$TODAY"
-sudo cp /etc/nginx/ssl/antcat/antcat.key "/etc/nginx/ssl/antcat/antcat.key.old_$TODAY"
+TIMESTAMP=$(date +"%Y_%m_%d__%H%M%S")
+sudo cp /etc/nginx/ssl/antcat/antcat.crt "/etc/nginx/ssl/antcat/antcat.crt.old_$TIMESTAMP"
+sudo cp /etc/nginx/ssl/antcat/antcat.key "/etc/nginx/ssl/antcat/antcat.key.old_$TIMESTAMP"
 
 echo "Copying..."
 sudo cp /etc/letsencrypt/live/antcat.org/fullchain.pem /etc/nginx/ssl/antcat/antcat.crt

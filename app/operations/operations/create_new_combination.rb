@@ -58,9 +58,12 @@ module Operations
         "missing - #{name}" || super
       end
 
+      # Disabled because it conflicts with Style/MissingRespondToMissing.
+      # rubocop:disable Lint/UselessMethodDefinition
       def respond_to_missing? _name, *_args
         super
       end
+      # rubocop:enable Lint/UselessMethodDefinition
     end
   end
 end

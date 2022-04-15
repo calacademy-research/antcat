@@ -40,11 +40,11 @@ describe Operations::CreateNewCombination do
         end
 
         it "does not create a new taxon" do
-          expect { operation.run }.to_not change { Taxon.count }
+          expect { operation.run }.not_to change { Taxon.count }
         end
 
         it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_taxon.reload.attributes }
+          expect { operation.run }.not_to change { current_taxon.reload.attributes }
         end
       end
 
@@ -60,11 +60,11 @@ describe Operations::CreateNewCombination do
         end
 
         it "does not create a new taxon" do
-          expect { operation.run }.to_not change { Taxon.count }
+          expect { operation.run }.not_to change { Taxon.count }
         end
 
         it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_taxon.reload.attributes }
+          expect { operation.run }.not_to change { current_taxon.reload.attributes }
         end
       end
 
@@ -89,18 +89,18 @@ describe Operations::CreateNewCombination do
         end
 
         it "does not create a new taxon" do
-          expect { operation.run }.to_not change { Taxon.count }
+          expect { operation.run }.not_to change { Taxon.count }
         end
 
         it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_taxon.reload.attributes }
+          expect { operation.run }.not_to change { current_taxon.reload.attributes }
         end
 
         it 'does not update the `current_taxon` of the obsolete combinations' do
           expect(current_taxon.obsolete_combinations).to match_array [obsolete_combination_1, obsolete_combination_2]
 
           expect { operation.run }.
-            to_not change { obsolete_combination_1.reload.current_taxon }.
+            not_to change { obsolete_combination_1.reload.current_taxon }.
             from(current_taxon)
 
           expect(current_taxon.obsolete_combinations).to match_array [obsolete_combination_1, obsolete_combination_2]
@@ -120,7 +120,7 @@ describe Operations::CreateNewCombination do
 
         it "does not modify unrelated attributes of `current_taxon`" do
           expect { operation.run }.
-            to_not change { current_taxon.reload.attributes.except('status', 'current_taxon_id', 'updated_at') }
+            not_to change { current_taxon.reload.attributes.except('status', 'current_taxon_id', 'updated_at') }
         end
 
         it "converts the existing taxon to an obsolete combination" do

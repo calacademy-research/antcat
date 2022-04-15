@@ -31,7 +31,7 @@ describe Operations::CreateNewCombinationRecord do
         end
 
         it "does not create a new taxon" do
-          expect { operation.run }.to_not change { Taxon.count }
+          expect { operation.run }.not_to change { Taxon.count }
         end
       end
     end

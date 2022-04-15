@@ -29,7 +29,7 @@ describe DatabaseScript do
       results_basenames = results.map(&:basename)
 
       expect(results_basenames).to include DatabaseScripts::OrphanedProtonyms.new.basename
-      expect(results_basenames).to_not include DatabaseScripts::ExtantTaxaInFossilGenera.new.basename
+      expect(results_basenames).not_to include DatabaseScripts::ExtantTaxaInFossilGenera.new.basename
     end
   end
 

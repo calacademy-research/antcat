@@ -54,7 +54,7 @@ describe AuthorName do
         error_message = "can only contain a single comma " \
           "(excluding allowed suffixes: #{described_class::ALLOWED_SUFFIXES.join(', ')})"
 
-        is_expected.to_not allow_value('Author, A., Pizza').for(:name).with_message(error_message)
+        is_expected.not_to allow_value('Author, A., Pizza').for(:name).with_message(error_message)
       end
     end
 
@@ -76,18 +76,18 @@ describe AuthorName do
       it 'does not allow digits or weird characters' do
         error_message = "contains unsupported characters"
 
-        is_expected.to_not allow_value('Author1, A.').for(:name).with_message(error_message)
-        is_expected.to_not allow_value('Author; A.').for(:name).with_message(error_message)
-        is_expected.to_not allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
+        is_expected.not_to allow_value('Author1, A.').for(:name).with_message(error_message)
+        is_expected.not_to allow_value('Author; A.').for(:name).with_message(error_message)
+        is_expected.not_to allow_value('Author, A. & Author, B.').for(:name).with_message(error_message)
       end
 
       it 'only allows commas if followed by a space' do
-        is_expected.to_not allow_value('Author,A.').for(:name).
+        is_expected.not_to allow_value('Author,A.').for(:name).
           with_message("cannot contain commas not followed by a space")
       end
 
       it 'does not allow consecutive spaces' do
-        is_expected.to_not allow_value('Author,   A.').for(:name).
+        is_expected.not_to allow_value('Author,   A.').for(:name).
           with_message("cannot contain consecutive spaces")
       end
     end

@@ -48,7 +48,7 @@ describe FeedbacksController do
       before { post :create, params: valid_params }
 
       it "does not create a feedback item" do
-        expect { post :create, params: valid_params }.to_not change { Feedback.count }.from(1)
+        expect { post :create, params: valid_params }.not_to change { Feedback.count }.from(1)
       end
 
       it "includes an error message in the response" do

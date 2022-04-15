@@ -19,15 +19,15 @@ describe Reference do
     it { is_expected.to validate_presence_of :pagination }
     it { is_expected.to validate_presence_of :author_names }
     it { is_expected.to validate_presence_of :title }
-    it { is_expected.to_not allow_values('<', '>').for(:doi) }
+    it { is_expected.not_to allow_values('<', '>').for(:doi) }
 
     it { is_expected.to allow_value('a').for(:year_suffix) }
     it { is_expected.to allow_value(nil).for(:year_suffix) }
-    it { is_expected.to_not allow_value('aa').for(:year_suffix) }
-    it { is_expected.to_not allow_value('A').for(:year_suffix) }
+    it { is_expected.not_to allow_value('aa').for(:year_suffix) }
+    it { is_expected.not_to allow_value('A').for(:year_suffix) }
 
     it { is_expected.to validate_inclusion_of(:review_state).in_array(Reference::REVIEW_STATES) }
-    it { is_expected.to_not allow_value(nil).for(:review_state) }
+    it { is_expected.not_to allow_value(nil).for(:review_state) }
 
     describe '`bolton_key` uniqueness' do
       let!(:conflict) { create :any_reference, bolton_key: 'Batiatus 2000' }

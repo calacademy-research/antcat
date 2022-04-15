@@ -55,7 +55,7 @@ describe TaxonForm do
             protonym_name_string: "Attainae"
           )
 
-          expect { form.save }.to_not change { Protonym.count }
+          expect { form.save }.not_to change { Protonym.count }
           expect(form.errors[:base]).to include "Protonym: Bioregion cannot be set for fossil protonyms"
         end
       end

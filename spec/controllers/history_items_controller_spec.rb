@@ -123,8 +123,8 @@ describe HistoryItemsController do
       end
 
       it 'updates the history item' do
-        expect(history_item.taxt).to_not eq history_item_params[:taxt]
-        expect(history_item.rank).to_not eq history_item_params[:rank]
+        expect(history_item.taxt).not_to eq history_item_params[:taxt]
+        expect(history_item.rank).not_to eq history_item_params[:rank]
 
         put(:update, params: { id: history_item.id, history_item: history_item_params })
 

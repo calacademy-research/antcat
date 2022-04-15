@@ -14,8 +14,8 @@ describe References::Cache::Regenerate do
 
       described_class[reference]
 
-      expect(reference.plain_text_cache).to_not eq nil
-      expect(reference.expanded_reference_cache).to_not eq nil
+      expect(reference.plain_text_cache).not_to eq nil
+      expect(reference.expanded_reference_cache).not_to eq nil
 
       expect(reference.plain_text_cache).to eq formatter.plain_text
       expect(reference.expanded_reference_cache).to eq formatter.expanded_reference
@@ -28,7 +28,7 @@ describe References::Cache::Regenerate do
         described_class[reference]
 
         reference.update_columns(title: new_title)
-        expect(reference.reload.plain_text_cache).to_not include new_title
+        expect(reference.reload.plain_text_cache).not_to include new_title
 
         described_class[reference]
         expect(reference.plain_text_cache).to include new_title

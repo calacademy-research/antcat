@@ -16,7 +16,7 @@ describe Taxa::Operations::ElevateToSpecies do
         end
 
         it "does not create a new taxon" do
-          expect { described_class[subspecies] }.to_not change { Taxon.count }
+          expect { described_class[subspecies] }.not_to change { Taxon.count }
         end
       end
     end
@@ -26,7 +26,7 @@ describe Taxa::Operations::ElevateToSpecies do
         let!(:subspecies) { create :subspecies, subfamily: create(:subfamily) }
 
         it "does not modify the original subspecies record" do
-          expect { described_class[subspecies] }.to_not change { subspecies.reload.attributes }
+          expect { described_class[subspecies] }.not_to change { subspecies.reload.attributes }
         end
 
         it "creates a new species" do

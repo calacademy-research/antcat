@@ -22,12 +22,12 @@ describe Institution do
       end
 
       it 'disallows unknown prefixes' do
-        is_expected.to_not allow_value("pizza/#{valid_v4_uuid}").for(:grscicoll_identifier)
+        is_expected.not_to allow_value("pizza/#{valid_v4_uuid}").for(:grscicoll_identifier)
       end
 
       it 'disallows invalid v4 UUIDs' do
-        is_expected.to_not allow_value("institution/zzzzzzzz-faf8-4698-95e6-bacc55860a95").for(:grscicoll_identifier)
-        is_expected.to_not allow_value("institution/00000000-0000-0000-0000-000000000000").for(:grscicoll_identifier)
+        is_expected.not_to allow_value("institution/zzzzzzzz-faf8-4698-95e6-bacc55860a95").for(:grscicoll_identifier)
+        is_expected.not_to allow_value("institution/00000000-0000-0000-0000-000000000000").for(:grscicoll_identifier)
       end
     end
 

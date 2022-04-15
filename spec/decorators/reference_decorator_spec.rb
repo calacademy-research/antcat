@@ -16,8 +16,8 @@ describe ReferenceDecorator do
         %i[format_public_notes format_editor_notes format_taxonomic_notes].each do |method_name|
           it "sanitizes them" do
             results = decorated.public_send method_name
-            expect(results).to_not include '<script>xss</script>'
-            expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+            expect(results).not_to include '<script>xss</script>'
+            expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
             expect(results).to include 'note xss'
           end
         end
@@ -70,8 +70,8 @@ describe ReferenceDecorator do
 
       it "sanitizes it" do
         results = decorated.format_title
-        expect(results).to_not include '<script>xss</script>'
-        expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+        expect(results).not_to include '<script>xss</script>'
+        expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
         expect(results).to include 'xss'
       end
     end
