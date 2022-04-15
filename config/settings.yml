@@ -5,6 +5,15 @@ http_basic_auth:
   name:
   password:
 
+email:
+  # Quickfix to disable emails because Google keeps blocking sign-in attemps after some inactivity.
+  # Note that this config does not affect `Rails.application.config.action_mailer.perform_deliveries`.
+  # TODO: Split per env.
+  # TODO: Ctrl+F Settings.email.enabled
+  # TODO: Probably use something like `config.action_mailer.perform_deliveries = Settings.email.enabled`, and/or
+  # keep two different `Settings` configs for "enabled"/"perform_deliveries".
+  enabled: false
+
 github:
   repo_url: "https://github.com/calacademy-research/antcat"
   issues_url: "https://github.com/calacademy-research/antcat/issues"

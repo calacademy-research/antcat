@@ -4,6 +4,7 @@ Feature: Email notifications
     And this user exists
       | email               | name     |
       | batiatus@antcat.org | Batiatus |
+    And these Settings: email: { enabled: true }
 
   Scenario: Receiving emails notifications, and unsubscribing
     Given there is an open issue "Ghost Stories" created by "Batiatus"
