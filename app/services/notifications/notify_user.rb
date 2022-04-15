@@ -23,6 +23,8 @@ module Notifications
       end
 
       def send_email_notification user, notification
+        return unless Settings.email.enabled
+
         UserMailer.new_notification(user, notification).deliver_now
       rescue StandardError => e
         NewRelic::Agent.notice_error(e)
