@@ -19,7 +19,7 @@ AllCops:
 ### Layout.
 
 Layout/ArgumentAlignment:
-  Enabled: false
+  EnforcedStyle: with_fixed_indentation
 
 Layout/BlockAlignment:
   Enabled: false
@@ -27,10 +27,11 @@ Layout/BlockAlignment:
 Layout/ClassStructure:
   Enabled: true
 
-# Trailing dot to make it easier to copy-paste into the console.
+# Use trailing dot to make it easier to copy-paste into the console.
 Layout/DotPosition:
   EnforcedStyle: trailing
 
+# Disabled because guard clauses w/o empty lines look OK in short methods.
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
@@ -46,8 +47,10 @@ Layout/FirstMethodArgumentLineBreak:
 Layout/FirstMethodParameterLineBreak:
   Enabled: true
 
+# Disabled because aligning keys/values improves readability of some hashes.
 Layout/HashAlignment:
   Enabled: false
+  EnforcedLastArgumentHashStyle: ignore_implicit
 
 Layout/HeredocArgumentClosingParenthesis:
   Enabled: true
@@ -56,7 +59,8 @@ Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
 
 Layout/LineEndStringConcatenationIndentation:
-  Enabled: false
+  Exclude:
+    - 'spec/**/*'
 
 Layout/LineLength:
   Max: 130
@@ -67,6 +71,7 @@ Layout/LineLength:
 Layout/MultilineHashKeyLineBreaks:
   Enabled: true
 
+# Disabled due to needless alignment and because multiline method calls are a lost cause anyways.
 Layout/MultilineMethodCallIndentation:
   Enabled: false
 
@@ -89,6 +94,7 @@ Lint/ConstantDefinitionInBlock:
   Exclude:
     - 'lib/tasks/**/*.rake'
 
+# Disabled because duplicated branch bodies are most often co-incidental duplication and/or added for clarity.
 Lint/DuplicateBranch:
   Enabled: false
 
@@ -115,8 +121,10 @@ Metrics/AbcSize:
 Metrics/BlockLength:
   Enabled: false
   Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
     - 'config/environments/**/*'
     - 'config/routes.rb'
+    - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
 
 Metrics/ClassLength:
@@ -179,6 +187,7 @@ Rails/BulkChangeTable:
 Rails/DefaultScope:
   Enabled: true
 
+# Disabled because delegations are in some cases less readable and/or harder to grep for.
 Rails/Delegate:
   Enabled: false
 
@@ -186,12 +195,15 @@ Rails/Delegate:
 Rails/EnvironmentVariableAccess:
   Enabled: false
 
+# TODO: Maybe enable and use `dependent: nil` for "read-only" associations.
 Rails/HasManyOrHasOneDependent:
   Enabled: false
 
+# Disabled because the site is only available in English (and there are tons of hardcoded translations in views and elsewhere).
 Rails/I18nLocaleTexts:
   Enabled: false
 
+# Disabled because we don't need to add `inverse_of` to all associations for the sake of it.
 Rails/InverseOf:
   Enabled: false
 
@@ -199,6 +211,7 @@ Rails/Output:
   Exclude:
     - 'lib/tasks/**/*'
 
+# Disabled because there are too many cases ;)
 Rails/OutputSafety:
   Enabled: false
   Exclude:
@@ -215,6 +228,7 @@ Rails/ReflectionClassName:
 Rails/RenderInline:
   Enabled: false
 
+# Disabled because it flags many false positives.
 Rails/SaveBang:
   Enabled: false
   AllowedReceivers:
@@ -254,14 +268,17 @@ Rails/Validation:
 
 ### Rake.
 
+# Disabled because not all Rake tasks should be included in `rake -T`.
 Rake/Desc:
   Enabled: false
 
 ### RSpec.
 
+# Disabled because identity comparisons do not matter for `true/false/nil`.
 RSpec/BeEq:
   Enabled: false
 
+# Disabled because it's useful to add empty placeholders.
 RSpec/EmptyExampleGroup:
   Enabled: false
 
@@ -290,11 +307,12 @@ RSpec/LetSetup:
 RSpec/MessageSpies:
   Enabled: false
 
+# Disabled because it misunderstands "one expectation per spec" (don't test unrelated behavior in one spec) as "one `expect`".
 RSpec/MultipleExpectations:
   Enabled: false
 
 RSpec/MultipleMemoizedHelpers:
-  Enabled: false
+  Max: 8
 
 RSpec/NestedGroups:
   Max: 6
@@ -342,6 +360,7 @@ Style/CommentAnnotation:
 Style/DateTime:
   Enabled: true
 
+# Disabled because we don't use that kind of documentation.
 Style/Documentation:
   Enabled: false
 
@@ -357,13 +376,12 @@ Style/GlobalStdStream:
     - 'config/environments/production.rb'
     - 'config/environments/staging.rb'
 
+# Disabled because it wants to split up independent/logical chunks of code.
 Style/GuardClause:
   Enabled: false
 
+# Disabled to avoid trailing "surprise if"s.
 Style/IfUnlessModifier:
-  Enabled: false
-
-Style/InverseMethods:
   Enabled: false
 
 Style/Lambda:
@@ -372,18 +390,23 @@ Style/Lambda:
 Style/MethodDefParentheses:
   EnforcedStyle: require_no_parentheses_except_multiline
 
+# Disabled because it's OK to chain blocks even of they span multiple lines.
 Style/MultilineBlockChain:
   Enabled: false
 
+# TODO: Disabled for now. Maybe enable.
 Style/MutableConstant:
   Enabled: false
 
+# Disabled because "Use underscores(_) as thousands separator and separate every 3 digits with them" makes IDs look weird.
 Style/NumericLiterals:
   Enabled: false
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
+    - 'spec/**/*'
 
-Style/OptionHash:
-  Enabled: false
-
+# "This cop checks for redundant assignment before returning."
+# Disabled because redundant assignment before returning are most often adde on purpose (more explicit).
 Style/RedundantAssignment:
   Enabled: false
 
@@ -399,6 +422,9 @@ Style/Send:
 
 Style/SingleArgumentDig:
   Enabled: false
+
+Style/SingleLineBlockParams:
+  Enabled: true
 
 Style/SoleNestedConditional:
   Enabled: false
@@ -421,6 +447,7 @@ Style/SymbolProc:
 Style/TrailingCommaInBlockArgs:
   Enabled: true
 
+# Disabled because underscores are more explicit and easier to spot.
 Style/TrailingUnderscoreVariable:
   Enabled: false
 
