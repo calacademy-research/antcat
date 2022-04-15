@@ -1,16 +1,22 @@
 @import "colors"
 
 .catalog-controller
+  .taxon-browser-sticky
+    position: -webkit-sticky
+    position: sticky
+    @media screen and (min-height: 640px) and (min-width: 640px)
+      bottom: 0
+      margin-top: 2rem
+      margin-bottom: 2rem
+
   #taxon-browser-container
     max-height: 30vh
-    @media screen and (max-width: 640px)
-      max-height: none
-    @media screen and (max-height: 640px)
-      max-height: 50vh
     left: 0
     // HACK: To avoid horizontal scollbar in Firefox.
-    width: 99vw
+    max-width: 99vw
     background-color: #fff
+    @media screen and (max-height: 640px) and (min-width: 640px)
+      max-height: 40vh
 
   #taxon-browser-new
     overflow: hidden
@@ -30,10 +36,6 @@
       min-height: 10rem
       overflow-y: auto
       max-height: 24vh
-      @media screen and (max-width: 640px)
-        max-height: 80vh
-      @media screen and (max-height: 640px)
-        min-height: none
       padding: 0
       border: 0
       font-size: 90%

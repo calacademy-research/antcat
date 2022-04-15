@@ -1,5 +1,5 @@
-%div{data: { sticky_container: true }}
-  #taxon-browser-container.sticky{data: { btm_anchor: "taxon-browser-sticky-target-js-hook:top", sticky: true, stick_to: "bottom", margin_bottom: 0, check_every: 0 }}
+.taxon-browser-sticky
+  #taxon-browser-container
     #taxon-browser-new
       #taxon-key.color-coded-catalog-links{data: { show_hide_toggable_id: "taxon-key" }}
         %div &dagger;fossil
@@ -16,7 +16,7 @@
             =link_to tab.title, "##{tab.id}"
 
         %li.tab-toggler{role: 'presentation'}
-          %span.white-label
+          %span.white-label.hide-for-small-only
             =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
           %span.label.secondary
             =taxon_browser_presenter.toggle_invalid_or_valid_only_link
