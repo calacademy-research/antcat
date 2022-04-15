@@ -25,7 +25,7 @@ describe Operations::ConvertToObsoleteCombination do
         end
 
         it "does not modify the original species record" do
-          expect { operation.run }.to_not change { current_taxon.reload.attributes }
+          expect { operation.run }.not_to change { current_taxon.reload.attributes }
         end
       end
 
@@ -51,7 +51,7 @@ describe Operations::ConvertToObsoleteCombination do
           end
 
           it "does not modify the original species record" do
-            expect { operation.run }.to_not change { current_taxon.reload.attributes }
+            expect { operation.run }.not_to change { current_taxon.reload.attributes }
           end
 
           it 'does not update the `current_taxon` of the obsolete combinations' do
@@ -59,7 +59,7 @@ describe Operations::ConvertToObsoleteCombination do
             expect(new_combination.obsolete_combinations).to eq []
 
             expect { operation.run }.
-              to_not change { obsolete_combination_1.reload.current_taxon }.
+              not_to change { obsolete_combination_1.reload.current_taxon }.
               from(current_taxon)
 
             expect(current_taxon.obsolete_combinations).to match_array [obsolete_combination_1, obsolete_combination_2]

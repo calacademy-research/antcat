@@ -317,9 +317,6 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 6
 
-RSpec/NotToNot:
-  Enabled: false
-
 RSpec/StubbedMock:
   Enabled: false
 

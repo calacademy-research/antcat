@@ -42,7 +42,7 @@ describe CreateCombinationPolicy do
         end
 
         it 'stops at the first error' do
-          expect(taxon).to_not receive(:soft_validations)
+          expect(taxon).not_to receive(:soft_validations)
           expect(policy.allowed?).to eq false
         end
       end

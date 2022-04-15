@@ -22,7 +22,7 @@ describe References::NewFromCopy do
           :taxonomic_notes
         ].each do |attribute|
           expect(copy.public_send(attribute)).to eq reference.public_send(attribute)
-          expect(copy.public_send(attribute)).to_not eq nil
+          expect(copy.public_send(attribute)).not_to eq nil
         end
       end
     end
@@ -36,9 +36,9 @@ describe References::NewFromCopy do
         expect(copy).to be_a ArticleReference
 
         expect(copy.series_volume_issue).to eq reference.series_volume_issue
-        expect(copy.series_volume_issue).to_not eq nil
+        expect(copy.series_volume_issue).not_to eq nil
         expect(copy.journal).to eq reference.journal
-        expect(copy.journal).to_not eq nil
+        expect(copy.journal).not_to eq nil
       end
     end
 
@@ -51,7 +51,7 @@ describe References::NewFromCopy do
         expect(copy).to be_a BookReference
 
         expect(copy.publisher).to eq reference.publisher
-        expect(copy.publisher).to_not eq nil
+        expect(copy.publisher).not_to eq nil
       end
     end
 
@@ -64,9 +64,9 @@ describe References::NewFromCopy do
         expect(copy).to be_a NestedReference
 
         expect(copy.pagination).to eq reference.pagination
-        expect(copy.pagination).to_not eq nil
+        expect(copy.pagination).not_to eq nil
         expect(copy.nesting_reference_id).to eq reference.nesting_reference_id
-        expect(copy.nesting_reference_id).to_not eq nil
+        expect(copy.nesting_reference_id).not_to eq nil
       end
     end
 

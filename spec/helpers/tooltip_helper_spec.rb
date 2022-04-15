@@ -12,8 +12,8 @@ describe TooltipHelper do
 
         it "sanitizes them" do
           results = helper.db_tooltip_icon('xss', scope: 'injection')
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+          expect(results).not_to include '<script>xss</script>'
+          expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
           expect(results).to include '"xss"'
         end
       end
@@ -46,8 +46,8 @@ describe TooltipHelper do
 
         it "sanitizes them" do
           results = helper.db_wiki_page_icon(wiki_page.permanent_identifier)
-          expect(results).to_not include '<script>xss</script>'
-          expect(results).to_not include '&lt;script&gt;xss&lt;/script&gt;'
+          expect(results).not_to include '<script>xss</script>'
+          expect(results).not_to include '&lt;script&gt;xss&lt;/script&gt;'
           expect(results).to include 'xss'
         end
       end

@@ -15,7 +15,7 @@ describe History::Definitions, :relational_hi do
           expect(definition[:templates]).to be_present
           expect(definition[:templates][:default]).to be_present
 
-          expect(definition[:validates_presence_of]).to_not eq nil
+          expect(definition[:validates_presence_of]).not_to eq nil
         end
       end
     end

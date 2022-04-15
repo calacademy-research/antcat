@@ -42,7 +42,7 @@ describe Catalog::SearchesController do
       context 'when searching from the search form' do
         it 'shows the results' do
           get :show, params: { qq: 'Lasius niger' }
-          expect(response).to_not redirect_to catalog_path(exact_match, qq: 'Lasius niger')
+          expect(response).not_to redirect_to catalog_path(exact_match, qq: 'Lasius niger')
           expect(response).to render_template 'show'
           expect(assigns(:taxa)).to eq [exact_match]
         end

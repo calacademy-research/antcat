@@ -27,7 +27,7 @@ describe Taxa::Operations::ConvertToSubspecies do
         before { create :subspecies, name_string: 'Atta alii dallatorrei', genus: genus }
 
         it "does not create a new taxon" do
-          expect { described_class[species, target_species_parent] }.to_not change { Taxon.count }
+          expect { described_class[species, target_species_parent] }.not_to change { Taxon.count }
         end
 
         it "returns the new non-persisted subspecies with errors" do
@@ -43,7 +43,7 @@ describe Taxa::Operations::ConvertToSubspecies do
         let!(:target_species_parent) { create :species, subfamily: create(:subfamily) }
 
         it "does not modify the original species record" do
-          expect { described_class[species, target_species_parent] }.to_not change { species.reload.attributes }
+          expect { described_class[species, target_species_parent] }.not_to change { species.reload.attributes }
         end
 
         it "creates a new subspecies" do

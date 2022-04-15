@@ -50,7 +50,7 @@ describe ReferenceForm do
 
         specify do
           expect { described_class.new(reference, params).save }.
-            to_not change { reference.reload.journal }
+            not_to change { reference.reload.journal }
         end
       end
     end
@@ -86,18 +86,18 @@ describe ReferenceForm do
         end
 
         it "does not create new `AuthorName`s for existing authors" do
-          expect { described_class.new(reference, params).save }.to_not change { AuthorName.count }
+          expect { described_class.new(reference, params).save }.not_to change { AuthorName.count }
         end
 
         it "reuses existing `ReferenceAuthorName`s" do
           expect { described_class.new(reference, params).save }.
-            to_not change { reference.reload.reference_author_name_ids }
+            not_to change { reference.reload.reference_author_name_ids }
         end
 
         it "does not create any versions for the reference" do
           with_versioning do
             expect { described_class.new(reference, params).save }.
-              to_not change { reference.versions.count }
+              not_to change { reference.versions.count }
           end
         end
       end
@@ -263,7 +263,7 @@ describe ReferenceForm do
 
           it 'does not create a new `ReferenceDocument`s' do
             expect { described_class.new(reference, params).save }.
-              to_not change { ReferenceDocument.count }.from(0)
+              not_to change { ReferenceDocument.count }.from(0)
           end
         end
 

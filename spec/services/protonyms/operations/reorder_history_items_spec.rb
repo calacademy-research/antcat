@@ -40,7 +40,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
         it "doesn't update the positions" do
           expect(third.valid?).to eq false
           expect { described_class[protonym, reordered_ids] }.
-            to_not change { item_ids(protonym) }.from(original_order)
+            not_to change { item_ids(protonym) }.from(original_order)
         end
 
         it 'adds an error to the protonym' do
@@ -55,7 +55,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
 
       it "doesn't update the positions" do
         expect { described_class[protonym, reordered_ids] }.
-          to_not change { item_ids(protonym) }.from(original_order)
+          not_to change { item_ids(protonym) }.from(original_order)
       end
 
       it 'adds an error to the protonym' do
@@ -69,7 +69,7 @@ describe Protonyms::Operations::ReorderHistoryItems do
 
       it "doesn't update the positions" do
         expect { described_class[protonym, reordered_ids] }.
-          to_not change { item_ids(protonym) }.from(original_order)
+          not_to change { item_ids(protonym) }.from(original_order)
       end
 
       it 'adds an error to the protonym' do

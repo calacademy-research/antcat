@@ -73,7 +73,7 @@ describe Autocomplete::TaxaQuery, :search do
 
     specify do
       expect(described_class['200']).to include(taxon_2005)
-      expect(described_class['200']).to_not include(taxon_1995)
+      expect(described_class['200']).not_to include(taxon_1995)
       expect(described_class['199']).to include(taxon_1995)
     end
   end

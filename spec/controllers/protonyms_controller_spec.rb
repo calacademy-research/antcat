@@ -188,9 +188,9 @@ describe ProtonymsController do
           }
         }
 
-        expect(protonym.authorship.pages).to_not eq '99-100'
+        expect(protonym.authorship.pages).not_to eq '99-100'
         expect { put(:update, params: { id: protonym.id, protonym: protonym_params }) }.
-          to_not change { protonym.reload.authorship.id }
+          not_to change { protonym.reload.authorship.id }
         expect(protonym.authorship.pages).to eq '99-100'
       end
     end
@@ -247,7 +247,7 @@ describe ProtonymsController do
         end
 
         specify do
-          expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
+          expect { delete(:destroy, params: { id: protonym.id }) }.not_to change { Protonym.count }
         end
       end
 
@@ -257,7 +257,7 @@ describe ProtonymsController do
         end
 
         specify do
-          expect { delete(:destroy, params: { id: protonym.id }) }.to_not change { Protonym.count }
+          expect { delete(:destroy, params: { id: protonym.id }) }.not_to change { Protonym.count }
         end
       end
     end

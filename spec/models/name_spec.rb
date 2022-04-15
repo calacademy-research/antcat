@@ -23,8 +23,8 @@ describe Name do
 
         let(:error_message) { "can only contain Latin letters, periods, dashes and parentheses" }
 
-        it { is_expected.to_not allow_value('Capaö').for(:name).with_message(error_message) }
-        it { is_expected.to_not allow_value('Capa1').for(:name).with_message(error_message) }
+        it { is_expected.not_to allow_value('Capaö').for(:name).with_message(error_message) }
+        it { is_expected.not_to allow_value('Capa1').for(:name).with_message(error_message) }
       end
 
       describe 'first letter in name' do

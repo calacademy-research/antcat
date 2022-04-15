@@ -114,7 +114,7 @@ describe ProtonymForm do
       it "collects validation errors" do
         form = described_class.new(protonym, protonym_params)
 
-        expect { form.save }.to_not change { Protonym.count }
+        expect { form.save }.not_to change { Protonym.count }
 
         expect(form.errors[:base]).to include "Name can't be blank"
         expect(form.errors[:base]).to include "Authorship: Reference must exist"

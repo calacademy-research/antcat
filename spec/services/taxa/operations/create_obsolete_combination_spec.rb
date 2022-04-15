@@ -14,7 +14,7 @@ describe Taxa::Operations::CreateObsoleteCombination do
         end
 
         it "does not create a new taxon" do
-          expect { described_class[current_taxon, obsolete_genus] }.to_not change { Taxon.count }
+          expect { described_class[current_taxon, obsolete_genus] }.not_to change { Taxon.count }
         end
 
         it "returns the new non-persisted subspecies with errors" do
@@ -30,7 +30,7 @@ describe Taxa::Operations::CreateObsoleteCombination do
         let!(:obsolete_genus) { create :genus }
 
         it "does not modify the original species record" do
-          expect { described_class[current_taxon, obsolete_genus] }.to_not change { current_taxon.reload.attributes }
+          expect { described_class[current_taxon, obsolete_genus] }.not_to change { current_taxon.reload.attributes }
         end
 
         it "creates a new taxon" do

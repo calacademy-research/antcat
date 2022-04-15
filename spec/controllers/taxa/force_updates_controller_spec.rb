@@ -47,7 +47,7 @@ describe Taxa::ForceUpdatesController do
       end
 
       it 'updates the taxon with minimal validations' do
-        expect(taxon.subfamily).to_not eq new_subfamily
+        expect(taxon.subfamily).not_to eq new_subfamily
 
         put :update, params: params
 

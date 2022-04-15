@@ -27,7 +27,7 @@ describe Taxon do
       subject(:taxon) { build_stubbed :any_taxon }
 
       it { is_expected.to validate_inclusion_of(:status).in_array(Status::STATUSES) }
-      it { is_expected.to_not allow_value(nil).for(:status) }
+      it { is_expected.not_to allow_value(nil).for(:status) }
     end
 
     describe "#homonym_replaced_by" do

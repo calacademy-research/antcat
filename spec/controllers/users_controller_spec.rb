@@ -92,7 +92,7 @@ describe UsersController do
     context 'when no new password not included' do
       it "does not update the password" do
         expect { put(:update, params: { id: user.id, user: user_params }) }.
-          to_not change { user.reload.encrypted_password }
+          not_to change { user.reload.encrypted_password }
       end
     end
   end
