@@ -28,7 +28,7 @@
 // require plugins/foundation.reveal
 // require plugins/foundation.slider
 // require plugins/foundation.smoothScroll
-//= require plugins/foundation.sticky
+// require plugins/foundation.sticky
 //= require plugins/foundation.tabs
 // require plugins/foundation.toggler
 // require plugins/foundation.tooltip
