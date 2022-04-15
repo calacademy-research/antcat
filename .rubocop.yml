@@ -223,8 +223,8 @@ Rails/SaveBang:
     - 'reference_form' # Actually `ReferenceForm`.
 
 Rails/SkipsModelValidations:
-  Enabled: false
   Exclude:
+    - 'lib/tasks/**/*.rake'
     - 'spec/**/*'
 
 Rails/UnknownEnv:

@@ -22,10 +22,12 @@ module References
         def invalidate_caches reference
           return if reference.new_record?
 
+          # rubocop:disable Rails/SkipsModelValidations
           reference.update_columns(
             plain_text_cache: nil,
             expanded_reference_cache: nil
           )
+          # rubocop:enable Rails/SkipsModelValidations
 
           References::Cache::Invalidate[reference.nestees]
         end
