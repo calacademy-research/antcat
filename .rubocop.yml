@@ -157,9 +157,6 @@ Metrics/PerceivedComplexity:
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 
-Naming/PredicateName:
-  Enabled: false
-
 Naming/VariableNumber:
   Enabled: false
 
