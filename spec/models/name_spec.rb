@@ -66,8 +66,7 @@ describe Name do
           it 'does not fail validations' do
             expect(name.valid?).to eq true
 
-            expect { name.non_conforming = false }.
-             to change { name.valid? }.from(true).to(false)
+            expect { name.non_conforming = false }.to change { name.valid? }.from(true).to(false)
             expect(name.errors[:name]).
               to include "type (`FamilyName`) and identified name type (`TribeName`) must match. " \
                 "Flag name as 'Non-conforming' to bypass this validation."

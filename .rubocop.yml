@@ -63,7 +63,7 @@ Layout/LineEndStringConcatenationIndentation:
     - 'spec/**/*'
 
 Layout/LineLength:
-  Max: 130
+  Max: 135
   Exclude:
     - 'app/controllers/quick_and_dirty_fixes_controller.rb'
     - 'app/database_scripts/database_scripts/**/*'
