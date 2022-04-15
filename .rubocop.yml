@@ -107,9 +107,6 @@ Lint/UselessAccessModifier:
   MethodCreatingMethods:
     - delegate
 
-Lint/UselessMethodDefinition:
-  Enabled: false
-
 # Metrics.
 
 Metrics/AbcSize:
@@ -158,7 +155,9 @@ Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 
 Naming/VariableNumber:
-  Enabled: false
+  Exclude:
+    - 'lib/tasks/seed/relational_history_items.rb'
+    - 'spec/**/*'
 
 ### Performance.
 
@@ -261,9 +260,6 @@ Rake/Desc:
 ### RSpec.
 
 RSpec/BeEq:
-  Enabled: false
-
-RSpec/DescribedClass:
   Enabled: false
 
 RSpec/EmptyExampleGroup:

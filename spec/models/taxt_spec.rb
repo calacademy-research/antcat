@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable RSpec/DescribedClass
 describe Taxt do
   describe '.extract_ids_from_taxon_tags' do
     context 'without matching tags' do
@@ -67,3 +68,4 @@ describe Taxt do
     end
   end
 end
+# rubocop:enable RSpec/DescribedClass
