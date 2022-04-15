@@ -1,6 +1,6 @@
 .taxon-browser-sticky
-  #taxon-browser-container
-    #taxon-browser-new
+  %div
+    #taxon-browser-new.taxon-browser-css-tabs
       #taxon-key.color-coded-catalog-links{data: { show_hide_toggable_id: "taxon-key" }}
         %div &dagger;fossil
         .valid valid
@@ -10,32 +10,30 @@
         .unavailable unavailable/nomen nudum
         .obsolete-combination obsolete combination
 
-      %ul#taxon-browser-tabs.tabs{data: { tabs: true }}
-        -taxon_browser.tabs.each do |tab|
-          %li.tabs-title{class: ("is-active" if tab.open?)}
-            =link_to tab.title, "##{tab.id}"
+      -taxon_browser.tabs.each.with_index do |tab, index|
+        %input.taxon-browser-tab-input{id: tab.id, class: "taxon-browser-tab-#{index}", checked: ("checked" if tab.open?), name: "taxon_browser_tab", type: "radio", value: 'selected tab'}
+        %label{for: tab.id}=tab.title
 
-        %li.tab-toggler{role: 'presentation'}
-          %span.white-label.hide-for-small-only
-            =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
-          %span.label.secondary
-            =taxon_browser_presenter.toggle_invalid_or_valid_only_link
+      .right-side-buttons.hide-for-small-only
+        %span.white-label
+          =link_to "toggle legend", "#", data: { show_hide_toggler_for: "taxon-key" }
+        %span.label.secondary
+          =taxon_browser_presenter.toggle_invalid_or_valid_only_link
 
-      .tabs-content{data: { tabs_content: "taxon-browser-tabs" }}
-        -taxon_browser.tabs.each do |tab|
-          .tabs-panel{id: tab.id, class: ("is-active" if tab.open?)}
-            %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
-              -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
-                %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
+      -taxon_browser.tabs.each.with_index do |tab, index|
+        .taxon-browser-tab.taxon-browser-tab-content{class: "taxon-browser-tab-content-#{index}"}
+          %ul.snaked.no-bullet.mr-scrollbary.color-coded-catalog-links
+            -TaxonBrowser::LinksToExtraTabs[tab.tab_taxon].each do |link|
+              %li.upcase=taxon_browser_presenter.extra_tab_link tab.tab_taxon, link[:label], link[:view]
 
-              -tab.each_taxon do |taxon, is_selected|
-                %li{class: ("selected" if is_selected)}
-                  =taxon_browser_presenter.taxon_browser_taxon_link taxon
+            -tab.each_taxon do |taxon, is_selected|
+              %li{class: ("selected" if is_selected)}
+                =taxon_browser_presenter.taxon_browser_taxon_link taxon
 
-              -# It's possible that `taxa` is empty at this point. Most likely
-              -# that means there are invalid children that can be seen by toggling
-              -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
-              -if tab.notify_about_no_valid_taxa?
-                %li No valid child taxa
-                -unless taxon_browser.show_invalid? # Don't link if already showing invalid.
-                  %li=taxon_browser_presenter.toggle_invalid_or_valid_only_link
+            -# It's possible that `taxa` is empty at this point. Most likely
+            -# that means there are invalid children that can be seen by toggling
+            -# "show invalid", or that the taxon is an invalid subfamily/tribe/genus.
+            -if tab.notify_about_no_valid_taxa?
+              %li No valid child taxa
+              -unless taxon_browser.show_invalid? # Don't link if already showing invalid.
+                %li=taxon_browser_presenter.toggle_invalid_or_valid_only_link

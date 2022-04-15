@@ -16,8 +16,6 @@ module CucumberHelpers
       # Catalog.
       when 'the taxon browser'
         "#taxon-browser-new"
-      when /^the (\w*) taxon browser tab$/
-        find(:link, Regexp.last_match(1))[:href]
       when 'the protonym'
         "#taxon-description #protonym-synopsis > span.name"
       when 'the nomen synopsis'

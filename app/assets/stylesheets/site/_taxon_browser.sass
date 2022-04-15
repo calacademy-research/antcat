@@ -9,41 +9,52 @@
       margin-top: 2rem
       margin-bottom: 2rem
 
-  #taxon-browser-container
-    max-height: 30vh
-    left: 0
-    // HACK: To avoid horizontal scollbar in Firefox.
-    max-width: 99vw
-    background-color: #fff
-    @media screen and (max-height: 640px) and (min-width: 640px)
-      max-height: 40vh
+  .taxon-browser-css-tabs
+    input.taxon-browser-tab-input
+      display: none
+      & + label
+        color: $color_primary
+        display: inline-block
+        padding: 4px 1rem
+        margin: 0
+        position: relative
+      & ~ .taxon-browser-tab
+        display: none
+        padding: 1rem
+      &:checked
+        & + label
+          background: #fff
+          color: #000
 
-  #taxon-browser-new
-    overflow: hidden
-    height: auto
-    left: 0
-    #taxon-browser-tabs.tabs
-      border-top: 4px solid $color_light_gray
-      border-bottom: 0
-      font-size: 90%
-    .tabs-title
-      a
-        border-radius: 0 0 5px 5px !important
-    .tabs-panel
-      padding-top: 0rem
-      padding-bottom: 0rem
-    .tabs-content
+    .taxon-browser-tab-content
+      clear: right
       min-height: 10rem
       overflow-y: auto
       max-height: 24vh
-      padding: 0
-      border: 0
+      padding-top: 0 !important
       font-size: 90%
       a.genus, a.subgenus, a.species, a.subspecies, a.infrasubspecies
         font-style: italic
       a.subspecies::before
         content: "ssp. "
         font-style: normal
+
+    .taxon-browser-tab-0:checked ~ .taxon-browser-tab.taxon-browser-tab-content-0,
+    .taxon-browser-tab-1:checked ~ .taxon-browser-tab.taxon-browser-tab-content-1,
+    .taxon-browser-tab-2:checked ~ .taxon-browser-tab.taxon-browser-tab-content-2,
+    .taxon-browser-tab-3:checked ~ .taxon-browser-tab.taxon-browser-tab-content-3,
+    .taxon-browser-tab-4:checked ~ .taxon-browser-tab.taxon-browser-tab-content-4,
+    .taxon-browser-tab-5:checked ~ .taxon-browser-tab.taxon-browser-tab-content-5,
+    .taxon-browser-tab-6:checked ~ .taxon-browser-tab.taxon-browser-tab-content-6,
+    .taxon-browser-tab-7:checked ~ .taxon-browser-tab.taxon-browser-tab-content-7
+      display: block
+
+  #taxon-browser-new
+    overflow: hidden
+    height: auto
+    left: 0
+    background-color: #fff
+
     .snaked
       padding-top: 0.8rem
       padding-bottom: 0.8rem
@@ -51,21 +62,24 @@
       -webkit-column-width: 9rem
       -moz-column-width: 9rem
       column-width: 9rem
+
     .mr-scrollbary
       height: 100%
+
     .upcase
       text-transform: uppercase
+
     li
       box-sizing: border-box
-    .tab-toggler
+
+    .right-side-buttons
       float: right
+      margin-bottom: 3px
       a
         color: #fff
       .label
         margin-right: 0.5rem
         margin-top: 0.5rem
-    .tabs-panel
-      padding-bottom: 0
 
     // Equally space out elements.
     #taxon-key
