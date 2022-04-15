@@ -12,7 +12,7 @@ require 'aws-sdk'
 
 abort "The Rails environment is running in production mode!" if Rails.env.production?
 
-Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |f| require f }
+Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 Aws.config[:s3] = { stub_responses: true }
 
