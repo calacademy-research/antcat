@@ -16,6 +16,9 @@ gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 gem 'webpacker', '5.1.1'
+# NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
+# webrick from here if it happens to be loaded as a dependency for gems in the :test group (for example cucumber-rails).
+gem 'webrick'
 
 gem 'acts_as_list'
 gem 'attr_extras'

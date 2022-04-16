@@ -684,6 +684,7 @@ DEPENDENCIES
   unread
   webmock
   webpacker (= 5.1.1)
+  webrick
   will_paginate
 
 RUBY VERSION

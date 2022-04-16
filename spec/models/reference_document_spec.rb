@@ -63,10 +63,21 @@ describe ReferenceDocument do
   end
 
   describe "#actual_url" do
-    let!(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
+    context 'with file (on S3)' do
+      let(:reference_document) { create :reference_document, :with_reference, :with_file }
 
-    it "simply is the `url`" do
-      expect(reference_document.reload.actual_url).to eq reference_document.url
+      it 'links to S3' do
+        expect(reference_document.actual_url).
+          to include "https://s3.amazonaws.com/antcat_test/#{reference_document.id}"
+      end
+    end
+
+    context 'with `url` (no file)' do
+      let(:reference_document) { create :reference_document, :with_reference, :with_deprecated_url }
+
+      it "simply is the `url`" do
+        expect(reference_document.reload.actual_url).to eq reference_document.url
+      end
     end
   end
 end
