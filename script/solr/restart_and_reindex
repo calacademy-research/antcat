@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# To run on production/staging: /data/antcat/current/script/solr/restart_and_reindex
+# To run on production/staging:
+#   /data/antcat/current/script/solr/restart_and_reindex
+# Or trigger from local (production only):
+#   ssh deploy@antcat.org "bash --login -c /data/antcat/current/script/solr/restart_and_reindex"
 
 set -u
 
@@ -8,6 +11,7 @@ echo "*** Executing $0"
 
 full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
+
 remote_current_release_path='/data/antcat/current'
 
 if [ "${RAILS_ENV:-}" = "production" ] || [ "${RAILS_ENV:-}" = "staging" ]; then
