@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Exporters::Antweb::Exporter do
   describe "#call" do
     let(:filename) { "antweb_export_test" }
-    let(:file) { instance_double('File') }
+    let(:file) { instance_double(File) }
 
     before do
       allow($stdout).to receive(:write) # Suppress progress output.
