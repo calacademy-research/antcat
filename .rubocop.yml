@@ -225,9 +225,6 @@ Rails/RakeEnvironment:
 Rails/ReflectionClassName:
   Enabled: false
 
-Rails/RenderInline:
-  Enabled: false
-
 # Disabled because it flags many false positives.
 Rails/SaveBang:
   Enabled: false
