@@ -46,17 +46,17 @@ module Catalog
         relation = relation.valid if params[:valid_only]
 
         relation.
-          yield_self(&method(:history_items_clause)).
-          yield_self(&method(:author_name_clause)).
-          yield_self(&method(:years_clause)).
-          yield_self(&method(:name_clause)).
-          yield_self(&method(:epithet_clause)).
-          yield_self(&method(:genus_clause)).
-          yield_self(&method(:protonym_clause)).
-          yield_self(&method(:type_information_clause)).
-          yield_self(&method(:locality_clause)).
-          yield_self(&method(:bioregion_clause)).
-          yield_self(&method(:forms_clause))
+          then(&method(:history_items_clause)).
+          then(&method(:author_name_clause)).
+          then(&method(:years_clause)).
+          then(&method(:name_clause)).
+          then(&method(:epithet_clause)).
+          then(&method(:genus_clause)).
+          then(&method(:protonym_clause)).
+          then(&method(:type_information_clause)).
+          then(&method(:locality_clause)).
+          then(&method(:bioregion_clause)).
+          then(&method(:forms_clause))
       end
 
       def history_items_clause relation
