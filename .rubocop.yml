@@ -383,6 +383,9 @@ Style/Documentation:
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/FetchEnvVar:
+  Enabled: false
+
 Style/FrozenStringLiteralComment:
   EnforcedStyle: always_true
 
