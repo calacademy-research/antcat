@@ -6,8 +6,9 @@ module Taxa
 
     attr_private_initialize :taxon
 
-    # This links the different parts of the name for species and below,
-    # and just the name for uninomials.
+    # This links individual parts of a name to different catalog pages (species and below).
+    # For genus and above there is only a single name, so just link that (including
+    # subgenera which are actually displayed as two words).
     def call
       return CatalogFormatter.link_to_taxon(taxon) unless taxon.is_a?(::SpeciesGroupTaxon)
 

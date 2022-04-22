@@ -49,7 +49,7 @@ Feature: Compare revisions
     And I follow "History"
     Then I should see "This item does not have any previous revisions"
 
-  @javascript
+  @retry_ci @javascript
   Scenario: Comparing revisions with intermediate revisions
     Given there is a history item "initial version"
     And I update the most recent history item to say "second version"
