@@ -16,9 +16,6 @@ gem 'sassc-rails'
 gem 'sprockets-rails', require: 'sprockets/railtie'
 gem 'uglifier'
 gem 'webpacker', '5.1.1'
-# NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
-# webrick from here if it happens to be loaded as a dependency for gems in the :test group (for example cucumber-rails).
-gem 'webrick'
 
 gem 'acts_as_list'
 gem 'attr_extras'
@@ -46,12 +43,14 @@ gem 'ruby-progressbar'
 gem 'strip_attributes'
 # TODO: Using GitHub ref for Ruby 3 compatibility, see https://github.com/sunspot/sunspot/issues/1007
 # version must be above at least https://rubygems.org/gems/sunspot_rails/versions/2.5.0
-# Without it, `rake sunspot:reindex` fails with this error:
-#   "ArgumentError: wrong number of arguments (given 1, expected 0) ... `find_in_batches'".
+# Without it, `rake sunspot:reindex` fails with "ArgumentError: wrong number of arguments (given 1, expected 0)".
 gem 'sunspot_rails', github: 'sunspot/sunspot', ref: 'f2f01a6278030d086e0efb141dceefdcca8932bd'
 gem 'sunspot_solr', '2.2.0'
 gem 'twitter-typeahead-rails'
 gem 'unread'
+# NOTE: webrick is required for `ReferenceDocument#actual_url`, but specs may incorrectly pass even after removing
+# webrick from here if it happens to be loaded as a dependency for gems in the :test group (for example cucumber-rails).
+gem 'webrick'
 gem 'will_paginate'
 
 group :development do
@@ -70,7 +69,7 @@ group :development, :test do
   gem 'haml_lint', require: false
   gem 'pry'
   gem 'rspec-rails'
-  gem 'rubocop', '~> 1.27.0', require: false
+  gem 'rubocop', '~> 1.28.0', require: false
   gem 'rubocop-performance'
   gem 'rubocop-rails'
   gem 'rubocop-rake'

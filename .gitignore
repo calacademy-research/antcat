@@ -4,14 +4,17 @@
 
 # Secrets.
 /config/database.yml
+/config/settings/*.secret.yml*
 /config/settings/production.secret.yml
 /config/settings/staging.secret.yml
+/secrets
 
 # EngineYard server settings.
 /config/server.yml
 
 # Generated AntCat output.
 /data/antweb_exports/antcat.antweb.txt
+/data/antweb_exports/antcat.antweb.txt.tmp
 /data/antweb_exports/antcat.antweb.txt.stderr.log
 /data/antweb_exports/antcat.antweb.txt.stdout.log
 

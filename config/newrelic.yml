@@ -118,7 +118,7 @@ common: &default_settings
 # information. Recommendation: To filter secret information from request
 # parameters,use the attributes.include setting instead. For more information,
 # see the Ruby attribute examples.
-# capture_params: false
+capture_params: true
 
 # If true, the agent will clear Tracer::State in Agent.drop_buffered_data.
 # clear_transaction_state_after_fork: false

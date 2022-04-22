@@ -19,7 +19,7 @@ Feature: Editing references sections
     And I should see "belonging to Atta"
     And I should see the edit summary "added new stuff"
 
-  @javascript
+  @retry_ci @javascript
   Scenario: Editing a reference section (with edit summary)
     Given there is a subfamily "Dolichoderinae" with a reference section "Original reference"
 
