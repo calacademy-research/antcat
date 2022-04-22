@@ -1,5 +1,7 @@
 # Use `config/settings/development.local.yml` for developer config (gitignored).
 
+site_url: http://localhost:3000
+
 rails:
   secret_key_base: pizza_dev_d5c397cd5dedaa1aab50641ea82d95cbdf149f231efe13572abd4815a408c0f6dd6104a776871fb55109d86db08946ebcbd6416cfc859b67249ba9
 

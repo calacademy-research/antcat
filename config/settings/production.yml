@@ -1,3 +1,5 @@
+site_url: https://antcat.org
+
 google_analytics:
   enabled: true
   tracking_id: 'UA-68028808-1'
