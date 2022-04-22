@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   protect_from_forgery with: :exception
 
+  before_action :set_new_relic_custom_attributes
   before_action :store_location_for_devise, if: :storable_location?
   before_action :set_paper_trail_whodunnit, :set_current_request_uuid
 
@@ -69,6 +70,15 @@ class ApplicationController < ActionController::Base
     def ensure_user_is_developer
       authenticate_user!
       raise NotAuthorized, User::DEVELOPER unless user_is_developer?
+    end
+
+    def set_new_relic_custom_attributes
+      if current_user
+        ::NewRelic::Agent.add_custom_attributes(
+          user_email: current_user.email,
+          user_id: current_user.id
+        )
+      end
     end
 
     def recaptcha_v3_valid? token, recaptcha_action
