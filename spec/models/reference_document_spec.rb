@@ -40,7 +40,7 @@ describe ReferenceDocument do
   describe "#routed_url" do
     it "creates the URL for an uploaded file so that it goes to our controller" do
       document = create :reference_document, :with_reference, file_file_name: '1.pdf'
-      expect(document.reload.routed_url).to eq "http://antcat.org/documents/#{document.id}/1.pdf"
+      expect(document.reload.routed_url).to eq "https://antcat.org/documents/#{document.id}/1.pdf"
     end
 
     context "when the file isn't hosted by us" do
@@ -57,7 +57,7 @@ describe ReferenceDocument do
 
       specify do
         expect(document.url).to eq nil
-        expect(document.routed_url).to eq "http://antcat.org/documents/#{document.id}/foo"
+        expect(document.routed_url).to eq "https://antcat.org/documents/#{document.id}/foo"
       end
     end
   end

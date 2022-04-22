@@ -66,7 +66,7 @@ class ReferenceDocument < ApplicationRecord
     end
 
     def url_via_file_file_name
-      "http://antcat.org/documents/#{id}/#{file_file_name}"
+      "https://antcat.org/documents/#{id}/#{file_file_name}"
     end
 
     def s3_url
