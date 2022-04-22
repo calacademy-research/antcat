@@ -3,7 +3,7 @@
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
   echo "WARNING! Destructive command. Can only be run in the dev env."
   echo
-  echo "Usage: RAILS_ENV=development ./script/db_dump/$(basename $0)"
+  echo "Usage: RAILS_ENV=development ./$(basename "$0")"
   echo
   echo "Requires the current user to have ssh access to EngineYard."
   exit 0
@@ -18,7 +18,7 @@ echo "*** Executing $0"
 full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
 
-antweb_exports_path="$dir_path/../../data/antweb_exports"
+antweb_exports_path=$(realpath "$dir_path/../../data/antweb_exports")
 
 export_filename="$antweb_exports_path/antcat.antweb.txt"
 export_filename_tmp="$export_filename.tmp"

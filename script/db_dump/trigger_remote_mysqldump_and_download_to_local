@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
-  echo "Usage: ./script/db_dump/$(basename $0)"
+  echo "Usage: ./$(basename "$0")"
   echo
   echo "Requires the current user to have ssh access to EngineYard."
   exit 0
@@ -14,32 +14,32 @@ echo "*** Executing $0"
 full_path=$(realpath "$0")
 dir_path=$(dirname "$full_path")
 
-db_dumps_path="$dir_path/../../data/db_dumps"
+db_dumps_path=$(realpath "$dir_path/../../data/db_dumps")
 
 # SSH config.
 # This script relies on the current user having ssh access to EngineYard.
 # You may need edit these commands to include "ssh -i /path/to/your/id_rsa".
-hostname="antcat.org"
-username="deploy"
-ssh_command="ssh -t -o StrictHostKeyChecking=no $username@$hostname"
-scp_command="scp -o StrictHostKeyChecking=no $username@$hostname"
+remote_host="antcat.org"
+remote_user="deploy"
+ssh_command="ssh -t -o StrictHostKeyChecking=no $remote_user@$remote_host"
+scp_command="scp -o StrictHostKeyChecking=no $remote_user@$remote_host"
 
-NOW=$(date +"%Y-%m-%dT%H-%M-%S")
-REMOTE_DB_DUMP_FILENAME="antcat.${NOW}.sql"
-REMOTE_DB_DUMP_PATH="/tmp/${REMOTE_DB_DUMP_FILENAME}"
-REMOTE_DB_DUMP_GZIP_PATH="/tmp/${REMOTE_DB_DUMP_FILENAME}.gz"
-LOCAL_DB_DUMP_GZIP_PATH="${db_dumps_path}/${REMOTE_DB_DUMP_FILENAME}.gz"
+timestamp=$(date +"%Y-%m-%dT%H-%M-%S")
+remote_db_dump_filename="antcat.${timestamp}.sql"
+remote_db_dump_path="/tmp/${remote_db_dump_filename}"
+remote_db_dump_gzip_path="/tmp/${remote_db_dump_filename}.gz"
+local_db_dump_gzip_path="${db_dumps_path}/${remote_db_dump_filename}.gz"
 
-echo "Remote: Running mysqldump... [target file: ${REMOTE_DB_DUMP_PATH}]"
-$ssh_command "mysqldump -u deploy antcat > ${REMOTE_DB_DUMP_PATH}"
+echo "Remote: Running mysqldump... [target file: ${remote_db_dump_path}]"
+$ssh_command "mysqldump -u deploy antcat > ${remote_db_dump_path}"
 echo
 
-echo "Remote: Running gzip... [target file: ${REMOTE_DB_DUMP_GZIP_PATH}]"
-$ssh_command "gzip ${REMOTE_DB_DUMP_PATH}"
+echo "Remote: Running gzip... [target file: ${remote_db_dump_gzip_path}]"
+$ssh_command "gzip ${remote_db_dump_path}"
 echo
 
-echo "Local: Downloading file from EngineYard... [target file: ${LOCAL_DB_DUMP_GZIP_PATH}]"
-$scp_command:$REMOTE_DB_DUMP_GZIP_PATH "${LOCAL_DB_DUMP_GZIP_PATH}"
+echo "Local: Downloading file from EngineYard... [target file: ${local_db_dump_gzip_path}]"
+$scp_command:$remote_db_dump_gzip_path "${local_db_dump_gzip_path}"
 echo
 
 echo "Done."
@@ -50,10 +50,10 @@ cat << EOF
 DB_SERVER_THAT_WILL_BE_DROPPED="zzzzzzzzzzzzzz.us-west-2.compute.amazonaws.com" # Make sure it's not production!!!
 
 # Copy from local to other remote.
-scp "${LOCAL_DB_DUMP_GZIP_PATH}" deploy@\$DB_SERVER_THAT_WILL_BE_DROPPED:/tmp
+scp "${local_db_dump_gzip_path}" deploy@\$DB_SERVER_THAT_WILL_BE_DROPPED:/tmp
 
 # Run this on remote:
 mysql -u root -e "DROP DATABASE antcat;"
 mysql -u root -e "CREATE DATABASE antcat;"
-zcat "${REMOTE_DB_DUMP_GZIP_PATH}" | mysql -u root antcat
+zcat "${remote_db_dump_gzip_path}" | mysql -u root antcat
 EOF

@@ -57,7 +57,7 @@ describe DatabaseScripts::EndDataAttributes do
     end
 
     before do
-      double = instance_double 'ReadEndData'
+      double = instance_double(ReadEndData)
       allow(ReadEndData).to receive(:new).with("app/database_scripts/database_scripts/.rb").and_return(double)
       allow(double).to receive(:call).and_return(end_data)
     end
@@ -89,7 +89,7 @@ describe DatabaseScripts::EndDataAttributes do
     let(:end_data) { {} }
 
     before do
-      double = instance_double 'ReadEndData'
+      double = instance_double(ReadEndData)
       allow(ReadEndData).to receive(:new).with("app/database_scripts/database_scripts/.rb").and_return(double)
       allow(double).to receive(:call).and_return(end_data)
     end

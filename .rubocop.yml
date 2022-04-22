@@ -117,9 +117,13 @@ Lint/UselessAccessModifier:
 
 Metrics/AbcSize:
   Enabled: false
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
+    - 'db/migrate/**/*'
 
 Metrics/BlockLength:
   Enabled: false
+  Max: 25
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
     - 'config/environments/**/*'
@@ -130,10 +134,7 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Enabled: false
   Max: 100
-  CountAsOne:
-    - array
-    - hash
-    - heredoc
+  CountAsOne: [array, hash, heredoc]
   Exclude:
     - 'app/cleanup/**/*'
     - 'app/controllers/quick_and_dirty_fixes_controller.rb'
@@ -141,14 +142,23 @@ Metrics/ClassLength:
 
 Metrics/CyclomaticComplexity:
   Enabled: false
+  Exclude:
+    - 'app/database_scripts/database_scripts/**/*'
+    - 'features/support/cucumber_helpers/**/*'
 
 Metrics/MethodLength:
   Enabled: false
+  Max: 15
+  CountAsOne: [array, hash, heredoc]
   Exclude:
     - 'app/database_scripts/database_scripts/**/*'
+    - 'db/migrate/**/*'
+    - 'features/support/cucumber_helpers/**/*'
+    - 'lib/tasks/**/*'
 
 Metrics/ModuleLength:
-  Enabled: false
+  Max: 100
+  CountAsOne: [array, hash, heredoc]
 
 Metrics/ParameterLists:
   CountKeywordArgs: false
@@ -176,11 +186,13 @@ Performance/MapCompact:
 Performance/MethodObjectAsBlock:
   Enabled: false
 
+# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
 Performance/Casecmp:
   Enabled: false
 
 ### Rails.
 
+# Disabled because it can be decided on a case-by-case basis if it's relevant.
 Rails/BulkChangeTable:
   Enabled: false
 
@@ -225,9 +237,6 @@ Rails/RakeEnvironment:
 Rails/ReflectionClassName:
   Enabled: false
 
-Rails/RenderInline:
-  Enabled: false
-
 # Disabled because it flags many false positives.
 Rails/SaveBang:
   Enabled: false
@@ -263,6 +272,7 @@ Rails/WhereNot:
 Rails/UniqueValidationWithoutIndex:
   Enabled: false
 
+# Disabled because `validates` is not available as an instance method (but for example `validates_inclusion_of` is).
 Rails/Validation:
   Enabled: false
 
@@ -284,6 +294,8 @@ RSpec/EmptyExampleGroup:
 
 RSpec/ExampleLength:
   Enabled: false
+  Max: 20
+  CountAsOne: [array, hash, heredoc]
 
 RSpec/ExpectChange:
   EnforcedStyle: block
@@ -301,9 +313,12 @@ RSpec/ImplicitSubject:
   Enabled: false
   EnforcedStyle: single_statement_only
 
+# Disabled because `let!` makes it easier to separate the Arrange step from the Act/Assert steps.
 RSpec/LetSetup:
   Enabled: false
 
+# Disabled for now even if `have_received` is more correct because `expect ... to receive` is currently mostly used for
+# a) call checking (in a lazy way but with less duplication), and b) the cases in the comment for RSpec/StubbedMock.
 RSpec/MessageSpies:
   Enabled: false
 
@@ -317,6 +332,8 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/NestedGroups:
   Max: 6
 
+# Disabled for now because `expect` is currently misused to make some specs less complicated. And `allow`s (which are more correct)
+# are more likely to be left unused by mistake when modifying specs (as opposed to `expect`s which would fail the spec).
 RSpec/StubbedMock:
   Enabled: false
 
@@ -331,12 +348,14 @@ Style/ArrayCoercion:
 Style/AutoResourceCleanup:
   Enabled: true
 
+# Disabled because not everything that can be a case statement must be rewritten as a case statement.
 Style/CaseLikeIf:
   Enabled: false
 
 Style/ClassCheck:
   EnforcedStyle: is_a?
 
+# Disabled because some comparisons are more readable when left/right hand sides look more similiar.
 Style/ClassEqualityComparison:
   Enabled: false
 
@@ -423,9 +442,11 @@ Style/SingleArgumentDig:
 Style/SingleLineBlockParams:
   Enabled: true
 
+# Disabled because some conditions are not combined on purpose for readability.
 Style/SoleNestedConditional:
   Enabled: false
 
+# Disabled because string interpolation is harder to read in some cases.
 Style/StringConcatenation:
   Enabled: false
 
@@ -436,9 +457,6 @@ Style/StringMethods:
   Enabled: true
 
 Style/SymbolArray:
-  Enabled: false
-
-Style/SymbolProc:
   Enabled: false
 
 Style/TrailingCommaInBlockArgs:
