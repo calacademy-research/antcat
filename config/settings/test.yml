@@ -1,3 +1,5 @@
+site_url: http://antcat_test.localhost
+
 http_basic_auth:
   enabled: false
   name: test

@@ -1,3 +1,4 @@
+# `production_url` is used for links that are always targeted to production. `site_url` is for the current site (env-specific).
 production_url: "https://antcat.org"
 
 http_basic_auth:
