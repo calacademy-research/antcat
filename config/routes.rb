@@ -214,7 +214,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :issues, except: :destroy do
+  resources :issues do
     scope module: :issues do
       resource :history, only: :show
     end
