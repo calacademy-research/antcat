@@ -6,7 +6,6 @@ module Users
 
     prepend_before_action :check_recaptcha, only: [:create]
     before_action :configure_permitted_parameters
-    before_action :check_if_too_many_registrations_today, only: :create
 
     def create
       super do |user|
@@ -67,11 +66,6 @@ module Users
           set_minimum_password_length
           respond_with_navigational(resource) { render :new }
         end
-      end
-
-      def check_if_too_many_registrations_today
-        return unless User.too_many_registrations_today?
-        redirect_to root_path, alert: 'Sorry, we have had too many new registrations today. Email us?'
       end
   end
 end
