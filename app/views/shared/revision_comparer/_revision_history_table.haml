@@ -17,6 +17,7 @@
           %th Date
           %th User
           %th
+          %th Event
       %tbody
         -# The `most_recent` revision is special, as it's not in `revisions`.
         -# It will be either the current object, or a reified instance of
@@ -28,6 +29,7 @@
           %td.shrink=radio_button_tag :selected_id, "", comparer.looking_at_most_recent?, data: { radio_button_index: -1 }
           %td.shrink=render "shared/revision_comparer/revision_info_date", revision: most_recent
           %td=render "shared/revision_comparer/revision_info_user", revision: most_recent
+          %td
           %td
 
         -revisions.each_with_index do |revision, index|
@@ -51,5 +53,8 @@
               -if revision.request_uuid
                 -# TODO: Move link one row up, as the `uuid` shows where a record stopped looking a certain way.
                 =link_to 'uuid', versions_path(request_uuid: revision.request_uuid), class: "btn-normal btn-tiny"
+            %td
+              %code
+                %small=revision.event
 
     =f.button "Compare selected revisions", name: nil, class: "btn-normal"
